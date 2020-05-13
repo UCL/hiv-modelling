@@ -5350,7 +5350,7 @@ end;
 
 
 * viral load;
-vset = 4.075 + (0.5 * normal(0)) + ((age-35)*0.005) ;
+vset = 2.075 + (0.5 * normal(0)) + ((age-35)*0.005) ;
 if gender=2 then vset=vset-0.2;
 if vset > 6.5 then vset=6.5;
 
