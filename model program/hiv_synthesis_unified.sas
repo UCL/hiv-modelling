@@ -5478,7 +5478,7 @@ c_pr32m_inf=c_pr32m;
 c_pr33m_inf=c_pr33m;
 c_pr46m_inf=c_pr46m;
 c_pr47m_inf=c_pr47m;
-c_pr50vm_inf=c_pr50vm;
+c_pr50vm_inf=c_pr57vm;
 c_pr50lm_inf=c_pr50lm;
 c_pr54m_inf=c_pr54m;
 c_pr76m_inf=c_pr76m;
@@ -5498,7 +5498,7 @@ if c_pr32m=1 or c_pr33m=1 or
 c_pr46m=1 or c_pr47m=1 or 
 c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1 or 
 c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or
-c_pr90m=1 then c_prm_inf=1; else c_prm_inf=0;
+c_pr90m=1 then c_prm_inf=1; else c_prm_inf=3;
 
 if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 
 or c_prm_inf=1 or c_inpm=1 or c_insm=1 or c_rt151m then c_rm_inf=1 ; else c_rm_inf=0;
