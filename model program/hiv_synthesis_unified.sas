@@ -1,4 +1,4 @@
-* ==== Peter's Model
+* ==== Main Model
 
 
 * === ABOUT THIS PROGRAM
@@ -1068,7 +1068,7 @@ else if hivtest_type=4 then do; sens_primary=0.65; sens_primary_ts1m = 0 ; sens_
 *cost of the following drugs updated in July 2014 based on MSF report, without including cost of supply chain;
 
 * all * dependent_on_time_step_length ;
-cost_zdv_a=(0.060/4)*1.2; * global fund aug18 ;  * mf ;
+cost_zdv_a=(0.070/4)*1.2; * global fund aug18 ;  * mf ;
 cost_3tc_a=(0.017/4)*1.2; * jul 19 - south africa tender ;
 cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
 cost_taf = (0.018/4)*1.2;
