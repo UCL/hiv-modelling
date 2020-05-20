@@ -558,7 +558,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-rbm=4;
+rbm=5;
 ch_risk_diag = 9/13; *overwritten; 
 ch_risk_diag_newp = 5/6; *overwritten;
 ych_risk_beh_newp = .99; *overwritten;
