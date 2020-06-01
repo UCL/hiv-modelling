@@ -1097,9 +1097,10 @@ sw_newp_lev_4_1 = 0.050 ; sw_newp_lev_4_2 = 0.050 ; sw_newp_lev_4_3 = 0.050 ; sw
 sw_newp_lev_5_1 = 0.050 ; sw_newp_lev_5_2 = 0.050 ; sw_newp_lev_5_3 = 0.050  ; sw_newp_lev_5_4 = 0.05 ; sw_newp_lev_5_5 = 0.80 ;
 end;
 
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.5; p_sw_init_newp_g3= 0.20; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.1; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.15; p_sw_init_newp_g5=0.05; end;
-if sw_init_newp=3 then do; p_sw_init_newp_g1=0.3; p_sw_init_newp_g2=0.5; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
+
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.05; end;
+if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
 
 
 * test type;
