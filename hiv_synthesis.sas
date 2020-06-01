@@ -333,6 +333,7 @@ values changed to after 2020
 
 
 * === LOVELEEN UPDATES SINCE LAST SAVED
+01-06-20 - changed values of sw_init_np
 19-05-20 - removed code on sw_ips as no longer needed (crudely calculated in output file for graph purposes) and small edit to age_deb_sw 
 14-05-20 - renamed rate_newp0_rred_rc to rate_sw_rred_rc
 		   recoded section in which newp was set to 0 for some sex workers. Now newp is set to a category below what it was.
