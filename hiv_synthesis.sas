@@ -27,6 +27,9 @@ has potential to replace approach 2 in future.
 tld prep - people do not have to test if they are on tld prep, people can be tested and diagnosed with hiv if they are on tld "prep" with hiv, 
 people on tld "prep" with hiv who are not diagnosed do not have visit=1 and do not have viral load testing, 
 
+* === ANASTASIS UPDATES
+- 02-6-20 - staking my claim in the model code
+
 * === ANDREW UPDATES
 
 - 22-5-20 - 12pm - change covid disruption length to 6m as default
@@ -509,7 +512,7 @@ incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_ini
 - consider higher pr_art_init if diagnosed while on prep
 
 - proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ñve and np=0, start tld if np goes >= 1) 
+alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ÔøΩve and np=0, start tld if np goes >= 1) 
 sample these)
 
 - is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
@@ -1331,7 +1334,7 @@ if gender ne . then do; obs+1; end;
 *
 cia world factbook 
 malawi
-Total population (x 1000)	Population aged 0ÅE4 (%)	Population aged 15ÅE4 (%)	Population aged 65+ (%)   n population aged 15ÅE4
+Total population (x 1000)	Population aged 0ÔøΩE4 (%)	Population aged 15ÔøΩE4 (%)	Population aged 65+ (%)   n population aged 15ÔøΩE4
 1990	9 381	45.9	51.4	2.7		4821000
 1995	9 883	44.7	52.2	3.1		5159000
 2000	11 229	45.8	51.1	3.1		5738000
