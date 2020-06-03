@@ -1,7 +1,7 @@
 
 
 
-* === ABOUT THIS PROGRAM
+* === ABOUT THIS PROGRAM  === *
  
 This is the unified hiv synthesis  program for sub saharan africa.
 
@@ -336,6 +336,7 @@ values changed to after 2020
 
 
 * === LOVELEEN UPDATES SINCE LAST SAVED
+01-06-20 - changed values of sw_init_np
 19-05-20 - removed code on sw_ips as no longer needed (crudely calculated in output file for graph purposes) and small edit to age_deb_sw 
 14-05-20 - renamed rate_newp0_rred_rc to rate_sw_rred_rc
 		   recoded section in which newp was set to 0 for some sex workers. Now newp is set to a category below what it was.
@@ -777,7 +778,7 @@ rate_want_no_more_children = 0.005;
 rate_sti = 1 / 20 ;
 rate_persist_sti = 1 / 5 ;
 
-* dependent on rred_rc, rate of sex workers moving to newp=0;
+* dependent on rred_rc, rate of sex workers moving to one category lower;
 rate_sw_rred_rc = 0.02; 
 * rate of development of non-hiv symptoms, regardless of hiv status;
 rate_non_hiv_symptoms=0.005;
@@ -1018,10 +1019,17 @@ p_neph_stops_after_ten = 0.1;
 								if 0.80 <= r        then oth_dol_adv_birth_e_risk = 0.0030; 
 * prop_bmi_ge23;			r=uniform(0);  prop_bmi_ge23 = 0.5;  if r < 0.5 then prop_bmi_ge23 = 0.75;
 * rr_int_tox ;				r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
-							if 0.67 <= r then rr_int_tox = 30;  
-* sw_lower_art_use_adh;
-							sw_lower_art_use_adh = 1; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5;
+							if 0.67 <= r then rr_int_tox = 30; 
+ 
+* sw_higher_int;			r=uniform(0); if r < 0.33 then sw_higher_int = 1; if 0.33 <= r < 0.67 then sw_higher_int = 2;  
+							if 0.67 <= r then sw_higher_int = 3;  
 
+*prob_sw_lower_adh;			r=uniform(0); if r < 0.33 then prob_sw_lower_adh = 0; if 0.33 <= r < 0.67 then prob_sw_lower_adh = 0.3;  
+							if 0.67 <= r then prob_sw_lower_adh = 1; 
+
+*sw_higher_prob_loss_at_diag;r=uniform(0); if r < 0.33 then sw_higher_prob_loss_at_diag = 1; if 0.33 <= r < 0.67 then sw_higher_prob_loss_at_diag = 1.5;  
+							if 0.67 <= r then sw_higher_prob_loss_at_diag = 2; 
+							
 * sw_program;				r=uniform(0); sw_program=0;  
 							if r < 0.33 then sw_program=1; 
 							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.1 then sw_program_effect = 2; end;
@@ -1075,6 +1083,10 @@ r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then 
 
 * ================ ;
 
+* determining newp base categories for new sw;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.05; end;
+if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-40   4   newp 41-130   5   newp 131+  ;
@@ -1100,9 +1112,7 @@ sw_newp_lev_4_1 = 0.050 ; sw_newp_lev_4_2 = 0.050 ; sw_newp_lev_4_3 = 0.050 ; sw
 sw_newp_lev_5_1 = 0.050 ; sw_newp_lev_5_2 = 0.050 ; sw_newp_lev_5_3 = 0.050  ; sw_newp_lev_5_4 = 0.05 ; sw_newp_lev_5_5 = 0.80 ;
 end;
 
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.5; p_sw_init_newp_g3= 0.20; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.1; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.15; p_sw_init_newp_g5=0.05; end;
-if sw_init_newp=3 then do; p_sw_init_newp_g1=0.3; p_sw_init_newp_g2=0.5; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
+
 
 
 * test type;
@@ -1654,14 +1664,14 @@ b = 1989-(age-15);
 
 age_deb_sw=.;
 u=uniform(0);
-date_start_sw = a + (b-a)*u;date_start_sw=round(date_start_sw, 0.25);
+date_start_sw = 1984+(5*(uniform(0)));round(date_start_sw, 0.25);
 age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
 
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
-a=uniform(0);if a<0.85 then episodes_sw=0;if 0.85 <= a <0.98 then episodes_sw=1;if a>=0.98 then episodes_sw=2;
+a=uniform(0);if a<0.95 then episodes_sw=0;if 0.95 <= a <0.98 then episodes_sw=1;if a>=0.98 then episodes_sw=2;
 episodes_sw=episodes_sw+1;
 
 e=uniform(0); if age > 30 then e=e*0.99; * older women cant be in highest category ;
@@ -3220,6 +3230,8 @@ end;
 
 
 age_deb_sw=.;
+
+*initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
 	e=uniform(0);
 	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3 ; 
@@ -6465,7 +6477,7 @@ res_test=.;
 	   if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
-		if sw_lower_art_use_adh = 1 and sw=1 then prointer=prointer * eff_sw_higher_int;
+		if sw=1 then prointer=prointer * eff_sw_higher_int;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -7171,9 +7183,8 @@ if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
 e=uniform(0);
-if sw_lower_art_use_adh = 1 then do;
 if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-end;
+
 
 * high risk of resistance with nnrtis even if v low adherence;
 * dependent_on_time_step_length ;
