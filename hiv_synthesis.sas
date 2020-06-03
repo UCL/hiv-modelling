@@ -1656,12 +1656,10 @@ if 40 <= age < 50 and life_sex_risk ge 2 and e < 0.002 then sw=1;
 end;
 
 if sw=1 then do;
-a = 1989;
-b = 1989-(age-15);
 
 age_deb_sw=.;
 u=uniform(0);
-date_start_sw = 1984+(5*(uniform(0)));date_start_sw=round(date_start_sw, 0.25);
+date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
 age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
 
 end;
@@ -15967,7 +15965,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_unified_&dataset_id";  
+*  file "/home/rmjlaph/Scratch/_output_unified_&dataset_id";  
 put   
 
 /*
