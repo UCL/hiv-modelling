@@ -1661,7 +1661,7 @@ b = 1989-(age-15);
 
 age_deb_sw=.;
 u=uniform(0);
-date_start_sw = 1984+(5*(uniform(0)));round(date_start_sw, 0.25);
+date_start_sw = 1984+(5*(uniform(0)));date_start_sw=round(date_start_sw, 0.25);
 age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
 
 end;
