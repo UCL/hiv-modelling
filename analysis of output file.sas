@@ -26,7 +26,8 @@ data a;
 * set a.covid_hiv_3mths_a;
 * set e.covid_hiv_revision_main_30r;
 * set e.covid_hiv_revision_main_30r_extra;
-  set f.core_2020_pre_6_6_20;
+* set f.core_2020_pre_6_6_20;
+  set f.core_2020_6_6_20;
 
 if option = 0 or option = 10;  if option = 10 then option = 1;
 
@@ -879,10 +880,12 @@ proc sort; by run;
 * data e.wide_covid_hiv_6mths_c;
 * data e.wide_covid_hiv_3mths_a;
 * data e.wide_covid_main_revision_op3 ;
-  data e.wide_covid_main_revision_extra;
+* data e.wide_covid_main_revision_extra;
+* data e.wide_core_pre_6_6_20;
+  data e.wide_core_6_6_20;
 
-  merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
-* merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
+* merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
+  merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
   by run;
 
 * data wide_prep; 
@@ -900,11 +903,14 @@ proc sort; by run;
 *  set e.wide_covid_hiv_6mths_a;
 *  set e.wide_covid_hiv_6mths_b; * results for submitted ms;
 *  set e.wide_covid_main_revision_op3 ;
-   set e.wide_covid_main_revision_extra;
- 
-if 0.04 <  prevalence1549_20 < 0.30;
+*  set e.wide_covid_main_revision_extra;
+*  set e.wide_core_pre_6_6_20 ;
+   set e.wide_core_6_6_20 ;
 
-* for main :; if run <= 989384738 ;
+
+* if 0.04 <  prevalence1549_20 < 0.30;
+
+* for main :; * if run <= 989384738 ;
 
 
 /*

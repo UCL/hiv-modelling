@@ -874,8 +874,12 @@ p_neph_stops_after_ten = 0.1;
 * conc_ep; 	r=normal(0) * 0.6; conc_ep = exp(r); conc_ep = round(conc_ep,0.1);
 * ch_risk_diag;  r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.8 <= r then ch_risk_diag = 1;
 * ch_risk_diag_newp;  r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;
+
+
 * ych_risk_beh_newp;  r=uniform(0); if r < 0.25 then ych_risk_beh_newp = 0.90;	if 0.25 <= r < 0.50 then ych_risk_beh_newp = 0.80;
-						if 0.50 <= r < 0.75 then ych_risk_beh_newp = 0.70; if 0.75 <= r then ych_risk_beh_newp = 0.60; 
+						if 0.50 <= r < 0.75 then ych_risk_beh_newp = 0.90; if 0.75 <= r then ych_risk_beh_newp = 0.80; 
+
+
 * ych2_risk_beh_newp;  r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; 
 * ych_risk_beh_ep;  r=uniform(0); if  r < 0.33 then ych_risk_beh_ep = 0.95; if 0.33 <= r < 0.67 then ych_risk_beh_ep = 0.90; if 0.67 <= r then ych_risk_beh_ep = 0.80; 
 * exp_setting_lower_p_vl1000; exp_setting_lower_p_vl1000 = 0; * exposure to setting with lower p_vl1000 due to migration (and return); 
@@ -15965,7 +15969,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-*  file "/home/rmjlaph/Scratch/_output_unified_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_unified_6_june_2020_&dataset_id";  
 put   
 
 /*

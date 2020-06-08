@@ -13,7 +13,7 @@ proc printto;
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_unified_pre_6_6_2020";
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_unified_6_6_2020_6pm";
 
 input    
 
@@ -578,7 +578,8 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 ; 
 
-data f.core_2020_pre_6_6_20; 
+* data f.core_2020_pre_6_6_20; 
+  data f.core_2020_6_6_20; 
 
 set d1 ;
 
