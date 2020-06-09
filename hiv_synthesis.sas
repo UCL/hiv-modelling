@@ -534,7 +534,7 @@ explore metrics for how to monitor prep programmes
   libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto    log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 
 
@@ -684,7 +684,7 @@ rate_restart = 0.4; *overwritten; * dependent_on_time_step_length ;
 pr_art_init = 0.4; *overwritten; * dependent_on_time_step_length ;
 base_res_test=0;
 flr=0;  
-third_line=0;
+third_line=1; * this means third line with dar unavailable but it is possible to have 1st line efa, 2nd line dol, 3rd line taz or lpr;
 art_intro_date = 2004;
 fold_change_mut_risk = 1; *overwritten;
 v_min_art=1.0;  
@@ -6683,9 +6683,9 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 	end;
 
-	if reg_option in (9999 120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) then do; * use 999 to retain code even though no option 9999;
+	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) and (p_lpr ne 1 and p_taz ne 1) then do; 
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			pi_after_dtg_fail=1; start_line3=1;
 		end;
 
 	end;
@@ -6695,7 +6695,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
  if reg_option in (104 118 120 121) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1; if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;end;
 		end;
 
 	end;
@@ -6705,7 +6705,7 @@ if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=
 restart pi so have added on 104 her, along with 111); 
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			if p_taz=1 or p_lrp=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;end;
 		end;
 
 	end;
@@ -7005,8 +7005,6 @@ end;
 
 if choose_line3=1  then do;
 		choose_line3=.; start_line3=.;
-	o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_dar=0;o_efa=0;o_dol=0;o_taz=0;
-		o_dar=1; o_dol=1;
 
 	if t ge 2 then do;
 			if o_zdv_tm1=1 and o_zdv=0 then do;   tss_zdv=0; end;
@@ -7021,16 +7019,29 @@ if choose_line3=1  then do;
 	end;
 end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;
-
-if restart_pi_after_dtg_fail=1  then do;  
-
+if pi_after_dtg_fail=1  then do;  
+			pi_after_dtg_fail=.;
+			if artline=2 then artline=3; line3=1;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
 			if t_ten=0 and t_zdv=1 then do; o_ten=1; end;
 end;
+
+
+* restart_pi_after_dtg_fail -  ;  * dec17;
+
+if restart_pi_after_dtg_fail=1  then do;  
+			restart_pi_after_dtg_fail=.;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_3tc=1;
+			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
+			if t_zdv ne 1 then do; o_zdv=1;  end;
+			if t_ten=0 and t_zdv=1 then do; o_ten=1; end;
+end;
+
+
 
 
 if art_monitoring_strategy = 153 then do; 
@@ -8922,7 +8933,7 @@ end;
 
 
 
-if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and artline=2 and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
@@ -8962,7 +8973,8 @@ then do;
 end;
 
 
-if (reg_option = 117 or (reg_option = 104 and art_monitoring_strategy = 1500) or reg_option = 118 or reg_option=119) and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+if (reg_option = 117 or (reg_option = 104 and art_monitoring_strategy = 1500) or reg_option = 118 or reg_option=119)  and artline=2 
+and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
@@ -9009,7 +9021,7 @@ end;
 
 
 
-if (reg_option in (120 121) and linefail=1 and o_dol=1 and f_dol_tm1 ne 1 and p_taz ne 1 and p_lpr ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+if reg_option in (120 121) and linefail=1 and artline=2 and o_dol=1 and f_dol_tm1 ne 1 and p_taz ne 1 and p_lpr ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
