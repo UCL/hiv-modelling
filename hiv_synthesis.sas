@@ -842,7 +842,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_init_newp;    r=uniform(0);  if r < 0.33 then sw_init_newp = 1;   if 0.33 <= r < 0.67 then sw_init_newp = 2;  
 								if 0.67 <= r then sw_init_newp = 3;  
 * rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.02;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.05;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; 
+								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
