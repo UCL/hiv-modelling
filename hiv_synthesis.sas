@@ -2257,6 +2257,10 @@ reg_option
 	
 113	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
 
+120    tld      remain on tle				remain on zl-pi					two VL > 1000		--> zld			    zl-pi			tl_pi
+
+121    tld      remain on tle				remain on zl-pi					single VL > 1000	--> zld			    zl-pi			tl_pi
+
 115	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
 																			and 80% adh
 
@@ -2302,7 +2306,7 @@ all art stopped (no_art_disrup_covid)
 	
 ;
 
-if caldate{t} ge 2019.5 then reg_option = 113;
+if caldate{t} ge 2019.5 then reg_option = 120;
 
 
 
@@ -2360,6 +2364,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 1 then do;
 
 	single_vl_switch_efa_2020 = 1;
+	reg_option = 121;
 
 	end;
 end;
@@ -2370,19 +2375,19 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 104 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119) then flr=2; 
+if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121) then flr=2; 
 if reg_option in (107) then flr=1;
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
-if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119) then do; 
+if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 
 if 2020.25 <= caldate{t} < 2020.75 and vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if reg_option in (101 102 103 104 107 110 113 116) then art_monitoring_strategy=150;
+if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 if t ge 2 and reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
 
@@ -6676,7 +6681,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 	end;
 
-	if reg_option in (9999) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) then do; * use 999 to retain code even though no option 9999;
+	if reg_option in (9999 120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) then do; * use 999 to retain code even though no option 9999;
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			restart_pi_after_dtg_fail=1; 
 		end;
@@ -6685,7 +6690,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 * AP 20-7-19;
 
- if reg_option in (104 118) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
+ if reg_option in (104 118 120 121) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
 			restart_pi_after_dtg_fail=1; 
@@ -6694,7 +6699,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	end;
 
 
-if reg_option in (103 104 110 111 114 116 117 118 119) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
+if reg_option in (103 104 110 111 114 116 117 118 119 120 121 and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 restart pi so have added on 104 her, along with 111); 
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
@@ -6932,7 +6937,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0  and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
-	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119) then do; * aug18;
+	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
@@ -6948,7 +6953,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0 and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
- 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119) then do;
+ 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 12 121) then do;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
