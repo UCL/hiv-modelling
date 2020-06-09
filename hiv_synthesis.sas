@@ -2318,7 +2318,7 @@ if caldate{t} ge 2019.5 then reg_option = 113;
 option = &s;
 
 * AP 20-7_19 ;
-if caldate_never_dot = 2020.25 then do;
+if caldate_never_dot = 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2354,40 +2354,15 @@ who may be dead and hence have caldate{t} missing;
 		circ_inc_rate_2020 = 0;
 		condom_incr_2020 = 0;
 		pop_wide_tld = 0;
+		single_vl_switch_efa_2020 = 0;
 
-	if option = 0 then do;  end; 
+	if option = 0 then do;  
+
+	end; 
 
 	if option = 1 then do;
 
-*
-
-vmmc stopped (vmmc_disrup_covid)
-condom availability stopped resulting in increase in newp (condom_disrup_covid)
-prep stopped (prep_disrup_covid)
-sex worker program stopped (swprog_disrup_covid)
-all hiv testing stopped (testing_disrup_covid) 
-all art use switched to tld (art_tld_disrup_covid)
-every other day tld (art_tld_eod_disrup_covid)
-all art initiations stopped (art_init_disrup_covid)
-viral load  testing, enhanced adherence counselling and switches stopped (vl_adh_switch_disrup_covid)
-all co-trimoxazole stopped (cotrim_disrup_covid)
-increase in death rate for people with adc or tb (inc_death_rate_aids_disrup_covid)
-all art stopped (no_art_disrup_covid)
-	
-;
-		vmmc_disrup_covid = 0 ; if _u43 < 0.5 then vmmc_disrup_covid = 1 ;
-		condom_disrup_covid = 0; if _u44 < 0.5 then condom_disrup_covid = 1 ;
-  		prep_disrup_covid = 0; if _u45 < 0.5 then prep_disrup_covid = 1 ;
-		swprog_disrup_covid = 0; if _u46 < 0.5 then swprog_disrup_covid = 1 ;   
-		testing_disrup_covid = 0; if _u47 < 0.5 then testing_disrup_covid = 1 ;
-		art_tld_disrup_covid = 0; if _u48 < 0.5 then art_tld_disrup_covid = 1 ;
-		art_tld_eod_disrup_covid = 0; if _u49 < 0.5 then art_tld_eod_disrup_covid = 1 ;
-		art_init_disrup_covid = 0; if _u50 < 0.5 then art_init_disrup_covid = 1 ;
-		vl_adh_switch_disrup_covid = 0; if _u51 < 0.5 then vl_adh_switch_disrup_covid = 1 ;
-		cotrim_disrup_covid = 0; if _u52 < 0.5 then cotrim_disrup_covid = 1 ;
-		inc_death_rate_aids_disrup_covid = 0; if _u53 < 0.5 then inc_death_rate_aids_disrup_covid = 1 ;
-		no_art_disrup_covid = 0; if _u54 < 1   then no_art_disrup_covid = 1 ;
-		art_low_adh_disrup_covid = 0; if _u55 < 0.5 then art_low_adh_disrup_covid = 1 ;
+	single_vl_switch_efa_2020 = 1;
 
 	end;
 end;
@@ -2413,6 +2388,11 @@ if 2020.25 <= caldate{t} < 2020.75 and vl_adh_switch_disrup_covid = 1 and covid_
 if reg_option in (101 102 103 104 107 110 113 116) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 if t ge 2 and reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
+
+if single_vl_switch_efa_2020 = 1 then do;
+art_monitoring_strategy=150;
+if (o_efa=1 or (int_clinic_not_aw=1 and mr_efa=1) or o_nev=1 or (int_clinic_not_aw=1 and mr_nev=1)) and linefail=0 then art_monitoring_strategy=153; 
+end;
 
 
 * may 2019 - for pico;
@@ -15036,7 +15016,7 @@ inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 
+art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
@@ -15969,7 +15949,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_unified_6_june_2020_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_9_june_2020_9am_&dataset_id";  
 put   
 
 /*
@@ -16425,7 +16405,7 @@ inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 
+art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
