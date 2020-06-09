@@ -534,7 +534,7 @@ explore metrics for how to monitor prep programmes
   libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto  ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto    log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 
 
@@ -1319,7 +1319,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 
 data r1;set z;
-do i=1 to 100000;
+do i=1 to 10000;
 	n=1;
 	serial_no + 1;
 	output; 
@@ -2308,6 +2308,8 @@ all art stopped (no_art_disrup_covid)
 
 if caldate{t} ge 2019.5 then reg_option = 120;
 
+	eff_prob_vl_meas_done = 1;
+	initial_prob_vl_meas_done = 1;
 
 
 * ==========================================================================================================================================;
@@ -6699,7 +6701,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	end;
 
 
-if reg_option in (103 104 110 111 114 116 117 118 119 120 121 and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
+if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 restart pi so have added on 104 her, along with 111); 
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
@@ -9003,6 +9005,55 @@ then do;
 			if o_dol=1 then f_dol=1;
 	end; 
 end;
+
+
+
+
+if (reg_option in (120 121) and linefail=1 and o_dol=1 and f_dol_tm1 ne 1 and p_taz ne 1 and p_lpr ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
+and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
+then do; 
+		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
+		drug_level_test=1;end;  
+		end;
+		vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; hhh=1;
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=.  then date_v_alert=caldate{t};
+		end;
+	end;
+	time_since_last_vm_prev=time_since_last_vm;
+
+
+	* eee;	
+	if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
+
+
+	if (
+	(caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold) and adh > 0.8) 
+	or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold) and adh_tm1 > 0.8)
+	) 
+	then do;
+			linefail=2;r_fail_2=c_totmut   ; cd4_fail1_2=cd4; vl_fail_2=vl; d2ndlfail=caldate{t}; 
+			if o_zdv=1 then f_zdv=1;
+			if o_3tc=1 then f_3tc=1;
+			if o_ten=1 then f_ten=1;
+			if o_nev=1 then f_nev=1;
+			if o_efa=1 then f_efa=1;
+			if o_lpr=1 then f_lpr=1;
+			if o_taz=1 then f_taz=1;
+			if o_dar=1 then f_dar=1;
+			if o_dol=1 then f_dol=1;
+	end; 
+end;
+
+
 
 
 
@@ -14074,7 +14125,15 @@ end;
 
 cald = caldate_never_dot ;
 
+
 * procs;
+
+proc print; var  cald  eff_prob_vl_meas_done  reg_option  visit  yrart  onart art_monitoring_strategy linefail_tm1 
+linefail artline vl vm o_efa o_dol o_taz o_ten o_zdv o_3tc ; 
+where d1stlfail ge 2020.5 /* (yrart ge 2019.5 or d1stlfail ge 2020.5)*/ and naive=0 and death = .;
+run;
+
+
 /*
 
 proc print; var cald option no_art_disrup_covid was_on_art_covid_disrup interrupt interrupt_choice lost return restart onart vl ;
@@ -14118,7 +14177,7 @@ run;
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = 100000;
+data sums; set r&da1; if serial_no = 10000;
 
 ***Variables created below are used to update the program ;
 
@@ -15123,7 +15182,7 @@ data cum_l&da2; set cum_l&da1 sums;
 
 
 data s;set sums;
-do i=1 to 100000; 
+do i=1 to 10000; 
 	n=1; output; 
 end; 
 drop i;
@@ -15814,6 +15873,9 @@ end;
 
 %mend update_r1;
 
+
+/*
+
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=0);
@@ -15943,6 +16005,43 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 
+data a.srewe; set r1;
+
+*/
+
+data r1; set a.srewe; 
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
 
 
 * ts1m:  need more update statements ;
