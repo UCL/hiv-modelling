@@ -3453,7 +3453,7 @@ if sw=1 and newp ge 1 then do;
 e=uniform(0); * dependent_on_time_step_length ;
 
 if (0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
-(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
+(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (0.70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
 (0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc) then do; 
 
 if 1 <= newp <= 6 then newp=0;
