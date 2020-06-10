@@ -2240,7 +2240,7 @@ if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
-		min_time_repeat_vl = 0.25;	
+		min_time_repeat_vm = 0.25;	
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
@@ -6672,43 +6672,42 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	end;
 
 
-
-
-* INITIATION OF 3rd LINE HAART - AFTER HAVING INTERRUPTED SINCE FAILING second line;
+* INITIATION OF 3rd LINE HAART - AFTER HAVING INTERRUPTED SINCE FAILING second line; * third line can now be pi after efa fail and dol fail;
 
 	if third_line=1 then do;
+
 		if t ge 2 and linefail_tm1 =2 and line3=0 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			start_line3=1; 
 		end;
 
-	end;
-
-	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) and (p_lpr ne 1 and p_taz ne 1) then do; 
+	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
-			pi_after_dtg_fail=1; start_line3=1;
+			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
 
 	end;
 
-* AP 20-7-19;
-
- if reg_option in (104 118 120 121) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
+	
+ 	if reg_option in (104 118 120 121) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1; if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;end;
+			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
 
 	end;
 
-
-if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
-restart pi so have added on 104 her, along with 111); 
+	if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
+	restart pi so have added on 104 here, along with 111); 
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			if p_taz=1 or p_lrp=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;end;
+			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
 		end;
 
 	end;
+	
+
+	end;
+
 
 
 	if t ge 2 and start_line3=1 then do; 
@@ -6955,7 +6954,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0 and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
- 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 12 121) then do;
+ 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121) then do;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
@@ -7017,7 +7016,6 @@ if choose_line3=1  then do;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
 			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
 	end;
-end;
 
 if pi_after_dtg_fail=1  then do;  
 			pi_after_dtg_fail=.;
@@ -7029,6 +7027,7 @@ if pi_after_dtg_fail=1  then do;
 			if t_ten=0 and t_zdv=1 then do; o_ten=1; end;
 end;
 
+end;
 
 * restart_pi_after_dtg_fail -  ;  * dec17;
 
@@ -8793,7 +8792,7 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 
 	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
 	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
-	then do;
+	then do;  
 			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 			if o_zdv=1 then f_zdv=1;
 			if o_3tc=1 then f_3tc=1;
@@ -14140,10 +14139,14 @@ cald = caldate_never_dot ;
 
 * procs;
 
-proc print; var  cald  eff_prob_vl_meas_done  reg_option  visit  yrart  onart art_monitoring_strategy linefail_tm1 
-linefail artline vl vm o_efa o_dol o_taz o_ten o_zdv o_3tc ; 
-where d1stlfail ge 2020.5 /* (yrart ge 2019.5 or d1stlfail ge 2020.5)*/ and naive=0 and death = .;
+proc print; var  cald  yrart  onart art_monitoring_strategy 
+linefail artline vl vm o_efa f_efa o_dol 
+time_since_last_vm time_of_first_vm  min_time_repeat_vm date_vl_switch_eval
+date_conf_vl_measure_done value_last_vm f_dol o_taz f_taz  o_ten f_ten  o_zdv f_zdv  o_3tc f_3tc restart_pi_after_dtg_fail; 
+where o_dol=1 and  /* d1stlfail ge 2019.5 and (yrart ge 2019.5 or d1stlfail ge 2020.5) and */ naive=0 and death = .;
 run;
+
+
 
 
 /*
@@ -15885,7 +15888,6 @@ end;
 
 %mend update_r1;
 
-
 /*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
@@ -16010,12 +16012,6 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=113,h=120,j=120,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=117,h=124,j=121,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=117,h=124,j=122,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=117,h=124,j=123,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=117,h=124,j=124,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 
 data a.srewe; set r1;
 
@@ -16023,6 +16019,12 @@ data a.srewe; set r1;
 
 data r1; set a.srewe; 
 
+%update_r1(da1=1,da2=2,e=7,f=8,g=117,h=124,j=123,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=117,h=124,j=124,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
