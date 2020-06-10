@@ -14139,11 +14139,9 @@ cald = caldate_never_dot ;
 
 * procs;
 
-proc print; var  cald  yrart  onart art_monitoring_strategy 
-linefail artline vl vm o_efa f_efa o_dol 
-time_since_last_vm time_of_first_vm  min_time_repeat_vm date_vl_switch_eval
-date_conf_vl_measure_done value_last_vm f_dol o_taz f_taz  o_ten f_ten  o_zdv f_zdv  o_3tc f_3tc restart_pi_after_dtg_fail; 
-where o_dol=1 and  /* d1stlfail ge 2019.5 and (yrart ge 2019.5 or d1stlfail ge 2020.5) and */ naive=0 and death = .;
+proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm o_efa f_efa o_dol f_dol o_taz 
+f_taz  o_ten f_ten  o_zdv f_zdv  o_3tc f_3tc  pi_after_dtg_fail  restart_pi_after_dtg_fail; 
+where linefail ge 1 and death = .;
 run;
 
 
