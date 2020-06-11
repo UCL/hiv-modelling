@@ -1,5 +1,5 @@
 
-proc print; var p_prep_ever_20 ; run;
+
 
 
   libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
@@ -7,17 +7,15 @@ proc print; var p_prep_ever_20 ; run;
   libname c "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\prep\reading datasets\";
   libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
   libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
+  libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 
 proc printto;
 
  ods html close ;
 * ods html ;
 
-
-
-
 data a; 
-  set d.prep_tld_keep; 
+* set d.prep_tld_keep; 
 * set c.prep_keep; 
 * set a.dolswitch_keep; 
 * set a.covid_hiv_3mths; 
@@ -26,12 +24,12 @@ data a;
 * set a.covid_hiv_6mths_c;
 * set a.covid_hiv_3yr;
 * set a.covid_hiv_3mths_a;
+* set e.covid_hiv_revision_main_30r;
+* set e.covid_hiv_revision_main_30r_extra;
+* set f.core_2020_pre_6_6_20;
+  set f.core_2020_6_6_20;
 
-
-vmmc_disrup_covid=.; condom_disrup_covid=.; prep_disrup_covid=.; swprog_disrup_covid=.; testing_disrup_covid=.; art_tld_disrup_covid=.;
-art_tld_eod_disrup_covid=.;  art_init_disrup_covid=.; vl_adh_switch_disrup_covid=.; cotrim_disrup_covid=.; no_art_disrup_covid=.; 
-inc_adeathr_disrup_covid=.;   art_low_adh_disrup_covid=.;  cov_death_risk_mult=.;
-
+if option = 0 or option = 10;  if option = 10 then option = 1;
 
 
 proc sort; by run cald option;
@@ -564,25 +562,25 @@ run;
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
-proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5   ;
+/* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
-proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.25 <= cald < 2025.25;
-proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;  
+/* proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.25 <= cald < 2025.25; */
+/* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50; */ 
   
-proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; 
+/* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
 proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run; 
-proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
-proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  
+/* proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; */ 
+/* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */ 
 
-data &v ; merge  y_20 t_20b t_20_21  t_20_25 t_20_70 ;  
+data &v ; merge  y_20 t_20_21 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=dataset); %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
+%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=rate_susc_np_1549_w);  %var(v=rate_susc_np_ic_1549_m);  %var(v=rate_susc_np_1549_w);
 %var(v=p_newp_sw);
 %var(v=mean_num_tests_ly_m1549_)  ;  %var(v=mean_num_tests_ly_w1549_); %var(v=n_tested_m);
@@ -641,7 +639,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-dataset s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
 p_newp_sw mean_num_tests_ly_m1549_  mean_num_tests_ly_w1549_  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
@@ -877,11 +875,17 @@ proc sort; by run;
 * data a.wide_dolswitch;
 * data c.wide_prep; 
 * data d.wide_tld_prep; 
+* data e.wide_covid_hiv_6mths_a;
+* data e.wide_covid_hiv_6mths_b;
 * data e.wide_covid_hiv_6mths_c;
 * data e.wide_covid_hiv_3mths_a;
+* data e.wide_covid_main_revision_op3 ;
+* data e.wide_covid_main_revision_extra;
+* data e.wide_core_pre_6_6_20;
+  data e.wide_core_6_6_20;
 
-  merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
-* merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
+* merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
+  merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
   by run;
 
 * data wide_prep; 
@@ -897,7 +901,16 @@ proc sort; by run;
 *  set d.wide_tld_prep; 
 *  set e.wide_covid_hiv_3mths; * results for submitted ms;
 *  set e.wide_covid_hiv_6mths_a;
-   set e.wide_covid_hiv_6mths_b; * results for submitted ms;
+*  set e.wide_covid_hiv_6mths_b; * results for submitted ms;
+*  set e.wide_covid_main_revision_op3 ;
+*  set e.wide_covid_main_revision_extra;
+*  set e.wide_core_pre_6_6_20 ;
+   set e.wide_core_6_6_20 ;
+
+
+* if 0.04 <  prevalence1549_20 < 0.30;
+
+* for main :; * if run <= 989384738 ;
 
 
 /*
@@ -908,7 +921,8 @@ proc sort; by run;
 */
 
 
-* if prep_improvements_ai1 ne . ;
+* if prep_improvements_ai1 ne .
+   ;
 
 
 ratio_prev_age2529w_overall_16 = prevalence2529w_16 / prevalence1549_16 ;  
@@ -981,6 +995,34 @@ incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_st
 
 
 * --------------------------------------------------------------------------------------------------------------;
+
+* for covid_hiv ;
+
+/*
+
+ratio_n_hivdeath_1y_vmmc = n_death_hivrel_20_21_2 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_condom = n_death_hivrel_20_21_3 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_prep = n_death_hivrel_20_21_4 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_testing = n_death_hivrel_20_21_5 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_art_init = n_death_hivrel_20_21_6 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_vl_adh_sw = n_death_hivrel_20_21_7 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_cotrim = n_death_hivrel_20_21_8 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_i_dth_r = n_death_hivrel_20_21_9 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_no_art = n_death_hivrel_20_21_10 / n_death_hivrel_20_21_1 ;
+ratio_n_hivdeath_1y_low_adh = n_death_hivrel_20_21_11 / n_death_hivrel_20_21_1 ;
+
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
+
+*/ 
 
 * for covid_hiv ;
 
@@ -1376,7 +1418,7 @@ run;
 proc univariate data=wide;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
-p_onart_diag_m_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
+p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 ;
 run;
 
@@ -1632,135 +1674,31 @@ run;
 
 * covid_hiv ;
 
-
-
-proc print; var
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1  testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1
-ratio_n_death_hivrel_20_21  n_death_hivrel_20_21_1  n_death_hivrel_20_21_2 
-ratio_incidence1549_20_21   incidence1549_20_21_2   incidence1549_20_21_1 ; 
-; run;
-
-proc univariate; var n_death_hivrel_20; run; 
-
-proc univariate; var ratio_n_death_hivrel_20_21 ; where condom_disrup_covid_ai1 = 1; run;
-
-proc glm; model log_ratio_death_hivrel_20_21 = p_vl1000_20 ; where no_art_disrup_covid_ai1 = 1; run;
-
-
-proc glm; model log_ratio_death_hivrel_20_21 = no_art_disrup_covid_ai1 ;
-* where 0.50 <= p_vl1000_20 < 0.55 ;   * this done for each country;
+proc univariate data=wide; var ratio_n_death_hivrel_20_21 ; 
+* where 0.80 <= p_vl1000_20 < 1.00 ;   * this done for each country;
 run;
 
-proc glm; model log_ratio_death_hivrel_20_21 = 
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1 testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1  art_low_adh_disrup_covid_ai1 ;
+proc freq data=wide; tables ratio_n_death_hivrel_20_21 ; 
+  where 0.80 <= p_vl1000_20 < 1.00 ;   * this done for each country;
 run;
 
-
-* uncertainty distribution for ratio_n_death_hivrel_20_21 for condom_disrup_covid_ai1 ;
-proc glm; model log_ratio_death_hivrel_20_21 = 
-vmmc_disrup_covid_ai1 /* condom_disrup_covid_ai1 */ testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1  art_low_adh_disrup_covid_ai1 ;
- output out = predicted p = predicted;
-run;
-data e; set predicted;
-* here subtract the intercept from the above model;
-diff = log_ratio_death_hivrel_20_21 - (predicted - (-0.05)) ;
-ratio_diff = exp(diff);
-proc print; var condom_disrup_covid_ai1  log_ratio_death_hivrel_20_21  predicted diff ratio_diff;
-run;
-proc univariate; var ratio_diff ratio_n_death_hivrel_20_21 ; where condom_disrup_covid_ai1 = 1; run;
-
-
-
-* uncertainty distribution for ratio_n_death_hivrel_20_21 for no_art_disrup_covid_ai1 ;
-proc glm data=wide; model log_ratio_death_hivrel_20_21 = 
-vmmc_disrup_covid_ai1  condom_disrup_covid_ai1 testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 /* no_art_disrup_covid_ai1 */
-inc_adeathr_disrup_covid_ai1  art_low_adh_disrup_covid_ai1 ;
- output out = predicted p = predicted1;
-run;
-data e; set predicted;
-* here subtract the intercept from the above model;
-diff = log_ratio_death_hivrel_20_21 - (predicted1 - 0.47) ;
-ratio_diff = exp(diff);
-proc print; var no_art_disrup_covid_ai1  log_ratio_death_hivrel_20_21  predicted1 diff ratio_diff; where no_art_disrup_covid_ai1 = 1;
-run;
-proc univariate; var ratio_diff ratio_n_death_hivrel_20_21 ; where no_art_disrup_covid_ai1 = 1; run;
-
-
-
-
+proc glm; model log_ratio_death_hivrel_20_21 = ; run;
 
 proc univariate; var ratio_incidence1549_20_21  incidence1549_20_21_2 incidence1549_20_21_1;
 run;
 
+proc freq; tables ratio_incidence1549_20_21 ; run;
+
+proc glm; model log_ratio_death_hivrel_20_21 = p_vl1000_20; run;
 
 
-proc glm; model log_ratio_incidence_20_25 = condom_disrup_covid_ai1  ; 
-* where p_vl1000_20 >  0.6;
-run;
+proc means; var p_death_hivrel_age_le64_20_21_2;   run;
 
+proc univariate; var ratio_n_bir_w_inf_child_20_21 ; run;
 
-proc glm; model log_ratio_incidence_20_21 =
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1  testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1
-;
-run;
-
-
-proc glm; model log_ratio_bir_w_inf_child_20_21 = p_w_giv_birth_this_per_20; where no_art_disrup_covid_ai1 =1 ; run;
-proc glm; model log_ratio_bir_w_inf_child_20_21 = no_art_disrup_covid_ai1 ; * where p_w_giv_birth_this_per_20 < 0.015; run; * like in south africa;
-proc glm; model log_ratio_bir_w_inf_child_20_21 = no_art_disrup_covid_ai1 ;  run;
-proc univariate; var p_w_giv_birth_this_per_20; run;
-
-proc glm; model log_ratio_bir_w_inf_child_20_25 =
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1  testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1
-p_mcirc_20 	prop_w_1549_sw_20	prop_1564_onprep_20  prevalence1549_20 
-incidence1549_20   p_diag_20   p_onart_diag_20	 p_onart_vl1000_20 
-;
-run;
-
-
-proc univariate; var ratio_n_death_hivrel_20_25 ; where cotrim_disrup_covid_ai1 = 1; run;
-
-proc glm; model log_ratio_death_hivrel_20_25 = 
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1  testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1
-p_mcirc_20 	prop_w_1549_sw_20	prop_1564_onprep_20  prevalence1549_20 
-incidence1549_20   p_diag_20   p_onart_diag_20	 p_onart_vl1000_20   ;
-run;
-
-
-proc glm; model log_ratio_incidence_20_25 =
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1 testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1 p_mcirc_20 	prop_w_1549_sw_20	prop_1564_onprep_20  prevalence1549_20 
-incidence1549_20   p_diag_20   p_onart_diag_20	 p_onart_vl1000_20 
-;
-run;
-
-
-proc glm; model log_ratio_death_hivrel_20_21 =  p_vl1000_20;
-where no_art_disrup_covid_ai1 = 1;
-run;
-
-proc glm; model d_p_onart_vl1000_20_25 = art_low_adh_disrup_covid_ai1 ; run;
-
-proc glm; model d_p_onart_vl1000_20_25 = no_art_disrup_covid_ai1 ; run;
-
-
-proc print; var p_death_hivrel_age_le64_20; run;
-
-proc means; var p_death_hivrel_age_le64_20_21_2; where no_art_disrup_covid_ai1=1;  run;
+proc means; var  death_rate_20_21_1  death_rate_20_21_2 p_vl1000_20_21_1  p_vl1000_20_21_2 p_onart_20_21_1  p_onart_20_21_2 
+p_onart_vl1000_20_21_1  p_onart_vl1000_20_21_2 
+n_death_hivrel_20_21_1  n_death_hivrel_20_21_2 ; run;
 
 
 

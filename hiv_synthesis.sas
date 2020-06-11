@@ -534,7 +534,7 @@ explore metrics for how to monitor prep programmes
   libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto  ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 
 
@@ -684,7 +684,7 @@ rate_restart = 0.4; *overwritten; * dependent_on_time_step_length ;
 pr_art_init = 0.4; *overwritten; * dependent_on_time_step_length ;
 base_res_test=0;
 flr=0;  
-third_line=0;
+third_line=1; * this means third line with dar unavailable but it is possible to have 1st line efa, 2nd line dol, 3rd line taz or lpr;
 art_intro_date = 2004;
 fold_change_mut_risk = 1; *overwritten;
 v_min_art=1.0;  
@@ -842,7 +842,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_init_newp;    r=uniform(0);  if r < 0.33 then sw_init_newp = 1;   if 0.33 <= r < 0.67 then sw_init_newp = 2;  
 								if 0.67 <= r then sw_init_newp = 3;  
 * rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.02;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.05;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; 
+								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -874,8 +874,9 @@ p_neph_stops_after_ten = 0.1;
 * conc_ep; 	r=normal(0) * 0.6; conc_ep = exp(r); conc_ep = round(conc_ep,0.1);
 * ch_risk_diag;  r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.8 <= r then ch_risk_diag = 1;
 * ch_risk_diag_newp;  r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;
-* ych_risk_beh_newp;  r=uniform(0); if r < 0.25 then ych_risk_beh_newp = 0.90;	if 0.25 <= r < 0.50 then ych_risk_beh_newp = 0.80;
-						if 0.50 <= r < 0.75 then ych_risk_beh_newp = 0.70; if 0.75 <= r then ych_risk_beh_newp = 0.60; 
+
+* ych_risk_beh_newp;  r=uniform(0); if r < 0.5 then ych_risk_beh_newp = 0.90;	if 0.5 <= r then ych_risk_beh_newp = 0.80;
+
 * ych2_risk_beh_newp;  r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; 
 * ych_risk_beh_ep;  r=uniform(0); if  r < 0.33 then ych_risk_beh_ep = 0.95; if 0.33 <= r < 0.67 then ych_risk_beh_ep = 0.90; if 0.67 <= r then ych_risk_beh_ep = 0.80; 
 * exp_setting_lower_p_vl1000; exp_setting_lower_p_vl1000 = 0; * exposure to setting with lower p_vl1000 due to migration (and return); 
@@ -2239,7 +2240,7 @@ if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
-		min_time_repeat_vl = 0.25;	
+		min_time_repeat_vm = 0.25;	
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
@@ -2255,6 +2256,10 @@ reg_option
 
 	
 113	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
+
+120    tld      remain on tle				remain on zl-pi					two VL > 1000		--> zld			    zl-pi			tl_pi
+
+121    tld      remain on tle				remain on zl-pi					single VL > 1000	--> zld			    zl-pi			tl_pi
 
 115	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
 																			and 80% adh
@@ -2301,89 +2306,27 @@ all art stopped (no_art_disrup_covid)
 	
 ;
 
-if caldate{t} ge 2019.5 then reg_option = 113;
-
+if caldate{t} ge 2019.5 then reg_option = 120;
 
 
 * ==========================================================================================================================================;
 
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
+* I suggest that we just leave this shell in the core program as we are not running beyond 2020.50 ;
 
 * INTERVENTIONS / CHANGES in 2020;
 
 option = &s;
 
-* AP 20-7_19 ;
-if caldate_never_dot = 2020.25 then do;
+if caldate_never_dot = 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-		cascade_care_improvements = 0;
-		incr_test_2020 = 0;
-		decr_hard_reach_2020 = 0;
-		decr_prob_loss_at_diag_2020 = 0;
-		decr_rate_lost_2020 = 0;
-		decr_rate_lost_art_2020 = 0; 
-		incr_rate_return_2020 = 0 ;
-		incr_rate_restart_2020 = 0;
-		incr_rate_init_2020 = 0 ;
-		incr_adh_2020 = 0;
-		decr_rate_int_choice_2020 = 0 ;
-		incr_prob_vl_meas_done_2020 = 0;  
-		art_mon_drug_levels_2020 = 0;
-		incr_pr_switch_line_2020 = 0 ;
-		incr_test_targeting_2020 = 0;
-		incr_max_freq_testing_2020 = 0;
-		sw_test_6mthly_2020 = 0;
-		reg_option_switch_2020 = 0;
-		ten_is_taf_2020 = 0;
-		prep_improvements = 0;
-		incr_adh_pattern_prep_2020 = 0 ;
-		inc_r_test_startprep_2020 = 0 ;
-		incr_r_test_restartprep_2020 = 0 ;
-		decr_r_choose_stop_prep_2020 = 0 ;
-		inc_p_prep_restart_choi_2020 = 0 ;
-		incr_prepuptake_sw_2020 = 0 ;
-		incr_prepuptake_pop_2020 = 0 ;
-		expand_prep_to_all_2020 = 0 ;
-		circ_improvements = 0;
-		circ_inc_rate_2020 = 0;
-		condom_incr_2020 = 0;
-		pop_wide_tld = 0;
+	if option = 0 then do;  
 
-	if option = 0 then do;  end; 
+	end; 
 
 	if option = 1 then do;
-
-*
-
-vmmc stopped (vmmc_disrup_covid)
-condom availability stopped resulting in increase in newp (condom_disrup_covid)
-prep stopped (prep_disrup_covid)
-sex worker program stopped (swprog_disrup_covid)
-all hiv testing stopped (testing_disrup_covid) 
-all art use switched to tld (art_tld_disrup_covid)
-every other day tld (art_tld_eod_disrup_covid)
-all art initiations stopped (art_init_disrup_covid)
-viral load  testing, enhanced adherence counselling and switches stopped (vl_adh_switch_disrup_covid)
-all co-trimoxazole stopped (cotrim_disrup_covid)
-increase in death rate for people with adc or tb (inc_death_rate_aids_disrup_covid)
-all art stopped (no_art_disrup_covid)
-	
-;
-		vmmc_disrup_covid = 0 ; if _u43 < 0.5 then vmmc_disrup_covid = 1 ;
-		condom_disrup_covid = 0; if _u44 < 0.5 then condom_disrup_covid = 1 ;
-  		prep_disrup_covid = 0; if _u45 < 0.5 then prep_disrup_covid = 1 ;
-		swprog_disrup_covid = 0; if _u46 < 0.5 then swprog_disrup_covid = 1 ;   
-		testing_disrup_covid = 0; if _u47 < 0.5 then testing_disrup_covid = 1 ;
-		art_tld_disrup_covid = 0; if _u48 < 0.5 then art_tld_disrup_covid = 1 ;
-		art_tld_eod_disrup_covid = 0; if _u49 < 0.5 then art_tld_eod_disrup_covid = 1 ;
-		art_init_disrup_covid = 0; if _u50 < 0.5 then art_init_disrup_covid = 1 ;
-		vl_adh_switch_disrup_covid = 0; if _u51 < 0.5 then vl_adh_switch_disrup_covid = 1 ;
-		cotrim_disrup_covid = 0; if _u52 < 0.5 then cotrim_disrup_covid = 1 ;
-		inc_death_rate_aids_disrup_covid = 0; if _u53 < 0.5 then inc_death_rate_aids_disrup_covid = 1 ;
-		no_art_disrup_covid = 0; if _u54 < 1   then no_art_disrup_covid = 1 ;
-		art_low_adh_disrup_covid = 0; if _u55 < 0.5 then art_low_adh_disrup_covid = 1 ;
 
 	end;
 end;
@@ -2394,21 +2337,26 @@ end;
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 104 ;
 
 
-if reg_option in (102 103 104 105 106 113 115 116 117 118 119) then flr=2; 
+if reg_option in (102 103 104 105 106 113 115 116 117 118 119 120 121) then flr=2; 
 if reg_option in (107) then flr=1;
 
 if initial_pr_switch_line =. then initial_pr_switch_line = eff_pr_switch_line; 
 if initial_prob_vl_meas_done = . then initial_prob_vl_meas_done = eff_prob_vl_meas_done;  
 
 if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0.85; end; 
-if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119) then do; 
+if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 
 if 2020.25 <= caldate{t} < 2020.75 and vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if reg_option in (101 102 103 104 107 110 113 116) then art_monitoring_strategy=150;
+if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 if t ge 2 and reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
+
+if single_vl_switch_efa_2020 = 1 then do;
+art_monitoring_strategy=150;
+if (o_efa=1 or (int_clinic_not_aw=1 and mr_efa=1) or o_nev=1 or (int_clinic_not_aw=1 and mr_nev=1)) and linefail=0 then art_monitoring_strategy=153; 
+end;
 
 
 * may 2019 - for pico;
@@ -3449,7 +3397,7 @@ if sw=1 and newp ge 1 then do;
 e=uniform(0); * dependent_on_time_step_length ;
 
 if (0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
-(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
+(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (0.70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
 (0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc) then do; 
 
 if 1 <= newp <= 6 then newp=0;
@@ -6684,43 +6632,42 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	end;
 
 
-
-
-* INITIATION OF 3rd LINE HAART - AFTER HAVING INTERRUPTED SINCE FAILING second line;
+* INITIATION OF 3rd LINE HAART - AFTER HAVING INTERRUPTED SINCE FAILING second line; * third line can now be pi after efa fail and dol fail;
 
 	if third_line=1 then do;
+
 		if t ge 2 and linefail_tm1 =2 and line3=0 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			start_line3=1; 
 		end;
 
-	end;
-
-	if reg_option in (9999) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and f_zdv=1) then do; * use 999 to retain code even though no option 9999;
+	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
 
 	end;
 
-* AP 20-7-19;
-
- if reg_option in (104 118) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
+	
+ 	if reg_option in (104 118 120 121) and linefail_tm1=2 and (f_dol=1 and f_3tc=1 and f_ten=1) then do;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
 
 	end;
 
-
-if reg_option in (103 104 110 111 114 116 117 118 119) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
-restart pi so have added on 104 her, along with 111); 
+	if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
+	restart pi so have added on 104 here, along with 111); 
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
-			restart_pi_after_dtg_fail=1; 
+			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
 		end;
 
 	end;
+	
+
+	end;
+
 
 
 	if t ge 2 and start_line3=1 then do; 
@@ -6951,7 +6898,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0  and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
-	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119) then do; * aug18;
+	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
@@ -6967,7 +6914,7 @@ start_line2_this_period=.;
 			if (t_ten=1 or f_ten=1) and t_zdv=0 and f_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
- 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119) then do;
+ 	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121) then do;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
@@ -7017,8 +6964,6 @@ end;
 
 if choose_line3=1  then do;
 		choose_line3=.; start_line3=.;
-	o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_dar=0;o_efa=0;o_dol=0;o_taz=0;
-		o_dar=1; o_dol=1;
 
 	if t ge 2 then do;
 			if o_zdv_tm1=1 and o_zdv=0 then do;   tss_zdv=0; end;
@@ -7031,18 +6976,31 @@ if choose_line3=1  then do;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
 			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
 	end;
-end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;
-
-if restart_pi_after_dtg_fail=1  then do;  
-
+if pi_after_dtg_fail=1  then do;  
+			pi_after_dtg_fail=.;
+			if artline=2 then artline=3; line3=1;
 			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
 			if t_ten=0 and t_zdv=1 then do; o_ten=1; end;
 end;
+
+end;
+
+* restart_pi_after_dtg_fail -  ;  * dec17;
+
+if restart_pi_after_dtg_fail=1  then do;  
+			restart_pi_after_dtg_fail=.;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_3tc=1;
+			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
+			if t_zdv ne 1 then do; o_zdv=1;  end;
+			if t_ten=0 and t_zdv=1 then do; o_ten=1; end;
+end;
+
+
 
 
 if art_monitoring_strategy = 153 then do; 
@@ -8794,7 +8752,7 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 
 	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
 	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
-	then do;
+	then do;  
 			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 			if o_zdv=1 then f_zdv=1;
 			if o_3tc=1 then f_3tc=1;
@@ -8934,7 +8892,7 @@ end;
 
 
 
-if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and artline=2 and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
@@ -8974,7 +8932,8 @@ then do;
 end;
 
 
-if (reg_option = 117 or (reg_option = 104 and art_monitoring_strategy = 1500) or reg_option = 118 or reg_option=119) and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+if (reg_option = 117 or (reg_option = 104 and art_monitoring_strategy = 1500) or reg_option = 118 or reg_option=119)  and artline=2 
+and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
@@ -9017,6 +8976,55 @@ then do;
 			if o_dol=1 then f_dol=1;
 	end; 
 end;
+
+
+
+
+if reg_option in (120 121) and linefail=1 and artline=2 and o_dol=1 and f_dol_tm1 ne 1 and p_taz ne 1 and p_lpr ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
+	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
+and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
+then do; 
+		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
+		drug_level_test=1;end;  
+		end;
+		vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; hhh=1;
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+			if date_v_alert=.  then date_v_alert=caldate{t};
+		end;
+	end;
+	time_since_last_vm_prev=time_since_last_vm;
+
+
+	* eee;	
+	if o_dol=1 and (caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold)) then o_dol_2nd_vlg1000 = 1;
+
+
+	if (
+	(caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold) and adh > 0.8) 
+	or
+	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold) and adh_tm1 > 0.8)
+	) 
+	then do;
+			linefail=2;r_fail_2=c_totmut   ; cd4_fail1_2=cd4; vl_fail_2=vl; d2ndlfail=caldate{t}; 
+			if o_zdv=1 then f_zdv=1;
+			if o_3tc=1 then f_3tc=1;
+			if o_ten=1 then f_ten=1;
+			if o_nev=1 then f_nev=1;
+			if o_efa=1 then f_efa=1;
+			if o_lpr=1 then f_lpr=1;
+			if o_taz=1 then f_taz=1;
+			if o_dar=1 then f_dar=1;
+			if o_dol=1 then f_dol=1;
+	end; 
+end;
+
+
 
 
 
@@ -14088,8 +14096,16 @@ end;
 
 cald = caldate_never_dot ;
 
+
 * procs;
+
 /*
+
+proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
+f_taz  o_ten f_ten  o_zdv f_zdv  o_3tc f_3tc  pi_after_dtg_fail  restart_pi_after_dtg_fail; 
+where p_dol=1 and  linefail ge 1 and death = .;
+run;
+
 
 proc print; var cald option no_art_disrup_covid was_on_art_covid_disrup interrupt interrupt_choice lost return restart onart vl ;
 where serial_no < 500 and naive=0 and was_on_art_covid_disrup=1 and death = .;
@@ -15032,7 +15048,7 @@ inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 
+art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
@@ -15825,8 +15841,8 @@ end;
 */
 
 
-
 %mend update_r1;
+
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -15958,14 +15974,13 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 
 
-
 * ts1m:  need more update statements ;
 
 
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-*  file "/home/rmjlaph/Scratch/_output_unified_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_10_june_2020_9am_&dataset_id";  
 put   
 
 /*
@@ -16421,7 +16436,7 @@ inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 
+art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
