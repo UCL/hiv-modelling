@@ -837,10 +837,10 @@ p_neph_stops_after_ten = 0.1;
 							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
 * dependent_on_time_step_length ;
 
-* sw_trans_matrix;   r=uniform(0);  if r < 0.33 then sw_trans_matrix = 1;   if 0.33 <= r < 0.67 then sw_trans_matrix = 2;  
-								if 0.67 <= r then sw_trans_matrix = 3;  
-* sw_init_newp;    r=uniform(0);  if r < 0.33 then sw_init_newp = 1;   if 0.33 <= r < 0.67 then sw_init_newp = 2;  
-								if 0.67 <= r then sw_init_newp = 3;  
+* sw_trans_matrix;   r=uniform(0);  if r < 0.25 then sw_trans_matrix = 1;   if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
+								if 0.50 <= r < 0.75 then sw_trans_matrix = 3;  if 0.75 <= r        then sw_trans_matrix = 4;  
+* sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
+								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 * rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.02;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.05;  
 								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
@@ -926,14 +926,14 @@ p_neph_stops_after_ten = 0.1;
 ***** art: linkage, retention, monitoring, loss, return, interruption of art and restarting;
 
 * adh_pattern; r=uniform(0);  if  r < 0.01 then adh_pattern=98 ;if 0.01 <= r < 0.02 then adh_pattern=105; if 0.02 <= r < 0.05 then adh_pattern=101; 
-				if 0.05 <= r < 0.10 then adh_pattern=99; if 0.10 <= r < 0.20 then adh_pattern=1;   if 0.20 <= r < 0.40 then adh_pattern=2;   
-				if 0.40 <= r < 0.60 then adh_pattern=3;   if 0.60 <= r < 0.80 then adh_pattern=4; if 0.80 <= r  then adh_pattern=5; 
+				if 0.05 <= r < 0.10 then adh_pattern=99; if 0.10 <= r < 0.30 then adh_pattern=1;   if 0.30 <= r < 0.45 then adh_pattern=2;   
+				if 0.45 <= r < 0.65 then adh_pattern=3;   if 0.65 <= r < 0.85 then adh_pattern=4; if 0.85 <= r  then adh_pattern=5; 
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  r=uniform(0); if r < 0.25 then prob_loss_at_diag = 0.02; if 0.25 <= r < 0.40 then prob_loss_at_diag = 0.05; 
-						if 0.40 <= r < 0.80  then prob_loss_at_diag = 0.15; 	if 0.80 <= r < 0.95  then prob_loss_at_diag = 0.30; 
-						if 0.95 <= r   then prob_loss_at_diag = 0.50;   
+						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.15; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.20; 
+						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.40; if 0.90 <= r   then prob_loss_at_diag = 0.60;   
 
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
@@ -1109,7 +1109,13 @@ sw_newp_lev_3_1 = 0.05 ; sw_newp_lev_3_2 = 0.05 ; sw_newp_lev_3_3 = 0.80  ; sw_n
 sw_newp_lev_4_1 = 0.050 ; sw_newp_lev_4_2 = 0.050 ; sw_newp_lev_4_3 = 0.050 ; sw_newp_lev_4_4 = 0.80 ; sw_newp_lev_4_5 = 0.050; 
 sw_newp_lev_5_1 = 0.050 ; sw_newp_lev_5_2 = 0.050 ; sw_newp_lev_5_3 = 0.050  ; sw_newp_lev_5_4 = 0.05 ; sw_newp_lev_5_5 = 0.80 ;
 end;
-
+if sw_trans_matrix=4 then do;
+sw_newp_lev_1_1 = 0.99 ; sw_newp_lev_1_2 = 0.01 ; sw_newp_lev_1_3 = 0.000  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
+sw_newp_lev_2_1 = 0.01 ; sw_newp_lev_2_2 = 0.98 ; sw_newp_lev_2_3 = 0.010  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
+sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.01 ; sw_newp_lev_3_3 = 0.98  ; sw_newp_lev_3_4 = 0.010 ; sw_newp_lev_3_5 = 0.000 ; 
+sw_newp_lev_4_1 = 0.000 ; sw_newp_lev_4_2 = 0.000 ; sw_newp_lev_4_3 = 0.010 ; sw_newp_lev_4_4 = 0.98 ; sw_newp_lev_4_5 = 0.010; 
+sw_newp_lev_5_1 = 0.000 ; sw_newp_lev_5_2 = 0.000 ; sw_newp_lev_5_3 = 0.000  ; sw_newp_lev_5_4 = 0.01 ; sw_newp_lev_5_5 = 0.99 ; 
+end;
 
 
 
@@ -2317,6 +2323,50 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 * INTERVENTIONS / CHANGES in 2020;
 
 option = &s;
+
+		cascade_care_improvements = 0;
+		incr_test_2020 = 0;
+		decr_hard_reach_2020 = 0;
+		decr_prob_loss_at_diag_2020 = 0;
+		decr_rate_lost_2020 = 0;
+		decr_rate_lost_art_2020 = 0; 
+		incr_rate_return_2020 = 0 ;
+		incr_rate_restart_2020 = 0;
+		incr_rate_init_2020 = 0 ;
+		incr_adh_2020 = 0;
+		decr_rate_int_choice_2020 = 0 ;
+		incr_prob_vl_meas_done_2020 = 0;  
+		art_mon_drug_levels_2020 = 0;
+		incr_pr_switch_line_2020 = 0 ;
+		incr_test_targeting_2020 = 0;
+		incr_max_freq_testing_2020 = 0;
+		sw_test_6mthly_2020 = 0;
+		reg_option_switch_2020 = 0;
+		ten_is_taf_2020 = 0;
+		prep_improvements = 0;
+		incr_adh_pattern_prep_2020 = 0 ;
+		inc_r_test_startprep_2020 = 0 ;
+		incr_r_test_restartprep_2020 = 0 ;
+		decr_r_choose_stop_prep_2020 = 0 ;
+		inc_p_prep_restart_choi_2020 = 0 ;
+		incr_prepuptake_sw_2020 = 0 ;
+		incr_prepuptake_pop_2020 = 0 ;
+		expand_prep_to_all_2020 = 0 ;
+		circ_improvements = 0;
+		circ_inc_rate_2020 = 0;
+		condom_incr_2020 = 0;
+		pop_wide_tld = 0;
+
+	    vmmc_disrup_covid = 0 ; 
+		condom_disrup_covid = 0; 
+  		prep_disrup_covid = 0; 
+		testing_disrup_covid = 0; 
+		art_init_disrup_covid = 0; 
+		vl_adh_switch_disrup_covid = 0; 
+		cotrim_disrup_covid = 0; 
+		inc_death_rate_aids_disrup_covid = 0; 
+		no_art_disrup_covid = 0; 
+		art_low_adh_disrup_covid = 0; 
 
 if caldate_never_dot = 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
@@ -15980,7 +16030,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_10_june_2020_9am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_11_june_2020_1pm_&dataset_id";  
 put   
 
 /*
