@@ -22,7 +22,7 @@ revision main: c_output_covid_hiv_main_30r  c_covid_hiv_main_30r_extra  c_covid_
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_covid_hiv_main_30r_5yr";
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_covid_hiv_main_30r_dsb";
 
 input    
 
@@ -596,8 +596,8 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 * data e.covid_hiv_revision_main_30r;
 * data e.covid_hiv_revision_main_30r_extra;
 * data e.covid_hiv_revision_main_30r_3mth;
-  data e.covid_hiv_revision_main_30r_5yr ;
-* data e.covid_hiv_revision_main_30r_dsb ;
+* data e.covid_hiv_revision_main_30r_5yr ;
+  data e.covid_hiv_revision_main_30r_dsb ;
 
 set d1 ;
 
