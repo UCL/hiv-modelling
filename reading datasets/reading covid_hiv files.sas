@@ -1,7 +1,7 @@
 
 
 libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
-libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
+libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 
 proc printto;
 
@@ -17,12 +17,12 @@ proc printto;
 3mths_a: c_output_covid_hiv_10_5_20_1pm_temp"
 main: c_output_covid_hiv_main_1 - revision, for main manuscript
 
-revision main: c_output_covid_hiv_main_30r  c_covid_hiv_main_30r_extra 
+revision main: c_output_covid_hiv_main_30r  c_covid_hiv_main_30r_extra  c_covid_hiv_main_30r_dsb  c_covid_hiv_main_30r_5yr  c_covid_hiv_main_30r_3mth ;
 ;
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_covid_hiv_main_30r_extra";
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_covid_hiv_main_30r_5yr";
 
 input    
 
@@ -594,7 +594,10 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 * data a.covid_hiv_3yr;
 * data a.covid_hiv_3mths_a;
 * data e.covid_hiv_revision_main_30r;
-  data e.covid_hiv_revision_main_30r_extra;
+* data e.covid_hiv_revision_main_30r_extra;
+* data e.covid_hiv_revision_main_30r_3mth;
+  data e.covid_hiv_revision_main_30r_5yr ;
+* data e.covid_hiv_revision_main_30r_dsb ;
 
 set d1 ;
 
