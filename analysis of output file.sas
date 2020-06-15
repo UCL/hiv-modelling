@@ -27,9 +27,12 @@ data a;
 * set e.covid_hiv_revision_main_30r;
 * set e.covid_hiv_revision_main_30r_extra;
 * set f.core_2020_pre_6_6_20;
-  set f.core_2020_6_6_20;
+* set f.core_2020_6_6_20;
+* set f.covid_hiv_revision_main_30r_3mth;
+* set f.covid_hiv_revision_main_30r_5yr ;
+  set f.covid_hiv_revision_main_30r_dsb ;
 
-if option = 0 or option = 10;  if option = 10 then option = 1;
+if option = 0 or option = 1 ;  if option = 1  then option = 1;
 
 
 proc sort; by run cald option;
@@ -563,14 +566,14 @@ run;
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;
+   proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
 /* proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.25 <= cald < 2025.25; */
 /* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50; */ 
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
-proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run; 
+   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;   
 /* proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; */ 
 /* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */ 
 
@@ -870,6 +873,8 @@ proc sort; by run;
   libname c "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\prep\reading datasets\";
   libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
   libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
+  libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
+
 
 * To get one row per run;
 * data a.wide_dolswitch;
@@ -882,7 +887,10 @@ proc sort; by run;
 * data e.wide_covid_main_revision_op3 ;
 * data e.wide_covid_main_revision_extra;
 * data e.wide_core_pre_6_6_20;
-  data e.wide_core_6_6_20;
+* data e.wide_core_6_6_20;
+* data f.wide_covid_revision_3mth_op1 ;  
+* data f.wide_covid_revision_5yr_op1 ;
+  data f.wide_covid_revision_dsb_op1 ;
 
 * merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
   merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
@@ -905,8 +913,10 @@ proc sort; by run;
 *  set e.wide_covid_main_revision_op3 ;
 *  set e.wide_covid_main_revision_extra;
 *  set e.wide_core_pre_6_6_20 ;
-   set e.wide_core_6_6_20 ;
-
+*  set e.wide_core_6_6_20 ;
+*  set f.wide_covid_revision_3mth_op1;
+*  set f.wide_covid_revision_5yr_op1;
+   set f.wide_covid_revision_dsb_op1;
 
 * if 0.04 <  prevalence1549_20 < 0.30;
 
@@ -1678,8 +1688,8 @@ proc univariate data=wide; var ratio_n_death_hivrel_20_21 ;
 * where 0.80 <= p_vl1000_20 < 1.00 ;   * this done for each country;
 run;
 
-proc freq data=wide; tables ratio_n_death_hivrel_20_21 ; 
-  where 0.80 <= p_vl1000_20 < 1.00 ;   * this done for each country;
+proc freq data=wide; tables ratio_n_death_hivrel_20_25 ; 
+* where 0.80 <= p_vl1000_20 < 1.00 ;   * this done for each country;
 run;
 
 proc glm; model log_ratio_death_hivrel_20_21 = ; run;
@@ -1687,7 +1697,7 @@ proc glm; model log_ratio_death_hivrel_20_21 = ; run;
 proc univariate; var ratio_incidence1549_20_21  incidence1549_20_21_2 incidence1549_20_21_1;
 run;
 
-proc freq; tables ratio_incidence1549_20_21 ; run;
+proc freq; tables ratio_incidence1549_20_25 ; run;
 
 proc glm; model log_ratio_death_hivrel_20_21 = p_vl1000_20; run;
 
