@@ -14147,7 +14147,7 @@ run;
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = 10000;
+data sums; set r&da1; if serial_no = 100000;
 
 ***Variables created below are used to update the program ;
 
