@@ -30,9 +30,11 @@ data a;
 * set f.core_2020_6_6_20;
 * set f.covid_hiv_revision_main_30r_3mth;
 * set f.covid_hiv_revision_main_30r_5yr ;
-  set f.covid_hiv_revision_main_30r_dsb ;
+* set f.covid_hiv_revision_main_30r_dsb ;
+  set f.core_2020_17_6_20_3pm;
 
-if option = 0 or option = 1 ;  if option = 1  then option = 1;
+* for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
+* if option = 0 or option = 1 ;  if option = 1  then option = 1;
 
 
 proc sort; by run cald option;
