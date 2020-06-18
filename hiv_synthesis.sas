@@ -829,8 +829,8 @@ p_neph_stops_after_ten = 0.1;
 * inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if r < 0.33 then base_rate_sw = 0.001;   if 0.33 <= r < 0.67 then base_rate_sw = 0.0015;  
-								if 0.67 <= r then base_rate_sw = 0.002;   
+* base_rate_sw; r=uniform(0);  if r < 0.40 then base_rate_sw = 0.001;   if 0.40 <= r < 0.80 then base_rate_sw = 0.0015;  
+								if 0.80 <= r then base_rate_sw = 0.002;   
 * dependent_on_time_step_length ;
 
 * base_rate_stop_sexwork;   r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
@@ -844,8 +844,8 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.02;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.05;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
+* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.005;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.01;  
+								if 0.67 <= r then rate_sw_rred_rc = 0.03; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -1035,6 +1035,10 @@ p_neph_stops_after_ten = 0.1;
 							if r < 0.33 then sw_program=1; 
 							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.1 then sw_program_effect = 2; end;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+
+* effect_weak_sw_prog_newp;	r=uniform(0); 	if r < 0.33 then do; effect_weak_sw_prog_newp = 0.90; effect_strong_sw_prog_newp = 0.60; end;
+* effect_strong_sw_prog_newp;				if 0.33 <= r < 0.67 then do; effect_weak_sw_prog_newp = 0.80; effect_strong_sw_prog_newp = 0.50; end; 
+											if 0.67 <= r        then do; effect_weak_sw_prog_newp = 0.70; effect_strong_sw_prog_newp = 0.30; end; 
 
 ***** prep;
 
@@ -2251,12 +2255,14 @@ if sw_program=1 and caldate{t} ge 2015 then do;
 		e=uniform(0); if e < 0.5 then sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.75 ; 
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; end;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
+	end;
 	if sw_program_effect=2 then do; 
 		sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.5 ; 
 		eff_prob_sw_lower_adh = 0 ; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; end;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
+	end;
 	end;
 end;
 
@@ -2661,6 +2667,12 @@ if 2015 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(yc
 
 * mar19;
 if caldate{t} = 2020.5 and condom_incr_2020 = 1 then rred_rc = rred_rc * 0.9;
+
+if sw=1 and sw_program_visit=1 then do;
+if sw_program_effect = 1 then rred_rc = rred_rc * effect_weak_sw_prog_newp ;
+if sw_program_effect = 2 then rred_rc = rred_rc * effect_strong_sw_prog_newp ;
+end;
+
 
 if 2020.25 <= caldate{t} < 2020.75 and condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
 
@@ -3470,15 +3482,17 @@ end;
 
 */
 
+* here;
 
 * depending on rred_rc (population change in risk behaviour) set newp category one lower for FSW workers;
 
 if sw=1 and newp ge 1 then do;
 e=uniform(0); * dependent_on_time_step_length ;
 
-if (0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
+if 
+((0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
 (0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (0.70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
-(0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc) then do; 
+(0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc)) then do; 
 
 if 1 <= newp <= 6 then newp=0;
 if 7 <= newp <= 40 then do;q=uniform(0); 
@@ -16081,7 +16095,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_17_6_20_3pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_18_6_20_6pm_&dataset_id";  
 put   
 
 /*
@@ -16528,8 +16542,8 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_init_newp sw_trans_matrix  rate_sw_rred_rc
+sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
