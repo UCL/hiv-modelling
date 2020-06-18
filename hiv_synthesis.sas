@@ -837,8 +837,11 @@ p_neph_stops_after_ten = 0.1;
 							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
 * dependent_on_time_step_length ;
 
-* sw_trans_matrix;   r=uniform(0);  if r < 0.25 then sw_trans_matrix = 1;   if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
-								if 0.50 <= r < 0.75 then sw_trans_matrix = 3;  if 0.75 <= r        then sw_trans_matrix = 4;  
+* sw_trans_matrix;   r=uniform(0);  if r < 0.12 then sw_trans_matrix = 1;   if 0.12 <= r < 0.24 then sw_trans_matrix = 2;  
+								if 0.24 <= r < 0.36 then sw_trans_matrix = 3;  if 0.36 <= r < 0.48      then sw_trans_matrix = 4;  
+								if 0.48 <= r < 0.60 then sw_trans_matrix = 5;  if 0.60 <= r < 0.72      then sw_trans_matrix = 6;  
+								if 0.72 <= r < 0.84 then sw_trans_matrix = 7;  if 0.84 <= r             then sw_trans_matrix = 8;  
+
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 * rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.02;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.05;  
@@ -1123,7 +1126,27 @@ sw_newp_lev_3_1 = 0.01 ; sw_newp_lev_3_2 = 0.01 ; sw_newp_lev_3_3 = 0.96 ; sw_ne
 sw_newp_lev_4_1 = 0.01 ; sw_newp_lev_4_2 = 0.01 ; sw_newp_lev_4_3 = 0.01 ; sw_newp_lev_4_4 = 0.96 ; sw_newp_lev_4_5 = 0.01; 
 sw_newp_lev_5_1 = 0.01 ; sw_newp_lev_5_2 = 0.01 ; sw_newp_lev_5_3 = 0.01 ; sw_newp_lev_5_4 = 0.01 ; sw_newp_lev_5_5 = 0.96 ; 
 end; 
-
+if sw_trans_matrix=6 then do;
+sw_newp_lev_1_1 = 0.60 ; sw_newp_lev_1_2 = 0.10 ; sw_newp_lev_1_3 = 0.10   ; sw_newp_lev_1_4 = 0.100 ; sw_newp_lev_1_5 = 0.100 ; 
+sw_newp_lev_2_1 = 0.10 ; sw_newp_lev_2_2 = 0.60 ; sw_newp_lev_2_3 = 0.100  ; sw_newp_lev_2_4 = 0.100 ; sw_newp_lev_2_5 = 0.100 ; 
+sw_newp_lev_3_1 = 0.10 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.60  ; sw_newp_lev_3_4 = 0.100 ; sw_newp_lev_3_5 = 0.100 ; 
+sw_newp_lev_4_1 = 0.100 ; sw_newp_lev_4_2 = 0.100 ; sw_newp_lev_4_3 = 0.100 ; sw_newp_lev_4_4 = 0.60 ; sw_newp_lev_4_5 = 0.100; 
+sw_newp_lev_5_1 = 0.100 ; sw_newp_lev_5_2 = 0.100 ; sw_newp_lev_5_3 = 0.100  ; sw_newp_lev_5_4 = 0.10 ; sw_newp_lev_5_5 = 0.60 ;
+end;
+if sw_trans_matrix=7 then do;
+sw_newp_lev_1_1 = 0.40 ; sw_newp_lev_1_2 = 0.15 ; sw_newp_lev_1_3 = 0.15   ; sw_newp_lev_1_4 = 0.150 ; sw_newp_lev_1_5 = 0.150 ; 
+sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.40 ; sw_newp_lev_2_3 = 0.150  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.150 ; 
+sw_newp_lev_3_1 = 0.15 ; sw_newp_lev_3_2 = 0.15 ; sw_newp_lev_3_3 = 0.40  ; sw_newp_lev_3_4 = 0.150 ; sw_newp_lev_3_5 = 0.150 ; 
+sw_newp_lev_4_1 = 0.150 ; sw_newp_lev_4_2 = 0.150 ; sw_newp_lev_4_3 = 0.150 ; sw_newp_lev_4_4 = 0.40 ; sw_newp_lev_4_5 = 0.150; 
+sw_newp_lev_5_1 = 0.150 ; sw_newp_lev_5_2 = 0.150 ; sw_newp_lev_5_3 = 0.150  ; sw_newp_lev_5_4 = 0.15 ; sw_newp_lev_5_5 = 0.40 ;
+end;
+if sw_trans_matrix=8 then do;
+sw_newp_lev_1_1 = 0.20 ; sw_newp_lev_1_2 = 0.30 ; sw_newp_lev_1_3 = 0.25   ; sw_newp_lev_1_4 = 0.150 ; sw_newp_lev_1_5 = 0.100 ; 
+sw_newp_lev_2_1 = 0.20 ; sw_newp_lev_2_2 = 0.30 ; sw_newp_lev_2_3 = 0.250  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.150 ; 
+sw_newp_lev_3_1 = 0.20 ; sw_newp_lev_3_2 = 0.30 ; sw_newp_lev_3_3 = 0.25  ; sw_newp_lev_3_4 = 0.150 ; sw_newp_lev_3_5 = 0.100 ; 
+sw_newp_lev_4_1 = 0.20  ; sw_newp_lev_4_2 = 0.30 ; sw_newp_lev_4_3 = 0.250 ; sw_newp_lev_4_4 = 0.15 ; sw_newp_lev_4_5 = 0.100; 
+sw_newp_lev_5_1 = 0.20  ; sw_newp_lev_5_2 = 0.30 ; sw_newp_lev_5_3 = 0.250  ; sw_newp_lev_5_4 = 0.15 ; sw_newp_lev_5_5 = 0.10 ;
+end;
 
 
 * test type;
@@ -16058,7 +16081,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_15_june_2020_2pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_17_6_20_3pm_&dataset_id";  
 put   
 
 /*
