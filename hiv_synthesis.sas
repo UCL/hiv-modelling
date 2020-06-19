@@ -969,7 +969,7 @@ p_neph_stops_after_ten = 0.1;
 * fold_change_mut_risk;  r=uniform(0); fold_change_mut_risk = 1; if r < 0.10  then fold_change_mut_risk = 2; if r > 0.90 then fold_change_mut_risk = 0.5; * jan18;
 * adh_effect_of_meas_alert; r=uniform(0); adh_effect_of_meas_alert = 0.7; if 0.7 <= r < 0.85 then adh_effect_of_meas_alert = 0.35; if 0.85 <= r then adh_effect_of_meas_alert = 0.9;
 * pr_switch_line;  r=uniform(0);  pr_switch_line = 0.20;  if 0.50 <= r then pr_switch_line = 0.50; 
-* prob_vl_meas_done; r=uniform(0); prob_vl_meas_done=0.7 ; if 0.25 <= r < 0.50 then prob_vl_meas_done=0.1 ; if 0.50 <= r < 0.75 then prob_vl_meas_done=1.00; if 0.75 <= r then prob_vl_meas_done=0.00;
+* prob_vl_meas_done; r=uniform(0); prob_vl_meas_done=0.7 ; if 0.35 <= r < 0.50 then prob_vl_meas_done=0.1 ; if 0.50 <= r < 0.90 then prob_vl_meas_done=1.00; if 0.90 <= r then prob_vl_meas_done=0.00;
 * cd4_monitoring;	r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_tb_adc; red_adh_tb_adc = 0.1 * exp(normal(0)*0.5); red_adh_tb_adc=round(red_adh_tb_adc,.01);
 * red_adh_tox_pop; r=uniform(0); red_adh_tox_pop_v = 0.05; if r < 0.5 then red_adh_tox_pop_v = 0.10; 
@@ -16095,7 +16095,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_18_6_20_6pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_19_6_20_12pm_&dataset_id";  
 put   
 
 /*

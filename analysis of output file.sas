@@ -31,10 +31,10 @@ data a;
 * set f.covid_hiv_revision_main_30r_3mth;
 * set f.covid_hiv_revision_main_30r_5yr ;
 * set f.covid_hiv_revision_main_30r_dsb ;
-  set f.core_2020_17_6_20_3pm;
+  set f.core_18_6_20_6pm;
 
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
-* if option = 0 or option = 1 ;  if option = 1  then option = 1;
+* if option = 0 or option = 1 ; *  if option = 1  then option = 1;
 
 
 proc sort; by run cald option;
@@ -893,7 +893,8 @@ proc sort; by run;
 * data e.wide_core_6_6_20;
 * data f.wide_covid_revision_3mth_op1 ;  
 * data f.wide_covid_revision_5yr_op1 ;
-  data f.wide_covid_revision_dsb_op1 ;
+* data f.wide_covid_revision_dsb_op1 ;
+  data f.wide_core_18_6_20_6pm ;
 
 * merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
   merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
@@ -919,7 +920,9 @@ proc sort; by run;
 *  set e.wide_core_6_6_20 ;
 *  set f.wide_covid_revision_3mth_op1;
 *  set f.wide_covid_revision_5yr_op1;
-   set f.wide_covid_revision_dsb_op1;
+*  set f.wide_covid_revision_dsb_op1;
+   set f.wide_core_18_6_20_6pm ;
+
 
 * if 0.04 <  prevalence1549_20 < 0.30;
 
@@ -1319,6 +1322,7 @@ if ndb_500_20_40_8 = min_ndb_500 then ce_500_monitoring=8;
 * --------------------------------------------------------------------------------------------------------------;
 
 
+/*
 
 proc freq  data=wide; tables
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
@@ -1381,6 +1385,8 @@ inc_adeathr_disrup_covid_ai1   art_low_adh_disrup_covid_ai1 cov_death_risk_mult_
 
 run;
 
+*/
+
 /*
 
 proc univariate data=wide;
@@ -1403,8 +1409,6 @@ r_efa_hiv_16   ratio_prev_age2529w_overall_16 sex_ratio_prev_age2024_16 p_onart_
 ;
 run;
 
-*/
-
 
 proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
@@ -1426,6 +1430,7 @@ r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_a
 p_k65m_20 p_m184m_20 ;
 run;
 
+*/
 
 
 proc univariate data=wide;

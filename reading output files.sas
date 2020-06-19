@@ -13,7 +13,7 @@ proc printto;
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_unified_6_6_2020_6pm";
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_18_6_20_6pm";
 
 input    
 
@@ -413,6 +413,9 @@ s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_evers
 
 s_sw_program_visit
 
+s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
+s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
+
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
 
 /*ADC etc*/
@@ -471,7 +474,7 @@ inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 
+art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
@@ -578,8 +581,8 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 ; 
 
-* data f.core_2020_pre_6_6_20; 
-  data f.core_2020_6_6_20; 
+
+  data f.core_18_6_20_6pm; 
 
 set d1 ;
 
