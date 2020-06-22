@@ -31,8 +31,7 @@ data a;
 * set f.covid_hiv_revision_main_30r_3mth;
 * set f.covid_hiv_revision_main_30r_5yr ;
 * set f.covid_hiv_revision_main_30r_dsb ;
-* set f.core_18_6_20_6pm;
-  set c.prep; 
+  set f.core_18_6_20_6pm;
 
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
 * if option = 0 or option = 1 ; *  if option = 1  then option = 1;
@@ -567,21 +566,21 @@ run;
 
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.75 <= cald < 2020.5; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25; */
+   proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
-   proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.5;   
-   proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;    
+/* proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.25 <= cald < 2025.25; */
+/* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50; */ 
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
-/* proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run; */
-   proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run;    
-   proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;    
+   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;   
+/* proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; */ 
+/* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */ 
 
-data &v ; merge  y_20 t_20_25 t_20_70 ;  
+data &v ; merge  y_20 t_20_21 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -882,7 +881,7 @@ proc sort; by run;
 
 * To get one row per run;
 * data a.wide_dolswitch;
-  data f.wide_prep; 
+* data c.wide_prep; 
 * data d.wide_tld_prep; 
 * data e.wide_covid_hiv_6mths_a;
 * data e.wide_covid_hiv_6mths_b;
@@ -895,10 +894,10 @@ proc sort; by run;
 * data f.wide_covid_revision_3mth_op1 ;  
 * data f.wide_covid_revision_5yr_op1 ;
 * data f.wide_covid_revision_dsb_op1 ;
-* data f.wide_core_18_6_20_6pm ;
+  data f.wide_core_18_6_20_6pm ;
 
-  merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
-* merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
+* merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
+  merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
   by run;
 
 * data wide_prep; 
@@ -910,7 +909,7 @@ proc sort; by run;
 
    data wide;    
 *  set b.wide_dolswitch;
-   set f.wide_prep; 
+*  set c.wide_prep; 
 *  set d.wide_tld_prep; 
 *  set e.wide_covid_hiv_3mths; * results for submitted ms;
 *  set e.wide_covid_hiv_6mths_a;
@@ -922,12 +921,12 @@ proc sort; by run;
 *  set f.wide_covid_revision_3mth_op1;
 *  set f.wide_covid_revision_5yr_op1;
 *  set f.wide_covid_revision_dsb_op1;
-*  set f.wide_core_18_6_20_6pm ;
+   set f.wide_core_18_6_20_6pm ;
 
 
 * if 0.04 <  prevalence1549_20 < 0.30;
 
-* covid_hiv for main :; * if run <= 989384738 ;
+* for main :; * if run <= 989384738 ;
 
 
 /*
@@ -1504,7 +1503,7 @@ p_hard_reach_m  inc_cat base_rate_sw
 
 * prep analysis;
 
-
+/*
 
 proc print data=wide; var  prep_improvements_ai1 incr_adh_pattern_prep_2020_ai1 inc_r_test_startprep_2020_ai1 incr_r_test_restartprep_2020_ai1
 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1 
@@ -1684,16 +1683,14 @@ run;
 proc freq data=wide; tables ce_500;
 run; 
 
-
-
-* --------------------------------------------------------------------------------------------------------------;
-
-
-
+*/
 
 * --------------------------------------------------------------------------------------------------------------;
 
-/*
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
 
 * covid_hiv ;
 
@@ -1723,7 +1720,7 @@ proc means; var  death_rate_20_21_1  death_rate_20_21_2 p_vl1000_20_21_1  p_vl10
 p_onart_vl1000_20_21_1  p_onart_vl1000_20_21_2 
 n_death_hivrel_20_21_1  n_death_hivrel_20_21_2 ; run;
 
-*/
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
