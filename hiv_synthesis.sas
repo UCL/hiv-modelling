@@ -2554,7 +2554,7 @@ if caldate{t} > 2019 and 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*ci
 end;
 
 if caldate{t} = 2020.5 and circ_inc_rate_2020 = 1 then prob_circ = 0 * prob_circ;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 2 then prob_circ = 2.0 * prob_circ;
+if caldate{t} = 2020.5 and circ_inc_rate_2020 = 2 then prob_circ = 0.5 * prob_circ;
 
 if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
