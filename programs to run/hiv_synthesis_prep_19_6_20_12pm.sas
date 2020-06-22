@@ -17571,7 +17571,7 @@ data r1; set a;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_19_6_20_12pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_prep_19_6_20_12pm_&dataset_id";  
 put   
 
 /*
