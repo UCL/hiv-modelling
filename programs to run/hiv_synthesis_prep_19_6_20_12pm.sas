@@ -3,7 +3,7 @@
 
 * === ABOUT THIS PROGRAM  === *
  
-This is the unified hiv synthesis  program for sub saharan africa.
+This is the unified hiv synthesis  program for sub  saharan africa.
 
 All programs run on legion/myriad for presentations/publications will use this program.
 
