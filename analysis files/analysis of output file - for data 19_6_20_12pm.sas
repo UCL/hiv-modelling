@@ -32,7 +32,7 @@ data a;
 * set f.covid_hiv_revision_main_30r_5yr ;
 * set f.covid_hiv_revision_main_30r_dsb ;
 * set f.core_18_6_20_6pm;
-  set c.prep; 
+  set c.prep_19_6_20_12pm; 
 
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
 * if option = 0 or option = 1 ; *  if option = 1  then option = 1;
@@ -311,7 +311,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_elig_prep;   				p_elig_prep = s_elig_prep / (s_alive - s_hiv1564);
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / (s_ageg1519w + s_ageg2024w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
-* prop_sw_onprep; 				prop_sw_onprep = max(s_prep_sw, 0) / s_sw_1564 ;
+* prop_sw_onprep; 				prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 -s_hiv_sw) ;
 
 * n_prep;						n_prep = s_prep * sf_2019;
 * n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2019;
@@ -641,7 +641,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=ddaly_ntd_mtct_odab_napd); %var(v=n_birth_with_inf_child);
 %var(v=dead_ddaly_ntd);   %var(v=ddaly_mtct);  %var(v=dead_ddaly_odabe);  %var(v=n_tested); 
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
-%var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
+%var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); %var(v=test_prop_positive);
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m); 
 
 
@@ -681,7 +681,7 @@ death_rate  death_rate_hiv  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive
 ;
 
 proc contents; run;
@@ -882,7 +882,7 @@ proc sort; by run;
 
 * To get one row per run;
 * data a.wide_dolswitch;
-  data f.wide_prep; 
+  data f.wide_prep_c.prep_19_6_20_12pm; 
 * data d.wide_tld_prep; 
 * data e.wide_covid_hiv_6mths_a;
 * data e.wide_covid_hiv_6mths_b;
@@ -910,7 +910,7 @@ proc sort; by run;
 
    data wide;    
 *  set b.wide_dolswitch;
-   set f.wide_prep; 
+   set f.wide_prep_c.prep_19_6_20_12pm; 
 *  set d.wide_tld_prep; 
 *  set e.wide_covid_hiv_3mths; * results for submitted ms;
 *  set e.wide_covid_hiv_6mths_a;
@@ -976,7 +976,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 * for prep analysis (comment out code for other analysese);
 
-/*
+
 
 d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 
@@ -1005,7 +1005,7 @@ if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_te
 and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
 incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
 
-*/
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -1043,6 +1043,7 @@ log_ratio_hivdeath_1y_vmmc = log(ratio_n_hivdeath_1y_vmmc);
 
 * for covid_hiv ;
 
+/*
 
 ratio_n_death_hivrel_20_21 = n_death_hivrel_20_21_2 / n_death_hivrel_20_21_1 ;
 ratio_incidence1549_20_21 = incidence1549_20_21_2 / incidence1549_20_21_1 ; 
@@ -1068,7 +1069,7 @@ ratio_p_iime__20_25 = p_iime__20_25_2 / p_iime__20_25_2 ;
 d_p_onart_vl1000_20_21 = p_onart_vl1000_20_21_2 - p_onart_vl1000_20_21_1;
 d_p_onart_vl1000_20_25 = p_onart_vl1000_20_25_2 - p_onart_vl1000_20_25_1;
 
-
+*/
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -1410,6 +1411,8 @@ r_efa_hiv_16   ratio_prev_age2529w_overall_16 sex_ratio_prev_age2024_16 p_onart_
 ;
 run;
 
+*/
+
 
 proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
@@ -1431,43 +1434,43 @@ r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_a
 p_k65m_20 p_m184m_20 ;
 run;
 
-*/
-
 
 proc univariate data=wide;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20;
 run;
 
 proc glm; class sw_init_newp sw_trans_matrix; model prop_sw_newp0_20 = sw_init_newp sw_trans_matrix rate_sw_rred_rc / solution; run;
 
+proc glm; class sw_init_newp sw_trans_matrix; model prop_sw_hiv_20 = sw_trans_matrix rate_sw_rred_rc ych_risk_beh_newp / solution; run;
+
 proc freq; tables sw_init_newp sw_trans_matrix rate_sw_rred_rc ; run;
 
 
-/*
 
-proc univariate data=wide;  var p_w_giv_birth_this_per_19 prop_w_1549_sw_19  p_mcirc_1549m_19
-p_tested_past_year_1549m_19  p_tested_past_year_1549w_19
-prevalence1549_19 prevalence1524w_19  prevalence1524m_19
-prevalence1549m_19 prevalence1549w_19  prevalence_sw_19
-incidence1549_19 incidence1549w_19  incidence1549m_19 
-mtct_prop_19 		p_diag_19 	p_diag_m_19   p_diag_w_19  p_diag_m1524_19  p_diag_w1524_19   p_diag_sw_19
-p_ai_no_arv_c_nnm_19
-p_ai_no_arv_c_pim_19  p_ai_no_arv_c_rt184m_19  p_ai_no_arv_c_rt65m_19   p_ai_no_arv_c_rttams_19  p_ai_no_arv_c_inm_19
-p_onart_diag_19  p_onart_diag_w_19 	p_onart_diag_m_19 p_onart_diag_sw_19 	p_onart_vl1000_19   p_vl1000_19   
-p_vl1000_m_19  p_vl1000_w_19   p_vl1000_m_1524_19  p_vl1000_w_1524_19  
-p_onart_vl1000_w_19				p_onart_vl1000_m_19   p_onart_vl1000_1524_19   p_onart_vl1000_sw_19
-p_onart_cd4_l500_19  p_startedline2_19  
-p_vlg1000_onart_65m_19   p_vlg1000_onart_184m_19
-p_184m_ontle_vlg1000_19  p_65m_ontle_vlg1000_19  p_nnm_ontle_vlg1000_19   p_184m_ontld_vlg1000_19   p_65m_ontld_vlg1000_19  
-p_nnm_ontld_vlg1000_19   p_inm_ontld_vlg1000_19   p_inm_ontld_vlg1000_19 
-p_tams_ontle_vlg1000_19   p_tams_ontld_vlg1000_19  	prop_w_1524_onprep_19  prop_1564_onprep_19 prop_sw_onprep_19 
-;
+
+proc univariate data=wide;  var p_w_giv_birth_this_per_20 prop_w_1549_sw_20  p_mcirc_1549m_20
+p_tested_past_year_1549m_20  p_tested_past_year_1549w_20
+prevalence1549_20 prevalence1524w_20  prevalence1524m_20
+prevalence1549m_20 prevalence1549w_20  prevalence_sw_20
+incidence1549_20 incidence1549w_20  incidence1549m_20 
+mtct_prop_20 		p_diag_20 	p_diag_m_20   p_diag_w_20  p_diag_m1524_20  p_diag_w1524_20   p_diag_sw_20
+p_ai_no_arv_c_nnm_20
+p_ai_no_arv_c_pim_20  p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   p_ai_no_arv_c_rttams_20  p_ai_no_arv_c_inm_20
+p_onart_diag_20  p_onart_diag_w_20 	p_onart_diag_m_20 p_onart_diag_sw_20 	p_onart_vl1000_20   p_vl1000_20   
+p_vl1000_m_20  p_vl1000_w_20   p_vl1000_m_1524_20  p_vl1000_w_1524_20  
+p_onart_vl1000_w_20				p_onart_vl1000_m_20   p_onart_vl1000_1524_20   p_onart_vl1000_sw_20
+p_onart_cd4_l500_20  p_startedline2_20  
+p_vlg1000_onart_65m_20   p_vlg1000_onart_184m_20
+p_184m_ontle_vlg1000_20  p_65m_ontle_vlg1000_20  p_nnm_ontle_vlg1000_20   p_184m_ontld_vlg1000_20   p_65m_ontld_vlg1000_20  
+p_nnm_ontld_vlg1000_20   p_inm_ontld_vlg1000_20   p_inm_ontld_vlg1000_20 
+p_tams_ontle_vlg1000_20   p_tams_ontld_vlg1000_20  	prop_w_1524_onprep_20  prop_1564_onprep_20 prop_sw_onprep_20  aids_death_rate_20
+death_rate_onart_20 ;
 run;
 
-*/
+
 
 
 
@@ -1539,28 +1542,21 @@ proc freq data=wide; tables prep_improvements_ai1 * pop_wide_tld_2020_ai1 ; run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_25_1  prop_w_1524_onprep_20_25_2 ;  
-  where prep_improvements_ai1 = 1;
 ods html close;
 run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
-  where prep_improvements_ai1 =1;
-* where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
 ods html;
-proc means data=wide; var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
-* where prep_improvements_ai1 =1;
-  where pop_wide_tld_2020_ai1 =1;
+proc means n mean lclm uclm p5 p95  data=wide; var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
 run; 
 ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
-* where prep_improvements_ai1 =1;
-  where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
@@ -1591,10 +1587,9 @@ ods htm close;
 
 
 ods html;
-proc means data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
-  where prep_improvements_ai1 =1;
+proc means data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 p_prep_ever_25_2;  
 run; 
-ods htm close;
+ods html close;
 
 
 ods html;
