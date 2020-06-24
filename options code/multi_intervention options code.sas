@@ -62,7 +62,7 @@ if caldate{t} = 2020.5 then do;
 		inc_p_prep_restart_choi_2020 = 0 ;
 		incr_prepuptake_sw_2020 = 0 ;
 		incr_prepuptake_pop_2020 = 0 ;
-		expand_prep_to_all_2020 = 0 ;
+		prep_strategy_2020 = 0 ;
 
 		circ_improvements = 0;
 		circ_inc_rate_2020 = 0;
@@ -208,7 +208,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * pop_wide_tld_2020;	pop_wide_tld_2020 = 0;
 						if _u47 < 0.00 then do;  
-							pop_wide_tld_2020 = 1; pop_wide_tld = 1; expand_prep_to_all_2020 = 1; prep_strategy = 7;prob_prep_pop_wide_tld = 0.50; 
+							pop_wide_tld_2020 = 1; pop_wide_tld = 1; prep_strategy_2020 = 1; prep_strategy = 7;prob_prep_pop_wide_tld = 0.50; 
 							decr_r_choose_stop_prep_2020 = 1; eff_rate_choose_stop_prep = 0.05 ; 
 							inc_p_prep_restart_choi_2020 = 1; eff_prob_prep_restart_choice = 0.5 ;
 							incr_adh_pattern_prep_2020 = 1; adhav_pr = adhav*1.00;
@@ -270,10 +270,10 @@ if _u48 <= 1.0 then prep_improvements = 1;
 							if _u37 < 0.8 and prep_willing_pop = 0 then prep_willing_pop = 1;
 						end;	
 
-* expand_prep_to_all_2020;
-						expand_prep_to_all_2020 = 0;  
+* prep_strategy_2020;
+						prep_strategy_2020 = 0;  
 						if _u38 < 0.75 then do;
-							expand_prep_to_all_2020 = 1; prep_strategy = 7;
+							prep_strategy_2020 = 1; prep_strategy = 7;
 						end;
 			end;
 
