@@ -45,7 +45,7 @@ option_0_prep_continue_2020=1;
 		inc_p_prep_restart_choi_2020 = 0 ;
 		incr_prepuptake_sw_2020 = 0 ;
 		incr_prepuptake_pop_2020 = 0 ;
-		expand_prep_to_all_2020 = 0 ;
+		prep_strategy_2020 = 0 ;
 
 		circ_improvements = 0;
 		circ_inc_rate_2020 = 0;
