@@ -3922,6 +3922,12 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	if prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
 	end;
 
+	if prep_strategy=8 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and (newp ge 2 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
 
 end;
 
