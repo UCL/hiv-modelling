@@ -1537,6 +1537,11 @@ proc means data=wide; var  dcost_prep_20_25_1 dcost_prep_20_25_2 ;
 run; 
 ods htm close;
 
+/*
+dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
++ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
+dcost_child_hiv + dcost_non_aids_pre_death 
+*/
 
 proc freq data=wide; tables prep_improvements_ai1 * pop_wide_tld_2020_ai1 ; run;
 
@@ -1614,6 +1619,7 @@ dtest_cost_20_25_1 dtest_cost_20_25_2
 dart_cost_y_20_25_1 dart_cost_y_20_25_2 
 dclin_cost_20_25_1 dclin_cost_20_25_2 
 dcost_prep_20_25_1 dcost_prep_20_25_2 
+dcost_circ_20_25_1 dcost_circ_20_25_2
 dcost_prep_visit_20_25_1 dcost_prep_visit_20_25_2 
 p_onart_20_25_1 p_onart_20_25_2 
 p_vl1000_20_25_1 p_vl1000_20_25_2 
@@ -1646,6 +1652,7 @@ dtest_cost_20_70_1 dtest_cost_20_70_2
 dart_cost_y_20_70_1 dart_cost_y_20_70_2 
 dclin_cost_20_70_1 dclin_cost_20_70_2 
 dcost_prep_20_70_1 dcost_prep_20_70_2 
+dcost_circ_20_70_1 dcost_circ_20_70_2
 dcost_prep_visit_20_70_1 dcost_prep_visit_20_70_2 
 p_onart_20_70_1 p_onart_20_70_2 
 p_vl1000_20_70_1 p_vl1000_20_70_2 
@@ -1679,6 +1686,10 @@ run;
 proc freq data=wide; tables ce_500;
 run; 
 
+
+proc logistic data=wide; model ce_500 =  prevalence1549_20 ; run;
+
+proc freq data=wide; tables prop_1564_onprep_20_25_2 ; run;
 
 
 * --------------------------------------------------------------------------------------------------------------;
