@@ -2266,6 +2266,12 @@ if sw_program=1 and caldate{t} ge 2015 then do;
 	end;
 end;
 
+if sw_higher_int = 1 and prob_sw_lower_adh = 0 and sw_higher_prob_loss_at_diag = 1 then disadv_sw=0;
+if sw_higher_int = 2 and prob_sw_lower_adh = 0.3 and sw_higher_prob_loss_at_diag = 1.5 then disadv_sw=1;
+if sw_higher_int = 3 and prob_sw_lower_adh = 1 and sw_higher_prob_loss_at_diag = 2 then disadv_sw=2;
+
+
+
 if 2020.25 <= caldate{t} < 2020.75 and swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
 	eff_sw_program = 0 ; 
 	sw_test_6mthly = 0; 
@@ -2404,18 +2410,32 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
-if caldate_never_dot = 2020.50 then do;
+if caldate_never_dot = 2000 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
-
+	disadv_sw=0;sw_program=0;
 	end; 
 
 	if option = 1 then do;
-
+	disadv_sw=1;sw_program=0;
 	end;
+
+	if option = 2 then do;
+	disadv_sw=2;sw_program=0;
+	end;
+
+	if option = 1 then do;
+	disadv_sw=2;sw_program_effect=1;
+	end;
+
+	if option = 1 then do;
+	disadv_sw=2;sw_program_effect=2;
+	end;
+
 end;
+
 
 * ==========================================================================================================================================;
 
