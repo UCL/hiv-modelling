@@ -1029,6 +1029,12 @@ p_neph_stops_after_ten = 0.1;
 *prob_sw_lower_adh;			r=uniform(0); if r < 0.33 then prob_sw_lower_adh = 0; if 0.33 <= r < 0.67 then prob_sw_lower_adh = 0.3;  
 							if 0.67 <= r then prob_sw_lower_adh = 1; 
 
+				
+*sw_art_disadv; 			if sw_higher_int = 1 and prob_sw_lower_adh = 0 and sw_higher_prob_loss_at_diag = 1 then sw_art_disadv=0;
+							if sw_higher_int = 2 and prob_sw_lower_adh = 0.3 and sw_higher_prob_loss_at_diag = 1.5 then sw_art_disadv=1;
+							if sw_higher_int = 3 and prob_sw_lower_adh = 1 and sw_higher_prob_loss_at_diag = 2 then sw_art_disadv=2;
+
+
 *sw_higher_prob_loss_at_diag;r=uniform(0); if r < 0.33 then sw_higher_prob_loss_at_diag = 1; if 0.33 <= r < 0.67 then sw_higher_prob_loss_at_diag = 1.5;  
 							if 0.67 <= r then sw_higher_prob_loss_at_diag = 2; 
 							
@@ -15156,7 +15162,8 @@ rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc
+nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
+sw_art_disadv
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
@@ -16550,7 +16557,7 @@ rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_ga
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
+sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
