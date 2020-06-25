@@ -1029,15 +1029,13 @@ p_neph_stops_after_ten = 0.1;
 *prob_sw_lower_adh;			r=uniform(0); if r < 0.33 then prob_sw_lower_adh = 0; if 0.33 <= r < 0.67 then prob_sw_lower_adh = 0.3;  
 							if 0.67 <= r then prob_sw_lower_adh = 1; 
 
-				
+*sw_higher_prob_loss_at_diag;r=uniform(0); if r < 0.33 then sw_higher_prob_loss_at_diag = 1; if 0.33 <= r < 0.67 then sw_higher_prob_loss_at_diag = 1.5;  
+							if 0.67 <= r then sw_higher_prob_loss_at_diag = 2; 
+
 *sw_art_disadv; 			if sw_higher_int = 1 and prob_sw_lower_adh = 0 and sw_higher_prob_loss_at_diag = 1 then sw_art_disadv=0;
 							if sw_higher_int = 2 and prob_sw_lower_adh = 0.3 and sw_higher_prob_loss_at_diag = 1.5 then sw_art_disadv=1;
 							if sw_higher_int = 3 and prob_sw_lower_adh = 1 and sw_higher_prob_loss_at_diag = 2 then sw_art_disadv=2;
 
-
-*sw_higher_prob_loss_at_diag;r=uniform(0); if r < 0.33 then sw_higher_prob_loss_at_diag = 1; if 0.33 <= r < 0.67 then sw_higher_prob_loss_at_diag = 1.5;  
-							if 0.67 <= r then sw_higher_prob_loss_at_diag = 2; 
-							
 * sw_program;				r=uniform(0); sw_program=0;  
 							if r < 0.33 then sw_program=1; 
 							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.1 then sw_program_effect = 2; end;
