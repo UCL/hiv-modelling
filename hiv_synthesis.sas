@@ -2387,7 +2387,7 @@ option = &s;
 		inc_p_prep_restart_choi_2020 = 0 ;
 		incr_prepuptake_sw_2020 = 0 ;
 		incr_prepuptake_pop_2020 = 0 ;
-		expand_prep_to_all_2020 = 0 ;
+		prep_strategy_2020 = 0 ;
 		circ_improvements = 0;
 		circ_inc_rate_2020 = 0;
 		condom_incr_2020 = 0;
@@ -15157,7 +15157,7 @@ decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
+inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
@@ -16551,7 +16551,7 @@ decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   expand_prep_to_all_2020 
+inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
