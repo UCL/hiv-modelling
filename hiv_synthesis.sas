@@ -3883,7 +3883,7 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=1 then do; 
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp=1 then prep_elig=1; 
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
 	end;
 
 	if prep_strategy=2 then do;
@@ -3920,6 +3920,12 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
 	if (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
 	if prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=8 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and (newp ge 2 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
 	end;
 
 
@@ -16094,7 +16100,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_23_6_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_24_6_20_4pm_&dataset_id";  
 put   
 
 /*
