@@ -16109,18 +16109,9 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_24_6_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_29_6_20_12pm_&dataset_id";  
 put   
 
-/*
-p50_cd4diag  			 s_cd4diag  
-p50_measured_cd4art 	 s_measured_cd4art 
-p50_years_since_start_prep   	 s_years_since_start_prep
-p50_n_test_prev_4p_onprep s_n_test_prev_4p_onprep
-p50_age_deb_sw 			 s_age_deb
-p50_act_years_sw 		 s_act_years_sw 
-p50_tot_dur_sw 			 s_tot_dur_sw
-*/
 
 /*general*/
 run   cald   option 
