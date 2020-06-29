@@ -38,14 +38,6 @@ data a;
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
 * if option = 0 or option = 1 ; *  if option = 1  then option = 1;
 
-* remove duplicate runs for c.prep_24_6_20_5pm_1; 
-if run in ( 19903590 21962856 48143071 60472083 61609239 83542837 110938176 135275311 168810063 189733845 215185010 235217151 
-243907928 281704052 288790980 293788914 324410173 356139146 358865980 373516008 383479943 440797111 453467977 461392394 468641399 
-480929197 483799161 487798584 487922748 505200451 526029343 543074013 550572530 588015697 638172886 646354963 649978450 659241809 
-665019001 672885318 680329441 687307834 690546944 713508766 724848269 727452382 733903270 748072469 805393260 813060132 813887433 
-837970592 854899929 863180501 882753686 883748382 912187437 928403717 931754760 953392395 958935533 977035064 979000089 )
-then delete;
-
 
 proc sort; by run cald option;
 run;
@@ -1560,12 +1552,6 @@ prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20;
 run;
-
-proc glm; class sw_init_newp sw_trans_matrix; model prop_sw_newp0_20 = sw_init_newp sw_trans_matrix rate_sw_rred_rc / solution; run;
-
-proc glm; class sw_init_newp sw_trans_matrix; model prop_sw_hiv_20 = sw_trans_matrix rate_sw_rred_rc ych_risk_beh_newp / solution; run;
-
-proc freq; tables sw_init_newp sw_trans_matrix rate_sw_rred_rc ; run;
 
 
 
