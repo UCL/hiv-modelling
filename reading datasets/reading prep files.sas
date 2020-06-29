@@ -581,6 +581,8 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 dataset=1;
 
+proc print data=c.prep_24_6_20_5pm_1; var run cald option; where run = 882753686 ; run;
+
 
 data c.prep_24_6_20_5pm_1; set d1;
 
