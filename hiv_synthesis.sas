@@ -549,7 +549,11 @@ drop eeee;
 
 data z;
 
-run = uniform(0)*1000000000;  run=round(run,1);
+x11= uniform(0)*10000000;
+x12= uniform(0)*100000000;
+x13= uniform(0)*1000000000;
+
+run = x13 + x12 + x11;  run=round(run,1);
 										   
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
@@ -14936,7 +14940,7 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep	  								
+s_pop_wide_tld_prep	prep_strategy  								
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -15161,7 +15165,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
-sw_art_disadv
+sw_art_disadv  
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
@@ -16107,18 +16111,9 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_24_6_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_29_6_20_12pm_&dataset_id";  
 put   
 
-/*
-p50_cd4diag  			 s_cd4diag  
-p50_measured_cd4art 	 s_measured_cd4art 
-p50_years_since_start_prep   	 s_years_since_start_prep
-p50_n_test_prev_4p_onprep s_n_test_prev_4p_onprep
-p50_age_deb_sw 			 s_age_deb
-p50_act_years_sw 		 s_act_years_sw 
-p50_tot_dur_sw 			 s_tot_dur_sw
-*/
 
 /*general*/
 run   cald   option 
