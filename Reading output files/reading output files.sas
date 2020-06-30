@@ -587,3 +587,4 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 set d1 ;
 
 run;
+proc freq;table run;where cald=2020;run;
