@@ -15162,7 +15162,7 @@ prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base_rate_stop_sexwork    rred_a_p 
-rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
+rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg sw_program_effect
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -15176,7 +15176,7 @@ incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choic
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
+circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
 
@@ -16398,7 +16398,7 @@ s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_lin
 s_onart_vlg1000  s_ever_onart_gt6m_vlg1000   s_ever_onart_gt6m_vl_m_g1000  s_onart_gt6m_vlg1000  s_r_onart_gt6m_vlg1000
 s_onart_gt6m_nnres_vlg1000  s_onart_gt6m_pires_vlg1000  s_onart_gt6m_res_vlg1000
 s_online1_vg1000  s_online1_vg1000_lf1  s_online1_vg1000_cd4l200  s_offart_vl1000
-s_vl1000_line2_12m  t  s_vl1000_line2_12m_onart  s_vl1000_line2
+s_vl1000_line2_12m   s_vl1000_line2_12m_onart  s_vl1000_line2
 
 s_offart  s_line1_  s_line2_  s_line1_lf0  s_line1_lf1  s_line2_lf1  s_line2_lf2  s_linefail_ge1  s_line1_fail_this_period
 s_lf1_past_yr   s_lf1_past_yr_line2 
@@ -16561,7 +16561,7 @@ incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choic
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
+circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
