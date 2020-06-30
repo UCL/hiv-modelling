@@ -976,8 +976,48 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 run;
 
 proc univariate;var 
-* --------------------------------------------------------------------------------------------------------------;
+p_mcirc_1519m_20_25_1 p_mcirc_1519m_20_30_1 p_mcirc_1519m_20_40_1
+p_mcirc_1519m_20_25_2 p_mcirc_1519m_20_30_2 p_mcirc_1519m_20_40_2
+p_mcirc_1519m_20_25_3 p_mcirc_1519m_20_30_3 p_mcirc_1519m_20_40_3
+p_mcirc_2024m_20_25_1 p_mcirc_2024m_20_30_1 p_mcirc_2024m_20_40_1
+p_mcirc_2024m_20_25_2 p_mcirc_2024m_20_30_2 p_mcirc_2024m_20_40_2
+p_mcirc_2024m_20_25_3 p_mcirc_2024m_20_30_3 p_mcirc_2024m_20_40_3
+p_mcirc_2529m_20_25_1 p_mcirc_2529m_20_30_1 p_mcirc_2529m_20_40_1
+p_mcirc_2529m_20_25_2 p_mcirc_2529m_20_30_2 p_mcirc_2529m_20_40_2
+p_mcirc_2529m_20_25_3 p_mcirc_2529m_20_30_3 p_mcirc_2529m_20_40_3
+p_mcirc_3039m_20_25_1 p_mcirc_3039m_20_30_1 p_mcirc_3039m_20_40_1
+p_mcirc_3039m_20_25_2 p_mcirc_3039m_20_30_2 p_mcirc_3039m_20_40_2
+p_mcirc_3039m_20_25_3 p_mcirc_3039m_20_30_3 p_mcirc_3039m_20_40_3
+p_mcirc_4049m_20_25_1 p_mcirc_4049m_20_30_1 p_mcirc_4049m_20_40_1
+p_mcirc_4049m_20_25_2 p_mcirc_4049m_20_30_2 p_mcirc_4049m_20_40_2
+p_mcirc_4049m_20_25_3 p_mcirc_4049m_20_30_3 p_mcirc_4049m_20_40_3
+p_mcirc_1549m_20_25_1 p_mcirc_1549m_20_30_1 p_mcirc_1549m_20_40_1
+p_mcirc_1549m_20_25_2 p_mcirc_1549m_20_30_2 p_mcirc_1549m_20_40_2
+p_mcirc_1549m_20_25_3 p_mcirc_1549m_20_30_3 p_mcirc_1549m_20_40_3
+;run;
 
+proc univariate; var 
+incidence1549_20_25_1 incidence1549_20_30_1 incidence1549_20_40_1
+incidence1549_20_25_2 incidence1549_20_30_2 incidence1549_20_40_2
+incidence1549_20_25_3 incidence1549_20_30_3 incidence1549_20_40_3
+;run;
+
+proc univariate; var 
+prevalence1549_20_25_1 prevalence1549_20_30_1 prevalence1549_20_40_1
+prevalence1549_20_25_2 prevalence1549_20_30_2 prevalence1549_20_40_2
+prevalence1549_20_25_3 prevalence1549_20_30_3 prevalence1549_20_40_3
+;run;
+
+proc univariate; var 
+death_rate_hiv_20_25_1 death_rate_hiv_20_30_1 death_rate_hiv_20_40_1
+death_rate_hiv_20_25_2 death_rate_hiv_20_30_2 death_rate_hiv_20_40_2
+death_rate_hiv_20_25_3 death_rate_hiv_20_30_3 death_rate_hiv_20_40_3
+;run;
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
 
 
 
