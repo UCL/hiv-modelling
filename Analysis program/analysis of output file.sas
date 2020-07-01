@@ -2133,16 +2133,14 @@ d_net_dalys_20_30_3 = ndb_500_20_30_3 - ndb_500_20_30_1;
 d_net_dalys_20_40_2 = ndb_500_20_40_2 - ndb_500_20_40_1;
 d_net_dalys_20_40_3 = ndb_500_20_40_3 - ndb_500_20_40_1;
 
-
-
 *nnt;
 *difference in number of circumcisions;
-d_n_mcirc_20_25_2 = n_mcirc_20_25_2 - n_mcirc_20_25_1;
-d_n_mcirc_20_25_3 = n_mcirc_20_25_3 - n_mcirc_20_25_1;
-d_n_mcirc_20_30_2 = n_mcirc_20_30_2 - n_mcirc_20_30_1;
-d_n_mcirc_20_30_3 = n_mcirc_20_30_3 - n_mcirc_20_30_1;
-d_n_mcirc_20_40_2 = n_mcirc_20_40_2 - n_mcirc_20_40_1;
-d_n_mcirc_20_40_3 = n_mcirc_20_40_3 - n_mcirc_20_40_1;
+d_n_mcirc_20_25_2 = n_mcirc1549_20_25_2 - n_mcirc1549_20_25_1;
+d_n_mcirc_20_25_3 = n_mcirc1549_20_25_3 - n_mcirc1549_20_25_1;
+d_n_mcirc_20_30_2 = n_mcirc1549_20_30_2 - n_mcirc1549_20_30_1;
+d_n_mcirc_20_30_3 = n_mcirc1549_20_30_3 - n_mcirc1549_20_30_1;
+d_n_mcirc_20_40_2 = n_mcirc1549_20_40_2 - n_mcirc1549_20_40_1;
+d_n_mcirc_20_40_3 = n_mcirc1549_20_40_3 - n_mcirc1549_20_40_1;
 
 *difference in number of new infections - all;
 d_n_new_inf_20_25_2 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
@@ -2165,7 +2163,6 @@ nnt_20_30_2 = d_n_mcirc_20_30_2 / d_n_new_inf_20_30_2;
 nnt_20_30_3 = d_n_mcirc_20_30_3 / d_n_new_inf_20_30_3;
 nnt_20_40_2 = d_n_mcirc_20_40_2 / d_n_new_inf_20_40_2;
 nnt_20_40_3 = d_n_mcirc_20_40_3 / d_n_new_inf_20_40_3;
-
 
 
 *cost per infection averted - all;
@@ -2248,6 +2245,34 @@ dcost_20_25_3 dcost_20_30_3 dcost_20_40_3
 ;run;
 
 proc univariate; var 
-d_dcost_20_25_2 d_dcost_20_30_2 d_dcost_20_40_2
-d_dcost_20_25_3 d_dcost_20_30_3 d_dcost_20_40_3
+d_net_dalys_20_25_2 d_net_dalys_20_30_2 d_net_dalys_20_40_2
+d_net_dalys_20_25_3 d_net_dalys_20_30_3 d_net_dalys_20_40_3
 ;run;
+
+proc univariate; var 
+cost_inf_avert_20_25_2 cost_inf_avert_20_30_2 cost_inf_avert_20_40_2
+cost_inf_avert_20_25_3 cost_inf_avert_20_30_3 cost_inf_avert_20_40_3
+;run;
+
+
+proc univariate; var 
+cost_daly_avert_20_25_2 cost_daly_avert_20_30_2 cost_daly_avert_20_40_2
+cost_daly_avert_20_25_3 cost_daly_avert_20_30_3 cost_daly_avert_20_40_3
+;run;
+
+
+***table 1;
+proc univariate; var 
+prevalence1549_20 prevalence1549m_20 prevalence1549w_20
+incidence1549_20 incidence1549m_20 incidence1549w_20
+prop_1564_onprep_20 
+p_diag_20 p_diag_m_20 p_diag_w_20
+p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20
+p_vl1000_20 p_vl1000_m_20 p_vl1000_w_20
+p_onart_vl1000_20 p_onart_vl1000_m_20 p_onart_vl1000_w_20
+p_mcirc_1549m_20 p_mcirc_1519m_20 p_mcirc_2024m_20 p_mcirc_2529m_20 p_mcirc_3039m_20 p_mcirc_4049m_20
+n_mcirc1549__20
+;	
+
+run;
+
