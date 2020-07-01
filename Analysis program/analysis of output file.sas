@@ -959,7 +959,7 @@ proc sort; by run;run;
 * if prep_improvements_ai1 ne .
    ;
 
-
+/*
 ratio_prev_age2529w_overall_16 = prevalence2529w_16 / prevalence1549_16 ;  
 sex_ratio_prev_age2024_16 = prevalence2024w_16 / prevalence2024m_16 ;
 ratio_prev_age2529w_overall_19 = prevalence2529w_19 / prevalence1549_19 ;  
@@ -967,6 +967,8 @@ sex_ratio_prev_age2024_19 = prevalence2024w_19 / prevalence2024m_19 ;
 
 accept=0; if keep_going_2016_ = 1 and keep_going_2020_ = 1 and 1/1.15 <= gender_r_newp_05_20 <= 1.15 
 and incidence1549w_16 / incidence1549m_16 > 1.25 and incidence1549_16 < 2.5 then accept=1;
+
+*/
 * dont think we need this with keep_going code now in model program;
 * if accept=1;
 
@@ -2104,13 +2106,34 @@ d_ddaly_all_20_30_3 = ddaly_all_20_30_3 - ddaly_all_20_30_1;
 d_ddaly_all_20_40_2 = ddaly_all_20_40_2 - ddaly_all_20_40_1;
 d_ddaly_all_20_40_3 = ddaly_all_20_40_3 - ddaly_all_20_40_1;
 
-*costs;
+*difference in costs;
 d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1;
 d_dcost_20_25_3 = dcost_20_25_3 - dcost_20_25_1;
 d_dcost_20_30_2 = dcost_20_30_2 - dcost_20_30_1;
 d_dcost_20_30_3 = dcost_20_30_3 - dcost_20_30_1;
 d_dcost_20_40_2 = dcost_20_40_2 - dcost_20_40_1;
 d_dcost_20_40_3 = dcost_20_40_3 - dcost_20_40_1;
+
+*net dalys;
+ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005; 
+ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005; 
+ndb_500_20_25_3 =  ddaly_all_20_25_3 + (dcost_20_25_3)/0.0005; 
+ndb_500_20_30_1 =  ddaly_all_20_30_1 + (dcost_20_30_1)/0.0005; 
+ndb_500_20_30_2 =  ddaly_all_20_30_2 + (dcost_20_30_2)/0.0005; 
+ndb_500_20_30_3 =  ddaly_all_20_30_3 + (dcost_20_30_3)/0.0005; 
+ndb_500_20_40_1 =  ddaly_all_20_40_1 + (dcost_20_40_1)/0.0005;
+ndb_500_20_40_2 =  ddaly_all_20_40_2 + (dcost_20_40_2)/0.0005; 
+ndb_500_20_40_3 =  ddaly_all_20_40_3 + (dcost_20_40_3)/0.0005; 
+
+*difference in net dalys;
+d_net_dalys_20_25_2 = ndb_500_20_25_2 - ndb_500_20_25_1;
+d_net_dalys_20_25_3 = ndb_500_20_25_3 - ndb_500_20_25_1;
+d_net_dalys_20_30_2 = ndb_500_20_30_2 - ndb_500_20_30_1;
+d_net_dalys_20_30_3 = ndb_500_20_30_3 - ndb_500_20_30_1;
+d_net_dalys_20_40_2 = ndb_500_20_40_2 - ndb_500_20_40_1;
+d_net_dalys_20_40_3 = ndb_500_20_40_3 - ndb_500_20_40_1;
+
+
 
 *nnt;
 *difference in number of circumcisions;
@@ -2143,13 +2166,7 @@ nnt_20_30_3 = d_n_mcirc_20_30_3 / d_n_new_inf_20_30_3;
 nnt_20_40_2 = d_n_mcirc_20_40_2 / d_n_new_inf_20_40_2;
 nnt_20_40_3 = d_n_mcirc_20_40_3 / d_n_new_inf_20_40_3;
 
-*net dalys;
-ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005; 
-ndb_500_20_25_3 =  ddaly_all_20_25_3 + (dcost_20_25_3)/0.0005; 
-ndb_500_20_30_2 =  ddaly_all_20_30_2 + (dcost_20_30_2)/0.0005; 
-ndb_500_20_30_3 =  ddaly_all_20_30_3 + (dcost_20_30_3)/0.0005; 
-ndb_500_20_40_2 =  ddaly_all_20_40_2 + (dcost_20_40_2)/0.0005; 
-ndb_500_20_40_3 =  ddaly_all_20_40_3 + (dcost_20_40_3)/0.0005; 
+
 
 *cost per infection averted - all;
 cost_inf_avert_20_25_2 = d_dcost_20_25_2 / d_n_new_inf_20_25_2;
@@ -2175,8 +2192,6 @@ cost_daly_avert_20_30_3 = d_dcost_20_30_3 / d_ddaly_all_20_30_3;
 cost_daly_avert_20_40_2 = d_dcost_20_40_2 / d_ddaly_all_20_40_2;
 cost_daly_avert_20_40_3 = d_dcost_20_40_3 / d_ddaly_all_20_40_3;
  
-
-run;
 
 proc univariate;var 
 p_mcirc_1519m_20_25_1 p_mcirc_1519m_20_30_1 p_mcirc_1519m_20_40_1
@@ -2217,3 +2232,22 @@ death_rate_hiv_20_25_2 death_rate_hiv_20_30_2 death_rate_hiv_20_40_2
 death_rate_hiv_20_25_3 death_rate_hiv_20_30_3 death_rate_hiv_20_40_3
 ;run;
 
+proc univariate; var 
+ddeath_rate_hiv_20_25_2 ddeath_rate_hiv_20_30_2 ddeath_rate_hiv_20_40_2
+ddeath_rate_hiv_20_25_3 ddeath_rate_hiv_20_30_3 ddeath_rate_hiv_20_40_3
+;run;
+
+proc univariate; var 
+d_ddaly_all_20_25_2 d_ddaly_all_20_30_2 d_ddaly_all_20_40_2
+d_ddaly_all_20_25_3 d_ddaly_all_20_30_3 d_ddaly_all_20_40_3
+;run;
+
+proc univariate; var 
+dcost_20_25_2 dcost_20_30_2 dcost_20_40_2
+dcost_20_25_3 dcost_20_30_3 dcost_20_40_3
+;run;
+
+proc univariate; var 
+d_dcost_20_25_2 d_dcost_20_30_2 d_dcost_20_40_2
+d_dcost_20_25_3 d_dcost_20_30_3 d_dcost_20_40_3
+;run;
