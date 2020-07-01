@@ -485,8 +485,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
 * p_vg1000_m, p_vl1000_m;		if s_hiv1564m  > 0 then p_vg1000_m = s_vg1000_m / s_hiv1564m ;  p_vl1000_m = 1- p_vg1000_m ;
 * p_vg1000_w, p_vl1000_w;		if s_hiv1564w  > 0 then p_vg1000_w = s_vg1000_w / s_hiv1564w ;  p_vl1000_w = 1- p_vg1000_w ;
-* p_vg1000_m_1524;				if s_hiv1564m  > 0 then p_vg1000_m_1524 = s_vg1000_m_1524 / s_hiv1524m ;
-* p_vg1000_w_1524;				if s_hiv1564w  > 0 then p_vg1000_w_1524 = s_vg1000_w_1524 / s_hiv1524w ;
+* p_vg1000_m_1524;				if s_hiv1524m  > 0 then p_vg1000_m_1524 = s_vg1000_m_1524 / s_hiv1524m ;
+* p_vg1000_w_1524;				if s_hiv1524w  > 0 then p_vg1000_w_1524 = s_vg1000_w_1524 / s_hiv1524w ;
 * p_vl1000_m_1524;				p_vl1000_m_1524 = 1 - p_vg1000_m_1524 ;
 * p_vl1000_w_1524;				p_vl1000_w_1524 = 1 - p_vg1000_w_1524 ;
 
@@ -530,12 +530,12 @@ s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
 n_pregnant_ntd = s_pregnant_ntd    * sf_2019 * 4 ; 
 n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2019 * 4;  * annual number;
 
-run;
 
-n_mcirc1549_=s_mcirc1549_ * sf_2019 * 4;
+n_mcirc1549_=s_mcirc_1549m * sf_2019 * 4;
 n_new_inf1549m=s_primary1549m * sf_2019 * 4;
 n_new_inf1549=s_primary1549 * sf_2019 * 4;
 
+run;
 
 proc sort data=y;by run option;run;
 
