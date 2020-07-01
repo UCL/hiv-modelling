@@ -37,7 +37,6 @@ data a;
 
 if run in (102090910, 241965809,656675947,934128236) then delete;
 proc sort; by run cald option;
-proc freq;table run;where cald=2015;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -73,10 +72,10 @@ s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
 s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
 
-r_bir_w_infected_child_ = rate_birth_with_infected_child_;
+*r_bir_w_infected_child_ = rate_birth_with_infected_child_;
 
 
-reg_option = s_reg_option / s_n;
+*reg_option = s_reg_option / s_n;
 
 * ================================================================================= ;
 
@@ -85,8 +84,7 @@ reg_option = s_reg_option / s_n;
 
 * ================================================================================= ;
 
-disc     = s_dcost_ / s_cost_;
-
+if s_cost_ gt 0 then disc     = s_dcost_ / s_cost_;
 * discount rate is 3%; 
 * note discounting is from 2020 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
@@ -259,6 +257,9 @@ if s_ai_naive_no_pmtct_c_rt65m_ = . then s_ai_naive_no_pmtct_c_rt65m_ = 0;
 if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 
 s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
+s_mcirc_3039m = s_mcirc_3034m + s_mcirc_3539m;
+s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
+
 
 s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
@@ -275,15 +276,15 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2019;
 * p_newp_sw;					p_newp_sw = s_sw_newp / s_w_newp ;
-* rate_susc_np_1549_m;			rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
-* rate_susc_np_1549_w;			rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
-* rate_susc_np_ic_1549_m;		rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
+* rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
+* rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
+* rate_susc_np_ic_1549_m;		*rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
 
-* mean_num_tests_ly_m1549_;		mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
-* mean_num_tests_ly_w1549_;		mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
+* mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
+* mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
 * n_tested_m;					n_tested_m = s_tested_m * sf_2019 * 4;
 * n_tested;						n_tested = s_tested * sf_2019 * 4;
-* test_prop_positive;			test_prop_positive = s_diag_this_period / s_tested;
+* test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -313,7 +314,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * n_prep;						n_prep = s_prep * sf_2019;
 * n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2019;
-* p_hiv1_prep;					p_hiv1_prep = s_hiv1_prep / s_prep ;
+* p_hiv1_prep;					if s_prep gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep ;
 
 * n_prep_ever;					n_prep_ever = s_prep_ever * sf_2019;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
@@ -326,7 +327,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2019;
 * n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2019;
 
-* prop_elig_on_prep;			prop_elig_on_prep = s_prep / s_elig_prep ; 
+* prop_elig_on_prep;			if s_elig_prep then prop_elig_on_prep = s_prep / s_elig_prep ; 
 
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
 
@@ -364,14 +365,14 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
 
 * derived var cald iables relating to people with hiv ;
-
+								if s_primary gt 0 then do;
 * p_inf_vlsupp ;				p_inf_vlsupp = s_inf_vlsupp   / s_primary;
 * p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
 * p_inf_ep ;					p_inf_ep = s_inf_ep   / s_primary;
 * p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
 * p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
 * p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
-
+								end;
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / s_hiv1564 ;  p_diag = p_diag * 100;
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / s_hiv1564m ;  p_diag_m = p_diag_m * 100;
@@ -394,7 +395,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
-* p_onart;						p_onart = s_onart / s_hiv1564;
+* p_onart;						if s_hiv1564 gt 0 then p_onart = s_onart / s_hiv1564;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -411,41 +412,41 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_zla;						if s_onart > 0 then p_zla = s_zla / s_onart ;
 * p_otherreg;					if s_onart > 0 then p_otherreg = s_otherreg / s_onart ;
 
-* p_o_zdv_tox;					p_o_zdv_tox = s_o_zdv_tox / s_zdv ;
-* p_o_3tc_tox;					p_o_3tc_tox = s_o_3tc_tox / s_3tc ;
-* p_o_ten_tox;					p_o_ten_tox = s_o_ten_tox / s_ten ;
-* p_o_taz_tox;					p_o_taz_tox = s_o_taz_tox / s_taz ;
-* p_o_lpr_tox;					p_o_lpr_tox = s_o_lpr_tox / s_lpr ;
-* p_o_efa_tox;					p_o_efa_tox = s_o_efa_tox / s_efa ;
-* p_o_nev_tox;					p_o_nev_tox = s_o_nev_tox / s_nev ;
-* p_o_dol_tox;					p_o_dol_tox = s_o_dol_tox / s_dol ;
+* p_o_zdv_tox;					if s_zdv gt 0 then p_o_zdv_tox = s_o_zdv_tox / s_zdv ;
+* p_o_3tc_tox;					if s_3tc gt 0 then p_o_3tc_tox = s_o_3tc_tox / s_3tc ;
+* p_o_ten_tox;					if s_ten gt 0 then p_o_ten_tox = s_o_ten_tox / s_ten ;
+* p_o_taz_tox;					if s_taz gt 0 then p_o_taz_tox = s_o_taz_tox / s_taz ;
+* p_o_lpr_tox;					if s_lpr gt 0 then p_o_lpr_tox = s_o_lpr_tox / s_lpr ;
+* p_o_efa_tox;					if s_efa gt 0 then p_o_efa_tox = s_o_efa_tox / s_efa ;
+* p_o_nev_tox;					if s_nev gt 0 then p_o_nev_tox = s_o_nev_tox / s_nev ;
+* p_o_dol_tox;					if s_dol gt 0 then p_o_dol_tox = s_o_dol_tox / s_dol ;
 
-* p_o_tle_tox;					p_o_tle_tox = s_o_tle_tox / s_tle ;
-* p_o_tld_tox;					p_o_tld_tox = s_o_tld_tox / s_tld ;
-* p_o_zld_tox;					p_o_zld_tox = s_o_zld_tox / s_zld ;
-* p_o_zla_tox;					p_o_zla_tox = s_o_zla_tox / s_zla ;
+* p_o_tle_tox;					if s_tle gt 0 then p_o_tle_tox = s_o_tle_tox / s_tle ;
+* p_o_tld_tox;					if s_tld gt 0 then p_o_tld_tox = s_o_tld_tox / s_tld ;
+* p_o_zld_tox;					if s_zld gt 0 then p_o_zld_tox = s_o_zld_tox / s_zld ;
+* p_o_zla_tox;					if s_zla gt 0 then p_o_zla_tox = s_o_zla_tox / s_zla ;
 
-* p_o_zdv_adh_hi;				p_o_zdv_adh_hi = s_o_zdv_adh_hi / s_zdv ;
-* p_o_3tc_adh_hi;				p_o_3tc_adh_hi = s_o_3tc_adh_hi / s_3tc ;
-* p_o_ten_adh_hi;				p_o_ten_adh_hi = s_o_ten_adh_hi / s_ten ;
-* p_o_taz_adh_hi;				p_o_taz_adh_hi = s_o_taz_adh_hi / s_taz ;
-* p_o_lpr_adh_hi;				p_o_lpr_adh_hi = s_o_lpr_adh_hi / s_lpr ;
-* p_o_efa_adh_hi;				p_o_efa_adh_hi = s_o_efa_adh_hi / s_efa ;
-* p_o_nev_adh_hi;				p_o_nev_adh_hi = s_o_nev_adh_hi / s_nev ;
-* p_o_dol_adh_hi;				p_o_dol_adh_hi = s_o_dol_adh_hi / s_dol ;
+* p_o_zdv_adh_hi;				if s_zdv gt 0 then p_o_zdv_adh_hi = s_o_zdv_adh_hi / s_zdv ;
+* p_o_3tc_adh_hi;				if s_3tc gt 0 then p_o_3tc_adh_hi = s_o_3tc_adh_hi / s_3tc ;
+* p_o_ten_adh_hi;				if s_ten gt 0 then p_o_ten_adh_hi = s_o_ten_adh_hi / s_ten ;
+* p_o_taz_adh_hi;				if s_taz gt 0 then p_o_taz_adh_hi = s_o_taz_adh_hi / s_taz ;
+* p_o_lpr_adh_hi;				if s_lpr gt 0 then p_o_lpr_adh_hi = s_o_lpr_adh_hi / s_lpr ;
+* p_o_efa_adh_hi;				if s_efa gt 0 then p_o_efa_adh_hi = s_o_efa_adh_hi / s_efa ;
+* p_o_nev_adh_hi;				if s_nev gt 0 then p_o_nev_adh_hi = s_o_nev_adh_hi / s_nev ;
+* p_o_dol_adh_hi;				if s_dol gt 0 then p_o_dol_adh_hi = s_o_dol_adh_hi / s_dol ;
 
-* p_o_tle_adh_hi;				p_o_tle_adh_hi = s_o_tle_adh_hi / s_tle ;
-* p_o_tld_adh_hi;				p_o_tld_adh_hi = s_o_tld_adh_hi / s_tld ;
-* p_o_zld_adh_hi;				p_o_zld_adh_hi = s_o_zld_adh_hi / s_zld ;
-* p_o_zla_adh_hi;				p_o_zla_adh_hi = s_o_zla_adh_hi / s_zla ;
+* p_o_tle_adh_hi;				if s_tle gt 0 then p_o_tle_adh_hi = s_o_tle_adh_hi / s_tle ;
+* p_o_tld_adh_hi;				if s_tld gt 0 then p_o_tld_adh_hi = s_o_tld_adh_hi / s_tld ;
+* p_o_zld_adh_hi;				if s_zld gt 0 then p_o_zld_adh_hi = s_o_zld_adh_hi / s_zld ;
+* p_o_zla_adh_hi;				if s_zla gt 0 then p_o_zla_adh_hi = s_o_zla_adh_hi / s_zla ;
 
-* p_adh_hi;						p_adh_hi = s_adh_hi / s_onart;
+* p_adh_hi;						if s_onart gt 0 then p_adh_hi = s_adh_hi / s_onart;
 
-* p_k65m;						p_k65m = s_k65m_ / s_hiv1564 ;
-* p_m184m;						p_m184m = s_m184m_ / s_hiv1564 ;
+* p_k65m;						if s_hiv1564 gt 0 then p_k65m = s_k65m_ / s_hiv1564 ;
+* p_m184m;						if s_hiv1564 gt 0 then p_m184m = s_m184m_ / s_hiv1564 ;
 
-* p_vlg1000_onart_65m;			if s_vlg1000_onart > . then p_vlg1000_onart_65m = s_vlg1000_onart_65m / s_vlg1000_onart ;
-* p_vlg1000_onart_184m;			if s_vlg1000_onart > . then p_vlg1000_onart_184m = s_vlg1000_onart_184m / s_vlg1000_onart ;
+* p_vlg1000_onart_65m;			if s_vlg1000_onart > 0 then p_vlg1000_onart_65m = s_vlg1000_onart_65m / s_vlg1000_onart ;
+* p_vlg1000_onart_184m;			if s_vlg1000_onart > 0 then p_vlg1000_onart_184m = s_vlg1000_onart_184m / s_vlg1000_onart ;
 
 * p_184m_ontle_vlg1000;			if s_vlg1000_ontle > 0 then p_184m_ontle_vlg1000 = s_vlg1000_184m_ontle / s_vlg1000_ontle ;
 * p_tams_ontle_vlg1000;			if s_vlg1000_ontle > 0 then p_tams_ontle_vlg1000 = s_vlg1000_tams_ontle / s_vlg1000_ontle ;
@@ -458,15 +459,17 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_nnm_ontld_vlg1000;			if s_vlg1000_ontld > 0 then p_nnm_ontld_vlg1000 = s_vlg1000_nnm_ontld / s_vlg1000_ontld ;
 * p_inm_ontld_vlg1000;			if s_vlg1000_ontld > 0 then p_inm_ontld_vlg1000 = s_vlg1000_inm_ontld / s_vlg1000_ontld ;
 
+								if s_onart_start_zld_if_reg_op_116 gt 0 then do;
 * p_nactive_ge2p75_xyz;			p_nactive_ge2p75_xyz = s_nac_ge2p75_a_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116;
 * p_nactive_ge2p00_xyz;			p_nactive_ge2p00_xyz = s_nac_ge2p00_a_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116;
 * p_nactive_ge1p50_xyz;			p_nactive_ge1p50_xyz = s_nac_ge1p50_a_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116;
+								end;
 
-* p_adh_hi_xyz_ot1;				p_adh_hi_xyz_ot1 = s_adh_hi_a_zld_if_reg_op_116 / s_a_zld_if_reg_op_116;
-* p_adh_hi_xyz_ot2;				p_adh_hi_xyz_ot2 = s_adh_hi_a_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116;
-* p_adh_hi_xyz_itt;				p_adh_hi_xyz_itt = s_adh_hi_a_zld_if_reg_op_116 / s_x_n_zld_if_reg_op_116;
+* p_adh_hi_xyz_ot1;				if s_a_zld_if_reg_op_116 gt 0 then p_adh_hi_xyz_ot1 = s_adh_hi_a_zld_if_reg_op_116 / s_a_zld_if_reg_op_116;
+* p_adh_hi_xyz_ot2;				if s_onart_start_zld_if_reg_op_116 gt 0 then p_adh_hi_xyz_ot2 = s_adh_hi_a_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116;
+* p_adh_hi_xyz_itt;				if s_x_n_zld_if_reg_op_116 gt 0 then  p_adh_hi_xyz_itt = s_adh_hi_a_zld_if_reg_op_116 / s_x_n_zld_if_reg_op_116;
 
-* p_e_rt65m_xyz; 				p_e_rt65m_xyz = s_e_rt65m_st_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116 ;
+* p_e_rt65m_xyz; 				if s_onart_start_zld_if_reg_op_116 gt 0 then p_e_rt65m_xyz = s_e_rt65m_st_zld_if_reg_op_116 / s_onart_start_zld_if_reg_op_116 ;
 
 * p_startedline2;				if s_artexp > 0 then do; p_startedline2 = s_startedline2 / s_artexp; end;
 * Of people on ART, percent with CD4 < 500;	
@@ -508,9 +511,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_nnme_;						p_nnme_ = s_nnme_ / s_hiv1564 ;
 
 * ts1m - below change 4 to 12;
-* aids_death_rate;				aids_death_rate = (4 * 100 * s_death_hivrel) / s_hiv1564 ;
-* death_rate_onart;				death_rate_onart = (4 * 100 * s_dead_onart) / s_onart ;
-* death_rate_artexp;			death_rate_artexp = (4 * 100 * s_dead_artexp / s_artexp);
+* aids_death_rate;				if s_hiv1564 gt 0 then aids_death_rate = (4 * 100 * s_death_hivrel) / s_hiv1564 ;
+* death_rate_onart;				if s_onart gt 0 then death_rate_onart = (4 * 100 * s_dead_onart) / s_onart ;
+* death_rate_artexp;			if s_artexp gt 0 then death_rate_artexp = (4 * 100 * s_dead_artexp / s_artexp);
 * death_rate;					if s_hiv1564 > 0 then death_rate= (4 * 100 * s_dead1564_) / s_hiv1564;
 * death_rate_hiv; 				if s_hiv1564 > 0 then death_rate_hiv = (4 * 100 * s_death_hiv) / s_hiv1564;
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019;
@@ -518,7 +521,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_death;						n_death = s_dead_allage * sf_2019;
 * n_covid;						n_covid = s_covid * sf_2019;
 
-* p_death_hivrel_age_le64;		p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
+* p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * number of women with hiv giving birth per year;
 n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2019 * 4;
@@ -526,6 +529,12 @@ n_birth_with_inf_child = s_birth_with_inf_child * sf_2019 * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
 n_pregnant_ntd = s_pregnant_ntd    * sf_2019 * 4 ; 
 n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2019 * 4;  * annual number;
+
+run;
+
+n_mcirc1549_=s_mcirc1549_ * sf_2019 * 4;
+n_new_inf1549m=s_primary1549m * sf_2019 * 4;
+n_new_inf1549=s_primary1549 * sf_2019 * 4;
 
 
 proc sort data=y;by run option;run;
@@ -646,7 +655,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dead_ddaly_ntd);   %var(v=ddaly_mtct);  %var(v=dead_ddaly_odabe);  %var(v=n_tested); 
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
-%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m); 
+%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
+%var(v=n_mcirc1549_);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
 
 
 data   wide_outputs; merge 
@@ -685,7 +695,8 @@ death_rate  death_rate_hiv  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ new_inf1549m new_inf1549;
+
 ;
 
 proc contents; run;
@@ -976,7 +987,8 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 run;
 
 proc univariate;var 
-p_mcirc_1519m_20_25_1 p_mcirc_1519m_20_30_1 p_mcirc_1519m_20_40_1
+p_mcirc_1519m_20_25_1 p_mcirc_1519m_20_30_1 p_mcirc_1519m_20_40_1;run;
+
 p_mcirc_1519m_20_25_2 p_mcirc_1519m_20_30_2 p_mcirc_1519m_20_40_2
 p_mcirc_1519m_20_25_3 p_mcirc_1519m_20_30_3 p_mcirc_1519m_20_40_3
 p_mcirc_2024m_20_25_1 p_mcirc_2024m_20_30_1 p_mcirc_2024m_20_40_1
@@ -1016,6 +1028,21 @@ death_rate_hiv_20_25_3 death_rate_hiv_20_30_3 death_rate_hiv_20_40_3
 
 
 
+ddaly_all; - absolute difference between options;
+
+*dalys averted; 
+
+*net dalys;
+ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005; *d=discounted;*500=CE threshold;
+
+
+nnt - calculate diff between n_mcirc and d_inf. then mcirc/newinf;
+
+ n_mcirc1549_ new_inf1549m new_inf1549;
+
+dd_cost/dnewinf =diff in cost; both genders or male only?
+
+diff in cost/diff in dalys=icer;only if dalys averted; 
 
 * --------------------------------------------------------------------------------------------------------------;
 
