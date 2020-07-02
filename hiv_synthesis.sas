@@ -549,7 +549,7 @@ drop eeee;
 
 data z;
 
-run = uniform(0)*1000000000;  run=round(run,1);
+run = rand('uniform')*1000000000;  run=round(run,1);
 										   
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
