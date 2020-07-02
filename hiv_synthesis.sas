@@ -2549,19 +2549,38 @@ if 30 le age_tm1 le 50 then do;
 if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
 end;
 
-
 end;
 
-if t ge 2 then do;
-if caldate{t} > 2019 and 10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if caldate{t} > 2019 and 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
-if caldate{t} > 2019 and 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+
+if t ge 2 and 2019 < caldate{t} < 2020.5 then do;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
 end;
 
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 0 then prob_circ = 0 * prob_circ;*option=0 - no further circ;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 1 and age_tm1 lt 15 then prob_circ=0;*option=1 - no circ in under 15s;;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 2 then prob_circ = 0.5 * prob_circ;*option=2 - circ rate halved;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 3 then prob_circ = prob_circ;*option=3 - no change;
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 0 then do; *option=0 - no further circ;
+prob_circ = 0;
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s;
+if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - circ rate halved;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+prob_circ = 0.5 * prob_circ;
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 then do;*option=3 - no change;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+end;
+
 
 if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
