@@ -549,11 +549,7 @@ drop eeee;
 
 data z;
 
-x11= uniform(0)*10000000;
-x12= uniform(0)*100000000;
-x13= uniform(0)*1000000000;
-
-run = x13 + x12 + x11;  run=round(run,1);
+run = uniform(0)*1000000000;  run=round(run,1);
 										   
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
@@ -16133,7 +16129,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_29_6_20_12pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_2_7_20_4pm_&dataset_id";  
 put   
 
 
