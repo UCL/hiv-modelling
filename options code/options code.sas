@@ -56,7 +56,7 @@ if caldate_never_dot ge 2020.50 then do;
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
-
+	circ_inc_rate_2020=0;
 	end; 
 
 	if option = 1 then do;
@@ -65,6 +65,10 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 2 then do;
 	circ_inc_rate_2020=2;
+	end;
+
+	if option = 3 then do;
+	circ_inc_rate_2020=3;
 	end;
 
 end;
