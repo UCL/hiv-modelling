@@ -533,7 +533,7 @@ explore metrics for how to monitor prep programmes
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
+  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -2554,19 +2554,37 @@ if 30 le age_tm1 le 50 then do;
 if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
 end;
 
-
 end;
 
-if t ge 2 then do;
-if caldate{t} > 2019 and 10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if caldate{t} > 2019 and 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
-if caldate{t} > 2019 and 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+if t ge 2 and 2019 < caldate{t} < 2020.5 then do;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
 end;
 
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 0 then prob_circ = 0 * prob_circ;*option=0 - no further circ;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 1 and age_tm1 lt 15 then prob_circ=0;*option=1 - no circ in under 15s;;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 2 then prob_circ = 0.5 * prob_circ;*option=2 - circ rate halved;
-if caldate{t} = 2020.5 and circ_inc_rate_2020 = 3 then prob_circ = prob_circ;*option=3 - no change;
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 0 and then do; *option=0 - no further circ;
+prob_circ = 0
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 1 and then do;*option=1 - no circ in under 15s;
+if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 and then do; *option=2 - circ rate halved;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+prob_circ = 0.5 * prob_circ;
+end;
+
+if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 and then do;*option=3 - no change;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.40;
+end;
+
 
 
 if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
@@ -14226,7 +14244,9 @@ cald = caldate_never_dot ;
 
 
 * procs;
-proc print;var cald age mcirc prob_circ option;run;
+proc print;var cald option age mcirc prob_circ birth_circ ; where age ge 0 and age < 50 and gender=1 and serial_no < 150; run;
+
+
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
@@ -15977,7 +15997,7 @@ end;
 
 %mend update_r1;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -16097,6 +16117,13 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
+
+data a.test; set r1; 
+
+*/
+
+data r1; set a.test;
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=113,h=120,j=120,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=117,h=124,j=121,s=0);
@@ -16106,9 +16133,6 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 
-data a; set r1; 
-
-data r1; set a;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
