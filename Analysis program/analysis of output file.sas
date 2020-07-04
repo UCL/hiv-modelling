@@ -6,7 +6,7 @@
   libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
   libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
   libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
+  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC";
 
 proc printto;
 
@@ -31,13 +31,14 @@ data a;
 * set f.covid_hiv_revision_main_30r_5yr ;
 * set f.covid_hiv_revision_main_30r_dsb ;
 *  set f.core_18_6_20_6pm;
-  set g.c_output_vmmc_25_6_20_3pm; 
+  set g.c_output_vmmc_2_7_20_10am;
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
 * if option = 0 or option = 1 ; *  if option = 1  then option = 1;
 
-if run in (102090910, 241965809,656675947,934128236) then delete;
-proc sort; by run cald option;
-
+if run in (129643958, 162522678, 332278352, 481070575, 504748246, 600030812, 717382639, 773656529, 836936616, 864487368,
+865508341, 920017032, 970221327) then delete;
+proc sort; by run cald option;run;
+proc freq;table run;where cald=2020;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -516,6 +517,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * death_rate_artexp;			if s_artexp gt 0 then death_rate_artexp = (4 * 100 * s_dead_artexp / s_artexp);
 * death_rate;					if s_hiv1564 > 0 then death_rate= (4 * 100 * s_dead1564_) / s_hiv1564;
 * death_rate_hiv; 				if s_hiv1564 > 0 then death_rate_hiv = (4 * 100 * s_death_hiv) / s_hiv1564;
+				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
+								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
+
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2019;
 * n_death;						n_death = s_dead_allage * sf_2019;
@@ -580,7 +584,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
  proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;
- proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;
+/* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; 
 
 /* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50; */ 
@@ -589,12 +593,12 @@ proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run op
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
  proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
-  proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; 
+/* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
  proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
 
 /* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */ 
 
-data &v ; merge  y_20 t_20_25 t_20_30 t_20_40 ;  
+data &v ; merge  y_20 t_20_25 t_20_40 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -648,7 +652,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
-%var(v=death_rate);   %var(v=death_rate_hiv);
+%var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
 %var(v=p_iime_);   %var(v=p_pime_);   %var(v=p_nnme_);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=ddaly_non_aids_pre_death);    %var(v=ddaly_ac_ntd_mtct);    %var(v=ddaly_ac_ntd_mtct_odabe);     %var(v=ddaly_ntd_mtct_napd);   
 %var(v=ddaly_ntd_mtct_odab_napd); %var(v=n_birth_with_inf_child);
@@ -911,7 +915,7 @@ proc sort; by run;run;
 * data f.wide_covid_revision_5yr_op1 ;
 * data f.wide_covid_revision_dsb_op1 ;
 * data f.wide_core_18_6_20_6pm ;
-  data g.wide_vmmc_25_6_20_3pm; 
+  data g.wide_vmmc_2_7_20_10am; 
 
 
 * merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
@@ -940,7 +944,7 @@ proc sort; by run;run;
 *  set f.wide_covid_revision_5yr_op1;
 *  set f.wide_covid_revision_dsb_op1;
 *  set f.wide_core_18_6_20_6pm ;
-   set g.wide_vmmc_25_6_20_3pm; 
+   set g.wide_vmmc_2_7_20_10am; 
 
 
 * if 0.04 <  prevalence1549_20 < 0.30;

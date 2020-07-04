@@ -3,7 +3,7 @@
 libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
 libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
 libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
+libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
 proc printto;
 
@@ -13,7 +13,7 @@ proc printto;
 
 data d1;  
 
-infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\c_output_vmmc_2_7_20_10am";
+infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_2_7_20_10am";
 
 input    
 
@@ -582,7 +582,7 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 ; 
 
 
-  data g.c_output_vmmc_25_6_20_3pm; 
+  data g.c_output_vmmc_2_7_20_10am; 
 
 set d1 ;
 
