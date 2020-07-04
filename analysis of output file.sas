@@ -1467,9 +1467,10 @@ p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl10
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
 run;
 
+
 proc glm; class sw_init_newp sw_trans_matrix; model prop_sw_newp0_20 = sw_init_newp sw_trans_matrix rate_sw_rred_rc / solution; run;
 
-proc freq; tables sw_init_newp sw_trans_matrix rate_sw_rred_rc ; run;
+
 
 
 /*

@@ -15,6 +15,7 @@ data d1;
 
 infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_18_6_20_6pm";
 
+
 input    
 
 
@@ -582,7 +583,9 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 ; 
 
 
+
   data f.core_18_6_20_6pm; 
+
 
 set d1 ;
 
