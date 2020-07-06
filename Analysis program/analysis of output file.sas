@@ -2169,44 +2169,39 @@ d_n_new_inf_m_20_40_2 = n_new_inf1549m_20_40_2 - n_new_inf1549m_20_40_1;
 d_n_new_inf_m_20_40_3 = n_new_inf1549m_20_40_3 - n_new_inf1549m_20_40_1;
 d_n_new_inf_m_20_40_4 = n_new_inf1549m_20_40_4 - n_new_inf1549m_20_40_1;
 
-
-nnt_20_25_2 = d_n_mcirc_20_25_2 / (-d_n_new_inf_20_25_2);
-nnt_20_25_3 = d_n_mcirc_20_25_3 / (-d_n_new_inf_20_25_3);
-nnt_20_25_4 = d_n_mcirc_20_25_4 / (-d_n_new_inf_20_25_4);
-
-nnt_20_40_2 = d_n_mcirc_20_40_2 / (-d_n_new_inf_20_40_2);
-nnt_20_40_3 = d_n_mcirc_20_40_3 / (-d_n_new_inf_20_40_3);
-nnt_20_40_4 = d_n_mcirc_20_40_4 / (-d_n_new_inf_20_40_4);
-
-
+if d_n_mcirc_20_25_2 gt 0 and (-d_n_new_inf_20_25_2) gt 0 then nnt_20_25_2 = d_n_mcirc_20_25_2 / (-d_n_new_inf_20_25_2);
+if d_n_mcirc_20_25_3 gt 0 and (-d_n_new_inf_20_25_3) gt 0 then nnt_20_25_3 = d_n_mcirc_20_25_3 / (-d_n_new_inf_20_25_3);
+if d_n_mcirc_20_25_4 gt 0 and (-d_n_new_inf_20_25_4) gt 0 then nnt_20_25_4 = d_n_mcirc_20_25_4 / (-d_n_new_inf_20_25_4);
+if d_n_mcirc_20_40_2 gt 0 and (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_mcirc_20_40_2 / (-d_n_new_inf_20_40_2);
+if d_n_mcirc_20_40_3 gt 0 and (-d_n_new_inf_20_40_3) gt 0 then nnt_20_40_3 = d_n_mcirc_20_40_3 / (-d_n_new_inf_20_40_3);
+if d_n_mcirc_20_40_4 gt 0 and (-d_n_new_inf_20_40_4) gt 0 then nnt_20_40_4 = d_n_mcirc_20_40_4 / (-d_n_new_inf_20_40_4);
 
 *cost per infection averted - all;
-cost_inf_avert_20_25_2 = (d_dcost_20_25_2 / d_n_new_inf_20_25_2)*1000000;
-cost_inf_avert_20_25_3 = (d_dcost_20_25_3 / d_n_new_inf_20_25_3)*1000000;
-cost_inf_avert_20_25_4 = (d_dcost_20_25_4 / d_n_new_inf_20_25_4)*1000000;
-
-cost_inf_avert_20_40_2 = (d_dcost_20_40_2 / d_n_new_inf_20_40_2)*1000000;
-cost_inf_avert_20_40_3 = (d_dcost_20_40_3 / d_n_new_inf_20_40_3)*1000000;
-cost_inf_avert_20_40_4 = (d_dcost_20_40_4 / d_n_new_inf_20_40_4)*1000000;
+if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_20_25_2))*1000000;
+if (-d_n_new_inf_20_25_3) gt 0 then cost_inf_avert_20_25_3 = (d_dcost_20_25_3 / (-d_n_new_inf_20_25_3))*1000000;
+if (-d_n_new_inf_20_25_4) gt 0 then cost_inf_avert_20_25_4 = (d_dcost_20_25_4 / (-d_n_new_inf_20_25_4))*1000000;
+if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_20_40_2))*1000000;
+if (-d_n_new_inf_20_40_3) gt 0 then cost_inf_avert_20_40_3 = (d_dcost_20_40_3 / (-d_n_new_inf_20_40_3))*1000000;
+if (-d_n_new_inf_20_40_4) gt 0 then cost_inf_avert_20_40_4 = (d_dcost_20_40_4 / (-d_n_new_inf_20_40_4))*1000000;
 
 
 *cost per infection averted - males only;
-cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / d_n_new_inf_m_20_25_2)*1000000;
-cost_inf_avert_m_20_25_3 = (d_dcost_20_25_3 / d_n_new_inf_m_20_25_3)*1000000;
-cost_inf_avert_m_20_25_4 = (d_dcost_20_25_4 / d_n_new_inf_m_20_25_4)*1000000;
-cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / d_n_new_inf_m_20_40_2)*1000000;
-cost_inf_avert_m_20_40_3 = (d_dcost_20_40_3 / d_n_new_inf_m_20_40_3)*1000000;
-cost_inf_avert_m_20_40_4 = (d_dcost_20_40_4 / d_n_new_inf_m_20_40_4)*1000000;
+if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
+if (-d_n_new_inf_20_25_3) gt 0 then cost_inf_avert_m_20_25_3 = (d_dcost_20_25_3 / (-d_n_new_inf_m_20_25_3))*1000000;
+if (-d_n_new_inf_20_25_4) gt 0 then cost_inf_avert_m_20_25_4 = (d_dcost_20_25_4 / (-d_n_new_inf_m_20_25_4))*1000000;
+if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_m_20_40_2))*1000000;
+if (-d_n_new_inf_20_40_3) gt 0 then cost_inf_avert_m_20_40_3 = (d_dcost_20_40_3 / (-d_n_new_inf_m_20_40_3))*1000000;
+if (-d_n_new_inf_20_40_4) gt 0 then cost_inf_avert_m_20_40_4 = (d_dcost_20_40_4 / (-d_n_new_inf_m_20_40_4))*1000000;
+
 
 *cost per daly averted =icer?;
-cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
-cost_daly_avert_20_25_3 = (d_dcost_20_25_3 / d_ddaly_all_20_25_3)*1000000;
-cost_daly_avert_20_25_4 = (d_dcost_20_25_4 / d_ddaly_all_20_25_4)*1000000;
-cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
-cost_daly_avert_20_40_3 = (d_dcost_20_40_3 / d_ddaly_all_20_40_3)*1000000;
-cost_daly_avert_20_40_4 = (d_dcost_20_40_4 / d_ddaly_all_20_40_4)*1000000;
+if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
+if d_ddaly_all_20_25_3 gt 0 then cost_daly_avert_20_25_3 = (d_dcost_20_25_3 / d_ddaly_all_20_25_3)*1000000;
+if d_ddaly_all_20_25_4 gt 0 then cost_daly_avert_20_25_4 = (d_dcost_20_25_4 / d_ddaly_all_20_25_4)*1000000;
+if d_ddaly_all_20_40_2 gt 0 then cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
+if d_ddaly_all_20_40_3 gt 0 then cost_daly_avert_20_40_3 = (d_dcost_20_40_3 / d_ddaly_all_20_40_3)*1000000;
+if d_ddaly_all_20_40_4 gt 0 then cost_daly_avert_20_40_4 = (d_dcost_20_40_4 / d_ddaly_all_20_40_4)*1000000;
 
- 
 
 proc means n p50 p5 p95;var
 
