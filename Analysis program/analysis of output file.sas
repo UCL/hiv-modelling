@@ -2290,7 +2290,6 @@ dcost_20_25_3 dcost_20_40_3
 dcost_20_25_4 dcost_20_40_4
 ;run;
 
-*cost_circ;cost_art;
 proc means n p50 p5 p95;var 
 d_dcost_20_25_2 d_dcost_20_40_2
 d_dcost_20_25_3 d_dcost_20_40_3
