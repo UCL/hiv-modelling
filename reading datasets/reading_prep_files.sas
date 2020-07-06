@@ -1,19 +1,12 @@
 
 
-libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
-libname c "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\prep\reading datasets\";
-libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-
-proc printto;
-
- ods html close ;
-* ods html ;
+libname a "/home/rmjlaph/Scratch/"; 
 
 
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_prep_30_6_20_6pm";
+  infile "/home/rmjlaph/Scratch/c_output_prep_30_6_20_6pm";
 
 input 
 
@@ -577,7 +570,7 @@ dataset=1;
 
 data d2;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_prep_2_7_20_6pm_temp";
+  infile "/home/rmjlaph/Scratch/c_output_prep_2_7_20_6pm_temp";
 
 input 
 
@@ -1136,11 +1129,9 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 dataset=2;
 
-data b.prep_2_7_20_6pm;
+data a.wide_prep_2_7_20_6pm;
 
 set d1 d2;
-
-proc freq; tables run; where cald = 2020; 
 
 run;
 
