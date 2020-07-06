@@ -1,4 +1,3 @@
-
 * ==========================================================================================================================================;
 
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
@@ -52,31 +51,26 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
-if caldate_never_dot = 2000 then do;
+if caldate_never_dot ge 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-	if option = 0 then do; 
-	sw_art_disadv=0;sw_program=0; 
+	if option = 0 then do;  
+	circ_inc_rate_2020=0;
 	end; 
 
-	if option = 1 then do; 
-	sw_art_disadv=1;sw_program=0; 
-	end; 
-
-	if option = 2 then do; 
-	sw_art_disadv=2;sw_program=0; 
-	end; 
-
-	if option = 3 then do; 
-	sw_art_disadv=2;sw_program_effect=1; 
-	end; 
-
-	if option = 4 then do; 
-	sw_art_disadv=2;sw_program_effect=2; 
-	end; 
-
+	if option = 1 then do;
+	circ_inc_rate_2020=1;
 	end;
+
+	if option = 2 then do;
+	circ_inc_rate_2020=2;
+	end;
+
+	if option = 3 then do;
+	circ_inc_rate_2020=3;
+	end;
+
 end;
 
 * ==========================================================================================================================================;
