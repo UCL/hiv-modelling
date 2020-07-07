@@ -54,6 +54,9 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
 
+		time_of_first_vm_2020 = 0.5;
+		min_time_repeat_vm_2020 = 0.25;
+
 	end; 
 
 	if option = 1 then do;
