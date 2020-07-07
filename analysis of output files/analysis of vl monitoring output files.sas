@@ -1,12 +1,6 @@
 
 
-  libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\dolswitch\reading datasets\";
-  libname c "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\prep\reading datasets\";
-  libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
-  libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
-  libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 
 proc printto;
 
@@ -14,24 +8,7 @@ proc printto;
 * ods html ;
 
 data a; 
-* set d.prep_tld_keep; 
-* set c.prep_keep; 
-* set a.dolswitch_keep; 
-* set a.covid_hiv_3mths; 
-* set a.covid_hiv_6mths_a; 
-* set a.covid_hiv_6mths_b; * results for submitted manuscript;
-* set a.covid_hiv_6mths_c;
-* set a.covid_hiv_3yr;
-* set a.covid_hiv_3mths_a;
-* set e.covid_hiv_revision_main_30r;
-* set e.covid_hiv_revision_main_30r_extra;
-* set f.core_2020_pre_6_6_20;
-* set f.core_2020_6_6_20;
-* set f.covid_hiv_revision_main_30r_3mth;
-* set f.covid_hiv_revision_main_30r_5yr ;
-* set f.covid_hiv_revision_main_30r_dsb ;
-  set f.prep_2_7_20_6pm;
-* set g.c_output_vmmc_2_7_20_10am;
+set a.tle_time_1st_vl_19_6_20_12pm;
 
 
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
@@ -498,6 +475,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_onart_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
+* p_vl1000_art_12m_onart;		if s_art_12m > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m / s_art_12m_onart ;
+
 * prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
@@ -578,7 +558,7 @@ death_rate  death_rate_hiv  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive p_vl1000_art_12m_onart p_vl1000_art_12m
 
 sf_2019 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -685,23 +665,23 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
-/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
+   proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50;   
  proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; 
 
-   proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;    
+/* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;*/  
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
-/* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
+   proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; 
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
  proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
- proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
+  proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
 
-   proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;    
+ /* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */   
 
-data &v ; merge  y_20 t_20_25 t_20_40 t_20_70 ;  
+data &v ; merge  y_20 t_20_25 t_20_40 t_21 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -731,6 +711,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
 %var(v=p_onart_m); %var(v=p_onart_w); 
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
+%var(v=p_vl1000_art_12m_onart); %var(v=p_vl1000_art_12m);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);   %var(v=reg_option) ;  %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 %var(v=aids_death_rate);  %var(v=death_rate_onart); %var(v=ddaly);  %var(v=ddaly_all);  %var(v=dcost);  %var(v= dart_cost_y);
@@ -781,7 +762,7 @@ p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rtt
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
 p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
-p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
+p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw p_vl1000_art_12m_onart p_vl1000_art_12m
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w reg_option p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
@@ -993,36 +974,14 @@ proc contents; run;
 
 proc sort; by run;run;
 
-
-  libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\dolswitch\reading datasets\";
-  libname c "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\prep\reading datasets\";
-  libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
-  libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
-  libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 
 * To get one row per run;
-* data a.wide_dolswitch;
-* data c.wide_prep; 
-* data d.wide_tld_prep; 
-* data e.wide_covid_hiv_6mths_a;
-* data e.wide_covid_hiv_6mths_b;
-* data e.wide_covid_hiv_6mths_c;
-* data e.wide_covid_hiv_3mths_a;
-* data e.wide_covid_main_revision_op3 ;
-* data e.wide_covid_main_revision_extra;
-* data e.wide_core_pre_6_6_20;
-* data e.wide_core_6_6_20;
-* data f.wide_covid_revision_3mth_op1 ;  
-* data f.wide_covid_revision_5yr_op1 ;
-* data f.wide_covid_revision_dsb_op1 ;
-* data f.wide_core_18_6_20_6pm ;
-* data g.wide_vmmc_2_7_20_10am; 
-  data f.wide_prep_2_7_20_6pm;
 
-  merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
-* merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
+  data a.wide_tle_time_1st_vl;
+
+* merge  sf  wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this for prep and covid_hiv ;
+  merge  sf  wide_outputs  wide_par ;  * this for tld_prep and dolswitch ;
   by run;run;
 
 * data wide_prep; 
@@ -1033,25 +992,11 @@ proc sort; by run;run;
 
 
    data wide;    
-*  set b.wide_dolswitch;
-*  set c.wide_prep; 
-*  set d.wide_tld_prep; 
-*  set e.wide_covid_hiv_3mths; * results for submitted ms;
-*  set e.wide_covid_hiv_6mths_a;
-*  set e.wide_covid_hiv_6mths_b; * results for submitted ms;
-*  set e.wide_covid_main_revision_op3 ;
-*  set e.wide_covid_main_revision_extra;
-*  set e.wide_core_pre_6_6_20 ;
-*  set e.wide_core_6_6_20 ;
-*  set f.wide_covid_revision_3mth_op1;
-*  set f.wide_covid_revision_5yr_op1;
-*  set f.wide_covid_revision_dsb_op1;
-*  set f.wide_core_18_6_20_6pm ;
-   set f.wide_prep_2_7_20_6pm; 
+   set a.wide_tle_time_1st_vl; 
 
 
 * for prep ;
-if prep_strategy_ai1 in (1 7 8);
+* if prep_strategy_ai1 in (1 7 8);
 
 
 * if 0.04 <  prevalence1549_20 < 0.30;
@@ -1109,7 +1054,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 * for prep analysis (comment out code for other analysese);
 
-
+/*
 
 d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 
@@ -1141,7 +1086,7 @@ if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_te
 and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
 incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
 
-
+*/
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -1252,9 +1197,105 @@ if ndb_500_20_70_1 = min_ndb_500 then ce_500=1;
 
 * --------------------------------------------------------------------------------------------------------------;
 
-/*
+* for vl monitoring analysis ;
+
+d_death_rate_onart_20_40_2 = (death_rate_onart_20_40_2 - death_rate_onart_20_40_1);
+
+d_death_rate_hiv_20_40_2 = (death_rate_hiv_20_40_2 - death_rate_hiv_20_40_1);
+
+d_death_rate_20_40_2 = (death_rate_20_40_2 - death_rate_20_40_1);
+
+d_ddaly_all_20_40_2 = ddaly_all_20_40_2 - ddaly_all_20_40_1 ;
+
+d_ddaly_20_40_2 = ddaly_20_40_2 - ddaly_20_40_1 ;
+
+d_dead_ddaly_ntd_20_40_2 = dead_ddaly_ntd_20_40_2 - dead_ddaly_ntd_20_40_1 ;
+
+d_ddaly_mtct_20_40_2 = ddaly_mtct_20_40_2 - ddaly_mtct_20_40_1 ;
+
+d_dead_ddaly_odabe_20_40_2 = dead_ddaly_odabe_20_40_2 - dead_ddaly_odabe_20_40_1 ;
+
+d_ddaly_non_aids_pre_dth_20_40_2 = ddaly_non_aids_pre_death_20_40_2 - ddaly_non_aids_pre_death_20_40_1 ;
+
+d_dcost_20_40_2 = dcost_20_40_2 - dcost_20_40_1 ; 
+
+d_dcd4_cost_20_40_2 = dcd4_cost_20_40_2 - dcd4_cost_20_40_1 ;
+
+d_dvl_cost_20_40_2 = dvl_cost_20_40_2 - dvl_cost_20_40_1 ;
+
+d_dvis_cost_20_40_2 = dvis_cost_20_40_2 - dvis_cost_20_40_1 ;
+
+d_dcot_cost_20_40_2 = dcot_cost_20_40_2 - dcot_cost_20_40_1 ;
+
+d_dtest_cost_20_40_2 = dtest_cost_20_40_2 - dtest_cost_20_40_1 ;
+
+d_dswitchline_cost_20_40_2 = dswitchline_cost_20_40_2 - dswitchline_cost_20_40_1 ;
+
+d_dclin_cost_20_40_2 = dclin_cost_20_40_2 - dclin_cost_20_40_1 ;
+
+d_dcost_clin_care_20_40_2 = dcost_clin_care_20_40_2 - dcost_clin_care_20_40_1 ;
+
+d_dcost_non_aids_pre_dth_20_40_2 = dcost_non_aids_pre_death_20_40_2 - dcost_non_aids_pre_death_20_40_1 ;
+
+d_dcost_child_hiv_20_40_2 = dcost_child_hiv_20_40_2 - dcost_child_hiv_20_40_1 ;
+
+d_dzdv_cost_20_40_2 = dzdv_cost_20_40_2 - dzdv_cost_20_40_1 ;
+
+d_dten_cost_20_40_2 = dten_cost_20_40_2 - dten_cost_20_40_1 ;
+
+d_d3tc_cost_20_40_2 = d3tc_cost_20_40_2 - d3tc_cost_20_40_1 ;
+
+d_dnev_cost_20_40_2 = dnev_cost_20_40_2 - dnev_cost_20_40_1 ;
+
+d_dlpr_cost_20_40_2 = dlpr_cost_20_40_2 - dlpr_cost_20_40_1 ;
+
+d_dtaz_cost_20_40_2 = dtaz_cost_20_40_2 - dtaz_cost_20_40_1 ;
+
+d_defa_cost_20_40_2 = defa_cost_20_40_2 - defa_cost_20_40_1 ;
+
+d_ddol_cost_20_40_2 = ddol_cost_20_40_2 - ddol_cost_20_40_1 ;
+
+ndb_500_20_40_2 =  ddaly_all_20_40_2 + (dcost_20_40_2)/0.0005;
+ndb_500_20_40_1 =  ddaly_all_20_40_1 + (dcost_20_40_1)/0.0005;
+
+d_ndb_500_20_40_2 = ndb_500_20_40_1 - ndb_500_20_40_2 ;
+
+min_ndb_500 = min(ndb_500_20_40_2, ndb_500_20_40_1);
+
+if ndb_500_20_40_2 = min_ndb_500 then ce_500=2;
+if ndb_500_20_40_1 = min_ndb_500 then ce_500=1;
+
+d_dart_cost_y_2 = dart_cost_y_20_40_2 - dart_cost_y_20_40_1 ;
+
+d_p_onart_vl1000_20_40_2 = (p_onart_vl1000_20_40_2 - p_onart_vl1000_20_40_1)* 100;
+
+d_p_onart_vl1000_21_2 = (p_onart_vl1000_21_2 - p_onart_vl1000_21_1)* 100;
+
+d_p_nnme__20_40_2 = (p_nnme__20_40_2 - p_nnme__20_40_1)* 100;
+
+d_p_iime__20_40_2 = (p_iime__20_40_2 - p_iime__20_40_1)* 100;
+
+d_n_pregnant_ntd_20_40_2 = (n_pregnant_ntd_20_40_2 - n_pregnant_ntd_20_40_1);
+
+d_mtct_prop_20_40_2 = (mtct_prop_20_40_2 - mtct_prop_20_40_1);
+
+d_n_birth_with_inf_child_20_40_2 = (n_birth_with_inf_child_20_40_2 - n_birth_with_inf_child_20_40_1);
+
+d_n_preg_odabe_20_40_2 = (n_preg_odabe_20_40_2 - n_preg_odabe_20_40_1);
+
+* --------------------------------------------------------------------------------------------------------------;
+
+
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
 
 * for dolswitch analysis (comment out code for other analyses);
+
+/*
 
 d_death_rate_onart_20_40_4 = (death_rate_onart_20_40_4 - death_rate_onart_20_40_1);
 d_death_rate_onart_20_40_3 = (death_rate_onart_20_40_3 - death_rate_onart_20_40_1);
@@ -1426,32 +1467,9 @@ d_n_preg_odabe_20_40_2 = (n_preg_odabe_20_40_2 - n_preg_odabe_20_40_1);
 
 */
 
-
 * --------------------------------------------------------------------------------------------------------------;
 
 
-
-* --------------------------------------------------------------------------------------------------------------;
-
-* for art monitoring analyses (comment out code for other analysese);
-
-/*
-
-d_p_onart_vl1000_20_40_8_7 = (p_onart_vl1000_20_40_8 - p_onart_vl1000_20_40_7)* 100;
-
-d_ddaly_all_20_40_8_7 = (ddaly_all_20_40_8 - ddaly_all_20_40_7);
-d_dcost_20_40_8_7 = (dcost_20_40_8 - dcost_20_40_7);
-d_ndb_500_20_40_8_7 = (ndb_500_20_40_8 - ndb_500_20_40_7); 
-
-min_ndb_500 = min(ndb_500_20_40_7, ndb_500_20_40_8);
-
-ce_500_monitoring=0;  
-if ndb_500_20_40_7 = min_ndb_500 then ce_500_monitoring=7;
-if ndb_500_20_40_8 = min_ndb_500 then ce_500_monitoring=8;
-
-*/
-
-* --------------------------------------------------------------------------------------------------------------;
 
 
 /*
@@ -1573,11 +1591,6 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
 run;
 
 
-proc contents; run;
-
-proc freq; tables prep_strategy_ai1; run;
-
-
 
 /*
 
@@ -1637,7 +1650,7 @@ p_hard_reach_m  inc_cat base_rate_sw
 
 * prep analysis;
 
-   
+/*   
 
 proc print data=wide; var  prep_improvements_ai1 incr_adh_pattern_prep_2020_ai1 inc_r_test_startprep_2020_ai1 incr_r_test_restartprep_2020_ai1
 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1 
@@ -1859,8 +1872,168 @@ prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
 
+*/
+
 
 * --------------------------------------------------------------------------------------------------------------;
+
+
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+* for vl monitoring analyses (comment out code for other analysese);
+
+
+ods html;
+proc means data=wide; var  p_dol_20  p_dol_20_40_2  p_dol_20_40_1 ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var   p_onart_vl1000_21_2  p_onart_vl1000_21_1  ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var   p_vl1000_art_12m_onart_20_40_2  p_vl1000_art_12m_onart_20_40_1  ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var   p_vl1000_art_12m_20_40_2  p_vl1000_art_12m_20_40_1  ;
+run; 
+ods html close;
+
+
+proc means data=wide; var  p_iime__20_40_2  p_iime__20_40_1  ;
+proc univariate data=wide; var   d_p_iime__20_40_2  ; run; 
+* nnme pime ; 
+
+
+proc means data=wide; var   n_pregnant_ntd_20_40_2  n_pregnant_ntd_20_40_1  ;
+proc univariate data=wide; var   d_n_pregnant_ntd_20_40_2  ; run; 
+
+
+proc means data=wide; var   n_birth_with_inf_child_20_40_2  n_birth_with_inf_child_20_40_1  ;
+proc univariate data=wide; var   d_n_birth_with_inf_child_20_40_2  ; run; 
+
+
+proc means data=wide; var    n_preg_odabe_20_40_2  n_preg_odabe_20_40_1  ;
+proc univariate data=wide; var   d_n_preg_odabe_20_40_2  ; run; 
+
+
+proc univariate data=wide; var  d_p_onart_vl1000_20_40_2  ;
+run; 
+
+
+ods html;
+proc means data=wide; var    d_p_onart_vl1000_21_2  ;
+run; 
+ods html close;
+
+
+proc means data=wide; var   death_rate_onart_20_40_2  death_rate_onart_20_40_1 ;  run;
+proc univariate data=wide; var   d_death_rate_onart_20_40_2  ;  run;
+
+
+ods html;
+proc means data=wide; var   d_death_rate_hiv_20_40_2  ;
+* where greater_tox_zdv_ = 1 and rate_int_choice_ ge 0.025;
+run; 
+ods html close;
+
+
+proc means data=wide; var  death_rate_20_40_2   death_rate_20_40_1 ;  run; 
+proc univariate data=wide; var  d_death_rate_20_40_4  d_death_rate_20_40_3  d_death_rate_20_40_2  ;  run; 
+
+ods html;
+proc means data=wide; var  d_ndb_500_20_40_2  ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  dcost_20_40_1  dcost_20_40_2   ;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  dlpr_cost_20_40_1  dlpr_cost_20_40_2  ; run;
+ods html close;
+
+proc means data=wide; var  d_dcost_20_40_2  ;run; 
+
+*  dcost
+dcd4_cost   dvl_cost   dvis_cost   dcot_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
+dclin_cost dcost_clin_care    dcost_non_aids_pre_dth   dcost_child_hiv  
+dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost  dtaz_cost    dcost_circ   dcost_condom_dn
+defa_cost   ddol_cost
+;
+
+
+ods html;
+proc means data=wide; var  d_ddaly_all_20_40_2  ;  run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  d_ddaly_20_40_2  ; run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  d_dead_ddaly_ntd_20_40_2  ; run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  d_ddaly_mtct_20_40_2  ; run; 
+ods html close;
+
+ods html;
+proc means data=wide; var  d_dead_ddaly_odabe_20_40_2  ; run; 
+ods html close;
+
+ods html;
+proc means data=wide; var d_ddaly_non_aids_pre_dth_20_40_2  ; run; 
+ods html close;
+
+
+
+proc freq; tables p_onart_vl1000_20  p_vlg1000_onart_65m_20  ; run;
+
+
+proc freq data=wide; tables ce_500; 
+* where p_onart_vl1000_20 < 0.83;
+* where p_onart_vl1000_20 > 0.90;
+* where pr_switch_line_ = 0.2;
+* where prob_vl_meas_done_ >= 0.70 ;
+* where prob_vl_meas_done_ <= 0.10 ;
+* where zero_tdf_activity_k65r_ =1;
+* where zero_3tc_activity_m184_ = 1 ;
+* where p_vlg1000_onart_65m_20 <= 0.64 ;  
+* where p_vlg1000_onart_65m_20 >= 0.76 ;  
+* where red_adh_multi_pill_pop_ > 0.10;
+* where greater_disability_tox_ = 1;
+* where greater_tox_zdv_ = 1;
+* where rate_int_choice_ ge 0.025;
+* where nnrti_res_no_effect = 1;
+  where red_adh_tox_pop_  > 0.10;
+run;
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+
+
+
+
+
 
 
 
@@ -2243,6 +2416,7 @@ run;
 
 *VMMC;
 
+/*
 
 *difference in HIV death rate;
 ddeath_rate_hiv_20_25_2 = death_rate_hiv_20_25_2 - death_rate_hiv_20_25_1;
@@ -2430,3 +2604,4 @@ n_mcirc1549__20
 
 run;
 
+*/
