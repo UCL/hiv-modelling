@@ -38,7 +38,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-		prep_strategy_2020 = 1; prep_strategy = 7;  
+		prep_strategy_2020 = 1; prep_strategy = 8;  
 		decr_r_choose_stop_prep_2020 = 1; eff_rate_choose_stop_prep = 0.05 ; 
 		inc_p_prep_restart_choi_2020 = 1; eff_prob_prep_restart_choice = 0.5 ;
 		incr_adh_pattern_prep_2020 = 1; adhav_pr = adhav*1.00;
