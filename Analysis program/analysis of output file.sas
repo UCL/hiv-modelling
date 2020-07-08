@@ -6,7 +6,7 @@
   libname d "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\tld_prep\reading datasets\";
   libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
   libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC";
+  libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw";
 
 proc printto;
 
@@ -31,12 +31,11 @@ data a;
 * set f.covid_hiv_revision_main_30r_5yr ;
 * set f.covid_hiv_revision_main_30r_dsb ;
 *  set f.core_18_6_20_6pm;
-  set g.c_output_vmmc_2_7_20_10am;
+  set g.c_output_fsw_7_7_20_9am;
 * for covid_hiv_revision_main_30r_5yr, etc include this line below to specify which option;
 * if option = 0 or option = 1 ; *  if option = 1  then option = 1;
 
-if run in (129643958, 162522678, 332278352, 481070575, 504748246, 600030812, 717382639, 773656529, 836936616, 864487368,
-865508341, 920017032, 970221327) then delete;
+if run in (888272138) then delete;
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 

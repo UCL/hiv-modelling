@@ -3,7 +3,7 @@
 libname a "C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\"; 
 libname e "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\covid_hiv\reading datasets\";
 libname f "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
+libname g "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw\";
 
 proc printto;
 
@@ -13,20 +13,10 @@ proc printto;
 
 data d1;  
 
-infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_2_7_20_10am";
+infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw\c_output_fsw_7_7_20_9am_temp";
 
 input    
 
-
-/*
-p50_cd4diag  			 s_cd4diag  
-p50_measured_cd4art 	 s_measured_cd4art 
-p50_years_since_start_prep   	 s_years_since_start_prep
-p50_n_test_prev_4p_onprep s_n_test_prev_4p_onprep
-p50_age_deb_sw 			 s_age_deb
-p50_act_years_sw 		 s_act_years_sw 
-p50_tot_dur_sw 			 s_tot_dur_sw
-*/
 
 /*general*/
 run   cald   option 
@@ -309,7 +299,7 @@ s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_lin
 s_onart_vlg1000  s_ever_onart_gt6m_vlg1000   s_ever_onart_gt6m_vl_m_g1000  s_onart_gt6m_vlg1000  s_r_onart_gt6m_vlg1000
 s_onart_gt6m_nnres_vlg1000  s_onart_gt6m_pires_vlg1000  s_onart_gt6m_res_vlg1000
 s_online1_vg1000  s_online1_vg1000_lf1  s_online1_vg1000_cd4l200  s_offart_vl1000
-s_vl1000_line2_12m  t  s_vl1000_line2_12m_onart  s_vl1000_line2
+s_vl1000_line2_12m   s_vl1000_line2_12m_onart  s_vl1000_line2
 
 s_offart  s_line1_  s_line2_  s_line1_lf0  s_line1_lf1  s_line2_lf1  s_line2_lf2  s_linefail_ge1  s_line1_fail_this_period
 s_lf1_past_yr   s_lf1_past_yr_line2 
@@ -472,7 +462,7 @@ incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choic
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   option_0_prep_continue_2020 
+circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
@@ -578,13 +568,11 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
+;
 
-; 
-
-
-  data g.c_output_vmmc_2_7_20_10am; 
+  data g.c_output_fsw_7_7_20_9am; 
 
 set d1 ;
 
 run;
-proc freq;table run;where cald=2020;run;
+proc freq;table run;where cald=1999;run;
