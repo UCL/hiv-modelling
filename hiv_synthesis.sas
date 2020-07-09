@@ -1071,6 +1071,11 @@ p_neph_stops_after_ten = 0.1;
 * circ_inc_rate; r=uniform(0); if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
 if 0.20 <= r < 0.8  then circ_inc_rate = 0.003; if 0.8 <= r < 0.9 then circ_inc_rate = 0.01;  if 0.90 <= r  then circ_inc_rate = 0.10;
 
+*circ_red_20_30;=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40;
+if 0.66 <= r  then circ_red_20_30=0.50; 
+*circ_red_30_50;=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25;
+if 0.66 <= r  then circ_red_30_50=0.35; 
+
 * rel_incr_circ_post_2013;r=uniform(0); if r < 0.10 then rel_incr_circ_post_2013 = 0.8; if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
 if 0.35 <= r < 0.60 then rel_incr_circ_post_2013 = 3;  if 0.60 <= r < 0.85 then rel_incr_circ_post_2013 = 10 ; 
 if 0.85 <= r then rel_incr_circ_post_2013 = 20;
@@ -2528,12 +2533,12 @@ if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc
 end;
 
 if 20 le age_tm1 lt 30 then do;
-if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate *0.40;
+if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate *circ_red_20_30;
 end;
 
 
 if 30 le age_tm1 le 50 then do;
-if mc_int < caldate{t} le 2013 then prob_circ = (0 + (caldate{t}-mc_int)*circ_inc_rate) * 0.25;
+if mc_int < caldate{t} le 2013 then prob_circ = (0 + (caldate{t}-mc_int)*circ_inc_rate) * circ_red_30_50;
 end;
 
 
@@ -2542,11 +2547,11 @@ if 2013 < caldate{t} le 2019 then prob_circ =  ((2013-mc_int)*circ_inc_rate) + (
 end;
 
 if 20 le age_tm1 lt 30 then do;
-if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*0.40) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013)*0.40;
+if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_red_20_30;
 end;
 
 if 30 le age_tm1 le 50 then do;
-if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * 0.25) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * 0.25;
+if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
 end;
