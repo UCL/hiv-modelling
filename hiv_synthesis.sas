@@ -1022,19 +1022,13 @@ p_neph_stops_after_ten = 0.1;
 * prop_bmi_ge23;			r=uniform(0);  prop_bmi_ge23 = 0.5;  if r < 0.5 then prop_bmi_ge23 = 0.75;
 * rr_int_tox ;				r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
 							if 0.67 <= r then rr_int_tox = 30; 
- 
-* sw_higher_int;			r=uniform(0); if r < 0.33 then sw_higher_int = 1; if 0.33 <= r < 0.67 then sw_higher_int = 2;  
-							if 0.67 <= r then sw_higher_int = 3;  
 
-*prob_sw_lower_adh;			r=uniform(0); if r < 0.33 then prob_sw_lower_adh = 0; if 0.33 <= r < 0.67 then prob_sw_lower_adh = 0.3;  
-							if 0.67 <= r then prob_sw_lower_adh = 1; 
+*sw_art_disadv;				r=uniform(0); if r < 0.33 then sw_art_disadv = 1; if 0.33 <= r < 0.67 then sw_art_disadv = 2;  
+							if 0.67 <= r then sw_art_disadv = 3; 
 
-*sw_higher_prob_loss_at_diag;r=uniform(0); if r < 0.33 then sw_higher_prob_loss_at_diag = 1; if 0.33 <= r < 0.67 then sw_higher_prob_loss_at_diag = 1.5;  
-							if 0.67 <= r then sw_higher_prob_loss_at_diag = 2; 
-
-*sw_art_disadv; 			if sw_higher_int = 1 and prob_sw_lower_adh = 0 and sw_higher_prob_loss_at_diag = 1 then sw_art_disadv=0;
-							if sw_higher_int = 2 and prob_sw_lower_adh = 0.3 and sw_higher_prob_loss_at_diag = 1.5 then sw_art_disadv=1;
-							if sw_higher_int = 3 and prob_sw_lower_adh = 1 and sw_higher_prob_loss_at_diag = 2 then sw_art_disadv=2;
+				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
+							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
+							if sw_art_disadv=3 then do; sw_higher_int = 3; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  
 							if r < 0.33 then sw_program=1; 
@@ -1071,9 +1065,9 @@ p_neph_stops_after_ten = 0.1;
 * circ_inc_rate; r=uniform(0); if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
 if 0.20 <= r < 0.8  then circ_inc_rate = 0.003; if 0.8 <= r < 0.9 then circ_inc_rate = 0.01;  if 0.90 <= r  then circ_inc_rate = 0.10;
 
-*circ_red_20_30;=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40;
+*circ_red_20_30;r=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40;
 if 0.66 <= r  then circ_red_20_30=0.50; 
-*circ_red_30_50;=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25;
+*circ_red_30_50;r=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25;
 if 0.66 <= r  then circ_red_30_50=0.35; 
 
 * rel_incr_circ_post_2013;r=uniform(0); if r < 0.10 then rel_incr_circ_post_2013 = 0.8; if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
@@ -2568,22 +2562,18 @@ prob_circ = 0;
 end;
 
 if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s;
-
-***Is this correct? for men aged <15, would prob_circ not be as defined above rather than 0?;
+if  age_tm1 lt 15 then prob_circ =0;
 if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
 if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - circ rate halved;
-if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 prob_circ = 0.5 * prob_circ;
-/*Potentially add further condition of no VMMC in under 15s after VMMC call discussions:
 if  age_tm1 lt 15 then prob_circ =0;
-*/
-
 end;
 
 if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 then do;*option=3 - no change;
@@ -15192,7 +15182,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg sw_program_effect
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
-sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
 sw_art_disadv  
 
@@ -16578,7 +16568,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
 
 /*2020 interventions*/
