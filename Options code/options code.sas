@@ -56,26 +56,25 @@ if caldate_never_dot = 2000 then do;
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do; 
-	sw_art_disadv=0;sw_program=0; 
+	sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1;sw_program=0; 
 	end; 
 
 	if option = 1 then do; 
-	sw_art_disadv=1;sw_program=0; 
+	sw_higher_int = 2 ; prob_sw_lower_adh = 0.3 ; sw_higher_prob_loss_at_diag = 1.5; sw_program=0; 
 	end; 
 
 	if option = 2 then do; 
-	sw_art_disadv=2;sw_program=0; 
+    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2;  sw_program=0; 
 	end; 
 
 	if option = 3 then do; 
-	sw_art_disadv=2;sw_program_effect=1; 
+    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2;  sw_program_effect=1; 
 	end; 
 
 	if option = 4 then do; 
-	sw_art_disadv=2;sw_program_effect=2; 
+    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; sw_program_effect=2; 
 	end; 
 
 end;
 
 * ==========================================================================================================================================;
-
