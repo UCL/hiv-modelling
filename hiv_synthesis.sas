@@ -1026,7 +1026,7 @@ p_neph_stops_after_ten = 0.1;
 *sw_art_disadv;				r=uniform(0); if r < 0.33 then sw_art_disadv = 1; if 0.33 <= r < 0.67 then sw_art_disadv = 2;  
 							if 0.67 <= r then sw_art_disadv = 3; 
 
-*sw_art_disadv; 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
+				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
 							if sw_art_disadv=3 then do; sw_higher_int = 3; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; end;
 
