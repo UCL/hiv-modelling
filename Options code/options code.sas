@@ -51,28 +51,16 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
-if caldate_never_dot = 1990 then do;
+if caldate_never_dot = 2015 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do; 
-	sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1;sw_program=0; 
+	sw_program=0; eff_sw_program=0; 
 	end; 
 
 	if option = 1 then do; 
-	sw_higher_int = 2 ; prob_sw_lower_adh = 0.3 ; sw_higher_prob_loss_at_diag = 1.5; sw_program=0; 
-	end; 
-
-	if option = 2 then do; 
-    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2;  sw_program=0; 
-	end; 
-
-	if option = 3 then do; 
-    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2;  sw_program_effect=1;  sw_program=1; 
-	end; 
-
-	if option = 4 then do; 
-    sw_higher_int = 3 ; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; sw_program_effect=2; sw_program=1; 
+    sw_program=1; eff_sw_program=1; 
 	end; 
 
 end;
