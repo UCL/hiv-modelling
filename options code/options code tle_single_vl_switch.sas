@@ -4,7 +4,7 @@
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
 
 * so tle used throughout unless overwitten by options code; 
-if caldate{t} ge 2019.5 then reg_option = .;
+if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2020.5 then eff_prob_vl_meas_done = 1;
 
