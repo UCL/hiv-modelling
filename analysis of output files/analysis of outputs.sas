@@ -1694,7 +1694,7 @@ dataset=3;
 
 data d4;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_tle_single_vl_switch_2_7_20_6pm";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c_output_tle_single_vl_switch_2_7_20_6pm_updated";
 
 input 
 
@@ -2701,6 +2701,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_linefail_ge1;				if s_artexp > 0 then p_linefail_ge1 = s_linefail_ge1 / s_artexp;
 * p_startedline2;				if s_artexp > 0 then p_startedline2 = s_startedline2 / s_artexp; 
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu ;
+* p_artexp_vl1000;				if s_artexp > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_artexp ;
 
 * p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
 * p_vg1000_m, p_vl1000_m;		if s_hiv1564m  > 0 then p_vg1000_m = s_vg1000_m / s_hiv1564m ;  p_vl1000_m = 1- p_vg1000_m ;
@@ -2788,12 +2789,12 @@ dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost
 defa_cost   ddol_cost
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
 p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1564  prop_sw_onprep  p_onart 
+n_sw_1564  prop_sw_onprep  p_onart  p_vl1000_art_12m  p_vl1000_art_12m_onart
 p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
 p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
  p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_hi  
 s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  p_adh_hi_xyz_itt  p_e_rt65m_xyz  
-p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m
+p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000  
 death_rate  death_rate_hiv  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
@@ -2959,8 +2960,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_c_inm); 
 %var(v=p_artexp_diag); %var(v=p_onart_diag); %var(v=p_onart_diag_w); %var(v=p_onart_diag_m); %var(v=p_onart_diag_sw); %var(v=p_efa); %var(v=p_taz);
-%var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000); 
+%var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000);  %var(v=p_artexp_vl1000);
 %var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
+%var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
 %var(v=p_onart_m); %var(v=p_onart_w); 
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);   %var(v=reg_option) ;  %var(v= p_startedline2) ;
@@ -3012,7 +3014,7 @@ p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
-p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
+p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524  p_artexp_vl1000  
 p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w reg_option p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
@@ -3034,8 +3036,8 @@ death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w  p_iime_   p_pime_ 
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_new_inf1549m n_new_inf1549;
-
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_new_inf1549m n_new_inf1549
+p_vl1000_art_12m p_vl1000_art_12m_onart 
 ;
 
 proc contents; run;
@@ -3240,6 +3242,8 @@ proc sort; by run;run;
 * merge  sf  wide_outputs    ;
 * by run;
 
+  
+libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 
    data wide;    
    set a.wide_vl_monitoring_2_7_20_6pm; 
@@ -3759,7 +3763,7 @@ run;
 
 
 proc univariate data=wide;
-var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
@@ -4313,24 +4317,24 @@ run;
 
 
 ods html;
-proc means data=wide; var  p_dol_20  p_dol_20_40_2  p_dol_20_40_1 ;
+proc means data=wide; var  p_efa_20  p_efa_20_40_2  p_efa_20_40_1 ; where dataset=1;
 run; 
 ods html close;
 
 proc sort; by dataset;
-proc means data=wide; var  p_efa_20  p_efa_20_40_1  p_efa_20_40_2 ; by dataset  ; 
-proc means data=wide; var  p_dol_20  p_dol_20_40_1  p_dol_20_40_2 ; by dataset  ; 
-proc means data=wide; var  p_taz_20  p_taz_20_40_1  p_taz_20_40_2 ; by dataset  ; 
+proc means data=wide; var  p_efa_20  p_efa_20_40_1  p_efa_20_40_2 ; where dataset=3; run;
+proc means data=wide; var  p_dol_20  p_dol_20_40_1  p_dol_20_40_2 ; where dataset=2; run;
+proc means data=wide; var  p_taz_20  p_taz_20_40_1  p_taz_20_40_2 ; where dataset=1;
 run;
 
 
 ods html;
-proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;
+proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;;where dataset=3;
 run; 
 ods html close;
 
 ods html;
-proc means data=wide; var   p_onart_vl1000_21_2  p_onart_vl1000_21_1  ;
+proc means data=wide; var   p_onart_vl1000_21_2  p_onart_vl1000_21_1  ;where dataset=1;
 run; 
 ods html close;
 
@@ -4340,7 +4344,7 @@ run;
 ods html close;
 
 ods html;
-proc means data=wide; var   p_vl1000_art_12m_20_40_2  p_vl1000_art_12m_20_40_1  ;
+proc means data=wide; var   p_vl1000_art_12m_20_40_1  p_vl1000_art_12m_20_40_2  ;
 run; 
 ods html close;
 
@@ -4372,12 +4376,13 @@ run;
 ods html close;
 
 
-proc means data=wide; var   death_rate_onart_20_40_2  death_rate_onart_20_40_1 ;  run;
-proc univariate data=wide; var   d_death_rate_onart_20_40_2  ;  run;
+proc means data=wide; var   death_rate_onart_20_40_2  death_rate_onart_20_40_1 
+death_rate_hiv_20_40_1 death_rate_hiv_20_40_2
+;where dataset=3; run;
 
 
 ods html;
-proc means data=wide; var   d_death_rate_hiv_20_40_2  ;
+proc means data=wide; var   d_death_rate_hiv_20_40_2  ;;where dataset=1;
 * where greater_tox_zdv_ = 1 and rate_int_choice_ ge 0.025;
 run; 
 ods html close;
@@ -4392,7 +4397,7 @@ run;
 ods html close;
 
 ods html;
-proc means data=wide; var  dcost_20_40_1  dcost_20_40_2   ;
+proc means data=wide; var  dcost_20_40_1  dcost_20_40_2   ; where dataset=3;
 run; 
 ods html close;
 
@@ -4415,7 +4420,7 @@ proc means data=wide; var  d_ddaly_all_20_40_2  ;  run;
 ods html close;
 
 ods html;
-proc means data=wide; var  d_ddaly_20_40_2  ; run; 
+proc means data=wide; var  ddaly_20_40_1 ddaly_20_40_2   ; where dataset=2; run; 
 ods html close;
 
 ods html;
