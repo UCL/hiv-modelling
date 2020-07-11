@@ -4317,19 +4317,19 @@ run;
 
 
 ods html;
-proc means data=wide; var  p_efa_20  p_efa_20_40_2  p_efa_20_40_1 ; where dataset=1;
+proc means data=wide; var  p_efa_20  p_efa_20_40_2  p_efa_20_40_1 ; where dataset=4;
 run; 
 ods html close;
 
 proc sort; by dataset;
 proc means data=wide; var  p_efa_20  p_efa_20_40_1  p_efa_20_40_2 ; where dataset=3; run;
-proc means data=wide; var  p_dol_20  p_dol_20_40_1  p_dol_20_40_2 ; where dataset=2; run;
+proc means data=wide; var  p_dol_20  p_dol_20_40_1  p_dol_20_40_2 ; where dataset=4; run;
 proc means data=wide; var  p_taz_20  p_taz_20_40_1  p_taz_20_40_2 ; where dataset=1;
 run;
 
 
 ods html;
-proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;;where dataset=3;
+proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;;where dataset=4;
 run; 
 ods html close;
 
@@ -4348,6 +4348,7 @@ proc means data=wide; var   p_vl1000_art_12m_20_40_1  p_vl1000_art_12m_20_40_2  
 run; 
 ods html close;
 
+proc means data=wide; var   p_linefail_ge1_20_40_1  p_linefail_ge1_20_40_2  ; where dataset=4; run; 
 
 proc means data=wide; var  p_iime__20_40_2  p_iime__20_40_1  ;
 proc univariate data=wide; var   d_p_iime__20_40_2  ; run; 
@@ -4378,7 +4379,7 @@ ods html close;
 
 proc means data=wide; var   death_rate_onart_20_40_2  death_rate_onart_20_40_1 
 death_rate_hiv_20_40_1 death_rate_hiv_20_40_2
-;where dataset=3; run;
+;where dataset=4; run;
 
 
 ods html;
