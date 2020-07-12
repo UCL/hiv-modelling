@@ -2701,7 +2701,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_linefail_ge1;				if s_artexp > 0 then p_linefail_ge1 = s_linefail_ge1 / s_artexp;
 * p_startedline2;				if s_artexp > 0 then p_startedline2 = s_startedline2 / s_artexp; 
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu ;
-* p_artexp_vl1000;				if s_artexp > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_artexp ;
+* p_artexp_vl1000;				if s_artexp > 0 then p_artexp_vl1000 = s_vl1000_art_gt6m_iicu / s_artexp ;
 
 * p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
 * p_vg1000_m, p_vl1000_m;		if s_hiv1564m  > 0 then p_vg1000_m = s_vg1000_m / s_hiv1564m ;  p_vl1000_m = 1- p_vg1000_m ;
@@ -4347,6 +4347,8 @@ ods html;
 proc means data=wide; var   p_vl1000_art_12m_20_40_1  p_vl1000_art_12m_20_40_2  ;
 run; 
 ods html close;
+
+proc means data=wide; var   p_artexp_vl1000_20_40_1  p_artexp_vl1000_20_40_2  ;  where dataset=4; run; 
 
 proc means data=wide; var   p_linefail_ge1_20_40_1  p_linefail_ge1_20_40_2  ; where dataset=4; run; 
 
