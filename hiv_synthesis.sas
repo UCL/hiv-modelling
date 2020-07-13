@@ -2300,6 +2300,16 @@ reg_option
       initiators   																
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
+101    	tle		remain on tle				remain on zl-pi.  				two VL > 1000		--> zl-pi			na				na	
+
+107     tl-pi	remain on tle				remain on zl-pi					two VL > 1000		--> zl-pi			na				na
+
+112	   	tle		remain on tle				remain on zl-pi  				s VL > 1000 6m		--> zl-pi			na				na	 
+
+110	   	tle		remain on tle				remain on zl-pi  				two VL > 1000		--> zld				na				--> tl-pi	 
+
+114	   	tld		remain on tle				remain on zl-pi.  				s VL > 1000 6m		--> zld				na				--> tl-pi	
+
 	
 113	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
 
