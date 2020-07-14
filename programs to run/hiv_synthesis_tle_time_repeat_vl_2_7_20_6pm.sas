@@ -2301,6 +2301,16 @@ reg_option
       initiators   																
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
+reg_ 	new 	currently on 1st line tle	currently on 2nd line zl-pi	failure 	  	tle failure			tld failure 	zld failure		
+	    		   	init	   															criteria	
+
+101    	tle		remain on tle				remain on zl-pi.  			two VL > 1000		--> zl-pi			na				na	
+
+107     tl-pi	remain on tle				remain on zl-pi				two VL > 1000		--> zl-pi			na				na
+112	   	tle		remain on tle				remain on zl-pi  			s VL > 1000 6m		--> zl-pi			na				na	 
+110	   	tle		remain on tle				remain on zl-pi  			two VL > 1000		--> zld				na				--> tl-pi	 
+114	   	tld		remain on tle				remain on zl-pi.  			s VL > 1000 6m		--> zld				na				--> tl-pi	
+
 	
 113	   tld		remain on tle				remain on zl-pi			    	two VL > 1000   	--> zl-pi			zl-pi			na
 
@@ -2360,7 +2370,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
 
 * so tle used throughout unless overwitten by options code; 
-if caldate{t} ge 2019.5 then reg_option = .;
+if caldate{t} ge 2019.5 then reg_option = 101;
 
 if caldate{t} ge 2020.5 then eff_prob_vl_meas_done = 1;
 
@@ -16642,7 +16652,7 @@ data r1; set a;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_tle_time_repeat_vl_2_7_20_6pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_tle_time_repeat_vl_2_7_20_6pm_x_&dataset_id";  
 put   
 
 

@@ -4329,7 +4329,12 @@ run;
 
 
 ods html;
-proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;;where dataset=1;
+proc means data=wide; var   p_onart_vl1000_20_40_1  p_onart_vl1000_20_40_2  ; where dataset=4;
+run; 
+ods html close;
+
+ods html;
+proc means data=wide; var   p_artexp_vl1000_20_40_2  p_artexp_vl1000_20_40_1   ; where dataset=4;
 run; 
 ods html close;
 
@@ -4339,12 +4344,12 @@ run;
 ods html close;
 
 ods html;
-proc means data=wide; var   p_vl1000_art_12m_onart_20_40_2  p_vl1000_art_12m_onart_20_40_1  ;
+proc means data=wide; var   p_vl1000_art_12m_onart_20_40_1  p_vl1000_art_12m_onart_20_40_2  ; where dataset=3; 
 run; 
 ods html close;
 
 ods html;
-proc means data=wide; var   p_vl1000_art_12m_20_40_1  p_vl1000_art_12m_20_40_2  ;
+proc means data=wide; var   p_vl1000_art_12m_20_40_1  p_vl1000_art_12m_20_40_2  ; where dataset=3; 
 run; 
 ods html close;
 
