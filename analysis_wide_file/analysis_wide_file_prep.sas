@@ -284,7 +284,7 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-  where prep_strategy_ai1 = 8;
+  where prep_strategy_ai1 = 7;
 run; 
 
 
