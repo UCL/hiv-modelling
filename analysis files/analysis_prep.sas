@@ -1051,6 +1051,7 @@ proc sort; by run;run;
    set f.wide_prep_2_7_20_6pm; 
 
 
+
 * for prep ;
 if prep_strategy_ai1 in (1 7 8);
 
@@ -1573,9 +1574,6 @@ p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl10
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
 run;
 
-
-proc contents; run;
-
 proc freq; tables prep_strategy_ai1; run;
 
 
@@ -1831,7 +1829,7 @@ run;
 
 
 proc means; var d_dcost_20_70_2  d_ddaly_all_20_70_2 ; 
-  where prep_strategy_ai1 = 1;
+  where prep_strategy_ai1 = 7;
 run;
 
 
@@ -1839,7 +1837,8 @@ proc logistic; model ce_500 =  prop_sw_hiv_20 incidence1549m_20;
   where prep_strategy_ai1 = 1;
 run;
 
-proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20  p_mcirc_20 prep_strategy_ai1 p_startedline2_20 ;
+proc logistic; class prep_strategy_ai1 adh_pattern_prep;  model ce_500 =  p_vl1000_20  p_mcirc_20 prep_strategy_ai1 p_startedline2_20 adh_pattern_prep ;
+where prep_strategy_ai1 = 7 or prep_strategy_ai1 = 8;
 run;
 
 proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20 prep_strategy_ai1;
@@ -1847,6 +1846,7 @@ proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20 prep_strate
 run;
 
 proc glm; class prep_strategy_ai1;  model d_ddaly_all_20_70_2 = prep_strategy_ai1 prevalence1549_20  / solution ;
+ where prep_strategy_ai1 = 7 or prep_strategy_ai1 = 8;
 run;
 
 
