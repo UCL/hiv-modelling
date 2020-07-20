@@ -907,9 +907,11 @@ p_neph_stops_after_ten = 0.1;
 
 ***** testing;
 
-* an_lin_incr_test;   r=uniform(0); if r < 0.2  then an_lin_incr_test = 0.0005 ; if 0.2  <= r < 0.4 then an_lin_incr_test = 0.0100; 
-					if 0.4 <= r < 0.6  then an_lin_incr_test = 0.0300 ;  if 0.6   <= r < 0.8  then an_lin_incr_test = 0.1000;
-					if 0.8   <= r  then an_lin_incr_test = 0.1500;
+* an_lin_incr_test;   r=uniform(0); if r < 0.1   then an_lin_incr_test = 0.0005 ; if 0.1   <= r < 0.3 then an_lin_incr_test = 0.0030; 
+					  if 0.3 <= r < 0.5   then an_lin_incr_test = 0.0100 ;  if 0.5    <= r < 0.7  then an_lin_incr_test = 0.0200;
+					  if 0.7    <= r < 0.9  then an_lin_incr_test = 0.0400;
+					  if 0.9    <= r        then an_lin_incr_test = 0.1000;
+
 * date_test_rate_plateau;  r=uniform(0); if r < 0.1  then date_test_rate_plateau = 2011.5; if 0.1  <= r < 0.2  then date_test_rate_plateau = 2013.5; 
 			if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4  <= r < 0.7 then date_test_rate_plateau = 2017.5; 
  				if 0.7 <= r then date_test_rate_plateau = 2019.5;
@@ -5455,10 +5457,10 @@ end;
 * xx33; 
 end;
 
-
+com_test=.;
 if tested=1 and hiv ne 1 then do;
 	cost_test= cost_test_c;
-	u=uniform(0); if u lt 0.1365 and com_test ne 1 then com_test=1;
+	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
 	unispec=uniform(0);
@@ -16140,7 +16142,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_2_7_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_20_7_20_2pm_&dataset_id";  
 put   
 
 
