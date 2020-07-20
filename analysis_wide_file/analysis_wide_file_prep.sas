@@ -55,7 +55,7 @@ if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_te
 and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
 incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
 
-
+cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -107,7 +107,7 @@ run;
 
 * prep analysis;
 
-   
+proc univariate ; var cost_per_test_20; run;
 
 proc print data=wide; var  prep_improvements_ai1 incr_adh_pattern_prep_2020_ai1 inc_r_test_startprep_2020_ai1 incr_r_test_restartprep_2020_ai1
 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1 
@@ -133,22 +133,25 @@ ods html close;
 
 ods html;
 proc means data=wide; var  dcost_prep_20_25_1 dcost_prep_20_25_2 ;  
-  where prep_improvements_ai1 =1;
+  where prep_strategy_ai1 ge 7;
 run; 
 ods htm close;
+
+
+proc means data=wide; var p_efa_20_70_1 p_efa_20_70_2 p_dol_20_70_1 p_dol_20_70_2 p_taz_20_70_1 p_taz_20_70_2 ; run;
 
 
 proc freq data=wide; tables prep_improvements_ai1 * pop_wide_tld_2020_ai1 ; run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_25_1  prop_w_1524_onprep_20_25_2 ;  
-  where prep_improvements_ai1 = 1;
+  where prep_strategy_ai1 = 8;
 ods html close;
 run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
-  where prep_strategy_ai1 = 8;
+  where prep_strategy_ai1 = 1;
 run; 
 ods html close;
 
@@ -215,6 +218,7 @@ proc means data=wide; var
 d_ddaly_all_20_25_2  
 d_ndb_500_20_25_2  
 d_dcost_20_25_2  
+n_tested_20_25_1 n_tested_20_25_2
 incidence1549_20_25_1 incidence1549_20_25_2 
 dvis_cost_20_25_1 dvis_cost_20_25_2 
 dtest_cost_20_25_1 dtest_cost_20_25_2
@@ -239,6 +243,12 @@ p_m184m_20_25_1 p_m184m_20_25_2
 run; 
 ods html close;
 
+
+proc glm; model n_tested_20_70_1 = an_lin_incr_test date_test_rate_plateau ; run;
+
+proc univariate; var n_tested_20 ; where an_lin_incr_test < 0.1;  run; 
+
+proc freq; tables an_lin_incr_test ; run; 
 
 * todo: check on test costs - they seem high ;
 
@@ -267,24 +277,24 @@ p_hiv1_prep_20_70_1 p_hiv1_prep_20_70_2
 run; 
 ods html close;
 
+proc univariate; var  n_tested_20_70_1 ; run;
+
+
 * dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
 
 
-proc glm; class   	incr_adh_pattern_prep_2020_ai1 
-inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 
-inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1   	incr_prepuptake_pop_2020_ai1   expand_prep_to_all_2020_ai1 ;
-model d_ddaly_all_20_70_2 = incr_adh_pattern_prep_2020_ai1 
-inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 
-inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1   	incr_prepuptake_pop_2020_ai1   expand_prep_to_all_2020_ai1
+proc glm; class   	 ;
+model d_ddaly_all_20_70_2 = eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
+eff_test_targeting_ai1   prep_strategy_ai1 
 / solution;
-where prep_improvements_ai1 =1;
+  where prep_strategy_ai1 ge 7;
 run;
 
 
 
 proc freq data=wide; tables ce_500;
-  where prep_strategy_ai1 = 7;
+  where prep_strategy_ai1 ge 7 and n_tested_20 > 2000000;
 run; 
 
 
@@ -308,12 +318,14 @@ proc logistic; model ce_500 =  prop_sw_hiv_20 incidence1549m_20;
   where prep_strategy_ai1 = 1;
 run;
 
-proc logistic; class prep_strategy_ai1 ;  model ce_500 =  p_vl1000_20  p_mcirc_20 prep_strategy_ai1 p_startedline2_20 adh_pattern_prep ;
+proc logistic; class prep_strategy_ai1 ;  model ce_500 =   prep_strategy_ai1 p_startedline2_20 
+eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
+eff_test_targeting_ai1   ;
 where prep_strategy_ai1 = 7 or prep_strategy_ai1 = 8;
 run;
 
-proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20 prep_strategy_ai1;
- *where prep_strategy_ai1 ge 7;
+proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20 p_mcirc_20 prep_strategy_ai1  prevalence1549_20 n_tested_20;
+  where prep_strategy_ai1 ge 7 ;
 run;
 
 proc glm; class prep_strategy_ai1;  model d_ddaly_all_20_70_2 = prep_strategy_ai1 prevalence1549_20  / solution ;
