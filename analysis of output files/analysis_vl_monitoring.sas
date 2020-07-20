@@ -1692,6 +1692,7 @@ dataset=3;
 
 
 
+
 data d4;  
 
   infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\vl_monitoring\c_output_tle_single_vl_switch_2_7_20_6pm_updated";
@@ -2252,6 +2253,7 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 ; 
 
 dataset=4;
+
 
 data a; set d1 d2 d3 d4 ;
 
@@ -3250,7 +3252,6 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 
 
-
 * --------------------------------------------------------------------------------------------------------------;
 
 * general code;
@@ -3376,12 +3377,12 @@ proc freq; tables sw_init_newp sw_trans_matrix rate_sw_rred_rc ; run;
 
 
 ods html;
-proc means data=wide; var  p_dol_20  p_dol_20_40_2  p_dol_20_40_1 ;
-run; 
+proc means data=wide; var  p_efa_20  p_efa_20_40_1  p_efa_20_40_2 p_dol_20  p_dol_20_40_1  p_dol_20_40_2 
+ p_taz_20  p_taz_20_40_1  p_taz_20_40_2   p_lpr_20  p_lpr_20_40_1  p_lpr_20_40_2   p_nev_20  p_nev_20_40_1  p_nev_20_40_2 ; where dataset=3; run; 
 ods html close;
 
 ods html;
-proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  ;
+proc means data=wide; var   p_onart_vl1000_20_40_2  p_onart_vl1000_20_40_1  p_artexp_vl1000_20_40_1 p_artexp_vl1000_20_40_2; where dataset=1; run; 
 run; 
 ods html close;
 
@@ -3396,7 +3397,7 @@ run;
 ods html close;
 
 ods html;
-proc means data=wide; var   p_vl1000_art_12m_20_40_2  p_vl1000_art_12m_20_40_1  ;
+proc means data=wide; var   p_vl1000_art_12m_20_40_2  p_vl1000_art_12m_20_40_1  ; where dataset=3; run; 
 run; 
 ods html close;
 
@@ -3428,13 +3429,13 @@ run;
 ods html close;
 
 
-proc means data=wide; var   death_rate_onart_20_40_2  death_rate_onart_20_40_1 ;  run;
+proc means data=wide; var   death_rate_onart_20_40_1  death_rate_onart_20_40_2 ; where dataset=4; run; 
+
 proc univariate data=wide; var   d_death_rate_onart_20_40_2  ;  run;
 
 
 ods html;
-proc means data=wide; var   d_death_rate_hiv_20_40_2  ;
-* where greater_tox_zdv_ = 1 and rate_int_choice_ ge 0.025;
+proc means data=wide; var death_rate_hiv_20_40_1 death_rate_hiv_20_40_2  ;  where dataset=4; run; 
 run; 
 ods html close;
 
@@ -3443,12 +3444,14 @@ proc means data=wide; var  death_rate_20_40_2   death_rate_20_40_1 ;  run;
 proc univariate data=wide; var  d_death_rate_20_40_4  d_death_rate_20_40_3  d_death_rate_20_40_2  ;  run; 
 
 ods html;
-proc means data=wide; var  d_ndb_500_20_40_2  ;
+proc means data=wide; var  d_ndb_500_20_40_2 ndb_500_20_40_1 ndb_500_20_40_2 ; where dataset=4; run; 
 run; 
 ods html close;
 
+proc univariate data=wide; var d_ndb_500_20_40_2 ; where dataset=4; run; 
+
 ods html;
-proc means data=wide; var  dcost_20_40_1  dcost_20_40_2   ;
+proc means data=wide; var  dcost_20_40_1  dcost_20_40_2   ;  where dataset=4; run; 
 run; 
 ods html close;
 
@@ -3456,7 +3459,7 @@ ods html;
 proc means data=wide; var  dlpr_cost_20_40_1  dlpr_cost_20_40_2  ; run;
 ods html close;
 
-proc means data=wide; var  d_dcost_20_40_2  ;run; 
+proc means data=wide; var  d_dcost_20_40_2  ;  where dataset=4; run;  
 
 *  dcost
 dcd4_cost   dvl_cost   dvis_cost   dcot_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
@@ -3467,11 +3470,11 @@ defa_cost   ddol_cost
 
 
 ods html;
-proc means data=wide; var  d_ddaly_all_20_40_2  ;  run; 
+proc means data=wide; var  ddaly_all_20_40_1 ddaly_all_20_40_2  ; where dataset=4; run;   
 ods html close;
 
 ods html;
-proc means data=wide; var  d_ddaly_20_40_2  ; run; 
+proc means data=wide; var  d_ddaly_20_40_2  ; where dataset=4; run;   
 ods html close;
 
 ods html;
