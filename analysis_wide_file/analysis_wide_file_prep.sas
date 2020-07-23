@@ -1,9 +1,9 @@
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 data wide;    
-set a.wide_prep_2_7_20_6pm_19_7_20; 
+set a.wide_prep_20_7_20_2pm_23_7_20; 
 
 
 
