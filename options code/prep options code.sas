@@ -276,10 +276,12 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * prep_strategy_2020;
 						prep_strategy_2020 = 0;  
+						/*
 						if _u38 < 0.33 then do;	prep_strategy_2020 = 1; prep_strategy = 7; end;
 						if 0.33 <= _u38 < 0.67  then do;	prep_strategy_2020 = 1; prep_strategy = 1; end;
 						if 0.67 <= _u38        then do;	prep_strategy_2020 = 1; prep_strategy = 8; end;
-						
+						*/
+						prep_strategy = 7;
 			end;
 
 
