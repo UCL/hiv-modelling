@@ -23,29 +23,14 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 * for prep analysis (comment out code for other analyses);
 
+/*
 
-
-
-
-* TO BE REMOVED ......................;
-
-* ======================================================================================================== ;
-
-* TO BE REMOVED ......................;
-
-
+* for use before testing costs were update
 
 dcost_20_70_1 = dcost_20_70_1 - ( 3 * dtest_cost_20_70_1 / 4) ;
 dcost_20_70_2 = dcost_20_70_2 - ( 3 * dtest_cost_20_70_2 / 4) ;
 
-
-* ======================================================================================================== ;
-
-* TO BE REMOVED ......................;
-
-
-
-
+*/
 
 d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 
@@ -79,6 +64,70 @@ incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_st
 
 cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
+
+dcost_20_70_1_from_wide = 
+dcost_20_70_1   +
+dvis_cost_20_70_1 + 
+dtest_cost_20_70_1  + 
+dart_cost_y_20_70_1 +  
+dclin_cost_20_70_1  + 
+dcost_prep_20_70_1  +  
+dcost_prep_visit_20_70_1 +  
+dadc_cost_20_70_1   + 
+dcd4_cost_20_70_1     + 
+dvl_cost_20_70_1    + 
+dvis_cost_20_70_1   + 
+dwho3_cost_20_70_1    + 
+dcot_cost_20_70_1   + 
+dtb_cost_20_70_1   + 
+dres_cost_20_70_1   + 
+dtest_cost_20_70_1  + 
+d_t_adh_int_cost_20_70_1 +  
+dswitchline_cost_20_70_1 +  
+dtaz_cost_20_70_1  + 
+dcost_drug_level_test_20_70_1 +   
+dclin_cost_20_70_1   + 
+dcost_circ_20_70_1  + 
+dcost_condom_dn_20_70_1  + 
+dcost_drug_level_test_20_70_1 +  
+dcost_child_hiv_20_70_1  + 
+dcost_non_aids_pre_death_20_70_1; 
+
+
+
+dcost_20_70_2_from_wide = 
+dcost_20_70_2   +
+dvis_cost_20_70_2 + 
+dtest_cost_20_70_2  + 
+dart_cost_y_20_70_2 +  
+dclin_cost_20_70_2  + 
+dcost_prep_20_70_2  +  
+dcost_prep_visit_20_70_2 +  
+dadc_cost_20_70_2   + 
+dcd4_cost_20_70_2     + 
+dvl_cost_20_70_2    + 
+dvis_cost_20_70_2   + 
+dwho3_cost_20_70_2    + 
+dcot_cost_20_70_2   + 
+dtb_cost_20_70_2   + 
+dres_cost_20_70_2   + 
+dtest_cost_20_70_2  + 
+d_t_adh_int_cost_20_70_2 +  
+dswitchline_cost_20_70_2 +  
+dtaz_cost_20_70_2  + 
+dcost_drug_level_test_20_70_2 +   
+dclin_cost_20_70_2   + 
+dcost_circ_20_70_2  + 
+dcost_condom_dn_20_70_2  + 
+dcost_drug_level_test_20_70_2 +  
+dcost_child_hiv_20_70_2  + 
+dcost_non_aids_pre_death_20_70_2; 
+
+
+
+
+
+
 * --------------------------------------------------------------------------------------------------------------;
 
 
@@ -94,12 +143,25 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 ;
 run;
 
-
+/*
+proc glm data=wide;
+class 
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+model prevalence4549m_20 = 
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
+exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
+res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
+adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv / solution
+;
+run;
+*/
 
 proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
-rate_susc_np_1549_w_20  rate_susc_np_ic_1549_m_20  rate_susc_np_1549_w_20
-p_newp_sw_20  mean_num_tests_ly_m1549__20  mean_num_tests_ly_w1549__20  n_tested_m_20
+p_newp_sw_20   n_tested_m_20
 p_mcirc_20	 		p_mcirc_1519m_20	p_mcirc_2024m_20	p_mcirc_2529m_20		p_mcirc_3039m_20	p_mcirc_4049m_20 	p_mcirc_50plm_20 
 prop_w_1549_sw_20	prop_w_ever_sw_20 	prop_sw_hiv_20 	prop_w_1524_onprep_20  prop_1564_onprep_20 	prevalence1549m_20 prevalence1549w_20
 prevalence1549_20 
@@ -118,7 +180,11 @@ run;
 
 
 proc univariate data=wide;
-var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 
+prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
+prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
+incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
+p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
@@ -129,7 +195,7 @@ run;
 
 * prep analysis;
 
-proc univariate ; var cost_per_test_20; run;
+proc univariate data=wide; var cost_per_test_20; run;
 
 proc print data=wide; var  prep_improvements_ai1 incr_adh_pattern_prep_2020_ai1 inc_r_test_startprep_2020_ai1 incr_r_test_restartprep_2020_ai1
 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1 
@@ -148,14 +214,11 @@ run;
 
 ods html;
 proc means data=wide; var n_hiv1_prep_20_70_1 n_hiv1_prep_20_70_2  n_prep_20_70_1 n_prep_20_70_2 ; 
-* where pop_wide_tld_2020_ai1 =1;
-  where prep_improvements_ai1 =1;
 run;
 ods html close;
 
 ods html;
 proc means data=wide; var  dcost_prep_20_25_1 dcost_prep_20_25_2 ;  
-  where prep_strategy_ai1 ge 7;
 run; 
 ods htm close;
 
@@ -167,34 +230,31 @@ proc freq data=wide; tables prep_improvements_ai1 * pop_wide_tld_2020_ai1 ; run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_25_1  prop_w_1524_onprep_20_25_2 ;  
-  where prep_strategy_ai1 = 8;
 ods html close;
 run;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
-  where prep_strategy_ai1 = 1;
+proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_70_1  prop_1564_onprep_20_70_2 ;  
+run; 
+ods html close;
+
+ods html;
+proc univariate data=wide; var  prop_1564_onprep_20_70_2 ;  
 run; 
 ods html close;
 
 ods html;
 proc means data=wide; var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
-* where prep_improvements_ai1 =1;
-  where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
-* where prep_improvements_ai1 =1;
-  where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 ;  
-  where prep_improvements_ai1 =1;
-* where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
@@ -202,38 +262,31 @@ ods html close;
 ods html;
 proc means data=wide; var      ddaly_all_20_70_1  ddaly_all_20_70_2  d_ddaly_all_20_70_2 d_ndb_500_20_70_2  ndb_500_20_70_2  ndb_500_20_70_1
 d_dcost_20_70_2  dcost_20_70_2  dcost_20_70_1  d_dcost_prep_20_70_2  dcost_prep_20_70_1 dcost_prep_20_70_2   ; 
-  where prep_improvements_ai1 =1;
-* where pop_wide_tld_2020_ai1 =1;
 run; 
 ods html close;
 
 
-
 ods html;
 proc means data=wide; var prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2 ;  
-* where prep_improvements_ai1 =1;
-  where pop_wide_tld_2020_ai1 =1;
 run; 
 ods htm close;
 
 
 ods html;
 proc means data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
-  where prep_improvements_ai1 =1;
 run; 
 ods htm close;
 
 
 ods html;
 proc means data=wide; var p_onart_20_70_1  p_onart_20_70_2 ;  
-  where prep_improvements_ai1 =1;
 run; 
 ods htm close;
 
 *  p_prep_ever   p_hiv1_prep   incidence1524w   incidence1524m   p_k65m    p_m184m ;
 
 
-proc univariate; var prop_elig_on_prep_20_25_2 ; run;
+proc univariate data=wide; var prop_elig_on_prep_20_25_2  n_prep_20_70_2   p_newp_ge1_20_70_2; run;
 
 ods html;
 proc means data=wide; var    
@@ -266,18 +319,11 @@ run;
 ods html close;
 
 
-proc glm; model n_tested_20_70_1 = an_lin_incr_test date_test_rate_plateau ; run;
-
-proc univariate; var n_tested_20 ; where an_lin_incr_test < 0.1;  run; 
-
-proc freq; tables an_lin_incr_test ; run; 
-
-* todo: check on test costs - they seem high ;
-
 
 ods html;
 proc means data=wide; var    d_ddaly_all_20_70_2  d_ndb_500_20_70_2  d_dcost_20_70_2  incidence1549_20_70_1 incidence1549_20_70_2 
 dcost_20_70_1   dcost_20_70_2
+dcost_20_70_1_from_wide dcost_20_70_2_from_wide
 n_tested_20_70_1 n_tested_20_70_2
 n_prep_20_70_1 n_prep_20_70_2
 dvis_cost_20_70_1 dvis_cost_20_70_2 
@@ -295,11 +341,32 @@ prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2
 prop_1564_onprep_20_70_1  prop_1564_onprep_20_70_2
 p_prep_ever_20_70_1 p_prep_ever_20_70_2
 p_hiv1_prep_20_70_1 p_hiv1_prep_20_70_2
+
+dadc_cost_20_70_1   dadc_cost_20_70_2   
+dcd4_cost_20_70_1   dcd4_cost_20_70_2   
+dvl_cost_20_70_1   dvl_cost_20_70_2   
+dvis_cost_20_70_1  dvis_cost_20_70_2   
+dwho3_cost_20_70_1   dwho3_cost_20_70_2   
+dcot_cost_20_70_1   dcot_cost_20_70_2   
+dtb_cost_20_70_1   dtb_cost_20_70_2   
+dres_cost_20_70_1   dres_cost_20_70_2 
+dtest_cost_20_70_1  dtest_cost_20_70_2  
+d_t_adh_int_cost_20_70_1  d_t_adh_int_cost_20_70_2   
+dswitchline_cost_20_70_1 dswitchline_cost_20_70_2
+dtaz_cost_20_70_1 dtaz_cost_20_70_2 
+dcost_drug_level_test_20_70_1   dcost_drug_level_test_20_70_2   
+dclin_cost_20_70_1  dclin_cost_20_70_2   
+dcost_circ_20_70_1  dcost_circ_20_70_2
+dcost_condom_dn_20_70_1 dcost_condom_dn_20_70_2
+dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2  
+dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
+dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
+where p_startedline2_20 < 0.10; 
 run; 
 ods html close;
 
-proc univariate; var  n_tested_20_70_1 ; run;
+  
 
 
 * dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
@@ -308,56 +375,53 @@ dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dco
 
 proc glm; class   	 ;
 model d_ddaly_all_20_70_2 = eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
-eff_test_targeting_ai1   prep_strategy_ai1 
+eff_test_targeting_ai1   prep_strategy_ai1  n_tested_20
 / solution;
-  where prep_strategy_ai1 ge 7;
 run;
 
 
 
 proc freq data=wide; tables ce_500;
-  where prep_strategy_ai1 ge 7 and n_tested_20 > 2000000;
+where p_newp_ge1_20 < 0.1 ;
 run; 
 
 
 proc sort; by icer_2;
 proc print; var ddaly_all_20_70_2   ddaly_all_20_70_1  dcost_20_70_2   dcost_20_70_1  d_dcost_20_70_2  d_ddaly_all_20_70_2  icer_2; 
-  where prep_strategy_ai1 = 7;
 run;
 
 
-proc freq; tables icer_2;
-  where prep_strategy_ai1 = 7;
+proc freq data=wide; tables icer_2;
 run;
 
 
 proc means; var d_dcost_20_70_2  d_ddaly_all_20_70_2 ; 
-  where prep_strategy_ai1 = 7;
 run;
 
-
-proc logistic; model ce_500 =  prop_sw_hiv_20 incidence1549m_20;
-  where prep_strategy_ai1 = 1;
-run;
 
 proc logistic; class prep_strategy_ai1 ;  model ce_500 =   prep_strategy_ai1 p_startedline2_20 
 eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
 eff_test_targeting_ai1   ;
-where prep_strategy_ai1 = 7 or prep_strategy_ai1 = 8;
-run;
-
-proc logistic; class prep_strategy_ai1;  model ce_500 =  p_vl1000_20 p_mcirc_20 prep_strategy_ai1  prevalence1549_20 n_tested_20;
-  where prep_strategy_ai1 ge 7 ;
-run;
-
-proc glm; class prep_strategy_ai1;  model d_ddaly_all_20_70_2 = prep_strategy_ai1 prevalence1549_20  / solution ;
- where prep_strategy_ai1 = 7 or prep_strategy_ai1 = 8;
 run;
 
 
-proc glm; class prep_strategy_ai1;  model d_dcost_20_70_2 = prep_strategy_ai1 p_startedline2_20  / solution ;
+proc logistic data=wide;  model ce_500 =   incidence1549w_20 ;run;
+
+proc logistic data=wide;  model ce_500 =   incidence1549w_20 p_newp_ge1_20  p_startedline2_20  prop_sw_hiv_20 ;
 run;
 
+
+
+proc corr data=wide; var incidence1549w_20 prop_1564_onprep_20_25_2 ; run;
+
+proc glm;  model d_ddaly_all_20_70_2 = incidence1549w_20 p_newp_ge1_20  / solution ;
+run;
+
+
+proc glm; model d_dcost_20_70_2 = /* p_taz_20 */ p_startedline2_20 prevalence1549_20 / solution ;
+run;
+
+proc means; var p_startedline2_20_70_1 p_startedline2_20_70_2 p_taz_20_70_1 p_taz_20_70_2  dtaz_cost_20_70_1  dtaz_cost_20_70_2; run; 
 
 
 * p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
