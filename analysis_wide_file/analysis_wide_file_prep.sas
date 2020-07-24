@@ -65,67 +65,56 @@ incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_st
 cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
 
-dcost_20_70_1_from_wide = 
-dcost_20_70_1   +
-dvis_cost_20_70_1 + 
-dtest_cost_20_70_1  + 
-dart_cost_y_20_70_1 +  
-dclin_cost_20_70_1  + 
-dcost_prep_20_70_1  +  
+
+dcost_20_70_1_from_wide =      
+dart_cost_y_20_70_1 +       
+dcost_prep_20_70_1  +      
 dcost_prep_visit_20_70_1 +  
-dadc_cost_20_70_1   + 
-dcd4_cost_20_70_1     + 
-dvl_cost_20_70_1    + 
+dadc_cost_20_70_1   +      
+dcd4_cost_20_70_1     +    
+dvl_cost_20_70_1    +      
 dvis_cost_20_70_1   + 
-dwho3_cost_20_70_1    + 
-dcot_cost_20_70_1   + 
-dtb_cost_20_70_1   + 
-dres_cost_20_70_1   + 
-dtest_cost_20_70_1  + 
+dwho3_cost_20_70_1    +    
+dcot_cost_20_70_1   +       
+dtb_cost_20_70_1   +       
+dres_cost_20_70_1   +      
+dtest_cost_20_70_1  +      
 d_t_adh_int_cost_20_70_1 +  
 dswitchline_cost_20_70_1 +  
-dtaz_cost_20_70_1  + 
 dcost_drug_level_test_20_70_1 +   
-dclin_cost_20_70_1   + 
-dcost_circ_20_70_1  + 
-dcost_condom_dn_20_70_1  + 
-dcost_drug_level_test_20_70_1 +  
-dcost_child_hiv_20_70_1  + 
-dcost_non_aids_pre_death_20_70_1; 
+dcost_circ_20_70_1  +           
+dcost_condom_dn_20_70_1  +      
+dcost_child_hiv_20_70_1  +      
+dcost_non_aids_pre_death_20_70_1 ; 
 
-
-
-dcost_20_70_2_from_wide = 
-dcost_20_70_2   +
-dvis_cost_20_70_2 + 
-dtest_cost_20_70_2  + 
-dart_cost_y_20_70_2 +  
-dclin_cost_20_70_2  + 
-dcost_prep_20_70_2  +  
+dcost_20_70_2_from_wide =      
+dart_cost_y_20_70_2 +       
+dcost_prep_20_70_2  +      
 dcost_prep_visit_20_70_2 +  
-dadc_cost_20_70_2   + 
-dcd4_cost_20_70_2     + 
-dvl_cost_20_70_2    + 
+dadc_cost_20_70_2   +      
+dcd4_cost_20_70_2     +    
+dvl_cost_20_70_2    +      
 dvis_cost_20_70_2   + 
-dwho3_cost_20_70_2    + 
-dcot_cost_20_70_2   + 
-dtb_cost_20_70_2   + 
-dres_cost_20_70_2   + 
-dtest_cost_20_70_2  + 
+dwho3_cost_20_70_2    +    
+dcot_cost_20_70_2   +       
+dtb_cost_20_70_2   +       
+dres_cost_20_70_2   +      
+dtest_cost_20_70_2  +      
 d_t_adh_int_cost_20_70_2 +  
 dswitchline_cost_20_70_2 +  
-dtaz_cost_20_70_2  + 
 dcost_drug_level_test_20_70_2 +   
-dclin_cost_20_70_2   + 
-dcost_circ_20_70_2  + 
-dcost_condom_dn_20_70_2  + 
-dcost_drug_level_test_20_70_2 +  
-dcost_child_hiv_20_70_2  + 
-dcost_non_aids_pre_death_20_70_2; 
+dcost_circ_20_70_2  +           
+dcost_condom_dn_20_70_2  +      
+dcost_child_hiv_20_70_2  +      
+dcost_non_aids_pre_death_20_70_2 ; 
 
+/*
+from create_wide_file_prep :
 
-
-
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
+		dcost_child_hiv + dcost_non_aids_pre_death ;
+*/
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -362,7 +351,7 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
-where p_startedline2_20 < 0.10; 
+where p_startedline2_20 > 0.10; 
 run; 
 ods html close;
 
