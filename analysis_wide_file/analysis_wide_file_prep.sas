@@ -215,27 +215,27 @@ ods htm close;
 proc means data=wide; var p_efa_20_70_1 p_efa_20_70_2 p_dol_20_70_1 p_dol_20_70_2 p_taz_20_70_1 p_taz_20_70_2 ; run;
 
 
-proc freq data=wide; tables prep_improvements_ai1 * pop_wide_tld_2020_ai1 ; run;
-
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_25_1  prop_w_1524_onprep_20_25_2 ;  
 ods html close;
 run;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_70_1  prop_1564_onprep_20_70_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
 run; 
 ods html close;
 
+
 ods html;
-proc univariate data=wide; var  prop_1564_onprep_20_70_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide;  var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
 run; 
 ods html close;
 
-ods html;
-proc means data=wide; var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
-run; 
-ods html close;
+****
+
+INVESTIGATE why prop_sw_onprep so low when prop_elig_on_prep is high ;
+
+;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
