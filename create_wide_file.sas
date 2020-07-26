@@ -426,6 +426,12 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_k65m;						if s_hiv1564 gt 0 then p_k65m = s_k65m_ / s_hiv1564 ;
 * p_m184m;						if s_hiv1564 gt 0 then p_m184m = s_m184m_ / s_hiv1564 ;
 
+* p_vlg1000_184m;				if s_vlg1000 > 0 then p_vlg1000_184m = s_vlg1000_184m / s_vg1000 ;
+* p_vlg1000_65m;				if s_vlg1000 > 0 then p_vlg1000_65m = s_vlg1000_65m / s_vg1000 ;
+
+* p_vlg1000_184m_hiv;			if s_hiv1564 > 0 then p_vlg1000_184m_hiv = s_vlg1000_184m / s_hiv1564  ;
+* p_vlg1000_65m_hiv;			if s_hiv1564 > 0 then p_vlg1000_65m_hiv = s_vlg1000_65m / s_hiv1564  ;
+
 * p_vlg1000_onart_65m;			if s_vlg1000_onart > 0 then p_vlg1000_onart_65m = s_vlg1000_onart_65m / s_vlg1000_onart ;
 * p_vlg1000_onart_184m;			if s_vlg1000_onart > 0 then p_vlg1000_onart_184m = s_vlg1000_onart_184m / s_vlg1000_onart ;
 
