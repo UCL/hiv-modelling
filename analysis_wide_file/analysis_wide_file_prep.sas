@@ -3,7 +3,7 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 data wide;    
-set a.wide_prep_20_7_20_2pm_23_7_20; 
+set a.wide_prep_20_7_20_2pm_26_7_20; 
 
 
 
@@ -176,7 +176,7 @@ incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20
 p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 ;
 run;
 
 
@@ -231,14 +231,34 @@ proc means n mean lclm uclm p5 p95 data=wide;  var prop_sw_onprep_20_25_1  prop_
 run; 
 ods html close;
 
-****
 
-INVESTIGATE why prop_sw_onprep so low when prop_elig_on_prep is high ;
-
-;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_hiv1_prep_20_25_1  p_hiv1_prep_20_25_2 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_vlg1000_184m_20_25_1  p_vlg1000_184m_20_25_2 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_vlg1000_65m_20_25_1  p_vlg1000_65m_20_25_2 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 ;  
 run; 
 ods html close;
 
@@ -256,19 +276,13 @@ ods html close;
 
 
 ods html;
-proc means data=wide; var prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2 ;  
-run; 
-ods htm close;
-
-
-ods html;
 proc means data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
 run; 
 ods htm close;
 
 
 ods html;
-proc means data=wide; var p_onart_20_70_1  p_onart_20_70_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var p_onart_20_25_1  p_onart_20_25_2 ;  
 run; 
 ods htm close;
 
@@ -351,7 +365,7 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
-where p_startedline2_20 > 0.10; 
+* where p_startedline2_20 > 0.10; 
 run; 
 ods html close;
 
