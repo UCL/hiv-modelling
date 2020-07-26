@@ -924,9 +924,9 @@ proc sort; by run;
 *  set f.wide_core_18_6_20_6pm ;
 
 
-* if 0.04 <  prevalence1549_20 < 0.30;
+  if 0.04 <  prevalence1549_20 < 0.30;
 
-* for main :; * if run <= 989384738 ;
+* for main :;   if run <= 989384738 ;
 
 
 /*
@@ -1432,6 +1432,8 @@ run;
 
 */
 
+proc univariate data=wide;
+var p_w_giv_birth_this_per_20; run;
 
 proc univariate data=wide;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
