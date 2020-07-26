@@ -64,6 +64,7 @@ incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_st
 
 cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
+d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
 
 
 dcost_20_70_1_from_wide =      
@@ -107,6 +108,10 @@ dcost_circ_20_70_2  +
 dcost_condom_dn_20_70_2  +      
 dcost_child_hiv_20_70_2  +      
 dcost_non_aids_pre_death_20_70_2 ; 
+
+r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
+r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
+
 
 /*
 from create_wide_file_prep :
@@ -246,6 +251,14 @@ ods html close;
 
 
 ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var n_death_hivrel_20_70_1  n_death_hivrel_20_70_2 d_n_death_hivrel_20_70_2 ;  
+run; 
+ods html close;
+
+
+
+
+ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_vlg1000_184m_20_25_1  p_vlg1000_184m_20_25_2 ;  
 run; 
 ods html close;
@@ -258,12 +271,12 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2  r_incidence_20_25_2 ;  
 run; 
 ods html close;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2  r_incidence_20_70_2 ;  
 run; 
 ods html close;
 
@@ -285,6 +298,16 @@ ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_onart_20_25_1  p_onart_20_25_2 ;  
 run; 
 ods htm close;
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_onart_vl1000_20_25_1  p_onart_vl1000_20_25_2 ;  
+run; 
+ods htm close;
+
+
+
 
 *  p_prep_ever   p_hiv1_prep   incidence1524w   incidence1524m   p_k65m    p_m184m ;
 
@@ -385,7 +408,7 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-where p_newp_ge1_20 < 0.1 ;
+* where p_newp_ge1_20 < 0.1 ;
 run; 
 
 
