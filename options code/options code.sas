@@ -51,9 +51,72 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
+
 if caldate_never_dot ge 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
+
+
+if _u48 <= 0.20 then prep_improvements = 1;
+
+		if prep_improvements = 1 then do; 
+
+* incr_adh_pattern_prep_2020;
+						incr_adh_pattern_prep_2020 = 0;  
+						if _u25 < 0.95 then do; 
+							incr_adh_pattern_prep_2020 = 1; 
+							adhav_pr = adhav*1.00; 
+						end;		
+
+* inc_r_test_startprep_2020;
+						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
+							inc_r_test_startprep_2020 = 1; 
+							eff_rate_test_startprep = 0.9; 
+							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
+						end;		
+
+* incr_r_test_restartprep_2020;
+						incr_r_test_restartprep_2020 = 0;  
+						if _u28 <= 0.95 then do; 
+							incr_r_test_restartprep_2020 = 1; 
+							eff_rate_test_restartprep = 0.9; 
+							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
+						end;		
+
+* decr_r_choose_stop_prep_2020;
+						decr_r_choose_stop_prep_2020 = 0;  
+						if _u30 < 0.95 then do; 
+							decr_r_choose_stop_prep_2020 = 1; 
+							eff_rate_choose_stop_prep = 0.03 ; 
+							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
+						end;		
+
+* inc_p_prep_restart_choi_2020;
+						inc_p_prep_restart_choi_2020 = 0;  
+						if _u32 < 0.95 then do; 
+							inc_p_prep_restart_choi_2020 = 1; 
+							eff_prob_prep_restart_choice = 0.8 ; 
+							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
+						end;		
+
+* incr_prepuptake_sw_2020;
+						incr_prepuptake_sw_2020 = 0;  
+						if _u34 < 0.95 then do; incr_prepuptake_sw_2020 = 1; 
+							r= uniform(0); if r < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
+						end;		
+
+* incr_prepuptake_pop_2020;
+						incr_prepuptake_pop_2020 = 0;  
+						if _u36 < 0.95 then do; 
+							incr_prepuptake_pop_2020 = 1; 
+							r= uniform(0); if r < 0.8 and prep_willing_pop = 0 then prep_willing_pop = 1;
+						end;	
+
+* prep_strategy;
+						prep_strategy = 7;
+
+			end;
+
 
 	if option = 0 then do;  
 	circ_inc_rate_2020=0;
@@ -61,14 +124,6 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 	circ_inc_rate_2020=1;
-	end;
-
-	if option = 2 then do;
-	circ_inc_rate_2020=2;
-	end;
-
-	if option = 3 then do;
-	circ_inc_rate_2020=3;
 	end;
 
 end;
