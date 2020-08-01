@@ -60,18 +60,36 @@ who may be dead and hence have caldate{t} missing;
 
 	 	vmmc_disrup_covid = 1 ;
 		testing_disrup_covid = 1 ;
-	 	clinical_hiv_services_covid = 1 ;
+		vl_adh_switch_disrup_covid = 1; 
+		cotrim_disrup_covid = 1; 
+		inc_death_rate_aids_disrup_covid = 1;
 
 end;
+
+if caldate_never_dot = 2020.5 then do;
+
+	if option = 0 then do;  
+						testing_disrup_covid = 1 ; 
+						vmmc_disrup_covid = 1 ; 
+						vl_adh_switch_disrup_covid = 1; cotrim_disrup_covid = 1; inc_death_rate_aids_disrup_covid = 1; * these three go together ;
+	end; 
+
+	if option = 1 then do;  
+						testing_disrup_covid = 1 ; 
+						vmmc_disrup_covid = 1 ; 
+						vl_adh_switch_disrup_covid = 0; cotrim_disrup_covid = 0; inc_death_rate_aids_disrup_covid = 0; * these three go together ;
+	end; 
+
+end;
+
 
 if caldate_never_dot = 2021.5 then do;
-
-	if option = 0 then do;  end; 
-
-	if option = 1 then vmmc_disrup_covid = 1 ;
-	if option = 2 then testing_disrup_covid = 1 ;
-	if option = 3 then do; vl_adh_switch_disrup_covid = 1; cotrim_disrup_covid = 1; inc_death_rate_aids_disrup_covid = 1; end;
+ 
+						testing_disrup_covid = 0 ; 
+						vmmc_disrup_covid = 0 ; 
+						vl_adh_switch_disrup_covid = 0; cotrim_disrup_covid = 0; inc_death_rate_aids_disrup_covid = 0; * these three go together ;
 
 end;
+
 
 * ==========================================================================================================================================;
