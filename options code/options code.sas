@@ -2,6 +2,7 @@
 
 * ==========================================================================================================================================;
 
+
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
 
 * INTERVENTIONS / CHANGES in 2020;
@@ -40,47 +41,36 @@ who may be dead and hence have caldate{t} missing;
 		inc_p_prep_restart_choi_2020 = 0 ;
 		incr_prepuptake_sw_2020 = 0 ;
 		incr_prepuptake_pop_2020 = 0 ;
-		prep_strategy_2020 = 0 ;
+		expand_prep_to_all_2020 = 0 ;
 		circ_improvements = 0;
 		circ_inc_rate_2020 = 0;
 		condom_incr_2020 = 0;
 		pop_wide_tld = 0;
 
+	    vmmc_disrup_covid = 0 ; 
+		condom_disrup_covid = 0; 
+  		prep_disrup_covid = 0; 
+		testing_disrup_covid = 0; 
+		art_init_disrup_covid = 0; 
+		vl_adh_switch_disrup_covid = 0; 
+		cotrim_disrup_covid = 0; 
+		inc_death_rate_aids_disrup_covid = 0; 
+		no_art_disrup_covid = 0; 
+		art_low_adh_disrup_covid = 0; 
+
+	 	vmmc_disrup_covid = 1 ;
+		testing_disrup_covid = 1 ;
+	 	clinical_hiv_services_covid = 1 ;
+
+end;
+
+if caldate_never_dot = 2021.5 then do;
+
 	if option = 0 then do;  end; 
 
-	if option = 1 then do;
-
-*
-
-vmmc stopped (vmmc_disrup_covid)
-condom availability stopped resulting in increase in newp (condom_disrup_covid)
-prep stopped (prep_disrup_covid)
-sex worker program stopped (swprog_disrup_covid)
-all hiv testing stopped (testing_disrup_covid) 
-all art use switched to tld (art_tld_disrup_covid)
-every other day tld (art_tld_eod_disrup_covid)
-all art initiations stopped (art_init_disrup_covid)
-viral load  testing, enhanced adherence counselling and switches stopped (vl_adh_switch_disrup_covid)
-all co-trimoxazole stopped (cotrim_disrup_covid)
-increase in death rate for people with adc or tb (inc_death_rate_aids_disrup_covid)
-all art stopped (no_art_disrup_covid)
-	
-;
-		vmmc_disrup_covid = 0 ; if _u43 < 0.5 then vmmc_disrup_covid = 1 ;
-		condom_disrup_covid = 0; if _u44 < 0.5 then condom_disrup_covid = 1 ;
-  		prep_disrup_covid = 0; if _u45 < 0.5 then prep_disrup_covid = 1 ;
-		swprog_disrup_covid = 0; if _u46 < 0.5 then swprog_disrup_covid = 1 ;   
-		testing_disrup_covid = 0; if _u47 < 0.5 then testing_disrup_covid = 1 ;
-		art_tld_disrup_covid = 0; if _u48 < 0.5 then art_tld_disrup_covid = 1 ;
-		art_tld_eod_disrup_covid = 0; if _u49 < 0.5 then art_tld_eod_disrup_covid = 1 ;
-		art_init_disrup_covid = 0; if _u50 < 0.5 then art_init_disrup_covid = 1 ;
-		vl_adh_switch_disrup_covid = 0; if _u51 < 0.5 then vl_adh_switch_disrup_covid = 1 ;
-		cotrim_disrup_covid = 0; if _u52 < 0.5 then cotrim_disrup_covid = 1 ;
-		inc_death_rate_aids_disrup_covid = 0; if _u53 < 0.5 then inc_death_rate_aids_disrup_covid = 1 ;
-		no_art_disrup_covid = 0; if _u54 < 0.5 then no_art_disrup_covid = 1 ;
-		art_low_adh_disrup_covid = 0; if _u55 < 0.5 then art_low_adh_disrup_covid = 1 ;
-
-	end;
+	if option = 1 then vmmc_disrup_covid = 1 ;
+	if option = 2 then testing_disrup_covid = 1 ;
+	if option = 3 then do; vl_adh_switch_disrup_covid = 1; cotrim_disrup_covid = 1; inc_death_rate_aids_disrup_covid = 1; end;
 
 end;
 
