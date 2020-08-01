@@ -66,31 +66,31 @@ end;
 
 if caldate_never_dot = 2020.5 then do;
 
-	if option = 0 then do;  
+	if option = 0 then do; * bring back none of the three yet ;
 						testing_disrup_covid = 1 ; 
 						vmmc_disrup_covid = 1 ; 
 						vl_adh_switch_disrup_covid = 1;  
 	end; 
 
-	if option = 1 then do;  
+	if option = 1 then do;  * bring back vl_adh_switch ;
 						testing_disrup_covid = 1 ; 
 						vmmc_disrup_covid = 1 ; 
 						vl_adh_switch_disrup_covid = 0; 
 	end; 
 
-	if option = 2 then do;  
+	if option = 2 then do;  * bring back testing ;
 						testing_disrup_covid = 0 ; 
 						vmmc_disrup_covid = 1 ; 
 						vl_adh_switch_disrup_covid = 1; 
 	end; 
 
-	if option = 3 then do;  
+	if option = 3 then do; * bring back testing and vl_adh_switch ; 
 						testing_disrup_covid = 0 ; 
 						vmmc_disrup_covid = 1 ; 
 						vl_adh_switch_disrup_covid = 0;  
 	end; 
 
-	if option = 4 then do;  
+	if option = 4 then do; * bring back vmmc as well as testing and vl_adh_switch ; 
 						testing_disrup_covid = 0 ; 
 						vmmc_disrup_covid = 0 ; 
 						vl_adh_switch_disrup_covid = 0;  
