@@ -2101,7 +2101,7 @@ if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
 
-covid_disrup_extent = 0.5 ;
+covid_disrup_extent = 1.0 ;
 
 covid_disrup_affected = 0;
 if covid_disrup_extent = 0.2 then do; w=uniform(0); if w < 0.2 then covid_disrup_affected = 1; end;
