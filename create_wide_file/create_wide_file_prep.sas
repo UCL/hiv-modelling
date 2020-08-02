@@ -1864,6 +1864,32 @@ dart2_cost = s_dart_2_cost * sf_2019 * discount_adj * 4 / 1000;
 dart3_cost = s_dart_3_cost * sf_2019 * discount_adj * 4 / 1000;
 dart_cost = s_dart_cost * sf_2019 * discount_adj * 4 / 1000;
 dvl_cost = s_dvl_cost * sf_2019 * discount_adj * 4 / 1000;
+
+
+
+
+
+* ############################################################################# ;
+
+
+* to be changed when have  updated runs ;
+
+
+
+dvl_cost = 0;
+
+
+
+
+
+* ############################################################################# ;
+
+
+
+
+
+
+
 dcd4_cost = s_dcd4_cost * sf_2019 * discount_adj * 4 / 1000;
 dadc_cost = s_dadc_cost * sf_2019 * discount_adj * 4 / 1000;
 dtb_cost = s_dtb_cost * sf_2019 * discount_adj * 4 / 1000;
