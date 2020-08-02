@@ -1708,11 +1708,6 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 data a; set d1 d2 d3; ;
 
 
-proc print data=d3; var run cald option s_dvl_cost s_dart_cost prob_vl_meas_done ; where cald=2025; run;
-
-
-
-
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 

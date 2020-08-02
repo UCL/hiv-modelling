@@ -6,6 +6,17 @@ data wide;
 set a.wide_prep_20_7_20_2pm_26_7_20; 
 
 
+* ################################################################## ;
+
+* NOTE to be removed when re-run;
+if prob_vl_meas_done=1;
+
+* ################################################################## ;
+
+
+
+
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -388,27 +399,11 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
-  where p_startedline2_20 > 0.10; 
+  where p_startedline2_20 < 0.10; 
 run; 
 ods html close;
 
 
-proc freq; tables prob_vl_meas_done; run;
-
-ods html; 
-
-proc means; var 
-dvl_cost_20_70_1   dvl_cost_20_70_2   ;
-* where p_startedline2_20 < 0.10; 
-where prob_vl_meas_done = 0.7; 
-run;
-
-proc means; var 
-dvl_cost_20_70_1   dvl_cost_20_70_2   ;
-* where  p_startedline2_20 >=  0.10; 
-run;
-
-ods html close;
 
 * dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
@@ -423,7 +418,6 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-* where p_newp_ge1_20 < 0.1 ;
 run; 
 
 proc univariate; var p_newp_ge1_20 ; run;
