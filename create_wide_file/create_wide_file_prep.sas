@@ -1704,11 +1704,13 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 ; 
  
-proc freq; tables run;
-run;
-
 
 data a; set d1 d2 d3; ;
+
+
+proc print data=d3; var run cald option s_dvl_cost s_dart_cost prob_vl_meas_done ; where cald=2025; run;
+
+
 
 
 proc sort; by run cald option;run;
