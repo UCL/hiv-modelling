@@ -10097,10 +10097,10 @@ if cascade_care_improvements = 1 and registd=1 and sv ne 1 then cost_cascade_int
 	v_lab_transport_cost=0; 
 
 
-	* test cost incurred for proportion of tests not done, result not obtained;
+	* test cost incurred for proportion of tests not done, result not obtained - but currently this proportion set to 0;
 	cost_vl_not_done=0;
 	if vm=. and vl_cost_inc=1 then do;
-	cost_vl_not_done = vl_cost;
+	vl_cost=cost_vl_not_done;
 	end;
 	
 	vl_cost_inc=0;
@@ -16148,7 +16148,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_20_7_20_2pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_2_8_20_3pm_&dataset_id";  
 put   
 
 
