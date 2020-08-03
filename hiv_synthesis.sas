@@ -2264,12 +2264,19 @@ if sw_program=1 and caldate{t} ge 2015 then do;
 		eff_sw_higher_int = sw_higher_int * 0.75 ; 
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
+		prepuptake_sw=0.70;
+		s= uniform(0); if s < 0.70 and prep_willing_sw = 0 then prep_willing_sw = 1;
+
+
 	end;
 	if sw_program_effect=2 then do; 
 		sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.5 ; 
 		eff_prob_sw_lower_adh = 0 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
+		prepuptake_sw=0.95;
+		s= uniform(0); if s < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
+
 	end;
 	end;
 end;
