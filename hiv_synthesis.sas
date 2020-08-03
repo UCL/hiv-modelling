@@ -2101,7 +2101,7 @@ if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
 
-covid_disrup_extent = 0.5 ;
+covid_disrup_extent = 1.0 ;
 
 covid_disrup_affected = 0;
 if covid_disrup_extent = 0.2 then do; w=uniform(0); if w < 0.2 then covid_disrup_affected = 1; end;
@@ -10097,10 +10097,10 @@ if cascade_care_improvements = 1 and registd=1 and sv ne 1 then cost_cascade_int
 	v_lab_transport_cost=0; 
 
 
-	* test cost incurred for proportion of tests not done, result not obtained;
+	* test cost incurred for proportion of tests not done, result not obtained - but currently this proportion set to 0;
 	cost_vl_not_done=0;
 	if vm=. and vl_cost_inc=1 then do;
-	cost_vl_not_done = vl_cost;
+	vl_cost=cost_vl_not_done;
 	end;
 	
 	vl_cost_inc=0;
@@ -13008,14 +13008,15 @@ npge2=0; if np ge 2 then npge2=1;
 npge10=0; if np ge 10 then npge10=1;
 
 *** Prep code;
-prep_newpg0 = 0;prep_newpg0 = 0;prep_newpg0 = 0;prep_newpg0 = 0;prep_newpg0 = 0;
+prep_newp=.;
+prep_newpg0 = 0;prep_newpg1 = 0;prep_newpg2 = 0;prep_newpg3 = 0;prep_newpg4 = 0;
 if prep=1 then do;
-if newpgr=0 then prep_newpg0 = 1;
-if newpgr=1 then prep_newpg1 = 1;
-if newpgr=2 then prep_newpg2 = 1;
-if newpgr=3 then prep_newpg3 = 1;
-if newpgr=10 then prep_newpg10 = 1;
-if newpgr=100 then prep_newpg100 = 1;
+prep_newp = newp; 
+if newp  =0 then prep_newpg0 = 1;
+if newp  =1 then prep_newpg1 = 1;
+if newp  =2 then prep_newpg2 = 1;
+if 3 <= newp < 10 then prep_newpg3 = 1;
+if 10 <= newp then prep_newpg4 = 1;
 end;
 
 newp_this_per_age1524w_onprep=.; newp_this_per_age1524w=.;prep_ever_w_1524=.;
@@ -13913,9 +13914,9 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_prep_6m_after_inf_no_r_184 + prep_6m_after_inf_no_r_184 ; s_prep_6m_after_inf_no_r_65 + prep_6m_after_inf_no_r_65 ;   				    
  	s_prep_12m_after_inf_no_r + prep_12m_after_inf_no_r ; s_prep_12m_after_inf_no_r_184 + prep_12m_after_inf_no_r_184 ; 
 	s_prep_12m_after_inf_no_r_65 + prep_12m_after_inf_no_r_65 ; s_hiv_prep_reason_1 + hiv_prep_reason_1 ; s_hiv_prep_reason_2 + hiv_prep_reason_2 ;
- 	s_hiv_prep_reason_3 + hiv_prep_reason_3 ; s_hiv_prep_reason_4 + hiv_prep_reason_4 ; 
+ 	s_hiv_prep_reason_3 + hiv_prep_reason_3 ; s_hiv_prep_reason_4 + hiv_prep_reason_4 ;  s_prep_newp + prep_newp ;
     s_prep_newpg0 + prep_newpg0 ; s_prep_newpg1 + prep_newpg1 ; s_prep_newpg2 + prep_newpg2 ; s_prep_newpg3 + prep_newpg3 ; 
-	s_prep_newpg10 + prep_newpg10 ; s_prep_newpg100 + prep_newpg100 ; s_newp_this_per_age1524w_onprep + newp_this_per_age1524w_onprep ;
+	s_prep_newpg4  + prep_newpg4  ; s_newp_this_per_age1524w_onprep + newp_this_per_age1524w_onprep ;
   	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_ever_w_1524 + prep_ever_w_1524 ; s_prep_ever_w + prep_ever_w ;
     s_test_gt_period1_on_prep + test_gt_period1_on_prep ; s_test_gt_period1_on_prep_pos + test_gt_period1_on_prep_pos ;
     s_test_period1_on_prep + test_period1_on_prep ; s_test_period1_on_prep_pos + test_period1_on_prep_pos ; s_prepuptake_sw + prepuptake_sw ;
@@ -14972,7 +14973,7 @@ s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
-s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg10  s_prep_newpg100 
+s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
 s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
@@ -15673,7 +15674,7 @@ s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
-s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg10  s_prep_newpg100 
+s_prep_newp  s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
 s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
@@ -16148,7 +16149,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_20_7_20_2pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_2_8_20_3pm_&dataset_id";  
 put   
 
 
@@ -16358,7 +16359,7 @@ s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
-s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg10  s_prep_newpg100 
+s_prep_newp  s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
 s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
