@@ -1025,17 +1025,16 @@ p_neph_stops_after_ten = 0.1;
 * rr_int_tox ;				r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
 							if 0.67 <= r then rr_int_tox = 30; 
 
-*sw_art_disadv;				r=uniform(0); if r < 0.33 then sw_art_disadv = 1; if 0.33 <= r < 0.67 then sw_art_disadv = 2;  
-							if 0.67 <= r then sw_art_disadv = 3; 
+*sw_art_disadv;				r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  
 
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
-							if sw_art_disadv=3 then do; sw_higher_int = 3; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  
-							if r < 0.33 then sw_program=1; 
-							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.1 then sw_program_effect = 2; end;
-							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+							if r < 0.20 then sw_program=1; 
+
+							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.5 then sw_program_effect = 2; 
+														rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_weak_sw_prog_newp;	r=uniform(0); 	if r < 0.33 then do; effect_weak_sw_prog_newp = 0.90; effect_strong_sw_prog_newp = 0.60; end;
 * effect_strong_sw_prog_newp;				if 0.33 <= r < 0.67 then do; effect_weak_sw_prog_newp = 0.80; effect_strong_sw_prog_newp = 0.50; end; 
