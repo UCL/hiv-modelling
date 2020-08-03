@@ -1057,7 +1057,7 @@ p_neph_stops_after_ten = 0.1;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
 
-* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.25; if r < 0.2 then prepuptake_sw = 0.75;
+* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.50;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
 
