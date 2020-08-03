@@ -3527,18 +3527,18 @@ end;
 
 * Reducing newp for FSW by 50% according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/2; newp=round(newp,1);
+u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/2; newp=round(newp,1);end;
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
-if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/2; newp=round(newp,1);
-if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/2; newp=round(newp,1);
+if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/2; newp=round(newp,1);end;
+if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/2; newp=round(newp,1);end;
 end;
 
 
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = 2020.5 and condom_incr_2020 = 1 then do;
-	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);
+	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
 
