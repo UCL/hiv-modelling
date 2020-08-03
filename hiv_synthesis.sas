@@ -2709,8 +2709,7 @@ if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995);
 if 2010 < caldate{t} <= 2015 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if 2015 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2015-2010));
 
-* mar19;
-if caldate{t} = 2020.5 and condom_incr_2020 = 1 then rred_rc = rred_rc * 0.9;
+
 
 if sw=1 and sw_program_visit=1 then do;
 if sw_program_effect = 1 then rred_rc = rred_rc * effect_weak_sw_prog_newp ;
@@ -3526,27 +3525,23 @@ end;
 
 */
 
-* here;
 
-* depending on rred_rc (population change in risk behaviour) set newp category one lower for FSW workers;
-
+* Reducing newp for FSW by 50% according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-e=uniform(0); * dependent_on_time_step_length ;
-
-if 
-((0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
-(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (0.70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
-(0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc)) then do; 
-
-if 1 <= newp <= 6 then newp=0;
-if 7 <= newp <= 40 then do;q=uniform(0); 
-            if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-            if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q then newp=6;end;
-if 41 <= newp <= 130 then do;q=uniform(0); newp = 6  + (q*34); newp = round(newp,1); end;
-if 130 < newp then do;        q=uniform(0); newp = 41 + (q*89); newp = round(newp,1); end;
+u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/2; newp=round(newp,1);
 end;
 
+if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/2; newp=round(newp,1);
+if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/2; newp=round(newp,1);
 end;
+
+
+* Reducing newp by 50% if condom incr =1;
+if caldate{t} = 2020.5 and condom_incr_2020 = 1 then do;
+	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);
+end;
+
 
 
 
@@ -16148,7 +16143,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_2_8_20_3pm_&dataset_id";  
+  file "/home/rmjllob/Scratch/_output_3_8_20_11am_&dataset_id";  
 put   
 
 
