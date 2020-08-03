@@ -61,11 +61,11 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do; 
     sw_program=1; eff_sw_program=1; sw_program_effect=1;
-	end; 
+	end;
 
 	if option = 2 then do; 
     sw_program=1; eff_sw_program=1; sw_program_effect=2;
-	end; 
+	end;
 
 end;
 
