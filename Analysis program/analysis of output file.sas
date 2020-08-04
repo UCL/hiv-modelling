@@ -164,7 +164,6 @@ p_mcirc_1549m_20_25_1 p_mcirc_1549m_20_40_1
 p_mcirc_1549m_20_25_2 p_mcirc_1549m_20_40_2
 p_mcirc_1549m_20_25_3 p_mcirc_1549m_20_40_3
 p_mcirc_1549m_20_25_4 p_mcirc_1549m_20_40_4
-
 ;run;
 
 proc means n p50 p5 p95;var 
