@@ -845,8 +845,8 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.005;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.01;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.03; * dependent on rred_rc, rate of sex workers moving to one category lower;
+* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.01;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.03;  
+								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -3535,12 +3535,12 @@ end;
 
 * Reducing newp for FSW by 50% according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/2; newp=round(newp,1);end;
+u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
-if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/2; newp=round(newp,1);end;
-if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/2; newp=round(newp,1);end;
+if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/3; newp=round(newp,1);end;
+if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/3 newp=round(newp,1);end;
 end;
 
 
