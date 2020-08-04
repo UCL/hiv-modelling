@@ -1367,7 +1367,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 
 data r1;set z;
-do i=1 to 100;
+do i=1 to 100000;
 	n=1;
 	serial_no + 1;
 	output; 
@@ -15325,7 +15325,7 @@ data cum_l&da2; set cum_l&da1 sums;
 
 
 data s;set sums;
-do i=1 to 100; 
+do i=1 to 100000; 
 	n=1; output; 
 end; 
 drop i;
