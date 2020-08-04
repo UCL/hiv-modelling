@@ -1,5 +1,24 @@
 
 
+
+
+
+* ############################################################################# ;
+
+
+* NOTE:  to be changed when have  updated runs ;
+
+
+* ############################################################################# ;
+
+
+
+
+
+
+
+
+
 libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 
@@ -1864,6 +1883,10 @@ dart2_cost = s_dart_2_cost * sf_2019 * discount_adj * 4 / 1000;
 dart3_cost = s_dart_3_cost * sf_2019 * discount_adj * 4 / 1000;
 dart_cost = s_dart_cost * sf_2019 * discount_adj * 4 / 1000;
 dvl_cost = s_dvl_cost * sf_2019 * discount_adj * 4 / 1000;
+
+
+
+
 
 
 

@@ -3,15 +3,9 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 data wide;    
-set a.wide_prep_20_7_20_2pm_26_7_20; 
+* set a.wide_prep_20_7_20_2pm_26_7_20; 
+  set a.wide_prep_20_7_20_2pm_2_8_20; 
 
-
-* ################################################################## ;
-
-* NOTE to be removed when re-run;
-if prob_vl_meas_done=1;
-
-* ################################################################## ;
 
 
 
@@ -399,7 +393,8 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
-  where p_startedline2_20 < 0.10; 
+* where prop_1564_onprep_20_70_2 < 0.10 and incidence1549_20 > 0.30 ;
+  where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
 run; 
 ods html close;
 
@@ -409,18 +404,8 @@ ods html close;
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
 
 
-proc glm; class   	 ;
-model d_ddaly_all_20_70_2 = eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
-eff_test_targeting_ai1   prep_strategy_ai1  n_tested_20
-/ solution;
-run;
+proc univariate; var prop_1564_onprep_20_70_2  prevalence1549_20 ; run;
 
-
-
-proc freq data=wide; tables ce_500;
-run; 
-
-proc univariate; var p_newp_ge1_20 ; run;
 
 
 proc sort; by icer_2;
@@ -429,68 +414,76 @@ run;
 
 
 proc freq data=wide; tables icer_2;
+  where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
+* where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.07 ;
 run;
 
 
-proc means; var d_dcost_20_70_2  d_ddaly_all_20_70_2 ; 
+proc logistic;  model ce_500 =  prop_1564_onprep_20_70_2
+eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  eff_test_targeting_ai1   ;
 run;
 
 
-proc logistic; class prep_strategy_ai1 ;  model ce_500 =   prep_strategy_ai1 p_startedline2_20 
-eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
-eff_test_targeting_ai1   ;
+* model including baseline variables only - to inform scale up of prep programmes ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20;
+run;
+
+* model including baseline variables only - to inform scale up of prep programmes - may present this model since we have this measure ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20 ;
+run;
+
+* model including some variables defined base on follow-up - to determine whether prep programmes should continue;
+proc logistic data=wide; model ce_500 =  prevalence1549_20  prop_1564_onprep_20_70_2 ;
 run;
 
 
-proc logistic data=wide;  model ce_500 =   incidence1549w_20 ;run;
+proc freq data=wide; tables ce_500;
+  where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
+* where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
 
-proc logistic data=wide;  model ce_500 =   incidence1549w_20 incidence1549m_20 p_newp_ge1_20  p_startedline2_20  prop_sw_hiv_20 prop_w_1549_sw_20 ;
+* where 0.02 <= prop_1564_onprep_20_70_2 < 0.05 and 0.02 <= prevalence1549_20 < 0.05 ;
+run; 
+
+
+
+
+
+*n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_onprep_20_70_2
+p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20
+p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
+;
+
+
+
+proc glm; model d_ddaly_all_20_70_2 = incidence1549w_20 p_newp_ge1_20  p_vl1000_20	prop_w_1549_sw_20 ; 
 run;
 
-* n_tested_20 n_prep_20_70_2 prop_1564_onprep_20_70_2 
+* p_startedline2_20   incidence1549w_20  incidence1549m_20 
+p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
+;
+
+
+proc glm; model d_dcost_20_70_2 = incidence1549_20  p_newp_ge1_20  p_startedline2_20 p_vl1000_20;
+run;
+
+proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 p_vl1000_20;
+run;
+
+/*
+proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
-
-;
-
-
-proc glm; model d_ddaly_all_20_70_2 = incidence1549w_20 incidence1549m_20 p_newp_ge1_20  p_startedline2_20  prop_sw_hiv_20   ;
-run;
-
-
-proc corr data=wide; var incidence1549w_20 prop_1564_onprep_20_25_2 ; run;
-
-proc glm;  model d_ddaly_all_20_70_2 = incidence1549w_20 p_newp_ge1_20  / solution ;
-run;
-
-
-proc glm; model d_dcost_20_70_2 = /* p_taz_20 */ p_startedline2_20 prevalence1549_20 / solution ;
-run;
-
-proc means; var p_startedline2_20_70_1 p_startedline2_20_70_2 p_taz_20_70_1 p_taz_20_70_2  dtaz_cost_20_70_1  dtaz_cost_20_70_2; run; 
-
-
-* p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
-p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
-
-
-proc logistic data=wide; 
-class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model ce_500 = sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
-exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
-res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv 
 ;
 run;
+*/
 
-
+ 
 * --------------------------------------------------------------------------------------------------------------;
 
 
