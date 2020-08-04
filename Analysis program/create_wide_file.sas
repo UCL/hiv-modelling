@@ -1194,7 +1194,7 @@ inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult
 
 option_0_prep_continue_2020 	 
 eff_rate_test_startprep   	eff_rate_test_restartprep   	
-eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
+eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	s_sw_newp
 ;
 
 
@@ -1304,7 +1304,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_);%var (v=n_vmmc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
-
+%var(v=s_sw_newp);
 
 data   wide_outputs; merge 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
@@ -1344,7 +1344,7 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549
-p_vl1000_art_12m p_vl1000_art_12m_onart 
+p_vl1000_art_12m p_vl1000_art_12m_onart s_sw_newp
 ;
 
 proc contents; run;
@@ -1361,7 +1361,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2019); %par(p=dataset);
+%par(p=sf_2019); /*%par(p=dataset)*/;
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1536,15 +1536,15 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
+libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
-  data a.wide_your_filename; 
+  data a.wide_fsw_3_8_20_11am; 
 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
-  by run;
+  by run;run;
 
 
 proc univariate;
@@ -1556,5 +1556,12 @@ run;
 
 
 run;
+
+
+data a;
+set a.wide_fsw_3_8_20_11am;run;
+
+data b;
+set a;
 
 
