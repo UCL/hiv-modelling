@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw\c_output_fsw_3_8_20_11am";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw\c_output_fsw_4_8_20_1pm";
 
 input 
 
@@ -1201,9 +1201,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data a.fsw_3_8_20_11am; set y;
+data a.fsw_4_8_20_1pm; set y;
 
-data y; set a.fsw_3_8_20_11am; run;
+data y; set a.fsw_4_8_20_1pm; run;
 
 
   options nomprint;
@@ -1538,7 +1538,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
-  data a.wide_fsw_3_8_20_11am; 
+  data a.wide_fsw_4_8_20_1pm; 
 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
@@ -1547,7 +1547,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
   by run;run;
 
 
-proc univariate;
+proc means n p50 p5 p95;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
