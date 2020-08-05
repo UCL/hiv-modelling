@@ -1,6 +1,17 @@
 
 
 
+
+
+s_newpge1_prep_elig
+s_newpge1_prep_elig_sw
+s_newp_prep_sw
+
+
+
+
+
+
 * === ABOUT THIS PROGRAM  === *
 
 --
@@ -13028,12 +13039,16 @@ if prep=1 then newp_this_per_age1524w_onprep=1;
 if prep ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
-newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;
+newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
+newp_this_per_elig_prep=0;  newp_this_per_elig_prep_sw=0;  
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
-if onart=1 then newp_this_per_art=1;
-if prep=1 then newp_this_per_prep=1;
-if prep=1 or onart=1 then newp_this_per_art_or_prep=1;
+	if onart=1 then newp_this_per_art=1;
+	if prep=1 then newp_this_per_prep=1;
+	if sw=1 and prep=1 then newp_this_per_prep_sw=1;
+	if prep=1 or onart=1 then newp_this_per_art_or_prep=1;
+	if prep_elig = 1 then newp_this_per_elig_prep=1; 
+	if sw=1 and prep_elig = 1 then newp_this_per_elig_prep_sw=1; 
 end;
 
 
@@ -13738,6 +13753,8 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_susc_np_inc_circ_1549_m + susc_np_inc_circ_1549_m ; s_susc_np_1549_m + susc_np_1549_m ; s_susc_np_1549_w + susc_np_1549_w ;
 	s_newp_this_per_art_or_prep + newp_this_per_art_or_prep ; s_newp_this_per_art + newp_this_per_art ; s_newp_this_per_prep + newp_this_per_prep ;
+	s_newp_this_per_prep_sw + newp_this_per_prep_sw ;  s_newp_this_per_elig_prep + newp_this_per_elig_prep ;
+	s_newp_this_per_elig_prep_sw + newp_this_per_elig_prep_sw ;
     s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;
 
 	s_i_v1_ep + i_v1_ep ; s_i_v2_ep + i_v2_ep ; s_i_v3_ep + i_v3_ep ; s_i_v4_ep + i_v4_ep ; s_i_v5_ep + i_v5_ep ; s_i_v6_ep + i_v6_ep ; 
@@ -14859,7 +14876,8 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
-s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per   s_newp_sw
+s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
+s_newp_this_per   s_newp_sw
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -15558,7 +15576,9 @@ s_n_newp_g_yw_0 s_n_newp_g_yw_1 s_n_newp_g_yw_2 s_n_newp_g_yw_3 s_n_newp_g_yw_4 
 	
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
-s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per   s_newp_sw
+s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep 	
+s_newp_this_per_elig_prep_sw 
+s_newp_this_per   s_newp_sw
 
 s_s_m_newp  s_s_w_newp
 
@@ -16149,7 +16169,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_2_8_20_3pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_4_8_20_6pm_&dataset_id";  
 put   
 
 
@@ -16243,7 +16263,9 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
-s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per  s_newp_sw
+s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
+s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
+s_newp_this_per  s_newp_sw
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -16709,4 +16731,7 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 * note need to keep one s_n ! ;
 
 run;
+
+
+
 
