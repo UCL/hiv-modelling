@@ -158,6 +158,8 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 run;
 */
 
+
+title '';
 proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
 p_newp_sw_20   n_tested_m_20
@@ -179,14 +181,15 @@ run;
 
 
 proc univariate data=wide;
-var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 
+var p_w_giv_birth_this_per_20	p_mcirc_20	p_mcirc_1549m_20 prevalence1549_20 
 prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
 prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
 incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
 p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 ;
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
+test_prop_positive_20 ;
 run;
 
 
@@ -394,7 +397,7 @@ dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
 * where prop_1564_onprep_20_70_2 < 0.10 and incidence1549_20 > 0.30 ;
-  where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
+* where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
 run; 
 ods html close;
 
