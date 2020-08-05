@@ -263,6 +263,10 @@ proc means n mean lclm uclm p5 p95 data=wide; var n_death_hivrel_20_70_1  n_deat
 run; 
 ods html close;
 
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prevalence_vg1000_20_25_1  prevalence_vg1000_20_25_2 ;  
+run; 
+ods html close;
 
 
 
@@ -441,7 +445,7 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-  where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
+* where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
 * where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
 
 * where 0.02 <= prop_1564_onprep_20_70_2 < 0.05 and 0.02 <= prevalence1549_20 < 0.05 ;
@@ -473,8 +477,7 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 proc glm; model d_dcost_20_70_2 = incidence1549_20  p_newp_ge1_20  p_startedline2_20 p_vl1000_20;
 run;
 
-proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 p_vl1000_20;
-run;
+
 
 /*
 proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 
