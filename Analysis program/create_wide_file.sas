@@ -1391,7 +1391,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2019 dataset sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2019 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1575,6 +1575,27 @@ run;
 
 proc contents;run;
 
-proc freq;table s_newp_sw;run;
+
+
+  proc glm ;   class 
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+exp_setting_lower_p_vl1000   ych_risk_beh_newp  adh_pattern   adh_pattern_prep  ;
+  model prevalence4549m_20 = 
+sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  
+ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep
+exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  
+fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost
+prob_lost_art  rate_return  rate_restart  rate_int_choice  
+clinic_not_aw_int_frac
+res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten
+fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb 
+prob_lossdiag_who3e  higher_newp_less_engagement  
+fold_tr  switch_for_tox
+adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men
+p_hard_reach_m  inc_cat base_rate_sw/solution;run;
+
+proc freq;table sex_age_mixing_matrix_m;run;
 
 
