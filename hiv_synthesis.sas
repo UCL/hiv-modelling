@@ -844,8 +844,8 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.005;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.01;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.03; * dependent on rred_rc, rate of sex workers moving to one category lower;
+* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.01;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.03;  
+								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -867,9 +867,9 @@ p_neph_stops_after_ten = 0.1;
 										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_w=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_w=4;
 										if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;
 * rred_a_p;	r=uniform(0); if r < 0.25 then rred_a_p=1; if 0.25 <= r < 0.50 then rred_a_p=2;  if 0.50 <= r < 0.75 then rred_a_p=3;  if r >= 0.75 then rred_a_p=4; 
-* p_rred_p; r=uniform(0); if r < 0.33 then p_rred_p = 0.1; if 0.33 <= r < 0.67 then p_rred_p = 0.3; 
-			if 0.67 <= r  then p_rred_p = 0.5;  	
-* p_hsb_p; 	r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.1; if 0.67 <= r then p_hsb_p = 0.2;
+* p_rred_p; r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; 
+			if 0.67 <= r  then p_rred_p = 0.7;  	
+* p_hsb_p; 	r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;
 * newp_factor;  newp_factor = 1 ; * 15_1_20 4pm ;
 * eprate;	eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);* rate of new long term partners in youngest age group; 
 * dependent_on_time_step_length ;
@@ -1024,17 +1024,16 @@ p_neph_stops_after_ten = 0.1;
 * rr_int_tox ;				r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
 							if 0.67 <= r then rr_int_tox = 30; 
 
-*sw_art_disadv;				r=uniform(0); if r < 0.33 then sw_art_disadv = 1; if 0.33 <= r < 0.67 then sw_art_disadv = 2;  
-							if 0.67 <= r then sw_art_disadv = 3; 
+*sw_art_disadv;				r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  
 
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
-							if sw_art_disadv=3 then do; sw_higher_int = 3; prob_sw_lower_adh = 1 ; sw_higher_prob_loss_at_diag = 2; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  
-							if r < 0.33 then sw_program=1; 
-							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.1 then sw_program_effect = 2; end;
-							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+							if r < 0.20 then sw_program=1; 
+
+							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.5 then sw_program_effect = 2; 
+														rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_weak_sw_prog_newp;	r=uniform(0); 	if r < 0.33 then do; effect_weak_sw_prog_newp = 0.90; effect_strong_sw_prog_newp = 0.60; end;
 * effect_strong_sw_prog_newp;				if 0.33 <= r < 0.67 then do; effect_weak_sw_prog_newp = 0.80; effect_strong_sw_prog_newp = 0.50; end; 
@@ -1057,7 +1056,7 @@ p_neph_stops_after_ten = 0.1;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
 
-* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.25; if r < 0.2 then prepuptake_sw = 0.75;
+* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.50;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
 
@@ -2264,12 +2263,19 @@ if sw_program=1 and caldate{t} ge 2015 then do;
 		eff_sw_higher_int = sw_higher_int * 0.75 ; 
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
+		prepuptake_sw=0.70;
+		s= uniform(0); if s < 0.70 and prep_willing_sw = 0 then prep_willing_sw = 1;
+
+
 	end;
 	if sw_program_effect=2 then do; 
 		sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.5 ; 
 		eff_prob_sw_lower_adh = 0 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
+		prepuptake_sw=0.95;
+		s= uniform(0); if s < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
+
 	end;
 	end;
 end;
@@ -2709,8 +2715,7 @@ if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995);
 if 2010 < caldate{t} <= 2015 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if 2015 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2015-2010));
 
-* mar19;
-if caldate{t} = 2020.5 and condom_incr_2020 = 1 then rred_rc = rred_rc * 0.9;
+
 
 if sw=1 and sw_program_visit=1 then do;
 if sw_program_effect = 1 then rred_rc = rred_rc * effect_weak_sw_prog_newp ;
@@ -3526,27 +3531,23 @@ end;
 
 */
 
-* here;
 
-* depending on rred_rc (population change in risk behaviour) set newp category one lower for FSW workers;
-
+* Reducing newp for FSW by 50% according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-e=uniform(0); * dependent_on_time_step_length ;
-
-if 
-((0.95 <= rred_rc < 1.00 and e < rate_sw_rred_rc) or (0.90 <= rred_rc < 0.95 and e < 2 * rate_sw_rred_rc) or
-(0.80 <= rred_rc < 0.90 and e < 5 * rate_sw_rred_rc) or (0.70 <= rred_rc < 0.80 and e < 8 * rate_sw_rred_rc) or 
-(0.00 <= rred_rc < 0.7 and e < 12 * rate_sw_rred_rc)) then do; 
-
-if 1 <= newp <= 6 then newp=0;
-if 7 <= newp <= 40 then do;q=uniform(0); 
-            if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-            if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q then newp=6;end;
-if 41 <= newp <= 130 then do;q=uniform(0); newp = 6  + (q*34); newp = round(newp,1); end;
-if 130 < newp then do;        q=uniform(0); newp = 41 + (q*89); newp = round(newp,1); end;
+u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
+if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
+if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/3; newp=round(newp,1);end;
+if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/3; newp=round(newp,1);end;
 end;
+
+
+* Reducing newp by 50% if condom incr =1;
+if caldate{t} = 2020.5 and condom_incr_2020 = 1 then do;
+	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+end;
+
 
 
 
@@ -16158,6 +16159,7 @@ end;
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
   file "/home/rmjlaph/Scratch/_output_4_8_20_6pm_&dataset_id";  
+
 put   
 
 
