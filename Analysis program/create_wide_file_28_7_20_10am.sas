@@ -1233,7 +1233,7 @@ data y; set a.vmmc_28_7_20_10am; run;
 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
-proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019 <= cald < 2020;
+proc means noprint data=y; var &v; output out=y_19_20 mean= &v._19_20; by run ; where 2019 <= cald < 2020;
 proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;
 proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50;
 proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;
@@ -1244,7 +1244,7 @@ proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&
 proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;
 
 
-data &v ; merge  y_20 t_20_25 t_20_40 t_20_70 t_19_20;  
+data &v ; merge  y_20 t_19_20  t_20_25 t_20_40 t_20_70 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
