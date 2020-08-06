@@ -28,51 +28,8 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 * for prep analysis (comment out code for other analyses);
 
-/*
-
-* for use before testing costs were update
-
-dcost_20_70_1 = dcost_20_70_1 - ( 3 * dtest_cost_20_70_1 / 4) ;
-dcost_20_70_2 = dcost_20_70_2 - ( 3 * dtest_cost_20_70_2 / 4) ;
-
-*/
-
-d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
-
-d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1 ;
-
-ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005;
-ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005;
-
-d_ndb_500_20_25_2 = ndb_500_20_25_2 - ndb_500_20_25_1 ;
-
-d_ddaly_all_20_70_2 = ddaly_all_20_70_2 - ddaly_all_20_70_1 ;
-
-d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1 ;
-
-d_dcost_prep_20_70_2 = dcost_prep_20_70_2 - dcost_prep_20_70_1 ;
-
-ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005;
-ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0005;
-
-d_ndb_500_20_70_2 = ndb_500_20_70_2 - ndb_500_20_70_1 ;
-
-if d_ndb_500_20_70_2 >= 0 then ce_500 = 0; if d_ndb_500_20_70_2 < 0 then ce_500 = 1;
-
-icer_2 = (d_dcost_20_70_2 * 1000000) / (- d_ddaly_all_20_70_2) ; 
-if d_ddaly_all_20_70_2 > 0 then icer_2 = 99999;
-
-optimal_standard_prep_ai1=0;
-if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_test_startprep_2020_ai1 = 1 and incr_r_test_restartprep_2020_ai1 = 1
-and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
-incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
-
-cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
-
-d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
-
-
-dcost_20_70_1_from_wide =      
+* checked that this = original dcost that is overwritten - we re-create here so can adjust components;
+dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
 dcost_prep_20_70_1  +      
 dcost_prep_visit_20_70_1 +  
@@ -93,9 +50,13 @@ dcost_condom_dn_20_70_1  +
 dcost_child_hiv_20_70_1  +      
 dcost_non_aids_pre_death_20_70_1 ; 
 
-dcost_20_70_2_from_wide =      
+* cost of prep deliver from $115 to $75 is implemented as a cut in prep drug cost from $60 to $20 to give the $40 saving - the $40 lower cost would
+be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_1  * 100/60) ; 
+
+* checked that this = original dcost that is overwritten - we re-create here so can adjust components;
+dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-dcost_prep_20_70_2  +      
+dcost_prep_20_70_2 +      
 dcost_prep_visit_20_70_2 +  
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -113,6 +74,47 @@ dcost_circ_20_70_2  +
 dcost_condom_dn_20_70_2  +      
 dcost_child_hiv_20_70_2  +      
 dcost_non_aids_pre_death_20_70_2 ; 
+
+
+d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
+
+d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1 ;
+
+ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005;
+ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005;
+
+d_ndb_500_20_25_2 = ndb_500_20_25_2 - ndb_500_20_25_1 ;
+
+d_ddaly_all_20_70_2 = ddaly_all_20_70_2 - ddaly_all_20_70_1 ;
+
+d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1 ;
+
+d_dcost_prep_20_70_2 = dcost_prep_20_70_2 - dcost_prep_20_70_1 ;
+
+ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005;
+ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0005;
+
+* sensitivity analysis;  * TO COMMENT OUT ;
+ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0001;
+ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0001;
+
+d_ndb_500_20_70_2 = ndb_500_20_70_2 - ndb_500_20_70_1 ;
+
+if d_ndb_500_20_70_2 >= 0 then ce_500 = 0; if d_ndb_500_20_70_2 < 0 then ce_500 = 1;
+
+icer_2 = (d_dcost_20_70_2 * 1000000) / (- d_ddaly_all_20_70_2) ; 
+if d_ddaly_all_20_70_2 > 0 then icer_2 = 99999;
+
+optimal_standard_prep_ai1=0;
+if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_test_startprep_2020_ai1 = 1 and incr_r_test_restartprep_2020_ai1 = 1
+and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
+incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
+
+cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
+
+d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
+
+
 
 r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
 r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
@@ -444,15 +446,6 @@ proc logistic data=wide; model ce_500 =  prevalence1549_20  prop_1564_onprep_20_
 run;
 
 
-proc freq data=wide; tables ce_500;
-* where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
-* where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
-
-* where 0.02 <= prop_1564_onprep_20_70_2 < 0.05 and 0.02 <= prevalence1549_20 < 0.05 ;
-run; 
-
-
-
 
 
 *n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_onprep_20_70_2
@@ -488,6 +481,18 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 run;
 */
+
+
+
+proc freq data=wide; tables ce_500;
+* where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
+* where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
+
+  where    0.05 <= prop_1564_onprep_20_70_2 < 0.10    and    0.10 <= prevalence1549_20 < 0.15   ;
+run; 
+
+
+
 
  
 * --------------------------------------------------------------------------------------------------------------;
