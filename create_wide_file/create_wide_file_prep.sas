@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_2_8_20_6pm_t";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_2_8_20_6pm";
 
 input 
 
@@ -1534,7 +1534,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_prep_2_8_20_6pm_6_8_20; 
+  data a.wide_prep_2_8_20_6pm_7_8_20; 
 * data a.wide_prep_2_8_20_6pm_disc_7p; 
 
 

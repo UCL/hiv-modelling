@@ -114,7 +114,7 @@ cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ;
 
 d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
 
-infections_averted_20_25 = n_infection_20_25_1-n_infection_20_25_1;
+infections_averted_20_25 = n_infection_20_25_1 - n_infection_20_25_2;
 
 cost_per_infection_averted = d_dcost_20_25_2 / infections_averted_20_25 ;
 
@@ -129,6 +129,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost 
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
 */
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -499,11 +500,11 @@ proc freq data=wide; tables ce_500;
 
 * where  0.15 <= prop_1564_onprep_20_70_2 < 0.85  ;
 
-  where 0.10 <= p_newp_ge1_20 < 0.15 and 1.50 <= incidence1549_20 < 5.00 ;
+  where 0.08 <= p_newp_ge1_20 < 0.12 and 1.50 <= incidence1549_20 < 5.00 ;
 run; 
 
 
-proc freq; tables cost_per_infection_averted ;  run;
+proc freq; tables cost_per_infection_averted  ;  run;
 
  
 * --------------------------------------------------------------------------------------------------------------;
