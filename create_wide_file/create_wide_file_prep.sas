@@ -623,9 +623,11 @@ if s_cost_ gt 0 then disc     = s_dcost_ / s_cost_;
 * ts1m - this code needs to change for ts1m;
 discount_adj = 1;
 discount_adj_10p = discount_adj * (0.90/0.97)**(cald-2020) ; 
+discount_adj_7p = discount_adj * (0.93/0.97)**(cald-2020) ; 
 discount_adj_0  = discount_adj * (1.00/0.97)**(cald-2020) ; 
 discount = disc * discount_adj ;
 discount_10p = disc * discount_adj_10p ;
+discount_7p = disc * discount_adj_7p ;
 discount_0 = disc * discount_adj_0 ;
 
 * proc print; 
@@ -633,9 +635,9 @@ discount_0 = disc * discount_adj_0 ;
 * where option=0  and cald ge 2019; 
 * run;
 
-* if using 10% discount rate:  ; 
-* discount=discount_10p; 
-* discount_adj=discount_adj_10p;
+* if using 7% discount rate:  ; 
+* discount=discount_7p; 
+* discount_adj=discount_adj_7p;
 
 * if using 0% discount rate:  ;
 * discount=discount_0; 
@@ -802,6 +804,10 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive ;
+
+* p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_m1524_newp_ge1 ) 
+									/ (s_ageg1517m + s_ageg1819m + s_ageg1519m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
+
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive ;
 
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
@@ -865,6 +871,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
 
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
+
+* p_prep_adhg80 ;				p_prep_adhg80 = s_prep_adhg80 / s_prep ;
+
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -1084,14 +1093,16 @@ n_mcirc1549_3m=s_mcirc_1549m * sf_2019;
 
 n_new_inf1549m=s_primary1549m * sf_2019 * 4;
 n_new_inf1549=s_primary1549 * sf_2019 * 4;
+n_infection  =s_primary     * sf_2019 * 4;
 
 
 keep run option cald dataset
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
 p_newp_sw mean_num_tests_ly_m1549_  mean_num_tests_ly_w1549_  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
+prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep p_prep_adhg80
+prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
@@ -1122,7 +1133,7 @@ death_rate  death_rate_hiv  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_infection
 
 sf_2019 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1231,7 +1242,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
+%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=rate_susc_np_1549_w);  %var(v=rate_susc_np_ic_1549_m);  %var(v=rate_susc_np_1549_w);
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=mean_num_tests_ly_m1549_)  ;  %var(v=mean_num_tests_ly_w1549_); %var(v=n_tested_m);
@@ -1239,7 +1250,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_mcirc); %var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);
 %var(v=p_mcirc_2529m); %var(v=p_mcirc_3039m); %var(v=p_mcirc_4049m); %var(v=p_mcirc_50plm); %var(v=p_mcirc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
-%var(v=prop_sw_onprep); %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
+%var(v=prop_sw_onprep);  %var(v=p_prep_adhg80); %var(v=n_infection);
+%var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
 %var(v=prevalence1519w);  	%var(v=prevalence1519m);  	  %var(v=prevalence2024w);  	  %var(v=prevalence2024m);  	  %var(v=prevalence2529w);  	  
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
 %var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
@@ -1292,11 +1304,12 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
 p_newp_sw mean_num_tests_ly_m1549_  mean_num_tests_ly_w1549_  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
+prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep  p_prep_adhg80  n_infection
+prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
@@ -1521,7 +1534,8 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_prep_2_8_20_6pm_4_8_20; 
+  data a.wide_prep_2_8_20_6pm_6_8_20; 
+* data a.wide_prep_2_8_20_6pm_disc_7p; 
 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after

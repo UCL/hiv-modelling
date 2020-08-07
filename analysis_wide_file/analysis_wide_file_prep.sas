@@ -5,7 +5,7 @@
 data wide;    
 * set a.wide_prep_20_7_20_2pm_26_7_20; 
   set a.wide_prep_2_8_20_6pm_4_8_20; 
-
+* set a.wide_prep_2_8_20_6pm_disc_7p;
 
 
 
@@ -31,7 +31,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-dcost_prep_20_70_1  +      
+dcost_prep_20_70_1   +      
 dcost_prep_visit_20_70_1 +  
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
@@ -56,7 +56,7 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_1  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-dcost_prep_20_70_2 +      
+dcost_prep_20_70_2   +      
 dcost_prep_visit_20_70_2 +  
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -95,8 +95,8 @@ ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005;
 ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0005;
 
 * sensitivity analysis;  * TO COMMENT OUT ;
-ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0001;
-ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0001;
+* ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0001;
+* ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0001;
 
 d_ndb_500_20_70_2 = ndb_500_20_70_2 - ndb_500_20_70_1 ;
 
@@ -114,7 +114,9 @@ cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ;
 
 d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
 
+infections_averted_20_25 = n_infection_20_25_1-n_infection_20_25_1;
 
+cost_per_infection_averted = d_dcost_20_25_2 / infections_averted_20_25 ;
 
 r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
 r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
@@ -250,6 +252,13 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  prop_elig_on_prep_20_25_2 ;  
+run; 
+ods html close;
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_newp_prep_20_25_1  p_newp_prep_20_25_2 ;  
 run; 
 ods html close;
 
@@ -413,7 +422,7 @@ ods html close;
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
 
 
-proc univariate; var prop_1564_onprep_20_70_2  prevalence1549_20 ; run;
+proc univariate; var prop_1564_onprep_20_70_2  prevalence1549_20 incidence1549_20; run;
 
 
 
@@ -427,28 +436,26 @@ proc freq data=wide; tables icer_2;
 * where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.07 ;
 run;
 
-
-proc logistic;  model ce_500 =  prop_1564_onprep_20_70_2
-eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  eff_test_targeting_ai1   ;
-run;
+proc univariate; var p_elig_prep_20_25_2  p_newp_ge1_20; run;
+proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20  p_elig_prep_20_25_2; run;
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
-proc logistic data=wide; model ce_500 =  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20;
+proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_20   ;
 run;
 
-* model including baseline variables only - to inform scale up of prep programmes - may present this model since we have this measure ;
-proc logistic data=wide; model ce_500 =  prevalence1549_20 ;
-run;
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20  prop_1564_onprep_20_70_2 ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_20  ;
 run;
 
+* the issue with prop_1564_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
+so is a measure of the proportion eligible while in real life as scale up starts to happen it just reflects the extent of scale up - need a measure
+of the proportion of population at risk of HIV in any one period;  
 
 
-
-*n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_onprep_20_70_2
+* p_newp_prep_20_25_2 prevalence_vg1000_20  prevalence_vg1000_20
+n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_onprep_20_70_2
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20
 p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
@@ -456,7 +463,7 @@ p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  pr
 
 
 
-proc glm; model d_ddaly_all_20_70_2 = incidence1549w_20 p_newp_ge1_20  p_vl1000_20	prop_w_1549_sw_20 ; 
+proc glm; model d_ddaly_all_20_70_2 = prevalence1549_20  p_newp_ge1_20  p_vl1000_20	prop_w_1549_sw_20  p_newp_prep_20_25_2  ; 
 run;
 
 * p_startedline2_20   incidence1549w_20  incidence1549m_20 
@@ -467,7 +474,7 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 
 
-proc glm; model d_dcost_20_70_2 = incidence1549_20  p_newp_ge1_20  p_startedline2_20 p_vl1000_20;
+proc glm; model d_dcost_20_70_2 = incidence1549_20 p_newp_ge1_20  p_vl1000_20;
 run;
 
 
@@ -488,11 +495,15 @@ proc freq data=wide; tables ce_500;
 * where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
 * where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
 
-  where    0.05 <= prop_1564_onprep_20_70_2 < 0.10    and    0.10 <= prevalence1549_20 < 0.15   ;
+* where    0.00 <= prop_1564_onprep_20_70_2 < 0.05    and    0.15 <= prevalence1549_20 < 0.85   ;
+
+* where  0.15 <= prop_1564_onprep_20_70_2 < 0.85  ;
+
+  where 0.10 <= p_newp_ge1_20 < 0.15 and 1.50 <= incidence1549_20 < 5.00 ;
 run; 
 
 
-
+proc freq; tables cost_per_infection_averted ;  run;
 
  
 * --------------------------------------------------------------------------------------------------------------;
