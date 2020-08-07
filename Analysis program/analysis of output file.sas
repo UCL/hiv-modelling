@@ -2,13 +2,10 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;
 set a.wide_vmmc_28_7_20_10am;
-proc contents;run;
 
 *difference in HIV death rate;
 
 ddeath_rate_hiv_m_20_40_2 = death_rate_hiv_m_20_40_2 - death_rate_hiv_m_20_40_1;
-
-
 
 *dalys averted;
 d_ddaly_all_20_40_2 = -(ddaly_all_20_40_2 - ddaly_all_20_40_1);
@@ -67,44 +64,31 @@ p_mcirc_1549m_20 p_mcirc_1519m_20 p_mcirc_2024m_20 p_mcirc_2529m_20 p_mcirc_3039
 run;
 
 proc means n p50 p5 p95;var
-n_vmmc1549_3m_19_20;
-run; 
-p_vmmc_1549m_u_20 p_vmmc_1519m_u_20 p_vmmc_2024m_u_20 p_vmmc_2529m_u_20 p_vmmc_3039m_u_20 p_vmmc_4049m_u_20;
-
+n_vmmc1549_3m_19_20_1
+p_vmmc_1549m_u_19_20_1 p_vmmc_1519m_u_19_20_1  p_vmmc_2024m_u_19_20_1  p_vmmc_2529m_u_19_20_1 p_vmmc_3039m_u_19_20_1 p_vmmc_4049m_u_19_20_1;
+run;
 proc contents;run;
 
 
 proc means n p50 p5 p95;var
 
-p_mcirc_1519m_20_25_1 p_mcirc_1519m_20_40_1
-p_mcirc_1519m_20_25_2 p_mcirc_1519m_20_40_2
-p_mcirc_1519m_20_25_3 p_mcirc_1519m_20_40_3
-p_mcirc_1519m_20_25_4 p_mcirc_1519m_20_40_4
+p_vmmc_1519m_20_25_1 p_vmmc_1519m_20_40_1 p_vmmc_1519m_20_70_1
+p_vmmc_1519m_20_25_2 p_vmmc_1519m_20_40_2 p_vmmc_1519m_20_70_2
 
-p_mcirc_2024m_20_25_1 p_mcirc_2024m_20_40_1
-p_mcirc_2024m_20_25_2 p_mcirc_2024m_20_40_2
-p_mcirc_2024m_20_25_3 p_mcirc_2024m_20_40_3
-p_mcirc_2024m_20_25_4 p_mcirc_2024m_20_40_4
+p_vmmc_2024m_20_25_1 p_vmmc_2024m_20_40_1 p_vmmc_2024m_20_70_1
+p_vmmc_2024m_20_25_2 p_vmmc_2024m_20_40_2 p_vmmc_2024m_20_70_2
 
-p_mcirc_2529m_20_25_1 p_mcirc_2529m_20_40_1
-p_mcirc_2529m_20_25_2 p_mcirc_2529m_20_40_2
-p_mcirc_2529m_20_25_3 p_mcirc_2529m_20_40_3
-p_mcirc_2529m_20_25_4 p_mcirc_2529m_20_40_4
+p_vmmc_2529m_20_25_1 p_vmmc_2529m_20_40_1 p_vmmc_2529m_20_70_1
+p_vmmc_2529m_20_25_2 p_vmmc_2529m_20_40_2 p_vmmc_2529m_20_70_2
 
-p_mcirc_3039m_20_25_1 p_mcirc_3039m_20_40_1
-p_mcirc_3039m_20_25_2 p_mcirc_3039m_20_40_2
-p_mcirc_3039m_20_25_3 p_mcirc_3039m_20_40_3
-p_mcirc_3039m_20_25_4 p_mcirc_3039m_20_40_4
+p_vmmc_3039m_20_25_1 p_vmmc_3039m_20_40_1 p_vmmc_3039m_20_70_1
+p_vmmc_3039m_20_25_2 p_vmmc_3039m_20_40_2 p_vmmc_3039m_20_70_2
 
-p_mcirc_4049m_20_25_1 p_mcirc_4049m_20_40_1
-p_mcirc_4049m_20_25_2 p_mcirc_4049m_20_40_2
-p_mcirc_4049m_20_25_3 p_mcirc_4049m_20_40_3
-p_mcirc_4049m_20_25_4 p_mcirc_4049m_20_40_4
+p_vmmc_4049m_20_25_1 p_vmmc_4049m_20_40_1 p_vmmc_4049m_20_70_1
+p_vmmc_4049m_20_25_2 p_vmmc_4049m_20_40_2 p_vmmc_4049m_20_70_2
 
-p_mcirc_1549m_20_25_1 p_mcirc_1549m_20_40_1
-p_mcirc_1549m_20_25_2 p_mcirc_1549m_20_40_2
-p_mcirc_1549m_20_25_3 p_mcirc_1549m_20_40_3
-p_mcirc_1549m_20_25_4 p_mcirc_1549m_20_40_4
+p_vmmc_1549m_20_25_1 p_vmmc_1549m_20_40_1 p_vmmc_1549m_20_70_1
+p_vmmc_1549m_20_25_2 p_vmmc_1549m_20_40_2 p_vmmc_1549m_20_70_2
 ;run;
 
 proc means n p50 p5 p95;var 
