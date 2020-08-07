@@ -2651,7 +2651,7 @@ if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and m
 end;
 
 vmmc=0;if mcirc=1 and birth_circ ne 1 then vmmc=1;
-
+new_vmmc=0;if new_mcirc=1 and birth_circ ne 1 then new_vmmc=1;
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
@@ -11272,16 +11272,16 @@ end;
 
 
 *** Total circumcisions and new circumcisions;
-mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;if gender=1 and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; vmmc1014m=vmmc; end;
+mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;if gender=1 and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
 
-mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;if gender=1 and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; vmmc1519m=vmmc; end;
-mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;if gender=1 and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; vmmc2024m=vmmc; end;
-mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;if gender=1 and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; vmmc2529m=vmmc; end;
-mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;if gender=1 and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; vmmc3034m=vmmc; end;
-mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;if gender=1 and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; vmmc3539m=vmmc; end;
-mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; vmmc4044m=vmmc; end;
-mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; vmmc4549m=vmmc; end;
-mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; vmmc50plm=vmmc; end;
+mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;if gender=1 and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
+mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;if gender=1 and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; new_vmmc2024m=new_vmmc; vmmc2024m=vmmc; end;
+mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;if gender=1 and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; new_vmmc2529m=new_vmmc; vmmc2529m=vmmc; end;
+mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;if gender=1 and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; new_vmmc3034m=new_vmmc; vmmc3034m=vmmc; end;
+mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;if gender=1 and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; new_vmmc3539m=new_vmmc; vmmc3539m=vmmc; end;
+mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
+mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
+mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
 
@@ -14195,7 +14195,9 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_mcirc_3539m + mcirc_3539m ; s_mcirc_4044m + mcirc_4044m ; s_mcirc_4549m + mcirc_4549m ; s_mcirc_50plm + mcirc_50plm ;
 	s_vmmc + vmmc ; s_vmmc1519m + vmmc1519m ; s_vmmc2024m + vmmc2024m ; s_vmmc2529m + vmmc2529m ; s_vmmc3034m + vmmc3034m ; s_vmmc3539m + vmmc3539m ;
     s_vmmc4044m + vmmc4044m ; s_vmmc4549m + vmmc4549m ; s_vmmc50plm + vmmc50plm ;
- 	s_new_mcirc + new_mcirc ; s_new_mcirc_1519m + new_mcirc_1519m ; s_new_mcirc_2024m + new_mcirc_2024m ; s_new_mcirc_2529m + new_mcirc_2529m ;
+	s_new_vmmc + new_vmmc ; s_new_vmmc1519m + new_vmmc1519m ; s_new_vmmc2024m + new_vmmc2024m ; s_new_vmmc2529m + new_vmmc2529m ; s_new_vmmc3034m + new_vmmc3034m ; s_new_vmmc3539m + new_vmmc3539m ;
+    s_new_vmmc4044m + new_vmmc4044m ; s_new_vmmc4549m + new_vmmc4549m ; s_new_vmmc50plm + new_vmmc50plm ;
+	s_new_mcirc + new_mcirc ; s_new_mcirc_1519m + new_mcirc_1519m ; s_new_mcirc_2024m + new_mcirc_2024m ; s_new_mcirc_2529m + new_mcirc_2529m ;
 	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ;          
  	s_new_mcirc_50plm + new_mcirc_50plm ;
             
@@ -14247,8 +14249,7 @@ if 15 <= age or death ne . then do;
 
 	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; s_dead_allage + dead; 
 	s_death_dcause3_allage + death_dcause3 ;  s_death_hivrel_allage + death_hivrel;
-	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
-  	s_vmmc1014m + vmmc1014m ; s_art_attrit_1yr + art_attrit_1yr ; s_art_attrit_1yr_on + art_attrit_1yr_on ; s_art_attrit_2yr + art_attrit_2yr ;
+  	s_art_attrit_1yr + art_attrit_1yr ; s_art_attrit_1yr_on + art_attrit_1yr_on ; s_art_attrit_2yr + art_attrit_2yr ;
 	s_art_attrit_2yr_on + art_attrit_2yr_on ; s_art_attrit_3yr + art_attrit_3yr ; s_art_attrit_3yr_on + art_attrit_3yr_on ; 
     s_art_attrit_4yr + art_attrit_4yr ; s_art_attrit_4yr_on + art_attrit_4yr_on ; s_art_attrit_5yr + art_attrit_5yr ; 
 	s_art_attrit_5yr_on + art_attrit_5yr_on ; s_art_attrit_6yr + art_attrit_6yr ; s_art_attrit_6yr_on + art_attrit_6yr_on ;
@@ -14260,6 +14261,11 @@ if 15 <= age or death ne . then do;
     s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_alive_w + alive_w ; s_alive_m + alive_m ; 
 	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
+end;
+
+if 0 <= age or death ne . then do;
+	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
+	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ;
 end;
 
 cald = caldate_never_dot ;
@@ -15184,11 +15190,15 @@ s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_on
 s_onart_birth_with_inf_child    
 
 /*circumcision*/
-s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m  s_mcirc_50plm
+s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
-s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  s_new_mcirc_4044m
-s_new_mcirc_4549m  s_new_mcirc_50plm
-s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m
+s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
+s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc4549m  s_new_vmmc50plm
+
+s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 
 /*parameters sampled*/
@@ -15886,11 +15896,15 @@ s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_on
 s_onart_birth_with_inf_child    
 
 /*circumcision*/
-s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m  s_mcirc_50plm
+s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
-s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  s_new_mcirc_4044m
-s_new_mcirc_4549m  s_new_mcirc_50plm
-s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m
+s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
+s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc4549m  s_new_vmmc50plm
+
+s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 /* covid */
 
@@ -16576,11 +16590,15 @@ s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_on
 s_onart_birth_with_inf_child  
 
 /*circumcision*/
-s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m  s_mcirc_50plm
+s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
-s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  s_new_mcirc_4044m
-s_new_mcirc_4549m  s_new_mcirc_50plm
-s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m
+s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
+s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc4549m  s_new_vmmc50plm
+
+s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 /*parameters sampled*/
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  
