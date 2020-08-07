@@ -3,6 +3,40 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 data a;
 set a.wide_vmmc_28_7_20_10am;
 
+*difference in vmmc rates;
+
+d_p_vmmc_inc1014m_20_25_2 = p_vmmc_inc1014m_20_25_2 - p_vmmc_inc1014m_20_25_1;
+d_p_vmmc_1549m_20_25_2 = p_vmmc_1549m_20_25_2 - p_vmmc_1549m_20_25_1;
+d_p_vmmc_1549m_20_25_2 = p_vmmc_1549m_20_25_2 - p_vmmc_1549m_20_25_1;
+d_p_vmmc_1014m_20_25_2 = p_vmmc_1014m_20_25_2 - p_vmmc_1014m_20_25_1;
+d_p_vmmc_1519m_20_25_2 = p_vmmc_1519m_20_25_2 - p_vmmc_1519m_20_25_1;
+d_p_vmmc_2024m_20_25_2 = p_vmmc_2024m_20_25_2 - p_vmmc_2024m_20_25_1;
+d_p_vmmc_2529m_20_25_2 = p_vmmc_2529m_20_25_2 - p_vmmc_2529m_20_25_1;
+d_p_vmmc_3039m_20_25_2 = p_vmmc_3039m_20_25_2 - p_vmmc_3039m_20_25_1;
+d_p_vmmc_4049m_20_25_2 = p_vmmc_4049m_20_25_2 - p_vmmc_4049m_20_25_1;
+
+d_p_vmmc_inc1014m_20_40_2 = p_vmmc_inc1014m_20_40_2 - p_vmmc_inc1014m_20_40_1;
+d_p_vmmc_1549m_20_40_2 = p_vmmc_1549m_20_40_2 - p_vmmc_1549m_20_40_1;
+d_p_vmmc_1549m_20_40_2 = p_vmmc_1549m_20_40_2 - p_vmmc_1549m_20_40_1;
+d_p_vmmc_1014m_20_40_2 = p_vmmc_1014m_20_40_2 - p_vmmc_1014m_20_40_1;
+d_p_vmmc_1519m_20_40_2 = p_vmmc_1519m_20_40_2 - p_vmmc_1519m_20_40_1;
+d_p_vmmc_2024m_20_40_2 = p_vmmc_2024m_20_40_2 - p_vmmc_2024m_20_40_1;
+d_p_vmmc_2529m_20_40_2 = p_vmmc_2529m_20_40_2 - p_vmmc_2529m_20_40_1;
+d_p_vmmc_3039m_20_40_2 = p_vmmc_3039m_20_40_2 - p_vmmc_3039m_20_40_1;
+d_p_vmmc_4049m_20_40_2 = p_vmmc_4049m_20_40_2 - p_vmmc_4049m_20_40_1;
+
+d_p_vmmc_inc1014m_20_70_2 = p_vmmc_inc1014m_20_70_2 - p_vmmc_inc1014m_20_70_1;
+d_p_vmmc_1549m_20_70_2 = p_vmmc_1549m_20_70_2 - p_vmmc_1549m_20_70_1;
+d_p_vmmc_1549m_20_70_2 = p_vmmc_1549m_20_70_2 - p_vmmc_1549m_20_70_1;
+d_p_vmmc_1014m_20_70_2 = p_vmmc_1014m_20_70_2 - p_vmmc_1014m_20_70_1;
+d_p_vmmc_1519m_20_70_2 = p_vmmc_1519m_20_70_2 - p_vmmc_1519m_20_70_1;
+d_p_vmmc_2024m_20_70_2 = p_vmmc_2024m_20_70_2 - p_vmmc_2024m_20_70_1;
+d_p_vmmc_2529m_20_70_2 = p_vmmc_2529m_20_70_2 - p_vmmc_2529m_20_70_1;
+d_p_vmmc_3039m_20_70_2 = p_vmmc_3039m_20_70_2 - p_vmmc_3039m_20_70_1;
+d_p_vmmc_4049m_20_70_2 = p_vmmc_4049m_20_70_2 - p_vmmc_4049m_20_70_1;
+
+
+
 *difference in HIV death rate;
 
 ddeath_rate_hiv_m_20_40_2 = death_rate_hiv_m_20_40_2 - death_rate_hiv_m_20_40_1;
@@ -60,17 +94,27 @@ p_diag_20 p_diag_m_20 p_diag_w_20
 p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20
 p_vl1000_20 p_vl1000_m_20 p_vl1000_w_20
 p_onart_vl1000_20 p_onart_vl1000_m_20 p_onart_vl1000_w_20
-p_mcirc_1549m_20 p_mcirc_1519m_20 p_mcirc_2024m_20 p_mcirc_2529m_20 p_mcirc_3039m_20 p_mcirc_4049m_20;
+p_mcirc_1549m_20 p_mcirc_inc1014m_20 p_mcirc_1014m_20 p_mcirc_1519m_20 p_mcirc_2024m_20 p_mcirc_2529m_20 p_mcirc_3039m_20 p_mcirc_4049m_20;
 run;
 
 proc means n p50 p5 p95;var
-n_vmmc1549_3m_19_20_1
-p_vmmc_1549m_u_19_20_1 p_vmmc_1519m_u_19_20_1  p_vmmc_2024m_u_19_20_1  p_vmmc_2529m_u_19_20_1 p_vmmc_3039m_u_19_20_1 p_vmmc_4049m_u_19_20_1;
+n_new_vmmc1549_3m_19_20_1 n_new_vmmc1549_3m_inc1014m_1
+p_new_vmmc_1014m_u_19_20_1  p_new_vmmc_1549m_u_19_20_1 p_new_vmmc_1519m_u_19_20_1  p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1 
+p_new_vmmc_3039m_u_19_20_1 p_new_vmmc_4049m_u_19_20_1;
 run;
 proc contents;run;
 
 
-proc means n p50 p5 p95;var
+proc means n p50 p5 p95;var p_vmmc_inc1014m
+
+p_vmmc_1549m_20_25_1 p_vmmc_1549m_20_40_1 p_vmmc_1549m_20_70_1
+p_vmmc_1549m_20_25_2 p_vmmc_1549m_20_40_2 p_vmmc_1549m_20_70_2
+
+p_vmmc_inc1014m_20_25_1 p_vmmc_inc1014m_20_40_1 p_vmmc_inc1014m_20_70_1
+p_vmmc_inc1014m_20_25_2 p_vmmc_inc1014m_20_40_2 p_vmmc_inc1014m_20_70_2
+
+p_vmmc_1014m_20_25_1 p_vmmc_1014m_20_40_1 p_vmmc_1014m_20_70_1
+p_vmmc_1014m_20_25_2 p_vmmc_1014m_20_40_2 p_vmmc_1014m_20_70_2
 
 p_vmmc_1519m_20_25_1 p_vmmc_1519m_20_40_1 p_vmmc_1519m_20_70_1
 p_vmmc_1519m_20_25_2 p_vmmc_1519m_20_40_2 p_vmmc_1519m_20_70_2
@@ -87,8 +131,7 @@ p_vmmc_3039m_20_25_2 p_vmmc_3039m_20_40_2 p_vmmc_3039m_20_70_2
 p_vmmc_4049m_20_25_1 p_vmmc_4049m_20_40_1 p_vmmc_4049m_20_70_1
 p_vmmc_4049m_20_25_2 p_vmmc_4049m_20_40_2 p_vmmc_4049m_20_70_2
 
-p_vmmc_1549m_20_25_1 p_vmmc_1549m_20_40_1 p_vmmc_1549m_20_70_1
-p_vmmc_1549m_20_25_2 p_vmmc_1549m_20_40_2 p_vmmc_1549m_20_70_2
+
 ;run;
 
 proc means n p50 p5 p95;var 
