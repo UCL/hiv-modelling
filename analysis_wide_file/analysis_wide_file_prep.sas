@@ -3,9 +3,8 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 data wide;    
-* set a.wide_prep_20_7_20_2pm_26_7_20; 
   set a.wide_prep_2_8_20_6pm_7_8_20; if run <=  864400278 ;  * to give 1000 setting scenarios;
-* set a.wide_prep_2_8_20_6pm_disc_7p;
+* set a.wide_prep_2_8_20_6pm_7_8_20_dis7p;  if run <=  864400278 ;  * to give 1000 setting scenarios;
 
 
 
@@ -29,7 +28,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-dcost_prep_20_70_1   +      
+(dcost_prep_20_70_1 / 3)   +      
 dcost_prep_visit_20_70_1 +  
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
@@ -54,7 +53,7 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_1  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-dcost_prep_20_70_2   +      
+(dcost_prep_20_70_2 / 3)    +      
 dcost_prep_visit_20_70_2 +  
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -113,11 +112,14 @@ cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ;
 d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
 
 infections_averted_20_25 = n_infection_20_25_1 - n_infection_20_25_2;
+cost_per_infection_averted_20_25 = 1000000 * (max(d_dcost_20_25_2 , 0)) / max(1,infections_averted_20_25) ;
 
-cost_per_infection_averted = d_dcost_20_25_2 / infections_averted_20_25 ;
+infections_averted_20_70 = n_infection_20_70_1 - n_infection_20_70_2;
+cost_per_infection_averted_20_70 = 1000000 * (max(d_dcost_20_70_2 , 0)) / max(1,infections_averted_20_70) ;
 
 r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
 r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
+
 
 
 /*
@@ -179,7 +181,7 @@ p_onart_vl1000_20   p_vl1000_20		p_vg1000_20 			p_onart_m_20 	p_onart_w_20
 p_onart_vl1000_w_20				p_onart_vl1000_m_20  prev_vg1000_newp_m_20   prev_vg1000_newp_w_20 p_startedline2_20
 p_tle_20	 p_tld_20	 p_zld_20	 p_zla_20	 p_otherreg_20	 p_drug_level_test_20	 p_linefail_ge1_20  
 r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_art_or_prep_20 n_sw_1564_20 
-p_k65m_20 p_m184m_20 ;
+p_k65m_20 p_m184m_20 p_newp_ge1_20  p_1524_newp_ge1_20;
 run;
 
 
@@ -274,7 +276,7 @@ run;
 ods html close;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prevalence_vg1000_20_25_1  prevalence_vg1000_20_25_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var prevalence_vg1000_20_70_1  prevalence_vg1000_20_70_2 ;  
 run; 
 ods html close;
 
@@ -320,6 +322,15 @@ ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_onart_20_25_1  p_onart_20_25_2 ;  
 run; 
 ods htm close;
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_prep_adhg80_20_25_1  p_prep_adhg80_20_25_2 ;  
+run; 
+ods htm close;
+
+
 
 
 
@@ -491,19 +502,18 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-* where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
-* where prop_1564_onprep_20_70_2 < 0.05 and incidence1549_20 > 0.30 ;
-
-* where    0.00 <= prop_1564_onprep_20_70_2 < 0.05    and    0.15 <= prevalence1549_20 < 0.85   ;
-
-* where  0.15 <= prop_1564_onprep_20_70_2 < 0.85  ;
-
-* where 0.08 <= p_newp_ge1_20 < 0.12 and 1.50 <= incidence1549_20 < 5.00 ;
+* where  0.12 <= p_newp_ge1_20 < 0.30  ;
+  where 0.00 <= p_newp_ge1_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 run; 
 
 
-proc freq; tables cost_per_infection_averted  ;  run;
-
+proc means data=wide; var cost_per_infection_averted_20_25  ; where infections_averted_20_25 > 0 and
+1.50 <= incidence1549_20 < 5.50 ;
+run;
+ 
+proc means data=wide; var cost_per_infection_averted_20_70  ; where infections_averted_20_70 > 0 ;
+* and 1.50 <= incidence1549_20 < 5.50 ;
+run;
  
 * --------------------------------------------------------------------------------------------------------------;
 

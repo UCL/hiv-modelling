@@ -636,8 +636,8 @@ discount_0 = disc * discount_adj_0 ;
 * run;
 
 * if using 7% discount rate:  ; 
-* discount=discount_7p; 
-* discount_adj=discount_adj_7p;
+  discount=discount_7p; 
+  discount_adj=discount_adj_7p;
 
 * if using 0% discount rate:  ;
 * discount=discount_0; 
@@ -847,7 +847,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prep;
 
 * p_elig_prep;   				p_elig_prep = s_elig_prep / (s_alive - s_hiv1564);
-* prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / (s_ageg1519w + s_ageg2024w) ;
+* prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 * prop_sw_onprep; 				prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -1534,8 +1534,8 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_prep_2_8_20_6pm_7_8_20; 
-* data a.wide_prep_2_8_20_6pm_disc_7p; 
+* data a.wide_prep_2_8_20_6pm_7_8_20; 
+  data a.wide_prep_2_8_20_6pm_7_8_20_dis7p; 
 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
