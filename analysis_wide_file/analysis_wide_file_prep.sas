@@ -4,10 +4,8 @@
 
 data wide;    
 * set a.wide_prep_20_7_20_2pm_26_7_20; 
-  set a.wide_prep_2_8_20_6pm_4_8_20; 
+  set a.wide_prep_2_8_20_6pm_7_8_20; if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_2_8_20_6pm_disc_7p;
-
-
 
 
 
@@ -500,7 +498,7 @@ proc freq data=wide; tables ce_500;
 
 * where  0.15 <= prop_1564_onprep_20_70_2 < 0.85  ;
 
-  where 0.08 <= p_newp_ge1_20 < 0.12 and 1.50 <= incidence1549_20 < 5.00 ;
+* where 0.08 <= p_newp_ge1_20 < 0.12 and 1.50 <= incidence1549_20 < 5.00 ;
 run; 
 
 
