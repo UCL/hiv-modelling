@@ -271,7 +271,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 						incr_prepuptake_pop_2020 = 0;  
 						if _u36 < 0.95 then do; 
 							incr_prepuptake_pop_2020 = 1; 
-							r= uniform(0); if r < 0.8 and prep_willing_pop = 0 then prep_willing_pop = 1;
+							r= uniform(0); if r < 0.95 and prep_willing_pop = 0 then prep_willing_pop = 1;
 						end;	
 
 * prep_strategy_2020;
@@ -281,7 +281,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 						if 0.33 <= _u38 < 0.67  then do;	prep_strategy_2020 = 1; prep_strategy = 1; end;
 						if 0.67 <= _u38        then do;	prep_strategy_2020 = 1; prep_strategy = 8; end;
 						*/
-						prep_strategy = 7;
+						prep_strategy = 9;
 			end;
 
 
