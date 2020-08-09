@@ -2642,11 +2642,11 @@ if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and m
 			 tested=1;tested_circ=1;dt_last_test=caldate{t};np_lasttest=0;
 			 if ever_tested ne 1 then do;date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t};end;
 		end;
-		if hiv    ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
+		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
 	end;
 
 	if test_link_circ=1 and t ge 2 and tested_tm1=1 and registd_tm1  ne 1 then do;
-		uc=uniform(0); if uc < test_link_circ_prob then do; mcirc=1;new_mcirc=1; end;
+		uc=uniform(0); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
 	end;
 	
 	if mcirc=1 then date_mcirc=caldate{t};
@@ -16178,7 +16178,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_8_8_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
 
 put   
 
