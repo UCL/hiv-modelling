@@ -1,9 +1,27 @@
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
+libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\";
 
 
    data wide;    
-   set a.wide_covid_hiv_2_8_8_20_11am_9_8_20;
+   set a.wide_covid_hiv_2_8_8_20_11am;
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+* for covid_hiv_2 analysis ;
+
+
+d_incidence1549_20_70_2 = incidence1549_20_70_2 - incidence1549_20_70_1 ;
+d_incidence1549_20_70_3 = incidence1549_20_70_3 - incidence1549_20_70_1 ;
+d_incidence1549_20_70_4 = incidence1549_20_70_4 - incidence1549_20_70_1 ;
+d_incidence1549_20_70_5 = incidence1549_20_70_5 - incidence1549_20_70_1 ;
+
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
 
 
 
@@ -355,6 +373,9 @@ if ndb_500_20_40_8 = min_ndb_500 then ce_500_monitoring=8;
 
 * --------------------------------------------------------------------------------------------------------------;
 
+proc contents;
+
+
 proc freq  data=wide; tables
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
@@ -421,6 +442,44 @@ p_hard_reach_m  inc_cat base_rate_sw
 / solution;
   run;
 */
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+* covid_hiv_2 analysis ;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; 
+var incidence1549_20_25_1  incidence1549_20_25_2 incidence1549_20_25_3 incidence1549_20_25_4  incidence1549_20_25_5 ; run;
+ods html close;
+
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; 
+var 
+n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 n_tested_20_25_4 n_tested_20_25_5
+n_new_mcirc_20_25_1 n_new_mcirc_20_25_2 n_new_mcirc_20_25_3 n_new_mcirc_20_25_4 n_new_mcirc_20_25_5
+dvl_cost_20_25_1 dvl_cost_20_25_2 dvl_cost_20_25_3 dvl_cost_20_25_4 dvl_cost_20_25_5;
+run;
+ods html close;
+
+
+
+
+
+
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
