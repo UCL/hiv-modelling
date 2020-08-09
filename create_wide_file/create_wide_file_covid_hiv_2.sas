@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_covid_hiv_2_20_7_20_2pm_1";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_covid_hiv_2_8_8_20_11am_1";  
 
 input   
 
@@ -1080,6 +1080,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_death;						n_death = s_dead_allage * sf_2019;
 * n_covid;						n_covid = s_covid * sf_2019;
 
+* n_death_discount;				n_death_discount = n_death*discount;
+* death_rate_all_discount;		death_rate_all_discount = (4 * 100 * s_dead_allage) / (s_alive_w + s_alive_m) ;
+
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * number of women with hiv giving birth per year;
@@ -1134,7 +1137,7 @@ p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vl
 death_rate  death_rate_hiv  death_rate_hiv_m  death_rate_hiv_w  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
+prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 death_rate_all_discount n_death_discount
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep
 
 sf_2019 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1223,7 +1226,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
    proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;  
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
-/*proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
+   proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; 
    proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;    
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
@@ -1231,10 +1234,10 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
    proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run;   
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
-/* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
+   proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
    proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;    
 
-data &v ; merge  y_20 t_20_25 t_20_70 /*add other datasets from above here*/ ;  
+data &v ; merge  y_20 t_20_25 t_20_40 t_20_70 /*add other datasets from above here*/ ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1299,8 +1302,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
-%var(v=n_mcirc1549_);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_);%var (v=n_vmmc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
-%var(v=s_sw_newp);
+%var(v=n_mcirc1549_);%var(v=n_mcirc1549_3m);%var(v=n_vmmc1549_);%var(v=n_vmmc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
+%var(v=s_sw_newp); %var(death_rate_all_discount); %var(n_death_discount);
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
@@ -1352,7 +1355,7 @@ p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hi
 n_prep  n_covid  n_death_covid  n_death  n_death_hivrel 
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m
 n_mcirc1549_  n_mcirc1549_3m  n_vmmc1549_  n_vmmc1549_3m  n_new_inf1549m  n_new_inf1549
-s_sw_newp
+s_sw_newp  death_rate_all_discount n_death_discount
 ;
 
 proc contents; run;
@@ -1544,7 +1547,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_covid_hiv_2_2_20_7_20_2pm_8_8_20; 
+  data a.wide_covid_hiv_2_8_8_20_11am_9_8_20; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -1578,6 +1581,6 @@ r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_a
 p_k65m_20 p_m184m_20 ;
 run;
 
-proc contents;run;
+
 
 
