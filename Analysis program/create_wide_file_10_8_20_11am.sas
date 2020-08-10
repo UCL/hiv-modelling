@@ -1233,9 +1233,10 @@ n_mcirc1549_  n_mcirc1549_3m  n_vmmc1549_  n_vmmc1549_3m  n_new_vmmc1549_3m n_ne
 
 proc sort data=y;by run option;run;
 
-data a.vmmc_10_8_20_11am; set y;run;
 
-data y; set a.vmmc_10_8_20_11am; run;
+data a.vmmc_7_8_20_11am; set y;run;
+
+data y; set a.vmmc_7_8_20_11am; run;
 
   options nomprint;
   option nospool;
@@ -1564,7 +1565,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_28_7_20_10am ;
+  data a.wide_vmmc_7_8_20_11am ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
