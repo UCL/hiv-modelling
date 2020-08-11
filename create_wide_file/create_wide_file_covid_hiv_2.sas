@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_8_8_20_11am_t";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_8_8_20_11am";  
 
 input   
 
@@ -1077,10 +1077,10 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019;
-* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2019;
-* n_death;						n_death = s_dead_allage * sf_2019;
-* n_covid;						n_covid = s_covid * sf_2019;
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019 * 4;
+* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2019 * 4;
+* n_death;						n_death = s_dead_allage * sf_2019 * 4;
+* n_covid;						n_covid = s_covid * sf_2019 * 4;
 
 * n_death_discount;				n_death_discount = n_death*discount;
 * death_rate_all_discount;		death_rate_all_discount = (4 * 100 * s_dead_allage) / (s_alive_w + s_alive_m) ;
@@ -1231,6 +1231,8 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
    proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;  
+   proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.5 <= cald < 2021.50;  
+   proc means noprint data=y; var &v; output out=y_20_23 mean= &v._20_23; by run option ; where 2020.5 <= cald < 2023.50;  
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
    proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; 
    proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;    
@@ -1239,11 +1241,13 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
    proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run;   
+   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;   
+   proc sort data=y_20_23; by run; proc transpose data=y_20_23 out=t_20_23 prefix=&v._20_23_; var &v._20_23; by run;   
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
    proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
    proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;    
 
-data &v ; merge  y_20 t_20_25 t_20_40 t_20_70 /*add other datasets from above here*/ ;  
+data &v ; merge  y_20 t_20_25 t_20_21 t_20_23 t_20_40 t_20_70 /*add other datasets from above here*/ ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
