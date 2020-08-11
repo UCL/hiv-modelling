@@ -832,8 +832,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
 
-* p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
-* p_mcirc_inc1014m;				p_mcirc_inc1014m = (s_mcirc + s_mcirc_1014m)/ (s_alive_m + s_ageg1014m);
+* p_mcirc;						p_mcirc = s_mcirc / s_alive1564_m ;
+* p_mcirc_inc1014m;				p_mcirc_inc1014m = (s_mcirc + s_mcirc_1014m)/ (s_alive1564_m + s_ageg1014m);
 * p_mcirc_1014m;				if s_ageg1014m gt 0 then p_mcirc_1014m = s_mcirc_1014m / s_ageg1014m ;
 * p_mcirc_1519m;				p_mcirc_1519m = s_mcirc_1519m / s_ageg1519m ;
 * p_mcirc_2024m;				p_mcirc_2024m = s_mcirc_2024m / s_ageg2024m ;
@@ -847,26 +847,26 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_mcirc_50plm;				p_mcirc_50plm = s_mcirc_50plm / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
 
-*new vmmc uptake rate (denom=hiv -ve males);
-* p_new_vmmc_u;					p_new_vmmc_u = s_new_vmmc / (s_alive_m -s_hiv1564m);
-* p_new_vmmc_u_1049m;			p_new_vmmc_u_1049m = (s_new_vmmc + s_new_vmmc1014m) / ((s_alive_m -s_hiv1564m) + (s_ageg1014m-s_hiv1014m));
-* p_new_vmmc_1014m_u;			if (s_ageg1014m - s_hiv1014m) gt 0 then p_new_vmmc_1014m_u = s_new_vmmc1014m / (s_ageg1014m - s_hiv1014m) ;
-* p_new_vmmc_1519m_u;			p_new_vmmc_1519m_u = s_new_vmmc1519m / (s_ageg1519m - s_hiv1519m) ;
-* p_new_vmmc_2024m_u;			p_new_vmmc_2024m_u = s_new_vmmc2024m / (s_ageg2024m - s_hiv2024m) ;
-* p_new_vmmc_2529m_u;			p_new_vmmc_2529m_u = s_new_vmmc2529m / (s_ageg2529m - s_hiv2529m) ;
-* p_new_vmmc_3034m_u;			p_new_vmmc_3034m_u = s_new_vmmc3034m / (s_ageg3034m - s_hiv3034m) ;
-* p_new_vmmc_3539m_u;			p_new_vmmc_3539m_u = s_new_vmmc3539m / (s_ageg3539m - s_hiv3539m) ;
-* p_new_vmmc_3039m_u;			p_new_vmmc_3039m_u = s_new_vmmc3039m / ((s_ageg3034m + s_ageg3539m) - (s_hiv3034m + s_hiv3539m));
-* p_new_vmmc_4044m_u;			p_new_vmmc_4044m_u = s_new_vmmc4044m / (s_ageg4044m - s_hiv4044m) ;
-* p_new_vmmc_4549m_u;			p_new_vmmc_4549m_u = s_new_vmmc4549m / (s_ageg4549m - s_hiv4549m) ;
+*new vmmc uptake rate per year (denom=hiv -ve males);
+* p_new_vmmc_u;					p_new_vmmc_u = (s_new_vmmc / (s_alive1564_m -s_hiv1564m))*4;
+* p_new_vmmc_u_1049m;			p_new_vmmc_u_1049m = ((s_new_vmmc1549m + s_new_vmmc1014m) / ((s_ageg1549m - s_hiv1549m) + (s_ageg1014m-s_hiv1014m)))*4;
+* p_new_vmmc_1014m_u;			if (s_ageg1014m - s_hiv1014m) gt 0 then p_new_vmmc_1014m_u = (s_new_vmmc1014m / (s_ageg1014m - s_hiv1014m))*4 ;
+* p_new_vmmc_1519m_u;			p_new_vmmc_1519m_u = (s_new_vmmc1519m / (s_ageg1519m - s_hiv1519m))*4;
+* p_new_vmmc_2024m_u;			p_new_vmmc_2024m_u = (s_new_vmmc2024m / (s_ageg2024m - s_hiv2024m))*4;
+* p_new_vmmc_2529m_u;			p_new_vmmc_2529m_u = (s_new_vmmc2529m / (s_ageg2529m - s_hiv2529m))*4;
+* p_new_vmmc_3034m_u;			p_new_vmmc_3034m_u = (s_new_vmmc3034m / (s_ageg3034m - s_hiv3034m))*4;
+* p_new_vmmc_3539m_u;			p_new_vmmc_3539m_u = (s_new_vmmc3539m / (s_ageg3539m - s_hiv3539m))*4;
+* p_new_vmmc_3039m_u;			p_new_vmmc_3039m_u = (s_new_vmmc3039m / ((s_ageg3034m + s_ageg3539m) - (s_hiv3034m + s_hiv3539m)))*4;
+* p_new_vmmc_4044m_u;			p_new_vmmc_4044m_u = (s_new_vmmc4044m / (s_ageg4044m - s_hiv4044m))*4 ;
+* p_new_vmmc_4549m_u;			p_new_vmmc_4549m_u = (s_new_vmmc4549m / (s_ageg4549m - s_hiv4549m))*4 ;
 * p_new_vmmc_4049m_u;			if ((s_ageg4044m + s_ageg4549m) - (s_hiv4044m + s_hiv4549m)) gt 0 then 
-								p_new_vmmc_4049m_u = s_new_vmmc4049m / ((s_ageg4044m + s_ageg4549m) - (s_hiv4044m + s_hiv4549m)) ;
-* p_new_vmmc_50plm_u;			p_new_vmmc_50plm_u = s_new_vmmc50plm / ((s_ageg5054m + s_ageg5559m + s_ageg6064m) - (s_hiv5054m + s_hiv5559m + s_hiv6064m)) ;
-* p_new_vmmc_1549m_u;			p_new_vmmc_1549m_u = s_new_vmmc1549m / (s_ageg1549m - s_hiv1549m );
+								p_new_vmmc_4049m_u = (s_new_vmmc4049m / ((s_ageg4044m + s_ageg4549m) - (s_hiv4044m + s_hiv4549m)))*4 ;
+* p_new_vmmc_50plm_u;			p_new_vmmc_50plm_u = (s_new_vmmc50plm / ((s_ageg5054m + s_ageg5559m + s_ageg6064m) - (s_hiv5054m + s_hiv5559m + s_hiv6064m)))*4 ;
+* p_new_vmmc_1549m_u;			p_new_vmmc_1549m_u = (s_new_vmmc1549m / (s_ageg1549m - s_hiv1549m ))*4;
 
 *% vmmc ;
-* p_vmmc;						p_vmmc = s_vmmc / s_alive_m ;
-* p_vmmc_inc1014m;				p_vmmc_inc1014m = (s_vmmc + s_vmmc1014m) / (s_alive_m + s_ageg1014m);
+* p_vmmc;						p_vmmc = s_vmmc /s_alive1564_m ;
+* p_vmmc_inc1014m;				p_vmmc_inc1014m = (s_vmmc + s_vmmc1014m) / (s_alive1564_m + s_ageg1014m);
 * p_vmmc_1014m;					if s_ageg1014m gt 0 then p_vmmc_1014m = s_vmmc1014m / s_ageg1014m ;
 * p_vmmc_1519m;					p_vmmc_1519m = s_vmmc1519m / s_ageg1519m ;
 * p_vmmc_2024m;					p_vmmc_2024m = s_vmmc2024m / s_ageg2024m ;
@@ -1106,6 +1106,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * death_rate_hiv; 				if s_hiv1564 > 0 then death_rate_hiv = (4 * 100 * s_death_hiv) / s_hiv1564;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
+* death_rate_hiv_all;			if s_alive1564 > 0 then death_rate_hiv_all = (4 * 100 * s_death_hiv) / s_alive1564;
+				 				if s_alive1564_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive1564_m;
+								if s_alive1564_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive1564_w;
 
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2019;
@@ -1122,7 +1125,7 @@ n_pregnant_ntd = s_pregnant_ntd    * sf_2019 * 4 ;
 n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2019 * 4;  * annual number;
 
 
-n_mcirc1549_py =		s_mcirc_1549m * sf_2019 * 4;
+n_mcirc1549_py =	s_mcirc_1549m * sf_2019 * 4;
 n_mcirc1549_3m =	s_mcirc_1549m * sf_2019;
 n_vmmc1549_py =		s_vmmc1549m * sf_2019 * 4;
 n_vmmc1549_3m =		s_vmmc1549m * sf_2019;
@@ -1172,7 +1175,7 @@ s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  
 p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000  
-death_rate  death_rate_hiv death_rate_hiv_m  death_rate_hiv_w  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
+death_rate  death_rate_hiv death_rate_hiv_m  death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
@@ -1333,6 +1336,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
 %var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
+%var(v=death_rate_hiv_all);%var(v=death_rate_hiv_all_m);%var(v=death_rate_hiv_all_w);
 %var(v=p_iime_);   %var(v=p_pime_);   %var(v=p_nnme_);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=ddaly_non_aids_pre_death);    %var(v=ddaly_ac_ntd_mtct);    %var(v=ddaly_ac_ntd_mtct_odabe);     %var(v=ddaly_ntd_mtct_napd);   
 %var(v=ddaly_ntd_mtct_odab_napd); %var(v=n_birth_with_inf_child);
@@ -1379,7 +1383,8 @@ s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  
 p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000  
-death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
+death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
+p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 

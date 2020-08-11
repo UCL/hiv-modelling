@@ -58,6 +58,12 @@ ddeath_rate_hiv_m_20_25_2 = death_rate_hiv_m_20_25_2 - death_rate_hiv_m_20_25_1;
 ddeath_rate_hiv_m_20_40_2 = death_rate_hiv_m_20_40_2 - death_rate_hiv_m_20_40_1;
 ddeath_rate_hiv_m_20_70_2 = death_rate_hiv_m_20_70_2 - death_rate_hiv_m_20_70_1;
 
+ddeath_rate_hiv_all_m_20_25_2 = death_rate_hiv_all_m_20_25_2 - death_rate_hiv_all_m_20_25_1;
+ddeath_rate_hiv_all_m_20_40_2 = death_rate_hiv_all_m_20_40_2 - death_rate_hiv_all_m_20_40_1;
+ddeath_rate_hiv_all_m_20_70_2 = death_rate_hiv_all_m_20_70_2 - death_rate_hiv_all_m_20_70_1;
+ 															   
+
+
 *infections averted;
 inf_avert_20_25_2 = ((n_new_inf1549_20_25_1 - n_new_inf1549_20_25_2)/n_new_inf1549_20_25_1)*100;
 inf_avert_20_40_2 = ((n_new_inf1549_20_40_1 - n_new_inf1549_20_40_2)/n_new_inf1549_20_40_1)*100;
@@ -121,9 +127,10 @@ if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_
 if d_ddaly_all_20_40_2 gt 0 then cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
 if d_ddaly_all_20_70_2 gt 0 then cost_daly_avert_20_70_2 = (d_dcost_20_70_2 / d_ddaly_all_20_70_2)*1000000;
 
+
 run;
 
-
+proc contents;run;
 
 ***table 1;
 proc means n p50 p5 p95;var
@@ -205,6 +212,10 @@ proc means n p50 p5 p95;var
 death_rate_hiv_m_20_25_1 death_rate_hiv_m_20_40_1 death_rate_hiv_m_20_70_1
 death_rate_hiv_m_20_25_2 death_rate_hiv_m_20_40_2 death_rate_hiv_m_20_70_2
 ddeath_rate_hiv_m_20_25_2 ddeath_rate_hiv_m_20_40_2  ddeath_rate_hiv_m_20_70_2
+
+death_rate_hiv_all_m_20_25_1 death_rate_hiv_all_m_20_40_1 death_rate_hiv_all_m_20_70_1
+death_rate_hiv_all_m_20_25_2 death_rate_hiv_all_m_20_40_2 death_rate_hiv_all_m_20_70_2
+ddeath_rate_hiv_all_m_20_25_2 ddeath_rate_hiv_all_m_20_40_2  ddeath_rate_hiv_all_m_20_70_2
 ;run;
 
 ***% infections averted;
@@ -213,12 +224,12 @@ inf_avert_20_25_2  inf_avert_20_40_2  inf_avert_20_70_2
 ;run;
 
 ***DALYs averted;
-proc means n p50 p5 p95;var  
+proc means n p50 p5 p95 mean lclm uclm;var  
 d_ddaly_all_20_25_2  d_ddaly_all_20_40_2  d_ddaly_all_20_70_2
 ;run;
 
 ***Total cost;
-proc means n p50 p5 p95;var
+proc means n p50 p5 p95 mean lclm uclm;var  
 dcost_20_25_1  dcost_20_40_1  dcost_20_70_1
 dcost_20_25_2  dcost_20_40_2  dcost_20_70_2
 ;run;
@@ -241,13 +252,32 @@ dtest_cost_20_25_1  dtest_cost_20_40_1  dtest_cost_20_70_1
 dtest_cost_20_25_2  dtest_cost_20_40_2  dtest_cost_20_70_2
 ;run;
 
-***difference in total cost;
+***Other costs;
 proc means n p50 p5 p95;var 
+dcost_condom_dn_20_25_1 dcost_drug_level_test_20_25_1  dcost_prep_visit_20_25_1
+dcost_prep_20_25_1 dcost_child_hiv_20_25_1  dcost_non_aids_pre_death_20_25_1
+dcost_condom_dn_20_40_1 dcost_drug_level_test_20_40_1  dcost_prep_visit_20_40_1
+dcost_prep_20_40_1 dcost_child_hiv_20_40_1  dcost_non_aids_pre_death_20_40_1
+dcost_condom_dn_20_70_1 dcost_drug_level_test_20_70_1  dcost_prep_visit_20_70_1
+dcost_prep_20_70_1 dcost_child_hiv_20_70_1  dcost_non_aids_pre_death_20_70_1
+
+dcost_condom_dn_20_25_2 dcost_drug_level_test_20_25_2  dcost_prep_visit_20_25_2
+dcost_prep_20_25_2 dcost_child_hiv_20_25_2  dcost_non_aids_pre_death_20_25_2
+dcost_condom_dn_20_40_2 dcost_drug_level_test_20_40_2  dcost_prep_visit_20_40_2
+dcost_prep_20_40_2 dcost_child_hiv_20_40_2  dcost_non_aids_pre_death_20_40_2
+dcost_condom_dn_20_70_2 dcost_drug_level_test_20_70_2  dcost_prep_visit_20_70_2
+dcost_prep_20_70_2 dcost_child_hiv_20_70_2  dcost_non_aids_pre_death_20_70_2;
+run;
+
+
+
+***difference in total cost;
+proc means n p50 p5 p95 mean lclm uclm;var  
 d_dcost_20_25_2  d_dcost_20_40_2  d_dcost_20_70_2
 ;run;
 
 ***net DALYs averted;
-proc means n p50 p5 p95;var 
+proc means n p50 p5 p95 mean lclm uclm;var  
 d_net_dalys_20_25_2  d_net_dalys_20_40_2  d_net_dalys_20_70_2
 ;run;
 
