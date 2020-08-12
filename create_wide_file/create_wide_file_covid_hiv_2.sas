@@ -6,9 +6,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_8_8_20_11am";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_9_8_20_5pm";  
 
 input   
+
 
 /*general*/
 run   cald   option 
@@ -201,6 +202,8 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+
+s_elig_prep_w_1549 s_prep_w_1549 
 
 s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
 
@@ -1209,9 +1212,10 @@ s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data covid_hiv_2_8_8_20_11am; set y;
+data covid_hiv_2_9_8_20_5pm; set y;  
 
-data y; set covid_hiv_2_8_8_20_11am; run;
+
+data y; set covid_hiv_2_9_8_20_5pm; run;
 
 
   options nomprint;
@@ -1555,7 +1559,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_covid_hiv_2_8_8_20_11am; 
+  data a.wide_covid_hiv_2_9_8_20_5pm; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

@@ -3,7 +3,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 
    data wide;    
-   set a.wide_covid_hiv_2_8_8_20_11am;
+   set a.wide_covid_hiv_2_9_8_20_5pm;
 
 
 
@@ -601,13 +601,16 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; 
-var  d_n_new_inf1549_20_70_5 ; run;
+proc means  n mean lclm uclm p5 p95 data=wide ; 
+var  d_n_new_inf1549_20_70_4 ; 
+run;
 ods html close;
+
+
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; 
-var d_n_death_dis_20_70_5 ; run;
+var d_n_death_dis_20_70_4 ; run;
 ods html close;
 
 
