@@ -249,6 +249,7 @@ s_vmmc4049m = s_vmmc4044m + s_vmmc4549m;
 
 s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
+s_hiv1524 = s_hiv1524m + s_hiv1524w ;
 
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
@@ -373,6 +374,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / s_hiv1564m ;  p_diag_m = p_diag_m * 100;
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w / s_hiv1564w ;  p_diag_w = p_diag_w * 100;
 
+* p_diag_1524;					if s_hiv1524 > 0 then p_diag_1524 = (s_diag_m1519_+s_diag_m2024_ + s_diag_w1519_+s_diag_w2024_ )/(s_hiv1524m+s_hiv1524w);
 * p_diag_m1524;					if s_hiv1524m > 0 then p_diag_m1524 = (s_diag_m1519_+s_diag_m2024_)/(s_hiv1524m);
 * p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
 
