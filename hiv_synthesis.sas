@@ -11281,16 +11281,17 @@ end;
 
 
 *** Total circumcisions and new circumcisions;
-mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;if gender=1 and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
+mcirc_1014m=0;new_mcirc_1014m=0;vmmc1014m=0;new_vmmc1014m=0;if gender=1 and 10 le age lt 15 then do; mcirc_1014m=mcirc; new_mcirc_1014m=new_mcirc; new_vmmc1014m=new_vmmc; vmmc1014m=vmmc; end;
 
-mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;if gender=1 and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
-mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;if gender=1 and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; new_vmmc2024m=new_vmmc; vmmc2024m=vmmc; end;
-mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;if gender=1 and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; new_vmmc2529m=new_vmmc; vmmc2529m=vmmc; end;
-mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;if gender=1 and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; new_vmmc3034m=new_vmmc; vmmc3034m=vmmc; end;
-mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;if gender=1 and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; new_vmmc3539m=new_vmmc; vmmc3539m=vmmc; end;
-mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
-mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
-mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
+mcirc_1519m=0;new_mcirc_1519m=0;vmmc1519m=0;new_vmmc1519m=0;if gender=1 and 15 le age lt 20 then do; mcirc_1519m=mcirc; new_mcirc_1519m=new_mcirc; new_vmmc1519m=new_vmmc; vmmc1519m=vmmc; end;
+mcirc_2024m=0;new_mcirc_2024m=0;vmmc2024m=0;new_vmmc2024m=0;if gender=1 and 20 le age lt 25 then do; mcirc_2024m=mcirc; new_mcirc_2024m=new_mcirc; new_vmmc2024m=new_vmmc; vmmc2024m=vmmc; end;
+mcirc_2529m=0;new_mcirc_2529m=0;vmmc2529m=0;new_vmmc2529m=0;if gender=1 and 25 le age lt 30 then do; mcirc_2529m=mcirc; new_mcirc_2529m=new_mcirc; new_vmmc2529m=new_vmmc; vmmc2529m=vmmc; end;
+mcirc_3034m=0;new_mcirc_3034m=0;vmmc3034m=0;new_vmmc3034m=0;if gender=1 and 30 le age lt 35 then do; mcirc_3034m=mcirc; new_mcirc_3034m=new_mcirc; new_vmmc3034m=new_vmmc; vmmc3034m=vmmc; end;
+mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;new_vmmc3539m=0;if gender=1 and 35 le age lt 40 then do; mcirc_3539m=mcirc; new_mcirc_3539m=new_mcirc; new_vmmc3539m=new_vmmc; vmmc3539m=vmmc; end;
+mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;new_vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
+mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;new_vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
+mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;new_vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
+
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
 
@@ -11411,7 +11412,6 @@ hiv8084m=0; if hiv=1 and gender=1 and 80 <= age < 85 then hiv8084m=1;
 
 hiv1564m=0; if hiv=1 and gender=1 and 15 <= age < 65 then hiv1564m=1;
 hiv1549m=0; if hiv=1 and gender=1 and 15 <= age < 50 then hiv1549m=1;
-hiv1014m=0; if hiv=1 and gender=1 and 10 <= age < 15 then hiv1014m=1;
 
 hiv1517w=0; if hiv=1 and gender=2 and 15 <= age < 18 then hiv1517w=1;
 hiv1819w=0; if hiv=1 and gender=2 and 18 <= age < 20 then hiv1819w=1;
@@ -13633,7 +13633,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_hiv1517m + hiv1517m ; s_hiv1819m + hiv1819m ; s_hiv1519m + hiv1519m ; s_hiv2024m + hiv2024m ;	s_hiv2529m + hiv2529m ; s_hiv3034m + hiv3034m ; 
 	s_hiv3539m + hiv3539m ; s_hiv4044m + hiv4044m ; s_hiv4549m + hiv4549m ; s_hiv5054m + hiv5054m ; s_hiv5559m + hiv5559m ; s_hiv6064m + hiv6064m ;
-	s_hiv1564m + hiv1564m ; s_hiv1549m + hiv1549m ; s_hiv1014m + hiv1014m ;	
+	s_hiv1564m + hiv1564m ; s_hiv1549m + hiv1549m ;	
 
 	s_hiv1517w + hiv1517w ; s_hiv1819w + hiv1819w ; s_hiv1519w + hiv1519w ; s_hiv2024w + hiv2024w ;	s_hiv2529w + hiv2529w ; s_hiv3034w + hiv3034w ; 
 	s_hiv3539w + hiv3539w ; s_hiv4044w + hiv4044w ; s_hiv4549w + hiv4549w ; s_hiv5054w + hiv5054w ; s_hiv5559w + hiv5559w ; s_hiv6064w + hiv6064w ;
@@ -14289,7 +14289,6 @@ cald = caldate_never_dot ;
 
 
 * procs;
-
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
@@ -14818,7 +14817,7 @@ s_alive_w s_alive_m
 /*number and status of those with HIV*/
 s_hiv1564 		s_hiv1549 
 s_hiv1517m		s_hiv1819m		s_hiv1519m  	s_hiv2024m		s_hiv2529m  	s_hiv3034m		s_hiv3539m		s_hiv4044m	
-s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		s_hiv1014m	
+s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
@@ -15529,7 +15528,7 @@ s_alive_w s_alive_m
 /*number and status of those with HIV*/
 s_hiv1564 		s_hiv1549 
 s_hiv1517m		s_hiv1819m		s_hiv1519m  	s_hiv2024m		s_hiv2529m  	s_hiv3034m		s_hiv3539m		s_hiv4044m	
-s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		s_hiv1014m
+s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
@@ -16221,7 +16220,7 @@ s_alive_w s_alive_m
 /*number and status of those with HIV*/
 s_hiv1564		s_hiv1549
 s_hiv1517m		s_hiv1819m		s_hiv1519m  	s_hiv2024m		s_hiv2529m  	s_hiv3034m		s_hiv3539m		s_hiv4044m	
-s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		s_hiv1014m
+s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
