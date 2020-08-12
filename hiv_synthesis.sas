@@ -1059,6 +1059,9 @@ p_neph_stops_after_ten = 0.1;
 * prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.50;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
+* note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
+and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
+if prep_willing=1;
 
 ***** circumcision ;  
 
@@ -2280,7 +2283,7 @@ if sw_program=1 and caldate{t} ge 2015 then do;
 	end;
 end;
 
-if 2020.25 <= caldate{t} < 2020.75 and swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
+if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
 	eff_sw_program = 0 ; 
 	sw_test_6mthly = 0; 
 	eff_sw_higher_int = sw_higher_int ; 
@@ -2457,7 +2460,7 @@ if reg_option in (108) then do; eff_pr_switch_line=0.85; eff_prob_vl_meas_done=0
 if reg_option in (101 102 103 104 105 106 107 109 110 111 112 113 114 115 116 117 118 119 120 121) then do; 
 eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl_meas_done; end; 
 
-if 2020.25 <= caldate{t} < 2020.75 and vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
+if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
 if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
@@ -2504,7 +2507,7 @@ if caldate{t} >= 2020.5 and incr_test_2020 = 4 and gender=1 then do; rate_1sttes
 if caldate{t} >= 2020.5 and incr_test_2020 = 5 and gender=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
 if caldate{t} >= 2020.5 and incr_test_2020 = 6 and gender=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 
-if 2020.25 <= caldate{t} < 2020.75 and testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
+if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
 
 * ts1m;
@@ -2606,7 +2609,7 @@ if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_r
 end;
 */
 
-if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
 ***Circumcision at birth;
 
@@ -2618,7 +2621,7 @@ if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_aff
 new_mcirc=0; 
 u=uniform(0);
 if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
-		if 2020.25 <= caldate{t} < 2020.75 and vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_birth_circ = 0;	
+		if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_birth_circ = 0;	
 		if u < prob_birth_circ then do;
 			mcirc=1;     
 			birth_circ=1;
@@ -2639,11 +2642,11 @@ if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and m
 			 tested=1;tested_circ=1;dt_last_test=caldate{t};np_lasttest=0;
 			 if ever_tested ne 1 then do;date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t};end;
 		end;
-		if hiv    ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
+		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
 	end;
 
 	if test_link_circ=1 and t ge 2 and tested_tm1=1 and registd_tm1  ne 1 then do;
-		uc=uniform(0); if uc < test_link_circ_prob then do; mcirc=1;new_mcirc=1; end;
+		uc=uniform(0); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
 	end;
 	
 	if mcirc=1 then date_mcirc=caldate{t};
@@ -2723,7 +2726,7 @@ if sw_program_effect = 2 then rred_rc = rred_rc * effect_strong_sw_prog_newp ;
 end;
 
 
-if 2020.25 <= caldate{t} < 2020.75 and condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
+if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
 
 
 * not * dependent_on_time_step_length ;
@@ -3679,7 +3682,7 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 if t ge 2 then do;
 s=uniform(0);   * dependent_on_time_step_length ;
 tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
-and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
+and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
 tested_symptoms_not_hiv =1; tested=1; 
 if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
 end;
@@ -3905,7 +3908,7 @@ if pregnant=1 then do;  * dependent_on_time_step_length ;
 		***LBM Aug19;
 		if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
 		if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
-        if registd ne 1 and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
+        if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
 		if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
         *5Nov2016: women who are already diagnosed but who do not disclose get tested;
          u=uniform(0); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
@@ -3916,7 +3919,7 @@ end;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	if registd ne 1 and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;anc=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+	if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;anc=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
 
@@ -3974,6 +3977,10 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	if prep_ever=1 and (newp ge 2 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
 	end;
 
+	if prep_strategy=9 then do;
+	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
 
 end;
 
@@ -3983,10 +3990,10 @@ end;
 tested_as_sw=.;
  
 if registd ne 1 and caldate{t} ge (date_start_testing+3.5) and tested ne 1 
-and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
+and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) 
-	and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do; 
+	and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do; 
 		tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
 		np_lasttest=0; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0; tested_as_sw=1;
 	end;
@@ -4033,7 +4040,7 @@ and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1
 	end;
 
 	
-	if t ge 4 and caldate{t} ge date_prep_intro and hard_reach=0 and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+	if t ge 4 and caldate{t} ge date_prep_intro and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 
 		*Testing before ever starting PrEP;
 
@@ -4094,16 +4101,14 @@ prep=0; pop_wide_tld_prep=0; prep_falseneg=0;
 
 
 if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do; 
-	if 2020.25 <= caldate{t} < 2020.75 then do;
 		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
 		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
 		eff_rate_choose_stop_prep = 1;
 		eff_prob_prep_restart_choice = 0 ;
-	end;
-	if caldate{t} ge 2020.75 then do;
+end;
+if prep_disrup_covid ne 1 and covid_disrup_affected = 1 then do; 
 		eff_rate_choose_stop_prep = pre_covid_rate_choose_stop_prep ;
 		eff_prob_prep_restart_choice = pre_covid_pr_prep_restart_choice ;
-	end;
 end;
 
 
@@ -4119,13 +4124,12 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	if prep_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
 		if sw = 1 then do;
 			if prep_willing_sw=1 then do; 
-				offered_prep=1;
 				if 		testfor_prep = 1  then do; prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
 				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
 		end;
 		else if sw ne 1 then do; 
-			if prep_willing_pop=1 then do; offered_prep=1;
+			if prep_willing_pop=1 then do; 
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
 				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
@@ -6204,7 +6208,7 @@ elig_test_who4=0;elig_test_who3=0;elig_test_tb=0;elig_test_who4_tested=0;elig_te
 		if who3_event_tm1 =1 and adc_tm1=0 and tb_tm1=0 then do; rate_test=test_rate_who3; elig_test_who3=1; end; *rate_test*incr_diag_rate_who3;
 
 		if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or who3_event_tm1 =1) then do;
-			unitest=uniform(0);if unitest<rate_test and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+			unitest=uniform(0);if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 				tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;sympt_diag=1;
 				sympt_diag_ever=1;dt_last_test=caldate{t};np_lasttest=0;
 				newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
@@ -6295,7 +6299,7 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 		return=1;lost=0;visit=1;end;
 
 * return cant happen if no_art_disrup_covid ;
-if return=1 and 2020.25 <= caldate{t} < 2020.75 and covid_disrup_affected = 1 and no_art_disrup_covid=1 then do;return=0;lost=1;visit=0; end;
+if return=1 and covid_disrup_affected = 1 and no_art_disrup_covid=1 then do;return=0;lost=1;visit=0; end;
 
 * shift to x4 virus being present - depends on viral load;
 	if t ge 2 then do;
@@ -6374,7 +6378,7 @@ res_test=.;
 
 * INITIATION OF ART ;
 
-	if t ge 3 and  time0 = . and (caldate{t} < 2020.25 or caldate{t} >= 2020.75 or ((art_init_disrup_covid ne 1 or covid_disrup_affected ne 1) 
+	if t ge 3 and  time0 = . and (((art_init_disrup_covid ne 1 or covid_disrup_affected ne 1) 
 							and (no_art_disrup_covid ne 1 or covid_disrup_affected ne 1))) then do;
 
 		u=uniform(0);
@@ -6586,7 +6590,7 @@ res_test=.;
 		prointer_supply= prob_supply_interrupted  ;
 		s=uniform(0); if s < prointer_supply then interrupt_supply  =1;
 
-		if no_art_disrup_covid = 1 and covid_disrup_affected = 1 and 2020.25 <= caldate{t} < 2020.75 then do; interrupt_supply  =1; was_on_art_covid_disrup=1; end;
+		if no_art_disrup_covid = 1 and covid_disrup_affected = 1 then do; interrupt_supply  =1; was_on_art_covid_disrup=1; end;
 
 	end;
 
@@ -6664,7 +6668,7 @@ end;
 		restart   =1; onart   =1;tcur=0; interrupt_supply=0;
 	end;
 
-	if caldate{t}=2020.75 and no_art_disrup_covid = 1 and covid_disrup_affected = 1 and was_on_art_covid_disrup=1 then do;
+	if  no_art_disrup_covid ne 1 and covid_disrup_affected = 1 and was_on_art_covid_disrup=1 then do;
 		restart   =1; onart   =1;tcur=0; interrupt_supply=0;
 	end;
 
@@ -7289,7 +7293,7 @@ if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=unif
 if t ge 2 then adhmin=min(adh,adhmin_tm1);
 
 * effect of art_low_adh_disrup_covid ;
-if art_low_adh_disrup_covid = 1 and 2020.25 <= caldate{t} < 2020.75 then adh = adh - 0.25 ;
+if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
@@ -8426,7 +8430,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * dol;
 		if o_dol_tm1=1 then do; 
 		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
-		if art_tld_eod_disrup_covid = 1 and 2020.25 <= caldate{t} < 2020.75 then pr_res_dol = pr_res_dol * 2; 
+		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
 			ax=uniform(0); if ax < pr_res_dol then c_inpm=1;  
 			bx=uniform(0); if bx < pr_res_dol then c_insm=1;
 		end;
@@ -9535,7 +9539,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	if caldate{t} ge 2015 and visit=1 and d < 0.8 then pcp_p   =1;
 
-	if 2020.25 <= caldate{t} < 2020.75 and cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
+	if  cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
 
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
@@ -9805,7 +9809,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) and who4_ = 0 then hiv_death_rate = hiv_death_rate*incr_death_rate_tb_;
 		if adc=1 then hiv_death_rate = hiv_death_rate*incr_death_rate_adc_;
 
-		if 2020.25 <= caldate{t} < 2020.75 and inc_death_rate_aids_disrup_covid = 1 and covid_disrup_affected = 1 and (adc=1 or (0 <= (caldate{t} - date_most_recent_tb) <= 0.5)) then do;  
+		if  inc_death_rate_aids_disrup_covid = 1 and covid_disrup_affected = 1 and (adc=1 or (0 <= (caldate{t} - date_most_recent_tb) <= 0.5)) then do;  
 		hiv_death_rate = hiv_death_rate * 2;
 		end;
 
@@ -12175,14 +12179,19 @@ elig_prep_epdiag=0;	*if registd ne 1 and hard_reach=0 and epdiag=1 then elig_pre
 					if prep_elig=1 and epdiag=1 then elig_prep_epdiag=1;
 elig_prep=0;       	*if registd ne 1 and hard_reach=0 and (epi  =1 or newp ge 2) then elig_prep=1; 
 					if prep_elig=1 then elig_prep=1;
-if gender = 2 and 15 <= age < 25 then do; elig_prep_w_1524 = 0; if prep_elig=1 then elig_prep_w_1524 = 1;  end;
-if gender = 2 and 25 <= age < 35 then do; elig_prep_w_2534 = 0; if prep_elig=1 then elig_prep_w_2534 = 1;  end;
-if gender = 2 and 35 <= age < 45 then do; elig_prep_w_3544 = 0; if prep_elig=1 then elig_prep_w_3544 = 1;  end;
+
+elig_prep_w_1524 = 0; elig_prep_w_2534 = 0; elig_prep_w_3544 = 0; elig_prep_w_1549 = 0; 
+if gender = 2 and 15 <= age < 25 then do; if prep_elig=1 then elig_prep_w_1524 = 1;  end;
+if gender = 2 and 25 <= age < 35 then do; if prep_elig=1 then elig_prep_w_2534 = 1;  end;
+if gender = 2 and 35 <= age < 45 then do; if prep_elig=1 then elig_prep_w_3544 = 1;  end;
+if gender = 2 and 15 <= age < 50 then do; if prep_elig=1 then elig_prep_w_1549 = 1;  end;
 if sw=1 then do; elig_prep_sw = 0; if prep_elig = 1 then elig_prep_sw = 1;   end;
 
-if gender = 2 and 15 <= age < 25 then do; prep_w_1524 = 0; if prep=1 then prep_w_1524 = 1;  end;
-if gender = 2 and 25 <= age < 35 then do; prep_w_2534 = 0; if prep=1 then prep_w_2534 = 1;  end;
-if gender = 2 and 35 <= age < 45 then do; prep_w_3544 = 0; if prep=1 then prep_w_3544 = 1;  end;
+prep_w_1524 = 0; prep_w_2534 = 0; prep_w_3544 = 0; prep_w_1549 = 0;
+if gender = 2 and 15 <= age < 25 then do;  if prep=1 then prep_w_1524 = 1;  end;
+if gender = 2 and 25 <= age < 35 then do;  if prep=1 then prep_w_2534 = 1;  end;
+if gender = 2 and 35 <= age < 45 then do;  if prep=1 then prep_w_3544 = 1;  end;
+if gender = 2 and 15 <= age < 49 then do;  if prep=1 then prep_w_1549 = 1;  end;
 
 elig_prep_onprep=0;
 if elig_prep = 1 then do;
@@ -13907,7 +13916,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_inf_prep_adhg80 + inf_prep_adhg80 ; s_inf_prep_adh5080 + inf_prep_adh5080 ;
     s_inf_prep_adhl50 + inf_prep_adhl50 ; s_prep_adhg80 + prep_adhg80 ; s_prep_adh5080 + prep_adh5080 ; s_prep_adhl50 + prep_adhl50 ;
 	s_onprep_1549 + onprep_1549 ; s_onprep_m + onprep_m ; s_onprep_w + onprep_w ; s_onprep_sw + onprep_sw ; s_onprep_1524 + onprep_1524 ;
-	s_onprep_1524w + onprep_1524w ; s_elig_prep_sw + elig_prep_sw ; 
+	s_onprep_1524w + onprep_1524w ; s_elig_prep_sw + elig_prep_sw ; s_elig_prep_w_1549 + elig_prep_w_1549;  s_prep_w_1549 + prep_w_1549;
 	s_elig_prep_w_1524 + elig_prep_w_1524 ; s_elig_prep_w_2534 + elig_prep_w_2534 ; s_elig_prep_w_3544 + elig_prep_w_3544 ;
     s_prep_w_2534 + prep_w_2534 ; s_prep_w_3544 + prep_w_3544 ; s_infected_prep_source_prep_r + infected_prep_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
@@ -14978,6 +14987,8 @@ s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
 
+s_elig_prep_w_1549 s_prep_w_1549 
+
 s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
 
 s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s_infected_prep_no_r    s_infected_prep_r  
@@ -15686,6 +15697,8 @@ s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
 
+s_elig_prep_w_1549 s_prep_w_1549 
+
 s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
 
 s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s_infected_prep_no_r    s_infected_prep_r  
@@ -16182,7 +16195,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_7_8_20_9am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
 
 put   
 
@@ -16378,6 +16391,8 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+
+s_elig_prep_w_1549 s_prep_w_1549 
 
 s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
 
