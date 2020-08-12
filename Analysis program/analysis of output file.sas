@@ -154,7 +154,7 @@ p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1;
 run;
 
 ***vmmc rates by option;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 p_vmmc_1549m_20_25_1  p_vmmc_1549m_20_40_1  p_vmmc_1549m_20_70_1
 p_vmmc_1549m_20_25_2  p_vmmc_1549m_20_40_2  p_vmmc_1549m_20_70_2
 p_vmmc_inc1014m_20_25_1  p_vmmc_inc1014m_20_40_1  p_vmmc_inc1014m_20_70_1
@@ -174,7 +174,7 @@ p_vmmc_4049m_20_25_2  p_vmmc_4049m_20_40_2  p_vmmc_4049m_20_70_2
 ;run;
 
 ***difference in vmmc rates according to option;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 d_p_vmmc_inc1014m_20_25_2  d_p_vmmc_inc1014m_20_40_2  d_p_vmmc_inc1014m_20_70_2
 d_p_vmmc_1549m_20_25_2  d_p_vmmc_1549m_20_40_2  d_p_vmmc_1549m_20_70_2
 d_p_vmmc_1014m_20_25_2  d_p_vmmc_1014m_20_40_2  d_p_vmmc_1014m_20_70_2
@@ -186,7 +186,7 @@ d_p_vmmc_4049m_20_25_2  d_p_vmmc_4049m_20_40_2  d_p_vmmc_4049m_20_70_2;
 run;
 
 ***incidence;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 incidence1549m_20_25_1  incidence1549m_20_40_1  incidence1549m_20_70_1
 incidence1549m_20_25_2  incidence1549m_20_40_2  incidence1549m_20_70_2
 d_incidence1549m_20_25_2  d_incidence1549m_20_40_2  d_incidence1549m_20_70_2
@@ -197,7 +197,7 @@ d_incidence1549w_20_25_2  d_incidence1549w_20_40_2  d_incidence1549w_20_70_2
 ;run;
 
 ***prevalence;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 prevalence1549m_20_25_1 prevalence1549m_20_40_1 prevalence1549m_20_70_1
 prevalence1549m_20_25_2 prevalence1549m_20_40_2  prevalence1549m_20_70_2
 d_prevalence1549m_20_25_2 d_prevalence1549m_20_40_2  d_prevalence1549m_20_70_2
@@ -208,7 +208,7 @@ d_prevalence1549w_20_25_2 d_prevalence1549w_20_40_2  d_prevalence1549w_20_70_2
 ;run;
 
 ***HIV death rate;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 death_rate_hiv_m_20_25_1 death_rate_hiv_m_20_40_1 death_rate_hiv_m_20_70_1
 death_rate_hiv_m_20_25_2 death_rate_hiv_m_20_40_2 death_rate_hiv_m_20_70_2
 ddeath_rate_hiv_m_20_25_2 ddeath_rate_hiv_m_20_40_2  ddeath_rate_hiv_m_20_70_2
@@ -219,41 +219,41 @@ ddeath_rate_hiv_all_m_20_25_2 ddeath_rate_hiv_all_m_20_40_2  ddeath_rate_hiv_all
 ;run;
 
 ***% infections averted;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 inf_avert_20_25_2  inf_avert_20_40_2  inf_avert_20_70_2
 ;run;
 
 ***DALYs averted;
-proc means n p50 p5 p95 mean lclm uclm;var  
+proc means n mean p50 p5 p95 lclm uclm;var 
 d_ddaly_all_20_25_2  d_ddaly_all_20_40_2  d_ddaly_all_20_70_2
 ;run;
 
 ***Total cost;
-proc means n p50 p5 p95 mean lclm uclm;var  
+proc means n mean p50 p5 p95 lclm uclm;var 
 dcost_20_25_1  dcost_20_40_1  dcost_20_70_1
 dcost_20_25_2  dcost_20_40_2  dcost_20_70_2
 ;run;
 
 ***VMMC cost;
-proc means n p50 p5 p95;var
+proc means n mean p50 p5 p95 lclm uclm;var 
 dcost_circ_20_25_1  dcost_circ_20_40_1  dcost_circ_20_70_1
 dcost_circ_20_25_2  dcost_circ_20_40_2  dcost_circ_20_70_2
 ;run;
 
 **ART and clinical care cost;
-proc means n p50 p5 p95;var
+proc means n mean p50 p5 p95 lclm uclm;var 
 dcost_clin_care_20_25_1  dcost_clin_care_20_40_1  dcost_clin_care_20_70_1
 dcost_clin_care_20_25_2  dcost_clin_care_20_40_2  dcost_clin_care_20_70_2
 ;run;
 
 ***HIV test cost;
-proc means n p50 p5 p95;var
+proc means n mean p50 p5 p95 lclm uclm;var 
 dtest_cost_20_25_1  dtest_cost_20_40_1  dtest_cost_20_70_1
 dtest_cost_20_25_2  dtest_cost_20_40_2  dtest_cost_20_70_2
 ;run;
 
 ***Other costs;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 dcost_condom_dn_20_25_1 dcost_drug_level_test_20_25_1  dcost_prep_visit_20_25_1
 dcost_prep_20_25_1 dcost_child_hiv_20_25_1  dcost_non_aids_pre_death_20_25_1
 dcost_condom_dn_20_40_1 dcost_drug_level_test_20_40_1  dcost_prep_visit_20_40_1
@@ -270,24 +270,23 @@ dcost_prep_20_70_2 dcost_child_hiv_20_70_2  dcost_non_aids_pre_death_20_70_2;
 run;
 
 
-
 ***difference in total cost;
-proc means n p50 p5 p95 mean lclm uclm;var  
+proc means n mean p50 p5 p95 lclm uclm;var 
 d_dcost_20_25_2  d_dcost_20_40_2  d_dcost_20_70_2
 ;run;
 
 ***net DALYs averted;
-proc means n p50 p5 p95 mean lclm uclm;var  
+proc means n mean p50 p5 p95 lclm uclm;var 
 d_net_dalys_20_25_2  d_net_dalys_20_40_2  d_net_dalys_20_70_2
 ;run;
 
 ***NNT;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 nnt_20_25_2  nnt_20_40_2  nnt_20_70_2
 ;run;
 
 ***cost per infection averted;
-proc means n p50 p5 p95;var 
+proc means n mean p50 p5 p95 lclm uclm;var 
 cost_inf_avert_20_25_2  cost_inf_avert_20_40_2  cost_inf_avert_20_70_2
 ;run;
 
