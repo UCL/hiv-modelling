@@ -1,5 +1,18 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
+***new_vmmc was not set to 0 in file used below so did extra runs up to 2020 with corrected file to get vmmc rates for 2019;
+data rates;
+set a.wide_vmmc_12_8_20_1pm;
+run;
+
+proc means n p50 p5 p95;var
+n_new_vmmc1549_py_19_20_1  n_new_vmmc1049_py_19_20_1
+p_new_vmmc_1549m_u_19_20_1  p_new_vmmc_u_1049m_19_20_1  p_new_vmmc_1014m_u_19_20_1 p_new_vmmc_1519m_u_19_20_1 
+p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1  p_new_vmmc_3034m_u_19_20_1  p_new_vmmc_3539m_u_19_20_1
+p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1; 
+run;
+
+
 data a;
 set a.wide_vmmc_7_8_20_11am;
 
@@ -279,6 +292,12 @@ d_dcost_20_25_2  d_dcost_20_40_2  d_dcost_20_70_2
 proc means n mean p50 p5 p95 lclm uclm;var 
 d_net_dalys_20_25_2  d_net_dalys_20_40_2  d_net_dalys_20_70_2
 ;run;
+
+proc freq;table d_net_dalys_20_25_2 ;where d_net_dalys_20_25_2 lt 0; run;
+proc freq;table d_net_dalys_20_40_2 ;where d_net_dalys_20_40_2 lt 0; run;
+proc freq;table d_net_dalys_20_70_2 ;where d_net_dalys_20_70_2 lt 0; run;
+
+
 
 ***NNT;
 proc means n mean p50 p5 p95 lclm uclm;var 
