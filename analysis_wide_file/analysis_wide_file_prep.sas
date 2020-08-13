@@ -210,7 +210,6 @@ proc univariate data=wide; var cost_per_test_20; run;
 proc print data=wide; var  prep_improvements_ai1 incr_adh_pattern_prep_2020_ai1 inc_r_test_startprep_2020_ai1 incr_r_test_restartprep_2020_ai1
 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1 
 incr_prepuptake_pop_2020_ai1 expand_prep_to_all_2020_ai1 prep_strategy_ai1 optimal_standard_prep_ai1 pop_wide_tld_2020_ai1 ;
-  where prep_improvements_ai1 =1;
 run;
 
 proc freq data=wide; tables
