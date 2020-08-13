@@ -4101,12 +4101,13 @@ prep=0; pop_wide_tld_prep=0; prep_falseneg=0;
 
 
 if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do; 
+		ever_prep_covid_disrup=1;
 		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
 		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
 		eff_rate_choose_stop_prep = 1;
 		eff_prob_prep_restart_choice = 0 ;
 end;
-if prep_disrup_covid ne 1 and covid_disrup_affected = 1 then do; 
+if prep_disrup_covid ne 1 and ever_prep_covid_disrup=1 then do; 
 		eff_rate_choose_stop_prep = pre_covid_rate_choose_stop_prep ;
 		eff_prob_prep_restart_choice = pre_covid_pr_prep_restart_choice ;
 end;
@@ -16195,7 +16196,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_13_8_20_4pm_&dataset_id";  
 
 put   
 
