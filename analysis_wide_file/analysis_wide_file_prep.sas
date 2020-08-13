@@ -3,9 +3,9 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 data wide;    
-  set a.wide_prep_2_8_20_6pm_7_8_20; if run <=  864400278 ;  * to give 1000 setting scenarios;
-* set a.wide_prep_2_8_20_6pm_7_8_20_dis7p;  if run <=  864400278 ;  * to give 1000 setting scenarios;
-
+* set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
+* set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
+  set a.wide_prep_8_8_20_5pm_13_8_20;
 
 
 
@@ -120,6 +120,9 @@ cost_per_infection_averted_20_70 = 1000000 * (max(d_dcost_20_70_2 , 0)) / max(1,
 r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
 r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
 
+d_prevalence1549_mw_20 = prevalence1549w_20 - prevalence1549m_20 ;
+l_r_prevalence1549_mw_20 = log( prevalence1549w_20 / prevalence1549m_20) ;
+
 
 
 /*
@@ -147,22 +150,6 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 ;
 run;
 
-/*
-proc glm data=wide;
-class 
-sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model prevalence4549m_20 = 
-sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
-exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
-res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv / solution
-;
-run;
-*/
-
 
 title '';
 proc univariate data=wide;
@@ -187,6 +174,7 @@ run;
 
 proc univariate data=wide;
 var p_w_giv_birth_this_per_20	p_mcirc_20	p_mcirc_1549m_20 prevalence1549_20 
+prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
 prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
 prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
 incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
@@ -194,8 +182,23 @@ p_ai_no_arv_c_nnm_20
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
-aids_death_rate_20  death_rate_onart_20 ;
+aids_death_rate_20  death_rate_onart_20 p_newp_ge1_20  p_1524_newp_ge1_20 p_newp_sw_20 ;
 run;
+
+
+/*
+
+proc glm; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+model d_prevalence1549_mw_20 = 
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
+exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
+res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
+adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv / solution;  run;
+
+*/
 
 
 * --------------------------------------------------------------------------------------------------------------;
