@@ -5,7 +5,7 @@
 data wide;    
 * set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-  set a.wide_prep_8_8_20_5pm_13_8_20;
+  set a.wide_prep_13_8_20_4pm_1;
 
 
 
@@ -213,7 +213,7 @@ incr_prepuptake_pop_2020_ai1 expand_prep_to_all_2020_ai1 prep_strategy_ai1 optim
 run;
 
 proc freq data=wide; tables
-option_0_prep_continue_2020_ai0  eff_rate_test_startprep_ai0  	eff_rate_test_restartprep_ai0  	eff_rate_choose_stop_prep_ai0  
+ eff_rate_test_startprep_ai0  	eff_rate_test_restartprep_ai0  	eff_rate_choose_stop_prep_ai0  
 eff_prob_prep_restart_choice_ai0  prep_improvements_ai1   incr_adh_pattern_prep_2020_ai1 
 inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 inc_p_prep_restart_choi_2020_ai1 
 incr_prepuptake_sw_2020_ai1  incr_prepuptake_pop_2020_ai1   expand_prep_to_all_2020_ai1  eff_rate_test_startprep_ai1  eff_rate_test_restartprep_ai1  	
@@ -384,7 +384,6 @@ ods html close;
 ods html;
 proc means data=wide; var    d_ddaly_all_20_70_2  d_ndb_500_20_70_2  d_dcost_20_70_2  incidence1549_20_70_1 incidence1549_20_70_2 
 dcost_20_70_1   dcost_20_70_2
-dcost_20_70_1_from_wide dcost_20_70_2_from_wide
 n_tested_20_70_1 n_tested_20_70_2
 n_prep_20_70_1 n_prep_20_70_2
 dvis_cost_20_70_1 dvis_cost_20_70_2 
@@ -449,7 +448,7 @@ proc freq data=wide; tables icer_2;
 run;
 
 proc univariate; var p_elig_prep_20_25_2  p_newp_ge1_20; run;
-proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20  p_elig_prep_20_25_2; run;
+proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20 ; run;
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
