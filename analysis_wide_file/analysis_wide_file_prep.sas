@@ -28,7 +28,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-(dcost_prep_20_70_1 / 3)   +      
+dcost_prep_20_70_1   +      
 dcost_prep_visit_20_70_1 +  
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
@@ -53,7 +53,7 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_1  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-(dcost_prep_20_70_2 / 3)    +      
+dcost_prep_20_70_2    +      
 dcost_prep_visit_20_70_2 +  
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -452,12 +452,12 @@ proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
-proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_20   ;
+proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_age1549_20   ;
 run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_20  ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20  ;
 run;
 
 * the issue with prop_1564_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
@@ -474,7 +474,7 @@ p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  pr
 
 
 
-proc glm; model d_ddaly_all_20_70_2 = prevalence1549_20  p_newp_ge1_20  p_vl1000_20	prop_w_1549_sw_20  p_newp_prep_20_25_2  ; 
+proc glm; model d_ddaly_all_20_70_2 = prevalence1549_20  p_newp_ge1_age1549_20  p_vl1000_20	prop_w_1549_sw_20  p_newp_prep_20_25_2  ; 
 run;
 
 * p_startedline2_20   incidence1549w_20  incidence1549m_20 
@@ -485,7 +485,7 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 
 
-proc glm; model d_dcost_20_70_2 = incidence1549_20 p_newp_ge1_20  p_vl1000_20;
+proc glm; model d_dcost_20_70_2 = incidence1549_20 p_newp_ge1_age1549_20  p_vl1000_20;
 run;
 
 
@@ -503,8 +503,8 @@ run;
 
 
 proc freq data=wide; tables ce_500;
-* where  0.12 <= p_newp_ge1_20 < 0.30  ;
-  where 0.00 <= p_newp_ge1_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
+* where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
+* where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 run; 
 
 
