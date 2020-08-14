@@ -293,9 +293,9 @@ proc means n mean p50 p5 p95 lclm uclm;var
 d_net_dalys_20_25_2  d_net_dalys_20_40_2  d_net_dalys_20_70_2
 ;run;
 
-proc freq;table d_net_dalys_20_25_2 ;where d_net_dalys_20_25_2 lt 0; run;
-proc freq;table d_net_dalys_20_40_2 ;where d_net_dalys_20_40_2 lt 0; run;
-proc freq;table d_net_dalys_20_70_2 ;where d_net_dalys_20_70_2 lt 0; run;
+proc freq;table d_net_dalys_20_25_2 ;where d_net_dalys_20_25_2 gt 0; run;
+proc freq;table d_net_dalys_20_40_2 ;where d_net_dalys_20_40_2 gt 0; run;
+proc freq;table d_net_dalys_20_70_2 ;where d_net_dalys_20_70_2 gt 0; run;
 
 
 
