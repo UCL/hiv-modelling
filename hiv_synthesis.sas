@@ -13056,6 +13056,9 @@ if newp_this_per=1 then do;
 	if sw=1 and prep_elig = 1 then newp_this_per_elig_prep_sw=1; 
 end;
 
+newp_hivneg=0;
+if hiv ne 1 then newp_hivneg = max(newp,0);
+
 
 prep_ever_w=.;
 if gender=2 then do;
@@ -13762,7 +13765,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_newp_this_per_art_or_prep + newp_this_per_art_or_prep ; s_newp_this_per_art + newp_this_per_art ; s_newp_this_per_prep + newp_this_per_prep ;
 	s_newp_this_per_prep_sw + newp_this_per_prep_sw ;  s_newp_this_per_elig_prep + newp_this_per_elig_prep ;
 	s_newp_this_per_elig_prep_sw + newp_this_per_elig_prep_sw ;
-    s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;
+    s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;  s_newp_hivneg + newp_hivneg ;
 
 	s_i_v1_ep + i_v1_ep ; s_i_v2_ep + i_v2_ep ; s_i_v3_ep + i_v3_ep ; s_i_v4_ep + i_v4_ep ; s_i_v5_ep + i_v5_ep ; s_i_v6_ep + i_v6_ep ; 
 	s_i_v1_newp + i_v1_newp ; s_i_v2_newp + i_v2_newp ; s_i_v3_newp + i_v3_newp ; s_i_v4_newp + i_v4_newp ; s_i_v5_newp + i_v5_newp ; s_i_v6_newp + i_v6_newp ; 
@@ -14891,7 +14894,7 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
-s_newp_this_per   s_newp_sw
+s_newp_this_per   s_newp_sw  s_newp_hivneg
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -15599,7 +15602,7 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep 	
 s_newp_this_per_elig_prep_sw 
-s_newp_this_per   s_newp_sw
+s_newp_this_per   s_newp_sw  s_newp_hivneg
 
 s_s_m_newp  s_s_w_newp
 
@@ -16196,7 +16199,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_13_8_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_14_8_20_10am_&dataset_id";  
 
 put   
 
@@ -16294,7 +16297,7 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
-s_newp_this_per  s_newp_sw
+s_newp_this_per  s_newp_sw  s_newp_hivneg
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
