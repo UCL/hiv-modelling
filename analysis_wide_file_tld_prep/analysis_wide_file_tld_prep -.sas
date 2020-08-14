@@ -562,3 +562,49 @@ run;
 * --------------------------------------------------------------------------------------------------------------;
 
 
+
+* --------------------------------------------------------------------------------------------------------------;
+
+* tld prep analysis;
+
+/*
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2   prop_1564_onprep_20_25_3 ;  
+run; 
+ods html close;
+
+ 
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2   prop_art_or_prep_20_25_3 ;  
+run; 
+ods html close;
+
+
+
+ods html;
+proc means data=wide; var    
+d_ddaly_all_20_70_2  d_ddaly_all_20_70_3
+d_ndb_500_20_70_2  d_ndb_500_20_70_3
+d_dcost_20_70_2  d_dcost_20_70_3  
+d_n_tested_20_70_2 d_n_tested_20_70_3
+incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3
+n_tested_20_70_1 n_tested_20_70_2 n_tested_20_70_3 
+p_onart_20_70_1 p_onart_20_70_2 p_onart_20_70_3
+p_diag_20_70_1 p_diag_20_70_2 p_diag_20_70_3
+p_vl1000_20_70_1 p_vl1000_20_70_2 p_vl1000_20_70_3
+prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2 prevalence_vg1000_20_70_3 
+prop_art_or_prep_20_70_1  prop_art_or_prep_20_70_2 prop_art_or_prep_20_70_3
+;
+run; 
+ods html close;
+
+proc freq; tables ce_500 ; run;
+
+*/
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+
