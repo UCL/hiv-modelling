@@ -1,15 +1,15 @@
 
 
+proc printto;
 
 libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
 
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_13_8_20_4pm_t";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_14_8_20_5pm_t";
 
 input 
-
 
 
 /*general*/
@@ -105,7 +105,7 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
-s_newp_this_per  s_newp_sw
+s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -573,7 +573,6 @@ s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 ; 
-
 
 
 data a; set d1;
@@ -1214,9 +1213,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.prep_13_8_20_4pm_1; set y;
+data a.tld_prep_14_8_20_5pm; set y;
 
-data y; set a.prep_13_8_20_4pm_1; run;
+data y; set a.prep_14_8_20_5pm; run;
 
 
   options nomprint;
@@ -1549,7 +1548,7 @@ proc sort; by run;run;
 
 * data a.wide_prep_2_8_20_6pm_7_8_20; 
 * data a.wide_prep_2_8_20_6pm_7_8_20_dis7p; 
-  data a.wide_prep_13_8_20_4pm_1; 
+  data a.wide_tld_prep_14_8_20_5pm; 
 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after

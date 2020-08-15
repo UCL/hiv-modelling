@@ -5,7 +5,7 @@
 data wide;    
 * set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-  set a.wide_prep_13_8_20_4pm_1;
+  set a.wide_tld_prep_14_8_20_5pm;
 
 
 
@@ -22,6 +22,8 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 
 * --------------------------------------------------------------------------------------------------------------;
+
+/*
 
 * for prep analysis (comment out code for other analyses);
 
@@ -125,14 +127,13 @@ l_r_prevalence1549_mw_20 = log( prevalence1549w_20 / prevalence1549m_20) ;
 
 
 
-/*
-from create_wide_file_prep :
+* from create_wide_file_prep :
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+* dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
-*/
 
+*/
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -143,7 +144,7 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost 
 
 * for tld prep analysis (comment out code for other analysese);
 
-/*
+  
 
 d_ddaly_all_20_70_2 = ddaly_all_20_70_2 - ddaly_all_20_70_1 ;
 d_ddaly_all_20_70_3 = ddaly_all_20_70_3 - ddaly_all_20_70_1 ;
@@ -174,7 +175,7 @@ if ndb_500_20_70_3 = min_ndb_500 then ce_500=3;
 if ndb_500_20_70_2 = min_ndb_500 then ce_500=2;
 if ndb_500_20_70_1 = min_ndb_500 then ce_500=1;
 
-*/
+  
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -245,6 +246,8 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 
 
 * --------------------------------------------------------------------------------------------------------------;
+
+/*
 
 * prep analysis;
 
@@ -533,7 +536,7 @@ run;
 
 
 
-/*
+
 proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
@@ -541,7 +544,7 @@ p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl10
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 run;
-*/
+
 
 
 
@@ -559,6 +562,8 @@ proc means data=wide; var cost_per_infection_averted_20_70  ; where infections_a
 * and 1.50 <= incidence1549_20 < 5.50 ;
 run;
  
+*/
+
 * --------------------------------------------------------------------------------------------------------------;
 
 
@@ -567,7 +572,7 @@ run;
 
 * tld prep analysis;
 
-/*
+
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2   prop_1564_onprep_20_25_3 ;  
@@ -602,7 +607,7 @@ ods html close;
 
 proc freq; tables ce_500 ; run;
 
-*/
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
