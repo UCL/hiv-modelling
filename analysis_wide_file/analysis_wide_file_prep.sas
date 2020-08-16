@@ -5,7 +5,7 @@
 data wide;    
 * set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-  set a.wide_prep_13_8_20_4pm_1;
+  set a.wide_prep_13_8_20_4pm;
 
 
 
@@ -154,7 +154,7 @@ run;
 title '';
 proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
-p_newp_sw_20   n_tested_m_20
+p_newp_sw_20   n_tested_m_20  p_mcirc_1549m_20
 p_mcirc_20	 		p_mcirc_1519m_20	p_mcirc_2024m_20	p_mcirc_2529m_20		p_mcirc_3039m_20	p_mcirc_4049m_20 	p_mcirc_50plm_20 
 prop_w_1549_sw_20	prop_w_ever_sw_20 	prop_sw_hiv_20 	prop_w_1524_onprep_20  prop_1564_onprep_20 	prevalence1549m_20 prevalence1549w_20
 prevalence1549_20 
@@ -178,7 +178,7 @@ prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
 prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
 prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
 incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
-p_ai_no_arv_c_nnm_20   
+p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
@@ -229,6 +229,11 @@ ods html close;
 ods html;
 proc means data=wide; var  dcost_prep_20_25_1 dcost_prep_20_25_2 ;  
 run; 
+ods htm close;
+
+
+ods html;
+proc means data=wide; var  av_prep_eff_non_res_v_20_25_2 ; run; 
 ods htm close;
 
 
@@ -457,7 +462,7 @@ run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20  ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20 prop_1564_onprep_20_25_2 ;
 run;
 
 * the issue with prop_1564_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
@@ -505,7 +510,9 @@ run;
 proc freq data=wide; tables ce_500;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
+* where 0.05 <= prop_1564_onprep_20_25_2 ;
 run; 
+
 
 
 proc means data=wide; var cost_per_infection_averted_20_25  ; where infections_averted_20_25 > 0 and

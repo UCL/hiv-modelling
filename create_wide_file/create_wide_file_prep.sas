@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_13_8_20_4pm_t";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_13_8_20_4pm";
 
 input 
 
@@ -869,6 +869,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_prep_ever;					n_prep_ever = s_prep_ever * sf_2019;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
 
+* av_prep_eff_non_res_v;  if s_prep > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep;
 
 * n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2019;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2019;
@@ -1114,7 +1115,7 @@ s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep p_prep_adhg80
+prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep p_prep_adhg80  av_prep_effectiveness_non_res_v
 prevalence1549m prevalence1549w prevalence1549 
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
@@ -1230,6 +1231,7 @@ data y; set a.prep_13_8_20_4pm_1; run;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
+proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where cald = 2017; 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
@@ -1250,7 +1252,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 
  proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  
 
-data &v ; merge  y_20 t_20_25 t_20_70 ;  
+data &v ; merge y_17 y_20 t_20_25 t_20_70 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1264,7 +1266,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_mcirc); %var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);
 %var(v=p_mcirc_2529m); %var(v=p_mcirc_3039m); %var(v=p_mcirc_4049m); %var(v=p_mcirc_50plm); %var(v=p_mcirc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
-%var(v=prop_sw_onprep);  %var(v=p_prep_adhg80); %var(v=n_infection);
+%var(v=prop_sw_onprep);  %var(v=p_prep_adhg80); %var(v=n_infection);  %var(v=av_prep_eff_non_res_v);
 %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
 %var(v=prevalence1519w);  	%var(v=prevalence1519m);  	  %var(v=prevalence2024w);  	  %var(v=prevalence2024m);  	  %var(v=prevalence2529w);  	  
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
@@ -1323,7 +1325,7 @@ p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
 prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep  p_prep_adhg80  n_infection
-prevalence1549m prevalence1549w prevalence1549 
+prevalence1549m prevalence1549w prevalence1549 av_prep_eff_non_res_v
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
@@ -1549,7 +1551,7 @@ proc sort; by run;run;
 
 * data a.wide_prep_2_8_20_6pm_7_8_20; 
 * data a.wide_prep_2_8_20_6pm_7_8_20_dis7p; 
-  data a.wide_prep_13_8_20_4pm_1; 
+  data a.wide_prep_13_8_20_4pm; 
 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
