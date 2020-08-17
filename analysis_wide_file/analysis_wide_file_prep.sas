@@ -121,7 +121,20 @@ r_incidence_20_25_2 =  incidence1549_20_25_2 / incidence1549_20_25_1 ;
 r_incidence_20_70_2 =  incidence1549_20_70_2 / incidence1549_20_70_1 ;
 
 d_prevalence1549_mw_20 = prevalence1549w_20 - prevalence1549m_20 ;
-l_r_prevalence1549_mw_20 = log( prevalence1549w_20 / prevalence1549m_20) ;
+l_r_prevalence1549_mw_20 = log( prevalence1549w_20 / prevalence1549m_20) ; 
+
+if 0 < p_newp_ge1_age1549_20 < 0.05 then  p_newp_ge1_age1549_20_g=1; if p_newp_ge1_age1549_20_g=1 then p_newp_ge1_age1549_20_g1=1;else p_newp_ge1_age1549_20_g1=0;
+if 0.05 < p_newp_ge1_age1549_20 < 0.10 then  p_newp_ge1_age1549_20_g=2;if p_newp_ge1_age1549_20_g=2 then p_newp_ge1_age1549_20_g2=1;else p_newp_ge1_age1549_20_g2=0;
+if 0.10 < p_newp_ge1_age1549_20 < 0.15 then p_newp_ge1_age1549_20_g=3; if p_newp_ge1_age1549_20_g=3 then p_newp_ge1_age1549_20_g3=1;else p_newp_ge1_age1549_20_g3=0;
+if 0.15 < p_newp_ge1_age1549_20        then p_newp_ge1_age1549_20_g=4; if p_newp_ge1_age1549_20_g=4 then p_newp_ge1_age1549_20_g4=1;else p_newp_ge1_age1549_20_g4=0;
+
+if 0 < incidence1549_20 < 0.2 then  incidence1549_20_g = 1;  if incidence1549_20_g=1 then incidence1549_20_g1=1;else incidence1549_20_g1=0;
+if 0.2 < incidence1549_20 < 0.5 then incidence1549_20_g = 2; if incidence1549_20_g=2 then incidence1549_20_g2=1;else incidence1549_20_g2=0;
+if 0.5 < incidence1549_20 < 1.0 then incidence1549_20_g = 3; if incidence1549_20_g=3 then incidence1549_20_g3=1;else incidence1549_20_g3=0;
+if 1.0 < incidence1549_20 < 1.5 then incidence1549_20_g = 4; if incidence1549_20_g=4 then incidence1549_20_g4=1;else incidence1549_20_g4=0;
+if 1.5 < incidence1549_20       then incidence1549_20_g = 5; if incidence1549_20_g=5 then incidence1549_20_g5=1;else incidence1549_20_g5=0;
+
+ce_500_x = 1 - ce_500 ;
 
 
 
@@ -457,8 +470,20 @@ proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
+proc logistic data=wide; model ce_500_x =  p_newp_ge1_age1549_20_g2 p_newp_ge1_age1549_20_g3  p_newp_ge1_age1549_20_g4 
+ incidence1549_20_g1   incidence1549_20_g2   incidence1549_20_g3   incidence1549_20_g4  ;
+output out=pred p=phat lower=lcl upper=ucl
+          predprob=(individual crossvalidate);
+run;
+
+data s; merge pred ; 
+proc sort; by p_newp_ge1_age1549_20_g incidence1549_20_g; 
+proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
+
+* model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_age1549_20   ;
 run;
+
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
@@ -511,12 +536,14 @@ proc freq data=wide; tables ce_500;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 * where 0.05 <= prop_1564_onprep_20_25_2 ;
+* where 1.50 <= incidence1549_20 < 9.50 ;
+  where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 run; 
 
 
 
-proc means data=wide; var cost_per_infection_averted_20_25  ; where infections_averted_20_25 > 0 and
-1.50 <= incidence1549_20 < 5.50 ;
+
+proc means data=wide; var cost_per_infection_averted_20_25  ; 
 run;
  
 proc means data=wide; var cost_per_infection_averted_20_70  ; where infections_averted_20_70 > 0 ;
