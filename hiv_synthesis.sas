@@ -9,8 +9,9 @@ This is the unified hiv synthesis  program for sub saharan africa.
 All programs run on legion/myriad for presentations/publications will use this program.
 
 When running to address a specific research question the only parts of the program that may differ from this core program are 
-sections ENHANCEMENTS / INTERVENTIONS in 2020 and WHETHER TO KEEP GOING BEYOND 2020.  In addition the section PARAMETER VALUES SAMPLED 
-can be replaced by reading an existing set of values for these.  
+the "options code" section and the the "update code" and the file name specified in the output file at the end of the program.  
+
+In addition the section parameter values sampled can be replaced by reading an existing set of values for these parameters.  
 
 Proposed approach to new evaluations:  For example, consider the evaluation of 6 potential art strategies.  Suggest we use two approaches for the 
 evaluation. 
@@ -25,448 +26,9 @@ interventions but, unlike in approach 1 above, these other interventions would b
 This latter aapproach (2) is the approach we have been using for several years.  Running both approaches 1 and 2 will help us ascertain whether approach 1 
 has potential to replace approach 2 in future.
 
-tld prep - people do not have to test if they are on tld prep, people can be tested and diagnosed with hiv if they are on tld "prep" with hiv, 
-people on tld "prep" with hiv who are not diagnosed do not have visit=1 and do not have viral load testing, 
 
-* === ANDREW UPDATES
+NOTES / CONSIDERATIONS / ISSUES
 
-- 22-5-20 - 12pm - change covid disruption length to 6m as default
-
-- 19-5-20 - 6pm  allow interruption of art when visit ne 1 (as when on tld under tld "prep").  output number who started art due to tld_prep, number 
-			with hiv currently on tld prep, and vl1000 for these 
-
-- 14-5-20 11am - change to if 0.95 <= rred_rc < 1.00 then do if e < rate_newp0_rred_rc then newp=0  end 
-
-- 12-5-20 5pm - changes to sw newp transition matrix, initial newp distribution and distribution of ych_risk_beh_newp and ych_risk_beh_ep
-
-- 12-5-20 9am - update sex work code with overwriting newp_tm1
-
-- 10-5-20 1pm - missed tested=1 where unitest < rate_1sttest
-
-- 8-5-20 5pm - interrupt_choice set to 0 at restart,changes to dn of ych_risk_beh_newp and ych_risk_beh_ep and fold_tr_yw, due to change below
-
-- 5-5-20 2pm - adding i_age1_m_newp = 0 etc
-
-- 22-4-20 8am - adding cd4 and death after art interruption
-
-- 16-4-20 11am - timing of covid19
-
-- 15-4-20 5pm - align on 3m disruption
-
-- 13-4-20 4pm - disrup due to covid on art adherence
-
-- 12-4-20 10am - output inc_death_rate_aids_disrup_covid
-
-- 10-4-20 8am - changes to coding of interruption of art due to covid disruption
-
-- 9-4-20 5pm - was_on_art_covid_disrup=1
-
-- 9-4-20 9am - redefining s_death_hiv_allage
-
-- 8-4-20 4pm - saving s_death_hivrel_allage
-
-- 8-4-20 8am - correcting placement of all cause deaths 
-
-- 7-4-20 7pm - correcting covid definition
-
-- 7-4-20 2pm - correcting covid definition
-
-- 3_4_20 11am - saving covid disrup parameter
-
-- 2_4_20 3pm - adding covid death, temporary stopping of interventions
-
-- 16_3_20 6pm - elig_prep_onprep
-
-- 16_3_20 9am - remove line with elig_prep defined as defined lower down, add in elig_prep_sw
-
-_ 15_3_20 5pm - changes to eff_prob_loss_at_diag to e_eff_prob_loss_at_diag
-
-- 27_2_20 7am - increase rate_newp0_rred_rc multipliers so greater proportion of sex workers increasing condom use
-
-- 26_2_20 - 9am - change _tp1 to _ips , change to dn of ych_risk_beh_newp
-
-- 26_2_20 - 7am - using s_sw1519_ips etc in keep and drop statements, including new parameters in keep statement
-
-- 25_2_20 - 6pm - adding program cost for sw program
-
-- 25_2_20 - 4pm - merge with loveleen simultaneous changes
-
-- 25_2_20 1pm - more on sex worker programmes and its effect
-
-- 25_2_20 12pm - sex worker programmes and its effect
-
-- 25_2_20 10am - added  higher_newp_with_lower_adhav   sw_lower_art_use_adh
-
-- 25_2_20 8am - change to ten is taf code
-
-- 25_2_20 7am - changes to transition probabilities between sex worker newp levels so less high newp sex workers so can have higher proportion of
-                women who are sex workers but lower incidence
-
-- 23_2_20 3pm - cost_condom_dn
-
-- 23_2_20 11am - prep_strategy not dropped, continuous_prep_use, changes to sw_newp_lev_ etc so lower prop sw in highest newp category
-
-- 22_2_20 6pm - adding more variables to output to keep, drop and put statements
-
-- 22_2_20 8am -  s_prop_w_vlg6
-
-- 21_2_20 4pm - defining some new outputs for the new table 1 with characteristics of setting scenarios
-
-- 19_2_20 12pm - 	programming of potential changes to vl monitoring 
-					amend tld/zld so that switch to zld only if linefail ge 1 
-					differential potency of zdv and tdf (and 3tc) in some setting scenarios 
-					consider higher still effect of pill count and toxicity on discontinuation
-
-- 18_2_20 7am - cald = caldate_never_dot 
-
-- 8_2_20 5pm - extra condition of caldate = death for s_ variables
-
-- 7_2_20 5pm - dead1 corrected,  extra condition of death = . for s_ variables
-
-- 5_2_20 4pm - set epi = .  
-
-- 4_2_20 1pm - include run in keep statement
-
-- 3_2_20 5pm - changes to introduce drop statement etc 
-
-- 2_2_20 11am - corrections to include run in keep statement
-
-- 28_1_20 1pm - replaced the proc univariate with sum statments and data setp
-				todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw act_years_sw  tot_dur_sw)
-
-- 25_1_20 12pm - all arrays removed except caldate
-
-- 23_1_20 7pm - removing arrays
-
-- 21_1_20 6m - removing more arrays
-
-- 21_1_20 5pm - removing more arrays
-
-- 21_1_20 3pm - removing more arrays
-
-- 21_1_20 8am - removing some arrays
-
-- 16_1_20 8am - undo changes in red_a code fixed
-
-- 15_1_20 4pm - max newp for sw > 30 = 30, newp factor = 1, red_a code add fixed
-
-- 15_1_20 1pm - add in outputs for when test running
-
-- 15_1_20 11am - add in serial_no
-
-- 7_1_20 8pm - vl1000_art_gt6m
-
-- 2_1_20 9am - a few changes based on comparison with latest lai program
-
-- 1_1_20 12pm - non_aids_pre_death_cost
-
-- 29_12_19  5pm - correction to pregnant_oth_dol_adv_birth_e=0
-
-- 27_12_19  10am - replace vm_tm1 gt log10(vl_threshold) with value_last_vm
-
-- 22_12_19  5pm - correction to **1/3
-
-- 22_12_19 4pm - correct fold_tr_newp in commented out section
-
-- 22_12_19 1pm - add variables to follow newp andd infection risk dynamics 
-
-- 21_12_19 9a - adding in a few ts1m lines which are currently commented out
-
-- 19_12_19 9am - correct: if 1  <= newp{t-1} 
-
-- 18_12_19 8am - removed extraneous a.save statement
-
-- 13_12_19 2pm - correct incidence1549 definition in keep_going
-
-- 11_12_19 8pm - correct {1-1} and change (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4))
-
-- 4_12_19 3pm -  see loveleen changes below
-
-- 3_12_19 4pm  - adjust range of fx, dist of gx, add in vl=vmax{t-1} from 3 months after interruption
-
-- 3_12_19 12pm  - add code for survaids, survcl200, survwho34
-
-- 3_12_19 11am  -  change to startyr, define survaids and aidsyn
-
-- 3_12_19 8am   - change code for reg_option 116, 117 (so use zdv if most recent vm > 3), change dist of rate_res_ten to give a more even distribution,
-
-- 1_12_19 5pm   - correct keep_going_2016 with incidence1549_19 corrected
-
-- 29_11_19 10am - changes to outputs for dolswitch program, change to distribtuion of switch_for_toxicity
-
-- 26-11-19 1pm  - correction to commented out code on effect of art
-
-- 26-11-19 11am - ts1m code added
-
-- 23-11-19 4pm -  removal of risk_incr_res_primary code - it was not functioning 
-
-- 23-11-19 8am -  save red_adh_multi_pill_pop_ in output file
-
-- 21-11-19 3pm -  changes in birth_circ
-
-- 20-11-19 5pm -  define equivalent code  of nactive as for adh in adh_a_zld_if_reg_op_116  
-
-- 16-11-19 3pm -  change if registd=1 and tested ne 1 and u<0.7 then do  tested=1  tested_anc_prevdiag=1  end   to remove tested=1 so cant
-				  have tested = 1 if registd = 1
-
-- 12-11-19 3pm - just a change to options code
-
-- 29-10-19 7am -  re-introduce definition of date_start_dol, introduce effect of weight gain from dol when taken in hiv- as prep (pop_wide_tld)
-
-- 26-10-19 12pm - consider red_adh_tox_pop = 0.20 as well as 0.05 as adh to zdv seems same as ten which is unrealistic given greater tox from zdv esp lipodystrophy
-			      current tox can affect adherence probability increased from 0.3 to 0.5
-	
-				  amend distribution of add_effect_tox_int so that there is this additional effect in 50% of runs instead of 20% as before, again
-				  because outputs show no difference in art retention between zdv and ten
-
-				  introduce in 50% of runs reduced adherence for regimen that is not 1 pill once a day  red_adh_multi_pill
-
-- 24-10-19 6pm - amendment to adh_a_zld_if_reg_op_116 code
-
-- 24-10_19 5pm - create adh_a_zld_if_reg_op_116 (needed for dolswitch and explained on line where created)
-
-- 24-10-19 1pm - update prep code (prep eligibility), prep drug cost
-
-- 24-10-19 12pm - update prep code 
-
-- 24-10-19 9am - define o_zla_tox o_tle_adh_hi etc
-
-- 24-10-19 8am - correction: prep=0  pop_wide_tld_prep=0
-
-- 23-10-19 5pm - changes to keep_going_2016
-
-- 23-10-19 3pm - corrections to code added 19-10-19
-
-- 19-10-19 9am - adding tox and adh_hi for each drug
-
-- 09-10-19 6pm - no change to core unified program but change to prep option code
-
-- 06-10-19 3pm - changes to transitions between sw newp numbers - to try to ensure we generate more setting scenarios with lower incidence
-
-- 05-10-19 12pm - added prep_strategy to outputs, define newp_this_per_art_or_prep etc and add to outputs, 
-				  added: if t ge 2 and onart{t-1}=1 and (prep ne 1 or adh = .), changed dn of adh_pattern_prep
-
-- 05-10-19 11am - correct decr_r_choose_stop_prep_2020
-
-- 04-10-19 2pm - change in dn of ych_risk_beh_newp
-
-- 02-10-19 6pm - correction to zero_tdf_activity....
-
-- 02-10-10 8am - change dn of circ_inc_rate
-
-- 01-10-19 2pm - changes to tld prep code, change dn of ych_risk_beh_newp 
-
-- 01-10-19 1pm - remove adhm code
-
-- 01-10-19 11am - change of prep&j to prep
-
-- 01-10-19 10am - changes to tld prep code
-
-- 01-10-19 8am - correction to inc_cat = 3
-
-- 29-9-19 4pm - re type _u5 as did not seem to be correct
-
-- 29-9-19 11am - small updates to distributions
-
-- 29-9-19 7am - updates to keep going
-
-- 29-9-19 3pm - corrected error by adding i_v1_np=0 etc
-
-- 28-9-19 6pm - changes to o_dol_2nd_vlg1000_dolr0_adh1 etc
-
-- 27-9-19 9am  - changes to sw code, further changes to prep code to account for tld for all
-
-- consider:  rr_sw_age_1525 = 1.50
-- consider: if 15 <= age < 18 and life_sex_risk = 2 and e < 0.010 then sw1=1 
-			if 18 <= age < 20 and life_sex_risk = 2 and e < 0.010 then sw1=1 
-			if 20 <= age < 30 and life_sex_risk = 2 and e < 0.010 then sw1=1 
-			if 30 <= age < 50 and life_sex_risk = 2 and e < 0.010 then sw1=1 
-
-			if 15 <= age < 18 and life_sex_risk = 3 and e < 0.10 then sw1=1 
-			if 18 <= age < 20 and life_sex_risk = 3 and e < 0.10 then sw1=1 
-			if 20 <= age < 30 and life_sex_risk = 3 and e < 0.10 then sw1=1 
-			if 30 <= age < 50 and life_sex_risk = 3 and e < 0.10 then sw1=1 
-  so highest newp in age group 15-25 women as in red_a_15w
-
-- once we are happy with this program I will start to run it using both approaches 1 and 2 above - for approach 2 the first evaluation I will
-  focus on is reg_option and art_monitoring strategy (use of measruement of tenofovir levels)
-
-- some changes to testing cose at: if t ge 2 and date_start_testing <= caldate{t} and prep_tm1=0
-
-- change distribution of an_lin_incr_test and test rate plataeu
-
-- introduction of eff_max_freq_testing and effective rate of other parameters so we can distinguish between values originally set and
-values changed to after 2020
-
-- inserted lines on prob_pregnancy_b = prob_pregnancy_base
-
-- added lines: if caldate{t} > 2016 and 10 le age_tm1 lt 15 then prob_circ = (2016-mc_int)*circ_inc_rate etc
-
-- round off some parameter values
-
-- remove the &j from end of several variables created after the main model part as these dont need to be arrays I dont think
-
-- question for loveleen: why is onart_iicu defined later after we have lines if onart = 1 or int_clinic_not_aw = 1 then do
-  why not define it higher up ? I think code works as is so perhaps best just not to change 
-
-- changed distribution of rate_choose_stop_prep 
-- changed distribution of circ_inc_rate as not enough variation in prop circumcised by 2019 
-- change so that all variable names with age ranges the age range ends with 4 or a 9 rather than a 5 or a 0
-
-- define s_alive_w s_alive_m numbers of adults age 15+ (including over age 65)
-- changed newp_factor to 0.25 * as prevalence outputs too high
-- added in new variables to drop statement (&l drop statement) so that we drop these variables over time - was slowing the running down
-- changed newp_factor to 0.5 * as prevalence outputs too high
-- still dont know why some runs are not running
-
-- changed from 100 to 10000 individuals to run on legion
-- removed run2
-- changed mulitplier for newp_factor = 1 *(  from 3 * as prevalence distribution was high
-- saved base_rate_sw_ in keep statement and output file
-- renamed cald_ as cald in output file
-- changes made over past 2 days include as below
-- some typos in s_ resolved 
-- change to code for rred_a dependent on m15r ets
-- small changes / additions to keep statement
-- renaming of t_ variables so they match with renaming to s_ in proc univariate
-- check that age gender balance in newp now seems to be working ok
-- checked that prevalence of sw seems reasonable (but we should maybe consider sampling rate of stopping)
-
-
-* === LOVELEEN UPDATES SINCE LAST SAVED
-01-06-20 - changed values of sw_init_np
-19-05-20 - removed code on sw_ips as no longer needed (crudely calculated in output file for graph purposes) and small edit to age_deb_sw 
-14-05-20 - renamed rate_newp0_rred_rc to rate_sw_rred_rc
-		   recoded section in which newp was set to 0 for some sex workers. Now newp is set to a category below what it was.
-		   added rate_sw_rred_rc to keep and put statements
-27-04-20 - episodes of sw added to base 1989 records. 
-15-04-20 - vmmc options updated
-14-04-20 - minor update to age_deb_sw_nm
-09-04-20 - new variable created age_deb_sw_nm which = t-1
-20-03-20 - age_deb_sw and and age_stop_sw set to missing in all periods other than when they occured
-19-03-20 - act_dur_sw=0 moved outside of do loop
-		 - changed duration of sw categories so only durations above 0 are recorded
-25-02-20 - 9pm, added coded to calculate denominator for rate of stopping sex work (sw1519_ips etc.)
-25-02-20 - corrected code on start date of sw who had started prior to 1989. Moved act_dur_sw=0 inside do loop.
-17-02-20 - added primary_sw age categories. ever_sw1849_ added to core code (was listed in output statement)
-14-02-20 - refined duration of sw calculation
-13-02-20 - added date-start_sw and episeds_sw for those with sw=1 in 1989. 
-12-02-20 - categorised age debut of sw and duration of sw. Added to output statements
-15-01-20 - added 10-14 year old circumcisions to 2nd proc univariate/keep statement
-		 - widened range for rel_incr_circ_post_2013 
-		 - edited circ_inc_rate distribution
-		 - changed circumcision rate for 15-19 year olds to match base rate (orignally 10-14 years olds)
-		 - added new circumcision rate for 20 to 30 year olds
-10-01-20 - circumcison code changed. rel_incr_circ_post_2013 introduced to increase circumcisions after 2013. 
-		 - circ_inc_rate no longer sampled. 
-		 - Corrected error where new_mcirc was set to 0 twice
-08-01-20 - vmmc age groups were not set to 0 at outset - this has been corrected
-03-01-20 - changed start of linear effect in circumcision code from 2016 to 2019
-		 - circ_inc_rate distribution widened at lower end
-		 - Error in birth_circ code (line 2364). Corrected new_mcirc=0 to new_mcirc=1
-02-01-20 - s_birth_circ added to keep statement
-		 - circ_inc_rate distribution widened again to include more values at upper end. 
-20-12-10 - circ_inc_rate distribution widened to include more values at upper end. 
-		 - rate of circumcision now increasing to 2019 instead of 2016
-20-12-19 - 'vmmc' defined as mcirc=1 and birth_circ ne 1. vmmc age cats added to proc univariate/keep statements
-20-12-19 - 'birth_circ' added to keep statement
-20-12-19 - new mcirc age categories added, now includes 30-34,35-39,40-44,45-49 in main program, proc univariate and keep statements
-04-12-19 - new_mcirc=1 added to circumcision at birth code as these will count as new circumcisions
-
-Updated code for art initiators
-Added if statement to resolve error in log file: if s_s_w_newp>0 then cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp
-Added 'if xx gt 0' in multiple places to resolve errors in log file
-Removed duplicates from proc uni (all prep_infected vars plus a few others)
-Add in 'if t ge 2' wherever needed
-Added s_hiv1549_ to keep statement
-Addition to anc code. Please check 'LBM Aug19'
-
-17/9/2019
-Added in age categories for sex workers and HIV amongst sw
-Added above to proc univariate and keep statements
-Added age_deb_sw and active years of sex work to proc univariate and keep statements
-
-
-
-* === LOVELEEN NOTES TO SELF
- 20-03-2020 - check age_deb_sw 
- 13-02-2020 - check duration of sex work
-
-
-
-* === ANDREW NOTES TO SELF
-
-to do before starting testing in preparation for runs:
-
-- consider effect of sw_program_visit on prob of starting and continuing on prep in sw
-
-- add in exposure at birth (mother infected), mother vl, child prophylaxis, infection at birth based on mtct rate and at least risk of aids death, 
-	resistance, diagnosed, onart, up to age 15 (would need to create a variable for each pregnancy for hiv+ women as to whether has transmitted to
-    the child, which can happen up to end of breastfeeding) - this would be based on woman-specific probabilities while the risk of babies being
-    infected would depend on the distribution of uch probabilities across all pregnant women in the period. probably will have to stick with having 
-    pregnant = 1 only in one period for the period of childbirth (and not counting still births or miscarriages) but can include probabilities
-	of infection during breastfeeding based on dn of breastfeeding and viral load during the breastfeeding period.
-
-- model ipt ?
-
-- make parameters like rare_int_choice so that they vary between individuals ?
-
-- todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw act_years_sw  tot_dur_sw)
-
-- consider effects on transmission of increases in gx
-
-- consider again early mismatch in newp by gender, and also growing newp_ge1 / newp_ge5 in first years to 1995: considered acceptable so long as resolved 
-  by around 1995.   We could have a  burn in period for newp before hiv introduced in 1989 but wonder if it is worth the disruption when everything seems 
-  generally OK  	
-
-- re-visit costs (particularly of testing)
-
-- sample rate of leaving sex work 
-
-- vmmc needs to depend on age
-
-- conceive of an additional average annual cost per hiv diagnosed person (without sv = 1) to help to improve all below: 
-  incr_adh_2020 decr_hard_reach_2020 decr_prob_loss_at_diag_2020 decr_rate_lost_2020 decr_rate_lost_art_2020
-  incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_init_2020  decr_rate_int_choice_2020  
-
-- consider extra costs testing sw - currently sw_test_6mthly_2020 intervention is assumed to cost only the cost of the extra tests 
-- more generally, have included an annual cost for people with diagnosed hiv and sv ne 1 to improve cascade but have not included additional costs beyond
-  unit costs for increased switch of increased viral load measure done, prep or circumcision - still no specific costs for lower newp / more condom use
-
-- consider that cascade of care enhancements can be general or in sex workers only 
-
-
- 
-
-
-
-
-
-
-
-* ==== VALE NOTES TO SELF
-
-
-
-
-
-
-
-* ==== DOCUMENTATION NOTES AND IDEAS
-
-
-- new outputs:  AIDS death rate by CD4 at start of ART and ahd{t} in first period
-
-
-
-
-
-
-
-
-
-
-* ==== GENERAL NOTES AND CONSIDERATIONS  
 
 - prep:  is > 80% adh enough for max efficacy ?
 
@@ -527,6 +89,70 @@ a. proportion of (re-)starters testing +ve within 3 months (the higher, the more
 (this applies assing rdt for the first test - proportion of (re-)starters testing +ve within 3 months will vary with window period of first test)
 explore metrics for how to monitor prep programmes
 
+
+
+
+* === LOVELEEN NOTES 
+
+ 20-03-2020 - check age_deb_sw 
+ 13-02-2020 - check duration of sex work
+
+
+* === ANDREW NOTES 
+
+to do before starting testing in preparation for runs:
+
+- consider effect of sw_program_visit on prob of starting and continuing on prep in sw
+
+- add in exposure at birth (mother infected), mother vl, child prophylaxis, infection at birth based on mtct rate and at least risk of aids death, 
+	resistance, diagnosed, onart, up to age 15 (would need to create a variable for each pregnancy for hiv+ women as to whether has transmitted to
+    the child, which can happen up to end of breastfeeding) - this would be based on woman-specific probabilities while the risk of babies being
+    infected would depend on the distribution of uch probabilities across all pregnant women in the period. probably will have to stick with having 
+    pregnant = 1 only in one period for the period of childbirth (and not counting still births or miscarriages) but can include probabilities
+	of infection during breastfeeding based on dn of breastfeeding and viral load during the breastfeeding period.
+
+- model ipt ?
+
+- make parameters like rare_int_choice so that they vary between individuals ?
+
+- todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw act_years_sw  tot_dur_sw)
+
+- consider effects on transmission of increases in gx
+
+- consider again early mismatch in newp by gender, and also growing newp_ge1 / newp_ge5 in first years to 1995: considered acceptable so long as resolved 
+  by around 1995.   We could have a  burn in period for newp before hiv introduced in 1989 but wonder if it is worth the disruption when everything seems 
+  generally OK  	
+
+- re-visit costs (particularly of testing)
+
+- sample rate of leaving sex work 
+
+- vmmc needs to depend on age
+
+- conceive of an additional average annual cost per hiv diagnosed person (without sv = 1) to help to improve all below: 
+  incr_adh_2020 decr_hard_reach_2020 decr_prob_loss_at_diag_2020 decr_rate_lost_2020 decr_rate_lost_art_2020
+  incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_init_2020  decr_rate_int_choice_2020  
+
+- consider extra costs testing sw - currently sw_test_6mthly_2020 intervention is assumed to cost only the cost of the extra tests 
+- more generally, have included an annual cost for people with diagnosed hiv and sv ne 1 to improve cascade but have not included additional costs beyond
+  unit costs for increased switch of increased viral load measure done, prep or circumcision - still no specific costs for lower newp / more condom use
+
+- consider that cascade of care enhancements can be general or in sex workers only 
+
+* ==== VALE NOTES 
+
+
+
+
+* ==== DOCUMENTATION NOTES AND IDEAS
+
+
+- new outputs:  AIDS death rate by CD4 at start of ART and ahd{t} in first period
+
+
+
+
+* ==== GENERAL NOTES AND CONSIDERATIONS  
 
 ;
 
@@ -13045,7 +12671,7 @@ if prep ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
 newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
-newp_this_per_elig_prep=0;  newp_this_per_elig_prep_sw=0;  
+newp_this_per_elig_prep=0;  newp_this_per_elig_prep_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
@@ -13054,6 +12680,9 @@ if newp_this_per=1 then do;
 	if prep=1 or onart=1 then newp_this_per_art_or_prep=1;
 	if prep_elig = 1 then newp_this_per_elig_prep=1; 
 	if sw=1 and prep_elig = 1 then newp_this_per_elig_prep_sw=1; 
+	if hiv ne 1 then newp_this_per_hivneg=1;
+	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
+	if 15 <= age < 50 then newp_this_per_1549=1;
 end;
 
 newp_hivneg=0;
@@ -13765,7 +13394,8 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_newp_this_per_art_or_prep + newp_this_per_art_or_prep ; s_newp_this_per_art + newp_this_per_art ; s_newp_this_per_prep + newp_this_per_prep ;
 	s_newp_this_per_prep_sw + newp_this_per_prep_sw ;  s_newp_this_per_elig_prep + newp_this_per_elig_prep ;
 	s_newp_this_per_elig_prep_sw + newp_this_per_elig_prep_sw ;
-    s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;  s_newp_hivneg + newp_hivneg ;
+    s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;  s_newp_hivneg + newp_hivneg ; s_newp_this_per_hivneg + newp_this_per_hivneg ;
+	s_newp_this_per_hivneg_1549 + newp_this_per_hivneg_1549;  s_newp_this_per_1549 + newp_this_per_1549 ;
 
 	s_i_v1_ep + i_v1_ep ; s_i_v2_ep + i_v2_ep ; s_i_v3_ep + i_v3_ep ; s_i_v4_ep + i_v4_ep ; s_i_v5_ep + i_v5_ep ; s_i_v6_ep + i_v6_ep ; 
 	s_i_v1_newp + i_v1_newp ; s_i_v2_newp + i_v2_newp ; s_i_v3_newp + i_v3_newp ; s_i_v4_newp + i_v4_newp ; s_i_v5_newp + i_v5_newp ; s_i_v6_newp + i_v6_newp ; 
@@ -14894,8 +14524,8 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
-s_newp_this_per   s_newp_sw  s_newp_hivneg
-
+s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg  s_newp_this_per_hivneg_1549  s_newp_this_per_1549 
+  
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
@@ -15602,7 +15232,7 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep 	
 s_newp_this_per_elig_prep_sw 
-s_newp_this_per   s_newp_sw  s_newp_hivneg
+s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
 s_s_m_newp  s_s_w_newp
 
@@ -16199,7 +15829,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_14_8_20_10am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_14_8_20_1pm_&dataset_id";  
 
 put   
 
@@ -16297,7 +15927,7 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
-s_newp_this_per  s_newp_sw  s_newp_hivneg
+s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -16752,17 +16382,6 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
-/* keep going - only needed in test runs */
-
-keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020  
-
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 
 ; 
 
