@@ -89,13 +89,11 @@ a. proportion of (re-)starters testing +ve within 3 months (the higher, the more
 (this applies assing rdt for the first test - proportion of (re-)starters testing +ve within 3 months will vary with window period of first test)
 explore metrics for how to monitor prep programmes
 
-
+- review gender differences in HIV prevalence and proportion diagnosed - larger differences seen in PHIA data
 
 
 * === LOVELEEN NOTES 
 
- 20-03-2020 - check age_deb_sw 
- 13-02-2020 - check duration of sex work
 
 
 * === ANDREW NOTES 
