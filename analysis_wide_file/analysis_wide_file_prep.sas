@@ -5,8 +5,9 @@
 data wide;    
 * set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-  set a.wide_prep_13_8_20_4pm;
-
+* set a.wide_prep_13_8_20_4pm;
+* set a.wide_prep_13_8_20_4pm_dis7p;
+  set a.w_prep_13_8_20_4pm_14_8_20_1pm; * if dataset = 2;  * if dataset = 1 gives results for circulated ms ;
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -28,7 +29,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-dcost_prep_20_70_1   +      
+(dcost_prep_20_70_1 / 3)  +      
 dcost_prep_visit_20_70_1 +  
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
@@ -48,12 +49,12 @@ dcost_child_hiv_20_70_1  +
 dcost_non_aids_pre_death_20_70_1 ; 
 
 * cost of prep deliver from $115 to $75 is implemented as a cut in prep drug cost from $60 to $20 to give the $40 saving - the $40 lower cost would
-be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_1  * 100/60) ; 
+be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_2  * 100/60) ; 
 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-dcost_prep_20_70_2    +      
+(dcost_prep_20_70_2 / 3) +      
 dcost_prep_visit_20_70_2 +  
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -196,13 +197,20 @@ prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
 aids_death_rate_20  death_rate_onart_20 p_newp_ge1_20  p_1524_newp_ge1_20 p_newp_sw_20 ;
+where  ych_risk_beh_ep = 0.95;
 run;
+
 
 
 /*
 
+proc means; var prevalence1549m_20 prevalence1549w_20 p_inf_ep_20 ; 
+where  ych_risk_beh_ep = 0.95;
+where sex_age_mixing_matrix_w=6;
+run;
+
 proc glm; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model d_prevalence1549_mw_20 = 
+model l_r_prevalence1549_mw_20 = 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
@@ -276,6 +284,17 @@ proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_20_25_1  pro
 run; 
 ods html close;
 
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_newp_this_per_prep_20_25_1  p_newp_this_per_prep_20_25_2 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_newp_prep_hivneg_20_25_1  p_newp_prep_hivneg_20_25_2 ;  
+run; 
+ods html close;
 
 
 ods html;
@@ -358,6 +377,10 @@ ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_onart_vl1000_20_25_1  p_onart_vl1000_20_25_2 ;  
 run; 
 ods htm close;
+
+
+
+
 
 
 
@@ -479,6 +502,9 @@ run;
 data s; merge pred ; 
 proc sort; by p_newp_ge1_age1549_20_g incidence1549_20_g; 
 proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
+
+
+
 
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_age1549_20   ;
