@@ -1080,6 +1080,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
 
+* n_start_line2_per_year;		n_start_line2_per_year = s_start_line2_this_period * sf_2019 * 4 ;
+
+* n_vl_test_done;				n_vl_test_done = (s_vl_cost / 0.022  )  * sf_2019 * 4 ;
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2019 * 4;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2019 * 4;
 * n_death;						n_death = s_dead_allage * sf_2019 * 4;
@@ -1111,7 +1114,7 @@ n_new_inf1549=s_primary1549 * sf_2019 * 4;
 keep run option cald dataset
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
-p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
+p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  n_start_line2_per_year
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_50plm p_vmmc_1549m
 prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
@@ -1145,7 +1148,7 @@ death_rate  death_rate_hiv  death_rate_hiv_m  death_rate_hiv_w  p_iime_   p_pime
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 death_rate_all_discount n_death_discount
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_vl_test_done
 
 sf_2019 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1169,7 +1172,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc
+prep_strategy rate_sw_rred_rc
 
 exp_setting_lower_p_vl1000  
 external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
@@ -1264,7 +1267,7 @@ drop _NAME_ _TYPE_ _FREQ_;
  %var(v=n_tested_m);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc); %var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);%var(v=p_mcirc_2529m); %var(v=p_mcirc_3039m); %var(v=p_mcirc_4049m);
-%var(v=p_mcirc_50plm); %var(v=p_mcirc_1549m);
+%var(v=p_mcirc_50plm); %var(v=p_mcirc_1549m);  %var(v=n_start_line2_per_year;
 %var(v=p_vmmc); %var(v=p_vmmc_1519m); %var(v=p_vmmc_2024m);%var(v=p_vmmc_2529m); %var(v=p_vmmc_3039m); %var(v=p_vmmc_4049m);
 %var(v=p_vmmc_50plm); %var(v=p_vmmc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
@@ -1305,7 +1308,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= p_o_tle_tox);   %var(v=p_o_tld_tox);   %var(v=p_o_zla_tox);   %var(v=p_o_zld_tox);    %var(v=p_o_tle_adh_hi);   %var(v=p_o_tld_adh_hi);   
 %var(v=p_o_zla_adh_hi);   %var(v=p_o_zld_adh_hi);   %var(v=p_adh_hi);    %var(v=s_a_zld_if_reg_op_116);
 %var(v=p_nactive_ge2p75_xyz);  %var(v=p_adh_hi_xyz_ot1);   %var(v=p_adh_hi_xyz_ot2);   %var(v=p_adh_hi_xyz_itt);   %var(v=p_e_rt65m_xyz);   
-%var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz); 
+%var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz);  %var(v=n_vl_test_done);
 %var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
@@ -1322,8 +1325,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp  
-p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
-p_tested_past_year_1549m  p_tested_past_year_1549w  
+p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m  n_start_line2_per_year
+p_tested_past_year_1549m  p_tested_past_year_1549w  n_vl_test_done  
 p_mcirc  p_mcirc_1519m  p_mcirc_2024m  p_mcirc_2529m  p_mcirc_3039m  p_mcirc_4049m  p_mcirc_50plm  p_mcirc_1549m
 p_vmmc  p_vmmc_1519m  p_vmmc_2024m  p_vmmc_2529m  p_vmmc_3039m  p_vmmc_4049m  p_vmmc_50plm  p_vmmc_1549m
 prop_w_1549_sw  prop_w_ever_sw  prop_sw_hiv  prop_w_1524_onprep  prop_1564_onprep  prop_sw_onprep 
@@ -1561,7 +1564,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_covid_hiv_2_9_8_20_5pm_extra; 
+  data a.w_covid_hiv_2_9_8_20_5pm_extra; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

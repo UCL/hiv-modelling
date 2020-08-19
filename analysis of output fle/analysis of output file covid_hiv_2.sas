@@ -3,7 +3,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 
    data wide;    
-   set a.wide_covid_hiv_2_9_8_20_5pm;
+ * set a.wide_covid_hiv_2_9_8_20_5pm;
+   set a.wide_covid_hiv_2_9_8_20_5pm_extra;
 
 
 
@@ -141,6 +142,10 @@ d_n_death_20_70_3 = n_death_20_70_3 - n_death_20_70_1 ;
 d_n_death_20_70_4 = n_death_20_70_4 - n_death_20_70_1 ;
 d_n_death_20_70_5 = n_death_20_70_5 - n_death_20_70_1 ;
 
+d_n_tested_20_21_2 = n_tested_20_21_2 - n_tested_20_21_1 ; 
+d_n_tested_20_21_3 = n_tested_20_21_3 - n_tested_20_21_1 ; 
+d_n_tested_20_21_4 = n_tested_20_21_4 - n_tested_20_21_1 ; 
+d_n_tested_20_21_5 = n_tested_20_21_5 - n_tested_20_21_1 ; 
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -685,7 +690,21 @@ run;
 ods html close;
 
 
+*
+n_start_line2_per_year 
+n_vl_test_done 
+n_death_hivrel 
+;
 
 
-
-
+ods html;
+proc means  n mean lclm uclm p5 p95 data=wide ; 
+var 
+n_tested_19 
+n_tested_20_21_1 n_tested_20_21_2 n_tested_20_21_3 n_tested_20_21_4 n_tested_20_21_5 
+n_tested_21_22_1 n_tested_21_22_2 n_tested_21_22_3 n_tested_21_22_4 n_tested_21_22_5 
+d_n_tested_20_21_2 d_n_tested_20_21_3 d_n_tested_20_21_4 d_n_tested_20_21_5 
+d_n_tested_21_22_2 d_n_tested_21_22_3 d_n_tested_21_22_4 d_n_tested_21_22_5
+; 
+run;
+ods html close;
