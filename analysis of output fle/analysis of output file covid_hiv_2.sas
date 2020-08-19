@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
    data wide;    
  * set a.wide_covid_hiv_2_9_8_20_5pm;
-   set a.wide_covid_hiv_2_9_8_20_5pm_extra;
+   set a.w_covid_hiv_2_9_8_20_5pm_extra;
 
 
 
@@ -146,6 +146,55 @@ d_n_tested_20_21_2 = n_tested_20_21_2 - n_tested_20_21_1 ;
 d_n_tested_20_21_3 = n_tested_20_21_3 - n_tested_20_21_1 ; 
 d_n_tested_20_21_4 = n_tested_20_21_4 - n_tested_20_21_1 ; 
 d_n_tested_20_21_5 = n_tested_20_21_5 - n_tested_20_21_1 ; 
+d_n_tested_21_22_2 = n_tested_21_22_2 - n_tested_21_22_1 ; 
+d_n_tested_21_22_3 = n_tested_21_22_3 - n_tested_21_22_1 ; 
+d_n_tested_21_22_4 = n_tested_21_22_4 - n_tested_21_22_1 ; 
+d_n_tested_21_22_5 = n_tested_21_22_5 - n_tested_21_22_1 ; 
+
+d_n_new_mcirc_20_21_2 = n_new_mcirc_20_21_2 - n_new_mcirc_20_21_1 ; 
+d_n_new_mcirc_20_21_3 = n_new_mcirc_20_21_3 - n_new_mcirc_20_21_1 ; 
+d_n_new_mcirc_20_21_4 = n_new_mcirc_20_21_4 - n_new_mcirc_20_21_1 ; 
+d_n_new_mcirc_20_21_5 = n_new_mcirc_20_21_5 - n_new_mcirc_20_21_1 ; 
+d_n_new_mcirc_21_22_2 = n_new_mcirc_21_22_2 - n_new_mcirc_21_22_1 ; 
+d_n_new_mcirc_21_22_3 = n_new_mcirc_21_22_3 - n_new_mcirc_21_22_1 ; 
+d_n_new_mcirc_21_22_4 = n_new_mcirc_21_22_4 - n_new_mcirc_21_22_1 ; 
+d_n_new_mcirc_21_22_5 = n_new_mcirc_21_22_5 - n_new_mcirc_21_22_1 ;
+
+d_n_onart_20_21_2 = n_onart_20_21_2 - n_onart_20_21_1 ; 
+d_n_onart_20_21_3 = n_onart_20_21_3 - n_onart_20_21_1 ; 
+d_n_onart_20_21_4 = n_onart_20_21_4 - n_onart_20_21_1 ; 
+d_n_onart_20_21_5 = n_onart_20_21_5 - n_onart_20_21_1 ; 
+d_n_onart_21_22_2 = n_onart_21_22_2 - n_onart_21_22_1 ; 
+d_n_onart_21_22_3 = n_onart_21_22_3 - n_onart_21_22_1 ; 
+d_n_onart_21_22_4 = n_onart_21_22_4 - n_onart_21_22_1 ; 
+d_n_onart_21_22_5 = n_onart_21_22_5 - n_onart_21_22_1 ;
+
+d_n_vl_test_done_20_21_2 = n_vl_test_done_20_21_2 - n_vl_test_done_20_21_1 ; 
+d_n_vl_test_done_20_21_3 = n_vl_test_done_20_21_3 - n_vl_test_done_20_21_1 ; 
+d_n_vl_test_done_20_21_4 = n_vl_test_done_20_21_4 - n_vl_test_done_20_21_1 ; 
+d_n_vl_test_done_20_21_5 = n_vl_test_done_20_21_5 - n_vl_test_done_20_21_1 ; 
+d_n_vl_test_done_21_22_2 = n_vl_test_done_21_22_2 - n_vl_test_done_21_22_1 ; 
+d_n_vl_test_done_21_22_3 = n_vl_test_done_21_22_3 - n_vl_test_done_21_22_1 ; 
+d_n_vl_test_done_21_22_4 = n_vl_test_done_21_22_4 - n_vl_test_done_21_22_1 ; 
+d_n_vl_test_done_21_22_5 = n_vl_test_done_21_22_5 - n_vl_test_done_21_22_1 ;
+
+d_n_diag_20_21_2 = n_diag_20_21_2 - n_diag_20_21_1 ; 
+d_n_diag_20_21_3 = n_diag_20_21_3 - n_diag_20_21_1 ; 
+d_n_diag_20_21_4 = n_diag_20_21_4 - n_diag_20_21_1 ; 
+d_n_diag_20_21_5 = n_diag_20_21_5 - n_diag_20_21_1 ; 
+d_n_diag_21_22_2 = n_diag_21_22_2 - n_diag_21_22_1 ; 
+d_n_diag_21_22_3 = n_diag_21_22_3 - n_diag_21_22_1 ; 
+d_n_diag_21_22_4 = n_diag_21_22_4 - n_diag_21_22_1 ; 
+d_n_diag_21_22_5 = n_diag_21_22_5 - n_diag_21_22_1 ;
+
+d_n_start_line2_20_21_2 = n_start_line2_20_21_2 - n_start_line2_20_21_1 ; 
+d_n_start_line2_20_21_3 = n_start_line2_20_21_3 - n_start_line2_20_21_1 ; 
+d_n_start_line2_20_21_4 = n_start_line2_20_21_4 - n_start_line2_20_21_1 ; 
+d_n_start_line2_20_21_5 = n_start_line2_20_21_5 - n_start_line2_20_21_1 ; 
+d_n_start_line2_21_22_2 = n_start_line2_21_22_2 - n_start_line2_21_22_1 ; 
+d_n_start_line2_21_22_3 = n_start_line2_21_22_3 - n_start_line2_21_22_1 ; 
+d_n_start_line2_21_22_4 = n_start_line2_21_22_4 - n_start_line2_21_22_1 ; 
+d_n_start_line2_21_22_5 = n_start_line2_21_22_5 - n_start_line2_21_22_1 ;
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -708,3 +757,15 @@ d_n_tested_21_22_2 d_n_tested_21_22_3 d_n_tested_21_22_4 d_n_tested_21_22_5
 ; 
 run;
 ods html close;
+
+* n_tested  n_new_mcirc  n_onart n_vl_test_done   n_diag  n_start_line2 ;
+
+
+
+
+
+
+
+
+
+
