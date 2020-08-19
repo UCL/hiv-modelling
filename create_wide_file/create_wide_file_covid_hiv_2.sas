@@ -1228,7 +1228,7 @@ data y; set covid_hiv_2_9_8_20_5pm; run;
 
 * &v ;
 
-/* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
+proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019 <= cald <= 2019.75; 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
@@ -1236,6 +1236,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
    proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;  
    proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.5 <= cald < 2021.50;  
+   proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;  
    proc means noprint data=y; var &v; output out=y_20_23 mean= &v._20_23; by run option ; where 2020.5 <= cald < 2023.50;  
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
    proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; 
@@ -1246,12 +1247,13 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
    proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run;   
    proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;   
+   proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run;   
    proc sort data=y_20_23; by run; proc transpose data=y_20_23 out=t_20_23 prefix=&v._20_23_; var &v._20_23; by run;   
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
    proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; 
    proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;    
 
-data &v ; merge  y_20 t_20_25 t_20_21 t_20_23 t_20_40 t_20_70 /*add other datasets from above here*/ ;  
+data &v ; merge  y_19  y_20 t_20_25 t_20_21 t_21_22  t_20_23 t_20_40 t_20_70 /*add other datasets from above here*/ ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1559,7 +1561,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_covid_hiv_2_9_8_20_5pm; 
+  data a.wide_covid_hiv_2_9_8_20_5pm_extra; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
