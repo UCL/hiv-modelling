@@ -2,21 +2,22 @@
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
+libname tmp "/folders/myfolders/output_files/";
+libname a "/folders/myfolders/output_files";
 
-
-data d1;  
+*data d1;  
 
   *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\;
   *infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\.......";
+  *infile "/folders/myfolders/output_files/output_266917";
+*input
 
-input 
+*...............
 
-...............
-
-;
+*;
 
 
-data a; set d1  ;
+data a; set tmp.output_x  ;
 
 
 proc sort; by run cald option;run;
@@ -58,7 +59,7 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 *r_bir_w_infected_child_ = rate_birth_with_infected_child_;
 
 
-*reg_option = s_reg_option / s_n;
+reg_option = s_reg_option / s_n;
 
 * ================================================================================= ;
 
@@ -262,12 +263,12 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2019;
 * p_newp_sw;					p_newp_sw = s_sw_newp / s_w_newp ;
-* rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
-* rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
-* rate_susc_np_ic_1549_m;		*rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
+* rate_susc_np_1549_m;			rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
+* rate_susc_np_1549_w;			rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
+* rate_susc_np_ic_1549_m;		rate_susc_np_ic_1549_m = s_susc_newp_inc_circ_1549_m / (s_alive1549_m - s_hiv1549m);  * circumcised count as not susceptible;
 
-* mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
-* mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
+* mean_num_tests_ly_m1549_;		mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
+* mean_num_tests_ly_w1549_;		mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
 * n_tested_m;					n_tested_m = s_tested_m * sf_2019 * 4;
 * n_tested;						n_tested = s_tested * sf_2019 * 4;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
@@ -539,12 +540,12 @@ n_pregnant_ntd = s_pregnant_ntd    * sf_2019 * 4 ;
 n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2019 * 4;  * annual number;
 
 
-n_mcirc1549_=s_mcirc_1549m * sf_2019 * 4;
-n_mcirc1549_3m=s_mcirc_1549m * sf_2019;
-n_vmmc1549_=s_vmmc1549m * sf_2019 * 4;
-n_vmmc1549_3m=s_vmmc1549m * sf_2019;
-n_new_inf1549m=s_primary1549m * sf_2019 * 4;
-n_new_inf1549=s_primary1549 * sf_2019 * 4;
+n_mcirc1549_ = s_mcirc_1549m * sf_2019 * 4;
+n_mcirc1549_3m = s_mcirc_1549m * sf_2019;
+n_vmmc1549_ = s_vmmc1549m * sf_2019 * 4;
+n_vmmc1549_3m = s_vmmc1549m * sf_2019;
+n_new_inf1549m = s_primary1549m * sf_2019 * 4;
+n_new_inf1549 = s_primary1549 * sf_2019 * 4;
 
 
 keep run option cald dataset
@@ -641,6 +642,8 @@ testing_disrup_covid  art_tld_disrup_covid  art_tld_eod_disrup_covid   art_init_
 vl_adh_switch_disrup_covid  cotrim_disrup_covid    no_art_disrup_covid 
 inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult 
 
+n_mcirc1549_ n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549 
+
 option_0_prep_continue_2020 s_sw_newp	 
  	
 ;
@@ -649,9 +652,9 @@ option_0_prep_continue_2020 s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data a.your_filename; set y;
+data a.wide_output_Fri; set y;
 
-data y; set a.your_filename; run;
+data y; set a.wide_output_Fri; run;
 
 
   options nomprint;
@@ -995,7 +998,8 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  data a.wide_your_filename; 
+*libname a "/folders/myfolders/output_files/";
+  data a.even_wider_output; 
 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after

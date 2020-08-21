@@ -511,7 +511,7 @@ incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_ini
 - consider higher pr_art_init if diagnosed while on prep
 
 - proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ñve and np=0, start tld if np goes >= 1) 
+alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ÔøΩve and np=0, start tld if np goes >= 1) 
 sample these)
 
 - is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
@@ -532,7 +532,7 @@ explore metrics for how to monitor prep programmes
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
+  libname a '/folders/myfolders/output_files/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -1369,7 +1369,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 
 data r1;set z;
-do i=1 to 100000;
+do i=1 to 1000;
 	n=1;
 	serial_no + 1;
 	output; 
@@ -1392,7 +1392,7 @@ if gender ne . then do; obs+1; end;
 *
 cia world factbook 
 malawi
-Total population (x 1000)	Population aged 0ÅE4 (%)	Population aged 15ÅE4 (%)	Population aged 65+ (%)   n population aged 15ÅE4
+Total population (x 1000)	Population aged 0ÔøΩE4 (%)	Population aged 15ÔøΩE4 (%)	Population aged 65+ (%)   n population aged 15ÔøΩE4
 1990	9 381	45.9	51.4	2.7		4821000
 1995	9 883	44.7	52.2	3.1		5159000
 2000	11 229	45.8	51.1	3.1		5738000
@@ -14338,7 +14338,7 @@ run;
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = 100000;
+data sums; set r&da1; if serial_no = 1000;
 
 ***Variables created below are used to update the program ;
 
@@ -15356,7 +15356,7 @@ data cum_l&da2; set cum_l&da1 sums;
 
 
 data s;set sums;
-do i=1 to 100000; 
+do i=1 to 1000; 
 	n=1; output; 
 end; 
 drop i;
@@ -16190,14 +16190,13 @@ end;
 
 
 * ts1m:  need more update statements ;
+libname tmp_out "/folders/myfolders/output_files/";
 
-
-
-data x; set cum_l1;
+data tmp_out.output_x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
-
-put   
+*  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
+*   file "/folders/myfolders/output_files/output_&dataset_id";
+input 
 
 
 /*general*/
