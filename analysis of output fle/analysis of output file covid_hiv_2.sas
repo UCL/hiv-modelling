@@ -160,6 +160,18 @@ d_n_new_mcirc_21_22_3 = n_new_mcirc_21_22_3 - n_new_mcirc_21_22_1 ;
 d_n_new_mcirc_21_22_4 = n_new_mcirc_21_22_4 - n_new_mcirc_21_22_1 ; 
 d_n_new_mcirc_21_22_5 = n_new_mcirc_21_22_5 - n_new_mcirc_21_22_1 ;
 
+* these lines to be removed when corrected in create wide file ;
+n_onart_20_21_1 = n_onart_20_21_1 / 4; 
+n_onart_20_21_2 = n_onart_20_21_2 / 4;
+n_onart_20_21_3 = n_onart_20_21_3 / 4;
+n_onart_20_21_4 = n_onart_20_21_4 / 4;
+n_onart_20_21_5 = n_onart_20_21_5 / 4;
+n_onart_21_22_1 = n_onart_21_22_1 / 4; 
+n_onart_21_22_2 = n_onart_21_22_2 / 4;
+n_onart_21_22_3 = n_onart_21_22_3 / 4;
+n_onart_21_22_4 = n_onart_21_22_4 / 4;
+n_onart_21_22_5 = n_onart_21_22_5 / 4;
+
 d_n_onart_20_21_2 = n_onart_20_21_2 - n_onart_20_21_1 ; 
 d_n_onart_20_21_3 = n_onart_20_21_3 - n_onart_20_21_1 ; 
 d_n_onart_20_21_4 = n_onart_20_21_4 - n_onart_20_21_1 ; 
@@ -196,9 +208,35 @@ d_n_start_line2_21_22_3 = n_start_line2_21_22_3 - n_start_line2_21_22_1 ;
 d_n_start_line2_21_22_4 = n_start_line2_21_22_4 - n_start_line2_21_22_1 ; 
 d_n_start_line2_21_22_5 = n_start_line2_21_22_5 - n_start_line2_21_22_1 ;
 
+d_n_death_dis_20_21_5_4 = n_death_discount_20_21_4 - n_death_discount_20_21_5 ;
+d_n_death_dis_20_23_5_4 = n_death_discount_20_23_4 - n_death_discount_20_23_5 ;
+d_n_death_dis_20_25_5_4 = n_death_discount_20_25_4 - n_death_discount_20_25_5 ;
+d_n_death_dis_20_40_5_4 = n_death_discount_20_40_4 - n_death_discount_20_40_5 ;
+d_n_death_dis_20_70_5_4 = n_death_discount_20_70_4 - n_death_discount_20_70_5 ;
+
+* for effect of circ compare options 4 and 5 ;
+
+d_n_new_mcirc_20_21_5_4 = n_new_mcirc_20_21_5 - n_new_mcirc_20_21_4 ;
+d_n_death_dis_20_70_5_4 = n_death_discount_20_70_4 - n_death_discount_20_70_5 ;
+
+deaths_averted_per_10000_circ = (d_n_death_dis_20_70_5_4 * 50 / d_n_new_mcirc_20_21_5_4 ) * 10000 ;
+
+* for effect of testing compare options 3 vs 1 ;
+
+d_n_tested_20_21_3_1 = n_tested_20_21_3 - n_tested_20_21_1 ;
+d_n_death_dis_20_70_3_1 = n_death_discount_20_70_1 - n_death_discount_20_70_3 ;
+
+deaths_averted_per_10000_test = (d_n_death_dis_20_70_3_1 * 50 / d_n_tested_20_21_3_1 ) * 10000 ;
+
+* for effect of vl testing compare options 2 vs 1 ;
+
+d_n_vl_test_done_20_21_2_1 = n_vl_test_done_20_21_2 - n_vl_test_done_20_21_1 ;
+d_n_death_dis_20_70_2_1 = n_death_discount_20_70_1 - n_death_discount_20_70_2 ;
+
+deaths_averted_per_10000_vl_test = (d_n_death_dis_20_70_2_1 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
+deaths_av_per_10000_vl_test_5y = (-d_n_death_dis_20_25_2 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
 
 * --------------------------------------------------------------------------------------------------------------;
-
 
 
 
@@ -567,7 +605,9 @@ proc means n p50 p5 p95;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 
+n_tested_19   n_onart_19 n_vl_test_done_19   n_diag_19  n_start_line2_19 n_new_mcirc_19
+;
 run;
 
 
@@ -749,21 +789,37 @@ n_death_hivrel
 ods html;
 proc means  n mean lclm uclm p5 p95 data=wide ; 
 var 
-n_tested_19 
-n_tested_20_21_1 n_tested_20_21_2 n_tested_20_21_3 n_tested_20_21_4 n_tested_20_21_5 
-n_tested_21_22_1 n_tested_21_22_2 n_tested_21_22_3 n_tested_21_22_4 n_tested_21_22_5 
-d_n_tested_20_21_2 d_n_tested_20_21_3 d_n_tested_20_21_4 d_n_tested_20_21_5 
-d_n_tested_21_22_2 d_n_tested_21_22_3 d_n_tested_21_22_4 d_n_tested_21_22_5
+d_n_new_mcirc_21_22_2 d_n_new_mcirc_21_22_3 d_n_new_mcirc_21_22_4 d_n_new_mcirc_21_22_5 
 ; 
 run;
 ods html close;
 
+* n_tested_20_21_1 n_tested_20_21_2 n_tested_20_21_3 n_tested_20_21_4 n_tested_20_21_5 
+* n_tested_21_22_1 n_tested_21_22_2 n_tested_21_22_3 n_tested_21_22_4 n_tested_21_22_5 
+* d_n_tested_20_21_2 d_n_tested_20_21_3 d_n_tested_20_21_4 d_n_tested_20_21_5 
+* d_n_tested_21_22_2 d_n_tested_21_22_3 d_n_tested_21_22_4 d_n_tested_21_22_5
+* d_n_death_dis_20_21_5_4 d_n_death_dis_20_25_5_4 d_n_death_dis_20_40_5_4 d_n_death_dis_20_70_5_4
+
 * n_tested  n_new_mcirc  n_onart n_vl_test_done   n_diag  n_start_line2 ;
 
+proc means n mean lclm uclm p5 p95 data=wide ; 
+var d_n_death_dis_20_21_5_4 d_n_death_dis_20_23_5_4 d_n_death_dis_20_25_5_4 d_n_death_dis_20_40_5_4 d_n_death_dis_20_70_5_4;
+run;
+
+proc means n mean lclm uclm p5 p95 data=wide ; 
+var deaths_averted_per_10000_circ deaths_averted_per_10000_test n_death_discount_20_70_1 n_death_discount_20_70_3
+n_death_discount_20_70_4 n_death_discount_20_70_5 d_n_death_dis_20_70_3_1  d_n_death_dis_20_70_5_4
+d_n_new_mcirc_20_21_5_4  d_n_tested_20_21_3_1
+d_n_death_dis_20_70_5_4  d_n_new_mcirc_20_21_5_4
+
+;
+run;
 
 
-
-
+proc means n mean lclm uclm p5 p95 data=wide ; 
+var  deaths_averted_per_10000_vl_test d_n_death_dis_20_70_2_1  d_n_vl_test_done_20_21_2_1
+deaths_av_per_10000_vl_test_5y;
+run;
 
 
 

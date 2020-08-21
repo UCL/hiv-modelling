@@ -1080,7 +1080,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
 
-* n_onart;						n_onart = s_onart * sf_2019 * 4 ;
+* n_onart;						n_onart = s_onart * sf_2019 ;
 * n_diag;						n_diag = s_diag_this_period * sf_2019 * 4 ;
 * n_start_line2;				n_start_line2 = s_start_line2_this_period * sf_2019 * 4 ;
 * n_vl_test_done;				n_vl_test_done = (s_vl_cost / 0.022  )  * sf_2019 * 4 ;
@@ -1218,7 +1218,7 @@ proc sort data=y;by run option;run;
 data covid_hiv_2_9_8_20_5pm; set y;  
 
 
-data y; set covid_hiv_2_9_8_20_5pm; run;
+data y; set covid_hiv_2_9_8_20_5pm; 
 
 
   options nomprint;
@@ -1409,7 +1409,6 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );    %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
 %par(p= incr_mort_risk_dol_weightg );
-%par(p= keep_going_1999 );  %par(p= keep_going_2004 );  %par(p= keep_going_2016 );  %par(p= keep_going_2020 ); 
 %par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
 %par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
 %par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
@@ -1442,7 +1441,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc  
+ prep_strategy rate_sw_rred_rc  
 ;
 
 proc contents; run;
