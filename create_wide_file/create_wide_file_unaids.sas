@@ -562,7 +562,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
-
+if run=997951394 ;
 
 data a; set d1  ;
 
@@ -1374,10 +1374,12 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data covid_hiv_2_9_8_20_5pm; set y;  
+data unaids_14_8_20_1pm; set y;  
+
+proc contents; run;
 
 
-data y; set covid_hiv_2_9_8_20_5pm; 
+data y; set unaids_14_8_20_1pm; 
 
 
   options nomprint;
@@ -1507,21 +1509,21 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_);%var(v=n_mcirc1549_3m);%var(v=n_vmmc1549_);%var(v=n_vmmc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
 %var(v=n_new_mcirc); %var(v=s_sw_newp); %var(v=death_rate_all_discount); %var(v=n_death_discount)
-%var(v=ageg1519m  );    %var(v=ageg2024m  );    %var(v=ageg2529m  );    %var(v=ageg3034m  );    %var(v=ageg3539m  );    %var(v=ageg4044m  );    %var(v=ageg4549m  );    %var(v=ageg5054m  );    %var(v=ageg5559m  );    %var(v=ageg6064m  );    %var(v=ageg6569m );
-%var(v=ageg7074m  );    %var(v=ageg7579m  );    %var(v=ageg8084m  );    %var(v=ageg85plw  );    %var(v=ageg1519w );    %var(v=ageg2024w  );    %var(v=ageg2529w  );    %var(v=ageg3034w  );    %var(v=ageg3539w  );    %var(v=ageg4044w  );    %var(v=ageg4549w); 
-%var(v=ageg5054w  );    %var(v=ageg5559w  );    %var(v=ageg6064w );    %var(v=ageg6569w  );    %var(v=ageg7074w  );    %var(v=ageg7579w  );    %var(v=ageg8084w  );    %var(v=ageg85plw  );    %var(v=onart_m1519 );
-%var(v=onart_m2024  );    %var(v=onart_m2529 );    %var(v=onart_m3034  );    %var(v=onart_m3539  );    %var(v=onart_m4044  );    %var(v=onart_m4549  );    %var(v=onart_m5054  );    %var(v=onart_m5559  );    %var(v=onart_m6064  );    %var(v=onart_m7074 );
-%var(v=onart_m7074  );    %var(v=onart_m7579  );    %var(v=onart_m8084  );    %var(v=onart_m85pl  );    %var(v=onart_w1519  );    %var(v=onart_w2024  );    %var(v=onart_w2529  );    %var(v=onart_w3034  );    %var(v=onart_w3539  );    %var(v=onart_w4044 );
-%var(v=onart_w4549 );    %var(v=onart_w5054 );    %var(v=onart_w5559 );    %var(v=onart_w6064 );    %var(v=onart_w6569 );    %var(v=onart_w7074 );    %var(v=onart_w7579 );    %var(v=onart_w8084 );    %var(v=onart_w85pl );    %var(v=mcirc_1014m 	);	
-%var(v=mcirc_1519m  );    %var(v=mcirc_2024m  );    %var(v=mcirc_2529m  );    %var(v=mcirc_3034m  );    %var(v=mcirc_3539m  );    %var(v=mcirc_4044m );    %var(v=mcirc_4549m  );    %var(v=mcirc_5054m  );    %var(v=mcirc_5559m  );    %var(v=mcirc_6064m );
-%var(v=mcirc_6569m );    %var(v=mcirc_7074m );    %var(v=mcirc_7579m );    %var(v=mcirc_8084m );    %var(v=mcirc_85plm );    %var(v=new_mcirc_1014m );    %var(v=new_mcirc_1519m );    %var(v=new_mcirc_2024m );    %var(v=new_mcirc_2529m );
-%var(v=new_mcirc_3034m  );    %var(v=new_mcirc_3539m  );    %var(v=new_mcirc_4044m  );    %var(v=new_mcirc_4549m  );    %var(v=new_mcirc_5054m );    %var(v=new_mcirc_5559m );    %var(v=new_mcirc_6064m  );    %var(v=new_mcirc_6569m );
-%var(v=new_mcirc_7074m  );    %var(v=new_mcirc_7579m  );    %var(v=new_mcirc_8084m  );    %var(v=new_mcirc_85plm  );    %var(v=new_inf_1519m  );    %var(v=new_inf_2024m  );    %var(v=new_inf_2529m  );    %var(v=new_inf_3034m );
-%var(v=new_inf_3539m  );    %var(v=new_inf_4044m  );    %var(v=new_inf_4549m  );    %var(v=new_inf_5054m  );    %var(v=new_inf_5559m  );    %var(v=new_inf_6064m  );    %var(v=new_inf_1519w  );    %var(v=new_inf_2024w  );    %var(v=new_inf_2529w );
-%var(v=new_inf_3034w  );    %var(v=new_inf_3539w );    %var(v=new_inf_4044w );    %var(v=new_inf_4549w  );    %var(v=new_inf_5054w  );    %var(v=new_inf_5559w );    %var(v=new_inf_6064w  );    %var(v=hiv1519m  );    %var(v=hiv2024m );    %var(v=hiv2529m);
-%var(v=hiv3034m  );    %var(v=hiv3539m  );    %var(v=hiv4044m  );    %var(v=hiv4549m  );    %var(v=hiv5054m  );    %var(v=hiv5559m  );    %var(v=hiv6064m  );    %var(v=hiv6569m  );    %var(v=hiv7074m  );    %var(v=hiv7579m );    %var(v=hiv8084m );    %var(v=hiv85plm );
-%var(v=hiv1519w  );    %var(v=hiv2024w  );    %var(v=hiv2529w  );    %var(v=hiv3034w  );    %var(v=hiv3539w  );    %var(v=hiv4044w );    %var(v=hiv4549w );    %var(v=hiv5054w  );    %var(v=hiv5559w );    %var(v=hiv6064w  );    %var(v=hiv6569w  );    %var(v=hiv7074w );    %var(v=hiv7579w );
-%var(v=hiv8084w  );    %var(v=hiv85plw );
+%var(v=n_ageg1519m  );    %var(v=n_ageg2024m  );    %var(v=n_ageg2529m  );    %var(v=n_ageg3034m  );    %var(v=n_ageg3539m  );    %var(v=n_ageg4044m  );    %var(v=n_ageg4549m  );    %var(v=n_ageg5054m  );    %var(v=n_ageg5559m  );    %var(v=n_ageg6064m  );    %var(v=n_ageg6569m );
+%var(v=n_ageg7074m  );    %var(v=n_ageg7579m  );    %var(v=n_ageg8084m  );    %var(v=n_ageg85plw  );    %var(v=n_ageg1519w );    %var(v=n_ageg2024w  );    %var(v=n_ageg2529w  );    %var(v=n_ageg3034w  );    %var(v=n_ageg3539w  );    %var(v=n_ageg4044w  );    %var(v=n_ageg4549w); 
+%var(v=n_ageg5054w  );    %var(v=n_ageg5559w  );    %var(v=n_ageg6064w );    %var(v=n_ageg6569w  );    %var(v=n_ageg7074w  );    %var(v=n_ageg7579w  );    %var(v=n_ageg8084w  );    %var(v=n_ageg85plw  );    %var(v=n_onart_m1519 );
+%var(v=n_onart_m2024  );    %var(v=n_onart_m2529 );    %var(v=n_onart_m3034  );    %var(v=n_onart_m3539  );    %var(v=n_onart_m4044  );    %var(v=n_onart_m4549  );    %var(v=n_onart_m5054  );    %var(v=n_onart_m5559  );    %var(v=n_onart_m6064  );    %var(v=n_onart_m7074 );
+%var(v=n_onart_m7074  );    %var(v=n_onart_m7579  );    %var(v=n_onart_m8084  );    %var(v=n_onart_m85pl  );    %var(v=n_onart_w1519  );    %var(v=n_onart_w2024  );    %var(v=n_onart_w2529  );    %var(v=n_onart_w3034  );    %var(v=n_onart_w3539  );    %var(v=n_onart_w4044 );
+%var(v=n_onart_w4549 );    %var(v=n_onart_w5054 );    %var(v=n_onart_w5559 );    %var(v=n_onart_w6064 );    %var(v=n_onart_w6569 );    %var(v=n_onart_w7074 );    %var(v=n_onart_w7579 );    %var(v=n_onart_w8084 );    %var(v=n_onart_w85pl );    %var(v=n_mcirc_1014m 	);	
+%var(v=n_mcirc_1519m  );    %var(v=n_mcirc_2024m  );    %var(v=n_mcirc_2529m  );    %var(v=n_mcirc_3034m  );    %var(v=n_mcirc_3539m  );    %var(v=n_mcirc_4044m );    %var(v=n_mcirc_4549m  );    %var(v=n_mcirc_5054m  );    %var(v=n_mcirc_5559m  );    %var(v=n_mcirc_6064m );
+%var(v=n_mcirc_6569m );    %var(v=n_mcirc_7074m );    %var(v=n_mcirc_7579m );    %var(v=n_mcirc_8084m );    %var(v=n_mcirc_85plm );    %var(v=n_new_mcirc_1014m );    %var(v=n_new_mcirc_1519m );    %var(v=n_new_mcirc_2024m );    %var(v=n_new_mcirc_2529m );
+%var(v=n_new_mcirc_3034m  );    %var(v=n_new_mcirc_3539m  );    %var(v=n_new_mcirc_4044m  );    %var(v=n_new_mcirc_4549m  );    %var(v=n_new_mcirc_5054m );    %var(v=n_new_mcirc_5559m );    %var(v=n_new_mcirc_6064m  );    %var(v=n_new_mcirc_6569m );
+%var(v=n_new_mcirc_7074m  );    %var(v=n_new_mcirc_7579m  );    %var(v=n_new_mcirc_8084m  );    %var(v=n_new_mcirc_85plm  );    %var(v=n_new_inf_1519m  );    %var(v=n_new_inf_2024m  );    %var(v=n_new_inf_2529m  );    %var(v=n_new_inf_3034m );
+%var(v=n_new_inf_3539m  );    %var(v=n_new_inf_4044m  );    %var(v=n_new_inf_4549m  );    %var(v=n_new_inf_5054m  );    %var(v=n_new_inf_5559m  );    %var(v=n_new_inf_6064m  );    %var(v=n_new_inf_1519w  );    %var(v=n_new_inf_2024w  );    %var(v=n_new_inf_2529w );
+%var(v=n_new_inf_3034w  );    %var(v=n_new_inf_3539w );    %var(v=n_new_inf_4044w );    %var(v=n_new_inf_4549w  );    %var(v=n_new_inf_5054w  );    %var(v=n_new_inf_5559w );    %var(v=n_new_inf_6064w  );    %var(v=n_hiv1519m  );    %var(v=n_hiv2024m );    %var(v=n_hiv2529m);
+%var(v=n_hiv3034m  );    %var(v=n_hiv3539m  );    %var(v=n_hiv4044m  );    %var(v=n_hiv4549m  );    %var(v=n_hiv5054m  );    %var(v=n_hiv5559m  );    %var(v=n_hiv6064m  );    %var(v=n_hiv6569m  );    %var(v=n_hiv7074m  );    %var(v=n_hiv7579m );    %var(v=n_hiv8084m );    %var(v=n_hiv85plm );
+%var(v=n_hiv1519w  );    %var(v=n_hiv2024w  );    %var(v=n_hiv2529w  );    %var(v=n_hiv3034w  );    %var(v=n_hiv3539w  );    %var(v=n_hiv4044w );    %var(v=n_hiv4549w );    %var(v=n_hiv5054w  );    %var(v=n_hiv5559w );    %var(v=n_hiv6064w  );    %var(v=n_hiv6569w  );    %var(v=n_hiv7074w );    %var(v=n_hiv7579w );
+%var(v=n_hiv8084w  );    %var(v=n_hiv85plw );
 
 
 data   wide_outputs; merge 
