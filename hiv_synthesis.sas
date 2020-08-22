@@ -10918,6 +10918,14 @@ mcirc_3539m=0;new_mcirc_3539m=0;vmmc3539m=0;new_vmmc3539m=0;if gender=1 and 35 l
 mcirc_4044m=0;new_mcirc_4044m=0;vmmc4044m=0;new_vmmc4044m=0;if gender=1 and 40 le age lt 45 then do; mcirc_4044m=mcirc; new_mcirc_4044m=new_mcirc; new_vmmc4044m=new_vmmc; vmmc4044m=vmmc; end;
 mcirc_4549m=0;new_mcirc_4549m=0;vmmc4549m=0;new_vmmc4549m=0;if gender=1 and 45 le age lt 50 then do; mcirc_4549m=mcirc; new_mcirc_4549m=new_mcirc; new_vmmc4549m=new_vmmc; vmmc4549m=vmmc; end;
 mcirc_50plm=0;new_mcirc_50plm=0;vmmc50plm=0;new_vmmc50plm=0;if gender=1 and       age ge 50 then do; mcirc_50plm=mcirc; new_mcirc_50plm=new_mcirc; new_vmmc50plm=new_vmmc; vmmc50plm=vmmc; end;
+mcirc_5054m=0;new_mcirc_5054m=0;vmmc5054m=0;new_vmmc5054m=0;if gender=1 and 50 le age lt 55 then do; mcirc_5054m=mcirc; new_mcirc_5054m=new_mcirc; new_vmmc5054m=new_vmmc; vmmc5054m=vmmc; end;
+mcirc_5559m=0;new_mcirc_5559m=0;vmmc5559m=0;new_vmmc5559m=0;if gender=1 and 55 le age lt 60 then do; mcirc_5559m=mcirc; new_mcirc_5559m=new_mcirc; new_vmmc5559m=new_vmmc; vmmc5559m=vmmc; end;
+mcirc_6064m=0;new_mcirc_6064m=0;vmmc6064m=0;new_vmmc6064m=0;if gender=1 and 60 le age lt 65 then do; mcirc_6064m=mcirc; new_mcirc_6064m=new_mcirc; new_vmmc6064m=new_vmmc; vmmc6064m=vmmc; end;
+mcirc_6569m=0;new_mcirc_6569m=0;vmmc6569m=0;new_vmmc6569m=0;if gender=1 and 65 le age lt 70 then do; mcirc_6569m=mcirc; new_mcirc_6569m=new_mcirc; new_vmmc6569m=new_vmmc; vmmc6569m=vmmc; end;
+mcirc_7074m=0;new_mcirc_7074m=0;vmmc7074m=0;new_vmmc7074m=0;if gender=1 and 70 le age lt 75 then do; mcirc_7074m=mcirc; new_mcirc_7074m=new_mcirc; new_vmmc7074m=new_vmmc; vmmc7074m=vmmc; end;
+mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender=1 and 75 le age lt 80 then do; mcirc_7579m=mcirc; new_mcirc_7579m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc7579m=vmmc; end;
+mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc8084m=vmmc; end;
+mcirc_85plm=0;new_mcirc_86plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc8084m=new_vmmc; vmmc85plm=vmmc; end;
 
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
@@ -11036,6 +11044,7 @@ hiv6569m=0; if hiv=1 and gender=1 and 65 <= age < 70 then hiv6569m=1;
 hiv7074m=0; if hiv=1 and gender=1 and 70 <= age < 75 then hiv7074m=1;
 hiv7579m=0; if hiv=1 and gender=1 and 75 <= age < 80 then hiv7579m=1;
 hiv8084m=0; if hiv=1 and gender=1 and 80 <= age < 85 then hiv8084m=1;
+hiv85plm=0; if hiv=1 and gender=1 and 85 <= age      then hiv85plm=1;
 
 hiv1564m=0; if hiv=1 and gender=1 and 15 <= age < 65 then hiv1564m=1;
 hiv1549m=0; if hiv=1 and gender=1 and 15 <= age < 50 then hiv1549m=1;
@@ -11056,6 +11065,7 @@ hiv6569w=0; if hiv=1 and gender=2 and 65 <= age < 70 then hiv6569w=1;
 hiv7074w=0; if hiv=1 and gender=2 and 70 <= age < 75 then hiv7074w=1;
 hiv7579w=0; if hiv=1 and gender=2 and 75 <= age < 80 then hiv7579w=1;
 hiv8084w=0; if hiv=1 and gender=2 and 80 <= age < 85 then hiv8084w=1;
+hiv85plw=0; if hiv=1 and gender=2 and 85 <= age      then hiv85plw=1;
 
 hiv1564w=0; if hiv=1 and gender=2 and 15 <= age < 65 then hiv1564w=1;
 hiv1549w=0; if hiv=1 and gender=2 and 15 <= age < 50 then hiv1549w=1;
@@ -13860,12 +13870,16 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_mcirc + mcirc ; s_mcirc_1519m + mcirc_1519m ; s_mcirc_2024m + mcirc_2024m ; s_mcirc_2529m + mcirc_2529m ; s_mcirc_3034m + mcirc_3034m ; 
 	s_mcirc_3539m + mcirc_3539m ; s_mcirc_4044m + mcirc_4044m ; s_mcirc_4549m + mcirc_4549m ; s_mcirc_50plm + mcirc_50plm ;
+	s_mcirc_5054m + mcirc_5054m ; s_mcirc_5559m + mcirc_5559m ; s_mcirc_6064m + mcirc_6064m ; s_mcirc_6569m + mcirc_6569m ;
+	s_mcirc_7074m + mcirc_7074m ; s_mcirc_7580m + mcirc_7580m ; s_mcirc_8084m + mcirc_8084m ; s_mcirc_85plm + mcirc_85plm ;
 	s_vmmc + vmmc ; s_vmmc1519m + vmmc1519m ; s_vmmc2024m + vmmc2024m ; s_vmmc2529m + vmmc2529m ; s_vmmc3034m + vmmc3034m ; s_vmmc3539m + vmmc3539m ;
     s_vmmc4044m + vmmc4044m ; s_vmmc4549m + vmmc4549m ; s_vmmc50plm + vmmc50plm ;
 	s_new_vmmc + new_vmmc ; s_new_vmmc1519m + new_vmmc1519m ; s_new_vmmc2024m + new_vmmc2024m ; s_new_vmmc2529m + new_vmmc2529m ; s_new_vmmc3034m + new_vmmc3034m ; s_new_vmmc3539m + new_vmmc3539m ;
     s_new_vmmc4044m + new_vmmc4044m ; s_new_vmmc4549m + new_vmmc4549m ; s_new_vmmc50plm + new_vmmc50plm ;
 	s_new_mcirc + new_mcirc ; s_new_mcirc_1519m + new_mcirc_1519m ; s_new_mcirc_2024m + new_mcirc_2024m ; s_new_mcirc_2529m + new_mcirc_2529m ;
-	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ;          
+	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ; 
+	s_new_mcirc_5054m + new_mcirc_5054m ; s_new_mcirc_5559m + new_mcirc_5559m ;s_new_mcirc_6064m + new_mcirc_6064m ;s_new_mcirc_6569m + new_mcirc_6569m ;
+	s_new_mcirc_7074m + new_mcirc_7074m ;s_new_mcirc_7579m + new_mcirc_7579m ;s_new_mcirc_8084m + new_mcirc_8084m ;s_new_mcirc_85plm + new_mcirc_85plm ;
  	s_new_mcirc_50plm + new_mcirc_50plm ;
             
 	/*supp mat*/
@@ -13926,7 +13940,8 @@ if 15 <= age or death ne . then do;
 	s_ageg7579m + ageg7579m ; s_ageg8084m + ageg8084m ; s_ageg6569w + ageg6569w ; s_ageg7074w + ageg7074w ; s_ageg7579w + ageg7579w ;
  	s_ageg8084w + ageg8084w ; s_ageg85plw + ageg85plw ; s_ageg85plm + ageg85plm ; 
 	s_hiv6569m + hiv6569m ; s_hiv7074m + hiv7074m ; s_hiv7579m + hiv7579m ; s_hiv8084m + hiv8084m ; s_hiv6569w + hiv6569w ;
-    s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_alive_w + alive_w ; s_alive_m + alive_m ; 
+    s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_hiv85plw + hiv85plw ;s_hiv85plm + hiv85plm ; 
+	s_alive_w + alive_w ; s_alive_m + alive_m ; 
 	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
 end;
@@ -14461,8 +14476,8 @@ s_ageg1m  s_ageg2m  s_ageg3m  s_ageg4m  s_ageg5m  s_ageg1w  s_ageg2w  s_ageg3w  
 
 s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		s_ageg85plw
 s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		s_ageg85plm
-s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m		
-s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w
+s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm	
+s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
 s_alive_w s_alive_m
  
 /*number and status of those with HIV*/
@@ -14865,10 +14880,11 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
-s_mcirc_50plm
+s_mcirc_50plm  	s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6469m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
@@ -15175,8 +15191,8 @@ s_ageg1m  s_ageg2m  s_ageg3m  s_ageg4m  s_ageg5m  s_ageg1w  s_ageg2w  s_ageg3w  
 
 s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		s_ageg85plm
 s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		s_ageg85plw
-s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m		
-s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w
+s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm	
+s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
 s_alive_w s_alive_m
  
 /*number and status of those with HIV*/
@@ -15577,10 +15593,12 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6469m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
@@ -15870,8 +15888,8 @@ s_ageg1m  s_ageg2m  s_ageg3m  s_ageg4m  s_ageg5m  s_ageg1w  s_ageg2w  s_ageg3w  
 
 s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		s_ageg85plm
 s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		s_ageg85plw
-s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m		
-s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w
+s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm	
+s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
 s_alive_w s_alive_m
 
 /*number and status of those with HIV*/
@@ -16277,10 +16295,12 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6469m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
