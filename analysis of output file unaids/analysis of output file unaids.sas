@@ -1,10 +1,9 @@
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\";
+libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\";
 
 
    data wide;    
- * set a.wide_covid_hiv_2_9_8_20_5pm;
-   set a.w_covid_hiv_2_9_8_20_5pm_extra;
+   set data a.w_unaids_14_8_20_1pm ; 
 
 
 
