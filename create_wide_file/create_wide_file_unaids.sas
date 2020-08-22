@@ -917,18 +917,36 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_new_inf_5559w ;				n_new_inf_5559w = s_priwary5559w  * sf_2020 ;
 * n_new_inf_6064w ;				n_new_inf_6064w = s_priwary6064w  * sf_2020 ;
 
-
-
-
-
-
-
-
-
-
-
-
-
+* n_hiv1519m ; 					n_hiv1519m = s_hiv1519m  * sf_2020 ;
+* n_hiv2024m ; 					n_hiv2024m = s_hiv2024m  * sf_2020 ;
+* n_hiv2529m ; 					n_hiv2529m = s_hiv2529m  * sf_2020 ;
+* n_hiv3034m ; 					n_hiv3034m = s_hiv3034m  * sf_2020 ;
+* n_hiv3539m ; 					n_hiv3539m = s_hiv3539m  * sf_2020 ;
+* n_hiv4044m ; 					n_hiv4044m = s_hiv4044m  * sf_2020 ;
+* n_hiv4549m ; 					n_hiv4549m = s_hiv4549m  * sf_2020 ;
+* n_hiv5054m ; 					n_hiv5054m = s_hiv5054m  * sf_2020 ;
+* n_hiv5559m ; 					n_hiv5559m = s_hiv5559m  * sf_2020 ;
+* n_hiv6064m ; 					n_hiv6064m = s_hiv6064m  * sf_2020 ;
+* n_hiv6569m ; 					* n_hiv6569m = s_hiv6569m  * sf_2020 ;
+* n_hiv7074m ; 					* n_hiv7074m = s_hiv7074m  * sf_2020 ;
+* n_hiv7579m ; 					* n_hiv7579m = s_hiv7579m  * sf_2020 ;
+* n_hiv8084m ; 					* n_hiv8084m = s_hiv8084m  * sf_2020 ;
+* n_hiv85plm ; 					* n_hiv85plm = s_hiv85plm  * sf_2020 ;
+* n_hiv1519w ; 					n_hiv1519w = s_hiv1519w  * sf_2020 ;
+* n_hiv2024w ; 					n_hiv2024w = s_hiv2024w  * sf_2020 ;
+* n_hiv2529w ; 					n_hiv2529w = s_hiv2529w  * sf_2020 ;
+* n_hiv3034w ; 					n_hiv3034w = s_hiv3034w  * sf_2020 ;
+* n_hiv3539w ; 					n_hiv3539w = s_hiv3539w  * sf_2020 ;
+* n_hiv4044w ; 					n_hiv4044w = s_hiv4044w  * sf_2020 ;
+* n_hiv4549w ; 					n_hiv4549w = s_hiv4549w  * sf_2020 ;
+* n_hiv5054w ; 					n_hiv5054w = s_hiv5054w  * sf_2020 ;
+* n_hiv5559w ; 					n_hiv5559w = s_hiv5559w  * sf_2020 ;
+* n_hiv6064w ; 					n_hiv6064w = s_hiv6064w  * sf_2020 ;
+* n_hiv6569w ; 					* n_hiv6569w = s_hiv6569w  * sf_2020 ;
+* n_hiv7074w ; 					* n_hiv7074w = s_hiv7074w  * sf_2020 ;
+* n_hiv7579w ; 					* n_hiv7579w = s_hiv7579w  * sf_2020 ;
+* n_hiv8084w ; 					* n_hiv8084w = s_hiv8084w  * sf_2020 ;
+* n_hiv85plw ; 					* n_hiv85plw = s_hiv85plw  * sf_2020 ;
 
 
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
