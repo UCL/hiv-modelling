@@ -579,7 +579,7 @@ dataset=1;
 
 data d2;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_14_8_20_1pm_t";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep\c_output_prep_14_8_20_1pm";
 
 input 
 
