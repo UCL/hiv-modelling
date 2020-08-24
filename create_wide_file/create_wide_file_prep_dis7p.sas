@@ -1789,9 +1789,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.prep_13_8_20_4pm_14_8_20_1pm; set y;
+data a.prep_13_8_20_4pm_14_8_20_1pm_dis7p; set y;
 
-data y; set a.prep_13_8_20_4pm_14_8_20_1pm; run;
+data y; set a.prep_13_8_20_4pm_14_8_20_1pm_dis7p; run;
 
 
   options nomprint;

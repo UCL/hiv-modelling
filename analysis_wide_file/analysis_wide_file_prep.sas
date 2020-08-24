@@ -7,7 +7,10 @@ data wide;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_13_8_20_4pm;
 * set a.wide_prep_13_8_20_4pm_dis7p;
-  set a.w_prep_13_8_20_4pm_14_8_20_1pm; * if dataset = 2;  * if dataset = 1 gives results for circulated ms ;
+  set a.w_prep_13_8_20_4pm_14_8_20_1pm;   if dataset = 2;   if run <=  828749079 ; * to give n = 1000 setting scenarios ;
+* set a.w_prep_14_8_20_1pm_dis7p;       * if dataset = 2; *  if run <=  828749079 ; * to give n = 1000 setting scenarios ;
+
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -29,8 +32,8 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-(dcost_prep_20_70_1 / 3)  +      
-dcost_prep_visit_20_70_1 +  
+dcost_prep_20_70_1     +      
+dcost_prep_visit_20_70_1 + 
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
 dvl_cost_20_70_1    +      
@@ -54,8 +57,8 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-(dcost_prep_20_70_2 / 3) +      
-dcost_prep_visit_20_70_2 +  
+dcost_prep_20_70_2   +      
+dcost_prep_visit_20_70_2 + 
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
 dvl_cost_20_70_2    +      
@@ -179,27 +182,25 @@ p_inf_vlsupp_20   p_inf_newp_20   p_inf_ep_20   p_inf_diag_20   p_inf_naive_20 p
 mtct_prop_20 		p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20    p_artexp_diag_20
 p_onart_diag_20	p_onart_diag_w_20 	p_onart_diag_m_20 	p_efa_20 	p_taz_20		p_ten_20 	p_zdv_20	p_dol_20	p_3tc_20 	p_lpr_20 	p_nev_20 
 p_onart_vl1000_20   p_vl1000_20		p_vg1000_20 			p_onart_m_20 	p_onart_w_20 
-p_onart_vl1000_w_20				p_onart_vl1000_m_20  prev_vg1000_newp_m_20   prev_vg1000_newp_w_20 p_startedline2_20
+p_onart_vl1000_w_20				p_onart_vl1000_m_20  prev_vg1000_newp_m_20   prev_vg1000_newp_w_20 p_startedline2_20    
 p_tle_20	 p_tld_20	 p_zld_20	 p_zla_20	 p_otherreg_20	 p_drug_level_test_20	 p_linefail_ge1_20  
 r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_art_or_prep_20 n_sw_1564_20 
 p_k65m_20 p_m184m_20 p_newp_ge1_20  p_1524_newp_ge1_20;
 run;
 
-
-proc univariate data=wide;
-var p_w_giv_birth_this_per_20	p_mcirc_20	p_mcirc_1549m_20 prevalence1549_20 
-prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
-prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
-prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
-incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
-p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
-p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
-aids_death_rate_20  death_rate_onart_20 p_newp_ge1_20  p_1524_newp_ge1_20 p_newp_sw_20 ;
-where  ych_risk_beh_ep = 0.95;
+ods html;
+proc means median p5 p95 data=wide;
+var	p_mcirc_1549m_17 
+prevalence1549m_17 prevalence1549w_17 prevalence1524m_17 prevalence1524w_17
+incidence1549w_17 incidence1549m_17	p_diag_m_17   p_diag_w_17	
+p_ai_no_arv_c_nnm_17   p_ai_no_arv_c_rt184m_17  p_ai_no_arv_c_rt65m_17   
+prop_w_1549_sw_17    prop_1564_onprep_17  prop_w_1524_onprep_17 
+p_onart_diag_w_17 	p_onart_diag_m_17   p_vl1000_17	p_onart_vl1000_w_17	p_onart_vl1000_m_17 
+p_onart_cd4_l500_17  p_mcirc_1549m_17  p_startedline2_17  prop_sw_hiv_17 
+prop_sw_onprep_17 p_newp_sw_17  n_tested_17 
+aids_death_rate_17  p_newp_sw_17 p_newp_ge1_age1549_17 ;
 run;
-
+ods html close;
 
 
 /*
@@ -266,6 +267,8 @@ proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_25_1  pr
 ods html close;
 run;
 
+
+
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
 run; 
@@ -273,7 +276,7 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide;  var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide;  var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 ;  
 run; 
 ods html close;
 
@@ -286,13 +289,13 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_newp_this_per_prep_20_25_1  p_newp_this_per_prep_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_newp_this_per_prep_20_25_1  p_newp_this_per_prep_20_25_2 ;  
 run; 
 ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_newp_prep_hivneg_20_25_1  p_newp_prep_hivneg_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_newp_prep_hivneg_20_25_1  p_newp_prep_hivneg_20_25_2 ;  
 run; 
 ods html close;
 
@@ -304,31 +307,30 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_hiv1_prep_20_25_1  p_hiv1_prep_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_hiv1_prep_20_25_1  p_hiv1_prep_20_25_2 ;  
 run; 
 ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var n_death_hivrel_20_70_1  n_death_hivrel_20_70_2 d_n_death_hivrel_20_70_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide;  var n_death_hivrel_20_70_1  n_death_hivrel_20_70_2 d_n_death_hivrel_20_70_2 ;  
 run; 
 ods html close;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prevalence_vg1000_20_70_1  prevalence_vg1000_20_70_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide;  var prevalence_vg1000_20_70_1  prevalence_vg1000_20_70_2 ;  
 run; 
 ods html close;
 
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_vlg1000_184m_20_25_1  p_vlg1000_184m_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_vlg1000_184m_20_25_1  p_vlg1000_184m_20_25_2 ;  
 run; 
 ods html close;
 
-
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_vlg1000_65m_20_25_1  p_vlg1000_65m_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_vlg1000_65m_20_25_1  p_vlg1000_65m_20_25_2 ;  
 run; 
 ods html close;
 
@@ -339,7 +341,7 @@ run;
 ods html close;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2  r_incidence_20_70_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide;  var incidence1549_20_70_1 incidence1549_20_70_2  r_incidence_20_70_2 ;  
 run; 
 ods html close;
 
@@ -365,7 +367,7 @@ ods htm close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var p_prep_adhg80_20_25_1  p_prep_adhg80_20_25_2 ;  
+proc means n mean  p5 p95 lclm uclm data=wide; var p_prep_adhg80_20_25_1  p_prep_adhg80_20_25_2 ;  
 run; 
 ods htm close;
 
@@ -492,6 +494,8 @@ proc univariate; var p_elig_prep_20_25_2  p_newp_ge1_20; run;
 proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20 ; run;
 
 
+
+
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; model ce_500_x =  p_newp_ge1_age1549_20_g2 p_newp_ge1_age1549_20_g3  p_newp_ge1_age1549_20_g4 
  incidence1549_20_g1   incidence1549_20_g2   incidence1549_20_g3   incidence1549_20_g4  ;
@@ -515,6 +519,12 @@ run;
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
 proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20 prop_1564_onprep_20_25_2 ;
 run;
+
+* model including some variables defined base on follow-up - to determine whether prep programmes should continue;
+proc logistic data=wide; model ce_500 =  prop_1564_onprep_20_25_2 ;
+run;
+
+proc glm; model d_ndb_500_20_70_2 = prop_1564_onprep_20_25_2 ; run;
 
 * the issue with prop_1564_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
 so is a measure of the proportion eligible while in real life as scale up starts to happen it just reflects the extent of scale up - need a measure
@@ -561,12 +571,12 @@ run;
 proc freq data=wide; tables ce_500;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
-* where 0.05 <= prop_1564_onprep_20_25_2 ;
+* where  prop_1564_onprep_20_25_2  >=  0.043 ;
 * where 1.50 <= incidence1549_20 < 9.50 ;
-  where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
+* where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 run; 
 
-
+proc freq; tables prop_1564_onprep_20_25_2 ; run;
 
 
 proc means data=wide; var cost_per_infection_averted_20_25  ; 
