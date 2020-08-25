@@ -532,7 +532,7 @@ explore metrics for how to monitor prep programmes
 
 
 
-  libname a '/folders/myfolders/output_files/';
+  libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -16190,12 +16190,12 @@ end;
 
 
 * ts1m:  need more update statements ;
-libname tmp_out "/folders/myfolders/output_files/";
+libname tmp_out "/folders/myfolders/hiv-modelling/output/";
 
 data tmp_out.output_x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 *  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
-*   file "/folders/myfolders/output_files/output_&dataset_id";
+*   file "/folders/myfolders/hiv-modelling/output/output_&dataset_id";
 input 
 
 

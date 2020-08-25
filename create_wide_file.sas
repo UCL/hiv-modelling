@@ -2,14 +2,13 @@
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-libname tmp "/folders/myfolders/output_files/";
-libname a "/folders/myfolders/output_files";
+libname tmp "/folders/myfolders/hiv-modelling/output/";
+libname a "/folders/myfolders/hiv-modelling/output/";
 
 *data d1;  
 
   *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\;
   *infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\.......";
-  *infile "/folders/myfolders/output_files/output_266917";
 *input
 
 *...............
@@ -998,7 +997,6 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-*libname a "/folders/myfolders/output_files/";
   data a.even_wider_output; 
 
 
