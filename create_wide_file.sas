@@ -2,7 +2,7 @@
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-libname tmp "/folders/myfolders/hiv-modelling/output/";
+*libname tmp "/folders/myfolders/hiv-modelling/output/";
 libname a "/folders/myfolders/hiv-modelling/output/";
 
 *data d1;  
@@ -14,9 +14,12 @@ libname a "/folders/myfolders/hiv-modelling/output/";
 *...............
 
 *;
+proc import datafile="/folders/myfolders/hiv-modelling/output/output_test.csv"
+   out = tmp_out
+   dbms = csv;
+   
 
-
-data a; set tmp.output_x  ;
+data a; set work.tmp_out  ;
 proc contents;
 run;
 
