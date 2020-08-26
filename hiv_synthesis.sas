@@ -16196,8 +16196,7 @@ data tmp_out.output_x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 *  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
 *   file "/folders/myfolders/hiv-modelling/output/output_&dataset_id";
-input 
-
+keep
 
 /*general*/
 run   cald   option 

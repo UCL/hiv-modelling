@@ -17,6 +17,8 @@ libname a "/folders/myfolders/hiv-modelling/output/";
 
 
 data a; set tmp.output_x  ;
+proc contents;
+run;
 
 
 proc sort; by run cald option;run;
