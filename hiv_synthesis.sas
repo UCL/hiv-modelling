@@ -10924,8 +10924,8 @@ mcirc_6064m=0;new_mcirc_6064m=0;vmmc6064m=0;new_vmmc6064m=0;if gender=1 and 60 l
 mcirc_6569m=0;new_mcirc_6569m=0;vmmc6569m=0;new_vmmc6569m=0;if gender=1 and 65 le age lt 70 then do; mcirc_6569m=mcirc; new_mcirc_6569m=new_mcirc; new_vmmc6569m=new_vmmc; vmmc6569m=vmmc; end;
 mcirc_7074m=0;new_mcirc_7074m=0;vmmc7074m=0;new_vmmc7074m=0;if gender=1 and 70 le age lt 75 then do; mcirc_7074m=mcirc; new_mcirc_7074m=new_mcirc; new_vmmc7074m=new_vmmc; vmmc7074m=vmmc; end;
 mcirc_7579m=0;new_mcirc_7579m=0;vmmc7579m=0;new_vmmc7579m=0;if gender=1 and 75 le age lt 80 then do; mcirc_7579m=mcirc; new_mcirc_7579m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc7579m=vmmc; end;
-mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc7579m=new_vmmc; vmmc8084m=vmmc; end;
-mcirc_85plm=0;new_mcirc_86plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc8084m=new_vmmc; vmmc85plm=vmmc; end;
+mcirc_8084m=0;new_mcirc_8084m=0;vmmc8084m=0;new_vmmc8084m=0;if gender=1 and 80 le age lt 85 then do; mcirc_8084m=mcirc; new_mcirc_8084m=new_mcirc; new_vmmc8084m=new_vmmc; vmmc8084m=vmmc; end;
+mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 le age       then do; mcirc_85plm=mcirc; new_mcirc_85plm=new_mcirc; new_vmmc85plm=new_vmmc; vmmc85plm=vmmc; end;
 
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
@@ -13871,7 +13871,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_mcirc + mcirc ; s_mcirc_1519m + mcirc_1519m ; s_mcirc_2024m + mcirc_2024m ; s_mcirc_2529m + mcirc_2529m ; s_mcirc_3034m + mcirc_3034m ; 
 	s_mcirc_3539m + mcirc_3539m ; s_mcirc_4044m + mcirc_4044m ; s_mcirc_4549m + mcirc_4549m ; s_mcirc_50plm + mcirc_50plm ;
 	s_mcirc_5054m + mcirc_5054m ; s_mcirc_5559m + mcirc_5559m ; s_mcirc_6064m + mcirc_6064m ; s_mcirc_6569m + mcirc_6569m ;
-	s_mcirc_7074m + mcirc_7074m ; s_mcirc_7580m + mcirc_7580m ; s_mcirc_8084m + mcirc_8084m ; s_mcirc_85plm + mcirc_85plm ;
+	s_mcirc_7074m + mcirc_7074m ; s_mcirc_7579m + mcirc_7579m ; s_mcirc_8084m + mcirc_8084m ; s_mcirc_85plm + mcirc_85plm ;
 	s_vmmc + vmmc ; s_vmmc1519m + vmmc1519m ; s_vmmc2024m + vmmc2024m ; s_vmmc2529m + vmmc2529m ; s_vmmc3034m + vmmc3034m ; s_vmmc3539m + vmmc3539m ;
     s_vmmc4044m + vmmc4044m ; s_vmmc4549m + vmmc4549m ; s_vmmc50plm + vmmc50plm ;
 	s_new_vmmc + new_vmmc ; s_new_vmmc1519m + new_vmmc1519m ; s_new_vmmc2024m + new_vmmc2024m ; s_new_vmmc2529m + new_vmmc2529m ; s_new_vmmc3034m + new_vmmc3034m ; s_new_vmmc3539m + new_vmmc3539m ;
@@ -14880,7 +14880,7 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
-s_mcirc_50plm  	s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
+s_mcirc_50plm  	s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7579m  s_mcirc_8084m  s_mcirc_85plm 
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
@@ -15593,7 +15593,7 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
-s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
+s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7579m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
@@ -16295,7 +16295,7 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
-s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7580m  s_mcirc_8084m  s_mcirc_85plm 
+s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7579m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
