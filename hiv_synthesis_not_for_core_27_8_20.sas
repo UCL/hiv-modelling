@@ -497,6 +497,8 @@ p_neph_stops_after_ten = 0.1;
 			if 0.67 <= r  then p_rred_p = 0.7;  	
 * p_hsb_p; 	r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;
 * newp_factor;  newp_factor = 1 ; * 15_1_20 4pm ;
+			 r=uniform(0); if r < 0.33 then newp_factor = 0.5 ; if r > 0.67 then newp_factor = 2   ; 
+
 * eprate;	eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);* rate of new long term partners in youngest age group; 
 * dependent_on_time_step_length ;
 
@@ -528,9 +530,13 @@ p_neph_stops_after_ten = 0.1;
 						prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 ***** transmission;
 
-* fold_change_w; r=uniform(0); if r < 0.05 then fold_change_w = 1; if 0.05 <= r < 0.10 then fold_change_w = 1.25; 
-					if 0.10 <= r then fold_change_w = 1.5; if 0.70 <= r then fold_change_w = 2; *dec16 changed from ms4d;
-* fold_change_yw; fold_change_yw = fold_change_w * 1.5  ;  fold_change_yw = round(fold_change_yw, 0.01); * so fold_change_yw not sampled but here for convenience;
+* fold_change_w; r=uniform(0); if r < 0.05 then fold_change_w = 1; if 0.05 <= r < 0.10 then fold_change_w = 1.5; 
+					if 0.10 <= r then fold_change_w = 2  ; if 0.70 <= r then fold_change_w = 3; *dec16 changed from ms4d;
+* ^^^;
+
+* fold_change_yw; fold_change_yw = fold_change_w * 1.5  ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;
+					if r > 0.67 then fold_change_yw = fold_change_w * 3    ;
+
 * fold_change_sti; fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;
 * ^^^;
 * fold_tr_newp;		fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;
@@ -572,7 +578,7 @@ p_neph_stops_after_ten = 0.1;
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  r=uniform(0); if r < 0.25 then prob_loss_at_diag = 0.02; if 0.25 <= r < 0.40 then prob_loss_at_diag = 0.05; 
 						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.15; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.20; 
-						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.40; if 0.90 <= r   then prob_loss_at_diag = 0.60;   
+						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.40; if 0.90 <= r   then prob_loss_at_diag = 0.80;   
 
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
@@ -584,16 +590,18 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
-* rate_return;  r=uniform(0); if  r < 0.25 then rate_return = 0.10; 
-			if 0.25 <= r < 0.5 then rate_return = 0.20; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; 
-* dependent_on_time_step_length ;
+* rate_return;  r=uniform(0); if  r < 0.25 then rate_return = 0.05; 
+			if 0.25 <= r < 0.5 then rate_return = 0.10; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; 
+* ^^^;
 
 * rate_restart;  r=uniform(0); if r < 0.25 then rate_restart = 0.8; if 0.25 <= r < 0.5 then rate_restart = 0.85; if 0.5 <= r < 0.75 then rate_restart = 0.9; if 0.75 <= r then rate_restart = 0.95;
 * dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
 * rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.70 then rate_int_choice = 0.002; 
-			if 0.70 <= r < 0.90 then rate_int_choice = 0.004; if 0.90 <= r then rate_int_choice = 0.008 ; 
+			if 0.70 <= r < 0.90 then rate_int_choice = 0.004; if 0.90 <= r then rate_int_choice = 0.012 ;
+* ^^^;
+ 
 * clinic_not_aw_int_frac;  r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;
 * res_trans_factor_nn (this is for nnrti only); r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7;
 				if 0.40 <= r < 0.60 then res_trans_factor_nn= 0.8; if 0.60 <= r < 0.80 then res_trans_factor_nn= 0.90;  if 0.80 <= r then res_trans_factor_nn= 1.00;  * may18;
@@ -627,7 +635,9 @@ p_neph_stops_after_ten = 0.1;
 * prob_lossdiag_adctb;  prob_lossdiag_adctb = rand('beta',5,95); prob_lossdiag_adctb = round(prob_lossdiag_adctb,0.01);
 * prob_lossdiag_who3e;  prob_lossdiag_who3e = rand('beta',15,85);prob_lossdiag_who3e = round(prob_lossdiag_who3e,0.01);
 * higher_newp_less_engagement; r=uniform(0);higher_newp_less_engagement = 0; if r < 0.2 then higher_newp_less_engagement = 1; * are people with more newp less likely to be engaged with care; 
-* fold_tr;		fold_tr= 1.0 * exp(normal(0)*0.3); fold_tr = round(fold_tr,0.01);
+* fold_tr;					fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.33; if r > 0.67 then fold_tr = 3;
+* ^^^;
+
 * switch_for_tox; r=uniform(0); if r < 0.80 then switch_for_tox=0; if r >= 0.80 then switch_for_tox=1;
 
 * dol_higher_potency;   dol_higher_potency = 0.5;  * so 1.5 potency - as for efa - may 2019 in response to advance results;
