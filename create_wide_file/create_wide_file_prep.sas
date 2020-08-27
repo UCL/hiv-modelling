@@ -1217,8 +1217,8 @@ discount_0 = disc * discount_adj_0 ;
 * run;
 
 * if using 7% discount rate:  ; 
-  discount=discount_7p; 
-  discount_adj=discount_adj_7p;
+* discount=discount_7p; 
+* discount_adj=discount_adj_7p;
 
 * if using 0% discount rate:  ;
 * discount=discount_0; 
