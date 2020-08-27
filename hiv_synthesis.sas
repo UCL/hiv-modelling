@@ -16199,7 +16199,7 @@ data output_csv; set cum_l1;
 keep
 
 /*general*/
-run   cald   option 
+run cald option 
 
 /*number alive and in each age group*/
 s_alive1549	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m
@@ -16750,25 +16750,48 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020  
 
+s_n
+/* s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
 s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n s_n 
-
+*/
 ; 
 
 * note need to keep one s_n ! ;
 
 run;
 
-proc export data=output_csv 
-   outfile="/folders/myfolders/hiv-modelling/output/output_test.csv" 
-   dbms=csv 
-replace;
+proc transpose data=output_csv(obs=0) out=names; 
+  var _all_;
 run;
+
+data _null_;
+  file "/folders/myfolders/hiv-modelling/output/output2.csv" dsd lrecl=999999;
+  set names;
+  put _name_ @ ;
+run;
+
+data _null_;
+   set output_csv ;
+   file "/folders/myfolders/hiv-modelling/output/output2.csv" dsd mod lrecl=999999;
+   put (_all_) (+0);
+run;
+
+
+proc contents data = output_csv;
+run;
+
+*proc export data=work.output_csv 
+*   outfile="/folders/myfolders/hiv-modelling/output/output_test.csv" 
+*   dbms=csv 
+*   label
+*   replace;
+*   putnames=yes;
+*run;
 
 
 

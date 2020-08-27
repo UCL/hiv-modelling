@@ -2,29 +2,42 @@
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-*libname tmp "/folders/myfolders/hiv-modelling/output/";
 libname a "/folders/myfolders/hiv-modelling/output/";
+filename csvfile "/folders/myfolders/hiv-modelling/output/output2.csv" lrecl=999999;
 
-*data d1;  
+/*
+data tmp_csv;
+  infile "/folders/myfolders/hiv-modelling/output/output2.csv" lrecl=999999 dsd;
+run;
+*/
 
   *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\;
   *infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\.......";
-*input
+  *infile "/folders/myfolders/hiv-modelling/output/output2.csv" dsd lrecl = 500000;
 
 *...............
 
 *;
-proc import datafile="/folders/myfolders/hiv-modelling/output/output_test.csv"
-   out = tmp_out
-   dbms = csv;
-   
+/*
+*/
 
-data a; set work.tmp_out  ;
-proc contents;
+
+proc import datafile=csvfile
+   out = tmp_csv
+   dbms = csv
+   replace;
+   getnames=yes;
+run;
+
+proc contents data=tmp_csv;
+  title "CSV Data"
+run;
+
+data a; set tmp_csv;
 run;
 
 
-proc sort; by run cald option;run;
+proc sort data=tmp_csv; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
