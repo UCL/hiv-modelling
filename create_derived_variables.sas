@@ -1,4 +1,7 @@
 
+* we will aim to keep this file as a common program (the same as we do for hiv_synthesis.sas) we always use to read in the output data sets 
+and create derived variables ;
+
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
