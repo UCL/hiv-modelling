@@ -454,8 +454,8 @@ p_neph_stops_after_ten = 0.1;
 * inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if r < 0.40 then base_rate_sw = 0.001;   if 0.40 <= r < 0.80 then base_rate_sw = 0.0015;  
-								if 0.80 <= r then base_rate_sw = 0.002;   
+* base_rate_sw; r=uniform(0);  if r < 0.40 then base_rate_sw = 0.0005;   if 0.40 <= r < 0.80 then base_rate_sw = 0.001;  
+								if 0.80 <= r then base_rate_sw = 0.0015;   
 * dependent_on_time_step_length ;
 
 * base_rate_stop_sexwork;   r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
@@ -487,9 +487,9 @@ p_neph_stops_after_ten = 0.1;
 * sex_age_mixing_matrix_m;e=uniform(0); if e < 1/6  then sex_age_mixing_matrix_m=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_m=2;
 										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_m=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_m=4;
 										if 4/6 <= e < 5/6  then sex_age_mixing_matrix_m=5; if 5/6 <= e        then sex_age_mixing_matrix_m=6;
-* sex_age_mixing_matrix_w;e=uniform(0); if e < 1/6  then sex_age_mixing_matrix_w=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_w=2;
-										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_w=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_w=4;
-										if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;
+* sex_age_mixing_matrix_w;e=uniform(0); if e < 0.1  then sex_age_mixing_matrix_w=1; if 0.1  <= e < 0.2 then sex_age_mixing_matrix_w=2;
+										if 0.2 <= e < 0.3  then sex_age_mixing_matrix_w=3; if 0.3 <= e < 0.4  then sex_age_mixing_matrix_w=4;
+										if 0.4 <= e < 0.5  then sex_age_mixing_matrix_w=5; if 0.5 <= e        then sex_age_mixing_matrix_w=6;
 * rred_a_p;	r=uniform(0); if r < 0.25 then rred_a_p=1; if 0.25 <= r < 0.50 then rred_a_p=2;  if 0.50 <= r < 0.75 then rred_a_p=3;  if r >= 0.75 then rred_a_p=4; 
 * p_rred_p; r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; 
 			if 0.67 <= r  then p_rred_p = 0.7;  	
@@ -554,8 +554,8 @@ p_neph_stops_after_ten = 0.1;
 
 ***** art: linkage, retention, monitoring, loss, return, interruption of art and restarting;
 
-* adh_pattern; r=uniform(0);  if  r < 0.01 then adh_pattern=98 ;if 0.01 <= r < 0.02 then adh_pattern=105; if 0.02 <= r < 0.05 then adh_pattern=101; 
-				if 0.05 <= r < 0.10 then adh_pattern=99; if 0.10 <= r < 0.40 then adh_pattern=1;   if 0.40 <= r < 0.60 then adh_pattern=2;   
+* adh_pattern; r=uniform(0);  
+				if 0.00 <= r < 0.03 then adh_pattern=100 ; if 0.03 <= r < 0.40 then adh_pattern=1;   if 0.40 <= r < 0.60 then adh_pattern=2;   
 				if 0.60 <= r < 0.75 then adh_pattern=3;   if 0.75 <= r < 0.90 then adh_pattern=4; if 0.90 <= r  then adh_pattern=5; 
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
@@ -574,7 +574,7 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
-* rate_return;  r=uniform(0); if  r < 0.25 then rate_return = 0.10; 
+* rate_return;  r=uniform(0); if  r < 0.05 then rate_return = 0.02; if  0.05 <= r < 0.25 then rate_return = 0.10; 
 			if 0.25 <= r < 0.5 then rate_return = 0.20; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; 
 * dependent_on_time_step_length ;
 
@@ -15870,7 +15870,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_8_20_1pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_28_8_20_12pm_&dataset_id";  
 
 put   
 
