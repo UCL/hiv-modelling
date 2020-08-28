@@ -2280,6 +2280,18 @@ end;
 vmmc=0;if mcirc=1 and birth_circ ne 1 then vmmc=1;
 new_vmmc=0;if new_mcirc=1 and birth_circ ne 1 then new_vmmc=1;
 
+if gender = 1 then do;
+hivneg_uncirc_1014 =0; if 10 <= age < 15 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1014 = 1;
+hivneg_uncirc_1519 =0; if 15 <= age < 20 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1519 = 1;
+hivneg_uncirc_2024 =0; if 20 <= age < 25 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2024 = 1;
+hivneg_uncirc_2529 =0; if 25 <= age < 30 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2529 = 1;
+hivneg_uncirc_3034 =0; if 30 <= age < 35 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3034 = 1;
+hivneg_uncirc_3539 =0; if 35 <= age < 40 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3539 = 1;
+hivneg_uncirc_4044 =0; if 40 <= age < 45 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4044 = 1;
+hivneg_uncirc_4549 =0; if 45 <= age < 50 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4549 = 1;
+end;
+
+
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
 if t ge 2 and caldate{t} < 2071.0 and death =.  then do;
@@ -10110,7 +10122,7 @@ if gender=1 then do;
 
 	if 15 <= age < 18 then ageg1517m=1;else ageg1517m=0;
 	if 18 <= age < 20 then ageg1819m=1;else ageg1819m=0;
-	if 15 <= age < 20 then ageg1519m=1;else ageg1519m=0;
+	if 15 <= age < 20 then ageg1519m=1;else ageg1519m=0;  
 	if 20 <= age < 25 then ageg2024m=1;else ageg2024m=0;
 	if 25 <= age < 30 then ageg2529m=1;else ageg2529m=0;
 	if 30 <= age < 35 then ageg3034m=1;else ageg3034m=0;
@@ -13880,8 +13892,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ; 
 	s_new_mcirc_5054m + new_mcirc_5054m ; s_new_mcirc_5559m + new_mcirc_5559m ;s_new_mcirc_6064m + new_mcirc_6064m ;s_new_mcirc_6569m + new_mcirc_6569m ;
 	s_new_mcirc_7074m + new_mcirc_7074m ;s_new_mcirc_7579m + new_mcirc_7579m ;s_new_mcirc_8084m + new_mcirc_8084m ;s_new_mcirc_85plm + new_mcirc_85plm ;
- 	s_new_mcirc_50plm + new_mcirc_50plm ;
-            
+ 	s_new_mcirc_50plm + new_mcirc_50plm ;   s_hivneg_uncirc_1014 + hivneg_uncirc_1014 ; s_hivneg_uncirc_1519 + hivneg_uncirc_1519 ; 
+	s_hivneg_uncirc_2024 + hivneg_uncirc_2024 ; s_hivneg_uncirc_2529 + hivneg_uncirc_2529 ; s_hivneg_uncirc_3034 + hivneg_uncirc_3034 ; 
+	s_hivneg_uncirc_3539 + hivneg_uncirc_3539 ; s_hivneg_uncirc_4044 + hivneg_uncirc_4044 ; s_hivneg_uncirc_4549 + hivneg_uncirc_4549 ;
+
+
 	/*supp mat*/
 
 	s_onart_vlg1 + onart_vlg1 ; s_onart_vlg2 + onart_vlg2 ; s_onart_vlg3 + onart_vlg3 ; s_onart_vlg4 + onart_vlg4 ; s_onart_vlg5 + onart_vlg5 ;
@@ -14888,6 +14903,9 @@ s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mc
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
+
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 
@@ -15602,6 +15620,9 @@ s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mc
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
+
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 /* covid */
@@ -16303,6 +16324,9 @@ s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
 s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
+
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
