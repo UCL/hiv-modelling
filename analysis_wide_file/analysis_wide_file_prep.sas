@@ -206,11 +206,14 @@ ods html close;
 
 
 
-proc means; var prevalence1524m_20 prevalence1524w_20 prevalence2024m_20 prevalence2024w_20 
-prevalence1549m_20 prevalence1549w_20 p_inf_ep_20 p_newp_sw_20 prop_w_1549_sw_20 incidence1549m_20 incidence1549w_20; 
+proc means p50 p5 p95 p99; var prevalence1524m_20 prevalence1524w_20 prevalence2024m_20 prevalence2024w_20 
+prevalence1549m_20 prevalence1549w_20 p_inf_ep_20 p_newp_sw_20 prop_w_1549_sw_20 incidence1549m_20 incidence1549w_20
+p_onart_diag_w_20 	p_onart_diag_m_20  p_onart_vl1000_w_20	p_onart_vl1000_m_20 
+
+; 
 * where  ych_risk_beh_ep = 0.95;
-* where sex_age_mixing_matrix_w=6;
-where base_rate_sw = 0.001;
+* where sex_age_mixing_matrix_w=6 and base_rate_sw = 0.001;
+* where base_rate_sw = 0.001;
 run;
 
 /*
