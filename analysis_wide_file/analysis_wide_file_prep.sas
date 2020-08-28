@@ -7,9 +7,10 @@ data wide;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_13_8_20_4pm;
 * set a.wide_prep_13_8_20_4pm_dis7p;
-  set a.w_prep_13_8_20_4pm_14_8_20_1pm;   if dataset = 2;    if run <=  828749079 ; * to give n = 1000 setting scenarios ;
+  set a.w_prep_13_8_20_4pm_14_8_20_1pm;   if dataset = 2;  * if run <=  828749079 ; * to give n = 1000 setting scenarios ;
 * set a.w_prep_14_8_20_1pm_dis7p;       * if dataset = 2;  * if run <=  828749079 ; * to give n = 1000 setting scenarios ;
 
+if run ne 192429854;
 
 
 
@@ -224,6 +225,8 @@ turn continuous like fold_tr_sti into categorical
 
 */
 
+
+proc print; var run; where rred_a_p = 1.5; run;
 
 proc glm; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern;
 model l_r_prevalence1549_mw_20 = 
