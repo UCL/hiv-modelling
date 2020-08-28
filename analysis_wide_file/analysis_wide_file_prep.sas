@@ -7,8 +7,8 @@ data wide;
 * set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
 * set a.wide_prep_13_8_20_4pm;
 * set a.wide_prep_13_8_20_4pm_dis7p;
-  set a.w_prep_13_8_20_4pm_14_8_20_1pm;   if dataset = 2;  if run <=  828749079 ; * to give n = 1000 setting scenarios ;
-* set a.w_prep_14_8_20_1pm_dis7p;       * if dataset = 2; *  if run <=  828749079 ; * to give n = 1000 setting scenarios ;
+  set a.w_prep_13_8_20_4pm_14_8_20_1pm;   if dataset = 2;    if run <=  828749079 ; * to give n = 1000 setting scenarios ;
+* set a.w_prep_14_8_20_1pm_dis7p;       * if dataset = 2;  * if run <=  828749079 ; * to give n = 1000 setting scenarios ;
 
 
 
@@ -32,7 +32,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_1 =      
 dart_cost_y_20_70_1 +       
-dcost_prep_20_70_1     +      
+dcost_prep_20_70_1  +      
 dcost_prep_visit_20_70_1 + 
 dadc_cost_20_70_1   +      
 dcd4_cost_20_70_1     +    
