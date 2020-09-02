@@ -823,6 +823,15 @@ deaths_av_per_10000_vl_test_5y;
 run;
 
 
+proc corr spearman data=wide ; var prevalence1549_20 deaths_averted_per_10000_test ; run;
 
+proc glm; model deaths_averted_per_10000_test =   p_diag_20  ; run;
 
+proc univariate; var p_diag_20 ; run;
 
+proc means n mean lclm uclm p5 p95 data=wide ; 
+var  deaths_averted_per_10000_test ;
+* where p_diag_20 < 83; 
+* where 83 <= p_diag_20 < 93; 
+  where 93 <= p_diag_20 ; 
+run;
