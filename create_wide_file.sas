@@ -1221,10 +1221,10 @@ s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data base_28_8_20_12pm; set y;  
+data not_for_core_27_8_20; set y;  
 
 
-data y; set base_28_8_20_12pm; 
+data y; set not_for_core_27_8_20; 
 
 
   options nomprint;
@@ -1569,7 +1569,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_28_8_20_12pm; 
+  data a.w_not_for_core_27_8_20; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
