@@ -579,8 +579,8 @@ p_neph_stops_after_ten = 0.1;
 ***** art: linkage, retention, monitoring, loss, return, interruption of art and restarting;
 
 * adh_pattern; r=uniform(0);  
-				if 0.00 <= r < 0.05 then adh_pattern=100 ; if 0.05 <= r < 0.60 then adh_pattern=1;   if 0.60 <= r < 0.70 then adh_pattern=2;   
-				if 0.70 <= r < 0.80 then adh_pattern=3;   if 0.80 <= r < 0.90 then adh_pattern=4; if 0.90 <= r  then adh_pattern=5; 
+				if 0.00 <= r < 0.05 then adh_pattern=100 ; if 0.05 <= r < 0.70 then adh_pattern=1;   if 0.70 <= r < 0.80 then adh_pattern=2;   
+				if 0.80 <= r < 0.90 then adh_pattern=3;   if 0.90 <= r < 0.95 then adh_pattern=4; if 0.95 <= r  then adh_pattern=5; 
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
@@ -619,7 +619,7 @@ p_neph_stops_after_ten = 0.1;
 * fold_change_mut_risk;  r=uniform(0); fold_change_mut_risk = 1; if r < 0.10  then fold_change_mut_risk = 2; if r > 0.90 then fold_change_mut_risk = 0.5; * jan18;
 * adh_effect_of_meas_alert; r=uniform(0); adh_effect_of_meas_alert = 0.7; if 0.7 <= r < 0.85 then adh_effect_of_meas_alert = 0.35; if 0.85 <= r then adh_effect_of_meas_alert = 0.9;
 * pr_switch_line;  r=uniform(0);  pr_switch_line = 0.20;  if 0.75 <= r then pr_switch_line = 0.50; 
-* prob_vl_meas_done; r=uniform(0); prob_vl_meas_done=0.7 ; if 0.30 <= r < 0.60 then prob_vl_meas_done=0.1 ; if 0.60 <= r < 0.90 then prob_vl_meas_done=1.00; if 0.90 <= r then prob_vl_meas_done=0.00;
+* prob_vl_meas_done; r=uniform(0); prob_vl_meas_done=0.7 ; if 0.40 <= r < 0.70 then prob_vl_meas_done=0.1 ; if 0.70 <= r < 0.95 then prob_vl_meas_done=1.00; if 0.95 <= r then prob_vl_meas_done=0.00;
 * cd4_monitoring;	r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_tb_adc; red_adh_tb_adc = 0.1 * exp(normal(0)*0.5); red_adh_tb_adc=round(red_adh_tb_adc,.01);
 * red_adh_tox_pop; r=uniform(0); red_adh_tox_pop_v = 0.05; if r < 0.5 then red_adh_tox_pop_v = 0.10; 
@@ -16047,7 +16047,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_3_9_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_3_9_20_7pm_&dataset_id";  
 
 put   
 
