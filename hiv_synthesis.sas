@@ -165,7 +165,6 @@ to do before starting testing in preparation for runs:
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
-* creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
 if eeee=1;
 drop eeee;
@@ -510,6 +509,7 @@ p_neph_stops_after_ten = 0.1;
 * ch_risk_diag_newp;  r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;
 
 * ych_risk_beh_newp;  r=uniform(0); ych_risk_beh_newp = 0.80;  if r < 0.33 then ych_risk_beh_newp = 0.70;	if 0.67 <= r then ych_risk_beh_newp = 0.60;
+* ^^^&&&;
 
 * ych2_risk_beh_newp;  r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; 
 * ych_risk_beh_ep;  r=uniform(0); ych_risk_beh_ep = 1.00;  if  0.25 <= r < 0.5 then ych_risk_beh_ep = 0.95; if 0.5 <= r < 0.75 then ych_risk_beh_ep = 0.90; if 0.75 <= r then ych_risk_beh_ep = 0.80; 
@@ -2302,6 +2302,18 @@ end;
 
 vmmc=0;if mcirc=1 and birth_circ ne 1 then vmmc=1;
 new_vmmc=0;if new_mcirc=1 and birth_circ ne 1 then new_vmmc=1;
+
+if gender = 1 then do;
+hivneg_uncirc_1014 =0; if 10 <= age < 15 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1014 = 1;
+hivneg_uncirc_1519 =0; if 15 <= age < 20 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1519 = 1;
+hivneg_uncirc_2024 =0; if 20 <= age < 25 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2024 = 1;
+hivneg_uncirc_2529 =0; if 25 <= age < 30 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2529 = 1;
+hivneg_uncirc_3034 =0; if 30 <= age < 35 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3034 = 1;
+hivneg_uncirc_3539 =0; if 35 <= age < 40 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3539 = 1;
+hivneg_uncirc_4044 =0; if 40 <= age < 45 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4044 = 1;
+hivneg_uncirc_4549 =0; if 45 <= age < 50 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4549 = 1;
+end;
+
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
@@ -13903,7 +13915,10 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_new_mcirc_3034m + new_mcirc_3034m ; s_new_mcirc_3539m + new_mcirc_3539m ; s_new_mcirc_4044m + new_mcirc_4044m ; s_new_mcirc_4549m + new_mcirc_4549m ; 
 	s_new_mcirc_5054m + new_mcirc_5054m ; s_new_mcirc_5559m + new_mcirc_5559m ;s_new_mcirc_6064m + new_mcirc_6064m ;s_new_mcirc_6569m + new_mcirc_6569m ;
 	s_new_mcirc_7074m + new_mcirc_7074m ;s_new_mcirc_7579m + new_mcirc_7579m ;s_new_mcirc_8084m + new_mcirc_8084m ;s_new_mcirc_85plm + new_mcirc_85plm ;
- 	s_new_mcirc_50plm + new_mcirc_50plm ;
+ 	s_new_mcirc_50plm + new_mcirc_50plm ;  s_hivneg_uncirc_1014 + hivneg_uncirc_1014 ; s_hivneg_uncirc_1519 + hivneg_uncirc_1519 ; 
+	s_hivneg_uncirc_2024 + hivneg_uncirc_2024 ; s_hivneg_uncirc_2529 + hivneg_uncirc_2529 ; s_hivneg_uncirc_3034 + hivneg_uncirc_3034 ; 
+	s_hivneg_uncirc_3539 + hivneg_uncirc_3539 ; s_hivneg_uncirc_4044 + hivneg_uncirc_4044 ; s_hivneg_uncirc_4549 + hivneg_uncirc_4549 ;
+
             
 	/*supp mat*/
 
@@ -14911,7 +14926,11 @@ s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mc
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
 
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
+
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
+
 
 
 /*parameters sampled*/
@@ -15624,6 +15643,9 @@ s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
 s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
+
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
