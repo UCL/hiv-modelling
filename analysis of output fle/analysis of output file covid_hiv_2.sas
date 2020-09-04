@@ -832,7 +832,7 @@ proc univariate; var p_diag_20 ; run;
 
 proc means n mean lclm uclm p5 p95 data=wide ; 
 var  deaths_averted_per_10000_test ;
-* where p_diag_20 < 83; 
-* where 83 <= p_diag_20 < 93; 
-  where 93 <= p_diag_20 ; 
+* where p_diag_20 < 82 ;
+* where 82 <= p_diag_20 < 92; 
+  where 92 <= p_diag_20 ; 
 run;
