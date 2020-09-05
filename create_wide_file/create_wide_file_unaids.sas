@@ -888,43 +888,43 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_mcirc_8084m ;				n_mcirc_8084m = s_mcirc_8084m * sf_2020 ;
 * n_mcirc_85plm ;				n_mcirc_85plm = s_mcirc_85plm * sf_2020 ;
 
-* n_new_mcirc_1014m ;			n_new_mcirc_1014m = s_new_mcirc_1014m * sf_2020 ;
-* n_new_mcirc_1519m ;			n_new_mcirc_1519m = s_new_mcirc_1519m * sf_2020 ;
-* n_new_mcirc_2024m ;			n_new_mcirc_2024m = s_new_mcirc_2024m * sf_2020 ;
-* n_new_mcirc_2529m ;			n_new_mcirc_2529m = s_new_mcirc_2529m * sf_2020 ;
-* n_new_mcirc_3034m ;			n_new_mcirc_3034m = s_new_mcirc_3034m * sf_2020 ;
-* n_new_mcirc_3539m ;			n_new_mcirc_3539m = s_new_mcirc_3539m * sf_2020 ;
-* n_new_mcirc_4044m ;			n_new_mcirc_4044m = s_new_mcirc_4044m * sf_2020 ;
-* n_new_mcirc_4549m ;			n_new_mcirc_4549m = s_new_mcirc_4549m * sf_2020 ;
-* n_new_mcirc_5054m ;			n_new_mcirc_5054m = s_new_mcirc_5054m * sf_2020 ;
-* n_new_mcirc_5559m ;			n_new_mcirc_5559m = s_new_mcirc_5559m * sf_2020 ;
-* n_new_mcirc_6064m ;			n_new_mcirc_6064m = s_new_mcirc_6064m * sf_2020 ;
-* n_new_mcirc_6569m ;			n_new_mcirc_6569m = s_new_mcirc_6569m * sf_2020 ;
-* n_new_mcirc_7074m ;			n_new_mcirc_7074m = s_new_mcirc_7074m * sf_2020 ;
-* n_new_mcirc_7579m ;			n_new_mcirc_7579m = s_new_mcirc_7579m * sf_2020 ;
-* n_new_mcirc_8084m ;			n_new_mcirc_8084m = s_new_mcirc_8084m * sf_2020 ;
-* n_new_mcirc_85plm ;			n_new_mcirc_85plm = s_new_mcirc_85plm * sf_2020 ;
+* n_new_mcirc_1014m ;			n_new_mcirc_1014m = s_new_mcirc_1014m * sf_2020 * 4 ;
+* n_new_mcirc_1519m ;			n_new_mcirc_1519m = s_new_mcirc_1519m * sf_2020 * 4 ;
+* n_new_mcirc_2024m ;			n_new_mcirc_2024m = s_new_mcirc_2024m * sf_2020 * 4  ;
+* n_new_mcirc_2529m ;			n_new_mcirc_2529m = s_new_mcirc_2529m * sf_2020 * 4  ;
+* n_new_mcirc_3034m ;			n_new_mcirc_3034m = s_new_mcirc_3034m * sf_2020 * 4  ;
+* n_new_mcirc_3539m ;			n_new_mcirc_3539m = s_new_mcirc_3539m * sf_2020 * 4  ;
+* n_new_mcirc_4044m ;			n_new_mcirc_4044m = s_new_mcirc_4044m * sf_2020 * 4  ;
+* n_new_mcirc_4549m ;			n_new_mcirc_4549m = s_new_mcirc_4549m * sf_2020 * 4  ;
+* n_new_mcirc_5054m ;			n_new_mcirc_5054m = s_new_mcirc_5054m * sf_2020 * 4  ;
+* n_new_mcirc_5559m ;			n_new_mcirc_5559m = s_new_mcirc_5559m * sf_2020 * 4  ;
+* n_new_mcirc_6064m ;			n_new_mcirc_6064m = s_new_mcirc_6064m * sf_2020 * 4  ;
+* n_new_mcirc_6569m ;			n_new_mcirc_6569m = s_new_mcirc_6569m * sf_2020 * 4  ;
+* n_new_mcirc_7074m ;			n_new_mcirc_7074m = s_new_mcirc_7074m * sf_2020 * 4  ;
+* n_new_mcirc_7579m ;			n_new_mcirc_7579m = s_new_mcirc_7579m * sf_2020 * 4  ;
+* n_new_mcirc_8084m ;			n_new_mcirc_8084m = s_new_mcirc_8084m * sf_2020 * 4  ;
+* n_new_mcirc_85plm ;			n_new_mcirc_85plm = s_new_mcirc_85plm * sf_2020 * 4  ;
 
-* n_new_inf_1519m ;				n_new_inf_1519m = s_primary1519m  * sf_2020 ;
-* n_new_inf_2024m ;				n_new_inf_2024m = s_primary2024m  * sf_2020 ;
-* n_new_inf_2529m ;				n_new_inf_2529m = s_primary2529m  * sf_2020 ;
-* n_new_inf_3034m ;				n_new_inf_3034m = s_primary3034m  * sf_2020 ;
-* n_new_inf_3539m ;				n_new_inf_3539m = s_primary3539m  * sf_2020 ;
-* n_new_inf_4044m ;				n_new_inf_4044m = s_primary4044m  * sf_2020 ;
-* n_new_inf_4549m ;				n_new_inf_4549m = s_primary4549m  * sf_2020 ;
-* n_new_inf_5054m ;				n_new_inf_5054m = s_primary5054m  * sf_2020 ;
-* n_new_inf_5559m ;				n_new_inf_5559m = s_primary5559m  * sf_2020 ;
-* n_new_inf_6064m ;				n_new_inf_6064m = s_primary6064m  * sf_2020 ;
-* n_new_inf_1519w ;				n_new_inf_1519w = s_priwary1519w  * sf_2020 ;
-* n_new_inf_2024w ;				n_new_inf_2024w = s_priwary2024w  * sf_2020 ;
-* n_new_inf_2529w ;				n_new_inf_2529w = s_priwary2529w  * sf_2020 ;
-* n_new_inf_3034w ;				n_new_inf_3034w = s_priwary3034w  * sf_2020 ;
-* n_new_inf_3539w ;				n_new_inf_3539w = s_priwary3539w  * sf_2020 ;
-* n_new_inf_4044w ;				n_new_inf_4044w = s_priwary4044w  * sf_2020 ;
-* n_new_inf_4549w ;				n_new_inf_4549w = s_priwary4549w  * sf_2020 ;
-* n_new_inf_5054w ;				n_new_inf_5054w = s_priwary5054w  * sf_2020 ;
-* n_new_inf_5559w ;				n_new_inf_5559w = s_priwary5559w  * sf_2020 ;
-* n_new_inf_6064w ;				n_new_inf_6064w = s_priwary6064w  * sf_2020 ;
+* n_new_inf_1519m ;				n_new_inf_1519m = s_primary1519m  * sf_2020 * 4  ;
+* n_new_inf_2024m ;				n_new_inf_2024m = s_primary2024m  * sf_2020 * 4  ;
+* n_new_inf_2529m ;				n_new_inf_2529m = s_primary2529m  * sf_2020 * 4  ;
+* n_new_inf_3034m ;				n_new_inf_3034m = s_primary3034m  * sf_2020 * 4  ;
+* n_new_inf_3539m ;				n_new_inf_3539m = s_primary3539m  * sf_2020 * 4  ;
+* n_new_inf_4044m ;				n_new_inf_4044m = s_primary4044m  * sf_2020 * 4  ;
+* n_new_inf_4549m ;				n_new_inf_4549m = s_primary4549m  * sf_2020 * 4  ;
+* n_new_inf_5054m ;				n_new_inf_5054m = s_primary5054m  * sf_2020 * 4  ;
+* n_new_inf_5559m ;				n_new_inf_5559m = s_primary5559m  * sf_2020 * 4  ;
+* n_new_inf_6064m ;				n_new_inf_6064m = s_primary6064m  * sf_2020 * 4  ;
+* n_new_inf_1519w ;				n_new_inf_1519w = s_priwary1519w  * sf_2020 * 4  ;
+* n_new_inf_2024w ;				n_new_inf_2024w = s_priwary2024w  * sf_2020 * 4  ;
+* n_new_inf_2529w ;				n_new_inf_2529w = s_priwary2529w  * sf_2020 * 4  ;
+* n_new_inf_3034w ;				n_new_inf_3034w = s_priwary3034w  * sf_2020 * 4  ;
+* n_new_inf_3539w ;				n_new_inf_3539w = s_priwary3539w  * sf_2020 * 4  ;
+* n_new_inf_4044w ;				n_new_inf_4044w = s_priwary4044w  * sf_2020 * 4  ;
+* n_new_inf_4549w ;				n_new_inf_4549w = s_priwary4549w  * sf_2020 * 4  ;
+* n_new_inf_5054w ;				n_new_inf_5054w = s_priwary5054w  * sf_2020 * 4  ;
+* n_new_inf_5559w ;				n_new_inf_5559w = s_priwary5559w  * sf_2020 * 4  ;
+* n_new_inf_6064w ;				n_new_inf_6064w = s_priwary6064w  * sf_2020 * 4  ;
 
 * n_hiv1519m ; 					n_hiv1519m = s_hiv1519m  * sf_2020 ;
 * n_hiv2024m ; 					n_hiv2024m = s_hiv2024m  * sf_2020 ;
@@ -1623,7 +1623,28 @@ proc means; run;
 
 proc print; run;
 
+* a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a.wide_new_mcirc a.wide_new_inf a.wide_n_hiv ;
 
+proc export 
+data=a.wide_misc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc" replace; run;
+
+proc export 
+data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults" replace; run;
+
+proc export 
+data=a.wide_onart dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_onart" replace; run;
+
+proc export 
+data=a.wide_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_mcirc" replace; run;
+
+proc export 
+data=a.wide_new_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_mcirc" replace; run;
+
+proc export 
+data=a.wide_new_inf dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_inf" replace; run;
+
+proc export 
+data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_hiv" replace; run;
 
 
 
