@@ -3,7 +3,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 
    data wide;    
-   set data a.w_unaids_14_8_20_1pm ; 
+   set data a.w_unaids_28_8_20_12pm ; 
 
 
 

@@ -5,7 +5,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_14_8_20_1pm";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_28_8_20_12pm";  
 
 input   
 
@@ -21,10 +21,10 @@ s_ageg1517w		s_ageg1819w		s_ageg1519w  	s_ageg2024w		s_ageg2529w  	s_ageg3034w		
 s_ageg4549w		s_ageg5054w 	s_ageg5559w		s_ageg6064w		s_ageg1564w		s_ageg1549w		s_age_1844w
 s_ageg1m  s_ageg2m  s_ageg3m  s_ageg4m  s_ageg5m  s_ageg1w  s_ageg2w  s_ageg3w  s_ageg4w  s_ageg5w  
 
-s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		
-s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		
-s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m		
-s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w
+s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		s_ageg85plm
+s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		s_ageg85plw
+s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm	
+s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
 s_alive_w s_alive_m
 
 /*number and status of those with HIV*/
@@ -283,8 +283,11 @@ s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl
 s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
+s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
-s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	s_onart_sw
+s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
+s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
+s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
@@ -427,12 +430,17 @@ s_onart_birth_with_inf_child
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
+s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7579m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  s_new_mcirc_50plm
+s_new_mcirc_5054m s_new_mcirc_5559m s_new_mcirc_6064m s_new_mcirc_6569m s_new_mcirc_7074m s_new_mcirc_7579m s_new_mcirc_8084m s_new_mcirc_85plm
 s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  s_new_vmmc50plm
+
+s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
+s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
@@ -561,7 +569,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
-if run=997951394 ;
+proc freq; tables run;
 
 data a; set d1  ;
 
@@ -1384,12 +1392,12 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_14_8_20_1pm; set y;  
+data unaids_28_8_20_12pm; set y;  
 
 proc contents; run;
 
 
-data y; set unaids_14_8_20_1pm; 
+data y; set unaids_28_8_20_12pm; 
 
 
   options nomprint;
@@ -1822,7 +1830,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_unaids_14_8_20_1pm ; 
+  data a.w_unaids_28_8_20_12pm ; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
