@@ -43,7 +43,7 @@ who may be dead and hence have caldate{t} missing;
 		incr_prepuptake_pop_2020 = 0 ;
 		expand_prep_to_all_2020 = 0 ;
 		circ_improvements = 0;
-		circ_inc_rate_2020 = 0;
+		circ_inc_rate_2020 = .; * currently 0 means stopping circumcision - this change from 0 is the reason for the _update _u in program name and output;
 		condom_incr_2020 = 0;
 		pop_wide_tld = 0;
 
