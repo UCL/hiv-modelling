@@ -69,7 +69,7 @@ who may be dead and hence have caldate{t} missing;
 		prep_strategy_2020 = 0 ;
 
 		circ_improvements = 0;
-		circ_inc_rate_2020 = 0;
+		circ_inc_rate_2020 = .;  * 0 means no further circ ;
 
 		condom_incr_2020 = 0;
 
