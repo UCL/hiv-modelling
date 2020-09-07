@@ -740,6 +740,7 @@ d_death_rate_all_dis_20_23_2 d_death_rate_all_dis_20_23_3 d_death_rate_all_dis_2
 n_death_discount_20_23_1 n_death_discount_20_23_2  n_death_discount_20_23_3  n_death_discount_20_23_4 n_death_discount_20_23_5  
 d_n_death_dis_20_23_2 d_n_death_dis_20_23_3 d_n_death_dis_20_23_4 d_n_death_dis_20_23_5 
 d_n_death_20_23_2 d_n_death_20_23_3 d_n_death_20_23_4 d_n_death_20_23_5 
+n_mcirc1549__20_23_2 n_mcirc1549__20_23_3 n_mcirc1549__20_23_4 n_mcirc1549__20_23_5 
 ; 
 run;
 ods html close;

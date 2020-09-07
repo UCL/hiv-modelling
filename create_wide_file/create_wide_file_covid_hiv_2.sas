@@ -1135,8 +1135,15 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+/*
+proc means data=d2; var s_vmmc1519m ; where option=0 and cald=2019 ; run;
 
-
+proc means data=d2; var s_vmmc1519m ; where option=0 and cald=2022 ; run;
+proc means data=d2; var s_vmmc1519m ; where option=1 and cald=2022 ; run;
+proc means data=d2; var s_vmmc1519m ; where option=2 and cald=2022 ; run;
+proc means data=d2; var s_vmmc1519m ; where option=3 and cald=2022 ; run;
+proc means data=d2; var s_vmmc1519m ; where option=4 and cald=2022 ; run;
+*/
 
 data a; set d1 d2 ;
 
