@@ -539,6 +539,8 @@ explore metrics for how to monitor prep programmes
 	
 %include "/folders/myfolders/hiv-modelling/config.sas";
 
+%let population = 100000;
+
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 data cum_l1; 
@@ -1369,7 +1371,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 
 data r1;set z;
-do i=1 to 1000;
+do i=1 to &population;
 	n=1;
 	serial_no + 1;
 	output; 
@@ -2432,7 +2434,7 @@ option = &s;
 		art_low_adh_disrup_covid = 0; 
 
 if caldate_never_dot = 2020.50 then do;
-* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
+* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = <population>
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
@@ -14319,7 +14321,7 @@ tot_yrs_prep prob_prep_restart_choice prepuptake_sw prepuptake_pop pop_wide_tld_
 where age ge 15 and hiv ne 1;
 run;
 
-proc freq; tables caldate&j s_hiv1564; where serial_no=100000; run;
+proc freq; tables caldate&j s_hiv1564; where serial_no=&population; run;
 
 proc print; var serial_no caldate&j infection yrart prointer onart onart_gt6m_iicu vl1000_art_gt6m_iicu tcur 
 int_clinic_not_aw nactive_tm1 adh vl  vmax_tm1 cc_tm1 cd4_tm1 cd4 cmin toffart rate_int_choice death ;
@@ -14338,7 +14340,7 @@ run;
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = 1000;
+data sums; set r&da1; if serial_no = &population;
 
 ***Variables created below are used to update the program ;
 
@@ -15356,7 +15358,7 @@ data cum_l&da2; set cum_l&da1 sums;
 
 
 data s;set sums;
-do i=1 to 1000; 
+do i=1 to &population;
 	n=1; output; 
 end; 
 drop i;
