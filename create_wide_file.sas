@@ -1197,12 +1197,12 @@ p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl10
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
 run;
 
-
+* note this would need to be changed if option=1 is not the default/null policy option;
 proc means n p50 mean p5 p95;
-var p_w_giv_birth_this_per_20_25	p_mcirc_20_25	prevalence1549_20_25 incidence1549_20_25 	p_diag_20_25 	p_diag_m_20_25   p_diag_w_20_25	p_ai_no_arv_c_nnm_20_25   
-prop_w_1549_sw_20_25  mtct_prop_20_25  prop_1564_onprep_20_25
-p_onart_diag_20_25 p_onart_vl1000_20_25   p_vl1000_20_25	p_onart_vl1000_w_20_25	p_onart_vl1000_m_20_25   p_onart_cd4_l500_20_25  
-p_onart_cd4_l200_20_25  p_startedline2_20_25 prop_sw_newp0_20_25  prop_sw_hiv_20_25 ;
+var p_w_giv_birth_this_per_20_25_1	p_mcirc_20_25_1	prevalence1549_20_25_1 incidence1549_20_25_1 	p_diag_20_25_1 	p_diag_m_20_25_1   p_diag_w_20_25_1	p_ai_no_arv_c_nnm_20_25_1   
+prop_w_1549_sw_20_25_1  mtct_prop_20_25_1  prop_1564_onprep_20_25_1
+p_onart_diag_20_25_1 p_onart_vl1000_20_25_1   p_vl1000_20_25_1	p_onart_vl1000_w_20_25_1	p_onart_vl1000_m_20_25_1   p_onart_cd4_l500_20_25_1  
+p_onart_cd4_l200_20_25_1  p_startedline2_20_25_1 prop_sw_newp0_20_25_1  prop_sw_hiv_20_25_1 ;
 run;
 
 
