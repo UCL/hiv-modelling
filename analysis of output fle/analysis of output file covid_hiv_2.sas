@@ -5,8 +5,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
    data wide;    
  * set a.wide_covid_hiv_2_9_8_20_5pm;
  * set a.w_covid_hiv_2_9_8_20_5pm_extra; * results sent to john stover - results document 21 aug 2020  ;
- * set a.w_covid_hiv_2_22_8_20_3pm_1;
-   set a.w_covid_hiv_2_22_8_20_3pm_1_2;
+   set a.w_covid_hiv_2_22_8_20_3pm_1;
+ * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
 
 
 
@@ -673,7 +673,12 @@ proc means n mean lclm uclm p5 p95 data=wide;
 var 
 n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 n_tested_20_25_4 n_tested_20_25_5
 n_new_mcirc_20_25_1 n_new_mcirc_20_25_2 n_new_mcirc_20_25_3 n_new_mcirc_20_25_4 n_new_mcirc_20_25_5
-dvl_cost_20_25_1 dvl_cost_20_25_2 dvl_cost_20_25_3 dvl_cost_20_25_4 dvl_cost_20_25_5;
+dvl_cost_20_25_1 dvl_cost_20_25_2 dvl_cost_20_25_3 dvl_cost_20_25_4 dvl_cost_20_25_5
+
+d_n_new_mcirc_20_21_2 d_n_new_mcirc_20_21_3 d_n_new_mcirc_20_21_4 d_n_new_mcirc_20_21_5
+n_new_mcirc_21_22_1 n_new_mcirc_21_22_2 n_new_mcirc_21_22_3 n_new_mcirc_21_22_4 n_new_mcirc_21_22_5
+
+;
 run;
 ods html close;
 
@@ -777,6 +782,7 @@ d_death_rate_all_dis_20_70_2 d_death_rate_all_dis_20_70_3 d_death_rate_all_dis_2
 n_death_discount_20_70_1 n_death_discount_20_70_2  n_death_discount_20_70_3  n_death_discount_20_70_4 n_death_discount_20_70_5  
 d_n_death_dis_20_70_2 d_n_death_dis_20_70_3 d_n_death_dis_20_70_4 d_n_death_dis_20_70_5 
 d_n_death_20_70_2 d_n_death_20_70_3 d_n_death_20_70_4 d_n_death_20_70_5 
+n_mcirc1549__20_70_2 n_mcirc1549__20_70_3 n_mcirc1549__20_70_4 n_mcirc1549__20_70_5
 ; 
 run;
 ods html close;
