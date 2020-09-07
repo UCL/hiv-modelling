@@ -3,7 +3,9 @@
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 libname a "/folders/myfolders/hiv-modelling/output/";
-filename csvfile "/folders/myfolders/hiv-modelling/output/output2.csv" lrecl=999999;
+filename csvfile "/folders/myfolders/hiv-modelling/output/output_&dataset_id.csv" lrecl=999999;
+
+%include "/folders/myfolders/hiv-modelling/config.sas";
 
 /*
 data tmp_csv;
@@ -21,12 +23,9 @@ run;
 /*
 */
 
-
-proc import datafile=csvfile
-   out = tmp_csv
-   dbms = csv
-   replace;
-   getnames=yes;
+data tmp_csv;
+infile csvfile dlm=',' firstobs=2 dsd truncover;
+input &keep_vars;
 run;
 
 proc contents data=tmp_csv;
