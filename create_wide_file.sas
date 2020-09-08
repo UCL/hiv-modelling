@@ -857,7 +857,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
-/* proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;*/
+   proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;  
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /*proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 /* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50; */ 
@@ -865,12 +865,12 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
-/* proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; */
+   proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 /* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run; */ 
 
-data &v ; merge  y_20 /*add other datasets from above here*/ ;  
+data &v ; merge  y_20 t_20_25 /*add other datasets from above here*/ ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1190,11 +1190,19 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;run;
 
-proc means n p50 p5 p95;
+proc means n p50 mean p5 p95;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
+run;
+
+* note this would need to be changed if option=1 is not the default/null policy option;
+proc means n p50 mean p5 p95;
+var p_w_giv_birth_this_per_20_25_1	p_mcirc_20_25_1	prevalence1549_20_25_1 incidence1549_20_25_1 	p_diag_20_25_1 	p_diag_m_20_25_1   p_diag_w_20_25_1	p_ai_no_arv_c_nnm_20_25_1   
+prop_w_1549_sw_20_25_1  mtct_prop_20_25_1  prop_1564_onprep_20_25_1
+p_onart_diag_20_25_1 p_onart_vl1000_20_25_1   p_vl1000_20_25_1	p_onart_vl1000_w_20_25_1	p_onart_vl1000_m_20_25_1   p_onart_cd4_l500_20_25_1  
+p_onart_cd4_l200_20_25_1  p_startedline2_20_25_1 prop_sw_newp0_20_25_1  prop_sw_hiv_20_25_1 ;
 run;
 
 
