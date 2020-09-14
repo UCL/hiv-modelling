@@ -1261,6 +1261,7 @@ n_mcirc1549_3m=s_mcirc_1549m * sf_2020;
 n_vmmc1549_=s_vmmc1549m * sf_2020 * 4;
 n_vmmc1549_3m=s_vmmc1549m * sf_2020;
 n_new_inf1549m=s_primary1549m * sf_2020 * 4;
+n_new_inf1549w=s_primary1549w * sf_2020 * 4;
 n_new_inf1549=s_primary1549 * sf_2020 * 4;
 
 keep run option cald 
