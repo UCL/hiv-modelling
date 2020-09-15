@@ -5,9 +5,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
    data wide;    
  * set a.wide_covid_hiv_2_9_8_20_5pm;
  * set a.w_covid_hiv_2_9_8_20_5pm_extra; * results sent to john stover - results document 21 aug 2020  ;
-   set a.w_covid_hiv_2_22_8_20_3pm_1;
+ * set a.w_covid_hiv_2_22_8_20_3pm_1;
  * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
-
+   set a.w_covid_hiv_2_22_8_20_3pm_u_temp;
+ 
 
 
 * --------------------------------------------------------------------------------------------------------------;
