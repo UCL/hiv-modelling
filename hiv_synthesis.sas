@@ -2259,7 +2259,7 @@ end;
 end;
 
 
-if t ge 2 and 2019 < caldate{t} < 2020.5 then do;
+if t ge 2 and 2019 < caldate{t}          then do;
 if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
@@ -16044,7 +16044,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_3_9_20_7pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_16_9_20_10am_&dataset_id";  
 
 put   
 
