@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_22_8_20_3pm_u_temp";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_22_8_20_3pm_u";  
 
 input   
 
@@ -570,7 +570,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 
-data a; set d1 d2 ;
+data a; set d1 ;
 
 
 proc sort; by run cald option;run;
@@ -1214,10 +1214,10 @@ s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data covid_hiv_2_22_8_20_3pm_u_temp; set y;  
+data covid_hiv_2_22_8_20_3pm_u; set y;  
 
 
-data y; set covid_hiv_2_22_8_20_3pm_u_temp; 
+data y; set covid_hiv_2_22_8_20_3pm_u; 
 
 
   options nomprint;
@@ -1562,7 +1562,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_covid_hiv_2_22_8_20_3pm_u_temp; 
+  data a.w_covid_hiv_2_22_8_20_3pm_u; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -1570,7 +1570,7 @@ proc sort; by run;run;
   by run;run;
 
 
-if run_ < ;  * to give n = 250 initially ;
+* if run_ < ;  * to give n = 400 initially ;
 
 
 proc means n p50 p5 p95;
@@ -1601,5 +1601,5 @@ p_k65m_20 p_m184m_20 ;
 run;
 
 
-
+proc freq; tables run; run;
 

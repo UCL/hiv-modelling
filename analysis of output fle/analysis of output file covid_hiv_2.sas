@@ -7,7 +7,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
  * set a.w_covid_hiv_2_9_8_20_5pm_extra; * results sent to john stover - results document 21 aug 2020  ;
  * set a.w_covid_hiv_2_22_8_20_3pm_1;
  * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
-   set a.w_covid_hiv_2_22_8_20_3pm_u_temp;
+   set a.w_covid_hiv_2_22_8_20_3pm_u;
  
 
 
@@ -217,27 +217,38 @@ d_n_death_dis_20_25_5_4 = n_death_discount_20_25_4 - n_death_discount_20_25_5 ;
 d_n_death_dis_20_40_5_4 = n_death_discount_20_40_4 - n_death_discount_20_40_5 ;
 d_n_death_dis_20_70_5_4 = n_death_discount_20_70_4 - n_death_discount_20_70_5 ;
 
+
 * for effect of circ compare options 4 and 5 ;
 
 d_n_new_mcirc_20_21_5_4 = n_new_mcirc_20_21_5 - n_new_mcirc_20_21_4 ;
 d_n_death_dis_20_70_5_4 = n_death_discount_20_70_4 - n_death_discount_20_70_5 ;
 
+if d_n_new_mcirc_20_21_5_4 > 0 then 
 deaths_averted_per_10000_circ = (d_n_death_dis_20_70_5_4 * 50 / d_n_new_mcirc_20_21_5_4 ) * 10000 ;
+else deaths_averted_per_10000_circ = 0;
 
 * for effect of testing compare options 3 vs 1 ;
 
 d_n_tested_20_21_3_1 = n_tested_20_21_3 - n_tested_20_21_1 ;
 d_n_death_dis_20_70_3_1 = n_death_discount_20_70_1 - n_death_discount_20_70_3 ;
 
+if d_n_tested_20_21_3_1 > 0 then 
 deaths_averted_per_10000_test = (d_n_death_dis_20_70_3_1 * 50 / d_n_tested_20_21_3_1 ) * 10000 ;
+else deaths_averted_per_10000_test = 0;
+
 
 * for effect of vl testing compare options 2 vs 1 ;
 
 d_n_vl_test_done_20_21_2_1 = n_vl_test_done_20_21_2 - n_vl_test_done_20_21_1 ;
 d_n_death_dis_20_70_2_1 = n_death_discount_20_70_1 - n_death_discount_20_70_2 ;
 
+if d_n_vl_test_done_20_21_2_1 > 0 then 
 deaths_averted_per_10000_vl_test = (d_n_death_dis_20_70_2_1 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
+else deaths_averted_per_10000_vl_test = 0;
+
+if d_n_vl_test_done_20_21_2_1 > 0 then
 deaths_av_per_10000_vl_test_5y = (-d_n_death_dis_20_25_2 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
+deaths_av_per_10000_vl_test_5y = 0;
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -670,8 +681,16 @@ p_hard_reach_m  inc_cat base_rate_sw
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; 
-var 
+proc means n mean lclm uclm p5 p95 data=wide; var 
+
+n_tested_20_21_1 n_tested_20_21_2 n_tested_20_21_3 n_tested_20_21_4 n_tested_20_21_5
+n_new_mcirc_20_21_1 n_new_mcirc_20_21_2 n_new_mcirc_20_21_3 n_new_mcirc_20_21_4 n_new_mcirc_20_21_5
+dvl_cost_20_21_1 dvl_cost_20_21_2 dvl_cost_20_21_3 dvl_cost_20_21_4 dvl_cost_20_21_5
+
+n_tested_21_22_1 n_tested_21_22_2 n_tested_21_22_3 n_tested_21_22_4 n_tested_21_22_5
+n_new_mcirc_21_22_1 n_new_mcirc_21_22_2 n_new_mcirc_21_22_3 n_new_mcirc_21_22_4 n_new_mcirc_21_22_5
+dvl_cost_21_22_1 dvl_cost_21_22_2 dvl_cost_21_22_3 dvl_cost_21_22_4 dvl_cost_21_22_5
+
 n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 n_tested_20_25_4 n_tested_20_25_5
 n_new_mcirc_20_25_1 n_new_mcirc_20_25_2 n_new_mcirc_20_25_3 n_new_mcirc_20_25_4 n_new_mcirc_20_25_5
 dvl_cost_20_25_1 dvl_cost_20_25_2 dvl_cost_20_25_3 dvl_cost_20_25_4 dvl_cost_20_25_5
