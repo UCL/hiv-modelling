@@ -118,12 +118,22 @@ if _u48 <= 0.20 then prep_improvements = 1;
 			end;
 
 
+**no change in VMMC policy;
 	if option = 0 then do;  
-	circ_inc_rate_2020=0;
+	circ_inc_rate_2020=.;
 	end; 
 
+**no VMMC in under 15s and increased rate in 15-19 year olds;
 	if option = 1 then do;
 	circ_inc_rate_2020=1;
+	end;
+**no further VMMC;
+	if option = 2 then do;
+	circ_inc_rate_2020=2;
+	end;
+**no VMMC in under 15s and NO increased rate in 15-19 year olds;
+	if option = 3 then do;
+	circ_inc_rate_2020=3;
 	end;
 
 end;
