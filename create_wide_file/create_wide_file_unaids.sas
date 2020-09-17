@@ -905,6 +905,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_new_mcirc_8084m ;			n_new_mcirc_8084m = s_new_mcirc_8084m * sf_2020 * 4  ;
 * n_new_mcirc_85plm ;			n_new_mcirc_85plm = s_new_mcirc_85plm * sf_2020 * 4  ;
 
+* n_new_inf_1549m ; 			n_new_inf_1549m = s_primary1549m  * sf_2020 * 4  ;
 * n_new_inf_1519m ;				n_new_inf_1519m = s_primary1519m  * sf_2020 * 4  ;
 * n_new_inf_2024m ;				n_new_inf_2024m = s_primary2024m  * sf_2020 * 4  ;
 * n_new_inf_2529m ;				n_new_inf_2529m = s_primary2529m  * sf_2020 * 4  ;
@@ -915,6 +916,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_new_inf_5054m ;				n_new_inf_5054m = s_primary5054m  * sf_2020 * 4  ;
 * n_new_inf_5559m ;				n_new_inf_5559m = s_primary5559m  * sf_2020 * 4  ;
 * n_new_inf_6064m ;				n_new_inf_6064m = s_primary6064m  * sf_2020 * 4  ;
+* n_new_inf_1549w ; 			n_new_inf_1549w = s_primary1549w  * sf_2020 * 4  ;
 * n_new_inf_1519w ;				n_new_inf_1519w = s_primary1519w  * sf_2020 * 4  ;
 * n_new_inf_2024w ;				n_new_inf_2024w = s_primary2024w  * sf_2020 * 4  ;
 * n_new_inf_2529w ;				n_new_inf_2529w = s_primary2529w  * sf_2020 * 4  ;
@@ -1380,9 +1382,19 @@ n_onart_w4549 n_onart_w5054 n_onart_w5559 n_onart_w6064 n_onart_w6569 n_onart_w7
 n_mcirc_1519m  n_mcirc_2024m  n_mcirc_2529m  n_mcirc_3034m  n_mcirc_3539m  n_mcirc_4044m n_mcirc_4549m  n_mcirc_5054m  n_mcirc_5559m  n_mcirc_6064m 
 n_mcirc_6569m n_mcirc_7074m n_mcirc_7579m n_mcirc_8084m n_mcirc_85plm n_new_mcirc_1014m n_new_mcirc_1519m n_new_mcirc_2024m n_new_mcirc_2529m 
 n_new_mcirc_3034m  n_new_mcirc_3539m  n_new_mcirc_4044m  n_new_mcirc_4549m  n_new_mcirc_5054m n_new_mcirc_5559m n_new_mcirc_6064m  n_new_mcirc_6569m 
-n_new_mcirc_7074m  n_new_mcirc_7579m  n_new_mcirc_8084m  n_new_mcirc_85plm  n_new_inf_1519m  n_new_inf_2024m  n_new_inf_2529m  n_new_inf_3034m 
-n_new_inf_3539m  n_new_inf_4044m  n_new_inf_4549m  n_new_inf_5054m  n_new_inf_5559m  n_new_inf_6064m  n_new_inf_1519w  n_new_inf_2024w  n_new_inf_2529w 
-n_new_inf_3034w  n_new_inf_3539w n_new_inf_4044w n_new_inf_4549w  n_new_inf_5054w  n_new_inf_5559w n_new_inf_6064w  n_hiv1519m  n_hiv2024m n_hiv2529m
+n_new_mcirc_7074m  n_new_mcirc_7579m  n_new_mcirc_8084m  n_new_mcirc_85plm  
+
+n_new_inf_1549m 
+
+n_new_inf_1519m  n_new_inf_2024m  n_new_inf_2529m  n_new_inf_3034m 
+n_new_inf_3539m  n_new_inf_4044m  n_new_inf_4549m  n_new_inf_5054m  n_new_inf_5559m  n_new_inf_6064m 
+
+n_new_inf_1549w 
+
+n_new_inf_1519w  n_new_inf_2024w  n_new_inf_2529w 
+n_new_inf_3034w  n_new_inf_3539w n_new_inf_4044w n_new_inf_4549w  n_new_inf_5054w  n_new_inf_5559w n_new_inf_6064w  
+
+n_hiv1519m  n_hiv2024m n_hiv2529m
 n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m  n_hiv6569m  n_hiv7074m  n_hiv7579m n_hiv8084m n_hiv85plm 
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549w n_hiv5054w  n_hiv5559w n_hiv6064w  n_hiv6569w  n_hiv7074w n_hiv7579w 
 n_hiv8084w  n_hiv85plw
@@ -1400,7 +1412,7 @@ data unaids_28_8_20_12pm; set y;
 proc contents; run;
 
 
-data y; set unaids_28_8_20_12pm; 
+data x; set unaids_28_8_20_12pm; 
 
 
   options nomprint;
@@ -1546,12 +1558,16 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_mcirc_1519m  );    %var(v=n_mcirc_2024m  );    %var(v=n_mcirc_2529m  );    %var(v=n_mcirc_3034m  );    %var(v=n_mcirc_3539m  );    %var(v=n_mcirc_4044m );    %var(v=n_mcirc_4549m  );    %var(v=n_mcirc_5054m  );    %var(v=n_mcirc_5559m  );    %var(v=n_mcirc_6064m );
 %var(v=n_mcirc_6569m );    %var(v=n_mcirc_7074m );    %var(v=n_mcirc_7579m );    %var(v=n_mcirc_8084m );    %var(v=n_mcirc_85plm );    %var(v=n_new_mcirc_1014m );    %var(v=n_new_mcirc_1519m );    %var(v=n_new_mcirc_2024m );    %var(v=n_new_mcirc_2529m );
 %var(v=n_new_mcirc_3034m  );    %var(v=n_new_mcirc_3539m  );    %var(v=n_new_mcirc_4044m  );    %var(v=n_new_mcirc_4549m  );    %var(v=n_new_mcirc_5054m );    %var(v=n_new_mcirc_5559m );    %var(v=n_new_mcirc_6064m  );    %var(v=n_new_mcirc_6569m );
-%var(v=n_new_mcirc_7074m  );    %var(v=n_new_mcirc_7579m  );    %var(v=n_new_mcirc_8084m  );    %var(v=n_new_mcirc_85plm  );    %var(v=n_new_inf_1519m  );    %var(v=n_new_inf_2024m  );    %var(v=n_new_inf_2529m  );    %var(v=n_new_inf_3034m );
-%var(v=n_new_inf_3539m  );    %var(v=n_new_inf_4044m  );    %var(v=n_new_inf_4549m  );    %var(v=n_new_inf_5054m  );    %var(v=n_new_inf_5559m  );    %var(v=n_new_inf_6064m  );    %var(v=n_new_inf_1519w  );    %var(v=n_new_inf_2024w  );    %var(v=n_new_inf_2529w );
+%var(v=n_new_mcirc_7074m  );    %var(v=n_new_mcirc_7579m  );    %var(v=n_new_mcirc_8084m  );    %var(v=n_new_mcirc_85plm  );   
+%var(v=n_new_inf_1549m  );  %var(v=n_new_inf_1519m  );    %var(v=n_new_inf_2024m  );    %var(v=n_new_inf_2529m  );    %var(v=n_new_inf_3034m );
+%var(v=n_new_inf_3539m  );    %var(v=n_new_inf_4044m  );    %var(v=n_new_inf_4549m  );    %var(v=n_new_inf_5054m  );    %var(v=n_new_inf_5559m  );    %var(v=n_new_inf_6064m  );   
+%var(v=n_new_inf_1549w  );
+%var(v=n_new_inf_1519w  );    %var(v=n_new_inf_2024w  );    %var(v=n_new_inf_2529w );
 %var(v=n_new_inf_3034w  );    %var(v=n_new_inf_3539w );    %var(v=n_new_inf_4044w );    %var(v=n_new_inf_4549w  );    %var(v=n_new_inf_5054w  );    %var(v=n_new_inf_5559w );    %var(v=n_new_inf_6064w  );    %var(v=n_hiv1519m  );    %var(v=n_hiv2024m );    %var(v=n_hiv2529m);
 %var(v=n_hiv3034m  );    %var(v=n_hiv3539m  );    %var(v=n_hiv4044m  );    %var(v=n_hiv4549m  );    %var(v=n_hiv5054m  );    %var(v=n_hiv5559m  );    %var(v=n_hiv6064m  );    %var(v=n_hiv6569m  );    %var(v=n_hiv7074m  );    %var(v=n_hiv7579m );    %var(v=n_hiv8084m );    %var(v=n_hiv85plm );
 %var(v=n_hiv1519w  );    %var(v=n_hiv2024w  );    %var(v=n_hiv2529w  );    %var(v=n_hiv3034w  );    %var(v=n_hiv3539w  );    %var(v=n_hiv4044w );    %var(v=n_hiv4549w );    %var(v=n_hiv5054w  );    %var(v=n_hiv5559w );    %var(v=n_hiv6064w  );    %var(v=n_hiv6569w  );    %var(v=n_hiv7074w );    %var(v=n_hiv7579w );
 %var(v=n_hiv8084w  );    %var(v=n_hiv85plw );
+
 
 
 data   a.wide_misc; merge 
@@ -1583,9 +1599,13 @@ n_new_mcirc_3034m  n_new_mcirc_3539m  n_new_mcirc_4044m  n_new_mcirc_4549m  n_ne
 n_new_mcirc_7074m  n_new_mcirc_7579m  n_new_mcirc_8084m  n_new_mcirc_85plm  
 ;
 
+
 data   a.wide_new_inf; merge 
+n_new_inf_1549m
 n_new_inf_1519m  n_new_inf_2024m  n_new_inf_2529m  n_new_inf_3034m 
-n_new_inf_3539m  n_new_inf_4044m  n_new_inf_4549m  n_new_inf_5054m  n_new_inf_5559m  n_new_inf_6064m  n_new_inf_1519w  n_new_inf_2024w  n_new_inf_2529w 
+n_new_inf_3539m  n_new_inf_4044m  n_new_inf_4549m  n_new_inf_5054m  n_new_inf_5559m  n_new_inf_6064m  
+n_new_inf_1549w
+n_new_inf_1519w  n_new_inf_2024w  n_new_inf_2529w 
 n_new_inf_3034w  n_new_inf_3539w n_new_inf_4044w n_new_inf_4549w  n_new_inf_5054w  n_new_inf_5559w n_new_inf_6064w  
 ;
 
