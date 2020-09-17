@@ -10276,16 +10276,16 @@ primary6064m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary6064m=1
 
 primary1549m=0; if gender=1 and primary=1 and 15 <= age < 50 then primary1549m=1;
 
-primary1519w=0; if gender=1 and primary=1 and 15 <= age < 20 then primary1519w=1;
-primary2024w=0; if gender=1 and primary=1 and 20 <= age < 25 then primary2024w=1;
-primary2529w=0; if gender=1 and primary=1 and 25 <= age < 30 then primary2529w=1;
-primary3034w=0; if gender=1 and primary=1 and 30 <= age < 35 then primary3034w=1;
-primary3539w=0; if gender=1 and primary=1 and 35 <= age < 40 then primary3539w=1;
-primary4044w=0; if gender=1 and primary=1 and 40 <= age < 45 then primary4044w=1;
-primary4549w=0; if gender=1 and primary=1 and 45 <= age < 50 then primary4549w=1;
-primary5054w=0; if gender=1 and primary=1 and 50 <= age < 55 then primary5054w=1;
-primary5559w=0; if gender=1 and primary=1 and 55 <= age < 60 then primary5559w=1;
-primary6064w=0; if gender=1 and primary=1 and 60 <= age < 65 then primary6064w=1;
+primary1519w=0; if gender=2 and primary=1 and 15 <= age < 20 then primary1519w=1;
+primary2024w=0; if gender=2 and primary=1 and 20 <= age < 25 then primary2024w=1;
+primary2529w=0; if gender=2 and primary=1 and 25 <= age < 30 then primary2529w=1;
+primary3034w=0; if gender=2 and primary=1 and 30 <= age < 35 then primary3034w=1;
+primary3539w=0; if gender=2 and primary=1 and 35 <= age < 40 then primary3539w=1;
+primary4044w=0; if gender=2 and primary=1 and 40 <= age < 45 then primary4044w=1;
+primary4549w=0; if gender=2 and primary=1 and 45 <= age < 50 then primary4549w=1;
+primary5054w=0; if gender=2 and primary=1 and 50 <= age < 55 then primary5054w=1;
+primary5559w=0; if gender=2 and primary=1 and 55 <= age < 60 then primary5559w=1;
+primary6064w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary6064w=1;
 
 primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1;
 
@@ -16111,7 +16111,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_17_9_20_11am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_17_9_20_6pm_&dataset_id";  
 
 put   
 
