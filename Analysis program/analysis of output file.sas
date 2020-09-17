@@ -15,6 +15,7 @@ run;
 
 data a;
 set a.wide_vmmc_7_8_20_11am;
+*set a.wide_vmmc_7_8_20_11am_sum;
 
 *difference in vmmc rates;
 
@@ -106,22 +107,24 @@ d_net_dalys_20_40_2 = ndb_500_20_40_1 - ndb_500_20_40_2;
 d_net_dalys_20_70_2 = ndb_500_20_70_1 - ndb_500_20_70_2;
 
 *nnt;
-*difference in number of circumcisions;
-d_n_mcirc_20_25_2 = n_mcirc1549_py_20_25_2 - n_mcirc1549_py_20_25_1;
-d_n_mcirc_20_40_2 = n_mcirc1549_py_20_40_2 - n_mcirc1549_py_20_40_1;
-d_n_mcirc_20_70_2 = n_mcirc1549_py_20_70_2 - n_mcirc1549_py_20_70_1;
+*difference in number of VMMCs;
+d_n_mcirc_20_25_2 = n_new_vmmc1549_py_20_25_2 - n_new_vmmc1549_py_20_25_1;
+d_n_mcirc_20_40_2 = n_new_vmmc1549_py_20_40_2 - n_new_vmmc1549_py_20_40_1;
+d_n_mcirc_20_70_2 = n_new_vmmc1549_py_20_70_2 - n_new_vmmc1549_py_20_70_1;
+
 *difference in number of new infections - all;
 d_n_new_inf_20_25_2 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
 d_n_new_inf_20_40_2 = n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1;
 d_n_new_inf_20_70_2 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
+
 *difference in number of new infections - male only;
 d_n_new_inf_m_20_25_2 = n_new_inf1549m_20_25_2 - n_new_inf1549m_20_25_1;
 d_n_new_inf_m_20_40_2 = n_new_inf1549m_20_40_2 - n_new_inf1549m_20_40_1;
 d_n_new_inf_m_20_70_2 = n_new_inf1549m_20_70_2 - n_new_inf1549m_20_70_1;
 
-if (-d_n_new_inf_m_20_25_2) gt 0 then nnt_20_25_2 = d_n_mcirc_20_25_2 / (-d_n_new_inf_m_20_25_2);
-if (-d_n_new_inf_m_20_40_2) gt 0 then nnt_20_40_2 = d_n_mcirc_20_40_2 / (-d_n_new_inf_m_20_40_2);
-if (-d_n_new_inf_m_20_70_2) gt 0 then nnt_20_70_2 = d_n_mcirc_20_70_2 / (-d_n_new_inf_m_20_70_2);
+if (-d_n_new_inf_20_25_2) gt 0 then nnt_20_25_2 = d_n_mcirc_20_25_2 / (-d_n_new_inf_20_25_2);
+if (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_mcirc_20_40_2 / (-d_n_new_inf_20_40_2);
+if (-d_n_new_inf_20_70_2) gt 0 then nnt_20_70_2 = d_n_mcirc_20_70_2 / (-d_n_new_inf_20_70_2);
 
 
 *cost per infection averted - all;
