@@ -1,21 +1,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-***new_vmmc was not set to 0 in file used below so did extra runs up to 2020 with corrected file to get vmmc rates for 2019;
-data rates;
-set a.wide_vmmc_12_8_20_1pm;
-run;
-
-proc means n p50 p5 p95;var
-n_new_vmmc1549_py_19_20_1  n_new_vmmc1049_py_19_20_1
-p_new_vmmc_1549m_u_19_20_1  p_new_vmmc_u_1049m_19_20_1  p_new_vmmc_1014m_u_19_20_1 p_new_vmmc_1519m_u_19_20_1 
-p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1  p_new_vmmc_3034m_u_19_20_1  p_new_vmmc_3539m_u_19_20_1
-p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1; 
-run;
-
-
 data a;
-set a.wide_vmmc_7_8_20_11am;
-*set a.wide_vmmc_7_8_20_11am_sum;
+set a.wide_vmmc_10_9_20_8pm;
 
 *difference in vmmc rates;
 
@@ -84,9 +70,13 @@ inf_avert_20_40_2 = ((n_new_inf1549_20_40_1 - n_new_inf1549_20_40_2)/n_new_inf15
 inf_avert_20_70_2 = ((n_new_inf1549_20_70_1 - n_new_inf1549_20_70_2)/n_new_inf1549_20_70_1)*100;
 
 *dalys averted;
-d_ddaly_all_20_25_2 = ddaly_all_20_25_1 - ddaly_all_20_25_2;
-d_ddaly_all_20_40_2 = ddaly_all_20_40_1 - ddaly_all_20_40_2;
-d_ddaly_all_20_70_2 = ddaly_all_20_70_1 - ddaly_all_20_70_2;
+*d_ddaly_all_20_25_2 = ddaly_all_20_25_1 - ddaly_all_20_25_2;
+*d_ddaly_all_20_40_2 = ddaly_all_20_40_1 - ddaly_all_20_40_2;
+*d_ddaly_all_20_70_2 = ddaly_all_20_70_1 - ddaly_all_20_70_2;
+
+d_ddaly_adults_20_25_2 = ddaly_adults_20_25_1 - ddaly_adults_20_25_2;
+d_ddaly_adults_20_40_2 = ddaly_adults_20_40_1 - ddaly_adults_20_40_2;
+d_ddaly_adults_20_70_2 = ddaly_adults_20_70_1 - ddaly_adults_20_70_2;
 
 *difference in costs;
 d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1;
@@ -94,23 +84,31 @@ d_dcost_20_40_2 = dcost_20_40_2 - dcost_20_40_1;
 d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1;
 
 *net dalys averted;
+/*
 ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005;
 ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005; 
 ndb_500_20_40_1 =  ddaly_all_20_40_1 + (dcost_20_40_1)/0.0005;
 ndb_500_20_40_2 =  ddaly_all_20_40_2 + (dcost_20_40_2)/0.0005; 
 ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0005;
 ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005; 
+*/
+ndb_500_20_25_1_adults =  ddaly_adults_20_25_1 + (dcost_20_25_1)/0.0005;
+ndb_500_20_25_2_adults =  ddaly_adults_20_25_2 + (dcost_20_25_2)/0.0005; 
+ndb_500_20_40_1_adults =  ddaly_adults_20_40_1 + (dcost_20_40_1)/0.0005;
+ndb_500_20_40_2_adults =  ddaly_adults_20_40_2 + (dcost_20_40_2)/0.0005; 
+ndb_500_20_70_1_adults =  ddaly_adults_20_70_1 + (dcost_20_70_1)/0.0005;
+ndb_500_20_70_2_adults =  ddaly_adults_20_70_2 + (dcost_20_70_2)/0.0005; 
 
 *net dalys averted;
-d_net_dalys_20_25_2 = ndb_500_20_25_1 - ndb_500_20_25_2;
-d_net_dalys_20_40_2 = ndb_500_20_40_1 - ndb_500_20_40_2;
-d_net_dalys_20_70_2 = ndb_500_20_70_1 - ndb_500_20_70_2;
+d_net_dalys_20_25_2_adults = ndb_500_20_25_1_adults - ndb_500_20_25_2_adults;
+d_net_dalys_20_40_2_adults = ndb_500_20_40_1_adults - ndb_500_20_40_2_adults;
+d_net_dalys_20_70_2_adults = ndb_500_20_70_1_adults - ndb_500_20_70_2_adults;
 
 *nnt;
 *difference in number of VMMCs;
-d_n_mcirc_20_25_2 = n_new_vmmc1549_py_20_25_2 - n_new_vmmc1549_py_20_25_1;
-d_n_mcirc_20_40_2 = n_new_vmmc1549_py_20_40_2 - n_new_vmmc1549_py_20_40_1;
-d_n_mcirc_20_70_2 = n_new_vmmc1549_py_20_70_2 - n_new_vmmc1549_py_20_70_1;
+d_n_vmmc_20_25_2 = n_new_vmmc1549_py_20_25_2 - n_new_vmmc1549_py_20_25_1;
+d_n_vmmc_20_40_2 = n_new_vmmc1549_py_20_40_2 - n_new_vmmc1549_py_20_40_1;
+d_n_vmmc_20_70_2 = n_new_vmmc1549_py_20_70_2 - n_new_vmmc1549_py_20_70_1;
 
 *difference in number of new infections - all;
 d_n_new_inf_20_25_2 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
@@ -122,9 +120,9 @@ d_n_new_inf_m_20_25_2 = n_new_inf1549m_20_25_2 - n_new_inf1549m_20_25_1;
 d_n_new_inf_m_20_40_2 = n_new_inf1549m_20_40_2 - n_new_inf1549m_20_40_1;
 d_n_new_inf_m_20_70_2 = n_new_inf1549m_20_70_2 - n_new_inf1549m_20_70_1;
 
-if (-d_n_new_inf_20_25_2) gt 0 then nnt_20_25_2 = d_n_mcirc_20_25_2 / (-d_n_new_inf_20_25_2);
-if (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_mcirc_20_40_2 / (-d_n_new_inf_20_40_2);
-if (-d_n_new_inf_20_70_2) gt 0 then nnt_20_70_2 = d_n_mcirc_20_70_2 / (-d_n_new_inf_20_70_2);
+if (-d_n_new_inf_20_25_2) gt 0 then nnt_20_25_2 = d_n_vmmc_20_25_2 / (-d_n_new_inf_20_25_2);
+if (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_vmmc_20_40_2 / (-d_n_new_inf_20_40_2);
+if (-d_n_new_inf_20_70_2) gt 0 then nnt_20_70_2 = d_n_vmmc_20_70_2 / (-d_n_new_inf_20_70_2);
 
 
 *cost per infection averted - all;
@@ -134,14 +132,19 @@ if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_20_70_2 = (d_dcost_20_70_2 / 
 
 
 *cost per infection averted - males only;
-if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
+/*if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
 if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_m_20_40_2))*1000000;
 if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_m_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_m_20_70_2))*1000000;
+*/
 
-*cost per daly averted =icer?;
-if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
-if d_ddaly_all_20_40_2 gt 0 then cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
-if d_ddaly_all_20_70_2 gt 0 then cost_daly_avert_20_70_2 = (d_dcost_20_70_2 / d_ddaly_all_20_70_2)*1000000;
+*cost per daly averted =icer;
+*if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
+*if d_ddaly_all_20_40_2 gt 0 then cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
+*if d_ddaly_all_20_70_2 gt 0 then cost_daly_avert_20_70_2 = (d_dcost_20_70_2 / d_ddaly_all_20_70_2)*1000000;
+
+if d_ddaly_adults_20_25_2 gt 0 then cost_daly_avert_20_25_2_adults = (d_dcost_20_25_2 / d_ddaly_adults_20_25_2)*1000000;
+if d_ddaly_adults_20_40_2 gt 0 then cost_daly_avert_20_40_2_adults = (d_dcost_20_40_2 / d_ddaly_adults_20_40_2)*1000000;
+if d_ddaly_adults_20_70_2 gt 0 then cost_daly_avert_20_70_2_adults = (d_dcost_20_70_2 / d_ddaly_adults_20_70_2)*1000000;
 
 
 run;
