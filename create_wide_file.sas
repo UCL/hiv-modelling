@@ -1,43 +1,47 @@
 
 
-*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
-*libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
 libname a "/folders/myfolders/hiv-modelling/output/";
-filename csvfile "/folders/myfolders/hiv-modelling/output/output_&dataset_id.csv" lrecl=999999;
+libname tmp "/folders/myfolders/hiv-modelling/output/";
 
-%include "/folders/myfolders/hiv-modelling/config.sas";
+/**
+uncomment the following two lines if using CSV import/export
+*/
+*filename csvfile "/folders/myfolders/hiv-modelling/output/output_csv.csv" lrecl=999999;
+*%include "/folders/myfolders/hiv-modelling/config.sas";
 
 /*
-data tmp_csv;
-  infile "/folders/myfolders/hiv-modelling/output/output2.csv" lrecl=999999 dsd;
-run;
+uncomment the following data step/proc and data steps
+ if using CSV export/import
 */
 
-  *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\;
-  *infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\.......";
-  *infile "/folders/myfolders/hiv-modelling/output/output2.csv" dsd lrecl = 500000;
+*data tmp_csv;
+*infile csvfile dlm=',' firstobs=2 dsd truncover;
+*input &keep_vars;
+*run;
 
-*...............
+*proc contents data=tmp_csv;
+*  title "CSV Data"
+*run;
 
-*;
-/*
+*data a; 
+*set tmp_csv;
+*run;
+
+/** uncomment if using
+* importing from sas7bdat file
 */
 
-data tmp_csv;
-infile csvfile dlm=',' firstobs=2 dsd truncover;
-input &keep_vars;
+data a; 
+	set tmp.output_compressed; 
 run;
 
-proc contents data=tmp_csv;
-  title "CSV Data"
+proc contents data=a;
+	title "Compressed Data"
 run;
 
-data a; set tmp_csv;
-run;
-
-
-proc sort data=tmp_csv; by run cald option;run;
+proc sort data=a; by run cald option;run;
 proc freq;table run;where cald=2020;run;
+
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;

@@ -537,7 +537,6 @@ explore metrics for how to monitor prep programmes
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%include "/folders/myfolders/hiv-modelling/config.sas";
 
 %let population = 100000;
 
@@ -16192,9 +16191,10 @@ end;
 
 
 * ts1m:  need more update statements ;
-* libname tmp_out "/folders/myfolders/hiv-modelling/output/";
+libname tmp_out "/folders/myfolders/hiv-modelling/output/";
+%include "/folders/myfolders/hiv-modelling/config.sas";
 
-data output_csv;
+data tmp_out.output_compressed(compress=yes);
 format &keep_vars; * to sort variables in the order specified (in config.sas);
 set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
@@ -16208,10 +16208,11 @@ run;
 
 
 * Specify the line length (lrecl) so it can accommodate all variable names;
-filename out_csv "/folders/myfolders/hiv-modelling/output/output_&dataset_id.csv" lrecl=50000;
-proc export data=output_csv
-   outfile=out_csv
-   dbms=csv
-   replace;
-   putnames=yes;
-run;
+* comment the following lines if exporting to CSV
+*filename out_csv "/folders/myfolders/hiv-modelling/output/output_csv.csv" lrecl=50000;
+*proc export data=output_csv
+*   outfile=out_csv
+*   dbms=csv
+*   replace;
+*   putnames=yes;
+*run;
