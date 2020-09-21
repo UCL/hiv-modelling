@@ -468,8 +468,8 @@ p_neph_stops_after_ten = 0.1;
 * inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if r < 0.05 then base_rate_sw = 0.0005;   if 0.05 <= r < 0.75 then base_rate_sw = 0.001;  
-					if 0.75 <= r then base_rate_sw = 0.002 ;   
+* base_rate_sw; r=uniform(0);  if 0.00 <= r < 0.33 then base_rate_sw = 0.001;  if 0.33 <= r < 0.67 then base_rate_sw = 0.015;  
+					if 0.67 <= r then base_rate_sw = 0.002 ;   
 
 * dependent_on_time_step_length ;
 
@@ -753,7 +753,7 @@ if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_i
 if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
 
 * transition probabilities between sex worker newp levels;
-* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-40   4   newp 41-100   5   newp 101+  ;
+* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-40   4   newp 41-80   5   newp 81+  ;
 if sw_trans_matrix=1 then do;
 sw_newp_lev_1_1 = 0.80 ; sw_newp_lev_1_2 = 0.17 ; sw_newp_lev_1_3 = 0.015  ; sw_newp_lev_1_4 = 0.010 ; sw_newp_lev_1_5 = 0.005 ; 
 sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
@@ -1398,10 +1398,10 @@ if 0.5 <= e < 0.95 then do; q=uniform(0);
 	newp = 6 + (q*34); newp = round(newp,1);  
 end;
 if 0.95 <= e < 0.99  then do; q=uniform(0); 
-	newp = 41 + (q*59); newp = round(newp,1);  
+	newp = 41 + (q*39); newp = round(newp,1);  
 end;
 if 0.99  <= e       then do; q=uniform(0); 
-	newp = 101 + (q*50 ); newp = round(newp,1);  
+	newp = 81 + (q*50 ); newp = round(newp,1);  
 end;
 end;
 
@@ -3028,8 +3028,8 @@ if sw=1 then  ever_sw = 1;
 1 	newp = 0
 2   newp 1-6
 3   newp 7-40
-4   newp 41-100
-5   newp 101+
+4   newp 41-80
+5   newp 81+
 ;
 
 * dependent_on_time_step_length ;
@@ -3069,8 +3069,8 @@ e=uniform(0);
 1 	newp = 0
 2   newp 1-6
 3   newp 7-40
-4   newp 41-100
-5   newp 101+
+4   newp 41-80 
+5   newp 80 +
 
 ;
 
@@ -3083,8 +3083,8 @@ if t ge 2 and newp_tm1 = 0 then do;
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
 	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); newp = round(newp,1);  end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=uniform(0); 	newp = 41 + (q*39); newp = round(newp,1);  end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=uniform(0); 	newp = 81 + (q*50 ); newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
@@ -3095,8 +3095,8 @@ if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
 	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); newp = round(newp,1);  end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=uniform(0); 	newp = 41 + (q*39); newp = round(newp,1);  end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 81 + (q*50 ); newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
@@ -3107,11 +3107,11 @@ if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;   
 	end;
 	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); newp = round(newp,1);  end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=uniform(0); 	newp = 41 + (q*39); newp = round(newp,1);  end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 81 + (q*50 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  41 <= newp_tm1 <= 100 then do;
+if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
 	if age > 30 then e=e*0.98; * older women cant be in highest category ;
 	if e < sw_newp_lev_4_1 then newp=0;
 	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
@@ -3119,19 +3119,19 @@ if  t ge 2 and  41 <= newp_tm1 <= 100 then do;
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
 	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); newp = round(newp,1);  end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=uniform(0); 	newp = 41 + (q*39); newp = round(newp,1);  end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 81 + (q*50 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  100 <  newp_tm1 then do;
+if  t ge 2 and  80 <  newp_tm1 then do;
 	if e < sw_newp_lev_5_1 then newp=0;
 	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;  
 	end;
 	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); newp = round(newp,1);  end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=uniform(0); 	newp = 41 + (q*39); newp = round(newp,1);  end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=uniform(0); 	newp = 81 + (q*50 ); newp = round(newp,1);  end;
 end;
 
 if age > 30 then newp = min(30,newp);
@@ -16111,7 +16111,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_17_9_20_6pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_21_9_20_12pm_&dataset_id";  
 
 put   
 
