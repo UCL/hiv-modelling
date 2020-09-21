@@ -314,7 +314,12 @@ nnt_20_25_2  nnt_20_40_2  nnt_20_70_2
 ***cost per infection averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
 cost_inf_avert_20_25_2  cost_inf_avert_20_40_2  cost_inf_avert_20_70_2
+<<<<<<< Updated upstream
 ;where (-d_n_new_inf_20_25_2 >0);run;
+=======
+cost_inf_avert_m_20_25_2  cost_inf_avert_m_20_40_2  cost_inf_avert_m_20_70_2
+
+>>>>>>> Stashed changes
 ;run;
 
 ***icer;
