@@ -2,6 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;
 set a.wide_vmmc_10_9_20_8pm;
+*set a.wide_vmmc_7_8_20_11am;
 
 *difference in vmmc rates;
 
@@ -132,10 +133,10 @@ if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_20_70_2 = (d_dcost_20_70_2 / 
 
 
 *cost per infection averted - males only;
-/*if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
-if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_m_20_40_2))*1000000;
-if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_m_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_m_20_70_2))*1000000;
-*/
+if (-d_n_new_inf_m_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
+if (-d_n_new_inf_m_20_40_2) gt 0 then cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_m_20_40_2))*1000000;
+if (-d_n_new_inf_m_20_70_2) gt 0 then cost_inf_avert_m_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_m_20_70_2))*1000000;
+
 
 *cost per daly averted =icer;
 *if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
@@ -244,7 +245,7 @@ inf_avert_20_25_2  inf_avert_20_40_2  inf_avert_20_70_2
 
 ***DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_ddaly_all_20_25_2  d_ddaly_all_20_40_2  d_ddaly_all_20_70_2
+d_ddaly_adults_20_25_2  d_ddaly_adults_20_40_2  d_ddaly_adults_20_70_2
 ;run;
 
 ***Total cost;
@@ -296,7 +297,7 @@ d_dcost_20_25_2  d_dcost_20_40_2  d_dcost_20_70_2
 
 ***net DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_net_dalys_20_25_2  d_net_dalys_20_40_2  d_net_dalys_20_70_2
+d_net_dalys_20_25_2_adults  d_net_dalys_20_40_2_adults  d_net_dalys_20_70_2_adults
 ;run;
 
 proc freq;table d_net_dalys_20_25_2 ;where d_net_dalys_20_25_2 gt 0; run;
@@ -313,12 +314,16 @@ nnt_20_25_2  nnt_20_40_2  nnt_20_70_2
 ***cost per infection averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
 cost_inf_avert_20_25_2  cost_inf_avert_20_40_2  cost_inf_avert_20_70_2
+d_dcost_20_25_2  d_n_new_inf_20_25_2;where (-d_n_new_inf_20_25_2 >0);run;
 ;run;
 
 ***icer;
-proc means n p50 p5 p95;var 
-cost_daly_avert_20_25_2  cost_daly_avert_20_40_2 cost_daly_avert_20_70_2
+proc means n mean p50 p5 p95 lclm uclm;var 
+cost_daly_avert_20_25_2_adults  cost_daly_avert_20_40_2_adults cost_daly_avert_20_70_2_adults
+d_dcost_20_25_2 d_ddaly_adults_20_25_2
 ;run;
 
 
+Proc logistic;  - use binary outcome to define if CE in each setting scenario
 
+with baseline incidence, prevalence of circ (current % circ) and other char of T1 and outcome cost per DALY averted
