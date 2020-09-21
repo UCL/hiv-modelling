@@ -30,17 +30,17 @@ uncomment the following data step/proc and data steps
 * importing from sas7bdat file
 */
 
-proc contents data=a.output_compressed;
+proc contents data=a.output_compressed_bin;
 	title "Compressed Data"
 run;
 
-proc sort data=a.output_compressed; by run cald option;run;
+proc sort data=a.output_compressed_bin; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a.output_compressed ;
+set a.output_compressed_bin ;
  
 if cald=2019;
 s_alive = s_alive_m + s_alive_w ;
@@ -50,7 +50,7 @@ proc sort; by run;
 
 
 data y; 
-merge a.output_compressed sf;
+merge a.output_compressed_bin sf;
 by run ;
 
 
@@ -667,7 +667,7 @@ option_0_prep_continue_2020 s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data a.wide_output_Fri(compress=yes); set y;
+data a.wide_output_Fri(compress=binary); set y;
 
 data y; set a.wide_output_Fri; run;
 
@@ -1013,7 +1013,7 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  data a.even_wider_output(compress=yes); 
+  data a.even_wider_output(compress=binary); 
 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after

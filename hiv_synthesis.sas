@@ -16194,7 +16194,7 @@ end;
 libname tmp_out "/folders/myfolders/hiv-modelling/output/";
 %include "/folders/myfolders/hiv-modelling/config.sas";
 
-data tmp_out.output_compressed(compress=yes);
+data tmp_out.output_compressed_bin(compress=binary);
 format &keep_vars; * to sort variables in the order specified (in config.sas);
 set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
