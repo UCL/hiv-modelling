@@ -1,7 +1,6 @@
 
 
 libname a "/folders/myfolders/hiv-modelling/output/";
-libname tmp "/folders/myfolders/hiv-modelling/output/";
 
 /**
 uncomment the following two lines if using CSV import/export
@@ -31,21 +30,17 @@ uncomment the following data step/proc and data steps
 * importing from sas7bdat file
 */
 
-data a; 
-	set tmp.output_compressed; 
-run;
-
-proc contents data=a;
+proc contents data=a.output_compressed;
 	title "Compressed Data"
 run;
 
-proc sort data=a; by run cald option;run;
+proc sort data=a.output_compressed; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a ;
+set a.output_compressed ;
  
 if cald=2019;
 s_alive = s_alive_m + s_alive_w ;
@@ -55,7 +50,7 @@ proc sort; by run;
 
 
 data y; 
-merge a sf;
+merge a.output_compressed sf;
 by run ;
 
 
