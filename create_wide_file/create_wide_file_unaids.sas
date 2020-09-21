@@ -588,8 +588,6 @@ proc freq; tables run;
 
 data a; set d1  ;
 
-if run = 4215223 ;
-
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
