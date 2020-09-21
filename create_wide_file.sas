@@ -667,7 +667,7 @@ option_0_prep_continue_2020 s_sw_newp
 
 proc sort data=y;by run option;run;
 
-data a.wide_output_Fri; set y;
+data a.wide_output_Fri(compress=yes); set y;
 
 data y; set a.wide_output_Fri; run;
 
@@ -1013,7 +1013,7 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 *libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\";
-  data a.even_wider_output; 
+  data a.even_wider_output(compress=yes); 
 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
