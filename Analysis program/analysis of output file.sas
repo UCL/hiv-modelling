@@ -85,14 +85,6 @@ d_dcost_20_40_2 = dcost_20_40_2 - dcost_20_40_1;
 d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1;
 
 *net dalys averted;
-/*
-ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005;
-ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005; 
-ndb_500_20_40_1 =  ddaly_all_20_40_1 + (dcost_20_40_1)/0.0005;
-ndb_500_20_40_2 =  ddaly_all_20_40_2 + (dcost_20_40_2)/0.0005; 
-ndb_500_20_70_1 =  ddaly_all_20_70_1 + (dcost_20_70_1)/0.0005;
-ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005; 
-*/
 ndb_500_20_25_1_adults =  ddaly_adults_20_25_1 + (dcost_20_25_1)/0.0005;
 ndb_500_20_25_2_adults =  ddaly_adults_20_25_2 + (dcost_20_25_2)/0.0005; 
 ndb_500_20_40_1_adults =  ddaly_adults_20_40_1 + (dcost_20_40_1)/0.0005;
@@ -104,6 +96,11 @@ ndb_500_20_70_2_adults =  ddaly_adults_20_70_2 + (dcost_20_70_2)/0.0005;
 d_net_dalys_20_25_2_adults = ndb_500_20_25_1_adults - ndb_500_20_25_2_adults;
 d_net_dalys_20_40_2_adults = ndb_500_20_40_1_adults - ndb_500_20_40_2_adults;
 d_net_dalys_20_70_2_adults = ndb_500_20_70_1_adults - ndb_500_20_70_2_adults;
+
+ce_20_25=0;if d_net_dalys_20_25_2_adults gt 0 then ce_20_25=1;
+ce_20_40=0;if d_net_dalys_20_40_2_adults gt 0 then ce_20_40=1;
+ce_20_70=0;if d_net_dalys_20_70_2_adults gt 0 then ce_20_70=1;
+
 
 *nnt;
 *difference in number of VMMCs;
@@ -126,10 +123,14 @@ if (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_vmmc_20_40_2 / (-d_n_new_i
 if (-d_n_new_inf_20_70_2) gt 0 then nnt_20_70_2 = d_n_vmmc_20_70_2 / (-d_n_new_inf_20_70_2);
 
 
+
 *cost per infection averted - all;
 if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_20_25_2))*1000000;
 if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_20_40_2))*1000000;
 if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_20_70_2))*1000000;
+
+***in scenarios in which infections weren't averted, define cost per infection averted as the upper range;
+if (-d_n_new_inf_20_25_2) ge 0 then cost_inf_avert_20_70_2=264252;
 
 
 *cost per infection averted - males only;
@@ -151,6 +152,7 @@ if d_ddaly_adults_20_70_2 gt 0 then cost_daly_avert_20_70_2_adults = (d_dcost_20
 run;
 
 proc contents;run;
+
 
 ***table 1;
 proc means n p50 p5 p95;var
@@ -300,10 +302,9 @@ proc means n mean p50 p5 p95 lclm uclm;var
 d_net_dalys_20_25_2_adults  d_net_dalys_20_40_2_adults  d_net_dalys_20_70_2_adults
 ;run;
 
-proc freq;table d_net_dalys_20_25_2 ;where d_net_dalys_20_25_2 gt 0; run;
-proc freq;table d_net_dalys_20_40_2 ;where d_net_dalys_20_40_2 gt 0; run;
-proc freq;table d_net_dalys_20_70_2 ;where d_net_dalys_20_70_2 gt 0; run;
+proc freq;table ce_20_25 ce_20_40 ce_20_70;run;
 
+proc print;var d_net_dalys_20_25_2_adults ce_20_25 cost_daly_avert_20_25_2_adults d_dcost_20_25_2 d_ddaly_adults_20_25_2;run;
 
 
 ***NNT;
@@ -314,12 +315,6 @@ nnt_20_25_2  nnt_20_40_2  nnt_20_70_2
 ***cost per infection averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
 cost_inf_avert_20_25_2  cost_inf_avert_20_40_2  cost_inf_avert_20_70_2
-<<<<<<< Updated upstream
-;where (-d_n_new_inf_20_25_2 >0);run;
-=======
-cost_inf_avert_m_20_25_2  cost_inf_avert_m_20_40_2  cost_inf_avert_m_20_70_2
-
->>>>>>> Stashed changes
 ;run;
 
 ***icer;
@@ -329,6 +324,6 @@ d_dcost_20_25_2 d_ddaly_adults_20_25_2
 ;run;
 
 
-Proc logistic;  - use binary outcome to define if CE in each setting scenario
+Proc logistic desc;model  ce_20_70  =
+incidence1549_20 incidence1549_40 p_diag_20 p_onart_diag_20 p_mcirc_1549m_20 p_onart_vl1000_20;run;
 
-with baseline incidence, prevalence of circ (current % circ) and other char of T1 and outcome cost per DALY averted
