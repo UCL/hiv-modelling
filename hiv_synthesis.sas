@@ -2312,7 +2312,8 @@ end;
 u_circ=uniform(0);
 tested_circ=0;
 
-if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1 then do; 
+if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
+and age < 50 then do; 
 
 	if u_circ lt prob_circ then do;
 		if t ge 2 and tested_tm1 ne 1 then do;
