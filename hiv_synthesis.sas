@@ -2274,7 +2274,7 @@ if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_r
 end;
 
 if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
-prob_circ = 0;
+prob_circ = 0;test_link_circ_prob=0;
 end;
 
 if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
