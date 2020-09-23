@@ -158,10 +158,11 @@ to do before starting testing in preparation for runs:
 
   libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
+
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-
+%let population = 100000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -1033,7 +1034,7 @@ Define fixed or initial values for each person individually
 
 
 data r1;set z;
-do i=1 to 100000;
+do i=1 to &population;
 	n=1;
 	serial_no + 1;
 	output; 
@@ -14157,7 +14158,7 @@ for any variables we want to save outputs, either to analyse afterwards, or to f
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = 100000;
+data sums; set r&da1; if serial_no = &population;
 
 ***Variables created below are used to update the program ;
 
@@ -15218,7 +15219,7 @@ data cum_l&da2; set cum_l&da1 sums;
 
 
 data s;set sums;
-do i=1 to 100000; 
+do i=1 to &population; 
 	n=1; output; 
 end; 
 drop i;
@@ -16108,10 +16109,9 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_21_9_20_12pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_23_9_20_10am_&dataset_id";  
 
 put   
 
@@ -16690,6 +16690,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * note need to keep one s_n ! ;
 
 run;
+
+
 
 
 
