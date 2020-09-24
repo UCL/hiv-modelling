@@ -638,6 +638,7 @@ discount_10p = disc * discount_adj_10p ;
 discount_7p = disc * discount_adj_7p ;
 discount_0 = disc * discount_adj_0 ;
 
+
 * if using 7% discount rate:  ; 
 * discount=discount_7p; 
 * discount_adj=discount_adj_7p;
@@ -1157,6 +1158,9 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * n_new_inf1549;				n_new_inf1549=s_primary1549 * sf_2020 * 4;
 * n_infection;					n_infection  = s_primary     * sf_2020 * 4;
 
+* d_new_inf1549;				d_new_inf1549 = discount * new_inf1549;
+
+
 * n_ageg1519m ;					n_ageg1519m = s_ageg1519m * sf_2020 ;
 * n_ageg2024m ;					n_ageg2024m = s_ageg2024m * sf_2020 ;
 * n_ageg2529m ;					n_ageg2529m = s_ageg2529m * sf_2020 ;
@@ -1423,7 +1427,7 @@ n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv606
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549w n_hiv5054w  n_hiv5559w n_hiv6064w  n_hiv6569w  n_hiv7074w n_hiv7579w 
 n_hiv8084w  n_hiv85plw
 n_onart n_diag n_start_line2 n_vl_test_done
-n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549
+n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549 d_new_inf1549
 s_sw_newp;
 proc sort data=y;by run option;run;
 
@@ -1526,7 +1530,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_py);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_py);%var (v=n_vmmc1549_3m);%var (v=n_new_vmmc1549_py);%var (v=n_new_vmmc1049_py);
-%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=s_sw_newp);
+%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=s_sw_newp); %var(v=d_new_inf1549);
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -1580,7 +1584,7 @@ p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hi
 n_prep  n_covid  n_death_covid  n_death  n_death_hivrel 
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m
 n_mcirc1549_py n_mcirc1549_3m n_vmmc1549_py  n_vmmc1549_3m  n_new_vmmc1549_py  n_new_vmmc1049_py
-n_new_inf1549m n_new_inf1549
+n_new_inf1549m n_new_inf1549 d_new_inf1549
 s_sw_newp
 ;
 

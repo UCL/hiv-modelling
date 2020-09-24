@@ -1,88 +1,87 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
 data a;
-set a.wide_vmmc_10_9_20_8pm;
-*set a.wide_vmmc_7_8_20_11am;
+*set a.wide_vmmc_10_9_20_8pm;
+set a.wide_vmmc_23_9_20_5pm;
+
+***option 1= continuation of VMMC;
+***option 2= no further VMMC;
+
 
 *difference in vmmc rates;
 
-d_p_vmmc_inc1014m_20_25_2 = (p_vmmc_inc1014m_20_25_2 - p_vmmc_inc1014m_20_25_1)*100;
-d_p_vmmc_1549m_20_25_2 = (p_vmmc_1549m_20_25_2 - p_vmmc_1549m_20_25_1)*100;
-d_p_vmmc_1549m_20_25_2 = (p_vmmc_1549m_20_25_2 - p_vmmc_1549m_20_25_1)*100;
-d_p_vmmc_1014m_20_25_2 = (p_vmmc_1014m_20_25_2 - p_vmmc_1014m_20_25_1)*100;
-d_p_vmmc_1519m_20_25_2 = (p_vmmc_1519m_20_25_2 - p_vmmc_1519m_20_25_1)*100;
-d_p_vmmc_2024m_20_25_2 = (p_vmmc_2024m_20_25_2 - p_vmmc_2024m_20_25_1)*100;
-d_p_vmmc_2529m_20_25_2 = (p_vmmc_2529m_20_25_2 - p_vmmc_2529m_20_25_1)*100;
-d_p_vmmc_3039m_20_25_2 = (p_vmmc_3039m_20_25_2 - p_vmmc_3039m_20_25_1)*100;
-d_p_vmmc_4049m_20_25_2 = (p_vmmc_4049m_20_25_2 - p_vmmc_4049m_20_25_1)*100;
-RUN;
-d_p_vmmc_inc1014m_20_40_2 = (p_vmmc_inc1014m_20_40_2 - p_vmmc_inc1014m_20_40_1)*100;
-d_p_vmmc_1549m_20_40_2 = (p_vmmc_1549m_20_40_2 - p_vmmc_1549m_20_40_1)*100;
-d_p_vmmc_1549m_20_40_2 = (p_vmmc_1549m_20_40_2 - p_vmmc_1549m_20_40_1)*100;
-d_p_vmmc_1014m_20_40_2 = (p_vmmc_1014m_20_40_2 - p_vmmc_1014m_20_40_1)*100;
-d_p_vmmc_1519m_20_40_2 = (p_vmmc_1519m_20_40_2 - p_vmmc_1519m_20_40_1)*100;
-d_p_vmmc_2024m_20_40_2 = (p_vmmc_2024m_20_40_2 - p_vmmc_2024m_20_40_1)*100;
-d_p_vmmc_2529m_20_40_2 = (p_vmmc_2529m_20_40_2 - p_vmmc_2529m_20_40_1)*100;
-d_p_vmmc_3039m_20_40_2 = (p_vmmc_3039m_20_40_2 - p_vmmc_3039m_20_40_1)*100;
-d_p_vmmc_4049m_20_40_2 = (p_vmmc_4049m_20_40_2 - p_vmmc_4049m_20_40_1)*100;
+d_p_vmmc_inc1014m_20_25_1 = (p_vmmc_inc1014m_20_25_1 - p_vmmc_inc1014m_20_25_2)*100;
+d_p_vmmc_1549m_20_25_1 = (p_vmmc_1549m_20_25_1 - p_vmmc_1549m_20_25_2)*100;
+d_p_vmmc_1549m_20_25_1 = (p_vmmc_1549m_20_25_1 - p_vmmc_1549m_20_25_2)*100;
+d_p_vmmc_1014m_20_25_1 = (p_vmmc_1014m_20_25_1 - p_vmmc_1014m_20_25_2)*100;
+d_p_vmmc_1519m_20_25_1 = (p_vmmc_1519m_20_25_1 - p_vmmc_1519m_20_25_2)*100;
+d_p_vmmc_2024m_20_25_1 = (p_vmmc_2024m_20_25_1 - p_vmmc_2024m_20_25_2)*100;
+d_p_vmmc_2529m_20_25_1 = (p_vmmc_2529m_20_25_1 - p_vmmc_2529m_20_25_2)*100;
+d_p_vmmc_3039m_20_25_1 = (p_vmmc_3039m_20_25_1 - p_vmmc_3039m_20_25_2)*100;
+d_p_vmmc_4049m_20_25_1 = (p_vmmc_4049m_20_25_1 - p_vmmc_4049m_20_25_2)*100;
 
-d_p_vmmc_inc1014m_20_70_2 = (p_vmmc_inc1014m_20_70_2 - p_vmmc_inc1014m_20_70_1)*100;
-d_p_vmmc_1549m_20_70_2 = (p_vmmc_1549m_20_70_2 - p_vmmc_1549m_20_70_1)*100;
-d_p_vmmc_1549m_20_70_2 = (p_vmmc_1549m_20_70_2 - p_vmmc_1549m_20_70_1)*100;
-d_p_vmmc_1014m_20_70_2 = (p_vmmc_1014m_20_70_2 - p_vmmc_1014m_20_70_1)*100;
-d_p_vmmc_1519m_20_70_2 = (p_vmmc_1519m_20_70_2 - p_vmmc_1519m_20_70_1)*100;
-d_p_vmmc_2024m_20_70_2 = (p_vmmc_2024m_20_70_2 - p_vmmc_2024m_20_70_1)*100;
-d_p_vmmc_2529m_20_70_2 = (p_vmmc_2529m_20_70_2 - p_vmmc_2529m_20_70_1)*100;
-d_p_vmmc_3039m_20_70_2 = (p_vmmc_3039m_20_70_2 - p_vmmc_3039m_20_70_1)*100;
-d_p_vmmc_4049m_20_70_2 = (p_vmmc_4049m_20_70_2 - p_vmmc_4049m_20_70_1)*100;
+d_p_vmmc_inc1014m_20_40_1 = (p_vmmc_inc1014m_20_40_1 - p_vmmc_inc1014m_20_40_2)*100;
+d_p_vmmc_1549m_20_40_1 = (p_vmmc_1549m_20_40_1 - p_vmmc_1549m_20_40_2)*100;
+d_p_vmmc_1549m_20_40_1 = (p_vmmc_1549m_20_40_1 - p_vmmc_1549m_20_40_2)*100;
+d_p_vmmc_1014m_20_40_1 = (p_vmmc_1014m_20_40_1 - p_vmmc_1014m_20_40_2)*100;
+d_p_vmmc_1519m_20_40_1 = (p_vmmc_1519m_20_40_1 - p_vmmc_1519m_20_40_2)*100;
+d_p_vmmc_2024m_20_40_1 = (p_vmmc_2024m_20_40_1 - p_vmmc_2024m_20_40_2)*100;
+d_p_vmmc_2529m_20_40_1 = (p_vmmc_2529m_20_40_1 - p_vmmc_2529m_20_40_2)*100;
+d_p_vmmc_3039m_20_40_1 = (p_vmmc_3039m_20_40_1 - p_vmmc_3039m_20_40_2)*100;
+d_p_vmmc_4049m_20_40_1 = (p_vmmc_4049m_20_40_1 - p_vmmc_4049m_20_40_2)*100;
+
+d_p_vmmc_inc1014m_20_70_1 = (p_vmmc_inc1014m_20_70_1 - p_vmmc_inc1014m_20_70_2)*100;
+d_p_vmmc_1549m_20_70_1 = (p_vmmc_1549m_20_70_1 - p_vmmc_1549m_20_70_2)*100;
+d_p_vmmc_1549m_20_70_1 = (p_vmmc_1549m_20_70_1 - p_vmmc_1549m_20_70_2)*100;
+d_p_vmmc_1014m_20_70_1 = (p_vmmc_1014m_20_70_1 - p_vmmc_1014m_20_70_2)*100;
+d_p_vmmc_1519m_20_70_1 = (p_vmmc_1519m_20_70_1 - p_vmmc_1519m_20_70_2)*100;
+d_p_vmmc_2024m_20_70_1 = (p_vmmc_2024m_20_70_1 - p_vmmc_2024m_20_70_2)*100;
+d_p_vmmc_2529m_20_70_1 = (p_vmmc_2529m_20_70_1 - p_vmmc_2529m_20_70_2)*100;
+d_p_vmmc_3039m_20_70_1 = (p_vmmc_3039m_20_70_1 - p_vmmc_3039m_20_70_2)*100;
+d_p_vmmc_4049m_20_70_1 = (p_vmmc_4049m_20_70_1 - p_vmmc_4049m_20_70_2)*100;
 
 *difference in HIV incidence rates - x 10 as incidence is calculated per 100py but we want 1000py for report;
-d_incidence1549m_20_25_2 = (incidence1549m_20_25_2 - incidence1549m_20_25_1)*10;
-d_incidence1549m_20_40_2 = (incidence1549m_20_40_2 - incidence1549m_20_40_1)*10;
-d_incidence1549m_20_70_2 = (incidence1549m_20_70_2 - incidence1549m_20_70_1)*10;
+d_incidence1549m_20_25_1 = (incidence1549m_20_25_1 - incidence1549m_20_25_2)*10;
+d_incidence1549m_20_40_1 = (incidence1549m_20_40_1 - incidence1549m_20_40_2)*10;
+d_incidence1549m_20_70_1 = (incidence1549m_20_70_1 - incidence1549m_20_70_2)*10;
 
-d_incidence1549w_20_25_2 = (incidence1549w_20_25_2 - incidence1549w_20_25_1)*10;
-d_incidence1549w_20_40_2 = (incidence1549w_20_40_2 - incidence1549w_20_40_1)*10;
-d_incidence1549w_20_70_2 = (incidence1549w_20_70_2 - incidence1549w_20_70_1)*10;
+d_incidence1549w_20_25_1 = (incidence1549w_20_25_1 - incidence1549w_20_25_2)*10;
+d_incidence1549w_20_40_1 = (incidence1549w_20_40_1 - incidence1549w_20_40_2)*10;
+d_incidence1549w_20_70_1 = (incidence1549w_20_70_1 - incidence1549w_20_70_2)*10;
 
 *difference in HIV prevalence rates ;
-d_prevalence1549m_20_25_2 =  (prevalence1549m_20_25_2 - prevalence1549m_20_25_1)*100;
-d_prevalence1549m_20_40_2 =  (prevalence1549m_20_40_2 - prevalence1549m_20_40_1)*100;
-d_prevalence1549m_20_70_2 =  (prevalence1549m_20_70_2 - prevalence1549m_20_70_1)*100;
+d_prevalence1549m_20_25_1 =  (prevalence1549m_20_25_1 - prevalence1549m_20_25_2)*100;
+d_prevalence1549m_20_40_1 =  (prevalence1549m_20_40_1 - prevalence1549m_20_40_2)*100;
+d_prevalence1549m_20_70_1 =  (prevalence1549m_20_70_1 - prevalence1549m_20_70_2)*100;
 
-d_prevalence1549w_20_25_2 =  (prevalence1549w_20_25_2 - prevalence1549w_20_25_1)*100;
-d_prevalence1549w_20_40_2 =  (prevalence1549w_20_40_2 - prevalence1549w_20_40_1)*100;
-d_prevalence1549w_20_70_2 =  (prevalence1549w_20_70_2 - prevalence1549w_20_70_1)*100; 
+d_prevalence1549w_20_25_1 =  (prevalence1549w_20_25_1 - prevalence1549w_20_25_2)*100;
+d_prevalence1549w_20_40_1 =  (prevalence1549w_20_40_1 - prevalence1549w_20_40_2)*100;
+d_prevalence1549w_20_70_1 =  (prevalence1549w_20_70_1 - prevalence1549w_20_70_2)*100; 
 
 *difference in HIV death rate;
-ddeath_rate_hiv_m_20_25_2 = death_rate_hiv_m_20_25_2 - death_rate_hiv_m_20_25_1;
-ddeath_rate_hiv_m_20_40_2 = death_rate_hiv_m_20_40_2 - death_rate_hiv_m_20_40_1;
-ddeath_rate_hiv_m_20_70_2 = death_rate_hiv_m_20_70_2 - death_rate_hiv_m_20_70_1;
+ddeath_rate_hiv_m_20_25_1 = death_rate_hiv_m_20_25_1 - death_rate_hiv_m_20_25_2;
+ddeath_rate_hiv_m_20_40_1 = death_rate_hiv_m_20_40_1 - death_rate_hiv_m_20_40_2;
+ddeath_rate_hiv_m_20_70_1 = death_rate_hiv_m_20_70_1 - death_rate_hiv_m_20_70_2;
 
-ddeath_rate_hiv_all_m_20_25_2 = death_rate_hiv_all_m_20_25_2 - death_rate_hiv_all_m_20_25_1;
-ddeath_rate_hiv_all_m_20_40_2 = death_rate_hiv_all_m_20_40_2 - death_rate_hiv_all_m_20_40_1;
-ddeath_rate_hiv_all_m_20_70_2 = death_rate_hiv_all_m_20_70_2 - death_rate_hiv_all_m_20_70_1;
+ddeath_rate_hiv_all_m_20_25_1 = death_rate_hiv_all_m_20_25_1 - death_rate_hiv_all_m_20_25_2;
+ddeath_rate_hiv_all_m_20_40_1 = death_rate_hiv_all_m_20_40_1 - death_rate_hiv_all_m_20_40_2;
+ddeath_rate_hiv_all_m_20_70_1 = death_rate_hiv_all_m_20_70_1 - death_rate_hiv_all_m_20_70_2;
  															   
+*% infections averted;
+inf_avert_20_25_1 = ((n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1)/n_new_inf1549_20_25_2)*100;
+inf_avert_20_40_1 = ((n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1)/n_new_inf1549_20_40_2)*100;
+inf_avert_20_70_1 = ((n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1)/n_new_inf1549_20_70_2)*100;
 
-
-*infections averted;
-inf_avert_20_25_2 = ((n_new_inf1549_20_25_1 - n_new_inf1549_20_25_2)/n_new_inf1549_20_25_1)*100;
-inf_avert_20_40_2 = ((n_new_inf1549_20_40_1 - n_new_inf1549_20_40_2)/n_new_inf1549_20_40_1)*100;
-inf_avert_20_70_2 = ((n_new_inf1549_20_70_1 - n_new_inf1549_20_70_2)/n_new_inf1549_20_70_1)*100;
 
 *dalys averted;
-*d_ddaly_all_20_25_2 = ddaly_all_20_25_1 - ddaly_all_20_25_2;
-*d_ddaly_all_20_40_2 = ddaly_all_20_40_1 - ddaly_all_20_40_2;
-*d_ddaly_all_20_70_2 = ddaly_all_20_70_1 - ddaly_all_20_70_2;
-
-d_ddaly_adults_20_25_2 = ddaly_adults_20_25_1 - ddaly_adults_20_25_2;
-d_ddaly_adults_20_40_2 = ddaly_adults_20_40_1 - ddaly_adults_20_40_2;
-d_ddaly_adults_20_70_2 = ddaly_adults_20_70_1 - ddaly_adults_20_70_2;
+d_ddaly_adults_20_25_1 = ddaly_adults_20_25_2 - ddaly_adults_20_25_1;
+d_ddaly_adults_20_40_1 = ddaly_adults_20_40_2 - ddaly_adults_20_40_1;
+d_ddaly_adults_20_70_1 = ddaly_adults_20_70_2 - ddaly_adults_20_70_1;
 
 *difference in costs;
-d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1;
-d_dcost_20_40_2 = dcost_20_40_2 - dcost_20_40_1;
-d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1;
+d_dcost_20_25_1 = dcost_20_25_1 - dcost_20_25_2;
+d_dcost_20_40_1 = dcost_20_40_1 - dcost_20_40_2;
+d_dcost_20_70_1 = dcost_20_70_1 - dcost_20_70_2;
 
 *net dalys averted;
 ndb_500_20_25_1_adults =  ddaly_adults_20_25_1 + (dcost_20_25_1)/0.0005;
@@ -93,64 +92,77 @@ ndb_500_20_70_1_adults =  ddaly_adults_20_70_1 + (dcost_20_70_1)/0.0005;
 ndb_500_20_70_2_adults =  ddaly_adults_20_70_2 + (dcost_20_70_2)/0.0005; 
 
 *net dalys averted;
-d_net_dalys_20_25_2_adults = ndb_500_20_25_1_adults - ndb_500_20_25_2_adults;
-d_net_dalys_20_40_2_adults = ndb_500_20_40_1_adults - ndb_500_20_40_2_adults;
-d_net_dalys_20_70_2_adults = ndb_500_20_70_1_adults - ndb_500_20_70_2_adults;
+d_net_dalys_20_25_1_adults = ndb_500_20_25_2_adults - ndb_500_20_25_1_adults;
+d_net_dalys_20_40_1_adults = ndb_500_20_40_2_adults - ndb_500_20_40_1_adults;
+d_net_dalys_20_70_1_adults = ndb_500_20_70_2_adults - ndb_500_20_70_1_adults;
 
-ce_20_25=0;if d_net_dalys_20_25_2_adults gt 0 then ce_20_25=1;
-ce_20_40=0;if d_net_dalys_20_40_2_adults gt 0 then ce_20_40=1;
-ce_20_70=0;if d_net_dalys_20_70_2_adults gt 0 then ce_20_70=1;
+ce_20_25=0;if d_net_dalys_20_25_1_adults gt 0 then ce_20_25=1;
+ce_20_40=0;if d_net_dalys_20_40_1_adults gt 0 then ce_20_40=1;
+ce_20_70=0;if d_net_dalys_20_70_1_adults gt 0 then ce_20_70=1;
 
 
 *nnt;
 *difference in number of VMMCs;
-d_n_vmmc_20_25_2 = n_new_vmmc1549_py_20_25_2 - n_new_vmmc1549_py_20_25_1;
-d_n_vmmc_20_40_2 = n_new_vmmc1549_py_20_40_2 - n_new_vmmc1549_py_20_40_1;
-d_n_vmmc_20_70_2 = n_new_vmmc1549_py_20_70_2 - n_new_vmmc1549_py_20_70_1;
+d_n_vmmc_20_25_1 = n_new_vmmc1549_py_20_25_1 - n_new_vmmc1549_py_20_25_2;
+d_n_vmmc_20_40_1 = n_new_vmmc1549_py_20_40_1 - n_new_vmmc1549_py_20_40_2;
+d_n_vmmc_20_70_1 = n_new_vmmc1549_py_20_70_1 - n_new_vmmc1549_py_20_70_2;
 
-*difference in number of new infections - all;
-d_n_new_inf_20_25_2 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
-d_n_new_inf_20_40_2 = n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1;
-d_n_new_inf_20_70_2 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
+*infections averted with continuation of VMMC;
+d_n_new_inf_20_25_1 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
+d_n_new_inf_20_40_1 = n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1;
+d_n_new_inf_20_70_1 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
 
-*difference in number of new infections - male only;
-d_n_new_inf_m_20_25_2 = n_new_inf1549m_20_25_2 - n_new_inf1549m_20_25_1;
-d_n_new_inf_m_20_40_2 = n_new_inf1549m_20_40_2 - n_new_inf1549m_20_40_1;
-d_n_new_inf_m_20_70_2 = n_new_inf1549m_20_70_2 - n_new_inf1549m_20_70_1;
+***For scenarios in which infections are not averted, assume 1 infection is averted and difference in number of VMMC is 
+   maximum difference found above;
+/*
+proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
+*max=141000, 156000, 189000;
+*median=57300, 90000, 108000;
+*/
 
-if (-d_n_new_inf_20_25_2) gt 0 then nnt_20_25_2 = d_n_vmmc_20_25_2 / (-d_n_new_inf_20_25_2);
-if (-d_n_new_inf_20_40_2) gt 0 then nnt_20_40_2 = d_n_vmmc_20_40_2 / (-d_n_new_inf_20_40_2);
-if (-d_n_new_inf_20_70_2) gt 0 then nnt_20_70_2 = d_n_vmmc_20_70_2 / (-d_n_new_inf_20_70_2);
+nnt_20_25_1=141000; nnt_20_40_1=156000; nnt_20_70_1=189000;
+/*nnt_20_25_1=57300; nnt_20_40_1=90000; nnt_20_70_1=108000;*/
+
+if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
+if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
+if d_n_new_inf_20_70_1 gt 0 then nnt_20_70_1 = d_n_vmmc_20_70_1 / d_n_new_inf_20_70_1;
 
 
 
 *cost per infection averted - all;
-if (-d_n_new_inf_20_25_2) gt 0 then cost_inf_avert_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_20_25_2))*1000000;
-if (-d_n_new_inf_20_40_2) gt 0 then cost_inf_avert_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_20_40_2))*1000000;
-if (-d_n_new_inf_20_70_2) gt 0 then cost_inf_avert_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_20_70_2))*1000000;
+***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
+   median difference;
+/*
+proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
+*median=5.9, 5.0, -3.8; - change to max;
+*/
 
-***in scenarios in which infections weren't averted, define cost per infection averted as the upper range;
-if (-d_n_new_inf_20_25_2) ge 0 then cost_inf_avert_20_70_2=264252;
+cost_inf_avert_20_25_1=5900000; cost_inf_avert_20_40_1=5000000; cost_inf_avert_20_70_1 = -3800000;
+if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_new_inf_20_25_1)*1000000;
+if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_new_inf_20_40_1)*1000000;
+if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_new_inf_20_70_1)*1000000;
 
 
-*cost per infection averted - males only;
-if (-d_n_new_inf_m_20_25_2) gt 0 then cost_inf_avert_m_20_25_2 = (d_dcost_20_25_2 / (-d_n_new_inf_m_20_25_2))*1000000;
-if (-d_n_new_inf_m_20_40_2) gt 0 then cost_inf_avert_m_20_40_2 = (d_dcost_20_40_2 / (-d_n_new_inf_m_20_40_2))*1000000;
-if (-d_n_new_inf_m_20_70_2) gt 0 then cost_inf_avert_m_20_70_2 = (d_dcost_20_70_2 / (-d_n_new_inf_m_20_70_2))*1000000;
+*cost per daly averted =icer; 
+/*proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;*/
 
+*max =13.5, 10.2, 7.7;
+cost_daly_avert_20_25_2_adult=13.5*1000000;
+cost_daly_avert_20_40_2_adult=10.2*1000000;
+cost_daly_avert_20_70_2_adult=7.7*1000000;
 
-*cost per daly averted =icer;
-*if d_ddaly_all_20_25_2 gt 0 then cost_daly_avert_20_25_2 = (d_dcost_20_25_2 / d_ddaly_all_20_25_2)*1000000;
-*if d_ddaly_all_20_40_2 gt 0 then cost_daly_avert_20_40_2 = (d_dcost_20_40_2 / d_ddaly_all_20_40_2)*1000000;
-*if d_ddaly_all_20_70_2 gt 0 then cost_daly_avert_20_70_2 = (d_dcost_20_70_2 / d_ddaly_all_20_70_2)*1000000;
-
-if d_ddaly_adults_20_25_2 gt 0 then cost_daly_avert_20_25_2_adults = (d_dcost_20_25_2 / d_ddaly_adults_20_25_2)*1000000;
-if d_ddaly_adults_20_40_2 gt 0 then cost_daly_avert_20_40_2_adults = (d_dcost_20_40_2 / d_ddaly_adults_20_40_2)*1000000;
-if d_ddaly_adults_20_70_2 gt 0 then cost_daly_avert_20_70_2_adults = (d_dcost_20_70_2 / d_ddaly_adults_20_70_2)*1000000;
+cost_daly_avert_20_70_1_adults=7700000;
+check everything is the right way;
+/*if d_ddaly_adults_20_25_1 gt 0 then*/ cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
+/*if d_ddaly_adults_20_40_1 gt 0 then*/ cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
+if d_ddaly_adults_20_70_1 gt 0 then cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
 
 
 run;
 
+proc print;var d_dcost_20_70_1 d_ddaly_adults_20_70_1 cost_daly_avert_20_70_1_adults;run;
+
+proc freq;table d_dcost_20_70_1;run;
 proc contents;run;
 
 
@@ -175,6 +187,8 @@ p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1  p_new_vmmc_3034m_u_19_20
 p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1; 
 run;
 
+
+**remember the options have been switched, 1=continuation, 2=no vmmc;
 ***vmmc rates by option;
 proc means n mean p50 p5 p95 lclm uclm;var 
 p_vmmc_1549m_20_25_1  p_vmmc_1549m_20_40_1  p_vmmc_1549m_20_70_1
@@ -211,49 +225,49 @@ run;
 proc means n mean p50 p5 p95 lclm uclm;var 
 incidence1549m_20_25_1  incidence1549m_20_40_1  incidence1549m_20_70_1
 incidence1549m_20_25_2  incidence1549m_20_40_2  incidence1549m_20_70_2
-d_incidence1549m_20_25_2  d_incidence1549m_20_40_2  d_incidence1549m_20_70_2
+d_incidence1549m_20_25_1  d_incidence1549m_20_40_1  d_incidence1549m_20_70_1
 
 incidence1549w_20_25_1  incidence1549w_20_40_1  incidence1549w_20_70_1
 incidence1549w_20_25_2  incidence1549w_20_40_2  incidence1549w_20_70_2
-d_incidence1549w_20_25_2  d_incidence1549w_20_40_2  d_incidence1549w_20_70_2
+d_incidence1549w_20_25_1  d_incidence1549w_20_40_1  d_incidence1549w_20_70_1
 ;run;
 
 ***prevalence;
 proc means n mean p50 p5 p95 lclm uclm;var 
 prevalence1549m_20_25_1 prevalence1549m_20_40_1 prevalence1549m_20_70_1
 prevalence1549m_20_25_2 prevalence1549m_20_40_2  prevalence1549m_20_70_2
-d_prevalence1549m_20_25_2 d_prevalence1549m_20_40_2  d_prevalence1549m_20_70_2
+d_prevalence1549m_20_25_1 d_prevalence1549m_20_40_1  d_prevalence1549m_20_70_1
 
 prevalence1549w_20_25_1 prevalence1549w_20_40_1 prevalence1549w_20_70_1
 prevalence1549w_20_25_2 prevalence1549w_20_40_2  prevalence1549w_20_70_2
-d_prevalence1549w_20_25_2 d_prevalence1549w_20_40_2  d_prevalence1549w_20_70_2
+d_prevalence1549w_20_25_1 d_prevalence1549w_20_40_1  d_prevalence1549w_20_70_1
 ;run;
 
 ***HIV death rate;
 proc means n mean p50 p5 p95 lclm uclm;var 
 death_rate_hiv_m_20_25_1 death_rate_hiv_m_20_40_1 death_rate_hiv_m_20_70_1
 death_rate_hiv_m_20_25_2 death_rate_hiv_m_20_40_2 death_rate_hiv_m_20_70_2
-ddeath_rate_hiv_m_20_25_2 ddeath_rate_hiv_m_20_40_2  ddeath_rate_hiv_m_20_70_2
+ddeath_rate_hiv_m_20_25_1 ddeath_rate_hiv_m_20_40_1  ddeath_rate_hiv_m_20_70_1
 
 death_rate_hiv_all_m_20_25_1 death_rate_hiv_all_m_20_40_1 death_rate_hiv_all_m_20_70_1
 death_rate_hiv_all_m_20_25_2 death_rate_hiv_all_m_20_40_2 death_rate_hiv_all_m_20_70_2
-ddeath_rate_hiv_all_m_20_25_2 ddeath_rate_hiv_all_m_20_40_2  ddeath_rate_hiv_all_m_20_70_2
+ddeath_rate_hiv_all_m_20_25_1 ddeath_rate_hiv_all_m_20_40_1  ddeath_rate_hiv_all_m_20_70_1
 ;run;
 
 ***% infections averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-inf_avert_20_25_2  inf_avert_20_40_2  inf_avert_20_70_2
+inf_avert_20_25_1  inf_avert_20_40_1  inf_avert_20_70_1
 ;run;
 
 ***DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_ddaly_adults_20_25_2  d_ddaly_adults_20_40_2  d_ddaly_adults_20_70_2
+d_ddaly_adults_20_25_1  d_ddaly_adults_20_40_1  d_ddaly_adults_20_70_1
 ;run;
 
 ***Total cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dcost_20_25_1  dcost_20_40_1  dcost_20_70_1
-dcost_20_25_2  dcost_20_40_2  dcost_20_70_2
+dcost_20_25_1  dcost_20_40_1  dcost_20_70_1 /*continuation*/
+dcost_20_25_2  dcost_20_40_2  dcost_20_70_2 /*no further vmmc*/
 ;run;
 
 ***VMMC cost;
@@ -294,28 +308,35 @@ run;
 
 ***difference in total cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_dcost_20_25_2  d_dcost_20_40_2  d_dcost_20_70_2
+d_dcost_20_25_1  d_dcost_20_40_1  d_dcost_20_70_1
 ;run;
 
 ***net DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_net_dalys_20_25_2_adults  d_net_dalys_20_40_2_adults  d_net_dalys_20_70_2_adults
+d_net_dalys_20_25_1_adults  d_net_dalys_20_40_1_adults  d_net_dalys_20_70_1_adults
 ;run;
-
 proc freq;table ce_20_25 ce_20_40 ce_20_70;run;
-
-proc print;var d_net_dalys_20_25_2_adults ce_20_25 cost_daly_avert_20_25_2_adults d_dcost_20_25_2 d_ddaly_adults_20_25_2;run;
 
 
 ***NNT;
 proc means n mean p50 p5 p95 lclm uclm;var 
-nnt_20_25_2  nnt_20_40_2  nnt_20_70_2
+nnt_20_25_1  nnt_20_40_1  nnt_20_70_1
 ;run;
+
+proc means n mean p50 p5 p95 lclm uclm;var nnt_20_25_1;where d_n_new_inf_20_25_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var nnt_20_40_1;where d_n_new_inf_20_40_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var nnt_20_70_1;where d_n_new_inf_20_70_1 >0;run;
 
 ***cost per infection averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-cost_inf_avert_20_25_2  cost_inf_avert_20_40_2  cost_inf_avert_20_70_2
+cost_inf_avert_20_25_1  cost_inf_avert_20_40_1  cost_inf_avert_20_70_1
 ;run;
+
+proc means n mean p50 p5 p95 lclm uclm;var cost_inf_avert_20_25_1;where d_n_new_inf_20_25_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var cost_inf_avert_20_40_1;where d_n_new_inf_20_40_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var cost_inf_avert_20_70_1;where d_n_new_inf_20_70_1 >0;run;
+
+proc univariate;var cost_daly_avert_20_70_1_adults;run;
 
 ***icer;
 proc means n mean p50 p5 p95 lclm uclm;var 
