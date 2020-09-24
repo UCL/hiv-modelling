@@ -581,6 +581,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+
 * note need to keep one s_n ! ;
 
 
@@ -1423,6 +1424,16 @@ data unaids_28_8_20_12pm; set y;
 
 proc contents; run;
 
+ods html;
+proc print; var 
+prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m p_diag_m p_diag_w	
+p_onart_diag p_onart_diag_m 	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2 ;
+where cald = 2020.25;
+run;
+ods html close;
+
+* means n mean lclm uclm p5 p95 ; 
+
 
 data x; set unaids_28_8_20_12pm; 
 
@@ -1559,7 +1570,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 */
 
 %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1524m); %var(v=prevalence1524w); %var(v=incidence1549w); %var(v=incidence1549m);  
-%var(v=p_mcirc_1549m); %var(v=p_diag_m) %var(v=p_diag_w);  %var(v=p_onart_diag);  %var(v=p_onart_diag_m); 	%var(v=p_onart_vl1000_w);	 
+%var(v=p_mcirc_1549m); %var(v=p_diag_m) %var(v=p_diag_w);  %var(v=p_onart_diag);  %var(v=p_onart_diag_m); 	%var(v=p_onart_vl1000_w);	
 %var(v=p_onart_vl1000_m);  %var(v=p_onart_cd4_l500);  %var(v=p_mcirc_1549m);  %var(v=p_startedline2);
 %var(v=n_ageg1519m  );    %var(v=n_ageg2024m  );    %var(v=n_ageg2529m  );    %var(v=n_ageg3034m  );    %var(v=n_ageg3539m  );    %var(v=n_ageg4044m  );    %var(v=n_ageg4549m  );    %var(v=n_ageg5054m  );    %var(v=n_ageg5559m  );    %var(v=n_ageg6064m  );    %var(v=n_ageg6569m );
 %var(v=n_ageg7074m  );    %var(v=n_ageg7579m  );    %var(v=n_ageg8084m  );    %var(v=n_ageg85plw  );    %var(v=n_ageg1519w );    %var(v=n_ageg2024w  );    %var(v=n_ageg2529w  );    %var(v=n_ageg3034w  );    %var(v=n_ageg3539w  );    %var(v=n_ageg4044w  );    %var(v=n_ageg4549w); 
@@ -1581,14 +1592,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_hiv8084w  );    %var(v=n_hiv85plw );
 
 
-
 data   a.wide_misc; merge 
 prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m  p_diag_m  p_diag_w	
 p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2
 ; 
-
-
-proc print; run;
 
 
 data   a.wide_age; merge 
