@@ -582,6 +582,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
+if run = 162349469 ;
+
 * note need to keep one s_n ! ;
 
 
@@ -1424,13 +1426,6 @@ data unaids_28_8_20_12pm; set y;
 
 proc contents; run;
 
-ods html;
-proc print; var 
-prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m p_diag_m p_diag_w	
-p_onart_diag p_onart_diag_m 	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2 ;
-where cald = 2020.25;
-run;
-ods html close;
 
 * means n mean lclm uclm p5 p95 ; 
 
@@ -1596,6 +1591,13 @@ data   a.wide_misc; merge
 prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m  p_diag_m  p_diag_w	
 p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2
 ; 
+
+ods html;
+proc print; var run prevalence1549m_20_1 prevalence1549w_20_1 prevalence1524m_20_1 prevalence1524w_20_1 incidence1549w_20_1 incidence1549m_20_1  
+p_mcirc_1549m_20_1  p_diag_m_20_1  p_diag_w_20_1  p_onart_diag_20_1 p_onart_diag_m_20_1  	p_onart_vl1000_w_20_1	p_onart_vl1000_m_20_1 
+p_onart_cd4_l500_20_1  p_mcirc_1549m_20_1  p_startedline2_20_1; 
+run;
+ods html close;
 
 
 data   a.wide_age; merge 
