@@ -727,8 +727,7 @@ if 0.66 <= r  then circ_red_20_30=0.50;
 if 0.66 <= r  then circ_red_30_50=0.35; 
 
 * rel_incr_circ_post_2013;r=uniform(0); if r < 0.10 then rel_incr_circ_post_2013 = 0.8; if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
-if 0.35 <= r < 0.60 then rel_incr_circ_post_2013 = 3;  if 0.60 <= r < 0.85 then rel_incr_circ_post_2013 = 10 ; 
-if 0.85 <= r then rel_incr_circ_post_2013 = 20;
+if 0.35 <= r < 0.60 then rel_incr_circ_post_2013 = 3;  if 0.60 <= r  then rel_incr_circ_post_2013 = 7 ; 
 
 * not * dependent_on_time_step_length ;
 
@@ -2285,8 +2284,10 @@ if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_re
 if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-
 if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+
+prob_circ = min(prob_circ,1);
+
 
 ***Circumcision at birth;
 
@@ -16112,7 +16113,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_23_9_20_10am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_24_9_20_2pm_&dataset_id";  
 
 put   
 
