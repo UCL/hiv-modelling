@@ -4591,7 +4591,7 @@ proc means data=wide; var  death_rate_20_40_2   death_rate_20_40_1 ;  run;
 proc univariate data=wide; var  d_death_rate_20_40_4  d_death_rate_20_40_3  d_death_rate_20_40_2  ;  run; 
 
 ods html;
-proc means mean stderr data=wide; var  d_ndb_500_20_40_2 ndb_500_20_40_1 ndb_500_20_40_2 ; where dataset=6; run; 
+proc means mean stderr data=wide; var  d_ndb_500_20_40_2 ndb_500_20_40_1 ndb_500_20_40_2 ; where dataset=5; run; 
 run; 
 ods html close;
 
@@ -4621,7 +4621,7 @@ proc means data=wide; var  ddaly_all_20_40_1 ddaly_all_20_40_2  ; where dataset=
 ods html close;
 
 ods html;
-proc means mean lclm uclm data=wide; var  d_ddaly_20_40_2  ; where dataset=6; run;   
+proc means mean n lclm uclm data=wide; var  d_ddaly_20_40_2  ; where dataset=5; run;   
 ods html close;
 
 ods html;
@@ -4660,7 +4660,8 @@ proc freq data=wide; tables ce_500;
 * where greater_tox_zdv_ = 1;
 * where rate_int_choice_ ge 0.025;
 * where nnrti_res_no_effect = 1;
-  where red_adh_tox_pop_  > 0.10;
+* where red_adh_tox_pop_  > 0.10;
+  where dataset = 5;
 run;
 
 
