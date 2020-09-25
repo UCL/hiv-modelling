@@ -582,7 +582,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
-if run = 162349469 ;
+* run sent to jeff - if run = 162349469 ;
 
 * note need to keep one s_n ! ;
 
@@ -1672,25 +1672,25 @@ proc print; run;
 * a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a.wide_new_mcirc a.wide_new_inf a.wide_n_hiv ;
 
 proc export 
-data=a.wide_misc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc" replace; run;
+data=a.wide_misc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all" replace; run;
 
 proc export 
-data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults" replace; run;
+data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults_all" replace; run;
 
 proc export 
-data=a.wide_onart dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_onart" replace; run;
+data=a.wide_onart dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_onart_all" replace; run;
 
 proc export 
-data=a.wide_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_mcirc" replace; run;
+data=a.wide_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_mcirc_all" replace; run;
 
 proc export 
-data=a.wide_new_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_mcirc" replace; run;
+data=a.wide_new_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_mcirc_all" replace; run;
 
 proc export 
-data=a.wide_new_inf dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_inf" replace; run;
+data=a.wide_new_inf dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_inf_all" replace; run;
 
 proc export 
-data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_hiv" replace; run;
+data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_hiv_all" replace; run;
 
 
 
