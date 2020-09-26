@@ -585,9 +585,9 @@ p_neph_stops_after_ten = 0.1;
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
-* prob_loss_at_diag;  r=uniform(0); if r < 0.25 then prob_loss_at_diag = 0.02; if 0.25 <= r < 0.40 then prob_loss_at_diag = 0.05; 
-						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.15; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.20; 
-						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.40; if 0.90 <= r   then prob_loss_at_diag = 0.80;   
+* prob_loss_at_diag;  r=uniform(0); if r < 0.20 then prob_loss_at_diag = 0.02; if 0.20 <= r < 0.40 then prob_loss_at_diag = 0.05; 
+						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.20; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.35; 
+						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.50; if 0.90 <= r   then prob_loss_at_diag = 0.80;   
 
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
@@ -606,8 +606,8 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
-* rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.70 then rate_int_choice = 0.002; 
-			if 0.70 <= r < 0.90 then rate_int_choice = 0.004; if 0.90 <= r then rate_int_choice = 0.008 ;
+* rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.50 then rate_int_choice = 0.002; 
+			if 0.50 <= r < 0.75 then rate_int_choice = 0.004; if 0.75 <= r then rate_int_choice = 0.008 ;
  
 * clinic_not_aw_int_frac;  r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;
 * res_trans_factor_nn (this is for nnrti only); r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7;
@@ -16113,7 +16113,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_9_20_4pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_26_9_20_6pm_&dataset_id";  
 
 put   
 
