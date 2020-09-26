@@ -484,8 +484,8 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.01;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.03;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
+* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.03;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.10;  
+								if 0.67 <= r then rate_sw_rred_rc = 0.20; * dependent on rred_rc, rate of sex workers having reduction in newp;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -503,12 +503,12 @@ p_neph_stops_after_ten = 0.1;
 * sex_age_mixing_matrix_m;e=uniform(0); if e < 1/6  then sex_age_mixing_matrix_m=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_m=2;
 										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_m=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_m=4;
 										if 4/6 <= e < 5/6  then sex_age_mixing_matrix_m=5; if 5/6 <= e        then sex_age_mixing_matrix_m=6;
-* sex_age_mixing_matrix_w;e=uniform(0); if e < 0.02 then sex_age_mixing_matrix_w=1; if 0.02 <= e < 0.04 then sex_age_mixing_matrix_w=2;
-										if 0.04 <= e < 0.06  then sex_age_mixing_matrix_w=3; if 0.06 <= e < 0.08  then sex_age_mixing_matrix_w=4;
-										if 0.08 <= e < 0.1  then sex_age_mixing_matrix_w=5; if 0.1 <= e        then sex_age_mixing_matrix_w=6;
-* rred_a_p;	r=uniform(0); if r < 0.25 then rred_a_p=1; if 0.25 <= r < 0.50 then rred_a_p=2;  if 0.50 <= r < 0.75 then rred_a_p=3;  if r >= 0.75 then rred_a_p=4; 
-* p_rred_p; r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; 
-			if 0.67 <= r  then p_rred_p = 0.7;  	
+* sex_age_mixing_matrix_w;e=uniform(0); if e < 1/6  then sex_age_mixing_matrix_w=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_w=2;
+										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_w=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_w=4;
+										if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;
+* rred_a_p;	r=uniform(0); if r < 0.15 then rred_a_p=1; if 0.15 <= r < 0.30 then rred_a_p=2;  if 0.30 <= r < 0.65 then rred_a_p=3;  if r >= 0.65 then rred_a_p=4; 
+* p_rred_p; r=uniform(0); if r < 0.33 then p_rred_p = 0.5; if 0.33 <= r < 0.67 then p_rred_p = 0.7; 
+			if 0.67 <= r  then p_rred_p = 0.9;  	
 * p_hsb_p; 	r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;
 * newp_factor;  newp_factor = 1 ; * 15_1_20 4pm ;
 			 r=uniform(0); if r < 0.33 then newp_factor = 0.5 ; if r > 0.67 then newp_factor = 2   ; 
@@ -585,9 +585,9 @@ p_neph_stops_after_ten = 0.1;
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
-* prob_loss_at_diag;  r=uniform(0); if r < 0.25 then prob_loss_at_diag = 0.02; if 0.25 <= r < 0.40 then prob_loss_at_diag = 0.05; 
-						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.15; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.20; 
-						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.40; if 0.90 <= r   then prob_loss_at_diag = 0.80;   
+* prob_loss_at_diag;  r=uniform(0); if r < 0.20 then prob_loss_at_diag = 0.02; if 0.20 <= r < 0.40 then prob_loss_at_diag = 0.05; 
+						if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.20; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.35; 
+						if 0.80 <= r < 0.90  then prob_loss_at_diag = 0.50; if 0.90 <= r   then prob_loss_at_diag = 0.80;   
 
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
@@ -606,8 +606,8 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
-* rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.70 then rate_int_choice = 0.002; 
-			if 0.70 <= r < 0.90 then rate_int_choice = 0.004; if 0.90 <= r then rate_int_choice = 0.008 ;
+* rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.50 then rate_int_choice = 0.002; 
+			if 0.50 <= r < 0.75 then rate_int_choice = 0.004; if 0.75 <= r then rate_int_choice = 0.008 ;
  
 * clinic_not_aw_int_frac;  r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;
 * res_trans_factor_nn (this is for nnrti only); r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7;
@@ -642,7 +642,7 @@ p_neph_stops_after_ten = 0.1;
 * prob_lossdiag_adctb;  prob_lossdiag_adctb = rand('beta',5,95); prob_lossdiag_adctb = round(prob_lossdiag_adctb,0.01);
 * prob_lossdiag_who3e;  prob_lossdiag_who3e = rand('beta',15,85);prob_lossdiag_who3e = round(prob_lossdiag_who3e,0.01);
 * higher_newp_less_engagement; r=uniform(0);higher_newp_less_engagement = 0; if r < 0.2 then higher_newp_less_engagement = 1; * are people with more newp less likely to be engaged with care; 
-* fold_tr;					fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.33; if r > 0.67 then fold_tr = 3;
+* fold_tr;					fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;
 
 * switch_for_tox; r=uniform(0); if r < 0.80 then switch_for_tox=0; if r >= 0.80 then switch_for_tox=1;
 
@@ -16115,7 +16115,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_9_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_26_9_20_6pm_&dataset_id";  
 
 put   
 
