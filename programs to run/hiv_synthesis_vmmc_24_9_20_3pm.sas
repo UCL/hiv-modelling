@@ -2362,7 +2362,7 @@ end;
 
 if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
-prob_circ = min(prob_circ,1);
+if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 
 ***Circumcision at birth;

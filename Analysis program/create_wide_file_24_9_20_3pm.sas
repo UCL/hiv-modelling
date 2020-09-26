@@ -577,18 +577,14 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 ; 
-
 * note need to keep one s_n ! ;
 
 run;
 
-
- 
-proc print;var run cald option s_mcirc s_new_mcirc s_new_vmmc;run;
+proc print;var run cald circ_inc_rate option s_mcirc s_new_mcirc s_new_vmmc;run;
 
 
 data a; set d1  ;
-
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2014;run;
@@ -601,7 +597,7 @@ if cald=2020;
 s_alive = s_alive_m + s_alive_w ;
 sf_2020 = 10000000 / s_alive;
 keep run sf_2020;
-proc sort; by run;
+proc sort; by run;run;
 
 
 data y; 
@@ -658,7 +654,6 @@ discount_0 = disc * discount_adj_0 ;
 * run;
 
 * ================================================================================= ;
-
 
 
 
@@ -861,13 +856,13 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * p_new_vmmc_1519m_u;			p_new_vmmc_1519m_u = (s_new_vmmc1519m / (s_ageg1519m - s_hiv1519m))*4;
 * p_new_vmmc_2024m_u;			p_new_vmmc_2024m_u = (s_new_vmmc2024m / (s_ageg2024m - s_hiv2024m))*4;
 * p_new_vmmc_2529m_u;			p_new_vmmc_2529m_u = (s_new_vmmc2529m / (s_ageg2529m - s_hiv2529m))*4;
-* p_new_vmmc_3034m_u;			p_new_vmmc_3034m_u = (s_new_vmmc3034m / (s_ageg3034m - s_hiv3034m))*4;
-* p_new_vmmc_3539m_u;			p_new_vmmc_3539m_u = (s_new_vmmc3539m / (s_ageg3539m - s_hiv3539m))*4;
-* p_new_vmmc_3039m_u;			p_new_vmmc_3039m_u = (s_new_vmmc3039m / ((s_ageg3034m + s_ageg3539m) - (s_hiv3034m + s_hiv3539m)))*4;
-* p_new_vmmc_4044m_u;			p_new_vmmc_4044m_u = (s_new_vmmc4044m / (s_ageg4044m - s_hiv4044m))*4 ;
-* p_new_vmmc_4549m_u;			if (s_ageg4549m - s_hiv4549m) gt 0 then 
-								p_new_vmmc_4549m_u = (s_new_vmmc4549m / (s_ageg4549m - s_hiv4549m))*4 ;
-* p_new_vmmc_4049m_u;			if ((s_ageg4044m + s_ageg4549m) - (s_hiv4044m + s_hiv4549m)) gt 0 then 
+* p_new_vmmc_3034m_u;			if s_ageg3034m gt 0 then p_new_vmmc_3034m_u = (s_new_vmmc3034m / (s_ageg3034m - s_hiv3034m))*4;
+* p_new_vmmc_3539m_u;			if s_ageg3539m gt 0 then p_new_vmmc_3539m_u = (s_new_vmmc3539m / (s_ageg3539m - s_hiv3539m))*4;
+* p_new_vmmc_3039m_u;			if (s_ageg3034m + s_ageg3539m) gt 0 then 
+								p_new_vmmc_3039m_u = (s_new_vmmc3039m / ((s_ageg3034m + s_ageg3539m) - (s_hiv3034m + s_hiv3539m)))*4;
+* p_new_vmmc_4044m_u;			if s_ageg4044m gt 0 then p_new_vmmc_4044m_u = (s_new_vmmc4044m / (s_ageg4044m - s_hiv4044m))*4 ;
+* p_new_vmmc_4549m_u;			if (s_ageg4549m-s_hiv4549m) gt 0 then p_new_vmmc_4549m_u = (s_new_vmmc4549m / (s_ageg4549m - s_hiv4549m))*4 ;
+* p_new_vmmc_4049m_u;			if (s_ageg4044m + s_ageg4549m) gt 0 then  
 								p_new_vmmc_4049m_u = (s_new_vmmc4049m / ((s_ageg4044m + s_ageg4549m) - (s_hiv4044m + s_hiv4549m)))*4 ;
 * p_new_vmmc_50plm_u;			p_new_vmmc_50plm_u = (s_new_vmmc50plm / ((s_ageg5054m + s_ageg5559m + s_ageg6064m) - (s_hiv5054m + s_hiv5559m + s_hiv6064m)))*4 ;
 * p_new_vmmc_1549m_u;			p_new_vmmc_1549m_u = (s_new_vmmc1549m / (s_ageg1549m - s_hiv1549m ))*4;
