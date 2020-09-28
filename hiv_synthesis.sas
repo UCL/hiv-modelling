@@ -538,7 +538,7 @@ explore metrics for how to monitor prep programmes
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 
-%let population = 100000;
+%let population = 1000;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -16194,14 +16194,24 @@ end;
 libname tmp_out "/folders/myfolders/hiv-modelling/output/";
 %include "/folders/myfolders/hiv-modelling/config.sas";
 
-data tmp_out.output_compressed_bin(compress=binary);
+data raw_data(compress=binary);
 format &keep_vars; * to sort variables in the order specified (in config.sas);
 set cum_l1;
-* file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-*  file "/home/rmjlaph/Scratch/_output_9_8_20_5pm_&dataset_id";  
-*   file "/folders/myfolders/hiv-modelling/output/output_&dataset_id";
 keep &keep_vars;
 run;
+
+%if %sysfunc(exist(tmp_out.output_compressed)) %then 
+	%do;
+		proc append base = tmp_out.output_compressed data = raw_data;
+		run;
+	%end;
+%else
+	%do;
+		data tmp_out.output_compressed(compress=binary);
+			set raw_data;
+		run;
+	%end;
+
 
 /* proc contents data = output_csv; */
 /* run; */

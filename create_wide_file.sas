@@ -30,17 +30,17 @@ uncomment the following data step/proc and data steps
 * importing from sas7bdat file
 */
 
-proc contents data=a.output_compressed_bin;
+proc contents data=a.output_compressed;
 	title "Compressed Data"
 run;
 
-proc sort data=a.output_compressed_bin; by run cald option;run;
+proc sort data=a.output_compressed; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a.output_compressed_bin ;
+set a.output_compressed ;
  
 if cald=2019;
 s_alive = s_alive_m + s_alive_w ;
@@ -50,7 +50,7 @@ proc sort; by run;
 
 
 data y; 
-merge a.output_compressed_bin sf;
+merge a.output_compressed sf;
 by run ;
 
 
