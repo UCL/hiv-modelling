@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;
 *set a.wide_vmmc_10_9_20_8pm;
-set a.wide_vmmc_23_9_20_5pm;
+set a.wide_vmmc_26_9_20_5pm_all;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -100,7 +100,6 @@ ce_20_25=0;if d_net_dalys_20_25_1_adults gt 0 then ce_20_25=1;
 ce_20_40=0;if d_net_dalys_20_40_1_adults gt 0 then ce_20_40=1;
 ce_20_70=0;if d_net_dalys_20_70_1_adults gt 0 then ce_20_70=1;
 
-
 *nnt;
 *difference in number of VMMCs;
 d_n_vmmc_20_25_1 = n_new_vmmc1549_py_20_25_1 - n_new_vmmc1549_py_20_25_2;
@@ -116,12 +115,10 @@ d_n_new_inf_20_70_1 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
    maximum difference found above;
 /*
 proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
-*max=141000, 156000, 189000;
-*median=57300, 90000, 108000;
+*max=134420, 139067, 179890;
 */
 
-nnt_20_25_1=141000; nnt_20_40_1=156000; nnt_20_70_1=189000;
-/*nnt_20_25_1=57300; nnt_20_40_1=90000; nnt_20_70_1=108000;*/
+nnt_20_25_1=134420; nnt_20_40_1=139067; nnt_20_70_1=179890;
 
 if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
 if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
@@ -130,39 +127,41 @@ if d_n_new_inf_20_70_1 gt 0 then nnt_20_70_1 = d_n_vmmc_20_70_1 / d_n_new_inf_20
 
 
 *cost per infection averted - all;
+*use discounted infections;
+
+*discounted infections averted with continuation of VMMC;
+d_n_d_new_inf_20_25_1 = d_n_infection_20_25_2 - d_n_infection_20_25_1;
+d_n_d_new_inf_20_40_1 = d_n_infection_20_40_2 - d_n_infection_20_40_1;
+d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
+
+
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
-   median difference;
+   max difference;
 /*
 proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
-*median=5.9, 5.0, -3.8; - change to max;
+*max=15.5, 11.8, 9.1;
 */
 
-cost_inf_avert_20_25_1=5900000; cost_inf_avert_20_40_1=5000000; cost_inf_avert_20_70_1 = -3800000;
-if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_new_inf_20_25_1)*1000000;
-if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_new_inf_20_40_1)*1000000;
-if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_new_inf_20_70_1)*1000000;
+cost_inf_avert_20_25_1=15.5*1000000; cost_inf_avert_20_40_1=11.8*1000000; cost_inf_avert_20_70_1 = 9.1*1000000;
+if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_d_new_inf_20_25_1)*1000000;
+if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_d_new_inf_20_40_1)*1000000;
+if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
 
 
 *cost per daly averted =icer; 
-/*proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;*/
-
-*max =13.5, 10.2, 7.7;
-cost_daly_avert_20_25_2_adult=13.5*1000000;
-cost_daly_avert_20_40_2_adult=10.2*1000000;
-cost_daly_avert_20_70_2_adult=7.7*1000000;
+cost_daly_avert_20_25_1_adults=15.5*1000000;
+cost_daly_avert_20_40_1_adults=11.8*1000000;
+cost_daly_avert_20_70_1_adults=9.1*1000000;
 
 cost_daly_avert_20_70_1_adults=7700000;
-check everything is the right way;
+*check everything is the right way;
 /*if d_ddaly_adults_20_25_1 gt 0 then*/ cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
 /*if d_ddaly_adults_20_40_1 gt 0 then*/ cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
-if d_ddaly_adults_20_70_1 gt 0 then cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
+/*if d_ddaly_adults_20_70_1 gt 0 then*/ cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
 
 
 run;
 
-proc print;var d_dcost_20_70_1 d_ddaly_adults_20_70_1 cost_daly_avert_20_70_1_adults;run;
-
-proc freq;table d_dcost_20_70_1;run;
 proc contents;run;
 
 
@@ -187,6 +186,17 @@ p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1  p_new_vmmc_3034m_u_19_20
 p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1; 
 run;
 
+***table 2, outputs in 2040 with continuation of VMMC;
+proc means n p50 p5 p95;var
+prevalence1549_40_41_1 
+incidence1549_40_41_1 
+prop_1564_onprep_20
+p_diag_40_41_1 
+p_onart_diag_40_41_1 
+p_vl1000_40_41_1 
+p_onart_vl1000_40_41_1 
+p_mcirc_1549m_40_41_1;
+run;
 
 **remember the options have been switched, 1=continuation, 2=no vmmc;
 ***vmmc rates by option;
@@ -211,14 +221,14 @@ p_vmmc_4049m_20_25_2  p_vmmc_4049m_20_40_2  p_vmmc_4049m_20_70_2
 
 ***difference in vmmc rates according to option;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_p_vmmc_inc1014m_20_25_2  d_p_vmmc_inc1014m_20_40_2  d_p_vmmc_inc1014m_20_70_2
-d_p_vmmc_1549m_20_25_2  d_p_vmmc_1549m_20_40_2  d_p_vmmc_1549m_20_70_2
-d_p_vmmc_1014m_20_25_2  d_p_vmmc_1014m_20_40_2  d_p_vmmc_1014m_20_70_2
-d_p_vmmc_1519m_20_25_2  d_p_vmmc_1519m_20_40_2  d_p_vmmc_1519m_20_70_2
-d_p_vmmc_2024m_20_25_2  d_p_vmmc_2024m_20_40_2  d_p_vmmc_2024m_20_70_2
-d_p_vmmc_2529m_20_25_2  d_p_vmmc_2529m_20_40_2  d_p_vmmc_2529m_20_70_2
-d_p_vmmc_3039m_20_25_2  d_p_vmmc_3039m_20_40_2  d_p_vmmc_3039m_20_70_2
-d_p_vmmc_4049m_20_25_2  d_p_vmmc_4049m_20_40_2  d_p_vmmc_4049m_20_70_2;
+d_p_vmmc_inc1014m_20_25_1  d_p_vmmc_inc1014m_20_40_1  d_p_vmmc_inc1014m_20_70_1
+d_p_vmmc_1549m_20_25_1  d_p_vmmc_1549m_20_40_1  d_p_vmmc_1549m_20_70_1
+d_p_vmmc_1014m_20_25_1  d_p_vmmc_1014m_20_40_1  d_p_vmmc_1014m_20_70_1
+d_p_vmmc_1519m_20_25_1  d_p_vmmc_1519m_20_40_1  d_p_vmmc_1519m_20_70_1
+d_p_vmmc_2024m_20_25_1  d_p_vmmc_2024m_20_40_1  d_p_vmmc_2024m_20_70_1
+d_p_vmmc_2529m_20_25_1  d_p_vmmc_2529m_20_40_1  d_p_vmmc_2529m_20_70_1
+d_p_vmmc_3039m_20_25_1  d_p_vmmc_3039m_20_40_1  d_p_vmmc_3039m_20_70_1
+d_p_vmmc_4049m_20_25_1  d_p_vmmc_4049m_20_40_1  d_p_vmmc_4049m_20_70_1;
 run;
 
 ***incidence;
@@ -317,7 +327,7 @@ d_net_dalys_20_25_1_adults  d_net_dalys_20_40_1_adults  d_net_dalys_20_70_1_adul
 ;run;
 proc freq;table ce_20_25 ce_20_40 ce_20_70;run;
 
-
+proc freq;table run;run;
 ***NNT;
 proc means n mean p50 p5 p95 lclm uclm;var 
 nnt_20_25_1  nnt_20_40_1  nnt_20_70_1
@@ -340,11 +350,34 @@ proc univariate;var cost_daly_avert_20_70_1_adults;run;
 
 ***icer;
 proc means n mean p50 p5 p95 lclm uclm;var 
-cost_daly_avert_20_25_2_adults  cost_daly_avert_20_40_2_adults cost_daly_avert_20_70_2_adults
-d_dcost_20_25_2 d_ddaly_adults_20_25_2
+cost_daly_avert_20_25_1_adults  cost_daly_avert_20_40_1_adults cost_daly_avert_20_70_1_adults
 ;run;
 
 
-Proc logistic desc;model  ce_20_70  =
-incidence1549_20 incidence1549_40 p_diag_20 p_onart_diag_20 p_mcirc_1549m_20 p_onart_vl1000_20;run;
+
+***Predictors of CE scenarios;
+data b;
+set a;
+
+if 0  le incidence1549_20 le 0.20 then incid=1;
+if 0.20 lt incidence1549_20 le 0.35 then incid=2;
+if 0.35 lt incidence1549_20 le 0.50 then incid=3;
+if 0.50 lt incidence1549_20 le 1 then incid=4;
+if 1 lt incidence1549_20 le 2 then incid=5;
+if 2 lt incidence1549_20         then incid=6;
+
+if 0.60 le p_onart_diag_20 le 0.75 then artcov=1;
+if 0.75 le p_onart_diag_20 le 0.90 then artcov=2;
+if 0.90 le p_onart_diag_20 le 1 then artcov=3;
+
+p_diag_20_per10=p_diag_20/10;
+p_onart_diag_20_per10=p_onart_diag_20/10;
+p_mcirc_1549m_20_per10=p_mcirc_1549m_20/10;
+p_onart_vl1000_20_per10=p_onart_vl1000_20/10;
+
+proc freq;table p_diag_20_per10;run;
+
+Proc logistic desc;class incid (ref="1") artcov (ref="3");
+model  ce_20_70  =
+incid p_diag_20_per10 p_onart_diag_20_per10 p_mcirc_1549m_20_per10 p_onart_vl1000_20_per10;run;
 
