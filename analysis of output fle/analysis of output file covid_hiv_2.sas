@@ -8,7 +8,13 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
  * set a.w_covid_hiv_2_22_8_20_3pm_1;
  * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
  * set a.w_covid_hiv_2_22_8_20_3pm_u;
-   set a.w_covid_hiv_2_16_9_20_10am;
+ * set a.w_covid_hiv_2_16_9_20_10am;
+   set a.w_covid_hiv_2_16_9_20_10am_d1 a.w_covid_hiv_2_16_9_20_10am_d2;
+
+
+* to give n = 500;
+if run le 848098457;
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -162,18 +168,6 @@ d_n_new_mcirc_21_22_2 = n_new_mcirc_21_22_2 - n_new_mcirc_21_22_1 ;
 d_n_new_mcirc_21_22_3 = n_new_mcirc_21_22_3 - n_new_mcirc_21_22_1 ; 
 d_n_new_mcirc_21_22_4 = n_new_mcirc_21_22_4 - n_new_mcirc_21_22_1 ; 
 d_n_new_mcirc_21_22_5 = n_new_mcirc_21_22_5 - n_new_mcirc_21_22_1 ;
-
-* these lines to be removed when corrected in create wide file ;
-n_onart_20_21_1 = n_onart_20_21_1 / 4; 
-n_onart_20_21_2 = n_onart_20_21_2 / 4;
-n_onart_20_21_3 = n_onart_20_21_3 / 4;
-n_onart_20_21_4 = n_onart_20_21_4 / 4;
-n_onart_20_21_5 = n_onart_20_21_5 / 4;
-n_onart_21_22_1 = n_onart_21_22_1 / 4; 
-n_onart_21_22_2 = n_onart_21_22_2 / 4;
-n_onart_21_22_3 = n_onart_21_22_3 / 4;
-n_onart_21_22_4 = n_onart_21_22_4 / 4;
-n_onart_21_22_5 = n_onart_21_22_5 / 4;
 
 d_n_onart_20_21_2 = n_onart_20_21_2 - n_onart_20_21_1 ; 
 d_n_onart_20_21_3 = n_onart_20_21_3 - n_onart_20_21_1 ; 
@@ -686,22 +680,44 @@ p_hard_reach_m  inc_cat base_rate_sw
 ods html;
 proc means n mean lclm uclm median p5 p95 data=wide; var 
 
+n_diag_20_21_1 n_diag_20_21_2 n_diag_20_21_3 n_diag_20_21_4 n_diag_20_21_5
 n_tested_20_21_1 n_tested_20_21_2 n_tested_20_21_3 n_tested_20_21_4 n_tested_20_21_5
 n_new_mcirc_20_21_1 n_new_mcirc_20_21_2 n_new_mcirc_20_21_3 n_new_mcirc_20_21_4 n_new_mcirc_20_21_5
 dvl_cost_20_21_1 dvl_cost_20_21_2 dvl_cost_20_21_3 dvl_cost_20_21_4 dvl_cost_20_21_5
+n_onart_20_21_1 n_onart_20_21_2 n_onart_20_21_3 n_onart_20_21_4 n_onart_20_21_5
+n_vl_test_done_20_21_1 n_vl_test_done_20_21_2 n_vl_test_done_20_21_3 n_vl_test_done_20_21_4 n_vl_test_done_20_21_5
+n_start_line2_20_21_1 n_start_line2_20_21_2 n_start_line2_20_21_3 n_start_line2_20_21_4 n_start_line2_20_21_5
 
+n_diag_21_22_1 n_diag_21_22_2 n_diag_21_22_3 n_diag_21_22_4 n_diag_21_22_5
 n_tested_21_22_1 n_tested_21_22_2 n_tested_21_22_3 n_tested_21_22_4 n_tested_21_22_5
 n_new_mcirc_21_22_1 n_new_mcirc_21_22_2 n_new_mcirc_21_22_3 n_new_mcirc_21_22_4 n_new_mcirc_21_22_5
 dvl_cost_21_22_1 dvl_cost_21_22_2 dvl_cost_21_22_3 dvl_cost_21_22_4 dvl_cost_21_22_5
+n_onart_21_22_1 n_onart_21_22_2 n_onart_21_22_3 n_onart_21_22_4 n_onart_21_22_5
+n_vl_test_done_21_22_1 n_vl_test_done_21_22_2 n_vl_test_done_21_22_3 n_vl_test_done_21_22_4 n_vl_test_done_21_22_5
+n_start_line2_21_22_1 n_start_line2_21_22_2 n_start_line2_21_22_3 n_start_line2_21_22_4 n_start_line2_21_22_5
 
 n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 n_tested_20_25_4 n_tested_20_25_5
 n_new_mcirc_20_25_1 n_new_mcirc_20_25_2 n_new_mcirc_20_25_3 n_new_mcirc_20_25_4 n_new_mcirc_20_25_5
 dvl_cost_20_25_1 dvl_cost_20_25_2 dvl_cost_20_25_3 dvl_cost_20_25_4 dvl_cost_20_25_5
 
+d_n_diag_20_21_2 d_n_diag_20_21_3 d_n_diag_20_21_4 d_n_diag_20_21_5
+d_n_diag_21_22_2 d_n_diag_21_22_3 d_n_diag_21_22_4 d_n_diag_21_22_5
+
+d_n_start_line2_20_21_2 d_n_start_line2_20_21_3 d_n_start_line2_20_21_4 d_n_start_line2_20_21_5
+d_n_start_line2_21_22_2 d_n_start_line2_21_22_3 d_n_start_line2_21_22_4 d_n_start_line2_21_22_5
+
+d_n_vl_test_done_20_21_2 d_n_vl_test_done_20_21_3 d_n_vl_test_done_20_21_4 d_n_vl_test_done_20_21_5
+d_n_vl_test_done_21_22_2 d_n_vl_test_done_21_22_3 d_n_vl_test_done_21_22_4 d_n_vl_test_done_21_22_5
+
+d_n_tested_20_21_2 d_n_tested_20_21_3 d_n_tested_20_21_4 d_n_tested_20_21_5
+d_n_tested_21_22_2 d_n_tested_21_22_3 d_n_tested_21_22_4 d_n_tested_21_22_5
+
 d_n_new_mcirc_20_21_2 d_n_new_mcirc_20_21_3 d_n_new_mcirc_20_21_4 d_n_new_mcirc_20_21_5
 n_new_mcirc_21_22_1 n_new_mcirc_21_22_2 n_new_mcirc_21_22_3 n_new_mcirc_21_22_4 n_new_mcirc_21_22_5
-
 d_n_new_mcirc_21_22_2 d_n_new_mcirc_21_22_3 d_n_new_mcirc_21_22_4 d_n_new_mcirc_21_22_5
+
+d_n_onart_20_21_2 d_n_onart_20_21_3 d_n_onart_20_21_4 d_n_onart_20_21_5
+d_n_onart_21_22_2 d_n_onart_21_22_3 d_n_onart_21_22_4 d_n_onart_21_22_5
 
 ;
 run;
@@ -843,14 +859,19 @@ run;
 
 proc print; var deaths_averted_per_10000_circ  d_n_death_dis_20_70_5_4 d_n_new_mcirc_20_21_5_4  ; run;
 
+ods html;
 proc means n median mean lclm uclm p5 p95 data=wide ; 
 var deaths_averted_per_10000_circ deaths_averted_per_10000_test n_death_discount_20_70_1 n_death_discount_20_70_3
 n_death_discount_20_70_4 n_death_discount_20_70_5 d_n_death_dis_20_70_3_1  d_n_death_dis_20_70_5_4
+
+d_n_death_dis_20_21_5_4 d_n_death_dis_20_23_5_4 d_n_death_dis_20_25_5_4 d_n_death_dis_20_40_5_4
+
 d_n_new_mcirc_20_21_5_4  d_n_tested_20_21_3_1
 d_n_death_dis_20_70_5_4  d_n_new_mcirc_20_21_5_4
 deaths_averted_per_10000_vl_test d_n_death_dis_20_70_2_1  d_n_vl_test_done_20_21_2_1
 deaths_av_per_10000_vl_test_5y;
 run;
+ods html close;
 
 
 proc corr spearman data=wide ; var prevalence1549_20 deaths_averted_per_10000_test ; run;
