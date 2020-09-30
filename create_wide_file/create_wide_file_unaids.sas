@@ -5,7 +5,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm";  
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm";  
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
 input   
 
@@ -1422,7 +1423,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_28_8_20_12pm; set y;  
+data unaids_17_9_20_6pm_5reps; set y;  
 
 proc contents; run;
 
@@ -1430,7 +1431,7 @@ proc contents; run;
 * means n mean lclm uclm p5 p95 ; 
 
 
-data x; set unaids_28_8_20_12pm; 
+data x; set unaids_17_9_20_6pm_5reps; 
 
 
   options nomprint;
@@ -1645,7 +1646,7 @@ data   a.wide_outputs; merge  a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a
 
 proc contents ; run;  
 
-  data a.w_unaids_28_8_20_12pm ; 
+  data a.w_unaids_17_9_20_6pm_5reps ; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
