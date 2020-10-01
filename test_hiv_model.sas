@@ -538,7 +538,7 @@ explore metrics for how to monitor prep programmes
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 
-%let population = 1000;
+* %let population = 1000;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -549,13 +549,15 @@ drop eeee;
 
 data z;
 
-run = rand('uniform')*1000000000;  run=round(run,1);
+/*
+run_id = rand('uniform')*1000000000;  run_id=round(run_id,1);
 										   
-dataset_id=trim(left(run));
+dataset_id=trim(left(run_id));
 call symput('dataset_id',dataset_id);
+*/
 
-caldate1=1989;
-caldate_never_dot=1989;
+caldate1=&startyear;
+caldate_never_dot=&startyear;
 
 * these used after 2020 - code is here so value the same for all people;
 _u1 = uniform(0); _u2 = uniform(0); _u3 = uniform(0); _u4 = uniform(0); _u5 = uniform(0);  _u6 = uniform(0); _u7 = uniform(0); _u8 = uniform(0);
@@ -569,7 +571,7 @@ _u57 = uniform(0); _u58 = uniform(0); _u59 = uniform(0); _u60 = uniform(0); _u61
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;
+startyr = &startyear + 0.25;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -14799,7 +14801,7 @@ drop serial_no ;
 keep
  
 /*general*/
-s_n  cald  run  option
+s_n  cald  &run_id  option
 																														 										  
 /*number alive and in each age group*/
 s_alive1549 	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m
