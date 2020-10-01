@@ -1,18 +1,18 @@
 
-%let population_size = 1000;
+%let population = 1000;
 %let total_runs = 10;
 %let startyear = 1989;
-libname tmp_out "/folders/myfolders/hiv-modelling/output/";
+%let endyear = 2020;
+%let increment = 0.25;
 
 %macro modelrun(howmany);
 	%do i = 1 %to &howmany;
-		data tmp_out.modeldata;
-			population = &population_size;
-			caldate1 = &startyear;
-			run_id = rand('uniform')*1000000000;  
-			run_id=round(run_id,1);										   
+		data _null_;
+			run_id = rand('uniform')*1000000000;
+			run_id=round(run_id,1);
+			call symput("run", run_id);
 			dataset_id=trim(left(run_id));
-			call symput("dataset_id", dataset_id);
+			call symput("dataset_id", dataset_id);			
 		run;
 		%include "/folders/myfolders/hiv-modelling/model_consumer.sas";
 	%end;
