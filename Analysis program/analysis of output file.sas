@@ -359,12 +359,13 @@ cost_daly_avert_20_25_1_adults  cost_daly_avert_20_40_1_adults cost_daly_avert_2
 data b;
 set a;
 
-if 0  le incidence1549_20 le 0.20 then incid=1;
-if 0.20 lt incidence1549_20 le 0.35 then incid=2;
-if 0.35 lt incidence1549_20 le 0.50 then incid=3;
-if 0.50 lt incidence1549_20 le 1 then incid=4;
-if 1 lt incidence1549_20 le 2 then incid=5;
-if 2 lt incidence1549_20         then incid=6;
+if 0  le incidence1549_20 le 0.10 then incid=1;
+if 0.10 lt incidence1549_20 le 0.20 then incid=2;
+if 0.20 lt incidence1549_20 le 0.30 then incid=3;
+if 0.30 lt incidence1549_20 le 0.50 then incid=4;
+if 0.50 lt incidence1549_20 le 1 then incid=5;
+if 1 lt incidence1549_20 le 2 then incid=6;
+if 2 lt incidence1549_20         then incid=7;
 
 if 0.60 le p_onart_diag_20 le 0.75 then artcov=1;
 if 0.75 le p_onart_diag_20 le 0.90 then artcov=2;
@@ -380,4 +381,6 @@ proc freq;table p_diag_20_per10;run;
 Proc logistic desc;class incid (ref="1") artcov (ref="3");
 model  ce_20_70  =
 incid p_diag_20_per10 p_onart_diag_20_per10 p_mcirc_1549m_20_per10 p_onart_vl1000_20_per10;run;
+
+proc freq;table ce_20_70*incid;run;
 
