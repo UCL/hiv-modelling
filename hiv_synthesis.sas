@@ -1487,7 +1487,9 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
-
+* Define a variable to enable lowering of future ART initiation;
+art_initiation_x = uniform(0);
+art_init_red20p=.; art_init_red50p=.;
 
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
@@ -6140,7 +6142,14 @@ res_test=.;
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
 				if pregnant =1 then u=u/10; * jul18 ;
-				if u < eff_pr_art_init then time0=caldate{t};
+
+				if u < eff_pr_art_init and 
+				(
+				(art_init_red20p ne 1 and art_init_red50p ne 1)
+				or (art_initiation_x <0.80 and art_init_red20p=1) 
+				or (art_initiation_x <0.50 and art_init_red50p=1)
+				) then time0=caldate{t};
+
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;
 
@@ -15128,7 +15137,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
