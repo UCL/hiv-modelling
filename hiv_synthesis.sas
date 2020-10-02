@@ -591,6 +591,10 @@ p_neph_stops_after_ten = 0.1;
 
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
+
+* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.90 then lower_future_art_cov=0;if 0.90 <= r < 0.97 then lower_future_art_cov=1;
+				if 0.97 <= r < 1.00 then lower_future_art_cov=2;
+
 * dependent_on_time_step_length ;
 
 * rate_lost; r=uniform(0); if r < 0.33 then rate_lost = 0.2; if 0.33 <= r < 0.66 then rate_lost = 0.35; if r >= 0.66 then rate_lost = 0.5;
@@ -1488,8 +1492,7 @@ prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
 * Define a variable to enable lowering of future ART initiation;
-art_initiation_x = uniform(0);
-art_init_red20p=.; art_init_red50p=.;
+future_art_init_red = uniform(0);
 
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
@@ -6144,11 +6147,11 @@ res_test=.;
 				if pregnant =1 then u=u/10; * jul18 ;
 
 				if u < eff_pr_art_init and 
-				(
-				(art_init_red20p ne 1 and art_init_red50p ne 1)
-				or (art_initiation_x <0.80 and art_init_red20p=1) 
-				or (art_initiation_x <0.50 and art_init_red50p=1)
-				) then time0=caldate{t};
+				(caldate{t} le 2020.25 or
+				(caldate{t} ge 2020.5 and 
+				((lower_future_art_cov=0) or (lower_future_art_cov=1 and future_art_init_red <0.80) or (lower_future_art_cov=2 and future_art_init_red <0.50)))
+				 )
+				then time0=caldate{t};
 
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;
@@ -15137,7 +15140,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
@@ -16637,7 +16640,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
