@@ -537,7 +537,10 @@ explore metrics for how to monitor prep programmes
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-
+/** [PS] 1-Oct-2020
+ - population, run_id, dataset_id, startyear, endyear are macro parameters defined in the model_runner.sas program
+ - run_id replaces run as a variable, as run is also a programmatic keyword in SAS
+*/
 * %let population = 1000;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -549,11 +552,11 @@ drop eeee;
 
 data z;
 
-/*
-run_id = rand('uniform')*1000000000;  run_id=round(run_id,1);
+/* [PS] see comments above regarding use of parameters defined in model_runner.sas
+run = rand('uniform')*1000000000;  run=round(run,1);
 										   
-dataset_id=trim(left(run_id));
-call symput('dataset_id',dataset_id);
+dataset_id=trim(left(run));
+call symput('dataset_id',dataset);
 */
 
 caldate1=&startyear;
@@ -571,7 +574,7 @@ _u57 = uniform(0); _u58 = uniform(0); _u59 = uniform(0); _u60 = uniform(0); _u61
 
 
 * start of epidemic;
-startyr = &startyear + 0.25;
+startyr = &startyear + &increment;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -1368,9 +1371,15 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 */
 
 
+/* [PS] 1-Oct-2020
+Note to myself: the 
+data z step above sets the start parameters for the model calculation based on random values (hence the seed). The underlying probability is a
+uniform random no distribution between 0 and 1.
+*/
 
-
-
+/**
+loop over all the population individuals who then get assigned a serial number? This is added to the parameter list defined in data step z
+*/
 data r1;set z;
 do i=1 to &population;
 	n=1;
@@ -2114,9 +2123,10 @@ if covid_disrup_extent = 1   then do; w=uniform(0); if w <= 1.0 then covid_disru
 
 option=.;
 
+/**
 dataset_id=trim(left(round(uniform(0)*1000000)));
 call symput('dataset_id',dataset_id);
-
+*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * START OF DEFINING MAIN MACRO;
@@ -14341,7 +14351,11 @@ run;
 * =========   data sums =================================================================================== ;
 
 
-data sums; set r&da1; if serial_no = &population;
+data sums; 
+run_id = &run_id ;
+
+set r&da1; 
+if serial_no = &population;
 
 ***Variables created below are used to update the program ;
 
@@ -14799,9 +14813,8 @@ drop serial_no ;
 
 
 keep
- 
 /*general*/
-s_n  cald  &run_id  option
+s_n  cald  run_id  option
 																														 										  
 /*number alive and in each age group*/
 s_alive1549 	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m

@@ -1,7 +1,7 @@
 %let keep_vars =
 
 /*general*/
-run cald option 
+run_id cald option 
 
 /*number alive and in each age group*/
 s_alive1549	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m
