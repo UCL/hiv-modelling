@@ -469,8 +469,9 @@ p_neph_stops_after_ten = 0.1;
 * inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if  r < 0.40 then base_rate_sw = 0.0015;  if 0.40 <= r < 0.9 then base_rate_sw = 0.002 ; 
-								if 0.90 <= r then base_rate_sw = 0.0025 ;  
+* base_rate_sw; r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
+								if 0.80 <= r then base_rate_sw = 0.0025 ;  
+
 
 * dependent_on_time_step_length ;
 
@@ -16175,7 +16176,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_6_10_20_8am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_6_10_20_1pm_&dataset_id";  
 
 put   
 
