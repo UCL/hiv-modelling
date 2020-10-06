@@ -78,6 +78,8 @@ d_ddaly_adults_20_25_1 = ddaly_adults_20_25_2 - ddaly_adults_20_25_1;
 d_ddaly_adults_20_40_1 = ddaly_adults_20_40_2 - ddaly_adults_20_40_1;
 d_ddaly_adults_20_70_1 = ddaly_adults_20_70_2 - ddaly_adults_20_70_1;
 
+d_ddaly_adults_20_70_2 = ddaly_adults_20_70_1 - ddaly_adults_20_70_2;
+
 *difference in costs;
 d_dcost_20_25_1 = dcost_20_25_1 - dcost_20_25_2;
 d_dcost_20_40_1 = dcost_20_40_1 - dcost_20_40_2;
@@ -327,7 +329,9 @@ d_net_dalys_20_25_1_adults  d_net_dalys_20_40_1_adults  d_net_dalys_20_70_1_adul
 ;run;
 proc freq;table ce_20_25 ce_20_40 ce_20_70;run;
 
-proc freq;table run;run;
+proc print;var run dcost_20_70_2 dcost_20_70_1 d_dcost_20_70_1 ddaly_adults_20_70_2 ddaly_adults_20_70_1 d_ddaly_adults_20_70_2
+cost_daly_avert_20_70_1_adults ndb_500_20_70_1_adults ndb_500_20_70_2_adults d_net_dalys_20_70_1_adults ce_20_70;run;
+
 ***NNT;
 proc means n mean p50 p5 p95 lclm uclm;var 
 nnt_20_25_1  nnt_20_40_1  nnt_20_70_1
