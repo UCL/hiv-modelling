@@ -1346,7 +1346,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy rate_sw_rred_rc
+prep_strategy rate_sw_rred_rc  exp_setting_lower_p_vl1000
 
 exp_setting_lower_p_vl1000  
 external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
@@ -1385,6 +1385,7 @@ s_sw_newp
 
 */
 
+exp_setting_lower_p_vl1000 external_exp_factor rate_exp_set_lower_p_vl1000
 
 prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m p_diag_m p_diag_w	
 p_onart_diag p_onart_diag_m 	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2
@@ -1646,24 +1647,46 @@ data   a.wide_outputs; merge  a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a
 
 proc contents ; run;  
 
-  data a.w_unaids_17_9_20_6pm_5reps ; 
+
+***Macro par used to add in values of all sampled parameters - values before intervention;
+%macro par(p=);
+
+* &p ;
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
+data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
+
+%mend par; 
+
+%par(p=exp_setting_lower_p_vl1000); 
+
+data wide_par; merge 
+exp_setting_lower_p_vl1000
+;
+
+proc contents; run;
+
+run;
+proc sort; by run;run;
+
+
+  data a.w_unaids_17_9_20_6pm_5reps_ex ; 
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
-  set   a.wide_outputs   ;  
+  set   a.wide_outputs  wide_par ;  
   by run;run;
 
 keep  prevalence1549m_20_1 prevalence1549w_20_1 prevalence1524m_20_1 prevalence1524w_20_1
 incidence1549w_20_1 incidence1549m_20_1  p_mcirc_1549m_20_1 p_diag_m_20_1 p_diag_w_20_1	
 p_onart_diag_20_1 p_onart_diag_m_20_1 	p_onart_vl1000_w_20_1	p_onart_vl1000_m_20_1 
-p_onart_cd4_l500_20_1  p_mcirc_1549m_20_1  p_startedline2_20_1 ; run;
+p_onart_cd4_l500_20_1  p_mcirc_1549m_20_1  p_startedline2_20_1  ; run;
 
 
 proc means n median p5 p95 mean lclm uclm;
 var	 prevalence1549m_20_1 prevalence1549w_20_1 prevalence1524m_20_1 prevalence1524w_20_1
 incidence1549w_20_1 incidence1549m_20_1  p_mcirc_1549m_20_1 p_diag_m_20_1 p_diag_w_20_1	
 p_onart_diag_20_1 p_onart_diag_m_20_1 	p_onart_vl1000_w_20_1	p_onart_vl1000_m_20_1 
-p_onart_cd4_l500_20_1  p_mcirc_1549m_20_1  p_startedline2_20_1 ;
+p_onart_cd4_l500_20_1  p_mcirc_1549m_20_1  p_startedline2_20_1 exp_setting_lower_p_vl1000 ;
 run;
 
 proc means; run;
@@ -1672,8 +1695,13 @@ proc print; run;
 
 * a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a.wide_new_mcirc a.wide_new_inf a.wide_n_hiv ;
 
+data   a.wide_misc_ex; merge 
+prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m  p_diag_m  p_diag_w	
+p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2  exp_setting_lower_p_vl1000
+; 
+
 proc export 
-data=a.wide_misc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all" replace; run;
+data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex" replace; run;
 
 proc export 
 data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults_all" replace; run;
