@@ -1,6 +1,7 @@
+options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
-%let population = 1000;
-%let total_runs = 2;
+%let population = 100000;
+%let total_runs = 500;
 %let startyear = 1989;
 %let endyear = 2020;
 %let increment = 0.25;
