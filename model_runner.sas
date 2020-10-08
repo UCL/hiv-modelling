@@ -1,4 +1,4 @@
-proc printto log="/home/cceapsc/sas/logs";
+proc printto log="/home/cceapsc/Scratch/testrun.log";
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 %let population = 1000;
@@ -16,7 +16,7 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 			dataset_id = trim(left(run_id));
 			call symput("dataset_id", dataset_id);			
 		run;
-		%include "/folders/myfolders/hiv-modelling/test_hiv_model.sas";
+		%include "./test_hiv_model.sas";
 	%end;
 %mend modelrun;
 %modelrun(&total_runs);
