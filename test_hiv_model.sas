@@ -532,7 +532,8 @@ explore metrics for how to monitor prep programmes
 
 
 
-  libname a '/folders/myfolders/hiv-modelling/output/';
+*  libname a '/folders/myfolders/hiv-modelling/output/';
+libname a '/home/cceapsc/Scratch';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -16206,8 +16207,10 @@ end;
 
 
 * ts1m:  need more update statements ;
-libname tmp_out "/folders/myfolders/hiv-modelling/output/";
-%include "/folders/myfolders/hiv-modelling/config.sas";
+*libname tmp_out "/folders/myfolders/hiv-modelling/output/";
+libname tmp_out "/home/cceapsc/Scratch";
+*%include "/folders/myfolders/hiv-modelling/config.sas";
+%include "./config.sas";
 
 data raw_data(compress=binary);
 format &keep_vars; * to sort variables in the order specified (in config.sas);

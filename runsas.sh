@@ -8,6 +8,7 @@ cd $TMPDIR
 module load sas/9.4/64
 cp $HOME/sas/hiv-modelling/model_runner.sas .
 cp $HOME/sas/hiv-modelling/test_hiv_model.sas .
+cp $HOME/sas/hiv-modelling/config.sas .
 
 sas model_runner.sas
 
