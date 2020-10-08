@@ -535,7 +535,7 @@ explore metrics for how to monitor prep programmes
   libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+* proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 /** [PS] 1-Oct-2020
  - population, run_id, dataset_id, startyear, endyear are macro parameters defined in the model_runner.sas program
@@ -543,7 +543,7 @@ explore metrics for how to monitor prep programmes
 */
 * %let population = 1000;
 
-options ps=1000 ls=220 cpucount=4 spool fullstimer ;
+/* options ps=1000 ls=220 cpucount=4 spool fullstimer ; */
 
 data cum_l1; 
 if eeee=1;
