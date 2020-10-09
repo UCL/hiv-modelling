@@ -1,0 +1,23 @@
+#!/bin/bash -l
+#$ -S /bin/bash
+#$ -l h_rt=08:00:00
+#$ -pe smp 4
+#$ -t 1-50
+#$ -A HIVSynthMod
+#$ -l mem=6G
+#$ -j y
+#$ -N vl_monitoring
+#$ -wd /home/rmjlaph/Scratch
+#$ -o /dev/null
+#$ -e /dev/null
+#$ -l tmpfs=100G
+module load sas/9.4/64
+cd $TMPDIR
+for file in `echo $addinfiles | tr ':' ' '` 
+do 
+ cp $file . 
+done
+sleep $[(RANDOM $ 10) +  1]s
+sas $sas_infile
+
+

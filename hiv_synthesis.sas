@@ -73,7 +73,7 @@ incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_ini
 - consider higher pr_art_init if diagnosed while on prep
 
 - proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ñve and np=0, start tld if np goes >= 1) 
+alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested ÔøΩve and np=0, start tld if np goes >= 1) 
 sample these)
 
 - is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
@@ -156,15 +156,16 @@ to do before starting testing in preparation for runs:
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
+* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
+libname a '/home/cceapsc/Scratch';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto log="/home/cceapsc/Scratch/current_modeloutput.log"; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 1000 ; 
 
-options ps=1000 ls=220 cpucount=4 spool fullstimer ;
+options ps=1000 ls=220 cpucount=4 spool stimer ;
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
@@ -1058,7 +1059,7 @@ if gender ne . then do; obs+1; end;
 *
 cia world factbook 
 malawi
-Total population (x 1000)	Population aged 0ÅE4 (%)	Population aged 15ÅE4 (%)	Population aged 65+ (%)   n population aged 15ÅE4
+Total population (x 1000)	Population aged 0ÔøΩE4 (%)	Population aged 15ÔøΩE4 (%)	Population aged 65+ (%)   n population aged 15ÔøΩE4
 1990	9 381	45.9	51.4	2.7		4821000
 1995	9 883	44.7	52.2	3.1		5159000
 2000	11 229	45.8	51.1	3.1		5738000
@@ -16159,7 +16160,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_9_20_6pm_&dataset_id";  
+  file "/home/cceapsc/Scratch/_output_09_10_20_12pm_&dataset_id";  
 
 put   
 
