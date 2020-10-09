@@ -595,8 +595,6 @@ p_neph_stops_after_ten = 0.1;
 * AP 19-7-19 ;
 * pr_art_init; r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	
 
-* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.90 then lower_future_art_cov=0;if 0.90 <= r < 0.97 then lower_future_art_cov=1;
-				if 0.97 <= r < 1.00 then lower_future_art_cov=2;
 
 * dependent_on_time_step_length ;
 
@@ -648,6 +646,9 @@ p_neph_stops_after_ten = 0.1;
 
 * prob_lossdiag_adctb;  prob_lossdiag_adctb = rand('beta',5,95); prob_lossdiag_adctb = round(prob_lossdiag_adctb,0.01);
 * prob_lossdiag_who3e;  prob_lossdiag_who3e = rand('beta',15,85);prob_lossdiag_who3e = round(prob_lossdiag_who3e,0.01);
+
+* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.93 then lower_future_art_cov=0;if 0.93 <= r        then lower_future_art_cov=1;
+
 * higher_newp_less_engagement; r=uniform(0);higher_newp_less_engagement = 0; if r < 0.2 then higher_newp_less_engagement = 1; * are people with more newp less likely to be engaged with care; 
 * fold_tr;					fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;
 
@@ -695,6 +696,7 @@ p_neph_stops_after_ten = 0.1;
 * effect_weak_sw_prog_newp;	r=uniform(0); 	if r < 0.33 then do; effect_weak_sw_prog_newp = 0.90; effect_strong_sw_prog_newp = 0.60; end;
 * effect_strong_sw_prog_newp;				if 0.33 <= r < 0.67 then do; effect_weak_sw_prog_newp = 0.80; effect_strong_sw_prog_newp = 0.50; end; 
 											if 0.67 <= r        then do; effect_weak_sw_prog_newp = 0.70; effect_strong_sw_prog_newp = 0.30; end; 
+
 
 ***** prep;
 
@@ -1494,9 +1496,6 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
-* Define a variable to enable lowering of future ART initiation;
-future_art_init_red = uniform(0);
-
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
@@ -1537,7 +1536,16 @@ eff_rate_test_restartprep = rate_test_restartprep;
 eff_rate_choose_stop_prep = rate_choose_stop_prep;
 
 * define effective prob_prep_restart_choice;
-eff_prob_prep_restart_choice = prob_prep_restart_choice;
+eff_prob_prep_restart_choice = prob_prep_restart_choice;	
+
+* define effective prob_lossdiag_who3e;
+eff_prob_lossdiag_who3e = prob_lossdiag_who3e ;
+
+* define eff_prob_lossdiag_adctb ;
+eff_prob_lossdiag_adctb = prob_lossdiag_adctb ;
+
+* define eff_prob_return_adc;
+eff_prob_return_adc = prob_return_adc ;
 
 * define effective test_targeting;
 
@@ -2012,6 +2020,21 @@ end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
 
+if caldate{t} ge 2020.5 and lower_future_art_cov=1 then do;							
+
+	eff_rate_int_choice = eff_rate_int_choice * 1.25;
+	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
+	eff_prob_lossdiag_who3e = eff_prob_lossdiag_who3e * 1.25;
+	eff_prob_lossdiag_adctb = eff_prob_lossdiag_adctb * 1.25;
+	eff_prob_lost_art = eff_prob_lost_art * 1.25;
+	eff_rate_lost = eff_rate_lost * 1.25;
+
+	eff_rate_restart = eff_rate_restart * 0.8;
+	eff_rate_return = eff_rate_return   * 0.8;
+	eff_pr_art_init =  eff_pr_art_init  * 0.8;  
+	eff_prob_return_adc = eff_prob_return_adc  * 0.8;
+
+end;
 
 
 *
@@ -2084,6 +2107,7 @@ all art stopped (no_art_disrup_covid)
 ;
 
 if caldate{t} ge 2019.5 then reg_option = 120;
+
 
 
 * ==========================================================================================================================================;
@@ -6151,12 +6175,7 @@ res_test=.;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
 				if pregnant =1 then u=u/10; * jul18 ;
 
-				if u < eff_pr_art_init and 
-				(caldate{t} le 2020.25 or
-				(caldate{t} ge 2020.5 and 
-				((lower_future_art_cov=0) or (lower_future_art_cov=1 and future_art_init_red <0.80) or (lower_future_art_cov=2 and future_art_init_red <0.50)))
-				 )
-				then time0=caldate{t};
+				if u < eff_pr_art_init then time0=caldate{t};
 
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;
@@ -16176,7 +16195,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_6_10_20_1pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_9_10_20_12pm_&dataset_id";  
 
 put   
 
