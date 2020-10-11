@@ -13,7 +13,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 
 * to give n = 500;
-if run le 848098457;
+* if run le 848098457;
 
 
 
