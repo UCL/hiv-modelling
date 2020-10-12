@@ -1,4 +1,5 @@
 
+
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\";
 libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\";
 
@@ -1324,30 +1325,6 @@ n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested 
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 death_rate_all_discount n_death_discount
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_vl_test_done  n_diag 
 
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti super_infection an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
-test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
-fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
-rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy rate_sw_rred_rc  exp_setting_lower_p_vl1000
-
 exp_setting_lower_p_vl1000  
 external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
 test_targeting    prob_loss_at_diag   pr_art_init   
@@ -1385,7 +1362,30 @@ s_sw_newp
 
 */
 
-exp_setting_lower_p_vl1000 external_exp_factor rate_exp_set_lower_p_vl1000
+
+sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy rate_sw_rred_rc  exp_setting_lower_p_vl1000
 
 prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m  p_mcirc_1549m p_diag_m p_diag_w	
 p_onart_diag p_onart_diag_m 	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2
@@ -1648,13 +1648,6 @@ data   a.wide_outputs; merge  a.wide_misc a.wide_age a.wide_onart a.wide_mcirc a
 proc contents ; run;  
 
 
-***Macro par used to add in values of all sampled parameters - values before intervention;
-%macro par(p=);
-
-* &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
-data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
-
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
@@ -1684,12 +1677,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );    %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
 %par(p= incr_mort_risk_dol_weightg );
-%par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
-%par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
-%par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
-%par(p=eff_rate_test_startprep );  	%par(p=eff_rate_test_restartprep );  	%par(p=prep_strategy );
-%par(p=eff_rate_choose_stop_prep );  		%par(p=eff_prob_prep_restart_choice );  %par(p=sw_init_newp); %par(p=sw_trans_matrix);
-%par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 );   %par(p=fold_tr_newp);
+ %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 );   %par(p=fold_tr_newp);
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
 run;
 
@@ -1755,9 +1743,6 @@ p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500
 ; 
 
 
-proc export 
-data=a.wide_par dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\parameters" replace; run;
-
 /*
 
 proc export 
@@ -1783,3 +1768,6 @@ data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa 
 
 */
 
+
+proc export 
+data=a.wide_par dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\parameters" replace; run;
