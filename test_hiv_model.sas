@@ -16212,12 +16212,16 @@ libname tmp_out "/home/cceapsc/Scratch";
 *%include "/folders/myfolders/hiv-modelling/config.sas";
 %include "./config.sas";
 
-data raw_data(compress=binary);
+*data raw_data(compress=binary);
+data a.output_sas__&dataset_id(compress=binary);
 format &keep_vars; * to sort variables in the order specified (in config.sas);
 set cum_l1;
 keep &keep_vars;
 run;
 
+
+
+/**
 %if %sysfunc(exist(tmp_out.output_compressed)) %then 
 	%do;
 		proc append base = tmp_out.output_compressed data = raw_data;
@@ -16229,7 +16233,7 @@ run;
 			set raw_data;
 		run;
 	%end;
-
+*/
 
 /* proc contents data = output_csv; */
 /* run; */
