@@ -1792,6 +1792,15 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
   by run;run;
 run;
 
+
+proc means n p50 mean p5 p95;
+var p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20
+p_onart_diag_40_41_1 p_onart_diag_m_40_41_1 p_onart_diag_w_40_41_1
+;run;
+
+proc freq;table lower_future_art_cov;run;
+
+
 proc means n p50 mean p5 p95;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
 prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
