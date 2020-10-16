@@ -2021,7 +2021,7 @@ end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
 
-if caldate{t} ge 2020.5 and lower_future_art_cov=1 then do;							
+if caldate{t} = 2020.5 and lower_future_art_cov=1 then do;							
 
 	eff_rate_int_choice = eff_rate_int_choice * 1.25;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
