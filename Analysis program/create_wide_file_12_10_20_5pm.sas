@@ -1783,7 +1783,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_9_10_20_4pm ;
+  data a.wide_vmmc_12_10_20_5pm ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -1793,11 +1793,26 @@ run;
 
 
 proc means n p50 mean p5 p95;
-var p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20
-p_onart_diag_40_41_1 p_onart_diag_m_40_41_1 p_onart_diag_w_40_41_1
-;run;
+var p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20;run;
 
-proc freq;table lower_future_art_cov;run;
+proc means n p50 mean p5 p95;
+var p_onart_diag_40_41_1 p_onart_diag_m_40_41_1 p_onart_diag_w_40_41_1
+;where lower_future_art_cov=0;run;
+
+proc means n p50 mean p5 p95;
+var p_onart_diag_40_41_1 p_onart_diag_m_40_41_1 p_onart_diag_w_40_41_1
+;where lower_future_art_cov=1;run;
+
+proc means n p50 p5 p95;var
+prevalence1549_40_41_1 
+incidence1549_40_41_1 
+prop_1564_onprep_20
+p_diag_40_41_1 
+p_onart_diag_40_41_1 
+p_vl1000_40_41_1 
+p_onart_vl1000_40_41_1 
+p_mcirc_1549m_40_41_1;
+;where lower_future_art_cov=1;run;
 
 
 proc means n p50 mean p5 p95;
