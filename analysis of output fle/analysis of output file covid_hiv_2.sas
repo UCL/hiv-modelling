@@ -9,10 +9,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
  * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
  * set a.w_covid_hiv_2_22_8_20_3pm_u;
  * set a.w_covid_hiv_2_16_9_20_10am;
-   set a.w_covid_hiv_2_16_9_20_10am_d1 a.w_covid_hiv_2_16_9_20_10am_d2;
+   set a.w_covid_hiv_2_16_9_20_10am_d1 a.w_covid_hiv_2_16_9_20_10am_d2 a.w_covid_hiv_2_16_9_20_10am_d3;
 
 
-* to give n = 500;
+* to give results for n = 500 sent to john stover use condition below with d1 and d2, not d3 ;
 * if run le 848098457;
 
 
