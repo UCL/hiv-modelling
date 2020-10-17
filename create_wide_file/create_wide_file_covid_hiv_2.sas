@@ -1329,7 +1329,7 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 
 data d3;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_16_9_20_10am_3";  
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\covid_hiv_2\c_output_covid_hiv_2_16_9_20_10am_3_temp";  
 
 input  
 
