@@ -592,7 +592,7 @@ proc freq;table run;where cald=2020;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-set a ;
+set d1;
  
 if cald=2020;
 s_alive = s_alive_m + s_alive_w ;
