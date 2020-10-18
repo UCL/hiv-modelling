@@ -1,11 +1,9 @@
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-* set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-* set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-  set a.wide_tld_prep_14_8_20_5pm;
+  set a.wide_tld_prep_26_9_20_6pm;
 
 
 

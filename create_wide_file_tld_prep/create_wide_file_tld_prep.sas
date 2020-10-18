@@ -1575,4 +1575,28 @@ aids_death_rate_20  death_rate_onart_20 ;
 run;
 
 
+ods html;
+proc means n p50 p5 p95;
+var p_w_giv_birth_this_per_20	prevalence1524w_20 	prevalence1524m_20 	prevalence1549m_20 prevalence1549w_20 	prevalence4549m_20
+incidence1549w_20  incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20  ;
+run;
+ods html close;
+
+
+ods html;
+proc means n median p5 p95 min max ;
+var	p_mcirc_1549m_20 
+prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20 prevalence4549m_20
+incidence1549w_20 incidence1549m_20	p_diag_m_20   p_diag_w_20	
+p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
+prop_w_1549_sw_20    prop_1564_onprep_20  prop_w_1524_onprep_20 
+p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 
+p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
+prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
+aids_death_rate_20  p_newp_sw_20 ;
+run;
+ods html close;
 
