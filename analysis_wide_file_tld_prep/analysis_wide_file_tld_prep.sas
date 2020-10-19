@@ -625,6 +625,8 @@ p_vl1000_20_70_1 p_vl1000_20_70_2 p_vl1000_20_70_3
 prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2 prevalence_vg1000_20_70_3 
 prop_art_or_prep_20_70_1  prop_art_or_prep_20_70_2 prop_art_or_prep_20_70_3
 prop_elig_on_prep_20_70_1 prop_elig_on_prep_20_70_2 prop_elig_on_prep_20_70_3
+p_elig_prep_20_70_1 p_elig_prep_20_70_2 p_elig_prep_20_70_3 
+prop_1564_hivneg_onprep_20_70_1 prop_1564_hivneg_onprep_20_70_2 prop_1564_hivneg_onprep_20_70_3 
 ;
 run; 
 ods html close;

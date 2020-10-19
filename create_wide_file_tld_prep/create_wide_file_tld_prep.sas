@@ -1158,6 +1158,7 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_infection  p_onart_as_tld_prep
+prop_1564_hivneg_onprep
 
 sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1326,6 +1327,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m);
 %var(v=n_mcirc1549_);%var (v=n_mcirc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);  %var(v=p_onart_as_tld_prep);
+%var(v=prop_1564_hivneg_onprep);
 
 
 data   wide_outputs; merge 
@@ -1366,7 +1368,7 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested test_prop_positive p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_new_inf1549m n_new_inf1549
-p_vl1000_art_12m p_vl1000_art_12m_onart p_onart_as_tld_prep
+p_vl1000_art_12m p_vl1000_art_12m_onart p_onart_as_tld_prep prop_1564_hivneg_onprep
 ;
 
 proc contents; run;
@@ -1581,7 +1583,7 @@ ods html;
 proc means n p50 p5 p95;
 var p_w_giv_birth_this_per_20	prevalence1524w_20 	prevalence1524m_20 	prevalence1549m_20 prevalence1549w_20 	prevalence4549m_20
 incidence1549w_20  incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_hivneg_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20  ;
 run;
@@ -1594,7 +1596,7 @@ var	p_mcirc_1549m_20
 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20 prevalence4549m_20
 incidence1549w_20 incidence1549m_20	p_diag_m_20   p_diag_w_20	
 p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
-prop_w_1549_sw_20    prop_1564_onprep_20  prop_w_1524_onprep_20 
+prop_w_1549_sw_20    prop_1564_hivneg_onprep_20  prop_w_1524_onprep_20 
 p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 
 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
