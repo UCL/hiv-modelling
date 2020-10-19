@@ -602,7 +602,7 @@ proc sort; by run;
 
 
 data y; 
-merge a sf;
+merge d1 sf;
 by run ;
 
 
@@ -866,10 +866,10 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prep;
 
 * p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
-* prop_elig_on_prep;			if s_elig_prep then prop_elig_on_prep = s_prep / s_elig_prep ; 
+* prop_elig_on_prep;			if s_elig_prep > 0 then prop_elig_on_prep = s_prep / s_elig_prep ; 
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
 * p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  * proportion of all newp in hiv-ve people for which person is on prep;
-
+* prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep-s_hiv1_prep), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 
 * p_elig_prep;   				p_elig_prep = s_elig_prep / (s_alive1564 - s_hiv1564);
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
@@ -1584,7 +1584,6 @@ prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20  p_mcirc_1549m_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20 n_tested_20
 aids_death_rate_20  death_rate_onart_20 ;
-where dataset=2;
 run;
 
 
