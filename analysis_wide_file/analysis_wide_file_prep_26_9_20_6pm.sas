@@ -465,6 +465,8 @@ prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2
 prop_1564_onprep_20_70_1  prop_1564_onprep_20_70_2
 p_prep_ever_20_70_1 p_prep_ever_20_70_2
 p_hiv1_prep_20_70_1 p_hiv1_prep_20_70_2
+p_mcirc_1549m_20_70_1 p_mcirc_1549m_20_70_2 
+prop_elig_on_prep_20_70_1 prop_elig_on_prep_20_70_2
 
 dadc_cost_20_70_1   dadc_cost_20_70_2   
 dcd4_cost_20_70_1   dcd4_cost_20_70_2   
