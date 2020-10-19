@@ -5,8 +5,6 @@
 data wide;    
   set a.wide_tld_prep_26_9_20_6pm;
 
-
-
 * --------------------------------------------------------------------------------------------------------------;
 
 * general code;
@@ -616,7 +614,7 @@ d_ndb_500_20_70_2  d_ndb_500_20_70_3
 d_dcost_20_70_2  d_dcost_20_70_3  
 d_n_tested_20_70_2 d_n_tested_20_70_3
 d_prop_art_or_prep_20_70_2 d_prop_art_or_prep_20_70_3
-d_p_elig_on_prep_hivneg_20_70_2 d_elig_on_prep_hivneg_20_70_3
+d_p_elig_on_prep_hivneg_20_70_2 d_p_elig_on_prep_hivneg_20_70_3
 incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3
 n_tested_20_70_1 n_tested_20_70_2 n_tested_20_70_3 
 p_onart_20_70_1 p_onart_20_70_2 p_onart_20_70_3
@@ -624,14 +622,19 @@ p_diag_20_70_1 p_diag_20_70_2 p_diag_20_70_3
 p_vl1000_20_70_1 p_vl1000_20_70_2 p_vl1000_20_70_3
 prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2 prevalence_vg1000_20_70_3 
 prop_art_or_prep_20_70_1  prop_art_or_prep_20_70_2 prop_art_or_prep_20_70_3
-prop_elig_on_prep_hivneg_20_70_1 prop_elig_on_prep_hivneg_20_70_2 prop_elig_on_prep_hivneg_20_70_3
+prop_elig_on_prep_hivneg_20_70_1 prop_elig_on_prep_hivneg_20_70_2 prop_elig_on_prep_hivneg_20_70_3 
 p_elig_prep_20_70_1 p_elig_prep_20_70_2 p_elig_prep_20_70_3 
 prop_1564_hivneg_onprep_20_70_1 prop_1564_hivneg_onprep_20_70_2 prop_1564_hivneg_onprep_20_70_3 
+p_onart_as_tld_prep_20_70_1 p_onart_as_tld_prep_20_70_2 p_onart_as_tld_prep_20_70_3
+p_onart_diag_20_70_1  p_onart_diag_20_70_2  p_onart_diag_20_70_3
+p_onart_20_70_1  p_onart_20_70_2  p_onart_20_70_3
 ;
 run; 
 ods html close;
 
 proc freq; tables ce_500 ; run;
+
+
 
 
 

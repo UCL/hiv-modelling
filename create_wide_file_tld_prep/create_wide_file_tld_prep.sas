@@ -587,7 +587,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 data a; set d1;
 
-
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
 
@@ -878,7 +877,6 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_prep_ever;					n_prep_ever = s_prep_ever * sf_2020;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
 
-
 * n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2020;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2020;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2020;
@@ -886,6 +884,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2020;
 * n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2020;
 
+* note this below is incorrect in context of tld prep because some on prep are not eligible they only take it as they have never tested and
+think they may have hiv so they take it;
 * prop_elig_on_prep_hivneg;		if s_elig_prep > 0 then prop_elig_on_prep_hivneg = ( s_prep - s_onart_as_tld_prep ) / s_elig_prep ; 
 
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
@@ -1231,6 +1231,7 @@ data a.tld_prep_26_9_20_6pm; set y;
 data y; set a.prep_26_9_20_6pm; run;
 
 
+
   options nomprint;
   option nospool;
 
@@ -1561,7 +1562,6 @@ proc sort; by run;run;
 
   data a.wide_tld_prep_26_9_20_6pm; 
 
-
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
 * merge   wide_outputs  wide_par ;  
@@ -1588,6 +1588,7 @@ p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl10
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20  ;
 run;
 ods html close;
+
 
 
 ods html;
