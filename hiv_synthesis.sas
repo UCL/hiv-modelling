@@ -11762,7 +11762,7 @@ end;
 
 started_art_as_tld_prep_vl1000=.; onart_as_tld_prep=.; onart_as_tld_prep_vl1000=.;
 if started_art_as_tld_prep = 1 then do; started_art_as_tld_prep_vl1000 = vl1000;  end;
-if started_art_as_tld_prep and onart=1 and registd ne 1 then onart_as_tld_prep=1; 
+if started_art_as_tld_prep = 1 and onart=1 and registd ne 1 then onart_as_tld_prep=1; 
 if onart_as_tld_prep=1 then do; onart_as_tld_prep_vl1000 = vl1000;   end; 
 
 ***As above, stratified by gender;
@@ -16196,7 +16196,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_9_10_20_12pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_20_10_20_7pm_&dataset_id";  
 
 put   
 
