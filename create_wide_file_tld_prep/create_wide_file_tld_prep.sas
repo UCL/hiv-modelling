@@ -1069,6 +1069,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 * p_onart_as_tld_prep;			if s_hiv1564- s_diag > 0 then p_onart_as_tld_prep = s_onart_as_tld_prep / (s_hiv1564 - s_diag);
 
+
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
 * p_vl1000_art_12m_onart;		if s_art_12m > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m / s_art_12m_onart ;
 
