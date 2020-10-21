@@ -3564,8 +3564,9 @@ end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
 
+epdiag=0; epart=0; 
 if epi=1 then do;
-	epdiag=0;
+
 	if epdiag_tm1=1 then epdiag=1;
 	if epdiag_tm1 ne 1 then do;
 		epdiag=0; s=uniform(0);
@@ -3586,7 +3587,7 @@ if epi=1 then do;
 		if s < j then epdiag=1;
 	end;
 
-	epart=0; if epdiag=1 then do; * remember some infected partners are lost to follow-up;
+	if epdiag=1 then do; * remember some infected partners are lost to follow-up;
 		if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
 		if epart_tm1 ne 1 and epdiag=1 then do;
 			epart=0; s=uniform(0);
