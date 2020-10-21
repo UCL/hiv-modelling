@@ -706,6 +706,7 @@ prop_1564_hivneg_onprep_20_25_1 prop_1564_hivneg_onprep_20_25_2 prop_1564_hivneg
 p_onart_as_tld_prep_20_25_1 p_onart_as_tld_prep_20_25_2 p_onart_as_tld_prep_20_25_3
 p_onart_diag_20_25_1  p_onart_diag_20_25_2  p_onart_diag_20_25_3
 p_onart_20_25_1  p_onart_20_25_2  p_onart_20_25_3
+p_newp_ge1_20_25_1 p_newp_ge1_20_25_2 p_newp_ge1_20_25_3 
 ;
 run; 
 ods html close;
