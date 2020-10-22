@@ -225,13 +225,13 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * incr_adh_pattern_prep_2020;
 						incr_adh_pattern_prep_2020 = 0;  
-						if _u25 < 0.95 then do; 
+						if _u25 < 0.80 then do; 
 							incr_adh_pattern_prep_2020 = 1; 
 							adhav_pr = adhav*1.00; 
 						end;		
 
 * inc_r_test_startprep_2020;
-						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
+						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.80 then do; 
 							inc_r_test_startprep_2020 = 1; 
 							eff_rate_test_startprep = 0.9; 
 							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
@@ -239,7 +239,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * incr_r_test_restartprep_2020;
 						incr_r_test_restartprep_2020 = 0;  
-						if _u28 <= 0.95 then do; 
+						if _u28 <= 0.80 then do; 
 							incr_r_test_restartprep_2020 = 1; 
 							eff_rate_test_restartprep = 0.9; 
 							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
@@ -247,7 +247,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * decr_r_choose_stop_prep_2020;
 						decr_r_choose_stop_prep_2020 = 0;  
-						if _u30 < 0.95 then do; 
+						if _u30 < 0.80 then do; 
 							decr_r_choose_stop_prep_2020 = 1; 
 							eff_rate_choose_stop_prep = 0.03 ; 
 							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
@@ -255,7 +255,7 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * inc_p_prep_restart_choi_2020;
 						inc_p_prep_restart_choi_2020 = 0;  
-						if _u32 < 0.95 then do; 
+						if _u32 < 0.80 then do; 
 							inc_p_prep_restart_choi_2020 = 1; 
 							eff_prob_prep_restart_choice = 0.8 ; 
 							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
@@ -263,13 +263,13 @@ if _u48 <= 1.0 then prep_improvements = 1;
 
 * incr_prepuptake_sw_2020;
 						incr_prepuptake_sw_2020 = 0;  
-						if _u34 < 0.95 then do; incr_prepuptake_sw_2020 = 1; 
+						if _u34 < 0.80 then do; incr_prepuptake_sw_2020 = 1; 
 							r= uniform(0); if r < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
 						end;		
 
 * incr_prepuptake_pop_2020;
 						incr_prepuptake_pop_2020 = 0;  
-						if _u36 < 0.95 then do; 
+						if _u36 < 0.80 then do; 
 							incr_prepuptake_pop_2020 = 1; 
 							r= uniform(0); if r < 0.95 and prep_willing_pop = 0 then prep_willing_pop = 1;
 						end;	
