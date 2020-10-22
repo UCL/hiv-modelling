@@ -239,13 +239,12 @@ d_n_vl_test_done_20_21_2_1 = n_vl_test_done_20_21_2 - n_vl_test_done_20_21_1 ;
 d_n_death_dis_20_70_2_1 = n_death_discount_20_70_1 - n_death_discount_20_70_2 ;
 d_n_death_dis_20_25_2_1 = n_death_discount_20_25_1 - n_death_discount_20_25_2 ;
 
-if d_n_vl_test_done_20_21_2_1 > 0 then 
+if d_n_vl_test_done_20_21_2_1 > 0  and prob_vl_meas_done ne 0 then 
 deaths_averted_per_10000_vl_test = (d_n_death_dis_20_70_2_1 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
 else deaths_averted_per_10000_vl_test = 0;
 
-
 if d_n_vl_test_done_20_21_2_1 > 0 and prob_vl_meas_done ne 0 then  
-deaths_av_per_10000_vl_test_5y = (d_n_death_dis_20_25_2_1 * 50 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
+deaths_av_per_10000_vl_test_5y = (d_n_death_dis_20_25_2_1 * 5 / d_n_vl_test_done_20_21_2_1 ) * 10000 ;
 else deaths_av_per_10000_vl_test_5y = 0;
 * note need to restrict this to setting scenarios with prob_vl_meas_done ne 0;
 

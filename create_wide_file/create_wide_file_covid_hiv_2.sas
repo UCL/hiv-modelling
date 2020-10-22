@@ -2979,7 +2979,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_covid_hiv_2_16_9_20_10am_d3 
+  data a.w_covid_hiv_2_16_9_20_10am_d3 ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -3016,7 +3016,4 @@ p_tle_20	 p_tld_20	 p_zld_20	 p_zla_20	 p_otherreg_20	 p_drug_level_test_20	 p_l
 r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_art_or_prep_20 n_sw_1564_20 
 p_k65m_20 p_m184m_20 ;
 run;
-
-
-proc freq; tables run; run;
 
