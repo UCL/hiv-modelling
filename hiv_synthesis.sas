@@ -6358,7 +6358,23 @@ res_test=.;
 
 	* interruption of prep before diagnosis;
 	* dependent_on_time_step_length ; 
-	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and onart   =1 then interrupt   =1;	
+	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
+		interrupt   =1;
+		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
+
+		if o_zdv_tm1=1 then do;  mr_zdv=1; tss_zdv=0; end;
+		if o_3tc_tm1=1 then do;  mr_3tc=1;tss_3tc=0; end;
+		if o_ten_tm1=1 then do;  mr_ten=1;tss_ten=0; end;
+		if o_nev_tm1=1 then do;  mr_nev=1;tss_nev=0; end;
+		if o_dar_tm1=1 then do;  mr_dar=1;tss_dar=0; end;
+		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
+		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
+		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
+		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
+		v_inter=vl_tm1; tcur_inter=tcur;
+	end;
 
 	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_tm1 =1 and prep=0))
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
