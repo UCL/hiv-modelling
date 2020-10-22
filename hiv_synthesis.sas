@@ -5795,9 +5795,9 @@ visit_tm1=visit;
 	vfail1_tm1 = vfail1;
 
 
-	* for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
+	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
 	if prep = 1 and pop_wide_tld_prep = 1 then do;
-	onart   =1; time0=caldate{t}; yrart=time0; 
+	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur  =0;  line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
