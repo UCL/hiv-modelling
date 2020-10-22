@@ -3564,8 +3564,9 @@ end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
 
+epdiag=0; epart=0; 
 if epi=1 then do;
-	epdiag=0;
+
 	if epdiag_tm1=1 then epdiag=1;
 	if epdiag_tm1 ne 1 then do;
 		epdiag=0; s=uniform(0);
@@ -3586,7 +3587,7 @@ if epi=1 then do;
 		if s < j then epdiag=1;
 	end;
 
-	epart=0; if epdiag=1 then do; * remember some infected partners are lost to follow-up;
+	if epdiag=1 then do; * remember some infected partners are lost to follow-up;
 		if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
 		if epart_tm1 ne 1 and epdiag=1 then do;
 			epart=0; s=uniform(0);
@@ -4012,7 +4013,7 @@ end;
 
 *Adherence to PrEP - modified Jan2017 f_prep;
 if prep = 1 then do;
-	adh=adhav_pr + adhvar*normal(0);  if adh gt 1 then adh=1; * may17;
+	adh=adhav_pr + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
 	if adhav_pr=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
@@ -5794,9 +5795,9 @@ visit_tm1=visit;
 	vfail1_tm1 = vfail1;
 
 
-	* for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
+	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
 	if prep = 1 and pop_wide_tld_prep = 1 then do;
-	onart   =1; time0=caldate{t}; yrart=time0; 
+	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur  =0;  line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
@@ -6357,7 +6358,23 @@ res_test=.;
 
 	* interruption of prep before diagnosis;
 	* dependent_on_time_step_length ; 
-	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and onart   =1 then interrupt   =1;	
+	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
+		interrupt   =1;
+		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
+
+		if o_zdv_tm1=1 then do;  mr_zdv=1; tss_zdv=0; end;
+		if o_3tc_tm1=1 then do;  mr_3tc=1;tss_3tc=0; end;
+		if o_ten_tm1=1 then do;  mr_ten=1;tss_ten=0; end;
+		if o_nev_tm1=1 then do;  mr_nev=1;tss_nev=0; end;
+		if o_dar_tm1=1 then do;  mr_dar=1;tss_dar=0; end;
+		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
+		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
+		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
+		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
+		v_inter=vl_tm1; tcur_inter=tcur;
+	end;
 
 	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_tm1 =1 and prep=0))
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
