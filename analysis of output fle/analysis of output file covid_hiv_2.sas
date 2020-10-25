@@ -9,7 +9,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
  * set a.w_covid_hiv_2_22_8_20_3pm_1_2;
  * set a.w_covid_hiv_2_22_8_20_3pm_u;
  * set a.w_covid_hiv_2_16_9_20_10am;
-   set a.w_covid_hiv_2_16_9_20_10am_d1 a.w_covid_hiv_2_16_9_20_10am_d2 a.w_covid_hiv_2_16_9_20_10am_d3;
+   set a.w_covid_hiv_2_16_9_20_10am_d1 a.w_covid_hiv_2_16_9_20_10am_d2 a.w_covid_hiv_2_16_9_20_10am_d3 a.w_covid_hiv_2_16_9_20_10am_d4;
 
 
 * to give results for n = 500 sent to john stover use condition below with d1 and d2, not d3 ;
@@ -622,7 +622,7 @@ n_tested_19   n_onart_19 n_vl_test_done_19   n_diag_19  n_start_line2_19 n_new_m
 ;
 run;
 
-
+ods html;
 proc means n p50 p5 p95;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
 p_newp_sw_20   n_tested_m_20
@@ -641,6 +641,7 @@ p_tle_20	 p_tld_20	 p_zld_20	 p_zla_20	 p_otherreg_20	 p_drug_level_test_20	 p_l
 r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_art_or_prep_20 n_sw_1564_20 
 p_k65m_20 p_m184m_20 ;
 run;
+ods html close;
 
 /*
 proc univariate  data=wide;  var gender_r_newp_05_20
@@ -883,7 +884,7 @@ proc univariate; var p_diag_20 ; run;
 
 proc means n mean lclm uclm p5 p95 data=wide ; 
 var  deaths_averted_per_10000_test ;
-* where p_diag_20 < 82 ;
+  where p_diag_20 < 82 ;
 * where 82 <= p_diag_20 < 92; 
-  where 92 <= p_diag_20 ; 
+* where 92 <= p_diag_20 ; 
 run;
