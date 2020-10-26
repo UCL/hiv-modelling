@@ -165,7 +165,7 @@ libname a '/home/cceapsc/Scratch/';
 	
 * %let population = 1000; 
 
-options ps=1000 ls=220 cpucount=4 spool fullstimer ;
+* options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
