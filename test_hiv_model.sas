@@ -544,7 +544,8 @@ libname a '/home/cceapsc/Scratch';
 */
 * %let population = 1000;
 
-/* options ps=1000 ls=220 cpucount=4 spool fullstimer ; */
+options ps=1000 ls=220 cpucount=8 spool stimer ;
+
 
 data cum_l1; 
 if eeee=1;
