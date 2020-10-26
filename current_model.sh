@@ -14,10 +14,5 @@
 module load sas/9.4/64
 cd $TMPDIR
 cp $HOME/sas/hiv-modelling/hiv_synthesis.sas .
-#for file in `echo $addinfiles | tr ':' ' '` 
-#do 
-# cp $file . 
-#done
 sleep $[ ( $RANDOM % 10 ) + 1 ]s
-#sas $sas_infile
-sas ./hiv_synthesis.sas
+sas hiv_synthesis.sas
