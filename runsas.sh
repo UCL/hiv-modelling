@@ -2,6 +2,7 @@
 #$ -l h_rt=08:00:00
 #$ -l mem=6G
 #$ -l tmpfs=15G
+#$ -pe smp 16
 #S -N hivtestrun
 #$ -wd /home/cceapsc/Scratch
 cd $TMPDIR

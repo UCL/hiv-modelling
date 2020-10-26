@@ -17,7 +17,7 @@ for file in `echo $addinfiles | tr ':' ' '`
 do 
  cp $file . 
 done
-sleep $[(RANDOM $ 10) +  1]s
+sleep $[(RANDOM % 10) +  1]s
 sas $sas_infile
 
 
