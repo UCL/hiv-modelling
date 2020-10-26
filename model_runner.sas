@@ -1,5 +1,5 @@
 proc printto log="/home/cceapsc/Scratch/run_1000_100.log";
-options ps=1000 ls=220 cpucount=4 spool fullstimer ;
+options ps=1000 ls=220 cpucount=8 spool stimer ;
 
 %let population = 1000;
 %let total_runs = 100;
