@@ -16,7 +16,7 @@ options ps=1000 ls=220 cpucount=16 spool stimer ;
 			dataset_id = trim(left(run));
 			call symput("dataset_id", dataset_id);			
 		run;
-		%include "/home/cceapsc/sas/hiv-modelling/hiv_synthesis_sasonly.sas";
+		%include "/home/cceapsc/sas/hiv-modelling/hiv_synthesis_onefile.sas";
 	%end;
 %mend modelrun;
 %modelrun(&total_runs);
