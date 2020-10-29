@@ -157,13 +157,13 @@ to do before starting testing in preparation for runs:
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
+  libname a 'C:\Users\jas05\Documents\My SAS Files\HIV Synthesis\Model outputs';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 1000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -14192,6 +14192,7 @@ cald = caldate_never_dot ;
 
 
 * procs;
+proc print; var cald gender age ep newp hiv onart; where age >=15; run;
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
