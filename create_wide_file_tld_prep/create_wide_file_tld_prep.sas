@@ -7,9 +7,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_26_9_20_6pm";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
 
 input 
+
 
 
 /*general*/
@@ -476,7 +477,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
@@ -1226,9 +1227,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.tld_prep_26_9_20_6pm; set y;
+data a.tld_prep_22_10_20_5pm; set y;
 
-data y; set a.prep_26_9_20_6pm; run;
+data y; set a.prep_22_10_20_5pm; run;
 
 
 
@@ -1560,7 +1561,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_tld_prep_26_9_20_6pm; 
+  data a.wide_tld_prep_22_10_20_5pm; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
