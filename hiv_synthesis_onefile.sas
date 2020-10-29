@@ -158,7 +158,8 @@ to do before starting testing in preparation for runs:
 
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
-libname a '/home/cceapsc/Scratch/';
+* libname a '/home/cceapsc/Scratch/';
+libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -16212,14 +16213,14 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-data raw_data(compress=binary); set cum_l1; run = &run;
+data a.raw_data(compress=binary); set cum_l1; run = &run;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 /*  file "/home/cceapsc/Scratch/_output_26_10_20_7pm_&dataset_id";  
 
 put
 */
    
-
+keep;
 /*general*/
 run   cald   option 
 
@@ -16795,6 +16796,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 run;
 
+/**
 %if %sysfunc(exist(a.output_compressed)) %then 
 	%do;
 		proc append base = a.output_compressed data = raw_data;
@@ -16807,6 +16809,17 @@ run;
 		run;
 	%end;
 
+proc print; var &run; run;
+**/
+proc contents data=a.raw_data;
+   title "Raw Data Set";
+run;
+
+/**
+proc contents data=a.output_compressed;
+   title "Compressed data set";
+run;
+*/
 
 
 
