@@ -15,4 +15,4 @@ cd $TMPDIR
 module load sas/9.4/64
 cp /home/cceapsc/sas/hiv-modelling/hiv_synthesis.sas .
 sleep $[ ( $RANDOM % 10 ) + 1 ]s
-sas `pwd`/hiv-modelling/hiv_synthesis.sas
+sas hiv_synthesis.sas
