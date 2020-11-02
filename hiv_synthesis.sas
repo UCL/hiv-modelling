@@ -2149,13 +2149,13 @@ incr_test_targeting_2020 = 0;
 *increase in the maximum frequency of testing;
 incr_max_freq_testing_2020 = 0;
 
-*testing SW every 6 months instead of annually;
+*testing SW every 6 months;
 sw_test_6mthly_2020 = 0;
 
 *switching regimens;
 reg_option_switch_2020 = 0;
 
-*assuming ten has same profile as taf;
+*tenofovir is taf, rather than tdf as it is by default;
 ten_is_taf_2020 = 0; *coded within core (not below options code);
 
 *increase in rates of circumcision;
@@ -2272,14 +2272,14 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 option = &s;
 
 
+if caldate_never_dot = 2020.50 then do;
+* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
+who may be dead and hence have caldate{t} missing;
+
 * can add in potential changes in policy after 2020.5 here -  set specific '2020' variables to '1' and specify proportion of
   runs for which the option should take place;
 	/*E.g. u=uniform(0); if u<0.90 then incr_test_2020=1;*/
 
-
-if caldate_never_dot = 2020.50 then do;
-* we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
-who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
 
@@ -2519,7 +2519,7 @@ end;
 end;
 
 * this is the default if note circ_inc_rate_2020 = .  - no change in circ policy ;
-if t ge 2 and 2019 < caldate{t} and circ_inc_rate=0         then do;
+if t ge 2 and 2019 < caldate{t} and circ_inc_rate_2020=0         then do;
 if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
@@ -16418,7 +16418,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_10_20_8am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_02_11_20_5pm_&dataset_id";  
 
 put   
 
