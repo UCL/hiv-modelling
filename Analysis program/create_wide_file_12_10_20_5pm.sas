@@ -5,7 +5,8 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm";
+  *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm_a";
 
 input 
 
@@ -586,7 +587,7 @@ data a; set d1  ;
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2014;run;
-
+proc freq;table lower_future_art_cov;where cald=2025;run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set a ;
@@ -1431,10 +1432,10 @@ s_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.vmmc_12_10_20_5pm; set y;run;
+data a.vmmc_12_10_20_5pm_a; set y;run;
 
 
-data y; set a.vmmc_12_10_20_5pm; run;
+data y; set a.vmmc_12_10_20_5pm_a; run;
 
   options nomprint;
   option nospool;
@@ -1783,7 +1784,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_12_10_20_5pm ;
+  data a.wide_vmmc_12_10_20_5pm_a ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

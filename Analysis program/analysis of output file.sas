@@ -1,8 +1,16 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
 data a;
-*set a.wide_vmmc_10_9_20_8pm;
-set a.wide_vmmc_26_9_20_5pm_all;
+set a.wide_vmmc_12_10_20_5pm;
+if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
+if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete; ***456 runs left after deleting above - remove 6 runs to get 450 and then add in 50 runs from output file below;
+run;
+data b;
+set a.wide_vmmc_12_10_20_5pm_a;
+run;
+
+data c;
+set a b;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -117,10 +125,9 @@ d_n_new_inf_20_70_1 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
    maximum difference found above;
 /*
 proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
-*max=134420, 139067, 179890;
 */
 
-nnt_20_25_1=134420; nnt_20_40_1=139067; nnt_20_70_1=179890;
+nnt_20_25_1=153761; nnt_20_40_1=155944; nnt_20_70_1=179890;
 
 if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
 if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
@@ -141,21 +148,20 @@ d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
    max difference;
 /*
 proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
-*max=15.5, 11.8, 9.1;
+*max=15.3, 12.5, 12.6;
 */
 
-cost_inf_avert_20_25_1=15.5*1000000; cost_inf_avert_20_40_1=11.8*1000000; cost_inf_avert_20_70_1 = 9.1*1000000;
+cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=12.5*1000000; cost_inf_avert_20_70_1 = 12.6*1000000;
 if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_d_new_inf_20_25_1)*1000000;
 if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_d_new_inf_20_40_1)*1000000;
 if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
 
 
 *cost per daly averted =icer; 
-cost_daly_avert_20_25_1_adults=15.5*1000000;
-cost_daly_avert_20_40_1_adults=11.8*1000000;
-cost_daly_avert_20_70_1_adults=9.1*1000000;
+cost_daly_avert_20_25_1_adults=15.3*1000000;
+cost_daly_avert_20_40_1_adults=12.5*1000000;
+cost_daly_avert_20_70_1_adults=12.6*1000000;
 
-cost_daly_avert_20_70_1_adults=7700000;
 *check everything is the right way;
 /*if d_ddaly_adults_20_25_1 gt 0 then*/ cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
 /*if d_ddaly_adults_20_40_1 gt 0 then*/ cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
@@ -164,7 +170,6 @@ cost_daly_avert_20_70_1_adults=7700000;
 
 run;
 
-proc contents;run;
 
 
 ***table 1;
