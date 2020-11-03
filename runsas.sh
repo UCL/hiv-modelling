@@ -11,6 +11,6 @@ cp $HOME/sas/hiv-modelling/model_runner.sas .
 cp $HOME/sas/hiv-modelling/hiv_synthesis_onefile.sas .
 #cp $HOME/sas/hiv-modelling/config.sas .
 
-sas model_runner.sas
+sas `pwd`/model_runner.sas
 
 
