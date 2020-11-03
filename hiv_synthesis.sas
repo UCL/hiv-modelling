@@ -9577,7 +9577,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 		incr_death_rate_tb_ = incr_death_rate_tb; incr_death_rate_adc_ = incr_death_rate_adc;
 
-		if visit=1 and (sv ne 1 or (. < adh < 0.8 and onart=1)) then do; * so lower death rate if under care when adc occurs, unless under simplified visits 
+		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then do; * so lower death rate if under care when adc occurs, unless under simplified visits 
 		and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) - reason for the poor adh condition
 		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;	
 			incr_death_rate_tb_ = incr_death_rate_tb / 1.5; incr_death_rate_adc_ = incr_death_rate_adc / 1.5; 
@@ -16214,7 +16214,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_20_10_20_7pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_26_10_20_8am_&dataset_id";  
 
 put   
 
