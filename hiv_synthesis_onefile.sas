@@ -156,9 +156,10 @@ to do before starting testing in preparation for runs:
 ;
 
 
+*options user="/folders/myfolders/";
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
-libname a '/home/cceapsc/Scratch/';
+ libname a '/home/cceapsc/Scratch/';
 * libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -167,7 +168,6 @@ libname a '/home/cceapsc/Scratch/';
 * %let population = 1000; 
 
 * options ps=1000 ls=220 cpucount=4 spool fullstimer ;
-
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
 if eeee=1;
@@ -16815,7 +16815,7 @@ proc contents data=raw_data;
 run;
 **/
 
-/**
+/** 
 proc contents data=a.out_compressed;
    title "Compressed data set";
 run;
