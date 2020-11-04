@@ -456,15 +456,6 @@ proc freq;table ce_20_70;where incid_cat3=3 and incid_cat2040_3=3;run;
 
 
 
-*incidence;
-if 0  le incidence1549_20 le 0.30 then incid_cat3=1;
-if 0.30 lt incidence1549_20 le 0.60 then incid_cat3=2;
-if 0.60 lt incidence1549_20 le 1 then incid_cat3=3;
-
-if 0  le incidence1549_40_41_1 le 0.30 then incid_cat2040_3=1;
-if 0.30 lt incidence1549_40_41_1 le 0.60 then incid_cat2040_3=2;
-if 0.60 lt incidence1549_40_41_1 le 1 then incid_cat2040_3=3;
-
 ***Lower future art cov - looking only at 50 year time horizon;
 data lowart;
 set a.wide_vmmc_23_10_20_1pm;
