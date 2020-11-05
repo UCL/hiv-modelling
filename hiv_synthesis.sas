@@ -648,7 +648,9 @@ p_neph_stops_after_ten = 0.1;
 * prob_lossdiag_adctb;  prob_lossdiag_adctb = rand('beta',5,95); prob_lossdiag_adctb = round(prob_lossdiag_adctb,0.01);
 * prob_lossdiag_who3e;  prob_lossdiag_who3e = rand('beta',15,85);prob_lossdiag_who3e = round(prob_lossdiag_who3e,0.01);
 
-* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.93 then lower_future_art_cov=0;if 0.93 <= r        then lower_future_art_cov=1;
+* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.97 then lower_future_art_cov=0;if 0.97 <= r  then lower_future_art_cov=1;
+* higher_future_prep_cov;r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
+
 
 * higher_newp_less_engagement; r=uniform(0);higher_newp_less_engagement = 0; if r < 0.2 then higher_newp_less_engagement = 1; * are people with more newp less likely to be engaged with care; 
 * fold_tr;					fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;
@@ -856,7 +858,6 @@ tb_cost_a=(.050);
 cot_cost_a=(.005/4);
 vis_cost_a=(.020); 
 redn_in_vis_cost_vlm_supp = 0.010 ;
-cost_cascade_interventions_a=0.010 ; 
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
@@ -1018,7 +1019,6 @@ cost_dar_a  =  cost_dar_a  / 3;
 tb_cost_a =  tb_cost_a / 3;
 cot_cost_a =  cot_cost_a  / 3;
 vis_cost_a   = vis_cost_a    / 3;
-cost_cascade_interventions_a = cost_cascade_interventions_a   / 3; 
 prep_drug_cost  =  prep_drug_cost  / 3;
 cost_prep_clinic  = cost_prep_clinic   / 3;
 cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
@@ -1467,7 +1467,7 @@ c_rt65_tm1 = . ;  c_rt151_tm1 = . ;  c_rt103_tm1 = . ;  c_rt181_tm1 = . ;  c_rt1
 c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76_tm1 = . ;  c_pr82_tm1 = . ;  c_pr84_tm1 = . ;  c_pr88_tm1 = . ; 
 c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184m = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
-cost_cascade_intervention = . ;  newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
+newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ;  r_s_ep_m15w25 = . ;  r_s_ep_m15w35 = . ;  r_s_ep_m15w45 = . ;  r_s_ep_m15w55 = . ;  r_s_ep_m25w15 = . ;  
 r_s_ep_m25w25 = . ;  r_s_ep_m25w35 = . ;  r_s_ep_m25w45 = . ;  r_s_ep_m25w55 = . ;  r_s_ep_m35w15 = . ;  r_s_ep_m35w25 = . ;  r_s_ep_m35w35 = . ; 
 r_s_ep_m35w45 = . ;  r_s_ep_m35w55 = . ;  r_s_ep_m45w15 = . ;  r_s_ep_m45w25 = . ;  r_s_ep_m45w35 = . ;  r_s_ep_m45w45 = . ;  r_s_ep_m45w55 = . ; 
@@ -2021,8 +2021,14 @@ end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
 
-if caldate{t} = 2020.5 and lower_future_art_cov=1 then do;							
 
+
+
+***Changes in ART coverage (~20% lower in 3% of runs) and PrEP coverage after option start date;
+if caldate{t} = 2020.5 then do;
+
+*lower future ART coverage;
+if lower_future_art_cov=1 then do;							
 	eff_rate_int_choice = eff_rate_int_choice * 1.25;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
 	eff_prob_lossdiag_who3e = eff_prob_lossdiag_who3e * 1.25;
@@ -2034,8 +2040,151 @@ if caldate{t} = 2020.5 and lower_future_art_cov=1 then do;
 	eff_rate_return = eff_rate_return   * 0.8;
 	eff_pr_art_init =  eff_pr_art_init  * 0.8;  
 	eff_prob_return_adc = eff_prob_return_adc  * 0.8;
+end;
+
+*higher future prep coverage;
+if	higher_future_prep_cov=1 then do;
+
+* incr_adh_pattern_prep_2020;
+						incr_adh_pattern_prep_2020 = 0;  
+						if _u25 < 0.95 then do; 
+							incr_adh_pattern_prep_2020 = 1; 
+							adhav_pr = adhav*1.00; 
+						end;		
+
+* inc_r_test_startprep_2020;
+						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
+							inc_r_test_startprep_2020 = 1; 
+							eff_rate_test_startprep = 0.9; 
+							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
+						end;		
+
+* incr_r_test_restartprep_2020;
+						incr_r_test_restartprep_2020 = 0;  
+						if _u28 <= 0.95 then do; 
+							incr_r_test_restartprep_2020 = 1; 
+							eff_rate_test_restartprep = 0.9; 
+							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
+						end;		
+
+* decr_r_choose_stop_prep_2020;
+						decr_r_choose_stop_prep_2020 = 0;  
+						if _u30 < 0.95 then do; 
+							decr_r_choose_stop_prep_2020 = 1; 
+							eff_rate_choose_stop_prep = 0.03 ; 
+							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
+						end;		
+
+* inc_p_prep_restart_choi_2020;
+						inc_p_prep_restart_choi_2020 = 0;  
+						if _u32 < 0.95 then do; 
+							inc_p_prep_restart_choi_2020 = 1; 
+							eff_prob_prep_restart_choice = 0.8 ; 
+							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
+						end;		
+
+* incr_prepuptake_sw_2020;
+						incr_prepuptake_sw_2020 = 0;  
+						if _u34 < 0.95 then do; incr_prepuptake_sw_2020 = 1; 
+							r= uniform(0); if r < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
+						end;		
+
+* incr_prepuptake_pop_2020;
+						incr_prepuptake_pop_2020 = 0;  
+						if _u36 < 0.95 then do; 
+							incr_prepuptake_pop_2020 = 1; 
+							r= uniform(0); if r < 0.8 and prep_willing_pop = 0 then prep_willing_pop = 1;
+						end;	
+
+* prep_strategy;
+						prep_strategy = 9;
 
 end;
+
+*Other potential changes after 2020.5 which can be turned on in the Options code;
+*(impact of changes are coded below the options code);
+
+*increase in testing;
+incr_test_2020 = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
+
+*decrease in the proportion of people hard to reach;
+decr_hard_reach_2020 = 0;
+
+*decrease in probability of being lost at diagnosis; 
+decr_prob_loss_at_diag_2020 = 0;
+
+*decrease in the rate of being lost;
+decr_rate_lost_2020 = 0;
+
+*decrease in the rate of being lost whilst on ART;
+decr_rate_lost_art_2020 = 0; 
+
+*increase in the rate of return;
+incr_rate_return_2020 = 0 ;
+
+*increase in the rate of restarting ART;
+incr_rate_restart_2020 = 0;
+
+*increase in the rate of ART initiation;
+incr_rate_init_2020 = 0 ;
+
+*increase in adherence;
+incr_adh_2020 = 0;
+
+*decrease in the rate of interruption by choice;
+decr_rate_int_choice_2020 = 0 ;
+
+*increase in the the probability of a VL measure being done;
+incr_prob_vl_meas_done_2020 = 0;  
+
+*ART monitoring drug levels;
+art_mon_drug_levels_2020 = 0;
+
+*increase in the probabilty of switching lines;
+incr_pr_switch_line_2020 = 0 ;
+
+*increase in test targeting;
+incr_test_targeting_2020 = 0;
+
+*increase in the maximum frequency of testing;
+incr_max_freq_testing_2020 = 0;
+
+*testing SW every 6 months;
+sw_test_6mthly_2020 = 0;
+
+*switching regimens;
+reg_option_switch_2020 = 0;
+
+*tenofovir is taf, rather than tdf as it is by default;
+ten_is_taf_2020 = 0; *coded within core (not below options code);
+
+*increase in rates of circumcision;
+circ_inc_rate_2020 = 0; *variations coded in circumcision section;
+
+*increase in condom use;
+condom_incr_2020 = 0; *coded within core (not below options code);
+
+*population wide tld;
+pop_wide_tld = 0;
+
+*covid disruption variables;
+vmmc_disrup_covid = 0 ; 
+condom_disrup_covid = 0; 
+prep_disrup_covid = 0; 
+testing_disrup_covid = 0; 
+art_init_disrup_covid = 0; 
+vl_adh_switch_disrup_covid = 0; 
+cotrim_disrup_covid = 0; 
+inc_death_rate_aids_disrup_covid = 0; 
+no_art_disrup_covid = 0; 
+art_low_adh_disrup_covid = 0; 
+
+
+end;
+
+		
+
+
 
 
 *
@@ -2122,53 +2271,15 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 option = &s;
 
-		cascade_care_improvements = 0;
-		incr_test_2020 = 0;
-		decr_hard_reach_2020 = 0;
-		decr_prob_loss_at_diag_2020 = 0;
-		decr_rate_lost_2020 = 0;
-		decr_rate_lost_art_2020 = 0; 
-		incr_rate_return_2020 = 0 ;
-		incr_rate_restart_2020 = 0;
-		incr_rate_init_2020 = 0 ;
-		incr_adh_2020 = 0;
-		decr_rate_int_choice_2020 = 0 ;
-		incr_prob_vl_meas_done_2020 = 0;  
-		art_mon_drug_levels_2020 = 0;
-		incr_pr_switch_line_2020 = 0 ;
-		incr_test_targeting_2020 = 0;
-		incr_max_freq_testing_2020 = 0;
-		sw_test_6mthly_2020 = 0;
-		reg_option_switch_2020 = 0;
-		ten_is_taf_2020 = 0;
-		prep_improvements = 0;
-		incr_adh_pattern_prep_2020 = 0 ;
-		inc_r_test_startprep_2020 = 0 ;
-		incr_r_test_restartprep_2020 = 0 ;
-		decr_r_choose_stop_prep_2020 = 0 ;
-		inc_p_prep_restart_choi_2020 = 0 ;
-		incr_prepuptake_sw_2020 = 0 ;
-		incr_prepuptake_pop_2020 = 0 ;
-		prep_strategy_2020 = 0 ;
-		circ_improvements = 0;
-		circ_inc_rate_2020 = 0;
-		condom_incr_2020 = 0;
-		pop_wide_tld = 0;
-
-	    vmmc_disrup_covid = 0 ; 
-		condom_disrup_covid = 0; 
-  		prep_disrup_covid = 0; 
-		testing_disrup_covid = 0; 
-		art_init_disrup_covid = 0; 
-		vl_adh_switch_disrup_covid = 0; 
-		cotrim_disrup_covid = 0; 
-		inc_death_rate_aids_disrup_covid = 0; 
-		no_art_disrup_covid = 0; 
-		art_low_adh_disrup_covid = 0; 
 
 if caldate_never_dot = 2020.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
+
+* can add in potential changes in policy after 2020.5 here -  set specific '2020' variables to '1' and specify proportion of
+  runs for which the option should take place;
+	/*E.g. u=uniform(0); if u<0.90 then incr_test_2020=1;*/
+
 
 	if option = 0 then do;  
 
@@ -2181,6 +2292,109 @@ end;
 
 * ==========================================================================================================================================;
 
+***Impact of potential changes in policy after 2020;
+
+* decr_hard_reach_2020; 
+if decr_hard_reach_2020 = 1 then do;
+	if _u6 < 0.5 then e_decr_hard_reach_2020 = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_2020 = 0.75; 
+	if hard_reach=1 then do;
+		e = uniform(0); if e < e_decr_hard_reach_2020 then hard_reach = 0; 
+	end; 
+end;
+
+* decr_prob_loss_at_diag_2020; 
+if	decr_prob_loss_at_diag_2020 = 1 then do;
+	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
+end;
+
+* decr_rate_lost_2020; 	
+if decr_rate_lost_2020 = 1 then do;
+	eff_rate_lost = eff_rate_lost * _u10 / 3; eff_rate_lost=round(eff_rate_lost,0.01); 
+end;
+
+* decr_rate_lost_art_2020; 
+if decr_rate_lost_art_2020 = 1 then do;
+	eff_prob_lost_art = eff_prob_lost_art + ((0.5 + 0.5*_u12) * (1 - eff_prob_lost_art) ) ; eff_prob_lost_art = round(eff_prob_lost_art, 0.01); 
+end;
+
+* incr_rate_return_2020; 
+if incr_rate_return_2020 = 1 then do;
+	eff_rate_return = eff_rate_return * (2 + 3*_u14);  eff_rate_return = round(eff_rate_return,0.01);  
+end;
+
+* incr_rate_restart_2020; 
+if incr_rate_restart_2020 = 1 then do;
+	eff_rate_restart = eff_rate_restart * (2 + 3*_u18);  eff_rate_restart = round(eff_rate_restart,0.01);  
+end;
+
+* incr_rate_init_2020; 	
+if incr_rate_init_2020 = 1 then do;
+	eff_pr_art_init = eff_pr_art_init + ( (0.5 + 0.5*_u20) * (1 - eff_pr_art_init) ); eff_pr_art_init=round(eff_pr_art_init,0.01); 
+end;
+
+* incr_adh_2020;  		
+if incr_adh_2020 = 1 then do;
+	if adhav < 0.8 then do; 
+		if _u4 < 0.5 then e_incr_adh_2020 = 0.5; if _u4 ge 0.5 then e_incr_adh_2020 = 0.75; 
+		e = uniform(0); if e < e_incr_adh_2020 then adhav = 0.9; 
+	end;
+end;
+
+* decr_rate_int_choice_2020; 
+if	decr_rate_int_choice_2020 = 1 then do;
+	eff_rate_int_choice = eff_rate_int_choice * _u22/3; eff_rate_int_choice = round(eff_rate_int_choice,0.001); 
+end;
+
+* incr_prob_vl_meas_done_2020; 
+if	incr_prob_vl_meas_done_2020 = 1 then do;
+	eff_prob_vl_meas_done = 0.85; 
+	cd4_monitoring=0; * this needed because cd4_monitoring was = 1 in half of people with no vl; 
+end;
+
+* art_mon_drug_levels_2020;
+if art_mon_drug_levels_2020 = 1 then do;
+	if reg_option = 103 then reg_option = 119;
+	if reg_option = 104 then reg_option = 118;
+	if reg_option = 113 then reg_option = 115;
+	if reg_option = 116 then reg_option = 117; 
+end;
+
+* incr_pr_switch_line_2020; 
+if incr_pr_switch_line_2020 = 1 then do;
+	eff_pr_switch_line = 0.80; 
+end;
+
+* incr_test_targeting_2020;	
+if incr_test_targeting_2020 = 1 then do;
+	if _u42 < 0.45 then eff_test_targeting = 2;
+	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
+end;						
+
+* incr_max_freq_testing_2020;
+if incr_max_freq_testing_2020=1 then do;
+	if eff_max_freq_testing = 2 then eff_max_freq_testing = 4; 
+	if eff_max_freq_testing = 1 then eff_max_freq_testing = 2;
+end;  
+
+* sw_test_6mthly_2020; 
+if sw_test_6mthly_2020 = 1 then sw_test_6mthly =1; 
+
+* reg_option_switch_2020;	
+if reg_option_switch_2020 = 1 then do;
+	if _u49 < 0.30 then reg_option = 104; 
+	if 0.30 <= _u49 < 0.6 then  reg_option = 116;
+	if 0.60 <= _u49 < 0.9 then  reg_option = 119;
+end;
+
+
+* pop_wide_tld_2020;	
+if pop_wide_tld_2020 = 1 then do;
+	pop_wide_tld = 1; prep_strategy = 9;prob_prep_pop_wide_tld = 0.10; 
+	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
+end;
+
+
+	
 
 if covid_disrup_affected = 1 and (art_tld_disrup_covid = 1 or art_tld_eod_disrup_covid = 1 or art_low_adh_disrup_covid = 1) then reg_option = 104 ;
 
@@ -2236,11 +2450,7 @@ end;
 
 
 if caldate{t} >= 2020.5 and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 2 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 3 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 4 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 5 and gender=1 then do; rate_1sttest = rate_1sttest * 5.0; rate_reptest = rate_reptest * 5.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 6 and gender=1 then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if caldate{t} >= 2020.5 and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -2309,7 +2519,7 @@ end;
 end;
 
 * this is the default if note circ_inc_rate_2020 = .  - no change in circ policy ;
-if t ge 2 and 2019 < caldate{t}          then do;
+if t ge 2 and 2019 < caldate{t} and circ_inc_rate_2020=0         then do;
 if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
@@ -9869,10 +10079,6 @@ if sv=1 then do;	vis_cost=vis_cost-redn_in_vis_cost_vlm_supp; full_vis_cost_sv =
 non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_pre_death_cost = 1.000;
 
 
-* cost per diagnosed person with sv ne 1, to improve cascade;
-cost_cascade_interventions = 0;
-if cascade_care_improvements = 1 and registd=1 and sv ne 1 then cost_cascade_interventions = cost_cascade_interventions_a;
-
 
 * lab costs;
 	cd4_cost=0; 
@@ -9933,7 +10139,7 @@ cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep) + max(0,cost_prep_visit)
-+ max(0,cost_cascade_interventions) + max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 cost_test_m=0; if gender=1 then cost_test_m = cost_test;
 cost_test_f=0; if gender=2 then cost_test_f = cost_test;
@@ -12677,7 +12883,6 @@ _dcost_prep = cost_prep*discount;
 _dcost_prep_ac_adh = cost_prep_ac_adh*discount;
 _dcost_prep_visit = cost_prep_visit*discount;
 _dcost_art_init = cost_art_init*discount;
-_dcost_cascade_interventions = cost_cascade_intervention*discount;
 _dcost_drug_level_test = drug_level_test_cost*discount;
 
 _dcost_non_aids_pre_death = non_aids_pre_death_cost*discount;
@@ -13956,7 +14161,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_res_cost + res_cost ; s_cost_circ + cost_circ ; s_cost_condom_dn + cost_condom_dn ; s_cost_sw_program + cost_sw_program ;  
 	s_t_adh_int_cost + t_adh_int_cost ; s_cost_test_m + cost_test_m ; 
 	s_cost_test_f + cost_test_f ; s_cost_prep + cost_prep ; s_cost_prep_visit + cost_prep_visit ; s_cost_prep_ac_adh + cost_prep_ac_adh ; 
-	s_cost_cascade_intervention + cost_cascade_intervention ; s_cost_test_m_sympt + cost_test_m_sympt ; s_cost_test_f_sympt + cost_test_f_sympt ;                         
+	s_cost_test_m_sympt + cost_test_m_sympt ; s_cost_test_f_sympt + cost_test_f_sympt ;                         
     s_cost_test_m_circ + cost_test_m_circ ; s_cost_test_f_anc + cost_test_f_anc ; s_cost_test_f_sw + cost_test_f_sw ;                      
   	s_cost_test_f_non_anc + cost_test_f_non_anc ; s_pi_cost + pi_cost ;	s_cost_switch_line + cost_switch_line ; s_cost_child_hiv + cost_child_hiv ;   			
   	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_cost_art_init + cost_art_init ; s_art_1_cost + art_1_cost ; s_art_2_cost + art_2_cost ;	     		     			 
@@ -13968,7 +14173,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ;  s_dcost_sw_program + dcost_sw_program ;
 	s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; 
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep + _dcost_prep ; s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
-	s_dcost_cascade_interventions + _dcost_cascade_interventions ; s_dcost_test_m_sympt + _dcost_test_m_sympt ; 
+	s_dcost_test_m_sympt + _dcost_test_m_sympt ; 
 	s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ; s_dcost_test_f_anc + _dcost_test_f_anc ;
   	s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ;       	     	    	       
     s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_art_init + _dcost_art_init ;               
@@ -14165,7 +14370,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_res_cost_80 + res_cost ; s_cost_circ_80 + cost_circ ; s_cost_condom_dn_80 + cost_condom_dn ; s_cost_sw_program_80 + cost_sw_program ;  
 	s_t_adh_int_cost_80 + t_adh_int_cost ; s_cost_test_m_80 + cost_test_m ; 
 	s_cost_test_f_80 + cost_test_f ; s_cost_prep_80 + cost_prep ; s_cost_prep_visit_80 + cost_prep_visit ; s_cost_prep_ac_adh_80 + cost_prep_ac_adh ; 
-	s_cost_cascade_intervention_80 + cost_cascade_intervention ; s_cost_test_m_sympt_80 + cost_test_m_sympt ; s_cost_test_f_sympt_80 + cost_test_f_sympt ;                         
+	s_cost_test_m_sympt_80 + cost_test_m_sympt ; s_cost_test_f_sympt_80 + cost_test_f_sympt ;                         
     s_cost_test_m_circ_80 + cost_test_m_circ ; s_cost_test_f_anc_80 + cost_test_f_anc ; s_cost_test_f_sw_80 + cost_test_f_sw ;                      
   	s_cost_test_f_non_anc_80 + cost_test_f_non_anc ; s_pi_cost_80 + pi_cost ;	s_cost_switch_line_80 + cost_switch_line ; s_cost_child_hiv_80 + cost_child_hiv ;   			
   	s_cost_child_hiv_mo_art_80 + cost_child_hiv_mo_art ; s_cost_art_init_80 + cost_art_init ; s_art_1_cost_80 + art_1_cost ; s_art_2_cost_80 + art_2_cost ;	     		     			 
@@ -14177,7 +14382,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
     s_dres_cost_80 + _dres_cost ; s_dcost_circ_80 + _dcost_circ ; s_dcost_condom_dn_80 + dcost_condom_dn ;  s_dcost_sw_program_80 + dcost_sw_program ;
 	s_d_t_adh_int_cost_80 + _d_t_adh_int_cost ; s_dtest_cost_m_80 + _dtest_cost_m ; 
 	s_dtest_cost_f_80 + _dtest_cost_f ; s_dcost_prep_80 + _dcost_prep ; s_dcost_prep_visit_80 + _dcost_prep_visit ; s_dcost_prep_ac_adh_80 + _dcost_prep_ac_adh ;          
-	s_dcost_cascade_interventions_80 + _dcost_cascade_interventions ; s_dcost_test_m_sympt_80 + _dcost_test_m_sympt ; 
+	s_dcost_test_m_sympt_80 + _dcost_test_m_sympt ; 
 	s_dcost_test_f_sympt_80 + _dcost_test_f_sympt ; s_dcost_test_m_circ_80 + _dcost_test_m_circ ; s_dcost_test_f_anc_80 + _dcost_test_f_anc ;
   	s_dcost_test_f_sw_80 + _dcost_test_f_sw ; s_dcost_test_f_non_anc_80 + _dcost_test_f_non_anc ; s_dpi_cost_80 + _dpi_cost ; s_dcost_switch_line_80 + _dcost_switch_line ;       	     	    	       
     s_dcost_child_hiv_80 + _dcost_child_hiv ; s_dcost_child_hiv_mo_art_80 + _dcost_child_hiv_mo_art ; s_dcost_art_init_80 + _dcost_art_init ;               
@@ -15046,7 +15251,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 /*costs and dalys (default to age 65; _80 */
 s_cost       s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			  s_cost_cascade_intervention
+s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  	
 s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
 	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
@@ -15056,7 +15261,7 @@ s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly
 
 s_dcost_  	   s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dwho3_cost     s_dcot_cost 
 s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn   s_dcost_sw_program  s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  s_dcost_cascade_interventions
+s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			
 s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
 s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
    s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
@@ -15065,14 +15270,14 @@ s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80  s_
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_cascade_intervention_80 s_cost_test_m_sympt_80    
+s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
 s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
 s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
 s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
 s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
 s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dwho3_cost_80 
 s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	s_dcost_cascade_interventions_80
+s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
@@ -15182,16 +15387,16 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov
 
 /*2020 interventions*/
-condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
+condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
+ circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
 
@@ -15799,7 +16004,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 /*costs and dalys*/
 s_cost       s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program     s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			  s_cost_cascade_intervention
+s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
 s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
 	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
@@ -15809,7 +16014,7 @@ s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly
 
 s_dcost_  	   s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dwho3_cost     s_dcot_cost 
 s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ   s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  s_dcost_cascade_interventions
+s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 		
 s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
 s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
    s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
@@ -15818,14 +16023,14 @@ s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80  s_
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_cascade_intervention_80 s_cost_test_m_sympt_80    
+s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_test_m_sympt_80    
 s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
 s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
 s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
 s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
 s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dwho3_cost_80 
 s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	s_dcost_cascade_interventions_80
+s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
@@ -16213,7 +16418,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_26_10_20_8am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_02_11_20_5pm_&dataset_id";  
 
 put   
 
@@ -16550,7 +16755,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 /*costs and dalys*/
 s_cost       s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ   s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost      s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			  s_cost_cascade_intervention
+s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
 s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
   	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
@@ -16560,7 +16765,7 @@ s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly
 
 s_dcost_  	   s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dwho3_cost     s_dcot_cost 
 s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  s_dcost_cascade_interventions
+s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  
 s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
 s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
 	   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
@@ -16569,14 +16774,14 @@ s_dead_ddaly_ntd  s_ddaly_mtct    s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_cascade_intervention_80 s_cost_test_m_sympt_80    
+s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
 s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
 s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
 s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
 s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
 s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dwho3_cost_80 
 s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	s_dcost_cascade_interventions_80
+s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
@@ -16682,16 +16887,16 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov
 
 /*2020 interventions*/
-condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
+condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
 incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
 inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
 inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
+	  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
