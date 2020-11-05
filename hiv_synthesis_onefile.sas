@@ -159,11 +159,12 @@ to do before starting testing in preparation for runs:
 *options user="/folders/myfolders/";
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
- libname a '/home/cceapsc/Scratch/';
+* libname a '/home/cceapsc/Scratch/';
+libname model 'N:\SAS\hiv-modelling';
 * libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 * %let population = 1000; 
 
@@ -16214,7 +16215,8 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-data raw_data(compress=binary); set cum_l1; run = &run;
+data raw_data(compress=binary); set cum_l1; 
+run = &run;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 /*  file "/home/cceapsc/Scratch/_output_26_10_20_7pm_&dataset_id";  
 put
@@ -16796,25 +16798,29 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 run;
 
-%if %sysfunc(exist(a.out_compressed)) %then 
-	%do;
-		proc append base = a.out_compressed data = raw_data;
-		run;
-	%end;
-%else
-	%do;
-		data a.out_compressed(compress=binary);
-			set raw_data;
-		run;
-	%end;
+%macro savemodel();
+	%if %sysfunc(exist(model.out_model)) %then 
+		%do;
+			proc append base = model.out_model data = raw_data;
+			run;
+		%end;
+	%else
+		%do;
+			data model.out_model(compress=binary);
+				set raw_data;
+			run;
+		%end;
+%mend;
+
+%savemodel;
 
 /**
+
 proc print; var &run; run;
 proc contents data=raw_data;
    title "Raw Data Set";
 run;
 **/
-
 /** 
 proc contents data=a.out_compressed;
    title "Compressed data set";
