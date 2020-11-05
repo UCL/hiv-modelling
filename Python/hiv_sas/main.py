@@ -1,7 +1,7 @@
 from pandas import read_sas, read_csv
 # This is a sample Python script.
 
-SAS_file = '/Users/peterschmidt/VirtualBox VMs/SAS University Edition/myfolders/output_id.sas7bdat'
+SAS_file = '/Users/peterschmidt/VirtualBox VMs/SAS University Edition/myfolders/hiv-modelling/output/out_compressed.sas7bdat'
 
 def openSasFile():
     print('trying to open a SAS file')
