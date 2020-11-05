@@ -397,11 +397,11 @@ if 2 lt incidence1549_20         then incid=7;
 *incidence;
 if 0  le incidence1549_20 le 0.30 then incid_cat3=1;
 if 0.30 lt incidence1549_20 le 0.60 then incid_cat3=2;
-if 0.60 lt incidence1549_20 le 1 then incid_cat3=3;
+if 0.60 lt incidence1549_20 then incid_cat3=3;
 
 if 0  le incidence1549_40_41_1 le 0.30 then incid_cat2040_3=1;
 if 0.30 lt incidence1549_40_41_1 le 0.60 then incid_cat2040_3=2;
-if 0.60 lt incidence1549_40_41_1 le 1 then incid_cat2040_3=3;
+if 0.60 lt incidence1549_40_41_1 then incid_cat2040_3=3;
 
 *prop diag;
 if 60 le p_diag_20 le 85 then p_diag=1;
@@ -441,6 +441,10 @@ model  ce_20_70  = incid_cat3 p_diag artcov  onart_vl1000 p_vmmc;run;
 
 
 proc freq;table ce_20_70*incid;run;
+
+proc freq;table incid_cat2040_3;run;
+
+proc freq;table incid_cat3*incid_cat2040_3;run;
 
 proc freq;table ce_20_70;where incid_cat3=1 and incid_cat2040_3=1;run;
 proc freq;table ce_20_70;where incid_cat3=1 and incid_cat2040_3=2;run;
