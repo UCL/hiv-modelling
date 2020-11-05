@@ -159,8 +159,8 @@ to do before starting testing in preparation for runs:
 *options user="/folders/myfolders/";
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
-* libname a '/home/cceapsc/Scratch/';
-libname model 'N:\SAS\hiv-modelling';
+libname a '/home/cceapsc/Scratch';
+* libname model 'N:\SAS\hiv-modelling';
 * libname a '/folders/myfolders/hiv-modelling/output/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -16799,14 +16799,14 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 run;
 
 %macro savemodel();
-	%if %sysfunc(exist(model.out_model)) %then 
+	%if %sysfunc(exist(a.out_model)) %then 
 		%do;
-			proc append base = model.out_model data = raw_data;
+			proc append base = a.out_model data = raw_data;
 			run;
 		%end;
 	%else
 		%do;
-			data model.out_model(compress=binary);
+			data a.out_model(compress=binary);
 				set raw_data;
 			run;
 		%end;
