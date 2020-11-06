@@ -1,4 +1,4 @@
-proc printto log="/home/cceapsc/Scratch/consumer.log";
+* proc printto log="/home/cceapsc/Scratch/consumer.log";
 
 * proc printto;
 libname model '/home/cceapsc/Scratch/';
