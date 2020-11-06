@@ -1,7 +1,4 @@
-*proc printto log="/home/cceapsc/Scratch/consumer.log";
-
-* proc printto;
-libname model '/home/cceapsc/Scratch/';
+libname model '/home/cceapsc/Scratch/output/';
 data xyz;
 	population = &population;
 	total = &total_runs;
