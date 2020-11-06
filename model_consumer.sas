@@ -2,7 +2,7 @@
 
 * proc printto;
 libname model '/home/cceapsc/Scratch/';
-data xyz;
+data model.xyz_&run;
 	population = &population;
 	total = &total_runs;
 	start = &startyear;
@@ -12,6 +12,7 @@ data xyz;
 	keep population total start end delta runner;
 run;
 
+/*
 %macro savemodel();
 	%if %sysfunc(exist(model.testdata)) %then 
 		%do;
@@ -27,3 +28,4 @@ run;
 %mend;
 
 %savemodel;
+*/
