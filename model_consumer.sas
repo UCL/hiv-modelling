@@ -1,8 +1,8 @@
-* proc printto log="/home/cceapsc/Scratch/consumer.log";
+*proc printto log="/home/cceapsc/Scratch/consumer.log";
 
 * proc printto;
 libname model '/home/cceapsc/Scratch/';
-data model.xyz_&run;
+data xyz;
 	population = &population;
 	total = &total_runs;
 	start = &startyear;
@@ -12,7 +12,6 @@ data model.xyz_&run;
 	keep population total start end delta runner;
 run;
 
-/*
 %macro savemodel();
 	%if %sysfunc(exist(model.testdata)) %then 
 		%do;
@@ -28,4 +27,3 @@ run;
 %mend;
 
 %savemodel;
-*/
