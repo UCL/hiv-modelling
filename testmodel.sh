@@ -1,7 +1,7 @@
 #!/bin/bash -l
-#$ -l h_rt=0:10:0
-#$ -l mem=1G
-#$ -l tmpfs=15G
+#$ -l h_rt=08:00:00
+#$ -l mem=32G
+#$ -l tmpfs=36G
 #$ -N test_model_runner
 #$ -pe smp 4
 #$ -wd /home/cceapsc/Scratch/output
