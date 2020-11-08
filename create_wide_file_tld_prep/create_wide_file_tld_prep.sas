@@ -7,7 +7,9 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
+
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_2";
 
 input 
 
@@ -1227,9 +1229,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.tld_prep_22_10_20_5pm; set y;
+data a.tld_prep_22_10_20_5pm_2; set y;
 
-data y; set a.prep_22_10_20_5pm; run;
+data y; set a.prep_22_10_20_5pm_2; run;
 
 
 
@@ -1561,7 +1563,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_tld_prep_22_10_20_5pm; 
+  data a.wide_tld_prep_22_10_20_5pm_2; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
