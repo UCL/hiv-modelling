@@ -1,8 +1,8 @@
 #!/bin/bash -l
 #$ -l h_rt=08:00:00
-#$ -l mem=32G
+#$ -l mem=36G
 #$ -l tmpfs=36G
-#$ -N test_model_runner
+#$ -N testmodelrunner
 #$ -pe smp 4
 #$ -wd /home/cceapsc/Scratch/output
 module load sas/9.4/64

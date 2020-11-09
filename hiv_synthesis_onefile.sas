@@ -159,7 +159,7 @@ to do before starting testing in preparation for runs:
 *options user="/folders/myfolders/";
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
-libname model '/home/cceapsc/Scratch/';
+libname model '/home/cceapsc/Scratch/output/';
 * libname model 'N:\SAS\hiv-modelling';
 * libname a '/folders/myfolders/hiv-modelling/output/';
 
