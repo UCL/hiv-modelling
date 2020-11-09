@@ -7,6 +7,8 @@
 data b;
 set y;
 
+if run = 14438576;
+
 if cald le 2020;
 
 p_onart_vl1000_all = .;
@@ -106,7 +108,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  47  ;
+%let nfit =  1  ;  * 47 ;
 run;
 proc sort;by cald option ;run;
 
