@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #$ -l h_rt=08:00:00
-#$ -l mem=36G
-#$ -l tmpfs=36G
+#$ -l mem=16G
+#$ -l tmpfs=72G
 #$ -N testmodelconsumer
 #$ -pe smp 4
 #$ -wd /home/cceapsc/Scratch/output
