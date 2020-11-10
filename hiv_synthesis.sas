@@ -1497,6 +1497,9 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
+*** 'eff' variables are defined for specific parameters which may change as a result of the code. Values of the original
+	parameters are stored and only 'eff_' variables are used throughout the code;
+
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
@@ -1554,6 +1557,12 @@ eff_test_targeting = test_targeting;
 
 keep_going_1999=.;  keep_going_2004=.; keep_going_2016=.;  keep_going_2020=.;
 
+* eff sex worker program variables;
+eff_sw_program=0;
+eff_sw_higher_int = sw_higher_int;
+eff_prob_sw_lower_adh = prob_sw_lower_adh;
+eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
+sw_program_visit=0;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -1761,12 +1770,7 @@ tcur=.;
 dead_tm1=0;
 
 
-* sex worker program not existing initially;
-eff_sw_program=0;
-eff_sw_higher_int = sw_higher_int;
-eff_prob_sw_lower_adh = prob_sw_lower_adh;
-eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
-sw_program_visit=0;
+
 
 
 ***LBM Mar 2017 - Prev_circ now relates to males aged > 15 at t=1 (1989) - a % of this population is assumed already circumcised;
@@ -1972,31 +1976,39 @@ if art_initiation_strategy=4 and 2011.5 <= caldate{t} and q < rate_ch_art_init_s
 
 if 2014 <= caldate{t} then art_initiation_strategy=10;
 
+* SW programs starts in 2015;
+if caldate{t} = 2015 then eff_sw_program=sw_program;
+
+* Attendance at SW program (if it exists);
+
+if eff_sw_program=1 and sw=1 then do;
+if sw_program_visit=0 then do; e=uniform(0); if e < rate_engage_sw_program then sw_program_visit=1 ; end; 
+if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then sw_program_visit=0 ; end; 
+end;
 
 * effect of sex work program ;
 sw_test_6mthly = 0;
-if sw_program=1 and caldate{t} ge 2015 then do;
-	eff_sw_program=1; 
+if eff_sw_program=1 then do;
+
 	if sw_program_visit = 1 then do;
-	if sw_program_effect=1 then do; 
+
+		if sw_program_effect=1 then do; 
 		e=uniform(0); if e < 0.5 then sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.75 ; 
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
 		prepuptake_sw=0.70;
 		s= uniform(0); if s < 0.70 and prep_willing_sw = 0 then prep_willing_sw = 1;
+		end;
 
-
-	end;
-	if sw_program_effect=2 then do; 
+		if sw_program_effect=2 then do; 
 		sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.5 ; 
 		eff_prob_sw_lower_adh = 0 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
 		prepuptake_sw=0.95;
 		s= uniform(0); if s < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
-
-	end;
+		end;
 	end;
 end;
 
@@ -2475,12 +2487,6 @@ if gender=2 then do;
 end;
 
 
-* ATTENDANCE AT SEX WORKER PROGRAM (if it exists);
-
-if eff_sw_program=1 and gender=2 and sw=1 then do;
-if sw_program_visit=0 then do; e=uniform(0); if e < rate_engage_sw_program then sw_program_visit=1 ; end; 
-if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then sw_program_visit=0 ; end; 
-end;
 
 
 
@@ -16291,7 +16297,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_09_11_20_8am_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_10_11_20_12pm_&dataset_id";  
 
 put   
 
