@@ -10348,133 +10348,6 @@ cd4diag=round(cd4diag,1);
 vset=round(vset,.1);
 
 
-* --------------------------------------------------------------------------------------;
-if rbm = 4 then do;
-
-* down columns give breakdown of age of partners for females by age group;
-
-if sex_age_mixing_matrix_w=1 then do;
-m15w15 =0.43*t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.34*t_w_1524_newp; m25w25=0.49*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.12*t_w_1524_newp; m35w25=0.30*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.10*t_w_1524_newp; m45w25=0.10*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.01*t_w_1524_newp; m55w25=0.02*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=2 then do;
-m15w15 =0.43* t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.415*t_w_1524_newp; m25w25=0.50*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.12* t_w_1524_newp; m35w25=0.35*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.05*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.005*t_w_1524_newp; m55w25=0.01*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=3 then do;
-m15w15 =0.25* t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.55 *t_w_1524_newp; m25w25=0.50*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.15* t_w_1524_newp; m35w25=0.35*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.05*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.02 *t_w_1524_newp; m55w25=0.01*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=4 then do;
-m15w15 =0.05* t_w_1524_newp; m15w25=0.03*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.55* t_w_1524_newp; m25w25=0.52*t_w_2534_newp; m25w35=0.05*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.35* t_w_1524_newp; m35w25=0.40*t_w_2534_newp; m35w35=0.57*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.03*t_w_2534_newp; m45w35=0.30*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.02 *t_w_1524_newp; m55w25=0.02*t_w_2534_newp; m55w35=0.05*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=5 then do;
-m15w15 =0.05* t_w_1524_newp; m15w25=0.01*t_w_2534_newp; m15w35=0.01*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.45* t_w_1524_newp; m25w25=0.40*t_w_2534_newp; m25w35=0.07*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.30* t_w_1524_newp; m35w25=0.39*t_w_2534_newp; m35w35=0.47*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.15* t_w_1524_newp; m45w25=0.15*t_w_2534_newp; m45w35=0.30*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.05 *t_w_1524_newp; m55w25=0.05*t_w_2534_newp; m55w35=0.15*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=6 then do;
-m15w15 =0.20* t_w_1524_newp; m15w25=0.00*t_w_2534_newp; m15w35=0.01*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.20* t_w_1524_newp; m25w25=0.25*t_w_2534_newp; m25w35=0.01*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.20* t_w_1524_newp; m35w25=0.25*t_w_2534_newp; m35w35=0.32*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.20* t_w_1524_newp; m45w25=0.25*t_w_2534_newp; m45w35=0.33*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.20 *t_w_1524_newp; m55w25=0.25*t_w_2534_newp; m55w35=0.33*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-
-ptnewp15_m=m15w15+m15w25+m15w35+m15w45+m15w55; 
-ptnewp25_m=m25w15+m25w25+m25w35+m25w45+m25w55; 
-ptnewp35_m=m35w15+m35w25+m35w35+m35w45+m35w55; 
-ptnewp45_m=m45w15+m45w25+m45w35+m45w45+m45w55; 
-ptnewp55_m=m55w15+m55w25+m55w35+m55w45+m55w55; 
-
-ptnewp_m=ptnewp15_m+ptnewp25_m+ptnewp35_m+ptnewp45_m+ptnewp55_m;
-
-* down columns give breakdown of age of partners for males by age group;
-
-if sex_age_mixing_matrix_m=1 then do;
-w15m15 =0.865*t_m_1524_newp; w15m25=0.47*t_m_2534_newp; w15m35=0.30*t_m_3544_newp; w15m45=0.43*t_m_4554_newp; w15m55=0.18*t_m_5564_newp;
-w25m15 =0.11 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.50*t_m_3544_newp; w25m45=0.30*t_m_4554_newp; w25m55=0.18*t_m_5564_newp;
-w35m15 =0.025*t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.20*t_m_3544_newp; w35m45=0.23*t_m_4554_newp; w35m55=0.27*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.00*t_m_3544_newp; w45m45=0.03*t_m_4554_newp; w45m55=0.27*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.01*t_m_4554_newp; w55m55=0.10*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=2 then do;
-w15m15 =0.865*t_m_1524_newp; w15m25=0.47*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.11 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.35*t_m_3544_newp; w25m45=0.23*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.025*t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.40*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.25*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.30*t_m_4554_newp; w45m55=0.30*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.07*t_m_4554_newp; w55m55=0.32*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=3 then do;
-w15m15 =0.90 *t_m_1524_newp; w15m25=0.44*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.34*t_m_3544_newp; w25m45=0.23*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.02 *t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.40*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.25*t_m_5564_newp;
-w45m15 =0.02 *t_m_1524_newp; w45m25=0.02*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.30*t_m_4554_newp; w45m55=0.30*t_m_5564_newp;
-w55m15 =0.01 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.01*t_m_3544_newp; w55m45=0.07*t_m_4554_newp; w55m55=0.32*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=4 then do;
-w15m15 =0.93 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.34*t_m_3544_newp; w25m45=0.20*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.08*t_m_2534_newp; w35m35=0.41*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.20*t_m_5564_newp;
-w45m15 =0.01 *t_m_1524_newp; w45m25=0.01*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.37*t_m_4554_newp; w45m55=0.40*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.03*t_m_4554_newp; w55m55=0.27*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=5 then do;
-w15m15 =0.94 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.40*t_m_3544_newp; w15m45=0.30*t_m_4554_newp; w15m55=0.30*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.40*t_m_3544_newp; w25m45=0.30*t_m_4554_newp; w25m55=0.30*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.08*t_m_2534_newp; w35m35=0.15*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.30*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.01*t_m_2534_newp; w45m35=0.04*t_m_3544_newp; w45m45=0.10*t_m_4554_newp; w45m55=0.05*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.01*t_m_3544_newp; w55m45=0.05*t_m_4554_newp; w55m55=0.05*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=6 then do;
-w15m15 =0.94 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.50*t_m_3544_newp; w15m45=0.50*t_m_4554_newp; w15m55=0.50*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.35*t_m_3544_newp; w25m45=0.35*t_m_4554_newp; w25m55=0.35*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.10*t_m_3544_newp; w35m45=0.10*t_m_4554_newp; w35m55=0.10*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.05*t_m_4554_newp; w45m55=0.05*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.00*t_m_4554_newp; w55m55=0.00*t_m_5564_newp;
-end;
-
-
-
-ptnewp15_w=w15m15+w15m25+w15m35+w15m45+w15m55; 
-ptnewp25_w=w25m15+w25m25+w25m35+w25m45+w25m55; 
-ptnewp35_w=w35m15+w35m25+w35m35+w35m45+w35m55; 
-ptnewp45_w=w45m15+w45m25+w45m35+w45m45+w45m55; 
-ptnewp55_w=w55m15+w55m25+w55m35+w55m45+w55m55; 
-
-ptnewp_w=ptnewp15_w+ptnewp25_w+ptnewp35_w+ptnewp45_w+ptnewp55_w;
-
-end;
-* --------------------------------------------------------------------------------------;
-
-
-
 if 15 <= age < 25 then ageg=1;
 if 25 <= age < 35 then ageg=2;
 if 35 <= age < 45 then ageg=3;
@@ -16421,7 +16294,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_02_11_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_09_11_20_8am_&dataset_id";  
 
 put   
 
