@@ -2789,7 +2789,7 @@ if rbm = 4 then do;
 rred_adc=1.0; if hiv_tm1=1 and adc_tm1=1 then rred_adc = 0.2;
 
 rred_adhav=1; 
-if higher_newp_with_lower_adhav=1 and adhav < 0.8 then rred_adhav=0.5;
+if higher_newp_with_lower_adhav=1 and adhav < 0.8 then rred_adhav=2.0;
 
 * reduction in sexual behaviour following +ve hiv test ;
 rred_d=1.0;
@@ -2836,7 +2836,7 @@ end;
 
 rred_ep = 1 ; if ep_tm1  = 1 and conc_ep ne . then rred_ep = conc_ep ;  * mar16 ;
 
-rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep); 
+rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav); 
 * rred_ep lower or greater concurrence with ep - to introduce a potential dependence of newp on ep - which could influence
 the magnitude of an epidemic generated for a given mean level of condomless sex;
 
