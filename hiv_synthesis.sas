@@ -14268,11 +14268,8 @@ cald = caldate_never_dot ;
 
 
 * procs;
-<<<<<<< Updated upstream
 proc print; var cald gender age life_sex_risk ep newp hiv rred newp_factor rred_a rred_p rred_adc date1pos ch_risk_diag_newp rred_d rred_rc rred_balance rred_ep onart; where age >=15 & serial_no<200; run;
-=======
-proc print; var cald gender age ep newp hiv rred newp_factor rred_a rred_p rred_adc rred_d rred_rc rred_balance rred_ep onart; where age >=15 & serial_no<100; run;
->>>>>>> Stashed changes
+
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
