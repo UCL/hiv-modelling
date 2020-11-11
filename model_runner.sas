@@ -10,7 +10,7 @@ options ps=1000 ls=220 cpucount=8 spool stimer ;
 
 proc printto log="/home/cceapsc/Scratch/output/outmodelrun.log";
 
-%let population = 1000;
+%let population = 100000;
 %let total_runs = 100;
 %let startyear = 1989;
 %let endyear = 2020;
