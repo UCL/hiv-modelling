@@ -47,3 +47,8 @@ vignettes/*.pdf
 *.txt
 *.csv
 
+# Python
+*/venv*
+*/venv/*
+
+

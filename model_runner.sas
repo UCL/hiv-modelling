@@ -6,12 +6,12 @@
 * options user="/folders/myfolders/" ps=1000 ls=220 cpucount=4 spool stimer ;
 */
 libname model clear;
-options ps=1000 ls=220 cpucount=4 spool stimer ;
+options ps=1000 ls=220 cpucount=8 spool stimer ;
 
 proc printto log="/home/cceapsc/Scratch/output/outmodelrun.log";
 
 %let population = 1000;
-%let total_runs = 3;
+%let total_runs = 100;
 %let startyear = 1989;
 %let endyear = 2020;
 %let increment = 0.25;
