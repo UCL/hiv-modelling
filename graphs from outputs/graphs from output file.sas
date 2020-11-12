@@ -7,7 +7,7 @@
 data b;
 set y;
 
-if run = 14438576;
+* if run =  905226805 ;  * 688071949 ;  * 192634086 ;  * 14438576;
 
 if cald le 2020;
 
@@ -108,7 +108,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  1  ;  * 47 ;
+%let nfit =  47   ;  * 47 ;
 run;
 proc sort;by cald option ;run;
 
@@ -258,9 +258,9 @@ band    x=cald lower=p5_p_w_giv_birth_this_per_1 	upper=p95_p_w_giv_birth_this_p
 
 run;
 
-quit;
 
-ods html;
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -274,10 +274,10 @@ band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0
 series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge5_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -291,7 +291,7 @@ band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0
 series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 
@@ -308,7 +308,7 @@ band    x=cald lower=p5_log_gender_r_newp_0 	upper=p95_log_gender_r_newp_0  / tr
 series  x=cald y=p50_log_gender_r_newp_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_log_gender_r_newp_1 	upper=p95_log_gender_r_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 
@@ -325,7 +325,7 @@ band    x=cald lower=p5_p_tested_past_year_1549m_0 	upper=p95_p_tested_past_year
 series  x=cald y=p50_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 
@@ -342,7 +342,7 @@ band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year
 series  x=cald y=p50_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 
@@ -360,11 +360,11 @@ band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparen
 series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -385,7 +385,7 @@ band    x=cald lower=p5_prop_w_ever_sw_0 	upper=p95_prop_w_ever_sw_0  / transpar
 series  x=cald y=p50_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
 
 proc sgplot data=d; 
@@ -404,7 +404,7 @@ band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0
 run;quit;
 
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -468,7 +468,7 @@ band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transp
 
 run;quit;
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -913,6 +913,7 @@ band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / tran
 
 run;quit;
 
+ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women on ART >6 months with VL <1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -928,7 +929,7 @@ band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / tran
 
 run;quit;
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -942,10 +943,9 @@ band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / 
 series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
+run;
 
-
-ods html;
+/*
 
 proc sgplot data=d; Title    height=1.5 justify=center "logm15r ";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
@@ -1010,6 +1010,7 @@ band    x=cald lower=p5_logw55r_0 	upper=p95_logw55r_0  / transparency=0.9 filla
 run;quit;
 
 title;
+*/
 
 ods html close;
 
