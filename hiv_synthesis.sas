@@ -3356,7 +3356,7 @@ if t ge 2 and newp_tm1 = 0 then do;
 end;
 
 if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
-	if age > 30 then e=e*0.99; * older women cant be in highest category ;
+	if e < sw_newp_lev_2_1 then newp=0;
 	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
