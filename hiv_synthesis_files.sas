@@ -166,7 +166,7 @@ libname model 'N:\SAS\hiv-modelling';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-* %let population = 1000; 
+%let population = 1000; 
 
 * options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
@@ -190,11 +190,11 @@ One  row of data defined, containing  parameter values that remain fixed for the
 
 data z;
 /*
+*/
 run = rand('uniform')*1000000000;  run=round(run,1);
 										   
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
-*/
 
 caldate1=1989;
 caldate_never_dot=1989;
@@ -16215,8 +16215,8 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-data model.out_&run(compress=binary); set cum_l1; 
-run = &run;
+data model.out_&dataset_id(compress=binary); set cum_l1; 
+* run = &run;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 /*  file "/home/cceapsc/Scratch/_output_26_10_20_7pm_&dataset_id";  
 put
