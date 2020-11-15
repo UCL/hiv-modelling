@@ -14,7 +14,7 @@ data a;
 * set a.lai_keep_extra_3; * this is separate and contains extra outputs;
 * set a.lai_keep_extra_4; * this is separate and contains extra outputs;
 * set a.lai_keep_extra_5; * this is separate and contains extra outputs;
-  set a.lai_keep_extra_6; * this is separate and contains extra outputs;
+* set a.lai_keep_extra_6; * this is separate and contains extra outputs;
 
 
 
@@ -799,7 +799,7 @@ data wide_option2; merge lai_option ;
 * data a.wide_lai_extra_3;
 * data a.wide_lai_extra_4;
 * data a.wide_lai_extra_5;
-  data a.wide_lai_extra_6;
+* data a.wide_lai_extra_6;
 
   merge  sf  wide_outputs  wide_par   wide_option2;
   by run_;
@@ -816,20 +816,18 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai
 * set a.wide_lai_extra_4;
 * set a.wide_lai_extra_5;
 * set a.wide_lai_extra_6;
-  set a.wide_lai a.wide_lai_extra  a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4  a.wide_lai_extra_5  a.wide_lai_extra_6 ;
+  set    a.wide_lai    a.wide_lai_extra  a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4    a.wide_lai_extra_5  a.wide_lai_extra_6 ;
 
 
 * to get n=1000 used in re-submission ;
-
+  
 if lai_option = 20 and run_ > 896551376 then delete;
 if lai_option = 22 and run_ > 400044319 then delete;
-if lai_option = 24 and run_ >  872097391 then delete;
+if lai_option = 24 and run_ > 872097391 then delete;
+  
 
-
-proc freq; tables lai_option ; run;
-
+* use with wide_lai to get the n=500 used in submitted paper ;
 /*
-use with wide_lai to get the n=500 used in submitted paper
 if lai_option = 20 and run_ > 969729506 then delete;
 if lai_option = 22 and run_ > 922424527 then delete;
 if lai_option = 24 and run_ > 872097391 then delete;
@@ -947,6 +945,14 @@ a_p_ae_clarla_e_20_adg80_21_31_2 = s_ae_clarla_e_20_adg80_21_31_2 / s_artexp_cla
 a_p_ae_clarla_e_22_adg80_21_31_2 = s_ae_clarla_e_22_adg80_21_31_2 / s_artexp_clarla_elig_22_21_31_2 ;
 a_p_ae_clarla_e_24_adg80_21_31_2 = s_ae_clarla_e_24_adg80_21_31_2 / s_artexp_clarla_elig_24_21_31_2 ;
 
+a_p_ae_clarla_e_20_adg80_21_31_1 = s_ae_clarla_e_20_adg80_21_31_1 / s_artexp_clarla_elig_20_21_31_1 ;
+a_p_ae_clarla_e_22_adg80_21_31_1 = s_ae_clarla_e_22_adg80_21_31_1 / s_artexp_clarla_elig_22_21_31_1 ;
+a_p_ae_clarla_e_24_adg80_21_31_1 = s_ae_clarla_e_24_adg80_21_31_1 / s_artexp_clarla_elig_24_21_31_1 ;
+
+d_a_p_ae_clarla_e_20_adg80_21_31 = a_p_ae_clarla_e_20_adg80_21_31_2 - a_p_ae_clarla_e_20_adg80_21_31_1;
+d_a_p_ae_clarla_e_22_adg80_21_31 = a_p_ae_clarla_e_22_adg80_21_31_2 - a_p_ae_clarla_e_22_adg80_21_31_1;
+d_a_p_ae_clarla_e_24_adg80_21_31 = a_p_ae_clarla_e_24_adg80_21_31_2 - a_p_ae_clarla_e_24_adg80_21_31_1;
+
 
 
 /*
@@ -1014,18 +1020,13 @@ run;
 
 
 
-proc univariate data=wide;  var p_w_giv_birth_this_per_19 
-prevalence1549_19 incidence1549_19 incidence1549w_19  incidence1549m_19 
-mtct_prop_19 		p_diag_19 	p_diag_m_19   p_diag_w_19	p_ai_no_arv_c_nnm_19  p_onart_diag_19	p_onart_vl1000_19   p_vl1000_19		
-p_onart_vl1000_w_19				p_onart_vl1000_m_19   p_onart_cd4_l500_19  p_startedline2_19  p_vl1000_art_gt6m_sw_19;
+proc univariate data=wide;  var p_w_giv_birth_this_per_20 
+prevalence1549_20 incidence1549_20 incidence1549w_20  incidence1549m_20 
+mtct_prop_20 		p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20  p_onart_diag_20	p_onart_vl1000_20   p_vl1000_20		
+p_onart_vl1000_w_20				p_onart_vl1000_m_20   p_onart_cd4_l500_20  p_startedline2_20  p_vl1000_art_gt6m_sw_20;
 run;
 
 
-proc freq; tables lai_option s_alive_19 prevalence1549_19 ; run;
-
-proc sort; by s_alive_19 ;
-
-proc print; var s_alive_19 prevalence1549_19 ; run;
 
 
 
@@ -1236,11 +1237,21 @@ proc means data=wide; var  p_o_ten_tox_19 p_o_ten_tox_20  p_o_ten_tox_21_31_2  p
 ods html close;
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide;  var  a_p_st_clarla_vlg1000_21_31_2   ; 
+proc means n mean lclm uclm p5 p95 data=wide;  
+var  a_p_st_clarla_vlg1000_21_31_2 
+a_p_st_clarla_linefail1_21_31_2 
+a_p_st_clarla_iim_21_31_2 
+a_p_st_clarla_rtnnm_21_31_2 
+a_p_st_clarla_m_21_31_2 
+a_p_st_clarla_agelt25_21_31_2; 
 where lai_option=24 ;  run; 
 ods html close;
 
-proc means n mean lclm uclm p5 p95 data=wide;  var p_ae_clarla_e22_hi_adhdl_21_31_2  a_p_ae_clarla_e_22_adg80_21_31_2  ; 
+
+
+proc means n mean lclm uclm p5 p95 data=wide;  var p_ae_clarla_e22_hi_adhdl_21_31_1  a_p_ae_clarla_e_22_adg80_21_31_1 
+p_ae_clarla_e22_hi_adhdl_21_31_2  a_p_ae_clarla_e_22_adg80_21_31_2 
+d_p_ae_clarla_e22_hi_adhdl_21_31  d_a_p_ae_clarla_e_22_adg80_21_31 ; 
 where lai_option=22 ;
 run;
 
