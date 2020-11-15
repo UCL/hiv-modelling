@@ -1083,7 +1083,7 @@ proc freq data=wide ; tables run_ ; where lai_option = 24; run;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var d_p_onart_vl1000_21_31_2   ;
-  where lai_option=20 ;
+  where lai_option=24 ;
 * where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;
 run; 
 ods html close;
@@ -1131,7 +1131,7 @@ ods html close;
 
 ods html;
 proc means data=wide; var d_p_onart_vl1000_21_31_2 ;
-where lai_option=26; run; 
+where lai_option=20; run; 
 ods html close;
 
 ods html;
@@ -1162,7 +1162,8 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var d_aids_death_rate_21_31_2  ;
-  where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;
+  where lai_option = 24 ;
+* where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;
   run;
 ods html close;
 
@@ -1173,7 +1174,8 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var d_p_iime__21_31_2 ;
-  where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ; run; 
+  where lai_option = 24 ; run; 
+* where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ; run; 
 ods html close;
 
 ods html;
@@ -1183,7 +1185,8 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var d_p_nnme__21_31_2 ;
- where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;  run; 
+  where lai_option = 24 ; run; 
+* where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ; run; 
 ods html close;
 
 ods html;
@@ -1213,7 +1216,8 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var d_incidence1549_21_31_2  ;
- where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;  run; 
+  where lai_option = 24 ; run; 
+* where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ; run;  
 ods html close;
 
 ods html;
@@ -1248,12 +1252,14 @@ where lai_option=24 ;  run;
 ods html close;
 
 
-
-proc means n mean lclm uclm p5 p95 data=wide;  var p_ae_clarla_e22_hi_adhdl_21_31_1  a_p_ae_clarla_e_22_adg80_21_31_1 
-p_ae_clarla_e22_hi_adhdl_21_31_2  a_p_ae_clarla_e_22_adg80_21_31_2 
-d_p_ae_clarla_e22_hi_adhdl_21_31  d_a_p_ae_clarla_e_22_adg80_21_31 ; 
-where lai_option=22 ;
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var p_ae_clarla_e24_hi_adhdl_21_31_1  a_p_ae_clarla_e_24_adg80_21_31_1 
+p_ae_clarla_e24_hi_adhdl_21_31_2  a_p_ae_clarla_e_24_adg80_21_31_2 
+d_p_ae_clarla_e24_hi_adhdl_21_31  d_a_p_ae_clarla_e_24_adg80_21_31 ; 
+where lai_option=24 ; 
 run;
+ods html close;
+
 
 
 
