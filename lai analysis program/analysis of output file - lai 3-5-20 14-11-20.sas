@@ -13,7 +13,9 @@ data a;
 * set a.lai_keep_extra_2; * this is separate and contains extra outputs;
 * set a.lai_keep_extra_3; * this is separate and contains extra outputs;
 * set a.lai_keep_extra_4; * this is separate and contains extra outputs;
-  set a.lai_keep_extra_5; * this is separate and contains extra outputs;
+* set a.lai_keep_extra_5; * this is separate and contains extra outputs;
+  set a.lai_keep_extra_6; * this is separate and contains extra outputs;
+
 
 
 lai_option = option_ ;
@@ -796,7 +798,8 @@ data wide_option2; merge lai_option ;
 * data a.wide_lai_extra_2 ;
 * data a.wide_lai_extra_3;
 * data a.wide_lai_extra_4;
-  data a.wide_lai_extra_5;
+* data a.wide_lai_extra_5;
+  data a.wide_lai_extra_6;
 
   merge  sf  wide_outputs  wide_par   wide_option2;
   by run_;
@@ -812,12 +815,21 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai
 * set a.wide_lai_extra_3;
 * set a.wide_lai_extra_4;
 * set a.wide_lai_extra_5;
-  set a.wide_lai  a.wide_lai_extra  a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4  a.wide_lai_extra_5 ;
+* set a.wide_lai_extra_6;
+  set a.wide_lai a.wide_lai_extra  a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4  a.wide_lai_extra_5  a.wide_lai_extra_6 ;
 
 
-* give 125 lai_option 20 and 24 and 250 lai_option 22 to give total 500 ;
-* remove these lines when reading lai_extra;
+* to get n=1000 used in re-submission ;
+
+if lai_option = 20 and run_ > 896551376 then delete;
+if lai_option = 22 and run_ > 400044319 then delete;
+if lai_option = 24 and run_ >  872097391 then delete;
+
+
+proc freq; tables lai_option ; run;
+
 /*
+use with wide_lai to get the n=500 used in submitted paper
 if lai_option = 20 and run_ > 969729506 then delete;
 if lai_option = 22 and run_ > 922424527 then delete;
 if lai_option = 24 and run_ > 872097391 then delete;
@@ -1008,6 +1020,12 @@ mtct_prop_19 		p_diag_19 	p_diag_m_19   p_diag_w_19	p_ai_no_arv_c_nnm_19  p_onar
 p_onart_vl1000_w_19				p_onart_vl1000_m_19   p_onart_cd4_l500_19  p_startedline2_19  p_vl1000_art_gt6m_sw_19;
 run;
 
+
+proc freq; tables lai_option s_alive_19 prevalence1549_19 ; run;
+
+proc sort; by s_alive_19 ;
+
+proc print; var s_alive_19 prevalence1549_19 ; run;
 
 
 
