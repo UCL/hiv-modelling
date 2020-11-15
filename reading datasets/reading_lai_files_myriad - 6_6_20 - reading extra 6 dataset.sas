@@ -13,7 +13,7 @@ proc printto;
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai\lai output files\c_output_lai_6_6_20_6pm_extra_6_temp";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai\lai output files\c_output_lai_6_6_20_6pm_extra_6";
 
 input 
 
