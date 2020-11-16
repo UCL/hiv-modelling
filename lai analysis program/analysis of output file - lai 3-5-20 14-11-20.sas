@@ -8,14 +8,7 @@ proc printto;
 * ods html ;
 
 data a; 
-* set a.lai_keep; * this contains the main 500 setting scenarios (once the filter below is applied to reach exactly 500);
-* set a.lai_keep_extra;  * this is separate and contains extra outputs;
-* set a.lai_keep_extra_2; * this is separate and contains extra outputs;
-* set a.lai_keep_extra_3; * this is separate and contains extra outputs;
-* set a.lai_keep_extra_4; * this is separate and contains extra outputs;
-* set a.lai_keep_extra_5; * this is separate and contains extra outputs;
-* set a.lai_keep_extra_6; * this is separate and contains extra outputs;
-
+ set a.lai_keep  a.lai_keep_extra  a.lai_keep_extra_2 a.lai_keep_extra_3 a.lai_keep_extra_4 a.lai_keep_extra_5 a.lai_keep_extra_6; 
 
 
 lai_option = option_ ;
@@ -183,7 +176,7 @@ if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
 if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 
-dvis_cost = s_dvis_cost * sf_2020 * discount_adj * 12 / 1000;
+dvis_cost_x = s_dvis_cost * sf_2020 * discount_adj * 12 / 1000; 
 dart1_cost = s_dart_1_cost * sf_2020 * discount_adj * 12 / 1000;
 dart2_cost = s_dart_2_cost * sf_2020 * discount_adj * 12 / 1000;
 dart3_cost = s_dart_3_cost * sf_2020 * discount_adj * 12 / 1000;
@@ -207,6 +200,17 @@ dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 12 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 12 / 1000;
+
+* the variable redn_in_vis_cost_vlm_supp in the model program that is the amount by which visit costs are lower if sv=1 was set to 0.010 and
+was not divided by 3 when moving to 1 monthly time steps - the difference between dfullvis_cost and dvis_cost should divided by 3 and subtracted
+from dfullvis_cost to get the correct dvis_cost;
+
+dvis_cost = dfullvis_cost - ((dfullvis_cost - dvis_cost_x) / 3) ;
+
+proc print; var cald  dfullvis_cost dvis_cost  dvis_cost_x ; where cald = 2022 and lai_option = 20; run; 
+
+
+
 dcost_circ = s_dcost_circ * sf_2020* discount_adj * 12 / 1000; 
 dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 12 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
@@ -793,13 +797,7 @@ data wide_option2; merge lai_option ;
 
 
 * To get one row per run;
-* data a.wide_lai;
-* data a.wide_lai_extra;
-* data a.wide_lai_extra_2 ;
-* data a.wide_lai_extra_3;
-* data a.wide_lai_extra_4;
-* data a.wide_lai_extra_5;
-* data a.wide_lai_extra_6;
+  data a.wide_lai_rev;
 
   merge  sf  wide_outputs  wide_par   wide_option2;
   by run_;
@@ -809,15 +807,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai
 
 
   data wide;    
-* set a.wide_lai;
-* set a.wide_lai_extra;
-* set a.wide_lai_extra_2;
-* set a.wide_lai_extra_3;
-* set a.wide_lai_extra_4;
-* set a.wide_lai_extra_5;
-* set a.wide_lai_extra_6;
-  set    a.wide_lai    a.wide_lai_extra  a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4    a.wide_lai_extra_5  a.wide_lai_extra_6 ;
-
+  set a.wide_lai_rev;
 
 * to get n=1000 used in re-submission ;
   
@@ -864,6 +854,8 @@ d_ddaly_non_aids_pre_dth_21_31_2 = ddaly_non_aids_pre_death_21_31_1 - ddaly_non_
 d_dcost_21_31_2 = dcost_21_31_2 - dcost_21_31_1 ; 
 
 d_dcd4_cost_21_31_2 = dcd4_cost_21_31_2 - dcd4_cost_21_31_1 ;
+
+d_dart_cost_y_21_31_2 = dart_cost_y_21_31_2 - dart_cost_y_21_31_1 ;
 
 d_dvl_cost_21_31_2 = dvl_cost_21_31_2 - dvl_cost_21_31_1 ;
 
@@ -1293,9 +1285,54 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide;  var   d_dcost_21_31_2      dcost_21_31_1      dcost_21_31_2  ;
-where lai_option=22  and rel_onart_la_drugs_ = 0.5 ;
+where lai_option=20 ;
+* where lai_option=22  and rel_onart_la_drugs_ = 0.5 ;
 run; 
 ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var   d_dcost_clin_care_21_31_2      dcost_clin_care_21_31_1      dcost_clin_care_21_31_2  ;
+where lai_option=20 ;
+run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var   d_dart_cost_y_21_31_2      dart_cost_y_21_31_1      dart_cost_y_21_31_2  ;
+where lai_option=24 ;
+run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var   d_dart_cost_y_21_31_2      dart_cost_y_21_31_1      dart_cost_y_21_31_2  ;
+where lai_option=24 ;
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var   d_dclin_cost_21_31_2      dclin_cost_21_31_1      dclin_cost_21_31_2  ;
+where lai_option=20 ;
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  var   d_dvis_cost_21_31_2      dvis_cost_21_31_1      dvis_cost_21_31_2  ;
+where lai_option=22 ;
+run; 
+ods html close;
+
+
+
+
+
+*  dart_cost_y
+dcost components: 
+dcost_clin_care dtest_cost dcost_drug_level_test dcost_circ dcost_prep_visit dcost_prep dcost_child_hiv dcost_non_aids_pre_death 
+
+dcost_clin_care = 
+dart_cost_y+dadc_cost+dcd4_cost+dvl_cost+dvis_cost+dwho3_cost+dcot_cost+dtb_cost+dres_cost+d_t_adh_int_cost+dswitchline_cost
+;
 
 ods html;
 proc means data=wide; var   d_dcla_cost_21_31_2  ;
@@ -1311,7 +1348,8 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide;  var  d_ddaly_all_21_31_2  ;
-where lai_option=22 and rel_onart_la_drugs_ = 0.5 ;
+where lai_option = 24;
+* where lai_option=22 and rel_onart_la_drugs_ = 0.5 ;
 run; 
 ods html close;
 
