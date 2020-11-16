@@ -480,9 +480,10 @@ p_neph_stops_after_ten = 0.1;
 							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
 * dependent_on_time_step_length ;
 
-* sw_trans_matrix;   r=uniform(0);  if r < 0.20 then sw_trans_matrix = 1;   if 0.20 <= r < 0.40 then sw_trans_matrix = 2;  
-								if 0.40 <= r < 0.60 then sw_trans_matrix = 3;  if 0.60 <= r < 0.80      then sw_trans_matrix = 4;  
-								if 0.80 <= r        then sw_trans_matrix = 5;  
+* sw_trans_matrix;   r=uniform(0);  if r < 0.125 			then sw_trans_matrix = 1;  if 0.125 <= r < 0.250 then sw_trans_matrix = 2;  
+									if 0.250 <= r < 0.375 	then sw_trans_matrix = 3;  if 0.375 <= r < 0.500 then sw_trans_matrix = 4;  
+									if 0.500 <= r < 0.625 	then sw_trans_matrix = 5;  if 0.625 <= r < 0.750 then sw_trans_matrix = 6;  
+									if 0.750 <= r < 0.875 	then sw_trans_matrix = 7;  if 0.875 <= r         then sw_trans_matrix = 8;  
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
@@ -767,7 +768,7 @@ if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_i
 if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
 
 * transition probabilities between sex worker newp levels;
-* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-40   4   newp 41-80   5   newp 81+  ;
+* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
 if sw_trans_matrix=1 then do;
 sw_newp_lev_1_1 = 0.80 ; sw_newp_lev_1_2 = 0.17 ; sw_newp_lev_1_3 = 0.015  ; sw_newp_lev_1_4 = 0.010 ; sw_newp_lev_1_5 = 0.005 ; 
 sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
@@ -819,7 +820,7 @@ sw_newp_lev_5_1 = 0.150 ; sw_newp_lev_5_2 = 0.150 ; sw_newp_lev_5_3 = 0.150  ; s
 end;
 if sw_trans_matrix=8 then do;
 sw_newp_lev_1_1 = 0.20 ; sw_newp_lev_1_2 = 0.30 ; sw_newp_lev_1_3 = 0.25   ; sw_newp_lev_1_4 = 0.150 ; sw_newp_lev_1_5 = 0.100 ; 
-sw_newp_lev_2_1 = 0.20 ; sw_newp_lev_2_2 = 0.30 ; sw_newp_lev_2_3 = 0.250  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.150 ; 
+sw_newp_lev_2_1 = 0.20 ; sw_newp_lev_2_2 = 0.30 ; sw_newp_lev_2_3 = 0.250  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.100 ; 
 sw_newp_lev_3_1 = 0.20 ; sw_newp_lev_3_2 = 0.30 ; sw_newp_lev_3_3 = 0.25  ; sw_newp_lev_3_4 = 0.150 ; sw_newp_lev_3_5 = 0.100 ; 
 sw_newp_lev_4_1 = 0.20  ; sw_newp_lev_4_2 = 0.30 ; sw_newp_lev_4_3 = 0.250 ; sw_newp_lev_4_4 = 0.15 ; sw_newp_lev_4_5 = 0.100; 
 sw_newp_lev_5_1 = 0.20  ; sw_newp_lev_5_2 = 0.30 ; sw_newp_lev_5_3 = 0.250  ; sw_newp_lev_5_4 = 0.15 ; sw_newp_lev_5_5 = 0.10 ;
@@ -3297,9 +3298,9 @@ if sw=1 then  ever_sw = 1;
 * sw newp levels are 
 1 	newp = 0
 2   newp 1-6
-3   newp 7-40
-4   newp 41-80
-5   newp 81+
+3   newp 7-20
+4   newp 21-50
+5   newp 51-150
 ;
 
 * dependent_on_time_step_length ;
@@ -3340,7 +3341,7 @@ e=uniform(0);
 2   newp 1-6
 3   newp 7-20
 4   newp 21-50 
-5   newp 50 +
+5   newp 50-150
 
 ;
 
@@ -3367,7 +3368,7 @@ if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
 	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
+if  t ge 2 and 7 <= newp_tm1 <= 20 then do;
 	if e < sw_newp_lev_3_1 then newp=0;
 	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3378,7 +3379,7 @@ if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
 	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
+if  t ge 2 and  21 <= newp_tm1 <= 50 then do;
 	if e < sw_newp_lev_4_1 then newp=0;
 	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3389,7 +3390,7 @@ if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
 	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  80 <  newp_tm1 then do;
+if  t ge 2 and  50 <  newp_tm1 then do;
 	if e < sw_newp_lev_5_1 then newp=0;
 	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3412,9 +3413,9 @@ end;
 * sw newp levels are 
 1 	newp = 0
 2   newp 1-6 / 3
-3   newp 7-40 /3 
-4   newp 41-100 /3
-5   newp 101+ /3
+3   newp 7-20 /3 
+4   newp 21-50 /3
+5   newp 51-150 /3
 
 * note if used needs to be updated with vales above
 
