@@ -163,7 +163,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -14270,8 +14270,6 @@ cald = caldate_never_dot ;
 
 
 * procs;
-proc print; var cald gender age life_sex_risk ep newp hiv rred newp_factor rred_a rred_p rred_adc date1pos ch_risk_diag_newp rred_d rred_rc rred_balance rred_ep onart; where age >=15 & serial_no<200; run;
-
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
