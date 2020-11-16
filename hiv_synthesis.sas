@@ -1497,6 +1497,9 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
+*** 'eff' variables are defined for specific parameters which may change as a result of the code. Values of the original
+	parameters are stored and only 'eff_' variables are used throughout the code;
+
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
@@ -1554,6 +1557,12 @@ eff_test_targeting = test_targeting;
 
 keep_going_1999=.;  keep_going_2004=.; keep_going_2016=.;  keep_going_2020=.;
 
+* eff sex worker program variables;
+eff_sw_program=0;
+eff_sw_higher_int = sw_higher_int;
+eff_prob_sw_lower_adh = prob_sw_lower_adh;
+eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
+sw_program_visit=0;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -1761,12 +1770,7 @@ tcur=.;
 dead_tm1=0;
 
 
-* sex worker program not existing initially;
-eff_sw_program=0;
-eff_sw_higher_int = sw_higher_int;
-eff_prob_sw_lower_adh = prob_sw_lower_adh;
-eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
-sw_program_visit=0;
+
 
 
 ***LBM Mar 2017 - Prev_circ now relates to males aged > 15 at t=1 (1989) - a % of this population is assumed already circumcised;
@@ -1972,31 +1976,39 @@ if art_initiation_strategy=4 and 2011.5 <= caldate{t} and q < rate_ch_art_init_s
 
 if 2014 <= caldate{t} then art_initiation_strategy=10;
 
+* SW programs starts in 2015;
+if caldate{t} = 2015 then eff_sw_program=sw_program;
+
+* Attendance at SW program (if it exists);
+
+if eff_sw_program=1 and sw=1 then do;
+if sw_program_visit=0 then do; e=uniform(0); if e < rate_engage_sw_program then sw_program_visit=1 ; end; 
+if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then sw_program_visit=0 ; end; 
+end;
 
 * effect of sex work program ;
 sw_test_6mthly = 0;
-if sw_program=1 and caldate{t} ge 2015 then do;
-	eff_sw_program=1; 
+if eff_sw_program=1 then do;
+
 	if sw_program_visit = 1 then do;
-	if sw_program_effect=1 then do; 
+
+		if sw_program_effect=1 then do; 
 		e=uniform(0); if e < 0.5 then sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.75 ; 
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
 		prepuptake_sw=0.70;
 		s= uniform(0); if s < 0.70 and prep_willing_sw = 0 then prep_willing_sw = 1;
+		end;
 
-
-	end;
-	if sw_program_effect=2 then do; 
+		if sw_program_effect=2 then do; 
 		sw_test_6mthly=1; 
 		eff_sw_higher_int = sw_higher_int * 0.5 ; 
 		eff_prob_sw_lower_adh = 0 ; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
 		prepuptake_sw=0.95;
 		s= uniform(0); if s < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
-
-	end;
+		end;
 	end;
 end;
 
@@ -2475,12 +2487,6 @@ if gender=2 then do;
 end;
 
 
-* ATTENDANCE AT SEX WORKER PROGRAM (if it exists);
-
-if eff_sw_program=1 and gender=2 and sw=1 then do;
-if sw_program_visit=0 then do; e=uniform(0); if e < rate_engage_sw_program then sw_program_visit=1 ; end; 
-if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then sw_program_visit=0 ; end; 
-end;
 
 
 
@@ -2783,7 +2789,7 @@ if rbm = 4 then do;
 rred_adc=1.0; if hiv_tm1=1 and adc_tm1=1 then rred_adc = 0.2;
 
 rred_adhav=1; 
-if higher_newp_with_lower_adhav=1 and adhav < 0.8 then rred_adhav=0.5;
+if higher_newp_with_lower_adhav=1 and adhav < 0.8 then rred_adhav=2.0;
 
 * reduction in sexual behaviour following +ve hiv test ;
 rred_d=1.0;
@@ -2830,7 +2836,7 @@ end;
 
 rred_ep = 1 ; if ep_tm1  = 1 and conc_ep ne . then rred_ep = conc_ep ;  * mar16 ;
 
-rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep); 
+rred= newp_factor*(rred_a * rred_p * rred_adc * rred_d * rred_rc * rred_balance * rred_ep * rred_adhav); 
 * rred_ep lower or greater concurrence with ep - to introduce a potential dependence of newp on ep - which could influence
 the magnitude of an epidemic generated for a given mean level of condomless sex;
 
@@ -3337,7 +3343,6 @@ e=uniform(0);
 
 * transitions between levels * dependent_on_time_step_length ;
 if t ge 2 and newp_tm1 = 0 then do;
-	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_1_1 then newp=0;
 	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3349,7 +3354,6 @@ if t ge 2 and newp_tm1 = 0 then do;
 end;
 
 if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
-	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_2_1 then newp=0;
 	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3361,7 +3365,6 @@ if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
 end;
 
 if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
-	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_3_1 then newp=0;
 	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3373,7 +3376,6 @@ if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
 end;
 
 if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
-	if age > 30 then e=e*0.98; * older women cant be in highest category ;
 	if e < sw_newp_lev_4_1 then newp=0;
 	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -10348,133 +10350,6 @@ cd4diag=round(cd4diag,1);
 vset=round(vset,.1);
 
 
-* --------------------------------------------------------------------------------------;
-if rbm = 4 then do;
-
-* down columns give breakdown of age of partners for females by age group;
-
-if sex_age_mixing_matrix_w=1 then do;
-m15w15 =0.43*t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.34*t_w_1524_newp; m25w25=0.49*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.12*t_w_1524_newp; m35w25=0.30*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.10*t_w_1524_newp; m45w25=0.10*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.01*t_w_1524_newp; m55w25=0.02*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=2 then do;
-m15w15 =0.43* t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.415*t_w_1524_newp; m25w25=0.50*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.12* t_w_1524_newp; m35w25=0.35*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.05*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.005*t_w_1524_newp; m55w25=0.01*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=3 then do;
-m15w15 =0.25* t_w_1524_newp; m15w25=0.09*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.55 *t_w_1524_newp; m25w25=0.50*t_w_2534_newp; m25w35=0.25*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.15* t_w_1524_newp; m35w25=0.35*t_w_2534_newp; m35w35=0.34*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.05*t_w_2534_newp; m45w35=0.25*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.02 *t_w_1524_newp; m55w25=0.01*t_w_2534_newp; m55w35=0.13*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=4 then do;
-m15w15 =0.05* t_w_1524_newp; m15w25=0.03*t_w_2534_newp; m15w35=0.03*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.55* t_w_1524_newp; m25w25=0.52*t_w_2534_newp; m25w35=0.05*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.35* t_w_1524_newp; m35w25=0.40*t_w_2534_newp; m35w35=0.57*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.03* t_w_1524_newp; m45w25=0.03*t_w_2534_newp; m45w35=0.30*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.02 *t_w_1524_newp; m55w25=0.02*t_w_2534_newp; m55w35=0.05*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=5 then do;
-m15w15 =0.05* t_w_1524_newp; m15w25=0.01*t_w_2534_newp; m15w35=0.01*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.45* t_w_1524_newp; m25w25=0.40*t_w_2534_newp; m25w35=0.07*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.30* t_w_1524_newp; m35w25=0.39*t_w_2534_newp; m35w35=0.47*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.15* t_w_1524_newp; m45w25=0.15*t_w_2534_newp; m45w35=0.30*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.05 *t_w_1524_newp; m55w25=0.05*t_w_2534_newp; m55w35=0.15*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-if sex_age_mixing_matrix_w=6 then do;
-m15w15 =0.20* t_w_1524_newp; m15w25=0.00*t_w_2534_newp; m15w35=0.01*t_w_3544_newp; m15w45=0.00*t_w_4554_newp; m15w55=0.00*t_w_5564_newp;
-m25w15 =0.20* t_w_1524_newp; m25w25=0.25*t_w_2534_newp; m25w35=0.01*t_w_3544_newp; m25w45=0.00*t_w_4554_newp; m25w55=0.00*t_w_5564_newp;
-m35w15 =0.20* t_w_1524_newp; m35w25=0.25*t_w_2534_newp; m35w35=0.32*t_w_3544_newp; m35w45=0.05*t_w_4554_newp; m35w55=0.00*t_w_5564_newp;
-m45w15 =0.20* t_w_1524_newp; m45w25=0.25*t_w_2534_newp; m45w35=0.33*t_w_3544_newp; m45w45=0.70*t_w_4554_newp; m45w55=0.10*t_w_5564_newp;
-m55w15 =0.20 *t_w_1524_newp; m55w25=0.25*t_w_2534_newp; m55w35=0.33*t_w_3544_newp; m55w45=0.25*t_w_4554_newp; m55w55=0.90*t_w_5564_newp;
-end;
-
-
-ptnewp15_m=m15w15+m15w25+m15w35+m15w45+m15w55; 
-ptnewp25_m=m25w15+m25w25+m25w35+m25w45+m25w55; 
-ptnewp35_m=m35w15+m35w25+m35w35+m35w45+m35w55; 
-ptnewp45_m=m45w15+m45w25+m45w35+m45w45+m45w55; 
-ptnewp55_m=m55w15+m55w25+m55w35+m55w45+m55w55; 
-
-ptnewp_m=ptnewp15_m+ptnewp25_m+ptnewp35_m+ptnewp45_m+ptnewp55_m;
-
-* down columns give breakdown of age of partners for males by age group;
-
-if sex_age_mixing_matrix_m=1 then do;
-w15m15 =0.865*t_m_1524_newp; w15m25=0.47*t_m_2534_newp; w15m35=0.30*t_m_3544_newp; w15m45=0.43*t_m_4554_newp; w15m55=0.18*t_m_5564_newp;
-w25m15 =0.11 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.50*t_m_3544_newp; w25m45=0.30*t_m_4554_newp; w25m55=0.18*t_m_5564_newp;
-w35m15 =0.025*t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.20*t_m_3544_newp; w35m45=0.23*t_m_4554_newp; w35m55=0.27*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.00*t_m_3544_newp; w45m45=0.03*t_m_4554_newp; w45m55=0.27*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.01*t_m_4554_newp; w55m55=0.10*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=2 then do;
-w15m15 =0.865*t_m_1524_newp; w15m25=0.47*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.11 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.35*t_m_3544_newp; w25m45=0.23*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.025*t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.40*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.25*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.30*t_m_4554_newp; w45m55=0.30*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.07*t_m_4554_newp; w55m55=0.32*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=3 then do;
-w15m15 =0.90 *t_m_1524_newp; w15m25=0.44*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.43*t_m_2534_newp; w25m35=0.34*t_m_3544_newp; w25m45=0.23*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.02 *t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.40*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.25*t_m_5564_newp;
-w45m15 =0.02 *t_m_1524_newp; w45m25=0.02*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.30*t_m_4554_newp; w45m55=0.30*t_m_5564_newp;
-w55m15 =0.01 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.01*t_m_3544_newp; w55m45=0.07*t_m_4554_newp; w55m55=0.32*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=4 then do;
-w15m15 =0.93 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.20*t_m_3544_newp; w15m45=0.15*t_m_4554_newp; w15m55=0.05*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.34*t_m_3544_newp; w25m45=0.20*t_m_4554_newp; w25m55=0.08*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.08*t_m_2534_newp; w35m35=0.41*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.20*t_m_5564_newp;
-w45m15 =0.01 *t_m_1524_newp; w45m25=0.01*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.37*t_m_4554_newp; w45m55=0.40*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.03*t_m_4554_newp; w55m55=0.27*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=5 then do;
-w15m15 =0.94 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.40*t_m_3544_newp; w15m45=0.30*t_m_4554_newp; w15m55=0.30*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.40*t_m_3544_newp; w25m45=0.30*t_m_4554_newp; w25m55=0.30*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.08*t_m_2534_newp; w35m35=0.15*t_m_3544_newp; w35m45=0.25*t_m_4554_newp; w35m55=0.30*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.01*t_m_2534_newp; w45m35=0.04*t_m_3544_newp; w45m45=0.10*t_m_4554_newp; w45m55=0.05*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.01*t_m_2534_newp; w55m35=0.01*t_m_3544_newp; w55m45=0.05*t_m_4554_newp; w55m55=0.05*t_m_5564_newp;
-end;
-
-if sex_age_mixing_matrix_m=6 then do;
-w15m15 =0.94 *t_m_1524_newp; w15m25=0.50*t_m_2534_newp; w15m35=0.50*t_m_3544_newp; w15m45=0.50*t_m_4554_newp; w15m55=0.50*t_m_5564_newp;
-w25m15 =0.05 *t_m_1524_newp; w25m25=0.40*t_m_2534_newp; w25m35=0.35*t_m_3544_newp; w25m45=0.35*t_m_4554_newp; w25m55=0.35*t_m_5564_newp;
-w35m15 =0.01 *t_m_1524_newp; w35m25=0.10*t_m_2534_newp; w35m35=0.10*t_m_3544_newp; w35m45=0.10*t_m_4554_newp; w35m55=0.10*t_m_5564_newp;
-w45m15 =0.00 *t_m_1524_newp; w45m25=0.00*t_m_2534_newp; w45m35=0.05*t_m_3544_newp; w45m45=0.05*t_m_4554_newp; w45m55=0.05*t_m_5564_newp;
-w55m15 =0.00 *t_m_1524_newp; w55m25=0.00*t_m_2534_newp; w55m35=0.00*t_m_3544_newp; w55m45=0.00*t_m_4554_newp; w55m55=0.00*t_m_5564_newp;
-end;
-
-
-
-ptnewp15_w=w15m15+w15m25+w15m35+w15m45+w15m55; 
-ptnewp25_w=w25m15+w25m25+w25m35+w25m45+w25m55; 
-ptnewp35_w=w35m15+w35m25+w35m35+w35m45+w35m55; 
-ptnewp45_w=w45m15+w45m25+w45m35+w45m45+w45m55; 
-ptnewp55_w=w55m15+w55m25+w55m35+w55m45+w55m55; 
-
-ptnewp_w=ptnewp15_w+ptnewp25_w+ptnewp35_w+ptnewp45_w+ptnewp55_w;
-
-end;
-* --------------------------------------------------------------------------------------;
-
-
-
 if 15 <= age < 25 then ageg=1;
 if 25 <= age < 35 then ageg=2;
 if 35 <= age < 45 then ageg=3;
@@ -14395,11 +14270,8 @@ cald = caldate_never_dot ;
 
 
 * procs;
-<<<<<<< Updated upstream
 proc print; var cald gender age life_sex_risk ep newp hiv rred newp_factor rred_a rred_p rred_adc date1pos ch_risk_diag_newp rred_d rred_rc rred_balance rred_ep onart; where age >=15 & serial_no<200; run;
-=======
-proc print; var cald gender age ep newp hiv rred newp_factor rred_a rred_p rred_adc rred_d rred_rc rred_balance rred_ep onart; where age >=15 & serial_no<100; run;
->>>>>>> Stashed changes
+
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
@@ -16421,7 +16293,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_02_11_20_5pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_10_11_20_12pm_&dataset_id";  
 
 put   
 
