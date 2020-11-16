@@ -1,11 +1,11 @@
 /** 
 * libname a clear;
 */
+/**
 * proc printto log="/folders/myfolders/hiv-modelling/output/run_1000_3.log";
 * options user="/folders/myfolders/" ps=1000 ls=220 cpucount=4 spool stimer ;
+*/
 
-* dm 'log;clear;output;clear;';
-* libname model clear;
 options ps=1000 ls=220 cpucount=8 spool stimer ;
 
 proc printto log="/home/cceapsc/Scratch/output/singlerun.log";

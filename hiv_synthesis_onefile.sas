@@ -16799,14 +16799,14 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 run;
 
 %macro savemodel();
-	%if %sysfunc(exist(model.out_model)) %then 
+	%if %sysfunc(exist(model.single_model)) %then 
 		%do;
-			proc append base = model.out_model data = raw_data;
+			proc append base = model.single_model data = raw_data;
 			run;
 		%end;
 	%else
 		%do;
-			data model.out_model(compress=binary);
+			data model.single_model(compress=binary);
 				set raw_data;
 			run;
 		%end;
