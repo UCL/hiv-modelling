@@ -1396,7 +1396,7 @@ if sw = 1 then do;
 a=uniform(0);if a<0.95 then episodes_sw=0;if 0.95 <= a <0.98 then episodes_sw=1;if a>=0.98 then episodes_sw=2;
 episodes_sw=episodes_sw+1;
 
-e=uniform(0); if age > 30 then e=e*0.99; * older women cant be in highest category ;
+e=uniform(0); 
 if e < 0.1 then newp=0;
 if 0.1 <= e < 0.5 then do; q=uniform(0); 
 	if q < 1/6 then newp=1; 
@@ -1415,6 +1415,7 @@ end;
 if 0.99  <= e       then do; q=uniform(0); 
 	newp = 81 + (q*50 ); newp = round(newp,1);  
 end;
+if age > 30 then newp = min(30,newp);
 end;
 
 
