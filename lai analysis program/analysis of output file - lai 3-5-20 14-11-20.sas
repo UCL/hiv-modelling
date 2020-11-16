@@ -826,12 +826,12 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\andrew\lai
 * set a.wide_lai_extra_6;
 
 set  a.wide_lai a.wide_lai_extra a.wide_lai_extra_2 a.wide_lai_extra_3 a.wide_lai_extra_4 a.wide_lai_extra_5 a.wide_lai_extra_6;
-drop    dcost_19        dcost_20     dcost_21_22_1    dcost_21_22_2    dcost_21_31_1    dcost_21_31_2  ;
+drop    dcost_19        dcost_20     dcost_21_22_1    dcost_21_22_2    dcost_21_31_1    dcost_21_31_2  
+  dvis_cost_19        dvis_cost_20     dvis_cost_21_22_1    dvis_cost_21_22_2    dvis_cost_21_31_1    dvis_cost_21_31_2  
+;
 proc sort; by run_;
 
-data wide2; set a.wide_lai_corrected_dcost ;
-
-proc print ;run;
+data wide2; set  a.wide_lai_clarlacost_corr_dcost ;
 
 data wide; merge wide1 wide2 ; by run_; 
 
@@ -851,8 +851,16 @@ if lai_option = 24 and run_ > 872097391 then delete;
 */
 
 
-n_sw_1564_19 = round(n_sw_1564_19, 1);
+dcost_wo_rlacla_21_31_1 = dcost_21_31_1 - dcla_rla_cost_21_31_1 ;
+dcost_wo_rlacla_21_31_2 = dcost_21_31_2 - dcla_rla_cost_21_31_2 ;
 
+
+* sensitivity analysis ; * two lines below should be commented out for main results;
+* dcost_21_31_1 = dcost_wo_rlacla_21_31_1 + ( dcla_rla_cost_21_31_1 * (131 / 120)); 
+* dcost_21_31_2 = dcost_wo_rlacla_21_31_2 + ( dcla_rla_cost_21_31_2 * (131 / 120)); 
+
+
+n_sw_1564_19 = round(n_sw_1564_19, 1);
 
 d_death_rate_onart_21_31_2 = (death_rate_onart_21_31_2 - death_rate_onart_21_31_1);
 
@@ -921,8 +929,20 @@ d_ndb_500_21_31_2 = ndb_500_21_31_1 - ndb_500_21_31_2 ;
 min_ndb_500 = min(ndb_500_21_31_2, ndb_500_21_31_1);
 
 ce_500=0;  
-if ndb_500_21_31_2 = min_ndb_500 then ce_500=2;
-if ndb_500_21_31_1 = min_ndb_500 then ce_500=1;
+if ndb_500_21_31_2 = min_ndb_500 then ce_500=1;
+if ndb_500_21_31_1 = min_ndb_500 then ce_500=0;
+
+
+if (d_dcost_21_31_2 >= 0 and d_ddaly_all_21_31_2 > 0) then do; icer = (d_dcost_21_31_2 * 1000000) / d_ddaly_all_21_31_2 ; end;
+
+if d_dcost_21_31_2 < 0 and d_ddaly_all_21_31_2 < 0 then do;
+icer_i = (d_dcost_21_31_2 * 1000000) / d_ddaly_all_21_31_2 ;
+if icer_i < 500 then icer=888888;  if icer_i > 500 then icer = 1; 
+end;
+
+if d_dcost_21_31_2 < 0 and d_ddaly_all_21_31_2 >= 0 then icer=0;
+if d_dcost_21_31_2 >= 0 and d_ddaly_all_21_31_2 <= 0 then icer=999999;
+
 
 d_dart_cost_y_2 = dart_cost_y_21_31_2 - dart_cost_y_21_31_1 ;
 
@@ -1306,13 +1326,14 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var   d_ndb_500_21_31_2   ndb_500_21_31_1   ndb_500_21_31_2 ;
-where lai_option=22  and rel_onart_la_drugs_ = 0.5 ;
+  where lai_option=22 ;
+* where lai_option=22  and rel_onart_la_drugs_ = 0.5 ;
 run; 
 ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide;  var   d_dcost_21_31_2      dcost_21_31_1      dcost_21_31_2  ;
-where lai_option=20 ;
+where lai_option=24 ;
 * where lai_option=22  and rel_onart_la_drugs_ = 0.5 ;
 run; 
 ods html close;
@@ -1349,7 +1370,17 @@ where lai_option=22 ;
 run; 
 ods html close;
 
-
+ods html;
+proc means; var 
+dcost_clin_care_21_31_1  dtest_cost_21_31_1  dcost_drug_level_test_21_31_1  dcost_circ_21_31_1  dcost_prep_visit_21_31_1  dcost_prep_21_31_1
+dcost_child_hiv_21_31_1  dcost_non_aids_pre_death_21_31_1  dart_cost_y_21_31_1  dadc_cost_21_31_1  dcd4_cost_21_31_1  dvl_cost_21_31_1  dvis_cost_21_31_1
+dwho3_cost_21_31_1  dcot_cost_21_31_1  dtb_cost_21_31_1  dres_cost_21_31_1  d_t_adh_int_cost_21_31_1  dswitchline_cost_21_31_1
+dcost_clin_care_21_31_2  dtest_cost_21_31_2  dcost_drug_level_test_21_31_2  dcost_circ_21_31_2  dcost_prep_visit_21_31_2  dcost_prep_21_31_2
+dcost_child_hiv_21_31_2  dcost_non_aids_pre_death_21_31_2  dart_cost_y_21_31_2  dadc_cost_21_31_2  dcd4_cost_21_31_2  dvl_cost_21_31_2  dvis_cost_21_31_2
+dwho3_cost_21_31_2  dcot_cost_21_31_2  dtb_cost_21_31_2  dres_cost_21_31_2  d_t_adh_int_cost_21_31_2  dswitchline_cost_21_31_2
+;
+run;
+ods html close;
 
 
 
@@ -1384,23 +1415,26 @@ ods html;
 proc means data=wide; var  ddaly_all_21_31_2  ddaly_all_21_31_1  ; where lai_option=20; run; 
 ods html close;
 
-proc freq; tables p_onart_vl1000_20 ; where lai_option = 22 ; run;
+proc freq; tables p_onart_vl1000_20 p_vl1000_20   p_startedline2_20; where lai_option = 22 ; run;
 
 
 
 proc freq data=wide; tables ce_500; 
-* where lai_option = 22 ;
+  where lai_option = 22 ;
 * where lai_option = 22 and rel_rate_res_cla_dol_ = 1.5;
 * where lai_option = 22 and dol_efa_cla_rla_potency_ = 2  ;
 * where lai_option = 22 and cla_time_to_lower_threshold_g_ = 3  ;
 * where lai_option = 22 and higher_newp_with_lower_adhav_ = 1 ;
-  where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;
+* where lai_option = 22 and rel_onart_la_drugs_ = 1   ;
 * where lai_option = 22 and p_onart_vl1000_20 >= 0.92 ;
 * where lai_option = 22 and p_onart_vl1000_20 <  0.88 ;
-* where lai_option = 20 ;
-* where lai_option = 20 and p_onart_vl1000_20 >= 0.93 ;
-* where lai_option = 20 and p_onart_vl1000_20 <  0.87 ;
-* where lai_option = 25 and sw_lower_art_adh_ = 1;
+* where lai_option = 22 and p_onart_vl1000_20 >= 0.92 ;
+* where lai_option = 22 and p_onart_vl1000_20 <  0.87 ;
+* where lai_option = 22 and sw_lower_art_adh_ = 1;
+* where lai_option = 22 and p_startedline2_20 < 0.12 ;
+* where lai_option = 22 and p_startedline2_20 >= 0.17 ;
+* where lai_option = 22 and p_vl1000_20 < 0.59 ;
+* where lai_option = 22 and p_vl1000_20 >= 0.70 ;
 run;
 
 * rel_onart_la_drugs_  higher_newp_with_lower_adhav_  ;
@@ -1411,6 +1445,16 @@ class lai_option  cla_time_to_lower_threshold_g_ ;
 model ce_500 = lai_option cla_time_to_lower_threshold_g_  p_onart_vl1000_20;
 run;
  
+
+
+proc freq; tables icer; where lai_option=22; run;
+proc sort; by icer;
+proc print; var lai_option ddaly_all_21_31_2  ddaly_all_21_31_1 d_ddaly_all_21_31_2  dcost_21_31_1 dcost_21_31_2 d_dcost_21_31_2  
+ndb_500_21_31_1 ndb_500_21_31_2  icer ce_500 ; where lai_option=22; run;
+
+
+proc univariate; var icer; where lai_option = 22; run;
+
 
 * --------------------------------------------------------------------------------------------------------------;
 

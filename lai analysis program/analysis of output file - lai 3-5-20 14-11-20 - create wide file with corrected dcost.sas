@@ -241,6 +241,10 @@ s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + 
 
 dcost_clin_care = dart_cost_y+dadc_cost+dcd4_cost+dvl_cost+dvis_cost+dwho3_cost+dcot_cost+dtb_cost+dres_cost+d_t_adh_int_cost+dswitchline_cost; 
 cost_clin_care = dcost_clin_care / discount;
+
+dcla_rla_cost = dcla_cost + drla_cost ;
+
+
 * ================================================================================= ;
 
 
@@ -545,7 +549,7 @@ run;
 */
 
 * this line below for when creating wide file with corrected dcost after accounting for dvis_cost as described above;
-keep cald  run_  option_  lai_option  dataset sf_2020 dcost ; run;
+keep cald  run_  option_  lai_option  dataset sf_2020 dcost dvis_cost  dcla_rla_cost; run;
 
 
 
@@ -606,7 +610,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
- %var(v=dcost);
+ %var(v=dcost);  %var(v=dvis_cost);  %var(v=dcla_rla_cost);
 /*
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=rate_susc_np_1549_w);  %var(v=rate_susc_np_ic_1549_m);  %var(v=rate_susc_np_1549_w);
@@ -671,7 +675,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 
-data wide_outputs; merge  dcost
+data wide_outputs; merge  dcost  dvis_cost  dcla_rla_cost 
 /*
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5 gender_r_newp  rate_susc_np_1549_w  rate_susc_np_ic_1549_m  rate_susc_np_1549_w
 p_newp_sw mean_num_tests_ly_m1549_  mean_num_tests_ly_w1549_  n_tested_m
@@ -715,7 +719,7 @@ proc sort; by run_; run;
 
 
 * To get one row per run;
-  data a.wide_lai_corrected_dcost;
+  data a.wide_lai_clarlacost_corr_dcost;
 
   merge  sf  wide_outputs  ;
   by run_;
