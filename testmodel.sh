@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #$ -S /bin/bash
 #$ -l h_rt=12:00:00
-#$ -pe smp 8
+#$ -pe smp 16
 #$ -t 1-3
 #$ -A HIVSynthMod
 #$ -l mem=36G
