@@ -163,7 +163,7 @@ proc printto log="/home/cceapsc/Scratch/output/sasoutput";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 *  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 1000; 
+%let population = 100000; 
 
 options ps=1000 ls=220 cpucount=16 spool fullstimer ;
 
