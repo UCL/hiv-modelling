@@ -1,6 +1,4 @@
 libname model '/home/cceapsc/Scratch/output/';
-* libname model 'N:\SAS\hiv-modelling\output\';
-printto;
 
 %macro appendtable();
 	%if %sysfunc(exist(model.combined_data)) %then 

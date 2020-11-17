@@ -36,7 +36,7 @@ def loadSasModule():
 
 def appendSasfiles(sasfiles):
     print('trying to append sas files')
-    loadSasModule()
+    #loadSasModule()
     for sasfile in sasfiles:
         print('processing file {}'.format(sasfile))
         canonicalName = getCanonicalName(sasfile)
