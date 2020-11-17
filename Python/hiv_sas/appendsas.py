@@ -34,6 +34,7 @@ def loadSasModule():
         print("Unexpected error:", sys.exc_info()[0])
 
 def appendSasfiles(sasfiles):
+    print('trying to append sas files')
     loadSasModule()
     for sasfile in sasfiles:
         print('processing file {}'.format(sasfile))
@@ -45,4 +46,6 @@ if __name__ == '__main__':
         print('provide a folder name to find SAS files')
         exit(1)
     folder = sys.argv[1]
+    print('processing sasfiles in folder {}'.format(folder))
     sasfiles = getOutputFiles(folder)
+    appendSasfiles(sasfiles)
