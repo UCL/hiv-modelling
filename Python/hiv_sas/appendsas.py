@@ -20,18 +20,19 @@ def runSasCommand(sasfilename):
     try:
         subprocess.run(["sas","$HOME/sas/hiv-modelling/appendsas.sas","-sysparam",sasfilename])
     except (RuntimeError, OSError) as err:
-        print("Unexpected error: {}".format(err))
+        print("Unexpected error in runSasCommand: {}".format(err))
     except:
-        print("Unexpected error:", sys.exc_info()[0])
+        print("Unexpected error in runSasCommand:", sys.exc_info()[0])
 
 
 def loadSasModule():
+    print('load sas module')
     try:
         subprocess.run(["module","load","sas/9.4/64"])
     except (RuntimeError, OSError) as err:
-        print("Unexpected error: {}".format(err))
+        print("Unexpected error in loadSasModule: {}".format(err))
     except:
-        print("Unexpected error:", sys.exc_info()[0])
+        print("Unexpected error in loadSasModule:", sys.exc_info()[0])
 
 def appendSasfiles(sasfiles):
     print('trying to append sas files')
