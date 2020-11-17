@@ -18,7 +18,7 @@ def getCanonicalName(sasfile):
 def runSasCommand(sasfilename):
     print('run the sas command')
     try:
-        subprocess.run(["sas","appendsas.sas","-sysparam",sasfilename])
+        subprocess.run(["sas","$HOME/sas/hiv-modelling/appendsas.sas","-sysparam",sasfilename])
     except (RuntimeError, OSError) as err:
         print("Unexpected error: {}".format(err))
     except:
