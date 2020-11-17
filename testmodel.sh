@@ -7,7 +7,7 @@
 #$ -l mem=36G
 #$ -j y
 #$ -N prep
-#$ -wd /home/cceapsc/Scratch
+#$ -wd /home/cceapsc/Scratch/output
 #$ -o /dev/null
 #$ -e /dev/null
 #$ -l tmpfs=100G
