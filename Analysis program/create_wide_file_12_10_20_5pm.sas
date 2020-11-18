@@ -632,11 +632,18 @@ if s_cost_ gt 0 then disc     = s_dcost_ / s_cost_;
 discount_adj = 1;
 discount_adj_10p = discount_adj * (0.90/0.97)**(cald-2020) ; 
 discount_adj_7p = discount_adj * (0.93/0.97)**(cald-2020) ; 
+discount_adj_5p = discount_adj * (0.95/0.97)**(cald-2020) ; 
 discount_adj_0  = discount_adj * (1.00/0.97)**(cald-2020) ; 
+
 discount = disc * discount_adj ;
 discount_10p = disc * discount_adj_10p ;
 discount_7p = disc * discount_adj_7p ;
+discount_5p = disc * discount_adj_5p ;
 discount_0 = disc * discount_adj_0 ;
+
+* if using 7% discount rate:;
+*discount=discount_5p; 
+*discount_adj=discount_adj_5p;
 
 
 * if using 7% discount rate:  ; 
@@ -1437,10 +1444,10 @@ s_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.vmmc_12_10_20_5pm_a; set y;run;
+data a.vmmc_12_10_20_5pm_120; set y;run;
 
 
-data y; set a.vmmc_12_10_20_5pm_a; run;
+data y; set a.vmmc_12_10_20_5pm_120; run;
 
   options nomprint;
   option nospool;
@@ -1789,7 +1796,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_12_10_20_5pm_a ;
+  data a.wide_vmmc_12_10_20_5pm_120 ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
