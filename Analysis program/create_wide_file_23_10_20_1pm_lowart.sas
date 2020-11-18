@@ -699,6 +699,10 @@ ddaly_adults = ddaly + ddaly_non_aids_pre_death;
 
 * all costs expressed as $ millions per year in 2018 USD;
 
+***Redefine VMMC costs to $120 to match those being used for Zimbabwe and Malawi;;
+s_cost_circ_new= s_cost_circ*(120/106);
+s_dcost_circ_new=discount*s_cost_circ_new;*use this to calculate dcost_circ below;
+
 * ts1m - 12 instead of 4; 
 dzdv_cost = s_cost_zdv * discount * sf_2020 * 4 / 1000;
 dten_cost = s_cost_ten * discount * sf_2020 * 4 / 1000;
@@ -743,7 +747,7 @@ dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 4 / 1000;
-dcost_circ = s_dcost_circ * sf_2020* discount_adj * 4 / 1000; 
+dcost_circ = s_dcost_circ_new * sf_2020* discount_adj * 4 / 1000; 
 dcost_condom_dn = s_dcost_condom_dn * sf_2020* discount_adj * 4 / 1000; 
 dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
@@ -1431,10 +1435,10 @@ s_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.vmmc_23_10_20_1pm_lowart; set y;run;
+data a.vmmc_23_10_20_1pm_lowart_120; set y;run;
 
 
-data y; set a.vmmc_23_10_20_1pm_lowart; run;
+data y; set a.vmmc_23_10_20_1pm_lowart_120; run;
 
   options nomprint;
   option nospool;
@@ -1783,7 +1787,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_23_10_20_1pm ;
+  data a.wide_vmmc_23_10_20_lowart_120 ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

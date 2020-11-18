@@ -1,16 +1,19 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
+***For the paper, use 12_10_20_5pm files, with 120 suffix denoting a change in VMMC costs;
+
 data a;
-set a.wide_vmmc_12_10_20_5pm;
+set a.wide_vmmc_12_10_20_5pm_120;
 if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
 if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete; ***456 runs left after deleting above - remove 6 runs to get 450 and then add in 50 runs from output file below;
 run;
 data b;
-set a.wide_vmmc_12_10_20_5pm_a;
+set a.wide_vmmc_12_10_20_5pm_120a;
 run;
 
 data c;
-set a b;
+*set a b;
+set a.wide_vmmc_12_10_20_5pm_5p;***This is assuming 5% discount rate;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -127,7 +130,7 @@ d_n_new_inf_20_70_1 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
 proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
 */
 
-nnt_20_25_1=153761; nnt_20_40_1=155944; nnt_20_70_1=179890;
+nnt_20_25_1=153761; nnt_20_40_1=155944; nnt_20_70_1=187050;
 
 if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
 if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
@@ -148,28 +151,26 @@ d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
    max difference;
 /*
 proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
-*max=15.3, 12.5, 12.6;
+*max=17.0, 13.9, 13.6;
 */
 
-cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=12.5*1000000; cost_inf_avert_20_70_1 = 12.6*1000000;
+cost_inf_avert_20_25_1=17.0*1000000; cost_inf_avert_20_40_1=13.9*1000000; cost_inf_avert_20_70_1 = 13.6*1000000;
 if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_d_new_inf_20_25_1)*1000000;
 if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_d_new_inf_20_40_1)*1000000;
 if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
 
 
-*cost per daly averted =icer; 
-cost_daly_avert_20_25_1_adults=15.3*1000000;
-cost_daly_avert_20_40_1_adults=12.5*1000000;
-cost_daly_avert_20_70_1_adults=12.6*1000000;
+*cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
+cost_daly_avert_20_25_1_adults=17.0*1000000;
+cost_daly_avert_20_40_1_adults=13.9*1000000;
+cost_daly_avert_20_70_1_adults=13.6*1000000;
 
 *check everything is the right way;
-/*if d_ddaly_adults_20_25_1 gt 0 then*/ cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
-/*if d_ddaly_adults_20_40_1 gt 0 then*/ cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
-/*if d_ddaly_adults_20_70_1 gt 0 then*/ cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
-
+if d_ddaly_adults_20_25_1 gt 0 then cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
+if d_ddaly_adults_20_40_1 gt 0 then cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
+if d_ddaly_adults_20_70_1 gt 0 then cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
 
 run;
-
 
 
 ***table 2;
@@ -375,7 +376,7 @@ cost_inf_avert_20_25_1  cost_inf_avert_20_40_1  cost_inf_avert_20_70_1
 ;run;
 
 
-***icer;
+***cost per DALY averted - icer;
 proc means n mean p50 p5 p95 lclm uclm;var 
 cost_daly_avert_20_25_1_adults  cost_daly_avert_20_40_1_adults cost_daly_avert_20_70_1_adults
 ;run;
@@ -462,7 +463,7 @@ proc freq;table ce_20_70;where incid_cat3=3 and incid_cat2040_3=3;run;
 
 ***Lower future art cov - looking only at 50 year time horizon;
 data lowart;
-set a.wide_vmmc_23_10_20_1pm;
+set a.wide_vmmc_23_10_20_lowart_120;
 run;
 
 data lowart1;
@@ -514,17 +515,17 @@ d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
    max difference;
 /*
-proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
-*max=8.9;
+proc univariate;var  d_dcost_20_70_1;run;
+*max=9.9;
 */
-cost_inf_avert_20_70_1 = 8.9*1000000;
+cost_inf_avert_20_70_1 = 9.9*1000000;
 if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
 
 
 *cost per daly averted =icer; 
-cost_daly_avert_20_70_1_adults=8.9*1000000;
+cost_daly_avert_20_70_1_adults=9.9*1000000;
 
-/*if d_ddaly_adults_20_70_1 gt 0 then*/ cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
+if d_ddaly_adults_20_70_1 gt 0 then cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
 
 run;
 

@@ -5,8 +5,8 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm";
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm_a";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm";
+  *infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_12_10_20_5pm_a";
 
 input 
 
@@ -589,6 +589,7 @@ proc sort; by run cald option;run;
 proc freq;table run;where cald=2014;run;
 proc freq;table lower_future_art_cov;where cald=2025;run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
+
 data sf;
 set a ;
  
@@ -700,6 +701,10 @@ ddaly_adults = ddaly + ddaly_non_aids_pre_death;
 
 * all costs expressed as $ millions per year in 2018 USD;
 
+***Redefine VMMC costs to $120 to match those being used for Zimbabwe and Malawi;;
+s_cost_circ_new= s_cost_circ*(120/106);
+s_dcost_circ_new=discount*s_cost_circ_new;*use this to calculate dcost_circ below;
+
 * ts1m - 12 instead of 4; 
 dzdv_cost = s_cost_zdv * discount * sf_2020 * 4 / 1000;
 dten_cost = s_cost_ten * discount * sf_2020 * 4 / 1000;
@@ -744,7 +749,7 @@ dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 4 / 1000;
-dcost_circ = s_dcost_circ * sf_2020* discount_adj * 4 / 1000; 
+dcost_circ = s_dcost_circ_new * sf_2020* discount_adj * 4 / 1000;*updated circ cost;
 dcost_condom_dn = s_dcost_condom_dn * sf_2020* discount_adj * 4 / 1000; 
 dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
