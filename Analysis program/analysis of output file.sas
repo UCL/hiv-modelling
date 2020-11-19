@@ -12,8 +12,15 @@ set a.wide_vmmc_12_10_20_5pm_120a;
 run;
 
 data c;
-*set a b;
-set a.wide_vmmc_12_10_20_5pm_5p;***This is assuming 5% discount rate;
+set a b;
+*set a.wide_vmmc_12_10_20_5pm_120_5p;***This is assuming 5% discount rate;
+*set a.wide_vmmc_12_10_20_5pm_140; ***This is assuming vmmc cost of $140;
+*et a.wide_vmmc_12_10_20_5pm_160; ***This is assuming vmmc cost of $160;
+*set a.wide_vmmc_12_10_20_5pm_180; ***This is assuming vmmc cost of $180;
+*set a.wide_vmmc_12_10_20_5pm_190; ***This is assuming vmmc cost of $190;
+*set a.wide_vmmc_12_10_20_5pm_185; ***This is assuming vmmc cost of $190;
+
+if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -152,9 +159,13 @@ d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
 /*
 proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
 *max=17.0, 13.9, 13.6;
+*assuming 5%, max=15.3, 14.0. 7.0;
 */
 
 cost_inf_avert_20_25_1=17.0*1000000; cost_inf_avert_20_40_1=13.9*1000000; cost_inf_avert_20_70_1 = 13.6*1000000;
+*assuming 5%;
+cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=14.0*1000000; cost_inf_avert_20_70_1 = 7.0*1000000;
+
 if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_d_new_inf_20_25_1)*1000000;
 if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_d_new_inf_20_40_1)*1000000;
 if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
@@ -164,6 +175,11 @@ if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n
 cost_daly_avert_20_25_1_adults=17.0*1000000;
 cost_daly_avert_20_40_1_adults=13.9*1000000;
 cost_daly_avert_20_70_1_adults=13.6*1000000;
+
+*assuming 5%;
+cost_daly_avert_20_25_1_adults=15.3*1000000;
+cost_daly_avert_20_40_1_adults=14.0*1000000;
+cost_daly_avert_20_70_1_adults=7.0*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_20_25_1 gt 0 then cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
