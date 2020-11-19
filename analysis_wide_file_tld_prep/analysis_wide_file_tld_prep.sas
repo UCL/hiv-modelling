@@ -3,7 +3,12 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_tld_prep_22_10_20_5pm;
+  set a.wide_tld_prep_22_10_20_5pm_1  a.wide_tld_prep_22_10_20_5pm_2;
+
+
+* for n = 500 setting scenarios ;
+ if run < 999836786 ;
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -197,9 +202,6 @@ d_p_onart_20_70_3 =  p_onart_20_70_3  - p_onart_20_70_1;
 d_dart_cost_y_20_70_2 = dart_cost_y_20_70_2 - dart_cost_y_20_70_1; 
 d_dart_cost_y_20_70_3 = dart_cost_y_20_70_3 - dart_cost_y_20_70_1; 
 
-
-
-
 d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 d_ddaly_all_20_25_3 = ddaly_all_20_25_3 - ddaly_all_20_25_1 ;
 
@@ -247,7 +249,30 @@ d_p_onart_20_25_3 =  p_onart_20_25_3  - p_onart_20_25_1;
 d_dart_cost_y_20_25_2 = dart_cost_y_20_25_2 - dart_cost_y_20_25_1; 
 d_dart_cost_y_20_25_3 = dart_cost_y_20_25_3 - dart_cost_y_20_25_1; 
 
+d_p_vl1000_20_25_2 = p_vl1000_20_25_2 - p_vl1000_20_25_1 ;
+d_p_vl1000_20_25_3 = p_vl1000_20_25_3 - p_vl1000_20_25_1 ;
 
+d_prevalence_vg1000_20_25_2 = prevalence_vg1000_20_25_2 - prevalence_vg1000_20_25_1 ;
+d_prevalence_vg1000_20_25_3 = prevalence_vg1000_20_25_3 - prevalence_vg1000_20_25_1 ;
+
+d_incidence1549_20_25_2 = incidence1549_20_25_2 - incidence1549_20_25_1 ;
+d_incidence1549_20_25_3 = incidence1549_20_25_3 - incidence1549_20_25_1 ;
+
+d_incidence1549_20_70_2 = incidence1549_20_70_2 - incidence1549_20_70_1 ;
+d_incidence1549_20_70_3 = incidence1549_20_70_3 - incidence1549_20_70_1 ;
+
+
+r_incidence1549_20_25_2 = 1 - (incidence1549_20_25_2 / incidence1549_20_25_1) ;
+r_incidence1549_20_25_3 = 1 - (incidence1549_20_25_3 / incidence1549_20_25_1) ;
+
+r_incidence1549_20_70_2 = 1 - (incidence1549_20_70_2 / incidence1549_20_70_1) ;
+r_incidence1549_20_70_3 = 1 - (incidence1549_20_70_3 / incidence1549_20_70_1) ;
+
+d_n_infection_20_70_2 = n_infection_20_70_2 - n_infection_20_70_1 ; 
+d_n_infection_20_70_3 = n_infection_20_70_3 - n_infection_20_70_1 ; 
+
+cost_per_infection_av_20_70_2 = (d_dcost_20_70_2 * 1000000) / d_n_infection_20_70_2;
+cost_per_infection_av_20_70_3 = (d_dcost_20_70_3 * 1000000) / d_n_infection_20_70_3;
 
 
 /*
@@ -313,10 +338,10 @@ prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_
 prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
 incidence1549m_20 incidence1549w_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	
 p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+prop_w_1549_sw_20  mtct_prop_20  
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 incidence1549_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
-aids_death_rate_20  death_rate_onart_20 p_newp_ge1_20  p_1524_newp_ge1_20 p_newp_sw_20 ;
+aids_death_rate_20  death_rate_onart_20 p_newp_ge1_20  p_1524_newp_ge1_20 p_newp_sw_20 prop_1564_hivneg_onprep_20  ;
 run;
 
 
@@ -336,6 +361,164 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 
 
 * --------------------------------------------------------------------------------------------------------------;
+
+
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+* tld prep analysis;
+
+ 
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_hivneg_onprep_20_25_1  prop_1564_hivneg_onprep_20_25_2   prop_1564_hivneg_onprep_20_25_3
+d_p_1564_hivneg_onprep_20_70_2  d_p_1564_hivneg_onprep_20_70_3 ;  
+run; 
+ods html close;
+
+ 
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2   prop_art_or_prep_20_25_3
+d_prop_art_or_prep_20_25_2  d_prop_art_or_prep_20_25_3 ;  
+run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var d_p_elig_on_prep_20_70_2  d_p_elig_on_prep_20_70_3 ;  
+run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var d_p_onart_20_25_2 d_p_onart_20_25_3 ; run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var d_p_onart_diag_20_25_2 d_p_onart_diag_20_25_3 ; run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var d_p_onart_as_tld_prep_20_25_2 d_p_onart_as_tld_prep_20_25_3  ; run; 
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var p_vl1000_20_25_1 p_vl1000_20_25_2 p_vl1000_20_25_3  d_p_vl1000_20_25_2 d_p_vl1000_20_25_3 ; run; 
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var prevalence_vg1000_20_25_1 prevalence_vg1000_20_25_2 prevalence_vg1000_20_25_3  
+d_prevalence_vg1000_20_25_2 d_prevalence_vg1000_20_25_3 
+; run;
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3 d_incidence1549_20_25_2 d_incidence1549_20_25_3 ;
+; run;
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3 d_incidence1549_20_70_2 d_incidence1549_20_70_3 ;
+; run;
+ods html close;
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3 r_incidence1549_20_25_2 r_incidence1549_20_25_3 ;
+; run;
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3 r_incidence1549_20_70_2 r_incidence1549_20_70_3 ;
+; run;
+ods html close;
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var    
+d_ddaly_all_20_25_2  d_ddaly_all_20_25_3
+d_ndb_500_20_25_2  d_ndb_500_20_25_3
+d_dcost_20_25_2  d_dcost_20_25_3 
+d_dcost_prep_20_25_2  d_dcost_prep_20_25_3  
+d_dart_cost_y_20_25_2 d_dart_cost_y_20_25_3
+d_n_tested_20_25_2 d_n_tested_20_25_3
+d_prop_art_or_prep_20_25_2 d_prop_art_or_prep_20_25_3
+d_p_elig_on_prep_20_25_2 d_p_elig_on_prep_20_25_3
+d_p_1564_hivneg_onprep_20_25_2 d_p_1564_hivneg_onprep_20_25_3
+d_p_elig_prep_20_25_2 d_p_elig_prep_20_25_3
+d_p_onart_diag_20_25_2 d_p_onart_diag_20_25_3
+d_p_onart_20_25_2 d_p_onart_20_25_3 
+d_p_onart_as_tld_prep_20_25_2 d_p_onart_as_tld_prep_20_25_3 
+dcost_20_25_1 dcost_20_25_2  dcost_20_25_3 
+incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3
+n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 
+p_onart_20_25_1 p_onart_20_25_2 p_onart_20_25_3
+p_diag_20_25_1 p_diag_20_25_2 p_diag_20_25_3
+p_vl1000_20_25_1 p_vl1000_20_25_2 p_vl1000_20_25_3
+prevalence_vg1000_20_25_1 prevalence_vg1000_20_25_2 prevalence_vg1000_20_25_3 
+prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2 prop_art_or_prep_20_25_3
+prop_elig_on_prep_20_25_1 prop_elig_on_prep_20_25_2 prop_elig_on_prep_20_25_3 
+p_elig_prep_20_25_1 p_elig_prep_20_25_2 p_elig_prep_20_25_3 
+prop_1564_hivneg_onprep_20_25_1 prop_1564_hivneg_onprep_20_25_2 prop_1564_hivneg_onprep_20_25_3 
+p_onart_as_tld_prep_20_25_1 p_onart_as_tld_prep_20_25_2 p_onart_as_tld_prep_20_25_3
+p_onart_diag_20_25_1  p_onart_diag_20_25_2  p_onart_diag_20_25_3
+p_onart_20_25_1  p_onart_20_25_2  p_onart_20_25_3
+p_newp_ge1_20_25_1 p_newp_ge1_20_25_2 p_newp_ge1_20_25_3 
+;
+run; 
+ods html close;
+
+
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var    
+d_ddaly_all_20_70_2  d_ddaly_all_20_70_3
+d_ndb_500_20_70_2  d_ndb_500_20_70_3
+d_dcost_20_70_2  d_dcost_20_70_3  
+d_dcost_prep_20_70_2  d_dcost_prep_20_70_3
+d_dart_cost_y_20_70_2 d_dart_cost_y_20_70_3
+d_n_tested_20_70_2 d_n_tested_20_70_3
+d_prop_art_or_prep_20_70_2 d_prop_art_or_prep_20_70_3
+d_p_elig_on_prep_20_70_2 d_p_elig_on_prep_20_70_3
+d_p_1564_hivneg_onprep_20_70_2 d_p_1564_hivneg_onprep_20_70_3
+d_p_elig_prep_20_70_2 d_p_elig_prep_20_70_3
+d_p_onart_as_tld_prep_20_70_2 d_p_onart_as_tld_prep_20_70_3 
+d_p_onart_diag_20_70_2 d_p_onart_diag_20_70_3
+d_p_onart_20_70_2 d_p_onart_20_70_3 
+incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3
+n_tested_20_70_1 n_tested_20_70_2 n_tested_20_70_3 
+p_onart_20_70_1 p_onart_20_70_2 p_onart_20_70_3
+p_diag_20_70_1 p_diag_20_70_2 p_diag_20_70_3
+p_vl1000_20_70_1 p_vl1000_20_70_2 p_vl1000_20_70_3
+prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2 prevalence_vg1000_20_70_3 
+prop_art_or_prep_20_70_1  prop_art_or_prep_20_70_2 prop_art_or_prep_20_70_3
+prop_elig_on_prep_20_70_1 prop_elig_on_prep_20_70_2 prop_elig_on_prep_20_70_3 
+p_elig_prep_20_70_1 p_elig_prep_20_70_2 p_elig_prep_20_70_3 
+prop_1564_hivneg_onprep_20_70_1 prop_1564_hivneg_onprep_20_70_2 prop_1564_hivneg_onprep_20_70_3 
+p_onart_as_tld_prep_20_70_1 p_onart_as_tld_prep_20_70_2 p_onart_as_tld_prep_20_70_3
+p_onart_diag_20_70_1  p_onart_diag_20_70_2  p_onart_diag_20_70_3
+p_onart_20_70_1  p_onart_20_70_2  p_onart_20_70_3
+cost_per_infection_av_20_70_2 cost_per_infection_av_20_70_3
+
+;
+run; 
+ods html close;
+
+proc freq; tables ce_500 ; run;
+
+
+
+* --------------------------------------------------------------------------------------------------------------;
+
+
+
 
 /*
 
@@ -653,105 +836,6 @@ proc means data=wide; var cost_per_infection_averted_20_70  ; where infections_a
 run;
  
 */
-
-* --------------------------------------------------------------------------------------------------------------;
-
-
-
-* --------------------------------------------------------------------------------------------------------------;
-
-* tld prep analysis;
-
-
-
-ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2   prop_1564_onprep_20_25_3 ;  
-run; 
-ods html close;
-
- 
-
-ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2   prop_art_or_prep_20_25_3 ;  
-run; 
-ods html close;
-
-
-
-
-ods html;
-proc means data=wide; var    
-d_ddaly_all_20_25_2  d_ddaly_all_20_25_3
-d_ndb_500_20_25_2  d_ndb_500_20_25_3
-d_dcost_20_25_2  d_dcost_20_25_3 
-d_dcost_prep_20_25_2  d_dcost_prep_20_25_3  
-d_dart_cost_y_20_25_2 d_dart_cost_y_20_25_3
-d_n_tested_20_25_2 d_n_tested_20_25_3
-d_prop_art_or_prep_20_25_2 d_prop_art_or_prep_20_25_3
-d_p_elig_on_prep_20_25_2 d_p_elig_on_prep_20_25_3
-d_p_1564_hivneg_onprep_20_25_2 d_p_1564_hivneg_onprep_20_25_3
-d_p_elig_prep_20_25_2 d_p_elig_prep_20_25_3
-d_p_onart_diag_20_25_2 d_p_onart_diag_20_25_3
-d_p_onart_20_25_2 d_p_onart_20_25_3 
-incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3
-n_tested_20_25_1 n_tested_20_25_2 n_tested_20_25_3 
-p_onart_20_25_1 p_onart_20_25_2 p_onart_20_25_3
-p_diag_20_25_1 p_diag_20_25_2 p_diag_20_25_3
-p_vl1000_20_25_1 p_vl1000_20_25_2 p_vl1000_20_25_3
-prevalence_vg1000_20_25_1 prevalence_vg1000_20_25_2 prevalence_vg1000_20_25_3 
-prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2 prop_art_or_prep_20_25_3
-prop_elig_on_prep_20_25_1 prop_elig_on_prep_20_25_2 prop_elig_on_prep_20_25_3 
-p_elig_prep_20_25_1 p_elig_prep_20_25_2 p_elig_prep_20_25_3 
-prop_1564_hivneg_onprep_20_25_1 prop_1564_hivneg_onprep_20_25_2 prop_1564_hivneg_onprep_20_25_3 
-p_onart_as_tld_prep_20_25_1 p_onart_as_tld_prep_20_25_2 p_onart_as_tld_prep_20_25_3
-p_onart_diag_20_25_1  p_onart_diag_20_25_2  p_onart_diag_20_25_3
-p_onart_20_25_1  p_onart_20_25_2  p_onart_20_25_3
-p_newp_ge1_20_25_1 p_newp_ge1_20_25_2 p_newp_ge1_20_25_3 
-;
-run; 
-ods html close;
-
-
-
-
-ods html;
-proc means data=wide; var    
-d_ddaly_all_20_70_2  d_ddaly_all_20_70_3
-d_ndb_500_20_70_2  d_ndb_500_20_70_3
-d_dcost_20_70_2  d_dcost_20_70_3  
-d_dcost_prep_20_70_2  d_dcost_prep_20_70_3
-d_dart_cost_y_20_70_2 d_dart_cost_y_20_70_3
-d_n_tested_20_70_2 d_n_tested_20_70_3
-d_prop_art_or_prep_20_70_2 d_prop_art_or_prep_20_70_3
-d_p_elig_on_prep_20_70_2 d_p_elig_on_prep_20_70_3
-d_p_1564_hivneg_onprep_20_70_2 d_p_1564_hivneg_onprep_20_70_3
-d_p_elig_prep_20_70_2 d_p_elig_prep_20_70_3
-d_p_onart_as_tld_prep_20_70_2 d_p_onart_as_tld_prep_20_70_3 
-d_p_onart_diag_20_70_2 d_p_onart_diag_20_70_3
-d_p_onart_20_70_2 d_p_onart_20_70_3 
-incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3
-n_tested_20_70_1 n_tested_20_70_2 n_tested_20_70_3 
-p_onart_20_70_1 p_onart_20_70_2 p_onart_20_70_3
-p_diag_20_70_1 p_diag_20_70_2 p_diag_20_70_3
-p_vl1000_20_70_1 p_vl1000_20_70_2 p_vl1000_20_70_3
-prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2 prevalence_vg1000_20_70_3 
-prop_art_or_prep_20_70_1  prop_art_or_prep_20_70_2 prop_art_or_prep_20_70_3
-prop_elig_on_prep_20_70_1 prop_elig_on_prep_20_70_2 prop_elig_on_prep_20_70_3 
-p_elig_prep_20_70_1 p_elig_prep_20_70_2 p_elig_prep_20_70_3 
-prop_1564_hivneg_onprep_20_70_1 prop_1564_hivneg_onprep_20_70_2 prop_1564_hivneg_onprep_20_70_3 
-p_onart_as_tld_prep_20_70_1 p_onart_as_tld_prep_20_70_2 p_onart_as_tld_prep_20_70_3
-p_onart_diag_20_70_1  p_onart_diag_20_70_2  p_onart_diag_20_70_3
-p_onart_20_70_1  p_onart_20_70_2  p_onart_20_70_3
-;
-run; 
-ods html close;
-
-proc freq; tables ce_500 ; run;
-
-
-
-
-
 
 * --------------------------------------------------------------------------------------------------------------;
 
