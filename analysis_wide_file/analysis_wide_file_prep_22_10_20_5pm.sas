@@ -1,15 +1,10 @@
 
-
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\prep";
+* note using tld_prep runs;
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-* set a.wide_prep_2_8_20_6pm_7_8_20; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-* set a.wide_prep_2_8_20_6pm_7_8_20_dis7p; * if run <=  864400278 ;  * to give 1000 setting scenarios;
-* set a.wide_prep_13_8_20_4pm;
-* set a.wide_prep_13_8_20_4pm_dis7p;
-* set a.w_prep_13_8_20_4pm_14_8_20_1pm; * if dataset = 2;  * if run <=  828749079 ; * to give n = 1000 setting scenarios ;
-* set a.w_prep_14_8_20_1pm_dis7p;       * if dataset = 2;  * if run <=  828749079 ; * to give n = 1000 setting scenarios ;
-  set a.wide_prep_26_9_20_6pm;
+  set a.wide_prep_22_10_20_5pm_1;
+
 
 * if run ne 192429854;
 
@@ -175,7 +170,7 @@ proc univariate data=wide;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
 p_newp_sw_20   n_tested_m_20  p_mcirc_1549m_20
 p_mcirc_20	 		p_mcirc_1519m_20	p_mcirc_2024m_20	p_mcirc_2529m_20		p_mcirc_3039m_20	p_mcirc_4049m_20 	p_mcirc_50plm_20 
-prop_w_1549_sw_20	prop_w_ever_sw_20 	prop_sw_hiv_20 	prop_w_1524_onprep_20  prop_1564_onprep_20 	prevalence1549m_20 prevalence1549w_20
+prop_w_1549_sw_20	prop_w_ever_sw_20 	prop_sw_hiv_20 	prop_w_1524_onprep_20  prop_1564_hivneg_onprep_20 	prevalence1549m_20 prevalence1549w_20
 prevalence1549_20 
 prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
 prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
@@ -196,7 +191,7 @@ var	p_mcirc_1549m_20
 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
 incidence1549w_20 incidence1549m_20	p_diag_m_20   p_diag_w_20	
 p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
-prop_w_1549_sw_20    prop_1564_onprep_20  prop_w_1524_onprep_20 
+prop_w_1549_sw_20    prop_1564_hivneg_onprep_20  prop_w_1524_onprep_20 
 p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 
 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
@@ -291,7 +286,7 @@ run;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2 ;  
+proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_hivneg_onprep_20_25_1  prop_1564_hivneg_onprep_20_25_2 ;  
 run; 
 ods html close;
 
@@ -432,7 +427,7 @@ prevalence_vg1000_20_25_1 prevalence_vg1000_20_25_2
 prev_vg1000_newp_m_20_25_1 prev_vg1000_newp_m_20_25_2 
 prev_vg1000_newp_w_20_25_1 prev_vg1000_newp_w_20_25_2 
 prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2
-prop_1564_onprep_20_25_1  prop_1564_onprep_20_25_2
+prop_1564_hivneg_onprep_20_25_1  prop_1564_hivneg_onprep_20_25_2
 prop_w_1524_onprep_20_25_1 prop_w_1524_onprep_20_25_2
 prop_elig_on_prep_20_25_1 prop_elig_on_prep_20_25_2
 p_prep_ever_20_25_1 p_prep_ever_20_25_2
@@ -462,7 +457,7 @@ prevalence_vg1000_20_70_1 prevalence_vg1000_20_70_2
 prev_vg1000_newp_m_20_70_1 prev_vg1000_newp_m_20_70_2 
 prev_vg1000_newp_w_20_70_1 prev_vg1000_newp_w_20_70_2 
 prop_art_or_prep_20_25_1  prop_art_or_prep_20_25_2
-prop_1564_onprep_20_70_1  prop_1564_onprep_20_70_2
+prop_1564_hivneg_onprep_20_70_1  prop_1564_hivneg_onprep_20_70_2
 p_prep_ever_20_70_1 p_prep_ever_20_70_2
 p_hiv1_prep_20_70_1 p_hiv1_prep_20_70_2
 p_mcirc_1549m_20_70_1 p_mcirc_1549m_20_70_2 
@@ -488,8 +483,8 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
-* where prop_1564_onprep_20_70_2 < 0.10 and incidence1549_20 > 0.30 ;
-* where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
+* where prop_1564_hivneg_onprep_20_70_2 < 0.10 and incidence1549_20 > 0.30 ;
+* where prop_1564_hivneg_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
 run; 
 ods html close;
 
@@ -499,7 +494,7 @@ ods html close;
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
 
 
-proc univariate; var prop_1564_onprep_20_70_2  prevalence1549_20 incidence1549_20; run;
+proc univariate; var prop_1564_hivneg_onprep_20_70_2  prevalence1549_20 incidence1549_20; run;
 
 
 
@@ -509,12 +504,12 @@ run;
 
 
 proc freq data=wide; tables icer_2;
-  where prop_1564_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
-* where prop_1564_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.07 ;
+  where prop_1564_hivneg_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
+* where prop_1564_hivneg_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.07 ;
 run;
 
 proc univariate; var p_elig_prep_20_25_2  p_newp_ge1_20; run;
-proc corr; var p_elig_prep_20_25_2 prop_1564_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20 ; run;
+proc corr; var p_elig_prep_20_25_2 prop_1564_hivneg_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20 ; run;
 
 
 
@@ -540,24 +535,24 @@ run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20 prop_1564_onprep_20_25_2 ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20 av_newp_ge1_20 ;
 run;
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prop_1564_onprep_20_25_2 ;
+proc logistic data=wide; model ce_500 =  prop_1564_hivneg_onprep_20_25_2 ;
 run;
 
-proc glm; model d_ndb_500_20_70_2 = prop_1564_onprep_20_25_2 ; run;
+proc glm; model d_ndb_500_20_70_2 = prop_1564_hivneg_onprep_20_25_2 ; run;
 
-* the issue with prop_1564_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
+* the issue with prop_1564_hivneg_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
 so is a measure of the proportion eligible while in real life as scale up starts to happen it just reflects the extent of scale up - need a measure
 of the proportion of population at risk of HIV in any one period;  
 
 
 * p_newp_prep_20_25_2 prevalence_vg1000_20  prevalence_vg1000_20
-n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_onprep_20_70_2
+n_tested_20  prevalence1549_20  p_newp_ge1_20  p_startedline2_20 prop_sw_hiv_20 prop_w_1549_sw_20 prop_1564_hivneg_onprep_20_70_2
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_hivneg_onprep_20 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20
 p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 
@@ -568,13 +563,13 @@ run;
 
 * p_startedline2_20   incidence1549w_20  incidence1549m_20 
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_hivneg_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
 
 
-proc glm; model d_dcost_20_70_2 = incidence1549_20 p_newp_ge1_age1549_20  p_vl1000_20;
+proc glm; model d_dcost_20_70_2 = incidence1549_20 p_newp_ge1_age1549_20  p_vl1000_20 ;
 run;
 
 
@@ -582,7 +577,7 @@ run;
 /*
 proc glm; model d_ndb_500_20_70_2 = incidence1549w_20  p_newp_ge1_20  p_startedline2_20 
 p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_hivneg_onprep_20
 p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
 p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20
 ;
@@ -594,12 +589,12 @@ run;
 proc freq data=wide; tables ce_500;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
-* where  prop_1564_onprep_20_25_2  >=  0.043 ;
+* where  prop_1564_hivneg_onprep_20_25_2  >=  0.043 ;
 * where 1.50 <= incidence1549_20 < 9.50 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 run; 
 
-proc freq; tables prop_1564_onprep_20_25_2 ; run;
+proc freq; tables prop_1564_hivneg_onprep_20_25_2 ; run;
 
 
 proc means data=wide; var cost_per_infection_averted_20_25  ; 
