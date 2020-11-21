@@ -7,9 +7,9 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_2";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_2";
 
 input 
 
@@ -799,6 +799,7 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 				dswitchline_cost; 
 cost_clin_care = dcost_clin_care / discount;
 
+und_cost = dcost / discount ;
 
 * ================================================================================= ;
 
@@ -1123,7 +1124,7 @@ n_new_inf1549 = s_primary1549 * sf_2020 * 4;
 n_infection  = s_primary     * sf_2020 * 4;
 
 
-keep run option cald 
+keep run option cald und_cost
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -1229,9 +1230,9 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.tld_prep_22_10_20_5pm_2; set y;
+data a.tld_prep_22_10_20_5pm_1a; set y;
 
-data y; set a.prep_22_10_20_5pm_2; run;
+data y; set a.prep_22_10_20_5pm_1a; run;
 
 
 
@@ -1255,6 +1256,9 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
+ proc means noprint data=y; var &v; output out=y_30    mean= &v._30   ; by run option ; where 2029.5  <= cald < 2031.5 ;   
+ proc means noprint data=y; var &v; output out=y_70    mean= &v._70   ; by run option ; where 2069.5  <= cald < 2070.5 ;   
+
  proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;  
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
@@ -1263,16 +1267,18 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
  proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
+ proc sort data=y_30   ; by run; proc transpose data=y_30    out=t_30    prefix=&v._30   _; var &v._30   ; by run; 
+ proc sort data=y_70   ; by run; proc transpose data=y_70    out=t_70    prefix=&v._70   _; var &v._70   ; by run; 
 
  proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  
 
-data &v ; merge  y_20 t_20_25 t_20_70 ;  
+data &v ; merge  y_20 t_20_25 t_20_70 t_30 t_70 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); 
+%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549);  %var(und_cost);
 %var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
@@ -1335,7 +1341,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  und_cost
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
@@ -1563,7 +1569,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_tld_prep_22_10_20_5pm_2; 
+  data a.wide_tld_prep_22_10_20_5pm_1a; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

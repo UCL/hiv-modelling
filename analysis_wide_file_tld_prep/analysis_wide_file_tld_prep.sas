@@ -268,11 +268,31 @@ r_incidence1549_20_25_3 = 1 - (incidence1549_20_25_3 / incidence1549_20_25_1) ;
 r_incidence1549_20_70_2 = 1 - (incidence1549_20_70_2 / incidence1549_20_70_1) ;
 r_incidence1549_20_70_3 = 1 - (incidence1549_20_70_3 / incidence1549_20_70_1) ;
 
-d_n_infection_20_70_2 = n_infection_20_70_2 - n_infection_20_70_1 ; 
-d_n_infection_20_70_3 = n_infection_20_70_3 - n_infection_20_70_1 ; 
+d_n_infection_20_25_2 = n_infection_20_25_1 - n_infection_20_25_2 ; 
+d_n_infection_20_25_3 = n_infection_20_25_1 - n_infection_20_25_3 ; 
+
+d_n_infection_20_70_2 = n_infection_20_70_1 - n_infection_20_70_2 ; 
+d_n_infection_20_70_3 = n_infection_20_70_1 - n_infection_20_70_3 ; 
+
+cost_per_infection_av_20_25_2 = (d_dcost_20_25_2 * 1000000) / d_n_infection_20_25_2;
+cost_per_infection_av_20_25_3 = (d_dcost_20_25_3 * 1000000) / d_n_infection_20_25_3;
 
 cost_per_infection_av_20_70_2 = (d_dcost_20_70_2 * 1000000) / d_n_infection_20_70_2;
 cost_per_infection_av_20_70_3 = (d_dcost_20_70_3 * 1000000) / d_n_infection_20_70_3;
+
+n_death_hivrel_20_25_1 = 4 * n_death_hivrel_20_25_1;
+n_death_hivrel_20_25_2 = 4 * n_death_hivrel_20_25_2;
+n_death_hivrel_20_25_3 = 4 * n_death_hivrel_20_25_3;
+n_death_hivrel_20_70_1 = 4 * n_death_hivrel_20_70_1;
+n_death_hivrel_20_70_2 = 4 * n_death_hivrel_20_70_2;
+n_death_hivrel_20_70_3 = 4 * n_death_hivrel_20_70_3;
+
+
+d_n_death_hivrel_20_25_2 = n_death_hivrel_20_25_1 - n_death_hivrel_20_25_2;
+d_n_death_hivrel_20_25_3 = n_death_hivrel_20_25_1 - n_death_hivrel_20_25_3;
+
+d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2;
+d_n_death_hivrel_20_70_3 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_3;
 
 
 /*
@@ -439,6 +459,24 @@ ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3 r_incidence1549_20_70_2 r_incidence1549_20_70_3 ;
 ; run;
 ods html close;
+
+
+ods html;
+proc means n mean lclm uclm median p5 p95 data=wide; var cost_per_infection_av_20_25_2  cost_per_infection_av_20_25_3
+cost_per_infection_av_20_70_2  cost_per_infection_av_20_70_3  ;  run;
+ods html close;
+
+
+ods html;
+proc means n mean lclm uclm median p5 p95 data=wide; var  n_death_hivrel_20_25_1 n_death_hivrel_20_25_2 n_death_hivrel_20_25_3
+d_n_death_hivrel_20_25_2 d_n_death_hivrel_20_25_3 ;run;
+ods html close;
+
+ods html;
+proc means n mean lclm uclm median p5 p95 data=wide; var  n_death_hivrel_20_70_1 n_death_hivrel_20_70_2 n_death_hivrel_20_70_3
+d_n_death_hivrel_20_70_2 d_n_death_hivrel_20_70_3 ; run;
+ods html close;
+
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var    
