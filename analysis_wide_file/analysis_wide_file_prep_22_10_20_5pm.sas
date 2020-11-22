@@ -529,20 +529,23 @@ proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
-proc logistic data=wide; model ce_500 =   incidence1549_20  p_newp_ge1_age1549_20   ;
+proc logistic data=wide; model ce_500 =   incidence1549_20 p_newp_ge1_age1549_20  av_newp_ge1_non_sw_20  ; * av_newp_ge1_non_sw_20 ;
 run;
 
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20 p_newp_ge1_age1549_20 av_newp_ge1_20 ;
+proc logistic data=wide; model ce_500 =  prevalence1549_20  av_newp_ge1_non_sw_20 ; * p_newp_ge1_age1549_20 ;
 run;
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
 proc logistic data=wide; model ce_500 =  prop_1564_hivneg_onprep_20_25_2 ;
 run;
 
-proc glm; model d_ndb_500_20_70_2 = prop_1564_hivneg_onprep_20_25_2 ; run;
+proc glm; model d_ndb_500_20_70_2 = incidence1549_20 p_newp_ge1_age1549_20  ;  
+* av_newp_ge1_non_sw_20 p_newp_ge1_age1549_20  p_vl1000_20 prevalence_vg1000_20 ;
+* prop_1564_hivneg_onprep_20_25_2 ; run;
+
 
 * the issue with prop_1564_hivneg_onprep_20_25_2 as an indicator of cost effectiveness is that in the model it represents the proportion after scale up, 
 so is a measure of the proportion eligible while in real life as scale up starts to happen it just reflects the extent of scale up - need a measure
@@ -558,7 +561,8 @@ p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  pr
 
 
 
-proc glm; model d_ddaly_all_20_70_2 = prevalence1549_20  p_newp_ge1_age1549_20  p_vl1000_20	prop_w_1549_sw_20  p_newp_prep_20_25_2  ; 
+proc glm; model d_ddaly_all_20_70_2 = prevalence1549_20  p_newp_ge1_age1549_20  p_vl1000_20	prop_w_1549_sw_20  av_newp_ge1_non_sw_20 ;
+* p_newp_prep_20_25_2  ; 
 run;
 
 * p_startedline2_20   incidence1549w_20  incidence1549m_20 
