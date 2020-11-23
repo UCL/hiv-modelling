@@ -165,7 +165,7 @@ proc printto log="/home/cceapsc/Scratch/output/sasoutput";
 	
 %let population = 100000; 
 
-options ps=1000 ls=220 cpucount=16 spool fullstimer ;
+options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
@@ -16211,7 +16211,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-data model.out_&dataset_id; set cum_l1;
+data model.out_&dataset_id(compress=binary); set cum_l1;
 /**
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 *  file "/home/cceapsc/Scratch/_output_29_10_20_2pm_&dataset_id";  
