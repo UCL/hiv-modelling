@@ -223,7 +223,6 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-rbm=4;
 ch_risk_diag = 9/13; *overwritten; 
 ch_risk_diag_newp = 5/6; *overwritten;
 ych_risk_beh_newp = .99; *overwritten;
@@ -1238,7 +1237,7 @@ end;
 
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
-if rbm=4 then do;
+
 
 r=uniform(0);
 if gender=2 then life_sex_risk=2; 
@@ -1441,7 +1440,7 @@ if ep=1 then ever_ep=1;
 
 np=ep+newp;
 
-end;
+
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
 
@@ -2785,7 +2784,7 @@ end;
 
 *-----------------------------------------------------------------------------------------------------------------------------------------;
 
-if rbm = 4 then do;
+
 
 * if infected and have adc then reduced risk behaviour;
 rred_adc=1.0; if hiv_tm1=1 and adc_tm1=1 then rred_adc = 0.2;
@@ -3595,7 +3594,7 @@ if t ge 2 and ep =  1 then ever_ep=1;
 
 np = ep + newp;
 
-end;
+
 
 *-----------------------------------------------------------------------------------------------------------------------------------------;
 
@@ -4262,7 +4261,7 @@ end;
 
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
 *  - men ; 
-if rbm =4 then do;
+
 
 
 
@@ -4283,8 +4282,6 @@ if 15 <= age < 25 then do;e=uniform(0);
 if              e < 0.865  then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975  then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e          then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
-																						 
-																						 
 end;
 else if 25 <= age < 35 then do;e=uniform(0);
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
@@ -4887,7 +4884,7 @@ end;
 end;
 
 
-end;
+
 
 
 *--------------------------------------------------------------------------------------------------------------------;
@@ -14664,7 +14661,7 @@ if s_w5564_ep5564 gt 0 then r_s_ep_m55w55 = s_m5564_ep5564 / s_w5564_ep5564 ;
 
 
 
-if rbm  = 4 then do;
+
 
 if sex_age_mixing_matrix_w=1 then do;
 ptnewp15_m=(0.43*s_w_1524_newp)+(0.09*s_w_2534_newp)+(0.03*s_w_3544_newp)+(0.00*s_w_4554_newp)+(0.00*s_w_5564_newp);
@@ -14765,7 +14762,7 @@ ptnewp55_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.00*
 end;
 
 
-end;
+
 
 
 if s_m_1524_newp gt 0 then m15r = ptnewp15_m / s_m_1524_newp;  
