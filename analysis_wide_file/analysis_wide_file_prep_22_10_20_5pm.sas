@@ -54,7 +54,7 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
-dcost_prep_20_70_2   +      
+(dcost_prep_20_70_2  * 300/60)   +      
 dcost_prep_visit_20_70_2 + 
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
@@ -202,7 +202,6 @@ p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_v
 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
 aids_death_rate_20  p_newp_sw_20 p_newp_ge1_age1549_20 ;
-where base_rate_sw = 0.001;
 run;
 ods html close;
 
@@ -418,12 +417,15 @@ ods html;
 proc means data=wide; var    
 d_ddaly_all_20_25_2  
 d_ndb_500_20_25_2  
+dcost_20_25_1 dcost_20_25_2 
 d_dcost_20_25_2  
 n_tested_20_25_1 n_tested_20_25_2
+n_prep_20_25_1 n_prep_20_25_2
 incidence1549_20_25_1 incidence1549_20_25_2 
 dvis_cost_20_25_1 dvis_cost_20_25_2 
 dtest_cost_20_25_1 dtest_cost_20_25_2
 dart_cost_y_20_25_1 dart_cost_y_20_25_2 
+dcost_circ_20_25_1 dcost_circ_20_25_2 
 dclin_cost_20_25_1 dclin_cost_20_25_2 
 dcost_prep_20_25_1 dcost_prep_20_25_2 
 dcost_prep_visit_20_25_1 dcost_prep_visit_20_25_2 
@@ -533,24 +535,30 @@ proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
-proc logistic data=wide; model ce_100_x =   incidence1549_20  ;
-* av_newp_ge1_non_sw_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_20_25_2 p_prep_adhg80_20_25_2   ;
+proc logistic data=wide; 
+  model ce_100_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
+* model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
+* av_newp_ge1_non_sw_20 p_newp_ge5_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_20_25_2 p_prep_adhg80_20_25_2  prevalence1549_20 ;
 run;
 
+
+proc corr spearman; var p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 incidence1549_20 ; run; 
 
 proc freq; tables icer_2; run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  prevalence1549_20  av_newp_ge1_non_sw_20 ; * p_newp_ge1_age1549_20 ;
+proc logistic data=wide; model ce_500 =  incidence1549_20 av_newp_ge1_non_sw_20 ; * av_newp_ge1_non_sw_20 ;
+*  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 av_newp_ge1_non_sw_20; 
+* prop_elig_on_prep_20_25_2 p_newp_this_per_prep_20_25_2 p_prep_adhg80_20_25_2 p_newp_prep_hivneg_20_25_2 ;
 run;
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
 proc logistic data=wide; model ce_500 =  prop_1564_hivneg_onprep_20_25_2 ;
 run;
 
-proc glm; model d_ndb_500_20_70_2 =  incidence1549_20  ; 
-*  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 ; 
+proc glm; model d_ndb_500_20_70_2 =  incidence1549_20 av_newp_ge1_non_sw_20  ; 
+*  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 av_newp_ge1_non_sw_20; 
 * prop_elig_on_prep_20_25_2 p_newp_this_per_prep_20_25_2 p_prep_adhg80_20_25_2 p_newp_prep_hivneg_20_25_2 ;
 run;  
 
