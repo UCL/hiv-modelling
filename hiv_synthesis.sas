@@ -169,8 +169,6 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
-if eeee=1;
-drop eeee;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -1862,49 +1860,41 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
+caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 then caldate_never_dot = caldate_never_dot + (1/12);
+caldate_never_dot = caldate_never_dot + (1/12);
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
 careful checking of whether serial_no = obs ; 
 
-
-if t ge 2 then do;
-tested_tm1=tested; tested=0;
-dead_tm1=dead;
-onart_tm2=onart_tm1;
-onart_tm1=onart;
-adhmin_tm1=adhmin;
-adh_tm1 = adh; adh = .;
-ep_tm1=ep;
-newp_tm1=newp; newp = .;
-np_tm1=np; np = .;
-primary_tm1 = primary; primary = .; 
-registd_tm1 = registd; 
-sw_tm2=sw_tm1; 
-sw_tm1=sw;
-hiv_tm1 = hiv; 
-age_tm1=age;
-end;
-
-if t ge 3 then  do;
-ep_tm2=ep_tm1;
-tested_tm2=tested_tm1; 
-newp_tm2=newp_tm1;
-registd_tm2 = registd_tm1;
-np_tm2=np_tm1;
-end;
-
-if t ge 4 then do;
-
+* Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
 ep_tm3=ep_tm2;
 newp_tm3=newp_tm2;
 np_tm3=np_tm2;
 
-end;
+tested_tm2=tested_tm1; 
+ep_tm2=ep_tm1;
+newp_tm2=newp_tm1;
+np_tm2=np_tm1;
+registd_tm2 = registd_tm1;
+onart_tm2=onart_tm1;
+sw_tm2=sw_tm1; 
+
+tested_tm1=tested; tested=0;
+ep_tm1=ep;
+newp_tm1=newp; newp = .;
+np_tm1=np; np = .;
+registd_tm1 = registd; 
+onart_tm1=onart;
+dead_tm1=dead;
+adhmin_tm1=adhmin;
+adh_tm1 = adh; adh = .;
+primary_tm1 = primary; primary = .; 
+sw_tm1=sw;
+hiv_tm1 = hiv; 
+age_tm1=age;
 
 
 if t ge 2 and caldate{t-1} < 2071.0  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
@@ -2423,7 +2413,7 @@ if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_pro
 
 if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
-if t ge 2 and reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
+if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
 
 if single_vl_switch_efa_2020 = 1 then do;
 art_monitoring_strategy=150;
