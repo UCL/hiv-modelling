@@ -1469,10 +1469,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184m = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
 newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
-d_s_newp = .; r_s_ep_m15w15 = . ;  r_s_ep_m15w25 = . ;  r_s_ep_m15w35 = . ;  r_s_ep_m15w45 = . ;  r_s_ep_m15w55 = . ;  r_s_ep_m25w15 = . ;  
-r_s_ep_m25w25 = . ;  r_s_ep_m25w35 = . ;  r_s_ep_m25w45 = . ;  r_s_ep_m25w55 = . ;  r_s_ep_m35w15 = . ;  r_s_ep_m35w25 = . ;  r_s_ep_m35w35 = . ; 
-r_s_ep_m35w45 = . ;  r_s_ep_m35w55 = . ;  r_s_ep_m45w15 = . ;  r_s_ep_m45w25 = . ;  r_s_ep_m45w35 = . ;  r_s_ep_m45w45 = . ;  r_s_ep_m45w55 = . ; 
-r_s_ep_m55w15 = . ;  r_s_ep_m55w25 = . ;  r_s_ep_m55w35 = . ;  r_s_ep_m55w45 = . ;  r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
+d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
 incidence3544w_epnewp = . ;  incidence4554w_epnewp = . ;  incidence5564w_epnewp = . ;  incidence1524m_epnewp = . ;  incidence2534m_epnewp = . ; 
@@ -3513,37 +3510,27 @@ end;
 e=uniform(0);
 if gender=1 then do;
 	if      15 <= age < 25 then do;
-		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); if 0 < r_s_ep_m15w25 <0.95 then e=e/(3*r_s_ep_m15w25); if 0 < r_s_ep_m15w35 <0.95 then e=e/(3*r_s_ep_m15w35);
-		if 0 < r_s_ep_m15w45 <0.95 then e=e/(3*r_s_ep_m15w45); if 0 < r_s_ep_m15w55 <0.95 then e=e/(3*r_s_ep_m15w55); end;
+		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); end;
 	else if 25 <= age < 35 then do;
-		if 0 < r_s_ep_m25w15 <0.95 then e=e/(3*r_s_ep_m25w15); if 0 < r_s_ep_m25w25 <0.95 then e=e/(3*r_s_ep_m25w25); if 0 < r_s_ep_m25w35 <0.95 then e=e/(3*r_s_ep_m25w35);
-		if 0 < r_s_ep_m25w45 <0.95 then e=e/(3*r_s_ep_m25w45); if 0 < r_s_ep_m25w55 <0.95 then e=e/(3*r_s_ep_m25w55); end;
+		if 0 < r_s_ep_m25w25 <0.95 then e=e/(3*r_s_ep_m25w25); end;
 	else if 35 <= age < 45 then do;
-		if 0 < r_s_ep_m35w15 <0.95 then e=e/(3*r_s_ep_m35w15); if 0 < r_s_ep_m35w25 <0.95 then e=e/(3*r_s_ep_m35w25); if 0 < r_s_ep_m35w35 <0.95 then e=e/(3*r_s_ep_m35w35);
-		if 0 < r_s_ep_m35w45 <0.95 then e=e/(3*r_s_ep_m35w45); if 0 < r_s_ep_m35w55 <0.95 then e=e/(3*r_s_ep_m35w55); end;
+		if 0 < r_s_ep_m35w35 <0.95 then e=e/(3*r_s_ep_m35w35); end;
 	else if 45 <= age < 55 then do;
-		if 0 < r_s_ep_m45w15 <0.95 then e=e/(3*r_s_ep_m45w15); if 0 < r_s_ep_m45w25 <0.95 then e=e/(3*r_s_ep_m45w25); if 0 < r_s_ep_m45w35 <0.95 then e=e/(3*r_s_ep_m45w35);
-		if 0 < r_s_ep_m45w45 <0.95 then e=e/(3*r_s_ep_m45w45); if 0 < r_s_ep_m45w55 <0.95 then e=e/(3*r_s_ep_m45w55); end;
+		if 0 < r_s_ep_m45w45 <0.95 then e=e/(3*r_s_ep_m45w45); end;
 	else if 55 <= age < 65 then do;
-		if 0 < r_s_ep_m55w15 <0.95 then e=e/(3*r_s_ep_m55w15); if 0 < r_s_ep_m55w25 <0.95 then e=e/(3*r_s_ep_m55w25); if 0 < r_s_ep_m55w35 <0.95 then e=e/(3*r_s_ep_m55w35);
-		if 0 < r_s_ep_m55w45 <0.95 then e=e/(3*r_s_ep_m55w45); if 0 < r_s_ep_m55w55 <0.95 then e=e/(3*r_s_ep_m55w55); end;
+		if 0 < r_s_ep_m55w55 <0.95 then e=e/(3*r_s_ep_m55w55); end;
 end;
 else if gender=2 then do;
 	if      15 <= age < 25 then do;
-		if r_s_ep_m15w15 >1.05 then e=e/(3*r_s_ep_m15w15); if r_s_ep_m25w15 >1.05 then e=e/(3*r_s_ep_m25w15); if r_s_ep_m35w15 >1.05 then e=e/(3*r_s_ep_m35w15); 
-		if r_s_ep_m45w15 >1.05 then e=e/(3*r_s_ep_m45w15); if r_s_ep_m55w15 >1.05 then e=e/(3*r_s_ep_m55w15); end;
+		if r_s_ep_m15w15 >1.05 then e=e/(3*r_s_ep_m15w15); end;
 	else if 25 <= age < 35 then do;
-		if r_s_ep_m15w25 >1.05 then e=e/(3*r_s_ep_m15w25); if r_s_ep_m25w25 >1.05 then e=e/(3*r_s_ep_m25w25); if r_s_ep_m35w25 >1.05 then e=e/(3*r_s_ep_m35w25); 
-		if r_s_ep_m45w25 >1.05 then e=e/(3*r_s_ep_m45w25); if r_s_ep_m55w25 >1.05 then e=e/(3*r_s_ep_m55w25); end;
+		if r_s_ep_m25w25 >1.05 then e=e/(3*r_s_ep_m25w25); end;
 	else if 35 <= age < 45 then do;
-		if r_s_ep_m15w35 >1.05 then e=e/(3*r_s_ep_m15w35); if r_s_ep_m25w35 >1.05 then e=e/(3*r_s_ep_m25w35); if r_s_ep_m35w35 >1.05 then e=e/(3*r_s_ep_m35w35); 
-		if r_s_ep_m45w35 >1.05 then e=e/(3*r_s_ep_m45w35); if r_s_ep_m55w35 >1.05 then e=e/(3*r_s_ep_m55w35); end;
+		if r_s_ep_m35w35 >1.05 then e=e/(3*r_s_ep_m35w35); end;
 	else if 45 <= age < 55 then do;
-		if r_s_ep_m15w45 >1.05 then e=e/(3*r_s_ep_m15w45); if r_s_ep_m25w45 >1.05 then e=e/(3*r_s_ep_m25w45); if r_s_ep_m35w45 >1.05 then e=e/(3*r_s_ep_m35w45); 
-		if r_s_ep_m45w45 >1.05 then e=e/(3*r_s_ep_m45w45); if r_s_ep_m55w45 >1.05 then e=e/(3*r_s_ep_m55w45); end;
+		if r_s_ep_m45w45 >1.05 then e=e/(3*r_s_ep_m45w45); end;
 	else if 55 <= age < 65 then do;
-		if r_s_ep_m15w55 >1.05 then e=e/(3*r_s_ep_m15w55); if r_s_ep_m25w55 >1.05 then e=e/(3*r_s_ep_m25w55); if r_s_ep_m35w55 >1.05 then e=e/(3*r_s_ep_m35w55); 
-		if r_s_ep_m45w55 >1.05 then e=e/(3*r_s_ep_m45w55); if r_s_ep_m55w55 >1.05 then e=e/(3*r_s_ep_m55w55); end;
+		if r_s_ep_m55w55 >1.05 then e=e/(3*r_s_ep_m55w55); end;
 end;
 
 * reduction in sexual behaviour following hiv+ test;  * dependent_on_time_step_length ;
@@ -10526,17 +10513,8 @@ w_3544_newp=0;if  gender=2 and 35 <= age < 45 then w_3544_newp=newp;
 w_4554_newp=0;if  gender=2 and 45 <= age < 55 then w_4554_newp=newp;
 w_5564_newp=0;if  gender=2 and 55 <= age < 65 then w_5564_newp=newp;
 
-m1524_ep1524=0; m1524_ep2534=0;m1524_ep3544=0; m1524_ep4554=0;m1524_ep5564=0;
-m2534_ep1524=0; m2534_ep2534=0;m2534_ep3544=0; m2534_ep4554=0;m2534_ep5564=0;
-m3544_ep1524=0; m3544_ep2534=0;m3544_ep3544=0; m3544_ep4554=0;m3544_ep5564=0;
-m4554_ep1524=0; m4554_ep2534=0;m4554_ep3544=0; m4554_ep4554=0;m4554_ep5564=0;
-m5564_ep1524=0; m5564_ep2534=0;m5564_ep3544=0; m5564_ep4554=0;m5564_ep5564=0;
-
-w1524_ep1524=0; w1524_ep2534=0;w1524_ep3544=0; w1524_ep4554=0;w1524_ep5564=0;
-w2534_ep1524=0; w2534_ep2534=0;w2534_ep3544=0; w2534_ep4554=0;w2534_ep5564=0;
-w3544_ep1524=0; w3544_ep2534=0;w3544_ep3544=0; w3544_ep4554=0;w3544_ep5564=0;
-w4554_ep1524=0; w4554_ep2534=0;w4554_ep3544=0; w4554_ep4554=0;w4554_ep5564=0;
-w5564_ep1524=0; w5564_ep2534=0;w5564_ep3544=0; w5564_ep4554=0;w5564_ep5564=0;
+m1524_ep1524=0; m2534_ep2534=0; m3544_ep3544=0; m4554_ep4554=0; m5564_ep5564=0;
+w1524_ep1524=0; w2534_ep2534=0; w3544_ep3544=0; w4554_ep4554=0; w5564_ep5564=0;
 
 if gender=1 and ep=1 then do;
 	if 15 <= age < 25 then do;
@@ -13647,19 +13625,8 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_newp_ge1_hiv + newp_ge1_hiv ; s_ever_ep + ever_ep ; s_ever_newp + ever_newp ;      
 
-	s_m1524_ep1524 + m1524_ep1524 ; s_m1524_ep2534 + m1524_ep2534 ; s_m1524_ep3544 + m1524_ep3544 ; s_m1524_ep4554 + m1524_ep4554 ; s_m1524_ep5564 + m1524_ep5564 ;
-
-	s_m2534_ep1524 + m2534_ep1524 ; s_m2534_ep2534 + m2534_ep2534 ; s_m2534_ep3544 + m2534_ep3544 ; s_m2534_ep4554 + m2534_ep4554 ; s_m2534_ep5564 + m2534_ep5564 ;
-	s_m3544_ep1524 + m3544_ep1524 ; s_m3544_ep2534 + m3544_ep2534 ; s_m3544_ep3544 + m3544_ep3544 ; s_m3544_ep4554 + m3544_ep4554 ; s_m3544_ep5564 + m3544_ep5564 ;
-	s_m4554_ep1524 + m4554_ep1524 ; s_m4554_ep2534 + m4554_ep2534 ; s_m4554_ep3544 + m4554_ep3544 ; s_m4554_ep4554 + m4554_ep4554 ; s_m4554_ep5564 + m4554_ep5564 ;
-	s_m5564_ep1524 + m5564_ep1524 ; s_m5564_ep2534 + m5564_ep2534 ; s_m5564_ep3544 + m5564_ep3544 ; s_m5564_ep4554 + m5564_ep4554 ; s_m5564_ep5564 + m5564_ep5564 ;
-
-	s_w1524_ep1524 + w1524_ep1524 ; s_w1524_ep2534 + w1524_ep2534 ; s_w1524_ep3544 + w1524_ep3544 ; s_w1524_ep4554 + w1524_ep4554 ; s_w1524_ep5564 + w1524_ep5564 ;
- 
-	s_w2534_ep1524 + w2534_ep1524 ; s_w2534_ep2534 + w2534_ep2534 ; s_w2534_ep3544 + w2534_ep3544 ; s_w2534_ep4554 + w2534_ep4554 ; s_w2534_ep5564 + w2534_ep5564 ;
-	s_w3544_ep1524 + w3544_ep1524 ; s_w3544_ep2534 + w3544_ep2534 ; s_w3544_ep3544 + w3544_ep3544 ; s_w3544_ep4554 + w3544_ep4554 ; s_w3544_ep5564 + w3544_ep5564 ;
-	s_w4554_ep1524 + w4554_ep1524 ; s_w4554_ep2534 + w4554_ep2534 ; s_w4554_ep3544 + w4554_ep3544 ; s_w4554_ep4554 + w4554_ep4554 ; s_w4554_ep5564 + w4554_ep5564 ;
-	s_w5564_ep1524 + w5564_ep1524 ; s_w5564_ep2534 + w5564_ep2534 ; s_w5564_ep3544 + w5564_ep3544 ; s_w5564_ep4554 + w5564_ep4554 ; s_w5564_ep5564 + w5564_ep5564 ;
+	s_m1524_ep1524 + m1524_ep1524 ; s_m2534_ep2534 + m2534_ep2534 ; s_m3544_ep3544 + m3544_ep3544 ; s_m4554_ep4554 + m4554_ep4554 ; s_m5564_ep5564 + m5564_ep5564 ;
+	s_w1524_ep1524 + w1524_ep1524 ; s_w2534_ep2534 + w2534_ep2534 ; s_w3544_ep3544 + w3544_ep3544 ; s_w4554_ep4554 + w4554_ep4554 ; s_w5564_ep5564 + w5564_ep5564 ;
  
 	s_m1524_newp_ge1 + m1524_newp_ge1 ; s_m2534_newp_ge1 + m2534_newp_ge1 ; s_m3544_newp_ge1 + m3544_newp_ge1 ; s_m4554_newp_ge1 + m4554_newp_ge1; s_m5564_newp_ge1 +  m5564_newp_ge1;
 	s_m1524_newp_ge5 + m1524_newp_ge5 ; s_m2534_newp_ge5 + m2534_newp_ge5 ; s_m3544_newp_ge5 + m3544_newp_ge5 ; s_m4554_newp_ge5 + m4554_newp_ge5; s_m5564_newp_ge5 +  m5564_newp_ge5;
@@ -14630,33 +14597,9 @@ if s_hiv1epi1_m > 0 then r_hiv_epi_both = s_hiv1epi1_w / s_hiv1epi1_m;
 if s_ep_w > 0 then r_ep_mw = s_ep_m / s_ep_w;  
 
 if s_w1524_ep1524 gt 0 then r_s_ep_m15w15 = s_m1524_ep1524 / s_w1524_ep1524 ; 
-if s_w2534_ep1524 gt 0 then r_s_ep_m15w25 = s_m1524_ep2534 / s_w2534_ep1524 ; 
-if s_w3544_ep1524 gt 0 then r_s_ep_m15w35 = s_m1524_ep3544 / s_w3544_ep1524 ;
-if s_w4554_ep1524 gt 0 then r_s_ep_m15w45 = s_m1524_ep4554 / s_w4554_ep1524 ; 
-if s_w5564_ep1524 gt 0 then r_s_ep_m15w55 = s_m1524_ep5564 / s_w5564_ep1524 ;
-
-if s_w1524_ep2534 gt 0 then r_s_ep_m25w15 = s_m2534_ep1524 / s_w1524_ep2534 ; 
 if s_w2534_ep2534 gt 0 then r_s_ep_m25w25 = s_m2534_ep2534 / s_w2534_ep2534 ; 
-if s_w3544_ep2534 gt 0 then r_s_ep_m25w35 = s_m2534_ep3544 / s_w3544_ep2534 ;
-if s_w4554_ep2534 gt 0 then r_s_ep_m25w45 = s_m2534_ep4554 / s_w4554_ep2534 ; 
-if s_w5564_ep2534 gt 0 then r_s_ep_m25w55 = s_m2534_ep5564 / s_w5564_ep2534 ;
-
-if s_w1524_ep3544 gt 0 then r_s_ep_m35w15 = s_m3544_ep1524 / s_w1524_ep3544 ; 
-if s_w2534_ep3544 gt 0 then r_s_ep_m35w25 = s_m3544_ep2534 / s_w2534_ep3544 ; 
-if s_w3544_ep3544 gt 0 then r_s_ep_m35w35 = s_m3544_ep3544 / s_w3544_ep3544 ;
-if s_w4554_ep3544 gt 0 then r_s_ep_m35w45 = s_m3544_ep4554 / s_w4554_ep3544 ; 
-if s_w5564_ep3544 gt 0 then r_s_ep_m35w55 = s_m3544_ep5564 / s_w5564_ep3544 ;
-
-if s_w1524_ep4554 gt 0 then r_s_ep_m45w15 = s_m4554_ep1524 / s_w1524_ep4554 ;
-if s_w2534_ep4554 gt 0 then r_s_ep_m45w25 = s_m4554_ep2534 / s_w2534_ep4554 ;
-if s_w3544_ep4554 gt 0 then r_s_ep_m45w35 = s_m4554_ep3544 / s_w3544_ep4554 ;
-if s_w4554_ep4554 gt 0 then r_s_ep_m45w45 = s_m4554_ep4554 / s_w4554_ep4554 ;
-if s_w5564_ep4554 gt 0 then r_s_ep_m45w55 = s_m4554_ep5564 / s_w5564_ep4554 ;
-
-if s_w1524_ep5564 gt 0 then r_s_ep_m55w15 = s_m5564_ep1524 / s_w1524_ep5564 ;
-if s_w2534_ep5564 gt 0 then r_s_ep_m55w25 = s_m5564_ep2534 / s_w2534_ep5564 ;
-if s_w3544_ep5564 gt 0 then r_s_ep_m55w35 = s_m5564_ep3544 / s_w3544_ep5564 ;
-if s_w4554_ep5564 gt 0 then r_s_ep_m55w45 = s_m5564_ep4554 / s_w4554_ep5564 ;
+if s_w3544_ep3544 gt 0 then r_s_ep_m35w35 = s_m3544_ep3544 / s_w3544_ep3544 ; 
+if s_w4554_ep4554 gt 0 then r_s_ep_m45w45 = s_m4554_ep4554 / s_w4554_ep4554 ; 
 if s_w5564_ep5564 gt 0 then r_s_ep_m55w55 = s_m5564_ep5564 / s_w5564_ep5564 ;
 
 
@@ -14857,23 +14800,14 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
 s_w1524_newp_ge1  s_w2534_newp_ge1  s_w3544_newp_ge1  s_w4554_newp_ge1  s_w5564_newp_ge1  
 s_w1524_newp_ge5  s_w2534_newp_ge5  s_w3544_newp_ge5  s_w4554_newp_ge5  s_w5564_newp_ge5
 s_m1549_newp_ge1  s_w1549_newp_ge1
-
 
 s_newp_g_m_0    s_newp_g_m_1    s_newp_g_m_2    s_newp_g_m_3    s_newp_g_m_4    s_newp_g_m_5    s_newp_g_m_6 
 s_n_newp_g_m_0  s_n_newp_g_m_1  s_n_newp_g_m_2  s_n_newp_g_m_3  s_n_newp_g_m_4  s_n_newp_g_m_5  s_n_newp_g_m_6 
@@ -15355,11 +15289,7 @@ d_onart
 
 d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 
-r_s_ep_m15w15  r_s_ep_m15w25  r_s_ep_m15w35  r_s_ep_m15w45  r_s_ep_m15w55
-r_s_ep_m25w15  r_s_ep_m25w25  r_s_ep_m25w35  r_s_ep_m25w45  r_s_ep_m25w55
-r_s_ep_m35w15  r_s_ep_m35w25  r_s_ep_m35w35  r_s_ep_m35w45  r_s_ep_m35w55
-r_s_ep_m45w15  r_s_ep_m45w25  r_s_ep_m45w35  r_s_ep_m45w45  r_s_ep_m45w55
-r_s_ep_m55w15  r_s_ep_m55w25  r_s_ep_m55w35  r_s_ep_m55w45  r_s_ep_m55w55
+r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
@@ -15611,16 +15541,8 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
@@ -16358,16 +16280,8 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
@@ -16852,13 +16766,9 @@ p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w
 d_onart
 
-d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
+d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw 
 
-r_s_ep_m15w15  r_s_ep_m15w25  r_s_ep_m15w35  r_s_ep_m15w45  r_s_ep_m15w55
-r_s_ep_m25w15  r_s_ep_m25w25  r_s_ep_m25w35  r_s_ep_m25w45  r_s_ep_m25w55
-r_s_ep_m35w15  r_s_ep_m35w25  r_s_ep_m35w35  r_s_ep_m35w45  r_s_ep_m35w55
-r_s_ep_m45w15  r_s_ep_m45w25  r_s_ep_m45w35  r_s_ep_m45w45  r_s_ep_m45w55
-r_s_ep_m55w15  r_s_ep_m55w25  r_s_ep_m55w35  r_s_ep_m55w45  r_s_ep_m55w55
+r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
