@@ -1388,6 +1388,7 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 				dswitchline_cost; 
 cost_clin_care = dcost_clin_care / discount;
 
+cost = dcost / discount;
 
 * ================================================================================= ;
 
@@ -1719,7 +1720,7 @@ n_new_inf1549 = s_primary1549 * sf_2020 * 4;
 n_infection  = s_primary     * sf_2020 * 4;
 
 
-keep run option cald dataset
+keep run option cald dataset cost
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -1825,9 +1826,17 @@ eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice
 
 proc sort data=y;by run option;run;
 
-data a.prep_22_10_20_5pm_1; set y;
+  data a.prep_22_10_20_5pm_1;
+* data a.prep_22_10_20_5pm_1_dis7p; 
 
-data y; set a.prep_22_10_20_5pm_1; run;
+set y;
+
+data y; 
+
+  set a.prep_22_10_20_5pm_1; 
+* set a.prep_22_10_20_5pm_1_dis7p;
+run;
+
 
 
   options nomprint;
@@ -1841,8 +1850,8 @@ data y; set a.prep_22_10_20_5pm_1; run;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where cald = 2017; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
+proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
@@ -1897,7 +1906,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);     %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
-%var(v=aids_death_rate);  %var(v=death_rate_onart); %var(v=ddaly);  %var(v=ddaly_all);  %var(v=dcost);  %var(v= dart_cost_y);
+%var(v=aids_death_rate);  %var(v=death_rate_onart); %var(v=ddaly);  %var(v=ddaly_all);  %var(v=dcost);  %var(v=cost);  %var(v= dart_cost_y);
 %var(v=dadc_cost);   %var(v=dcd4_cost);   %var(v=dvl_cost);   %var(v=dvis_cost);   %var(v=dwho3_cost);   %var(v=dcot_cost);   %var(v=dtb_cost);   
 %var(v=dres_cost);  %var(v=dtest_cost);   %var(v=d_t_adh_int_cost);   %var(v=dswitchline_cost);  %var(v=dtaz_cost);   %var(v=dcost_drug_level_test);
 %var(v=dclin_cost );  
@@ -1949,7 +1958,7 @@ p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev
 p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524  p_artexp_vl1000  
 p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
- p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
+ p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost cost dart_cost_y
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dclin_cost   dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
 dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
@@ -2161,6 +2170,7 @@ proc sort; by run;run;
 * To get one row per run;
 
   data a.wide_prep_22_10_20_5pm_1; 
+* data a.wide_prep_22_10_20_5pm_1_dis7p; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

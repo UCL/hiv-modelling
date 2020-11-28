@@ -4,6 +4,7 @@
 
 data wide;    
   set a.wide_prep_22_10_20_5pm_1;
+* set a.wide_prep_22_10_20_5pm_1_dis7p;
 
 
 * if run ne 192429854;
@@ -55,7 +56,7 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_2  * 100/60) 
 dcost_20_70_2           =      
 dart_cost_y_20_70_2 +       
 dcost_prep_20_70_2     +      
-dcost_prep_visit_20_70_2 + 
+(dcost_prep_20_70_2  * (1 *  75)/60) + 
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
 dvl_cost_20_70_2    +      
@@ -87,6 +88,7 @@ d_ddaly_all_20_70_2 = ddaly_all_20_70_2 - ddaly_all_20_70_1 ;
 
 d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1 ;
 
+d_dcost_prep_20_25_2 = dcost_prep_20_25_2 - dcost_prep_20_25_1 ;
 d_dcost_prep_20_70_2 = dcost_prep_20_70_2 - dcost_prep_20_70_1 ;
 
 ndb_500_20_70_2 =  ddaly_all_20_70_2 + (dcost_20_70_2)/0.0005;
@@ -115,6 +117,7 @@ incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_st
 
 cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
+d_n_death_hivrel_20_25_2 = n_death_hivrel_20_25_1 - n_death_hivrel_20_25_2 ;
 d_n_death_hivrel_20_70_2 = n_death_hivrel_20_70_1 - n_death_hivrel_20_70_2 ;
 
 infections_averted_20_25 = n_infection_20_25_1 - n_infection_20_25_2;
@@ -157,8 +160,6 @@ dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost 
 
 * --------------------------------------------------------------------------------------------------------------;
 
-
-
 proc freq  data=wide; tables
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
@@ -192,7 +193,7 @@ p_k65m_20 p_m184m_20 p_newp_ge1_20  p_1524_newp_ge1_20;
 run;
 
 ods html;
-proc means median p5 p95 data=wide;
+proc means n median p5 p95 data=wide; 
 var	p_mcirc_1549m_20 
 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
 incidence1549w_20 incidence1549m_20	p_diag_m_20   p_diag_w_20	
@@ -201,7 +202,7 @@ prop_w_1549_sw_20    prop_1564_hivneg_onprep_20  prop_w_1524_onprep_20
 p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 
 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
-aids_death_rate_20  p_newp_sw_20 p_newp_ge1_age1549_20 ;
+aids_death_rate_20  p_newp_sw_20 p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 ;
 run;
 ods html close;
 
@@ -334,6 +335,11 @@ ods html close;
 
 
 ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var n_death_hivrel_20_25_1  n_death_hivrel_20_25_2 d_n_death_hivrel_20_25_2 ;  
+run; 
+ods html close;
+
+ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var n_death_hivrel_20_70_1  n_death_hivrel_20_70_2 d_n_death_hivrel_20_70_2 ;  
 run; 
 ods html close;
@@ -368,7 +374,13 @@ ods html close;
 
 
 ods html;
-proc means data=wide; var      ddaly_all_20_70_1  ddaly_all_20_70_2  d_ddaly_all_20_70_2 d_ndb_500_20_70_2  ndb_500_20_70_2  ndb_500_20_70_1
+proc means n mean  p5 p95 lclm uclm data=wide; var      ddaly_all_20_25_1  ddaly_all_20_25_2  d_ddaly_all_20_25_2 d_ndb_500_20_25_2  ndb_500_20_25_2  ndb_500_20_25_1
+d_dcost_20_25_2  dcost_20_25_2  dcost_20_25_1  d_dcost_prep_20_25_2  dcost_prep_20_25_1 dcost_prep_20_25_2   ; 
+run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide; var      ddaly_all_20_70_1  ddaly_all_20_70_2  d_ddaly_all_20_70_2 d_ndb_500_20_70_2  ndb_500_20_70_2  ndb_500_20_70_1
 d_dcost_20_70_2  dcost_20_70_2  dcost_20_70_1  d_dcost_prep_20_70_2  dcost_prep_20_70_1 dcost_prep_20_70_2   ; 
 run; 
 ods html close;
@@ -393,18 +405,10 @@ run;
 ods htm close;
 
 
-
-
-
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_onart_vl1000_20_25_1  p_onart_vl1000_20_25_2 ;  
 run; 
 ods htm close;
-
-
-
-
-
 
 
 
@@ -449,10 +453,12 @@ ods html close;
 
 
 ods html;
-proc means data=wide; var    d_ddaly_all_20_70_2  d_ndb_500_20_70_2  d_dcost_20_70_2  incidence1549_20_70_1 incidence1549_20_70_2 
+proc means n mean lclm uclm p5 p95 data=wide;  
+var    d_ddaly_all_20_70_2  d_ndb_500_20_70_2  d_dcost_20_70_2  incidence1549_20_70_1 incidence1549_20_70_2 
 dcost_20_70_1   dcost_20_70_2
 n_tested_20_70_1 n_tested_20_70_2
 n_prep_20_70_1 n_prep_20_70_2
+prop_art_or_prep_20_70_1 prop_art_or_prep_20_70_2
 dvis_cost_20_70_1 dvis_cost_20_70_2 
 dtest_cost_20_70_1 dtest_cost_20_70_2
 dart_cost_y_20_70_1 dart_cost_y_20_70_2 
@@ -491,6 +497,7 @@ dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2
 dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2
 dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2 
 ;
+* where 0.00 <= incidence1549_20 < 0.30 ;
 * where prop_1564_hivneg_onprep_20_70_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.05 ;
 run; 
@@ -557,7 +564,7 @@ run;
 proc logistic data=wide; model ce_500 =  prop_1564_hivneg_onprep_20_25_2 ;
 run;
 
-proc glm; model d_ndb_500_20_70_2 =  incidence1549_20 av_newp_ge1_non_sw_20  ; 
+proc glm; model d_ndb_500_20_70_2 =  incidence1549_20 av_newp_ge1_non_sw_20 prevalence1549_20 ; 
 *  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 av_newp_ge1_non_sw_20; 
 * prop_elig_on_prep_20_25_2 p_newp_this_per_prep_20_25_2 p_prep_adhg80_20_25_2 p_newp_prep_hivneg_20_25_2 ;
 run;  
@@ -666,25 +673,39 @@ run;
 */
 
 
+proc univariate; var incidence1549_20 av_newp_ge1_non_sw_20 prevalence1549_20; run;
 
-proc freq data=wide; tables ce_500;
-* where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
-* where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
-* where  prop_1564_hivneg_onprep_20_25_2  >=  0.043 ;
-* where 1.50 <= incidence1549_20 < 9.50 ;
-* where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
-run; 
+
+
+proc corr; var p_newp_ge1_age1549_20 incidence1549_20 prevalence1549_20 ; run;
 
 proc freq; tables prop_1564_hivneg_onprep_20_25_2 ; run;
 
-
-proc means data=wide; var cost_per_infection_averted_20_25  ; 
+proc means median data=wide; var cost_per_infection_averted_20_25  ; where infections_averted_20_25 > 0 ;
 run;
  
 proc means data=wide; var cost_per_infection_averted_20_70  ; where infections_averted_20_70 > 0 ;
 * and 1.50 <= incidence1549_20 < 5.50 ;
 run;
  
+proc means; var infections_averted_20_25  ; run;
+
+
+
+ods html;
+proc freq data=wide; tables ce_500_x / nocum norow binomial;
+exact binomial; 
+* where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
+* where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
+* where  prop_1564_hivneg_onprep_20_25_2  >=  0.043 ;
+  where 0.20 <= incidence1549_20 < 0.50 ;
+* where 0.00 <= prevalence1549_20 < 0.03 ;
+* where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
+* where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
+run; 
+ods html close;
+
+
 * --------------------------------------------------------------------------------------------------------------;
 
 
