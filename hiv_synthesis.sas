@@ -169,8 +169,6 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
-if eeee=1;
-drop eeee;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -223,7 +221,6 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-rbm=4;
 ch_risk_diag = 9/13; *overwritten; 
 ch_risk_diag_newp = 5/6; *overwritten;
 ych_risk_beh_newp = .99; *overwritten;
@@ -480,9 +477,10 @@ p_neph_stops_after_ten = 0.1;
 							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
 * dependent_on_time_step_length ;
 
-* sw_trans_matrix;   r=uniform(0);  if r < 0.20 then sw_trans_matrix = 1;   if 0.20 <= r < 0.40 then sw_trans_matrix = 2;  
-								if 0.40 <= r < 0.60 then sw_trans_matrix = 3;  if 0.60 <= r < 0.80      then sw_trans_matrix = 4;  
-								if 0.80 <= r        then sw_trans_matrix = 5;  
+* sw_trans_matrix;   r=uniform(0);  if r < 0.125 			then sw_trans_matrix = 1;  if 0.125 <= r < 0.250 then sw_trans_matrix = 2;  
+									if 0.250 <= r < 0.375 	then sw_trans_matrix = 3;  if 0.375 <= r < 0.500 then sw_trans_matrix = 4;  
+									if 0.500 <= r < 0.625 	then sw_trans_matrix = 5;  if 0.625 <= r < 0.750 then sw_trans_matrix = 6;  
+									if 0.750 <= r < 0.875 	then sw_trans_matrix = 7;  if 0.875 <= r         then sw_trans_matrix = 8;  
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
@@ -767,7 +765,7 @@ if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_i
 if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
 
 * transition probabilities between sex worker newp levels;
-* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-40   4   newp 41-80   5   newp 81+  ;
+* sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
 if sw_trans_matrix=1 then do;
 sw_newp_lev_1_1 = 0.80 ; sw_newp_lev_1_2 = 0.17 ; sw_newp_lev_1_3 = 0.015  ; sw_newp_lev_1_4 = 0.010 ; sw_newp_lev_1_5 = 0.005 ; 
 sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
@@ -819,7 +817,7 @@ sw_newp_lev_5_1 = 0.150 ; sw_newp_lev_5_2 = 0.150 ; sw_newp_lev_5_3 = 0.150  ; s
 end;
 if sw_trans_matrix=8 then do;
 sw_newp_lev_1_1 = 0.20 ; sw_newp_lev_1_2 = 0.30 ; sw_newp_lev_1_3 = 0.25   ; sw_newp_lev_1_4 = 0.150 ; sw_newp_lev_1_5 = 0.100 ; 
-sw_newp_lev_2_1 = 0.20 ; sw_newp_lev_2_2 = 0.30 ; sw_newp_lev_2_3 = 0.250  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.150 ; 
+sw_newp_lev_2_1 = 0.20 ; sw_newp_lev_2_2 = 0.30 ; sw_newp_lev_2_3 = 0.250  ; sw_newp_lev_2_4 = 0.150 ; sw_newp_lev_2_5 = 0.100 ; 
 sw_newp_lev_3_1 = 0.20 ; sw_newp_lev_3_2 = 0.30 ; sw_newp_lev_3_3 = 0.25  ; sw_newp_lev_3_4 = 0.150 ; sw_newp_lev_3_5 = 0.100 ; 
 sw_newp_lev_4_1 = 0.20  ; sw_newp_lev_4_2 = 0.30 ; sw_newp_lev_4_3 = 0.250 ; sw_newp_lev_4_4 = 0.15 ; sw_newp_lev_4_5 = 0.100; 
 sw_newp_lev_5_1 = 0.20  ; sw_newp_lev_5_2 = 0.30 ; sw_newp_lev_5_3 = 0.250  ; sw_newp_lev_5_4 = 0.15 ; sw_newp_lev_5_5 = 0.10 ;
@@ -1237,7 +1235,7 @@ end;
 
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
-if rbm=4 then do;
+
 
 r=uniform(0);
 if gender=2 then life_sex_risk=2; 
@@ -1396,7 +1394,7 @@ if sw = 1 then do;
 a=uniform(0);if a<0.95 then episodes_sw=0;if 0.95 <= a <0.98 then episodes_sw=1;if a>=0.98 then episodes_sw=2;
 episodes_sw=episodes_sw+1;
 
-e=uniform(0); if age > 30 then e=e*0.99; * older women cant be in highest category ;
+e=uniform(0); 
 if e < 0.1 then newp=0;
 if 0.1 <= e < 0.5 then do; q=uniform(0); 
 	if q < 1/6 then newp=1; 
@@ -1407,14 +1405,15 @@ if 0.1 <= e < 0.5 then do; q=uniform(0);
 	if 5/6 <= q       then newp=6;    
 end;
 if 0.5 <= e < 0.95 then do; q=uniform(0); 
-	newp = 6 + (q*34); newp = round(newp,1);  
+	newp = 6 + (q*14); newp = round(newp,1);  
 end;
 if 0.95 <= e < 0.99  then do; q=uniform(0); 
-	newp = 41 + (q*39); newp = round(newp,1);  
+	newp = 21 + (q*29); newp = round(newp,1);  
 end;
 if 0.99  <= e       then do; q=uniform(0); 
-	newp = 81 + (q*50 ); newp = round(newp,1);  
+	newp = 51 + (q*100 ); newp = round(newp,1);  
 end;
+if age > 30 then newp = min(30,newp);
 end;
 
 
@@ -1439,7 +1438,7 @@ if ep=1 then ever_ep=1;
 
 np=ep+newp;
 
-end;
+
 *-----------------------------------------------------------------------------------------------------------------------------------;
 
 
@@ -1468,10 +1467,7 @@ c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76
 c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184m = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
 newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
-d_s_newp = .; r_s_ep_m15w15 = . ;  r_s_ep_m15w25 = . ;  r_s_ep_m15w35 = . ;  r_s_ep_m15w45 = . ;  r_s_ep_m15w55 = . ;  r_s_ep_m25w15 = . ;  
-r_s_ep_m25w25 = . ;  r_s_ep_m25w35 = . ;  r_s_ep_m25w45 = . ;  r_s_ep_m25w55 = . ;  r_s_ep_m35w15 = . ;  r_s_ep_m35w25 = . ;  r_s_ep_m35w35 = . ; 
-r_s_ep_m35w45 = . ;  r_s_ep_m35w55 = . ;  r_s_ep_m45w15 = . ;  r_s_ep_m45w25 = . ;  r_s_ep_m45w35 = . ;  r_s_ep_m45w45 = . ;  r_s_ep_m45w55 = . ; 
-r_s_ep_m55w15 = . ;  r_s_ep_m55w25 = . ;  r_s_ep_m55w35 = . ;  r_s_ep_m55w45 = . ;  r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
+d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
 prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mono_m_5564 = . ;  prop_mono_w_1524 = . ;  prop_mono_w_2534 = . ; 
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
 incidence3544w_epnewp = . ;  incidence4554w_epnewp = . ;  incidence5564w_epnewp = . ;  incidence1524m_epnewp = . ;  incidence2534m_epnewp = . ; 
@@ -1864,49 +1860,41 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
+caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 then caldate_never_dot = caldate_never_dot + (1/12);
+caldate_never_dot = caldate_never_dot + (1/12);
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
 careful checking of whether serial_no = obs ; 
 
-
-if t ge 2 then do;
-tested_tm1=tested; tested=0;
-dead_tm1=dead;
-onart_tm2=onart_tm1;
-onart_tm1=onart;
-adhmin_tm1=adhmin;
-adh_tm1 = adh; adh = .;
-ep_tm1=ep;
-newp_tm1=newp; newp = .;
-np_tm1=np; np = .;
-primary_tm1 = primary; primary = .; 
-registd_tm1 = registd; 
-sw_tm2=sw_tm1; 
-sw_tm1=sw;
-hiv_tm1 = hiv; 
-age_tm1=age;
-end;
-
-if t ge 3 then  do;
-ep_tm2=ep_tm1;
-tested_tm2=tested_tm1; 
-newp_tm2=newp_tm1;
-registd_tm2 = registd_tm1;
-np_tm2=np_tm1;
-end;
-
-if t ge 4 then do;
-
+* Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
 ep_tm3=ep_tm2;
 newp_tm3=newp_tm2;
 np_tm3=np_tm2;
 
-end;
+tested_tm2=tested_tm1; 
+ep_tm2=ep_tm1;
+newp_tm2=newp_tm1;
+np_tm2=np_tm1;
+registd_tm2 = registd_tm1;
+onart_tm2=onart_tm1;
+sw_tm2=sw_tm1; 
+
+tested_tm1=tested; tested=0;
+ep_tm1=ep;
+newp_tm1=newp; newp = .;
+np_tm1=np; np = .;
+registd_tm1 = registd; 
+onart_tm1=onart;
+dead_tm1=dead;
+adhmin_tm1=adhmin;
+adh_tm1 = adh; adh = .;
+primary_tm1 = primary; primary = .; 
+sw_tm1=sw;
+hiv_tm1 = hiv; 
+age_tm1=age;
 
 
 if t ge 2 and caldate{t-1} < 2071.0  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
@@ -2425,7 +2413,7 @@ if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_pro
 
 if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
-if t ge 2 and reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
+if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
 
 if single_vl_switch_efa_2020 = 1 then do;
 art_monitoring_strategy=150;
@@ -2783,7 +2771,7 @@ end;
 
 *-----------------------------------------------------------------------------------------------------------------------------------------;
 
-if rbm = 4 then do;
+
 
 * if infected and have adc then reduced risk behaviour;
 rred_adc=1.0; if hiv_tm1=1 and adc_tm1=1 then rred_adc = 0.2;
@@ -3294,9 +3282,9 @@ if sw=1 then  ever_sw = 1;
 * sw newp levels are 
 1 	newp = 0
 2   newp 1-6
-3   newp 7-40
-4   newp 41-80
-5   newp 81+
+3   newp 7-20
+4   newp 21-50
+5   newp 51-150
 ;
 
 * dependent_on_time_step_length ;
@@ -3337,7 +3325,7 @@ e=uniform(0);
 2   newp 1-6
 3   newp 7-20
 4   newp 21-50 
-5   newp 50 +
+5   newp 50-150
 
 ;
 
@@ -3364,7 +3352,7 @@ if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
 	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
+if  t ge 2 and 7 <= newp_tm1 <= 20 then do;
 	if e < sw_newp_lev_3_1 then newp=0;
 	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3375,7 +3363,7 @@ if  t ge 2 and 7 <= newp_tm1 <= 40 then do;
 	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
+if  t ge 2 and  21 <= newp_tm1 <= 50 then do;
 	if e < sw_newp_lev_4_1 then newp=0;
 	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3386,7 +3374,7 @@ if  t ge 2 and  41 <= newp_tm1 <= 80 then do;
 	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 51 + (q*100 ); newp = round(newp,1);  end;
 end;
 
-if  t ge 2 and  80 <  newp_tm1 then do;
+if  t ge 2 and  50 <  newp_tm1 then do;
 	if e < sw_newp_lev_5_1 then newp=0;
 	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
@@ -3409,9 +3397,9 @@ end;
 * sw newp levels are 
 1 	newp = 0
 2   newp 1-6 / 3
-3   newp 7-40 /3 
-4   newp 41-100 /3
-5   newp 101+ /3
+3   newp 7-20 /3 
+4   newp 21-50 /3
+5   newp 51-150 /3
 
 * note if used needs to be updated with vales above
 
@@ -3510,37 +3498,27 @@ end;
 e=uniform(0);
 if gender=1 then do;
 	if      15 <= age < 25 then do;
-		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); if 0 < r_s_ep_m15w25 <0.95 then e=e/(3*r_s_ep_m15w25); if 0 < r_s_ep_m15w35 <0.95 then e=e/(3*r_s_ep_m15w35);
-		if 0 < r_s_ep_m15w45 <0.95 then e=e/(3*r_s_ep_m15w45); if 0 < r_s_ep_m15w55 <0.95 then e=e/(3*r_s_ep_m15w55); end;
+		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); end;
 	else if 25 <= age < 35 then do;
-		if 0 < r_s_ep_m25w15 <0.95 then e=e/(3*r_s_ep_m25w15); if 0 < r_s_ep_m25w25 <0.95 then e=e/(3*r_s_ep_m25w25); if 0 < r_s_ep_m25w35 <0.95 then e=e/(3*r_s_ep_m25w35);
-		if 0 < r_s_ep_m25w45 <0.95 then e=e/(3*r_s_ep_m25w45); if 0 < r_s_ep_m25w55 <0.95 then e=e/(3*r_s_ep_m25w55); end;
+		if 0 < r_s_ep_m25w25 <0.95 then e=e/(3*r_s_ep_m25w25); end;
 	else if 35 <= age < 45 then do;
-		if 0 < r_s_ep_m35w15 <0.95 then e=e/(3*r_s_ep_m35w15); if 0 < r_s_ep_m35w25 <0.95 then e=e/(3*r_s_ep_m35w25); if 0 < r_s_ep_m35w35 <0.95 then e=e/(3*r_s_ep_m35w35);
-		if 0 < r_s_ep_m35w45 <0.95 then e=e/(3*r_s_ep_m35w45); if 0 < r_s_ep_m35w55 <0.95 then e=e/(3*r_s_ep_m35w55); end;
+		if 0 < r_s_ep_m35w35 <0.95 then e=e/(3*r_s_ep_m35w35); end;
 	else if 45 <= age < 55 then do;
-		if 0 < r_s_ep_m45w15 <0.95 then e=e/(3*r_s_ep_m45w15); if 0 < r_s_ep_m45w25 <0.95 then e=e/(3*r_s_ep_m45w25); if 0 < r_s_ep_m45w35 <0.95 then e=e/(3*r_s_ep_m45w35);
-		if 0 < r_s_ep_m45w45 <0.95 then e=e/(3*r_s_ep_m45w45); if 0 < r_s_ep_m45w55 <0.95 then e=e/(3*r_s_ep_m45w55); end;
+		if 0 < r_s_ep_m45w45 <0.95 then e=e/(3*r_s_ep_m45w45); end;
 	else if 55 <= age < 65 then do;
-		if 0 < r_s_ep_m55w15 <0.95 then e=e/(3*r_s_ep_m55w15); if 0 < r_s_ep_m55w25 <0.95 then e=e/(3*r_s_ep_m55w25); if 0 < r_s_ep_m55w35 <0.95 then e=e/(3*r_s_ep_m55w35);
-		if 0 < r_s_ep_m55w45 <0.95 then e=e/(3*r_s_ep_m55w45); if 0 < r_s_ep_m55w55 <0.95 then e=e/(3*r_s_ep_m55w55); end;
+		if 0 < r_s_ep_m55w55 <0.95 then e=e/(3*r_s_ep_m55w55); end;
 end;
 else if gender=2 then do;
 	if      15 <= age < 25 then do;
-		if r_s_ep_m15w15 >1.05 then e=e/(3*r_s_ep_m15w15); if r_s_ep_m25w15 >1.05 then e=e/(3*r_s_ep_m25w15); if r_s_ep_m35w15 >1.05 then e=e/(3*r_s_ep_m35w15); 
-		if r_s_ep_m45w15 >1.05 then e=e/(3*r_s_ep_m45w15); if r_s_ep_m55w15 >1.05 then e=e/(3*r_s_ep_m55w15); end;
+		if r_s_ep_m15w15 >1.05 then e=e/(3*r_s_ep_m15w15); end;
 	else if 25 <= age < 35 then do;
-		if r_s_ep_m15w25 >1.05 then e=e/(3*r_s_ep_m15w25); if r_s_ep_m25w25 >1.05 then e=e/(3*r_s_ep_m25w25); if r_s_ep_m35w25 >1.05 then e=e/(3*r_s_ep_m35w25); 
-		if r_s_ep_m45w25 >1.05 then e=e/(3*r_s_ep_m45w25); if r_s_ep_m55w25 >1.05 then e=e/(3*r_s_ep_m55w25); end;
+		if r_s_ep_m25w25 >1.05 then e=e/(3*r_s_ep_m25w25); end;
 	else if 35 <= age < 45 then do;
-		if r_s_ep_m15w35 >1.05 then e=e/(3*r_s_ep_m15w35); if r_s_ep_m25w35 >1.05 then e=e/(3*r_s_ep_m25w35); if r_s_ep_m35w35 >1.05 then e=e/(3*r_s_ep_m35w35); 
-		if r_s_ep_m45w35 >1.05 then e=e/(3*r_s_ep_m45w35); if r_s_ep_m55w35 >1.05 then e=e/(3*r_s_ep_m55w35); end;
+		if r_s_ep_m35w35 >1.05 then e=e/(3*r_s_ep_m35w35); end;
 	else if 45 <= age < 55 then do;
-		if r_s_ep_m15w45 >1.05 then e=e/(3*r_s_ep_m15w45); if r_s_ep_m25w45 >1.05 then e=e/(3*r_s_ep_m25w45); if r_s_ep_m35w45 >1.05 then e=e/(3*r_s_ep_m35w45); 
-		if r_s_ep_m45w45 >1.05 then e=e/(3*r_s_ep_m45w45); if r_s_ep_m55w45 >1.05 then e=e/(3*r_s_ep_m55w45); end;
+		if r_s_ep_m45w45 >1.05 then e=e/(3*r_s_ep_m45w45); end;
 	else if 55 <= age < 65 then do;
-		if r_s_ep_m15w55 >1.05 then e=e/(3*r_s_ep_m15w55); if r_s_ep_m25w55 >1.05 then e=e/(3*r_s_ep_m25w55); if r_s_ep_m35w55 >1.05 then e=e/(3*r_s_ep_m35w55); 
-		if r_s_ep_m45w55 >1.05 then e=e/(3*r_s_ep_m45w55); if r_s_ep_m55w55 >1.05 then e=e/(3*r_s_ep_m55w55); end;
+		if r_s_ep_m55w55 >1.05 then e=e/(3*r_s_ep_m55w55); end;
 end;
 
 * reduction in sexual behaviour following hiv+ test;  * dependent_on_time_step_length ;
@@ -3591,7 +3569,7 @@ if t ge 2 and ep =  1 then ever_ep=1;
 
 np = ep + newp;
 
-end;
+
 
 *-----------------------------------------------------------------------------------------------------------------------------------------;
 
@@ -3670,7 +3648,7 @@ end;
 
 if ep >= 1 then epi=0;
 
-if t ge 2 and (ep=1 or ep=2) and epi_tm1 =1 then epi=1;
+if t ge 2 and ep=1 and epi_tm1 =1 then epi=1;
 
 f=uniform(0);if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
 
@@ -4258,7 +4236,7 @@ end;
 
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
 *  - men ; 
-if rbm =4 then do;
+
 
 
 
@@ -4279,8 +4257,6 @@ if 15 <= age < 25 then do;e=uniform(0);
 if              e < 0.865  then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975  then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e          then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
-																						 
-																						 
 end;
 else if 25 <= age < 35 then do;e=uniform(0);
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
@@ -4432,10 +4408,10 @@ ptnewp55_m=(0.005*s_w_1524_newp)+(0.01*s_w_2534_newp)+(0.13*s_w_3544_newp)+(0.25
 if gender=2 and sex_age_mixing_matrix_w=2 then do;
 if      15 <= age < 25 then do;e=uniform(0);
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
-else if 0.43 <= e < 0.84 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
-else if 0.84 <= e < 0.96 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
-else if 0.96 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
-else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
+else if 0.43 <= e < 0.845 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
+else if 0.845 <= e < 0.965 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
+else if 0.965 <= e < 0.995 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
+else if 0.995 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
 else if 25 <= age < 35 then do;e=uniform(0);
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
@@ -4535,18 +4511,18 @@ m55w15 =0.02 *s_w_1524_newp; m55w25=0.01*s_w_2534_newp; m55w35=0.13*s_w_3544_new
 
 if gender=2 and sex_age_mixing_matrix_w=3 then do;
 if      15 <= age < 25 then do;e=uniform(0);
-if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
-else if 0.43 <= e < 0.77 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
-else if 0.77 <= e < 0.89 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
-else if 0.89 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
-else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
+if              e < 0.25 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
+else if 0.25 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
+else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
+else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
+else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
 else if 25 <= age < 35 then do;e=uniform(0);
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
-else if 0.09 <= e < 0.58 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
-else if 0.58 <= e < 0.88 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
-else if 0.88 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
-else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
+else if 0.09 <= e < 0.59 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
+else if 0.59 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
+else if 0.94 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
+else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
 else if 35 <= age < 45 then do;e=uniform(0);
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
@@ -4806,9 +4782,8 @@ end;
 else if 25 <= age < 35 then do;e=uniform(0);
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
-else if 0.90 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
-else if 0.90 <= e < 0.95   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
-else if 0.95 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
+else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
+else if 0.98 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 end;
 else if 35 <= age < 45 then do;e=uniform(0);
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
@@ -4884,7 +4859,7 @@ end;
 end;
 
 
-end;
+
 
 
 *--------------------------------------------------------------------------------------------------------------------;
@@ -10526,17 +10501,8 @@ w_3544_newp=0;if  gender=2 and 35 <= age < 45 then w_3544_newp=newp;
 w_4554_newp=0;if  gender=2 and 45 <= age < 55 then w_4554_newp=newp;
 w_5564_newp=0;if  gender=2 and 55 <= age < 65 then w_5564_newp=newp;
 
-m1524_ep1524=0; m1524_ep2534=0;m1524_ep3544=0; m1524_ep4554=0;m1524_ep5564=0;
-m2534_ep1524=0; m2534_ep2534=0;m2534_ep3544=0; m2534_ep4554=0;m2534_ep5564=0;
-m3544_ep1524=0; m3544_ep2534=0;m3544_ep3544=0; m3544_ep4554=0;m3544_ep5564=0;
-m4554_ep1524=0; m4554_ep2534=0;m4554_ep3544=0; m4554_ep4554=0;m4554_ep5564=0;
-m5564_ep1524=0; m5564_ep2534=0;m5564_ep3544=0; m5564_ep4554=0;m5564_ep5564=0;
-
-w1524_ep1524=0; w1524_ep2534=0;w1524_ep3544=0; w1524_ep4554=0;w1524_ep5564=0;
-w2534_ep1524=0; w2534_ep2534=0;w2534_ep3544=0; w2534_ep4554=0;w2534_ep5564=0;
-w3544_ep1524=0; w3544_ep2534=0;w3544_ep3544=0; w3544_ep4554=0;w3544_ep5564=0;
-w4554_ep1524=0; w4554_ep2534=0;w4554_ep3544=0; w4554_ep4554=0;w4554_ep5564=0;
-w5564_ep1524=0; w5564_ep2534=0;w5564_ep3544=0; w5564_ep4554=0;w5564_ep5564=0;
+m1524_ep1524=0; m2534_ep2534=0; m3544_ep3544=0; m4554_ep4554=0; m5564_ep5564=0;
+w1524_ep1524=0; w2534_ep2534=0; w3544_ep3544=0; w4554_ep4554=0; w5564_ep5564=0;
 
 if gender=1 and ep=1 then do;
 	if 15 <= age < 25 then do;
@@ -13647,19 +13613,8 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_newp_ge1_hiv + newp_ge1_hiv ; s_ever_ep + ever_ep ; s_ever_newp + ever_newp ;      
 
-	s_m1524_ep1524 + m1524_ep1524 ; s_m1524_ep2534 + m1524_ep2534 ; s_m1524_ep3544 + m1524_ep3544 ; s_m1524_ep4554 + m1524_ep4554 ; s_m1524_ep5564 + m1524_ep5564 ;
-
-	s_m2534_ep1524 + m2534_ep1524 ; s_m2534_ep2534 + m2534_ep2534 ; s_m2534_ep3544 + m2534_ep3544 ; s_m2534_ep4554 + m2534_ep4554 ; s_m2534_ep5564 + m2534_ep5564 ;
-	s_m3544_ep1524 + m3544_ep1524 ; s_m3544_ep2534 + m3544_ep2534 ; s_m3544_ep3544 + m3544_ep3544 ; s_m3544_ep4554 + m3544_ep4554 ; s_m3544_ep5564 + m3544_ep5564 ;
-	s_m4554_ep1524 + m4554_ep1524 ; s_m4554_ep2534 + m4554_ep2534 ; s_m4554_ep3544 + m4554_ep3544 ; s_m4554_ep4554 + m4554_ep4554 ; s_m4554_ep5564 + m4554_ep5564 ;
-	s_m5564_ep1524 + m5564_ep1524 ; s_m5564_ep2534 + m5564_ep2534 ; s_m5564_ep3544 + m5564_ep3544 ; s_m5564_ep4554 + m5564_ep4554 ; s_m5564_ep5564 + m5564_ep5564 ;
-
-	s_w1524_ep1524 + w1524_ep1524 ; s_w1524_ep2534 + w1524_ep2534 ; s_w1524_ep3544 + w1524_ep3544 ; s_w1524_ep4554 + w1524_ep4554 ; s_w1524_ep5564 + w1524_ep5564 ;
- 
-	s_w2534_ep1524 + w2534_ep1524 ; s_w2534_ep2534 + w2534_ep2534 ; s_w2534_ep3544 + w2534_ep3544 ; s_w2534_ep4554 + w2534_ep4554 ; s_w2534_ep5564 + w2534_ep5564 ;
-	s_w3544_ep1524 + w3544_ep1524 ; s_w3544_ep2534 + w3544_ep2534 ; s_w3544_ep3544 + w3544_ep3544 ; s_w3544_ep4554 + w3544_ep4554 ; s_w3544_ep5564 + w3544_ep5564 ;
-	s_w4554_ep1524 + w4554_ep1524 ; s_w4554_ep2534 + w4554_ep2534 ; s_w4554_ep3544 + w4554_ep3544 ; s_w4554_ep4554 + w4554_ep4554 ; s_w4554_ep5564 + w4554_ep5564 ;
-	s_w5564_ep1524 + w5564_ep1524 ; s_w5564_ep2534 + w5564_ep2534 ; s_w5564_ep3544 + w5564_ep3544 ; s_w5564_ep4554 + w5564_ep4554 ; s_w5564_ep5564 + w5564_ep5564 ;
+	s_m1524_ep1524 + m1524_ep1524 ; s_m2534_ep2534 + m2534_ep2534 ; s_m3544_ep3544 + m3544_ep3544 ; s_m4554_ep4554 + m4554_ep4554 ; s_m5564_ep5564 + m5564_ep5564 ;
+	s_w1524_ep1524 + w1524_ep1524 ; s_w2534_ep2534 + w2534_ep2534 ; s_w3544_ep3544 + w3544_ep3544 ; s_w4554_ep4554 + w4554_ep4554 ; s_w5564_ep5564 + w5564_ep5564 ;
  
 	s_m1524_newp_ge1 + m1524_newp_ge1 ; s_m2534_newp_ge1 + m2534_newp_ge1 ; s_m3544_newp_ge1 + m3544_newp_ge1 ; s_m4554_newp_ge1 + m4554_newp_ge1; s_m5564_newp_ge1 +  m5564_newp_ge1;
 	s_m1524_newp_ge5 + m1524_newp_ge5 ; s_m2534_newp_ge5 + m2534_newp_ge5 ; s_m3544_newp_ge5 + m3544_newp_ge5 ; s_m4554_newp_ge5 + m4554_newp_ge5; s_m5564_newp_ge5 +  m5564_newp_ge5;
@@ -14630,38 +14585,14 @@ if s_hiv1epi1_m > 0 then r_hiv_epi_both = s_hiv1epi1_w / s_hiv1epi1_m;
 if s_ep_w > 0 then r_ep_mw = s_ep_m / s_ep_w;  
 
 if s_w1524_ep1524 gt 0 then r_s_ep_m15w15 = s_m1524_ep1524 / s_w1524_ep1524 ; 
-if s_w2534_ep1524 gt 0 then r_s_ep_m15w25 = s_m1524_ep2534 / s_w2534_ep1524 ; 
-if s_w3544_ep1524 gt 0 then r_s_ep_m15w35 = s_m1524_ep3544 / s_w3544_ep1524 ;
-if s_w4554_ep1524 gt 0 then r_s_ep_m15w45 = s_m1524_ep4554 / s_w4554_ep1524 ; 
-if s_w5564_ep1524 gt 0 then r_s_ep_m15w55 = s_m1524_ep5564 / s_w5564_ep1524 ;
-
-if s_w1524_ep2534 gt 0 then r_s_ep_m25w15 = s_m2534_ep1524 / s_w1524_ep2534 ; 
 if s_w2534_ep2534 gt 0 then r_s_ep_m25w25 = s_m2534_ep2534 / s_w2534_ep2534 ; 
-if s_w3544_ep2534 gt 0 then r_s_ep_m25w35 = s_m2534_ep3544 / s_w3544_ep2534 ;
-if s_w4554_ep2534 gt 0 then r_s_ep_m25w45 = s_m2534_ep4554 / s_w4554_ep2534 ; 
-if s_w5564_ep2534 gt 0 then r_s_ep_m25w55 = s_m2534_ep5564 / s_w5564_ep2534 ;
-
-if s_w1524_ep3544 gt 0 then r_s_ep_m35w15 = s_m3544_ep1524 / s_w1524_ep3544 ; 
-if s_w2534_ep3544 gt 0 then r_s_ep_m35w25 = s_m3544_ep2534 / s_w2534_ep3544 ; 
-if s_w3544_ep3544 gt 0 then r_s_ep_m35w35 = s_m3544_ep3544 / s_w3544_ep3544 ;
-if s_w4554_ep3544 gt 0 then r_s_ep_m35w45 = s_m3544_ep4554 / s_w4554_ep3544 ; 
-if s_w5564_ep3544 gt 0 then r_s_ep_m35w55 = s_m3544_ep5564 / s_w5564_ep3544 ;
-
-if s_w1524_ep4554 gt 0 then r_s_ep_m45w15 = s_m4554_ep1524 / s_w1524_ep4554 ;
-if s_w2534_ep4554 gt 0 then r_s_ep_m45w25 = s_m4554_ep2534 / s_w2534_ep4554 ;
-if s_w3544_ep4554 gt 0 then r_s_ep_m45w35 = s_m4554_ep3544 / s_w3544_ep4554 ;
-if s_w4554_ep4554 gt 0 then r_s_ep_m45w45 = s_m4554_ep4554 / s_w4554_ep4554 ;
-if s_w5564_ep4554 gt 0 then r_s_ep_m45w55 = s_m4554_ep5564 / s_w5564_ep4554 ;
-
-if s_w1524_ep5564 gt 0 then r_s_ep_m55w15 = s_m5564_ep1524 / s_w1524_ep5564 ;
-if s_w2534_ep5564 gt 0 then r_s_ep_m55w25 = s_m5564_ep2534 / s_w2534_ep5564 ;
-if s_w3544_ep5564 gt 0 then r_s_ep_m55w35 = s_m5564_ep3544 / s_w3544_ep5564 ;
-if s_w4554_ep5564 gt 0 then r_s_ep_m55w45 = s_m5564_ep4554 / s_w4554_ep5564 ;
+if s_w3544_ep3544 gt 0 then r_s_ep_m35w35 = s_m3544_ep3544 / s_w3544_ep3544 ; 
+if s_w4554_ep4554 gt 0 then r_s_ep_m45w45 = s_m4554_ep4554 / s_w4554_ep4554 ; 
 if s_w5564_ep5564 gt 0 then r_s_ep_m55w55 = s_m5564_ep5564 / s_w5564_ep5564 ;
 
 
 
-if rbm  = 4 then do;
+
 
 if sex_age_mixing_matrix_w=1 then do;
 ptnewp15_m=(0.43*s_w_1524_newp)+(0.09*s_w_2534_newp)+(0.03*s_w_3544_newp)+(0.00*s_w_4554_newp)+(0.00*s_w_5564_newp);
@@ -14706,9 +14637,9 @@ end;
 if sex_age_mixing_matrix_w=6 then do;
 ptnewp15_m=(0.20*s_w_1524_newp)+(0.00*s_w_2534_newp)+(0.01*s_w_3544_newp)+(0.00*s_w_4554_newp)+(0.00*s_w_5564_newp);
 ptnewp25_m=(0.20 *s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.01*s_w_3544_newp)+(0.00*s_w_4554_newp)+(0.00*s_w_5564_newp);
-ptnewp35_m=(0.20*s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.28*s_w_3544_newp)+(0.05*s_w_4554_newp)+(0.00*s_w_5564_newp);
-ptnewp45_m=(0.20*s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.30*s_w_3544_newp)+(0.70*s_w_4554_newp)+(0.10*s_w_5564_newp);
-ptnewp55_m=(0.20 *s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.30*s_w_3544_newp)+(0.25*s_w_4554_newp)+(0.90*s_w_5564_newp);
+ptnewp35_m=(0.20*s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.32*s_w_3544_newp)+(0.05*s_w_4554_newp)+(0.00*s_w_5564_newp);
+ptnewp45_m=(0.20*s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.33*s_w_3544_newp)+(0.70*s_w_4554_newp)+(0.10*s_w_5564_newp);
+ptnewp55_m=(0.20 *s_w_1524_newp)+(0.25*s_w_2534_newp)+(0.33*s_w_3544_newp)+(0.25*s_w_4554_newp)+(0.90*s_w_5564_newp);
 end;
 
 
@@ -14722,7 +14653,7 @@ ptnewp55_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.01*
 end;
 
 if sex_age_mixing_matrix_m=2 then do;
-ptnewp15_w=(0.865*s_m_1524_newp)+(0.47*s_m_2534_newp)+(0.30*s_m_3544_newp)+(0.15*s_m_4554_newp)+(0.05*s_m_5564_newp);
+ptnewp15_w=(0.865*s_m_1524_newp)+(0.47*s_m_2534_newp)+(0.20*s_m_3544_newp)+(0.15*s_m_4554_newp)+(0.05*s_m_5564_newp);
 ptnewp25_w=(0.11*s_m_1524_newp)+(0.43*s_m_2534_newp)+(0.35*s_m_3544_newp)+(0.23*s_m_4554_newp)+(0.08*s_m_5564_newp);
 ptnewp35_w=(0.025*s_m_1524_newp)+(0.10*s_m_2534_newp)+(0.40*s_m_3544_newp)+(0.25*s_m_4554_newp)+(0.25*s_m_5564_newp);
 ptnewp45_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.05*s_m_3544_newp)+(0.30*s_m_4554_newp)+(0.30*s_m_5564_newp);
@@ -14756,13 +14687,13 @@ end;
 if sex_age_mixing_matrix_m=6 then do;
 ptnewp15_w=(0.94 *s_m_1524_newp)+(0.50*s_m_2534_newp)+(0.50*s_m_3544_newp)+(0.50*s_m_4554_newp)+(0.50*s_m_5564_newp);
 ptnewp25_w=(0.05*s_m_1524_newp)+(0.40*s_m_2534_newp)+(0.35*s_m_3544_newp)+(0.35*s_m_4554_newp)+(0.35*s_m_5564_newp);
-ptnewp35_w=(0.01 *s_m_1524_newp)+(0.10*s_m_2534_newp)+(0.10*s_m_3544_newp)+(0.10*s_m_4554_newp)+(0.10*s_m_5564_newp);
-ptnewp45_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.05*s_m_3544_newp)+(0.05*s_m_4554_newp)+(0.05*s_m_5564_newp);
+ptnewp35_w=(0.01 *s_m_1524_newp)+(0.08*s_m_2534_newp)+(0.10*s_m_3544_newp)+(0.10*s_m_4554_newp)+(0.10*s_m_5564_newp);
+ptnewp45_w=(0.00*s_m_1524_newp)+(0.02*s_m_2534_newp)+(0.05*s_m_3544_newp)+(0.05*s_m_4554_newp)+(0.05*s_m_5564_newp);
 ptnewp55_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.00*s_m_4554_newp)+(0.00*s_m_5564_newp);
 end;
 
 
-end;
+
 
 
 if s_m_1524_newp gt 0 then m15r = ptnewp15_m / s_m_1524_newp;  
@@ -14857,23 +14788,14 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
 s_w1524_newp_ge1  s_w2534_newp_ge1  s_w3544_newp_ge1  s_w4554_newp_ge1  s_w5564_newp_ge1  
 s_w1524_newp_ge5  s_w2534_newp_ge5  s_w3544_newp_ge5  s_w4554_newp_ge5  s_w5564_newp_ge5
 s_m1549_newp_ge1  s_w1549_newp_ge1
-
 
 s_newp_g_m_0    s_newp_g_m_1    s_newp_g_m_2    s_newp_g_m_3    s_newp_g_m_4    s_newp_g_m_5    s_newp_g_m_6 
 s_n_newp_g_m_0  s_n_newp_g_m_1  s_n_newp_g_m_2  s_n_newp_g_m_3  s_n_newp_g_m_4  s_n_newp_g_m_5  s_n_newp_g_m_6 
@@ -15355,11 +15277,7 @@ d_onart
 
 d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 
-r_s_ep_m15w15  r_s_ep_m15w25  r_s_ep_m15w35  r_s_ep_m15w45  r_s_ep_m15w55
-r_s_ep_m25w15  r_s_ep_m25w25  r_s_ep_m25w35  r_s_ep_m25w45  r_s_ep_m25w55
-r_s_ep_m35w15  r_s_ep_m35w25  r_s_ep_m35w35  r_s_ep_m35w45  r_s_ep_m35w55
-r_s_ep_m45w15  r_s_ep_m45w25  r_s_ep_m45w35  r_s_ep_m45w45  r_s_ep_m45w55
-r_s_ep_m55w15  r_s_ep_m55w25  r_s_ep_m55w35  r_s_ep_m55w45  r_s_ep_m55w55
+r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
@@ -15611,16 +15529,8 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
@@ -16358,16 +16268,8 @@ s_w_1524_epnewp  s_w_2534_epnewp  s_w_3544_epnewp  s_w_4554_epnewp  s_w_5564_epn
 s_newp_ge1_hiv 
 
 s_ever_ep  s_ever_newp  
-s_m1524_ep1524 s_m1524_ep2534 s_m1524_ep3544 s_m1524_ep4554 s_m1524_ep5564 
-s_m2534_ep1524 s_m2534_ep2534 s_m2534_ep3544 s_m2534_ep4554 s_m2534_ep5564 
-s_m3544_ep1524 s_m3544_ep2534 s_m3544_ep3544 s_m3544_ep4554 s_m3544_ep5564 
-s_m4554_ep1524 s_m4554_ep2534 s_m4554_ep3544 s_m4554_ep4554 s_m4554_ep5564 
-s_m5564_ep1524 s_m5564_ep2534 s_m5564_ep3544 s_m5564_ep4554 s_m5564_ep5564 
-s_w1524_ep1524 s_w1524_ep2534 s_w1524_ep3544 s_w1524_ep4554 s_w1524_ep5564 
-s_w2534_ep1524 s_w2534_ep2534 s_w2534_ep3544 s_w2534_ep4554 s_w2534_ep5564 
-s_w3544_ep1524 s_w3544_ep2534 s_w3544_ep3544 s_w3544_ep4554 s_w3544_ep5564 
-s_w4554_ep1524 s_w4554_ep2534 s_w4554_ep3544 s_w4554_ep4554 s_w4554_ep5564 
-s_w5564_ep1524 s_w5564_ep2534 s_w5564_ep3544 s_w5564_ep4554 s_w5564_ep5564 
+s_m1524_ep1524 s_m2534_ep2534 s_m3544_ep3544 s_m4554_ep4554 s_m5564_ep5564 
+s_w1524_ep1524 s_w2534_ep2534 s_w3544_ep3544 s_w4554_ep4554 s_w5564_ep5564 
 
 s_m1524_newp_ge1  s_m2534_newp_ge1  s_m3544_newp_ge1  s_m4554_newp_ge1  s_m5564_newp_ge1  
 s_m1524_newp_ge5  s_m2534_newp_ge5  s_m3544_newp_ge5  s_m4554_newp_ge5  s_m5564_newp_ge5  
@@ -16852,13 +16754,9 @@ p_onart_vls  p_onart_epvls  d_vls
 p_diag  p_diag_onart  p_diag_eponart  p_diag_m  p_diag_w  p_epdiag_m  p_epdiag_w  d_diag_m  d_diag_w
 d_onart
 
-d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
+d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw 
 
-r_s_ep_m15w15  r_s_ep_m15w25  r_s_ep_m15w35  r_s_ep_m15w45  r_s_ep_m15w55
-r_s_ep_m25w15  r_s_ep_m25w25  r_s_ep_m25w35  r_s_ep_m25w45  r_s_ep_m25w55
-r_s_ep_m35w15  r_s_ep_m35w25  r_s_ep_m35w35  r_s_ep_m35w45  r_s_ep_m35w55
-r_s_ep_m45w15  r_s_ep_m45w25  r_s_ep_m45w35  r_s_ep_m45w45  r_s_ep_m45w55
-r_s_ep_m55w15  r_s_ep_m55w25  r_s_ep_m55w35  r_s_ep_m55w45  r_s_ep_m55w55
+r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
