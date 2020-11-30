@@ -5268,7 +5268,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		end;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
-		    a=uniform(0);b=uniform(0);
+		    b=uniform(0);
     		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
