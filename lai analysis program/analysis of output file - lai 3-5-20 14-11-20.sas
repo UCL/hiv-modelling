@@ -14,7 +14,7 @@ data a;
 * set a.lai_keep_extra_3; * this is separate and contains extra outputs - presubmission;
 * set a.lai_keep_extra_4; * this is separate and contains extra outputs - presubmission;
 * set a.lai_keep_extra_5; * resubmission;
-* set a.lai_keep_extra_6; * resubmission
+* set a.lai_keep_extra_6; * resubmission;
   set a.lai_keep  a.lai_keep_extra  a.lai_keep_extra_2 a.lai_keep_extra_3 a.lai_keep_extra_4 a.lai_keep_extra_5 a.lai_keep_extra_6; 
 
 
@@ -831,7 +831,9 @@ drop    dcost_19        dcost_20     dcost_21_22_1    dcost_21_22_2    dcost_21_
 ;
 proc sort; by run_;
 
-data wide2; set  a.wide_lai_clarlacost_corr_dcost ;
+
+
+data wide2; set  a.wide_lai_clarlacost_corr_dcost ; run; 
 
 data wide; merge wide1 wide2 ; by run_; 
 
@@ -1425,7 +1427,7 @@ proc freq data=wide; tables ce_500;
 * where lai_option = 22 and dol_efa_cla_rla_potency_ = 2  ;
 * where lai_option = 22 and cla_time_to_lower_threshold_g_ = 3  ;
 * where lai_option = 22 and higher_newp_with_lower_adhav_ = 1 ;
-* where lai_option = 22 and rel_onart_la_drugs_ = 1   ;
+  where lai_option = 22 and rel_onart_la_drugs_ = 0.5 ;
 * where lai_option = 22 and p_onart_vl1000_20 >= 0.92 ;
 * where lai_option = 22 and p_onart_vl1000_20 <  0.88 ;
 * where lai_option = 22 and p_onart_vl1000_20 >= 0.92 ;
