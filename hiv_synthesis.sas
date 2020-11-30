@@ -157,7 +157,7 @@ to do before starting testing in preparation for runs:
 
 
 
-  libname a 'C:\Users\jas05\Documents\My SAS Files\HIV Synthesis\Model outputs';
+  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -1314,7 +1314,7 @@ if 60 <= age < 65 then rred_a=rred_a_60m;
 
 rred= newp_factor * rred_a*rred_p;
 
-* newp=0; s1=0.85; * newp1=1; s2=0.10   ;*   >= 2; s3=0.05  ; * newp1 10x; s4=0.0030 ;
+* newp=0; s1=0.85; * newp1=1; s2=0.10   ;* newp >= 2; s3=0.05  ; * newp1 10x; s4=0.0030 ;
 
 
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
@@ -2930,6 +2930,8 @@ if cu1/cu4 <= a < cu2/cu4  then do; e=uniform(0); if e < 0.50 then newp=1; if 0.
 											if e ge 0.80 then newp=3; end;
 if cu2/cu4 <= a < cu3/cu4 then do; e=uniform(0); if e < 0.35 then newp=4; if 0.35 <= e < 0.56 then newp=5; if 0.56 <= e < 0.73 then newp=6; 
 					if 0.73 <= e < 0.86 then newp=7; if 0.86 <= e < 0.95 then newp=8; if 0.95 <= e then newp=9; end;
+if cu3/cu4 <= a < cu4/cu4 then do; if e < 0.60 then newp=10; if 0.60 <= e < 0.80 then newp=15; if 0.80 <= e < 0.90 then newp=20;
+					if 0.90 <= e < 0.95 then newp=25; if 0.95 <= e < 0.99 then newp=30; if 0.99 <= e then newp=35; end;
  
 end;
 
