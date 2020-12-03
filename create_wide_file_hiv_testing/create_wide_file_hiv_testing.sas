@@ -2,14 +2,17 @@
 
 proc printto;
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+*libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+libname a "C:\Users\jas05\Dropbox\UCL\UCL Dropbox temp\output files\hiv_testing";
+
 
 
 data d1;  
 
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_1";
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_2";
+*  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_2";
+  infile "C:\Users\jas05\Dropbox\UCL\UCL Dropbox temp\output files\hiv_testing\c_output_tld_prep_22_10_20_5pm_2";
 
 input 
 
@@ -1231,7 +1234,7 @@ proc sort data=y;by run option;run;
 
 data a.tld_prep_22_10_20_5pm_2; set y;
 
-data y; set a.prep_22_10_20_5pm_2; run;
+data y; set a.tld_prep_22_10_20_5pm_2; run;
 
 
 
@@ -1246,27 +1249,60 @@ data y; set a.prep_22_10_20_5pm_2; run;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
+/* proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; */
+proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1995.5 <= cald < 1996.50;
+proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 2000.5 <= cald < 2001.50;
+proc means  noprint data=y; var &v; output out=y_01 mean= &v._01; by run ; where 2001.5 <= cald < 2002.50;
+proc means  noprint data=y; var &v; output out=y_02 mean= &v._02; by run ; where 2002.5 <= cald < 2003.50;
+proc means  noprint data=y; var &v; output out=y_03 mean= &v._03; by run ; where 2003.5 <= cald < 2004.50;
+proc means  noprint data=y; var &v; output out=y_04 mean= &v._04; by run ; where 2004.5 <= cald < 2005.50;
+proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2005.5 <= cald < 2006.50;
+proc means  noprint data=y; var &v; output out=y_06 mean= &v._06; by run ; where 2006.5 <= cald < 2007.50;
+proc means  noprint data=y; var &v; output out=y_07 mean= &v._07; by run ; where 2007.5 <= cald < 2008.50;
+proc means  noprint data=y; var &v; output out=y_08 mean= &v._08; by run ; where 2008.5 <= cald < 2009.50;
+proc means  noprint data=y; var &v; output out=y_09 mean= &v._09; by run ; where 2009.5 <= cald < 2010.50;
+proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where 2010.5 <= cald < 2011.50;
+proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2015.5 <= cald < 2016.50;
+proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2020.5 <= cald < 2021.50;
+
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
- proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50;
+/*  proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option ; where 2020.5 <= cald < 2025.50; */
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
- proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;  
+/* proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option ; where 2020.5 <= cald < 2070.50;  */
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
- proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; 
+/*  proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run; */
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 
- proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  
+/* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  */    
+proc sort data=y_95; by run; proc transpose data=y_95 out=t_95 prefix=&v._95_; var &v._95; by run;
+proc sort data=y_00; by run; proc transpose data=y_00 out=t_00 prefix=&v._00_; var &v._00; by run;
+proc sort data=y_01; by run; proc transpose data=y_01 out=t_01 prefix=&v._01_; var &v._01; by run;
+proc sort data=y_02; by run; proc transpose data=y_02 out=t_02 prefix=&v._02_; var &v._02; by run;
+proc sort data=y_03; by run; proc transpose data=y_03 out=t_03 prefix=&v._03_; var &v._03; by run;
+proc sort data=y_04; by run; proc transpose data=y_04 out=t_04 prefix=&v._04_; var &v._04; by run;
+proc sort data=y_05; by run; proc transpose data=y_05 out=t_05 prefix=&v._05_; var &v._05; by run;
+proc sort data=y_06; by run; proc transpose data=y_06 out=t_06 prefix=&v._06_; var &v._06; by run;
+proc sort data=y_07; by run; proc transpose data=y_07 out=t_07 prefix=&v._07_; var &v._07; by run;
+proc sort data=y_08; by run; proc transpose data=y_08 out=t_08 prefix=&v._08_; var &v._08; by run;
+proc sort data=y_09; by run; proc transpose data=y_09 out=t_09 prefix=&v._09_; var &v._09; by run;
+proc sort data=y_10; by run; proc transpose data=y_10 out=t_10 prefix=&v._10_; var &v._10; by run;
+proc sort data=y_15; by run; proc transpose data=y_15 out=t_15 prefix=&v._15_; var &v._15; by run;
+proc sort data=y_20; by run; proc transpose data=y_20 out=t_20 prefix=&v._20_; var &v._20; by run;
 
-data &v ; merge  y_20 t_20_25 t_20_70 ;  
+
+
+/* data &v ; merge  y_20 t_20_25 t_20_70 ;  */
+data &v ; merge  t_95 t_00 t_01 t_02 t_03 t_04 t_05 t_06 t_07 t_08 t_09 t_10 t_15 t_20 ;  
+
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1571,6 +1607,7 @@ proc sort; by run;run;
   by run;
 
 
+  /*
 proc univariate ;
 var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 prevalence1524w_20  prevalence1524m_20
 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
@@ -1605,6 +1642,43 @@ p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_v
 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
 aids_death_rate_20  p_newp_sw_20 ;
+run;
+ods html close;
+*/
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
+p_tested_past_year_1549m_95_1
+p_tested_past_year_1549m_00_1
+p_tested_past_year_1549m_01_1
+p_tested_past_year_1549m_02_1
+p_tested_past_year_1549m_03_1
+p_tested_past_year_1549m_04_1
+p_tested_past_year_1549m_05_1
+p_tested_past_year_1549m_06_1
+p_tested_past_year_1549m_07_1
+p_tested_past_year_1549m_08_1
+p_tested_past_year_1549m_09_1
+p_tested_past_year_1549m_10_1
+p_tested_past_year_1549m_15_1
+p_tested_past_year_1549m_20_1
+
+p_tested_past_year_1549w_95_1
+p_tested_past_year_1549w_00_1
+p_tested_past_year_1549w_01_1
+p_tested_past_year_1549w_02_1
+p_tested_past_year_1549w_03_1
+p_tested_past_year_1549w_04_1
+p_tested_past_year_1549w_05_1
+p_tested_past_year_1549w_06_1
+p_tested_past_year_1549w_07_1
+p_tested_past_year_1549w_08_1
+p_tested_past_year_1549w_09_1
+p_tested_past_year_1549w_10_1
+p_tested_past_year_1549w_15_1
+p_tested_past_year_1549w_20_1
+;
 run;
 ods html close;
 
