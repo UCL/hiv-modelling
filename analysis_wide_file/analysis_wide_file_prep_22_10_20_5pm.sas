@@ -3,12 +3,9 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_prep_22_10_20_5pm_1;
-* set a.wide_prep_22_10_20_5pm_1_dis7p;
+  set a.wide_prep_22_10_20_5pm_123; 
 
-
-* if run ne 192429854;
-
+  * if run ne 192429854;
 
 
 * --------------------------------------------------------------------------------------------------------------;
