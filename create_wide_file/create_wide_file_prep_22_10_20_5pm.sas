@@ -1770,8 +1770,8 @@ proc freq; tables cald dataset option ; run ;
 data d; set d1 d2 d3 ;
 
 
-proc sort; by run cald option;run;
-proc freq;table run; where cald=2020;run;
+proc sort data=d; by run cald option;run;
+proc freq data=d;table run; where cald=2020;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
