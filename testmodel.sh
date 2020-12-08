@@ -12,8 +12,8 @@
 #$ -l tmpfs=100G
 cd $TMPDIR
 module load sas/9.4/64
-cp /home/cceapsc/sas/hiv-modelling/hiv_saveas_sas.sas .
+cp $HOME/test_hiv_synthesis.sas .
 sleep $[ ( $RANDOM % 10 ) + 1 ]s
-sas hiv_saveas_sas.sas
+sas test_hiv_synthesis.sas
 
 
