@@ -1,0 +1,52 @@
+import os
+import sys
+import subprocess
+
+def getOutputFiles(folder):
+    files = []
+    for filename in os.listdir(folder):
+        if filename.endswith('.sas7bdat'):
+            files.append(filename)
+    return files
+
+def getCanonicalName(sasfile):
+    components = sasfile.split('.')
+    if len(components) == 2:
+        return components[0]
+    return ''
+
+def runSasCommand(sasfilename):
+    print('run the sas command')
+    try:
+        subprocess.call(["sas","/home/cceapsc/sas/hiv-modelling/appendsas.sas","-sysparm",sasfilename])
+    except (RuntimeError, OSError, AttributeError) as err:
+        print("Unexpected error in runSasCommand: {}".format(err))
+    except:
+        print("Unexpected error in runSasCommand:", sys.exc_info()[0])
+
+
+def loadSasModule():
+    print('load sas module')
+    try:
+        subprocess.run(["module","load","sas/9.4/64"])
+    except (RuntimeError, OSError) as err:
+        print("Unexpected error in loadSasModule: {}".format(err))
+    except:
+        print("Unexpected error in loadSasModule:", sys.exc_info()[0])
+
+def appendSasfiles(sasfiles):
+    print('trying to append sas files')
+    #loadSasModule()
+    for sasfile in sasfiles:
+        print('processing file {}'.format(sasfile))
+        canonicalName = getCanonicalName(sasfile)
+        runSasCommand(canonicalName)
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print('provide a folder name to find SAS files')
+        exit(1)
+    folder = sys.argv[1]
+    print('processing sasfiles in folder {}'.format(folder))
+    sasfiles = getOutputFiles(folder)
+    appendSasfiles(sasfiles)
