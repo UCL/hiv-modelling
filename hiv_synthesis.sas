@@ -163,7 +163,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 5000 ; 
+%let population = 100000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -688,7 +688,7 @@ p_neph_stops_after_ten = 0.1;
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
 
-* sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1; sw_program=1;
+* sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; e=uniform(0);rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then do; effect_sw_prog_newp = 0.80; if 0.33 <= r < 0.33 then effect_sw_prog_newp=0.60;
@@ -1972,7 +1972,7 @@ if art_initiation_strategy=4 and 2011.5 <= caldate{t} and q < rate_ch_art_init_s
 if 2014 <= caldate{t} then art_initiation_strategy=10;
 
 * SW programs starts in 2015;
-if caldate{t} = 1990 then eff_sw_program=sw_program;
+if caldate{t} = 2015 then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
