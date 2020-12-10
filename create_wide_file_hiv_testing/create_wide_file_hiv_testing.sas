@@ -1283,6 +1283,7 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 
 /* proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;  */    
+
 proc sort data=y_95; by run; proc transpose data=y_95 out=t_95 prefix=&v._95_; var &v._95; by run;
 proc sort data=y_00; by run; proc transpose data=y_00 out=t_00 prefix=&v._00_; var &v._00; by run;
 proc sort data=y_01; by run; proc transpose data=y_01 out=t_01 prefix=&v._01_; var &v._01; by run;
@@ -1301,7 +1302,9 @@ proc sort data=y_20; by run; proc transpose data=y_20 out=t_20 prefix=&v._20_; v
 
 
 /* data &v ; merge  y_20 t_20_25 t_20_70 ;  */
+/*data &v ; merge  y_95 y_00 y_01 y_02 y_03 y_04 y_05 y_06 y_07 y_08 y_09 y_10 y_15 y_20 ;  */
 data &v ; merge  t_95 t_00 t_01 t_02 t_03 t_04 t_05 t_06 t_07 t_08 t_09 t_10 t_15 t_20 ;  
+
 
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
