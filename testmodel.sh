@@ -6,7 +6,7 @@
 #$ -A HIVSynthMod
 #$ -l mem=16G
 #$ -j y
-#$ -wd /home/cceapsc/Scratch/output
+#$ -wd $HOME/Scratch
 #$ -o /dev/null
 #$ -e /dev/null
 #$ -l tmpfs=100G

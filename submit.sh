@@ -1,3 +1,3 @@
 #!/bin/bash -l
-qsub -N hivmodel testmodel.sh
-qsub -hold_jid hivmodel -N concatenate concatenate.sh 
+qsub -N hivmodel $HOME/testmodel.sh
+qsub -hold_jid hivmodel -N concatenate $HOME/concatenate.sh 

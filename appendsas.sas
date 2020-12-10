@@ -1,4 +1,4 @@
-libname model '/home/cceapsc/Scratch/output/';
+libname model '/home/cceapsc/Scratch/';
 
 %macro appendtable();
 	%if %sysfunc(exist(model.combined_data)) %then 
