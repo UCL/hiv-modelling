@@ -688,16 +688,22 @@ p_neph_stops_after_ten = 0.1;
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
 
-* sw_program;				r=uniform(0); sw_program=0;  
-							if r < 0.20 then sw_program=1; 
+* sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
+							if sw_program = 1 then do; e=uniform(0);rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
-							if sw_program = 1 then do; e=uniform(0); sw_program_effect = 1; if e < 0.5 then sw_program_effect = 2; 
-														rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then do; effect_sw_prog_newp = 0.80; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.60;
+											if r >= 0.66 then effect_sw_prog_newp = 0.40; end;
 
-* effect_weak_sw_prog_newp;	r=uniform(0); 	if r < 0.33 then do; effect_weak_sw_prog_newp = 0.90; effect_strong_sw_prog_newp = 0.60; end;
-* effect_strong_sw_prog_newp;				if 0.33 <= r < 0.67 then do; effect_weak_sw_prog_newp = 0.80; effect_strong_sw_prog_newp = 0.50; end; 
-											if 0.67 <= r        then do; effect_weak_sw_prog_newp = 0.70; effect_strong_sw_prog_newp = 0.30; end; 
-
+* effect_sw_prog_6mtest;	e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
+										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;
+* effect_sw_prog_int;		e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
+										  if e >= 0.66 then effect_sw_prog_int=0.80;
+* effect_sw_prog_adh;		e=uniform(0); if e < 0.33 then effect_sw_prog_adh=3; if 0.33 <= e < 0.66 then effect_sw_prog_adh=1.5;
+										  if e >= 0.66 then effect_sw_prog_adh=0;
+* effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
+										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
+* effect_sw_prog_prep;		e=uniform(0); if e < 0.33 then effect_sw_prog_prep=0.60; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.75;
+										  if e >= 0.66 then effect_sw_prog_prep=0.90;
 
 ***** prep;
 
@@ -1559,6 +1565,7 @@ eff_sw_higher_int = sw_higher_int;
 eff_prob_sw_lower_adh = prob_sw_lower_adh;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 sw_program_visit=0;
+eff_prepuptake_sw=prepuptake_sw;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -1967,38 +1974,37 @@ if 2014 <= caldate{t} then art_initiation_strategy=10;
 * SW programs starts in 2015;
 if caldate{t} = 2015 then eff_sw_program=sw_program;
 
-* Attendance at SW program (if it exists);
+* Attendance at SW program (if it exists) and effects of program;
 
 if eff_sw_program=1 and sw=1 then do;
-if sw_program_visit=0 then do; e=uniform(0); if e < rate_engage_sw_program then sw_program_visit=1 ; end; 
-if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then sw_program_visit=0 ; end; 
-end;
 
-* effect of sex work program ;
-sw_test_6mthly = 0;
-if eff_sw_program=1 then do;
+if sw_program_visit=0 then do; e=uniform(0);
+	if e < rate_engage_sw_program then do;
+		sw_program_visit=1 ; 
+			date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
-	if sw_program_visit = 1 then do;
-
-		if sw_program_effect=1 then do; 
-		e=uniform(0); if e < 0.5 then sw_test_6mthly=1; 
-		eff_sw_higher_int = sw_higher_int * 0.75 ; 
-		eff_prob_sw_lower_adh = prob_sw_lower_adh / 2 ; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.25/1.5; 
-		prepuptake_sw=0.70;
-		s= uniform(0); if s < 0.70 and prep_willing_sw = 0 then prep_willing_sw = 1;
-		end;
-
-		if sw_program_effect=2 then do; 
-		sw_test_6mthly=1; 
-		eff_sw_higher_int = sw_higher_int * 0.5 ; 
-		eff_prob_sw_lower_adh = 0 ; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * 1.00/1.5; 
-		prepuptake_sw=0.95;
-		s= uniform(0); if s < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
+			e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1; 
+			eff_sw_higher_int = sw_higher_int * effect_sw_prog_int; 
+			eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ; 
+			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag; 
+			eff_prepuptake_sw=effect_sw_prog_prep;
+			s= uniform(0); if s < eff_prepuptake_sw and prep_willing_sw = 0 then prep_willing_sw = 1;
 		end;
 	end;
+end; 
+
+if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then do;
+	sw_program_visit=0 ; 
+	date_last_sw_prog_vis=caldate{t};
+	sw_test_6mthly=0;
+	eff_sw_higher_int = sw_higher_int;
+	eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+	eff_prepuptake_sw=prepuptake_sw;
+end; 
+
 end;
+
 
 if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
 	eff_sw_program = 0 ; 
@@ -2665,10 +2671,7 @@ if 2015 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(yc
 
 
 
-if sw=1 and sw_program_visit=1 then do;
-if sw_program_effect = 1 then rred_rc = rred_rc * effect_weak_sw_prog_newp ;
-if sw_program_effect = 2 then rred_rc = rred_rc * effect_strong_sw_prog_newp ;
-end;
+if sw=1 and sw_program_visit=1 then rred_rc = rred_rc * effect_sw_prog_newp ;
 
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
@@ -3484,9 +3487,9 @@ u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/3; newp=roun
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
-if sw_program_effect=1 then do; u=uniform(0); if u < 0.05 then newp=newp/3; newp=round(newp,1);end;
-if sw_program_effect=2 then do; u=uniform(0); if u < 0.10 then newp=newp/3; newp=round(newp,1);end;
+	u=uniform(0); if u < 0.075 then newp=newp/3; newp=round(newp,1);
 end;
+
 
 
 * Reducing newp by 50% if condom incr =1;
@@ -14232,6 +14235,8 @@ cald = caldate_never_dot ;
 
 
 * procs;
+
+
 /*
 
 proc print; var  cald  yrart  onart art_monitoring_strategy  linefail artline vl vm nod o_efa f_efa o_dol f_dol o_taz 
@@ -15188,7 +15193,8 @@ rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg sw_prog
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
+nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp
+effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov
 
 /*2020 interventions*/
@@ -16208,7 +16214,7 @@ end;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_10_11_20_12pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_09_12_20_4pm_&dataset_id";  
 
 put   
 
@@ -16668,7 +16674,9 @@ rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_ga
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
+sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp   
+effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
+sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov
 
 /*2020 interventions*/
