@@ -37,3 +37,13 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# SAS
+*.sas7bdat
+
+# Python
+*/.idea/*
+*/venv/*
+*/output/*
+
+
