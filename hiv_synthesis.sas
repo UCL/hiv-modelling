@@ -1993,9 +1993,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 	end;
 end; 
 
-end;
-
-if sw_program_visit=1 then do; e=uniform(0); if (e < rate_disengage_sw_program) or (sw=0) then do;
+if sw_program_visit=1 then do; e=uniform(0); if (e < rate_disengage_sw_program) then do;
 	sw_program_visit=0 ; 
 	date_last_sw_prog_vis=caldate{t};
 	sw_test_6mthly=0;
@@ -2005,6 +2003,7 @@ if sw_program_visit=1 then do; e=uniform(0); if (e < rate_disengage_sw_program) 
 	eff_prepuptake_sw=prepuptake_sw;
 end; 
 
+end;
 
 
 if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
@@ -3298,7 +3297,15 @@ rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork 
 if t ge 2 then do;
 	if sw_tm1=1 then do;
 		d_sw=uniform(0);
-		if d_sw < rate_stop_sexwork/(sqrt(rred_rc)) or age ge 50 then do; sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  end;
+		if d_sw < rate_stop_sexwork/(sqrt(rred_rc)) or age ge 50 then do; 
+			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
+			date_last_sw_prog_vis=caldate{t};
+			sw_test_6mthly=0;
+			eff_sw_higher_int = sw_higher_int;
+			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+			eff_prepuptake_sw=prepuptake_sw;
+		end;
 	end;
 end;
 
