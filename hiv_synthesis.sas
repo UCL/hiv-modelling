@@ -1993,7 +1993,9 @@ if sw_program_visit=0 then do; e=uniform(0);
 	end;
 end; 
 
-if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program then do;
+end;
+
+if sw_program_visit=1 then do; e=uniform(0); if (e < rate_disengage_sw_program) or (sw=0) then do;
 	sw_program_visit=0 ; 
 	date_last_sw_prog_vis=caldate{t};
 	sw_test_6mthly=0;
@@ -2003,7 +2005,6 @@ if sw_program_visit=1 then do; e=uniform(0); if e < rate_disengage_sw_program th
 	eff_prepuptake_sw=prepuptake_sw;
 end; 
 
-end;
 
 
 if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
