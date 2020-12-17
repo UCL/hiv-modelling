@@ -1,21 +1,21 @@
-%let outfile = %scan(&sysparm,1);
-%let modeldir = %scan(&sysparm,2);
-%let sasfile = %scan(&sysparm,3);
+%let sasoutfile = %scan(&sysparm,1," ");
+%let sasoutput = %scan(&sysparm,2," ");
+%let sasresult = %scan(&sysparm,3," ");
 
-libname model &modeldir;
+libname model "&sasoutput/";
 
 * libname model '/home/cceapsc/Scratch/';
 
 %macro appendtable();
-	%if %sysfunc(exist(model.&sasfile)) %then 
+	%if %sysfunc(exist(model.&sasresult)) %then 
 		%do;
-			proc append base = model.&sasfile data = model.&outfile;
+			proc append base = model.&sasresult data = model.&sasoutfile;
 			run;
 		%end;
 	%else
 		%do;
-			data model.&sasfile(compress=binary);
-				set model.&outfile;
+			data model.&sasresult(compress=binary);
+				set model.&sasoutfile;
 			run;
 		%end;
 %mend;

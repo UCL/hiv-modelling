@@ -1,6 +1,6 @@
-%let outfile = %scan(&sysparm,1);
+%let outfile = %scan(&sysparm,1," ");
 
-libname output &outfile;
+libname output "&outfile/";
 
 data output.xyz;
     population = 1000;
