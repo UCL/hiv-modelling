@@ -17,5 +17,4 @@ echo "home directory: $input";
 echo "output directory: $scratch";
 echo "combined SAS filename: $combined";
 echo "runs: $runs";
-qsub -N hivmodel -t 1-$runs -wd $scratch -v SASINPUT=$input,SASOUTPUT=$scratch,SASRESULT=$combined $input/testmodel.sh
-qsub -hold_jid hivmodel -N concatenate -v SASINPUT=$input,SASOUTPUT=$scratch,SASRESULT=$combined $input/concatenate.sh 
+qsub -N testsysparm -wd $scratch -v SASINPUT=$input,SASOUTPUT=$scratch,SASRESULT=$combined $input/testsysparm.sh
