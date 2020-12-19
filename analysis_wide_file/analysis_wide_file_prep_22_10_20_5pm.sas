@@ -191,17 +191,22 @@ r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_a
 p_k65m_20 p_m184m_20 p_newp_ge1_20  p_1524_newp_ge1_20;
 run;
 
+
 ods html;
 proc means n median p5 p95 data=wide; 
-var	p_mcirc_1549m_20 
-prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20
-incidence1549w_20 incidence1549m_20	p_diag_m_20   p_diag_w_20	
-p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   
-prop_w_1549_sw_20    prop_1564_hivneg_onprep_20  prop_w_1524_onprep_20 
-p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 
-p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 
-prop_sw_onprep_20 p_newp_sw_20  n_tested_20 
-aids_death_rate_20  p_newp_sw_20 p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 ;
+var	p_mcirc_1549m_17 prevalence1549m_17 prevalence1549w_17 prevalence1524m_17 prevalence1524w_17  incidence1549w_17 incidence1549m_17	p_diag_m_17   
+p_diag_w_17	p_ai_no_arv_c_nnm_17   p_ai_no_arv_c_rt184m_17  p_ai_no_arv_c_rt65m_17  prop_w_1549_sw_17  prop_1564_hivneg_onprep_17  prop_w_1524_onprep_17 
+p_onart_diag_w_17 	p_onart_diag_m_17   p_vl1000_17	p_onart_vl1000_w_17 p_onart_vl1000_m_17 p_onart_cd4_l500_17  p_mcirc_1549m_17  p_startedline2_17  
+prop_sw_hiv_17 prop_sw_onprep_17 p_newp_sw_17  n_tested_17 aids_death_rate_17  p_newp_sw_17 p_newp_ge1_age1549_17 av_newp_ge1_non_sw_17 ;
+run;
+ods html close;
+
+ods html;
+proc means n median p5 p95 data=wide; 
+var	p_mcirc_1549m_20 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20  incidence1549w_20 incidence1549m_20	p_diag_m_20   
+p_diag_w_20	p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20  prop_w_1549_sw_20  prop_1564_hivneg_onprep_20  prop_w_1524_onprep_20 
+p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20 p_onart_vl1000_m_20 p_onart_cd4_l500_20  p_mcirc_1549m_20  p_startedline2_20  
+prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 aids_death_rate_20  p_newp_sw_20 p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 ;
 run;
 ods html close;
 
