@@ -722,14 +722,18 @@ proc freq data=wide; tables ce_500_x / nocum norow binomial;
 exact binomial; 
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
-* where  prop_1564_hivneg_onprep_20_25_2  >=  0.043 ;
-  where 0.00 <= incidence1549_20 < 0.20 ;
-* where 0.00 <= prevalence1549_20 < 0.03 ;
+* where  prop_1564_hivneg_onprep_20_25_2  >=  0.043 ;  
+* where 0.00 <= incidence1549_20 < 0.20 ;
+* where 0.00 <= prevalence1549_20 < 0.02 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  9.5 ;
+  where 0.67 <= prop_elig_on_prep_20_25_2 < 1.00 ;
 run; 
 ods html close;
 
+proc freq; tables prevalence1549_20 p_newp_prep_hivneg_20_25_2  prop_elig_on_prep_20_25_2 ; run;
+
+proc glm; model prop_elig_on_prep_20_25_2 = 
 
 * --------------------------------------------------------------------------------------------------------------;
 
