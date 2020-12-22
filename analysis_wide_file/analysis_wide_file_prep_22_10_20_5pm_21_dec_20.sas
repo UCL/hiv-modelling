@@ -91,6 +91,8 @@ d_ddaly_all_20_70_2 = ddaly_all_20_70_2 - ddaly_all_20_70_1 ;
 
 d_dcost_20_70_2 = dcost_20_70_2 - dcost_20_70_1 ;
 
+cost_saving=0; if d_dcost_20_70_2 < 0 and d_ddaly_all_20_70_2 < 0 then cost_saving=1;
+
 d_dcost_prep_20_25_2 = dcost_prep_20_25_2 - dcost_prep_20_25_1 ;
 d_dcost_prep_20_70_2 = dcost_prep_20_70_2 - dcost_prep_20_70_1 ;
 
@@ -105,9 +107,6 @@ d_ndb_100_20_70_2 = ndb_100_20_70_2 - ndb_100_20_70_1 ;
 
 if d_ndb_500_20_70_2 >= 0 then ce_500 = 0; if d_ndb_500_20_70_2 < 0 then ce_500 = 1;
 if d_ndb_100_20_70_2 >= 0 then ce_100 = 0; if d_ndb_100_20_70_2 < 0 then ce_100 = 1;
-
-icer_2 = (d_dcost_20_70_2 * 1000000) / (- d_ddaly_all_20_70_2) ; 
-if d_ddaly_all_20_70_2 > 0 then icer_2 = 99999;
 
 optimal_standard_prep_ai1=0;
 if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_test_startprep_2020_ai1 = 1 and incr_r_test_restartprep_2020_ai1 = 1
@@ -228,6 +227,7 @@ prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 aids_death_rate_20  p
 run;
 ods html close;
 
+proc means; var incidence1549_20; run;
 
 
 proc means p50 p5 p95 p99; var prevalence1524m_20 prevalence1524w_20 prevalence2024m_20 prevalence2024w_20 
@@ -528,16 +528,8 @@ dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dco
 proc univariate; var prop_1564_hivneg_onprep_20_70_2  prevalence1549_20 incidence1549_20; run;
 
 
+proc freq; tables cost_saving; run;
 
-proc sort; by icer_2;
-proc print; var ddaly_all_20_70_2   ddaly_all_20_70_1  dcost_20_70_2   dcost_20_70_1  d_dcost_20_70_2  d_ddaly_all_20_70_2  icer_2; 
-run;
-
-
-proc freq data=wide; tables icer_2;
-  where prop_1564_hivneg_onprep_20_70_2 < 0.05 and prevalence1549_20 > 0.1 ;
-* where prop_1564_hivneg_onprep_20_70_2 < 0.10 and prevalence1549_20 > 0.07 ;
-run;
 
 proc univariate; var p_elig_prep_20_25_2  p_newp_ge1_20; run;
 proc corr; var p_elig_prep_20_25_2 prop_1564_hivneg_onprep_20_25_2 p_newp_prep_20_25_2 p_newp_ge1_20 ; run;
@@ -557,17 +549,34 @@ proc sort; by p_newp_ge1_age1549_20_g incidence1549_20_g;
 proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 
 
+proc corr; var incidence1549_20  prevalence_vg1000_20 prevalence1549_20 av_newp_ge1_non_sw_20; run;
+
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; 
-  model ce_100_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
-* model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
+* model ce_500_x =  av_newp_ge1_non_sw_20  incidence1549_20 ;  
+  model ce_100_x =  av_newp_ge1_non_sw_20  incidence1549_20 ;  
+* model cost_saving =  av_newp_ge1_non_sw_20  incidence1549_20 ;  
+  * prevalence1549_20 ;
+* model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 prev_vg1000_newp_m_20 prev_vg1000_newp_w_20;
 * av_newp_ge1_non_sw_20 p_newp_ge5_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_20_25_2 p_prep_adhg80_20_25_2  prevalence1549_20 ;
 run;
 
+proc logistic data=wide; 
+  model ce_100_x = prevalence_vg1000_20 ; run;
+
+* variables considered for inclusion: ;
+proc logistic data=wide; 
+  model ce_100_x =  incidence1549_20 av_newp_ge1_non_sw_20 
+ /* / selection = stepwise */ ;
+run;
+
+proc logistic data=wide; 
+  model ce_100_x =    av_newp_ge1_non_sw_20 incidence1549_20 ;
+run;
+* prop_sw_hiv_20  ;
 
 proc corr spearman; var p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 incidence1549_20 ; run; 
 
-proc freq; tables icer_2; run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
@@ -580,7 +589,7 @@ run;
 proc logistic data=wide; model ce_500 =  prop_1564_hivneg_onprep_20_25_2 ;
 run;
 
-proc glm; model d_ndb_500_20_70_2 =  incidence1549_20 av_newp_ge1_non_sw_20 prevalence1549_20 ; 
+proc glm; model d_ndb_500_20_70_2 =   av_newp_ge1_non_sw_20 incidence1549_20 ; * prevalence1549_20 ;
 *  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 av_newp_ge1_non_sw_20; 
 * prop_elig_on_prep_20_25_2 p_newp_this_per_prep_20_25_2 p_prep_adhg80_20_25_2 p_newp_prep_hivneg_20_25_2 ;
 run;  
