@@ -9518,6 +9518,34 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	if  cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
 
+
+	* TB preventive prophylaxis ;
+
+	d=uniform(0);
+
+	tb_proph_tm1=tb_proph;
+
+	tb_proph = 0;	
+
+	* todo: to determine when tb_proph = 1;
+
+
+	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
+	as diagnosing crypm early ;
+
+	d=uniform(0);
+
+	crypm_proph_tm1=crypm_proph;
+
+	crypm_proph = 0;	
+
+	* todo: to determine when crypm_proph = 1;
+
+
+
+
+
+
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
 * consider if * dependent_on_time_step_length ;
@@ -9687,6 +9715,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
 
+		if oth_adc=1 then do; ii=uniform(0); if ii < 0.2  end;
+		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and crag and tb lam testing and sv and adh;
+		if crypm=1 then do; ii=uniform(0); crypm_diag_e=1; if ii < 0.2 then crypm_diag_e=0 ;  end;
+		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < 0.2 then sbi_diag_e=0 ;  end;
+
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
 			adc_diagnosed=0; if registd=1 then adc_diagnosed=1;  adc_naive=0; if naive=1 then adc_naive=1;
@@ -9792,6 +9825,8 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		incr_death_rate_tb_ = incr_death_rate_tb; incr_death_rate_oth_adc_ = incr_death_rate_oth_adc;
 		incr_death_rate_crypm_ = incr_death_rate_crypm;  incr_death_rate_sbi_ = incr_death_rate_sbi;
 
+		* todo: this below to be replaced - 1.5 will be replaced with a parameter - will depend on when diag_e - visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) 
+		will be just one of the factors that determines this;
 		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then do; * so lower death rate if under care when adc occurs, unless under simplified visits 
 		and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) - reason for the poor adh condition
 		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;	
