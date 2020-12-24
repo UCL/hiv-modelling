@@ -9626,6 +9626,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if x6 le tb_risk then tb  =1;
 
+		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and tb lam testing and sv and adh;
+		if tb=1 then do; ii=uniform(0); tb_diag_e=1; if ii < 0.2 then tb_diag_e=0 ;  end;
+
 		if non_tb_who3_ev   =1 or tb  =1  then do;
 
 * ------------------------------------------------------------------------------------------------------- ;
@@ -9730,8 +9733,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
 
-		if oth_adc=1 then do; ii=uniform(0); if ii < 0.2  end;
-		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and crag and tb lam testing and sv and adh;
+		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and crag testing and sv and adh;
 		if crypm=1 then do; ii=uniform(0); crypm_diag_e=1; if ii < 0.2 then crypm_diag_e=0 ;  end;
 		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < 0.2 then sbi_diag_e=0 ;  end;
 
