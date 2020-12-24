@@ -9542,6 +9542,16 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* todo: to determine when crypm_proph = 1;
 
 
+	* SBI preventive prophylaxis ;
+
+	d=uniform(0);
+
+	sbi_proph_tm1=sbi_proph;
+
+	sbi_proph = 0;	
+
+	* todo: to determine when sbi_proph = 1;
+
 
 
 
@@ -9590,7 +9600,6 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* risk increases with age;
 	base_rate = base_rate*((age/38)**1.2);
 
-
 	* for sensitivity analysis - fold change in base rate;
 	base_rate = base_rate * fold_change_in_risk_base_rate;
 
@@ -9606,6 +9615,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		non_tb_who3_rate = who3_rate * 4/5; * because assume 20% of who3 is tb;
 		tb_rate = who3_rate * 1/5; * because assume 20% of who3 is tb;
+
+		* todo: tb_rate also depends on rb_proph ;
 
 		non_tb_who3_risk  = 1 - exp (-0.25* (non_tb_who3_rate));
 		* ts1m: *	non_tb_who3_risk  = 1 - exp (-(1/12)*(non_tb_who3_rate));
@@ -9704,7 +9715,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if nod    =1 then rate = 0.9*rate;
 
 		oth_adc_rate = rate * 0.7; * because assume 30% of adc is sbi or crypm;
-		crypm_rate = rate * 0.15; sbi_rate = rate * 0.15;
+		crypm_rate = rate * 0.15; 
+		sbi_rate = rate * 0.15;
+
+		* todo: crypm_rate also depends on crypm_proph ;
+		* todo: sbi_rate also depends on sbi_proph ;
 
 		risk_oth_adc = 1 - exp (-0.25*oth_adc_rate);
 		* ts1m: *	riskx = 1 - exp (-(1/12)*oth_adc_rate);
