@@ -14264,10 +14264,23 @@ if 45 <= age < 60 then age_g = 3;
 if 60 <= age < 75 then age_g = 4;
 if 75 <= age      then age_g = 5;
 
+in_care_time_of_adc_tb = 0; if (visit=1 and (sv ne 1 or (adh > 0.8 and onart=1))) then in_care_time_of_adc_tb = 1; 
+
+proc freq; tables 
+cd4_g * who3_event vl_g * who3_event age_g * who3_event  pcp_p * who3_event  onart * who3_event 
+cd4_g * tb vl_g * tb age_g * tb  pcp_p * tb  onart * tb  
+cd4_g * adc vl_g * adc age_g * adc  pcp_p * adc  onart * adc 
+; where hiv=1 and (death = . or caldate&j = death ) ;
+
+proc freq; tables 
+cd4_g * dead  vl_g * dead age_g * dead  pcp_p * dead  onart * dead ; where hiv=1 and (death = . or caldate&j = death ) ;
+
+proc freq; tables 
+who3_event * dead  adc * in_care_time_of_adc_tb * dead  tb * in_care_time_of_adc_tb * dead; where hiv=1 and (death = . or caldate&j = death ) ;
 
 
 proc print; var cald hiv vl cd4 base_rate visit sv adh age gender ac_death_rate dcause rdcause  death_rix  hiv_death_rate  nod pcp_p 
-incr_death_rate_tb  incr_death_rate_tb_  incr_death_rate_adc incr_death_rate_adc_ date_most_recent_tb  who3_event who3_risk who3_rate  
+incr_death_rate_tb  incr_death_rate_tb_  incr_death_rate_adc incr_death_rate_adc_ date_most_recent_tb  who3_event adc  who3_risk who3_rate  
 fold_change_in_risk_base_rate  dead death ; 
 where age ge 15;
 
