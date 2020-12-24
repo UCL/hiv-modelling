@@ -14245,12 +14245,33 @@ cald = caldate_never_dot ;
 
 * procs;
 
+if 0 <= cd4 < 50 then cd4_g = 1 ;
+if 50 <= cd4 < 100 then cd4_g = 2 ;
+if 100 <= cd4 < 200 then cd4_g = 3 ;
+if 200 <= cd4 < 350 then cd4_g = 4 ;
+if 350 <= cd4 < 500 then cd4_g = 5 ;
+if 500 <= cd4 then cd4g = 6 ;
+
+if vl < 1.7 then vl_g=1;
+if 1.7 <= vl < 3 then vl_g=2;
+if 3 <= vl < 4 then vl_g=3;
+if 4 <= vl < 5 then vl_g=4;
+if 5 <= vl then vl_g=5;
+
+if age < 30 then age_g = 1; 
+if 30 <= age < 45 then age_g = 2; 
+if 45 <= age < 60 then age_g = 3;
+if 60 <= age < 75 then age_g = 4;
+if 75 <= age      then age_g = 5;
+
+
+
 proc print; var cald hiv vl cd4 base_rate visit sv adh age gender ac_death_rate dcause rdcause  death_rix  hiv_death_rate  nod pcp_p 
 incr_death_rate_tb  incr_death_rate_tb_  incr_death_rate_adc incr_death_rate_adc_ date_most_recent_tb  who3_event who3_risk who3_rate  
 fold_change_in_risk_base_rate  dead death ; 
 where age ge 15;
 
-proc freq; tables hiv; where death = .; run;
+proc freq; tables hiv; where death = .;  run;
 
 
 /*
