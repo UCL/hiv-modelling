@@ -9570,6 +9570,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if cm   =. then time_since_last_cm = time_since_last_cm + 0.25;
 
 
+	* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment; 
+	if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
+
+
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
 * consider if * dependent_on_time_step_length ;
@@ -9642,7 +9646,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x6 le tb_risk then tb  =1;
 
 		* todo: move tb_base_prob_diag_l = 0.5  tblam_eff_prob_diag_l = 0.4 to top;
-		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
+		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  
 		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per then 
 				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
 		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
@@ -9754,21 +9758,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
 
-		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and crag testing and sv and adh;
-		if crypm=1 then do; ii=uniform(0); crypm_diag_e=1; if ii < 0.2 then crypm_diag_e=0 ;  end;
+		* todo: move crypm_base_prob_diag_l = 0.5  crag_eff_prob_diag_l = 0.4 to top;
+		crypm_base_prob_diag_l = 0.5; crypm_eff_prob_diag_l = 0.4;  
+		crypm_prob_diag_e = (1 - crypm_base_prob_diag_1); if crag_measured_this_per then 
+				crypm_prob_diag_e = (1 - (crypm_base_prob_diag_l * effect_visit_prob_diag_l * crag_eff_prob_diag_l));
+		if crypm=1 then do; ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  end;
+
 		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < 0.2 then sbi_diag_e=0 ;  end;
-
-
-/*
-		* todo: move tb_base_prob_diag_l = 0.5  tblam_eff_prob_diag_l = 0.4 to top;
-		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
-		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per then 
-				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
-		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
-*/
-
-
-
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
