@@ -5887,7 +5887,7 @@ if t ge 2 then do;
 		u=uniform(0);
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
-			visit   =1; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
+			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
 			if prep   =1 and pop_wide_tld_prep ne 1 then do;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;
@@ -6186,7 +6186,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 		unisens=uniform(0);		
 		if t ge 3 and unisens lt sens_vct then do; 
 			registd=1; date1pos=caldate{t}; 
-			visit=1; lost   =0; cd4diag=cd4_tm1;
+			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
 			*costing of HIV-positive;
 			if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) and unitest<rate_test then cost_test=cost_test_a;
@@ -6260,6 +6260,9 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 * return cant happen if no_art_disrup_covid ;
 if return=1 and covid_disrup_affected = 1 and no_art_disrup_covid=1 then do;return=0;lost=1;visit=0; end;
 
+if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t};
+
+
 * shift to x4 virus being present - depends on viral load;
 	if t ge 2 then do;
 		pr_x4_shift=(10**vl_tm1)*0.0000004; s=uniform(0); if s < pr_x4_shift then do; x4v=1; date_x4=caldate{t};end;
@@ -6322,7 +6325,7 @@ if return=1 and covid_disrup_affected = 1 and no_art_disrup_covid=1 then do;retu
 res_test=.;
 
 
-* WHETHER CD4 WAS MEASURED - NAIVE PATIENTS;
+* WHETHER CD4 WAS MEASURED ;
 	w=uniform(0);
 	if t ge 2 and  hiv_monitoring_strategy=2
 	and naive=1 and visit=1 and (date_latest_cm = . or (caldate{t} - date_latest_cm) > 0.25) and w < prob_cd4_meas_done then do;
@@ -6333,6 +6336,7 @@ res_test=.;
 			who4_tm1=1 then elig_mcd4_=1;		
 	end;
 
+	if cm_1stvis_return_vlmg1000=1 then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;
 
 
 * INITIATION OF ART ;
@@ -9151,9 +9155,6 @@ then do;
 end;
 
 
-
-
-
 * eee;	
 o_dol_2nd_vlg1000_dolr1_adh0=0;o_dol_2nd_vlg1000_dolr1_adh1=0;o_dol_2nd_vlg1000_dolr0_adh0=0;o_dol_2nd_vlg1000_dolr0_adh1=0;
 if o_dol_2nd_vlg1000 = 1 then do;
@@ -9162,6 +9163,17 @@ if adh_tm1 >= 0.8 and r_dol_tm1 > 0 then o_dol_2nd_vlg1000_dolr1_adh1 = 1;
 if adh_tm1 < 0.8 and r_dol_tm1 = 0 then o_dol_2nd_vlg1000_dolr0_adh0 = 1;
 if adh_tm1 >= 0.8 and r_dol_tm1 = 0 then o_dol_2nd_vlg1000_dolr0_adh1 = 1;
 end;
+
+
+* measure cd4 crag tb lam;
+crag_measured_this_per = 0; tblam_measured_this_per = 0; 
+if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
+	if cm_1stvis_return_vlmg1000=1 then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; 
+	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
+	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
+end;
+
+
 
 
 * measure viral load on second line (in fact, after failing first line) ; 
@@ -9553,6 +9565,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if sbi_proph=1 then date_most_recent_sbi_proph = caldate{t};
 
 
+	* latest measured cd4;
+	if cm    ne . then do; time_since_last_cm = 0; value_last_cm = cm ; date_latest_cm=caldate{t}; end;
+	if cm   =. then time_since_last_cm = time_since_last_cm + 0.25;
+
 
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
@@ -9625,8 +9641,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if x6 le tb_risk then tb  =1;
 
-		* todo: 0.2 below to be replaced with parameter , which will be determined by cd4 testing and tb lam testing and sv and adh;
-		if tb=1 then do; ii=uniform(0); tb_diag_e=1; if ii < 0.2 then tb_diag_e=0 ;  end;
+		* todo: move tb_base_prob_diag_l = 0.5  tblam_eff_prob_diag_l = 0.4 to top;
+		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
+		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per then 
+				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
+		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
 
 		if non_tb_who3_ev   =1 or tb  =1  then do;
 
@@ -9739,6 +9758,18 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if crypm=1 then do; ii=uniform(0); crypm_diag_e=1; if ii < 0.2 then crypm_diag_e=0 ;  end;
 		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < 0.2 then sbi_diag_e=0 ;  end;
 
+
+/*
+		* todo: move tb_base_prob_diag_l = 0.5  tblam_eff_prob_diag_l = 0.4 to top;
+		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
+		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per then 
+				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
+		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
+*/
+
+
+
+
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
 			adc_diagnosed=0; if registd=1 then adc_diagnosed=1;  adc_naive=0; if naive=1 then adc_naive=1;
@@ -9822,11 +9853,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	who4_time = who4_date-date1pos;
 
-
-
-
-* latest measured cd4 and vl;
-if cm    ne . then do; latest_cm = cm   ; date_latest_cm=caldate{t}; end;
+* latest measured vl;
 if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 
@@ -9852,7 +9879,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
 				incr_death_rate_tb_ = incr_death_rate_tb * rel_rate_death_tb_diag_e; 
 				incr_death_rate_oth_adc_ = incr_death_rate_oth_adc * rel_rate_death_oth_adc_diag_e; 
-				incr_death_rate_crypmc_ = incr_death_rate_crypm * rel_rate_death_crypm_diag_e; 
+				incr_death_rate_crypm_ = incr_death_rate_crypm * rel_rate_death_crypm_diag_e; 
 				incr_death_rate_sbi_ = incr_death_rate_sbi * rel_rate_death_sbi_diag_e; 
 		end;  
 		* todo: note visit is not set to 1 above just because adc has occurred, although registd  is set to 1;    
@@ -9996,10 +10023,6 @@ so a proportion (15%) are classified as non-who4_;
 * ts1m: 	
 *	if vm=. then time_since_last_vm = time_since_last_vm + (1/12);
 *	if vm <= 3 then time_since_last_vm_gt3 = time_since_last_vm_gt3 + (1/12); 
-
-	if cm ne . then do; time_since_last_cm = 0; value_last_cm = cm ; end;
-	if cm   =. then time_since_last_cm = time_since_last_cm + 0.25; 
-* ts1m: 	if cm   =. then time_since_last_cm = time_since_last_cm + (1/12);
 
 	sv=0;
  
