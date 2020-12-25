@@ -7214,6 +7214,8 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
 	
+* todo: Enhanced art support given this 3 month period (as in remstart trial) (such support already has an effect on ART adherence in our model);
+
 
 * current tox can affect adherence;  
 		r=uniform(0); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
