@@ -9741,12 +9741,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		oth_adc_rate = rate * 0.7; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
-		* todo: make 0.5 a parameter ;
-		if 0 <= (caldate{t} - date_most_recent_crypm_proph) < 1 then crypm_rate = crypm_rate * 0.5;
+		* todo: move effect_crypm_proph up ;
+		effect_crypm_proph = 0.5;
+		if 0 <= (caldate{t} - date_most_recent_crypm_proph) < 1 then crypm_rate = crypm_rate * effect_crypm_proph;
 		crypm_rate = rate * 0.15; 
-		* todo: determine length of effect of crypm_proph;
-		* todo: make 0.5 a parameter ;
-		if 0 <= (caldate{t} - date_most_recent_sbi_proph) < 1 then sbi_rate = sbi_rate * 0.5;
+		* todo: determine length of effect of sbi_proph;
+		* todo: move effect_sbi_proph up ;
+		if 0 <= (caldate{t} - date_most_recent_sbi_proph) < 1 then sbi_rate = sbi_rate * effect_sbi_proph;
 		sbi_rate = rate * 0.15;
 
 		risk_oth_adc = 1 - exp (-0.25*oth_adc_rate);
@@ -9758,13 +9759,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
 
-		* todo: move crypm_base_prob_diag_l = 0.5  crag_eff_prob_diag_l = 0.4 to top;
+		* todo: move crypm_base_prob_diag_l = 0.5  crag_eff_prob_diag_l = 0.4   sbi_base_prob_diag_1 = 0.2 to top;
 		crypm_base_prob_diag_l = 0.5; crypm_eff_prob_diag_l = 0.4;  
 		crypm_prob_diag_e = (1 - crypm_base_prob_diag_1); if crag_measured_this_per then 
 				crypm_prob_diag_e = (1 - (crypm_base_prob_diag_l * effect_visit_prob_diag_l * crag_eff_prob_diag_l));
 		if crypm=1 then do; ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  end;
 
-		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < 0.2 then sbi_diag_e=0 ;  end;
+		sbi_base_prob_diag_l = 0.2;
+		sbi_prob_diag_e = (1 - sbi_base_prob_diag_1); 
+		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < sbi_prob_diag_e then sbi_diag_e=0 ;  end;
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
