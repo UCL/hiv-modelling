@@ -9526,8 +9526,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	tb_proph_tm1=tb_proph;
 
 	tb_proph = 0;	
-
 	* todo: to determine when tb_proph = 1;
+	if tb_proph=1 then date_most_recent_tb_proph = caldate{t};
 
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
@@ -9538,8 +9538,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	crypm_proph_tm1=crypm_proph;
 
 	crypm_proph = 0;	
-
 	* todo: to determine when crypm_proph = 1;
+	if crypt_proph=1 then date_most_recent_crypt_proph = caldate{t};
 
 
 	* SBI preventive prophylaxis ;
@@ -9549,10 +9549,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	sbi_proph_tm1=sbi_proph;
 
 	sbi_proph = 0;	
-
 	* todo: to determine when sbi_proph = 1;
-
-
+	if sbi_proph=1 then date_most_recent_sbi_proph = caldate{t};
 
 
 
@@ -9616,8 +9614,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		non_tb_who3_rate = who3_rate * 4/5; * because assume 20% of who3 is tb;
 		tb_rate = who3_rate * 1/5; * because assume 20% of who3 is tb;
 
-		* todo: tb_rate also depends on rb_proph ;
-
+		* todo: determine length of effect of tb_proph;
+		* todo: make 0.5 a parameter ;
+		if 0 <= (caldate{t} - date_most_recent_tb_proph) < 1 then non_tb_who3_rate = non_tb_who3_rate * 0.5;
 		non_tb_who3_risk  = 1 - exp (-0.25* (non_tb_who3_rate));
 		* ts1m: *	non_tb_who3_risk  = 1 - exp (-(1/12)*(non_tb_who3_rate));
 		tb_risk  = 1 - exp (-0.25* (tb_rate));
@@ -9718,11 +9717,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if nod    =1 then rate = 0.9*rate;
 
 		oth_adc_rate = rate * 0.7; * because assume 30% of adc is sbi or crypm;
+		* todo: determine length of effect of crypm_proph;
+		* todo: make 0.5 a parameter ;
+		if 0 <= (caldate{t} - date_most_recent_crypm_proph) < 1 then crypm_rate = crypm_rate * 0.5;
 		crypm_rate = rate * 0.15; 
+		* todo: determine length of effect of crypm_proph;
+		* todo: make 0.5 a parameter ;
+		if 0 <= (caldate{t} - date_most_recent_sbi_proph) < 1 then sbi_rate = sbi_rate * 0.5;
 		sbi_rate = rate * 0.15;
-
-		* todo: crypm_rate also depends on crypm_proph ;
-		* todo: sbi_rate also depends on sbi_proph ;
 
 		risk_oth_adc = 1 - exp (-0.25*oth_adc_rate);
 		* ts1m: *	riskx = 1 - exp (-(1/12)*oth_adc_rate);
@@ -9842,14 +9844,18 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		incr_death_rate_tb_ = incr_death_rate_tb; incr_death_rate_oth_adc_ = incr_death_rate_oth_adc;
 		incr_death_rate_crypm_ = incr_death_rate_crypm;  incr_death_rate_sbi_ = incr_death_rate_sbi;
 
-		* todo: this below to be replaced - 1.5 will be replaced with a parameter - will depend on when diag_e - visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) 
-		will be just one of the factors that determines this;
+		rel_rate_death_tb_diag_e = 0.67; rel_rate_death_oth_adc_diag_e = 0.8 ; rel_rate_death_crypm_diag_e = 0.5 ; rel_rate_death_sbi_diag_e = 0.8 ;  
+		* todo: this below to be replaced - 0.67 above will be replaced with a parameter - will depend on when diag_e - visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) 
+		will be just one of the factors that determines diag_e;
 		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then do; * so lower death rate if under care when adc occurs, unless under simplified visits 
 		and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) - reason for the poor adh condition
-		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;	
-			incr_death_rate_tb_ = incr_death_rate_tb / 1.5; incr_death_rate_oth_adc_ = incr_death_rate_oth_adc / 1.5; 
-			incr_death_rate_crypmc_ = incr_death_rate_crypm / 1.5; incr_death_rate_sbi_ = incr_death_rate_sbi / 1.5; 
-		end;  * note visit is not set to 1 above just because adc has occurred, although registd  is set to 1;    
+		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
+				incr_death_rate_tb_ = incr_death_rate_tb * rel_rate_death_tb_diag_e; 
+				incr_death_rate_oth_adc_ = incr_death_rate_oth_adc * rel_rate_death_oth_adc_diag_e; 
+				incr_death_rate_crypmc_ = incr_death_rate_crypm * rel_rate_death_crypm_diag_e; 
+				incr_death_rate_sbi_ = incr_death_rate_sbi * rel_rate_death_sbi_diag_e; 
+		end;  
+		* todo: note visit is not set to 1 above just because adc has occurred, although registd  is set to 1;    
 
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) and who4_ = 0 then hiv_death_rate = hiv_death_rate*incr_death_rate_tb_;
 		if oth_adc=1 then hiv_death_rate = hiv_death_rate*incr_death_rate_oth_adc_;
