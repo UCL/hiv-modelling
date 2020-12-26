@@ -13176,7 +13176,6 @@ if 75 <= age      then age_g = 5;
 in_care_time_of_adc_tb = 0; if (visit=1 and (sv ne 1 or (adh > 0.8 and onart=1))) then in_care_time_of_adc_tb = 1; 
 
 
-
 if cd4_g=1 then cd4_g1=1; else cd4_g1=0; if cd4_g=2 then cd4_g2=1; else cd4_g2=0; if cd4_g=3 then cd4_g3=1; else cd4_g3=0;
 if cd4_g=4 then cd4_g4=1; else cd4_g4=0; if cd4_g=5 then cd4_g5=1; else cd4_g5=0; if cd4_g=6 then cd4_g6=1; else cd4_g6=0;
 
@@ -13294,6 +13293,23 @@ if dead=1 then do;
 	if tb_proph = 1 then tb_proph_dead = 1;  if crypm_proph = 1 then crypm_proph_dead = 1;	if sbi_proph = 1 then sbi_proph_dead = 1;
 	if who3_event=1 then who3_event_dead=1;  if adc=1 then adc_dead=1; if tb=1 then tb_dead=1; if crypm=1 then crypm_dead=1; if sbi=1 then sbi_dead=1;      
 end;
+
+
+
+
+* todo:
+
+create outputs to allow calculation of death rate in first three months from 1st visit for care, return, start art, restart, 
+vl measured > 1000, cd4 measured............ 
+may need to do this by time from these above baselines :  this period, timenow - date restart = 3 , 6 12   
+
+todo: check on all code with proc prints, check on how rapidly people get on art after an adc or tb that triggers a return to care -
+can it be fast enough as it might be in reality ?
+
+;
+
+
+
 
 
 ***Newp groups;
@@ -14525,7 +14541,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_age_g1_dead +age_g1_dead ; s_age_g2_dead +age_g2_dead ; s_age_g3_dead +age_g3_dead ; s_age_g4_dead +age_g4_dead ; s_age_g5_dead +age_g5_dead ;
 	s_onart_dead_80 + onart_dead ;  s_pcpp_dead + pcpp_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
 	s_sbi_proph_dead + sbi_proph_dead ;    s_who3_event_dead  +  who3_event_dead ;    s_adc_dead +   adc_dead ;  s_crypm_dead + crypm_dead ;  
-	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;         
+	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
 end;
 
 
@@ -15483,7 +15499,7 @@ s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi
 s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
-s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  
+s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 
 
 /*Pregnancy and children*/
@@ -16233,7 +16249,6 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-
 s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
@@ -16250,7 +16265,7 @@ s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi
 s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
-s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  
+s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -17002,7 +17017,6 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-
 s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
@@ -17019,7 +17033,7 @@ s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi
 s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
-s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  
+s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
