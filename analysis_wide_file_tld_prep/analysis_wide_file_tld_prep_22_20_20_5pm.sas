@@ -5,8 +5,7 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_prep_22_10_20_5pm_123; 
-* set a.wide_prep_22_10_20_5pm_123_dis7p; 
+  set a.wide_tld_prep_22_10_20_5pm_123; 
 
 * to get n = 1000 ;
   if run le 903381561 ;
@@ -59,8 +58,8 @@ be beyond drug cost: (dcost_prep_20_70_2 / 3) or (dcost_prep_20_70_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
 dcost_20_70_2             =      
 dart_cost_y_20_70_2 +         
-(dcost_prep_20_70_2  * (2 *  20)/60) + 
-(dcost_prep_visit_20_70_2 * 2) + 
+(dcost_prep_20_70_2  * (1 *  60)/60) + 
+(dcost_prep_visit_20_70_2 * 1) + 
 dadc_cost_20_70_2   +      
 dcd4_cost_20_70_2     +    
 dvl_cost_20_70_2    +      
@@ -77,6 +76,29 @@ dcost_circ_20_70_2  +
 dcost_condom_dn_20_70_2  +      
 dcost_child_hiv_20_70_2  +      
 dcost_non_aids_pre_death_20_70_2 ; 
+
+* checked that this = original dcost that is overwritten - we re-create here so can adjust components;
+dcost_20_70_3             =      
+dart_cost_y_20_70_3 +         
+(dcost_prep_20_70_3  * (1 *  60)/60) + 
+(dcost_prep_visit_20_70_3 * 1) + 
+dadc_cost_20_70_3   +      
+dcd4_cost_20_70_3     +    
+dvl_cost_20_70_3    +      
+dvis_cost_20_70_3   + 
+dwho3_cost_20_70_3    +    
+dcot_cost_20_70_3   +       
+dtb_cost_20_70_3   +       
+dres_cost_20_70_3   +      
+dtest_cost_20_70_3  +      
+d_t_adh_int_cost_20_70_3 +  
+dswitchline_cost_20_70_3 +  
+dcost_drug_level_test_20_70_3 +   
+dcost_circ_20_70_3  +           
+dcost_condom_dn_20_70_3  +      
+dcost_child_hiv_20_70_3  +      
+dcost_non_aids_pre_death_20_70_3 ; 
+
 
 d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 
