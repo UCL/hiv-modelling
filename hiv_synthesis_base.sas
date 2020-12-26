@@ -14250,7 +14250,7 @@ if 50 <= cd4 < 100 then cd4_g = 2 ;
 if 100 <= cd4 < 200 then cd4_g = 3 ;
 if 200 <= cd4 < 350 then cd4_g = 4 ;
 if 350 <= cd4 < 500 then cd4_g = 5 ;
-if 500 <= cd4 then cd4g = 6 ;
+if 500 <= cd4 then cd4_g = 6 ;
 
 if vl < 1.7 then vl_g=1;
 if 1.7 <= vl < 3 then vl_g=2;
@@ -14266,17 +14266,31 @@ if 75 <= age      then age_g = 5;
 
 in_care_time_of_adc_tb = 0; if (visit=1 and (sv ne 1 or (adh > 0.8 and onart=1))) then in_care_time_of_adc_tb = 1; 
 
+/*
+
 proc freq; tables 
-cd4_g * who3_event vl_g * who3_event age_g * who3_event  pcp_p * who3_event  onart * who3_event 
+
 cd4_g * tb vl_g * tb age_g * tb  pcp_p * tb  onart * tb  
 cd4_g * adc vl_g * adc age_g * adc  pcp_p * adc  onart * adc 
+cd4_g * who3_event vl_g * who3_event age_g * who3_event  pcp_p * who3_event  onart * who3_event
 ; where hiv=1 and (death = . or caldate&j = death ) ;
 
 proc freq; tables 
 cd4_g * dead  vl_g * dead age_g * dead  pcp_p * dead  onart * dead ; where hiv=1 and (death = . or caldate&j = death ) ;
 
+*/
+
 proc freq; tables 
-who3_event * dead  adc * in_care_time_of_adc_tb * dead  tb * in_care_time_of_adc_tb * dead; where hiv=1 and (death = . or caldate&j = death ) ;
+who3_event * dead ;
+
+proc freq; tables 
+tb * in_care_time_of_adc_tb * dead  ; where hiv=1 and (death = . or caldate&j = death ) and tb = 1 ;
+
+proc freq; tables 
+adc * in_care_time_of_adc_tb * dead  ; where hiv=1 and (death = . or caldate&j = death ) and adc = 1 ;
+
+proc freq; tables cald; run;
+
 
 /*
 proc print; var cald hiv vl cd4 base_rate visit sv adh age gender ac_death_rate dcause rdcause  death_rix  hiv_death_rate  nod pcp_p 
@@ -16112,7 +16126,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -16232,6 +16246,8 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
 
 data a.save_ahd;  set r1;
+
+*/
 
 data r1; set a.save_ahd ;
 
