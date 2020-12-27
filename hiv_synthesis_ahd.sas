@@ -163,7 +163,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -9654,17 +9654,18 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if x6 le tb_risk then tb  =1;
  
-		tb_diag_e = .; 
-
 		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment;  
 	 	* unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
 		- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
 
-		tb_prob_diag_1 = tb_base_prob_diag_l; 
-		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_1 = tb_prob_diag_1 * effect_visit_prob_diag_l ;
-		if tblam_measured_this_per = 1 then tb_prob_diag_1 = tb_prob_diag_1 * tblam_eff_prob_diag_l ;
-		tb_prob_diag_e = 1 - tb_prob_diag_l ;
-		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
+		tb_diag_e = .; tb_prob_diag_l = .;
+		if tb=1 then do;
+			tb_prob_diag_l = tb_base_prob_diag_l; 
+			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
+			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
+			tb_prob_diag_e = 1 - tb_prob_diag_l ;
+			ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
+		end;
 
 
 		if non_tb_who3_ev   =1 or tb  =1  then do;
@@ -9779,19 +9780,25 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
  		unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
 		- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost
 		;
-		
-		crypm_diag_e = .; 
-		crypm_prob_diag_1 = crypm_base_prob_diag_l ;
-		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then crypm_prob_diag_1 = crypm_prob_diag_1 * effect_visit_prob_diag_l ;
-		if crag_measured_this_per = 1 then crypm_prob_diag_1 = crypm_prob_diag_1 * crag_eff_prob_diag_l ;
-		crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
-		if crypm=1 then do; ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  end;
 
-		sbi_diag_e = .; 
-		sbi_prob_diag_1 = sbi_base_prob_diag_l ;
-		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_1 = sbi_prob_diag_1 * effect_visit_prob_diag_l ;
-		sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
-		if sbi=1 then do; ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  end;
+		crypt_prob_diag_l = .;	crypm_diag_e = .; 
+		if crypm=1 then do; 
+			crypm_prob_diag_l = crypm_base_prob_diag_l ;
+			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then crypm_prob_diag_l = crypm_prob_diag_l * effect_visit_prob_diag_l ;
+			if crag_measured_this_per = 1 then crypm_prob_diag_l = crypm_prob_diag_l * crag_eff_prob_diag_l ;
+			crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
+			ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
+		end;
+
+
+		sbi_prob_diag_l = .;  sbi_diag_e = .; 
+		if sbi=1 then do; 	
+			sbi_prob_diag_l = sbi_base_prob_diag_l ;
+			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_l = sbi_prob_diag_l * effect_visit_prob_diag_l ;
+			sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
+			ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
+		end;
+
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
@@ -9923,6 +9930,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 * some of these deaths are related to CD4 but wont go down as who4_ related (eg other cancers, but not incl liver death)
 so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4;agedeath=age;
+			if tb=1 then dead_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
 
 			dead_diagnosed=0; if registd=1 then dead_diagnosed=1;  dead_naive=0; if naive=1 then dead_naive=1;
 			dead_onart=0; if onart=1 then dead_onart=1; dead_line1_lf0=0; if artline=1 and linefail=0 then dead_line1_lf0 =1;
@@ -13315,10 +13323,18 @@ create outputs to allow calculation of death rate in first three months from 1st
 vl measured > 1000, cd4 measured............ 
 may need to do this by time from these above baselines :  this period, timenow - date restart = 3 , 6 12   
 
-todo: check on all code with proc prints, check on how rapidly people get on art after an adc or tb that triggers a return to care -
+concentrate on 6 months as this is primary endpoint for reality ?
+
+i think we need to concentrate on risk in the tcur=0.25 + tcur = 0.5 period to mimic the reality trial
+
+also calculate death rate from time of tb crypm sbi (and including that time period in which event occurred ?) which led to engagement with care
+
+todo: with proc prints, check on how rapidly people get on art after an adc or tb that triggers a return to care -
 can it be fast enough as it might be in reality ?
 
-todo: think about when the beneficial effect of being diagnosed early (ie treatment available) emerged
+todo: think about when in calendar time the beneficial effect of being diagnosed early (ie treatment available) emerged
+
+todo: run base program and ahd to compare distribution of aids rate and hiv death rate over time - make sure increase to n=100000
 
 ;
 
@@ -14556,6 +14572,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_onart_dead_80 + onart_dead ;  s_pcpp_dead + pcpp_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
 	s_sbi_proph_dead + sbi_proph_dead ;    s_who3_event_dead  +  who3_event_dead ;    s_adc_dead +   adc_dead ;  s_crypm_dead + crypm_dead ;  
 	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
+	s_dead_tb + dead_tb;  s_dead_crypm + dead_crypm ;  s_dead_sbi + dead_sbi ;  s_dead_oth_adc +  dead_oth_adc;
 end;
 
 
@@ -14581,13 +14598,15 @@ non_tb_who3_ev * dead  adc * in_care_time_of_adc_tb * dead  tb * in_care_time_of
 
 */
 
-/*
-proc print; var cald hiv vl cd4 base_rate visit sv adh age gender ac_death_rate dcause rdcause  death_rix  hiv_death_rate  nod pcp_p 
-incr_death_rate_tb  incr_death_rate_tb_  incr_death_rate_oth_adc incr_death_rate_oth_adc_ date_most_recent_tb  non_tb_who3_ev adc  who3_risk non_tb_who3_rate  
-fold_change_in_risk_base_rate  dead death ; 
-where age ge 15;
 
-*/
+
+proc print; var cald death registd yrart visit interrupt lost date1pos date_1st_hiv_care_visit return restart tcur onart nactive 
+vl vm cd4 tb crypm sbi oth_adc who3_event death_rix tb_diag_e crypm_diag_e sbi_diag_e dead ; 
+where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 250;
+run;
+
+
+
 
 
 /*
@@ -15357,7 +15376,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
@@ -15514,7 +15533,7 @@ s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
-
+s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16125,7 +16144,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
 s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
@@ -16280,6 +16299,7 @@ s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
+s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16459,8 +16479,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -16564,6 +16583,13 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=93,h=100,j=100,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=97,h=104,j=101,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=97,h=104,j=102,s=0);
+
+data a.save_ahd; set r1;
+
+*/
+
+data r1; set a.save_ahd;
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=97,h=104,j=103,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=0);
@@ -16578,11 +16604,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
-
-data a.save_ahd;  set r1;
-
-data r1; set a.save_ahd ;
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
@@ -16595,6 +16616,9 @@ data r1; set a.save_ahd ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
+
+
+
 
 
 * ts1m:  need more update statements ;
@@ -16892,7 +16916,7 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
 s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
 s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
@@ -17048,6 +17072,7 @@ s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi_diag_e   s_
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
+s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
