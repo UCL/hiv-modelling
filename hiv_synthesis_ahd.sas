@@ -310,18 +310,21 @@ incr_death_rate_crypm = 10;
 incr_death_rate_sbi = 10;
 incr_death_rate_tb = 10;
 fold_change_ac_death_rate = 1;
+
+* following values are placeholdes - should result in similar aids and death rate to previous coding;
 effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
 effect_crypm_proph = 0.5; * as above for crypm;
 effect_sbi_proph = 0.5; 
 tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
-tblam_eff_prob_diag_l = 0.4; * effect of tb lam test on tb being diagnosed early;
+tblam_eff_prob_diag_l = 0.5; * effect of tb lam test on tb being diagnosed early;
 crypm_base_prob_diag_l = 0.5; * base probability that crypm is diagnosed late ; 
-crag_eff_prob_diag_l = 0.4; * effect of crag test on crypm being diagnosed early;  
-sbi_base_prob_diag_1 = 0.2; * base probability that sbi is diagnosed late ;
+crag_eff_prob_diag_l = 0.5; * effect of crag test on crypm being diagnosed early;  
+sbi_base_prob_diag_l = 0.5; * base probability that sbi is diagnosed late ;
 rel_rate_death_tb_diag_e = 0.67; * effect of tb being diagnosed early on rate of death from the tb event; 
-rel_rate_death_oth_adc_diag_e = 0.8 ; * effect of tb being diagnosed early on rate of death from the other adc event; 
-rel_rate_death_crypm_diag_e = 0.5 ; * effect of crypm being diagnosed early on rate of death from the crypm event; 
-rel_rate_death_sbi_diag_e = 0.8 ; * effect of tb being diagnosed early on rate of death from the sbi event; 
+rel_rate_death_oth_adc_diag_e = 0.9 ; * effect of oth_adc being diagnosed early on rate of death from the other adc event; 
+rel_rate_death_crypm_diag_e = 0.67 ; * effect of crypm being diagnosed early on rate of death from the crypm event; 
+rel_rate_death_sbi_diag_e = 0.67 ; * effect of sbi being diagnosed early on rate of death from the sbi event; 
+effect_visit_prob_diag_l = 0.9; * effect of being under care on prob of an adc or tb being diagnosed late;
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -9580,11 +9583,6 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if cm    ne . then do; time_since_last_cm = 0; value_last_cm = cm ; date_latest_cm=caldate{t}; end;
 	if cm   =. then time_since_last_cm = time_since_last_cm + 0.25;
 
-	* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment; 
-	effect_visit_prob_diag_l = 0; if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
- 	* unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
-	- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
-
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
 * consider if * dependent_on_time_step_length ;
@@ -9657,8 +9655,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x6 le tb_risk then tb  =1;
  
 		tb_diag_e = .; 
-		tb_prob_diag_1 = tb_base_prob_diag_1 * effect_visit_prob_diag_l 
-		if tblam_measured_this_per = 1 then tb_prob_diag_1 * tblam_eff_prob_diag_l
+
+		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment;  
+	 	* unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
+		- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
+
+		tb_prob_diag_1 = tb_base_prob_diag_l; 
+		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_1 = tb_prob_diag_1 * effect_visit_prob_diag_l ;
+		if tblam_measured_this_per = 1 then tb_prob_diag_1 = tb_prob_diag_1 * tblam_eff_prob_diag_l ;
 		tb_prob_diag_e = 1 - tb_prob_diag_l ;
 		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
 
@@ -9770,14 +9774,22 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
  
+		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill 
+		- i.e. low/zero effect of treatment  
+ 		unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
+		- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost
+		;
+		
 		crypm_diag_e = .; 
-		crypm_prob_diag_1 = crypm_base_prob_diag_1 * effect_visit_prob_diag_l 
-		if crag_measured_this_per = 1 then crypm_prob_diag_1 * crag_eff_prob_diag_l
+		crypm_prob_diag_1 = crypm_base_prob_diag_l ;
+		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then crypm_prob_diag_1 = crypm_prob_diag_1 * effect_visit_prob_diag_l ;
+		if crag_measured_this_per = 1 then crypm_prob_diag_1 = crypm_prob_diag_1 * crag_eff_prob_diag_l ;
 		crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
 		if crypm=1 then do; ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  end;
 
-		sbi_diag_e = .;
-		sbi_prob_diag_1 = sbi_base_prob_diag_1 * effect_visit_prob_diag_l 
+		sbi_diag_e = .; 
+		sbi_prob_diag_1 = sbi_base_prob_diag_l ;
+		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_1 = sbi_prob_diag_1 * effect_visit_prob_diag_l ;
 		sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
 		if sbi=1 then do; ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  end;
 
