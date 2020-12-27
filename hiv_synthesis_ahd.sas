@@ -311,8 +311,17 @@ incr_death_rate_sbi = 10;
 incr_death_rate_tb = 10;
 fold_change_ac_death_rate = 1;
 effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
+effect_crypm_proph = 0.5; * as above for crypm;
+effect_sbi_proph = 0.5; 
 tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
-tblam_eff_prob_diag_l = 0.4; 
+tblam_eff_prob_diag_l = 0.4; * effect of tb lam test on tb being diagnosed early;
+crypm_base_prob_diag_l = 0.5; * base probability that crypm is diagnosed late ; 
+crag_eff_prob_diag_l = 0.4; * effect of crag test on crypm being diagnosed early;  
+sbi_base_prob_diag_1 = 0.2; * base probability that sbi is diagnosed late ;
+rel_rate_death_tb_diag_e = 0.67; * effect of tb being diagnosed early on rate of death from the tb event; 
+rel_rate_death_oth_adc_diag_e = 0.8 ; * effect of tb being diagnosed early on rate of death from the other adc event; 
+rel_rate_death_crypm_diag_e = 0.5 ; * effect of crypm being diagnosed early on rate of death from the crypm event; 
+rel_rate_death_sbi_diag_e = 0.8 ; * effect of tb being diagnosed early on rate of death from the sbi event; 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -863,7 +872,7 @@ cost_lpr_a=(0.152/4)*1.2;
 cost_taz_a=(0.185/4)*1.2;   * global fund aug18 ; * mf ;
 cost_dol_a=(0.020/4)*1.2;   * jul 19 - south africa tender ;
 cost_dar_a=(0.200/4)*1.2;	
-tb_cost_a=(.050);
+tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
 vis_cost_a=(.020); 
 redn_in_vis_cost_vlm_supp = 0.010 ;
@@ -873,9 +882,10 @@ prep_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain 
 prep_drug_cost_tld = (0.065 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 cost_prep_clinic = 0.010; *Clinic/Programme costs relating to PrEP use in HIV-negative individuals; * changed from 0.10 to 0.30 after input from gesine;
 cost_prep_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
-
+ 
 * not * dependent_on_time_step_length ;
-adc_cost_a=(.200);
+* todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
+adc_cost_a=(.200); 
 non_tb_who3_cost_a=(.020);
 cd4_cost_a=(.010);
 vl_cost_a=(.022);
@@ -9570,10 +9580,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if cm    ne . then do; time_since_last_cm = 0; value_last_cm = cm ; date_latest_cm=caldate{t}; end;
 	if cm   =. then time_since_last_cm = time_since_last_cm + 0.25;
 
-
 	* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment; 
-	if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
-
+	effect_visit_prob_diag_l = 0; if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then effect_visit_prob_diag_l = 0.9;
+ 	* unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
+	- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
 
 	* rates used to assess risk of ARC, AIDS and AIDS death;
 
@@ -9647,9 +9657,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if x6 le tb_risk then tb  =1;
  
 		tb_diag_e = .; 
-		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per=1 then 
-				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
+		tb_prob_diag_1 = tb_base_prob_diag_1 * effect_visit_prob_diag_l 
+		if tblam_measured_this_per = 1 then tb_prob_diag_1 * tblam_eff_prob_diag_l
+		tb_prob_diag_e = 1 - tb_prob_diag_l ;
 		if tb=1 then do; ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  end;
+
 
 		if non_tb_who3_ev   =1 or tb  =1  then do;
 			
@@ -9743,12 +9755,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		oth_adc_rate = rate * 0.7; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
-		* todo: move effect_crypm_proph up ;
-		effect_crypm_proph = 0.5;
 		if 0 <= (caldate{t} - date_most_recent_crypm_proph) < 1 then crypm_rate = crypm_rate * effect_crypm_proph;
 		crypm_rate = rate * 0.15; 
 		* todo: determine length of effect of sbi_proph;
-		* todo: move effect_sbi_proph up ;
 		if 0 <= (caldate{t} - date_most_recent_sbi_proph) < 1 then sbi_rate = sbi_rate * effect_sbi_proph;
 		sbi_rate = rate * 0.15;
 
@@ -9760,18 +9769,17 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		x2=uniform(0); if x2 le risk_oth_adc then oth_adc=1;
 		x2=uniform(0); if x2 le risk_crypm then crypm=1;
 		x2=uniform(0); if x2 le risk_sbi then sbi=1;
-
-		* todo: move crypm_base_prob_diag_l = 0.5  crag_eff_prob_diag_l = 0.4   sbi_base_prob_diag_1 = 0.2 to top;
-		crypm_base_prob_diag_l = 0.5; crypm_eff_prob_diag_l = 0.4;  
+ 
 		crypm_diag_e = .; 
-		crypm_prob_diag_e = (1 - crypm_base_prob_diag_1); if crag_measured_this_per = 1 then 
-				crypm_prob_diag_e = (1 - (crypm_base_prob_diag_l * effect_visit_prob_diag_l * crag_eff_prob_diag_l));
+		crypm_prob_diag_1 = crypm_base_prob_diag_1 * effect_visit_prob_diag_l 
+		if crag_measured_this_per = 1 then crypm_prob_diag_1 * crag_eff_prob_diag_l
+		crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
 		if crypm=1 then do; ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  end;
 
-		sbi_base_prob_diag_l = 0.2;
-		sbi_diag_e = .; 
-		sbi_prob_diag_e = (1 - sbi_base_prob_diag_1); 
-		if sbi=1 then do; ii=uniform(0); sbi_diag_e=1; if ii < sbi_prob_diag_e then sbi_diag_e=0 ;  end;
+		sbi_diag_e = .;
+		sbi_prob_diag_1 = sbi_base_prob_diag_1 * effect_visit_prob_diag_l 
+		sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
+		if sbi=1 then do; ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  end;
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
@@ -9870,27 +9878,18 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 		hiv_death_rate=base_rate*fold_decr_hivdeath;
 
-		incr_death_rate_tb_ = incr_death_rate_tb; incr_death_rate_oth_adc_ = incr_death_rate_oth_adc;
-		incr_death_rate_crypm_ = incr_death_rate_crypm;  incr_death_rate_sbi_ = incr_death_rate_sbi;
+		incr_death_rate_tb_ = incr_death_rate_tb ; if tb_diag_e = 1 then incr_death_rate_tb_ = incr_death_rate_tb * rel_rate_death_tb_diag_e ;
+		incr_death_rate_oth_adc_ = incr_death_rate_oth_adc ; if oth_adc_diag_e = 1 then incr_death_rate_oth_adc_ = incr_death_rate_oth_adc * rel_rate_death_oth_adc_diag_e;
+		incr_death_rate_crypm_ = incr_death_rate_crypm ; if crypm_diag_e = 1 then incr_death_rate_crypm_ = incr_death_rate_crypm * rel_rate_death_crypm_diag_e ;
+		incr_death_rate_sbi_ = incr_death_rate_sbi ; if sbi_diag_e = 1 then incr_death_rate_sbi_ = incr_death_rate_sbi * rel_rate_death_sbi_diag_e ;
 
-		* todo: these below to be moved up;
-		rel_rate_death_tb_diag_e = 0.67; rel_rate_death_oth_adc_diag_e = 0.8 ; rel_rate_death_crypm_diag_e = 0.5 ; rel_rate_death_sbi_diag_e = 0.8 ;  
-		* todo: this below to be replaced - 0.67 above will be replaced with a parameter - will depend on when diag_e - visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) 
-		will be just one of the factors that determines diag_e;
-		if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then do; * so lower death rate if under care when adc occurs, unless under simplified visits 
-		and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) - reason for the poor adh condition
-		is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
-				incr_death_rate_tb_ = incr_death_rate_tb * rel_rate_death_tb_diag_e; 
-				incr_death_rate_oth_adc_ = incr_death_rate_oth_adc * rel_rate_death_oth_adc_diag_e; 
-				incr_death_rate_crypm_ = incr_death_rate_crypm * rel_rate_death_crypm_diag_e; 
-				incr_death_rate_sbi_ = incr_death_rate_sbi * rel_rate_death_sbi_diag_e; 
-		end;  
 		* todo: note visit is not set to 1 above just because adc has occurred, although registd  is set to 1;    
 
-		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) and who4_ = 0 then hiv_death_rate = hiv_death_rate*incr_death_rate_tb_;
+		if tb=1 and adc = 0 then hiv_death_rate = hiv_death_rate*incr_death_rate_tb_;
 		if oth_adc=1 then hiv_death_rate = hiv_death_rate*incr_death_rate_oth_adc_;
 		if crypm=1 then hiv_death_rate = hiv_death_rate*incr_death_rate_crypm_;
 		if sbi=1 then hiv_death_rate = hiv_death_rate*incr_death_rate_sbi_;
+		* todo: ensure only one adc / tb per 3 month period;
 
 		if  inc_death_rate_aids_disrup_covid = 1 and covid_disrup_affected = 1 and (adc=1 or (0 <= (caldate{t} - date_most_recent_tb) <= 0.5)) then do;  
 		hiv_death_rate = hiv_death_rate * 2;
