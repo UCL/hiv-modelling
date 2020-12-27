@@ -2455,7 +2455,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 %var(v=s_alive); %var(v=prop_elig_on_prep);  %var(v=p_onart_diag);  %var(v=p_onart_as_tld_prep);
-#var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
+%var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
 %var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
