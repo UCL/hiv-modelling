@@ -297,7 +297,7 @@ mc_int=2008;
 test_link_circ=1; 
 test_link_circ_prob = 0.05;
 
-* NATURAL PROGRESSION;
+* RISK OF HV RELATED CONDITIONS AND NATURAL PROGRESSION;
 
 mean_sqrtcd4_inf=27.5 ; * mean sqrt CD4 at infection;  
 fx = 1.0;  *overwritten - factor determining rate of natural cd4 decline; 
@@ -310,6 +310,9 @@ incr_death_rate_crypm = 10;
 incr_death_rate_sbi = 10;
 incr_death_rate_tb = 10;
 fold_change_ac_death_rate = 1;
+effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
+tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
+tblam_eff_prob_diag_l = 0.4; 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -9542,7 +9545,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
-	as diagnosing crypm early ;
+	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
 
 	d=uniform(0);
 
@@ -9635,16 +9638,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		non_tb_who3_risk  = 1 - exp (-0.25* (non_tb_who3_rate));
 		* ts1m: *	non_tb_who3_risk  = 1 - exp (-(1/12)*(non_tb_who3_rate));
 		* todo: determine length of effect of tb_proph;
-		* todo: move up ; effect_tb_proph = 0.5;
+		
 		if 0 <= (caldate{t} - date_most_recent_tb_proph) < 1 then tb_rate = tb_rate * effect_tb_proph;
 		tb_risk  = 1 - exp (-0.25* (tb_rate));
 
 		x5=uniform(0); x6=uniform(0);
 		if x5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if x6 le tb_risk then tb  =1;
-
-		* todo: move tb_base_prob_diag_l = 0.5  tblam_eff_prob_diag_l = 0.4 to top;
-		tb_base_prob_diag_l = 0.5; tblam_eff_prob_diag_l = 0.4;  
+ 
 		tb_diag_e = .; 
 		tb_prob_diag_e = (1 - tb_base_prob_diag_1); if tblam_measured_this_per=1 then 
 				tb_prob_diag_e = (1 - (tb_base_prob_diag_l * effect_visit_prob_diag_l * tblam_eff_prob_diag_l));
@@ -13305,6 +13306,8 @@ may need to do this by time from these above baselines :  this period, timenow -
 
 todo: check on all code with proc prints, check on how rapidly people get on art after an adc or tb that triggers a return to care -
 can it be fast enough as it might be in reality ?
+
+todo: think about when the beneficial effect of being diagnosed early (ie treatment available) emerged
 
 ;
 
