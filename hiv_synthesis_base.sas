@@ -157,7 +157,7 @@ to do before starting testing in preparation for runs:
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
+  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -9564,6 +9564,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* for sensitivity analysis - fold change in base rate;
 	base_rate = base_rate * fold_change_in_risk_base_rate;
 
+
 	* occurrence of who 3 symptoms;
 	who3_event   =0; tb   =0;
 	if t ge 2 and dead=0 then do; 
@@ -9833,8 +9834,6 @@ so a proportion (15%) are classified as non-who4_;
 		if x3 le liverdri3 then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
 		end;
-
-
 
 
 * what death rates to use ?;
@@ -14245,61 +14244,6 @@ cald = caldate_never_dot ;
 
 * procs;
 
-if 0 <= cd4 < 50 then cd4_g = 1 ;
-if 50 <= cd4 < 100 then cd4_g = 2 ;
-if 100 <= cd4 < 200 then cd4_g = 3 ;
-if 200 <= cd4 < 350 then cd4_g = 4 ;
-if 350 <= cd4 < 500 then cd4_g = 5 ;
-if 500 <= cd4 then cd4_g = 6 ;
-
-if vl < 1.7 then vl_g=1;
-if 1.7 <= vl < 3 then vl_g=2;
-if 3 <= vl < 4 then vl_g=3;
-if 4 <= vl < 5 then vl_g=4;
-if 5 <= vl then vl_g=5;
-
-if age < 30 then age_g = 1; 
-if 30 <= age < 45 then age_g = 2; 
-if 45 <= age < 60 then age_g = 3;
-if 60 <= age < 75 then age_g = 4;
-if 75 <= age      then age_g = 5;
-
-in_care_time_of_adc_tb = 0; if (visit=1 and (sv ne 1 or (adh > 0.8 and onart=1))) then in_care_time_of_adc_tb = 1; 
-
-/*
-
-proc freq; tables 
-
-cd4_g * tb vl_g * tb age_g * tb  pcp_p * tb  onart * tb  
-cd4_g * adc vl_g * adc age_g * adc  pcp_p * adc  onart * adc 
-cd4_g * who3_event vl_g * who3_event age_g * who3_event  pcp_p * who3_event  onart * who3_event
-; where hiv=1 and (death = . or caldate&j = death ) ;
-
-proc freq; tables 
-cd4_g * dead  vl_g * dead age_g * dead  pcp_p * dead  onart * dead ; where hiv=1 and (death = . or caldate&j = death ) ;
-
-*/
-
-proc freq; tables 
-who3_event * dead ;
-
-proc freq; tables 
-tb * in_care_time_of_adc_tb * dead  ; where hiv=1 and (death = . or caldate&j = death ) and tb = 1 ;
-
-proc freq; tables 
-adc * in_care_time_of_adc_tb * dead  ; where hiv=1 and (death = . or caldate&j = death ) and adc = 1 ;
-
-proc freq; tables cald; run;
-
-
-/*
-proc print; var cald hiv vl cd4 base_rate visit sv adh age gender ac_death_rate dcause rdcause  death_rix  hiv_death_rate  nod pcp_p 
-incr_death_rate_tb  incr_death_rate_tb_  incr_death_rate_adc incr_death_rate_adc_ date_most_recent_tb  who3_event adc  who3_risk who3_rate  
-fold_change_in_risk_base_rate  dead death ; 
-where age ge 15;
-
-proc freq; tables hiv; where death = .;  run;
-*/
 
 /*
 
@@ -16126,7 +16070,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-/*
+
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -16244,13 +16188,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
-
-data a.save_ahd;  set r1;
-
-*/
-
-data r1; set a.save_ahd ;
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
@@ -16285,7 +16222,7 @@ data r1; set a.save_ahd ;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_14_12_20_1pm_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_base_14_12_20_1pm_&dataset_id";  
 
 put   
 
