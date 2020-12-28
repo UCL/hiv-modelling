@@ -163,7 +163,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -5924,13 +5924,13 @@ end;
 
 * note these lines only apply in period of infection;
 
-if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; end;
+if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 
 * AP 21-7-19;  * note that onart=1 but registd = 0 ;
 if prep = 1 and pop_wide_tld_prep=1 then do; onart   =1; time0=caldate{t}; yrart=time0;  started_art_as_tld_prep=1;
-linefail=0; artline=1; tcur   =0;  line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; tcur   =0; 
+linefail=0; artline=1; tcur   =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1;  
 o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 end;
 
@@ -6014,7 +6014,7 @@ visit_tm1=visit;
 	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
 	if prep = 1 and pop_wide_tld_prep = 1 then do;
 	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
-	linefail=0; artline=1; tcur  =0;  line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
+	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
 
@@ -6651,7 +6651,7 @@ end;
 		if pregnant=1 then e_rate_restart = e_rate_restart*5; * jul18;
 		if return   =1 then e_rate_restart = 1;
 
-		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; interrupt_choice=0; end;
+		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
 		if return    =1 and restart=1 then do; 
 			if date_first_art_exp_initiation=. then date_first_art_exp_initiation=caldate{t};  
 			date_last_return_restart=caldate{t}; * oct16;
@@ -6662,11 +6662,11 @@ end;
 
 	if t ge 3 and interrupt_supply   =1 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0
 	and tcur_tm1=. and interrupt=0 and d < prob_supply_resumed then do;
-		restart   =1; onart   =1;tcur=0; interrupt_supply=0;
+		restart   =1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_supply=0;
 	end;
 
 	if  no_art_disrup_covid ne 1 and covid_disrup_affected = 1 and was_on_art_covid_disrup=1 then do;
-		restart   =1; onart   =1;tcur=0; interrupt_supply=0;
+		restart   =1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_supply=0;
 	end;
 
 
@@ -6682,7 +6682,7 @@ end;
   (ie line of therapy is one higher than lines failed, so they just restart the same regimen;
 
 	if t ge 2 and restart   =1 then do;
-		tcur=0;onart   =1;
+		tcur=0;onart   =1;cd4_tcur0 = cd4;
 		o_zdv=mr_zdv_tm1;
 		o_3tc=mr_3tc_tm1;
 		o_ten=mr_ten_tm1;
@@ -6716,7 +6716,7 @@ end;
 * INITIATION OF FIRST LINE THERAPY ;
 
 if yrart=caldate{t} and onart    ne 1 and  art_intro_date <= yrart then do;
-tcur=0;naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0;
+tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0;
 o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;
 
     if caldate{t} < 2010.5 then do; o_zdv=1; o_3tc=1; o_efa=1; end;
@@ -6736,7 +6736,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_tm1 =0 and prep=1 then tcur=0;
+	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end;
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -6754,7 +6754,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 * INITIATION OF 2ND LINE HAART - AFTER HAVING INTERRUPTED SINCE FAILING FIRST LINE;
 
 	if t ge 2 and start_line2=1 then do; 
-		artline=2; onart   =1; tcur=0;date_line2=caldate{t}; line2=1;choose_line2=1;adhav=adhav+altered_adh_sec_line; 
+		artline=2; onart   =1; tcur=0; cd4_tcur0 = cd4; date_line2=caldate{t}; line2=1;choose_line2=1;adhav=adhav+altered_adh_sec_line; 
 		if adhav gt 1 then adhav=1;
 	end;
 * increased adh second line;
@@ -6817,7 +6817,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 
 	if t ge 2 and start_line3=1 then do; 
-		artline=3; onart=1; tcur=0;date_line3=caldate{t}; line3=1;choose_line3=1;adhav=adhav+altered_adh_sec_line; 
+		artline=3; onart=1; tcur=0; cd4_tcur0 = cd4; date_line3=caldate{t}; line3=1;choose_line3=1;adhav=adhav+altered_adh_sec_line; 
 		if adhav gt 1 then adhav=1;
 	end;
 * increased adh second and third line;
@@ -13314,32 +13314,29 @@ if dead=1 then do;
 	if who3_event=1 then who3_event_dead=1;  if adc=1 then adc_dead=1; if tb=1 then tb_dead=1; if crypm=1 then crypm_dead=1; if sbi=1 then sbi_dead=1;      
 end;
 
+tcur3m_cd4t0l100=.; who3_tcur3m_cd4t0l100=.; adc_tcur3m_cd4t0l100=.; tb_tcur3m_cd4t0l100=.; crypm_tcur3m_cd4t0l100=.; sbi_tcur3m_cd4t0l100=.; 
+if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 100 then do;
+	tcur3m_cd4t0l100=1;  	if who3_event=1 then who3_tcur3m_cd4t0l100=1;  if adc=1 then adc_tcur3m_cd4t0l100=1; if tb=1 then tb_tcur3m_cd4t0l100=1; 
+	if crypm=1 then crypm_tcur3m_cd4t0l100=1; if sbi=1 then sbi_tcur3m_cd4t0l100=1; 
+end;
 
+tcur6m_cd4t0l100=.; who3_tcur6m_cd4t0l100=.; adc_tcur6m_cd4t0l100=.; tb_tcur6m_cd4t0l100=.; crypm_tcur6m_cd4t0l100=.; sbi_tcur6m_cd4t0l100=.; 
+if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 100 then do;
+	tcur6m_cd4t0l100=1;  	if who3_event=1 then who3_tcur6m_cd4t0l100=1;  if adc=1 then adc_tcur6m_cd4t0l100=1; if tb=1 then tb_tcur6m_cd4t0l100=1; 
+	if crypm=1 then crypm_tcur6m_cd4t0l100=1; if sbi=1 then sbi_tcur6m_cd4t0l100=1; 
+end;
 
+tcur3m_cd4t0l200=.; who3_tcur3m_cd4t0l200=.; adc_tcur3m_cd4t0l200=.; tb_tcur3m_cd4t0l200=.; crypm_tcur3m_cd4t0l200=.; sbi_tcur3m_cd4t0l200=.; 
+if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 200 then do;
+	tcur3m_cd4t0l200=1;  	if who3_event=1 then who3_tcur3m_cd4t0l200=1;  if adc=1 then adc_tcur3m_cd4t0l200=1; if tb=1 then tb_tcur3m_cd4t0l200=1; 
+	if crypm=1 then crypm_tcur3m_cd4t0l200=1; if sbi=1 then sbi_tcur3m_cd4t0l200=1; 
+end;
 
-* todo:
-
-create outputs to allow calculation of death rate in first three months from 1st visit for care, return, start art, restart, 
-vl measured > 1000, cd4 measured............ 
-may need to do this by time from these above baselines :  this period, timenow - date restart = 3 , 6 12   
-
-concentrate on 6 months as this is primary endpoint for reality ?
-
-i think we need to concentrate on risk in the tcur=0.25 + tcur = 0.5 period to mimic the reality trial
-
-also calculate death rate from time of tb crypm sbi (and including that time period in which event occurred ?) which led to engagement with care
-
-todo: with proc prints, check on how rapidly people get on art after an adc or tb that triggers a return to care -
-can it be fast enough as it might be in reality ?
-
-todo: think about when in calendar time the beneficial effect of being diagnosed early (ie treatment available) emerged
-
-todo: run base program and ahd to compare distribution of aids rate and hiv death rate over time - make sure increase to n=100000
-
-;
-
-
-
+tcur6m_cd4t0l200=.; who3_tcur6m_cd4t0l200=.; adc_tcur6m_cd4t0l200=.; tb_tcur6m_cd4t0l200=.; crypm_tcur6m_cd4t0l200=.; sbi_tcur6m_cd4t0l200=.; 
+if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 200 then do;
+	tcur6m_cd4t0l200=1;  	if who3_event=1 then who3_tcur6m_cd4t0l200=1;  if adc=1 then adc_tcur6m_cd4t0l200=1; if tb=1 then tb_tcur6m_cd4t0l200=1; 
+	if crypm=1 then crypm_tcur6m_cd4t0l200=1; if sbi=1 then sbi_tcur6m_cd4t0l200=1; 
+end;
 
 
 ***Newp groups;
@@ -14573,6 +14570,16 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_sbi_proph_dead + sbi_proph_dead ;    s_who3_event_dead  +  who3_event_dead ;    s_adc_dead +   adc_dead ;  s_crypm_dead + crypm_dead ;  
 	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
 	s_dead_tb + dead_tb;  s_dead_crypm + dead_crypm ;  s_dead_sbi + dead_sbi ;  s_dead_oth_adc +  dead_oth_adc;
+	s_tcur3m_cd4t0l100 + tcur3m_cd4t0l100 ; s_who3_tcur3m_cd4t0l100 + who3_tcur3m_cd4t0l100 ; s_adc_tcur3m_cd4t0l100 + adc_tcur3m_cd4t0l100 ; 
+	s_tb_tcur3m_cd4t0l100 + tb_tcur3m_cd4t0l100 ; s_crypm_tcur3m_cd4t0l100 + crypm_tcur3m_cd4t0l100 ; s_sbi_tcur3m_cd4t0l100 + sbi_tcur3m_cd4t0l100 ; 
+	s_tcur6m_cd4t0l100 + tcur6m_cd4t0l100 ; s_who3_tcur6m_cd4t0l100 + who3_tcur6m_cd4t0l100 ; s_adc_tcur6m_cd4t0l100 + adc_tcur6m_cd4t0l100 ; 
+	s_tb_tcur6m_cd4t0l100 + tb_tcur6m_cd4t0l100 ; s_crypm_tcur6m_cd4t0l100 + crypm_tcur6m_cd4t0l100 ; s_sbi_tcur6m_cd4t0l100 + sbi_tcur6m_cd4t0l100 ; 
+	s_tcur3m_cd4t0l200 + tcur3m_cd4t0l200 ; s_who3_tcur3m_cd4t0l200 + who3_tcur3m_cd4t0l200 ; s_adc_tcur3m_cd4t0l200 + adc_tcur3m_cd4t0l200 ; 
+	s_tb_tcur3m_cd4t0l200 + tb_tcur3m_cd4t0l200 ; s_crypm_tcur3m_cd4t0l200 + crypm_tcur3m_cd4t0l200 ; s_sbi_tcur3m_cd4t0l200 + sbi_tcur3m_cd4t0l200 ; 
+	s_tcur6m_cd4t0l200 + tcur6m_cd4t0l200 ; s_who3_tcur6m_cd4t0l200 + who3_tcur6m_cd4t0l200 ; s_adc_tcur6m_cd4t0l200 + adc_tcur6m_cd4t0l200 ; 
+	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
+
+
 end;
 
 
@@ -15534,6 +15541,10 @@ s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_v
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
+s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
+s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
+s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
+s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16300,6 +16311,10 @@ s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_v
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
+s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
+s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
+s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
+s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16479,7 +16494,6 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -16583,13 +16597,6 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=93,h=100,j=100,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=97,h=104,j=101,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=97,h=104,j=102,s=0);
-
-data a.save_ahd; set r1;
-
-*/
-
-data r1; set a.save_ahd;
-
 %update_r1(da1=1,da2=2,e=7,f=8,g=97,h=104,j=103,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=0);
@@ -16616,9 +16623,6 @@ data r1; set a.save_ahd;
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
-
-
-
 
 
 * ts1m:  need more update statements ;
@@ -17073,6 +17077,10 @@ s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_v
 s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    	s_dead_80  s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
+s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
+s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
+s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
+s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
