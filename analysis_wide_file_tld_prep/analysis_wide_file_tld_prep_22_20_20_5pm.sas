@@ -331,7 +331,8 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3 r_incidence1549_20_70_2 r_incidence1549_20_70_3 ;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3 
+r_incidence1549_20_70_2 r_incidence1549_20_70_3 ;
 ; run;
 ods html close;
 
