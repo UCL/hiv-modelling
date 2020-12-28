@@ -139,11 +139,11 @@ d_incidence1549_20_70_2 = incidence1549_20_70_2 - incidence1549_20_70_1 ;
 d_incidence1549_20_70_3 = incidence1549_20_70_3 - incidence1549_20_70_1 ;
 
 
-r_incidence1549_20_25_2 = 1 - (incidence1549_20_25_2 / incidence1549_20_25_1) ;
-r_incidence1549_20_25_3 = 1 - (incidence1549_20_25_3 / incidence1549_20_25_1) ;
+r_incidence1549_20_25_2 =  (incidence1549_20_25_2 / incidence1549_20_25_1) ;
+r_incidence1549_20_25_3 =  (incidence1549_20_25_3 / incidence1549_20_25_1) ;
 
-r_incidence1549_20_70_2 = 1 - (incidence1549_20_70_2 / incidence1549_20_70_1) ;
-r_incidence1549_20_70_3 = 1 - (incidence1549_20_70_3 / incidence1549_20_70_1) ;
+r_incidence1549_20_70_2 =  (incidence1549_20_70_2 / incidence1549_20_70_1) ;
+r_incidence1549_20_70_3 =  (incidence1549_20_70_3 / incidence1549_20_70_1) ;
 
 d_n_infection_20_25_2 = n_infection_20_25_1 - n_infection_20_25_2 ; 
 d_n_infection_20_25_3 = n_infection_20_25_1 - n_infection_20_25_3 ; 
@@ -241,6 +241,11 @@ proc means n mean median lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_20_2
 prop_w_1524_onprep_20_25_3;  run;
 ods html close;
 
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var prop_sw_onprep_20_25_1  prop_sw_onprep_20_25_2 prop_sw_onprep_20_25_3 ;  
+run; 
+ods html close;
+
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide; var p_prep_adhg80_20_25_1  p_prep_adhg80_20_25_2  p_prep_adhg80_20_25_3 ;  
@@ -260,6 +265,23 @@ prop_elig_on_prep_20_70_1 prop_elig_on_prep_20_70_2  prop_elig_on_prep_20_70_3
 d_p_elig_on_prep_20_70_2  d_p_elig_on_prep_20_70_3 ;  
 run; 
 ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide; var p_hiv1_prep_20_25_1  p_hiv1_prep_20_25_2  p_hiv1_prep_20_25_3 ;  
+run; 
+ods html close;
+
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide; var p_vlg1000_184m_20_25_1  p_vlg1000_184m_20_25_2 p_vlg1000_184m_20_25_3 ;  
+run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide; var p_vlg1000_65m_20_25_1  p_vlg1000_65m_20_25_2 p_vlg1000_65m_20_25_3 ;  
+run; 
+ods html close;
+
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var p_onart_20_25_1 p_onart_20_25_2 p_onart_20_25_3  
@@ -302,11 +324,9 @@ proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_70_1 incidenc
 ; run;
 ods html close;
 
-
-
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3 r_incidence1549_20_25_2 r_incidence1549_20_25_3 ;
-; run;
+proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_20_25_1 incidence1549_20_25_2 incidence1549_20_25_3 
+r_incidence1549_20_25_2 r_incidence1549_20_25_3 ; run;
 ods html close;
 
 
