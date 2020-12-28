@@ -47,12 +47,16 @@ d_n_tested_20_70_2 = n_tested_20_70_2 - n_tested_20_70_1 ;
 d_n_tested_20_70_3 = n_tested_20_70_3 - n_tested_20_70_1 ;
 
 min_ndb_500 = min(ndb_500_20_70_3, ndb_500_20_70_2, ndb_500_20_70_1);
+min_ndb_500_1_3 = min(ndb_500_20_70_3, ndb_500_20_70_1);
 
 ce_500=0;  
 if ndb_500_20_70_3 = min_ndb_500 then ce_500=3;
 if ndb_500_20_70_2 = min_ndb_500 then ce_500=2;
 if ndb_500_20_70_1 = min_ndb_500 then ce_500=1;
 
+ce_500_1_3=0;  
+if ndb_500_20_70_3 = min_ndb_500_1_3 then ce_500_1_3=3;
+if ndb_500_20_70_1 = min_ndb_500_1_3 then ce_500_1_3=1;
 
 d_prop_art_or_prep_20_70_2 = prop_art_or_prep_20_70_2 - prop_art_or_prep_20_70_1;
 d_prop_art_or_prep_20_70_3 = prop_art_or_prep_20_70_3 - prop_art_or_prep_20_70_1;
@@ -150,12 +154,6 @@ d_n_infection_20_25_3 = n_infection_20_25_1 - n_infection_20_25_3 ;
 
 d_n_infection_20_70_2 = n_infection_20_70_1 - n_infection_20_70_2 ; 
 d_n_infection_20_70_3 = n_infection_20_70_1 - n_infection_20_70_3 ; 
-
-cost_per_infection_av_20_25_2 = (d_dcost_20_25_2 * 1000000) / d_n_infection_20_25_2;
-cost_per_infection_av_20_25_3 = (d_dcost_20_25_3 * 1000000) / d_n_infection_20_25_3;
-
-cost_per_infection_av_20_70_2 = (d_dcost_20_70_2 * 1000000) / d_n_infection_20_70_2;
-cost_per_infection_av_20_70_3 = (d_dcost_20_70_3 * 1000000) / d_n_infection_20_70_3;
 
 n_death_hivrel_20_25_1 = 4 * n_death_hivrel_20_25_1;
 n_death_hivrel_20_25_2 = 4 * n_death_hivrel_20_25_2;
@@ -359,6 +357,7 @@ proc means n mean lclm uclm p5 p95 data=wide; var
 d_ddaly_all_20_25_2  d_ddaly_all_20_25_3
 d_ndb_500_20_25_2  d_ndb_500_20_25_3
 d_dcost_20_25_2  d_dcost_20_25_3 
+d_n_infection_20_25_2 d_n_infection_20_25_3
 d_dcost_prep_20_25_2  d_dcost_prep_20_25_3  
 d_dart_cost_y_20_25_2 d_dart_cost_y_20_25_3
 d_n_tested_20_25_2 d_n_tested_20_25_3
@@ -404,6 +403,7 @@ d_p_elig_on_prep_20_70_2 d_p_elig_on_prep_20_70_3
 d_p_1564_hivneg_onprep_20_70_2 d_p_1564_hivneg_onprep_20_70_3
 d_p_elig_prep_20_70_2 d_p_elig_prep_20_70_3
 d_p_onart_as_tld_prep_20_70_2 d_p_onart_as_tld_prep_20_70_3 
+dcost_20_70_1 dcost_20_70_2  dcost_20_70_3 
 d_p_onart_diag_20_70_2 d_p_onart_diag_20_70_3
 d_p_onart_20_70_2 d_p_onart_20_70_3 
 incidence1549_20_70_1 incidence1549_20_70_2 incidence1549_20_70_3
@@ -420,12 +420,31 @@ p_onart_as_tld_prep_20_70_1 p_onart_as_tld_prep_20_70_2 p_onart_as_tld_prep_20_7
 p_onart_diag_20_70_1  p_onart_diag_20_70_2  p_onart_diag_20_70_3
 p_onart_20_70_1  p_onart_20_70_2  p_onart_20_70_3
 cost_per_infection_av_20_70_2 cost_per_infection_av_20_70_3
-
+dadc_cost_20_70_1   dadc_cost_20_70_2    dadc_cost_20_70_3   
+dcd4_cost_20_70_1   dcd4_cost_20_70_2    dcd4_cost_20_70_3   
+dvl_cost_20_70_1   dvl_cost_20_70_2  dvl_cost_20_70_3   
+dvis_cost_20_70_1  dvis_cost_20_70_2    dvis_cost_20_70_3   
+dwho3_cost_20_70_1   dwho3_cost_20_70_2   dwho3_cost_20_70_3   
+dcot_cost_20_70_1   dcot_cost_20_70_2    dcot_cost_20_70_3   
+dtb_cost_20_70_1   dtb_cost_20_70_2    dtb_cost_20_70_3   
+dres_cost_20_70_1   dres_cost_20_70_2  dres_cost_20_70_3 
+dtest_cost_20_70_1  dtest_cost_20_70_2   dtest_cost_20_70_3  
+d_t_adh_int_cost_20_70_1  d_t_adh_int_cost_20_70_2    d_t_adh_int_cost_20_70_3   
+dswitchline_cost_20_70_1 dswitchline_cost_20_70_2 dswitchline_cost_20_70_3
+dtaz_cost_20_70_1 dtaz_cost_20_70_2  dtaz_cost_20_70_3 
+dcost_drug_level_test_20_70_1   dcost_drug_level_test_20_70_2   dcost_drug_level_test_20_70_3   
+dclin_cost_20_70_1  dclin_cost_20_70_2   dclin_cost_20_70_3   
+dcost_circ_20_70_1  dcost_circ_20_70_2 dcost_circ_20_70_3
+dcost_condom_dn_20_70_1 dcost_condom_dn_20_70_2  dcost_condom_dn_20_70_3
+dcost_drug_level_test_20_70_1 dcost_drug_level_test_20_70_2   dcost_drug_level_test_20_70_3  
+dcost_child_hiv_20_70_1 dcost_child_hiv_20_70_2 dcost_child_hiv_20_70_3
+dcost_non_aids_pre_death_20_70_1 dcost_non_aids_pre_death_20_70_2  dcost_non_aids_pre_death_20_70_3 
+dcost_prep_visit_20_70_2  dcost_prep_visit_20_70_3
 ;
 run; 
 ods html close;
 
-proc freq; tables ce_500 ; run;
+proc freq; tables ce_500 ce_500_1_3 ; run;
 
 
 
