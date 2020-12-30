@@ -14605,14 +14605,14 @@ non_tb_who3_ev * dead  adc * in_care_time_of_adc_tb * dead  tb * in_care_time_of
 
 */
 
-
+/*
 
 proc print; var cald death registd yrart visit interrupt lost date1pos date_1st_hiv_care_visit return restart tcur onart nactive 
 vl vm cd4 tb crypm sbi oth_adc who3_event death_rix tb_diag_e crypm_diag_e sbi_diag_e dead ; 
 where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 250;
 run;
 
-
+*/
 
 
 
@@ -16650,7 +16650,7 @@ end;
 * file "/home/rmjlaph/Scratch/_output_ahd_14_12_20_1pm_&dataset_id";  
 data b.out_ahd_&dataset_id(compress=binary); set cum_l1;
 
-put   
+keep
 
 
 /*general*/

@@ -16232,7 +16232,7 @@ data b.out_base_&dataset_id(compress=binary); set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 * file "/home/rmjlaph/Scratch/_output_base_14_12_20_1pm_&dataset_id";  
 
-put   
+keep
 
 
 /*general*/
