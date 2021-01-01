@@ -163,7 +163,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000  ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -14242,8 +14242,22 @@ end;
 cald = caldate_never_dot ;
 
 
+
 * procs;
 
+proc print; var cald hiv death dead  ; 
+where 15 <= age < 65 and hiv=1 ; run;
+proc freq; tables hiv; where 15 <= age < 65 and death = . or death=caldate&j ; run;
+
+/*
+
+proc print; var cald cd4  who3_rate  who3_risk  who3_event tb dead ; 
+where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 100;
+run;
+
+proc freq; tables hiv cald  ; run;
+
+*/
 
 /*
 
@@ -15311,7 +15325,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
-
+proc print; var s_hiv1564 ; run;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

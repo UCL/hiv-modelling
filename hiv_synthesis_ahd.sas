@@ -305,10 +305,10 @@ gx=1.0;
 fold_incr_who3 = 5;
 fold_decr_hivdeath=0.25; * degree to which hiv death rate is lower than aids rate;
 fold_change_in_risk_base_rate = 1;
-incr_death_rate_oth_adc = 10;
-incr_death_rate_crypm = 10;
-incr_death_rate_sbi = 10;
-incr_death_rate_tb = 10;
+incr_death_rate_oth_adc = 5 ;
+incr_death_rate_crypm = 5 ;
+incr_death_rate_sbi = 5 ;
+incr_death_rate_tb = 5 ;
 fold_change_ac_death_rate = 1;
 
 * following values are placeholdes - should result in similar aids and death rate to previous coding;
@@ -9645,14 +9645,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		non_tb_who3_risk  = 1 - exp (-0.25* (non_tb_who3_rate));
 		* ts1m: *	non_tb_who3_risk  = 1 - exp (-(1/12)*(non_tb_who3_rate));
+
 		* todo: determine length of effect of tb_proph;
-		
 		if 0 <= (caldate{t} - date_most_recent_tb_proph) < 1 then tb_rate = tb_rate * effect_tb_proph;
 		tb_risk  = 1 - exp (-0.25* (tb_rate));
 
-		x5=uniform(0); x6=uniform(0);
-		if x5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
-		if x6 le tb_risk then tb  =1;
+		xy5=uniform(0); xy6=uniform(0);
+		if xy5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
+		if xy6 le tb_risk then tb  =1;
  
 		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill - i.e. low/zero effect of treatment;  
 	 	* unless under simplified visits and poorly adherent to art (because in that situation not really visiting clinicians/nurses at most visits) 
@@ -14587,9 +14587,20 @@ cald = caldate_never_dot ;
 
 
 
-/*
 
 * procs;
+
+/*
+
+proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
+where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 100;
+run;
+
+proc freq; tables hiv cald  ; run;
+
+*/
+
+/*
 
 proc freq; tables 
 cd4_g * non_tb_who3_ev vl_g * non_tb_who3_ev age_g * non_tb_who3_ev  pcp_p * non_tb_who3_ev  onart * non_tb_who3_ev 
