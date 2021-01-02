@@ -11184,6 +11184,113 @@ art_time_adh_bcd4_g = 104; if caldate&j = death then art_time_adh_bcd4_dead_g =1
 if 5.25 <= caldate&j - yrart <= 10  and (onart=1 or int_clinic_not_aw =1) and 0.8 <= adh_in_first_period_onart  and 500 <= cd4art  then do; 
 art_time_adh_bcd4_g = 105; if caldate&j = death then art_time_adh_bcd4_dead_g =105; if caldate&j = death and dcause=1 then art_time_adh_bcd4_adead_g=105; end;
 
+* to compare with results on death rate by baseline cd4 count ;
+if caldate&j - yrart = 0.25 and . < cd4art < 100 then do; art_3m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_3m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 0.5 and . < cd4art < 100 then do; art_6m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_6m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 0.75 and . < cd4art < 100 then do; art_9m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_9m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 1.0 and . < cd4art < 100 then do; art_12m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_12m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 1.25 and . < cd4art < 100 then do; art_15m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_15m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 1.50 and . < cd4art < 100 then do; art_18m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_18m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 1.75 and . < cd4art < 100 then do; art_21m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_21m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 2.00 and . < cd4art < 100 then do; art_24m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_24m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 2.25 and . < cd4art < 100 then do; art_27m_bcd4_lt100 = 1; ; if caldate&j = death and dcause=1 then art_27m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 2.50 and . < cd4art < 100 then do; art_30m_bcd4_lt100 = 1;  if caldate&j = death and dcause=1 then art_30m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 2.75 and . < cd4art < 100 then do; art_33m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_33m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 3.00 and . < cd4art < 100 then do; art_36m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_36m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 3.25 and . < cd4art < 100 then do; art_39m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_39m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 3.50 and . < cd4art < 100 then do; art_42m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_42m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 3.75 and . < cd4art < 100 then do; art_45m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_45m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 4.00 and . < cd4art < 100 then do; art_48m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_48m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 4.25 and . < cd4art < 100 then do; art_51m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_51m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 4.50 and . < cd4art < 100 then do; art_54m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_54m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 4.75 and . < cd4art < 100 then do; art_57m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_57m_bcd4_lt100_adead =1; end;
+if caldate&j - yrart = 5.00 and . < cd4art < 100 then do; art_60m_bcd4_lt100 = 1; if caldate&j = death and dcause=1 then art_60m_bcd4_lt100_adead =1; end;
+
+if caldate&j - yrart = 0.25 and 100 <= cd4art < 200 then do; art_3m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_3m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 0.5 and 100 <= cd4art < 200 then do; art_6m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_6m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 0.75 and 100 <= cd4art < 200 then do; art_9m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_9m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 1.0 and 100 <= cd4art < 200 then do; art_12m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_12m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 1.25 and 100 <= cd4art < 200 then do; art_15m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_15m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 1.50 and 100 <= cd4art < 200 then do; art_18m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_18m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 1.75 and 100 <= cd4art < 200 then do; art_21m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_21m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 2.00 and 100 <= cd4art < 200 then do; art_24m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_24m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 2.25 and 100 <= cd4art < 200 then do; art_27m_bcd4_100200 = 1; ; if caldate&j = death and dcause=1 then art_27m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 2.50 and 100 <= cd4art < 200 then do; art_30m_bcd4_100200 = 1;  if caldate&j = death and dcause=1 then art_30m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 2.75 and 100 <= cd4art < 200 then do; art_33m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_33m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 3.00 and 100 <= cd4art < 200 then do; art_36m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_36m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 3.25 and 100 <= cd4art < 200 then do; art_39m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_39m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 3.50 and 100 <= cd4art < 200 then do; art_42m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_42m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 3.75 and 100 <= cd4art < 200 then do; art_45m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_45m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 4.00 and 100 <= cd4art < 200 then do; art_48m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_48m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 4.25 and 100 <= cd4art < 200 then do; art_51m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_51m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 4.50 and 100 <= cd4art < 200 then do; art_54m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_54m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 4.75 and 100 <= cd4art < 200 then do; art_57m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_57m_bcd4_100200_adead =1; end;
+if caldate&j - yrart = 5.00 and 100 <= cd4art < 200 then do; art_60m_bcd4_100200 = 1; if caldate&j = death and dcause=1 then art_60m_bcd4_100200_adead =1; end;
+
+if caldate&j - yrart = 0.25 and 200 <= cd4art < 350 then do; art_3m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_3m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 0.5 and 200 <= cd4art < 350 then do; art_6m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_6m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 0.75 and 200 <= cd4art < 350 then do; art_9m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_9m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 1.0 and 200 <= cd4art < 350 then do; art_12m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_12m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 1.25 and 200 <= cd4art < 350 then do; art_15m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_15m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 1.50 and 200 <= cd4art < 350 then do; art_18m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_18m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 1.75 and 200 <= cd4art < 350 then do; art_21m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_21m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 2.00 and 200 <= cd4art < 350 then do; art_24m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_24m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 2.25 and 200 <= cd4art < 350 then do; art_27m_bcd4_200350 = 1; ; if caldate&j = death and dcause=1 then art_27m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 2.50 and 200 <= cd4art < 350 then do; art_30m_bcd4_200350 = 1;  if caldate&j = death and dcause=1 then art_30m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 2.75 and 200 <= cd4art < 350 then do; art_33m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_33m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 3.00 and 200 <= cd4art < 350 then do; art_36m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_36m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 3.25 and 200 <= cd4art < 350 then do; art_39m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_39m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 3.50 and 200 <= cd4art < 350 then do; art_42m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_42m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 3.75 and 200 <= cd4art < 350 then do; art_45m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_45m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 4.00 and 200 <= cd4art < 350 then do; art_48m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_48m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 4.25 and 200 <= cd4art < 350 then do; art_51m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_51m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 4.50 and 200 <= cd4art < 350 then do; art_54m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_54m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 4.75 and 200 <= cd4art < 350 then do; art_57m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_57m_bcd4_200350_adead =1; end;
+if caldate&j - yrart = 5.00 and 200 <= cd4art < 350 then do; art_60m_bcd4_200350 = 1; if caldate&j = death and dcause=1 then art_60m_bcd4_200350_adead =1; end;
+
+if caldate&j - yrart = 0.25 and 350 <= cd4art < 500 then do; art_3m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_3m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 0.5 and 350 <= cd4art < 500 then do; art_6m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_6m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 0.75 and 350 <= cd4art < 500 then do; art_9m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_9m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 1.0 and 350 <= cd4art < 500 then do; art_12m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_12m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 1.25 and 350 <= cd4art < 500 then do; art_15m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_15m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 1.50 and 350 <= cd4art < 500 then do; art_18m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_18m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 1.75 and 350 <= cd4art < 500 then do; art_21m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_21m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 2.00 and 350 <= cd4art < 500 then do; art_24m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_24m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 2.25 and 350 <= cd4art < 500 then do; art_27m_bcd4_350500 = 1; ; if caldate&j = death and dcause=1 then art_27m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 2.50 and 350 <= cd4art < 500 then do; art_30m_bcd4_350500 = 1;  if caldate&j = death and dcause=1 then art_30m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 2.75 and 350 <= cd4art < 500 then do; art_33m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_33m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 3.00 and 350 <= cd4art < 500 then do; art_36m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_36m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 3.25 and 350 <= cd4art < 500 then do; art_39m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_39m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 3.50 and 350 <= cd4art < 500 then do; art_42m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_42m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 3.75 and 350 <= cd4art < 500 then do; art_45m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_45m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 4.00 and 350 <= cd4art < 500 then do; art_48m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_48m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 4.25 and 350 <= cd4art < 500 then do; art_51m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_51m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 4.50 and 350 <= cd4art < 500 then do; art_54m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_54m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 4.75 and 350 <= cd4art < 500 then do; art_57m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_57m_bcd4_350500_adead =1; end;
+if caldate&j - yrart = 5.00 and 350 <= cd4art < 500 then do; art_60m_bcd4_350500 = 1; if caldate&j = death and dcause=1 then art_60m_bcd4_350500_adead =1; end;
+
+if caldate&j - yrart = 0.25 and 500 <= cd4art  then do; art_3m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_3m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 0.5 and 500 <= cd4art  then do; art_6m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_6m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 0.75 and 500 <= cd4art  then do; art_9m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_9m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 1.0 and 500 <= cd4art  then do; art_12m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_12m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 1.25 and 500 <= cd4art  then do; art_15m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_15m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 1.50 and 500 <= cd4art  then do; art_18m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_18m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 1.75 and 500 <= cd4art  then do; art_21m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_21m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 2.00 and 500 <= cd4art  then do; art_24m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_24m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 2.25 and 500 <= cd4art  then do; art_27m_bcd4_ge500 = 1; ; if caldate&j = death and dcause=1 then art_27m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 2.50 and 500 <= cd4art  then do; art_30m_bcd4_ge500 = 1;  if caldate&j = death and dcause=1 then art_30m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 2.75 and 500 <= cd4art  then do; art_33m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_33m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 3.00 and 500 <= cd4art  then do; art_36m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_36m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 3.25 and 500 <= cd4art  then do; art_39m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_39m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 3.50 and 500 <= cd4art  then do; art_42m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_42m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 3.75 and 500 <= cd4art  then do; art_45m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_45m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 4.00 and 500 <= cd4art  then do; art_48m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_48m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 4.25 and 500 <= cd4art  then do; art_51m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_51m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 4.50 and 500 <= cd4art  then do; art_54m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_54m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 4.75 and 500 <= cd4art  then do; art_57m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_57m_bcd4_ge500_adead =1; end;
+if caldate&j - yrart = 5.00 and 500 <= cd4art  then do; art_60m_bcd4_ge500 = 1; if caldate&j = death and dcause=1 then art_60m_bcd4_ge500_adead =1; end;
+
+diagnosed_dead=0; if resgistd=1 and caldate&j=death then diagnosed_dead=1;
 
 onart_vlg1 = .;onart_vlg2 = .;onart_vlg3 = .;onart_vlg4 = .;onart_vlg5 = .; 
 onart_vlg1_r = .; onart_vlg2_r = .; onart_vlg3_r = .; onart_vlg4_r = .; onart_vlg5_r = .; 
@@ -14501,6 +14608,8 @@ if 0 <= age or death ne . then do;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
 end;
 
+* note - I have stopped adding an "_80" for all of these variables - so we need to take care for each s_ variable whether it applies to 15-64 
+or 15-79 or all ages.   I think we should consider changing the above from 15-64 to 15+ or 15-79;
 if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_live_daly_80 + live_daly_80 ; s_live_ddaly_80 + live_ddaly_80 ;
 
@@ -14529,6 +14638,105 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
    	s_dart_1_cost_80 + _dart_1_cost ; s_dart_2_cost_80 + _dart_2_cost ; s_dart_3_cost_80 + _dart_3_cost ; s_dcost_vl_not_done_80 + _dcost_vl_not_done ;		  		
   	s_dcost_non_aids_pre_death_80 + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death_80 + ddaly_non_aids_pre_death ;     			  	  	   
  	s_dcost_drug_level_test_80 + _dcost_drug_level_test ;    	   		   		
+
+	/* death by time on art */
+
+	s_diag80 + registd ;  s_diagnosed_dead + diagnosed_dead ;
+	s_art_3m_bcd4_lt100 + art_3m_bcd4_lt100 ; s_art_3m_bcd4_lt100_adead + art_3m_bcd4_lt100_adead ;	s_art_6m_bcd4_lt100 + art_6m_bcd4_lt100 ; 
+	s_art_6m_bcd4_lt100_adead + art_6m_bcd4_lt100_adead ; s_art_9m_bcd4_lt100 + art_9m_bcd4_lt100 ; s_art_9m_bcd4_lt100_adead + art_9m_bcd4_lt100_adead ;
+	s_art_12m_bcd4_lt100 + art_12m_bcd4_lt100 ; s_art_12m_bcd4_lt100_adead + art_12m_bcd4_lt100_adead ; 	
+	s_art_15m_bcd4_lt100 + art_15m_bcd4_lt100 ; s_art_15m_bcd4_lt100_adead + art_15m_bcd4_lt100_adead ;
+	s_art_18m_bcd4_lt100 + art_18m_bcd4_lt100 ; s_art_18m_bcd4_lt100_adead + art_18m_bcd4_lt100_adead ;
+	s_art_21m_bcd4_lt100 + art_21m_bcd4_lt100 ; s_art_21m_bcd4_lt100_adead + art_21m_bcd4_lt100_adead ;
+	s_art_24m_bcd4_lt100 + art_24m_bcd4_lt100 ; s_art_24m_bcd4_lt100_adead + art_24m_bcd4_lt100_adead ;
+	s_art_27m_bcd4_lt100 + art_27m_bcd4_lt100 ; s_art_27m_bcd4_lt100_adead + art_27m_bcd4_lt100_adead ;
+	s_art_30m_bcd4_lt100 + art_30m_bcd4_lt100 ; s_art_30m_bcd4_lt100_adead + art_30m_bcd4_lt100_adead ;
+	s_art_33m_bcd4_lt100 + art_33m_bcd4_lt100 ; s_art_33m_bcd4_lt100_adead + art_33m_bcd4_lt100_adead ;
+	s_art_36m_bcd4_lt100 + art_36m_bcd4_lt100 ; s_art_36m_bcd4_lt100_adead + art_36m_bcd4_lt100_adead ;
+	s_art_39m_bcd4_lt100 + art_39m_bcd4_lt100 ; s_art_39m_bcd4_lt100_adead + art_39m_bcd4_lt100_adead ;
+	s_art_42m_bcd4_lt100 + art_42m_bcd4_lt100 ; s_art_42m_bcd4_lt100_adead + art_42m_bcd4_lt100_adead ;
+	s_art_45m_bcd4_lt100 + art_45m_bcd4_lt100 ; s_art_45m_bcd4_lt100_adead + art_45m_bcd4_lt100_adead ;
+	s_art_48m_bcd4_lt100 + art_48m_bcd4_lt100 ; s_art_48m_bcd4_lt100_adead + art_48m_bcd4_lt100_adead ;
+	s_art_51m_bcd4_lt100 + art_51m_bcd4_lt100 ; s_art_51m_bcd4_lt100_adead + art_51m_bcd4_lt100_adead ;
+	s_art_54m_bcd4_lt100 + art_54m_bcd4_lt100 ; s_art_54m_bcd4_lt100_adead + art_54m_bcd4_lt100_adead ;
+	s_art_57m_bcd4_lt100 + art_57m_bcd4_lt100 ; s_art_57m_bcd4_lt100_adead + art_57m_bcd4_lt100_adead ;
+	s_art_60m_bcd4_lt100 + art_60m_bcd4_lt100 ; s_art_60m_bcd4_lt100_adead + art_60m_bcd4_lt100_adead ;
+	s_art_3m_bcd4_100200 + art_3m_bcd4_100200 ; s_art_3m_bcd4_100200_adead + art_3m_bcd4_100200_adead ;	s_art_6m_bcd4_100200 + art_6m_bcd4_100200 ; 
+	s_art_6m_bcd4_100200_adead + art_6m_bcd4_100200_adead ; s_art_9m_bcd4_100200 + art_9m_bcd4_100200 ; s_art_9m_bcd4_100200_adead + art_9m_bcd4_100200_adead ;
+	s_art_12m_bcd4_100200 + art_12m_bcd4_100200 ; s_art_12m_bcd4_100200_adead + art_12m_bcd4_100200_adead ; 	
+	s_art_15m_bcd4_100200 + art_15m_bcd4_100200 ; s_art_15m_bcd4_100200_adead + art_15m_bcd4_100200_adead ;
+	s_art_18m_bcd4_100200 + art_18m_bcd4_100200 ; s_art_18m_bcd4_100200_adead + art_18m_bcd4_100200_adead ;
+	s_art_21m_bcd4_100200 + art_21m_bcd4_100200 ; s_art_21m_bcd4_100200_adead + art_21m_bcd4_100200_adead ;
+	s_art_24m_bcd4_100200 + art_24m_bcd4_100200 ; s_art_24m_bcd4_100200_adead + art_24m_bcd4_100200_adead ;
+	s_art_27m_bcd4_100200 + art_27m_bcd4_100200 ; s_art_27m_bcd4_100200_adead + art_27m_bcd4_100200_adead ;
+	s_art_30m_bcd4_100200 + art_30m_bcd4_100200 ; s_art_30m_bcd4_100200_adead + art_30m_bcd4_100200_adead ;
+	s_art_33m_bcd4_100200 + art_33m_bcd4_100200 ; s_art_33m_bcd4_100200_adead + art_33m_bcd4_100200_adead ;
+	s_art_36m_bcd4_100200 + art_36m_bcd4_100200 ; s_art_36m_bcd4_100200_adead + art_36m_bcd4_100200_adead ;
+	s_art_39m_bcd4_100200 + art_39m_bcd4_100200 ; s_art_39m_bcd4_100200_adead + art_39m_bcd4_100200_adead ;
+	s_art_42m_bcd4_100200 + art_42m_bcd4_100200 ; s_art_42m_bcd4_100200_adead + art_42m_bcd4_100200_adead ;
+	s_art_45m_bcd4_100200 + art_45m_bcd4_100200 ; s_art_45m_bcd4_100200_adead + art_45m_bcd4_100200_adead ;
+	s_art_48m_bcd4_100200 + art_48m_bcd4_100200 ; s_art_48m_bcd4_100200_adead + art_48m_bcd4_100200_adead ;
+	s_art_51m_bcd4_100200 + art_51m_bcd4_100200 ; s_art_51m_bcd4_100200_adead + art_51m_bcd4_100200_adead ;
+	s_art_54m_bcd4_100200 + art_54m_bcd4_100200 ; s_art_54m_bcd4_100200_adead + art_54m_bcd4_100200_adead ;
+	s_art_57m_bcd4_100200 + art_57m_bcd4_100200 ; s_art_57m_bcd4_100200_adead + art_57m_bcd4_100200_adead ;
+	s_art_60m_bcd4_100200 + art_60m_bcd4_100200 ; s_art_60m_bcd4_100200_adead + art_60m_bcd4_100200_adead ;
+	s_art_3m_bcd4_200350 + art_3m_bcd4_200350 ; s_art_3m_bcd4_200350_adead + art_3m_bcd4_200350_adead ;	s_art_6m_bcd4_200350 + art_6m_bcd4_200350 ; 
+	s_art_6m_bcd4_200350_adead + art_6m_bcd4_200350_adead ; s_art_9m_bcd4_200350 + art_9m_bcd4_200350 ; s_art_9m_bcd4_200350_adead + art_9m_bcd4_200350_adead ;
+	s_art_12m_bcd4_200350 + art_12m_bcd4_200350 ; s_art_12m_bcd4_200350_adead + art_12m_bcd4_200350_adead ; 	
+	s_art_15m_bcd4_200350 + art_15m_bcd4_200350 ; s_art_15m_bcd4_200350_adead + art_15m_bcd4_200350_adead ;
+	s_art_18m_bcd4_200350 + art_18m_bcd4_200350 ; s_art_18m_bcd4_200350_adead + art_18m_bcd4_200350_adead ;
+	s_art_21m_bcd4_200350 + art_21m_bcd4_200350 ; s_art_21m_bcd4_200350_adead + art_21m_bcd4_200350_adead ;
+	s_art_24m_bcd4_200350 + art_24m_bcd4_200350 ; s_art_24m_bcd4_200350_adead + art_24m_bcd4_200350_adead ;
+	s_art_27m_bcd4_200350 + art_27m_bcd4_200350 ; s_art_27m_bcd4_200350_adead + art_27m_bcd4_200350_adead ;
+	s_art_30m_bcd4_200350 + art_30m_bcd4_200350 ; s_art_30m_bcd4_200350_adead + art_30m_bcd4_200350_adead ;
+	s_art_33m_bcd4_200350 + art_33m_bcd4_200350 ; s_art_33m_bcd4_200350_adead + art_33m_bcd4_200350_adead ;
+	s_art_36m_bcd4_200350 + art_36m_bcd4_200350 ; s_art_36m_bcd4_200350_adead + art_36m_bcd4_200350_adead ;
+	s_art_39m_bcd4_200350 + art_39m_bcd4_200350 ; s_art_39m_bcd4_200350_adead + art_39m_bcd4_200350_adead ;
+	s_art_42m_bcd4_200350 + art_42m_bcd4_200350 ; s_art_42m_bcd4_200350_adead + art_42m_bcd4_200350_adead ;
+	s_art_45m_bcd4_200350 + art_45m_bcd4_200350 ; s_art_45m_bcd4_200350_adead + art_45m_bcd4_200350_adead ;
+	s_art_48m_bcd4_200350 + art_48m_bcd4_200350 ; s_art_48m_bcd4_200350_adead + art_48m_bcd4_200350_adead ;
+	s_art_51m_bcd4_200350 + art_51m_bcd4_200350 ; s_art_51m_bcd4_200350_adead + art_51m_bcd4_200350_adead ;
+	s_art_54m_bcd4_200350 + art_54m_bcd4_200350 ; s_art_54m_bcd4_200350_adead + art_54m_bcd4_200350_adead ;
+	s_art_57m_bcd4_200350 + art_57m_bcd4_200350 ; s_art_57m_bcd4_200350_adead + art_57m_bcd4_200350_adead ;
+	s_art_60m_bcd4_200350 + art_60m_bcd4_200350 ; s_art_60m_bcd4_200350_adead + art_60m_bcd4_200350_adead ;
+	s_art_3m_bcd4_350500 + art_3m_bcd4_350500 ; s_art_3m_bcd4_350500_adead + art_3m_bcd4_350500_adead ;	s_art_6m_bcd4_350500 + art_6m_bcd4_350500 ; 
+	s_art_6m_bcd4_350500_adead + art_6m_bcd4_350500_adead ; s_art_9m_bcd4_350500 + art_9m_bcd4_350500 ; s_art_9m_bcd4_350500_adead + art_9m_bcd4_350500_adead ;
+	s_art_12m_bcd4_350500 + art_12m_bcd4_350500 ; s_art_12m_bcd4_350500_adead + art_12m_bcd4_350500_adead ; 	
+	s_art_15m_bcd4_350500 + art_15m_bcd4_350500 ; s_art_15m_bcd4_350500_adead + art_15m_bcd4_350500_adead ;
+	s_art_18m_bcd4_350500 + art_18m_bcd4_350500 ; s_art_18m_bcd4_350500_adead + art_18m_bcd4_350500_adead ;
+	s_art_21m_bcd4_350500 + art_21m_bcd4_350500 ; s_art_21m_bcd4_350500_adead + art_21m_bcd4_350500_adead ;
+	s_art_24m_bcd4_350500 + art_24m_bcd4_350500 ; s_art_24m_bcd4_350500_adead + art_24m_bcd4_350500_adead ;
+	s_art_27m_bcd4_350500 + art_27m_bcd4_350500 ; s_art_27m_bcd4_350500_adead + art_27m_bcd4_350500_adead ;
+	s_art_30m_bcd4_350500 + art_30m_bcd4_350500 ; s_art_30m_bcd4_350500_adead + art_30m_bcd4_350500_adead ;
+	s_art_33m_bcd4_350500 + art_33m_bcd4_350500 ; s_art_33m_bcd4_350500_adead + art_33m_bcd4_350500_adead ;
+	s_art_36m_bcd4_350500 + art_36m_bcd4_350500 ; s_art_36m_bcd4_350500_adead + art_36m_bcd4_350500_adead ;
+	s_art_39m_bcd4_350500 + art_39m_bcd4_350500 ; s_art_39m_bcd4_350500_adead + art_39m_bcd4_350500_adead ;
+	s_art_42m_bcd4_350500 + art_42m_bcd4_350500 ; s_art_42m_bcd4_350500_adead + art_42m_bcd4_350500_adead ;
+	s_art_45m_bcd4_350500 + art_45m_bcd4_350500 ; s_art_45m_bcd4_350500_adead + art_45m_bcd4_350500_adead ;
+	s_art_48m_bcd4_350500 + art_48m_bcd4_350500 ; s_art_48m_bcd4_350500_adead + art_48m_bcd4_350500_adead ;
+	s_art_51m_bcd4_350500 + art_51m_bcd4_350500 ; s_art_51m_bcd4_350500_adead + art_51m_bcd4_350500_adead ;
+	s_art_54m_bcd4_350500 + art_54m_bcd4_350500 ; s_art_54m_bcd4_350500_adead + art_54m_bcd4_350500_adead ;
+	s_art_57m_bcd4_350500 + art_57m_bcd4_350500 ; s_art_57m_bcd4_350500_adead + art_57m_bcd4_350500_adead ;
+	s_art_60m_bcd4_350500 + art_60m_bcd4_350500 ; s_art_60m_bcd4_350500_adead + art_60m_bcd4_350500_adead ;
+	s_art_3m_bcd4_ge500 + art_3m_bcd4_ge500 ; s_art_3m_bcd4_ge500_adead + art_3m_bcd4_ge500_adead ;	s_art_6m_bcd4_ge500 + art_6m_bcd4_ge500 ; 
+	s_art_6m_bcd4_ge500_adead + art_6m_bcd4_ge500_adead ; s_art_9m_bcd4_ge500 + art_9m_bcd4_ge500 ; s_art_9m_bcd4_ge500_adead + art_9m_bcd4_ge500_adead ;
+	s_art_12m_bcd4_ge500 + art_12m_bcd4_ge500 ; s_art_12m_bcd4_ge500_adead + art_12m_bcd4_ge500_adead ; 	
+	s_art_15m_bcd4_ge500 + art_15m_bcd4_ge500 ; s_art_15m_bcd4_ge500_adead + art_15m_bcd4_ge500_adead ;
+	s_art_18m_bcd4_ge500 + art_18m_bcd4_ge500 ; s_art_18m_bcd4_ge500_adead + art_18m_bcd4_ge500_adead ;
+	s_art_21m_bcd4_ge500 + art_21m_bcd4_ge500 ; s_art_21m_bcd4_ge500_adead + art_21m_bcd4_ge500_adead ;
+	s_art_24m_bcd4_ge500 + art_24m_bcd4_ge500 ; s_art_24m_bcd4_ge500_adead + art_24m_bcd4_ge500_adead ;
+	s_art_27m_bcd4_ge500 + art_27m_bcd4_ge500 ; s_art_27m_bcd4_ge500_adead + art_27m_bcd4_ge500_adead ;
+	s_art_30m_bcd4_ge500 + art_30m_bcd4_ge500 ; s_art_30m_bcd4_ge500_adead + art_30m_bcd4_ge500_adead ;
+	s_art_33m_bcd4_ge500 + art_33m_bcd4_ge500 ; s_art_33m_bcd4_ge500_adead + art_33m_bcd4_ge500_adead ;
+	s_art_36m_bcd4_ge500 + art_36m_bcd4_ge500 ; s_art_36m_bcd4_ge500_adead + art_36m_bcd4_ge500_adead ;
+	s_art_39m_bcd4_ge500 + art_39m_bcd4_ge500 ; s_art_39m_bcd4_ge500_adead + art_39m_bcd4_ge500_adead ;
+	s_art_42m_bcd4_ge500 + art_42m_bcd4_ge500 ; s_art_42m_bcd4_ge500_adead + art_42m_bcd4_ge500_adead ;
+	s_art_45m_bcd4_ge500 + art_45m_bcd4_ge500 ; s_art_45m_bcd4_ge500_adead + art_45m_bcd4_ge500_adead ;
+	s_art_48m_bcd4_ge500 + art_48m_bcd4_ge500 ; s_art_48m_bcd4_ge500_adead + art_48m_bcd4_ge500_adead ;
+	s_art_51m_bcd4_ge500 + art_51m_bcd4_ge500 ; s_art_51m_bcd4_ge500_adead + art_51m_bcd4_ge500_adead ;
+	s_art_54m_bcd4_ge500 + art_54m_bcd4_ge500 ; s_art_54m_bcd4_ge500_adead + art_54m_bcd4_ge500_adead ;
+	s_art_57m_bcd4_ge500 + art_57m_bcd4_ge500 ; s_art_57m_bcd4_ge500_adead + art_57m_bcd4_ge500_adead ;
+	s_art_60m_bcd4_ge500 + art_60m_bcd4_ge500 ; s_art_60m_bcd4_ge500_adead + art_60m_bcd4_ge500_adead ;
 
 	/* outputs relating to advanced hiv disease */
 	
@@ -15445,6 +15653,49 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
 
+/* note s_ variables below are for up to age 80 */
+
+s_diag80  s_diagnosed_dead 
+s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
+s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
+s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
+s_art_27m_bcd4_lt100_adead s_art_30m_bcd4_lt100  s_art_30m_bcd4_lt100_adead s_art_33m_bcd4_lt100  s_art_33m_bcd4_lt100_adead s_art_36m_bcd4_lt100  
+s_art_36m_bcd4_lt100_adead s_art_39m_bcd4_lt100  s_art_39m_bcd4_lt100_adead s_art_42m_bcd4_lt100 s_art_42m_bcd4_lt100_adead s_art_45m_bcd4_lt100  
+s_art_45m_bcd4_lt100_adead s_art_48m_bcd4_lt100  s_art_48m_bcd4_lt100_adead s_art_51m_bcd4_lt100 s_art_51m_bcd4_lt100_adead s_art_54m_bcd4_lt100 
+s_art_54m_bcd4_lt100_adead s_art_57m_bcd4_lt100 s_art_57m_bcd4_lt100_adead s_art_60m_bcd4_lt100 s_art_60m_bcd4_lt100_adead 
+
+s_art_3m_bcd4_100200  s_art_3m_bcd4_100200_adead s_art_6m_bcd4_100200 	s_art_6m_bcd4_100200_adead  s_art_9m_bcd4_100200 
+s_art_9m_bcd4_100200_adead s_art_12m_bcd4_100200 s_art_12m_bcd4_100200_adead s_art_15m_bcd4_100200 s_art_15m_bcd4_100200_adead s_art_18m_bcd4_100200 
+s_art_18m_bcd4_100200_adead s_art_21m_bcd4_100200 s_art_21m_bcd4_100200_adead s_art_24m_bcd4_100200  s_art_24m_bcd4_100200_adead s_art_27m_bcd4_100200  
+s_art_27m_bcd4_100200_adead s_art_30m_bcd4_100200  s_art_30m_bcd4_100200_adead s_art_33m_bcd4_100200  s_art_33m_bcd4_100200_adead s_art_36m_bcd4_100200  
+s_art_36m_bcd4_100200_adead s_art_39m_bcd4_100200  s_art_39m_bcd4_100200_adead s_art_42m_bcd4_100200 s_art_42m_bcd4_100200_adead s_art_45m_bcd4_100200  
+s_art_45m_bcd4_100200_adead s_art_48m_bcd4_100200  s_art_48m_bcd4_100200_adead s_art_51m_bcd4_100200 s_art_51m_bcd4_100200_adead s_art_54m_bcd4_100200 
+s_art_54m_bcd4_100200_adead s_art_57m_bcd4_100200 s_art_57m_bcd4_100200_adead s_art_60m_bcd4_100200 s_art_60m_bcd4_100200_adead
+
+s_art_3m_bcd4_200350  s_art_3m_bcd4_200350_adead s_art_6m_bcd4_200350 	s_art_6m_bcd4_200350_adead  s_art_9m_bcd4_200350 
+s_art_9m_bcd4_200350_adead s_art_12m_bcd4_200350 s_art_12m_bcd4_200350_adead s_art_15m_bcd4_200350 s_art_15m_bcd4_200350_adead s_art_18m_bcd4_200350 
+s_art_18m_bcd4_200350_adead s_art_21m_bcd4_200350 s_art_21m_bcd4_200350_adead s_art_24m_bcd4_200350  s_art_24m_bcd4_200350_adead s_art_27m_bcd4_200350  
+s_art_27m_bcd4_200350_adead s_art_30m_bcd4_200350  s_art_30m_bcd4_200350_adead s_art_33m_bcd4_200350  s_art_33m_bcd4_200350_adead s_art_36m_bcd4_200350  
+s_art_36m_bcd4_200350_adead s_art_39m_bcd4_200350  s_art_39m_bcd4_200350_adead s_art_42m_bcd4_200350 s_art_42m_bcd4_200350_adead s_art_45m_bcd4_200350  
+s_art_45m_bcd4_200350_adead s_art_48m_bcd4_200350  s_art_48m_bcd4_200350_adead s_art_51m_bcd4_200350 s_art_51m_bcd4_200350_adead s_art_54m_bcd4_200350 
+s_art_54m_bcd4_200350_adead s_art_57m_bcd4_200350 s_art_57m_bcd4_200350_adead s_art_60m_bcd4_200350 s_art_60m_bcd4_200350_adead
+
+s_art_3m_bcd4_350500  s_art_3m_bcd4_350500_adead s_art_6m_bcd4_350500 	s_art_6m_bcd4_350500_adead  s_art_9m_bcd4_350500 
+s_art_9m_bcd4_350500_adead s_art_12m_bcd4_350500 s_art_12m_bcd4_350500_adead s_art_15m_bcd4_350500 s_art_15m_bcd4_350500_adead s_art_18m_bcd4_350500 
+s_art_18m_bcd4_350500_adead s_art_21m_bcd4_350500 s_art_21m_bcd4_350500_adead s_art_24m_bcd4_350500  s_art_24m_bcd4_350500_adead s_art_27m_bcd4_350500  
+s_art_27m_bcd4_350500_adead s_art_30m_bcd4_350500  s_art_30m_bcd4_350500_adead s_art_33m_bcd4_350500  s_art_33m_bcd4_350500_adead s_art_36m_bcd4_350500  
+s_art_36m_bcd4_350500_adead s_art_39m_bcd4_350500  s_art_39m_bcd4_350500_adead s_art_42m_bcd4_350500 s_art_42m_bcd4_350500_adead s_art_45m_bcd4_350500  
+s_art_45m_bcd4_350500_adead s_art_48m_bcd4_350500  s_art_48m_bcd4_350500_adead s_art_51m_bcd4_350500 s_art_51m_bcd4_350500_adead s_art_54m_bcd4_350500 
+s_art_54m_bcd4_350500_adead s_art_57m_bcd4_350500 s_art_57m_bcd4_350500_adead s_art_60m_bcd4_350500 s_art_60m_bcd4_350500_adead
+
+s_art_3m_bcd4_ge500  s_art_3m_bcd4_ge500_adead s_art_6m_bcd4_ge500 	s_art_6m_bcd4_ge500_adead  s_art_9m_bcd4_ge500 
+s_art_9m_bcd4_ge500_adead s_art_12m_bcd4_ge500 s_art_12m_bcd4_ge500_adead s_art_15m_bcd4_ge500 s_art_15m_bcd4_ge500_adead s_art_18m_bcd4_ge500 
+s_art_18m_bcd4_ge500_adead s_art_21m_bcd4_ge500 s_art_21m_bcd4_ge500_adead s_art_24m_bcd4_ge500  s_art_24m_bcd4_ge500_adead s_art_27m_bcd4_ge500  
+s_art_27m_bcd4_ge500_adead s_art_30m_bcd4_ge500  s_art_30m_bcd4_ge500_adead s_art_33m_bcd4_ge500  s_art_33m_bcd4_ge500_adead s_art_36m_bcd4_ge500  
+s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_art_42m_bcd4_ge500 s_art_42m_bcd4_ge500_adead s_art_45m_bcd4_ge500  
+s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
+s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
+
 /*costs and dalys (default to age 65; _80 */
 s_cost       s_onart_cost    s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
@@ -16217,6 +16468,50 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
 
+/* note s_ variables below are for up to age 80 */
+
+s_diag80  s_diagnosed_dead 
+s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
+s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
+s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
+s_art_27m_bcd4_lt100_adead s_art_30m_bcd4_lt100  s_art_30m_bcd4_lt100_adead s_art_33m_bcd4_lt100  s_art_33m_bcd4_lt100_adead s_art_36m_bcd4_lt100  
+s_art_36m_bcd4_lt100_adead s_art_39m_bcd4_lt100  s_art_39m_bcd4_lt100_adead s_art_42m_bcd4_lt100 s_art_42m_bcd4_lt100_adead s_art_45m_bcd4_lt100  
+s_art_45m_bcd4_lt100_adead s_art_48m_bcd4_lt100  s_art_48m_bcd4_lt100_adead s_art_51m_bcd4_lt100 s_art_51m_bcd4_lt100_adead s_art_54m_bcd4_lt100 
+s_art_54m_bcd4_lt100_adead s_art_57m_bcd4_lt100 s_art_57m_bcd4_lt100_adead s_art_60m_bcd4_lt100 s_art_60m_bcd4_lt100_adead 
+
+s_art_3m_bcd4_100200  s_art_3m_bcd4_100200_adead s_art_6m_bcd4_100200 	s_art_6m_bcd4_100200_adead  s_art_9m_bcd4_100200 
+s_art_9m_bcd4_100200_adead s_art_12m_bcd4_100200 s_art_12m_bcd4_100200_adead s_art_15m_bcd4_100200 s_art_15m_bcd4_100200_adead s_art_18m_bcd4_100200 
+s_art_18m_bcd4_100200_adead s_art_21m_bcd4_100200 s_art_21m_bcd4_100200_adead s_art_24m_bcd4_100200  s_art_24m_bcd4_100200_adead s_art_27m_bcd4_100200  
+s_art_27m_bcd4_100200_adead s_art_30m_bcd4_100200  s_art_30m_bcd4_100200_adead s_art_33m_bcd4_100200  s_art_33m_bcd4_100200_adead s_art_36m_bcd4_100200  
+s_art_36m_bcd4_100200_adead s_art_39m_bcd4_100200  s_art_39m_bcd4_100200_adead s_art_42m_bcd4_100200 s_art_42m_bcd4_100200_adead s_art_45m_bcd4_100200  
+s_art_45m_bcd4_100200_adead s_art_48m_bcd4_100200  s_art_48m_bcd4_100200_adead s_art_51m_bcd4_100200 s_art_51m_bcd4_100200_adead s_art_54m_bcd4_100200 
+s_art_54m_bcd4_100200_adead s_art_57m_bcd4_100200 s_art_57m_bcd4_100200_adead s_art_60m_bcd4_100200 s_art_60m_bcd4_100200_adead
+
+s_art_3m_bcd4_200350  s_art_3m_bcd4_200350_adead s_art_6m_bcd4_200350 	s_art_6m_bcd4_200350_adead  s_art_9m_bcd4_200350 
+s_art_9m_bcd4_200350_adead s_art_12m_bcd4_200350 s_art_12m_bcd4_200350_adead s_art_15m_bcd4_200350 s_art_15m_bcd4_200350_adead s_art_18m_bcd4_200350 
+s_art_18m_bcd4_200350_adead s_art_21m_bcd4_200350 s_art_21m_bcd4_200350_adead s_art_24m_bcd4_200350  s_art_24m_bcd4_200350_adead s_art_27m_bcd4_200350  
+s_art_27m_bcd4_200350_adead s_art_30m_bcd4_200350  s_art_30m_bcd4_200350_adead s_art_33m_bcd4_200350  s_art_33m_bcd4_200350_adead s_art_36m_bcd4_200350  
+s_art_36m_bcd4_200350_adead s_art_39m_bcd4_200350  s_art_39m_bcd4_200350_adead s_art_42m_bcd4_200350 s_art_42m_bcd4_200350_adead s_art_45m_bcd4_200350  
+s_art_45m_bcd4_200350_adead s_art_48m_bcd4_200350  s_art_48m_bcd4_200350_adead s_art_51m_bcd4_200350 s_art_51m_bcd4_200350_adead s_art_54m_bcd4_200350 
+s_art_54m_bcd4_200350_adead s_art_57m_bcd4_200350 s_art_57m_bcd4_200350_adead s_art_60m_bcd4_200350 s_art_60m_bcd4_200350_adead
+
+s_art_3m_bcd4_350500  s_art_3m_bcd4_350500_adead s_art_6m_bcd4_350500 	s_art_6m_bcd4_350500_adead  s_art_9m_bcd4_350500 
+s_art_9m_bcd4_350500_adead s_art_12m_bcd4_350500 s_art_12m_bcd4_350500_adead s_art_15m_bcd4_350500 s_art_15m_bcd4_350500_adead s_art_18m_bcd4_350500 
+s_art_18m_bcd4_350500_adead s_art_21m_bcd4_350500 s_art_21m_bcd4_350500_adead s_art_24m_bcd4_350500  s_art_24m_bcd4_350500_adead s_art_27m_bcd4_350500  
+s_art_27m_bcd4_350500_adead s_art_30m_bcd4_350500  s_art_30m_bcd4_350500_adead s_art_33m_bcd4_350500  s_art_33m_bcd4_350500_adead s_art_36m_bcd4_350500  
+s_art_36m_bcd4_350500_adead s_art_39m_bcd4_350500  s_art_39m_bcd4_350500_adead s_art_42m_bcd4_350500 s_art_42m_bcd4_350500_adead s_art_45m_bcd4_350500  
+s_art_45m_bcd4_350500_adead s_art_48m_bcd4_350500  s_art_48m_bcd4_350500_adead s_art_51m_bcd4_350500 s_art_51m_bcd4_350500_adead s_art_54m_bcd4_350500 
+s_art_54m_bcd4_350500_adead s_art_57m_bcd4_350500 s_art_57m_bcd4_350500_adead s_art_60m_bcd4_350500 s_art_60m_bcd4_350500_adead
+
+s_art_3m_bcd4_ge500  s_art_3m_bcd4_ge500_adead s_art_6m_bcd4_ge500 	s_art_6m_bcd4_ge500_adead  s_art_9m_bcd4_ge500 
+s_art_9m_bcd4_ge500_adead s_art_12m_bcd4_ge500 s_art_12m_bcd4_ge500_adead s_art_15m_bcd4_ge500 s_art_15m_bcd4_ge500_adead s_art_18m_bcd4_ge500 
+s_art_18m_bcd4_ge500_adead s_art_21m_bcd4_ge500 s_art_21m_bcd4_ge500_adead s_art_24m_bcd4_ge500  s_art_24m_bcd4_ge500_adead s_art_27m_bcd4_ge500  
+s_art_27m_bcd4_ge500_adead s_art_30m_bcd4_ge500  s_art_30m_bcd4_ge500_adead s_art_33m_bcd4_ge500  s_art_33m_bcd4_ge500_adead s_art_36m_bcd4_ge500  
+s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_art_42m_bcd4_ge500 s_art_42m_bcd4_ge500_adead s_art_45m_bcd4_ge500  
+s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
+s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
+
+
 /*costs and dalys*/
 s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program     s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
@@ -16984,6 +17279,49 @@ s_per1_art_int s_per2_art_int	s_dead_per1_art_int	s_dead_per2_art_int  s_cd4_bef
 s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per2_art_int 	s_cd4_per2_art_int_lt100	s_cd4_per2_art_int_100200
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
+
+/* note s_ variables below are for up to age 80 */
+
+s_diag80  s_diagnosed_dead 
+s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
+s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
+s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
+s_art_27m_bcd4_lt100_adead s_art_30m_bcd4_lt100  s_art_30m_bcd4_lt100_adead s_art_33m_bcd4_lt100  s_art_33m_bcd4_lt100_adead s_art_36m_bcd4_lt100  
+s_art_36m_bcd4_lt100_adead s_art_39m_bcd4_lt100  s_art_39m_bcd4_lt100_adead s_art_42m_bcd4_lt100 s_art_42m_bcd4_lt100_adead s_art_45m_bcd4_lt100  
+s_art_45m_bcd4_lt100_adead s_art_48m_bcd4_lt100  s_art_48m_bcd4_lt100_adead s_art_51m_bcd4_lt100 s_art_51m_bcd4_lt100_adead s_art_54m_bcd4_lt100 
+s_art_54m_bcd4_lt100_adead s_art_57m_bcd4_lt100 s_art_57m_bcd4_lt100_adead s_art_60m_bcd4_lt100 s_art_60m_bcd4_lt100_adead 
+
+s_art_3m_bcd4_100200  s_art_3m_bcd4_100200_adead s_art_6m_bcd4_100200 	s_art_6m_bcd4_100200_adead  s_art_9m_bcd4_100200 
+s_art_9m_bcd4_100200_adead s_art_12m_bcd4_100200 s_art_12m_bcd4_100200_adead s_art_15m_bcd4_100200 s_art_15m_bcd4_100200_adead s_art_18m_bcd4_100200 
+s_art_18m_bcd4_100200_adead s_art_21m_bcd4_100200 s_art_21m_bcd4_100200_adead s_art_24m_bcd4_100200  s_art_24m_bcd4_100200_adead s_art_27m_bcd4_100200  
+s_art_27m_bcd4_100200_adead s_art_30m_bcd4_100200  s_art_30m_bcd4_100200_adead s_art_33m_bcd4_100200  s_art_33m_bcd4_100200_adead s_art_36m_bcd4_100200  
+s_art_36m_bcd4_100200_adead s_art_39m_bcd4_100200  s_art_39m_bcd4_100200_adead s_art_42m_bcd4_100200 s_art_42m_bcd4_100200_adead s_art_45m_bcd4_100200  
+s_art_45m_bcd4_100200_adead s_art_48m_bcd4_100200  s_art_48m_bcd4_100200_adead s_art_51m_bcd4_100200 s_art_51m_bcd4_100200_adead s_art_54m_bcd4_100200 
+s_art_54m_bcd4_100200_adead s_art_57m_bcd4_100200 s_art_57m_bcd4_100200_adead s_art_60m_bcd4_100200 s_art_60m_bcd4_100200_adead
+
+s_art_3m_bcd4_200350  s_art_3m_bcd4_200350_adead s_art_6m_bcd4_200350 	s_art_6m_bcd4_200350_adead  s_art_9m_bcd4_200350 
+s_art_9m_bcd4_200350_adead s_art_12m_bcd4_200350 s_art_12m_bcd4_200350_adead s_art_15m_bcd4_200350 s_art_15m_bcd4_200350_adead s_art_18m_bcd4_200350 
+s_art_18m_bcd4_200350_adead s_art_21m_bcd4_200350 s_art_21m_bcd4_200350_adead s_art_24m_bcd4_200350  s_art_24m_bcd4_200350_adead s_art_27m_bcd4_200350  
+s_art_27m_bcd4_200350_adead s_art_30m_bcd4_200350  s_art_30m_bcd4_200350_adead s_art_33m_bcd4_200350  s_art_33m_bcd4_200350_adead s_art_36m_bcd4_200350  
+s_art_36m_bcd4_200350_adead s_art_39m_bcd4_200350  s_art_39m_bcd4_200350_adead s_art_42m_bcd4_200350 s_art_42m_bcd4_200350_adead s_art_45m_bcd4_200350  
+s_art_45m_bcd4_200350_adead s_art_48m_bcd4_200350  s_art_48m_bcd4_200350_adead s_art_51m_bcd4_200350 s_art_51m_bcd4_200350_adead s_art_54m_bcd4_200350 
+s_art_54m_bcd4_200350_adead s_art_57m_bcd4_200350 s_art_57m_bcd4_200350_adead s_art_60m_bcd4_200350 s_art_60m_bcd4_200350_adead
+
+s_art_3m_bcd4_350500  s_art_3m_bcd4_350500_adead s_art_6m_bcd4_350500 	s_art_6m_bcd4_350500_adead  s_art_9m_bcd4_350500 
+s_art_9m_bcd4_350500_adead s_art_12m_bcd4_350500 s_art_12m_bcd4_350500_adead s_art_15m_bcd4_350500 s_art_15m_bcd4_350500_adead s_art_18m_bcd4_350500 
+s_art_18m_bcd4_350500_adead s_art_21m_bcd4_350500 s_art_21m_bcd4_350500_adead s_art_24m_bcd4_350500  s_art_24m_bcd4_350500_adead s_art_27m_bcd4_350500  
+s_art_27m_bcd4_350500_adead s_art_30m_bcd4_350500  s_art_30m_bcd4_350500_adead s_art_33m_bcd4_350500  s_art_33m_bcd4_350500_adead s_art_36m_bcd4_350500  
+s_art_36m_bcd4_350500_adead s_art_39m_bcd4_350500  s_art_39m_bcd4_350500_adead s_art_42m_bcd4_350500 s_art_42m_bcd4_350500_adead s_art_45m_bcd4_350500  
+s_art_45m_bcd4_350500_adead s_art_48m_bcd4_350500  s_art_48m_bcd4_350500_adead s_art_51m_bcd4_350500 s_art_51m_bcd4_350500_adead s_art_54m_bcd4_350500 
+s_art_54m_bcd4_350500_adead s_art_57m_bcd4_350500 s_art_57m_bcd4_350500_adead s_art_60m_bcd4_350500 s_art_60m_bcd4_350500_adead
+
+s_art_3m_bcd4_ge500  s_art_3m_bcd4_ge500_adead s_art_6m_bcd4_ge500 	s_art_6m_bcd4_ge500_adead  s_art_9m_bcd4_ge500 
+s_art_9m_bcd4_ge500_adead s_art_12m_bcd4_ge500 s_art_12m_bcd4_ge500_adead s_art_15m_bcd4_ge500 s_art_15m_bcd4_ge500_adead s_art_18m_bcd4_ge500 
+s_art_18m_bcd4_ge500_adead s_art_21m_bcd4_ge500 s_art_21m_bcd4_ge500_adead s_art_24m_bcd4_ge500  s_art_24m_bcd4_ge500_adead s_art_27m_bcd4_ge500  
+s_art_27m_bcd4_ge500_adead s_art_30m_bcd4_ge500  s_art_30m_bcd4_ge500_adead s_art_33m_bcd4_ge500  s_art_33m_bcd4_ge500_adead s_art_36m_bcd4_ge500  
+s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_art_42m_bcd4_ge500 s_art_42m_bcd4_ge500_adead s_art_45m_bcd4_ge500  
+s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
+s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
 /*costs and dalys*/
 s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
