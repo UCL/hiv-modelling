@@ -5,7 +5,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data a; 
    set a.hiv_synthesis_base ;
-*  set a.hiv_synthesis_ahd  ;
+*  set a.hiv_synthesis_ahd_3;
+
 
 proc sort; by run cald option;run;
 
@@ -595,22 +596,19 @@ n_vmmc1549_3m=s_vmmc1549m * sf_2020;
 n_new_inf1549m=s_primary1549m * sf_2020 * 4;
 n_new_inf1549=s_primary1549 * sf_2020 * 4;
 
+/*
 
-
+* for base ;
 proc means n mean p50 p5 p95 lclm uclm min max; var death_rate_hiv tb_rate who3_rate  s_who3_event adc_rate s_tb s_hiv1564 p_cd4_lt200 ; 
 where 2015    <= cald  and s_hiv1564 > 1000;  run; 
 
-* for ahd only; 
+
+* for ahd ; 
 proc means n mean p50 p5 p95 lclm uclm min max; var death_rate_hiv tb_rate who3_rate_80 s_who3_event_80 adc_rate crypm_rate_80 sbi_rate_80 
-s_hiv1564 s_hiv1579 s_tb p_cd4_lt200; 
+s_hiv1564 s_hiv1579 s_tb s_tb_diag_e p_cd4_lt200; 
 where 2015    <= cald and s_hiv1564 > 1000;  run; 
 
-
-
-
-
-
-
+*/
 
 
 keep run option cald dataset
