@@ -157,7 +157,8 @@ to do before starting testing in preparation for runs:
 
 
 
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
+* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
+* libname a 'C:\Loveleen\Synthesis model\';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -14787,7 +14788,6 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_tcur6m_cd4t0l200 + tcur6m_cd4t0l200 ; s_who3_tcur6m_cd4t0l200 + who3_tcur6m_cd4t0l200 ; s_adc_tcur6m_cd4t0l200 + adc_tcur6m_cd4t0l200 ; 
 	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
 
-	s_who3_rate + who3_rate;  s_tb_rate + tb_rate; s_tb_risk + tb_risk ; s_non_tb_who3_rate + non_tb_who3_rate;
 	s_dead_80 + dead; s_death_hivrel_80 + death_hivrel ;
 
 end;
@@ -15810,7 +15810,7 @@ s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
-s_who3_rate s_tb_rate s_tb_risk  s_non_tb_who3_rate s_dead_80  s_death_hivrel_80 
+s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16626,7 +16626,7 @@ s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
-s_who3_rate s_tb_rate s_tb_risk  s_non_tb_who3_rate s_dead_80  s_death_hivrel_80 
+s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -16956,11 +16956,11 @@ end;
 
 
   libname b '/home/rmjlaph/Scratch/';
-
-* data x; * set cum_l1;
-* file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-* file "/home/rmjlaph/Scratch/_output_ahd_14_12_20_1pm_&dataset_id";  
-data b.out_ahd_&dataset_id(compress=binary); set cum_l1;
+* libname b '/home/rmjllob/Scratch/';
+* libname b '/home/rmjlvca/Scratch/';
+* libname b '/home/rmjljes/Scratch/';
+ 
+data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
 
 keep
 
@@ -17440,7 +17440,7 @@ s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 
-s_who3_rate s_tb_rate s_tb_risk  s_non_tb_who3_rate s_dead_80  s_death_hivrel_80
+s_dead_80  s_death_hivrel_80
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
