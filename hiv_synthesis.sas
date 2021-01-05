@@ -317,10 +317,11 @@ effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
 effect_crypm_proph = 0.5; * as above for crypm;
 effect_sbi_proph = 0.5; 
 tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
-tblam_eff_prob_diag_l = 0.5; * effect of tb lam test on tb being diagnosed early;
+tblam_eff_prob_diag_l = 0.5; * effect of tb lam test on tb being diagnosed late;
 crypm_base_prob_diag_l = 0.5; * base probability that crypm is diagnosed late ; 
-crag_eff_prob_diag_l = 0.5; * effect of crag test on crypm being diagnosed early;  
+crag_eff_prob_diag_l = 0.5; * effect of crag test on crypm being diagnosed late;  
 sbi_base_prob_diag_l = 0.5; * base probability that sbi is diagnosed late ;
+oth_adc_base_prob_diag_l = 0.5; * base probability that other adc is diagnosed late ;
 rel_rate_death_tb_diag_e = 0.67; * effect of tb being diagnosed early on rate of death from the tb event; 
 rel_rate_death_oth_adc_diag_e = 0.9 ; * effect of oth_adc being diagnosed early on rate of death from the other adc event; 
 rel_rate_death_crypm_diag_e = 0.67 ; * effect of crypm being diagnosed early on rate of death from the crypm event; 
@@ -9800,6 +9801,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
 		end;
 
+		oth_adc_prob_diag_l = .;  oth_adc_diag_e = .; 
+		if oth_adc=1 then do; 	
+			oth_adc_prob_diag_l = oth_adc_base_prob_diag_l ;
+			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then oth_adc_prob_diag_l = oth_adc_prob_diag_l * effect_visit_prob_diag_l ;
+			oth_adc_prob_diag_e = 1 - oth_adc_prob_diag_l ;
+			ii=uniform(0); oth_adc_diag_e=0; if ii < oth_adc_prob_diag_e then oth_adc_diag_e=1 ;  
+		end;
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
 			adc=1;  if dateaids=. then dateaids=caldate{t}; 
