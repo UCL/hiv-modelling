@@ -9186,9 +9186,9 @@ end;
 
 
 * measure cd4 crag tb lam;
-crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per=0;
+crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per=0;cm_1stvis_return_vlmg1000=0;
 if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold) then do; 
-	if cm_1stvis_return_vlmg1000=1 then do; cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cm_this_per=1; end;
+	cm_1stvis_return_vlmg1000=1; cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cm_this_per=1; 
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
@@ -9551,6 +9551,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* TB preventive prophylaxis ;
 
 	d=uniform(0);
+
+	* todo: model latent tb and risk of re-infection ? ;
 
 	tb_proph_tm1=tb_proph;
 
