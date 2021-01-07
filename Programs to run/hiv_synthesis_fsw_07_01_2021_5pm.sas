@@ -155,11 +155,11 @@ to do before starting testing in preparation for runs:
 
 ;
 
-
-
-  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
-
-
+/*
+libname a '/home/rmjllob/Scratch/';
+%let outputdir = &sysparm;
+libname a "&outputdir/";
+*/
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
@@ -16489,6 +16489,7 @@ data r1; set a;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+*libname a '/home/rmjllob/Scratch/'
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
