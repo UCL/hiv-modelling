@@ -886,7 +886,7 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * prop_w_ever_sw;				prop_w_ever_sw = s_ever_sw / s_alive1564_w ;
 * prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
 
-proc print;var s_sw_program_visit s_sw_1564 option;where cald gt 2015;run;
+proc print;var s_sw_program_visit s_sw_1564 option;where cald gt 2015;run;*;
 
 
 * prop_sw_hiv;					prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
