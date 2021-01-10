@@ -491,21 +491,17 @@ p_neph_stops_after_ten = 0.1;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=ranuni(0); 
-			if e < 1/20 then sex_beh_trans_matrix_m=1;if 1/20 <= e < 2/20 then sex_beh_trans_matrix_m=2;if 2/20 <= e < 3/20 then sex_beh_trans_matrix_m=3; 
-			if 3/20 <= e < 4/20 then sex_beh_trans_matrix_m=4;if 4/20 <= e < 5/20 then sex_beh_trans_matrix_m=5;if 5/20 <= e < 6/20 then sex_beh_trans_matrix_m=6; 
-			if 6/20 <= e < 7/20 then sex_beh_trans_matrix_m=7;if 7/20 <= e < 8/20 then sex_beh_trans_matrix_m=8;if 8/20 <= e < 9/20 then sex_beh_trans_matrix_m=9; 
-			if 9/20 <= e < 10/20 then sex_beh_trans_matrix_m=10; if 10/20 <= e < 11/20 then sex_beh_trans_matrix_m=11;if 11/20 <= e < 12/20 then sex_beh_trans_matrix_m=12;
-			if 12/20 <= e < 13/20 then sex_beh_trans_matrix_m=13; if 13/20 <= e < 14/20 then sex_beh_trans_matrix_m=14;if 14/20 <= e < 15/20 then sex_beh_trans_matrix_m=15;
-			if 15/20 <= e < 16/20 then sex_beh_trans_matrix_m=16; if 16/20 <= e < 17/20 then sex_beh_trans_matrix_m=17;if 17/20 <= e < 18/20 then sex_beh_trans_matrix_m=18;
-			if 18/20 <= e < 19/20 then sex_beh_trans_matrix_m=19; if 19/20 <= e < 20/20 then sex_beh_trans_matrix_m=20;
+			if e < 1/15 then sex_beh_trans_matrix_m=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_m=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_m=3; 
+			if 3/15 <= e < 4/15 then sex_beh_trans_matrix_m=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_m=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_m=6; 
+			if 6/15 <= e < 7/15 then sex_beh_trans_matrix_m=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_m=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_m=9; 
+			if 9/15 <= e < 10/15 then sex_beh_trans_matrix_m=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_m=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_m=12;
+			if 12/15 <= e < 13/15 then sex_beh_trans_matrix_m=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_m=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_m=15;
 			e=ranuni(0); 
 			if e < 1/15 then sex_beh_trans_matrix_w=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_w=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_w=3; 
 			if 3/15 <= e < 4/15 then sex_beh_trans_matrix_w=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_w=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_w=6; 
 			if 6/15 <= e < 7/15 then sex_beh_trans_matrix_w=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_w=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_w=9; 
 			if 9/15 <= e < 10/15 then sex_beh_trans_matrix_w=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_w=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_w=12;
 			if 12/15 <= e < 13/15 then sex_beh_trans_matrix_w=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_w=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_w=15;
-
-* no_newpgt4_w_age1525;	e=ranuni(0); no_newpgt4_w_age1525=0; if e < 0.5 then no_newpgt4_w_age1525=1;
 
 * sex_age_mixing_matrix_m;e=ranuni(0); if e < 1/6  then sex_age_mixing_matrix_m=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_m=2;
 										if 2/6 <= e < 3/6  then sex_age_mixing_matrix_m=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_m=4;
@@ -726,7 +722,7 @@ p_neph_stops_after_ten = 0.1;
 * prepuptake_sw;			r=ranuni(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.50;
 * prepuptake_pop;			r=ranuni(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
-* eff_adh_prep; 			r=ranuni(0); eff_adh_prep=0.95; if < 0.5 then eff_adh_prep=0.9; 
+* eff_adh_prep; 			r=ranuni(0); eff_adh_prep=0.95; if r < 0.5 then eff_adh_prep=0.9; 
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
@@ -2156,26 +2152,31 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-		prep_strategy_2020 = 1; prep_strategy = 9;  
+		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;   
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		decr_r_choose_stop_prep_2020 = 1; eff_rate_choose_stop_prep = 0.05 ; 
-		inc_p_prep_restart_choi_2020 = 1; eff_prob_prep_restart_choice = 0.7 ;
-		incr_adh_pattern_prep_2020 = 1; adhav_pr = adhav*1.00;
-		incr_prepuptake_pop_2020 = 1; if _u37 < 0.75 and prep_willing_pop = 0 then prep_willing_pop = 1;
-		incr_prepuptake_sw_2020 = 1; if _u35 < 0.90 and prep_willing_sw = 0 then prep_willing_sw = 1;
+		eff_rate_choose_stop_prep = 0.05 ; 
+		eff_prob_prep_restart_choice = 0.7 ;
+		adhav_pr = adhav*1.00;
+		if _u38 < 0.333 then do;  			r=ranuni(0); if prep_willing_pop = 0 and r < 0.75  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=ranuni(0); if prep_willing_pop = 0 and r < 0.90 then prep_willing_pop = 1; end;
+		if 0.666 <= _u38         then do;  	r=ranuni(0); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
+		r=ranuni(0); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
 
 	end;
 
-
 	if option = 2 then do;
 
-		pop_wide_tld_2020 = 1; pop_wide_tld = 1; prep_strategy_2020 = 1; prep_strategy = 9; prob_prep_pop_wide_tld = 0.50; 
+		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
+		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;  
+		prob_prep_pop_wide_tld = 0.50; 
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		decr_r_choose_stop_prep_2020 = 1; eff_rate_choose_stop_prep = 0.05 ;  
-		inc_p_prep_restart_choi_2020 = 1; eff_prob_prep_restart_choice = 0.7 ;
-		incr_adh_pattern_prep_2020 = 1; adhav_pr = adhav*1.00;
-		incr_prepuptake_pop_2020 = 1; if _u37 < 0.75 and prep_willing_pop = 0 then prep_willing_pop = 1;
-		incr_prepuptake_sw_2020 = 1; if _u35 < 0.90 and prep_willing_sw = 0 then prep_willing_sw = 1;
+		eff_rate_choose_stop_prep = 0.05 ;  
+		eff_prob_prep_restart_choice = 0.7 ;
+		adhav_pr = adhav*1.00;
+		if _u38 < 0.333 then do;  			r=ranuni(0); if prep_willing_pop = 0 and r < 0.75  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=ranuni(0); if prep_willing_pop = 0 and r < 0.90 then prep_willing_pop = 1; end;
+		if 0.666 <= _u38         then do;  	r=ranuni(0); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
+		r=ranuni(0); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
 
 	end;
 
@@ -2639,120 +2640,89 @@ if 4  <= newp_tm1<10 then do; *newp=0; s1=0.03; *newp=1; s2=0.07; *newp >= 2; s3
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.05; *newp 10x; s4=0.9500; end;
 end;
 if sex_beh_trans_matrix_m=2 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.98; *newp=1; s2=0.01 ; *newp >= 2; s3=0.01 ; *newp 10x; s4=0.00025; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.98; *newp=1; s2=0.01; *newp >= 2; s3=0.01; *newp 10x; s4=0.00025; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.05; *newp=1; s2=0.15; *newp >= 2; s3=0.80; *newp 10x; s4=0.00125; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.20; *newp 10x; s4=0.8000; end;
-end;
-if sex_beh_trans_matrix_m=3 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.02; *newp 10x; s4=0.0005 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.05; *newp >= 2; s3=0.02; *newp 10x; s4=0.0005 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.0025 ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.40; *newp 10x; s4=0.6000; end;
 end;
-if sex_beh_trans_matrix_m=4 then do;
+if sex_beh_trans_matrix_m=3 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.995; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.0001 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.02; *newp 10x; s4=0.0001 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.03; *newp=1; s2=0.07; *newp >= 2; s3=0.90; *newp 10x; s4=0.0005  ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.04; *newp=1; s2=0.04; *newp >= 2; s3=0.09; *newp 10x; s4=0.8300; end;
 end;
-if sex_beh_trans_matrix_m=5 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.98; *newp=1; s2=0.01 ; *newp >= 2; s3=0.01 ; *newp 10x; s4=0.005  ; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.98; *newp=1; s2=0.01; *newp >= 2; s3=0.01; *newp 10x; s4=0.0005 ; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.05; *newp=1; s2=0.15; *newp >= 2; s3=0.80; *newp 10x; s4=0.0025 ; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.025; *newp=1; s2=0.06; *newp >= 2; s3=0.17; *newp 10x; s4=0.7500; end;
-end;
-if sex_beh_trans_matrix_m=6 then do;
+if sex_beh_trans_matrix_m=4 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.02; *newp 10x; s4=0.001 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.05; *newp >= 2; s3=0.02; *newp 10x; s4=0.001 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.005  ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.04; *newp=1; s2=0.08; *newp >= 2; s3=0.21; *newp 10x; s4=0.6700; end;
 end;
-if sex_beh_trans_matrix_m=7 then do;
+if sex_beh_trans_matrix_m=5 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.995; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.000025; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.02; *newp 10x; s4=0.000025; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.03; *newp=1; s2=0.07; *newp >= 2; s3=0.90; *newp 10x; s4=0.000125; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.05; *newp 10x; s4=0.9500; end;
 end;
-if sex_beh_trans_matrix_m=8 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.98; *newp=1; s2=0.01 ; *newp >= 2; s3=0.01 ; *newp 10x; s4=0.000125; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.98; *newp=1; s2=0.01; *newp >= 2; s3=0.01; *newp 10x; s4=0.000125; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.05; *newp=1; s2=0.15; *newp >= 2; s3=0.80; *newp 10x; s4=0.000625; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.20; *newp 10x; s4=0.8000; end;
-end;
-if sex_beh_trans_matrix_m=9 then do;
+if sex_beh_trans_matrix_m=6 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.02; *newp 10x; s4=0.00025 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.05; *newp >= 2; s3=0.02; *newp 10x; s4=0.00025 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.00125 ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.40; *newp 10x; s4=0.6000; end;
 end;
-if sex_beh_trans_matrix_m=10 then do;
+if sex_beh_trans_matrix_m=7  then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.90; *newp=1; s2=0.06; *newp >= 2; s3=0.04; *newp 10x; s4=0.0005 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.0005 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.0025 ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.40; *newp 10x; s4=0.6000; end;
 end;
-if sex_beh_trans_matrix_m=11 then do;
+if sex_beh_trans_matrix_m=8  then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.90; *newp=1; s2=0.06; *newp >= 2; s3=0.04; *newp 10x; s4=0.001 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.001 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.005  ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.04; *newp=1; s2=0.08; *newp >= 2; s3=0.21; *newp 10x; s4=0.6700; end;
 end;
-if sex_beh_trans_matrix_m=12 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.90; *newp=1; s2=0.06; *newp >= 2; s3=0.04; *newp 10x; s4=0.00025 ; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.00025 ; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.20; *newp=1; s2=0.20; *newp >= 2; s3=0.60; *newp 10x; s4=0.00125 ; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=0.00; *newp >= 2; s3=0.00; *newp 10x; s4=1.0000; end;
-end;
-if sex_beh_trans_matrix_m=13 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.75; *newp=1; s2=0.15; *newp >= 2; s3=0.10; *newp 10x; s4=0.0005 ; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.005; *newp >= 2; s3=0.005; *newp 10x; s4=0.0005 ; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.90; *newp=1; s2=0.05; *newp >= 2; s3=0.03; *newp 10x; s4=0.02   ; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.90; *newp=1; s2=0.05; *newp >= 2; s3=0.03; *newp 10x; s4=0.02  ; end;
-end;
-if sex_beh_trans_matrix_m=14 then do;
+if sex_beh_trans_matrix_m=9  then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.75; *newp=1; s2=0.15; *newp >= 2; s3=0.10; *newp 10x; s4=0.001 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.05; *newp >= 2; s3=0.02; *newp 10x; s4=0.001 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.01; *newp 10x; s4=0.01   ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.95; *newp=1; s2=0.03; *newp >= 2; s3=0.01; *newp 10x; s4=0.0100; end;
 end;
-if sex_beh_trans_matrix_m=15 then do;
+if sex_beh_trans_matrix_m=10 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.75; *newp=1; s2=0.15; *newp >= 2; s3=0.10; *newp 10x; s4=0.00025 ; end;
 if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.05; *newp >= 2; s3=0.02; *newp 10x; s4=0.00025 ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.80; *newp=1; s2=0.10; *newp >= 2; s3=0.05; *newp 10x; s4=0.05    ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.80; *newp=1; s2=0.10; *newp >= 2; s3=0.05; *newp 10x; s4=0.05  ; end;
 end;
-if sex_beh_trans_matrix_m=16 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.995; *newp=1; s2=0.005; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00   ; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.95; *newp=1; s2=0.05; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
+if sex_beh_trans_matrix_m=11 then do;
+if       newp_tm1=0  then do; *newp=0; s1=0.99 ; *newp=1; s2=0.01 ; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00   ; end;
+if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.05; *newp=1; s2=0.95; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
 end;
-if sex_beh_trans_matrix_m=17 then do;
-if       newp_tm1=0  then do; *newp=0; s1=0.98; *newp=1; s2=0.02 ; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.98; *newp=1; s2=0.02; *newp >= 2; s3=0.00; *newp 10x; s4=0.00; end;
-if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
-if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
-end;
-if sex_beh_trans_matrix_m=18 then do;
+if sex_beh_trans_matrix_m=12 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.95; *newp=1; s2=0.05; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.93; *newp=1; s2=0.07; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
+if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.50; *newp=1; s2=0.50; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
 end;
-if sex_beh_trans_matrix_m=19 then do;
+if sex_beh_trans_matrix_m=13 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.90; *newp=1; s2=0.10; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.01 ; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
+if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.75; *newp=1; s2=0.25 ; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
 end;
-if sex_beh_trans_matrix_m=20 then do;
+if sex_beh_trans_matrix_m=14 then do;
 if       newp_tm1=0  then do; *newp=0; s1=0.75; *newp=1; s2=0.25; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
-if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.99; *newp=1; s2=0.01; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
+if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.95; *newp=1; s2=0.05; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
 if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
 if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
 end;
-
+if sex_beh_trans_matrix_m=15 then do;
+if       newp_tm1=0  then do; *newp=0; s1=0.75; *newp=1; s2=0.25; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
+if 1  <= newp_tm1<=3  then do; *newp=0; s1=0.85; *newp=1; s2=0.15; *newp >= 2; s3=0.00 ; *newp 10x; s4=0.00; end;
+if 4  <= newp_tm1<10 then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00   ; end;
+if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3=0.00; *newp 10x; s4=0.00  ; end;
+end;
 
 
 
@@ -2924,8 +2894,8 @@ if sex_beh_trans_matrix_w=8 then do;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.95; *newp=1-3; s2=0.05; end;
 end;
 if sex_beh_trans_matrix_w=9 then do;
-	if       newp_tm1=0   then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
-	if 1  <= newp_tm1     then do; *newp=0; s1=0.85; *newp=1-3; s2=0.15; end;
+	if       newp_tm1=0   then do; *newp=0; s1=0.90; *newp=1-3; s2=0.10; end;
+	if 1  <= newp_tm1     then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
 end;
 if sex_beh_trans_matrix_w=10 then do;
 	if       newp_tm1=0   then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
@@ -2936,8 +2906,8 @@ if sex_beh_trans_matrix_w=11 then do;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
 end;
 if sex_beh_trans_matrix_w=12 then do;
-	if       newp_tm1=0   then do; *newp=0; s1=0.98; *newp=1-3; s2=0.02; end;
-	if 1  <= newp_tm1     then do; *newp=0; s1=0.98; *newp=1-3; s2=0.02; end;
+	if       newp_tm1=0   then do; *newp=0; s1=0.95; *newp=1-3; s2=0.05; end;
+	if 1  <= newp_tm1     then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
 end;
 if sex_beh_trans_matrix_w=13 then do;
 	if       newp_tm1=0   then do; *newp=0; s1=0.98; *newp=1-3; s2=0.02; end;
@@ -2948,7 +2918,7 @@ if sex_beh_trans_matrix_w=14 then do;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.85; *newp=1-3; s2=0.15; end;
 end;
 if sex_beh_trans_matrix_w=15 then do;
-	if       newp_tm1=0   then do; *newp=0; s1=0.98; *newp=1-3; s2=0.02; end;
+	if       newp_tm1=0   then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.75; *newp=1-3; s2=0.25; end;
 end;
 
@@ -2957,10 +2927,10 @@ cu1=s1;cu2=cu1+s2; a=ranuni(0);
 if            a < cu1/cu2 then do; newp=0; end; 
 if cu1/cu2 <= a < cu2/cu2  then do; 
 	e=ranuni(0); 
-	if age >= 25 or (15 <= age < 25 and no_newpgt4_w_age1525=1) then do;
+	if age >= 25 then do;
 	if e < 0.70 then newp = 1; if 0.70 <= e < 0.85 then newp = 2; if e ge 0.85 then newp = 3; 
 	end;	
-	if 15 <= age < 25 and no_newpgt4_w_age1525=0 then do;
+	if 15 <= age < 25 then do;
 	if e < 0.30 then newp=1; 		if 0.30 <= e < 0.50 then newp=2; 	if 0.50 <= e < 0.65 then newp=3; 
 	if 0.65 <= e < 0.77 then newp=4; 	if 0.77 <= e < 0.86 then newp=5; 	if 0.86 <= e < 0.92 then newp=6; 
 	if 0.92 <= e < 0.96 then newp=7; if 0.96 <= e < 0.98 then newp=8; 	if 0.98 <= e then newp=9; 
@@ -3762,6 +3732,11 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	if prep_strategy=9 then do;
 	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
 	end;
+
+	if prep_strategy=10 then do;
+	if (newp ge 1  or newp_tm1 ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
 
 
 end;
@@ -12287,6 +12262,16 @@ if infected_prep=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
 if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
+* here here - to add s_ variables and in outputs ;
+
+prep_elig_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=9) then 
+prep_elig_epdiag=1;
+
+
+
+
+
+
 
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
 infected_ep_m=0; if gender=1 and infected_ep=1 then infected_ep_m=infected_ep;
@@ -15219,15 +15204,14 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  no_newpgt4_w_age1525
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
-incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
-inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
+incr_pr_switch_line_2020    	 prep_improvements      
+inc_r_test_startprep_2020   incr_r_test_restartprep_2020    
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
@@ -18584,15 +18568,14 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  no_newpgt4_w_age1525
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 
 /*2020 interventions*/
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
-incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
-inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
+incr_pr_switch_line_2020    	 prep_improvements       
+inc_r_test_startprep_2020   incr_r_test_restartprep_2020   
 circ_improvements 			  circ_inc_rate_2020 		     incr_test_targeting_2020   
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
