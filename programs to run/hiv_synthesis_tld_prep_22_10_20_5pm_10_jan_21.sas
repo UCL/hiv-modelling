@@ -1,5 +1,6 @@
 
 
+
 * === ABOUT THIS PROGRAM  === *
 
 --
@@ -397,7 +398,7 @@ prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probabi
 * dependent_on_time_step_length ;
 
 prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
-tot_yrs_prep=0;
+tot_yrs_prep=0; cum_years_onprep_a2021=0;cum_years_prep_elig_a2021=0;
 prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
 * dependent_on_time_step_length ; 
 prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
@@ -1185,7 +1186,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=ranuni(0);
-if 0.0 <= e < inc1    then age=-67+uniform(0)*12;   * AP 20-7-19;
+if 0.0 <= e < inc1    then age=-68+uniform(0)*13;   * AP 20-7-19;
 if inc1 <= e < cum2   then age=-55+uniform(0)*10;  
 if cum2 <= e < cum3   then age=-45+uniform(0)*10;  
 if cum3 <= e < cum4   then age=-35+uniform(0)*10;  
@@ -1202,7 +1203,7 @@ if cum12 <= e          then age= 55+uniform(0)*10;
 
 age =round(age ,.25);
 
-year_start=-67;
+year_start=-68;
 
 if age  >= year_start;
 
@@ -4046,20 +4047,14 @@ tot_yrs_prep = tot_yrs_prep+0.25; * dependent_on_time_step_length ;
 tot_yrs_prep = tot_yrs_prep + (1/12);
 ;
 
-
+if caldate{t} ge 2021.5 then cum_years_onprep_a2021 = cum_years_onprep_a2021 + 0.25;
 
 prep_effectiveness_non_res_v = adh* eff_adh_prep ;
 if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1;
 * dependent_on_time_step_length ;  
 end;
 
-
-* here here ;
-
-define cum_years_prep_elig_a2021
-define cum_years_onprep_a2021 
-
-
+if prep_elig=1 and caldate{t} ge 2021.5 then cum_years_prep_elig_a2021 = cum_years_prep_elig_a2021 + 0.25;
 
 
 
@@ -12264,8 +12259,8 @@ if infected_prep=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
 if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
-elig_prep_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=9) then 
-elig_prep_epdiag=1;
+elig_prep_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=10))
+then elig_prep_epdiag=1;
 
 * so can calculate proportion of newp with person on prep;
 newp_prep = 0; if prep=1 then newp_prep=newp;
@@ -12275,7 +12270,10 @@ if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
 if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_year=1;
 if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_year=1;
 
-if cum_years_prep_elig_a2021 > 0 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
+prop_elig_years_onprep_a2021=0;
+if cum_years_prep_elig_a2021 > 0 and registd ne 1 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
+
+continuous_prep_ge1yr=0; if prep=1 and continuous_prep_use >= 1 then continuous_prep_ge1yr=1;
 
 
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
@@ -13839,7 +13837,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_tot_yrs_prep_gt_5 + tot_yrs_prep_gt_5 ; s_tot_yrs_prep_gt_10 + tot_yrs_prep_gt_10 ; s_tot_yrs_prep_gt_20 + tot_yrs_prep_gt_20 ;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;    
 	s_prep_elig_past_year + prep_elig_past_year ; s_prep_elig_past_3year + prep_elig_past_3year ; s_prep_elig_past_5year + prep_elig_past_5year ;
-	s_newp_prep + newp_prep ; 
+	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_a2021 + prop_elig_years_onprep_a2021 ;  s_continuous_prep_ge1yr + continuous_prep_ge1yr;
 
 	/*testing and diagnosis*/
 
@@ -14971,7 +14969,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	prep_strategy  								
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
 
 
 /*testing and diagnosis*/
@@ -15727,7 +15725,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	 							
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -16656,6 +16654,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+/*
 
 data r1; set a;
 
@@ -16863,7 +16862,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
-
+*/
 
 
 
@@ -17279,6 +17278,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+/*
 
 data r1; set a;
 
@@ -17485,7 +17485,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
-
+*/
 
 
 
@@ -17900,6 +17900,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+/*
 
 data r1; set a;
 
@@ -18106,7 +18107,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
-
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -18345,7 +18346,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   prep_strategy
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 										
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_a2021	s_continuous_prep_ge1yr									
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
