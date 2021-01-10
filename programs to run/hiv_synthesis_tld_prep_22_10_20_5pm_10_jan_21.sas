@@ -3737,7 +3737,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	if (newp ge 1  or newp_tm1 ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
 	end;
 
-
+	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
 
 end;
 
@@ -4053,6 +4053,11 @@ if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1
 * dependent_on_time_step_length ;  
 end;
 
+
+* here here ;
+
+define cum_years_prep_elig_a2021
+define cum_years_onprep_a2021 
 
 
 
@@ -12000,8 +12005,6 @@ if ever_i_nor_prep=1 then rm_prep=rm_;
 *Outcomes relating to PrEP;
 
 *Number of people eligible for PrEP;
-elig_prep_epdiag=0;	*if registd ne 1 and hard_reach=0 and epdiag=1 then elig_prep_epdiag=1;
-					if prep_elig=1 and epdiag=1 then elig_prep_epdiag=1;
 elig_prep=0;       	*if registd ne 1 and hard_reach=0 and (epi  =1 or newp ge 2) then elig_prep=1; 
 					if prep_elig=1 then elig_prep=1;
 
@@ -12232,13 +12235,12 @@ prep_adhl50 =0;	if prep=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;
 if prep=1 then do;
 	if (15<=age<49) then onprep_1549=1;
-	if gender=1 and (15<=age<49) then onprep_m=1;
-	if gender=2 and (15<=age<49) then onprep_w=1;
+	if gender=1 then onprep_m=1;
+	if gender=2 then onprep_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
 end;
-
 
 if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
@@ -12262,15 +12264,18 @@ if infected_prep=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
 if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
-* here here - to add s_ variables and in outputs ;
+elig_prep_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=9) then 
+elig_prep_epdiag=1;
 
-prep_elig_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=9) then 
-prep_elig_epdiag=1;
+* so can calculate proportion of newp with person on prep;
+newp_prep = 0; if prep=1 then newp_prep=newp;
 
+prep_elig_past_year=0;prep_elig_past_3year=0;prep_elig_past_5year=0;
+if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_year=1;
 
-
-
-
+if cum_years_prep_elig_a2021 > 0 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
 
 
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
@@ -12391,6 +12396,13 @@ else if gender=2 then do;
 	if sw ne 1           then      ever_tested_sw=0;
 end;
 
+year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
+year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
+if 0 <= caldate&j - infection < 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
+if 1 <= caldate&j - infection < 2 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
+if 2 <= caldate&j - infection < 3 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
+if 3 <= caldate&j - infection < 4 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
+if 4 <= caldate&j - infection < 5 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
 
 ***Pregnancy outcomes;
 pregnant_w1549=0;pregnant_w1524=0;pregnant_w1519=0;pregnant_w2024=0;pregnant_w2529=0;pregnant_w3034=0;pregnant_w3539=0;  
@@ -13826,7 +13838,9 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_prepuptake_pop + prepuptake_pop ; s_prob_prep_restart_choice + prob_prep_restart_choice ; s_prep_all_past_year + prep_all_past_year ;
     s_tot_yrs_prep_gt_5 + tot_yrs_prep_gt_5 ; s_tot_yrs_prep_gt_10 + tot_yrs_prep_gt_10 ; s_tot_yrs_prep_gt_20 + tot_yrs_prep_gt_20 ;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;    
-       
+	s_prep_elig_past_year + prep_elig_past_year ; s_prep_elig_past_3year + prep_elig_past_3year ; s_prep_elig_past_5year + prep_elig_past_5year ;
+	s_newp_prep + newp_prep ; 
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -13862,7 +13876,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
-             
+	s_year_1_infection + year_1_infection ; s_year_2_infection + year_2_infection ; s_year_3_infection + year_3_infection ; 
+	s_year_5_infection + year_5_infection ; s_year_5_infection + year_5_infection ;  
+	s_year_1_infection_diag + year_1_infection_diag ; s_year_2_infection_diag + year_2_infection_diag ; s_year_3_infection_diag + year_3_infection_diag ;
+	s_year_4_infection_diag + year_4_infection_diag ; s_year_5_infection_diag + year_5_infection_diag ;
+ 
 	/*VL and CD4*/
 
 	s_vlg1 + vlg1 ; s_vlg2 + vlg2 ; s_vlg3 + vlg3 ; s_vlg4 + vlg4 ; s_vlg5 + vlg5 ; s_vlg6 + vlg6 ; 
@@ -14953,6 +14971,8 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	prep_strategy  								
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -14984,6 +15004,8 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag  
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -15705,6 +15727,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	 							
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -15736,6 +15759,8 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -18320,7 +18345,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   prep_strategy
-										
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep 										
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18352,6 +18377,8 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
