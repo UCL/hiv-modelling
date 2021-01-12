@@ -311,6 +311,8 @@ incr_death_rate_crypm = 5 ;
 incr_death_rate_sbi = 5 ;
 incr_death_rate_tb = 5 ;
 fold_change_ac_death_rate = 1;
+prop_adc_crypm = 0.15;
+prop_adc_sbi = 0.15;
 
 * following values are placeholdes - should result in similar aids and death rate to previous coding;
 effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
@@ -9764,13 +9766,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if nod    = 2 then rate = 0.85*rate;
 		if nod    =1 then rate = 0.9*rate;
 
-		oth_adc_rate = rate * 0.7; * because assume 30% of adc is sbi or crypm;
+		oth_adc_rate = rate * (1 - prop_adc_crypm - prop_adc_sbi) ; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
 		if 0 <= (caldate{t} - date_most_recent_crypm_proph) < 1 then crypm_rate = crypm_rate * effect_crypm_proph;
-		crypm_rate = rate * 0.15; 
+		crypm_rate = rate * prop_adc_crypm ; 
 		* todo: determine length of effect of sbi_proph;
 		if 0 <= (caldate{t} - date_most_recent_sbi_proph) < 1 then sbi_rate = sbi_rate * effect_sbi_proph;
-		sbi_rate = rate * 0.15;
+		sbi_rate = rate * prop_adc_sbi ;
 
 		risk_oth_adc = 1 - exp (-0.25*oth_adc_rate);
 		* ts1m: *	riskx = 1 - exp (-(1/12)*oth_adc_rate);
