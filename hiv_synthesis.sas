@@ -317,18 +317,20 @@ prop_adc_sbi = 0.15;
 * following values are placeholdes - should result in similar aids and death rate to previous coding;
 effect_tb_proph = 0.5; * effect of tb prophylaxis on risk of tb;
 effect_crypm_proph = 0.5; * as above for crypm;
-effect_sbi_proph = 0.5; 
-tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
+effect_sbi_proph = 0.5;
 tblam_eff_prob_diag_l = 0.5; * effect of tb lam test on tb being diagnosed late;
-crypm_base_prob_diag_l = 0.5; * base probability that crypm is diagnosed late ; 
 crag_eff_prob_diag_l = 0.5; * effect of crag test on crypm being diagnosed late;  
+
+tb_base_prob_diag_l = 0.5; * base probability that tb is diagnosed late ;
+crypm_base_prob_diag_l = 0.5; * base probability that crypm is diagnosed late ; 
 sbi_base_prob_diag_l = 0.5; * base probability that sbi is diagnosed late ;
-oth_adc_base_prob_diag_l = 0.5; * base probability that other adc is diagnosed late ;
+oth_adc_base_prob_diag_l = 0.5; * base probability that other adc is diagnosed late; 
 rel_rate_death_tb_diag_e = 0.67; * effect of tb being diagnosed early on rate of death from the tb event; 
 rel_rate_death_oth_adc_diag_e = 0.9 ; * effect of oth_adc being diagnosed early on rate of death from the other adc event; 
 rel_rate_death_crypm_diag_e = 0.67 ; * effect of crypm being diagnosed early on rate of death from the crypm event; 
 rel_rate_death_sbi_diag_e = 0.67 ; * effect of sbi being diagnosed early on rate of death from the sbi event; 
 effect_visit_prob_diag_l = 0.9; * effect of being under care on prob of an adc or tb being diagnosed late;
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -726,6 +728,27 @@ p_neph_stops_after_ten = 0.1;
 * effect_sw_prog_prep;		e=uniform(0); if e < 0.33 then effect_sw_prog_prep=0.60; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.75;
 										  if e >= 0.66 then effect_sw_prog_prep=0.90;
 
+* tb_base_prob_diag_l;		e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
+										  if e >= 0.666 then tb_base_prob_diag_l=0.75;
+* crypm_base_prob_diag_l;	e=uniform(0); if e < 0.333 then crypm_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then crypm_base_prob_diag_l=0.50;
+										  if e >= 0.666 then crypm_base_prob_diag_l=0.75;
+* sbi_base_prob_diag_l;		e=uniform(0); if e < 0.333 then sbi_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then sbi_base_prob_diag_l=0.50;
+										  if e >= 0.666 then sbi_base_prob_diag_l=0.75;
+* oth_adc_base_prob_diag_l;	e=uniform(0); if e < 0.333 then oth_adc_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then oth_adc_base_prob_diag_l=0.50;
+										  if e >= 0.666 then oth_adc_base_prob_diag_l=0.75;
+
+* rel_rate_death_tb_diag_e;		e=uniform(0); if e < 0.333 then rel_rate_death_tb_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_tb_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_tb_diag_e=0.8 ;
+* rel_rate_death_crypm_diag_e;	e=uniform(0); if e < 0.333 then rel_rate_death_crypm_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_crypm_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_crypm_diag_e=0.8 ;
+* rel_rate_death_sbi_diag_e;	e=uniform(0); if e < 0.333 then rel_rate_death_sbi_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_sbi_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_sbi_diag_e=0.8 ;
+* rel_rate_death_oth_adc_diag_e;e=uniform(0); if e < 0.333 then rel_rate_death_oth_adc_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_oth_adc_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_oth_adc_diag_e=0.8 ;
+
+* effect_visit_prob_diag_l		;e=uniform(0); if e < 0.333 then effect_visit_prob_diag_l=0.5 ; if 0.333 <= e < 0.666 then effect_visit_prob_diag_l=0.67;
+										  if e >= 0.666 then effect_visit_prob_diag_l=0.80;
+
 ***** prep;
 
 * adh_pattern_prep;  r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 
@@ -784,7 +807,10 @@ p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 ****** covid death risk ;
 r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;
 
+
 * ================ ;
+
+
 
 * determining newp base categories for new sw;
 if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
@@ -16965,12 +16991,21 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+/*
+
+data x; set cum_l1;
+* file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_tld_prep_22_10_20_5pm_12_jan_21_&dataset_id";  
+
+put   
+
+*/
 
   libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
- 
+
 data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
 
 keep
