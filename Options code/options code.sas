@@ -51,16 +51,16 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
-if caldate_never_dot = 2015.25 then do;
+if caldate_never_dot ge 2014.5 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do; 
-	eff_sw_program=0; 
+	eff_sw_program=0;sw_program=0; 
 	end; 
 
 	if option = 1 then do; 
-    eff_sw_program=1;
+    eff_sw_program=1;sw_program=1;
 	end;
 end;
 

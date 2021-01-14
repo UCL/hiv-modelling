@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_15_12_20_1pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_07_01_21_5pm";
 
 input 
 
@@ -886,7 +886,9 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * prop_w_ever_sw;				prop_w_ever_sw = s_ever_sw / s_alive1564_w ;
 * prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
 
-/*proc print;var s_sw_program_visit sw_program eff_sw_program cald s_sw_1564 option;where cald gt 2015;run;*;
+
+proc print;var cald s_sw_program_visit sw_program eff_sw_program cald s_sw_1564 option;run;
+*/;
 
 
 * prop_sw_hiv;					prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
@@ -1443,10 +1445,10 @@ s_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_15_12_20_12pm; set y;run;
+data a.fsw_07_01_21_5pm; set y;run;
 
 
-data y; set a.fsw_15_12_20_12pm; run;
+data y; set a.fsw_07_01_21_5pm; run;
 
   options nomprint;
   option nospool;
@@ -1788,7 +1790,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_fsw_15_12_20_12pm ;
+  data a.wide_fsw_07_01_21_5pm ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

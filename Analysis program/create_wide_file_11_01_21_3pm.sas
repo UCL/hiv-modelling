@@ -5,10 +5,9 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_15_12_20_1pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_11_01_21_3pm_temp";
 
 input 
-
 
 /*general*/
 run   cald   option 
@@ -464,7 +463,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
@@ -567,8 +566,9 @@ r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
-; 
 
+
+; 
 run;
 
 
@@ -576,7 +576,7 @@ data a; set d1  ;
 
 proc sort; by run cald option;run;
 
-proc print;var cald option eff_sw_program;run;
+proc freq;table cald;where cald=2014;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 
@@ -886,7 +886,9 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * prop_w_ever_sw;				prop_w_ever_sw = s_ever_sw / s_alive1564_w ;
 * prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
 
-/*proc print;var s_sw_program_visit sw_program eff_sw_program cald s_sw_1564 option;where cald gt 2015;run;*;
+
+proc print;var cald s_sw_program_visit sw_program eff_sw_program cald s_sw_1564 option;run;
+*/;
 
 
 * prop_sw_hiv;					prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
@@ -1443,10 +1445,10 @@ s_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_15_12_20_12pm; set y;run;
+data a.fsw_11_01_21_3pm; set y;run;
 
 
-data y; set a.fsw_15_12_20_12pm; run;
+data y; set a.fsw_11_01_21_3pm; run;
 
   options nomprint;
   option nospool;
@@ -1788,7 +1790,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_fsw_15_12_20_12pm ;
+  data a.wide_fsw_11_01_21_3pm ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
