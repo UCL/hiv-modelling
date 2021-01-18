@@ -2326,7 +2326,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 option = &s;
 
 
-if caldate_never_dot = 2020.50 then do;
+if caldate_never_dot = 2021.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
