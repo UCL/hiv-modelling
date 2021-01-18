@@ -16972,6 +16972,8 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 
 
 * ts1m:  need more update statements ;
@@ -17009,6 +17011,8 @@ put
 data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
 
 keep
+
+
 
 
 /*general*/
