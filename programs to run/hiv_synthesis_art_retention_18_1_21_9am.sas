@@ -2340,16 +2340,41 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-	
-	eff_rate_restart = 
+	if _u40 < 0.20 then 	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.00) ; 
+	if 0.20 <= _u40 < 0.40 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.25) ; 
+	if 0.40 <= _u40 < 0.60 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.50) ; 
+	if 0.60 <= _u40 < 0.80 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.75) ; 
+	if 0.80 <= _u40        then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 1.00) ; 
 
-	eff_rate_lost 
-	eff_prob_lost_art 
-	eff_rate_return 
-	eff_rate_int_choice 
-	eff_prob_return_adc 
+	if _u41 < 0.20 then 	eff_rate_lost = eff_rate_lost / 1 ; 
+	if 0.20 <= _u41 < 0.40 then eff_rate_lost = eff_rate_lost / 1.5 ;
+	if 0.40 <= _u41 < 0.60 then eff_rate_lost = eff_rate_lost / 2.0 ;
+	if 0.60 <= _u41 < 0.80 then eff_rate_lost = eff_rate_lost / 5.0 ;
+	if 0.80 <= _u41        then eff_rate_lost = eff_rate_lost / 10.0 ;
 
+	if _u43 < 0.20 then 	eff_prob_lost_art = eff_prob_lost_art / 1 ; 
+	if 0.20 <= _u43 < 0.40 then eff_prob_lost_art = eff_prob_lost_art / 1.5 ;
+	if 0.40 <= _u43 < 0.60 then eff_prob_lost_art = eff_prob_lost_art / 2.0 ;
+	if 0.60 <= _u43 < 0.80 then eff_prob_lost_art = eff_prob_lost_art / 5.0 ;
+	if 0.80 <= _u43        then eff_prob_lost_art = eff_prob_lost_art / 10.0 ;
 
+	if _u44 < 0.20 then 	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.00) ; 
+	if 0.20 <= _u44 < 0.40 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.25) ; 
+	if 0.40 <= _u44 < 0.60 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.50) ; 
+	if 0.60 <= _u44 < 0.80 then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.75) ; 
+	if 0.80 <= _u44        then eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 1.00) ; 
+
+	if _u45 < 0.20 then 	eff_rate_int_choice = eff_rate_int_choice / 1 ; 
+	if 0.20 <= _u45 < 0.40 then eff_rate_int_choice = eff_rate_int_choice / 1.5 ;
+	if 0.40 <= _u45 < 0.60 then eff_rate_int_choice = eff_rate_int_choice / 2.0 ;
+	if 0.60 <= _u45 < 0.80 then eff_rate_int_choice = eff_rate_int_choice / 5.0 ;
+	if 0.80 <= _u45        then eff_rate_int_choice = eff_rate_int_choice / 10.0 ;
+
+	if _u46 < 0.20 then 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.00) ; 
+	if 0.20 <= _u46 < 0.40 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.25) ; 
+	if 0.40 <= _u46 < 0.60 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.50) ; 
+	if 0.60 <= _u46 < 0.80 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.75) ; 
+	if 0.80 <= _u46        then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 1.00) ; 
 
 	end;
 end;
@@ -15934,9 +15959,12 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
 
+eff_prob_return_adc 
+
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
+
 
 
 /*supp material*/
@@ -17574,6 +17602,8 @@ art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting
+
+eff_prob_return_adc 
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
