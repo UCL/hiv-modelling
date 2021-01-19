@@ -1232,7 +1232,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=uniform(0);
-if 0.0 <= e < inc1    then age=-67+uniform(0)*12;   * AP 20-7-19;
+if 0.0 <= e < inc1    then age=-68+uniform(0)*13;   
 if inc1 <= e < cum2   then age=-55+uniform(0)*10;  
 if cum2 <= e < cum3   then age=-45+uniform(0)*10;  
 if cum3 <= e < cum4   then age=-35+uniform(0)*10;  
@@ -1249,7 +1249,7 @@ if cum12 <= e          then age= 55+uniform(0)*10;
 
 age =round(age ,.25);
 
-year_start=-67;
+year_start=-68;
 
 if age  >= year_start;
 
@@ -2326,7 +2326,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 option = &s;
 
 
-if caldate_never_dot = 2020.50 then do;
+if caldate_never_dot = 2021.50 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -16972,6 +16972,8 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 
 
 * ts1m:  need more update statements ;
@@ -16991,11 +16993,11 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
+/*  
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_tld_prep_22_10_20_5pm_12_jan_21_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_base_18_1_21_&dataset_id";  
 
 put   
 
@@ -17009,6 +17011,8 @@ put
 data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
 
 keep
+
+
 
 
 /*general*/
