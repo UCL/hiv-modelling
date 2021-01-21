@@ -2153,7 +2153,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-		prep_strategy = 9; if _u37 < 0.0 then prep_strategy = 10;  if 0.0 <= _u37 < 0.5 then prep_strategy = 11;  
+		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;  if 0.2 <= _u37 < 1.0 then prep_strategy = 11;  
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ; 
 		eff_prob_prep_restart_choice = 0.7 ;
@@ -2168,7 +2168,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do;
 
 		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
-		prep_strategy = 9; if _u37 < 0.0 then prep_strategy = 10;  if 0.0 <= _u37 < 0.5 then prep_strategy = 11; 
+		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;  if 0.2 <= _u37 < 0.4 then prep_strategy = 11; 
 		prob_prep_pop_wide_tld = 0.50; 
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ;  
@@ -3740,7 +3740,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=11 then do;
 	r = rand('Uniform');
-	if (newp ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and (r < 0.05 or (r < 0.5 and epi=1 ) ) then prep_elig=1; 
+	if (newp ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and (r < 0.05 or (r < 0.5 and epi=1 )))) then prep_elig=1; 
 	end;
 
 	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
