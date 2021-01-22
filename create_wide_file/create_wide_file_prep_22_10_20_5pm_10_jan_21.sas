@@ -1591,7 +1591,6 @@ proc sort; by run;run;
 
   data a.wide_prep_22_10_20_5pm_10_jan_21; 
 
-
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
 * merge   wide_outputs  wide_par ;  
