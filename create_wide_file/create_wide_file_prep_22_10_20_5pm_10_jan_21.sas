@@ -1219,7 +1219,7 @@ inc_r_test_startprep_2020  incr_r_test_restartprep_2020  decr_r_choose_stop_prep
 inc_p_prep_restart_choi_2020 incr_prepuptake_sw_2020    incr_prepuptake_pop_2020    expand_prep_to_all_2020  
 circ_improvements  			circ_inc_rate_2020  		incr_test_targeting_2020    pop_wide_tld_2020 
 incr_max_freq_testing_2020     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_2020  
-reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    
+reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 
 eff_max_freq_testing  		eff_rate_restart   		eff_prob_loss_at_diag   		eff_rate_lost   		
 eff_prob_lost_art   		eff_rate_return   
@@ -1440,6 +1440,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=eff_rate_choose_stop_prep );  		%par(p=eff_prob_prep_restart_choice );  %par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
+%par(p=lower_future_art_cov);  %par(p=eff_adh_prep);  %par(p=sens_vct_test_type_3);  
 
 
 data wide_par; merge dataset
@@ -1465,7 +1466,8 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc
+keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc 
+lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 ;
 
 proc contents; run;
@@ -1616,17 +1618,6 @@ var	p_mcirc_1549m_20 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 pr
 incidence1549m_20	p_diag_m_20   p_diag_w_20 p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   prop_w_1549_sw_20    
 p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 p_onart_cd4_l500_20  
 p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 aids_death_rate_20  p_newp_sw_20 ;
-run;
-ods html close;
-
-
-
-ods html;
-proc means n median p5 p95 min max ;
-var	p_mcirc_1549m_40 prevalence1549m_40 prevalence1549w_40 prevalence1524m_40 prevalence1524w_40 prevalence4549m_40 incidence1549w_40 
-incidence1549m_40	p_diag_m_40   p_diag_w_40 p_ai_no_arv_c_nnm_40   p_ai_no_arv_c_rt184m_40  p_ai_no_arv_c_rt65m_40   prop_w_1549_sw_40    
-p_onart_diag_w_40 	p_onart_diag_m_40   p_vl1000_40	p_onart_vl1000_w_40	p_onart_vl1000_m_40 p_onart_cd4_l500_40  
-p_mcirc_1549m_40  p_startedline2_40  prop_sw_hiv_40 prop_sw_onprep_40 p_newp_sw_40  n_tested_40 aids_death_rate_40  p_newp_sw_40 ;
 run;
 ods html close;
 
