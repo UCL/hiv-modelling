@@ -293,7 +293,6 @@ ods html close;
 run;
 
 
-
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_1564_hivneg_onprep_20_25_1  prop_1564_hivneg_onprep_20_25_2 ;  
 run; 
