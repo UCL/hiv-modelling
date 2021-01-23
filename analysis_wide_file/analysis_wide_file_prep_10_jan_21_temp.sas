@@ -75,6 +75,8 @@ d_ddaly_all_20_25_2 = ddaly_all_20_25_2 - ddaly_all_20_25_1 ;
 
 d_dcost_20_25_2 = dcost_20_25_2 - dcost_20_25_1 ;
 
+d_dcost_clin_care_20_70_2 = dcost_clin_care_20_70_2 - dcost_clin_care_20_70_1;
+
 ndb_500_20_25_2 =  ddaly_all_20_25_2 + (dcost_20_25_2)/0.0005;
 ndb_500_20_25_1 =  ddaly_all_20_25_1 + (dcost_20_25_1)/0.0005;
 
@@ -464,6 +466,8 @@ dvis_cost_20_70_1 dvis_cost_20_70_2
 dtest_cost_20_70_1 dtest_cost_20_70_2
 dart_cost_y_20_70_1 dart_cost_y_20_70_2 
 dclin_cost_20_70_1 dclin_cost_20_70_2 
+dcost_clin_care_20_70_1 dcost_clin_care_20_70_2
+d_dcost_clin_care_20_70_2
 dcost_prep_20_70_1 dcost_prep_20_70_2 
 dcost_prep_visit_20_70_1 dcost_prep_visit_20_70_2 
 p_onart_20_70_1 p_onart_20_70_2 
@@ -544,7 +548,7 @@ proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; 
-  model ce_100_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
+  model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
 * model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
 * av_newp_ge1_non_sw_20 p_newp_ge5_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_20_25_2 p_prep_adhg80_20_25_2  prevalence1549_20 ;
 run;
