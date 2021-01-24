@@ -1086,7 +1086,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 * SECTION 2
 
-Create the 100000 people who will be alive and aged 15+ at some point between 1989 and 2070 (50 year time horizon from 2020)
+Create the 100000 people who will be alive and aged 15+ at some point between 1989 and 2071 (50 year time horizon from 2020)
 
 Define fixed or initial values for each person individually
 
@@ -1952,9 +1952,9 @@ hiv_tm1 = hiv;
 age_tm1=age;
 
 
-if t ge 2 and caldate{t-1} < 2071.0  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
+if t ge 2 and caldate{t-1} < 2071.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < 2071.0  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
+if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
 
@@ -2657,7 +2657,7 @@ end;
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
-if t ge 2 and caldate{t} < 2071.0 and death =.  then do;
+if t ge 2 and caldate{t} < 2071.5 and death =.  then do;
 
 cost=0;cost_test=0;
 
@@ -6001,7 +6001,7 @@ if hiv=1 then do;
 
 
 
-if t ge 2 and . < infection < caldate{t} < 2071.0 and dead_tm1 ne 1  then do;
+if t ge 2 and . < infection < caldate{t} < 2071.5 and dead_tm1 ne 1  then do;
 
 sympt_diag=0;
 
