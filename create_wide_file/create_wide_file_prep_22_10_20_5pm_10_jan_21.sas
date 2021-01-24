@@ -593,19 +593,18 @@ dataset=1;
 
 data d; set d1 ;
 
-
 proc sort data=d; by run cald option;run;
-proc freq data=d;table run; where cald=2020;run;
+proc freq data=d;table run; where cald=2021;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set d ;
  
-if cald=2020;
+if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2020 = 10000000 / s_alive;
-keep run sf_2020;
+sf_2021 = 10000000 / s_alive;
+keep run sf_2021;
 proc sort; by run;
 
 
@@ -648,9 +647,9 @@ if s_cost_ gt 0 then disc     = s_dcost_ / s_cost_;
 * note discounting is from 2020 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
 discount_adj = 1;
-discount_adj_10p = discount_adj * (0.90/0.97)**(cald-2020) ; 
-discount_adj_7p = discount_adj * (0.93/0.97)**(cald-2020) ; 
-discount_adj_0  = discount_adj * (1.00/0.97)**(cald-2020) ; 
+discount_adj_10p = discount_adj * (0.90/0.97)**(cald-2021) ; 
+discount_adj_7p = discount_adj * (0.93/0.97)**(cald-2021) ; 
+discount_adj_0  = discount_adj * (1.00/0.97)**(cald-2021) ; 
 discount = disc * discount_adj ;
 discount_10p = disc * discount_adj_10p ;
 discount_7p = disc * discount_adj_7p ;
@@ -678,25 +677,25 @@ discount_0 = disc * discount_adj_0 ;
 
 * ================================================================================= ;
 
-ly = s_ly * sf_2020;
-dly = s_dly * sf_2020;
+ly = s_ly * sf_2021;
+dly = s_dly * sf_2021;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2020 * 4 * (0.0022 / 0.0058); 
+dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2021 * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
-ddaly = s_ddaly * sf_2020 * 4 * discount_adj ;
+ddaly = s_ddaly * sf_2021 * 4 * discount_adj ;
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2020 * 4  * discount_adj ; * odabe ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2021 * 4  * discount_adj ; * odabe ;
 
-ddaly_mtct = s_ddaly_mtct * sf_2020 * 4  * discount_adj ;
+ddaly_mtct = s_ddaly_mtct * sf_2021 * 4  * discount_adj ;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2020 * 4  * discount_adj ; * napd;
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2021 * 4  * discount_adj ; * napd;
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -707,7 +706,6 @@ ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_d
 ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe + ddaly_non_aids_pre_death;
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
-
 
 
 * ================================================================================= ;
@@ -728,15 +726,15 @@ run;
 * all costs expressed as $ millions per year in 2018 USD;
 
 * ts1m - 12 instead of 4; 
-dzdv_cost = s_cost_zdv * discount * sf_2020 * 4 / 1000;
-dten_cost = s_cost_ten * discount * sf_2020 * 4 / 1000;
-d3tc_cost = s_cost_3tc * discount * sf_2020 * 4 / 1000; 
-dnev_cost = s_cost_nev * discount * sf_2020 * 4 / 1000;
-dlpr_cost = s_cost_lpr * discount * sf_2020 * 4 / 1000;
-ddar_cost = s_cost_dar * discount * sf_2020 * 4 / 1000;
-dtaz_cost = s_cost_taz * discount * sf_2020 * 4 / 1000;
-defa_cost = s_cost_efa * discount * sf_2020 * 4 / 1000;
-ddol_cost = s_cost_dol * discount * sf_2020 * 4 / 1000;
+dzdv_cost = s_cost_zdv * discount * sf_2021 * 4 / 1000;
+dten_cost = s_cost_ten * discount * sf_2021 * 4 / 1000;
+d3tc_cost = s_cost_3tc * discount * sf_2021 * 4 / 1000; 
+dnev_cost = s_cost_nev * discount * sf_2021 * 4 / 1000;
+dlpr_cost = s_cost_lpr * discount * sf_2021 * 4 / 1000;
+ddar_cost = s_cost_dar * discount * sf_2021 * 4 / 1000;
+dtaz_cost = s_cost_taz * discount * sf_2021 * 4 / 1000;
+defa_cost = s_cost_efa * discount * sf_2021 * 4 / 1000;
+ddol_cost = s_cost_dol * discount * sf_2021 * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
@@ -747,37 +745,37 @@ if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 * ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * sf_2020 * discount_adj * 4 / 1000;
-dart1_cost = s_dart_1_cost * sf_2020 * discount_adj * 4 / 1000;
-dart2_cost = s_dart_2_cost * sf_2020 * discount_adj * 4 / 1000;
-dart3_cost = s_dart_3_cost * sf_2020 * discount_adj * 4 / 1000;
-dart_cost = s_dart_cost * sf_2020 * discount_adj * 4 / 1000;
-dvl_cost = s_dvl_cost * sf_2020 * discount_adj * 4 / 1000;
-dcd4_cost = s_dcd4_cost * sf_2020 * discount_adj * 4 / 1000;
-dadc_cost = s_dadc_cost * sf_2020 * discount_adj * 4 / 1000;
-dtb_cost = s_dtb_cost * sf_2020 * discount_adj * 4 / 1000;
-dtest_cost = s_dtest_cost * sf_2020 * discount_adj * 4 / 1000;
-dwho3_cost = s_dwho3_cost * sf_2020 * discount_adj * 4 / 1000;
-dcot_cost = s_dcot_cost * sf_2020 * discount_adj * 4 / 1000;
-dres_cost = s_dres_cost * sf_2020 * discount_adj * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2020 * discount_adj * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * sf_2020 * discount_adj * 4 / 1000;  
-dcost_prep = s_dcost_prep * sf_2020* discount_adj * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * sf_2020* discount_adj * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 4 / 1000; 
+dvis_cost = s_dvis_cost * sf_2021 * discount_adj * 4 / 1000;
+dart1_cost = s_dart_1_cost * sf_2021 * discount_adj * 4 / 1000;
+dart2_cost = s_dart_2_cost * sf_2021 * discount_adj * 4 / 1000;
+dart3_cost = s_dart_3_cost * sf_2021 * discount_adj * 4 / 1000;
+dart_cost = s_dart_cost * sf_2021 * discount_adj * 4 / 1000;
+dvl_cost = s_dvl_cost * sf_2021 * discount_adj * 4 / 1000;
+dcd4_cost = s_dcd4_cost * sf_2021 * discount_adj * 4 / 1000;
+dadc_cost = s_dadc_cost * sf_2021 * discount_adj * 4 / 1000;
+dtb_cost = s_dtb_cost * sf_2021 * discount_adj * 4 / 1000;
+dtest_cost = s_dtest_cost * sf_2021 * discount_adj * 4 / 1000;
+dwho3_cost = s_dwho3_cost * sf_2021 * discount_adj * 4 / 1000;
+dcot_cost = s_dcot_cost * sf_2021 * discount_adj * 4 / 1000;
+dres_cost = s_dres_cost * sf_2021 * discount_adj * 4 / 1000;
+d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2021 * discount_adj * 4 / 1000;  
+dcost_cascade_interventions = s_dcost_cascade_interventions * sf_2021 * discount_adj * 4 / 1000;  
+dcost_prep = s_dcost_prep * sf_2021* discount_adj * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * sf_2021* discount_adj * 4 / 1000; 			   
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2021* discount_adj * 4 / 1000; 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2020 * discount_adj * 4 / 1000;
+* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2021 * discount_adj * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
-dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 4 / 1000;
-dcost_circ = s_dcost_circ * sf_2020* discount_adj * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf_2020* discount_adj * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 4 / 1000;
+dfullvis_cost = s_dfull_vis_cost * sf_2021 * discount_adj * 4 / 1000;
+dcost_circ = s_dcost_circ * sf_2021* discount_adj * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * sf_2021* discount_adj * 4 / 1000; 
+dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2021 * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * sf_2020 * discount_adj * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf_2020 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
+dcost_drug_level_test = s_dcost_drug_level_test * sf_2021 * discount_adj * 4 / 1000;
+dcost_child_hiv  = s_dcost_child_hiv * sf_2021 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
 dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 
@@ -807,7 +805,6 @@ cost_clin_care = dcost_clin_care / discount;
 cost = dcost / discount;
 
 * ================================================================================= ;
-
 
 * derived var cald iables relating to population, not only those with hiv ;
 
@@ -848,7 +845,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
-* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2020;
+* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2021;
 * p_newp_sw;					p_newp_sw = s_sw_newp / s_w_newp ;
 * rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
 * rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
@@ -856,8 +853,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
 * mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
-* n_tested_m;					n_tested_m = s_tested_m * sf_2020 * 4;
-* n_tested;						n_tested = s_tested * sf_2020 * 4;
+* n_tested_m;					n_tested_m = s_tested_m * sf_2021 * 4;
+* n_tested;						n_tested = s_tested * sf_2021 * 4;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -892,21 +889,21 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 * prop_sw_onprep; 				prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
-* n_prep;						n_prep = s_prep * sf_2020;
-* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2020;
+* n_prep;						n_prep = s_prep * sf_2021;
+* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2021;
 * p_hiv1_prep;					if s_prep gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep ;
 
-* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2020;
+* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2021;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
 
 * av_prep_eff_non_res_v;  		if s_prep > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep;
 
-* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2020;
-* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2020;
-* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2020;
-* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2020;
-* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2020;
-* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2020;
+* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2021;
+* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2021;
+* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2021;
+* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2021;
+* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2021;
+* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2021;
 
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
 
@@ -1111,29 +1108,29 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2020;
-* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2020;
-* n_death;						n_death = s_dead_allage * sf_2020;
-* n_covid;						n_covid = s_covid * sf_2020;
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2021;
+* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2021;
+* n_death;						n_death = s_dead_allage * sf_2021;
+* n_covid;						n_covid = s_covid * sf_2021;
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * number of women with hiv giving birth per year;
-n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2020 * 4;
-n_birth_with_inf_child = s_birth_with_inf_child * sf_2020 * 4;
+n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2021 * 4;
+n_birth_with_inf_child = s_birth_with_inf_child * sf_2021 * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
-n_pregnant_ntd = s_pregnant_ntd    * sf_2020 * 4 ; 
-n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2020 * 4;  * annual number;
+n_pregnant_ntd = s_pregnant_ntd    * sf_2021 * 4 ; 
+n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2021 * 4;  * annual number;
 
 
-n_mcirc1549_=s_mcirc_1549m * sf_2020 * 4;
-n_mcirc1549_3m=s_mcirc_1549m * sf_2020;
+n_mcirc1549_=s_mcirc_1549m * sf_2021 * 4;
+n_mcirc1549_3m=s_mcirc_1549m * sf_2021;
 
-n_new_inf1549m = s_primary1549m * sf_2020 * 4;
-n_new_inf1549 = s_primary1549 * sf_2020 * 4;
-n_infection  = s_primary     * sf_2020 * 4;
+n_new_inf1549m = s_primary1549m * sf_2021 * 4;
+n_new_inf1549 = s_primary1549 * sf_2021 * 4;
+n_infection  = s_primary     * sf_2021 * 4;
 
 
 keep run option cald dataset cost
@@ -1176,7 +1173,7 @@ prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hi
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_infection
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
 
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1278,7 +1275,8 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
- proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.50;  
+ proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071
+ - can change to 2071.5 once changes to program made;
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
@@ -1414,7 +1412,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2020);  %par(p=dataset);
+%par(p=sf_2021);  %par(p=dataset);
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1445,7 +1443,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 
 data wide_par; merge dataset
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1612,6 +1610,7 @@ aids_death_rate_20  death_rate_onart_20 av_newp_ge1_20 av_newp_ge1_non_sw_20 ;
 run;
 
 
+proc print; run; 
 
 ods html;
 proc means n median p5 p95 min max ;
