@@ -879,6 +879,14 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * prep;
 
+* proportion of those on prep who have ge 1 newp in the period ;
+* p_prep_newp ;					if s_prep > 0 then p_prep_newp = (s_newp_this_per_hivneg_m_prep + s_newp_this_per_hivneg_w_prep) / s_prep ; 
+* prop_1549m_onprep;			prop_1564m_onprep =   max(s_onprep_m, 0) / (s_alive1564_m - s_hiv1564m) ;
+* prop_1549w_onprep;			prop_1564w_onprep =   max(s_onprep_w, 0) / (s_alive1564_w - s_hiv1564w) ;
+* p_prep_elig_past_year;		p_prep_elig_past_year = s_prep_elig_past_year / ((s_alive1564_w + s_alive1564_m) - s_hiv1564);
+* p_prep_elig_past_5year;		p_prep_elig_past_5year = s_prep_elig_past_5year / ((s_alive1564_w + s_alive1564_m) - s_hiv1564);
+* mean_newp_per_person_prep;	if s_prep > 0 then mean_newp_per_person_prep = s_prep_newp / s_prep ;
+
 * p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
 * prop_elig_on_prep;			if s_elig_prep > 0 then prop_elig_on_prep = s_prep / s_elig_prep ; 
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
@@ -1234,6 +1242,7 @@ n_mcirc1549_  n_mcirc1549_3m
 
 eff_rate_test_startprep   	eff_rate_test_restartprep   	
 eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
+p_prep_newp  prop_1549m_onprep  prop_1549w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_per_person_prep
 ;
 
 
@@ -1353,7 +1362,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_);%var (v=n_mcirc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
-
+%var(v=p_prep_newp);  %var(v=prop_1549m_onprep);  %var(v=prop_1549w_onprep);  %var(v=p_prep_elig_past_year);  %var(v=p_prep_elig_past_5year);  
+%var(v=mean_newp_per_person_prep);
 
 data   wide_outputs; merge 
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
@@ -1395,6 +1405,7 @@ n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested 
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_new_inf1549m n_new_inf1549
 p_vl1000_art_12m p_vl1000_art_12m_onart 
+p_prep_newp  prop_1549m_onprep  prop_1549w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_per_person_prep
 ;
 
 proc contents; run;
