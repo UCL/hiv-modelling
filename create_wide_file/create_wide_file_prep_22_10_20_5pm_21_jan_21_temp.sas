@@ -885,9 +885,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
 	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
 
-create outputs so can implement this suggestion from Leigh: Perhaps express as an annual rate of diagnosis and compare to the Giguere estimates of rates of testing in the first year after HIV acquisition. (Just a suggestion if you’re wanting to ‘validate’ against the Shniy90 model estimates.)
 Also, maybe I can output the number of condomless partners per 3 months of prep use for each individual who has used prep, and give the mean / distribution across individuals of that measure.      
-
 
 */
 
