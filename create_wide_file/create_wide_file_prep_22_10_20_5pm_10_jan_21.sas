@@ -593,6 +593,7 @@ dataset=1;
 
 data d; set d1 ;
 
+
 proc sort data=d; by run cald option;run;
 proc freq data=d;table run; where cald=2021;run;
 
@@ -1241,13 +1242,11 @@ proc sort data=y;by run option;run;
 
   data a.prep_22_10_20_5pm_10_jan_21;
 
-
 set y;
 
 data y; 
 
   set a.prep_22_10_20_5pm_10_jan_21;
-run;
 
 
   options nomprint;
@@ -1407,8 +1406,9 @@ proc sort; by run; run;
 %macro par(p=);
 
 * &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2021.5; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
+
 
 %mend par; 
 
@@ -1441,7 +1441,6 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
 %par(p=lower_future_art_cov);  %par(p=eff_adh_prep);  %par(p=sens_vct_test_type_3);  
 
-
 data wide_par; merge dataset
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1469,6 +1468,7 @@ keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strate
 lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 ;
 
+
 proc contents; run;
 
 run;
@@ -1484,7 +1484,7 @@ proc sort; by run;run;
 %macro par_ai1(p=);
 
 * &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p._ai1; by run ; where cald = 2021 and option = 1 ;run;
+proc means noprint data=y; var &p ; output out=y_ mean= &p._ai1; by run ; where cald = 2021.5 and option = 1 ;run;
 data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par_ai1_option1; 
