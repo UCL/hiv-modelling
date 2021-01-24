@@ -249,7 +249,7 @@ zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  grea
 
 proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
 prep_strategy_21_22_2;
-model r_incidence_21_26_2 = 
+model r_incidence_21_71_2 = 
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w
 p_rred_p  p_hsb_p rred_a_p 
 newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
@@ -263,7 +263,7 @@ prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_a
 prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  
 hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-greater_disability_tox 	 
+greater_disability_tox 	 prop_1564_hivneg_onprep_21_26_2 prop_elig_on_prep_21_26_2 
 / selection=stepwise ;  run;
 
 
