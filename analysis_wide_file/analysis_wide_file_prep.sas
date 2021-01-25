@@ -6,7 +6,6 @@ data wide;
 * set a.wide_prep_21_jan_21_temp;  
   set a.wide_prep_22_10_20_5pm_10_jan_21; 
 
-
 * --------------------------------------------------------------------------------------------------------------;
 
 * general code;
@@ -75,6 +74,10 @@ d_prop_1564m_onprep_21_26_2  = prop_1564m_onprep_21_26_2 - prop_1564m_onprep_21_
 d_prop_1564w_onprep_21_26_2  = prop_1564w_onprep_21_26_2 - prop_1564w_onprep_21_26_1 ;
 d_p_prep_elig_past_year_21_26_2   = p_prep_elig_past_year_21_26_2 - p_prep_elig_past_year_21_26_1 ;
 d_p_prep_elig_past_5year_21_26_2   = p_prep_elig_past_5year_21_26_2 - p_prep_elig_past_5year_21_26_1;  
+
+mean_newp_per_pers_prep_21_26_2 = mean_newp_per_person_prep_21_26_2;
+mean_newp_per_pers_prep_21_26_1 = mean_newp_per_person_prep_21_26_1;
+
 d_mean_newp_ppers_prep_21_26_2  = mean_newp_per_pers_prep_21_26_2 - mean_newp_per_pers_prep_21_26_1 ;
 
 d_ddaly_all_21_26_2 = ddaly_all_21_26_2 - ddaly_all_21_26_1 ;
