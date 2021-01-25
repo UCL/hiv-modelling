@@ -12272,8 +12272,8 @@ newp_prep = 0; if prep=1 then newp_prep=newp;
 
 prep_elig_past_year=0;prep_elig_past_3year=0;prep_elig_past_5year=0;
 if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
-if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_year=1;
-if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_3year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_5year=1;
 
 prop_elig_years_onprep_a2021=0;
 if cum_years_prep_elig_a2021 > 0 and registd ne 1 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
