@@ -3301,17 +3301,19 @@ if t ge 2  then do;
 if gender = 2 and sw_tm1  = 0 then do;
 
 	* effect of age on becoming a sex worker;
-	if 15 <= age < 20 then sw_age_factor = rr_sw_age_1519;
-	else if 20 <= age < 25 then sw_age_factor = 1;
-	else if 25 <= age < 35 then sw_age_factor = rr_sw_age_2534;
-	else if 35 <= age < 50 then sw_age_factor = rr_sw_age_3549;
-	else if age >= 50 then sw_age_factor = 0;
-	
+	select;
+		when (15 <= age < 20) sw_age_factor = rr_sw_age_1519;
+		when (20 <= age < 25) sw_age_factor = 1;
+		when (25 <= age < 35) sw_age_factor = rr_sw_age_2534;
+		when (35 <= age < 50) sw_age_factor = rr_sw_age_3549;
+		otherwise sw_age_factor = 0;
+	end;
+
 	* effect of the life sex risk on becoming a sex worker;
 	sw_risk_factor = 1;
 	if life_sex_risk = 1 then sw_risk_factor = 0;
 	elif life_sex_risk = 3 then sw_risk_factor = rr_sw_life_sex_risk_3;
-	
+
 	* dependent_on_time_step_length;
 	prob_becoming_sw = base_rate_sw * sqrt(rred_rc) * sw_age_factor * sw_risk_factor;
 
@@ -3319,7 +3321,7 @@ if gender = 2 and sw_tm1  = 0 then do;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
 	e = uniform(0);
-	if e < prob_becoming_sw then sw = 1;	
+	if e < prob_becoming_sw then sw = 1;
 
 	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
 	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
