@@ -3,7 +3,8 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_prep_21_jan_21_temp;  
+* set a.wide_prep_21_jan_21_temp;  
+  set a.wide_prep_22_10_20_5pm_10_jan_21; 
 
 
 
@@ -70,6 +71,12 @@ dcost_condom_dn_21_71_2  +
 dcost_child_hiv_21_71_2  +      
 dcost_non_aids_pre_death_21_71_2 ; 
 
+d_p_prep_newp_21_26_2  = p_prep_newp_21_26_2 - p_prep_newp_21_26_1;
+d_prop_1549m_onprep_21_26_2  = prop_1549m_onprep_21_26_2 - prop_1549m_onprep_21_26_1 ;
+d_prop_1549w_onprep_21_26_2  = prop_1549w_onprep_21_26_2 - prop_1549w_onprep_21_26_1 ;
+d_p_prep_elig_past_year_21_26_2   = p_prep_elig_past_year_21_26_2 - p_prep_elig_past_year_21_26_1 ;
+d_p_prep_elig_past_5year_21_26_2   = p_prep_elig_past_5year_21_26_2 - p_prep_elig_past_5year_21_26_1;  
+d_mean_newp_per_person_prep_21_26_2  = mean_newp_per_person_prep_21_26_2 - mean_newp_per_person_prep_21_26_1 ;
 
 d_ddaly_all_21_26_2 = ddaly_all_21_26_2 - ddaly_all_21_26_1 ;
 
@@ -337,6 +344,28 @@ ods html close;
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_21_26_1  prop_elig_on_prep_21_26_2 ;  
 run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_prop_1549m_onprep_21_26_2  prop_1549m_onprep_21_26_2  prop_1549m_onprep_21_26_1
+d_prop_1549w_onprep_21_26_2  prop_1549w_onprep_21_26_2  prop_1549w_onprep_21_26_1; run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_elig_past_year_21_26_2  p_prep_elig_past_year_21_26_2  p_prep_elig_past_year_21_26_1; run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_elig_past_5year_21_26_2  p_prep_elig_past_5year_21_26_2  p_prep_elig_past_5year_21_26_1; run; 
+ods html close;
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_mean_newp_per_person_prep_21_26_2  mean_newp_per_person_prep_21_26_2  
+mean_newp_per_person_prep_21_26_1; run; 
 ods html close;
 
 
