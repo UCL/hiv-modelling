@@ -1418,19 +1418,20 @@ end;
 
 
 
-sw =0; 
-e=uniform(0);
+sw = 0;
 
-if gender =2 then do;
+if gender = 2 and life_sex_risk >= 2 then do;
+	select;
+		when (15 <= age < 20) prob_sw_init = 0.040;
+		when (20 <= age < 25) prob_sw_init = 0.020;
+		when (25 <= age < 40) prob_sw_init = 0.010;
+		when (40 <= age < 50) prob_sw_init = 0.002;
+		otherwise prob_sw_init = 0;
+	end;
 
-if life_sex_risk = 3 then e = e / 3;													  
-														
-if 15 <= age < 18 and life_sex_risk ge 2 and e < 0.040 then sw=1;
-if 18 <= age < 20 and life_sex_risk ge 2 and e < 0.040 then sw=1;
-if 20 <= age < 25 and life_sex_risk ge 2 and e < 0.020 then sw=1;
-if 25 <= age < 40 and life_sex_risk ge 2 and e < 0.010 then sw=1;
-if 40 <= age < 50 and life_sex_risk ge 2 and e < 0.002 then sw=1;
+	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
+	if uniform(0) < prob_sw_init then sw = 1;
 end;
 
 age_deb_sw=.;
