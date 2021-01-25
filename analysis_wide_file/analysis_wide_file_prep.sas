@@ -3,9 +3,8 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_prep_21_jan_21_temp;  
-* set a.wide_prep_22_10_20_5pm_10_jan_21; 
-
+* set a.wide_prep_21_jan_21_temp;  
+  set a.wide_prep_22_10_20_5pm_10_jan_21; 
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -72,11 +71,11 @@ dcost_child_hiv_21_71_2  +
 dcost_non_aids_pre_death_21_71_2 ; 
 
 d_p_prep_newp_21_26_2  = p_prep_newp_21_26_2 - p_prep_newp_21_26_1;
-d_prop_1549m_onprep_21_26_2  = prop_1549m_onprep_21_26_2 - prop_1549m_onprep_21_26_1 ;
-d_prop_1549w_onprep_21_26_2  = prop_1549w_onprep_21_26_2 - prop_1549w_onprep_21_26_1 ;
+d_prop_1564m_onprep_21_26_2  = prop_1564m_onprep_21_26_2 - prop_1564m_onprep_21_26_1 ;
+d_prop_1564w_onprep_21_26_2  = prop_1564w_onprep_21_26_2 - prop_1564w_onprep_21_26_1 ;
 d_p_prep_elig_past_year_21_26_2   = p_prep_elig_past_year_21_26_2 - p_prep_elig_past_year_21_26_1 ;
 d_p_prep_elig_past_5year_21_26_2   = p_prep_elig_past_5year_21_26_2 - p_prep_elig_past_5year_21_26_1;  
-d_mean_newp_per_person_prep_21_26_2  = mean_newp_per_person_prep_21_26_2 - mean_newp_per_person_prep_21_26_1 ;
+d_mean_newp_ppers_prep_21_26_2  = mean_newp_per_pers_prep_21_26_2 - mean_newp_per_pers_prep_21_26_1 ;
 
 d_ddaly_all_21_26_2 = ddaly_all_21_26_2 - ddaly_all_21_26_1 ;
 
@@ -181,10 +180,10 @@ title '';
 proc univariate data=wide;
 var s_alive_21			p_w_giv_birth_this_per_21	p_newp_ge1_21  p_newp_ge5_21 
 p_newp_sw_21   n_tested_m_21  p_mcirc_1549m_21
-p_mcirc_21	 		p_mcirc_1519m_21	p_mcirc_2124m_21	p_mcirc_2529m_21		p_mcirc_3039m_21	p_mcirc_4049m_21 	p_mcirc_50plm_21 
+p_mcirc_21	 		p_mcirc_1519m_21	p_mcirc_2024m_21	p_mcirc_2529m_21		p_mcirc_3039m_21	p_mcirc_4049m_21 	p_mcirc_50plm_21 
 prop_w_1549_sw_21	prop_w_ever_sw_21 	prop_sw_hiv_21 	prop_w_1524_onprep_21  prop_1564_hivneg_onprep_21 	prevalence1549m_21 prevalence1549w_21
 prevalence1549_21 
-prevalence1519w_21 	prevalence1519m_21 	  prevalence2124w_21 	  prevalence2124m_21 	  prevalence2529w_21 	  prevalence2529m_21   prevalence3034w_21   
+prevalence1519w_21 	prevalence1519m_21 	  prevalence2024w_21 	  prevalence2024m_21 	  prevalence2529w_21 	  prevalence2529m_21   prevalence3034w_21   
 prevalence3034m_21 	prevalence3539w_21 	  prevalence3539m_21 	  prevalence4044w_21 	 prevalence4044m_21 	  prevalence4549w_21  prevalence4549m_21 
 prevalence_vg1000_21 incidence1549_21 incidence1549w_21  incidence1549m_21 
 p_inf_vlsupp_21   p_inf_newp_21   p_inf_ep_21   p_inf_diag_21   p_inf_naive_21 p_inf_primary_21
@@ -193,7 +192,7 @@ p_onart_diag_21	p_onart_diag_w_21 	p_onart_diag_m_21 	p_efa_21 	p_taz_21		p_ten_
 p_onart_vl1000_21   p_vl1000_21		p_vg1000_21 			p_onart_m_21 	p_onart_w_21 
 p_onart_vl1000_w_21				p_onart_vl1000_m_21  prev_vg1000_newp_m_21   prev_vg1000_newp_w_21 p_startedline2_21    
 p_tle_21	 p_tld_21	 p_zld_21	 p_zla_21	 p_otherreg_21	 p_drug_level_test_21	 p_linefail_ge1_21  
-r_efa_hiv_21  p_onart_cd4_l500_21  p_onart_cd4_l210_21  p_startedline2_21 prop_art_or_prep_21 n_sw_1564_21 
+r_efa_hiv_21  p_onart_cd4_l500_21  p_onart_cd4_l200_21  p_startedline2_21 prop_art_or_prep_21 n_sw_1564_21 
 p_k65m_21 p_m184m_21 p_newp_ge1_21  p_1524_newp_ge1_21;
 run;
 
@@ -242,16 +241,6 @@ turn continuous like fold_tr_sti into categorical
 
 
 proc print; var run; where rred_a_p = 1.5; run;
-
-proc glm; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern;
-model l_r_prevalence1549_mw_21 = 
-sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p rred_a_p newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
-exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
-res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv / solution;  run;
 
 
 proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
@@ -351,8 +340,8 @@ proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_pre
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_prop_1549m_onprep_21_26_2  prop_1549m_onprep_21_26_2  prop_1549m_onprep_21_26_1
-d_prop_1549w_onprep_21_26_2  prop_1549w_onprep_21_26_2  prop_1549w_onprep_21_26_1; run; 
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_prop_1564m_onprep_21_26_2  prop_1564m_onprep_21_26_2  prop_1564m_onprep_21_26_1
+d_prop_1564w_onprep_21_26_2  prop_1564w_onprep_21_26_2  prop_1564w_onprep_21_26_1; run; 
 ods html close;
 
 ods html;
@@ -364,8 +353,8 @@ proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_elig_past_5year_21_
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_mean_newp_per_person_prep_21_26_2  mean_newp_per_person_prep_21_26_2  
-mean_newp_per_person_prep_21_26_1; run; 
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_mean_newp_ppers_prep_21_26_2  mean_newp_per_pers_prep_21_26_2  
+mean_newp_per_pers_prep_21_26_1; run; 
 ods html close;
 
 
