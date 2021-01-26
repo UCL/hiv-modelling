@@ -1252,13 +1252,13 @@ p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_21_jan_21;
+  data a.prep_22_10_20_5pm_21_jan_21_temp;
 
 set y;
 
 data y; 
 
-  set a.prep_22_10_20_5pm_21_jan_21;
+  set a.prep_22_10_20_5pm_21_jan_21_temp;
 
 
   options nomprint;
@@ -1605,7 +1605,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_prep_21_jan_21; 
+  data a.wide_prep_21_jan_21_temp; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
