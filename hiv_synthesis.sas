@@ -508,7 +508,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 * rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.01;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.03;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
+								if 0.67 <= r then rate_sw_rred_rc = 0.10; * rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -712,7 +712,7 @@ p_neph_stops_after_ten = 0.1;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
-							if sw_program = 1 then do; e=uniform(0);rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then do; effect_sw_prog_newp = 0.80; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.60;
 											if r >= 0.66 then effect_sw_prog_newp = 0.40; end;
@@ -766,7 +766,7 @@ p_neph_stops_after_ten = 0.1;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
 
-* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.50;
+* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.80;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
@@ -1434,13 +1434,15 @@ if 40 <= age < 50 and life_sex_risk ge 2 and e < 0.002 then sw=1;
 
 end;
 
-if sw=1 then do;
-
 age_deb_sw=.;
-u=uniform(0);
-date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
-age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
 
+if sw=1 then do;
+	ever_sw=1;
+	if 18 le age lt 49 then ever_sw1849_=1;
+
+	u=uniform(0);
+	date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
+	age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
@@ -1475,9 +1477,6 @@ end;
 * newp = newp/3;  
 * newp=round(newp,1);
 
-
-if sw=1 then ever_sw=1;
-if 18 le age lt 49 and sw=1 then ever_sw1849_=1;
 
 if 15 <= age < 65 then do; ep =0; ageg_ep=0; epmono=0; end;
 u=uniform(0);
@@ -2027,28 +2026,29 @@ if caldate{t} = 2015 then eff_sw_program=sw_program;
 if eff_sw_program=1 and sw=1 then do;
 
 if sw_program_visit=0 then do; e=uniform(0);
-	if e < rate_engage_sw_program then do;
+	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
-			date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
-			e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1; 
-			eff_sw_higher_int = sw_higher_int * effect_sw_prog_int; 
-			eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ; 
-			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag; 
-			eff_prepuptake_sw=effect_sw_prog_prep;
-			s= uniform(0); if s < eff_prepuptake_sw and prep_willing_sw = 0 then prep_willing_sw = 1;
+		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
+		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
+		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
+		eff_prepuptake_sw=effect_sw_prog_prep;
+		s= uniform(0); if s < eff_prepuptake_sw and prep_willing_sw = 0 then prep_willing_sw = 1;
 		end;
 	end;
 end; 
 
-if sw_program_visit=1 then do; e=uniform(0); if (e < rate_disengage_sw_program) then do;
-	sw_program_visit=0 ; 
-	date_last_sw_prog_vis=caldate{t};
-	sw_test_6mthly=0;
-	eff_sw_higher_int = sw_higher_int;
-	eff_prob_sw_lower_adh = prob_sw_lower_adh; 
-	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-	eff_prepuptake_sw=prepuptake_sw;
+else if sw_program_visit=1 then do; e=uniform(0);
+	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
+		sw_program_visit=0 ; 
+		date_last_sw_prog_vis=caldate{t};
+		sw_test_6mthly=0;
+		eff_sw_higher_int = sw_higher_int;
+		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_prepuptake_sw=prepuptake_sw;
 end; 
 
 end;
@@ -3314,8 +3314,6 @@ if gender = 2 and sw_tm1  = 0 then do;
 end;
 end;
 
-
-age_deb_sw=.;
 
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
