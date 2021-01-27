@@ -171,7 +171,7 @@ rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  ad
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_policy_21_22_2
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_strategy_21_22_2  eff_adh_prep
 ;
 run;
 
@@ -193,7 +193,7 @@ p_onart_vl1000_21   p_vl1000_21		p_vg1000_21 			p_onart_m_21 	p_onart_w_21
 p_onart_vl1000_w_21				p_onart_vl1000_m_21  prev_vg1000_newp_m_21   prev_vg1000_newp_w_21 p_startedline2_21    
 p_tle_21	 p_tld_21	 p_zld_21	 p_zla_21	 p_otherreg_21	 p_drug_level_test_21	 p_linefail_ge1_21  
 r_efa_hiv_21  p_onart_cd4_l500_21  p_onart_cd4_l200_21  p_startedline2_21 prop_art_or_prep_21 n_sw_1564_21 
-p_k65m_21 p_m184m_21 p_newp_ge1_21  p_1524_newp_ge1_21;
+p_k65m_21 p_m184m_21 p_newp_ge1_21  p_1524_newp_ge1_21  mean_newp_ppers_prep_21;
 run;
 
 
@@ -258,8 +258,15 @@ prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  
 hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
 greater_disability_tox 	 prop_1564_hivneg_onprep_21_71_2 prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21
-p_prep_adhg80_21_71_2
+p_prep_adhg80_21_71_2 eff_adh_prep  av_newp_ge1_non_sw_21
 / selection=stepwise ;  run;
+
+
+proc glmselect data=wide; class prep_strategy_21_22_2;
+model r_incidence_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
+p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21
+/ selection=stepwise ;  run;
+
 
 
 proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
@@ -279,8 +286,20 @@ prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  
 hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
 greater_disability_tox 	 prop_1564_hivneg_onprep_21_71_2 prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21
-p_prep_adhg80_21_71_2
+p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21
 / selection=stepwise ;  run;
+
+proc glmselect data=wide; class prep_strategy_21_22_2;
+model d_ddaly_all_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
+p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21 prep_strategy_21_22_2
+/ selection=stepwise ;  run;
+
+
+proc glmselect data=wide; class prep_strategy_21_22_2;
+model ndb_500_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
+p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21 prep_strategy_21_22_2
+/ selection=stepwise ;  run;
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -590,11 +609,14 @@ proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 
 
 * model including baseline variables only - to inform scale up of prep programmes ;
-proc logistic data=wide; 
-  model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
+proc logistic data=wide; class prep_strategy_21_22_2;
+  model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_21 eff_adh_prep p_prep_adhg80_21_71_2 p_prep_adhg80_21_71_2 prop_elig_on_prep_21_71_2 
+ prep_strategy_21_22_2;
 * model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
 * av_newp_ge1_non_sw_20 p_newp_ge5_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_21_26_2 p_prep_adhg80_21_26_2  prevalence1549_20 ;
 run;
+
+
 
 
 proc corr spearman; var p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 incidence1549_20 ; run; 
@@ -746,11 +768,11 @@ exact binomial;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 * where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-* where 0.20 <= incidence1549_20 < 0.50 ;
+  where 0.50 <= incidence1549_21        ;
 * where 0.00 <= prevalence1549_20 < 0.03 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
-* where rate_res_ten = 0.3;
+* where rate_res_ten le 0.2;
 run; 
 ods html close;
 
