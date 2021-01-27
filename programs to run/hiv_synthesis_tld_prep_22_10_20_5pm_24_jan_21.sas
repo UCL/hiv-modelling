@@ -16681,10 +16681,8 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
-/*
 
 data r1; set a;
-
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=2);
@@ -16888,10 +16886,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
-
-*/
-
-
 
 
 
@@ -17305,7 +17299,6 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
-/*
 
 data r1; set a;
 
@@ -17511,9 +17504,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
-
-*/
-
 
 
 
@@ -17927,7 +17917,6 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
-/*
 
 data r1; set a;
 
@@ -18134,7 +18123,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
-*/
+
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -18152,7 +18141,7 @@ data r1; set a;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_tld_prep_22_10_20_5pm_21_jan_21_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_tld_prep_22_10_20_5pm_24_jan_21_&dataset_id";  
 
 put   
 
