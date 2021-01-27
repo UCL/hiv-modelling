@@ -428,7 +428,7 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
+proc means n mean median lclm uclm p5 p95 data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
 run; 
 ods html close;
 
@@ -598,7 +598,7 @@ proc corr; var p_elig_prep_21_26_2 prop_1564_hivneg_onprep_21_26_2 p_newp_prep_2
 
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; model ce_500_x =  p_newp_ge1_age1549_20_g2 p_newp_ge1_age1549_20_g3  p_newp_ge1_age1549_20_g4 
- incidence1549_20_g1   incidence1549_20_g2   incidence1549_20_g3   incidence1549_20_g4  ;
+ incidence1549_20_g1   incidence1549_20_g2   incidence1549_20_g3   incidence1549_20_g4   ;
 output out=pred p=phat lower=lcl upper=ucl
           predprob=(individual crossvalidate);
 run;
@@ -611,7 +611,7 @@ proc print; var p_newp_ge1_age1549_20_g  incidence1549_20_g  phat ; run;
 * model including baseline variables only - to inform scale up of prep programmes ;
 proc logistic data=wide; class prep_strategy_21_22_2;
   model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_21 eff_adh_prep p_prep_adhg80_21_71_2 p_prep_adhg80_21_71_2 prop_elig_on_prep_21_71_2 
- prep_strategy_21_22_2;
+ prep_strategy_21_22_2 p_newp_ge1_age1549_21;
 * model ce_500_x = incidence1549_20 av_newp_ge1_non_sw_20 ;
 * av_newp_ge1_non_sw_20 p_newp_ge5_20 p_newp_ge1_age1549_20 prop_1564_hivneg_onprep_21_26_2 p_prep_adhg80_21_26_2  prevalence1549_20 ;
 run;
@@ -768,11 +768,12 @@ exact binomial;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 * where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-  where 0.50 <= incidence1549_21        ;
+* where 0.50 <= incidence1549_21        ;
 * where 0.00 <= prevalence1549_20 < 0.03 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
 * where rate_res_ten le 0.2;
+  where 0.20 <= incidence1549_21 and prep_strategy_21_22_2 = 11;
 run; 
 ods html close;
 
