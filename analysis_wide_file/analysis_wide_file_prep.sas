@@ -3,8 +3,8 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-* set a.wide_prep_21_jan_21_temp;  
-  set a.wide_prep_22_10_20_5pm_10_jan_21; 
+  set a.wide_prep_21_jan_21  a.wide_prep_10_jan_21; 
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -75,10 +75,7 @@ d_prop_1564w_onprep_21_26_2  = prop_1564w_onprep_21_26_2 - prop_1564w_onprep_21_
 d_p_prep_elig_past_year_21_26_2   = p_prep_elig_past_year_21_26_2 - p_prep_elig_past_year_21_26_1 ;
 d_p_prep_elig_past_5year_21_26_2   = p_prep_elig_past_5year_21_26_2 - p_prep_elig_past_5year_21_26_1;  
 
-mean_newp_per_pers_prep_21_26_2 = mean_newp_per_person_prep_21_26_2;
-mean_newp_per_pers_prep_21_26_1 = mean_newp_per_person_prep_21_26_1;
-
-d_mean_newp_ppers_prep_21_26_2  = mean_newp_per_pers_prep_21_26_2 - mean_newp_per_pers_prep_21_26_1 ;
+d_mean_newp_ppers_prep_21_26_2  = mean_newp_ppers_prep_21_26_2 - mean_newp_ppers_prep_21_26_1 ;
 
 d_ddaly_all_21_26_2 = ddaly_all_21_26_2 - ddaly_all_21_26_1 ;
 
@@ -174,7 +171,7 @@ rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  ad
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv 
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_policy_21_22_2
 ;
 run;
 
@@ -242,8 +239,6 @@ turn continuous like fold_tr_sti into categorical
 
 */
 
-
-proc print; var run; where rred_a_p = 1.5; run;
 
 
 proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
