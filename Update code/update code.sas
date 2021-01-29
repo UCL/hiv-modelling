@@ -101,11 +101,11 @@
 %update_r1(da1=1,da2=2,e=5,f=6,g=97,h=104,j=101,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=97,h=104,j=102,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=97,h=104,j=103,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=1);
 
 data a; set r1;
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=1);
@@ -148,7 +148,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);*2025;
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=2);
@@ -191,7 +190,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);*2025;
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=1);
@@ -234,7 +232,6 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);*2025;
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=2);
@@ -278,7 +275,6 @@ data r1; set a;
 
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=1);
@@ -322,7 +318,6 @@ data r1; set a;
 
 
 data r1; set a;
-%update_r1(da1=2,da2=1,e=8,f=9,g=97,h=104,j=104,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=101,h=108,j=105,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=101,h=108,j=106,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=101,h=108,j=107,s=2);

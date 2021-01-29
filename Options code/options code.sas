@@ -60,8 +60,9 @@ who may be dead and hence have caldate{t} missing;
 	end; 
 
 	if option = 2 then do; 
-    eff_sw_program=1;sw_program=1;
+    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;
 	end;
 end;
+
 
 * ==========================================================================================================================================;
