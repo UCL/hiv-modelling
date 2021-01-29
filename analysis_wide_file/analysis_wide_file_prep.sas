@@ -429,6 +429,7 @@ ods html close;
 
 ods html;
 proc means n mean median lclm uclm p5 p95 data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
+where prep_strategy_21_26_2 = 9;
 run; 
 ods html close;
 
@@ -567,6 +568,7 @@ dcost_non_aids_pre_death_21_71_1 dcost_non_aids_pre_death_21_71_2
 * where 0.00 <= incidence1549_20 < 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.05 ;
+  where prep_strategy_21_26_2  = 11 ;
 run; 
 ods html close;
 
@@ -768,12 +770,12 @@ exact binomial;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 * where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-* where 0.50 <= incidence1549_21        ;
+  where 0.20 <= incidence1549_21 and  prep_strategy_21_22_2 = 11;   ;
 * where 0.00 <= prevalence1549_20 < 0.03 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
 * where rate_res_ten le 0.2;
-  where 0.20 <= incidence1549_21 and prep_strategy_21_22_2 = 11;
+* where prep_strategy_21_22_2 = 9 ;
 run; 
 ods html close;
 
