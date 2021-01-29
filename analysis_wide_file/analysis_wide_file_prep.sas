@@ -349,11 +349,13 @@ ods html close;
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_elig_on_prep_21_26_1  prop_elig_on_prep_21_26_2 ;  
+* where prep_strategy_21_26_2 = 9 ;
 run; 
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; run; 
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; 
+where prep_strategy_21_26_2 = 11 ; 
 ods html close;
 
 ods html;
@@ -377,6 +379,7 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide; var p_newp_this_per_prep_21_26_1  p_newp_this_per_prep_21_26_2 ;  
+where prep_strategy_21_26_2 = 11 ;
 run; 
 ods html close;
 
@@ -775,7 +778,7 @@ exact binomial;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
 * where rate_res_ten le 0.2;
-* where prep_strategy_21_22_2 = 9 ;
+* where prep_strategy_21_22_2 = 11;
 run; 
 ods html close;
 
