@@ -1,7 +1,7 @@
 
 
 
-* === ABOUT THIS PROGRAM  === *
+* === ABOUT THIS PROGRAM   === *
 
 --
  
@@ -626,7 +626,7 @@ p_neph_stops_after_ten = 0.1;
 * incr_rate_int_low_adh;  r=rand('Uniform'); incr_rate_int_low_adh = 1;  if r < 0.5 then incr_rate_int_low_adh = 2; if r < 0.25 then incr_rate_int_low_adh = 5;
 * poorer_cd4rise_fail_nn;  poorer_cd4rise_fail_nn = -6 + (3 * normal(0)); poorer_cd4rise_fail_nn = round(poorer_cd4rise_fail_nn,1);
 * poorer_cd4rise_fail_ii;  r=rand('Uniform'); poorer_cd4rise_fail_ii=0; if r < 0.5 then poorer_cd4rise_fail_ii=1;
-* rate_res_ten;  r=rand('Uniform'); rate_res_ten=0.2; if r < 0.33 then rate_res_ten=0.1;  if r >= 0.67 then rate_res_ten=0.3;  
+* rate_res_ten;  r=rand('Uniform'); rate_res_ten=0.2; if r < 0.50 then rate_res_ten=0.1;  
 * fold_change_mut_risk;  r=rand('Uniform'); fold_change_mut_risk = 1; if r < 0.10  then fold_change_mut_risk = 2; if r > 0.90 then fold_change_mut_risk = 0.5; * jan18;
 * adh_effect_of_meas_alert; r=rand('Uniform'); adh_effect_of_meas_alert = 0.7; if 0.7 <= r < 0.85 then adh_effect_of_meas_alert = 0.35; if 0.85 <= r then adh_effect_of_meas_alert = 0.9;
 * pr_switch_line;  r=rand('Uniform');  pr_switch_line = 0.20;  if 0.75 <= r then pr_switch_line = 0.50; 
@@ -2153,13 +2153,13 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;  if 0.2 <= _u37 <= 0.4 then prep_strategy = 11;  
+		prep_strategy = 13;   
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ; 
 		eff_prob_prep_restart_choice = 0.7 ;
 		adhav_pr = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75  then prep_willing_pop = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.90 then prep_willing_pop = 1; end;
+		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.50  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75 then prep_willing_pop = 1; end;
 		if 0.666 <= _u38         then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
 		r=rand('Uniform'); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
 
@@ -2168,14 +2168,14 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do;
 
 		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
-		prep_strategy = 9; if _u37 < 0.2 then prep_strategy = 10;  if 0.2 <= _u37 <= 0.4 then prep_strategy = 11; 
+		prep_strategy = 13;
 		prob_prep_pop_wide_tld = 0.50; 
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ;  
 		eff_prob_prep_restart_choice = 0.7 ;
 		adhav_pr = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75  then prep_willing_pop = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.90 then prep_willing_pop = 1; end;
+		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.50  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75 then prep_willing_pop = 1; end;
 		if 0.666 <= _u38         then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
 		r=rand('Uniform'); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
 
@@ -3745,12 +3745,14 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=12 then do;
 	r = rand('Uniform');
-	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
+	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
 	end;
 
 	if prep_strategy=13 then do;
 	r = rand('Uniform');
-	if (newp ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
 	end;
 
 	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};

@@ -37,3 +37,4 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+analysis_wide_file/analysis_wide_file_prep.sas
