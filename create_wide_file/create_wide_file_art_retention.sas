@@ -733,6 +733,7 @@ discount_0 = disc * discount_adj_0 ;
 
 
 
+
 * dalys and life years;
 
 * ================================================================================= ;
@@ -740,43 +741,16 @@ discount_0 = disc * discount_adj_0 ;
 ly = s_ly * sf_2021;
 dly = s_dly * sf_2021;
 
-s_ddaly = s_dead_ddaly + s_live_ddaly;
+ddaly = (s_live_ddaly_80 + s_dead_ddaly_80) * sf_2021 * 4 * discount_adj ;
+daly = (s_live_daly_80 + s_dead_daly_80) * sf_2021 * 4 ;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2021 * 4 * (0.0022 / 0.0058); 
-*  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
-*  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
-
-ddaly = s_ddaly * sf_2021 * 4 * discount_adj ;
-
-* sensitivity analysis;
-* dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
-
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2021 * 4  * discount_adj ; * odabe ;
-
-ddaly_mtct = s_ddaly_mtct * sf_2021 * 4  * discount_adj ;
-
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2021 * 4  * discount_adj ; * napd;
-
-ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
-
-ddaly_ac_ntd_mtct_odabe = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe ;
-
-ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_death;
-
-ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe + ddaly_non_aids_pre_death;
-
-ddaly_all = ddaly_ntd_mtct_odab_napd;
-
+* note here using dalys not including odabe,napd, mtct, ntd 
 
 
 * ================================================================================= ;
 
-/*
-proc print; var cald  run option ddaly_ntd_mtct_odab_napd  ddaly  dead_ddaly_ntd  ddaly_mtct  dead_ddaly_odabe   
-ddaly_non_aids_pre_death;
-where cald = 2021;
-run;
-*/
+
+
 
 
 
@@ -825,9 +799,6 @@ dcost_prep = s_dcost_prep * sf_2021* discount_adj * 4 / 1000;
 dcost_prep_visit  = s_dcost_prep_visit * sf_2021* discount_adj * 4 / 1000; 			   
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2021* discount_adj * 4 / 1000; 
 
-* note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2021 * discount_adj * 4 / 1000;
-  dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * sf_2021 * discount_adj * 4 / 1000;
 dcost_circ = s_dcost_circ * sf_2021* discount_adj * 4 / 1000; 
@@ -836,7 +807,6 @@ dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2021 * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf_2021 * discount_adj * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf_2021 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
 dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 
@@ -850,12 +820,8 @@ dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 dart_cost_x = dart1_cost + dart2_cost + dart3_cost; 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
-* dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
-		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
-
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
+		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep ;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
@@ -1207,10 +1173,7 @@ n_infection  = s_primary     * sf_2021 * 4;
 
 
 keep run option cald n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
-
-
-
-
+ddaly daly
 ;
 
 
@@ -1403,11 +1366,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 %var(v=n_alive);  %var(v=p_onart_artexp);  %var(v=n_art_initiation); %var(v=n_restart);   %var(v=p_onart_vl1000); %var(v=n_hivge15);
-%var(v=death_rate_hiv_ge15_all); %var(v=death_rate_hiv_ge15);
+%var(v=death_rate_hiv_ge15_all); %var(v=death_rate_hiv_ge15); %var(v=ddaly); %var(v=daly);
 
 
 data   wide_outputs; merge 
-n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 
+n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
 ;
 
 proc contents; run;
