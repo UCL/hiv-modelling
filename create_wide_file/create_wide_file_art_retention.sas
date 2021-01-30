@@ -650,19 +650,21 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+s_restart=.; s_art_initiation=.; s_hivge15=.;
+
+
 
 proc sort data=d; by run cald option;run;
-proc freq data=d;table run; where cald=2020;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set d ;
  
-if cald=2020;
+if cald=2021;
 s_alive = s_alive_m + s_alive_w ;
-sf_2020 = 10000000 / s_alive;
-keep run sf_2020;
+sf_2021 = 10000000 / s_alive;
+keep run sf_2021;
 proc sort; by run;
 
 
@@ -735,25 +737,25 @@ discount_0 = disc * discount_adj_0 ;
 
 * ================================================================================= ;
 
-ly = s_ly * sf_2020;
-dly = s_dly * sf_2020;
+ly = s_ly * sf_2021;
+dly = s_dly * sf_2021;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2020 * 4 * (0.0022 / 0.0058); 
+dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2021 * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
-ddaly = s_ddaly * sf_2020 * 4 * discount_adj ;
+ddaly = s_ddaly * sf_2021 * 4 * discount_adj ;
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2020 * 4  * discount_adj ; * odabe ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2021 * 4  * discount_adj ; * odabe ;
 
-ddaly_mtct = s_ddaly_mtct * sf_2020 * 4  * discount_adj ;
+ddaly_mtct = s_ddaly_mtct * sf_2021 * 4  * discount_adj ;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2020 * 4  * discount_adj ; * napd;
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2021 * 4  * discount_adj ; * napd;
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -785,15 +787,15 @@ run;
 * all costs expressed as $ millions per year in 2018 USD;
 
 * ts1m - 12 instead of 4; 
-dzdv_cost = s_cost_zdv * discount * sf_2020 * 4 / 1000;
-dten_cost = s_cost_ten * discount * sf_2020 * 4 / 1000;
-d3tc_cost = s_cost_3tc * discount * sf_2020 * 4 / 1000; 
-dnev_cost = s_cost_nev * discount * sf_2020 * 4 / 1000;
-dlpr_cost = s_cost_lpr * discount * sf_2020 * 4 / 1000;
-ddar_cost = s_cost_dar * discount * sf_2020 * 4 / 1000;
-dtaz_cost = s_cost_taz * discount * sf_2020 * 4 / 1000;
-defa_cost = s_cost_efa * discount * sf_2020 * 4 / 1000;
-ddol_cost = s_cost_dol * discount * sf_2020 * 4 / 1000;
+dzdv_cost = s_cost_zdv * discount * sf_2021 * 4 / 1000;
+dten_cost = s_cost_ten * discount * sf_2021 * 4 / 1000;
+d3tc_cost = s_cost_3tc * discount * sf_2021 * 4 / 1000; 
+dnev_cost = s_cost_nev * discount * sf_2021 * 4 / 1000;
+dlpr_cost = s_cost_lpr * discount * sf_2021 * 4 / 1000;
+ddar_cost = s_cost_dar * discount * sf_2021 * 4 / 1000;
+dtaz_cost = s_cost_taz * discount * sf_2021 * 4 / 1000;
+defa_cost = s_cost_efa * discount * sf_2021 * 4 / 1000;
+ddol_cost = s_cost_dol * discount * sf_2021 * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
@@ -804,37 +806,37 @@ if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 * ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * sf_2020 * discount_adj * 4 / 1000;
-dart1_cost = s_dart_1_cost * sf_2020 * discount_adj * 4 / 1000;
-dart2_cost = s_dart_2_cost * sf_2020 * discount_adj * 4 / 1000;
-dart3_cost = s_dart_3_cost * sf_2020 * discount_adj * 4 / 1000;
-dart_cost = s_dart_cost * sf_2020 * discount_adj * 4 / 1000;
-dvl_cost = s_dvl_cost * sf_2020 * discount_adj * 4 / 1000;
-dcd4_cost = s_dcd4_cost * sf_2020 * discount_adj * 4 / 1000;
-dadc_cost = s_dadc_cost * sf_2020 * discount_adj * 4 / 1000;
-dtb_cost = s_dtb_cost * sf_2020 * discount_adj * 4 / 1000;
-dtest_cost = s_dtest_cost * sf_2020 * discount_adj * 4 / 1000;
-dwho3_cost = s_dwho3_cost * sf_2020 * discount_adj * 4 / 1000;
-dcot_cost = s_dcot_cost * sf_2020 * discount_adj * 4 / 1000;
-dres_cost = s_dres_cost * sf_2020 * discount_adj * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2020 * discount_adj * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * sf_2020 * discount_adj * 4 / 1000;  
-dcost_prep = s_dcost_prep * sf_2020* discount_adj * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * sf_2020* discount_adj * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 4 / 1000; 
+dvis_cost = s_dvis_cost * sf_2021 * discount_adj * 4 / 1000;
+dart1_cost = s_dart_1_cost * sf_2021 * discount_adj * 4 / 1000;
+dart2_cost = s_dart_2_cost * sf_2021 * discount_adj * 4 / 1000;
+dart3_cost = s_dart_3_cost * sf_2021 * discount_adj * 4 / 1000;
+dart_cost = s_dart_cost * sf_2021 * discount_adj * 4 / 1000;
+dvl_cost = s_dvl_cost * sf_2021 * discount_adj * 4 / 1000;
+dcd4_cost = s_dcd4_cost * sf_2021 * discount_adj * 4 / 1000;
+dadc_cost = s_dadc_cost * sf_2021 * discount_adj * 4 / 1000;
+dtb_cost = s_dtb_cost * sf_2021 * discount_adj * 4 / 1000;
+dtest_cost = s_dtest_cost * sf_2021 * discount_adj * 4 / 1000;
+dwho3_cost = s_dwho3_cost * sf_2021 * discount_adj * 4 / 1000;
+dcot_cost = s_dcot_cost * sf_2021 * discount_adj * 4 / 1000;
+dres_cost = s_dres_cost * sf_2021 * discount_adj * 4 / 1000;
+d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2021 * discount_adj * 4 / 1000;  
+dcost_cascade_interventions = s_dcost_cascade_interventions * sf_2021 * discount_adj * 4 / 1000;  
+dcost_prep = s_dcost_prep * sf_2021* discount_adj * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * sf_2021* discount_adj * 4 / 1000; 			   
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2021* discount_adj * 4 / 1000; 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2020 * discount_adj * 4 / 1000;
+* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2021 * discount_adj * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
-dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 4 / 1000;
-dcost_circ = s_dcost_circ * sf_2020* discount_adj * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf_2020* discount_adj * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 4 / 1000;
+dfullvis_cost = s_dfull_vis_cost * sf_2021 * discount_adj * 4 / 1000;
+dcost_circ = s_dcost_circ * sf_2021* discount_adj * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * sf_2021* discount_adj * 4 / 1000; 
+dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2021 * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * sf_2020 * discount_adj * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf_2020 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
+dcost_drug_level_test = s_dcost_drug_level_test * sf_2021 * discount_adj * 4 / 1000;
+dcost_child_hiv  = s_dcost_child_hiv * sf_2021 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
 dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 
@@ -884,6 +886,7 @@ s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
+
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
@@ -905,7 +908,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
-* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2020;
+* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2021;
 * p_newp_sw;					p_newp_sw = s_sw_newp / s_w_newp ;
 * rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
 * rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
@@ -913,8 +916,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
 * mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
-* n_tested_m;					n_tested_m = s_tested_m * sf_2020 * 4;
-* n_tested;						n_tested = s_tested * sf_2020 * 4;
+* n_tested_m;					n_tested_m = s_tested_m * sf_2021 * 4;
+* n_tested;						n_tested = s_tested * sf_2021 * 4;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -949,21 +952,21 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 * prop_sw_onprep; 				prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
-* n_prep;						n_prep = s_prep * sf_2020;
-* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2020;
+* n_prep;						n_prep = s_prep * sf_2021;
+* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2021;
 * p_hiv1_prep;					if s_prep gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep ;
 
-* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2020;
+* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2021;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
 
 * av_prep_eff_non_res_v;  		if s_prep > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep;
 
-* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2020;
-* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2020;
-* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2020;
-* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2020;
-* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2020;
-* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2020;
+* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2021;
+* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2021;
+* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2021;
+* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2021;
+* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2021;
+* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2021;
 
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
 
@@ -982,6 +985,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 									(s_ageg1519w + s_ageg2024w - s_hiv1519w - s_hiv2024w + s_primary1519w + s_primary2024w);
 * incidence1524m;				incidence1524m = ((s_primary1519m + s_primary2024m) * 4 * 100) / 
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
+* incidencege15;				incidencege15 = (s_primaryge15 * 4 * 100) / (s_alive  + s_primaryge15);
 
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
@@ -1029,6 +1033,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_ai_no_arv_c_rttams;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_rttams = s_ai_naive_no_pmtct_c_rttams_ / s_ai_naive_no_pmtct_;
 * p_ai_no_arv_c_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_inm = s_ai_naive_no_pmtct_c_inm_ / s_ai_naive_no_pmtct_;
 
+* p_onart_artexp; 				if s_artexp > 0 then p_onart_artexp = s_onart / s_artexp;
 * p_artexp_diag;  				if s_diag > 0 then p_artexp_diag = s_artexp / s_diag;
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
@@ -1167,147 +1172,59 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * death_rate_hiv; 				if s_hiv1564 > 0 then death_rate_hiv = (4 * 100 * s_death_hiv) / s_hiv1564;
 				 				if s_hiv1564m > 0 then death_rate_hiv_m = (4 * 100 * s_death_hiv_m) / s_hiv1564m;
 								if s_hiv1564w > 0 then death_rate_hiv_w = (4 * 100 * s_death_hiv_w) / s_hiv1564w;
+* death_rate_hiv_ge15;			if s_hivge15 > 0 then death_rate_hiv_ge15 = (4 * 100 *	s_death_hivrel_allage) / s_hivge15 ;
+* death_rate_hiv_ge15_all;		if s_alive > 0 then death_rate_hiv_ge15_all = (4 * 100 *	s_death_hivrel_allage) / s_alive ;
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2020;
-* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2020;
-* n_death;						n_death = s_dead_allage * sf_2020;
-* n_covid;						n_covid = s_covid * sf_2020;
+
+* n_alive;						n_alive = s_alive * sf_2021;
+* n_restart; 					n_restart = s_restart * sf_2021;
+* n_art_initiation;				n_art_initiation = s_art_initiation * sf_2021;
+* n_hivge15;					n_hivge15 = s_hivge15 * sf_2021;
+
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2021;
+* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2021;
+* n_death;						n_death = s_dead_allage * sf_2021;
+* n_covid;						n_covid = s_covid * sf_2021;
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * number of women with hiv giving birth per year;
-n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2020 * 4;
-n_birth_with_inf_child = s_birth_with_inf_child * sf_2020 * 4;
+n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2021 * 4;
+n_birth_with_inf_child = s_birth_with_inf_child * sf_2021 * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
-n_pregnant_ntd = s_pregnant_ntd    * sf_2020 * 4 ; 
-n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2020 * 4;  * annual number;
+n_pregnant_ntd = s_pregnant_ntd    * sf_2021 * 4 ; 
+n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2021 * 4;  * annual number;
 
 
-n_mcirc1549_=s_mcirc_1549m * sf_2020 * 4;
-n_mcirc1549_3m=s_mcirc_1549m * sf_2020;
+n_mcirc1549_=s_mcirc_1549m * sf_2021 * 4;
+n_mcirc1549_3m=s_mcirc_1549m * sf_2021;
 
-n_new_inf1549m = s_primary1549m * sf_2020 * 4;
-n_new_inf1549 = s_primary1549 * sf_2020 * 4;
-n_infection  = s_primary     * sf_2020 * 4;
+n_new_inf1549m = s_primary1549m * sf_2021 * 4;
+n_new_inf1549 = s_primary1549 * sf_2021 * 4;
+n_infection  = s_primary     * sf_2021 * 4;
 
 
-keep run option cald dataset cost
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
-p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
-p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
-p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80  av_prep_effectiveness_non_res_v
-prevalence1549m prevalence1549w prevalence1549 
-prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
-prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
-prevalence1524w prevalence1524m  prevalence_sw
-incidence1549 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary mtct_prop
-p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0
-p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
-p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
-p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
-p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
-p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
-prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
- p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
-dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
-dclin_cost dcost_cascade_interventions     dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
-dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
-defa_cost   ddol_cost
-m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
-p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1564  prop_sw_onprep  p_onart  p_vl1000_art_12m  p_vl1000_art_12m_onart
-p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
-p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
- p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_hi  
-s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  p_adh_hi_xyz_itt  p_e_rt65m_xyz  
-p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000
-p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
-p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000 p_vlg1000_184m p_vlg1000_65m
-death_rate  death_rate_hiv death_rate_hiv_w death_rate_hiv_m  n_new_inf1549m n_new_inf1549 p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
-ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
-n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested  p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep  n_infection
-p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
+keep run option cald n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
 
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti super_infection an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
-test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
-fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
-rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc
 
-exp_setting_lower_p_vl1000  
-external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
-test_targeting    prob_loss_at_diag   pr_art_init   
-rate_lost   prob_lost_art   rate_return   rate_restart   rate_int_choice  
-clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh  
-fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
-red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
-prob_return_adc   prob_lossdiag_adctb   prob_lossdiag_who3e  higher_newp_less_engagement  
-fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  
 
-condom_incr_2020     			cascade_care_improvements  incr_test_2020              decr_hard_reach_2020   
-decr_prob_loss_at_diag_2020  	decr_rate_lost_2020 		decr_rate_lost_art_2020     incr_rate_return_2020      
-incr_rate_restart_2020         incr_rate_init_2020        decr_rate_int_choice_2020  
-incr_prob_vl_meas_done_2020  
-incr_pr_switch_line_2020     	prep_improvements        	incr_adh_pattern_prep_2020  
-inc_r_test_startprep_2020  incr_r_test_restartprep_2020  decr_r_choose_stop_prep_2020  
-inc_p_prep_restart_choi_2020 incr_prepuptake_sw_2020    incr_prepuptake_pop_2020    expand_prep_to_all_2020  
-circ_improvements  			circ_inc_rate_2020  		incr_test_targeting_2020    pop_wide_tld_2020 
-incr_max_freq_testing_2020     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_2020  
-reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    
 
-eff_max_freq_testing  		eff_rate_restart   		eff_prob_loss_at_diag   		eff_rate_lost   		
-eff_prob_lost_art   		eff_rate_return   
-eff_pr_art_init   	eff_rate_int_choice   	eff_prob_vl_meas_done   		eff_pr_switch_line   	
-eff_rate_test_startprep   	eff_rate_test_restartprep   	
-eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
-e_decr_hard_reach_2020  eff_test_targeting  prep_strategy 
-vmmc_disrup_covid  condom_disrup_covid  prep_disrup_covid  swprog_disrup_covid  
-testing_disrup_covid  art_tld_disrup_covid  art_tld_eod_disrup_covid   art_init_disrup_covid   
-vl_adh_switch_disrup_covid  cotrim_disrup_covid    no_art_disrup_covid 
-inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult 
-
-n_mcirc1549_  n_mcirc1549_3m
-
-eff_rate_test_startprep   	eff_rate_test_restartprep   	
-eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
 ;
 
 
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_123;
-* data a.prep_22_10_20_5pm_123_dis7p; 
+  data a.art_retention;
+
 
 set y;
 
 data y; 
 
-  set a.prep_22_10_20_5pm_123; 
-* set a.prep_22_10_20_5pm_123_dis7p;
+  set a.art_retention; 
 run;
 
 
@@ -1325,130 +1242,172 @@ run;
 proc means  noprint data=y; var &v; output out=y_22p5_0 mean= &v._22p5_0; by run ; where cald = 2022.5 and option=0; 
 proc means  noprint data=y; var &v; output out=y_22p5_1 mean= &v._22p5_1; by run ; where cald = 2022.5 and option=1; 
 
-proc means  noprint data=y; var &v; output out=y_89 mean= &v._89; by run ; where 1989.0 <= cald < 1990 and option=0; 
+proc means  noprint data=y; var &v; output out=y_89_0 mean= &v._89_0; by run ; where 1989 <= cald < 1990 and option=0; 
+proc means  noprint data=y; var &v; output out=y_90_0 mean= &v._90_0; by run ; where 1990 <= cald < 1991 and option=0; 
+proc means  noprint data=y; var &v; output out=y_91_0 mean= &v._91_0; by run ; where 1991 <= cald < 1992 and option=0; 
+proc means  noprint data=y; var &v; output out=y_92_0 mean= &v._92_0; by run ; where 1992 <= cald < 1993 and option=0; 
+proc means  noprint data=y; var &v; output out=y_93_0 mean= &v._93_0; by run ; where 1993 <= cald < 1994 and option=0; 
+proc means  noprint data=y; var &v; output out=y_94_0 mean= &v._94_0; by run ; where 1994 <= cald < 1995 and option=0; 
+proc means  noprint data=y; var &v; output out=y_95_0 mean= &v._95_0; by run ; where 1995 <= cald < 1996 and option=0; 
+proc means  noprint data=y; var &v; output out=y_96_0 mean= &v._96_0; by run ; where 1996 <= cald < 1997 and option=0; 
+proc means  noprint data=y; var &v; output out=y_97_0 mean= &v._97_0; by run ; where 1997 <= cald < 1998 and option=0; 
+proc means  noprint data=y; var &v; output out=y_98_0 mean= &v._98_0; by run ; where 1998 <= cald < 1999 and option=0; 
+proc means  noprint data=y; var &v; output out=y_99_0 mean= &v._99_0; by run ; where 1999 <= cald < 2000 and option=0; 
+proc means  noprint data=y; var &v; output out=y_00_0 mean= &v._00_0; by run ; where 2000 <= cald < 2001 and option=0; 
+proc means  noprint data=y; var &v; output out=y_01_0 mean= &v._01_0; by run ; where 2001 <= cald < 2002 and option=0; 
+proc means  noprint data=y; var &v; output out=y_02_0 mean= &v._02_0; by run ; where 2002 <= cald < 2003 and option=0; 
+proc means  noprint data=y; var &v; output out=y_03_0 mean= &v._03_0; by run ; where 2003 <= cald < 2004 and option=0; 
+proc means  noprint data=y; var &v; output out=y_04_0 mean= &v._04_0; by run ; where 2004 <= cald < 2005 and option=0; 
+proc means  noprint data=y; var &v; output out=y_05_0 mean= &v._05_0; by run ; where 2005 <= cald < 2006 and option=0; 
+proc means  noprint data=y; var &v; output out=y_06_0 mean= &v._06_0; by run ; where 2006 <= cald < 2007 and option=0; 
+proc means  noprint data=y; var &v; output out=y_07_0 mean= &v._07_0; by run ; where 2007 <= cald < 2008 and option=0; 
+proc means  noprint data=y; var &v; output out=y_08_0 mean= &v._08_0; by run ; where 2008 <= cald < 2009 and option=0; 
+proc means  noprint data=y; var &v; output out=y_09_0 mean= &v._09_0; by run ; where 2009 <= cald < 2010 and option=0; 
+proc means  noprint data=y; var &v; output out=y_10_0 mean= &v._10_0; by run ; where 2010 <= cald < 2011 and option=0; 
+proc means  noprint data=y; var &v; output out=y_11_0 mean= &v._11_0; by run ; where 2011 <= cald < 2012 and option=0; 
+proc means  noprint data=y; var &v; output out=y_12_0 mean= &v._12_0; by run ; where 2012 <= cald < 2013 and option=0; 
+proc means  noprint data=y; var &v; output out=y_13_0 mean= &v._13_0; by run ; where 2013 <= cald < 2014 and option=0; 
+proc means  noprint data=y; var &v; output out=y_14_0 mean= &v._14_0; by run ; where 2014 <= cald < 2015 and option=0; 
+proc means  noprint data=y; var &v; output out=y_15_0 mean= &v._15_0; by run ; where 2015 <= cald < 2016 and option=0; 
+proc means  noprint data=y; var &v; output out=y_16_0 mean= &v._16_0; by run ; where 2016 <= cald < 2017 and option=0; 
+proc means  noprint data=y; var &v; output out=y_17_0 mean= &v._17_0; by run ; where 2017 <= cald < 2018 and option=0; 
+proc means  noprint data=y; var &v; output out=y_18_0 mean= &v._18_0; by run ; where 2018 <= cald < 2019 and option=0; 
+proc means  noprint data=y; var &v; output out=y_19_0 mean= &v._19_0; by run ; where 2019 <= cald < 2010 and option=0; 
+proc means  noprint data=y; var &v; output out=y_20_0 mean= &v._20_0; by run ; where 2020 <= cald < 2021 and option=0; 
+proc means  noprint data=y; var &v; output out=y_21_0 mean= &v._21_0; by run ; where 2021 <= cald < 2022 and option=0; 
+proc means  noprint data=y; var &v; output out=y_22_0 mean= &v._22_0; by run ; where 2022 <= cald < 2023 and option=0; 
+proc means  noprint data=y; var &v; output out=y_23_0 mean= &v._23_0; by run ; where 2023 <= cald < 2024 and option=0; 
+proc means  noprint data=y; var &v; output out=y_24_0 mean= &v._24_0; by run ; where 2024 <= cald < 2025 and option=0; 
+proc means  noprint data=y; var &v; output out=y_25_0 mean= &v._25_0; by run ; where 2025 <= cald < 2026 and option=0; 
+proc means  noprint data=y; var &v; output out=y_26_0 mean= &v._26_0; by run ; where 2026 <= cald < 2027 and option=0; 
+proc means  noprint data=y; var &v; output out=y_27_0 mean= &v._27_0; by run ; where 2027 <= cald < 2028 and option=0; 
+proc means  noprint data=y; var &v; output out=y_28_0 mean= &v._28_0; by run ; where 2028 <= cald < 2029 and option=0; 
+proc means  noprint data=y; var &v; output out=y_29_0 mean= &v._29_0; by run ; where 2029 <= cald < 2020 and option=0; 
+proc means  noprint data=y; var &v; output out=y_30_0 mean= &v._30_0; by run ; where 2030 <= cald < 2031 and option=0; 
+proc means  noprint data=y; var &v; output out=y_31_0 mean= &v._31_0; by run ; where 2031 <= cald < 2032 and option=0; 
+proc means  noprint data=y; var &v; output out=y_32_0 mean= &v._32_0; by run ; where 2032 <= cald < 2033 and option=0; 
+proc means  noprint data=y; var &v; output out=y_33_0 mean= &v._33_0; by run ; where 2033 <= cald < 2034 and option=0; 
+proc means  noprint data=y; var &v; output out=y_34_0 mean= &v._34_0; by run ; where 2034 <= cald < 2035 and option=0; 
+proc means  noprint data=y; var &v; output out=y_35_0 mean= &v._35_0; by run ; where 2035 <= cald < 2036 and option=0; 
+proc means  noprint data=y; var &v; output out=y_36_0 mean= &v._36_0; by run ; where 2036 <= cald < 2037 and option=0; 
+proc means  noprint data=y; var &v; output out=y_37_0 mean= &v._37_0; by run ; where 2037 <= cald < 2038 and option=0; 
+proc means  noprint data=y; var &v; output out=y_38_0 mean= &v._38_0; by run ; where 2038 <= cald < 2039 and option=0; 
+proc means  noprint data=y; var &v; output out=y_39_0 mean= &v._39_0; by run ; where 2039 <= cald < 2030 and option=0; 
+proc means  noprint data=y; var &v; output out=y_40_0 mean= &v._40_0; by run ; where 2040 <= cald < 2041 and option=0; 
+proc means  noprint data=y; var &v; output out=y_41_0 mean= &v._41_0; by run ; where 2041 <= cald < 2042 and option=0; 
+proc means  noprint data=y; var &v; output out=y_42_0 mean= &v._42_0; by run ; where 2042 <= cald < 2043 and option=0; 
+proc means  noprint data=y; var &v; output out=y_43_0 mean= &v._43_0; by run ; where 2043 <= cald < 2044 and option=0; 
+proc means  noprint data=y; var &v; output out=y_44_0 mean= &v._44_0; by run ; where 2044 <= cald < 2045 and option=0; 
+proc means  noprint data=y; var &v; output out=y_45_0 mean= &v._45_0; by run ; where 2045 <= cald < 2046 and option=0; 
+proc means  noprint data=y; var &v; output out=y_46_0 mean= &v._46_0; by run ; where 2046 <= cald < 2047 and option=0; 
+proc means  noprint data=y; var &v; output out=y_47_0 mean= &v._47_0; by run ; where 2047 <= cald < 2048 and option=0; 
+proc means  noprint data=y; var &v; output out=y_48_0 mean= &v._48_0; by run ; where 2048 <= cald < 2049 and option=0; 
+proc means  noprint data=y; var &v; output out=y_49_0 mean= &v._49_0; by run ; where 2049 <= cald < 2040 and option=0; 
+proc means  noprint data=y; var &v; output out=y_50_0 mean= &v._50_0; by run ; where 2050 <= cald < 2051 and option=0; 
+proc means  noprint data=y; var &v; output out=y_51_0 mean= &v._51_0; by run ; where 2051 <= cald < 2052 and option=0; 
+proc means  noprint data=y; var &v; output out=y_52_0 mean= &v._52_0; by run ; where 2052 <= cald < 2053 and option=0; 
+proc means  noprint data=y; var &v; output out=y_53_0 mean= &v._53_0; by run ; where 2053 <= cald < 2054 and option=0; 
+proc means  noprint data=y; var &v; output out=y_54_0 mean= &v._54_0; by run ; where 2054 <= cald < 2055 and option=0; 
+proc means  noprint data=y; var &v; output out=y_55_0 mean= &v._55_0; by run ; where 2055 <= cald < 2056 and option=0; 
+proc means  noprint data=y; var &v; output out=y_56_0 mean= &v._56_0; by run ; where 2056 <= cald < 2057 and option=0; 
+proc means  noprint data=y; var &v; output out=y_57_0 mean= &v._57_0; by run ; where 2057 <= cald < 2058 and option=0; 
+proc means  noprint data=y; var &v; output out=y_58_0 mean= &v._58_0; by run ; where 2058 <= cald < 2059 and option=0; 
+proc means  noprint data=y; var &v; output out=y_59_0 mean= &v._59_0; by run ; where 2059 <= cald < 2050 and option=0; 
+proc means  noprint data=y; var &v; output out=y_60_0 mean= &v._60_0; by run ; where 2060 <= cald < 2061 and option=0; 
+proc means  noprint data=y; var &v; output out=y_61_0 mean= &v._61_0; by run ; where 2061 <= cald < 2062 and option=0; 
+proc means  noprint data=y; var &v; output out=y_62_0 mean= &v._62_0; by run ; where 2062 <= cald < 2063 and option=0; 
+proc means  noprint data=y; var &v; output out=y_63_0 mean= &v._63_0; by run ; where 2063 <= cald < 2064 and option=0; 
+proc means  noprint data=y; var &v; output out=y_64_0 mean= &v._64_0; by run ; where 2064 <= cald < 2065 and option=0; 
+proc means  noprint data=y; var &v; output out=y_65_0 mean= &v._65_0; by run ; where 2065 <= cald < 2066 and option=0; 
+proc means  noprint data=y; var &v; output out=y_66_0 mean= &v._66_0; by run ; where 2066 <= cald < 2067 and option=0; 
+proc means  noprint data=y; var &v; output out=y_67_0 mean= &v._67_0; by run ; where 2067 <= cald < 2068 and option=0; 
+proc means  noprint data=y; var &v; output out=y_68_0 mean= &v._68_0; by run ; where 2068 <= cald < 2069 and option=0; 
+proc means  noprint data=y; var &v; output out=y_69_0 mean= &v._69_0; by run ; where 2069 <= cald < 2060 and option=0; 
+proc means  noprint data=y; var &v; output out=y_70_0 mean= &v._70_0; by run ; where 2070 <= cald < 2071 and option=0; 
+proc means  noprint data=y; var &v; output out=y_71_0 mean= &v._71_0; by run ; where 2071 <= cald < 2072 and option=0; 
+proc means  noprint data=y; var &v; output out=y_72_0 mean= &v._72_0; by run ; where 2072 <= cald < 2073 and option=0; 
 
+proc means  noprint data=y; var &v; output out=y_21_1 mean= &v._21_1; by run ; where 2021 <= cald < 2022 and option=1; 
+proc means  noprint data=y; var &v; output out=y_22_1 mean= &v._22_1; by run ; where 2022 <= cald < 2023 and option=1; 
+proc means  noprint data=y; var &v; output out=y_23_1 mean= &v._23_1; by run ; where 2023 <= cald < 2024 and option=1; 
+proc means  noprint data=y; var &v; output out=y_24_1 mean= &v._24_1; by run ; where 2024 <= cald < 2025 and option=1; 
+proc means  noprint data=y; var &v; output out=y_25_1 mean= &v._25_1; by run ; where 2025 <= cald < 2026 and option=1; 
+proc means  noprint data=y; var &v; output out=y_26_1 mean= &v._26_1; by run ; where 2026 <= cald < 2027 and option=1; 
+proc means  noprint data=y; var &v; output out=y_27_1 mean= &v._27_1; by run ; where 2027 <= cald < 2028 and option=1; 
+proc means  noprint data=y; var &v; output out=y_28_1 mean= &v._28_1; by run ; where 2028 <= cald < 2029 and option=1; 
+proc means  noprint data=y; var &v; output out=y_29_1 mean= &v._29_1; by run ; where 2029 <= cald < 2020 and option=1; 
+proc means  noprint data=y; var &v; output out=y_30_1 mean= &v._30_1; by run ; where 2030 <= cald < 2031 and option=1; 
+proc means  noprint data=y; var &v; output out=y_31_1 mean= &v._31_1; by run ; where 2031 <= cald < 2032 and option=1; 
+proc means  noprint data=y; var &v; output out=y_32_1 mean= &v._32_1; by run ; where 2032 <= cald < 2033 and option=1; 
+proc means  noprint data=y; var &v; output out=y_33_1 mean= &v._33_1; by run ; where 2033 <= cald < 2034 and option=1; 
+proc means  noprint data=y; var &v; output out=y_34_1 mean= &v._34_1; by run ; where 2034 <= cald < 2035 and option=1; 
+proc means  noprint data=y; var &v; output out=y_35_1 mean= &v._35_1; by run ; where 2035 <= cald < 2036 and option=1; 
+proc means  noprint data=y; var &v; output out=y_36_1 mean= &v._36_1; by run ; where 2036 <= cald < 2037 and option=1; 
+proc means  noprint data=y; var &v; output out=y_37_1 mean= &v._37_1; by run ; where 2037 <= cald < 2038 and option=1; 
+proc means  noprint data=y; var &v; output out=y_38_1 mean= &v._38_1; by run ; where 2038 <= cald < 2039 and option=1; 
+proc means  noprint data=y; var &v; output out=y_39_1 mean= &v._39_1; by run ; where 2039 <= cald < 2030 and option=1; 
+proc means  noprint data=y; var &v; output out=y_40_1 mean= &v._40_1; by run ; where 2040 <= cald < 2041 and option=1; 
+proc means  noprint data=y; var &v; output out=y_41_1 mean= &v._41_1; by run ; where 2041 <= cald < 2042 and option=1; 
+proc means  noprint data=y; var &v; output out=y_42_1 mean= &v._42_1; by run ; where 2042 <= cald < 2043 and option=1; 
+proc means  noprint data=y; var &v; output out=y_43_1 mean= &v._43_1; by run ; where 2043 <= cald < 2044 and option=1; 
+proc means  noprint data=y; var &v; output out=y_44_1 mean= &v._44_1; by run ; where 2044 <= cald < 2045 and option=1; 
+proc means  noprint data=y; var &v; output out=y_45_1 mean= &v._45_1; by run ; where 2045 <= cald < 2046 and option=1; 
+proc means  noprint data=y; var &v; output out=y_46_1 mean= &v._46_1; by run ; where 2046 <= cald < 2047 and option=1; 
+proc means  noprint data=y; var &v; output out=y_47_1 mean= &v._47_1; by run ; where 2047 <= cald < 2048 and option=1; 
+proc means  noprint data=y; var &v; output out=y_48_1 mean= &v._48_1; by run ; where 2048 <= cald < 2049 and option=1; 
+proc means  noprint data=y; var &v; output out=y_49_1 mean= &v._49_1; by run ; where 2049 <= cald < 2040 and option=1; 
+proc means  noprint data=y; var &v; output out=y_50_1 mean= &v._50_1; by run ; where 2050 <= cald < 2051 and option=1; 
+proc means  noprint data=y; var &v; output out=y_51_1 mean= &v._51_1; by run ; where 2051 <= cald < 2052 and option=1; 
+proc means  noprint data=y; var &v; output out=y_52_1 mean= &v._52_1; by run ; where 2052 <= cald < 2053 and option=1; 
+proc means  noprint data=y; var &v; output out=y_53_1 mean= &v._53_1; by run ; where 2053 <= cald < 2054 and option=1; 
+proc means  noprint data=y; var &v; output out=y_54_1 mean= &v._54_1; by run ; where 2054 <= cald < 2055 and option=1; 
+proc means  noprint data=y; var &v; output out=y_55_1 mean= &v._55_1; by run ; where 2055 <= cald < 2056 and option=1; 
+proc means  noprint data=y; var &v; output out=y_56_1 mean= &v._56_1; by run ; where 2056 <= cald < 2057 and option=1; 
+proc means  noprint data=y; var &v; output out=y_57_1 mean= &v._57_1; by run ; where 2057 <= cald < 2058 and option=1; 
+proc means  noprint data=y; var &v; output out=y_58_1 mean= &v._58_1; by run ; where 2058 <= cald < 2059 and option=1; 
+proc means  noprint data=y; var &v; output out=y_59_1 mean= &v._59_1; by run ; where 2059 <= cald < 2050 and option=1; 
+proc means  noprint data=y; var &v; output out=y_60_1 mean= &v._60_1; by run ; where 2060 <= cald < 2061 and option=1; 
+proc means  noprint data=y; var &v; output out=y_61_1 mean= &v._61_1; by run ; where 2061 <= cald < 2062 and option=1; 
+proc means  noprint data=y; var &v; output out=y_62_1 mean= &v._62_1; by run ; where 2062 <= cald < 2063 and option=1; 
+proc means  noprint data=y; var &v; output out=y_63_1 mean= &v._63_1; by run ; where 2063 <= cald < 2064 and option=1; 
+proc means  noprint data=y; var &v; output out=y_64_1 mean= &v._64_1; by run ; where 2064 <= cald < 2065 and option=1; 
+proc means  noprint data=y; var &v; output out=y_65_1 mean= &v._65_1; by run ; where 2065 <= cald < 2066 and option=1; 
+proc means  noprint data=y; var &v; output out=y_66_1 mean= &v._66_1; by run ; where 2066 <= cald < 2067 and option=1; 
+proc means  noprint data=y; var &v; output out=y_67_1 mean= &v._67_1; by run ; where 2067 <= cald < 2068 and option=1; 
+proc means  noprint data=y; var &v; output out=y_68_1 mean= &v._68_1; by run ; where 2068 <= cald < 2069 and option=1; 
+proc means  noprint data=y; var &v; output out=y_69_1 mean= &v._69_1; by run ; where 2069 <= cald < 2060 and option=1; 
+proc means  noprint data=y; var &v; output out=y_70_1 mean= &v._70_1; by run ; where 2070 <= cald < 2071 and option=1; 
+proc means  noprint data=y; var &v; output out=y_71_1 mean= &v._71_1; by run ; where 2071 <= cald < 2072 and option=1; 
+proc means  noprint data=y; var &v; output out=y_72_1 mean= &v._72_1; by run ; where 2072 <= cald < 2073 and option=1; 
 
-proc means  noprint data=y; var &v; output out=y_21_0 mean= &v._21_0; by run ; where 2021.0 <= cald < 2022 and option=0; 
+proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
+proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
 
+data &v ; merge y_22p5_0 y_22p5_1 y_21_71_0 y_21_71_0
+y_89_0 y_90_0 y_91_0 y_92_0 y_93_0 y_94_0 y_95_0 y_96_0 y_97_0 y_98_0 y_99_0 y_00_0  
+y_01_0 y_02_0 y_03_0 y_04_0 y_05_0 y_06_0 y_07_0 y_08_0 y_09_0 y_10_0  
+y_11_0 y_12_0 y_13_0 y_14_0 y_15_0 y_16_0 y_17_0 y_18_0 y_19_0 y_20_0 
+y_21_0 y_22_0 y_23_0 y_24_0 y_25_0 y_26_0 y_27_0 y_28_0 y_29_0 y_30_0 
+y_31_0 y_32_0 y_33_0 y_34_0 y_35_0 y_36_0 y_37_0 y_38_0 y_39_0 y_40_0 
+y_41_0 y_42_0 y_43_0 y_44_0 y_45_0 y_46_0 y_47_0 y_48_0 y_49_0 y_50_0 
+y_51_0 y_52_0 y_53_0 y_54_0 y_55_0 y_56_0 y_57_0 y_58_0 y_59_0 y_60_0 
+y_61_0 y_62_0 y_63_0 y_64_0 y_65_0 y_66_0 y_67_0 y_68_0 y_69_0 y_70_0 y_71_0 y_72_0 
+y_21_1 y_22_1 y_23_1 y_24_1 y_25_1 y_26_1 y_27_1 y_28_1 y_29_1 y_30_1 
+y_31_1 y_32_1 y_33_1 y_34_1 y_35_1 y_36_1 y_37_1 y_38_1 y_39_1 y_40_1 
+y_41_1 y_42_1 y_43_1 y_44_1 y_45_1 y_46_1 y_47_1 y_48_1 y_49_1 y_50_1 
+y_51_1 y_52_1 y_53_1 y_54_1 y_55_1 y_56_1 y_57_1 y_58_1 y_59_1 y_60_1 
+y_61_1 y_62_1 y_63_1 y_64_1 y_65_1 y_66_1 y_67_1 y_68_1 y_69_1 y_70_1 y_71_1 y_72_1 ; 
 
-proc means  noprint data=y; var &v; output out=y_21_1 mean= &v._21_1; by run ; where 2021.0 <= cald < 2022 and option=1; 
-
-
-
-proc means noprint data=y; var &v; output out=y_20_70_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
-proc means noprint data=y; var &v; output out=y_20_70_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
-
-
-data &v ; merge        ; 
-
-
- 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
-%var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
-%var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
-%var(v=n_tested_m);
-%var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
-%var(v=p_mcirc); %var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);
-%var(v=p_mcirc_2529m); %var(v=p_mcirc_3039m); %var(v=p_mcirc_4049m); %var(v=p_mcirc_50plm); %var(v=p_mcirc_1549m);
-%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_w_1524_onprep); %var(v=prop_1564_hivneg_onprep);
-%var(v=p_newp_this_per_prep);  %var(v=p_newp_prep_hivneg);
-%var(v=prop_sw_onprep);  %var(v=p_prep_adhg80); %var(v=n_infection);  %var(v=av_prep_eff_non_res_v);
-%var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
-%var(v=prevalence1519w);  	%var(v=prevalence1519m);  	  %var(v=prevalence2024w);  	  %var(v=prevalence2024m);  	  %var(v=prevalence2529w);  	  
-%var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
-%var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
-%var(v=prevalence_vg1000); %var(v=incidence1549);   %var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
-%var(v=incidence1549w);  %var(v=incidence1549m); 
-%var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
-%var(v=p_diag_m1524); %var(v=p_diag_w1524);
-%var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
-%var(v=p_ai_no_arv_c_inm); 
-%var(v=p_artexp_diag); %var(v=p_onart_diag); %var(v=p_onart_diag_w); %var(v=p_onart_diag_m); %var(v=p_onart_diag_sw); %var(v=p_efa); %var(v=p_taz);
-%var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000);  %var(v=p_artexp_vl1000);
-%var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
-%var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
-%var(v=p_onart_m); %var(v=p_onart_w); 
-%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
-%var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);     %var(v= p_startedline2) ;
-%var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
-%var(v=aids_death_rate);  %var(v=death_rate_onart); %var(v=ddaly);  %var(v=ddaly_all);  %var(v=dcost);  %var(v=cost);  %var(v= dart_cost_y);
-%var(v=dadc_cost);   %var(v=dcd4_cost);   %var(v=dvl_cost);   %var(v=dvis_cost);   %var(v=dwho3_cost);   %var(v=dcot_cost);   %var(v=dtb_cost);   
-%var(v=dres_cost);  %var(v=dtest_cost);   %var(v=d_t_adh_int_cost);   %var(v=dswitchline_cost);  %var(v=dtaz_cost);   %var(v=dcost_drug_level_test);
-%var(v=dclin_cost );  
-%var(v=dcost_circ );  %var(v=dcost_condom_dn);
-%var(v=dcost_prep_visit );   %var(v=dcost_prep );   %var(v=dcost_drug_level_test ); 
-%var(v=dcost_clin_care );  %var(v=dcost_non_aids_pre_death );  %var(v=dcost_child_hiv );  %var(v=dzdv_cost );   %var(v=dten_cost );   %var(v=d3tc_cost );   
-%var(v=dnev_cost );   %var(v=dlpr_cost );   %var(v=ddar_cost );   %var(v=dtaz_cost );    %var(v=defa_cost );   %var(v=ddol_cost );
-%var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
-%var(v=r_efa_hiv); %var(v=p_onart_cd4_l200);
-%var(v=p_dol_2vg1000_dolr1_adh0); %var(v=p_dol_2vg1000_dolr1_adh1); %var(v=p_dol_2vg1000_dolr0_adh0); %var(v=p_dol_2vg1000_dolr0_adh1);
-%var(v=p_onart_cd4_l500);   %var(v=p_startedline2);  %var(v=prop_art_or_prep);  %var(v=n_sw_1564);   %var(v=prop_sw_onprep);   %var(v=p_onart);
-%var(v=p_o_zdv_tox);   %var(v=p_o_3tc_tox);   %var(v=p_o_ten_tox);   %var(v=p_o_taz_tox);   %var(v=p_o_lpr_tox);   %var(v=p_o_efa_tox);   
-%var(v=p_o_nev_tox);  %var(v=p_o_dol_tox);   %var(v=p_o_zdv_adh_hi);   %var(v=p_o_3tc_adh_hi);   %var(v=p_o_ten_adh_hi);  
-%var(v=p_o_taz_adh_hi);   %var(v=p_o_lpr_adh_hi);   %var(v=p_o_efa_adh_hi);   %var(v=p_o_nev_adh_hi);   %var(v=p_o_dol_adh_hi);  
-%var(v= p_o_tle_tox);   %var(v=p_o_tld_tox);   %var(v=p_o_zla_tox);   %var(v=p_o_zld_tox);    %var(v=p_o_tle_adh_hi);   %var(v=p_o_tld_adh_hi);   
-%var(v=p_o_zla_adh_hi);   %var(v=p_o_zld_adh_hi);   %var(v=p_adh_hi);    %var(v=s_a_zld_if_reg_op_116);
-%var(v=p_nactive_ge2p75_xyz);  %var(v=p_adh_hi_xyz_ot1);   %var(v=p_adh_hi_xyz_ot2);   %var(v=p_adh_hi_xyz_itt);   %var(v=p_e_rt65m_xyz);   
-%var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz); 
-%var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
-%var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_vlg1000_184m); %var(v=p_vlg1000_65m);
-%var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
-%var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
-%var(v=p_iime_);   %var(v=p_pime_);   %var(v=p_nnme_);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
-%var(v=ddaly_non_aids_pre_death);    %var(v=ddaly_ac_ntd_mtct);    %var(v=ddaly_ac_ntd_mtct_odabe);     %var(v=ddaly_ntd_mtct_napd);   
-%var(v=ddaly_ntd_mtct_odab_napd); %var(v=n_birth_with_inf_child);
-%var(v=dead_ddaly_ntd);   %var(v=ddaly_mtct);  %var(v=dead_ddaly_odabe);  %var(v=n_tested); %var(v=test_prop_positive);
-%var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
-%var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
-%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
-%var(v=n_mcirc1549_);%var (v=n_mcirc1549_3m);%var(v=n_new_inf1549m); %var(v=n_new_inf1549);
+%var(v=n_alive);  %var(v=p_onart_artexp);  %var(v=n_art_initiation); %var(v=n_restart);   %var(v=p_onart_vl1000); %var(v=n_hivge15);
+%var(v=death_rate_hiv_ge15_all); %var(v=death_rate_hiv_ge15);
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
-p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
-p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep
-p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw prop_sw_hiv prop_w_1524_onprep prop_1564_hivneg_onprep prop_sw_onprep  p_prep_adhg80  
-p_newp_this_per_prep p_newp_prep_hivneg  n_infection
-prevalence1549m prevalence1549w prevalence1549 av_prep_eff_non_res_v
-prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
-prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
-prevalence1524w prevalence1524m  prevalence_sw
-incidence1549 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary mtct_prop
-p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0
-p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
-p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
-p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
-p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524  p_artexp_vl1000  
-p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
-prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
- p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost cost dart_cost_y
-dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
-dclin_cost   dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
-dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
-defa_cost   ddol_cost
-m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
-p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1564  prop_sw_onprep  p_onart 
-p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
-p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
- p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_hi  
-s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  p_adh_hi_xyz_itt  p_e_rt65m_xyz  
-p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m
-p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
-p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000  p_vlg1000_184m p_vlg1000_65m
-death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w  p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg_odabe
-ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
-n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested test_prop_positive p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc1549_3m n_new_inf1549m n_new_inf1549
-p_vl1000_art_12m p_vl1000_art_12m_onart 
+n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 
 ;
 
 proc contents; run;
@@ -1460,12 +1419,12 @@ proc sort; by run; run;
 %macro par(p=);
 
 * &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2021; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2020);  %par(p=dataset);
+%par(p=sf_2021);  %par(p=dataset);
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1495,7 +1454,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 
 data wide_par; merge dataset
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1520,144 +1479,21 @@ zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater
 keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc
 ;
 
-proc contents; run;
+
 
 run;
-proc sort; by run;run;
-
-
-
-
-* NOTE THESE BLOCKS OF CODE ARE SPECIFIC TO OPTIONS (currently for case of 2 options 0 and 1) ;
-
-* values for parameters that change after the intervention introduction, for option=1;
-
-%macro par_ai1(p=);
-
-* &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p._ai1; by run ; where cald = 2021 and option = 1 ;run;
-data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
-
-%mend par_ai1_option1; 
-
-%par_ai1(p=exp_setting_lower_p_vl1000 ); 
-%par_ai1(p=external_exp_factor );  %par_ai1(p=rate_exp_set_lower_p_vl1000 );   %par_ai1(p=max_freq_testing ); 
-%par_ai1(p=test_targeting );   %par_ai1(p=prob_loss_at_diag );  %par_ai1(p=pr_art_init );  
-%par_ai1(p=rate_lost );  %par_ai1(p=prob_lost_art );  %par_ai1(p=rate_return );  %par_ai1(p=rate_restart );  %par_ai1(p=rate_int_choice ); 
-%par_ai1(p=clinic_not_aw_int_frac );   %par_ai1(p=rate_loss_persistence );  %par_ai1(p=incr_rate_int_low_adh ); 
-%par_ai1(p=fold_change_mut_risk );  %par_ai1(p=adh_effect_of_meas_alert );  %par_ai1(p=pr_switch_line );  %par_ai1(p=prob_vl_meas_done ); 
-%par_ai1(p=red_adh_tb_adc );  %par_ai1(p=red_adh_tox_pop );  %par_ai1(p=add_eff_adh_nnrti );  %par_ai1(p=altered_adh_sec_line_pop ); 
-%par_ai1(p=prob_return_adc );  %par_ai1(p=prob_lossdiag_adctb );  %par_ai1(p=prob_lossdiag_who3e ); %par_ai1(p=higher_newp_less_engagement ); 
-%par_ai1(p=fold_tr );  %par_ai1(p=switch_for_tox );  %par_ai1(p=adh_pattern_prep );   %par_ai1(p=base_rate_sw ); 
-
-%par_ai1(p=condom_incr_2020 );    			%par_ai1(p=cascade_care_improvements ); %par_ai1(p=incr_test_2020 );             %par_ai1(p=decr_hard_reach_2020 );  
-%par_ai1(p=decr_prob_loss_at_diag_2020 ); 	%par_ai1(p=decr_rate_lost_2020 );		%par_ai1(p=decr_rate_lost_art_2020 );    %par_ai1(p=incr_rate_return_2020 );     
-%par_ai1(p=incr_rate_restart_2020 );        %par_ai1(p=incr_rate_init_2020 );       %par_ai1(p=decr_rate_int_choice_2020 ); 
-%par_ai1(p=incr_prob_vl_meas_done_2020 ); 
-%par_ai1(p=incr_pr_switch_line_2020 )    	%par_ai1(p=prep_improvements );       	%par_ai1(p=incr_adh_pattern_prep_2020 ); 
-%par_ai1(p=inc_r_test_startprep_2020 ); %par_ai1(p=incr_r_test_restartprep_2020 ); %par_ai1(p=decr_r_choose_stop_prep_2020 ); 
-%par_ai1(p=inc_p_prep_restart_choi_2020 );%par_ai1(p=incr_prepuptake_sw_2020 );   %par_ai1(p=incr_prepuptake_pop_2020 );   %par_ai1(p=expand_prep_to_all_2020 ); 
-%par_ai1(p=circ_improvements ); 			%par_ai1(p=circ_inc_rate_2020 ); 		%par_ai1(p=incr_test_targeting_2020 );   %par_ai1(p=pop_wide_tld_2020 );
-%par_ai1(p=incr_max_freq_testing_2020 );    %par_ai1(p=initial_pr_switch_line );    %par_ai1(p=initial_prob_vl_meas_done );  %par_ai1(p=sw_test_6mthly_2020 ); 
-%par_ai1(p=reg_option_switch_2020 );     %par_ai1(p=art_mon_drug_levels_2020 );      %par_ai1(p=ten_is_taf_2020 );   
-
-%par_ai1(p=eff_max_freq_testing ); 		%par_ai1(p=eff_rate_restart );  		%par_ai1(p=eff_prob_loss_at_diag );  		%par_ai1(p=eff_rate_lost );  		
-%par_ai1(p=eff_prob_lost_art );  		%par_ai1(p=eff_rate_return );  
-%par_ai1(p=eff_pr_art_init );  	%par_ai1(p=eff_rate_int_choice );  	%par_ai1(p=eff_prob_vl_meas_done );  		%par_ai1(p=eff_pr_switch_line );  	
-%par_ai1(p=eff_rate_test_startprep );  	%par_ai1(p=eff_rate_test_restartprep );  	
-%par_ai1(p=eff_rate_choose_stop_prep );  		%par_ai1(p=eff_prob_prep_restart_choice );  	
-%par_ai1(p=e_decr_hard_reach_2020 ); %par_ai1(p=eff_test_targeting ); %par_ai1(p=prep_strategy );
-%par_ai1(p=vmmc_disrup_covid);  %par_ai1(p=condom_disrup_covid);  %par_ai1(p=prep_disrup_covid);  %par_ai1(p=swprog_disrup_covid);  
-%par_ai1(p=testing_disrup_covid);  %par_ai1(p=art_tld_disrup_covid);  %par_ai1(p=art_tld_eod_disrup_covid);   %par_ai1(p=art_init_disrup_covid);   
-%par_ai1(p=vl_adh_switch_disrup_covid);  %par_ai1(p=cotrim_disrup_covid);    %par_ai1(p=no_art_disrup_covid); 
-%par_ai1(p=inc_adeathr_disrup_covid); %par_ai1(p=art_low_adh_disrup_covid);  %par_ai1(p=cov_death_risk_mult); 
-
-run;
-
-
-data wide_par_after_int_option1; merge 
- exp_setting_lower_p_vl1000_ai1 
-external_exp_factor_ai1 rate_exp_set_lower_p_vl1000_ai1  max_freq_testing_ai1 
-test_targeting_ai1  prob_loss_at_diag_ai1 pr_art_init_ai1 
-rate_lost_ai1 prob_lost_art_ai1 rate_return_ai1 rate_restart_ai1 rate_int_choice_ai1 
-clinic_not_aw_int_frac_ai1  rate_loss_persistence_ai1 incr_rate_int_low_adh_ai1 
-fold_change_mut_risk_ai1 adh_effect_of_meas_alert_ai1 pr_switch_line_ai1 prob_vl_meas_done_ai1 
-red_adh_tb_adc_ai1 red_adh_tox_pop_ai1 add_eff_adh_nnrti_ai1 altered_adh_sec_line_pop_ai1 
-prob_return_adc_ai1 prob_lossdiag_adctb_ai1 prob_lossdiag_who3e_ai1 higher_newp_less_engagement_ai1 
-fold_tr_ai1 switch_for_tox_ai1 adh_pattern_prep_ai1   base_rate_sw_ai1 
-
-condom_incr_2020_ai1    			cascade_care_improvements_ai1 	incr_test_2020_ai1             decr_hard_reach_2020_ai1  
-decr_prob_loss_at_diag_2020_ai1 	decr_rate_lost_2020_ai1 		decr_rate_lost_art_2020_ai1    incr_rate_return_2020_ai1     
-incr_rate_restart_2020_ai1        	incr_rate_init_2020_ai1       	decr_rate_int_choice_2020_ai1  incr_prob_vl_meas_done_2020_ai1 
-incr_pr_switch_line_2020_ai1    	prep_improvements_ai1       	incr_adh_pattern_prep_2020_ai1 
-inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 
-inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1   	incr_prepuptake_pop_2020_ai1   expand_prep_to_all_2020_ai1 
-circ_improvements_ai1 				circ_inc_rate_2020_ai1 		incr_test_targeting_2020_ai1   pop_wide_tld_2020_ai1 
-incr_max_freq_testing_2020_ai1     initial_pr_switch_line_ai1 	    initial_prob_vl_meas_done_ai1  sw_test_6mthly_2020_ai1 
-reg_option_switch_2020_ai1  art_mon_drug_levels_2020_ai1   ten_is_taf_2020_ai1 	
-
-eff_max_freq_testing_ai1 		eff_rate_restart_ai1  		eff_prob_loss_at_diag_ai1  		eff_rate_lost_ai1  		
-eff_prob_lost_art_ai1  		eff_rate_return_ai1  		
-eff_pr_art_init_ai1  	eff_rate_int_choice_ai1  	eff_prob_vl_meas_done_ai1  		eff_pr_switch_line_ai1  	
-eff_rate_test_startprep_ai1  	eff_rate_test_restartprep_ai1  	
-eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
-e_decr_hard_reach_2020_ai1 eff_test_targeting_ai1   prep_strategy_ai1 
-
-vmmc_disrup_covid_ai1 condom_disrup_covid_ai1 prep_disrup_covid_ai1 swprog_disrup_covid_ai1 testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
-art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
-inc_adeathr_disrup_covid_ai1   art_low_adh_disrup_covid_ai1  cov_death_risk_mult_ai1
-
-;
-
-proc contents; run;
-
-run;
-proc sort; by run;
-
-
-* values for parameters that change after the intervention for option=0;
-
-%macro par_ai0(p=);
-* &p ;
-proc means noprint data=y; var &p ; output out=y_ mean= &p._ai0; by run ; where cald = 2021 and option = 0 ;run;
-data &p._ai0 ; set  y_ ; drop _TYPE_ _FREQ_; 
-
-%mend par_ai0; 
-
-%par_ai0(p=eff_rate_test_startprep );  	%par_ai0(p=eff_rate_test_restartprep );  	
-%par_ai0(p=eff_rate_choose_stop_prep );  		%par_ai0(p=eff_prob_prep_restart_choice );  	
-
-data wide_par_after_int_option0; merge 
- eff_rate_test_startprep_ai0  	eff_rate_test_restartprep_ai0   	
-eff_rate_choose_stop_prep_ai0   eff_prob_prep_restart_choice_ai0  	
-; 
-run;
-
-proc contents; run;
-
-proc sort; by run;run;
-
-
 
 * To get one row per run;
 
-  data a.wide_prep_22_10_20_5pm_123; 
-* data a.wide_prep_22_10_20_5pm_123_dis7p; 
+  data a.wide_art_retention; 
 
-  merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
-  baseline that you need to track the values of;
-* merge   wide_outputs  wide_par ;  
+  merge   wide_outputs  wide_par  ; 
   by run;
 
 
-proc univariate ;
-var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 prevalence1524w_20  prevalence1524m_20
-incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-p_ai_no_arv_c_pim_20  p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   p_ai_no_arv_c_rttams_20  p_ai_no_arv_c_inm_20
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_hivneg_onprep_20  p_mcirc_1549m_20
-p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20 n_tested_20
-aids_death_rate_20  death_rate_onart_20 av_newp_ge1_20 av_newp_ge1_non_sw_20 ;
-run;
+proc contents; run;
+
+
+
 
 
