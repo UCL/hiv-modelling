@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.wide_fsw_15_12_20_12pm ;
+set a.wide_fsw_28_01_21_9pm ;
 
 ***table 1;
 proc means n p50 p5 p95;var
@@ -58,7 +58,7 @@ incidence_sw_20_21_1
 p_diag_sw_20_21_1
 p_onart_diag_sw_20_21_1
 p_onart_vl1000_sw_20_21_1
-p_newp_sw_20_21_1
+t_sw_newp_20_21_1
 prop_sw_program_visit_20_21_1
 
 n_sw_1564_20_21_2
@@ -68,7 +68,7 @@ incidence_sw_20_21_2
 p_diag_sw_20_21_2
 p_onart_diag_sw_20_21_2
 p_onart_vl1000_sw_20_21_2
-p_newp_sw_20_21_2
+t_sw_newp_20_21_2
 prop_sw_program_visit_20_21_2;
 run;
 
