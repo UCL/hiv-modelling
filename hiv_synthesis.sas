@@ -14635,7 +14635,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 end;
 
-if 15 <= age or death ne . then do;
+if 15 <= age and (death = . or caldate&j = death ) then do;
 
 	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; s_dead_allage + dead; 
 	s_dead_daly_80 + dead_daly_80 ; s_dead_ddaly_80 + dead_ddaly_80 ; 
@@ -14656,7 +14656,7 @@ if 15 <= age or death ne . then do;
 
 end;
 
-if 0 <= age or death ne . then do;
+if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
 end;
