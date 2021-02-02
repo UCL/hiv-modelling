@@ -113,7 +113,7 @@ to do before starting testing in preparation for runs:
 
 - make parameters like rare_int_choice so that they vary between individuals ?
 
-- todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw act_years_sw  tot_dur_sw)
+- todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw  tot_dur_sw)
 
 - consider effects on transmission of increases in gx
 
@@ -2687,7 +2687,6 @@ end;
 if t ge 2 and gender=2 then do;
 	pregnant=0;anc=0;on_sd_nvp=0;on_dual_nvp=0;
 	if cum_children=. and dead=0 then cum_children=0;
-	if act_years_sw=. then act_years_sw=0;
 	if episodes_sw=.     then episodes_sw=0;
 	if years_ep=.		  then years_ep=0;
 	
@@ -10457,7 +10456,7 @@ if  caldate{t} > death > . then do;
 	restart=.;interrupt=.;
 	lost=.;toffart   =.;
 	primary   =.;ever_tested=.;date_last_test=.;sympt_diag=.;sympt_diag_ever=.;
-	ever_ep=.;ever_newp=.;ever_sw=.;ever_sw1849_=.;act_years_sw=.;years_sw=.;
+	ever_ep=.;ever_newp=.;ever_sw=.;ever_sw1849_=.;years_sw=.;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
 	prep=.;hr_noprep=.;elig_prep_epdiag=.;elig_prep=.;	primary_prep=.;primary_hr_noprep=.; 
@@ -11451,7 +11450,7 @@ mcirc_85plm=0;new_mcirc_85plm=0;vmmc85plm=0;new_vmmc85plm=0;if gender=1 and 85 l
 
 * uncertain about this code here below - currently setting all variables to . so they do not come up as errors in proc univariate;
 
-new_1519sw=.;new_2024sw=.;new_2529sw=.;new_3039sw=.;new_ge40sw=.;tot_newp=.;newp_p3m=.;years_ep=.;ever_ep=.;p_ep_py=.;act_years_sw=.;
+new_1519sw=.;new_2024sw=.;new_2529sw=.;new_3039sw=.;new_ge40sw=.;tot_newp=.;newp_p3m=.;years_ep=.;ever_ep=.;p_ep_py=.;
 
 /*
 new_1519sw=.;new_2024sw=.;new_2529sw=.;new_3039sw=.;new_ge40sw=.;
@@ -11468,7 +11467,6 @@ if 15 le age le 65 then do;
 			if 25 le age lt 30 then new_2529sw = 1;
 			if 30 le age lt 40 then new_3039sw = 1;
 			if       age ge 40 then new_ge40sw = 1;
-		act_years_sw = act_years_sw + 0.25;
 	end;
 end;
 */
