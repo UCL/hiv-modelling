@@ -2053,14 +2053,31 @@ end;
 
 end;
 
-
+* if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
+if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
+	sw_program_effects_changed_covid=0;
+	eff_sw_program = eff_sw_program_wo_covid; 
+	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
+	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
+	eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
+	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
+end;
+* if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
+  we can revert to them after the disruption period;
 if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
-	eff_sw_program = 0 ; 
+	sw_program_effects_changed_covid=1;
+	eff_sw_program_wo_covid = eff_sw_program ; 
+	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
+	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
+	eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
+	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
+	eff_sw_program = 0;
 	sw_test_6mthly = 0; 
 	eff_sw_higher_int = sw_higher_int ; 
 	eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
-end; 
+end;
+
 
 if 2016.5 <= caldate{t} then art_initiation_strategy=3;
 
