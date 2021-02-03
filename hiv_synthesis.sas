@@ -437,7 +437,7 @@ rate_sti = 1 / 20 ;
 rate_persist_sti = 1 / 5 ;
 
 * dependent on rred_rc, rate of sex workers moving to one category lower;
-rate_sw_rred_rc = 0.02; 
+p_rred_sw_newp = 0.02; 
 * rate of development of non-hiv symptoms, regardless of hiv status;
 rate_non_hiv_symptoms=0.005;
 r_swi_efa_cns = 0.02;
@@ -507,8 +507,8 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* rate_sw_rred_rc;	 r=uniform(0); if r < 0.33 then rate_sw_rred_rc=0.01;   if 0.33 <= r < 0.67 then rate_sw_rred_rc = 0.03;  
-								if 0.67 <= r then rate_sw_rred_rc = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
+* p_rred_sw_newp;	 r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
+								if 0.67 <= r then p_rred_sw_newp = 0.10; * dependent on rred_rc, rate of sex workers moving to one category lower;
 
 * sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
 			e=uniform(0); 
@@ -3539,7 +3539,7 @@ end;
 
 * Reducing newp for FSW according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/3; newp=round(newp,1);end;
+u=uniform(0); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
@@ -15910,7 +15910,7 @@ rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-nnrti_res_no_effect  sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp
+nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov
 
@@ -17549,7 +17549,7 @@ rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_ga
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
-sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp   
+sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov
