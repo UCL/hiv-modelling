@@ -3537,7 +3537,7 @@ end;
 */
 
 
-* Reducing newp for FSW by 67% according to population change in risk behaviour;
+* Reducing newp for FSW by 50% according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
 u=uniform(0); if u < (1-rred_rc)*rate_sw_rred_rc then do; newp=newp/3; newp=round(newp,1);end;
 end;
