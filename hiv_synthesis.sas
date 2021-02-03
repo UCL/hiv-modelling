@@ -73,7 +73,7 @@ incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_ini
 - consider higher pr_art_init if diagnosed while on prep
 
 - proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested –ve and np=0, start tld if np goes >= 1) 
+alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested -ve and np=0, start tld if np goes >= 1)
 sample these)
 
 - is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
@@ -1119,7 +1119,7 @@ if gender ne . then do; obs+1; end;
 *
 cia world factbook 
 malawi
-Total population (x 1000)	Population aged 0E4 (%)	Population aged 15E4 (%)	Population aged 65+ (%)   n population aged 15E4
+Total population (x 1000)	Population aged 0 E4 (%)	Population aged 15 E4 (%)	Population aged 65+ (%)   n population aged 15 E4
 1990	9 381	45.9	51.4	2.7		4821000
 1995	9 883	44.7	52.2	3.1		5159000
 2000	11 229	45.8	51.1	3.1		5738000
