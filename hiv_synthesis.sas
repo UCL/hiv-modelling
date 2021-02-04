@@ -17003,15 +17003,16 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*  
+
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_base_21_1_21_&dataset_id";  
+  file "/home/rmjllob/Scratch/_output_base_03_02_21_&dataset_id";  
 
 put   
 
-*/
+
+/*  
 
   libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
@@ -17024,7 +17025,7 @@ keep
 
 
 
-
+*/
 /*general*/
 run   cald   option 
 
