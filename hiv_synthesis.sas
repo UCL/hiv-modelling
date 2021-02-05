@@ -3330,9 +3330,9 @@ end;
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
 	e=uniform(0);
-	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3 ; 
+	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 6;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 20; 
-	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 100;
+	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 50;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) <= e then newp_tm1 = 150;
 
 	if ever_sw ne 1 then do; 
