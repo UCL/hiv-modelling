@@ -3294,7 +3294,7 @@ end;
 */
 
 if t ge 2  then do;
-if gender = 2 and sw_tm1  = 0 then do;
+if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 
 	* effect of age on becoming a sex worker;
 	select;
@@ -3305,13 +3305,11 @@ if gender = 2 and sw_tm1  = 0 then do;
 		otherwise sw_age_factor = 0;
 	end;
 
-	* effect of the life sex risk on becoming a sex worker;
-	sw_risk_factor = 1;
-	if life_sex_risk = 1 then sw_risk_factor = 0;
-	elif life_sex_risk = 3 then sw_risk_factor = rr_sw_life_sex_risk_3;
-
 	* dependent_on_time_step_length;
-	prob_becoming_sw = base_rate_sw * sqrt(rred_rc) * sw_age_factor * sw_risk_factor;
+	prob_becoming_sw = base_rate_sw * sqrt(rred_rc) * sw_age_factor;
+
+	* effect of the life sex risk on becoming a sex worker;
+	if life_sex_risk = 3 then prob_becoming_sw = prob_becoming_sw * rr_sw_life_sex_risk_3;
 
 	* effect of previously having been a sex worker on becoming a sex worker;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
