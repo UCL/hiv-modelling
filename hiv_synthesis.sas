@@ -2064,7 +2064,7 @@ if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_dis
 end;
 * if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
   we can revert to them after the disruption period;
-if swprog_disrup_covid = 1 and covid_disrup_affected = 1 then do;
+if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_changed_covid ne 1 then do;
 	sw_program_effects_changed_covid=1;
 	eff_sw_program_wo_covid = eff_sw_program ; 
 	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
