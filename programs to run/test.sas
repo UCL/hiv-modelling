@@ -157,14 +157,14 @@ to do before starting testing in preparation for runs:
 
 
 
-* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
+  libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -14874,6 +14874,11 @@ cald = caldate_never_dot ;
 
 * procs;
 
+proc print; var cald caldate&j caldate_never_dot hiv option eff_rate_restart ; 
+where serial_no < 100 and age ge 15;
+run; 
+
+
 /*
 
 proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
@@ -16886,7 +16891,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-
+  
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -17014,17 +17019,17 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=117,h=124,j=124,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
+
+data a.syer; set r1;
+
+  
+
+data r1 ; set a.syer;
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
-
-data a; set r1; 
-
-
-
-data r1; set a;
-
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
