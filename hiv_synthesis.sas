@@ -1915,7 +1915,7 @@ do until (t=&f);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
  
 
-caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
+if t ge 2 then caldate_never_dot = caldate_never_dot + 0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
 caldate_never_dot = caldate_never_dot + (1/12);
 
