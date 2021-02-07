@@ -652,10 +652,10 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
-if run =  888424326 ;
+if run = 362302134  ;
 *    362302134    820655109      888424326       ;
 
-
+proc print; var cald s_alive_m ; run;
 
 
 proc sort data=d; by run cald option;run;
@@ -1323,8 +1323,6 @@ proc means noprint data=y; var &v; output out=y_67_0 mean= &v._67_0; by run ; wh
 proc means noprint data=y; var &v; output out=y_68_0 mean= &v._68_0; by run ; where 2068 <= cald < 2069 and option=0; 
 proc means noprint data=y; var &v; output out=y_69_0 mean= &v._69_0; by run ; where 2069 <= cald < 2070 and option=0; 
 proc means noprint data=y; var &v; output out=y_70_0 mean= &v._70_0; by run ; where 2070 <= cald < 2071 and option=0; 
-proc means noprint data=y; var &v; output out=y_71_0 mean= &v._71_0; by run ; where 2071 <= cald < 2072 and option=0; 
-proc means noprint data=y; var &v; output out=y_72_0 mean= &v._72_0; by run ; where 2072 <= cald < 2073 and option=0; 
 
 proc means noprint data=y; var &v; output out=y_21_1 mean= &v._21_1; by run ; where 2021 <= cald < 2022 and option=1; 
 proc means noprint data=y; var &v; output out=y_22_1 mean= &v._22_1; by run ; where 2022 <= cald < 2023 and option=1; 
@@ -1376,8 +1374,6 @@ proc means noprint data=y; var &v; output out=y_67_1 mean= &v._67_1; by run ; wh
 proc means noprint data=y; var &v; output out=y_68_1 mean= &v._68_1; by run ; where 2068 <= cald < 2069 and option=1; 
 proc means noprint data=y; var &v; output out=y_69_1 mean= &v._69_1; by run ; where 2069 <= cald < 2070 and option=1; 
 proc means noprint data=y; var &v; output out=y_70_1 mean= &v._70_1; by run ; where 2070 <= cald < 2071 and option=1; 
-proc means noprint data=y; var &v; output out=y_71_1 mean= &v._71_1; by run ; where 2071 <= cald < 2072 and option=1; 
-proc means noprint data=y; var &v; output out=y_72_1 mean= &v._72_1; by run ; where 2072 <= cald < 2073 and option=1; 
 
 proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
 proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
