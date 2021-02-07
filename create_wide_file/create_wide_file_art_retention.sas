@@ -651,7 +651,11 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
-if run = 362302134 ;
+
+if run = 820655109 ;
+*    362302134    820655109      888424326       ;
+
+
 
 
 proc sort data=d; by run cald option;run;
@@ -1173,8 +1177,14 @@ n_new_inf1549 = s_primary1549 * sf_2021 * 4;
 n_infection  = s_primary     * sf_2021 * 4;
 
 
-keep run option cald n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
+keep 
+
+run option cald 
+
+n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
 ddaly daly incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m
+p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
+p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate 
 
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1372,7 +1382,7 @@ proc means  noprint data=y; var &v; output out=y_72_1 mean= &v._72_1; by run ; w
 proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
 proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
 
-data &v ; merge y_22p5_0 y_22p5_1 y_21_71_0 y_21_71_0
+data &v ; merge y_22p5_0 y_22p5_1 y_21_71_0 y_21_71_0 y_21_71_1
 y_89_0 y_90_0 y_91_0 y_92_0 y_93_0 y_94_0 y_95_0 y_96_0 y_97_0 y_98_0 y_99_0 y_00_0  
 y_01_0 y_02_0 y_03_0 y_04_0 y_05_0 y_06_0 y_07_0 y_08_0 y_09_0 y_10_0  
 y_11_0 y_12_0 y_13_0 y_14_0 y_15_0 y_16_0 y_17_0 y_18_0 y_19_0 y_20_0 
@@ -1395,10 +1405,16 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=death_rate_hiv_ge15_all); %var(v=death_rate_hiv_ge15); %var(v=ddaly); %var(v=daly);
 %var(v=incidence1549);  %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=prevalence1549);  %var(v=prevalence1549w);  %var(v=prevalence1549m); 
 
+%var(v=p_diag_m);   %var(v=prop_w_1549_sw);  %var(v=p_onart_diag_w); 	%var(v=p_onart_diag_m);   %var(v=p_vl1000);	 %var(v=p_onart_vl1000_w);	
+%var(v=p_onart_vl1000_m);   %var(v=p_onart_cd4_l500);  %var(v=p_mcirc_1549m);  %var(v=p_startedline2);  %var(v=prop_sw_hiv)  %var(v=p_newp_sw);  
+%var(v=aids_death_rate);  
 
 data   wide_outputs; merge 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
 incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m 
+
+p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
+p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate 
 ;
 
 proc contents; run;
@@ -1483,6 +1499,75 @@ run;
 
 proc contents; run;
 
+ods html;
+proc means n median p5 p95 min max ;
+var	
+n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
+death_rate_hiv_ge15_21_0 ddaly_21_0 daly_21_0  incidence1549_21_0 incidence1549w_21_0 incidence1549m_21_0 prevalence1549_21_0 
+prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  
+p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0 p_mcirc_1549m_21_0  p_startedline2_21_0  prop_sw_hiv_21_0 
+p_newp_sw_21_0  aids_death_rate_21_0  ;
+run;
+ods html close;
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
+n_alive_21_71_0 p_onart_artexp_21_71_0 n_art_initiation_21_71_0 n_restart_21_71_0 p_onart_vl1000_21_71_0 n_hivge15_21_71_0 
+death_rate_hiv_ge15_all_21_71_0 
+death_rate_hiv_ge15_21_71_0 ddaly_21_71_0 daly_21_71_0  incidence1549_21_71_0 incidence1549w_21_71_0 incidence1549m_21_71_0 
+prevalence1549_21_71_0 
+prevalence1549w_21_71_0 prevalence1549m_21_71_0  p_diag_m_21_71_0  prop_w_1549_sw_21_71_0 p_onart_diag_w_21_71_0 	
+p_onart_diag_m_21_71_0  
+p_vl1000_21_71_0	p_onart_vl1000_w_21_71_0  p_onart_vl1000_m_21_71_0 p_onart_cd4_l500_21_71_0 p_mcirc_1549m_21_71_0  
+p_startedline2_21_71_0  prop_sw_hiv_21_71_0 
+p_newp_sw_21_71_0  aids_death_rate_21_71_0  
+n_alive_21_71_1 p_onart_artexp_21_71_1 n_art_initiation_21_71_1 n_restart_21_71_1 p_onart_vl1000_21_71_1 n_hivge15_21_71_1 
+death_rate_hiv_ge15_all_21_71_1 
+death_rate_hiv_ge15_21_71_1 ddaly_21_71_1 daly_21_71_1  incidence1549_21_71_1 incidence1549w_21_71_1 incidence1549m_21_71_1 
+prevalence1549_21_71_1 
+prevalence1549w_21_71_1 prevalence1549m_21_71_1  p_diag_m_21_71_1  prop_w_1549_sw_21_71_1 p_onart_diag_w_21_71_1 	
+p_onart_diag_m_21_71_1  
+p_vl1000_21_71_1	p_onart_vl1000_w_21_71_1  p_onart_vl1000_m_21_71_1 p_onart_cd4_l500_21_71_1 p_mcirc_1549m_21_71_1  
+p_startedline2_21_71_1  prop_sw_hiv_21_71_1 
+p_newp_sw_21_71_1  aids_death_rate_21_71_1  ;
+run;
+ods html close;
+
+
+data a.art_retention_xlsx;
+
+set a.wide_art_retention;
+
+drop sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy rate_sw_rred_rc
+;
+
+proc export data = a.art_retention_xlsx
+  dbms=xlsx 
+  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\file_abc" replace;
+run;
 
 
 
