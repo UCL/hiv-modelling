@@ -1,5 +1,4 @@
 
-
 * ==========================================================================================================================================;
 
 * SECTION 3 - OPTIONS ;
@@ -62,6 +61,12 @@ who may be dead and hence have caldate{t} missing;
 	if 0.40 <= _u46 < 0.60 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.50) ; 
 	if 0.60 <= _u46 < 0.80 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.75) ; 
 	if 0.80 <= _u46        then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 1.00) ; 
+
+	if _u47 < 0.20 then 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.00) ; 
+	if 0.20 <= _u47 < 0.40 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.25) ; 
+	if 0.40 <= _u47 < 0.60 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.50) ; 
+	if 0.60 <= _u47 < 0.80 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.75) ; 
+	if 0.80 <= _u47        then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 1.00) ; 
 
 	end;
 end;
