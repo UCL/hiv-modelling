@@ -621,20 +621,22 @@ p_neph_stops_after_ten = 0.1;
 
 * rate_lost; r=uniform(0); if r < 0.33 then rate_lost = 0.2; if 0.33 <= r < 0.66 then rate_lost = 0.35; if r >= 0.66 then rate_lost = 0.5;
 * dependent_on_time_step_length ;
+rate_lost = 0.5;
 * prob_lost_art; r=uniform(0); if r < 0.2 then prob_lost_art = 0.5; if 0.2 <= r < 0.4 then prob_lost_art = 0.6; if 0.4 <= r < 0.6 then prob_lost_art = 0.7; if 0.6 <= r < 0.8 then prob_lost_art = 0.8;	if 0.8 <= r then prob_lost_art = 0.9;
 * dependent_on_time_step_length ;
+prob_lost_art = 0.9;
 
 * AP 19-7-19 ;
 * rate_return;  r=uniform(0); if  r < 0.10 then rate_return = 0.01; if  0.10 <= r < 0.25 then rate_return = 0.10; 
 			if 0.25 <= r < 0.5 then rate_return = 0.10; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; 
-
+rate_return = 0.01;
 * rate_restart;  r=uniform(0); if r < 0.25 then rate_restart = 0.8; if 0.25 <= r < 0.5 then rate_restart = 0.85; if 0.5 <= r < 0.75 then rate_restart = 0.9; if 0.75 <= r then rate_restart = 0.95;
 * dependent_on_time_step_length ;
-
+rate_restart = 0.8;
 * AP 19-7-19 ;
 * rate_int_choice;  r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.50 then rate_int_choice = 0.002; 
 			if 0.50 <= r < 0.75 then rate_int_choice = 0.004; if 0.75 <= r then rate_int_choice = 0.008 ;
- 
+ rate_int_choice = 0.0005;
 * clinic_not_aw_int_frac;  r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;
 * res_trans_factor_nn (this is for nnrti only); r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7;
 				if 0.40 <= r < 0.60 then res_trans_factor_nn= 0.8; if 0.60 <= r < 0.80 then res_trans_factor_nn= 0.90;  if 0.80 <= r then res_trans_factor_nn= 1.00;  * may18;
@@ -2376,6 +2378,14 @@ who may be dead and hence have caldate{t} missing;
 	if 0.40 <= _u46 < 0.60 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.50) ; 
 	if 0.60 <= _u46 < 0.80 then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.75) ; 
 	if 0.80 <= _u46        then eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 1.00) ; 
+
+	if _u47 < 0.20 then 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.00) ; 
+	if 0.20 <= _u47 < 0.40 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.25) ; 
+	if 0.40 <= _u47 < 0.60 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.50) ; 
+	if 0.60 <= _u47 < 0.80 then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.75) ; 
+	if 0.80 <= _u47        then eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 1.00) ; 
+
+	eff_rate_restart =1; eff_rate_lost =0; eff_prob_lost_art =0; eff_rate_int_choice = 0; eff_prob_return_adc =1;eff_rate_return=1;
 
 	end;
 end;
@@ -14870,13 +14880,15 @@ end;
 cald = caldate_never_dot ;
 
 
-
+p_onart_artexp = s_onart / s_artexp;
 
 * procs;
 
-proc print; var cald caldate&j caldate_never_dot hiv option eff_rate_restart ; 
-where serial_no < 100 and age ge 15;
-run; 
+proc print; var cald s_hiv1564 option eff_rate_restart 
+eff_rate_lost eff_prob_lost_art eff_rate_int_choice eff_prob_return_adc eff_rate_return
+p_onart_artexp  s_onart s_artexp ; 
+where serial_no = &population;
+run;
 
 
 /*
@@ -16891,7 +16903,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-  
+
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -17020,9 +17032,11 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=121,h=128,j=125,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=121,h=128,j=126,s=0);
 
-data a.syer2; set r1;
+data a.syer3; set r1;
 
-data r1 ; set a.syer2;
+
+
+data r1 ; set a.syer3;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=121,h=128,j=127,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
@@ -17064,6 +17078,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
 
+ 
 data r1; set a;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=1);
