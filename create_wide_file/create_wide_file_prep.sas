@@ -8,7 +8,8 @@ data d1;
 
 * note this file tld_prep is used for prep also - we just delete the tld_prep option;
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21";
 
 input 
 
@@ -585,6 +586,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 ; 
+
 
 
 * to focus on prep and not tld_prep;
@@ -1260,14 +1262,16 @@ prop_onprep_newpge2 prop_onprep_newpge3
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_21_jan_21;
+  data a.prep_22_10_20_5pm_29_jan_21;
+* data a.prep_22_10_20_5pm_21_jan_21;
 * data a.prep_22_10_20_5pm_10_jan_21;
 
 set y;
 
 data y; 
 
-  set a.prep_22_10_20_5pm_21_jan_21;
+  set a.prep_22_10_20_5pm_29_jan_21;
+* set a.prep_22_10_20_5pm_21_jan_21;
 * set a.prep_22_10_20_5pm_10_jan_21;
 
 
@@ -1616,7 +1620,8 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_prep_21_jan_21;
+  data a.wide_prep_29_jan_21;
+* data a.wide_prep_21_jan_21;
 * data a.wide_prep_10_jan_21; 
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
