@@ -652,7 +652,11 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
+<<<<<<< Updated upstream
 if run = 362302134  ;
+=======
+* if run = 362302134  ;
+>>>>>>> Stashed changes
 *    362302134    820655109      888424326       ;
 
 proc print; var cald s_alive_m ; run;
@@ -1151,6 +1155,10 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_restart; 					n_restart = s_restart * sf_2021;
 * n_art_initiation;				n_art_initiation = s_art_initiation * sf_2021;
 * n_hivge15;					n_hivge15 = s_hivge15 * sf_2021;
+<<<<<<< Updated upstream
+=======
+* n_onart;						n_onart = max(0,s_onart) * sf_2021;
+>>>>>>> Stashed changes
 
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2021;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2021;
@@ -1184,7 +1192,11 @@ run option cald
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
 ddaly daly incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m
 p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
+<<<<<<< Updated upstream
 p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate 
+=======
+p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate n_onart
+>>>>>>> Stashed changes
 
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1404,14 +1416,22 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_diag_m);   %var(v=prop_w_1549_sw);  %var(v=p_onart_diag_w); 	%var(v=p_onart_diag_m);   %var(v=p_vl1000);	 %var(v=p_onart_vl1000_w);	
 %var(v=p_onart_vl1000_m);   %var(v=p_onart_cd4_l500);  %var(v=p_mcirc_1549m);  %var(v=p_startedline2);  %var(v=prop_sw_hiv)  %var(v=p_newp_sw);  
+<<<<<<< Updated upstream
 %var(v=aids_death_rate);  
+=======
+%var(v=aids_death_rate);  %var(v=n_onart);
+>>>>>>> Stashed changes
 
 data   wide_outputs; merge 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
 incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m 
 
 p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
+<<<<<<< Updated upstream
 p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate 
+=======
+p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate  n_onart 
+>>>>>>> Stashed changes
 ;
 
 proc contents; run;
@@ -1518,7 +1538,11 @@ prevalence1549w_21_71_0 prevalence1549m_21_71_0  p_diag_m_21_71_0  prop_w_1549_s
 p_onart_diag_m_21_71_0  
 p_vl1000_21_71_0	p_onart_vl1000_w_21_71_0  p_onart_vl1000_m_21_71_0 p_onart_cd4_l500_21_71_0 p_mcirc_1549m_21_71_0  
 p_startedline2_21_71_0  prop_sw_hiv_21_71_0 
+<<<<<<< Updated upstream
 p_newp_sw_21_71_0  aids_death_rate_21_71_0  
+=======
+p_newp_sw_21_71_0  aids_death_rate_21_71_0  n_onart_21_71_0
+>>>>>>> Stashed changes
 n_alive_21_71_1 p_onart_artexp_21_71_1 n_art_initiation_21_71_1 n_restart_21_71_1 p_onart_vl1000_21_71_1 n_hivge15_21_71_1 
 death_rate_hiv_ge15_all_21_71_1 
 death_rate_hiv_ge15_21_71_1 ddaly_21_71_1 daly_21_71_1  incidence1549_21_71_1 incidence1549w_21_71_1 incidence1549m_21_71_1 
@@ -1527,7 +1551,11 @@ prevalence1549w_21_71_1 prevalence1549m_21_71_1  p_diag_m_21_71_1  prop_w_1549_s
 p_onart_diag_m_21_71_1  
 p_vl1000_21_71_1	p_onart_vl1000_w_21_71_1  p_onart_vl1000_m_21_71_1 p_onart_cd4_l500_21_71_1 p_mcirc_1549m_21_71_1  
 p_startedline2_21_71_1  prop_sw_hiv_21_71_1 
+<<<<<<< Updated upstream
 p_newp_sw_21_71_1  aids_death_rate_21_71_1  ;
+=======
+p_newp_sw_21_71_1  aids_death_rate_21_71_1  n_onart_21_71_1 ;
+>>>>>>> Stashed changes
 run;
 ods html close;
 
@@ -1568,6 +1596,7 @@ run;
 
 
 
+<<<<<<< Updated upstream
 
 
 ods html;
@@ -1595,3 +1624,5 @@ run;
 ods html close;
 
 
+=======
+>>>>>>> Stashed changes
