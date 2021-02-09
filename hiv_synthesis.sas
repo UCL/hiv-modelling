@@ -2116,7 +2116,6 @@ if lower_future_art_cov=1 then do;
 end;
 
 *higher future prep coverage;
-* dependent_on_time_step_length;
 if	higher_future_prep_cov=1 then do;
 
 * incr_adh_pattern_prep_2020;
@@ -2126,14 +2125,14 @@ if	higher_future_prep_cov=1 then do;
 							adhav_pr = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_2020;
+* inc_r_test_startprep_2020; * dependent_on_time_step_length;
 						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_2020 = 1; 
 							eff_rate_test_startprep = 0.9; 
 							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
 						end;		
 
-* incr_r_test_restartprep_2020;
+* incr_r_test_restartprep_2020; * dependent_on_time_step_length;
 						incr_r_test_restartprep_2020 = 0;  
 						if _u28 <= 0.95 then do; 
 							incr_r_test_restartprep_2020 = 1; 
@@ -2141,7 +2140,7 @@ if	higher_future_prep_cov=1 then do;
 							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
 						end;		
 
-* decr_r_choose_stop_prep_2020;
+* decr_r_choose_stop_prep_2020; * dependent_on_time_step_length;
 						decr_r_choose_stop_prep_2020 = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stop_prep_2020 = 1; 
@@ -2149,7 +2148,7 @@ if	higher_future_prep_cov=1 then do;
 							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
 						end;		
 
-* inc_p_prep_restart_choi_2020;
+* inc_p_prep_restart_choi_2020; * dependent_on_time_step_length;
 						inc_p_prep_restart_choi_2020 = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_restart_choi_2020 = 1; 
