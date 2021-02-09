@@ -1591,6 +1591,9 @@ p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_s
 run;
 ods html close;
 
+proc means n p50 p5 p95 min max;var m15r etc. across 4 periods in 2020;
+
+
 proc means n p50 p5 p95;
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
 p_newp_sw_20   n_tested_m_20
