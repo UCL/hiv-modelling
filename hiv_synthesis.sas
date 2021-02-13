@@ -715,8 +715,8 @@ p_neph_stops_after_ten = 0.1;
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
-* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then do; effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
-											if r >= 0.66 then effect_sw_prog_newp = 0.12; end;
+* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
+											if r >= 0.66 then effect_sw_prog_newp = 0.12; 
 
 * effect_sw_prog_6mtest;	e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
 										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;
@@ -14857,7 +14857,6 @@ cald = caldate_never_dot ;
 
 
 
-
 * procs;
 
 /*
@@ -17016,15 +17015,16 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*  
+
 
 data x; set cum_l1;
-* file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_base_21_1_21_&dataset_id";  
+
+file "/home/rmjxxx/Scratch/_output_base_12_02_21_&dataset_id";  
 
 put   
 
-*/
+
+/*  
 
   libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
@@ -17037,7 +17037,7 @@ keep
 
 
 
-
+*/
 /*general*/
 run   cald   option 
 
