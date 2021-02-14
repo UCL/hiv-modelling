@@ -387,7 +387,7 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide; var p_newp_this_per_prep_21_26_1  p_newp_this_per_prep_21_26_2 ;  
-where prep_strategy_21_26_2 = 11 ;
+* where prep_strategy_21_26_2 = 11 ;
 run; 
 ods html close;
 
