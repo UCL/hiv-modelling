@@ -7,10 +7,9 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 data d ;  
 
 * note this file tld_prep is used for prep also - we just delete the tld_prep option;
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_7_2_21_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_7_2_21";
 
 input 
-
 
 /*general*/
 run   cald   option 
@@ -650,9 +649,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 ; 
-
-
-proc freq; tables run; 
 
 proc sort data=d; by run cald option;run;
 
@@ -1372,10 +1368,13 @@ proc means noprint data=y; var &v; output out=y_68_1 mean= &v._68_1; by run ; wh
 proc means noprint data=y; var &v; output out=y_69_1 mean= &v._69_1; by run ; where 2069 <= cald < 2070 and option=1; 
 proc means noprint data=y; var &v; output out=y_70_1 mean= &v._70_1; by run ; where 2070 <= cald < 2071 and option=1; 
 
+proc means noprint data=y; var &v; output out=y_21_24_0 mean= &v._21_24_0; by run ; where 2021.5 <= cald < 2024.50 and option = 0;  
+proc means noprint data=y; var &v; output out=y_21_24_1 mean= &v._21_24_1; by run ; where 2021.5 <= cald < 2024.50 and option = 1;  
+
 proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
 proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
 
-data &v ; merge y_22p5_0 y_22p5_1 y_21_71_0 y_21_71_0 y_21_71_1
+data &v ; merge y_22p5_0 y_22p5_1 y_21_71_0 y_21_71_0 y_21_71_1 y_21_24_0 y_21_24_1
 y_89_0 y_90_0 y_91_0 y_92_0 y_93_0 y_94_0 y_95_0 y_96_0 y_97_0 y_98_0 y_99_0 y_00_0  
 y_01_0 y_02_0 y_03_0 y_04_0 y_05_0 y_06_0 y_07_0 y_08_0 y_09_0 y_10_0  
 y_11_0 y_12_0 y_13_0 y_14_0 y_15_0 y_16_0 y_17_0 y_18_0 y_19_0 y_20_0 
@@ -1383,12 +1382,12 @@ y_21_0 y_22_0 y_23_0 y_24_0 y_25_0 y_26_0 y_27_0 y_28_0 y_29_0 y_30_0
 y_31_0 y_32_0 y_33_0 y_34_0 y_35_0 y_36_0 y_37_0 y_38_0 y_39_0 y_40_0 
 y_41_0 y_42_0 y_43_0 y_44_0 y_45_0 y_46_0 y_47_0 y_48_0 y_49_0 y_50_0 
 y_51_0 y_52_0 y_53_0 y_54_0 y_55_0 y_56_0 y_57_0 y_58_0 y_59_0 y_60_0 
-y_61_0 y_62_0 y_63_0 y_64_0 y_65_0 y_66_0 y_67_0 y_68_0 y_69_0 y_70_0 y_71_0 y_72_0 
+y_61_0 y_62_0 y_63_0 y_64_0 y_65_0 y_66_0 y_67_0 y_68_0 y_69_0 y_70_0 
 y_21_1 y_22_1 y_23_1 y_24_1 y_25_1 y_26_1 y_27_1 y_28_1 y_29_1 y_30_1 
 y_31_1 y_32_1 y_33_1 y_34_1 y_35_1 y_36_1 y_37_1 y_38_1 y_39_1 y_40_1 
 y_41_1 y_42_1 y_43_1 y_44_1 y_45_1 y_46_1 y_47_1 y_48_1 y_49_1 y_50_1 
 y_51_1 y_52_1 y_53_1 y_54_1 y_55_1 y_56_1 y_57_1 y_58_1 y_59_1 y_60_1 
-y_61_1 y_62_1 y_63_1 y_64_1 y_65_1 y_66_1 y_67_1 y_68_1 y_69_1 y_70_1 y_71_1 y_72_1 ; 
+y_61_1 y_62_1 y_63_1 y_64_1 y_65_1 y_66_1 y_67_1 y_68_1 y_69_1 y_70_1  ; 
 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1411,7 +1410,6 @@ p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl10
 p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate  n_onart   n_death_hivrel    prevalence_vg1000
 ;
 
-proc contents; run;
 
 proc sort; by run; run;
 
@@ -1498,11 +1496,39 @@ proc means n median p5 p95 min max ;
 var	
 n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
 death_rate_hiv_ge15_21_0 ddaly_21_0 daly_21_0  incidence1549_21_0 incidence1549w_21_0 incidence1549m_21_0 prevalence1549_21_0 
-prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  
+prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  p_onart_artexp_21_0
 p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0 p_mcirc_1549m_21_0  p_startedline2_21_0  prop_sw_hiv_21_0 
 p_newp_sw_21_0  aids_death_rate_21_0  ;
+where p_onart_artexp_21_0 < 0.97;
 run;
 ods html close;
+
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
+n_alive_21_24_0 p_onart_artexp_21_24_0 n_art_initiation_21_24_0 n_restart_21_24_0 p_onart_vl1000_21_24_0 n_hivge15_21_24_0 
+death_rate_hiv_ge15_all_21_24_0 
+death_rate_hiv_ge15_21_24_0 ddaly_21_24_0 daly_21_24_0  incidence1549_21_24_0 incidence1549w_21_24_0 incidence1549m_21_24_0 
+prevalence1549_21_24_0 
+prevalence1549w_21_24_0 prevalence1549m_21_24_0  p_diag_m_21_24_0  prop_w_1549_sw_21_24_0 p_onart_diag_w_21_24_0 	
+p_onart_diag_m_21_24_0  
+p_vl1000_21_24_0	p_onart_vl1000_w_21_24_0  p_onart_vl1000_m_21_24_0 p_onart_cd4_l500_21_24_0 p_mcirc_1549m_21_24_0  
+p_startedline2_21_24_0  prop_sw_hiv_21_24_0 
+p_newp_sw_21_24_0  aids_death_rate_21_24_0  n_onart_21_24_0  n_death_hivrel_21_24_0    prevalence_vg1000_21_24_0
+n_alive_21_24_1 p_onart_artexp_21_24_1 n_art_initiation_21_24_1 n_restart_21_24_1 p_onart_vl1000_21_24_1 n_hivge15_21_24_1 
+death_rate_hiv_ge15_all_21_24_1 
+death_rate_hiv_ge15_21_24_1 ddaly_21_24_1 daly_21_24_1  incidence1549_21_24_1 incidence1549w_21_24_1 incidence1549m_21_24_1 
+prevalence1549_21_24_1 
+prevalence1549w_21_24_1 prevalence1549m_21_24_1  p_diag_m_21_24_1  prop_w_1549_sw_21_24_1 p_onart_diag_w_21_24_1 	
+p_onart_diag_m_21_24_1  
+p_vl1000_21_24_1	p_onart_vl1000_w_21_24_1  p_onart_vl1000_m_21_24_1 p_onart_cd4_l500_21_24_1 p_mcirc_1549m_21_24_1  
+p_startedline2_21_24_1  prop_sw_hiv_21_24_1 
+p_newp_sw_21_24_1  aids_death_rate_21_24_1  n_onart_21_24_1 n_death_hivrel_21_24_1  prevalence_vg1000_21_24_1;
+run;
+ods html close;
+
+
 
 ods html;
 proc means n median p5 p95 min max ;
@@ -1525,6 +1551,7 @@ p_onart_diag_m_21_71_1
 p_vl1000_21_71_1	p_onart_vl1000_w_21_71_1  p_onart_vl1000_m_21_71_1 p_onart_cd4_l500_21_71_1 p_mcirc_1549m_21_71_1  
 p_startedline2_21_71_1  prop_sw_hiv_21_71_1 
 p_newp_sw_21_71_1  aids_death_rate_21_71_1  n_onart_21_71_1 n_death_hivrel_21_71_1  prevalence_vg1000_21_71_1;
+where p_onart_artexp_21_0 < 0.97;
 run;
 ods html close;
 
