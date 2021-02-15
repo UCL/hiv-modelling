@@ -79,7 +79,11 @@ dcost_non_aids_pre_death_21_71_2 ;
 dtotcost_prep_21_26_1 = dcost_prep_21_26_1  + dcost_prep_visit_21_26_1 ;
 dtotcost_prep_21_26_2 = dcost_prep_21_26_2  + dcost_prep_visit_21_26_2 ;       
 
+dtotcost_prep_21_71_1 = dcost_prep_21_71_1  + dcost_prep_visit_21_71_1 ;
+dtotcost_prep_21_71_2 = dcost_prep_21_71_2  + dcost_prep_visit_21_71_2 ;       
+
 d_dtotcost_prep_21_26_2 = dtotcost_prep_21_26_2 - dtotcost_prep_21_26_1 ; 
+d_dtotcost_prep_21_71_2 = dtotcost_prep_21_71_2 - dtotcost_prep_21_71_1 ; 
 
 d_p_prep_newp_21_26_2  = p_prep_newp_21_26_2 - p_prep_newp_21_26_1;
 d_prop_1564m_onprep_21_26_2  = prop_1564m_onprep_21_26_2 - prop_1564m_onprep_21_26_1 ;
@@ -112,6 +116,7 @@ ndb_500_21_71_1 =  ddaly_all_21_71_1 + (dcost_21_71_1)/0.0005;
 
 ndb_100_21_71_2 =  ddaly_all_21_71_2 + (dcost_21_71_2)/0.0001;
 ndb_100_21_71_1 =  ddaly_all_21_71_1 + (dcost_21_71_1)/0.0001;
+
 
 * sensitivity analysis;  * TO COMMENT OUT ;
 * ndb_500_21_71_2 =  ddaly_all_21_71_2 + (dcost_21_71_2)/0.0001;
@@ -162,6 +167,7 @@ if 1.5 < incidence1549_20       then incidence1549_20_g = 5; if incidence1549_20
 ce_500_x = 1 - ce_500 ;
 ce_100_x = 1 - ce_100 ;
 
+cost_saving = 0;  if d_dcost_21_71_2 < 0 and d_ddaly_all_21_71_2 < 0 then cost_saving = 1;
 
 
 /*
@@ -431,6 +437,13 @@ proc means n mean  p5 p95 lclm uclm data=wide;  var prevalence_vg1000_21_71_1  p
 run; 
 ods html close;
 
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var p_prep_ever_21_26_1  p_prep_ever_21_26_2 p_prep_ever_21_71_1  p_prep_ever_21_71_2 ;  
+run; 
+ods html close;
+
+
+
 
 
 ods html;
@@ -537,6 +550,7 @@ ods html close;
 
 
 
+
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide;  
 var    d_ddaly_all_21_71_2  d_ndb_500_21_71_2  d_dcost_21_71_2  incidence1549_21_71_1 incidence1549_21_71_2 
@@ -583,11 +597,12 @@ dcost_condom_dn_21_71_1 dcost_condom_dn_21_71_2
 dcost_drug_level_test_21_71_1 dcost_drug_level_test_21_71_2  
 dcost_child_hiv_21_71_1 dcost_child_hiv_21_71_2
 dcost_non_aids_pre_death_21_71_1 dcost_non_aids_pre_death_21_71_2 
+dtotcost_prep_21_71_1 dtotcost_prep_21_71_2  d_dtotcost_prep_21_71_2 
 ;
 * where 0.00 <= incidence1549_20 < 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.05 ;
-  where prep_strategy_21_26_2  = 11 ;
+* where prep_strategy_21_26_2  = 11 ;
 run; 
 ods html close;
 
@@ -640,15 +655,14 @@ run;
 
 
 
-proc corr spearman; var p_newp_ge1_age1549_20 av_newp_ge1_non_sw_20 incidence1549_20 ; run; 
+proc corr spearman; var p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 incidence1549_21 ; run; 
 
 proc freq; tables icer_2; run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
-proc logistic data=wide; model ce_500 =  incidence1549_20 av_newp_ge1_non_sw_20 ; * av_newp_ge1_non_sw_20 ;
-*  p_newp_ge5_20 p_newp_ge1_age1549_20  p_ai_no_arv_c_rt65m_20  p_inf_newp_20  p_ai_no_arv_c_rt184m_20 av_newp_ge1_non_sw_20; 
-* prop_elig_on_prep_21_26_2 p_newp_this_per_prep_21_26_2 p_prep_adhg80_21_26_2 p_newp_prep_hivneg_21_26_2 ;
+proc logistic data=wide; model ce_500 =  incidence1549_21  av_newp_ge1_non_sw_21  ; 
+* where incidence1549_21 > 0.2;
 run;
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
@@ -785,17 +799,29 @@ proc means; var infections_averted_21_26  ; run;
 ods html;
 proc freq data=wide; tables ce_500_x / nocum norow binomial;
 exact binomial; 
-* where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
-* where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
+* where  0.12 <= p_newp_ge1_age1549_21 < 0.30  ;
+* where 0.00 <= p_newp_ge1_age1549_21 < 0.04 and 1.50 <= incidence1549_21 < 9.50 ;
 * where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-* where 0.20 <= incidence1549_21 and  prep_strategy_21_22_2 = 11;   ;
-* where 0.00 <= prevalence1549_20 < 0.03 ;
-* where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
-* where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
+* where 0.20 <= incidence1549_21 < 9.20 ;
+* where 0.20  <= prevalence1549_21 < 0.35 ;
+* where 0.15 <= p_newp_ge1_age1549_21 < 0.95 ; 
+* where 3.5 <= av_newp_ge1_non_sw_21 <  9.5 ;
+  where 0.20 <= incidence1549_21 and 0.0 <= av_newp_ge1_non_sw_21 < 1.7 ;
 * where rate_res_ten le 0.2;
 * where prep_strategy_21_22_2 = 11;
+* where 0.75 <= p_newp_prep_hivneg_21_26_2 < 1.05;
 run; 
 ods html close;
+
+
+proc print;  var  cost_saving ce_100 d_dcost_21_71_2 d_ddaly_all_21_71_2 ; run; 
+
+proc freq; tables cost_saving ; run;
+
+proc univariate; var incidence1549_21 ; where incidence1549_21 >= 1.5; run;
+proc univariate; var av_newp_ge1_non_sw_21 ; where av_newp_ge1_non_sw_21 >= 3.5; run;
+
+
 
 
 * --------------------------------------------------------------------------------------------------------------;
