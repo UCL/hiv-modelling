@@ -75,6 +75,12 @@ dcost_condom_dn_21_71_2  +
 dcost_child_hiv_21_71_2  +      
 dcost_non_aids_pre_death_21_71_2 ; 
 
+
+dtotcost_prep_21_26_1 = dcost_prep_21_26_1  + dcost_prep_visit_21_26_1 ;
+dtotcost_prep_21_26_2 = dcost_prep_21_26_2  + dcost_prep_visit_21_26_2 ;       
+
+d_dtotcost_prep_21_26_2 = dtotcost_prep_21_26_2 - dtotcost_prep_21_26_1 ; 
+
 d_p_prep_newp_21_26_2  = p_prep_newp_21_26_2 - p_prep_newp_21_26_1;
 d_prop_1564m_onprep_21_26_2  = prop_1564m_onprep_21_26_2 - prop_1564m_onprep_21_26_1 ;
 d_prop_1564w_onprep_21_26_2  = prop_1564w_onprep_21_26_2 - prop_1564w_onprep_21_26_1 ;
@@ -363,7 +369,7 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; 
-where prep_strategy_21_26_2 = 11 ; 
+* where prep_strategy_21_26_2 = 11 ; 
 ods html close;
 
 ods html;
@@ -380,8 +386,8 @@ proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_elig_past_5year_21_
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_mean_newp_ppers_prep_21_26_2  mean_newp_per_pers_prep_21_26_2  
-mean_newp_per_pers_prep_21_26_1; run; 
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_mean_newp_ppers_prep_21_26_2  mean_newp_ppers_prep_21_26_2  
+mean_newp_ppers_prep_21_26_1; run; 
 ods html close;
 
 
@@ -440,7 +446,6 @@ ods html close;
 
 ods html;
 proc means n mean median lclm uclm p5 p95 data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
-where prep_strategy_21_26_2 = 9;
 run; 
 ods html close;
 
@@ -495,7 +500,7 @@ ods htm close;
 proc univariate data=wide; var prop_elig_on_prep_21_26_2  n_prep_21_71_2   p_newp_ge1_21_71_2; run;
 
 ods html;
-proc means data=wide; var    
+proc means n mean lclm uclm p5 p95 data=wide;  var 
 d_ddaly_all_21_26_2  
 d_ndb_500_21_26_2  
 dcost_21_26_1 dcost_21_26_2 
@@ -523,8 +528,11 @@ p_prep_ever_21_26_1 p_prep_ever_21_26_2
 p_hiv1_prep_21_26_1 p_hiv1_prep_21_26_2
 p_k65m_21_26_1 p_k65m_21_26_2
 p_m184m_21_26_1 p_m184m_21_26_2
+dtotcost_prep_21_26_1 dtotcost_prep_21_26_2  d_dtotcost_prep_21_26_2 
 ;
 run; 
+
+
 ods html close;
 
 
@@ -764,11 +772,10 @@ proc corr; var p_newp_ge1_age1549_20 incidence1549_20 prevalence1549_20 ; run;
 
 proc freq; tables prop_1564_hivneg_onprep_21_26_2 ; run;
 
-proc means median data=wide; var cost_per_infection_averted_21_26  ; where infections_averted_21_26 > 0 ;
+proc means n mean median data=wide; var cost_per_infection_averted_21_26  ; where infections_averted_21_26 > 0 ;
 run;
  
-proc means data=wide; var cost_per_infection_averted_21_71  ; where infections_averted_21_71 > 0 ;
-* and 1.50 <= incidence1549_20 < 5.50 ;
+proc means n mean median data=wide; var cost_per_infection_averted_21_71  ; where infections_averted_21_71 > 0 ;
 run;
  
 proc means; var infections_averted_21_26  ; run;
@@ -781,7 +788,7 @@ exact binomial;
 * where  0.12 <= p_newp_ge1_age1549_20 < 0.30  ;
 * where 0.00 <= p_newp_ge1_age1549_20 < 0.04 and 1.50 <= incidence1549_20 < 9.50 ;
 * where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-  where 0.20 <= incidence1549_21 and  prep_strategy_21_22_2 = 11;   ;
+* where 0.20 <= incidence1549_21 and  prep_strategy_21_22_2 = 11;   ;
 * where 0.00 <= prevalence1549_20 < 0.03 ;
 * where 0.15 <= p_newp_ge1_age1549_20 < 0.95 ; 
 * where 4.5 <= av_newp_ge1_non_sw_20 <  6.0 ;
