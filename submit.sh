@@ -21,12 +21,13 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir = "${HOME}/Scratch/$combinedsas_$tmpfiles"
+finaloutdir = "${HOME}/Scratch/${combinedsas}_${tmpfiles}"
 
 echo "===== JOB SUMMARY ======="
 echo "directory of input files: $inputdir";
 echo "output directory: $finaloutdir";
 echo "final output SAS filename: $combinedsas";
+echo "tmp output file names start with: $tmpfiles"
 echo "runs: $runs";
 echo "jobname for model runs: $jobname";
 echo "clock is set to: $clock";
