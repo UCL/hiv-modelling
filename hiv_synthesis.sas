@@ -1968,7 +1968,7 @@ if caldate{t} = 2017.25 then do;
 prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
-prep_tm3=prep_tm2; prep_tm2=prep_tm1; prep_tm1=prep;    
+prep_tm2=prep_tm1; prep_tm1=prep;
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
 
@@ -1981,8 +1981,9 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 
 
 * prep scale-up over 4 years;
-prob_prep_b = pr_prep_b;
-if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );   
+if caldate{t} < date_prep_intro then prob_prep_b = 0;
+else if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
+else prob_prep_b = pr_prep_b;
 
 * MONITORING AND ART STRATEGIES;
 
