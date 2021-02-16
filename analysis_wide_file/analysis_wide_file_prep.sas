@@ -29,7 +29,7 @@ n_sw_1564_19 = round(n_sw_1564_19, 1);
 * for prep analysis (comment out code for other analyses);
 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
-xdcost_21_71_1 =      
+ dcost_21_71_1 =      
 dart_cost_y_21_71_1 +       
 dcost_prep_21_71_1  +      
 dcost_prep_visit_21_71_1 + 
@@ -54,9 +54,9 @@ dcost_non_aids_pre_death_21_71_1 ;
 be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) ; 
 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
-xdcost_21_71_2           =      
+ dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1 *  60/60) +
+(dcost_prep_21_71_2  * 1 * 20  / 60 ) +
 (dcost_prep_visit_21_71_2 * 1)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2     +    
@@ -796,22 +796,13 @@ proc means; var infections_averted_21_26  ; run;
 
 
 
-ods html;
-proc freq data=wide; tables ce_500_x / nocum norow binomial;
-exact binomial; 
-* where  0.12 <= p_newp_ge1_age1549_21 < 0.30  ;
-* where 0.00 <= p_newp_ge1_age1549_21 < 0.04 and 1.50 <= incidence1549_21 < 9.50 ;
-* where  prop_1564_hivneg_onprep_21_26_2  >=  0.043 ;
-* where 0.20 <= incidence1549_21 < 9.20 ;
-* where 0.20  <= prevalence1549_21 < 0.35 ;
-* where 0.15 <= p_newp_ge1_age1549_21 < 0.95 ; 
-* where 3.5 <= av_newp_ge1_non_sw_21 <  9.5 ;
-  where 0.20 <= incidence1549_21 and 0.0 <= av_newp_ge1_non_sw_21 < 1.7 ;
-* where rate_res_ten le 0.2;
-* where prep_strategy_21_22_2 = 11;
-* where 0.75 <= p_newp_prep_hivneg_21_26_2 < 1.05;
+  ods html;
+proc freq data=wide; * tables ce_500_x / nocum norow binomial; * exact binomial; 
+                       tables ce_500_x ; 
+  where 0.2 <= incidence1549_21 < 0.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
 run; 
-ods html close;
+  ods html close;
+
 
 
 proc print;  var  cost_saving ce_100 d_dcost_21_71_2 d_ddaly_all_21_71_2 ; run; 

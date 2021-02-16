@@ -1263,16 +1263,14 @@ prop_onprep_newpge2 prop_onprep_newpge3
 proc sort data=y;by run option;run;
 
   data a.prep_22_10_20_5pm_29_jan_21;
-* data a.prep_22_10_20_5pm_21_jan_21;
-* data a.prep_22_10_20_5pm_10_jan_21;
+
 
 set y;
 
 data y; 
 
   set a.prep_22_10_20_5pm_29_jan_21;
-* set a.prep_22_10_20_5pm_21_jan_21;
-* set a.prep_22_10_20_5pm_10_jan_21;
+
 
 
   options nomprint;
