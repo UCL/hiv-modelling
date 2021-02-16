@@ -21,7 +21,7 @@ do
         t) tmpfiles=${OPTARG};;
     esac
 done
-finaloutdir = "${HOME}/Scratch/${combinedsas}_${tmpfiles}"
+finaloutdir="${HOME}/Scratch/${combinedsas}_${tmpfiles}"
 
 echo "===== JOB SUMMARY ======="
 echo "directory of input files: $inputdir";
