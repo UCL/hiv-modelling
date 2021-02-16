@@ -159,8 +159,9 @@ to do before starting testing in preparation for runs:
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\';
 * libname a '/home/cceapsc/Scratch/';
-%let outputdir = &sysparm;
+%let outputdir = %scan(&sysparm,1," ");
 libname a "&outputdir/";
+%let tmpfilename = %scan(&sysparm,2," ");
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -16208,7 +16209,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
-data a.out_&dataset_id(compress=binary); set cum_l1;
+data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 /**
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
 

@@ -1,21 +1,38 @@
 #!/bin/bash -l
-input="${HOME}"
-scratch="${HOME}/Scratch"
-combined="combined_data"
+inputdir="${HOME}"
+tmpfiles="out"
+combinedsas="combined_data"
 runs="100"
+jobname="hivmodel"
+model="hiv_synthesis.sas"
+clock="h_rt=08:00:00"
+account="HIVSynthMod"
 
-while getopts i:s:c:r: flag
+while getopts a:i:o:r:j:m:c:t: flag
 do
     case "${flag}" in
-        i) input=${OPTARG};;
-        s) scratch=${OPTARG};;
-        c) combined=${OPTARG};;
+        a) account=${OPTARG};;
+        i) inputdir=${OPTARG};;
+        o) combinedsas=${OPTARG};;
         r) runs=${OPTARG};;
+        j) jobname=${OPTARG};;
+        m) model=${OPTARG};;
+        c) clock=${OPTARG};;
+        t) tmpfiles=${OPTARG};;
     esac
 done
-echo "home directory: $input";
-echo "output directory: $scratch";
-echo "combined SAS filename: $combined";
+finaloutdir = "${HOME}/Scratch/$combinedsas_$tmpfiles"
+
+echo "===== JOB SUMMARY ======="
+echo "directory of input files: $inputdir";
+echo "output directory: $finaloutdir";
+echo "final output SAS filename: $combinedsas";
 echo "runs: $runs";
-qsub -N hivmodel -t 1-$runs -wd $scratch -v SASINPUT=$input,SASOUTPUT=$scratch,SASRESULT=$combined $input/testmodel.sh
-qsub -hold_jid hivmodel -N concatenate -v SASINPUT=$input,SASOUTPUT=$scratch,SASRESULT=$combined $input/concatenate.sh 
+echo "jobname for model runs: $jobname";
+echo "clock is set to: $clock";
+echo "using SAS HIV model file: $model";
+echo "job is run on account: $account";
+#qsub -N $jobname -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
+#qsub -hold_jid $jobname -N concatenate -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/concatenate.sh 
+
+
