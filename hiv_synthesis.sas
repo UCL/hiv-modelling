@@ -407,7 +407,7 @@ hard_reach=0; * this is effectively reluctance to test - with effects on testing
 * PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
 annual_testing_prep=0.25; *frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
 hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen);
-eff_adh_prep=0.95; *PrEP effectiveness with 100% adherence ; 
+prep_efficacy=0.95; *PrEP effectiveness with 100% adherence ;
 factor_prep_adh_older=0.5; * factor determining how much higher adh to prep is in people age > 25 than < 25; 
 rate_test_onprep=1.00; *Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
 * dependent_on_time_step_length ;
@@ -417,7 +417,6 @@ prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probabi
 * dependent_on_time_step_length ;
 
 prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
-tot_yrs_prep=0;
 prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
 * dependent_on_time_step_length ; 
 prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
@@ -914,7 +913,7 @@ cost_child_hiv_a = 0.030;
 cost_child_hiv_mo_art_a = 0.030; 
 prep_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 prep_drug_cost_tld = (0.065 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-cost_prep_clinic = 0.010; *Clinic/Programme costs relating to PrEP use in HIV-negative individuals; * changed from 0.10 to 0.30 after input from gesine;
+cost_prep_clinic = 0.010; *Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
 cost_prep_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
  
 * not * dependent_on_time_step_length ;
@@ -1817,6 +1816,7 @@ hiv=0;
 nip=0;
 pcp_p  = 0;
 prep  = 0;
+tot_yrs_prep = 0;
 tcur=.;
 dead_tm1=0;
 
@@ -1961,10 +1961,11 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 * PREP introduction in fsw/agyw 2017; 
 
+* PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
 if caldate{t} = 2017.25 then do;
-prep_strategy=3; sens=0; date_prep_intro=2017.25; annual_testing_prep=0.25; hivtest_type=3; 
+prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
 prep_tm3=prep_tm2; prep_tm2=prep_tm1; prep_tm1=prep;    
@@ -2124,14 +2125,14 @@ if	higher_future_prep_cov=1 then do;
 							adhav_pr = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_2020;
+* inc_r_test_startprep_2020; * dependent_on_time_step_length;
 						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_2020 = 1; 
 							eff_rate_test_startprep = 0.9; 
 							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
 						end;		
 
-* incr_r_test_restartprep_2020;
+* incr_r_test_restartprep_2020; * dependent_on_time_step_length;
 						incr_r_test_restartprep_2020 = 0;  
 						if _u28 <= 0.95 then do; 
 							incr_r_test_restartprep_2020 = 1; 
@@ -2139,7 +2140,7 @@ if	higher_future_prep_cov=1 then do;
 							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
 						end;		
 
-* decr_r_choose_stop_prep_2020;
+* decr_r_choose_stop_prep_2020; * dependent_on_time_step_length;
 						decr_r_choose_stop_prep_2020 = 0;  
 						if _u30 < 0.95 then do; 
 							decr_r_choose_stop_prep_2020 = 1; 
@@ -2147,7 +2148,7 @@ if	higher_future_prep_cov=1 then do;
 							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
 						end;		
 
-* inc_p_prep_restart_choi_2020;
+* inc_p_prep_restart_choi_2020; * dependent_on_time_step_length;
 						inc_p_prep_restart_choi_2020 = 0;  
 						if _u32 < 0.95 then do; 
 							inc_p_prep_restart_choi_2020 = 1; 
@@ -4309,7 +4310,7 @@ tot_yrs_prep = tot_yrs_prep + (1/12);
 
 
 
-prep_effectiveness_non_res_v = adh* eff_adh_prep ;
+prep_effectiveness_non_res_v = adh* prep_efficacy ;
 if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1;
 * dependent_on_time_step_length ;  
 end;
@@ -5157,15 +5158,15 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
 		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
 		if prep   =1 then do; 
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_nip = risk_nip * (1-(adh * 0.5 * eff_adh_prep));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_efficacy));
+			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_efficacy));
 
 		end;
 
@@ -5324,15 +5325,15 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
 		if prep   =1 then do; 
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * 0.50 * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * eff_adh_prep));
-			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * 0.5 * eff_adh_prep));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * 0.50 * prep_efficacy));
+			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * prep_efficacy));
+			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * 0.5 * prep_efficacy));
 
 		end;
 
@@ -14921,7 +14922,7 @@ proc print; var serial_no caldate&j
 prep prep_strategy prep_elig  prep_ever  dt_prep_s  dt_prep_e  continuous_prep_use
 adh_pattern_prep rate_test_startprep rate_test_restartprep rate_choose_stop_prep prob_prep_restart_choice prepuptake_sw  prepuptake_pop 
 eff_rate_test_startprep eff_rate_test_restartprep eff_rate_choose_stop_prep eff_prob_prep_restart_choice prepuptake_sw prepuptake_pop 
-prepuptake_pop annual_testing_prep hivtest_type eff_adh_prep factor_prep_adh_older rate_test_onprep pr_prep_b prob_prep_restart prob_prep_visit_counsel
+prepuptake_pop annual_testing_prep hivtest_type prep_efficacy factor_prep_adh_older rate_test_onprep pr_prep_b prob_prep_restart prob_prep_visit_counsel
 tot_yrs_prep prob_prep_restart_choice prepuptake_sw prepuptake_pop pop_wide_tld_prob_egfr;
 where age ge 15 and hiv ne 1;
 run;
