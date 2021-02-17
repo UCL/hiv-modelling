@@ -4102,15 +4102,6 @@ end;
 cost_test=0; 
 
 
-* short term migration - exp_setting_lower_p_vl1000; * mar19;
-
-exp_set_lower_p_v1000_in_period = 0;
-if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-r=uniform(0);  * dependent_on_time_step_length;
-if gender = 1 and r < rate_exp_set_lower_p_vl1000 then exp_set_lower_p_v1000_in_period = 1;
-if gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2 then exp_set_lower_p_v1000_in_period = 1;
-end;
-
 
 * PREP INITIATION AND CONTINUATION;
 
@@ -5002,6 +4993,15 @@ if gender=2 then do; u1=t_prop_m_vlg1; u2=t_prop_m_vlg2; u3=t_prop_m_vlg3; u4=t_
 if gender=1 then do; u1=t_prop_w_vlg1; u2=t_prop_w_vlg2; u3=t_prop_w_vlg3; u4=t_prop_w_vlg4; u5=t_prop_w_vlg5; u6=t_prop_w_vlg6; end;
 end;
 
+
+* short term migration - exp_setting_lower_p_vl1000; * mar19;
+
+exp_set_lower_p_v1000_in_period = 0;
+if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
+r=uniform(0);  * dependent_on_time_step_length;
+if gender = 1 and r < rate_exp_set_lower_p_vl1000 then exp_set_lower_p_v1000_in_period = 1;
+if gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2 then exp_set_lower_p_v1000_in_period = 1;
+end;
 
 * mar19 if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
 if exp_set_lower_p_v1000_in_period = 1 then do;   
