@@ -4111,7 +4111,7 @@ cost_test=0;
 prep=0; pop_wide_tld_prep=0; prep_falseneg=0; 
 
 
-if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do; 
+if prep_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_covid_disrup ne 1 then do; 
 		ever_prep_covid_disrup=1;
 		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
 		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
@@ -4119,6 +4119,7 @@ if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do;
 		eff_prob_prep_restart_choice = 0 ;
 end;
 if prep_disrup_covid ne 1 and ever_prep_covid_disrup=1 then do; 
+		ever_prep_covid_disrup = 0;
 		eff_rate_choose_stop_prep = pre_covid_rate_choose_stop_prep ;
 		eff_prob_prep_restart_choice = pre_covid_pr_prep_restart_choice ;
 end;
