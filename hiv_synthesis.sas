@@ -1982,7 +1982,7 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 
 * prep scale-up over 4 years;
 if caldate{t} < date_prep_intro then prob_prep_b = 0;
-else if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
+else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
 else prob_prep_b = pr_prep_b;
 
 * MONITORING AND ART STRATEGIES;
@@ -4119,7 +4119,6 @@ if prep_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_covid_disru
 		eff_prob_prep_restart_choice = 0 ;
 end;
 if prep_disrup_covid ne 1 and ever_prep_covid_disrup=1 then do; 
-		ever_prep_covid_disrup = 0;
 		eff_rate_choose_stop_prep = pre_covid_rate_choose_stop_prep ;
 		eff_prob_prep_restart_choice = pre_covid_pr_prep_restart_choice ;
 end;
