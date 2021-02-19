@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_16_02_21_11am";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_16_02_21_11am_a";
 
 input 
 
@@ -1514,10 +1514,10 @@ t_sw_newp;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_16_02_21_11am; set y;run;
+data a.fsw_16_02_21_11am_a; set y;run;
 
 
-data y; set a.fsw_16_02_21_11am; run;
+data y; set a.fsw_16_02_21_11am_a; run;
 
   options nomprint;
   option nospool;
@@ -1858,7 +1858,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_fsw_16_02_21_11am ;
+  data a.wide_fsw_16_02_21_11am_a ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
