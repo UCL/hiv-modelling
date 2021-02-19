@@ -12620,7 +12620,7 @@ infected_newp_m=0; if gender=1 and infected_newp=1 then infected_newp_m=infected
 if 15 le age lt 50 then tested1549_=tested;
 if gender=1 and 15 le age lt 50 then tested1549m=tested;
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
-if sw=1 then tested_sw=tested;
+tested_sw=.; if sw=1 then tested_sw=tested;
 
 ***Access to being  tested given some are hard to reach;
 acc_test=0;acc_test_1524_=0;acc_test_2549_=0;acc_test_5064_=0;acc_test_sw=0;
