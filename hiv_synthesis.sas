@@ -1968,7 +1968,7 @@ if caldate{t} = 2017.25 then do;
 prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
-prep_tm3=prep_tm2; prep_tm2=prep_tm1; prep_tm1=prep;    
+prep_tm2=prep_tm1; prep_tm1=prep;
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
 
@@ -1981,8 +1981,9 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 
 
 * prep scale-up over 4 years;
-prob_prep_b = pr_prep_b;
-if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );   
+if caldate{t} < date_prep_intro then prob_prep_b = 0;
+else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
+else prob_prep_b = pr_prep_b;
 
 * MONITORING AND ART STRATEGIES;
 
@@ -4100,15 +4101,6 @@ end;
 cost_test=0; 
 
 
-* short term migration - exp_setting_lower_p_vl1000; * mar19;
-
-exp_set_lower_p_v1000_in_period = 0;
-if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-r=uniform(0);  * dependent_on_time_step_length;
-if gender = 1 and r < rate_exp_set_lower_p_vl1000 then exp_set_lower_p_v1000_in_period = 1;
-if gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2 then exp_set_lower_p_v1000_in_period = 1;
-end;
-
 
 * PREP INITIATION AND CONTINUATION;
 
@@ -4118,7 +4110,7 @@ end;
 prep=0; pop_wide_tld_prep=0; prep_falseneg=0; 
 
 
-if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do; 
+if prep_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_covid_disrup ne 1 then do; 
 		ever_prep_covid_disrup=1;
 		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
 		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
@@ -5001,9 +4993,14 @@ if gender=1 then do; u1=t_prop_w_vlg1; u2=t_prop_w_vlg2; u3=t_prop_w_vlg3; u4=t_
 end;
 
 
-* mar19 if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
-if exp_set_lower_p_v1000_in_period = 1 then do;   
-u1 = u1 / external_exp_factor; 
+* short term migration - exp_setting_lower_p_vl1000; * mar19;
+
+* if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
+if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
+	r=uniform(0);  * dependent_on_time_step_length;
+	if (gender = 1 and r < rate_exp_set_lower_p_vl1000) or (gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2) then do;
+		u1 = u1 / external_exp_factor;
+	end;
 end;
 
 
