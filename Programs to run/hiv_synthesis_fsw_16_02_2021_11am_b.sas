@@ -4147,6 +4147,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 end;
 
+tested_sw=0; if sw=1 and tested=1 then tested_sw=1;
 
 cost_test=0; 
 

@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_16_02_21_11am_a";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_16_02_21_11am_b";
 
 input 
 
@@ -903,6 +903,8 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
 * n_tested_m;					n_tested_m = s_tested_m * sf_2020 * 4;
 * n_tested;						n_tested = s_tested * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw = s_tested_as_sw * sf_2020 * 4;
+
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -1510,14 +1512,14 @@ n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549
 n_hiv8084w  n_hiv85plw
 n_onart n_diag n_start_line2 n_vl_test_done
 n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549 d_n_new_inf1549 d_n_infection
-t_sw_newp;
+t_sw_newp  n_tested_sw;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_16_02_21_11am_a; set y;run;
+data a.fsw_16_02_21_11am_b; set y;run;
 
 
-data y; set a.fsw_16_02_21_11am_a; run;
+data y; set a.fsw_16_02_21_11am_b; run;
 
   options nomprint;
   option nospool;
@@ -1607,7 +1609,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_py);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_py);%var (v=n_vmmc1549_3m);%var (v=n_new_vmmc1549_py);%var (v=n_new_vmmc1049_py);
-%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp); %var(v=d_n_new_inf1549);%var(v=d_n_infection);
+%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp); %var(v=d_n_new_inf1549);%var(v=d_n_infection);%var(v=n_tested_sw);
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -1662,7 +1664,7 @@ n_prep  n_covid  n_death_covid  n_death  n_death_hivrel
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m
 n_mcirc1549_py n_mcirc1549_3m n_vmmc1549_py  n_vmmc1549_3m  n_new_vmmc1549_py  n_new_vmmc1049_py
 n_new_inf1549m n_new_inf1549 d_n_new_inf1549 d_n_infection
-t_sw_newp
+t_sw_newp n_tested_sw
 ;
 
 proc contents; run;
@@ -1858,7 +1860,7 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data a.wide_fsw_16_02_21_11am_a ;
+  data a.wide_fsw_16_02_21_11am_b ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
