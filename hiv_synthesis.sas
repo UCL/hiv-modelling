@@ -419,7 +419,7 @@ prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probabi
 prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
 prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
 * dependent_on_time_step_length ; 
-prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
+prepuptake_sw=0.20; *Probability of PrEP uptake if eligible for female sex workers;
 prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
 pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 * dependent_on_time_step_length ;
