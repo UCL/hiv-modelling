@@ -1150,7 +1150,7 @@ n_new_inf1549 = s_primary1549 * sf_2021 * 4;
 n_infection  = s_primary     * sf_2021 * 4;
 
 
-keep run option cald  ddaly_all  dcost ;
+keep run option cald  ddaly_all  dcost  incidence1549  av_newp_ge1_non_sw ;
 
 
 proc sort data=y;by run option;run;
@@ -1209,10 +1209,10 @@ data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
-%var(v=ddaly_all);  %var(v=dcost); 
+%var(v=ddaly_all);  %var(v=dcost);  %var(v=cost);  %var(v=incidence1549);  %var(v=av_newp_ge1_non_sw);
 
 data   wide_outputs; merge 
-ddaly_all  dcost cost ;
+ddaly_all  dcost cost incidence1549  av_newp_ge1_non_sw;
 
 
 proc sort; by run; run;
