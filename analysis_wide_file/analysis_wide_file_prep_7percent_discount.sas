@@ -41,7 +41,7 @@ ce_500_x = 1 - ce_500 ;
 
   ods html;
 proc freq data=wide;  tables ce_500_x ; 
-  where 0.2 <= incidence1549_21 < 0.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
+* where 0.2 <= incidence1549_21 < 0.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
 run; 
   ods html close;
 
