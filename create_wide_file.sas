@@ -1,8 +1,5 @@
 * options user="/folders/myfolders/";
 
-* libname a "/folders/myfolders/hiv-modelling/output/";
-* dm 'log;clear;output;clear;';
-* libname a 'N:\SAS\hiv-modelling';
 /**
 uncomment the following two lines if using CSV import/export
 */
