@@ -56,7 +56,7 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1 * 20  / 60 ) +
+(dcost_prep_21_71_2  * 1 * 60  / 60 ) +
 (dcost_prep_visit_21_71_2 * 1)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2     +    

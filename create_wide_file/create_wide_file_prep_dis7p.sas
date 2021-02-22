@@ -808,6 +808,8 @@ cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
 
+  
+
 * ================================================================================= ;
 
 * derived var cald iables relating to population, not only those with hiv ;
@@ -1150,7 +1152,27 @@ n_new_inf1549 = s_primary1549 * sf_2021 * 4;
 n_infection  = s_primary     * sf_2021 * 4;
 
 
-keep run option cald  ddaly_all  dcost  incidence1549  av_newp_ge1_non_sw ;
+keep run option cald  ddaly_all  dcost  incidence1549  av_newp_ge1_non_sw 
+dart_cost_y
+dcost_prep
+dcost_prep_visit  
+dadc_cost         
+dcd4_cost         
+dvl_cost          
+dvis_cost    
+dwho3_cost        
+dcot_cost          
+dtb_cost          
+dres_cost         
+dtest_cost        
+d_t_adh_int_cost   
+dswitchline_cost   
+dcost_drug_level_test    
+dcost_circ             
+dcost_condom_dn        
+dcost_child_hiv        
+dcost_non_aids_pre_death 
+;
 
 
 proc sort data=y;by run option;run;
@@ -1210,9 +1232,49 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 %var(v=ddaly_all);  %var(v=dcost);  %var(v=cost);  %var(v=incidence1549);  %var(v=av_newp_ge1_non_sw);
+%var(v=dart_cost_y);
+%var(v=dcost_prep);
+%var(v=dcost_prep_visit);
+%var(v=dadc_cost);
+%var(v=dcd4_cost);
+%var(v=dvl_cost);
+%var(v=dvis_cost);
+%var(v=dwho3_cost);
+%var(v=dcot_cost);
+%var(v=dtb_cost);
+%var(v=dres_cost);
+%var(v=dtest_cost);
+%var(v=d_t_adh_int_cost);
+%var(v=dswitchline_cost);
+%var(v=dcost_drug_level_test);
+%var(v=dcost_circ);
+%var(v=dcost_condom_dn);
+%var(v=dcost_child_hiv);
+%var(v=dcost_non_aids_pre_death);
+
 
 data   wide_outputs; merge 
-ddaly_all  dcost cost incidence1549  av_newp_ge1_non_sw;
+ddaly_all  dcost cost incidence1549  av_newp_ge1_non_sw
+dart_cost_y
+dcost_prep
+dcost_prep_visit  
+dadc_cost         
+dcd4_cost         
+dvl_cost          
+dvis_cost    
+dwho3_cost        
+dcot_cost          
+dtb_cost          
+dres_cost         
+dtest_cost        
+d_t_adh_int_cost   
+dswitchline_cost   
+dcost_drug_level_test    
+dcost_circ             
+dcost_condom_dn        
+dcost_child_hiv        
+dcost_non_aids_pre_death 
+;
 
 
 proc sort; by run; run;
