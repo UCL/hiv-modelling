@@ -419,7 +419,7 @@ prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probabi
 prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
 prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
 * dependent_on_time_step_length ; 
-prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
+prepuptake_sw=0.20; *Probability of PrEP uptake if eligible for female sex workers;
 prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
 pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 * dependent_on_time_step_length ;
@@ -713,6 +713,7 @@ p_neph_stops_after_ten = 0.1;
 
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+
 /*
 * effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
 											if r >= 0.66 then effect_sw_prog_newp = 0.12; 
@@ -725,8 +726,7 @@ p_neph_stops_after_ten = 0.1;
 										  if e >= 0.66 then effect_sw_prog_adh=1;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
-* effect_sw_prog_prep;		e=uniform(0); if e < 0.33 then effect_sw_prog_prep=0.60; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.75;
-										  if e >= 0.66 then effect_sw_prog_prep=0.90;
+* effect_sw_prog_prep;       e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.80;
 */
 
 * effect_sw_prog_newp;        e=uniform(0); if e < 0.50 then effect_sw_prog_newp = 0.95; if 0.50 <= e then effect_sw_prog_newp = 0.8;
@@ -741,7 +741,6 @@ p_neph_stops_after_ten = 0.1;
                                                               if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
 * effect_sw_prog_prep;        e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.80;
                                                               
-
 
 * tb_base_prob_diag_l;		e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
 										  if e >= 0.666 then tb_base_prob_diag_l=0.75;
@@ -781,7 +780,7 @@ p_neph_stops_after_ten = 0.1;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
 
-* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.5;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.80;
+* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.2;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.5;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
@@ -1983,7 +1982,7 @@ if caldate{t} = 2017.25 then do;
 prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
-prep_tm3=prep_tm2; prep_tm2=prep_tm1; prep_tm1=prep;    
+prep_tm2=prep_tm1; prep_tm1=prep;
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
 
@@ -1996,8 +1995,9 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 
 
 * prep scale-up over 4 years;
-prob_prep_b = pr_prep_b;
-if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );   
+if caldate{t} < date_prep_intro then prob_prep_b = 0;
+else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
+else prob_prep_b = pr_prep_b;
 
 * MONITORING AND ART STRATEGIES;
 
@@ -2345,7 +2345,6 @@ all art stopped (no_art_disrup_covid)
 ;
 
 if caldate{t} ge 2019.5 then reg_option = 120;
-
 
 
 
@@ -3610,11 +3609,11 @@ end;
 if sw=1 and newp ge 1 then do;
 u=uniform(0); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
-/*
+
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
 	u=uniform(0); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
-*/
+
 
 
 * Reducing newp by 50% if condom incr =1;
@@ -4153,15 +4152,6 @@ end;
 cost_test=0; 
 
 
-* short term migration - exp_setting_lower_p_vl1000; * mar19;
-
-exp_set_lower_p_v1000_in_period = 0;
-if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-r=uniform(0);  * dependent_on_time_step_length;
-if gender = 1 and r < rate_exp_set_lower_p_vl1000 then exp_set_lower_p_v1000_in_period = 1;
-if gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2 then exp_set_lower_p_v1000_in_period = 1;
-end;
-
 
 * PREP INITIATION AND CONTINUATION;
 
@@ -4171,7 +4161,7 @@ end;
 prep=0; pop_wide_tld_prep=0; prep_falseneg=0; 
 
 
-if prep_disrup_covid = 1 and covid_disrup_affected = 1 then do; 
+if prep_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_covid_disrup ne 1 then do; 
 		ever_prep_covid_disrup=1;
 		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
 		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
@@ -5054,9 +5044,14 @@ if gender=1 then do; u1=t_prop_w_vlg1; u2=t_prop_w_vlg2; u3=t_prop_w_vlg3; u4=t_
 end;
 
 
-* mar19 if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
-if exp_set_lower_p_v1000_in_period = 1 then do;   
-u1 = u1 / external_exp_factor; 
+* short term migration - exp_setting_lower_p_vl1000; * mar19;
+
+* if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
+if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
+	r=uniform(0);  * dependent_on_time_step_length;
+	if (gender = 1 and r < rate_exp_set_lower_p_vl1000) or (gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2) then do;
+		u1 = u1 / external_exp_factor;
+	end;
 end;
 
 
@@ -12673,7 +12668,7 @@ infected_newp_m=0; if gender=1 and infected_newp=1 then infected_newp_m=infected
 if 15 le age lt 50 then tested1549_=tested;
 if gender=1 and 15 le age lt 50 then tested1549m=tested;
 if gender=2 and 15 le age lt 50 then tested1549w=tested;
-if sw=1 then tested_sw=tested;
+tested_sw=.; if sw=1 then tested_sw=tested;
 
 ***Access to being  tested given some are hard to reach;
 acc_test=0;acc_test_1524_=0;acc_test_2549_=0;acc_test_5064_=0;acc_test_sw=0;
@@ -14382,7 +14377,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_tested_4p_m4049_ + tested_4p_m4049_ ; s_tested_4p_m5064_ + tested_4p_m5064_ ; s_tested_4p_w1549_ + tested_4p_w1549_ ; 
 	s_tested_4p_w1519_ + tested_4p_w1519_ ; s_tested_4p_w2024_ + tested_4p_w2024_ ; s_tested_4p_w2529_ + tested_4p_w2529_ ;
 	s_tested_4p_w3039_ + tested_4p_w3039_ ; s_tested_4p_w4049_ + tested_4p_w4049_ ; s_tested_4p_w5064_ + tested_4p_w5064_ ;
- 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw
+ 	s_tested_4p_sw + tested_4p_sw ; s_tested_sw + tested_sw;
 	s_ever_tested_m1549_ + ever_tested_m1549_ ; s_ever_tested_m1519_ + ever_tested_m1519_ ;
     s_ever_tested_m2024_ + ever_tested_m2024_ ; s_ever_tested_m2529_ + ever_tested_m2529_ ; s_ever_tested_m3034_ + ever_tested_m3034_ ;
    	s_ever_tested_m3539_ + ever_tested_m3539_ ; s_ever_tested_m4044_ + ever_tested_m4044_ ; s_ever_tested_m4549_ + ever_tested_m4549_ ;
@@ -17397,7 +17392,7 @@ data r1; set a;
 
 data x; set cum_l1;
 
-file "/home/rmjllob/Scratch/_output_fsw_19_02_21_11am_no6mtest_&dataset_id";  
+file "/home/rmjllob/Scratch/_output_fsw_22_02_21_8am_no6mtest_&dataset_id";  
 
 put   
 
