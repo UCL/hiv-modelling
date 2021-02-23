@@ -419,7 +419,6 @@ prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probabi
 prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
 prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
 * dependent_on_time_step_length ; 
-prepuptake_sw=0.20; *Probability of PrEP uptake if eligible for female sex workers;
 prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
 pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 * dependent_on_time_step_length ;
@@ -766,7 +765,8 @@ p_neph_stops_after_ten = 0.1;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
 
-* prepuptake_sw;			r=uniform(0); prepuptake_sw=0.2;  if r > 0.8 then prepuptake_sw =0.10; if r < 0.2 then prepuptake_sw = 0.5;
+* add_prepuptake_sw;		r=uniform(0); add_prepuptake_sw=0.2;  if r > 0.8 then add_prepuptake_sw =0.10; if r < 0.2 then add_prepuptake_sw = 0.5;
+							add_prepuptake_sw=0;
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
@@ -1612,7 +1612,6 @@ eff_sw_higher_int = sw_higher_int;
 eff_prob_sw_lower_adh = prob_sw_lower_adh;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 sw_program_visit=0;
-eff_prepuptake_sw=prepuptake_sw;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
 
@@ -1807,10 +1806,6 @@ if adh_pattern_prep=4 then adhav_pr = adhav*0.50;
 
 * willingness to take prep if offered;
 r1=uniform(0); prep_willing_pop = 0; if r1 < prepuptake_pop then prep_willing_pop =1;
-if gender=2 then do;
-r2=uniform(0); prep_willing_sw = prep_willing_pop; 
-if prep_willing_pop=0 and r2 < (prepuptake_sw-prepuptake_pop)/(1-prepuptake_pop) then prep_willing_sw =1;
-end;
 
 hiv=0;
 nip=0;
