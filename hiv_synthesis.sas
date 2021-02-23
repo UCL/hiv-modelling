@@ -764,10 +764,9 @@ p_neph_stops_after_ten = 0.1;
 * prob_prep_restart_choice;  r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;
 * dependent_on_time_step_length ;
-
-* add_prepuptake_sw;		r=uniform(0); add_prepuptake_sw=0.2;  if r > 0.8 then add_prepuptake_sw =0.10; if r < 0.2 then add_prepuptake_sw = 0.5;
-							add_prepuptake_sw=0;
+							
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
+* add_prepuptake_sw;		add_prepuptake_sw=0; ***this may be sampled at a later date;
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
