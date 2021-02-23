@@ -724,7 +724,7 @@ p_neph_stops_after_ten = 0.1;
 										  if e >= 0.66 then effect_sw_prog_adh=1;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
-* effect_sw_prog_prep;       e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.80;
+* effect_sw_prog_prep;       e=uniform(0);if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
 
 
 * tb_base_prob_diag_l;		e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
