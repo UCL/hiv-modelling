@@ -1805,7 +1805,7 @@ if adh_pattern_prep=4 then adhav_pr = adhav*0.50;
 
 
 * willingness to take prep if offered;
-r1=uniform(0); prep_willing_pop = 0; if r1 < prepuptake_pop then prep_willing_pop =1;
+r1=uniform(0); prep_willing = 0; if r1 < prepuptake_pop then prep_willing =1;
 
 hiv=0;
 nip=0;
@@ -2032,8 +2032,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		eff_prepuptake_sw=effect_sw_prog_prep;
-		s= uniform(0); if s < eff_prepuptake_sw and prep_willing_sw = 0 then prep_willing_sw = 1;
+		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		end;
 	end;
 end; 
@@ -2046,7 +2045,6 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_sw_higher_int = sw_higher_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		eff_prepuptake_sw=prepuptake_sw;
 end; 
 
 end;
@@ -2152,17 +2150,13 @@ if	higher_future_prep_cov=1 then do;
 							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
 						end;		
 
-* incr_prepuptake_sw_2020;
-						incr_prepuptake_sw_2020 = 0;  
-						if _u34 < 0.95 then do; incr_prepuptake_sw_2020 = 1; 
-							r= uniform(0); if r < 0.95 and prep_willing_sw = 0 then prep_willing_sw = 1;
-						end;		
+	
 
 * incr_prepuptake_pop_2020;
 						incr_prepuptake_pop_2020 = 0;  
 						if _u36 < 0.95 then do; 
 							incr_prepuptake_pop_2020 = 1; 
-							r= uniform(0); if r < 0.8 and prep_willing_pop = 0 then prep_willing_pop = 1;
+							r= uniform(0); if r < 0.8 and prep_willing = 0 then prep_willing = 1;
 						end;	
 
 * prep_strategy;
@@ -3298,6 +3292,8 @@ e=uniform(0);
 if t ge 2  then do;
 if gender = 2 and sw_tm1  = 0 then do;
 
+r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;***currently SW are no more likely to be willing to take prep than gen pop;
+
 	if ever_sw ne 1 then do; * dependent_on_time_step_length ;
 	if 15 <= age < 20 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_1519*sqrt(rred_rc) then sw=1;
 	if 20 <= age < 25 and life_sex_risk = 2 and e < base_rate_sw*sqrt(rred_rc) then sw=1;
@@ -4064,7 +4060,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		available with roll-out and interest of PrEP
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
-		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and (prep_willing_pop=1 or  (sw=1 and prep_willing_sw=1 ))  then do;
+		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and prep_willing=1  then do;
 			a=uniform(0); if a < eff_rate_test_startprep then do;	
 				tested=1;ever_tested=1;testfor_prep=1;dt_last_test=caldate{t};np_lasttest=0;
 			end; 
@@ -4128,18 +4124,12 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 	if prep_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
-		if sw = 1 then do;
-			if prep_willing_sw=1 then do; 
-				if 		testfor_prep = 1  then do; prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
-				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
-			end;
-		end;
-		else if sw ne 1 then do; 
-			if prep_willing_pop=1 then do; 
+
+			if prep_willing=1 then do; 
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
 				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
-		end;
+
 	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
 	end;
 	* continuing PrEP;
@@ -4197,10 +4187,10 @@ if pop_wide_tld=1 and prep=1 then pop_wide_tld_prep=1;
 if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
 
 	if prep_ever ne 1 then do;   * dependent_on_time_step_length; 
-			r=uniform(0); if (prep_willing_pop=1 or  (sw=1 and prep_willing_sw=1 )) and r < prob_prep_pop_wide_tld then do ;
+			r=uniform(0); if prep_willing=1 and r < prob_prep_pop_wide_tld then do ;
 
 * ts1m ; * replace line above with this:
-*			r=uniform(0); * if (prep_willing_pop=1 or  (sw=1 and prep_willing_sw=1 )) and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
+*			r=uniform(0); * if (prep_willing=1 or  (sw=1 and prep_willing_sw=1 )) and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
 
 			prep   =1; pop_wide_tld_prep=1;  prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 			end;
@@ -14290,7 +14280,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_onprep_12_i_prep_no_r + onprep_12_i_prep_no_r ;  s_onprep_18_i_prep_no_r + onprep_18_i_prep_no_r ; s_prepinfect_rm_p + prepinfect_rm_p ;     
 	s_prepinfect_m184m_p + prepinfect_m184m_p ; s_prepinfect_k65m_p + prepinfect_k65m_p ; s_prepinfect_tam_p + prepinfect_tam_p ; 
  	s_prepinfect_rtm + prepinfect_rtm ; s_prepinfect_k65m + prepinfect_k65m ; s_prepinfect_m184m + prepinfect_m184m ; s_prepinfect_tam + prepinfect_tam ;
- 	s_prep_willing_pop + prep_willing_pop ; s_prep_willing_sw + prep_willing_sw ; s_stop_prep_choice + stop_prep_choice ; 
+ 	s_prep_willing + prep_willing ; s_stop_prep_choice + stop_prep_choice ; 
 	s_started_prep_hiv_test_sens + started_prep_hiv_test_sens ; s_cur_res_prep_drug + cur_res_prep_drug ; 
 	s_started_prep_hiv_test_sens_e + started_prep_hiv_test_sens_e ; s_started_prep_in_primary_e +  started_prep_in_primary_e ; 
  	s_cur_res_ten + cur_res_ten ; s_cur_res_3tc + cur_res_3tc ; s_i_65m + i_65m ; s_cur_res_efa + cur_res_efa ;  		   	   		   	     
@@ -15577,7 +15567,7 @@ s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s
 s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing_pop  		   s_prep_willing_sw  	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
+s_prep_willing  		    s_stop_prep_choice      s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
 s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
@@ -16394,7 +16384,7 @@ s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s
 s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing_pop  		   s_prep_willing_sw  	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
+s_prep_willing  		    	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
 s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
@@ -17221,7 +17211,7 @@ s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s
 s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing_pop  		   s_prep_willing_sw  	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
+s_prep_willing  		    	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
 s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
