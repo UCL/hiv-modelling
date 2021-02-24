@@ -3291,8 +3291,6 @@ e=uniform(0);
 if t ge 2  then do;
 if gender = 2 and sw_tm1  = 0 then do;
 
-r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;***currently SW are no more likely to be willing to take prep than gen pop;
-
 	if ever_sw ne 1 then do; * dependent_on_time_step_length ;
 	if 15 <= age < 20 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_1519*sqrt(rred_rc) then sw=1;
 	if 20 <= age < 25 and life_sex_risk = 2 and e < base_rate_sw*sqrt(rred_rc) then sw=1;
@@ -3303,6 +3301,10 @@ r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;***
 	if 20 <= age < 25 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
 	if 25 <= age < 35 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_2534*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
 	if 35 <= age < 50 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_3549*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
+
+	if sw=1 then do; r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;end;
+	***currently SW are no more likely to be willing to take prep than gen pop;
+
 	end;
 
 	if ever_sw = 1 then do; * dependent_on_time_step_length ;
@@ -3319,6 +3321,7 @@ r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;***
 
 end;
 end;
+
 
 
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
