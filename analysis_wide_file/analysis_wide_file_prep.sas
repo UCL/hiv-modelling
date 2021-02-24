@@ -732,6 +732,7 @@ proc means; var infections_averted_21_26  ; run;
 proc freq data=wide; * tables ce_500_x / nocum norow binomial; * exact binomial; 
                        tables ce_500_x ; 
 * where 0.2 <= incidence1549_21 < 0.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
+  where 0.05 <= prevalence_vg1000_21 < 0.55 and 3  <= av_newp_ge1_non_sw_21 < 10 and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 run; 
   ods html close;
 
