@@ -51,7 +51,7 @@ option = &s;
 		no_art_disrup_covid = 0; 
 		art_low_adh_disrup_covid = 0; 
 
-if caldate_never_dot ge 2014.5 then do;
+if caldate_never_dot ge 2009.5 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -60,7 +60,7 @@ who may be dead and hence have caldate{t} missing;
 	end; 
 
 	if option = 2 then do; 
-    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;
+    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.20; rate_disengage_sw_program = 0.025;
 	end;
 end;
 
