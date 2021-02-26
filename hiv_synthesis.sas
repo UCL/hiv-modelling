@@ -1959,7 +1959,7 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
 if caldate{t} = 2017.25 then do;
-prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
+prep_strategy=9; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
@@ -3982,7 +3982,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	end;
 
 	if prep_strategy=9 then do;
-	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	if (newp ge 1 or (epdiag=1 and epart ne 1)) and (sw=1 or 15<=age<25) and (gender=2) then prep_elig=1; 
 	end;
 
 	if prep_strategy=10 then do;
