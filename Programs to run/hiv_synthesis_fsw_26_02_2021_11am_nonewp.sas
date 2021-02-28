@@ -729,7 +729,7 @@ p_neph_stops_after_ten = 0.1;
 */
 
 * effect_sw_prog_newp;        e=uniform(0); if e < 0.50 then effect_sw_prog_newp = 0.95; if 0.50 <= e then effect_sw_prog_newp = 0.8;
-
+effect_sw_prog_newp=0;
 * effect_sw_prog_6mtest;      e=uniform(0); if e < 0.50 then effect_sw_prog_6mtest=0.95; if 0.50 <= e then effect_sw_prog_6mtest=0.80;
                                                               
 * effect_sw_prog_int;         e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
@@ -738,7 +738,7 @@ p_neph_stops_after_ten = 0.1;
                                                               if e >= 0.66 then effect_sw_prog_adh=1;
 * effect_sw_prog_lossdiag;    e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
                                                               if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
-* effect_sw_prog_prep;        e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if e >=0.50 then effect_sw_prog_prep=0.80;
+* effect_sw_prog_prep;        e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if 0.33 <= e < 0.66 then effect_sw_prog_prep=0.80;
 
 
 * tb_base_prob_diag_l;		e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
@@ -17381,7 +17381,7 @@ data r1; set a;
 
 data x; set cum_l1;
 
-file "/home/rmjllob/Scratch/_output_fsw_26_02_21_11am_&dataset_id";  
+file "/home/rmjllob/Scratch/_output_fsw_26_02_21_11am_nonewp_&dataset_id";  
 
 put   
 

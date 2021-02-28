@@ -4,10 +4,9 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_22_02_21_8am";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_26_02_21_11am";
 
 input 
-
 /*general*/
 run   cald   option 
 
@@ -199,7 +198,7 @@ s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s
 s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing_pop  		   s_prep_willing_sw  	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
+s_prep_willing  		    	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
 s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
 s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
 s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
@@ -640,6 +639,8 @@ r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
+
+
 ;
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
@@ -682,7 +683,7 @@ if option=1 then do;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_1_ = s_diag_sw / s_sw_1564; 
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_1_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
@@ -690,15 +691,44 @@ if option=1 then do;
 * incidence1549w;				incidence1549w_1_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_1_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-***mild disadv;
+***no disadv;
 if sw_art_disadv=1 then do;
+* n_sw_1564;					n_sw_1564_nodis_1_ = s_sw_1564 * sf_2020;
+* n_sw_1549;					n_sw_1549_nodis_1_ = s_sw_1549 * sf_2020;
+
+* prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_nodis_1_ = s_sw_1549 / s_alive1549_w ;
+* prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_nodis_1_ = s_sw_1564 / s_alive1564_w ;
+* prop_w_ever_sw;				prop_w_ever_sw_nodis_1_ = s_ever_sw / s_alive1564_w ;
+* p_sw_prog_vis;				p_sw_prog_vis_nodis_1_ = s_sw_program_visit / s_sw_1564 ;
+
+* prop_sw_hiv;					prop_sw_hiv_nodis_1_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
+								prop_sw_newp0_nodis_1_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
+* t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_nodis_1_ = s_sw_newp/s_sw_1564;
+* n_tested_sw;					n_tested_sw_nodis_1_ = s_tested_sw * sf_2020 * 4;
+* p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_nodis_1_ = s_sw_newp / s_w_newp ;
+* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
+
+* prevalence_sw;				prevalence_sw_nodis_1_ = s_hiv_sw / s_sw_1564; 
+
+* incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_nodis_1_ = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_1_ = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
+end;
+
+***mild disadv;
+if sw_art_disadv=2 then do;
+
 * n_sw_1564;					n_sw_1564_mild_1_ = s_sw_1564 * sf_2020;
 * n_sw_1549;					n_sw_1549_mild_1_ = s_sw_1549 * sf_2020;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mild_1_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mild_1_ = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				prop_w_ever_sw_mild_1_ = s_ever_sw / s_alive1564_w ;
-* p_sw_prog_vis;				p_sw_prog_vis_mild_1_ = s_sw_program_visit / s_sw_1564 ;
+* p_sw_prog_vis;		p_sw_prog_vis_mild_1_ = s_sw_program_visit / s_sw_1564 ;
 
 * prop_sw_hiv;					prop_sw_hiv_mild_1_ = s_hiv_sw / s_sw_1564 ;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
@@ -712,38 +742,9 @@ if sw_art_disadv=1 then do;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_mild_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mild_1_ = s_diag_sw / s_sw_1564; 
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_mild_1_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-
-end;
-
-***mod disadv;
-if sw_art_disadv=2 then do;
-
-* n_sw_1564;					n_sw_1564_mod_1_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_mod_1_ = s_sw_1549 * sf_2020;
-
-* prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mod_1_ = s_sw_1549 / s_alive1549_w ;
-* prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mod_1_ = s_sw_1564 / s_alive1564_w ;
-* prop_w_ever_sw;				prop_w_ever_sw_mod_1_ = s_ever_sw / s_alive1564_w ;
-* p_sw_prog_vis;		p_sw_prog_vis_mod_1_ = s_sw_program_visit / s_sw_1564 ;
-
-* prop_sw_hiv;					prop_sw_hiv_mod_1_ = s_hiv_sw / s_sw_1564 ;
-* prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
-								prop_sw_newp0_mod_1_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
-* t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_mod_1_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_mod_1_ = s_tested_sw * sf_2020 * 4;
-* p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_mod_1_ = s_sw_newp / s_w_newp ;
-* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_mod_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
-
-* prevalence_sw;				prevalence_sw_mod_1_ = s_hiv_sw / s_sw_1564; 
-
-* incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_mod_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mod_1_ = s_diag_sw / s_sw_1564; 
-* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mod_1_ = s_onart_sw / s_diag_sw;
-* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mod_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 end;
 
 end;
@@ -771,11 +772,7 @@ if option=2 then do;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_2_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_2_ = s_diag_sw / s_sw_1564; 
-* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_2_ = s_onart_sw / s_diag_sw;
-* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_2_ = s_diag_sw / s_sw_1564; 
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_2_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
@@ -784,8 +781,39 @@ if option=2 then do;
 * incidence1549m;				incidence1549m_2_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
 
-***mild disadv;
+***nodis disadv;
 if sw_art_disadv=1 then do;
+
+* n_sw_1564;					n_sw_1564_nodis_2_ = s_sw_1564 * sf_2020;
+* n_sw_1549;					n_sw_1549_nodis_2_ = s_sw_1549 * sf_2020;
+
+* prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_nodis_2_ = s_sw_1549 / s_alive1549_w ;
+* prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_nodis_2_ = s_sw_1564 / s_alive1564_w ;
+* prop_w_ever_sw;				prop_w_ever_sw_nodis_2_ = s_ever_sw / s_alive1564_w ;
+* p_sw_prog_vis;		p_sw_prog_vis_nodis_2_ = s_sw_program_visit / s_sw_1564 ;
+
+* prop_sw_hiv;					prop_sw_hiv_nodis_2_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
+								prop_sw_newp0_nodis_2_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
+* t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_nodis_2_ = s_sw_newp/s_sw_1564;
+* n_tested_sw;					n_tested_sw_nodis_2_ = s_tested_sw * sf_2020 * 4;
+* p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_nodis_2_ = s_sw_newp / s_w_newp ;
+* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_2_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
+
+* prevalence_sw;				prevalence_sw_nodis_2_ = s_hiv_sw / s_sw_1564; 
+
+* incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_2_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_nodis_2_ = s_diag_sw / s_hiv_sw; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_2_ = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+end;
+
+***mild disadv;
+if sw_art_disadv=2 then do;
+* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mild_2_ = s_diag_sw / s_sw_1564; 
+* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_2_ = s_onart_sw / s_diag_sw;
+* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 * n_sw_1564;					n_sw_1564_mild_2_ = s_sw_1564 * sf_2020;
 * n_sw_1549;					n_sw_1549_mild_2_ = s_sw_1549 * sf_2020;
@@ -807,40 +835,9 @@ if sw_art_disadv=1 then do;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_mild_2_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mild_2_ = s_diag_sw / s_sw_1564; 
+* p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_mild_2_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-end;
-
-***mod disadv;
-if sw_art_disadv=2 then do;
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mod_2_ = s_diag_sw / s_sw_1564; 
-* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mod_2_ = s_onart_sw / s_diag_sw;
-* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mod_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-
-* n_sw_1564;					n_sw_1564_mod_2_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_mod_2_ = s_sw_1549 * sf_2020;
-
-* prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mod_2_ = s_sw_1549 / s_alive1549_w ;
-* prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mod_2_ = s_sw_1564 / s_alive1564_w ;
-* prop_w_ever_sw;				prop_w_ever_sw_mod_2_ = s_ever_sw / s_alive1564_w ;
-* p_sw_prog_vis;		p_sw_prog_vis_mod_2_ = s_sw_program_visit / s_sw_1564 ;
-
-* prop_sw_hiv;					prop_sw_hiv_mod_2_ = s_hiv_sw / s_sw_1564 ;
-* prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
-								prop_sw_newp0_mod_2_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
-* t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_mod_2_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_mod_2_ = s_tested_sw * sf_2020 * 4;
-* p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_mod_2_ = s_sw_newp / s_w_newp ;
-* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_mod_2_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
-
-* prevalence_sw;				prevalence_sw_mod_2_ = s_hiv_sw / s_sw_1564; 
-
-* incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_mod_2_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw_mod_2_ = s_diag_sw / s_sw_1564; 
-* p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mod_2_ = s_onart_sw / s_diag_sw;
-* p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mod_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 end;
 
 end;
@@ -853,7 +850,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=1200;  
+%let nfit=600;  
 run;
 
 data c;
@@ -865,24 +862,24 @@ n_sw_1564_1_  n_sw_1549_1_  prop_w_1564_sw_1_  prop_w_1549_sw_1_  prop_w_ever_sw
 t_sw_newp_1_  n_tested_sw_1_  p_newp_sw_1_  prop_sw_onprep_1_  prevalence_sw_1_  incidence_sw_1_  p_diag_sw_1_  p_onart_diag_sw_1_
 p_onart_vl1000_sw_1_
 
+n_sw_1564_nodis_1_  n_sw_1549_nodis_1_  prop_w_1564_sw_nodis_1_  prop_w_1549_sw_nodis_1_  prop_w_ever_sw_nodis_1_  p_sw_prog_vis_nodis_1_  prop_sw_hiv_nodis_1_  prop_sw_newp0_nodis_1_
+t_sw_newp_nodis_1_  n_tested_sw_nodis_1_  p_newp_sw_nodis_1_  prop_sw_onprep_nodis_1_  prevalence_sw_nodis_1_  incidence_sw_nodis_1_  p_diag_sw_nodis_1_  p_onart_diag_sw_nodis_1_
+p_onart_vl1000_sw_nodis_1_
+
 n_sw_1564_mild_1_  n_sw_1549_mild_1_  prop_w_1564_sw_mild_1_  prop_w_1549_sw_mild_1_  prop_w_ever_sw_mild_1_  p_sw_prog_vis_mild_1_  prop_sw_hiv_mild_1_  prop_sw_newp0_mild_1_
 t_sw_newp_mild_1_  n_tested_sw_mild_1_  p_newp_sw_mild_1_  prop_sw_onprep_mild_1_  prevalence_sw_mild_1_  incidence_sw_mild_1_  p_diag_sw_mild_1_  p_onart_diag_sw_mild_1_
 p_onart_vl1000_sw_mild_1_
-
-n_sw_1564_mod_1_  n_sw_1549_mod_1_  prop_w_1564_sw_mod_1_  prop_w_1549_sw_mod_1_  prop_w_ever_sw_mod_1_  p_sw_prog_vis_mod_1_  prop_sw_hiv_mod_1_  prop_sw_newp0_mod_1_
-t_sw_newp_mod_1_  n_tested_sw_mod_1_  p_newp_sw_mod_1_  prop_sw_onprep_mod_1_  prevalence_sw_mod_1_  incidence_sw_mod_1_  p_diag_sw_mod_1_  p_onart_diag_sw_mod_1_
-p_onart_vl1000_sw_mod_1_
 
 
 n_sw_1564_2_  n_sw_1549_2_  prop_w_1564_sw_2_  prop_w_1549_sw_2_  prop_w_ever_sw_2_  p_sw_prog_vis_2_  prop_sw_hiv_2_  prop_sw_newp0_2_
 t_sw_newp_2_  n_tested_sw_2_  p_newp_sw_2_  prop_sw_onprep_2_  prevalence_sw_2_  incidence_sw_2_  p_diag_sw_2_  p_onart_diag_sw_2_
 p_onart_vl1000_sw_2_
+n_sw_1564_nodis_2_  n_sw_1549_nodis_2_  prop_w_1564_sw_nodis_2_  prop_w_1549_sw_nodis_2_  prop_w_ever_sw_nodis_2_  p_sw_prog_vis_nodis_2_  prop_sw_hiv_nodis_2_  prop_sw_newp0_nodis_2_
+t_sw_newp_nodis_2_  n_tested_sw_nodis_2_  p_newp_sw_nodis_2_  prop_sw_onprep_nodis_2_  prevalence_sw_nodis_2_  incidence_sw_nodis_2_  p_diag_sw_nodis_2_  p_onart_diag_sw_nodis_2_
+p_onart_vl1000_sw_nodis_2_
 n_sw_1564_mild_2_  n_sw_1549_mild_2_  prop_w_1564_sw_mild_2_  prop_w_1549_sw_mild_2_  prop_w_ever_sw_mild_2_  p_sw_prog_vis_mild_2_  prop_sw_hiv_mild_2_  prop_sw_newp0_mild_2_
 t_sw_newp_mild_2_  n_tested_sw_mild_2_  p_newp_sw_mild_2_  prop_sw_onprep_mild_2_  prevalence_sw_mild_2_  incidence_sw_mild_2_  p_diag_sw_mild_2_  p_onart_diag_sw_mild_2_
 p_onart_vl1000_sw_mild_2_
-n_sw_1564_mod_2_  n_sw_1549_mod_2_  prop_w_1564_sw_mod_2_  prop_w_1549_sw_mod_2_  prop_w_ever_sw_mod_2_  p_sw_prog_vis_mod_2_  prop_sw_hiv_mod_2_  prop_sw_newp0_mod_2_
-t_sw_newp_mod_2_  n_tested_sw_mod_2_  p_newp_sw_mod_2_  prop_sw_onprep_mod_2_  prevalence_sw_mod_2_  incidence_sw_mod_2_  p_diag_sw_mod_2_  p_onart_diag_sw_mod_2_
-p_onart_vl1000_sw_mod_2_
 
 incidence1549_1_  incidence1549w_1_  incidence1549m_1_  incidence1549_2_  incidence1549w_2_  incidence1549m_2_
 
@@ -943,7 +940,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Feb2021.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\28Feb2021.doc' startpage=never; 
 
 
 
@@ -952,11 +949,11 @@ Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000 )  valueattrs=(size=10);
-label p50_n_sw_1549_1_	                  = "Model age 15-49 (median)";
+label p50_n_sw_1549_1_	                  = "model age 15-49 (median)";
 
 label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
 series  x=cald y=p50_n_sw_1549_1_  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sw_1549_1_      upper=p95_n_sw_1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model age 18-49 90% range";
+band    x=cald lower=p5_n_sw_1549_1_      upper=p95_n_sw_1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "mildel age 18-49 90% range";
 
 scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
 										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
@@ -967,8 +964,8 @@ proc sgplot data=e;
 title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.08 by 0.02) 		valueattrs=(size=10);
-label p50_prop_w_1549_sw_1_   = "Model - median ";
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
+label p50_prop_w_1549_sw_1_   = "model - median ";
 
 label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
 label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
@@ -980,6 +977,25 @@ scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle      
 scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
 										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
 run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "90-90-90 indicators amongst sex workers with no disadvantages (age 15-49)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+label p50_p_diag_sw_nodis_1_  = "% diagnosed ";
+label p50_p_onart_diag_sw_nodis_1_ = "% diagnosed and on ART";
+label p50_p_onart_vl1000_sw_nodis_1_ = "% on ART and virally suppressed";
+
+series  x=cald y=p50_p_diag_sw_nodis_1_  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_diag_sw_nodis_1_ 	 upper=p95_p_diag_sw_nodis_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_sw_nodis_1_  / 	 lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_sw_nodis_1_	 upper=p95_p_onart_diag_sw_nodis_1_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000_sw_nodis_1_  / 	 lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_sw_nodis_1_	 upper=p95_p_onart_vl1000_sw_nodis_1_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "90-90-90 indicators amongst sex workers with mild disadvantages (age 15-49)";
@@ -1001,30 +1017,11 @@ run;quit;
 
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "90-90-90 indicators amongst sex workers with moderate disadvantages (age 15-49)";
-footnote1 height=0.9  "";
-xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
-label p50_p_diag_sw_mod_1_  = "% diagnosed ";
-label p50_p_onart_diag_sw_mod_1_ = "% diagnosed and on ART";
-label p50_p_onart_vl1000_sw_mod_1_ = "% on ART and virally suppressed";
-
-series  x=cald y=p50_p_diag_sw_mod_1_  / 	 lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_p_diag_sw_mod_1_ 	 upper=p95_p_diag_sw_mod_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-series  x=cald y=p50_p_onart_diag_sw_mod_1_  / 	 lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_mod_1_	 upper=p95_p_onart_diag_sw_mod_1_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-series  x=cald y=p50_p_onart_vl1000_sw_mod_1_  / 	 lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_mod_1_	 upper=p95_p_onart_vl1000_sw_mod_1_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-
-run;quit;
-
-
-proc sgplot data=e; 
 title    height=1.5 justify=center "Assuming a sex-worker program is in place, proportion of sex workers who have a program visit";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
-label p50_p_sw_prog_vis_2_ = "% diagnosed ";
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 1 by 0.2) 		valueattrs=(size=10);
+label p50_p_sw_prog_vis_2_ = "Proportion with a program visit";
 
 series  x=cald y=p50_p_sw_prog_vis_2_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_sw_prog_vis_2_ 	 upper=p95_p_sw_prog_vis_2_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
@@ -1034,7 +1031,7 @@ proc sgplot data=e;
 title    height=1.5 justify=center "Average number of condomless partners stratified by existence of a program";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+yaxis grid label 	= 'Number' 		labelattrs=(size=12)   		valueattrs=(size=10);
 
 label p50_t_sw_newp_1_ = "No sex worker program ";
 label p50_t_sw_newp_2_ = "Sex worker program ";
@@ -1066,7 +1063,7 @@ proc sgplot data=e;
 title    height=1.5 justify=center "Number of HIV tests amongst sex workers stratified by existence of a program";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+yaxis grid label 	= 'Number' 		labelattrs=(size=12)  values = (0 to 100000 by 10000) 		valueattrs=(size=10);
 
 label p50_n_tested_sw_1_ = "No sex worker program ";
 label p50_n_tested_sw_2_ = "Sex worker program ";
@@ -1089,9 +1086,9 @@ label p50_p_diag_sw_1_  = "No sex worker program ";
 label p50_p_diag_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_diag_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_sw_1_  upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - Model 90% range";
+band    x=cald lower=p5_p_diag_sw_1_  upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_p_diag_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_sw_2_  upper=p95_p_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_p_diag_sw_2_  upper=p95_p_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1101,14 +1098,14 @@ title    height=1.5 justify=center "Proportion of sex workers diagnosed with HIV
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Proportion'          labelattrs=(size=12)  values = (0 to 1 by 0.1)       valueattrs=(size=10);
 
+label p50_p_diag_sw_nodis_2_  = "No disadvantages ";
 label p50_p_diag_sw_mild_2_  = "Mild disadvantages ";
-label p50_p_diag_sw_mod_2_  = "Moderate disadvantages ";
 
 
-series  x=cald y=p50_p_diag_sw_mild_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_diag_sw_mild_2_  upper=p95_p_diag_sw_mild_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - Model 90% range";
-series  x=cald y=p50_p_diag_sw_mod_2_/  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_diag_sw_mod_2_  upper=p95_p_diag_sw_mod_2_/ transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - Model 90% range";
+series  x=cald y=p50_p_diag_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
+band    x=cald lower=p5_p_diag_sw_nodis_2_  upper=p95_p_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
+series  x=cald y=p50_p_diag_sw_mild_2_/  lineattrs = (color=darkred thickness = 2);
+band    x=cald lower=p5_p_diag_sw_mild_2_  upper=p95_p_diag_sw_mild_2_/ transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1123,9 +1120,9 @@ label p50_p_onart_diag_sw_1_  = "No sex worker program ";
 label p50_p_onart_diag_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_onart_diag_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_1_  upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - Model 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_1_  upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_p_onart_diag_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1135,13 +1132,13 @@ title    height=1.5 justify=center "Proportion of sex workers diagnosed with HIV
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Proportion'          labelattrs=(size=12)  values = (0 to 1 by 0.1)       valueattrs=(size=10);
 
-label p50_p_onart_diag_sw_mild_2_  = "Mild disadvantages";
-label p50_p_onart_diag_sw_mod_2_  = "Moderate disadvantages ";
+label p50_p_onart_diag_sw_nodis_2_  = "No disadvantages";
+label p50_p_onart_diag_sw_mild_2_  = "Mild disadvantages ";
 
-series  x=cald y=p50_p_onart_diag_sw_mild_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_mild_2_  upper=p95_p_onart_diag_sw_mild_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - Model 90% range";
+series  x=cald y=p50_p_onart_diag_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
+band    x=cald lower=p5_p_onart_diag_sw_nodis_2_  upper=p95_p_onart_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_p_onart_diag_sw_2_ /  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1155,9 +1152,9 @@ label p50_p_onart_vl1000_sw_1_  = "No sex worker program ";
 label p50_p_onart_vl1000_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_onart_vl1000_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_1_  upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - Model 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_1_  upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_p_onart_vl1000_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_2_  upper=p95_p_onart_vl1000_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_2_  upper=p95_p_onart_vl1000_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1168,13 +1165,13 @@ title    height=1.5 justify=center "Proportion of sex workers on ART and virally
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
 yaxis grid label = 'Proportion'          labelattrs=(size=12)  values = (0 to 1 by 0.1)       valueattrs=(size=10);
 
-label p50_p_onart_vl1000_sw_mild_2_  = "Mild disadvantages";
-label p50_p_onart_vl1000_sw_mod_2_  = "Moderate disadvantages ";
+label p50_p_onart_vl1000_sw_nodis_2_  = "No disadvantages";
+label p50_p_onart_vl1000_sw_mild_2_  = "Mild disadvantages ";
 
-series  x=cald y=p50_p_onart_vl1000_sw_mild_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_mild_2_  upper=p95_p_onart_vl1000_sw_mild_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - Model 90% range";
-series  x=cald y=p50_p_onart_vl1000_sw_mod_2_ /  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_mod_2_  upper=p95_p_onart_vl1000_sw_mod_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - Model 90% range";
+series  x=cald y=p50_p_onart_vl1000_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_sw_nodis_2_  upper=p95_p_onart_vl1000_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
+series  x=cald y=p50_p_onart_vl1000_sw_mild_2_ /  lineattrs = (color=darkred thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_sw_mild_2_  upper=p95_p_onart_vl1000_sw_mild_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1184,15 +1181,15 @@ proc sgplot data=e;
 
 title    height=1.5 justify=center "HIV incidence amongst sex workers";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Proportion'          labelattrs=(size=12)        valueattrs=(size=10);
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 50 by 5)    valueattrs=(size=10);
 
 label p50_incidence_sw_1_  = "No sex worker program ";
 label p50_incidence_sw_2_ = "Sex worker program";
 
 series  x=cald y=p50_incidence_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence_sw_1_  upper=p95_incidence_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - Model 90% range";
+band    x=cald lower=p5_incidence_sw_1_  upper=p95_incidence_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_incidence_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence_sw_2_  upper=p95_incidence_sw_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_incidence_sw_2_  upper=p95_incidence_sw_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
@@ -1200,15 +1197,15 @@ proc sgplot data=e;
 
 title    height=1.5 justify=center "HIV incidence in general population";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Proportion'          labelattrs=(size=12)        valueattrs=(size=10);
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2)    valueattrs=(size=10);
 
 label p50_incidence1549_1_  = "No sex worker program ";
 label p50_incidence1549_2_ = "Sex worker program";
 
 series  x=cald y=p50_incidence1549_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549_1_  upper=p95_incidence1549_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - Model 90% range";
+band    x=cald lower=p5_incidence1549_1_  upper=p95_incidence1549_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
 series  x=cald y=p50_incidence1549_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1549_2_  upper=p95_incidence1549_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - Model 90% range";
+band    x=cald lower=p5_incidence1549_2_  upper=p95_incidence1549_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
 
