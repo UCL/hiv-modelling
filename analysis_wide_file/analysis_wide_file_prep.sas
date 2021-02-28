@@ -56,8 +56,8 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1 * 60  / 60 ) +
-(dcost_prep_visit_21_71_2 * 1)     + 
+(dcost_prep_21_71_2  * 2 *  60 / 60 ) +
+(dcost_prep_visit_21_71_2 * 2)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2     +    
 dvl_cost_21_71_2    +      
@@ -728,14 +728,13 @@ proc means; var infections_averted_21_26  ; run;
 
 
 
+
   ods html;
 proc freq data=wide; * tables ce_500_x / nocum norow binomial; * exact binomial; 
                        tables ce_500_x ; 
-* where 0.2 <= incidence1549_21 < 0.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
   where 0.05 <= prevalence_vg1000_21 < 0.55 and 3  <= av_newp_ge1_non_sw_21 < 10 and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 run; 
   ods html close;
-
 
 
 proc print;  var  cost_saving ce_100 d_dcost_21_71_2 d_ddaly_all_21_71_2 ; run; 

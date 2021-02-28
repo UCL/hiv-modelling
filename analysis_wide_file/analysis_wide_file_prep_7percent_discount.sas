@@ -86,8 +86,7 @@ if d_ndb_100_21_71_2 >= 0 then ce_100 = 0; if d_ndb_100_21_71_2 < 0 then ce_100 
 ce_500_x = 1 - ce_500 ;
 
   ods html;
-proc freq data=wide;  tables ce_500_x ; 
-  where 1.5 <= incidence1549_21 < 9.5 and 3  <= av_newp_ge1_non_sw_21 < 10  ;
+proc freq data=wide; tables ce_500_x ; 
+  where 0.05 <= prevalence_vg1000_21 < 0.55 and 3 <= av_newp_ge1_non_sw_21 < 10 and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 run; 
   ods html close;
-
