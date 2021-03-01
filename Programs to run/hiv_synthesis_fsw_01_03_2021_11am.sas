@@ -2047,6 +2047,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
+		if prep_willing=1 then eff_rate_test_startprep=1;
 		end;
 	end;
 end; 
@@ -2059,6 +2060,7 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_sw_higher_int = sw_higher_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_rate_test_startprep=rate_test_startprep;
 end; 
 
 end;
@@ -17382,7 +17384,7 @@ data r1; set a;
 
 data x; set cum_l1;
 
-file "/home/rmjllob/Scratch/_output_fsw_26_02_21_11am_&dataset_id";  
+file "/home/rmjllob/Scratch/_output_fsw_01_03_21_11am_&dataset_id";  
 
 put   
 
