@@ -659,6 +659,12 @@ merge a sf;
 by run ;
 run;
 
+data x;
+set a1;
+
+* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
+* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_2_ = s_prep_sw / (s_sw_1564 - s_hiv_sw) ;
+
 data a2;
 set a1;
 
@@ -979,6 +985,25 @@ scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       colo
 run;quit;
 
 proc sgplot data=e; 
+title    height=1.5 justify=center "90-90-90 indicators amongst all sex workers (age 15-49)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+label p50_p_diag_sw_1_  = "% diagnosed ";
+label p50_p_onart_diag_sw_1_ = "% diagnosed and on ART";
+label p50_p_onart_vl1000_sw_1_ = "% on ART and virally suppressed";
+
+series  x=cald y=p50_p_diag_sw_1_  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_diag_sw_1_ 	 upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_diag_sw_1_  / 	 lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_sw_1_	 upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+series  x=cald y=p50_p_onart_vl1000_sw_1_  / 	 lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_sw_1_	 upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+run;quit;
+
+
+proc sgplot data=e; 
 title    height=1.5 justify=center "90-90-90 indicators amongst sex workers with no disadvantages (age 15-49)";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
@@ -1091,6 +1116,8 @@ series  x=cald y=p50_p_diag_sw_2_ /  lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_sw_2_  upper=p95_p_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
 
 run;quit;
+
+proc print data=e; var run option s_prep_willing;where cald=2020 and s_sw_1549 >0;run;
 
 proc sgplot data=e; 
 
