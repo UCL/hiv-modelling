@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_01_03_21_10pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm_temp";
 
 input 
 /*general*/
@@ -642,8 +642,12 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 ;
+
+
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
+
+
 
 data sf;
 set a ;
