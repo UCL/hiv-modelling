@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_26_02_21_11am";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_01_03_21_10pm";
 
 input 
 /*general*/
@@ -856,7 +856,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=600;  
+%let nfit=246;  
 run;
 
 data c;
@@ -946,7 +946,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\28Feb2021.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\02Mar2021.doc' startpage=never; 
 
 
 
@@ -959,7 +959,7 @@ label p50_n_sw_1549_1_	                  = "model age 15-49 (median)";
 
 label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
 series  x=cald y=p50_n_sw_1549_1_  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sw_1549_1_      upper=p95_n_sw_1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "mildel age 18-49 90% range";
+band    x=cald lower=p5_n_sw_1549_1_      upper=p95_n_sw_1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
 										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
@@ -1239,3 +1239,5 @@ run;quit;
 ods rtf close;
 ods listing;
 run;
+
+proc freq data=e; table effect_sw_prog_prep;run;
