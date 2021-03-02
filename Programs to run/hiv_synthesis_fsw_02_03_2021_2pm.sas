@@ -780,6 +780,7 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 							
 * prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
+prepuptake_pop=0.1;
 * add_prepuptake_sw;		add_prepuptake_sw=0; ***this may be sampled at a later date;
 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
@@ -2401,7 +2402,7 @@ who may be dead and hence have caldate{t} missing;
 	end; 
 
 	if option = 2 then do; 
-    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.20; rate_disengage_sw_program = 0.025;
+    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.20; rate_disengage_sw_program = 0.025;prep_strategy=9;
 	end;
 end;
 
