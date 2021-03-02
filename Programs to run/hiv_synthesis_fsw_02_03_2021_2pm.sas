@@ -2402,7 +2402,8 @@ who may be dead and hence have caldate{t} missing;
 	end; 
 
 	if option = 2 then do; 
-    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.20; rate_disengage_sw_program = 0.025;prep_strategy=9;
+    eff_sw_program=1;sw_program=1;rate_engage_sw_program =0.20; rate_disengage_sw_program = 0.025;
+	if caldate_never_dot ge 2017.25 then prep_strategy=9;
 	end;
 end;
 
