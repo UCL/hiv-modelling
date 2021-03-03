@@ -1946,6 +1946,8 @@ hiv_tm1 = hiv;
 age_tm1=age;
 
 
+* note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
+value at a certain calendar time;
 if t ge 2 and caldate{t-1} < 2071.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
 if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
@@ -1958,7 +1960,8 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
-if caldate{t} = 2017.25 then do;
+if caldate_never_dot = 2017.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
+value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
 prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
@@ -2735,6 +2738,8 @@ if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-
 if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
 
 
+* note this is a key point in the model program in that after this point through to the end of the overall loop at xx55 we are only giving
+values to people aged 15 or over ;
 
 if age    < 15 then do; hiv=.; goto xx55; end;
 
@@ -15585,7 +15590,7 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep	prep_strategy  								
+s_pop_wide_tld_prep	  								
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -15886,9 +15891,9 @@ s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-
-
 /*parameters sampled*/
+/* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
+
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
@@ -15916,6 +15921,8 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 /*2020 interventions*/
+/* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
+
 condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
@@ -15934,6 +15941,7 @@ vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid test
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
+prep_strategy
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
