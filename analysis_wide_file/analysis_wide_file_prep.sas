@@ -5,7 +5,6 @@
 data wide;    
   set a.wide_prep_29_jan_21 ; 
 
-
 * to give n = 1000 setting scenarios;
 
 if run > 837709993 then delete;
@@ -56,8 +55,8 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 2 *  60 / 60 ) +
-(dcost_prep_visit_21_71_2 * 2)     + 
+(dcost_prep_21_71_2  * 1 *  60 / 60 ) +
+(dcost_prep_visit_21_71_2 * 1)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2     +    
 dvl_cost_21_71_2    +      
@@ -666,9 +665,7 @@ p_mcirc_1549m_21 /* prevalence1549_21 prop_sw_hiv_21 p_newp_sw_21  p_newp_ge1_ag
 run;
 
 
-proc logistic data=wide; model ce_500_x =  
-p_mcirc_1549m_21 /* incidence1549_21 */ av_newp_ge1_non_sw_21 /* p_vl1000_21 */ prevalence_vg1000_21  
-; 
+proc logistic data=wide; model ce_500_x = p_mcirc_1549m_21 av_newp_ge1_non_sw_21 prevalence_vg1000_21 ; 
 run;
 
 
@@ -684,8 +681,8 @@ p_mcirc_1549m_21 /* incidence1549_21 */ av_newp_ge1_non_sw_21 /* p_vl1000_21 */ 
 run;
 
 
-proc corr; var p_mcirc_1549m_21 incidence1549_21 prevalence1549_21 prop_sw_hiv_21 p_newp_sw_21  p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 p_vl1000_21
-prevalence_vg1000_21  ; run;
+proc corr data=wide; var p_mcirc_1549m_21 incidence1549_21 prevalence1549_21 prop_sw_hiv_21 p_newp_sw_21  p_newp_ge1_age1549_21 
+av_newp_ge1_non_sw_21 p_vl1000_21 prevalence_vg1000_21 ; run;
 
 
 * model including some variables defined base on follow-up - to determine whether prep programmes should continue;
@@ -726,13 +723,23 @@ run;
  
 proc means; var infections_averted_21_26  ; run;
 
+proc freq data=wide; tables prevalence_vg1000_21 av_newp_ge1_non_sw_21 p_mcirc_1549m_21 prop_1564_hivneg_onprep_21_26_2 ; run;  
 
 
-
+* for figure;
   ods html;
-proc freq data=wide; * tables ce_500_x / nocum norow binomial; * exact binomial; 
-                       tables ce_500_x ; 
-  where 0.05 <= prevalence_vg1000_21 < 0.55 and 3  <= av_newp_ge1_non_sw_21 < 10 and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
+proc freq data=wide;  tables ce_500_x ; 
+  where 0.00 <= prevalence_vg1000_21 < 0.01 and 3  <= av_newp_ge1_non_sw_21 < 10 and 0.333 <= p_mcirc_1549m_21 < 0.667 ;
+run; 
+  ods html close;
+
+* for table / results;
+  ods html;
+proc freq data=wide;   tables ce_500_x / nocum norow binomial; * exact binomial;  
+* where 0.000 <= p_mcirc_1549m_21 < 0.333 ;
+* where 0.05 <= prevalence_vg1000_21 < 0.55 ; 
+* where 3 <= av_newp_ge1_non_sw_21 < 10 ;
+  where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 run; 
   ods html close;
 

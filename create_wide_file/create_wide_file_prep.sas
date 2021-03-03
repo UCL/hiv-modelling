@@ -594,6 +594,11 @@ if option=0 or option=1;
 
 dataset=1;
 
+proc freq; tables prep_strategy ; where option=1 and cald ge 2021.5; run;
+
+
+
+
 data d; set d1 ;
 
 
@@ -1103,7 +1108,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
 * p_vl1000_art_12m_onart;		if s_art_12m > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m / s_art_12m_onart ;
 
-* prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
+* prevalence_vg1000;			if s_alive1564 > 0 then prevalence_vg1000 = s_vg1000 / s_alive1564;
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
 * r_efa_hiv;					if s_hiv1564 > 0 then r_efa_hiv = s_r_efa / s_hiv1564 ;
