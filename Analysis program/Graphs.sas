@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm_temp";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm";
 
 input 
 /*general*/
@@ -643,7 +643,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ;
 
-
+proc freq;table option;where cald ge 2020 and prep_strategy=.;;run;
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
 
@@ -662,12 +662,6 @@ data a1;
 merge a sf;
 by run ;
 run;
-
-data x;
-set a1;
-
-* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
-* prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_2_ = s_prep_sw / (s_sw_1564 - s_hiv_sw) ;
 
 data a2;
 set a1;
@@ -860,7 +854,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=246;  
+%let nfit=600;  
 run;
 
 data c;
@@ -949,8 +943,8 @@ set d;
 %include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
 run;
 
-ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\02Mar2021.doc' startpage=never; 
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\03Mar2021.doc' startpage=never; 
 
 
 
@@ -1076,7 +1070,7 @@ proc sgplot data=e;
 title    height=1.5 justify=center "Proportion of sex workers on PrEP stratified by existence of a program";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
-yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.4 by 0.1) 		valueattrs=(size=10);
 
 label p50_prop_sw_onprep_1_ = "No sex worker program ";
 label p50_prop_sw_onprep_2_ = "Sex worker program ";
@@ -1086,6 +1080,22 @@ band    x=cald lower=p5_prop_sw_onprep_1_	 upper=p95_prop_sw_onprep_1_ / transpa
 
 series  x=cald y=p50_prop_sw_onprep_2_  / 	 lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_prop_sw_onprep_2_	 upper=p95_prop_sw_onprep_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_prop_sw_newp0_1_ = "No sex worker program ";
+label p50_prop_sw_newp0_2_ = "Sex worker program ";
+
+series  x=cald y=p50_prop_sw_newp0_1_  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_sw_newp0_1_	 upper=p95_prop_sw_newp0_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+series  x=cald y=p50_prop_sw_newp0_2_  / 	 lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_sw_newp0_2_	 upper=p95_prop_sw_newp0_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 run;quit;
 
 proc sgplot data=e; 
@@ -1115,13 +1125,11 @@ label p50_p_diag_sw_1_  = "No sex worker program ";
 label p50_p_diag_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_diag_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_sw_1_  upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_diag_sw_1_  upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_diag_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_sw_2_  upper=p95_p_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_diag_sw_2_  upper=p95_p_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 
 run;quit;
-
-proc print data=e; var run option s_prep_willing;where cald=2020 and s_sw_1549 >0;run;
 
 proc sgplot data=e; 
 
@@ -1134,9 +1142,9 @@ label p50_p_diag_sw_mild_2_  = "Mild disadvantages ";
 
 
 series  x=cald y=p50_p_diag_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_diag_sw_nodis_2_  upper=p95_p_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_diag_sw_nodis_2_  upper=p95_p_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_diag_sw_mild_2_/  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_diag_sw_mild_2_  upper=p95_p_diag_sw_mild_2_/ transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_diag_sw_mild_2_  upper=p95_p_diag_sw_mild_2_/ transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1151,9 +1159,9 @@ label p50_p_onart_diag_sw_1_  = "No sex worker program ";
 label p50_p_onart_diag_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_onart_diag_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_1_  upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_1_  upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_onart_diag_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1167,9 +1175,9 @@ label p50_p_onart_diag_sw_nodis_2_  = "No disadvantages";
 label p50_p_onart_diag_sw_mild_2_  = "Mild disadvantages ";
 
 series  x=cald y=p50_p_onart_diag_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_nodis_2_  upper=p95_p_onart_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_nodis_2_  upper=p95_p_onart_diag_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_onart_diag_sw_2_ /  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_onart_diag_sw_2_  upper=p95_p_onart_diag_sw_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1183,9 +1191,9 @@ label p50_p_onart_vl1000_sw_1_  = "No sex worker program ";
 label p50_p_onart_vl1000_sw_2_  = "Sex worker program ";
 
 series  x=cald y=p50_p_onart_vl1000_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_1_  upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_1_  upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_onart_vl1000_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_2_  upper=p95_p_onart_vl1000_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_2_  upper=p95_p_onart_vl1000_sw_2_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1200,9 +1208,9 @@ label p50_p_onart_vl1000_sw_nodis_2_  = "No disadvantages";
 label p50_p_onart_vl1000_sw_mild_2_  = "Mild disadvantages ";
 
 series  x=cald y=p50_p_onart_vl1000_sw_nodis_2_ /  lineattrs = (color=lightred thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_nodis_2_  upper=p95_p_onart_vl1000_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_nodis_2_  upper=p95_p_onart_vl1000_sw_nodis_2_ / transparency=0.9 fillattrs = (color=lightred) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_p_onart_vl1000_sw_mild_2_ /  lineattrs = (color=darkred thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_sw_mild_2_  upper=p95_p_onart_vl1000_sw_mild_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_p_onart_vl1000_sw_mild_2_  upper=p95_p_onart_vl1000_sw_mild_2_ / transparency=0.9 fillattrs = (color=darkred) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1218,9 +1226,9 @@ label p50_incidence_sw_1_  = "No sex worker program ";
 label p50_incidence_sw_2_ = "Sex worker program";
 
 series  x=cald y=p50_incidence_sw_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence_sw_1_  upper=p95_incidence_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_incidence_sw_1_  upper=p95_incidence_sw_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_incidence_sw_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence_sw_2_  upper=p95_incidence_sw_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_incidence_sw_2_  upper=p95_incidence_sw_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1228,15 +1236,15 @@ proc sgplot data=e;
 
 title    height=1.5 justify=center "HIV incidence in general population";
 xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2)    valueattrs=(size=10);
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 2 by 0.2)    valueattrs=(size=10);
 
 label p50_incidence1549_1_  = "No sex worker program ";
 label p50_incidence1549_2_ = "Sex worker program";
 
 series  x=cald y=p50_incidence1549_1_ /  lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549_1_  upper=p95_incidence1549_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - mildel 90% range";
+band    x=cald lower=p5_incidence1549_1_  upper=p95_incidence1549_1_ / transparency=0.9 fillattrs = (color=black) legendlabel= "No program - model 90% range";
 series  x=cald y=p50_incidence1549_2_ /  lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1549_2_  upper=p95_incidence1549_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - mildel 90% range";
+band    x=cald lower=p5_incidence1549_2_  upper=p95_incidence1549_2_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 
 run;quit;
 
@@ -1244,4 +1252,4 @@ ods rtf close;
 ods listing;
 run;
 
-proc freq data=e; table effect_sw_prog_prep;run;
+
