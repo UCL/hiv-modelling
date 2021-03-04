@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm_nonewp";
 
 input 
 /*general*/
@@ -854,7 +854,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=600;  
+%let nfit=60;  
 run;
 
 data c;
