@@ -1219,8 +1219,8 @@ run;quit;
 proc sgplot data=e; 
 
 title    height=1.5 justify=center "HIV incidence amongst sex workers";
-xaxis label             = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)       valueattrs=(size=10); 
-yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 50 by 5)    valueattrs=(size=10);
+xaxis label             = 'Year'                labelattrs=(size=12)  values = (1995 to 2025 by 2)       valueattrs=(size=10); 
+yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values = (0 to 100 by 5)    valueattrs=(size=10);
 
 label p50_incidence_sw_1_  = "No sex worker program ";
 label p50_incidence_sw_2_ = "Sex worker program";
