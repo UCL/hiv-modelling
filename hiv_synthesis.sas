@@ -1958,7 +1958,9 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
-if caldate{t} = 2017.25 then do;
+
+if caldate_never_dot = 2017.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
+value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
 prep_strategy=9; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
