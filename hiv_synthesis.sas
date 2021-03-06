@@ -708,7 +708,7 @@ p_neph_stops_after_ten = 0.1;
 *sw_art_disadv;				r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  
 
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
-							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.3; sw_higher_prob_loss_at_diag = 1.5; end;
+							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.1; sw_higher_prob_loss_at_diag = 1.5; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
@@ -1960,9 +1960,10 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
+
 if caldate_never_dot = 2017.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
 value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=3; sens=0; date_prep_intro=2017.25; hivtest_type=3;
+prep_strategy=9; sens=0; date_prep_intro=2017.25; hivtest_type=3;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
@@ -2035,6 +2036,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
+		if prep_willing=1 then eff_rate_test_startprep=1;
 		end;
 	end;
 end; 
@@ -2047,6 +2049,7 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_sw_higher_int = sw_higher_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_rate_test_startprep=rate_test_startprep;
 end; 
 
 end;
@@ -3987,7 +3990,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 	end;
 
 	if prep_strategy=9 then do;
-	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	if (newp ge 1 or (epdiag=1 and epart ne 1)) and (sw=1 or 15<=age<25) and (gender=2) then prep_elig=1; 
 	end;
 
 	if prep_strategy=10 then do;
@@ -17011,7 +17014,7 @@ end;
 
 data x; set cum_l1;
 
-file "/home/rmjxxx/Scratch/_output_base_22_02_21_&dataset_id";  
+file "/home/rmjxxx/Scratch/_output_base_01_03_21_&dataset_id";  
 
 put   
 
