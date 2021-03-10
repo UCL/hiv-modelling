@@ -9,7 +9,8 @@ data d1;
 * note this file tld_prep is used for prep also - we just delete the tld_prep option;
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 
 input 
 
@@ -593,11 +594,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 if option=0 or option=1;
 
 dataset=1;
-
-proc freq; tables prep_strategy ; where option=1 and cald ge 2021.5; run;
-
-
-
 
 data d; set d1 ;
 
@@ -1259,23 +1255,17 @@ p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep
 prop_onprep_newpge2 prop_onprep_newpge3
 ;
 
-
- 
-
-
-
-
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_29_jan_21;
-
+  data a.prep_22_10_20_5pm_29_jan_21_2;
 
 set y;
 
+
+
 data y; 
 
-  set a.prep_22_10_20_5pm_29_jan_21;
-
+  set a.prep_22_10_20_5pm_29_jan_21_2;
 
 
   options nomprint;
@@ -1623,7 +1613,8 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_prep_29_jan_21;
+  data a.wide_prep_29_jan_21_2;
+* data a.wide_prep_29_jan_21;
 * data a.wide_prep_21_jan_21;
 * data a.wide_prep_10_jan_21; 
 
