@@ -1450,7 +1450,7 @@ if sw = 1 then do;
 
 	e=uniform(0);
 	if e < 0.1 then newp=0;
-	if 0.1 <= e < 0.5 then do; q=uniform(0);
+	else if 0.1 <= e < 0.5 then do; q=uniform(0);
 		if         q < 0.7  then newp=1;
 		if 0.7  <= q < 0.8  then newp=2;
 		if 0.8  <= q < 0.9  then newp=3;
@@ -3415,12 +3415,12 @@ if t ge 2 then do;
 	* transition to a new level with these probabilities and select newp;
 	e = uniform(0);
 	if e < newp_lev1_prob then newp=0;
-	if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=uniform(0);
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=uniform(0);
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=uniform(0); newp = 7 + (q*14); newp = round(newp,1); end;
-	if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=uniform(0); newp = 21 + (q*29); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=uniform(0); newp = 7 + (q*14); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=uniform(0); newp = 21 + (q*29); newp = round(newp,1); end;
 	else do; q=uniform(0); newp = 51 + (q*100); newp = round(newp,1);  end;
 end;
 
