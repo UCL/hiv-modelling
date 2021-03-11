@@ -12578,8 +12578,8 @@ prep_adhl50 =0;	if prep=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;
 if prep=1 then do;
 	if (15<=age<49) then onprep_1549=1;
-	if gender=1 and (15<=age<49) then onprep_m=1;
-	if gender=2 and (15<=age<49) then onprep_w=1;
+	if gender=1 then onprep_m=1;
+	if gender=2 then onprep_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
@@ -12607,6 +12607,25 @@ if started_prep_hiv_test_sens_e = 1 then hiv_prep_reason_2=1;
 if infected_prep=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
 if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
+
+
+elig_prep_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=10))
+then elig_prep_epdiag=1;
+
+* so can calculate proportion of newp with person on prep;
+newp_prep = 0; if prep=1 then newp_prep=newp;
+
+prep_elig_past_year=0;prep_elig_past_3year=0;prep_elig_past_5year=0;
+if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_3year=1;
+if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_5year=1;
+
+prop_elig_years_onprep_a2021=0;
+if cum_years_prep_elig_a2021 > 0 and registd ne 1 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
+
+continuous_prep_ge1yr=0; if prep=1 and continuous_prep_use >= 1 then continuous_prep_ge1yr=1;
+
+
 
 
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
@@ -12726,6 +12745,15 @@ else if gender=2 then do;
 	if sw = 1 		   then do;  ever_tested_sw   =ever_tested; diag_sw   =registd; onart_sw   =onart;vs_sw=vl1000; end;
 	if sw ne 1           then      ever_tested_sw=0;
 end;
+
+year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
+year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
+if 0 <= caldate&j - infection < 1 and registd ne 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
+if 1 <= caldate&j - infection < 2 and registd ne 1 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
+if 2 <= caldate&j - infection < 3 and registd ne 1 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
+if 3 <= caldate&j - infection < 4 and registd ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
+if 4 <= caldate&j - infection < 5 and registd ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
+
 
 
 ***Pregnancy outcomes;
@@ -13240,8 +13268,10 @@ if prep=1 then newp_this_per_age1524w_onprep=1;
 if prep ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
+
 newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
 newp_this_per_elig_prep=0;  newp_this_per_elig_prep_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
+newp_this_per_hivneg_m = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; newp_this_per_hivneg_sw = 0;
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
@@ -13253,7 +13283,21 @@ if newp_this_per=1 then do;
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
+	if gender=1 then newp_this_per_hivneg_m = 1;
+	if gender=2 then newp_this_per_hivneg_w = 1;
+	if gender=2 and 15 <= age < 25 then newp_this_per_hivneg_age1524w = 1;
+	if sw=1 then newp_this_per_hivneg_sw = 1;
+
 end;
+
+newp_this_per_hivneg_m_prep = 0; newp_this_per_hivneg_w_prep = 0; newp_tp_hivneg_age1524w_prep = 0; newp_this_per_hivneg_sw_prep = 0 ;
+if prep=1 then do;
+if newp_this_per_hivneg_m = 1 then newp_this_per_hivneg_m_prep = 1;
+if newp_this_per_hivneg_w = 1 then newp_this_per_hivneg_w_prep = 1;
+if newp_this_per_hivneg_age1524w = 1 then newp_tp_hivneg_age1524w_prep = 1;
+if newp_this_per_hivneg_sw = 1 then newp_this_per_hivneg_sw_prep = 1 ;
+end;
+
 
 newp_hivneg=0;
 if hiv ne 1 then newp_hivneg = max(newp,0);
@@ -14319,7 +14363,13 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_prepuptake_pop + prepuptake_pop ; s_prob_prep_restart_choice + prob_prep_restart_choice ; s_prep_all_past_year + prep_all_past_year ;
     s_tot_yrs_prep_gt_5 + tot_yrs_prep_gt_5 ; s_tot_yrs_prep_gt_10 + tot_yrs_prep_gt_10 ; s_tot_yrs_prep_gt_20 + tot_yrs_prep_gt_20 ;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;    
-       
+	s_prep_elig_past_year + prep_elig_past_year ; s_prep_elig_past_3year + prep_elig_past_3year ; s_prep_elig_past_5year + prep_elig_past_5year ;
+	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_a2021 + prop_elig_years_onprep_a2021 ;  s_continuous_prep_ge1yr + continuous_prep_ge1yr;
+	s_newp_this_per_hivneg_m  +  newp_this_per_hivneg_m ; s_newp_this_per_hivneg_w +  newp_this_per_hivneg_w ;   
+	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
+	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
+	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
+ 
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -14384,6 +14434,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
+	s_year_1_infection + year_1_infection ; s_year_2_infection + year_2_infection ; s_year_3_infection + year_3_infection ; 
+	s_year_5_infection + year_5_infection ; s_year_5_infection + year_5_infection ;  
+	s_year_1_infection_diag + year_1_infection_diag ; s_year_2_infection_diag + year_2_infection_diag ; s_year_3_infection_diag + year_3_infection_diag ;
+	s_year_4_infection_diag + year_4_infection_diag ; s_year_5_infection_diag + year_5_infection_diag ;
+ 
 
 	/*ART*/
 
@@ -15602,6 +15657,10 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	prep_strategy  								
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
+s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -15633,6 +15692,10 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag  
+
+
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -16419,6 +16482,10 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	 							
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
+s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -16450,6 +16517,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -17246,6 +17316,10 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   prep_strategy
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_a2021	s_continuous_prep_ge1yr									
+s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
+
 										
 
 /*testing and diagnosis*/
@@ -17278,6 +17352,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
