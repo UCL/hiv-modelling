@@ -171,7 +171,7 @@ dcd4_cost = s_dcd4_cost * sf_2021 * discount_adj * 4 / 1000;
 dadc_cost = s_dadc_cost * sf_2021 * discount_adj * 4 / 1000;
 dtb_cost = s_dtb_cost * sf_2021 * discount_adj * 4 / 1000;
 dtest_cost = s_dtest_cost * sf_2021 * discount_adj * 4 / 1000;
-dwho3_cost = s_dwho3_cost * sf_2021 * discount_adj * 4 / 1000;
+dnon_tb_who3_cost = s_dnon_tb_who3_cost * sf_2021 * discount_adj * 4 / 1000;
 dcot_cost = s_dcot_cost * sf_2021 * discount_adj * 4 / 1000;
 dres_cost = s_dres_cost * sf_2021 * discount_adj * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2021 * discount_adj * 4 / 1000;  
@@ -193,7 +193,7 @@ if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf_2021 * discount_adj * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * sf_2021 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
 
-dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
+dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
@@ -208,13 +208,13 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 * dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
 		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
+dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
 cost_clin_care = dcost_clin_care / discount;
 
@@ -603,7 +603,7 @@ p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1
 p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
-dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
+dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dclin_cost dcost_cascade_interventions     dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
 dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
 defa_cost   ddol_cost
@@ -636,7 +636,7 @@ clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_l
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3 higher_newp_less_engagement
 fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
@@ -655,7 +655,7 @@ rate_lost   prob_lost_art   rate_return   rate_restart   rate_int_choice
 clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh  
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
 red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
-prob_return_adc   prob_lossdiag_adctb   prob_lossdiag_who3e  higher_newp_less_engagement  
+prob_return_adc   prob_lossdiag_adctb   prob_lossdiag_non_tb_who3  higher_newp_less_engagement  
 fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  
 
 condom_incr_2020     			cascade_care_improvements  incr_test_2020              decr_hard_reach_2020   
@@ -889,7 +889,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=poorer_cd4rise_fail_nn ); %par(p=poorer_cd4rise_fail_ii ); %par(p=rate_res_ten );
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
 %par(p=red_adh_tb_adc ); %par(p=red_adh_tox_pop ); %par(p=add_eff_adh_nnrti ); %par(p=altered_adh_sec_line_pop );
-%par(p=prob_return_adc ); %par(p=prob_lossdiag_adctb ); %par(p=prob_lossdiag_who3e ); %par(p=higher_newp_less_engagement );
+%par(p=prob_return_adc ); %par(p=prob_lossdiag_adctb ); %par(p=prob_lossdiag_non_tb_who3 ); %par(p=higher_newp_less_engagement );
 %par(p=fold_tr ); %par(p=switch_for_tox ); %par(p=adh_pattern_prep ); %par(p=rate_test_startprep ); %par(p=rate_test_restartprep );
 %par(p=rate_choose_stop_prep ); %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
@@ -918,7 +918,7 @@ clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_l
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3 higher_newp_less_engagement
 fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
@@ -958,7 +958,7 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par_ai1(p=clinic_not_aw_int_frac );   %par_ai1(p=rate_loss_persistence );  %par_ai1(p=incr_rate_int_low_adh ); 
 %par_ai1(p=fold_change_mut_risk );  %par_ai1(p=adh_effect_of_meas_alert );  %par_ai1(p=pr_switch_line );  %par_ai1(p=prob_vl_meas_done ); 
 %par_ai1(p=red_adh_tb_adc );  %par_ai1(p=red_adh_tox_pop );  %par_ai1(p=add_eff_adh_nnrti );  %par_ai1(p=altered_adh_sec_line_pop ); 
-%par_ai1(p=prob_return_adc );  %par_ai1(p=prob_lossdiag_adctb );  %par_ai1(p=prob_lossdiag_who3e ); %par_ai1(p=higher_newp_less_engagement ); 
+%par_ai1(p=prob_return_adc );  %par_ai1(p=prob_lossdiag_adctb );  %par_ai1(p=prob_lossdiag_non_tb_who3 ); %par_ai1(p=higher_newp_less_engagement ); 
 %par_ai1(p=fold_tr );  %par_ai1(p=switch_for_tox );  %par_ai1(p=adh_pattern_prep );   %par_ai1(p=base_rate_sw ); 
 
 %par_ai1(p=condom_incr_2020 );    			%par_ai1(p=cascade_care_improvements ); %par_ai1(p=incr_test_2020 );             %par_ai1(p=decr_hard_reach_2020 );  
@@ -994,7 +994,7 @@ rate_lost_ai1 prob_lost_art_ai1 rate_return_ai1 rate_restart_ai1 rate_int_choice
 clinic_not_aw_int_frac_ai1  rate_loss_persistence_ai1 incr_rate_int_low_adh_ai1 
 fold_change_mut_risk_ai1 adh_effect_of_meas_alert_ai1 pr_switch_line_ai1 prob_vl_meas_done_ai1 
 red_adh_tb_adc_ai1 red_adh_tox_pop_ai1 add_eff_adh_nnrti_ai1 altered_adh_sec_line_pop_ai1 
-prob_return_adc_ai1 prob_lossdiag_adctb_ai1 prob_lossdiag_who3e_ai1 higher_newp_less_engagement_ai1 
+prob_return_adc_ai1 prob_lossdiag_adctb_ai1 prob_lossdiag_non_tb_who3_ai1 higher_newp_less_engagement_ai1 
 fold_tr_ai1 switch_for_tox_ai1 adh_pattern_prep_ai1   base_rate_sw_ai1 
 
 condom_incr_2020_ai1    			cascade_care_improvements_ai1 	incr_test_2020_ai1             decr_hard_reach_2020_ai1  
