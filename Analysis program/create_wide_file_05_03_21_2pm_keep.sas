@@ -653,11 +653,7 @@ data a; set d1  ;
 if option=3 then option_new=1;
 if option=2 then option_new=2;
 
-<<<<<<< Updated upstream
 proc sort; by run cald option_new;run;
-=======
-proc sort; by run cald option;run;
->>>>>>> Stashed changes
 proc freq;table run;where cald=2014;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;

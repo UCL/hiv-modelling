@@ -159,6 +159,10 @@ d_n_d_new_inf_20_25_1 = d_n_infection_20_25_2 - d_n_infection_20_25_1;
 d_n_d_new_inf_20_40_1 = d_n_infection_20_40_2 - d_n_infection_20_40_1;
 d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
 
+<<<<<<< Updated upstream
+=======
+proc freq;table d_dcost_20_25_1;run;
+>>>>>>> Stashed changes
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
    max difference;
 /*
