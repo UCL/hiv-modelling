@@ -3,7 +3,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 ***For the paper, use 12_10_20_5pm files, with 120 suffix denoting a change in VMMC costs;
 
 data a;
-set a.wide_vmmc_12_10_20_5pm_120;
+set a.wide_vmmc_12_10_20_5pm;
 if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
 if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete; ***456 runs left after deleting above - remove 6 runs to get 450 and then add in 50 runs from output file below;
 run;
@@ -14,7 +14,7 @@ run;
 proc contents;run;
 
 data c;
-set b;  
+set a;  
 *set a b;
 *set a.wide_vmmc_23_10_20_lowart_120;
 *set a.wide_vmmc_12_10_20_5pm_120_5p;***This is assuming 5% discount rate;
@@ -143,7 +143,7 @@ proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
 */
 
 /*lowart;nnt_20_25_1=143106; nnt_20_40_1=158930; nnt_20_70_1=188993;*/
-*base/5% disc/180/60;nnt_20_25_1=144673; nnt_20_40_1=178359; nnt_20_70_1=241167;
+*base/5% disc/180/60;nnt_20_25_1=153761; nnt_20_40_1=155944; nnt_20_70_1=187050;
 
 if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
 if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
@@ -159,10 +159,7 @@ d_n_d_new_inf_20_25_1 = d_n_infection_20_25_2 - d_n_infection_20_25_1;
 d_n_d_new_inf_20_40_1 = d_n_infection_20_40_2 - d_n_infection_20_40_1;
 d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
 
-<<<<<<< Updated upstream
-=======
-proc freq;table d_dcost_20_25_1;run;
->>>>>>> Stashed changes
+
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
    max difference;
 /*
@@ -174,7 +171,7 @@ proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
 *60; max=9.6, 8.1, 9.4;
 */
 
-*base;cost_inf_avert_20_25_1=14.68*1000000; cost_inf_avert_20_40_1=15.39*1000000; cost_inf_avert_20_70_1 = 5.83*1000000;
+*base;cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=12.5*1000000; cost_inf_avert_20_70_1 = 12.6*1000000;
 /*lowart;cost_inf_avert_20_25_1=16.6*1000000; cost_inf_avert_20_40_1=13.9*1000000; cost_inf_avert_20_70_1 = 9.9*1000000;*/
 /*5% disc;cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=9.6*1000000; cost_inf_avert_20_70_1 = 6.1*1000000;*/
 /*180;cost_inf_avert_20_25_1=24.8*1000000; cost_inf_avert_20_40_1=20.1*1000000; cost_inf_avert_20_70_1 = 17.9*1000000;*/
@@ -186,9 +183,9 @@ if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_20_25_1_adults=14.7*1000000;
-cost_daly_avert_20_40_1_adults=15.4*1000000;
-cost_daly_avert_20_70_1_adults=5.8*1000000;
+cost_daly_avert_20_25_1_adults=15.2*1000000;
+cost_daly_avert_20_40_1_adults=12.5*1000000;
+cost_daly_avert_20_70_1_adults=12.6*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_20_25_1 gt 0 then cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
