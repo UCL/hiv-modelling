@@ -649,7 +649,7 @@ run;
 
 data a; set d1  ;
 
-**option=2=no further vmmc;*option=3=continuation;
+**option=2=no further vmmc=option_new 1;*option=3=continuation= option_new 2;
 if option=3 then option_new=1;
 if option=2 then option_new=2;
 
@@ -1506,10 +1506,10 @@ s_sw_newp;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_09_03_21_2pm_temp; set y;run;
+data a.vmmc_05_03_21_2pm_temp_1; set y;run;
 
 
-data y; set a.vmmc_09_03_21_2pm_temp; run;
+data y; set a.vmmc_05_03_21_2pm_temp_1; run;
 
 proc freq;table option_new;run;
 
@@ -1860,7 +1860,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_05_03_21_temp;
+  data a.wide_vmmc_05_03_21_temp_1;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
