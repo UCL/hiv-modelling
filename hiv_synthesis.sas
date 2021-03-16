@@ -1932,7 +1932,7 @@ sw_tm2=sw_tm1;
 
 tested_tm1=tested; tested=0;
 ep_tm1=ep;
-newp_tm1=newp; newp = .;
+if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
 registd_tm1 = registd; 
 onart_tm1=onart;
