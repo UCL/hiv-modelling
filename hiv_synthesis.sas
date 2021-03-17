@@ -8360,7 +8360,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
-		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17;
+		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; * dependent_on_time_step_length ;
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -10291,7 +10291,7 @@ non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_
 cost_prep=0; cost_prep_visit=0;cost_prep_ac_adh=0;
 if prep=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
-	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -10299,7 +10299,7 @@ if prep=1 and pop_wide_tld_prep ne 1 then do;
 end;
 if pop_wide_tld_prep = 1 then do;
 	cost_ten=0;	cost_3tc=0; cost_dol=0;
-	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
