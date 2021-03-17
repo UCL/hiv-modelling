@@ -5212,7 +5212,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				age_source_inf=age_newp;
 				infected_prep=0; if prep   =1 then do; 
 				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
-					if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
+				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 				end;
 			end;
 			goto xx77;
@@ -5377,7 +5377,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			age_source_inf=ageg_ep;
 			infected_prep=0; if prep   =1 then do; 
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
-				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
+			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 			end;
 		end;
 		if hiv=1 then do;
@@ -17797,7 +17797,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * note need to keep one s_n ! ;
 
 run;
-
 
 
 
