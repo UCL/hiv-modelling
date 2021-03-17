@@ -6069,15 +6069,16 @@ visit_tm1=visit;
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
 
-	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+(1/12);
-	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+(1/12);
-	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+(1/12);
-	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+(1/12);
-	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+(1/12);
-	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+(1/12);
-	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+(1/12);
-	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+(1/12);
-	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+(1/12);
+* dependent_on_time_step_length ;
+	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
+	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+0.25;
+	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+0.25;
+	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+0.25;
+	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+0.25;
+	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+0.25;
+	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
+	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
+	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 
 	c_lip_tm1=c_lip ;   c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
