@@ -1535,7 +1535,6 @@ with B or C and also that no new infections during HIV infection;
 d=uniform(0);
 hcv=0;
 if d < 0.02 then hcv=1;
-e=1;
 hbv=0;
 if d < 0.03 then hbv=1;
 
