@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_05_03_21_2pm_temp";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_05_03_21_2pm_temp300";
 
 input 
 
@@ -1506,10 +1506,10 @@ s_sw_newp;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_05_03_21_2pm_temp_1; set y;run;
+data a.vmmc_05_03_21_2pm_temp300; set y;run;
 
 
-data y; set a.vmmc_05_03_21_2pm_temp_1; run;
+data y; set a.vmmc_05_03_21_2pm_temp300; run;
 
 proc freq;table option_new;run;
 
@@ -1860,7 +1860,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_05_03_21_temp_1;
+  data a.wide_vmmc_05_03_21_temp300;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
