@@ -12939,10 +12939,9 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 2.75 then nac_ge2p75_a_zld_if_reg_op_1
 if a_zld_if_reg_op_116 = 1 and nactive >= 2.00 then nac_ge2p00_a_zld_if_reg_op_116 = 1; 
 if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_116 = 1; 
 
-*Discounting from 2020 (125th step); * 3%;  * dependent_on_time_step_length ;         
-d=&j;  
-discount = (0.9924141173)**(d-125);
-* ts1m:  discount = (0.9974649513861632)**(d-(125*3));
+*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;         
+discount = 1/(1.03**((&j-129)/4));
+
 
 
 _ly=.; _dly=.; _qaly=.; _dqaly=.;_cost_=.; _dcost_=.;_dcost_onart_=.;
@@ -13001,7 +13000,7 @@ _dcd4_cost = cd4_cost*discount ;
 _dvis_cost = vis_cost*discount ;
 _dfull_vis_cost = full_vis_cost*discount;
 _dfull_vis_cost_sv = full_vis_cost_sv*discount;
-_vis_cost_sv = vis_cost_sv*discount;
+_dvis_cost_sv = vis_cost_sv*discount;
 _dnon_tb_who3_cost = non_tb_who3_cost*discount ;
 _dcot_cost = cot_cost*discount ;
 _dtb_cost = tb_cost*discount ;
