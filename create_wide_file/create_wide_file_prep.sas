@@ -29,7 +29,6 @@ s_ageg6569m		s_ageg7074m		s_ageg7579m		s_ageg8084m		s_ageg85plm
 s_ageg6569w		s_ageg7074w		s_ageg7579w		s_ageg8084w		s_ageg85plw
 s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm	
 s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
-s_alive_w s_alive_m
 
 /*number and status of those with HIV*/
 s_hiv1564		s_hiv1549
@@ -607,8 +606,7 @@ data sf;
 set d ;
  
 if cald=2021.5;
-s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
+sf_2021 = 10000000 / s_alive_1564;
 keep run sf_2021;
 proc sort; by run;
 
@@ -828,7 +826,7 @@ s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
 s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
-* s_alive;						s_alive = s_alive_m + s_alive_w ;
+* s_alive;						* s_alive = s_alive_m + s_alive_w ;
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
@@ -1152,7 +1150,7 @@ n_infection  = s_primary     * sf_2021 * 4;
 
 
 keep run option cald dataset cost
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
@@ -1312,7 +1310,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
+%var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
 %var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);  %var(v=prep_strategy);
 %var(v=n_tested_m);
@@ -1377,7 +1375,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep  prep_strategy
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
