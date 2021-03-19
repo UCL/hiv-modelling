@@ -73,7 +73,7 @@ incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_ini
 - consider higher pr_art_init if diagnosed while on prep
 
 - proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested –ve and np=0, start tld if np goes >= 1) 
+alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested -ve and np=0, start tld if np goes >= 1)
 sample these)
 
 - is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
@@ -1119,7 +1119,7 @@ if gender ne . then do; obs+1; end;
 *
 cia world factbook 
 malawi
-Total population (x 1000)	Population aged 0E4 (%)	Population aged 15E4 (%)	Population aged 65+ (%)   n population aged 15E4
+Total population (x 1000)	Population aged 0 E4 (%)	Population aged 15 E4 (%)	Population aged 65+ (%)   n population aged 15 E4
 1990	9 381	45.9	51.4	2.7		4821000
 1995	9 883	44.7	52.2	3.1		5159000
 2000	11 229	45.8	51.1	3.1		5738000
@@ -1418,61 +1418,56 @@ end;
 
 
 
-sw =0; 
-e=uniform(0);
+sw = 0;
 
-if gender =2 then do;
+if gender = 2 and life_sex_risk >= 2 then do;
+	select;
+		when (15 <= age < 20) prob_sw_init = 0.040;
+		when (20 <= age < 25) prob_sw_init = 0.020;
+		when (25 <= age < 40) prob_sw_init = 0.010;
+		when (40 <= age < 50) prob_sw_init = 0.002;
+		otherwise prob_sw_init = 0;
+	end;
 
-if life_sex_risk = 3 then e = e / 3;													  
-														
-if 15 <= age < 18 and life_sex_risk ge 2 and e < 0.040 then sw=1;
-if 18 <= age < 20 and life_sex_risk ge 2 and e < 0.040 then sw=1;
-if 20 <= age < 25 and life_sex_risk ge 2 and e < 0.020 then sw=1;
-if 25 <= age < 40 and life_sex_risk ge 2 and e < 0.010 then sw=1;
-if 40 <= age < 50 and life_sex_risk ge 2 and e < 0.002 then sw=1;
+	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
+	if uniform(0) < prob_sw_init then sw = 1;
 end;
 
 age_deb_sw=.;
 
 if sw=1 then do;
 	ever_sw=1;
-	if 18 le age lt 49 then ever_sw1849_=1;
 
 	u=uniform(0);
 	date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
-	age_deb_sw= age - (1989-date_start_sw);age_deb_sw_nm= age - (1989-date_start_sw);
+	age_deb_sw= age - (1989-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
-a=uniform(0);if a<0.95 then episodes_sw=0;if 0.95 <= a <0.98 then episodes_sw=1;if a>=0.98 then episodes_sw=2;
-episodes_sw=episodes_sw+1;
+	a=uniform(0);if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
 
-e=uniform(0); 
-if e < 0.1 then newp=0;
-if 0.1 <= e < 0.5 then do; q=uniform(0); 
-	if         q < 0.7  then newp=1;
-	if 0.7  <= q < 0.8  then newp=2;
-	if 0.8  <= q < 0.9  then newp=3;
-	if 0.9  <= q < 0.95 then newp=4;
-	if 0.95 <= q < 0.98 then newp=5;
-	if 0.98 <= q        then newp=6;
-end;
-if 0.5 <= e < 0.95 then do; q=uniform(0); 
-	newp = 6 + (q*14); newp = round(newp,1);  
-end;
-if 0.95 <= e < 0.99  then do; q=uniform(0); 
-	newp = 21 + (q*29); newp = round(newp,1);  
-end;
-if 0.99  <= e       then do; q=uniform(0); r=uniform(0); 
-	if q < 0.4 then newp= 51 + (r*24); 
-	if 0.4 <= q < 0.7 then newp= 76 + (r*24); 
-	if 0.7 <= q < 0.9 then newp= 101 + (r*24); 
-	if 0.9 <= q       then newp= 126 + (r*24); 
-	newp = round(newp,1);  
-end;
-if age > 30 then newp = min(30,newp);
+	e=uniform(0);
+	if e < 0.1 then newp=0;
+	else if 0.1 <= e < 0.5 then do; q=uniform(0);
+		if         q < 0.7  then newp=1;
+		if 0.7  <= q < 0.8  then newp=2;
+		if 0.8  <= q < 0.9  then newp=3;
+		if 0.9  <= q < 0.95 then newp=4;
+		if 0.95 <= q < 0.98 then newp=5;
+		if 0.98 <= q        then newp=6;
+	end;
+	else do;
+		select;
+			when (0.5 <= e < 0.95) do; newp_lower = 7; newp_higher = 20; end;
+			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
+			when (0.99 <= e) do; newp_lower = 51; newp_higher = 151; end;
+		end;
+		* choose uniformly between newp_lower and newp_higher;
+		newp = round(newp_lower + uniform(0) * (newp_higher - newp_lower), 1);
+	end;
+	if age > 30 then newp = min(30,newp);
 end;
 
 
@@ -1937,7 +1932,7 @@ sw_tm2=sw_tm1;
 
 tested_tm1=tested; tested=0;
 ep_tm1=ep;
-newp_tm1=newp; newp = .;
+if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
 registd_tm1 = registd; 
 onart_tm1=onart;
@@ -3297,40 +3292,35 @@ end;
 
 */
 
-
-e=uniform(0);
-
 if t ge 2  then do;
-if gender = 2 and sw_tm1  = 0 then do;
+if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 
-	if ever_sw ne 1 then do; * dependent_on_time_step_length ;
-	if 15 <= age < 20 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_1519*sqrt(rred_rc) then sw=1;
-	if 20 <= age < 25 and life_sex_risk = 2 and e < base_rate_sw*sqrt(rred_rc) then sw=1;
-	if 25 <= age < 35 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_2534*sqrt(rred_rc) then sw=1;
-	if 35 <= age < 50 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_3549*sqrt(rred_rc) then sw=1;
-
-	if 15 <= age < 20 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_1519*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
-	if 20 <= age < 25 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
-	if 25 <= age < 35 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_2534*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
-	if 35 <= age < 50 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_3549*rr_sw_life_sex_risk_3*sqrt(rred_rc) then sw=1;
-
-	if sw=1 then do; r=uniform(0);if prep_willing=0 and r < add_prepuptake_sw then prep_willing=1;end;
-	***currently SW are no more likely to be willing to take prep than gen pop;
-
+	* effect of age on becoming a sex worker;
+	select;
+		when (15 <= age < 20) sw_age_factor = rr_sw_age_1519;
+		when (20 <= age < 25) sw_age_factor = 1;
+		when (25 <= age < 35) sw_age_factor = rr_sw_age_2534;
+		when (35 <= age < 50) sw_age_factor = rr_sw_age_3549;
+		otherwise sw_age_factor = 0;
 	end;
 
-	if ever_sw = 1 then do; * dependent_on_time_step_length ;
-	if 15 <= age < 20 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_1519*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 20 <= age < 25 and life_sex_risk = 2 and e < base_rate_sw*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 25 <= age < 35 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_2534*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 35 <= age < 50 and life_sex_risk = 2 and e < base_rate_sw*rr_sw_age_3549*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
+	* dependent_on_time_step_length;
+	prob_becoming_sw = base_rate_sw * sqrt(rred_rc) * sw_age_factor;
 
-	if 15 <= age < 20 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_1519*rr_sw_life_sex_risk_3*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 20 <= age < 25 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_life_sex_risk_3*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 25 <= age < 35 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_2534*rr_sw_life_sex_risk_3*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
-	if 35 <= age < 50 and life_sex_risk = 3 and e < base_rate_sw*rr_sw_age_3549*rr_sw_life_sex_risk_3*sqrt(rred_rc)*rr_sw_prev_sw then sw=1;
+	* effect of the life sex risk on becoming a sex worker;
+	if life_sex_risk = 3 then prob_becoming_sw = prob_becoming_sw * rr_sw_life_sex_risk_3;
+
+	* effect of previously having been a sex worker on becoming a sex worker;
+	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
+
+	e = uniform(0);
+	if e < prob_becoming_sw then sw = 1;
+
+	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
+	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
+		r = uniform(0);
+		if r < add_prepuptake_sw then prep_willing = 1;
 	end;
-
 end;
 end;
 
@@ -3339,13 +3329,13 @@ end;
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
 	e=uniform(0);
-	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3 ; 
+	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 6;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 20; 
-	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 100;
+	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 50;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) <= e then newp_tm1 = 150;
 
 	if ever_sw ne 1 then do; 
-		date_start_sw = caldate{t}; age_deb_sw=age; age_deb_sw_nm=age;*LBM Apr2020 nm=not missing;
+		date_start_sw = caldate{t}; age_deb_sw=age;
 	end; 
 	if ever_sw=1 then date_restart_sw=caldate{t}; 
 end;
@@ -3400,8 +3390,6 @@ end;
 
 
 if sw = 1 then do;
-e=uniform(0);
-
 
 * sw newp levels are 
 1 	newp = 0
@@ -3413,81 +3401,27 @@ e=uniform(0);
 ;
 
 * transitions between levels * dependent_on_time_step_length ;
-if t ge 2 and newp_tm1 = 0 then do;
-	if e < sw_newp_lev_1_1 then newp=0;
-	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=uniform(0); 
+
+if t ge 2 then do;
+	* probabilities of transitioning to each level, depending on the current one;
+	select;
+		when (newp_tm1 = 0) do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
+		when (1 <= newp_tm1 <= 6) do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
+		when (7 <= newp_tm1 <= 20) do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
+		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
+		when (50 < newp_tm1) do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
+	end;
+
+	* transition to a new level with these probabilities and select newp;
+	e = uniform(0);
+	if e < newp_lev1_prob then newp=0;
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=uniform(0);
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=uniform(0); newp = 6 + (q*14); newp = round(newp,1);	 end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=uniform(0); 	newp = 21 + (q*29); newp = round(newp,1);  end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       
-	then do; 
-		q=uniform(0); r=uniform(0); 
-		if q < 0.4 then newp= 51 + (r*24); if 0.4 <= q < 0.7 then newp= 76 + (r*24); if 0.7 <= q < 0.9 then newp= 101 + (r*24);	if 0.9 <= q then newp= 126 + (r*24); 
-		newp = round(newp,1);  
-	end;
-end;
-
-
-if  t ge 2 and 1 <= newp_tm1 <= 6 then do;
-	if e < sw_newp_lev_2_1 then newp=0;
-	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=uniform(0); 
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
-	end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=uniform(0); newp = 6 + (q*14); newp = round(newp,1);	 end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=uniform(0); 	newp = 21 + (q*29); newp = round(newp,1);  end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; 
-
-	q=uniform(0); r=uniform(0); 
-	if q < 0.4 then newp= 51 + (r*24); if 0.4 <= q < 0.7 then newp= 76 + (r*24); if 0.7 <= q < 0.9 then newp= 101 + (r*24);	if 0.9 <= q then newp= 126 + (r*24); 
-	newp = round(newp,1);   
-
-	end;
-end;
-
-if  t ge 2 and 7 <= newp_tm1 <= 20 then do;
-	if e < sw_newp_lev_3_1 then newp=0;
-	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;   
-	end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=uniform(0); newp = 6 + (q*14); newp = round(newp,1);	 end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=uniform(0); 	newp = 21 + (q*29); newp = round(newp,1);  end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; 
-	q=uniform(0); r=uniform(0); 
-	if q < 0.4 then newp= 51 + (r*24); if 0.4 <= q < 0.7 then newp= 76 + (r*24); if 0.7 <= q < 0.9 then newp= 101 + (r*24);	if 0.9 <= q then newp= 126 + (r*24); 
-	newp = round(newp,1);  
-	end;
-end;
-
-if  t ge 2 and  21 <= newp_tm1 <= 50 then do;
-	if e < sw_newp_lev_4_1 then newp=0;
-	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
-	end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=uniform(0); newp = 6 + (q*14); newp = round(newp,1);	 end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=uniform(0); 	newp = 21 + (q*29); newp = round(newp,1);  end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); r=uniform(0); 
-	if q < 0.4 then newp= 51 + (r*24); if 0.4 <= q < 0.7 then newp= 76 + (r*24); if 0.7 <= q < 0.9 then newp= 101 + (r*24);	if 0.9 <= q then newp= 126 + (r*24); 
-	newp = round(newp,1);  
-	end;
-end;
-
-if  t ge 2 and  50 <  newp_tm1 then do;
-	if e < sw_newp_lev_5_1 then newp=0;
-	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;  
-	end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=uniform(0); newp = 6 + (q*14); newp = round(newp,1);	 end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=uniform(0); 	newp = 21 + (q*29); newp = round(newp,1);  end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=uniform(0); r=uniform(0); 
-	if q < 0.4 then newp= 51 + (r*24); if 0.4 <= q < 0.7 then newp= 76 + (r*24); if 0.7 <= q < 0.9 then newp= 101 + (r*24);	if 0.9 <= q then newp= 126 + (r*24); 
-	newp = round(newp,1);  
-	end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=uniform(0); newp = 7 + (q*14); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=uniform(0); newp = 21 + (q*29); newp = round(newp,1); end;
+	else do; q=uniform(0); newp = 51 + (q*100); newp = round(newp,1);  end;
 end;
 
 if age > 30 then newp = min(30,newp);
@@ -10501,7 +10435,7 @@ if  caldate{t} > death > . then do;
 	restart=.;interrupt=.;
 	lost=.;toffart   =.;
 	primary   =.;ever_tested=.;date_last_test=.;sympt_diag=.;sympt_diag_ever=.;
-	ever_ep=.;ever_newp=.;ever_sw=.;ever_sw1849_=.;years_sw=.;
+	ever_ep=.;ever_newp=.;ever_sw=.;years_sw=.;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
 	prep=.;hr_noprep=.;elig_prep_epdiag=.;elig_prep=.;	primary_prep=.;primary_hr_noprep=.; 
@@ -10511,7 +10445,7 @@ if  caldate{t} > death > . then do;
 	cum_children=.;pregnant=.;anc=.;on_sd_nvp=.;on_dual_nvp=.;int_clinic_not_aw=.;
 	dead_6m_onart=.; dead_12m_onart=.;dead_24m_onart=.;dead_36m_onart=.;
 	np_ever=.;newp_ever=.;
-	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.;age_deb_sw_nm=.; sw=.;
+	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep=.; visit_prep=.; prepstart=.; ever_stopped_prep_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 end;
@@ -10934,16 +10868,6 @@ if 20 le age_deb_sw lt 25 then age_deb_sw2024_=1;
 if 25 le age_deb_sw lt 30 then age_deb_sw2529_=1;
 if 30 le age_deb_sw lt 40 then age_deb_sw3039_=1;
 if       age_deb_sw ge 40 then age_deb_swov40_=1;
-
-***For proportion starting sw in each age cat;
-age_deb_sw_nm1519_=0;age_deb_sw_nm2024_=0;age_deb_sw_nm2529_=0;age_deb_sw_nm3039_=0;age_deb_sw_nmov40_=0;
-if sw=1 then do;
-if 15 le age_deb_sw_nm lt 20 then age_deb_sw_nm1519_=1;
-if 20 le age_deb_sw_nm lt 25 then age_deb_sw_nm2024_=1;
-if 25 le age_deb_sw_nm lt 30 then age_deb_sw_nm2529_=1;
-if 30 le age_deb_sw_nm lt 40 then age_deb_sw_nm3039_=1;
-if       age_deb_sw_nm ge 40 then age_deb_sw_nmov40_=1;
-end;
 
 actdur_sw_0to3=0;actdur_sw_3to5=0;actdur_sw_6to9=0;actdur_sw_10to19=0;actdur_sw_ov20=0;
 if 0 lt act_dur_sw lt 3 then actdur_sw_0to3=1;
@@ -14609,7 +14533,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	/*sex workers*/
 
 	s_base_rate_sw + base_rate_sw ; s_sw + sw ; s_sw_1549 + sw_1549 ; s_sw_1849 + sw_1849 ; s_sw_1519 + sw_1519 ; s_sw_2024 + sw_2024 ;
-	s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_ever_sw1849_ + ever_sw1849_ ; s_sw_1564 + sw_1564 ;
+	s_sw_2529 + sw_2529 ; s_sw_3039 + sw_3039 ; s_sw_ov40 + sw_ov40 ; s_ever_sw + ever_sw ; s_sw_1564 + sw_1564 ;
 	s_ever_sw_hiv + ever_sw_hiv ; s_ever_sw_diag + ever_sw_diag ; s_hiv_sw + hiv_sw ; s_hiv_sw1849_ + hiv_sw1849_ ; s_hiv_sw1549_ + hiv_sw1549_ ; 
   	s_hiv_sw1519_ + hiv_sw1519_ ; s_hiv_sw2024_ + hiv_sw2024_ ; s_hiv_sw2529_ + hiv_sw2529_ ; s_hiv_sw3039_ + hiv_sw3039_ ; s_hiv_swov40_ + hiv_swov40_ ;              
 	s_i_fsw_v1_np + i_fsw_v1_np ; s_i_fsw_v2_np + i_fsw_v2_np ; s_i_fsw_v3_np + i_fsw_v3_np ; s_i_fsw_v4_np + i_fsw_v4_np ; 
@@ -14620,8 +14544,6 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_age_deb_sw1519_ + age_deb_sw1519_;  s_age_deb_sw2024_ + age_deb_sw2024_;  s_age_deb_sw2529_ + age_deb_sw2529_;
 	s_age_deb_sw3039_ + age_deb_sw3039_;  s_age_deb_swov40_ + age_deb_swov40_; 
-	s_age_deb_sw_nm1519_ + age_deb_sw_nm1519_;  s_age_deb_sw_nm2024_ + age_deb_sw_nm2024_;  s_age_deb_sw_nm2529_ + age_deb_sw_nm2529_;
-	s_age_deb_sw_nm3039_ + age_deb_sw_nm3039_;  s_age_deb_sw_nmov40_ + age_deb_sw_nmov40_; 
 
 	s_age_stop_sw1519_ + age_stop_sw1519_;  s_age_stop_sw2024_ + age_stop_sw2024_;  s_age_stop_sw2529_ + age_stop_sw2529_;
 	s_age_stop_sw3039_ + age_stop_sw3039_;  s_age_stop_swov40_ + age_stop_swov40_; 
@@ -15907,7 +15829,7 @@ s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
-s_ever_sw  s_ever_sw1849_  s_ever_sw_hiv  s_ever_sw_diag
+s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
@@ -15918,7 +15840,6 @@ s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw
 s_vs_sw
 
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
-s_age_deb_sw_nm1519_  s_age_deb_sw_nm2024_  s_age_deb_sw_nm2529_  s_age_deb_sw_nm3039_  s_age_deb_sw_nmov40_ 
 
 s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  s_age_stop_swov40_ 
 
@@ -16735,7 +16656,7 @@ s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
-s_ever_sw  s_ever_sw1849_  s_ever_sw_hiv  s_ever_sw_diag
+s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
@@ -16745,7 +16666,6 @@ s_episodes_sw  s_sw_gt1ep
 s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw  
 s_vs_sw
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
-s_age_deb_sw_nm1519_  s_age_deb_sw_nm2024_  s_age_deb_sw_nm2529_  s_age_deb_sw_nm3039_  s_age_deb_sw_nmov40_ 
 
 s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  s_age_stop_swov40_ 
 
@@ -17569,7 +17489,7 @@ s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
-s_ever_sw  s_ever_sw1849_  s_ever_sw_hiv  s_ever_sw_diag
+s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
@@ -17580,7 +17500,6 @@ s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw
 s_diag_sw s_onart_sw s_vs_sw 
 
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
-s_age_deb_sw_nm1519_  s_age_deb_sw_nm2024_  s_age_deb_sw_nm2529_  s_age_deb_sw_nm3039_  s_age_deb_sw_nmov40_ 
 
 s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  s_age_stop_swov40_ 
 
