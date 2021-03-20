@@ -243,7 +243,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
 
-* p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive ;
+* p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
 
