@@ -14651,7 +14651,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 end;
 
-if 15 <= age and (death = . or caldate&j = death ) then do;
+
+* this set of sum statements apply to people who are dead as well as those alive, because we need to count dalys in people that have died before
+the age cut-off for dalys (dead_dealys) - this section should not contain any variable we want to sum across only living people;
+
+if 15 <= age or death ne . then do;
 
 	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; s_dead_allage + dead; 
 	s_dead_daly_80 + dead_daly_80 ; s_dead_ddaly_80 + dead_ddaly_80 ; 
@@ -14663,14 +14667,24 @@ if 15 <= age and (death = . or caldate&j = death ) then do;
     s_art_attrit_7yr + art_attrit_7yr ; s_art_attrit_7yr_on + art_attrit_7yr_on ; s_art_attrit_8yr + art_attrit_8yr ;
 	s_art_attrit_8yr_on + art_attrit_8yr_on ; s_dead_ddaly_ntd + dead_ddaly_ntd ; s_cost_child_hiv + cost_child_hiv ; 
 	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_ddaly_mtct + ddaly_mtct ; s_ageg6569m + ageg6569m ; s_ageg7074m + ageg7074m ;
+	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
+
+end;
+
+
+* this set of sum statements applies to when we want to sum variables for all living people of any age >= 15;
+
+if 15 <= age and (death = . or caldate&j = death ) then do; 
+
+	s_ageg6569m + ageg6569m ; s_ageg7074m + ageg7074m ;
 	s_ageg7579m + ageg7579m ; s_ageg8084m + ageg8084m ; s_ageg6569w + ageg6569w ; s_ageg7074w + ageg7074w ; s_ageg7579w + ageg7579w ;
  	s_ageg8084w + ageg8084w ; s_ageg85plw + ageg85plw ; s_ageg85plm + ageg85plm ; 
 	s_hiv6569m + hiv6569m ; s_hiv7074m + hiv7074m ; s_hiv7579m + hiv7579m ; s_hiv8084m + hiv8084m ; s_hiv6569w + hiv6569w ;
     s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_hiv85plw + hiv85plw ;s_hiv85plm + hiv85plm ; 
 	s_alive_w + alive_w ; s_alive_m + alive_m ; 
-	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
 end;
+
 
 if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
