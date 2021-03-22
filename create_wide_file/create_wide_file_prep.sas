@@ -587,6 +587,55 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+keep 
+
+run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos
+s_m_1524_newp  s_m_2534_newp s_m_3544_newp s_m_4554_newp s_m_5564_newp s_w_1524_newp  s_w_2534_newp s_w_3544_newp s_w_4554_newp s_w_5564_newp 
+s_i_age1_m_newp s_i_age2_m_newp s_i_age3_m_newp s_i_age4_m_newp s_i_age5_m_newp s_i_age1_w_newp s_i_age2_w_newp s_i_age3_w_newp s_i_age4_w_newp 
+s_i_age5_w_newp s_dcost_ s_cost_ s_ly s_dly s_dead_ddaly s_live_ddaly  s_dead_ddaly_ntd s_dead_ddaly_oth_dol_adv_birth_e s_ddaly_mtct 
+s_ddaly_non_aids_pre_death s_cost_zdv s_cost_ten s_cost_3tc s_cost_nev s_cost_lpr  s_cost_dar  s_cost_taz  s_cost_efa  s_cost_dol 
+s_dart_cost s_dcost_cascade_interventions s_dcost_prep s_dcost_prep_visit s_dcost_prep_ac_adh s_dcost_circ s_dcost_condom_dn
+s_dvis_cost  s_dart_1_cost  s_dart_2_cost  s_dart_3_cost  s_dart_cost  s_dvl_cost  s_dcd4_cost s_dadc_cost  s_dtb_cost  s_dtest_cost  s_dwho3_cost 
+s_dcot_cost  s_dres_cost  s_d_t_adh_int_cost  s_dcost_cascade_interventions  s_dcost_prep  s_dcost_prep_visit  s_dcost_prep_ac_adh s_dfull_vis_cost 
+s_dcost_circ s_dcost_condom_dn s_dcost_switch_line s_dcost_drug_level_test s_dcost_drug_level_test s_dcost_child_hiv 
+s_ai_naive_no_pmtct_c_nnm_ s_ai_naive_no_pmtct_c_pim_ s_ai_naive_no_pmtct_c_inm_ s_ai_naive_no_pmtct_c_rt184m_ s_ai_naive_no_pmtct_c_rt65m_ 
+s_ai_naive_no_pmtct_c_rttams_ s_mcirc_1519m  s_mcirc_2024m s_mcirc_2529m s_mcirc_3034m s_mcirc_3539m  s_mcirc_4044m s_mcirc_4549m  s_mcirc_3034m 
+s_mcirc_3539m s_mcirc_4044m s_mcirc_4549m s_hiv1519m   s_hiv2024m  s_hiv1519w  s_hiv2024w  s_pregnant  s_alive1564_w  s_m_newp  s_w_newp s_newp_ge1  
+s_alive1564  s_newp s_newp_ge1 s_newp_sw s_sw_newp_cat2  s_sw_newp_cat3 s_sw_newp_cat4 s_sw_newp_cat5 s_w1549_newp_ge1  s_m1549_newp_ge1  s_alive1549_w  
+s_alive1549_m  s_m1524_newp_ge1  s_m1524_newp_ge1 s_ageg1517m  s_ageg1819m  s_ageg1519m  s_ageg2024m  s_ageg1517w  s_ageg1819w  s_ageg1519w 
+s_ageg2024w s_newp_ge5 s_npge2_l4p_1549m  s_npge2_l4p_1549w s_sw_1564  s_sw_newp  s_tested_m  s_tested  s_diag_this_period  s_tested_4p_m1549_  
+s_diag_m1549_ s_tested_4p_w1549_  s_diag_w1549_  s_mcirc  s_alive1564_m s_mcirc_1519m s_ageg1519m s_mcirc_2024m  s_ageg2024m s_mcirc_2529m  
+s_ageg2529m s_ageg3034m  s_ageg3539m  s_ageg4044m  s_ageg4549m s_mcirc_50plm  s_ageg5054m  s_ageg5559m  s_ageg6064m 
+s_ageg1549m s_sw_1549 s_ever_sw s_sw_program_visit  s_sw_1564 s_hiv_sw s_sw_newp_cat1 s_sw_newp_cat1 s_sw_newp_cat2 s_sw_newp_cat3 
+s_sw_newp_cat4 s_sw_newp_cat5  s_newp_this_per_hivneg_m_prep  s_newp_this_per_hivneg_w_prep s_prep  s_onprep_m s_alive1564_m s_hiv1564m 
+s_onprep_w s_alive1564_w s_hiv1564w s_prep_elig_past_year s_alive1564_w  s_alive1564_m  s_hiv1564 s_prep_elig_past_5year s_prep_newp s_prep_newpg1 
+s_prep_newpg2  s_prep_newpg3  s_prep_newpg4 s_prep_newpg2 s_prep_newpg3  s_prep_newpg4  s_prep_newpg3 s_prep_newpg4  s_newp_this_per_prep 
+s_newp_this_per_hivneg  s_prep  s_elig_prep s_prep_newp  s_m_newp  s_w_newp  s_prep_newp  s_newp_hivneg  s_hiv1_prep  s_elig_prep 
+s_onprep_1524w s_ageg1519w  s_prep_sw s_sw_1564 s_hiv_sw  s_hiv1_prep  s_hiv1_prep s_prep_ever s_prep_effectiveness_non_res_v 
+s_elig_prep_w_1524  s_elig_prep_w_2534  s_elig_prep_w_3544  s_prep_w_1524  s_prep_w_2534  s_prep_w_3544  s_onart  s_prep_adhg80 
+s_hiv1549m  s_hiv1549w  s_primary1549  s_primary1549  s_primary1549w s_primary1549m s_primary1519w s_primary2024w s_primary1519m  s_primary2024m
+s_hiv1519w  s_hiv1519m  s_hiv2024w  s_hiv2024m  s_hiv2529w  s_hiv2529m  s_hiv3034w  s_hiv3034m  s_hiv3539w  s_hiv3539m  s_hiv4044w  s_hiv4044m  
+s_hiv4549w  s_hiv4549m   s_hiv_sw  s_sw_1564 s_inf_vlsupp   s_primary   s_inf_newp  s_inf_ep    s_inf_diag    s_inf_naive  
+s_inf_primary s_birth_with_inf_child  s_give_birth_with_hiv  s_diag  s_diag_m  s_diag_w s_diag_m1519_  s_diag_m2024_   s_diag_w1519_  
+s_diag_w2024_  s_diag_sw s_sw_1564 s_ai_naive_no_pmtct_c_nnm_  s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_rt184m_  
+s_ai_naive_no_pmtct_c_rt65m_ s_ai_naive_no_pmtct_c_rttams_ s_ai_naive_no_pmtct_c_inm_ s_artexp s_onart_iicu s_onart_w s_onart_m s_onart_sw s_onart 
+s_efa  s_taz  s_ten  s_zdv  s_dol  s_3tc  s_lpr  s_nev  s_tle  s_tld  s_zld  s_zla  s_otherreg s_o_zdv_tox s_o_3tc_tox s_o_ten_tox s_o_taz_tox 
+s_o_lpr_tox s_o_efa_tox s_o_nev_tox s_o_dol_tox s_o_tle_tox s_o_tld_tox s_o_zld_tox s_o_zla_tox s_o_zdv_adh_hi s_o_3tc_adh_hi s_o_ten_adh_hi 
+s_o_taz_adh_hi s_o_lpr_adh_hi s_o_efa_adh_hi s_o_nev_adh_hi s_o_dol_adh_hi s_o_tle_adh_hi s_o_tld_adh_hi s_o_zld_adh_hi s_o_zla_adh_hi 
+s_adh_hi  s_k65m_  s_m184m_  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_184m  s_vlg1000_65m  s_vlg1000_onart_65m  s_vlg1000_onart_184m s_vlg1000_onart 
+s_vlg1000_184m_ontle  s_vlg1000_ontle s_vlg1000_tams_ontle s_vlg1000_65m_ontle s_vlg1000_nnm_ontle s_vlg1000_184m_ontld s_vlg1000_65m_ontld  
+s_vlg1000_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld s_nac_ge2p75_a_zld_if_reg_op_116 s_onart_start_zld_if_reg_op_116 
+s_nac_ge2p00_a_zld_if_reg_op_116  s_nac_ge1p50_a_zld_if_reg_op_116 s_adh_hi_a_zld_if_reg_op_116 s_a_zld_if_reg_op_116  s_adh_hi_a_zld_if_reg_op_116 
+s_adh_hi_a_zld_if_reg_op_116 s_e_rt65m_st_zld_if_reg_op_116 s_startedline2 s_onart_cd4_g500 s_onart_iicu s_onart_cl200  s_drug_level_test s_linefail_ge1
+s_vl1000_art_gt6m_iicu s_vl1000_art_gt6m_iicu  s_vg1000 s_vg1000_m s_vg1000_w s_vg1000_m_1524 s_vg1000_w_1524 s_onart_m  s_onart_w  
+s_vl1000_art_gt6m_iicu_w  s_onart_gt6m_iicu_w s_vl1000_art_gt6m_iicu_m  s_onart_gt6m_iicu_m s_vl1000_art_gt6m_iicu_1524_  s_onart_gt6m_iicu_1524_  
+s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw  s_vl1000_art_12m s_art_12m  s_vl1000_art_12m  s_art_12m_onart s_vg1000  s_i_vl1000_m_newp  
+s_m_newp  s_i_vl1000_w_newp  s_w_newp s_r_efa s_o_dol_2nd_vlg1000_dolr1_adh0 s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh1 
+s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 s_iime_  s_pime_  s_nnme_  s_death_hivrel s_dead_onart s_dead_artexp  s_dead1564_ 
+s_death_hiv  s_death_hiv_m s_death_hiv_w s_death_hivrel_allage s_death_dcause3_allage  s_dead_allage  s_covid  s_death_hivrel_allage 
+s_give_birth_with_hiv  s_birth_with_inf_child  s_pregnant_ntd  s_pregnant_oth_dol_adv_birth_e s_primary1549m s_primary1549 
+s_primary     
+;
 
 
 * to focus on prep and not tld_prep;
@@ -594,11 +643,10 @@ if option=0 or option=1;
 
 dataset=1;
 
-data d; set d1 ;
-
+data d; set d1;
 
 proc sort data=d; by run cald option;run;
-proc freq data=d;table run; where cald=2021;run;
+proc freq data=d; table run; where cald=2021;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
