@@ -1534,9 +1534,9 @@ with B or C and also that no new infections during HIV infection;
 d=uniform(0);
 hcv=0;
 if d < 0.02 then hcv=1;
-e=1;
+e=uniform(0);
 hbv=0;
-if d < 0.03 then hbv=1;
+if e < 0.03 then hbv=1;
 
 
 u=uniform(0);low_preg_risk=0;
@@ -5147,6 +5147,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				age_source_inf=age_newp;
 				infected_prep=0; if prep   =1 then do; 
 				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
+				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 				end;
 			end;
 			goto xx77;
@@ -5311,11 +5312,12 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			age_source_inf=ageg_ep;
 			infected_prep=0; if prep   =1 then do; 
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
+			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 			end;
 		end;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
-		    a=uniform(0);b=uniform(0);
+		    b=uniform(0);
     		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
@@ -6036,15 +6038,16 @@ visit_tm1=visit;
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
 
-	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+(1/12);
-	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+(1/12);
-	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+(1/12);
-	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+(1/12);
-	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+(1/12);
-	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+(1/12);
-	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+(1/12);
-	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+(1/12);
-	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+(1/12);
+* dependent_on_time_step_length ;
+	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
+	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+0.25;
+	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+0.25;
+	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+0.25;
+	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+0.25;
+	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+0.25;
+	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
+	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
+	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 
 	c_lip_tm1=c_lip ;   c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
@@ -8326,7 +8329,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
-		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17;
+		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; * dependent_on_time_step_length ;
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -10257,7 +10260,7 @@ non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_
 cost_prep=0; cost_prep_visit=0;cost_prep_ac_adh=0;
 if prep=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
-	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -10265,7 +10268,7 @@ if prep=1 and pop_wide_tld_prep ne 1 then do;
 end;
 if pop_wide_tld_prep = 1 then do;
 	cost_ten=0;	cost_3tc=0; cost_dol=0;
-	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -12373,11 +12376,13 @@ if primary_prep=1 and started_prep_in_primary_e ne 1 then do;
 	if k65m_p = 1 then prepinfect_k65m_p=1;
 	if tam_p >= 1 then prepinfect_tam_p=1;
 	if (m184m_p+k65m_p+tam_p) >= 1 then prepinfect_prep_r_p=1;
+	if pop_wide_tld_prep=1 and (inpm_p+insm_p) ge 1 then prepinfect_prep_r_p=1;
 	if inpm_p >= 1 then prepinfect_inpm_p=1;
 	if insm_p >= 1 then prepinfect_insm_p=1;
 	*Whether these resistant virus were passed onto the individual;
 	if rm_inf = 1 then prepinfect_rtm=1; * may17;
 	if (c_rt184m_inf+c_rt65m_inf+c_rttams_inf) >= 1 then prepinfect_prep_r=1;
+	if pop_wide_tld_prep=1 and (c_inpm_inf+c_insm_inf) ge 1 then prepinfect_prep_r=1;
 	if c_rt65m_inf >= 1 then prepinfect_k65m=1;
 	if c_rt184m_inf = 1 then prepinfect_m184m=1;
 	if c_inpm_inf = 1 then prepinfect_inpm=1;
@@ -17721,7 +17726,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * note need to keep one s_n ! ;
 
 run;
-
 
 
 
