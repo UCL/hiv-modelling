@@ -4,10 +4,15 @@
 libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 
+
+
+
+
 data d1;  
 
   infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
+
 
 input 
 
@@ -584,6 +589,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+
+
 keep 
 
 run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos
@@ -599,7 +606,7 @@ s_ai_naive_no_pmtct_c_nnm_ s_ai_naive_no_pmtct_c_pim_ s_ai_naive_no_pmtct_c_inm_
 s_ai_naive_no_pmtct_c_rttams_ s_mcirc_1519m  s_mcirc_2024m s_mcirc_2529m s_mcirc_3034m s_mcirc_3539m  s_mcirc_4044m s_mcirc_4549m  s_mcirc_3034m 
 s_mcirc_3539m s_mcirc_4044m s_mcirc_4549m s_hiv1519m   s_hiv2024m  s_hiv1519w  s_hiv2024w  s_pregnant  s_alive1564_w  s_m_newp  s_w_newp s_newp_ge1  
 s_alive1564  s_newp s_newp_ge1 s_newp_sw s_sw_newp_cat2  s_sw_newp_cat3 s_sw_newp_cat4 s_sw_newp_cat5 s_w1549_newp_ge1  s_m1549_newp_ge1  s_alive1549_w  
-s_alive1549_m  s_m1524_newp_ge1  s_m1524_newp_ge1 s_ageg1517m  s_ageg1819m  s_ageg1519m  s_ageg2024m  s_ageg1517w  s_ageg1819w  s_ageg1519w 
+s_alive1549_m  s_alive1549 s_m1524_newp_ge1  s_m1524_newp_ge1 s_ageg1517m  s_ageg1819m  s_ageg1519m  s_ageg2024m  s_ageg1517w  s_ageg1819w  s_ageg1519w 
 s_ageg2024w s_newp_ge5 s_npge2_l4p_1549m  s_npge2_l4p_1549w s_sw_1564  s_sw_newp  s_tested_m  s_tested  s_diag_this_period  s_tested_4p_m1549_  
 s_diag_m1549_ s_tested_4p_w1549_  s_diag_w1549_  s_mcirc  s_alive1564_m s_mcirc_1519m s_ageg1519m s_mcirc_2024m  s_ageg2024m s_mcirc_2529m  
 s_ageg2529m s_ageg3034m  s_ageg3539m  s_ageg4044m  s_ageg4549m s_mcirc_50plm  s_ageg5054m  s_ageg5559m  s_ageg6064m 
@@ -610,7 +617,7 @@ s_prep_newpg2  s_prep_newpg3  s_prep_newpg4 s_prep_newpg2 s_prep_newpg3  s_prep_
 s_newp_this_per_hivneg  s_prep  s_elig_prep s_prep_newp  s_m_newp  s_w_newp  s_prep_newp  s_newp_hivneg  s_hiv1_prep  s_elig_prep 
 s_onprep_1524w s_ageg1519w  s_prep_sw s_sw_1564 s_hiv_sw  s_hiv1_prep  s_hiv1_prep s_prep_ever s_prep_effectiveness_non_res_v 
 s_elig_prep_w_1524  s_elig_prep_w_2534  s_elig_prep_w_3544  s_prep_w_1524  s_prep_w_2534  s_prep_w_3544  s_onart  s_prep_adhg80 
-s_hiv1549m  s_hiv1549w  s_primary1549  s_primary1549  s_primary1549w s_primary1549m s_primary1519w s_primary2024w s_primary1519m  s_primary2024m
+s_hiv1549m  s_hiv1549w s_hiv1549 s_primary1549  s_primary1549  s_primary1549w s_primary1549m s_primary1519w s_primary2024w s_primary1519m  s_primary2024m
 s_hiv1519w  s_hiv1519m  s_hiv2024w  s_hiv2024m  s_hiv2529w  s_hiv2529m  s_hiv3034w  s_hiv3034m  s_hiv3539w  s_hiv3539m  s_hiv4044w  s_hiv4044m  
 s_hiv4549w  s_hiv4549m   s_hiv_sw  s_sw_1564 s_inf_vlsupp   s_primary   s_inf_newp  s_inf_ep    s_inf_diag    s_inf_naive  
 s_inf_primary s_birth_with_inf_child  s_give_birth_with_hiv  s_diag  s_diag_m  s_diag_w s_diag_m1519_  s_diag_m2024_   s_diag_w1519_  
@@ -631,7 +638,156 @@ s_m_newp  s_i_vl1000_w_newp  s_w_newp s_r_efa s_o_dol_2nd_vlg1000_dolr1_adh0 s_o
 s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 s_iime_  s_pime_  s_nnme_  s_death_hivrel s_dead_onart s_dead_artexp  s_dead1564_ 
 s_death_hiv  s_death_hiv_m s_death_hiv_w s_death_hivrel_allage s_death_dcause3_allage  s_dead_allage  s_covid  s_death_hivrel_allage 
 s_give_birth_with_hiv  s_birth_with_inf_child  s_pregnant_ntd  s_pregnant_oth_dol_adv_birth_e s_primary1549m s_primary1549 
-s_primary     
+s_primary  s_ageg2529w s_ageg3034w  s_ageg3539w  s_ageg4044w  s_ageg4549w  s_vlg1000_tams_ontld  s_x_n_zld_if_reg_op_116 s_onart_gt6m_iicu 
+inc_death_rate_aids_disrup_covid 
+
+
+  dataset     m15r    m25r    m35r    m45r    m55r    w15r    w25r    w35r    w45r    w55r    sex_beh_trans_matrix_m   
+ sex_beh_trans_matrix_w     sex_age_mixing_matrix_m    sex_age_mixing_matrix_w   p_rred_p   p_hsb_p    newp_factor   eprate    conc_ep    ch_risk_diag  
+  ch_risk_diag_newp    ych_risk_beh_newp    ych2_risk_beh_newp     ych_risk_beh_ep    exp_setting_lower_p_vl1000  external_exp_factor 
+rate_exp_set_lower_p_vl1000    prob_pregnancy_base   fold_change_w   fold_change_yw   fold_change_sti   super_infection an_lin_incr_test   date_test_rate_plateau   
+  rate_testanc_inc   incr_test_rate_sympt    max_freq_testing   test_targeting  fx   adh_pattern   prob_loss_at_diag   pr_art_init  rate_lost  
+  prob_lost_art    rate_return    rate_restart   rate_int_choice   clinic_not_aw_int_frac   res_trans_factor_nn    rate_loss_persistence   incr_rate_int_low_adh   
+        poorer_cd4rise_fail_nn    poorer_cd4rise_fail_ii    rate_res_ten    fold_change_mut_risk    adh_effect_of_meas_alert   pr_switch_line  
+  prob_vl_meas_done   red_adh_tb_adc    red_adh_tox_pop    add_eff_adh_nnrti   altered_adh_sec_line_pop    prob_return_adc   prob_lossdiag_adctb 
+prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox    adh_pattern_prep   rate_test_startprep   rate_test_restartprep   
+   rate_choose_stop_prep   circ_inc_rate    p_hard_reach_w    hard_reach_higher_in_men    p_hard_reach_m   inc_cat    base_rate_sw  base_rate_stop_sexwork   
+        rred_a_p    rr_int_tox    nnrti_res_no_effect    double_rate_gas_tox_taz     incr_mort_risk_dol_weightg    sw_init_newp    sw_trans_matrix  
+  eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
+  eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   
+            eff_prob_prep_restart_choice    eff_test_targeting    zero_tdf_activity_k65r     zero_3tc_activity_m184    red_adh_multi_pill_pop   
+  greater_disability_tox     greater_tox_zdv       prep_strategy  
+  rate_sw_rred_rc    exp_setting_lower_p_vl1000     external_exp_factor    rate_exp_set_lower_p_vl1000    max_freq_testing   test_targeting  
+  prob_loss_at_diag   pr_art_init   rate_lost   prob_lost_art   rate_return  rate_restart   rate_int_choice  clinic_not_aw_int_frac   
+    rate_loss_persistence          incr_rate_int_low_adh     fold_change_mut_risk     adh_effect_of_meas_alert   pr_switch_line  
+  prob_vl_meas_done    red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop   prob_return_adc   prob_lossdiag_adctb   
+      prob_lossdiag_who3e   higher_newp_less_engagement   fold_tr    switch_for_tox  
+  adh_pattern_prep  
+  base_rate_sw  
+  condom_incr_2020  
+  cascade_care_improvements   
+          
+  incr_test_2020  
+  decr_hard_reach_2020   
+          
+  decr_prob_loss_at_diag_2020   
+          
+  decr_rate_lost_2020   
+          
+  decr_rate_lost_art_2020   
+          
+  incr_rate_return_2020   
+          
+  incr_rate_restart_2020   
+          
+  incr_rate_init_2020   
+          
+  decr_rate_int_choice_2020   
+          
+  incr_prob_vl_meas_done_2020   
+          
+  incr_pr_switch_line_2020   
+          
+  prep_improvements   
+          
+    
+          
+  inc_r_test_startprep_2020   
+          
+  incr_r_test_restartprep_2020  
+          
+          
+  circ_improvements   
+          
+  circ_inc_rate_2020   
+          
+  incr_test_targeting_2020   
+          
+  pop_wide_tld_2020   
+          
+  incr_max_freq_testing_2020   
+          
+  initial_pr_switch_line   
+          
+  initial_prob_vl_meas_done   
+          
+  sw_test_6mthly_2020   
+          
+  reg_option_switch_2020   
+          
+  art_mon_drug_levels_2020   
+          
+  ten_is_taf_2020  
+  lower_future_art_cov   
+          
+  eff_adh_prep  
+  sens_vct_test_type_3   
+          
+  eff_max_freq_testing   
+          
+  eff_rate_restart  
+  eff_prob_loss_at_diag   
+          
+  eff_rate_lost  
+  eff_prob_lost_art   
+          
+  eff_rate_return  
+  eff_pr_art_init  
+  eff_rate_int_choice   
+          
+  eff_prob_vl_meas_done   
+          
+  eff_pr_switch_line   
+          
+  eff_rate_test_startprep   
+          
+  eff_rate_test_restartprep   
+          
+  eff_rate_choose_stop_prep   
+          
+  eff_prob_prep_restart_choice  
+          
+  e_decr_hard_reach_2020   
+          
+  eff_test_targeting   
+          
+  prep_strategy  
+  vmmc_disrup_covid   
+          
+  condom_disrup_covid   
+          
+  prep_disrup_covid   
+          
+  swprog_disrup_covid   
+          
+  testing_disrup_covid   
+          
+  art_tld_disrup_covid   
+          
+  art_tld_eod_disrup_covid   
+          
+ art_init_disrup_covid   
+          
+  vl_adh_switch_disrup_covid   
+          
+  cotrim_disrup_covid   
+          
+  no_art_disrup_covid   
+          
+  art_low_adh_disrup_covid   
+          
+  cov_death_risk_mult   
+          
+  eff_rate_test_startprep   
+          
+  eff_rate_test_restartprep   
+          
+  eff_rate_choose_stop_prep   
+          
+  eff_prob_prep_restart_choice  
+          
+
+
 ;
 
 
@@ -665,8 +821,6 @@ by run ;
 
 * ================================================================================= ;
 
-zero_3tc_activity_m184   = s_zero_3tc_activity_m184 / s_n ;
-zero_tdf_activity_k65r  =  s_zero_tdf_activity_k65r / s_n ;
 
 if s_pregnant_oth_dol_adv_birth_e = . then s_pregnant_oth_dol_adv_birth_e = 0;
 
@@ -1258,7 +1412,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc
+  prep_strategy rate_sw_rred_rc
 
 exp_setting_lower_p_vl1000  
 external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
@@ -1274,9 +1428,8 @@ condom_incr_2020     			cascade_care_improvements  incr_test_2020              d
 decr_prob_loss_at_diag_2020  	decr_rate_lost_2020 		decr_rate_lost_art_2020     incr_rate_return_2020      
 incr_rate_restart_2020         incr_rate_init_2020        decr_rate_int_choice_2020  
 incr_prob_vl_meas_done_2020  
-incr_pr_switch_line_2020     	prep_improvements        	incr_adh_pattern_prep_2020  
-inc_r_test_startprep_2020  incr_r_test_restartprep_2020  decr_r_choose_stop_prep_2020  
-inc_p_prep_restart_choi_2020 incr_prepuptake_sw_2020    incr_prepuptake_pop_2020    expand_prep_to_all_2020  
+incr_pr_switch_line_2020     	prep_improvements        	  
+inc_r_test_startprep_2020  incr_r_test_restartprep_2020  
 circ_improvements  			circ_inc_rate_2020  		incr_test_targeting_2020    pop_wide_tld_2020 
 incr_max_freq_testing_2020     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_2020  
 reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
@@ -1500,7 +1653,6 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );   %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
 %par(p= incr_mort_risk_dol_weightg );
-%par(p= keep_going_1999 );  %par(p= keep_going_2004 );  %par(p= keep_going_2016 );  %par(p= keep_going_2020 ); 
 %par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
 %par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
 %par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
@@ -1533,7 +1685,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-keep_going_1999  keep_going_2004  keep_going_2016  keep_going_2020   prep_strategy rate_sw_rred_rc 
+  prep_strategy rate_sw_rred_rc 
 lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 ;
 
@@ -1572,9 +1724,8 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par_ai1(p=decr_prob_loss_at_diag_2020 ); 	%par_ai1(p=decr_rate_lost_2020 );		%par_ai1(p=decr_rate_lost_art_2020 );    %par_ai1(p=incr_rate_return_2020 );     
 %par_ai1(p=incr_rate_restart_2020 );        %par_ai1(p=incr_rate_init_2020 );       %par_ai1(p=decr_rate_int_choice_2020 ); 
 %par_ai1(p=incr_prob_vl_meas_done_2020 ); 
-%par_ai1(p=incr_pr_switch_line_2020 )    	%par_ai1(p=prep_improvements );       	%par_ai1(p=incr_adh_pattern_prep_2020 ); 
-%par_ai1(p=inc_r_test_startprep_2020 ); %par_ai1(p=incr_r_test_restartprep_2020 ); %par_ai1(p=decr_r_choose_stop_prep_2020 ); 
-%par_ai1(p=inc_p_prep_restart_choi_2020 );%par_ai1(p=incr_prepuptake_sw_2020 );   %par_ai1(p=incr_prepuptake_pop_2020 );   %par_ai1(p=expand_prep_to_all_2020 ); 
+%par_ai1(p=incr_pr_switch_line_2020 )    	%par_ai1(p=prep_improvements );       	
+%par_ai1(p=inc_r_test_startprep_2020 ); %par_ai1(p=incr_r_test_restartprep_2020 ); 
 %par_ai1(p=circ_improvements ); 			%par_ai1(p=circ_inc_rate_2020 ); 		%par_ai1(p=incr_test_targeting_2020 );   %par_ai1(p=pop_wide_tld_2020 );
 %par_ai1(p=incr_max_freq_testing_2020 );    %par_ai1(p=initial_pr_switch_line );    %par_ai1(p=initial_prob_vl_meas_done );  %par_ai1(p=sw_test_6mthly_2020 ); 
 %par_ai1(p=reg_option_switch_2020 );     %par_ai1(p=art_mon_drug_levels_2020 );      %par_ai1(p=ten_is_taf_2020 );   
@@ -1607,9 +1758,8 @@ fold_tr_ai1 switch_for_tox_ai1 adh_pattern_prep_ai1   base_rate_sw_ai1
 condom_incr_2020_ai1    			cascade_care_improvements_ai1 	incr_test_2020_ai1             decr_hard_reach_2020_ai1  
 decr_prob_loss_at_diag_2020_ai1 	decr_rate_lost_2020_ai1 		decr_rate_lost_art_2020_ai1    incr_rate_return_2020_ai1     
 incr_rate_restart_2020_ai1        	incr_rate_init_2020_ai1       	decr_rate_int_choice_2020_ai1  incr_prob_vl_meas_done_2020_ai1 
-incr_pr_switch_line_2020_ai1    	prep_improvements_ai1       	incr_adh_pattern_prep_2020_ai1 
-inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 
-inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1   	incr_prepuptake_pop_2020_ai1   expand_prep_to_all_2020_ai1 
+incr_pr_switch_line_2020_ai1    	prep_improvements_ai1       	
+inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 
 circ_improvements_ai1 				circ_inc_rate_2020_ai1 		incr_test_targeting_2020_ai1   pop_wide_tld_2020_ai1 
 incr_max_freq_testing_2020_ai1     initial_pr_switch_line_ai1 	    initial_prob_vl_meas_done_ai1  sw_test_6mthly_2020_ai1 
 reg_option_switch_2020_ai1  art_mon_drug_levels_2020_ai1   ten_is_taf_2020_ai1 	
