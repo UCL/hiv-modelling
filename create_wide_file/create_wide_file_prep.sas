@@ -6,11 +6,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-* note this file tld_prep is used for prep also - we just delete the tld_prep option;
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_21_jan_21";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 
 input 
 
@@ -681,6 +678,8 @@ s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
 s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
 
+
+
 *r_bir_w_infected_child_ = rate_birth_with_infected_child_;
 
 
@@ -1303,7 +1302,7 @@ prop_onprep_newpge2 prop_onprep_newpge3
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_29_jan_21_2;
+  data a.prep_22_10_20_5pm_29_jan_21_1;
 
 set y;
 
@@ -1311,7 +1310,8 @@ set y;
 
 data y; 
 
-  set a.prep_22_10_20_5pm_29_jan_21_2;
+  set a.prep_22_10_20_5pm_29_jan_21_1;
+
 
 
   options nomprint;
@@ -1659,8 +1659,8 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-* data a.wide_prep_29_jan_21_1;
-  data a.wide_prep_29_jan_21_2;
+  data a.wide_prep_29_jan_21_1;
+* data a.wide_prep_29_jan_21_2;
 * data a.wide_prep_29_jan_21;
 * data a.wide_prep_21_jan_21;
 * data a.wide_prep_10_jan_21; 
@@ -1673,7 +1673,7 @@ proc sort; by run;run;
 
 
 ods html;
-proc means n median p5 p95 min max ;
+proc means data=a.wide_prep_29_jan_21_1 n median p5 p95 min max ;
 var	p_mcirc_1549m_20 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20 prevalence4549m_20 incidence1549w_20 
 incidence1549m_20	p_diag_m_20   p_diag_w_20 p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   prop_w_1549_sw_20    
 p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 p_onart_cd4_l500_20  
@@ -1683,7 +1683,7 @@ ods html close;
 
 
 ods html;
-proc means n median p5 p95 min max ;
+proc means data=a.wide_prep_29_jan_21_1 n median p5 p95 min max ;
 var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21 prevalence4549m_21 incidence1549w_21 
 incidence1549m_21	p_diag_m_21   p_diag_w_21 p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21   prop_w_1549_sw_21    
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21 p_onart_cd4_l500_21  
