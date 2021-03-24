@@ -521,11 +521,10 @@ p_neph_stops_after_ten = 0.1;
 * ========== PARAMETER VALUES SAMPLED ;  * these represent both uncertainty over likely fixed biological parameters and variability over settings;
 
 ***** population growth  ***LBM Jul19;
-* inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
+* inc_cat; %sample(inc_cat, 1 2 3, 0.33 0.33 0.34);
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
-								if 0.80 <= r then base_rate_sw = 0.0025 ;  
+* base_rate_sw; %sample(base_rate_sw, 0.0015 0.002 0.0025, 0.20 0.60 0.20);
 
 
 * dependent_on_time_step_length ;
