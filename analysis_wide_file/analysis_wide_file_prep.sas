@@ -3,13 +3,11 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;    
-  set a.wide_prep_29_jan_21 ; 
+  set a.wide_prep_29_jan_21_1 ; 
 
 * to give n = 1000 setting scenarios;
 
 if run > 837709993 then delete;
-
-
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -259,6 +257,7 @@ turn continuous like fold_tr_sti into categorical
 */
 
 
+/*
 
 proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
 prep_strategy_21_22_2;
@@ -319,6 +318,7 @@ model ndb_500_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  inciden
 p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21 prep_strategy_21_22_2
 / selection=stepwise ;  run;
 
+*/
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -739,7 +739,7 @@ proc freq data=wide;   tables ce_500_x / nocum norow binomial; * exact binomial;
 * where 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 * where 0.05 <= prevalence_vg1000_21 < 0.55 ; 
 * where 3 <= av_newp_ge1_non_sw_21 < 10 ;
-  where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
+* where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 run; 
   ods html close;
 
