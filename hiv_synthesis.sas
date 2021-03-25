@@ -165,6 +165,7 @@ to do before starting testing in preparation for runs:
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000 ; 
+%let year_interv = 2020.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -1534,9 +1535,9 @@ with B or C and also that no new infections during HIV infection;
 d=uniform(0);
 hcv=0;
 if d < 0.02 then hcv=1;
-e=1;
+e=uniform(0);
 hbv=0;
-if d < 0.03 then hbv=1;
+if e < 0.03 then hbv=1;
 
 
 u=uniform(0);low_preg_risk=0;
@@ -2097,7 +2098,7 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;
 
 
 ***Changes in ART coverage (~20% lower in 3% of runs) and PrEP coverage after option start date;
-if caldate{t} = 2020.5 then do;
+if caldate{t} = &year_interv then do;
 
 *lower future ART coverage;
 if lower_future_art_cov=1 then do;							
@@ -2340,7 +2341,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 option = &s;
 
 
-if caldate_never_dot = 2021.50 then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2517,8 +2518,8 @@ if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do;
 end;
 
 
-if caldate{t} >= 2020.5 and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -2588,18 +2589,18 @@ if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_r
 end;
 
 * note circ_inc_rate_2020 = 1 means circ stops in 10-15 year olds;
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age_tm1 lt 15 then prob_circ =0;
 if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
 prob_circ = 0;test_link_circ_prob=0;
 end;
 
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age_tm1 lt 15 then prob_circ =0;
 if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
@@ -3527,7 +3528,7 @@ end;
 
 
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = 2020.5 and condom_incr_2020 = 1 then do;
+if caldate{t} = &year_interv and condom_incr_2020 = 1 then do;
 	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
@@ -5147,6 +5148,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				age_source_inf=age_newp;
 				infected_prep=0; if prep   =1 then do; 
 				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
+				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 				end;
 			end;
 			goto xx77;
@@ -5311,11 +5313,12 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			age_source_inf=ageg_ep;
 			infected_prep=0; if prep   =1 then do; 
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
+			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 			end;
 		end;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
-		    a=uniform(0);b=uniform(0);
+		    b=uniform(0);
     		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
@@ -6036,15 +6039,16 @@ visit_tm1=visit;
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
 	end;
 
-	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+(1/12);
-	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+(1/12);
-	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+(1/12);
-	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+(1/12);
-	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+(1/12);
-	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+(1/12);
-	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+(1/12);
-	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+(1/12);
-	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+(1/12);
+* dependent_on_time_step_length ;
+	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
+	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+0.25;
+	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+0.25;
+	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+0.25;
+	mr_dar_tm1=mr_dar; if tss_dar ge 0 and o_dar_tm1=0 then tss_dar = tss_dar+0.25;
+	mr_efa_tm1=mr_efa; if tss_efa ge 0 and o_efa_tm1=0 then tss_efa = tss_efa+0.25;
+	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
+	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
+	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 
 	c_lip_tm1=c_lip ;   c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
@@ -6926,7 +6930,7 @@ end;
 
 * monitoring strategy 1500 is only for people on dol who have not failed previously;
 
-if caldate{t} ge 2020.5 and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
+if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
 
 
 
@@ -8326,7 +8330,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
-		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17;
+		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; * dependent_on_time_step_length ;
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -10257,7 +10261,7 @@ non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_
 cost_prep=0; cost_prep_visit=0;cost_prep_ac_adh=0;
 if prep=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
-	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -10265,7 +10269,7 @@ if prep=1 and pop_wide_tld_prep ne 1 then do;
 end;
 if pop_wide_tld_prep = 1 then do;
 	cost_ten=0;	cost_3tc=0; cost_dol=0;
-	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh; * 1.2 is supply chain, as for arvs;
+	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -12373,11 +12377,13 @@ if primary_prep=1 and started_prep_in_primary_e ne 1 then do;
 	if k65m_p = 1 then prepinfect_k65m_p=1;
 	if tam_p >= 1 then prepinfect_tam_p=1;
 	if (m184m_p+k65m_p+tam_p) >= 1 then prepinfect_prep_r_p=1;
+	if pop_wide_tld_prep=1 and (inpm_p+insm_p) ge 1 then prepinfect_prep_r_p=1;
 	if inpm_p >= 1 then prepinfect_inpm_p=1;
 	if insm_p >= 1 then prepinfect_insm_p=1;
 	*Whether these resistant virus were passed onto the individual;
 	if rm_inf = 1 then prepinfect_rtm=1; * may17;
 	if (c_rt184m_inf+c_rt65m_inf+c_rttams_inf) >= 1 then prepinfect_prep_r=1;
+	if pop_wide_tld_prep=1 and (c_inpm_inf+c_insm_inf) ge 1 then prepinfect_prep_r=1;
 	if c_rt65m_inf >= 1 then prepinfect_k65m=1;
 	if c_rt184m_inf = 1 then prepinfect_m184m=1;
 	if c_inpm_inf = 1 then prepinfect_inpm=1;
@@ -12929,8 +12935,9 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 2.75 then nac_ge2p75_a_zld_if_reg_op_1
 if a_zld_if_reg_op_116 = 1 and nactive >= 2.00 then nac_ge2p00_a_zld_if_reg_op_116 = 1; 
 if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_116 = 1; 
 
-*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;         
-discount = 1/(1.03**((&j-129)/4));
+*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;  
+discount = 1;
+if caldate&j ge &year_interv+1 then discount = 1/(1.03**(caldate&j-(&year_interv+1)));
 
 
 
@@ -14651,7 +14658,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 end;
 
-if 15 <= age and (death = . or caldate&j = death ) then do;
+
+* this set of sum statements apply to people who are dead as well as those alive, because we need to count dalys in people that have died before
+the age cut-off for dalys (dead_dealys) - this section should not contain any variable we want to sum across only living people;
+
+if 15 <= age or death ne . then do;
 
 	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; s_dead_allage + dead; 
 	s_dead_daly_80 + dead_daly_80 ; s_dead_ddaly_80 + dead_ddaly_80 ; 
@@ -14663,12 +14674,21 @@ if 15 <= age and (death = . or caldate&j = death ) then do;
     s_art_attrit_7yr + art_attrit_7yr ; s_art_attrit_7yr_on + art_attrit_7yr_on ; s_art_attrit_8yr + art_attrit_8yr ;
 	s_art_attrit_8yr_on + art_attrit_8yr_on ; s_dead_ddaly_ntd + dead_ddaly_ntd ; s_cost_child_hiv + cost_child_hiv ; 
 	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_ddaly_mtct + ddaly_mtct ; s_ageg6569m + ageg6569m ; s_ageg7074m + ageg7074m ;
+	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
+
+end;
+
+
+* this set of sum statements applies to when we want to sum variables for all living people of any age >= 15;
+
+if 15 <= age and (death = . or caldate&j = death ) then do; 
+
+	s_ageg6569m + ageg6569m ; s_ageg7074m + ageg7074m ;
 	s_ageg7579m + ageg7579m ; s_ageg8084m + ageg8084m ; s_ageg6569w + ageg6569w ; s_ageg7074w + ageg7074w ; s_ageg7579w + ageg7579w ;
  	s_ageg8084w + ageg8084w ; s_ageg85plw + ageg85plw ; s_ageg85plm + ageg85plm ; 
 	s_hiv6569m + hiv6569m ; s_hiv7074m + hiv7074m ; s_hiv7579m + hiv7579m ; s_hiv8084m + hiv8084m ; s_hiv6569w + hiv6569w ;
     s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_hiv85plw + hiv85plw ;s_hiv85plm + hiv85plm ; 
 	s_alive_w + alive_w ; s_alive_m + alive_m ; 
-	s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
 end;
 
