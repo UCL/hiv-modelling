@@ -499,7 +499,7 @@ p_neph_stops_after_ten = 0.1;
 * dependent_on_time_step_length ;
 
 * sw_trans_matrix;   r=uniform(0);  if r < 0.25 			then sw_trans_matrix = 1;  if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
-									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r < 1.00 then sw_trans_matrix = 4;  
+									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r then sw_trans_matrix = 4;  
 
 * sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
@@ -2004,7 +2004,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
 		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
-		f=uniform(0); if f < effect_sw_prog_pers_sti then eff_rate_persist_sti = rate_persist_sti * effect_sw_prog_pers_sti;
+		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
