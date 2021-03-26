@@ -784,7 +784,6 @@ prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox   
 ;
 
 
-
 * to focus on prep and not tld_prep;
 if option=0 or option=1;
 
@@ -1344,6 +1343,7 @@ n_new_inf1549 = s_primary1549 * sf_2021 * 4;
 n_infection  = s_primary     * sf_2021 * 4;
 
 
+
 keep run option cald dataset cost
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
@@ -1456,11 +1456,9 @@ proc sort data=y;by run option;run;
 set y;
 
 
-
 data y; 
 
   set a.prep_22_10_20_5pm_29_jan_21_2;
-
 
 
   options nomprint;
