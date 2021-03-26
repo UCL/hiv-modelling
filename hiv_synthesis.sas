@@ -14692,6 +14692,7 @@ if 15 <= age and (death = . or caldate&j = death ) then do;
 
 end;
 
+
 if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
@@ -17727,7 +17728,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * note need to keep one s_n ! ;
 
 run;
-
 
 
 
