@@ -4,12 +4,13 @@
 
 data wide;  
   set a.wide_prep_29_jan_21_1 a.wide_prep_29_jan_21_2 ; 
-
-proc freq; tables run; run; 
+ 
 
 * to give n = 1000 setting scenarios;
 
 * if run > 837709993 then delete; * for file 1 to make 1000 setting scenarios;
+if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
+
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -55,7 +56,7 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1 *  60 / 60 ) +
+(dcost_prep_21_71_2  * 1 *  60  / 60 ) +
 (dcost_prep_visit_21_71_2 * 1)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2     +    
@@ -167,6 +168,32 @@ ce_500_x = 1 - ce_500 ;
 ce_100_x = 1 - ce_100 ;
 
 cost_saving = 0;  if d_dcost_21_71_2 < 0 and d_ddaly_all_21_71_2 < 0 then cost_saving = 1;
+
+
+if 0.00 <= prevalence_vg1000_21 < 0.01 then prevalence_vg1000_21_g=1;
+if 0.01 <= prevalence_vg1000_21 < 0.02 then prevalence_vg1000_21_g=2;
+if 0.02 <= prevalence_vg1000_21 < 0.03 then prevalence_vg1000_21_g=3;
+if 0.03 <= prevalence_vg1000_21 < 0.05 then prevalence_vg1000_21_g=4;
+if 0.05 <= prevalence_vg1000_21        then prevalence_vg1000_21_g=5; 
+
+prevalence_vg1000_21_g2=0; if prevalence_vg1000_21_g=2 then prevalence_vg1000_21_g2=1;
+prevalence_vg1000_21_g3=0; if prevalence_vg1000_21_g=3 then prevalence_vg1000_21_g3=1;
+prevalence_vg1000_21_g4=0; if prevalence_vg1000_21_g=4 then prevalence_vg1000_21_g4=1;
+prevalence_vg1000_21_g5=0; if prevalence_vg1000_21_g=5 then prevalence_vg1000_21_g5=1;
+
+if 0     <= p_mcirc_1549m_21 < 0.333 then p_mcirc_1549m_21_g  = 1;
+if 0.333 <= p_mcirc_1549m_21 < 0.667 then p_mcirc_1549m_21_g  = 2;
+if 0.667 <= p_mcirc_1549m_21         then p_mcirc_1549m_21_g  = 3;
+
+p_mcirc_1549m_21_g2 = 0; if p_mcirc_1549m_21_g = 2 then p_mcirc_1549m_21_g2 = 1;
+p_mcirc_1549m_21_g3 = 0; if p_mcirc_1549m_21_g = 3 then p_mcirc_1549m_21_g3 = 1;
+
+if 1     <= av_newp_ge1_non_sw_21 < 2     then av_newp_ge1_non_sw_21_g  = 1;
+if 2     <= av_newp_ge1_non_sw_21 < 3     then av_newp_ge1_non_sw_21_g  = 2;
+if 3     <= av_newp_ge1_non_sw_21         then av_newp_ge1_non_sw_21_g  = 3;
+
+av_newp_ge1_non_sw_21_g2 = 0; if av_newp_ge1_non_sw_21_g = 2 then av_newp_ge1_non_sw_21_g2 = 1;
+av_newp_ge1_non_sw_21_g3 = 0; if av_newp_ge1_non_sw_21_g = 3 then av_newp_ge1_non_sw_21_g3 = 1;
 
 
 /*
@@ -728,12 +755,6 @@ proc means; var infections_averted_21_26  ; run;
 proc freq data=wide; tables prevalence_vg1000_21 av_newp_ge1_non_sw_21 p_mcirc_1549m_21 prop_1564_hivneg_onprep_21_26_2 ; run;  
 
 
-* for figure;
-  ods html;
-proc freq data=wide;  tables ce_500_x ; 
-  where 0.00 <= prevalence_vg1000_21 < 0.01 and 3  <= av_newp_ge1_non_sw_21 < 10 and 0.333 <= p_mcirc_1549m_21 < 0.667 ;
-run; 
-  ods html close;
 
 * for table / results;
   ods html;
@@ -752,6 +773,39 @@ proc freq; tables cost_saving ; run;
 
 proc univariate; var incidence1549_21 ; where incidence1549_21 >= 1.5; run;
 proc univariate; var av_newp_ge1_non_sw_21 ; where av_newp_ge1_non_sw_21 >= 3.5; run;
+
+
+* for figure;
+  ods html;
+proc freq data=wide;  tables ce_500   ; 
+  where 0.05 <= prevalence_vg1000_21 < 0.55 and 1  <= av_newp_ge1_non_sw_21 < 2  and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
+run; 
+  ods html close;
+
+
+proc logistic  data=wide  ;
+output out = out predicted=predicted;
+model ce_500_x = 
+
+prevalence_vg1000_21_g2
+prevalence_vg1000_21_g3
+prevalence_vg1000_21_g4
+prevalence_vg1000_21_g5
+
+p_mcirc_1549m_21_g2 
+p_mcirc_1549m_21_g3 
+
+av_newp_ge1_non_sw_21_g2 
+av_newp_ge1_non_sw_21_g3 
+;
+run;
+
+data r; set out; 
+proc sort; by av_newp_ge1_non_sw_21_g p_mcirc_1549m_21_g prevalence_vg1000_21_g ;
+proc print; 
+var av_newp_ge1_non_sw_21_g p_mcirc_1549m_21_g prevalence_vg1000_21_g predicted; 
+run; 
+
 
 
 
