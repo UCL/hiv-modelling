@@ -2,12 +2,14 @@
 * note using tld_prep runs;
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
-data wide;    
-  set a.wide_prep_29_jan_21_1 ; 
+data wide;  
+  set a.wide_prep_29_jan_21_1 a.wide_prep_29_jan_21_2 ; 
+
+proc freq; tables run; run; 
 
 * to give n = 1000 setting scenarios;
 
-if run > 837709993 then delete;
+* if run > 837709993 then delete; * for file 1 to make 1000 setting scenarios;
 
 * --------------------------------------------------------------------------------------------------------------;
 
