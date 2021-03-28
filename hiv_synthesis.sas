@@ -367,7 +367,7 @@ newp_seed = 7;
 * incr_test_2020;		incr_test_2020 = 0;
 * sw_test_6mthly;		sw_test_6mthly=0;
 
-	* MOVE THESE? ;
+	*** MOVE THESE? ;
 * np_lasttest;			np_lasttest=0;  
 * newp_lasttest;		newp_lasttest=0; 
 
@@ -445,9 +445,28 @@ newp_seed = 7;
 * rel_rate_death_sbi_diag_e;		rel_rate_death_sbi_diag_e = 0.67 ; 		* effect of sbi being diagnosed early on rate of death from the sbi event; 
 * effect_visit_prob_diag_l;			effect_visit_prob_diag_l = 0.9; 		* effect of being under care on prob of an adc or tb being diagnosed late;
 
-* fx;					r=uniform(0);  if r < 0.2 then fx = 0.7; if 0.2 <= r < 0.4 then fx = 0.85; if 0.4 <= r < 0.6 then fx = 1.0; if 0.6 <= r < 0.8 then fx = 1/0.85 ; if 0.8 <= r then fx=1/0.7; * factor determining rate of natural cd4 decline;
-* gx;					r=uniform(0);  if r < 0.33 then gx = 1.0; if 0.33 <= r < 0.67 then gx = 1.5;  if 0.67 <= r  then gx = 2.0;  
+* fx;								r=uniform(0);  if r < 0.2 then fx = 0.7; if 0.2 <= r < 0.4 then fx = 0.85; if 0.4 <= r < 0.6 then fx = 1.0; if 0.6 <= r < 0.8 then fx = 1/0.85 ; if 0.8 <= r then fx=1/0.7; * factor determining rate of natural cd4 decline;
+* gx;								r=uniform(0);  if r < 0.33 then gx = 1.0; if 0.33 <= r < 0.67 then gx = 1.5;  if 0.67 <= r  then gx = 2.0;  
 
+* tb_base_prob_diag_l;				e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
+										  if e >= 0.666 then tb_base_prob_diag_l=0.75;
+* crypm_base_prob_diag_l;			e=uniform(0); if e < 0.333 then crypm_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then crypm_base_prob_diag_l=0.50;
+										  if e >= 0.666 then crypm_base_prob_diag_l=0.75;
+* sbi_base_prob_diag_l;				e=uniform(0); if e < 0.333 then sbi_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then sbi_base_prob_diag_l=0.50;
+										  if e >= 0.666 then sbi_base_prob_diag_l=0.75;
+* oth_adc_base_prob_diag_l;			e=uniform(0); if e < 0.333 then oth_adc_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then oth_adc_base_prob_diag_l=0.50;
+										  if e >= 0.666 then oth_adc_base_prob_diag_l=0.75;
+
+* rel_rate_death_tb_diag_e;			e=uniform(0); if e < 0.333 then rel_rate_death_tb_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_tb_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_tb_diag_e=0.8 ;
+* rel_rate_death_crypm_diag_e;		e=uniform(0); if e < 0.333 then rel_rate_death_crypm_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_crypm_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_crypm_diag_e=0.8 ;
+* rel_rate_death_sbi_diag_e;		e=uniform(0); if e < 0.333 then rel_rate_death_sbi_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_sbi_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_sbi_diag_e=0.8 ;
+* rel_rate_death_oth_adc_diag_e;	e=uniform(0); if e < 0.333 then rel_rate_death_oth_adc_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_oth_adc_diag_e=0.67;
+										  if e >= 0.666 then rel_rate_death_oth_adc_diag_e=0.8 ;
+* effect_visit_prob_diag_l;			e=uniform(0); if e < 0.333 then effect_visit_prob_diag_l=0.5 ; if 0.333 <= e < 0.666 then effect_visit_prob_diag_l=0.67;
+										  if e >= 0.666 then effect_visit_prob_diag_l=0.80;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -491,7 +510,7 @@ newp_seed = 7;
 * dol_higher_potency;		dol_higher_potency = 1.5;			* QUERY WHICH VALUE?
 * dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
 
-	* MOVE THIS? ;
+	*** MOVE THIS? ;
 * hard_reach;				hard_reach=0; 						* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 
 * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
@@ -554,56 +573,74 @@ newp_seed = 7;
 * zero_tdf_activity_k65r; 
 						r=uniform(0); zero_tdf_activity_k65r = 0; if r < 0.2 then zero_tdf_activity_k65r = 1; 
 
+* poorer_cd4rise_fail_ii;  
+						r=uniform(0); poorer_cd4rise_fail_ii=0; if r < 0.5 then poorer_cd4rise_fail_ii=1;
+						* dependent_on_time_step_length ;	
+* rate_res_ten;  		r=uniform(0); rate_res_ten=0.2; if r < 0.33 then rate_res_ten=0.1;  if r >= 0.67 then rate_res_ten=0.3;  
+						* dependent_on_time_step_length ;	
+* cd4_monitoring;		r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
+* red_adh_multi_pill_pop; 
+						r=uniform(0); red_adh_multi_pill_pop_v = 0.05; if r < 0.33 then red_adh_multi_pill_pop_v = 0.10; 
+							if r > 0.67 then red_adh_multi_pill_pop_v = 0.15; 
+							red_adh_multi_pill_pop = red_adh_multi_pill_pop_v * exp(normal(0)*0.5); 
+							red_adh_multi_pill_pop=round(red_adh_multi_pill_pop,.01);
+* greater_disability_tox;  
+						r=uniform(0); greater_disability_tox = 0; if r < 0.5 then greater_disability_tox = 1;
+* rr_int_tox ;			r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
+							if 0.67 <= r then rr_int_tox = 30; 
+* greater_tox_zdv;		
+						r_nau_start_zdv_lpr = 	0.03;
+						r_lip_start_zdv = 		0.015;
+						r_ane_start_zdv = 		0.03; 
+						r_head_start_zdv = 		0.1;  
+						r_lac_start_zdv = 		0.0002;
+						r = uniform(0); greater_tox_zdv = 0; if 0.33 <= r < 0.67 then greater_tox_zdv = 1;if 0.67 <= r then greater_tox_zdv = 2;
+						if greater_tox_zdv = 1 then do; r_nau_start_zdv_lpr = r_nau_start_zdv_lpr * 2 ; r_lip_start_zdv = r_lip_start_zdv* 2  ;
+						r_ane_start_zdv = r_ane_start_zdv* 2 ; r_head_start_zdv = r_head_start_zdv * 2 ; r_lac_start_zdv = r_lac_start_zdv* 2 ; end;
+						if greater_tox_zdv = 2 then do; r_nau_start_zdv_lpr = r_nau_start_zdv_lpr * 4 ; r_lip_start_zdv = r_lip_start_zdv* 4  ;
+						r_ane_start_zdv = r_ane_start_zdv* 4 ; r_head_start_zdv = r_head_start_zdv * 4 ; r_lac_start_zdv = r_lac_start_zdv* 4 ; end;
+* zdv_potency_p75;		r=uniform(0);  zdv_potency_p75 = 0; if r < 0.5 then zdv_potency_p75 = 1; 
 
+* double_rate_gas_tox_taz; 
+						r=uniform(0); double_rate_gas_tox_taz = 1; if r < 0.5 then double_rate_gas_tox_taz=2;
 
+* tox_weightg_dol ;		r=uniform(0); tox_weightg_dol = 0; if r < 0.5 then tox_weightg_dol = 1;		
+* higher_rate_res_dol ; r=uniform(0); higher_rate_res_dol = 0; if r < 0.2 then higher_rate_res_dol = 1; 
+* incr_mort_risk_dol_weightg ; 
+						r=uniform(0); if 0    <= r < 0.01  then incr_mort_risk_dol_weightg = 1;  
+								if 0.01    <= r < 0.17  then incr_mort_risk_dol_weightg = 1.1;
+								if 0.17  <= r < 0.34  then incr_mort_risk_dol_weightg = 2  ; if 0.34  <= r < 0.51 then incr_mort_risk_dol_weightg = 2.1;
+								if 0.51  <= r < 0.68  then incr_mort_risk_dol_weightg = 2.2; if 0.68  <= r < 0.85 then incr_mort_risk_dol_weightg = 3  ; 
+								if 0.85  <= r         then incr_mort_risk_dol_weightg = 4  ; 
+* oth_dol_adv_birth_e_risk;    
+						r=uniform(0); if 0.0 <= r < 0.20 then oth_dol_adv_birth_e_risk = 0.0005;
+								if 0.20 <= r < 0.60 then oth_dol_adv_birth_e_risk = 0.0015;
+								if 0.60 <= r < 0.80 then oth_dol_adv_birth_e_risk = 0.0020; 
+								if 0.80 <= r        then oth_dol_adv_birth_e_risk = 0.0030; 
+* prop_bmi_ge23;		r=uniform(0);  prop_bmi_ge23 = 0.5;  if r < 0.5 then prop_bmi_ge23 = 0.75;
+
+* nnrti_res_no_effect; r=uniform(0); nnrti_res_no_effect=0.25;  if 0.95  <= r then nnrti_res_no_effect = 0.5; 
+					   		if 0.20 <= r < 0.95 then nnrti_res_no_effect = 0  ; 
+
+* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.97 then lower_future_art_cov=0;if 0.97 <= r  then lower_future_art_cov=1;
+* higher_future_prep_cov;
+						r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
+
+* rate_birth_with_infected_child; 
+		r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
+		if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
+		if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
 
 
 ***** art: linkage, retention, monitoring, loss, return, interruption of art and restarting;
 
 
-* poorer_cd4rise_fail_ii;  r=uniform(0); poorer_cd4rise_fail_ii=0; if r < 0.5 then poorer_cd4rise_fail_ii=1;
-* rate_res_ten;  r=uniform(0); rate_res_ten=0.2; if r < 0.33 then rate_res_ten=0.1;  if r >= 0.67 then rate_res_ten=0.3;  
-* cd4_monitoring;	r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
-* red_adh_multi_pill_pop; r=uniform(0); red_adh_multi_pill_pop_v = 0.05; if r < 0.33 then red_adh_multi_pill_pop_v = 0.10; 
-										if r > 0.67 then red_adh_multi_pill_pop_v = 0.15; 
-									red_adh_multi_pill_pop = red_adh_multi_pill_pop_v * exp(normal(0)*0.5); 
-									red_adh_multi_pill_pop=round(red_adh_multi_pill_pop,.01);
-* greater_disability_tox;  r=uniform(0); greater_disability_tox = 0; if r < 0.5 then greater_disability_tox = 1;
-* greater_tox_zdv;		r = uniform(0); greater_tox_zdv = 0; if 0.33 <= r < 0.67 then greater_tox_zdv = 1;if 0.67 <= r then greater_tox_zdv = 2;
-						if greater_tox_zdv = 1 then do; r_nau_start_zdv_lpr = r_nau_start_zdv_lpr * 2 ; r_lip_start_zdv = r_lip_start_zdv* 2  ;
-						r_ane_start_zdv = r_ane_start_zdv* 2 ; r_head_start_zdv = r_head_start_zdv * 2 ; r_lac_start_zdv = r_lac_start_zdv* 2 ; end;
-						if greater_tox_zdv = 2 then do; r_nau_start_zdv_lpr = r_nau_start_zdv_lpr * 4 ; r_lip_start_zdv = r_lip_start_zdv* 4  ;
-						r_ane_start_zdv = r_ane_start_zdv* 4 ; r_head_start_zdv = r_head_start_zdv * 4 ; r_lac_start_zdv = r_lac_start_zdv* 4 ; end;
-
-
-* lower_future_art_cov; r=uniform(0); if 0 <= r < 0.97 then lower_future_art_cov=0;if 0.97 <= r  then lower_future_art_cov=1;
-* higher_future_prep_cov;r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
 
 
 
 
-* zdv_potency_p75;	r=uniform(0);  zdv_potency_p75 = 0; if r < 0.5 then zdv_potency_p75 = 1; 
-* higher_rate_res_dol ;  r=uniform(0); higher_rate_res_dol = 0; if r < 0.2 then higher_rate_res_dol = 1; 
-* rate_birth_with_infected_child; 
-		r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
-		if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
-		if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
-* nnrti_res_no_effect; r=uniform(0); nnrti_res_no_effect=0.25;  if 0.95  <= r then nnrti_res_no_effect = 0.5; 
-					   if 0.20 <= r < 0.95 then nnrti_res_no_effect = 0  ; 
-* double_rate_gas_tox_taz; r=uniform(0); double_rate_gas_tox_taz = 1; if r < 0.5 then double_rate_gas_tox_taz=2;
-* tox_weightg_dol ;	r=uniform(0); tox_weightg_dol = 0; if r < 0.5 then tox_weightg_dol = 1;		
-* incr_mort_risk_dol_weightg ; r=uniform(0); if 0    <= r < 0.01  then incr_mort_risk_dol_weightg = 1;  
-								if 0.01    <= r < 0.17  then incr_mort_risk_dol_weightg = 1.1;
-								if 0.17  <= r < 0.34  then incr_mort_risk_dol_weightg = 2  ; if 0.34  <= r < 0.51 then incr_mort_risk_dol_weightg = 2.1;
-								if 0.51  <= r < 0.68  then incr_mort_risk_dol_weightg = 2.2; if 0.68  <= r < 0.85 then incr_mort_risk_dol_weightg = 3  ; 
-								if 0.85  <= r         then incr_mort_risk_dol_weightg = 4  ; 
-* oth_dol_adv_birth_e_risk;    r=uniform(0); if 0.0 <= r < 0.20 then oth_dol_adv_birth_e_risk = 0.0005;
-								if 0.20 <= r < 0.60 then oth_dol_adv_birth_e_risk = 0.0015;
-								if 0.60 <= r < 0.80 then oth_dol_adv_birth_e_risk = 0.0020; 
-								if 0.80 <= r        then oth_dol_adv_birth_e_risk = 0.0030; 
-* prop_bmi_ge23;			r=uniform(0);  prop_bmi_ge23 = 0.5;  if r < 0.5 then prop_bmi_ge23 = 0.75;
-* rr_int_tox ;				r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
-							if 0.67 <= r then rr_int_tox = 30; 
+
+
 
 
 
@@ -631,26 +668,8 @@ newp_seed = 7;
 * effect_sw_prog_prep;       e=uniform(0);if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
 
 
-* tb_base_prob_diag_l;		e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
-										  if e >= 0.666 then tb_base_prob_diag_l=0.75;
-* crypm_base_prob_diag_l;	e=uniform(0); if e < 0.333 then crypm_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then crypm_base_prob_diag_l=0.50;
-										  if e >= 0.666 then crypm_base_prob_diag_l=0.75;
-* sbi_base_prob_diag_l;		e=uniform(0); if e < 0.333 then sbi_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then sbi_base_prob_diag_l=0.50;
-										  if e >= 0.666 then sbi_base_prob_diag_l=0.75;
-* oth_adc_base_prob_diag_l;	e=uniform(0); if e < 0.333 then oth_adc_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then oth_adc_base_prob_diag_l=0.50;
-										  if e >= 0.666 then oth_adc_base_prob_diag_l=0.75;
 
-* rel_rate_death_tb_diag_e;		e=uniform(0); if e < 0.333 then rel_rate_death_tb_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_tb_diag_e=0.67;
-										  if e >= 0.666 then rel_rate_death_tb_diag_e=0.8 ;
-* rel_rate_death_crypm_diag_e;	e=uniform(0); if e < 0.333 then rel_rate_death_crypm_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_crypm_diag_e=0.67;
-										  if e >= 0.666 then rel_rate_death_crypm_diag_e=0.8 ;
-* rel_rate_death_sbi_diag_e;	e=uniform(0); if e < 0.333 then rel_rate_death_sbi_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_sbi_diag_e=0.67;
-										  if e >= 0.666 then rel_rate_death_sbi_diag_e=0.8 ;
-* rel_rate_death_oth_adc_diag_e;e=uniform(0); if e < 0.333 then rel_rate_death_oth_adc_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_oth_adc_diag_e=0.67;
-										  if e >= 0.666 then rel_rate_death_oth_adc_diag_e=0.8 ;
 
-* effect_visit_prob_diag_l		;e=uniform(0); if e < 0.333 then effect_visit_prob_diag_l=0.5 ; if 0.333 <= e < 0.666 then effect_visit_prob_diag_l=0.67;
-										  if e >= 0.666 then effect_visit_prob_diag_l=0.80;
 
 
 
@@ -713,7 +732,6 @@ r_swi_dol_cns = 0.02;
 rate_loss_acq_pim_offart = 0.2;
 rate_loss_acq_iim_offart = 0.2;
 
-r_nau_start_zdv_lpr = 0.03 ;
 p_nau_stops_zdv_lpr = 0.5 ;
 r_dia_start_lpr = 0.02;
 p_dia_stops_lpr = 0.5 ;
@@ -726,14 +744,10 @@ r_cns_start_efa = 0.1;
 p_cns_stops_efa = 0.2;
 r_cns_start_dol = 0.05;
 p_cns_stops_dol = 0.6;
-r_lip_start_zdv = 0.015;
 r_hep_start_nev = 0.02;
 r_otx_start = 0.03;
-r_ane_start_zdv = 0.03; 
 p_ane_stops_zdv = 0.8;
-r_head_start_zdv = 0.1;  
 p_head_stops_zdv = 0.6 ;
-r_lac_start_zdv = 0.0002;
 r_neph_start_ten = 0.0035;
 p_neph_stops_ten = 0 ;
 p_neph_stops_after_ten = 0.1;
