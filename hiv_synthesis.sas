@@ -519,8 +519,8 @@ newp_seed = 7;
 * pr_switch_line;  		r=uniform(0);  pr_switch_line = 0.20;  if 0.75 <= r then pr_switch_line = 0.50; 
 						* dependent_on_time_step_length ;  
 * adh_pattern; 			r=uniform(0);  
-							if 0.00 <= r < 0.05 then adh_pattern=100 ; if 0.05 <= r < 0.70 then adh_pattern=1;   if 0.70 <= r < 0.80 then adh_pattern=2;   
-							if 0.80 <= r < 0.90 then adh_pattern=3;   if 0.90 <= r < 0.95 then adh_pattern=4; if 0.95 <= r  then adh_pattern=5; 
+							if 0.00 <= r < 0.05 then adh_pattern=1 ; if 0.05 <= r < 0.60 then adh_pattern=2; if 0.60 <= r < 0.70 then adh_pattern=3;   if 0.70 <= r < 0.80 then adh_pattern=4;   
+							if 0.80 <= r < 0.90 then adh_pattern=5;   if 0.90 <= r < 0.95 then adh_pattern=6; if 0.95 <= r  then adh_pattern=7; 
 * red_adh_tb_adc; 		red_adh_tb_adc = 0.1 * exp(normal(0)*0.5); red_adh_tb_adc=round(red_adh_tb_adc,.01);			* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 		r=uniform(0); red_adh_tox_pop_v = 0.05; if r < 0.5 then red_adh_tox_pop_v = 0.10; 				* reduced adherence in those with toxicity;
 							red_adh_tox_pop = red_adh_tox_pop_v * exp(normal(0)*0.5); red_adh_tox_pop=round(red_adh_tox_pop,.01);
@@ -1589,91 +1589,16 @@ sw_program_visit=0;
 
 * remember that there are additional negative effects on adherence of younger age, tox, adc/tb, occasional drops i adh, 2nd line; 
 
-if adh_pattern=100 then do;  
-
-*adherence pattern 100;
-e=uniform(0);f=uniform(0);
-if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; adhmic=1;end;
-if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; adhmic=1;end;
-if 0.02 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; adhmic=1;end;
-if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.02; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.02; adhmic=2;end;
-if 0.62 <= e        then do; adhav = 0.95; adhvar=0.02; adhmic=3;end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
-
-end;
-
-if adh_pattern=99 then do;
-
-*adherence pattern 99;
-e=uniform(0);f=uniform(0);
-if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; adhmic=1;end;
-if 0.03 <= e < 0.05 then do; adhav = 0.79; adhvar=0.20; adhmic=1;end;
-if 0.05 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; adhmic=1;end;
-if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.02; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.02; adhmic=2;end;
-if 0.62 <= e        then do; adhav = 0.95; adhvar=0.02; adhmic=3;end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
-
-end;
-
-
-if adh_pattern=1 then do;
+if adh_pattern=1 then do;  
 
 *adherence pattern 1;
 e=uniform(0);f=uniform(0);
-if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; adhmic=1;end;
-if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; adhmic=1;end;
-if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; adhmic=1;end;
-if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.05; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.05; adhmic=2;end;
-if 0.62 <= e        then do; adhav = 0.95; adhvar=0.05; adhmic=3;end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
-
-end;
-
-
-if adh_pattern=105 then do;
-
-*adherence pattern 105;  * means 1.5;
-e=uniform(0);f=uniform(0);
-if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; adhmic=1;end;
-if 0.12 <= e < 0.20 then do; adhav = 0.9  ; adhvar=0.06; adhmic=1;end;
-if 0.20 <= e < 0.42 then do; adhav = 0.95 ; adhvar=0.05; adhmic=2;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.95 ; adhvar=0.05; adhmic=3;end;
-if 0.62 <= e        then do; adhav = 0.95 ; adhvar=0.05; adhmic=3;end;
-
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
-
-end;
-
-
-if adh_pattern=98 then do;
-
-*adherence pattern 98;
-e=uniform(0);f=uniform(0);
-if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; adhmic=1;end;
-if 0.15 <= e < 0.42 then do; adhav = 0.95 ; adhvar=0.02; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.95 ; adhvar=0.02; adhmic=2;end;
-if 0.62 <= e < 0.8  then do; adhav = 0.95 ; adhvar=0.02; adhmic=3;end;
-if 0.8  <= e        then do; adhav = 0.95 ; adhvar=0.02; adhmic=3;end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
-
-end;
-
-
-if adh_pattern=101 then do;
-
-*adherence pattern 101;
-e=uniform(0);f=uniform(0);
-if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.05 <= e        then do; adhav = 0.90 ; adhvar=0.05; adhmic=2;end;
+if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
+if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
+if 0.02 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; end;
+if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.02; end;
+if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.02; end;
+if 0.62 <= e        then do; adhav = 0.95; adhvar=0.02; end;
 
 if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
@@ -1684,28 +1609,28 @@ if adh_pattern=2 then do;
 
 *adherence pattern 2;
 e=uniform(0);f=uniform(0);
-if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; adhmic=1;end;
-if 0.15 <= e < 0.42 then do; adhav = 0.90 ; adhvar=0.06; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.90 ; adhvar=0.05; adhmic=2;end;
-if 0.62 <= e < 0.8  then do; adhav = 0.90 ; adhvar=0.05; adhmic=3;end;
-if 0.8  <= e        then do; adhav = 0.95 ; adhvar=0.05; adhmic=3;end;
+if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
+if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
+if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; end;
+if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.05; end;
+if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.05; end;
+if 0.62 <= e        then do; adhav = 0.95; adhvar=0.05; end;
 
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
+if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
 end;
 
 
 if adh_pattern=3 then do;
 
-* adherence pattern 3 ;
+*adherence pattern 3;  
 e=uniform(0);f=uniform(0);
-if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; adhmic=1;end;
-if 0.30 <= e < 0.42 then do; adhav = 0.9 ;  adhvar=0.06; adhmic=1;end;
-if 0.42 <= e < 0.62 then do; adhav = 0.9 ; adhvar=0.06;  adhmic=2;end;
-if 0.62 <= e < 0.80 then do; adhav = 0.9 ; adhvar=0.06;  adhmic=3;end;
-if 0.80 <= e        then do; adhav = 0.95; adhvar=0.05; adhmic=3;end;
+if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
+if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
+if 0.12 <= e < 0.20 then do; adhav = 0.9  ; adhvar=0.06; end;
+if 0.20 <= e < 0.42 then do; adhav = 0.95 ; adhvar=0.05; end;
+if 0.42 <= e < 0.62 then do; adhav = 0.95 ; adhvar=0.05; end;
+if 0.62 <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
 
 if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
@@ -1714,7 +1639,39 @@ end;
 
 if adh_pattern=4 then do;
 
-* adherence pattern 4 ;
+*adherence pattern 4;
+e=uniform(0);f=uniform(0);
+if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
+if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
+if 0.15 <= e < 0.42 then do; adhav = 0.90 ; adhvar=0.06; end;
+if 0.42 <= e < 0.62 then do; adhav = 0.90 ; adhvar=0.05; end;
+if 0.62 <= e < 0.8  then do; adhav = 0.90 ; adhvar=0.05; end;
+if 0.8  <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
+
+end;
+
+
+if adh_pattern=5 then do;
+
+* adherence pattern 5 ;
+e=uniform(0);f=uniform(0);
+if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
+if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; end;
+if 0.30 <= e < 0.42 then do; adhav = 0.9 ;  adhvar=0.06; end;
+if 0.42 <= e < 0.62 then do; adhav = 0.9 ; adhvar=0.06; end;
+if 0.62 <= e < 0.80 then do; adhav = 0.9 ; adhvar=0.06; end;
+if 0.80 <= e        then do; adhav = 0.95; adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
+
+end;
+
+
+if adh_pattern=6 then do;
+
+* adherence pattern 6 ;
 e=uniform(0);f=uniform(0);
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1726,14 +1683,14 @@ if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 end;
 
 
-if adh_pattern=5 then do;
+if adh_pattern=7 then do;
 
-* adherence pattern 5 ;
+* adherence pattern 7 ;
 e=uniform(0);f=uniform(0);
-if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; adhmic=1;end;
-if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; adhmic=1;end;
-if 0.60 <= e < 0.70 then do; adhav = 0.70;  adhvar=0.06; adhmic=1;end;
-if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; adhmic=3;end;
+if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
+if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
+if 0.60 <= e < 0.70 then do; adhav = 0.70;  adhvar=0.06; end;
+if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
 
 if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
@@ -1768,10 +1725,10 @@ red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_to
 red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
-if adh_pattern_prep=1 then adhav_pr = adhav*1.00; 
-if adh_pattern_prep=2 then adhav_pr = adhav*0.90;
-if adh_pattern_prep=3 then adhav_pr = adhav*0.70;
-if adh_pattern_prep=4 then adhav_pr = adhav*0.50;
+if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
+if adh_pattern_prep=2 then adhav_prep = adhav*0.90;
+if adh_pattern_prep=3 then adhav_prep = adhav*0.70;
+if adh_pattern_prep=4 then adhav_prep = adhav*0.50;
 
 
 * willingness to take prep if offered;
@@ -2093,7 +2050,7 @@ if	higher_future_prep_cov=1 then do;
 						incr_adh_pattern_prep_2020 = 0;  
 						if _u25 < 0.95 then do; 
 							incr_adh_pattern_prep_2020 = 1; 
-							adhav_pr = adhav*1.00; 
+							adhav_prep = adhav*1.00; 
 						end;		
 
 * inc_r_test_startprep_2020; * dependent_on_time_step_length;
@@ -4217,8 +4174,8 @@ end;
 
 *Adherence to PrEP - modified Jan2017 f_prep;
 if prep = 1 then do;
-	adh=adhav_pr + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
-	if adhav_pr=0 then adh=0;
+	adh=adhav_prep + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
+	if adhav_prep=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age > 25 then do;
@@ -7210,7 +7167,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 * adherence between t-1 and t  (adh); 
 
 	if t ge 2 and onart_tm1=1 and (prep ne 1 or adh = .) then do;  * for person on prep whether pop wide tld or regular prep the adh should be
-	already defined, based on adhav_pr - if prep = 1 it means person does not know they have hiv ;
+	already defined, based on adhav_prep - if prep = 1 it means person does not know they have hiv ;
 		adh=adhav + adhvar*normal(0);
 
 * effect on adherence of alerts due to vl > 1000;
