@@ -165,6 +165,7 @@ to do before starting testing in preparation for runs:
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000 ; 
+%let year_interv = 2020.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -2135,7 +2136,7 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;
 
 
 ***Changes in ART coverage (~20% lower in 3% of runs) and PrEP coverage after option start date;
-if caldate{t} = 2020.5 then do;
+if caldate{t} = &year_interv then do;
 
 *lower future ART coverage;
 if lower_future_art_cov=1 then do;							
@@ -2378,7 +2379,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 option = &s;
 
 
-if caldate_never_dot = 2021.50 then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2555,8 +2556,8 @@ if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do;
 end;
 
 
-if caldate{t} >= 2020.5 and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-if caldate{t} >= 2020.5 and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -2626,18 +2627,18 @@ if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_r
 end;
 
 * note circ_inc_rate_2020 = 1 means circ stops in 10-15 year olds;
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age_tm1 lt 15 then prob_circ =0;
 if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
 prob_circ = 0;test_link_circ_prob=0;
 end;
 
-if t ge 2 and 2020.5 <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age_tm1 lt 15 then prob_circ =0;
 if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
@@ -3565,7 +3566,7 @@ end;
 
 
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = 2020.5 and condom_incr_2020 = 1 then do;
+if caldate{t} = &year_interv and condom_incr_2020 = 1 then do;
 	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
@@ -6967,7 +6968,7 @@ end;
 
 * monitoring strategy 1500 is only for people on dol who have not failed previously;
 
-if caldate{t} ge 2020.5 and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
+if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
 
 
 
@@ -12972,8 +12973,9 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 2.75 then nac_ge2p75_a_zld_if_reg_op_1
 if a_zld_if_reg_op_116 = 1 and nactive >= 2.00 then nac_ge2p00_a_zld_if_reg_op_116 = 1; 
 if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_116 = 1; 
 
-*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;         
-discount = 1/(1.03**((&j-129)/4));
+*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;  
+discount = 1;
+if caldate&j ge &year_interv+1 then discount = 1/(1.03**(caldate&j-(&year_interv+1)));
 
 
 
