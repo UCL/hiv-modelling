@@ -1460,7 +1460,7 @@ proc sort data=y;by run option;run;
 
 * data a.prep_22_10_20_5pm_29_jan_21_1;
 * data a.prep_22_10_20_5pm_29_jan_21_2;
-  data a.prep_22_10_20_5pm_29_jan_21_prep_eff_0;
+  data a.prep_29_jan_21_prep_eff_0;
 
 
 set y;
@@ -1470,7 +1470,7 @@ data y;
 
 * set a.prep_22_10_20_5pm_29_jan_21_1;
 * set a.prep_22_10_20_5pm_29_jan_21_2;
-  set a.prep_22_10_20_5pm_29_jan_21_prep_eff_0;
+  set a.prep_29_jan_21_prep_eff_0;
 
 
   options nomprint;
