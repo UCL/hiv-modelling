@@ -660,10 +660,8 @@ newp_seed = 7;
 * base_rate_stop_sexwork;	r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
 							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
 						* dependent_on_time_step_length ;
-* sw_trans_matrix;   	r=uniform(0);  if r < 0.125 			then sw_trans_matrix = 1;  if 0.125 <= r < 0.250 then sw_trans_matrix = 2;  
-									if 0.250 <= r < 0.375 	then sw_trans_matrix = 3;  if 0.375 <= r < 0.500 then sw_trans_matrix = 4;  
-									if 0.500 <= r < 0.625 	then sw_trans_matrix = 5;  if 0.625 <= r < 0.750 then sw_trans_matrix = 6;  
-									if 0.750 <= r < 0.875 	then sw_trans_matrix = 7;  if 0.875 <= r         then sw_trans_matrix = 8;  
+* sw_trans_matrix;   	r=uniform(0);  if r < 0.25 			then sw_trans_matrix = 1;  if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
+									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r then sw_trans_matrix = 4;  
 * sw_init_newp;    		r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 * p_rred_sw_newp;	 	r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
@@ -687,7 +685,7 @@ newp_seed = 7;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
 * effect_sw_prog_prep;      e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
-
+* effect_sw_prog_pers_sti;	e=uniform(0); if e < 0.50 then effect_sw_prog_pers_sti=0.7; if e >= 0.50 then effect_sw_prog_pers_sti=0.5;
 
 
 * CIRCUMCISION;
@@ -767,9 +765,8 @@ if prep_willing=1;
 
 
 * determining newp base categories for new sw;
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.6; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.4; p_sw_init_newp_g2=0.37; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.05; end;
-if sw_init_newp=3 then do; p_sw_init_newp_g1=0.8; p_sw_init_newp_g2=0.02; p_sw_init_newp_g3= 0.02; p_sw_init_newp_g4=0.08; p_sw_init_newp_g5=0.08; end;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.8; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.60; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
