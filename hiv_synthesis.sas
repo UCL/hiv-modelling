@@ -169,6 +169,42 @@ to do before starting testing in preparation for runs:
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
+/*
+Macro for sampling from a categorical distribution.
+
+Usage:
+%sample(<variable name>, <list of possible values>, <list of probabilities>)
+
+Example:
+To set a variable my_var to 0, 1 or 5 with probabilities 0.2, 0.1 and 0.7 respectively, use:
+%sample(my_var, 0 1 5, 0.2 0.1 0.7);
+
+The above example is essentially the same as:
+
+r = rand('uniform');
+if r < 0.2 then my_var = 0;
+if 0.2 <= r < 0.2 + 0.1 then my_var = 1;
+if 0.2 + 0.1 <= r then my_var = 5;
+
+Note that the values must be separated by spaces, as must the probabilities.
+The list of probabilities must sum to 1.
+The lengths of the two lists (values and probabilities) must be equal.
+*/
+%macro sample(name, v, p);
+	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
+	randvar = rand('uniform');
+	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
+	if randvar < &cum_prob then
+		&name = %scan(&v,1,,s);
+	%let cnt=%sysfunc(countw(&p,,s));
+	%do i=2 %to &cnt;
+		%let cum_prob = %sysevalf(&cum_prob + %scan(&p,&i,,s));
+		%let value=%scan(&v,&i,,S);
+		else %if &i < &cnt %then if randvar < &cum_prob then;
+			&name = &value;
+	%end;
+%mend sample;
+
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
 
@@ -486,11 +522,10 @@ p_neph_stops_after_ten = 0.1;
 * ========== PARAMETER VALUES SAMPLED ;  * these represent both uncertainty over likely fixed biological parameters and variability over settings;
 
 ***** population growth  ***LBM Jul19;
-* inc_cat; r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
+* inc_cat; %sample(inc_cat, 1 2 3, 0.33 0.33 0.34);
 
 ***** Sexual behaviour;
-* base_rate_sw; r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
-								if 0.80 <= r then base_rate_sw = 0.0025 ;  
+* base_rate_sw; %sample(base_rate_sw, 0.0015 0.002 0.0025, 0.20 0.60 0.20);
 
 
 * dependent_on_time_step_length ;
