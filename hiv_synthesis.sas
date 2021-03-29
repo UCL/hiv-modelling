@@ -190,6 +190,7 @@ Note that the values must be separated by spaces, as must the probabilities.
 The list of probabilities must sum to 1.
 The lengths of the two lists (values and probabilities) must be equal.
 */
+
 %macro sample(name, v, p);
 	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
 	randvar = rand('uniform');
@@ -263,8 +264,9 @@ newp_seed = 7;
 * POPULATION GROWTH AND DEMOGRAPHY;
 
 * inc_cat; 				r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
+						/*%sample(inc_cat, 1 2 3, 0.33 0.33 0.34);*/
 
-* hard_reach;			hard_reach=0; 						* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
+* hard_reach;			hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  		p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men;  
 						hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
@@ -281,12 +283,14 @@ newp_seed = 7;
 * fold_preg5564;		fold_preg5564=0.0;
 
 * prob_pregnancy_base;  r=uniform(0); prob_pregnancy_base=0.03 + r*0.08;  
-						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
+						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 
+						elseif inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 						prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 * rate_birth_with_infected_child; 
 						r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
 							if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
 							if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
+						/*%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);*/
 * rate_want_no_more_children;	
 							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
 							* dependent_on_time_step_length ;
@@ -302,6 +306,7 @@ newp_seed = 7;
 * rr_sw_prev_sw;		rr_sw_prev_sw = 10;
 
 * ch_risk_diag;  		r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.8 <= r then ch_risk_diag = 1;
+						/*%sample(ch_risk_diag, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);*/
 * ch_risk_diag_newp;  	r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;
 * ych_risk_beh_newp;  	r=uniform(0); ych_risk_beh_newp = 0.70;  if r < 0.20 then ych_risk_beh_newp = 0.80;	if 0.80 <= r then ych_risk_beh_newp = 0.60;
 * ych2_risk_beh_newp;  	r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; 
