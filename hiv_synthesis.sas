@@ -218,20 +218,47 @@ startyr = 1989 + 1/12;
 newp_seed = 7;  
 
 
-* ----------------------
+* ======================
 *** PARAMETER VALUES ***
-* ----------------------
+* ======================
+* SAMPLED PARAMETER VALUES represent both uncertainty over likely fixed biological parameters and variability over settings;
 
 
-* POPULATION GROWTH;
+* POPULATION GROWTH AND DEMOGRAPHY;
 
 * inc_cat; 				r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
 
+* hard_reach;			hard_reach=0; 						* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
+* p_hard_reach_w;  		p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* hard_reach_higher_in_men;  
+						hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* p_hard_reach_m;		p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
+
+
+
+* PREGNANCY;
+
+* can_be_pregnant;		can_be_pregnant=0.95;
+* fold_preg1524;		fold_preg1524=2;
+* fold_preg2534;		fold_preg2534=1.9; 
+* fold_preg4554;		fold_preg4554=0.2;  
+* fold_preg5564;		fold_preg5564=0.0;
+
+* prob_pregnancy_base;  r=uniform(0); prob_pregnancy_base=0.03 + r*0.08;  
+						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
+						prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
+* rate_birth_with_infected_child; 
+						r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
+							if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
+							if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
+* rate_want_no_more_children;	
+							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
+							* dependent_on_time_step_length ;
 
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_2020;		condom_incr_2020 = 0; * mar19;
+* condom_incr_2020;		condom_incr_2020 = 0; * mar19; * initialising condom_incr_2020 - this is set again in 2020 variables section
 * rr_sw_age_1519;		rr_sw_age_1519 = 1.00;
 * rr_sw_age_2534;		rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;		rr_sw_age_3549 = 0.03;
@@ -294,39 +321,6 @@ newp_seed = 7;
 
 
 
-* SEX WORKERS;
-
-* base_rate_sw; 		r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
-								if 0.80 <= r then base_rate_sw = 0.0025 ;  
-						* dependent_on_time_step_length ;
-* base_rate_stop_sexwork;	r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
-							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
-						* dependent_on_time_step_length ;
-* sw_trans_matrix;   	r=uniform(0);  if r < 0.125 			then sw_trans_matrix = 1;  if 0.125 <= r < 0.250 then sw_trans_matrix = 2;  
-									if 0.250 <= r < 0.375 	then sw_trans_matrix = 3;  if 0.375 <= r < 0.500 then sw_trans_matrix = 4;  
-									if 0.500 <= r < 0.625 	then sw_trans_matrix = 5;  if 0.625 <= r < 0.750 then sw_trans_matrix = 6;  
-									if 0.750 <= r < 0.875 	then sw_trans_matrix = 7;  if 0.875 <= r         then sw_trans_matrix = 8;  
-* sw_init_newp;    		r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
-								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
-* p_rred_sw_newp;	 	r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
-								if 0.67 <= r then p_rred_sw_newp = 0.10; * rate of sex workers moving to one category lower;
-
-
-
-* PREGNANCY;
-
-* can_be_pregnant;		can_be_pregnant=0.95;
-* fold_preg1524;		fold_preg1524=2;
-* fold_preg2534;		fold_preg2534=1.9; 
-* fold_preg4554;		fold_preg4554=0.2;  
-* fold_preg5564;		fold_preg5564=0.0;
-
-* prob_pregnancy_base;  r=uniform(0); prob_pregnancy_base=0.03 + r*0.08;  
-						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
-						prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
-
-
-
 * TRANSMISSION;
 
 * tr_rate_primary;		tr_rate_primary = 0.16; 
@@ -353,66 +347,6 @@ newp_seed = 7;
 
 
 
-* HIV TESTING;
-
-* date_start_testing;	date_start_testing = 2003.5; 
-* date_start_testanc;	date_start_testanc=2003.5;
-* initial_rate_1sttest;	initial_rate_1sttest = 0; * dependent_on_time_step_length ;
-* test_rate_who4;		test_rate_who4=0.10;  * dependent_on_time_step_length ;
-* test_rate_tb;			test_rate_tb  =0.10;  * dependent_on_time_step_length ;
-* test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; * dependent_on_time_step_length ;
-* hivtest_type;			hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
-* date_pmtct;			date_pmtct=2004;
-* pmtct_inc_rate;		pmtct_inc_rate = 0.20; * rate_per_year ; 
-* incr_test_2020;		incr_test_2020 = 0;
-* sw_test_6mthly;		sw_test_6mthly=0;
-
-	*** MOVE THESE? ;
-* np_lasttest;			np_lasttest=0;  
-* newp_lasttest;		newp_lasttest=0; 
-
-* rate_testanc_inc; 	r=uniform(0); if  r < 0.33 then rate_testanc_inc = 0.030; if 0.33 <= r < 0.66   then rate_testanc_inc = 0.050; if 0.66  <= r then rate_testanc_inc = 0.1; * jul18;
-* test_targeting;   	r=uniform(0); test_targeting =1.25 ; if r < 0.20 then test_targeting = 1.5;
-* max_freq_testing;   	r=uniform(0); max_freq_testing =1; if r < 0.20 then max_freq_testing=2; 
-* an_lin_incr_test;   	r=uniform(0); 	
-							if r < 0.1 		  then an_lin_incr_test = 0.0005; if 0.1 <= r < 0.3 then an_lin_incr_test = 0.0030; 
-					  		if 0.3 <= r < 0.5 then an_lin_incr_test = 0.0100; if 0.5 <= r < 0.7 then an_lin_incr_test = 0.0200;
-					  		if 0.7 <= r < 0.9 then an_lin_incr_test = 0.0400; if 0.9 <= r      	then an_lin_incr_test = 0.1000;
-* date_test_rate_plateau;   
-						* dependent_on_time_step_length ;
-						r=uniform(0);
-							if r < 0.1  		then date_test_rate_plateau = 2011.5; if 0.1 <= r < 0.2 then date_test_rate_plateau = 2013.5; 
-							if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4 <= r < 0.7 then date_test_rate_plateau = 2017.5; 
- 							if 0.7 <= r 		then date_test_rate_plateau = 2019.5;
-* incr_test_rate_sympt; r=uniform(0); if r < 0.2 then incr_test_rate_sympt = 1.05 ; if 0.2 <= r < 0.4 then incr_test_rate_sympt = 1.10; if 0.4 <= r < 0.6 then incr_test_rate_sympt = 1.15; if 0.6 <= r < 0.8 then incr_test_rate_sympt = 1.20;	if 0.8 <= r then incr_test_rate_sympt = 1.25; 
-						* dependent_on_time_step_length ;
-
-
-
-* CIRCUMCISION;
-
-* mc_int;				mc_int=2008;
-* test_link_circ;		test_link_circ=1; 
-* test_link_circ_prob;	test_link_circ_prob = 0.05;
-
-* circ_inc_rate; 		r=uniform(0); 	
-							if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
-							if 0.20 <= r < 0.8  then circ_inc_rate = 0.003; if 0.8 <= r < 0.9 then circ_inc_rate = 0.01;  if 0.90 <= r  then circ_inc_rate = 0.10;
-* circ_inc_15_19;		r=uniform(0); if r < 0.33 then circ_inc_15_19 = 1.5;  if 0.33 <= r < 0.66 then circ_inc_15_19 = 2.0;  if 0.66 <= r  then circ_inc_15_19=3.0; 
-* circ_red_20_30;		r=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40; if 0.66 <= r  then circ_red_20_30=0.50; 
-* circ_red_30_50;		r=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25; if 0.66 <= r  then circ_red_30_50=0.35; 
-* rel_incr_circ_post_2013;
-						r=uniform(0); 
-							if 		 	r < 0.10 then rel_incr_circ_post_2013 = 0.8; 	if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
-							if 0.35 <= 	r < 0.60 then rel_incr_circ_post_2013 = 3;  	if 0.60 <= r  		then rel_incr_circ_post_2013 = 7 ;
-						if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
-* prob_birth_circ; 		r=uniform(0); 
-							if r < 0.33 then prob_birth_circ = 0.03; if 0.33 <= r < 0.65 then prob_birth_circ = 0.05; 
-							if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_circ = 0.5;
-***LBM Jul19 check data on circ;
-
-
-
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * mean_sqrtcd4_inf;					mean_sqrtcd4_inf=27.5 ; 				* mean sqrt CD4 at infection; 
@@ -420,6 +354,13 @@ newp_seed = 7;
 * fold_incr_who3;					fold_incr_who3 = 5;
 * fold_decr_hivdeath;				fold_decr_hivdeath=0.25; 				* degree to which hiv death rate is lower than aids rate;
 * fold_change_in_risk_base_rate;	fold_change_in_risk_base_rate = 1;
+
+* rate of sti and persistence, function of newp;
+* rate_sti;							rate_sti = 1 / 20 ;
+									* dependent_on_time_step_length ;
+* rate_persist_sti;					rate_persist_sti = 1 / 5 ;
+									* dependent_on_time_step_length ;
+
 * incr_death_rate_oth_adc;			incr_death_rate_oth_adc = 5 ;
 * incr_death_rate_crypm;			incr_death_rate_crypm = 5 ;
 * incr_death_rate_sbi;				incr_death_rate_sbi = 5 ;
@@ -469,6 +410,45 @@ newp_seed = 7;
 										  if e >= 0.666 then effect_visit_prob_diag_l=0.80;
 
 
+
+* HIV TESTING;
+
+* date_start_testing;	date_start_testing = 2003.5; 
+* date_start_testanc;	date_start_testanc=2003.5;
+* initial_rate_1sttest;	initial_rate_1sttest = 0; * dependent_on_time_step_length ;
+* test_rate_who4;		test_rate_who4=0.10;  * dependent_on_time_step_length ;
+* test_rate_tb;			test_rate_tb  =0.10;  * dependent_on_time_step_length ;
+* test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; * dependent_on_time_step_length ;
+* hivtest_type;			hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
+* date_pmtct;			date_pmtct=2004;
+* pmtct_inc_rate;		pmtct_inc_rate = 0.20; * rate_per_year ; 
+* incr_test_2020;		incr_test_2020 = 0;
+* sw_test_6mthly;		sw_test_6mthly=0;
+
+* np_lasttest;			np_lasttest=0;  
+* newp_lasttest;		newp_lasttest=0; 
+
+* rate_testanc_inc; 	r=uniform(0); if  r < 0.33 then rate_testanc_inc = 0.030; if 0.33 <= r < 0.66   then rate_testanc_inc = 0.050; if 0.66  <= r then rate_testanc_inc = 0.1; * jul18;
+* test_targeting;   	r=uniform(0); test_targeting =1.25 ; if r < 0.20 then test_targeting = 1.5;
+* max_freq_testing;   	r=uniform(0); max_freq_testing =1; if r < 0.20 then max_freq_testing=2; 
+* an_lin_incr_test;   	r=uniform(0); 	
+							if r < 0.1 		  then an_lin_incr_test = 0.0005; if 0.1 <= r < 0.3 then an_lin_incr_test = 0.0030; 
+					  		if 0.3 <= r < 0.5 then an_lin_incr_test = 0.0100; if 0.5 <= r < 0.7 then an_lin_incr_test = 0.0200;
+					  		if 0.7 <= r < 0.9 then an_lin_incr_test = 0.0400; if 0.9 <= r      	then an_lin_incr_test = 0.1000;
+* date_test_rate_plateau;   
+						* dependent_on_time_step_length ;
+						r=uniform(0);
+							if r < 0.1  		then date_test_rate_plateau = 2011.5; if 0.1 <= r < 0.2 then date_test_rate_plateau = 2013.5; 
+							if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4 <= r < 0.7 then date_test_rate_plateau = 2017.5; 
+ 							if 0.7 <= r 		then date_test_rate_plateau = 2019.5;
+* incr_test_rate_sympt; r=uniform(0); if r < 0.2 then incr_test_rate_sympt = 1.05 ; if 0.2 <= r < 0.4 then incr_test_rate_sympt = 1.10; if 0.4 <= r < 0.6 then incr_test_rate_sympt = 1.15; if 0.6 <= r < 0.8 then incr_test_rate_sympt = 1.20;	if 0.8 <= r then incr_test_rate_sympt = 1.25; 
+						* dependent_on_time_step_length ;
+
+* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;		* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
+							* dependent_on_time_step_length ;
+
+
+
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
 * art_monitoring_strategy;	art_monitoring_strategy = 8; 
@@ -510,10 +490,53 @@ newp_seed = 7;
 * dol_higher_potency;		dol_higher_potency = 1.5;			* QUERY WHICH VALUE?
 * dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
 
-	*** MOVE THIS? ;
-* hard_reach;				hard_reach=0; 						* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
+* rate_ch_art_init_str_2011;	
+							rate_ch_art_init_str_2011 = 0.4;	* rate of change in art initiation strategy in 2011;
+							* dependent_on_time_step_length ;
 
-* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
+* 26_11_19; 
+* all * dependent_on_time_step_length ;
+* r_swi_efa_cns;			r_swi_efa_cns = 0.02;
+* r_swi_efa_ras;			r_swi_efa_ras = 0.05;
+* r_swi_nev_hep;			r_swi_nev_hep = 0.10;
+* r_swi_nev_ras;			r_swi_nev_ras = 0.15;
+* r_swi_zdv_nau;			r_swi_zdv_nau = 0.08;
+* r_swi_zdv_head;			r_swi_zdv_head = 0.02;
+* r_swi_zdv_lip;			r_swi_zdv_lip = 0.01;
+* r_swi_zdv_ane;			r_swi_zdv_ane = 0.05;
+* r_swi_zdv_lac;			r_swi_zdv_lac = 1;
+* r_swi_ten_neph;			r_swi_ten_neph = 0.20;
+* r_swi_lpr_nau;			r_swi_lpr_nau = 0.05;
+* r_swi_lpr_dia;			r_swi_lpr_dia = 0.05;
+* r_swi_taz_nau;			r_swi_taz_nau = 0.05;
+* r_swi_taz_dia;			r_swi_taz_dia = 0.05;
+* r_swi_dol_cns;			r_swi_dol_cns = 0.02;
+* rate_loss_acq_pim_offart;	rate_loss_acq_pim_offart = 0.2;
+* rate_loss_acq_iim_offart;	rate_loss_acq_iim_offart = 0.2;
+
+* all * dependent_on_time_step_length ;
+* p_nau_stops_zdv_lpr;		p_nau_stops_zdv_lpr = 0.5 ;
+* r_dia_start_lpr;			r_dia_start_lpr = 0.02;
+* p_dia_stops_lpr;			p_dia_stops_lpr = 0.5 ;
+* r_dia_start_taz_dar;		r_dia_start_taz_dar = 0.01;
+* p_dia_stops_taz_dar;		p_dia_stops_taz_dar = 0.5 ;
+* r_ras_start_efa;			r_ras_start_efa = 0.03;
+* r_res_start_nev;			r_res_start_nev = 0.10;
+* r_weightg_start_dol;		r_weightg_start_dol = 0.01;
+* r_cns_start_efa;			r_cns_start_efa = 0.1;
+* p_cns_stops_efa;			p_cns_stops_efa = 0.2;
+* r_cns_start_dol;			r_cns_start_dol = 0.05;
+* p_cns_stops_dol;			p_cns_stops_dol = 0.6;
+* r_hep_start_nev;			r_hep_start_nev = 0.02;
+* r_otx_start;				r_otx_start = 0.03;
+* p_ane_stops_zdv;			p_ane_stops_zdv = 0.8;
+* p_head_stops_zdv;			p_head_stops_zdv = 0.6 ;
+* r_neph_start_ten;			r_neph_start_ten = 0.0035;
+* p_neph_stops_ten;			p_neph_stops_ten = 0 ;
+* p_neph_stops_after_ten;	p_neph_stops_after_ten = 0.1;
+
+
+							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  	r=uniform(0); if r < 0.20 then prob_loss_at_diag = 0.02; if 0.20 <= r < 0.40 then prob_loss_at_diag = 0.05; 
 							if 0.40 <= r < 0.60  then prob_loss_at_diag = 0.20; if 0.60 <= r < 0.80  then prob_loss_at_diag = 0.35; 
@@ -623,40 +646,38 @@ newp_seed = 7;
 					   		if 0.20 <= r < 0.95 then nnrti_res_no_effect = 0  ; 
 
 * lower_future_art_cov; r=uniform(0); if 0 <= r < 0.97 then lower_future_art_cov=0;if 0.97 <= r  then lower_future_art_cov=1;
-* higher_future_prep_cov;
-						r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
-
-* rate_birth_with_infected_child; 
-		r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
-		if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
-		if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
-
-
-***** art: linkage, retention, monitoring, loss, return, interruption of art and restarting;
 
 
 
+* SEX WORKERS;
 
+* p_rred_sw_newp;		p_rred_sw_newp = 0.02; 		* dependent on rred_rc, rate of sex workers moving to one category lower;
+							* Should this be dependent_on_time_step_length? ;
 
+* base_rate_sw; 		r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
+								if 0.80 <= r then base_rate_sw = 0.0025 ;  
+						* dependent_on_time_step_length ;
+* base_rate_stop_sexwork;	r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
+							 if r > 0.67 then base_rate_stop_sexwork = 0.01;
+						* dependent_on_time_step_length ;
+* sw_trans_matrix;   	r=uniform(0);  if r < 0.125 			then sw_trans_matrix = 1;  if 0.125 <= r < 0.250 then sw_trans_matrix = 2;  
+									if 0.250 <= r < 0.375 	then sw_trans_matrix = 3;  if 0.375 <= r < 0.500 then sw_trans_matrix = 4;  
+									if 0.500 <= r < 0.625 	then sw_trans_matrix = 5;  if 0.625 <= r < 0.750 then sw_trans_matrix = 6;  
+									if 0.750 <= r < 0.875 	then sw_trans_matrix = 7;  if 0.875 <= r         then sw_trans_matrix = 8;  
+* sw_init_newp;    		r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
+								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
+* p_rred_sw_newp;	 	r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
+								if 0.67 <= r then p_rred_sw_newp = 0.10; * rate of sex workers moving to one category lower;
 
-
-
-
-
-
-
-
-*sw_art_disadv;				r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  
-
+* sw_art_disadv;		r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  
 				 			if sw_art_disadv=1 then do; sw_higher_int = 1; prob_sw_lower_adh = 0; sw_higher_prob_loss_at_diag = 1; end;
 							if sw_art_disadv=2 then do; sw_higher_int = 2; prob_sw_lower_adh = 0.1; sw_higher_prob_loss_at_diag = 1.5; end;
 
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
-* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
-											if r >= 0.66 then effect_sw_prog_newp = 0.12; 
-
+* effect_sw_prog_newp;  	r=uniform(0); if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
+										  if r >= 0.66 then effect_sw_prog_newp = 0.12; 
 * effect_sw_prog_6mtest;	e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
 										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;
 * effect_sw_prog_int;		e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
@@ -665,135 +686,83 @@ newp_seed = 7;
 										  if e >= 0.66 then effect_sw_prog_adh=1;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
-* effect_sw_prog_prep;       e=uniform(0);if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
+* effect_sw_prog_prep;      e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
 
 
 
+* CIRCUMCISION;
 
+* mc_int;				mc_int=2008;
+* test_link_circ;		test_link_circ=1; 
+* test_link_circ_prob;	test_link_circ_prob = 0.05;
 
-
-
-
-
+* circ_inc_rate; 		r=uniform(0); 	
+							if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
+							if 0.20 <= r < 0.8  then circ_inc_rate = 0.003; if 0.8 <= r < 0.9 then circ_inc_rate = 0.01;  if 0.90 <= r  then circ_inc_rate = 0.10;
+* circ_inc_15_19;		r=uniform(0); if r < 0.33 then circ_inc_15_19 = 1.5;  if 0.33 <= r < 0.66 then circ_inc_15_19 = 2.0;  if 0.66 <= r  then circ_inc_15_19=3.0; 
+* circ_red_20_30;		r=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40; if 0.66 <= r  then circ_red_20_30=0.50; 
+* circ_red_30_50;		r=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25; if 0.66 <= r  then circ_red_30_50=0.35; 
+* rel_incr_circ_post_2013;
+						r=uniform(0); 
+							if 		 	r < 0.10 then rel_incr_circ_post_2013 = 0.8; 	if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
+							if 0.35 <= 	r < 0.60 then rel_incr_circ_post_2013 = 3;  	if 0.60 <= r  		then rel_incr_circ_post_2013 = 7 ;
+						if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
+* prob_birth_circ; 		r=uniform(0); 
+							if r < 0.33 then prob_birth_circ = 0.03; if 0.33 <= r < 0.65 then prob_birth_circ = 0.05; 
+							if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_circ = 0.5;
+***LBM Jul19 check data on circ;
 
 
 
 * PREP;
 
 * PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
-annual_testing_prep=0.25; *frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
-hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen);
-prep_efficacy=0.95; *PrEP effectiveness with 100% adherence ;
-factor_prep_adh_older=0.5; * factor determining how much higher adh to prep is in people age > 25 than < 25; 
-rate_test_onprep=1.00; *Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
-* dependent_on_time_step_length ;
-pr_prep_b=0.75; * 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
-
-prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
-* dependent_on_time_step_length ;
-
-prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
-prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
-* dependent_on_time_step_length ; 
-prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
-pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
-* dependent_on_time_step_length ;
-
-
-* EXTRA RATE PARAMETERS FOR WHICH VALUES WERE PREVIOUSLY HARD CODED BELOW - 26_11_19; 
-
-* rate of change in art initiation strategy in 2011;
-rate_ch_art_init_str_2011 = 0.4;
-* rate of women wanting no more children;
-rate_want_no_more_children = 0.005;
-* rate of sti and persistence, function of newp;
-rate_sti = 1 / 20 ;
-rate_persist_sti = 1 / 5 ;
-
-* dependent on rred_rc, rate of sex workers moving to one category lower;
-p_rred_sw_newp = 0.02; 
-* rate of development of non-hiv symptoms, regardless of hiv status;
-rate_non_hiv_symptoms=0.005;
-r_swi_efa_cns = 0.02;
-r_swi_efa_ras = 0.05;
-r_swi_nev_hep = 0.10;
-r_swi_nev_ras = 0.15;
-r_swi_zdv_nau = 0.08;
-r_swi_zdv_head = 0.02;
-r_swi_zdv_lip = 0.01;
-r_swi_zdv_ane = 0.05;
-r_swi_zdv_lac = 1;
-r_swi_ten_neph = 0.20;
-r_swi_lpr_nau = 0.05;
-r_swi_lpr_dia = 0.05;
-r_swi_taz_nau = 0.05;
-r_swi_taz_dia = 0.05;
-r_swi_dol_cns = 0.02;
-rate_loss_acq_pim_offart = 0.2;
-rate_loss_acq_iim_offart = 0.2;
-
-p_nau_stops_zdv_lpr = 0.5 ;
-r_dia_start_lpr = 0.02;
-p_dia_stops_lpr = 0.5 ;
-r_dia_start_taz_dar = 0.01;
-p_dia_stops_taz_dar = 0.5 ;
-r_ras_start_efa = 0.03;
-r_res_start_nev = 0.10;
-r_weightg_start_dol = 0.01;
-r_cns_start_efa = 0.1;
-p_cns_stops_efa = 0.2;
-r_cns_start_dol = 0.05;
-p_cns_stops_dol = 0.6;
-r_hep_start_nev = 0.02;
-r_otx_start = 0.03;
-p_ane_stops_zdv = 0.8;
-p_head_stops_zdv = 0.6 ;
-r_neph_start_ten = 0.0035;
-p_neph_stops_ten = 0 ;
-p_neph_stops_after_ten = 0.1;
-
-
-* ========== PARAMETER VALUES SAMPLED ;  * these represent both uncertainty over likely fixed biological parameters and variability over settings;
-
-
-
-***** prep;
-
-* adh_pattern_prep;  r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 
-* rate_test_startprep; r=uniform(0); if r < 0.33 then rate_test_startprep = 0.25; if 0.33 <= r < 0.67 then rate_test_startprep = 0.5; if 0.67 <= r  then rate_test_startprep = 0.75;*Additional rate of being tested for HIV before PrEP;	 
-* dependent_on_time_step_length ;
-
-* rate_test_restartprep;  r=uniform(0); if r < 0.50 then rate_test_restartprep = 0.50; if 0.50 <= r  then rate_test_restartprep = 0.80;
-* dependent_on_time_step_length ;
-
-* rate_choose_stop_prep; r=uniform(0); if r < 0.33 then rate_choose_stop_prep = 0.05;  if 0.33 <= r < 0.67 then rate_choose_stop_prep = 0.15;
-						if 0.67 <= r        then rate_choose_stop_prep = 0.30;
-* dependent_on_time_step_length ;
-
-* prob_prep_restart_choice;  r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
-							if 0.67 <= r then prob_prep_restart_choice=0.20;
-* dependent_on_time_step_length ;
-							
-* prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
-* add_prepuptake_sw;		add_prepuptake_sw=0; ***this may be sampled at a later date;
-
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
 if prep_willing=1;
 
+* annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
+* prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
+* factor_prep_adh_older;	factor_prep_adh_older=0.5; 	* factor determining how much higher adh to prep is in people age > 25 than < 25; 
+* rate_test_onprep;			rate_test_onprep=1.00; 		* Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
+							* dependent_on_time_step_length ;
+* pr_prep_b;				pr_prep_b=0.75; 			* 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
+* prob_prep_restart;		prob_prep_restart=1.00; 	* set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
+							* dependent_on_time_step_length ;
+* prob_prep_visit_counsel;	prob_prep_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
+
+* prob_prep_restart_choice;	prob_prep_restart_choice=0.10; 	* probability of restarting PrEP after discontinuation even when newp>1;
+							* dependent_on_time_step_length ; 
+* pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
+							* dependent_on_time_step_length ;
+* adh_pattern_prep;  		r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 
+* rate_test_startprep; 		r=uniform(0); if r < 0.33 then rate_test_startprep = 0.25; if 0.33 <= r < 0.67 then rate_test_startprep = 0.5; if 0.67 <= r  then rate_test_startprep = 0.75;*Additional rate of being tested for HIV before PrEP;	 
+							* dependent_on_time_step_length ;
+* rate_test_restartprep;  	r=uniform(0); if r < 0.50 then rate_test_restartprep = 0.50; if 0.50 <= r  then rate_test_restartprep = 0.80;
+							* dependent_on_time_step_length ;
+* rate_choose_stop_prep; 	r=uniform(0); if r < 0.33 then rate_choose_stop_prep = 0.05;  if 0.33 <= r < 0.67 then rate_choose_stop_prep = 0.15;
+								if 0.67 <= r        then rate_choose_stop_prep = 0.30;
+							* dependent_on_time_step_length ;
+* prob_prep_restart_choice; r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
+							if 0.67 <= r then prob_prep_restart_choice=0.20;
+							* dependent_on_time_step_length ;
+							* prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
+							*Probability of PrEP uptake if eligible for general population;
+* add_prepuptake_sw;		add_prepuptake_sw=0; ***this may be sampled at a later date;
+* higher_future_prep_cov;	r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
 
 
 
-* p_hard_reach_w;  p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
-* hard_reach_higher_in_men;  hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* COVID-19
 
-p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
-
-****** covid death risk ;
-r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;
+* cov_death_risk_mult;		r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;
 
 
-* ================ ;
+
+* ===================== ;
+* END OF PARAMETER LIST ;
+* ===================== ;
+
 
 
 
