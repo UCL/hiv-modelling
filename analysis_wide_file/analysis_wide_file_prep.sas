@@ -523,7 +523,7 @@ ods htm close;
 
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide; var p_prep_adhg80_21_26_1  p_prep_adhg80_21_26_2 ;  
+proc means n mean median  p5 p95 lclm uclm data=wide; var p_prep_adhg80_21_26_1  p_prep_adhg80_21_26_2 ;  
 run; 
 ods htm close;
 
