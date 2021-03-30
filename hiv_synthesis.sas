@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2020.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -263,9 +263,9 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 				r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;
-						/*%sample(inc_cat, 1 2 3, 0.33 0.33 0.34);*/
-
+* inc_cat; 				%sample(inc_cat, 1 2 3, 1/3 1/3 1/3);
+						/*r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;*/
+						
 * hard_reach;			hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  		p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men;  
@@ -281,19 +281,20 @@ newp_seed = 7;
 * fold_preg2534;		fold_preg2534=1.9; 
 * fold_preg4554;		fold_preg4554=0.2;  
 * fold_preg5564;		fold_preg5564=0.0;
+* rate_want_no_more_children;	
+						rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
+						* dependent_on_time_step_length ;
 
 * prob_pregnancy_base;  r=uniform(0); prob_pregnancy_base=0.03 + r*0.08;  
-						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 
-						elseif inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
+						if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
+						if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 						prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 * rate_birth_with_infected_child; 
-						r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
+						%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
+						/*r=uniform(0); if r < 0.05 then rate_birth_with_infected_child = 0.3; 
 							if 0.05 <= r < 0.30 then rate_birth_with_infected_child = 0.4 ; if 0.30 <= r < 0.90 then rate_birth_with_infected_child = 0.5 ; 
-							if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; 
-						/*%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);*/
-* rate_want_no_more_children;	
-							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
-							* dependent_on_time_step_length ;
+							if 0.90 <= r        then rate_birth_with_infected_child = 0.6 ; */
+
 
 
 * SEXUAL BEHAVIOUR;
@@ -305,18 +306,25 @@ newp_seed = 7;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
 * rr_sw_prev_sw;		rr_sw_prev_sw = 10;
 
-* ch_risk_diag;  		r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.8 <= r then ch_risk_diag = 1;
-						/*%sample(ch_risk_diag, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);*/
-* ch_risk_diag_newp;  	r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;
-* ych_risk_beh_newp;  	r=uniform(0); ych_risk_beh_newp = 0.70;  if r < 0.20 then ych_risk_beh_newp = 0.80;	if 0.80 <= r then ych_risk_beh_newp = 0.60;
-* ych2_risk_beh_newp;  	r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; 
-* ych_risk_beh_ep;  	r=uniform(0); ych_risk_beh_ep = 1.00;  if  0.25 <= r < 0.5 then ych_risk_beh_ep = 0.95; if 0.5 <= r < 0.75 then ych_risk_beh_ep = 0.90; if 0.75 <= r then ych_risk_beh_ep = 0.80; 
+* ch_risk_diag;  		%sample(ch_risk_diag, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);
+						/*r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.75 <= r then ch_risk_diag = 1;*/
+* ch_risk_diag_newp;  	%sample(ch_risk_diag_newp, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);
+						/*r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; *mf - aug18;*/
+* ych_risk_beh_newp;  	%sample(ych_risk_beh_newp, 0.6 0.7 0.8, 0.2 0.6 0.2);
+						/*r=uniform(0); ych_risk_beh_newp = 0.70;  if r < 0.20 then ych_risk_beh_newp = 0.80;	if 0.80 <= r then ych_risk_beh_newp = 0.60;*/
+* ych2_risk_beh_newp;  	%sample(ych2_risk_beh_newp, 0.95 0.99 1 1/0.99 1/0.95, 0.05 0.05 0.8 0.05 0.05);
+						/*r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; */
+* ych_risk_beh_ep;  	%sample(ych_risk_beh_ep, 0.8 0.9 0.95 1, 0.25 0.25 0.25 0.25);
+						/*r=uniform(0); ych_risk_beh_ep = 1.00;  if  0.25 <= r < 0.5 then ych_risk_beh_ep = 0.95; if 0.5 <= r < 0.75 then ych_risk_beh_ep = 0.90; if 0.75 <= r then ych_risk_beh_ep = 0.80; */
 * eprate;				eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 						* rate of new long term partners in youngest age group; 
 						* dependent_on_time_step_length ;
-* newp_factor;  		r=uniform(0); newp_factor = 1 ; if r < 0.33 then newp_factor = 0.5 ; if r > 0.67 then newp_factor = 2   ; * 15_1_20 4pm ;
-* p_rred_p; 			r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; if 0.67 <= r  then p_rred_p = 0.7;  	
-* p_hsb_p; 				r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;
+* newp_factor;  		%sample(newp_factor, 0.5 1 2, 1/3 1/3 1/3);
+						/*r=uniform(0); newp_factor = 1 ; if r < 0.33 then newp_factor = 0.5 ; if r > 0.67 then newp_factor = 2   ; * 15_1_20 4pm ;*/
+* p_rred_p; 			%sample(p_rred_p, 0.3 0.5 0.7, 1/3 1/3 1/3);
+						/*r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; if 0.67 <= r  then p_rred_p = 0.7;  	*/
+* p_hsb_p; 				%sample(p_hsb_p, 0.05 0.08 0.15, 1/3 1/3 1/3);
+						/*r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;*/
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -332,33 +340,41 @@ newp_seed = 7;
 							rate_exp_set_lower_p_vl1000 = 0; 
 						end;
 						* rate of exposure;  * rate_exp_set_lower_p_vl1000 * dependent_on_time_step_length ;
-* sex_beh_trans_matrix_m and sex_beh_trans_matrix_w ;
-						e=uniform(0); 
+* sex_beh_trans_matrix_m;
+						%sample(sex_beh_trans_matrix_m, 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15, 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15);
+						/*e=uniform(0); 
 						if e < 1/15 then sex_beh_trans_matrix_m=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_m=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_m=3; 
 						if 3/15 <= e < 4/15 then sex_beh_trans_matrix_m=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_m=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_m=6; 
 						if 6/15 <= e < 7/15 then sex_beh_trans_matrix_m=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_m=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_m=9; 
 						if 9/15 <= e < 10/15 then sex_beh_trans_matrix_m=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_m=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_m=12;
-						if 12/15 <= e < 13/15 then sex_beh_trans_matrix_m=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_m=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_m=15;
-						e=uniform(0); 
+						if 12/15 <= e < 13/15 then sex_beh_trans_matrix_m=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_m=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_m=15;*/
+* sex_beh_trans_matrix_w;
+						%sample(sex_beh_trans_matrix_w, 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15, 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15);
+						/*e=uniform(0); 
 						if e < 1/15 then sex_beh_trans_matrix_w=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_w=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_w=3; 
 						if 3/15 <= e < 4/15 then sex_beh_trans_matrix_w=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_w=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_w=6; 
 						if 6/15 <= e < 7/15 then sex_beh_trans_matrix_w=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_w=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_w=9; 
 						if 9/15 <= e < 10/15 then sex_beh_trans_matrix_w=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_w=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_w=12;
-						if 12/15 <= e < 13/15 then sex_beh_trans_matrix_w=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_w=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_w=15;
+						if 12/15 <= e < 13/15 then sex_beh_trans_matrix_w=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_w=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_w=15;*/
 * sex_age_mixing_matrix_m;
-						e=uniform(0); 
+						%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6, 1/6 1/6 1/6 1/6 1/6 1/6);
+						/*e=uniform(0); 
 						if e < 1/6  then sex_age_mixing_matrix_m=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_m=2;
 						if 2/6 <= e < 3/6  then sex_age_mixing_matrix_m=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_m=4;
-						if 4/6 <= e < 5/6  then sex_age_mixing_matrix_m=5; if 5/6 <= e        then sex_age_mixing_matrix_m=6;
+						if 4/6 <= e < 5/6  then sex_age_mixing_matrix_m=5; if 5/6 <= e        then sex_age_mixing_matrix_m=6;*/
 * sex_age_mixing_matrix_w;
-						e=uniform(0); 
+						%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6, 1/6 1/6 1/6 1/6 1/6 1/6);
+						/*e=uniform(0); 
 						if e < 1/6  then sex_age_mixing_matrix_w=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_w=2;
 						if 2/6 <= e < 3/6  then sex_age_mixing_matrix_w=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_w=4;
-						if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;
-* rred_a_p;				r=uniform(0); if r < 0.15 then rred_a_p=1; if 0.15 <= r < 0.30 then rred_a_p=2;  if 0.30 <= r < 0.65 then rred_a_p=3;  if r >= 0.65 then rred_a_p=4; 
-* conc_ep; 				r=uniform(0); conc_ep = 1    ; if r < 0.33 then conc_ep = 0.333; if r > 0.67 then conc_ep=3;
+						if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;*/
+* rred_a_p;				%sample(rred_a_p, 1 2 3 4, 0.15 0.15 0.35 0.35);
+						/*r=uniform(0); if r < 0.15 then rred_a_p=1; if 0.15 <= r < 0.30 then rred_a_p=2;  if 0.30 <= r < 0.65 then rred_a_p=3;  if r >= 0.65 then rred_a_p=4; */
+* conc_ep; 				%sample(conc_ep, 1/3 1 3, 1/3 1/3 1/3);
+						/*r=uniform(0); conc_ep = 1    ; if r < 0.33 then conc_ep = 0.333; if r > 0.67 then conc_ep=3;*/
 * higher_newp_with_lower_adhav;
-						r=uniform(0); higher_newp_with_lower_adhav = 0; if r < 0.2 then higher_newp_with_lower_adhav = 1;
+						%sample(higher_newp_with_lower_adhav, 0 1, 0.8 0.2);
+						/*r=uniform(0); higher_newp_with_lower_adhav = 0; if r < 0.2 then higher_newp_with_lower_adhav = 1;*/
 
 
 
@@ -5089,6 +5105,11 @@ end;
 
 
 * prob of infection from existing infected partner ;
+/* Note that the presence/absence of resistance mutatations in the infected partner is re-evaluated each time step, rather than tracking a specific partner through time. 
+This is a simplification, but transmission from partner to subject only occurs at one time step - at which point any mutations present will reflect the distribution 
+across the population. It would be complicated to track a specific partner's mutations as we do not explicitly model their drug regimen, acquistion of new mutations, or 
+change in majority/minority virus over time. * JAS Mar2021
+*/
 
 risk_eip=0;  ep_primary=0;
 
@@ -14815,7 +14836,11 @@ cald = caldate_never_dot ;
 
 
 * procs;
-
+proc print; var cald 
+newp_factor p_rred_p p_hsb_p sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p conc_ep higher_newp_with_lower_adhav 
+age sw newp newp_tm1 hiv cd4 onart; 
+where age ge 15 and sw=1 and death=.;
+run;
 /*
 
 proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
