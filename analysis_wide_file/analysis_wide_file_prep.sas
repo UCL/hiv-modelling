@@ -195,6 +195,16 @@ if 3     <= av_newp_ge1_non_sw_21         then av_newp_ge1_non_sw_21_g  = 3;
 av_newp_ge1_non_sw_21_g2 = 0; if av_newp_ge1_non_sw_21_g = 2 then av_newp_ge1_non_sw_21_g2 = 1;
 av_newp_ge1_non_sw_21_g3 = 0; if av_newp_ge1_non_sw_21_g = 3 then av_newp_ge1_non_sw_21_g3 = 1;
 
+dcost_prep_drug_vis_21_26_1 = dcost_prep_21_26_1 + dcost_prep_visit_21_26_1 ;
+dcost_prep_drug_vis_21_26_2 = dcost_prep_21_26_2 + dcost_prep_visit_21_26_2 ;
+
+d_dcost_prep_drug_vis_21_26_2 = dcost_prep_drug_vis_21_26_2 - dcost_prep_drug_vis_21_26_1;
+
+dcost_prep_drug_vis_21_71_1 = dcost_prep_21_71_1 + dcost_prep_visit_21_71_1 ;
+dcost_prep_drug_vis_21_71_2 = dcost_prep_21_71_2 + dcost_prep_visit_21_71_2 ;
+
+d_dcost_prep_drug_vis_21_71_2 = dcost_prep_drug_vis_21_71_2 - dcost_prep_drug_vis_21_71_1;
+
 
 /*
 from create_wide_file_prep :
@@ -556,6 +566,7 @@ dcost_circ_21_26_1 dcost_circ_21_26_2
 dclin_cost_21_26_1 dclin_cost_21_26_2 
 dcost_prep_21_26_1 dcost_prep_21_26_2 
 dcost_prep_visit_21_26_1 dcost_prep_visit_21_26_2 
+dcost_prep_drug_vis_21_26_2 dcost_prep_drug_vis_21_26_2  d_dcost_prep_drug_vis_21_26_2
 p_onart_21_26_1 p_onart_21_26_2 
 p_vl1000_21_26_1 p_vl1000_21_26_2 
 prevalence_vg1000_21_26_1 prevalence_vg1000_21_26_2 
@@ -594,6 +605,7 @@ dcost_clin_care_21_71_1 dcost_clin_care_21_71_2
 d_dcost_clin_care_21_71_2
 dcost_prep_21_71_1 dcost_prep_21_71_2 
 dcost_prep_visit_21_71_1 dcost_prep_visit_21_71_2 
+dcost_prep_drug_vis_21_71_2 dcost_prep_drug_vis_21_71_2  d_dcost_prep_drug_vis_21_71_2
 p_onart_21_71_1 p_onart_21_71_2 
 p_vl1000_21_71_1 p_vl1000_21_71_2 
 prevalence_vg1000_21_71_1 prevalence_vg1000_21_71_2 
@@ -605,7 +617,6 @@ p_prep_ever_21_71_1 p_prep_ever_21_71_2
 p_hiv1_prep_21_71_1 p_hiv1_prep_21_71_2
 p_mcirc_1549m_21_71_1 p_mcirc_1549m_21_71_2 
 prop_elig_on_prep_21_71_1 prop_elig_on_prep_21_71_2
-
 dadc_cost_21_71_1   dadc_cost_21_71_2   
 dcd4_cost_21_71_1   dcd4_cost_21_71_2   
 dvl_cost_21_71_1   dvl_cost_21_71_2   
@@ -747,10 +758,10 @@ run;
 proc means n mean median data=wide; var cost_per_infection_averted_21_26  ; where infections_averted_21_26 > 0 ;
 run;
  
-proc means n mean median data=wide; var cost_per_infection_averted_21_71  ; where infections_averted_21_71 > 0 ;
+proc means n mean lclm uclm p5 p95 data=wide; var cost_per_infection_averted_21_71  ; where infections_averted_21_71 > 0 ;
 run;
  
-proc means; var infections_averted_21_26  ; run;
+proc means n mean lclm uclm p5 p95 data=wide ; var n_infection_21_71_1  n_infection_21_71_2 infections_averted_21_71  ; run;
 
 proc freq data=wide; tables prevalence_vg1000_21 av_newp_ge1_non_sw_21 p_mcirc_1549m_21 prop_1564_hivneg_onprep_21_26_2 ; run;  
 
@@ -758,11 +769,12 @@ proc freq data=wide; tables prevalence_vg1000_21 av_newp_ge1_non_sw_21 p_mcirc_1
 
 * for table / results;
   ods html;
-proc freq data=wide;   tables ce_500_x / nocum norow binomial; * exact binomial;  
+proc freq data=wide;   tables  ce_500_x / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ;
 * where 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 * where 0.05 <= prevalence_vg1000_21 < 0.55 ; 
 * where 3 <= av_newp_ge1_non_sw_21 < 10 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
+  where 1.5 <= incidence1549_21 < 9.5 ;
 run; 
   ods html close;
 
