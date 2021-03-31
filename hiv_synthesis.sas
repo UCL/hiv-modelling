@@ -387,18 +387,28 @@ newp_seed = 7;
 						* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
 						* dependent_on_time_step_length ;
 
-* fold_tr;				fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;
-* fold_change_w; 		r=uniform(0); if r < 0.05 then fold_change_w = 1; if 0.05 <= r < 0.30 then fold_change_w = 1.5; if 0.30 <= r then fold_change_w = 2; 
-* fold_change_yw; 		fold_change_yw = fold_change_w * 3    ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;	if r > 0.67 then fold_change_yw = fold_change_w * 5    ;
-* fold_change_sti; 		fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;
-* fold_tr_newp;			fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;
-* super_infection; 		u=uniform(0); if u < 0.5 then super_infection=0; if u >= 0.5 then super_infection = 1;
-* res_trans_factor_nn;	r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7;
-							if 0.40 <= r < 0.60 then res_trans_factor_nn= 0.8; if 0.60 <= r < 0.80 then res_trans_factor_nn= 0.90;  if 0.80 <= r then res_trans_factor_nn= 1.00;  * may18;
+* fold_tr;				%sample(fold_tr, 1/1.5 1 1.5, 1/3 1/3 1/3);
+						/*fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;*/
+* fold_change_w; 		%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
+						/*r=uniform(0); if r < 0.05 then fold_change_w = 1; if 0.05 <= r < 0.30 then fold_change_w = 1.5; if 0.30 <= r then fold_change_w = 2; */
+* fold_change_yw; 		%sample(tmp, 1 3 5, 1/3 1/3 1/3); fold_change_yw=tmp*fold_change_w;
+						/*fold_change_yw = fold_change_w * 3    ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;	if r > 0.67 then fold_change_yw = fold_change_w * 5    ;*/
+* fold_change_sti; 		%sample(fold_change_sti, 2 3 5, 1/3 1/3 1/3);
+						/*fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;*/
+* fold_tr_newp;			%sample(fold_tr_newp, 0.3 0.5 0.7, 1/3 1/3 1/3);
+						/*fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;*/
+* super_infection; 		%sample(super_infection, 0 1, 0.5 0.5);
+						/*u=uniform(0); if u < 0.5 then super_infection=0; if u >= 0.5 then super_infection = 1;*/
+* res_trans_factor_nn;	%sample(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1, 0.2 0.2 0.2 0.2 0.2);
+						/*r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7; if 0.40 <= r < 0.60 then res_trans_factor_nn= 0.8; 
+						if 0.60 <= r < 0.80 then res_trans_factor_nn= 0.90;  if 0.80 <= r then res_trans_factor_nn= 1.00;  * may18;*/
 						* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only);
-* res_trans_factor_ii;	r=uniform(0); res_trans_factor_ii = 1; if r < 0.2 then res_trans_factor_ii = 2; 
+* res_trans_factor_ii;	%sample(res_trans_factor_ii, 1 2, 0.8 0.2);
+						r=uniform(0); res_trans_factor_ii = 1; if r < 0.2 then res_trans_factor_ii = 2; 
 * rate_loss_persistence;
-						r=uniform(0); if r < 0.1  then rate_loss_persistence= 0.00;if 0.1 <= r < 0.2  then rate_loss_persistence= 0.005; if 0.2  <= r < 0.3  then rate_loss_persistence= 0.01;  if 0.3  <= r < 0.7  then rate_loss_persistence= 0.015; if 0.7  <= r then rate_loss_persistence= 0.020;
+						%sample(rate_loss_persistence, 0 0.005 0.010 0.015 0.020, 0.1 0.1 0.1 0.4 0.3);
+						/*r=uniform(0); if r < 0.1  then rate_loss_persistence= 0.00;if 0.1 <= r < 0.2  then rate_loss_persistence= 0.005; if 0.2  <= r < 0.3  then rate_loss_persistence= 0.01;  
+						if 0.3  <= r < 0.7  then rate_loss_persistence= 0.015; if 0.7  <= r then rate_loss_persistence= 0.020;*/
 						* loss of persistence of tdr - at the moment rate same for each mutation, but rate transmission not same for each mutation; 
 						* dependent_on_time_step_length ; 	
 
