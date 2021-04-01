@@ -702,7 +702,7 @@ newp_seed = 7;
 							/*r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;*/
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
-								0.0		0.1		0.7		1.0,
+								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
 							/*r=uniform(0); prob_vl_meas_done=0.7 ; if 0.40 <= r < 0.70 then prob_vl_meas_done=0.1 ; if 0.70 <= r < 0.95 then prob_vl_meas_done=1.00; if 0.95 <= r then prob_vl_meas_done=0.00;*/
 							* dependent_on_time_step_length ;	
@@ -771,7 +771,7 @@ newp_seed = 7;
 								if 0.51  <= r < 0.68  then incr_mort_risk_dol_weightg = 2.2; if 0.68  <= r < 0.85 then incr_mort_risk_dol_weightg = 3  ; 
 								if 0.85  <= r         then incr_mort_risk_dol_weightg = 4  ; */
 * oth_dol_adv_birth_e_risk;	%sample(oth_dol_adv_birth_e_risk, 
-								0.0005	0.0015	0.0020	0.0030,
+								0.0005	0.0015	0.002	0.003,
 								0.20	0.40	0.20	0.20);
 							/*r=uniform(0); if 0.0 <= r < 0.20 then oth_dol_adv_birth_e_risk = 0.0005;
 								if 0.20 <= r < 0.60 then oth_dol_adv_birth_e_risk = 0.0015;
@@ -846,7 +846,7 @@ newp_seed = 7;
 * test_link_circ_prob;		test_link_circ_prob = 0.05;
 
 * circ_inc_rate; 			%sample(circ_inc_rate, 
-								0.0001	0.0010	0.0030	0.0100	0.100, 
+								0.0001	0.001	0.003	0.01	0.1, 
 								0.1		0.1		0.6		0.1		0.1);
 							/*r=uniform(0); 	
 								if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
@@ -857,14 +857,19 @@ newp_seed = 7;
 							/*r=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40; if 0.66 <= r  then circ_red_20_30=0.50; */
 * circ_red_30_50;			%sample(circ_red_30_50, 0.15 0.25 0.35, 1/3 1/3 1/3);
 							/*r=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25; if 0.66 <= r  then circ_red_30_50=0.35; */
-* rel_incr_circ_post_2013;
-							r=uniform(0); 
+* rel_incr_circ_post_2013;	%sample(rel_incr_circ_post_2013, 
+								0.8		1		3		7, 
+								0.10	0.25	0.25	0.40);
+							/*r=uniform(0); 
 								if 		 	r < 0.10 then rel_incr_circ_post_2013 = 0.8; 	if 0.10 <= r < 0.35 then rel_incr_circ_post_2013 = 1;  
-								if 0.35 <= 	r < 0.60 then rel_incr_circ_post_2013 = 3;  	if 0.60 <= r  		then rel_incr_circ_post_2013 = 7 ;
+								if 0.35 <= 	r < 0.60 then rel_incr_circ_post_2013 = 3;  	if 0.60 <= r  		then rel_incr_circ_post_2013 = 7 ;*/
 								if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
-* prob_birth_circ; 			r=uniform(0); 
+* prob_birth_circ; 			%sample(prob_birth_circ, 
+								0.03	0.05	0.1		0.5, 
+								0.33	0.32	0.33	0.02);
+							/*r=uniform(0); 
 								if r < 0.33 then prob_birth_circ = 0.03; if 0.33 <= r < 0.65 then prob_birth_circ = 0.05; 
-								if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_circ = 0.5;
+								if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_circ = 0.5;*/
 ***LBM Jul19 check data on circ;
 
 
@@ -885,32 +890,42 @@ if prep_willing=1;
 * prob_prep_restart;		prob_prep_restart=1.00; 	* set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
 							* dependent_on_time_step_length ;
 * prob_prep_visit_counsel;	prob_prep_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
+* add_prepuptake_sw;		add_prepuptake_sw=0; 		***this may be sampled at a later date;
 
 * prob_prep_restart_choice;	prob_prep_restart_choice=0.10; 	* probability of restarting PrEP after discontinuation even when newp>1;
 							* dependent_on_time_step_length ; 
 * pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 							* dependent_on_time_step_length ;
-* adh_pattern_prep;  		r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 
-* rate_test_startprep; 		r=uniform(0); if r < 0.33 then rate_test_startprep = 0.25; if 0.33 <= r < 0.67 then rate_test_startprep = 0.5; if 0.67 <= r  then rate_test_startprep = 0.75;*Additional rate of being tested for HIV before PrEP;	 
+
+* adh_pattern_prep;  		%sample(adh_pattern_prep, 1 2 3 4, 0.3 0.3 0.3 0.1);
+							/*r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 */
+* rate_test_startprep; 		%sample(rate_test_startprep, 0.25 0.5 0.75, 1/3 1/3 1/3);
+							/*r=uniform(0); if r < 0.33 then rate_test_startprep = 0.25; if 0.33 <= r < 0.67 then rate_test_startprep = 0.5; if 0.67 <= r  then rate_test_startprep = 0.75;*/
+							*Additional rate of being tested for HIV before PrEP;	 
 							* dependent_on_time_step_length ;
-* rate_test_restartprep;  	r=uniform(0); if r < 0.50 then rate_test_restartprep = 0.50; if 0.50 <= r  then rate_test_restartprep = 0.80;
+* rate_test_restartprep;  	%sample(rate_test_restartprep, 0.5 0.8, 0.5 0.5);
+							/*r=uniform(0); if r < 0.50 then rate_test_restartprep = 0.50; if 0.50 <= r  then rate_test_restartprep = 0.80;*/
 							* dependent_on_time_step_length ;
-* rate_choose_stop_prep; 	r=uniform(0); if r < 0.33 then rate_choose_stop_prep = 0.05;  if 0.33 <= r < 0.67 then rate_choose_stop_prep = 0.15;
-								if 0.67 <= r        then rate_choose_stop_prep = 0.30;
+* rate_choose_stop_prep; 	%sample(rate_choose_stop_prep, 0.05 0.15 0.30, 1/3 1/3 1/3);
+							/*r=uniform(0); if r < 0.33 then rate_choose_stop_prep = 0.05;  if 0.33 <= r < 0.67 then rate_choose_stop_prep = 0.15;
+								if 0.67 <= r        then rate_choose_stop_prep = 0.30;*/
 							* dependent_on_time_step_length ;
-* prob_prep_restart_choice; r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
-							if 0.67 <= r then prob_prep_restart_choice=0.20;
+* prob_prep_restart_choice; %sample(prob_prep_restart_choice, 0.05 0.10 0.20, 1/3 1/3 1/3);
+							/*r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
+							if 0.67 <= r then prob_prep_restart_choice=0.20;*/
 							* dependent_on_time_step_length ;
-							* prepuptake_pop;			r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;
+* prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
+							/*r=uniform(0); prepuptake_pop=0.2;  if r > 0.8 then prepuptake_pop =0.10; if r < 0.2 then prepuptake_pop = 0.5 ;*/
 							*Probability of PrEP uptake if eligible for general population;
-* add_prepuptake_sw;		add_prepuptake_sw=0; ***this may be sampled at a later date;
-* higher_future_prep_cov;	r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
+* higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
+							/*r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;*/
 
 
 
 * COVID-19
 
-* cov_death_risk_mult;		r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;
+* cov_death_risk_mult;		%sample(cov_death_risk_mult, 1 2 3, 0.4 0.4 0.2);
+							/*r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;*/
 
 
 
