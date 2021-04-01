@@ -655,7 +655,8 @@ run;
 
 data a; set d1  ;
 
-**option=2=no further vmmc;*option=4=continuation for 5 years;
+**option_new=1 = continuation for 5 years;
+**option_new=2 = no further vmmc;
 if option=4 then option_new=1;
 if option=2 then option_new=2;
 
@@ -667,11 +668,15 @@ proc freq;table run;where cald=2014;run;
 data sf;
 set a ;
  
-if cald=2020;
+if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2020 = 10000000 / s_alive;
-keep run sf_2020;
+sf_2021 = 10000000 / s_alive;
+keep run sf_2021;
 proc sort; by run;run;
+
+*With the following command we can change only here instead of in all the lines below,
+in the keep statement, macro par and merge we are still using the variable sf_2019;
+%let sf=sf_2021;
 
 
 data y; 
@@ -699,33 +704,15 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 
 * ================================================================================= ;
 
-if s_cost_ gt 0 then disc     = s_dcost_ / s_cost_;
 * discount rate is 3%; 
-* note discounting is from 2020 - no adjustment needed;
+* note discounting is from 2021 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
-discount_adj = 1;
-discount_adj_10p = discount_adj * (0.90/0.97)**(cald-2020) ; 
-discount_adj_7p = discount_adj * (0.93/0.97)**(cald-2020) ; 
-discount_adj_0  = discount_adj * (1.00/0.97)**(cald-2020) ; 
-discount = disc * discount_adj ;
-discount_10p = disc * discount_adj_10p ;
-discount_7p = disc * discount_adj_7p ;
-discount_0 = disc * discount_adj_0 ;
 
-
-* if using 7% discount rate:  ; 
-* discount=discount_7p; 
-* discount_adj=discount_adj_7p;
-
-* if using 0% discount rate:  ;
-* discount=discount_0; 
-* discount_adj=discount_adj_0;
-
-***To demonstate that discounting is working correctly;
-* proc print; 
-* var cald  run  cald s_dcost_  s_cost_  disc  discount_adj  discount  discount_adj_10p discount_10p ; 
-* where option=0  and cald ge 2019; 
-* run;
+%let year_start_disc=2021;
+discount_3py = 1/(1.03**(cald-&year_start_disc));
+discount_10py = 1/(1.10**(cald-&year_start_disc));
+*The following can be changed if we want instead 10% discount rate;
+%let discount=discount_3py;
 
 * ================================================================================= ;
 
@@ -735,25 +722,27 @@ discount_0 = disc * discount_adj_0 ;
 
 * ================================================================================= ;
 
-ly = s_ly * sf_2020;
-dly = s_dly * sf_2020;
+ly = s_ly * &sf;
+dly = s_dly * &sf;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * sf_2020 * 4 * (0.0022 / 0.0058); 
+dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
 *  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
 
-ddaly = s_ddaly * sf_2020 * 4 * discount_adj ;
+ddaly = s_ddaly * &sf * 4;
+
 
 * sensitivity analysis;
 * dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
 
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * sf_2020 * 4  * discount_adj ; * odabe - dalys due to other dol adverse birth event;
 
-ddaly_mtct = s_ddaly_mtct * sf_2020 * 4  * discount_adj ;
+dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * &sf * 4; * odabe ;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * sf_2020 * 4  * discount_adj ; * napd - dalys before death due to non-AIDS event ;
+ddaly_mtct = s_ddaly_mtct * &sf * 4;
+
+ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * &sf * 4; * napd;
 
 ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
 
@@ -769,6 +758,15 @@ ddaly_adults = ddaly + ddaly_non_aids_pre_death;
 
 * ================================================================================= ;
 
+/*
+proc print; var cald  run option ddaly_ntd_mtct_odab_napd  ddaly  dead_ddaly_ntd  ddaly_mtct  dead_ddaly_odabe   
+ddaly_non_aids_pre_death;
+where cald = 2021;
+run;
+*/
+
+
+
 * costs ;
 
 * ================================================================================= ;
@@ -776,19 +774,21 @@ ddaly_adults = ddaly + ddaly_non_aids_pre_death;
 * all costs expressed as $ millions per year in 2018 USD;
 
 ***Redefine VMMC costs to $120 to match those being used for Zimbabwe and Malawi;;
-s_cost_circ_new= s_cost_circ*(120/106);
-s_dcost_circ_new=discount*s_cost_circ_new;*use this to calculate dcost_circ below;
+s_cost_circ_new= s_cost_circ*(90/106);
+s_dcost_circ_new=&discount*s_cost_circ_new;*use this to calculate dcost_circ below;
 
 * ts1m - 12 instead of 4; 
-dzdv_cost = s_cost_zdv * discount * sf_2020 * 4 / 1000;
-dten_cost = s_cost_ten * discount * sf_2020 * 4 / 1000;
-d3tc_cost = s_cost_3tc * discount * sf_2020 * 4 / 1000; 
-dnev_cost = s_cost_nev * discount * sf_2020 * 4 / 1000;
-dlpr_cost = s_cost_lpr * discount * sf_2020 * 4 / 1000;
-ddar_cost = s_cost_dar * discount * sf_2020 * 4 / 1000;
-dtaz_cost = s_cost_taz * discount * sf_2020 * 4 / 1000;
-defa_cost = s_cost_efa * discount * sf_2020 * 4 / 1000;
-ddol_cost = s_cost_dol * discount * sf_2020 * 4 / 1000;
+
+dzdv_cost = s_cost_zdv * &discount * &sf * 4 / 1000;
+dten_cost = s_cost_ten * &discount * &sf * 4 / 1000;
+d3tc_cost = s_cost_3tc * &discount * &sf * 4 / 1000; 
+dnev_cost = s_cost_nev * &discount * &sf * 4 / 1000;
+dlpr_cost = s_cost_lpr * &discount * &sf * 4 / 1000;
+ddar_cost = s_cost_dar * &discount * &sf * 4 / 1000;
+dtaz_cost = s_cost_taz * &discount * &sf * 4 / 1000;
+defa_cost = s_cost_efa * &discount * &sf * 4 / 1000;
+ddol_cost = s_cost_dol * &discount * &sf * 4 / 1000;
+
 
 if s_dart_cost=. then s_dart_cost=0;
 if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
@@ -799,39 +799,41 @@ if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
 * ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * sf_2020 * discount_adj * 4 / 1000;
-dart1_cost = s_dart_1_cost * sf_2020 * discount_adj * 4 / 1000;
-dart2_cost = s_dart_2_cost * sf_2020 * discount_adj * 4 / 1000;
-dart3_cost = s_dart_3_cost * sf_2020 * discount_adj * 4 / 1000;
-dart_cost = s_dart_cost * sf_2020 * discount_adj * 4 / 1000;
-dvl_cost = s_dvl_cost * sf_2020 * discount_adj * 4 / 1000;
-dcd4_cost = s_dcd4_cost * sf_2020 * discount_adj * 4 / 1000;
-dadc_cost = s_dadc_cost * sf_2020 * discount_adj * 4 / 1000;
-dtb_cost = s_dtb_cost * sf_2020 * discount_adj * 4 / 1000;
-dtest_cost = s_dtest_cost * sf_2020 * discount_adj * 4 / 1000;
-dwho3_cost = s_dwho3_cost * sf_2020 * discount_adj * 4 / 1000;
-dcot_cost = s_dcot_cost * sf_2020 * discount_adj * 4 / 1000;
-dres_cost = s_dres_cost * sf_2020 * discount_adj * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * sf_2020 * discount_adj * 4 / 1000;  
-dcost_cascade_intervntn = s_dcost_cascade_interventions * sf_2020 * discount_adj * 4 / 1000;  
-dcost_prep = s_dcost_prep * sf_2020* discount_adj * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * sf_2020* discount_adj * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2020* discount_adj * 4 / 1000; 
+dvis_cost = s_dvis_cost * &sf * 4 / 1000;
+dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
+dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
+dart_3_cost = s_dart_3_cost * &sf * 4 / 1000;
+dart_cost = s_dart_cost * &sf * 4 / 1000;
+dvl_cost = s_dvl_cost * &sf * 4 / 1000;
+dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
+dadc_cost = s_dadc_cost * &sf * 4 / 1000;
+dtb_cost = s_dtb_cost * &sf * 4 / 1000;
+dtest_cost = s_dtest_cost * &sf * 4 / 1000;
+*dwho3_cost = s_dwho3_cost * &sf * 4 / 1000;
+dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
+dcot_cost = s_dcot_cost * &sf * 4 / 1000;
+dres_cost = s_dres_cost * &sf * 4 / 1000;
+d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
+dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
+dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 			   
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2020 * discount_adj * 4 / 1000;
+* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
   dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
-dfullvis_cost = s_dfull_vis_cost * sf_2020 * discount_adj * 4 / 1000;
-dcost_circ = s_dcost_circ_new * sf_2020* discount_adj * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * sf_2020* discount_adj * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * discount_adj * sf_2020 * 4 / 1000;
+dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
+dcost_circ = s_dcost_circ_new * &sf * 4 / 1000; 
+dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; 
+dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * sf_2020 * discount_adj * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf_2020 * discount_adj * 4 / 1000; * s_cost_child_hiv is discounted cost;
+dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
+dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
+ 
 
-dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
+dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
@@ -840,23 +842,25 @@ dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 * dzdv_cost = dzdv_cost * (25 / 45);
 
 
-dart_cost_x = dart1_cost + dart2_cost + dart3_cost; 
+dart_cost_x = dart_1_cost + dart_2_cost + dart_3_cost; 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
 * dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
 		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_intervntn + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_non_aids_pre_death ;
 
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
+		dcost_child_hiv + dcost_non_aids_pre_death ;
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
+dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
-if discount gt 0 then cost_clin_care = dcost_clin_care / discount;
 
+if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
+
+if &discount gt 0 then cost = dcost / &discount;
 
 * ================================================================================= ;
 
@@ -869,6 +873,19 @@ if s_ai_naive_no_pmtct_c_inm_ = . then s_ai_naive_no_pmtct_c_inm_ = 0;
 if s_ai_naive_no_pmtct_c_rt184m_ = . then s_ai_naive_no_pmtct_c_rt184m_ = 0;
 if s_ai_naive_no_pmtct_c_rt65m_ = . then s_ai_naive_no_pmtct_c_rt65m_ = 0;
 if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
+
+s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
+s_mcirc_3039m = s_mcirc_3034m + s_mcirc_3539m;
+s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
+
+s_vmmc1549m = s_vmmc1519m + s_vmmc2024m + s_vmmc2529m + s_vmmc3034m + s_vmmc3539m + s_vmmc4044m + s_vmmc4549m ;
+s_vmmc3039m = s_vmmc3034m + s_vmmc3539m;
+s_vmmc4049m = s_vmmc4044m + s_vmmc4549m;
+
+s_hiv1524m = s_hiv1519m + s_hiv2024m ;
+s_hiv1524w = s_hiv1519w + s_hiv2024w ;
+
+
 
 
 * s_mcirc_1549m;				s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
@@ -902,11 +919,11 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
-* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2020;
+* n_sw_1564;					n_sw_1564 = s_sw_1564 * sf_2021;
 * p_newp_sw;					p_newp_sw = s_sw_newp / s_w_newp ;
 
-* n_tested_m;					n_tested_m = s_tested_m * sf_2020 * 4;
-* n_tested;						n_tested = s_tested * sf_2020 * 4;
+* n_tested_m;					n_tested_m = s_tested_m * sf_2021 * 4;
+* n_tested;						n_tested = s_tested * sf_2021 * 4;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
@@ -977,21 +994,21 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
-* n_prep;						n_prep = s_prep * sf_2020;
-* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2020;
+* n_prep;						n_prep = s_prep * sf_2021;
+* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * sf_2021;
 * p_hiv1_prep;					if s_prep gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep ;
 
-* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2020;
+* n_prep_ever;					n_prep_ever = s_prep_ever * sf_2021;
 * p_prep_ever;					p_prep_ever = s_prep_ever / (s_alive1564_w + s_alive1564_m) ;
 
 * av_prep_eff_non_res_v;  		if s_prep > 0 then av_prep_eff_non_res_v = s_prep_effectiveness_non_res_v / s_prep;
 
-* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2020;
-* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2020;
-* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2020;
-* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2020;
-* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2020;
-* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2020;
+* n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * sf_2021;
+* n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * sf_2021;
+* n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * sf_2021;
+* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * sf_2021;
+* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * sf_2021;
+* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * sf_2021;
 
 * prop_art_or_prep;				prop_art_or_prep =  ( max(s_prep,0) + s_onart) / (s_alive1564_w + s_alive1564_m) ;
 
@@ -1201,192 +1218,192 @@ if s_ai_naive_no_pmtct_c_rttams_ = . then s_ai_naive_no_pmtct_c_rttams_ = 0;
 				 				if s_alive1564_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive1564_m;
 								if s_alive1564_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive1564_w;
 
-* n_onart;						n_onart = s_onart * sf_2020 ;
-* n_diag;						n_diag = s_diag_this_period * sf_2020 * 4 ;
-* n_start_line2;				n_start_line2 = s_start_line2_this_period * sf_2020 * 4 ;
-* n_vl_test_done;				n_vl_test_done = (s_vl_cost / 0.022  )  * sf_2020 * 4 ;
+* n_onart;						n_onart = s_onart * sf_2021 ;
+* n_diag;						n_diag = s_diag_this_period * sf_2021 * 4 ;
+* n_start_line2;				n_start_line2 = s_start_line2_this_period * sf_2021 * 4 ;
+* n_vl_test_done;				n_vl_test_done = (s_vl_cost / 0.022  )  * sf_2021 * 4 ;
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2020;
-* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2020;
-* n_death;						n_death = s_dead_allage * sf_2020;
-* n_covid;						n_covid = s_covid * sf_2020;
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * sf_2021;
+* n_death_covid;				n_death_covid = s_death_dcause3_allage * sf_2021;
+* n_death;						n_death = s_dead_allage * sf_2021;
+* n_covid;						n_covid = s_covid * sf_2021;
 								inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid;
 
 * n_death_discount;				n_death_discount = n_death*discount;
 * death_rate_all_discount;		death_rate_all_discount = (4 * 100 * s_dead_allage) / (s_alive_w + s_alive_m) ;
 
 
-* n_give_birth_w_hiv;			n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2020 * 4; * number of women with hiv giving birth per year;
-* n_birth_with_inf_child;		n_birth_with_inf_child = s_birth_with_inf_child * sf_2020 * 4;
-* n_pregnant_ntd;				s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058); n_pregnant_ntd = s_pregnant_ntd    * sf_2020 * 4 ; 
+* n_give_birth_w_hiv;			n_give_birth_w_hiv = s_give_birth_with_hiv * sf_2021 * 4; * number of women with hiv giving birth per year;
+* n_birth_with_inf_child;		n_birth_with_inf_child = s_birth_with_inf_child * sf_2021 * 4;
+* n_pregnant_ntd;				s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058); n_pregnant_ntd = s_pregnant_ntd    * sf_2021 * 4 ; 
 								* number pregnant with baby with neural tube defect;
 
-* n_preg_odabe;					n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2020 * 4;  
+* n_preg_odabe;					n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * sf_2021 * 4;  
 								* annual number of pregnancies with other adverse dol birth event;
 
 
-* n_mcirc1549_py;				n_mcirc1549_py =	s_mcirc_1549m * sf_2020 * 4;
-* n_mcirc1549_3m;				n_mcirc1549_3m =	s_mcirc_1549m * sf_2020;
-* n_vmmc1549_py;				n_vmmc1549_py =		s_vmmc1549m * sf_2020 * 4;
-* n_vmmc1549_3m;				n_vmmc1549_3m =		s_vmmc1549m * sf_2020;
-* n_new_vmmc1549_py;			n_new_vmmc1549_py =	s_new_vmmc1549m * sf_2020 * 4;
-* n_new_vmmc1049_py;			n_new_vmmc1049_py = (s_new_vmmc1549m + s_new_vmmc1014m) * sf_2020 * 4;
+* n_mcirc1549_py;				n_mcirc1549_py =	s_mcirc_1549m * sf_2021 * 4;
+* n_mcirc1549_3m;				n_mcirc1549_3m =	s_mcirc_1549m * sf_2021;
+* n_vmmc1549_py;				n_vmmc1549_py =		s_vmmc1549m * sf_2021 * 4;
+* n_vmmc1549_3m;				n_vmmc1549_3m =		s_vmmc1549m * sf_2021;
+* n_new_vmmc1549_py;			n_new_vmmc1549_py =	s_new_vmmc1549m * sf_2021 * 4;
+* n_new_vmmc1049_py;			n_new_vmmc1049_py = (s_new_vmmc1549m + s_new_vmmc1014m) * sf_2021 * 4;
 
-* n_new_inf1549m;				n_new_inf1549m=s_primary1549m * sf_2020 * 4;
-* n_new_inf1549;				n_new_inf1549=s_primary1549 * sf_2020 * 4;
-* n_infection;					n_infection  = s_primary     * sf_2020 * 4;
+* n_new_inf1549m;				n_new_inf1549m=s_primary1549m * sf_2021 * 4;
+* n_new_inf1549;				n_new_inf1549=s_primary1549 * sf_2021 * 4;
+* n_infection;					n_infection  = s_primary     * sf_2021 * 4;
 
 * d_n_new_inf1549;				d_n_new_inf1549 = discount * n_new_inf1549;
 * d_n_infection;				d_n_infection = discount * n_infection;
 
 
-* n_ageg1519m ;					n_ageg1519m = s_ageg1519m * sf_2020 ;
-* n_ageg2024m ;					n_ageg2024m = s_ageg2024m * sf_2020 ;
-* n_ageg2529m ;					n_ageg2529m = s_ageg2529m * sf_2020 ;
-* n_ageg3034m ;					n_ageg3034m = s_ageg3034m * sf_2020 ;
-* n_ageg3539m ;					n_ageg3539m = s_ageg3539m * sf_2020 ;
-* n_ageg4044m ;					n_ageg4044m = s_ageg4044m * sf_2020 ;
-* n_ageg4549m ;					n_ageg4549m = s_ageg4549m * sf_2020 ;
-* n_ageg5054m ;					n_ageg5054m = s_ageg5054m * sf_2020 ;
-* n_ageg5559m ;					n_ageg5559m = s_ageg5559m * sf_2020 ;
-* n_ageg6064m ;					n_ageg6064m = s_ageg6064m * sf_2020 ;
-* n_ageg6569m ;					n_ageg6569m = s_ageg6569m * sf_2020 ;
-* n_ageg7074m ;					n_ageg7074m = s_ageg7074m * sf_2020 ;
-* n_ageg7579m ;					n_ageg7579m = s_ageg7579m * sf_2020 ;
-* n_ageg8084m ;					n_ageg8084m = s_ageg8084m * sf_2020 ;
-* n_ageg85plw ;					n_ageg85plw  = s_ageg85plw * sf_2020 ;
-* n_ageg1519w ;					n_ageg1519w = s_ageg1519w * sf_2020 ;
-* n_ageg2024w ;					n_ageg2024w = s_ageg2024w * sf_2020 ;
-* n_ageg2529w ;					n_ageg2529w = s_ageg2529w * sf_2020 ;
-* n_ageg3034w ;					n_ageg3034w = s_ageg3034w * sf_2020 ;
-* n_ageg3539w ;					n_ageg3539w = s_ageg3539w * sf_2020 ;
-* n_ageg4044w ;					n_ageg4044w = s_ageg4044w * sf_2020 ;
-* n_ageg4549w ;					n_ageg4549w = s_ageg4549w * sf_2020 ;
-* n_ageg5054w ;					n_ageg5054w = s_ageg5054w * sf_2020 ;
-* n_ageg5559w ;					n_ageg5559w = s_ageg5559w * sf_2020 ;
-* n_ageg6064w ;					n_ageg6064w = s_ageg6064w * sf_2020 ;
-* n_ageg6569w ;					n_ageg6569w = s_ageg6569w * sf_2020 ;
-* n_ageg7074w ;					n_ageg7074w = s_ageg7074w * sf_2020 ;
-* n_ageg7579w ;					n_ageg7579w = s_ageg7579w * sf_2020 ;
-* n_ageg8084w ;					n_ageg8084w = s_ageg8084w * sf_2020 ;
-* n_ageg85plw ;					n_ageg85plw  = s_ageg85plw * sf_2020 ;
+* n_ageg1519m ;					n_ageg1519m = s_ageg1519m * sf_2021 ;
+* n_ageg2024m ;					n_ageg2024m = s_ageg2024m * sf_2021 ;
+* n_ageg2529m ;					n_ageg2529m = s_ageg2529m * sf_2021 ;
+* n_ageg3034m ;					n_ageg3034m = s_ageg3034m * sf_2021 ;
+* n_ageg3539m ;					n_ageg3539m = s_ageg3539m * sf_2021 ;
+* n_ageg4044m ;					n_ageg4044m = s_ageg4044m * sf_2021 ;
+* n_ageg4549m ;					n_ageg4549m = s_ageg4549m * sf_2021 ;
+* n_ageg5054m ;					n_ageg5054m = s_ageg5054m * sf_2021 ;
+* n_ageg5559m ;					n_ageg5559m = s_ageg5559m * sf_2021 ;
+* n_ageg6064m ;					n_ageg6064m = s_ageg6064m * sf_2021 ;
+* n_ageg6569m ;					n_ageg6569m = s_ageg6569m * sf_2021 ;
+* n_ageg7074m ;					n_ageg7074m = s_ageg7074m * sf_2021 ;
+* n_ageg7579m ;					n_ageg7579m = s_ageg7579m * sf_2021 ;
+* n_ageg8084m ;					n_ageg8084m = s_ageg8084m * sf_2021 ;
+* n_ageg85plw ;					n_ageg85plw  = s_ageg85plw * sf_2021 ;
+* n_ageg1519w ;					n_ageg1519w = s_ageg1519w * sf_2021 ;
+* n_ageg2024w ;					n_ageg2024w = s_ageg2024w * sf_2021 ;
+* n_ageg2529w ;					n_ageg2529w = s_ageg2529w * sf_2021 ;
+* n_ageg3034w ;					n_ageg3034w = s_ageg3034w * sf_2021 ;
+* n_ageg3539w ;					n_ageg3539w = s_ageg3539w * sf_2021 ;
+* n_ageg4044w ;					n_ageg4044w = s_ageg4044w * sf_2021 ;
+* n_ageg4549w ;					n_ageg4549w = s_ageg4549w * sf_2021 ;
+* n_ageg5054w ;					n_ageg5054w = s_ageg5054w * sf_2021 ;
+* n_ageg5559w ;					n_ageg5559w = s_ageg5559w * sf_2021 ;
+* n_ageg6064w ;					n_ageg6064w = s_ageg6064w * sf_2021 ;
+* n_ageg6569w ;					n_ageg6569w = s_ageg6569w * sf_2021 ;
+* n_ageg7074w ;					n_ageg7074w = s_ageg7074w * sf_2021 ;
+* n_ageg7579w ;					n_ageg7579w = s_ageg7579w * sf_2021 ;
+* n_ageg8084w ;					n_ageg8084w = s_ageg8084w * sf_2021 ;
+* n_ageg85plw ;					n_ageg85plw  = s_ageg85plw * sf_2021 ;
 
-* n_onart_m1519 ;				n_onart_m1519 = s_onart_m1519_  * sf_2020 ;
-* n_onart_m2024 ;				n_onart_m2024 = s_onart_m2024_  * sf_2020 ;
-* n_onart_m2529 ;				n_onart_m2529 = s_onart_m2529_  * sf_2020 ;
-* n_onart_m3034 ;				n_onart_m3034 = s_onart_m3034_  * sf_2020 ;
-* n_onart_m3539 ;				n_onart_m3539 = s_onart_m3539_  * sf_2020 ;
-* n_onart_m4044 ;				n_onart_m4044 = s_onart_m4044_  * sf_2020 ;
-* n_onart_m4549 ;				n_onart_m4549 = s_onart_m4549_  * sf_2020 ;
-* n_onart_m5054 ;				n_onart_m5054 = s_onart_m5054_  * sf_2020 ;
-* n_onart_m5559 ;				n_onart_m5559 = s_onart_m5559_  * sf_2020 ;
-* n_onart_m6064 ;				n_onart_m6064 = s_onart_m6064_  * sf_2020 ;
-* n_onart_m6569 ;				n_onart_m6569 = s_onart_m6569_  * sf_2020 ;
-* n_onart_m7074 ;				n_onart_m7074 = s_onart_m7074_  * sf_2020 ;
-* n_onart_m7579 ;				n_onart_m7579 = s_onart_m7579_  * sf_2020 ;
-* n_onart_m8084 ;				n_onart_m8084 = s_onart_m8084_  * sf_2020 ;
-* n_onart_m85pl ;				n_onart_m85pl = s_onart_m85pl_  * sf_2020 ;
-* n_onart_w1519 ;				n_onart_w1519 = s_onart_w1519_  * sf_2020 ;
-* n_onart_w2024 ;				n_onart_w2024 = s_onart_w2024_  * sf_2020 ;
-* n_onart_w2529 ;				n_onart_w2529 = s_onart_w2529_  * sf_2020 ;
-* n_onart_w3034 ;				n_onart_w3034 = s_onart_w3034_  * sf_2020 ;
-* n_onart_w3539 ;				n_onart_w3539 = s_onart_w3539_  * sf_2020 ;
-* n_onart_w4044 ;				n_onart_w4044 = s_onart_w4044_  * sf_2020 ;
-* n_onart_w4549 ;				n_onart_w4549 = s_onart_w4549_  * sf_2020 ;
-* n_onart_w5054 ;				n_onart_w5054 = s_onart_w5054_  * sf_2020 ;
-* n_onart_w5559 ;				n_onart_w5559 = s_onart_w5559_  * sf_2020 ;
-* n_onart_w6064 ;				n_onart_w6064 = s_onart_w6064_  * sf_2020 ;
-* n_onart_w6569 ;				n_onart_w6569 = s_onart_w6569_  * sf_2020 ;
-* n_onart_w7074 ;				n_onart_w7074 = s_onart_w7074_  * sf_2020 ;
-* n_onart_w7579 ;				n_onart_w7579 = s_onart_w7579_  * sf_2020 ;
-* n_onart_w8084 ;				n_onart_w8084 = s_onart_w8084_  * sf_2020 ;
-* n_onart_w85pl ;				n_onart_w85pl = s_onart_w85pl_  * sf_2020 ;
+* n_onart_m1519 ;				n_onart_m1519 = s_onart_m1519_  * sf_2021 ;
+* n_onart_m2024 ;				n_onart_m2024 = s_onart_m2024_  * sf_2021 ;
+* n_onart_m2529 ;				n_onart_m2529 = s_onart_m2529_  * sf_2021 ;
+* n_onart_m3034 ;				n_onart_m3034 = s_onart_m3034_  * sf_2021 ;
+* n_onart_m3539 ;				n_onart_m3539 = s_onart_m3539_  * sf_2021 ;
+* n_onart_m4044 ;				n_onart_m4044 = s_onart_m4044_  * sf_2021 ;
+* n_onart_m4549 ;				n_onart_m4549 = s_onart_m4549_  * sf_2021 ;
+* n_onart_m5054 ;				n_onart_m5054 = s_onart_m5054_  * sf_2021 ;
+* n_onart_m5559 ;				n_onart_m5559 = s_onart_m5559_  * sf_2021 ;
+* n_onart_m6064 ;				n_onart_m6064 = s_onart_m6064_  * sf_2021 ;
+* n_onart_m6569 ;				n_onart_m6569 = s_onart_m6569_  * sf_2021 ;
+* n_onart_m7074 ;				n_onart_m7074 = s_onart_m7074_  * sf_2021 ;
+* n_onart_m7579 ;				n_onart_m7579 = s_onart_m7579_  * sf_2021 ;
+* n_onart_m8084 ;				n_onart_m8084 = s_onart_m8084_  * sf_2021 ;
+* n_onart_m85pl ;				n_onart_m85pl = s_onart_m85pl_  * sf_2021 ;
+* n_onart_w1519 ;				n_onart_w1519 = s_onart_w1519_  * sf_2021 ;
+* n_onart_w2024 ;				n_onart_w2024 = s_onart_w2024_  * sf_2021 ;
+* n_onart_w2529 ;				n_onart_w2529 = s_onart_w2529_  * sf_2021 ;
+* n_onart_w3034 ;				n_onart_w3034 = s_onart_w3034_  * sf_2021 ;
+* n_onart_w3539 ;				n_onart_w3539 = s_onart_w3539_  * sf_2021 ;
+* n_onart_w4044 ;				n_onart_w4044 = s_onart_w4044_  * sf_2021 ;
+* n_onart_w4549 ;				n_onart_w4549 = s_onart_w4549_  * sf_2021 ;
+* n_onart_w5054 ;				n_onart_w5054 = s_onart_w5054_  * sf_2021 ;
+* n_onart_w5559 ;				n_onart_w5559 = s_onart_w5559_  * sf_2021 ;
+* n_onart_w6064 ;				n_onart_w6064 = s_onart_w6064_  * sf_2021 ;
+* n_onart_w6569 ;				n_onart_w6569 = s_onart_w6569_  * sf_2021 ;
+* n_onart_w7074 ;				n_onart_w7074 = s_onart_w7074_  * sf_2021 ;
+* n_onart_w7579 ;				n_onart_w7579 = s_onart_w7579_  * sf_2021 ;
+* n_onart_w8084 ;				n_onart_w8084 = s_onart_w8084_  * sf_2021 ;
+* n_onart_w85pl ;				n_onart_w85pl = s_onart_w85pl_  * sf_2021 ;
 
-* n_mcirc_1014m ;				n_mcirc_1014m = s_mcirc_1014m * sf_2020 ;
-* n_mcirc_1519m ;				n_mcirc_1519m = s_mcirc_1519m * sf_2020 ;
-* n_mcirc_2024m ;				n_mcirc_2024m = s_mcirc_2024m * sf_2020 ;
-* n_mcirc_2529m ;				n_mcirc_2529m = s_mcirc_2529m * sf_2020 ;
-* n_mcirc_3034m ;				n_mcirc_3034m = s_mcirc_3034m * sf_2020 ;
-* n_mcirc_3539m ;				n_mcirc_3539m = s_mcirc_3539m * sf_2020 ;
-* n_mcirc_4044m ;				n_mcirc_4044m = s_mcirc_4044m * sf_2020 ;
-* n_mcirc_4549m ;				n_mcirc_4549m = s_mcirc_4549m * sf_2020 ;
-* n_mcirc_5054m ;				n_mcirc_5054m = s_mcirc_5054m * sf_2020 ;
-* n_mcirc_5559m ;				n_mcirc_5559m = s_mcirc_5559m * sf_2020 ;
-* n_mcirc_6064m ;				n_mcirc_6064m = s_mcirc_6064m * sf_2020 ;
-* n_mcirc_6569m ;				n_mcirc_6569m = s_mcirc_6569m * sf_2020 ;
-* n_mcirc_7074m ;				n_mcirc_7074m = s_mcirc_7074m * sf_2020 ;
-* n_mcirc_7579m ;				n_mcirc_7579m = s_mcirc_7579m * sf_2020 ;
-* n_mcirc_8084m ;				n_mcirc_8084m = s_mcirc_8084m * sf_2020 ;
-* n_mcirc_85plm ;				n_mcirc_85plm = s_mcirc_85plm * sf_2020 ;
+* n_mcirc_1014m ;				n_mcirc_1014m = s_mcirc_1014m * sf_2021 ;
+* n_mcirc_1519m ;				n_mcirc_1519m = s_mcirc_1519m * sf_2021 ;
+* n_mcirc_2024m ;				n_mcirc_2024m = s_mcirc_2024m * sf_2021 ;
+* n_mcirc_2529m ;				n_mcirc_2529m = s_mcirc_2529m * sf_2021 ;
+* n_mcirc_3034m ;				n_mcirc_3034m = s_mcirc_3034m * sf_2021 ;
+* n_mcirc_3539m ;				n_mcirc_3539m = s_mcirc_3539m * sf_2021 ;
+* n_mcirc_4044m ;				n_mcirc_4044m = s_mcirc_4044m * sf_2021 ;
+* n_mcirc_4549m ;				n_mcirc_4549m = s_mcirc_4549m * sf_2021 ;
+* n_mcirc_5054m ;				n_mcirc_5054m = s_mcirc_5054m * sf_2021 ;
+* n_mcirc_5559m ;				n_mcirc_5559m = s_mcirc_5559m * sf_2021 ;
+* n_mcirc_6064m ;				n_mcirc_6064m = s_mcirc_6064m * sf_2021 ;
+* n_mcirc_6569m ;				n_mcirc_6569m = s_mcirc_6569m * sf_2021 ;
+* n_mcirc_7074m ;				n_mcirc_7074m = s_mcirc_7074m * sf_2021 ;
+* n_mcirc_7579m ;				n_mcirc_7579m = s_mcirc_7579m * sf_2021 ;
+* n_mcirc_8084m ;				n_mcirc_8084m = s_mcirc_8084m * sf_2021 ;
+* n_mcirc_85plm ;				n_mcirc_85plm = s_mcirc_85plm * sf_2021 ;
 
-* n_new_mcirc_1014m ;			n_new_mcirc_1014m = s_new_mcirc_1014m * sf_2020 ;
-* n_new_mcirc_1519m ;			n_new_mcirc_1519m = s_new_mcirc_1519m * sf_2020 ;
-* n_new_mcirc_2024m ;			n_new_mcirc_2024m = s_new_mcirc_2024m * sf_2020 ;
-* n_new_mcirc_2529m ;			n_new_mcirc_2529m = s_new_mcirc_2529m * sf_2020 ;
-* n_new_mcirc_3034m ;			n_new_mcirc_3034m = s_new_mcirc_3034m * sf_2020 ;
-* n_new_mcirc_3539m ;			n_new_mcirc_3539m = s_new_mcirc_3539m * sf_2020 ;
-* n_new_mcirc_4044m ;			n_new_mcirc_4044m = s_new_mcirc_4044m * sf_2020 ;
-* n_new_mcirc_4549m ;			n_new_mcirc_4549m = s_new_mcirc_4549m * sf_2020 ;
-* n_new_mcirc_5054m ;			n_new_mcirc_5054m = s_new_mcirc_5054m * sf_2020 ;
-* n_new_mcirc_5559m ;			n_new_mcirc_5559m = s_new_mcirc_5559m * sf_2020 ;
-* n_new_mcirc_6064m ;			n_new_mcirc_6064m = s_new_mcirc_6064m * sf_2020 ;
-* n_new_mcirc_6569m ;			n_new_mcirc_6569m = s_new_mcirc_6569m * sf_2020 ;
-* n_new_mcirc_7074m ;			n_new_mcirc_7074m = s_new_mcirc_7074m * sf_2020 ;
-* n_new_mcirc_7579m ;			n_new_mcirc_7579m = s_new_mcirc_7579m * sf_2020 ;
-* n_new_mcirc_8084m ;			n_new_mcirc_8084m = s_new_mcirc_8084m * sf_2020 ;
-* n_new_mcirc_85plm ;			n_new_mcirc_85plm = s_new_mcirc_85plm * sf_2020 ;
+* n_new_mcirc_1014m ;			n_new_mcirc_1014m = s_new_mcirc_1014m * sf_2021 ;
+* n_new_mcirc_1519m ;			n_new_mcirc_1519m = s_new_mcirc_1519m * sf_2021 ;
+* n_new_mcirc_2024m ;			n_new_mcirc_2024m = s_new_mcirc_2024m * sf_2021 ;
+* n_new_mcirc_2529m ;			n_new_mcirc_2529m = s_new_mcirc_2529m * sf_2021 ;
+* n_new_mcirc_3034m ;			n_new_mcirc_3034m = s_new_mcirc_3034m * sf_2021 ;
+* n_new_mcirc_3539m ;			n_new_mcirc_3539m = s_new_mcirc_3539m * sf_2021 ;
+* n_new_mcirc_4044m ;			n_new_mcirc_4044m = s_new_mcirc_4044m * sf_2021 ;
+* n_new_mcirc_4549m ;			n_new_mcirc_4549m = s_new_mcirc_4549m * sf_2021 ;
+* n_new_mcirc_5054m ;			n_new_mcirc_5054m = s_new_mcirc_5054m * sf_2021 ;
+* n_new_mcirc_5559m ;			n_new_mcirc_5559m = s_new_mcirc_5559m * sf_2021 ;
+* n_new_mcirc_6064m ;			n_new_mcirc_6064m = s_new_mcirc_6064m * sf_2021 ;
+* n_new_mcirc_6569m ;			n_new_mcirc_6569m = s_new_mcirc_6569m * sf_2021 ;
+* n_new_mcirc_7074m ;			n_new_mcirc_7074m = s_new_mcirc_7074m * sf_2021 ;
+* n_new_mcirc_7579m ;			n_new_mcirc_7579m = s_new_mcirc_7579m * sf_2021 ;
+* n_new_mcirc_8084m ;			n_new_mcirc_8084m = s_new_mcirc_8084m * sf_2021 ;
+* n_new_mcirc_85plm ;			n_new_mcirc_85plm = s_new_mcirc_85plm * sf_2021 ;
 
-* n_new_inf_1519m ;				n_new_inf_1519m = s_primary1519m  * sf_2020 ;
-* n_new_inf_2024m ;				n_new_inf_2024m = s_primary2024m  * sf_2020 ;
-* n_new_inf_2529m ;				n_new_inf_2529m = s_primary2529m  * sf_2020 ;
-* n_new_inf_3034m ;				n_new_inf_3034m = s_primary3034m  * sf_2020 ;
-* n_new_inf_3539m ;				n_new_inf_3539m = s_primary3539m  * sf_2020 ;
-* n_new_inf_4044m ;				n_new_inf_4044m = s_primary4044m  * sf_2020 ;
-* n_new_inf_4549m ;				n_new_inf_4549m = s_primary4549m  * sf_2020 ;
-* n_new_inf_5054m ;				n_new_inf_5054m = s_primary5054m  * sf_2020 ;
-* n_new_inf_5559m ;				n_new_inf_5559m = s_primary5559m  * sf_2020 ;
-* n_new_inf_6064m ;				n_new_inf_6064m = s_primary6064m  * sf_2020 ;
-* n_new_inf_1519w ;				n_new_inf_1519w = s_primary1519w  * sf_2020 ;
-* n_new_inf_2024w ;				n_new_inf_2024w = s_primary2024w  * sf_2020 ;
-* n_new_inf_2529w ;				n_new_inf_2529w = s_primary2529w  * sf_2020 ;
-* n_new_inf_3034w ;				n_new_inf_3034w = s_primary3034w  * sf_2020 ;
-* n_new_inf_3539w ;				n_new_inf_3539w = s_primary3539w  * sf_2020 ;
-* n_new_inf_4044w ;				n_new_inf_4044w = s_primary4044w  * sf_2020 ;
-* n_new_inf_4549w ;				n_new_inf_4549w = s_primary4549w  * sf_2020 ;
-* n_new_inf_5054w ;				n_new_inf_5054w = s_primary5054w  * sf_2020 ;
-* n_new_inf_5559w ;				n_new_inf_5559w = s_primary5559w  * sf_2020 ;
-* n_new_inf_6064w ;				n_new_inf_6064w = s_primary6064w  * sf_2020 ;
+* n_new_inf_1519m ;				n_new_inf_1519m = s_primary1519m  * sf_2021 ;
+* n_new_inf_2024m ;				n_new_inf_2024m = s_primary2024m  * sf_2021 ;
+* n_new_inf_2529m ;				n_new_inf_2529m = s_primary2529m  * sf_2021 ;
+* n_new_inf_3034m ;				n_new_inf_3034m = s_primary3034m  * sf_2021 ;
+* n_new_inf_3539m ;				n_new_inf_3539m = s_primary3539m  * sf_2021 ;
+* n_new_inf_4044m ;				n_new_inf_4044m = s_primary4044m  * sf_2021 ;
+* n_new_inf_4549m ;				n_new_inf_4549m = s_primary4549m  * sf_2021 ;
+* n_new_inf_5054m ;				n_new_inf_5054m = s_primary5054m  * sf_2021 ;
+* n_new_inf_5559m ;				n_new_inf_5559m = s_primary5559m  * sf_2021 ;
+* n_new_inf_6064m ;				n_new_inf_6064m = s_primary6064m  * sf_2021 ;
+* n_new_inf_1519w ;				n_new_inf_1519w = s_primary1519w  * sf_2021 ;
+* n_new_inf_2024w ;				n_new_inf_2024w = s_primary2024w  * sf_2021 ;
+* n_new_inf_2529w ;				n_new_inf_2529w = s_primary2529w  * sf_2021 ;
+* n_new_inf_3034w ;				n_new_inf_3034w = s_primary3034w  * sf_2021 ;
+* n_new_inf_3539w ;				n_new_inf_3539w = s_primary3539w  * sf_2021 ;
+* n_new_inf_4044w ;				n_new_inf_4044w = s_primary4044w  * sf_2021 ;
+* n_new_inf_4549w ;				n_new_inf_4549w = s_primary4549w  * sf_2021 ;
+* n_new_inf_5054w ;				n_new_inf_5054w = s_primary5054w  * sf_2021 ;
+* n_new_inf_5559w ;				n_new_inf_5559w = s_primary5559w  * sf_2021 ;
+* n_new_inf_6064w ;				n_new_inf_6064w = s_primary6064w  * sf_2021 ;
 
-* n_hiv1519m ; 					n_hiv1519m = s_hiv1519m  * sf_2020 ;
-* n_hiv2024m ; 					n_hiv2024m = s_hiv2024m  * sf_2020 ;
-* n_hiv2529m ; 					n_hiv2529m = s_hiv2529m  * sf_2020 ;
-* n_hiv3034m ; 					n_hiv3034m = s_hiv3034m  * sf_2020 ;
-* n_hiv3539m ; 					n_hiv3539m = s_hiv3539m  * sf_2020 ;
-* n_hiv4044m ; 					n_hiv4044m = s_hiv4044m  * sf_2020 ;
-* n_hiv4549m ; 					n_hiv4549m = s_hiv4549m  * sf_2020 ;
-* n_hiv5054m ; 					n_hiv5054m = s_hiv5054m  * sf_2020 ;
-* n_hiv5559m ; 					n_hiv5559m = s_hiv5559m  * sf_2020 ;
-* n_hiv6064m ; 					n_hiv6064m = s_hiv6064m  * sf_2020 ;
-* n_hiv6569m ; 					n_hiv6569m = s_hiv6569m  * sf_2020 ;
-* n_hiv7074m ; 					n_hiv7074m = s_hiv7074m  * sf_2020 ;
-* n_hiv7579m ; 					n_hiv7579m = s_hiv7579m  * sf_2020 ;
-* n_hiv8084m ; 					n_hiv8084m = s_hiv8084m  * sf_2020 ;
-* n_hiv85plm ; 					n_hiv85plm = s_hiv85plm  * sf_2020 ;
-* n_hiv1519w ; 					n_hiv1519w = s_hiv1519w  * sf_2020 ;
-* n_hiv2024w ; 					n_hiv2024w = s_hiv2024w  * sf_2020 ;
-* n_hiv2529w ; 					n_hiv2529w = s_hiv2529w  * sf_2020 ;
-* n_hiv3034w ; 					n_hiv3034w = s_hiv3034w  * sf_2020 ;
-* n_hiv3539w ; 					n_hiv3539w = s_hiv3539w  * sf_2020 ;
-* n_hiv4044w ; 					n_hiv4044w = s_hiv4044w  * sf_2020 ;
-* n_hiv4549w ; 					n_hiv4549w = s_hiv4549w  * sf_2020 ;
-* n_hiv5054w ; 					n_hiv5054w = s_hiv5054w  * sf_2020 ;
-* n_hiv5559w ; 					n_hiv5559w = s_hiv5559w  * sf_2020 ;
-* n_hiv6064w ; 					n_hiv6064w = s_hiv6064w  * sf_2020 ;
-* n_hiv6569w ; 					n_hiv6569w = s_hiv6569w  * sf_2020 ;
-* n_hiv7074w ; 					n_hiv7074w = s_hiv7074w  * sf_2020 ;
-* n_hiv7579w ; 					n_hiv7579w = s_hiv7579w  * sf_2020 ;
-* n_hiv8084w ; 					n_hiv8084w = s_hiv8084w  * sf_2020 ;
-* n_hiv85plw ; 					n_hiv85plw = s_hiv85plw  * sf_2020 ;
+* n_hiv1519m ; 					n_hiv1519m = s_hiv1519m  * sf_2021 ;
+* n_hiv2024m ; 					n_hiv2024m = s_hiv2024m  * sf_2021 ;
+* n_hiv2529m ; 					n_hiv2529m = s_hiv2529m  * sf_2021 ;
+* n_hiv3034m ; 					n_hiv3034m = s_hiv3034m  * sf_2021 ;
+* n_hiv3539m ; 					n_hiv3539m = s_hiv3539m  * sf_2021 ;
+* n_hiv4044m ; 					n_hiv4044m = s_hiv4044m  * sf_2021 ;
+* n_hiv4549m ; 					n_hiv4549m = s_hiv4549m  * sf_2021 ;
+* n_hiv5054m ; 					n_hiv5054m = s_hiv5054m  * sf_2021 ;
+* n_hiv5559m ; 					n_hiv5559m = s_hiv5559m  * sf_2021 ;
+* n_hiv6064m ; 					n_hiv6064m = s_hiv6064m  * sf_2021 ;
+* n_hiv6569m ; 					n_hiv6569m = s_hiv6569m  * sf_2021 ;
+* n_hiv7074m ; 					n_hiv7074m = s_hiv7074m  * sf_2021 ;
+* n_hiv7579m ; 					n_hiv7579m = s_hiv7579m  * sf_2021 ;
+* n_hiv8084m ; 					n_hiv8084m = s_hiv8084m  * sf_2021 ;
+* n_hiv85plm ; 					n_hiv85plm = s_hiv85plm  * sf_2021 ;
+* n_hiv1519w ; 					n_hiv1519w = s_hiv1519w  * sf_2021 ;
+* n_hiv2024w ; 					n_hiv2024w = s_hiv2024w  * sf_2021 ;
+* n_hiv2529w ; 					n_hiv2529w = s_hiv2529w  * sf_2021 ;
+* n_hiv3034w ; 					n_hiv3034w = s_hiv3034w  * sf_2021 ;
+* n_hiv3539w ; 					n_hiv3539w = s_hiv3539w  * sf_2021 ;
+* n_hiv4044w ; 					n_hiv4044w = s_hiv4044w  * sf_2021 ;
+* n_hiv4549w ; 					n_hiv4549w = s_hiv4549w  * sf_2021 ;
+* n_hiv5054w ; 					n_hiv5054w = s_hiv5054w  * sf_2021 ;
+* n_hiv5559w ; 					n_hiv5559w = s_hiv5559w  * sf_2021 ;
+* n_hiv6064w ; 					n_hiv6064w = s_hiv6064w  * sf_2021 ;
+* n_hiv6569w ; 					n_hiv6569w = s_hiv6569w  * sf_2021 ;
+* n_hiv7074w ; 					n_hiv7074w = s_hiv7074w  * sf_2021 ;
+* n_hiv7579w ; 					n_hiv7579w = s_hiv7579w  * sf_2021 ;
+* n_hiv8084w ; 					n_hiv8084w = s_hiv8084w  * sf_2021 ;
+* n_hiv85plw ; 					n_hiv85plw = s_hiv85plw  * sf_2021 ;
 
 
 keep run option option_new cald /*dataset*/
@@ -1432,7 +1449,7 @@ prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hi
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  test_prop_positive  p_newp_prep n_infection 
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
 
-sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1511,10 +1528,10 @@ s_sw_newp;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_09_03_21_2pm_temp; set y;run;
+data a.vmmc_29_03_21_6pm_temp; set y;run;
 
 
-data y; set a.vmmc_09_03_21_2pm_temp; run;
+data y; set a.vmmc_29_03_21_6pm_temp; run;
 
 proc freq;table option_new;run;
 
@@ -1528,23 +1545,23 @@ proc freq;table option_new;run;
 
 * &v ;
 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where cald = 2020; 
+proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2021.5 <= cald < 2022.5; 
 
 ***outputs in 2040;
 proc means noprint data=y; var &v; output out=y_40_41 mean= &v._40_41; by run option_new ; where 2040.0 <= cald < 2041.0; 
-proc means noprint data=y; var &v; output out=y_19_20 mean= &v._19_20; by run option_new ; where 2019.5 <= cald < 2020.50;
-proc means noprint data=y; var &v; output out=y_20_25 mean= &v._20_25; by run option_new ; where 2020.5 <= cald < 2025.50;
-proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option_new ; where 2020.5 <= cald < 2040.50;
-proc means noprint data=y; var &v; output out=y_20_70 mean= &v._20_70; by run option_new ; where 2020.5 <= cald < 2070.50;
+proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option_new ; where 2020.5 <= cald < 2021.5;
+proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option_new ; where 2021.5 <= cald < 2026.50;
+proc means noprint data=y; var &v; output out=y_21_41 mean= &v._21_41; by run option_new ; where 2021.5 <= cald < 2041.50;
+proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option_new ; where 2021.5 <= cald < 2071.50;
 
 proc sort data=y_40_41; by run; proc transpose data=y_40_41 out=t_40_41 prefix=&v._40_41_; var &v._40_41; by run;
-proc sort data=y_19_20; by run; proc transpose data=y_19_20 out=t_19_20 prefix=&v._19_20_; var &v._19_20; by run;
-proc sort data=y_20_25; by run; proc transpose data=y_20_25 out=t_20_25 prefix=&v._20_25_; var &v._20_25; by run;
-proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run;
-proc sort data=y_20_70; by run; proc transpose data=y_20_70 out=t_20_70 prefix=&v._20_70_; var &v._20_70; by run;
+proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run;
+proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run;
+proc sort data=y_21_41; by run; proc transpose data=y_21_41 out=t_21_41 prefix=&v._21_41_; var &v._21_41; by run;
+proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;
 
 
-data &v ; merge  y_20 t_40_41  t_19_20 t_20_25 t_20_40 t_20_70 ;  
+data &v ; merge  y_21 t_40_41  t_21_22 t_21_26 t_21_41 t_21_71 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1686,7 +1703,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2020); /*%par(p=dataset);*/
+%par(p=sf_2021); /*%par(p=dataset);*/
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1716,7 +1733,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2020 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1742,8 +1759,6 @@ prep_strategy rate_sw_rred_rc lower_future_art_cov
 ;
 
 proc contents; run;
-
-run;
 proc sort; by run;run;
 
 
@@ -1865,7 +1880,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_05_03_21_temp;
+  data a.wide_vmmc_29_03_21_6pm_temp;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

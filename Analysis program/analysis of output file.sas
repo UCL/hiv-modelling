@@ -9,12 +9,12 @@ if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete;
 run;
 
 data b;
-set a.wide_vmmc_05_03_21_temp;
+set a.wide_vmmc_29_03_21_6pm_temp;
 run;
 proc contents;run;
 
 data c;
-set a;  
+set b;  
 *set a b;
 *set a.wide_vmmc_23_10_20_lowart_120;
 *set a.wide_vmmc_12_10_20_5pm_120_5p;***This is assuming 5% discount rate;
@@ -33,121 +33,121 @@ set a;
 
 *difference in vmmc rates;
 
-d_p_vmmc_inc1014m_20_25_1 = (p_vmmc_inc1014m_20_25_1 - p_vmmc_inc1014m_20_25_2)*100;
-d_p_vmmc_1549m_20_25_1 = (p_vmmc_1549m_20_25_1 - p_vmmc_1549m_20_25_2)*100;
-d_p_vmmc_1549m_20_25_1 = (p_vmmc_1549m_20_25_1 - p_vmmc_1549m_20_25_2)*100;
-d_p_vmmc_1014m_20_25_1 = (p_vmmc_1014m_20_25_1 - p_vmmc_1014m_20_25_2)*100;
-d_p_vmmc_1519m_20_25_1 = (p_vmmc_1519m_20_25_1 - p_vmmc_1519m_20_25_2)*100;
-d_p_vmmc_2024m_20_25_1 = (p_vmmc_2024m_20_25_1 - p_vmmc_2024m_20_25_2)*100;
-d_p_vmmc_2529m_20_25_1 = (p_vmmc_2529m_20_25_1 - p_vmmc_2529m_20_25_2)*100;
-d_p_vmmc_3039m_20_25_1 = (p_vmmc_3039m_20_25_1 - p_vmmc_3039m_20_25_2)*100;
-d_p_vmmc_4049m_20_25_1 = (p_vmmc_4049m_20_25_1 - p_vmmc_4049m_20_25_2)*100;
+d_p_vmmc_inc1014m_21_26_1 = (p_vmmc_inc1014m_21_26_1 - p_vmmc_inc1014m_21_26_2)*100;
+d_p_vmmc_1549m_21_26_1 = (p_vmmc_1549m_21_26_1 - p_vmmc_1549m_21_26_2)*100;
+d_p_vmmc_1549m_21_26_1 = (p_vmmc_1549m_21_26_1 - p_vmmc_1549m_21_26_2)*100;
+d_p_vmmc_1014m_21_26_1 = (p_vmmc_1014m_21_26_1 - p_vmmc_1014m_21_26_2)*100;
+d_p_vmmc_1519m_21_26_1 = (p_vmmc_1519m_21_26_1 - p_vmmc_1519m_21_26_2)*100;
+d_p_vmmc_2024m_21_26_1 = (p_vmmc_2024m_21_26_1 - p_vmmc_2024m_21_26_2)*100;
+d_p_vmmc_2529m_21_26_1 = (p_vmmc_2529m_21_26_1 - p_vmmc_2529m_21_26_2)*100;
+d_p_vmmc_3039m_21_26_1 = (p_vmmc_3039m_21_26_1 - p_vmmc_3039m_21_26_2)*100;
+d_p_vmmc_4049m_21_26_1 = (p_vmmc_4049m_21_26_1 - p_vmmc_4049m_21_26_2)*100;
 
-d_p_vmmc_inc1014m_20_40_1 = (p_vmmc_inc1014m_20_40_1 - p_vmmc_inc1014m_20_40_2)*100;
-d_p_vmmc_1549m_20_40_1 = (p_vmmc_1549m_20_40_1 - p_vmmc_1549m_20_40_2)*100;
-d_p_vmmc_1549m_20_40_1 = (p_vmmc_1549m_20_40_1 - p_vmmc_1549m_20_40_2)*100;
-d_p_vmmc_1014m_20_40_1 = (p_vmmc_1014m_20_40_1 - p_vmmc_1014m_20_40_2)*100;
-d_p_vmmc_1519m_20_40_1 = (p_vmmc_1519m_20_40_1 - p_vmmc_1519m_20_40_2)*100;
-d_p_vmmc_2024m_20_40_1 = (p_vmmc_2024m_20_40_1 - p_vmmc_2024m_20_40_2)*100;
-d_p_vmmc_2529m_20_40_1 = (p_vmmc_2529m_20_40_1 - p_vmmc_2529m_20_40_2)*100;
-d_p_vmmc_3039m_20_40_1 = (p_vmmc_3039m_20_40_1 - p_vmmc_3039m_20_40_2)*100;
-d_p_vmmc_4049m_20_40_1 = (p_vmmc_4049m_20_40_1 - p_vmmc_4049m_20_40_2)*100;
+d_p_vmmc_inc1014m_21_41_1 = (p_vmmc_inc1014m_21_41_1 - p_vmmc_inc1014m_21_41_2)*100;
+d_p_vmmc_1549m_21_41_1 = (p_vmmc_1549m_21_41_1 - p_vmmc_1549m_21_41_2)*100;
+d_p_vmmc_1549m_21_41_1 = (p_vmmc_1549m_21_41_1 - p_vmmc_1549m_21_41_2)*100;
+d_p_vmmc_1014m_21_41_1 = (p_vmmc_1014m_21_41_1 - p_vmmc_1014m_21_41_2)*100;
+d_p_vmmc_1519m_21_41_1 = (p_vmmc_1519m_21_41_1 - p_vmmc_1519m_21_41_2)*100;
+d_p_vmmc_2024m_21_41_1 = (p_vmmc_2024m_21_41_1 - p_vmmc_2024m_21_41_2)*100;
+d_p_vmmc_2529m_21_41_1 = (p_vmmc_2529m_21_41_1 - p_vmmc_2529m_21_41_2)*100;
+d_p_vmmc_3039m_21_41_1 = (p_vmmc_3039m_21_41_1 - p_vmmc_3039m_21_41_2)*100;
+d_p_vmmc_4049m_21_41_1 = (p_vmmc_4049m_21_41_1 - p_vmmc_4049m_21_41_2)*100;
 
-d_p_vmmc_inc1014m_20_70_1 = (p_vmmc_inc1014m_20_70_1 - p_vmmc_inc1014m_20_70_2)*100;
-d_p_vmmc_1549m_20_70_1 = (p_vmmc_1549m_20_70_1 - p_vmmc_1549m_20_70_2)*100;
-d_p_vmmc_1549m_20_70_1 = (p_vmmc_1549m_20_70_1 - p_vmmc_1549m_20_70_2)*100;
-d_p_vmmc_1014m_20_70_1 = (p_vmmc_1014m_20_70_1 - p_vmmc_1014m_20_70_2)*100;
-d_p_vmmc_1519m_20_70_1 = (p_vmmc_1519m_20_70_1 - p_vmmc_1519m_20_70_2)*100;
-d_p_vmmc_2024m_20_70_1 = (p_vmmc_2024m_20_70_1 - p_vmmc_2024m_20_70_2)*100;
-d_p_vmmc_2529m_20_70_1 = (p_vmmc_2529m_20_70_1 - p_vmmc_2529m_20_70_2)*100;
-d_p_vmmc_3039m_20_70_1 = (p_vmmc_3039m_20_70_1 - p_vmmc_3039m_20_70_2)*100;
-d_p_vmmc_4049m_20_70_1 = (p_vmmc_4049m_20_70_1 - p_vmmc_4049m_20_70_2)*100;
+d_p_vmmc_inc1014m_21_71_1 = (p_vmmc_inc1014m_21_71_1 - p_vmmc_inc1014m_21_71_2)*100;
+d_p_vmmc_1549m_21_71_1 = (p_vmmc_1549m_21_71_1 - p_vmmc_1549m_21_71_2)*100;
+d_p_vmmc_1549m_21_71_1 = (p_vmmc_1549m_21_71_1 - p_vmmc_1549m_21_71_2)*100;
+d_p_vmmc_1014m_21_71_1 = (p_vmmc_1014m_21_71_1 - p_vmmc_1014m_21_71_2)*100;
+d_p_vmmc_1519m_21_71_1 = (p_vmmc_1519m_21_71_1 - p_vmmc_1519m_21_71_2)*100;
+d_p_vmmc_2024m_21_71_1 = (p_vmmc_2024m_21_71_1 - p_vmmc_2024m_21_71_2)*100;
+d_p_vmmc_2529m_21_71_1 = (p_vmmc_2529m_21_71_1 - p_vmmc_2529m_21_71_2)*100;
+d_p_vmmc_3039m_21_71_1 = (p_vmmc_3039m_21_71_1 - p_vmmc_3039m_21_71_2)*100;
+d_p_vmmc_4049m_21_71_1 = (p_vmmc_4049m_21_71_1 - p_vmmc_4049m_21_71_2)*100;
 
 *difference in HIV incidence rates - x 10 as incidence is calculated per 100py but we want 1000py for report;
-d_incidence1549m_20_25_1 = (incidence1549m_20_25_1 - incidence1549m_20_25_2)*10;
-d_incidence1549m_20_40_1 = (incidence1549m_20_40_1 - incidence1549m_20_40_2)*10;
-d_incidence1549m_20_70_1 = (incidence1549m_20_70_1 - incidence1549m_20_70_2)*10;
+d_incidence1549m_21_26_1 = (incidence1549m_21_26_1 - incidence1549m_21_26_2)*10;
+d_incidence1549m_21_41_1 = (incidence1549m_21_41_1 - incidence1549m_21_41_2)*10;
+d_incidence1549m_21_71_1 = (incidence1549m_21_71_1 - incidence1549m_21_71_2)*10;
 
-d_incidence1549w_20_25_1 = (incidence1549w_20_25_1 - incidence1549w_20_25_2)*10;
-d_incidence1549w_20_40_1 = (incidence1549w_20_40_1 - incidence1549w_20_40_2)*10;
-d_incidence1549w_20_70_1 = (incidence1549w_20_70_1 - incidence1549w_20_70_2)*10;
+d_incidence1549w_21_26_1 = (incidence1549w_21_26_1 - incidence1549w_21_26_2)*10;
+d_incidence1549w_21_41_1 = (incidence1549w_21_41_1 - incidence1549w_21_41_2)*10;
+d_incidence1549w_21_71_1 = (incidence1549w_21_71_1 - incidence1549w_21_71_2)*10;
 
 *difference in HIV prevalence rates ;
-d_prevalence1549m_20_25_1 =  (prevalence1549m_20_25_1 - prevalence1549m_20_25_2)*100;
-d_prevalence1549m_20_40_1 =  (prevalence1549m_20_40_1 - prevalence1549m_20_40_2)*100;
-d_prevalence1549m_20_70_1 =  (prevalence1549m_20_70_1 - prevalence1549m_20_70_2)*100;
+d_prevalence1549m_21_26_1 =  (prevalence1549m_21_26_1 - prevalence1549m_21_26_2)*100;
+d_prevalence1549m_21_41_1 =  (prevalence1549m_21_41_1 - prevalence1549m_21_41_2)*100;
+d_prevalence1549m_21_71_1 =  (prevalence1549m_21_71_1 - prevalence1549m_21_71_2)*100;
 
-d_prevalence1549w_20_25_1 =  (prevalence1549w_20_25_1 - prevalence1549w_20_25_2)*100;
-d_prevalence1549w_20_40_1 =  (prevalence1549w_20_40_1 - prevalence1549w_20_40_2)*100;
-d_prevalence1549w_20_70_1 =  (prevalence1549w_20_70_1 - prevalence1549w_20_70_2)*100; 
+d_prevalence1549w_21_26_1 =  (prevalence1549w_21_26_1 - prevalence1549w_21_26_2)*100;
+d_prevalence1549w_21_41_1 =  (prevalence1549w_21_41_1 - prevalence1549w_21_41_2)*100;
+d_prevalence1549w_21_71_1 =  (prevalence1549w_21_71_1 - prevalence1549w_21_71_2)*100; 
 
 *difference in HIV death rate;
-ddeath_rate_hiv_m_20_25_1 = death_rate_hiv_m_20_25_1 - death_rate_hiv_m_20_25_2;
-ddeath_rate_hiv_m_20_40_1 = death_rate_hiv_m_20_40_1 - death_rate_hiv_m_20_40_2;
-ddeath_rate_hiv_m_20_70_1 = death_rate_hiv_m_20_70_1 - death_rate_hiv_m_20_70_2;
+ddeath_rate_hiv_m_21_26_1 = death_rate_hiv_m_21_26_1 - death_rate_hiv_m_21_26_2;
+ddeath_rate_hiv_m_21_41_1 = death_rate_hiv_m_21_41_1 - death_rate_hiv_m_21_41_2;
+ddeath_rate_hiv_m_21_71_1 = death_rate_hiv_m_21_71_1 - death_rate_hiv_m_21_71_2;
 
-ddeath_rate_hiv_all_m_20_25_1 = death_rate_hiv_all_m_20_25_1 - death_rate_hiv_all_m_20_25_2;
-ddeath_rate_hiv_all_m_20_40_1 = death_rate_hiv_all_m_20_40_1 - death_rate_hiv_all_m_20_40_2;
-ddeath_rate_hiv_all_m_20_70_1 = death_rate_hiv_all_m_20_70_1 - death_rate_hiv_all_m_20_70_2;
+ddeath_rate_hiv_all_m_21_26_1 = death_rate_hiv_all_m_21_26_1 - death_rate_hiv_all_m_21_26_2;
+ddeath_rate_hiv_all_m_21_41_1 = death_rate_hiv_all_m_21_41_1 - death_rate_hiv_all_m_21_41_2;
+ddeath_rate_hiv_all_m_21_71_1 = death_rate_hiv_all_m_21_71_1 - death_rate_hiv_all_m_21_71_2;
  															   
 *% infections averted;
-inf_avert_20_25_1 = ((n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1)/n_new_inf1549_20_25_2)*100;
-inf_avert_20_40_1 = ((n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1)/n_new_inf1549_20_40_2)*100;
-inf_avert_20_70_1 = ((n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1)/n_new_inf1549_20_70_2)*100;
+inf_avert_21_26_1 = ((n_new_inf1549_21_26_2 - n_new_inf1549_21_26_1)/n_new_inf1549_21_26_2)*100;
+inf_avert_21_41_1 = ((n_new_inf1549_21_41_2 - n_new_inf1549_21_41_1)/n_new_inf1549_21_41_2)*100;
+inf_avert_21_71_1 = ((n_new_inf1549_21_71_2 - n_new_inf1549_21_71_1)/n_new_inf1549_21_71_2)*100;
 
 
 *dalys averted;
-d_ddaly_adults_20_25_1 = ddaly_adults_20_25_2 - ddaly_adults_20_25_1;
-d_ddaly_adults_20_40_1 = ddaly_adults_20_40_2 - ddaly_adults_20_40_1;
-d_ddaly_adults_20_70_1 = ddaly_adults_20_70_2 - ddaly_adults_20_70_1;
+d_ddaly_adults_21_26_1 = ddaly_adults_21_26_2 - ddaly_adults_21_26_1;
+d_ddaly_adults_21_41_1 = ddaly_adults_21_41_2 - ddaly_adults_21_41_1;
+d_ddaly_adults_21_71_1 = ddaly_adults_21_71_2 - ddaly_adults_21_71_1;
 
-d_ddaly_adults_20_70_2 = ddaly_adults_20_70_1 - ddaly_adults_20_70_2;
+d_ddaly_adults_21_71_2 = ddaly_adults_21_71_1 - ddaly_adults_21_71_2;
 
 *difference in costs;
-d_dcost_20_25_1 = dcost_20_25_1 - dcost_20_25_2;
-d_dcost_20_40_1 = dcost_20_40_1 - dcost_20_40_2;
-d_dcost_20_70_1 = dcost_20_70_1 - dcost_20_70_2;
+d_dcost_21_26_1 = dcost_21_26_1 - dcost_21_26_2;
+d_dcost_21_41_1 = dcost_21_41_1 - dcost_21_41_2;
+d_dcost_21_71_1 = dcost_21_71_1 - dcost_21_71_2;
 
 *net dalys averted;
-ndb_500_20_25_1_adults =  ddaly_adults_20_25_1 + (dcost_20_25_1)/0.0005;
-ndb_500_20_25_2_adults =  ddaly_adults_20_25_2 + (dcost_20_25_2)/0.0005; 
-ndb_500_20_40_1_adults =  ddaly_adults_20_40_1 + (dcost_20_40_1)/0.0005;
-ndb_500_20_40_2_adults =  ddaly_adults_20_40_2 + (dcost_20_40_2)/0.0005; 
-ndb_500_20_70_1_adults =  ddaly_adults_20_70_1 + (dcost_20_70_1)/0.0005;
-ndb_500_20_70_2_adults =  ddaly_adults_20_70_2 + (dcost_20_70_2)/0.0005; 
+ndb_500_21_26_1_adults =  ddaly_adults_21_26_1 + (dcost_21_26_1)/0.0005;
+ndb_500_21_26_2_adults =  ddaly_adults_21_26_2 + (dcost_21_26_2)/0.0005; 
+ndb_500_21_41_1_adults =  ddaly_adults_21_41_1 + (dcost_21_41_1)/0.0005;
+ndb_500_21_41_2_adults =  ddaly_adults_21_41_2 + (dcost_21_41_2)/0.0005; 
+ndb_500_21_71_1_adults =  ddaly_adults_21_71_1 + (dcost_21_71_1)/0.0005;
+ndb_500_21_71_2_adults =  ddaly_adults_21_71_2 + (dcost_21_71_2)/0.0005; 
 
 *net dalys averted;
-d_net_dalys_20_25_1_adults = ndb_500_20_25_2_adults - ndb_500_20_25_1_adults;
-d_net_dalys_20_40_1_adults = ndb_500_20_40_2_adults - ndb_500_20_40_1_adults;
-d_net_dalys_20_70_1_adults = ndb_500_20_70_2_adults - ndb_500_20_70_1_adults;
+d_net_dalys_21_26_1_adults = ndb_500_21_26_2_adults - ndb_500_21_26_1_adults;
+d_net_dalys_21_41_1_adults = ndb_500_21_41_2_adults - ndb_500_21_41_1_adults;
+d_net_dalys_21_71_1_adults = ndb_500_21_71_2_adults - ndb_500_21_71_1_adults;
 
-ce_20_25=0;if d_net_dalys_20_25_1_adults gt 0 then ce_20_25=1;
-ce_20_40=0;if d_net_dalys_20_40_1_adults gt 0 then ce_20_40=1;
-ce_20_70=0;if d_net_dalys_20_70_1_adults gt 0 then ce_20_70=1;
+ce_21_26=0;if d_net_dalys_21_26_1_adults gt 0 then ce_21_26=1;
+ce_21_41=0;if d_net_dalys_21_41_1_adults gt 0 then ce_21_41=1;
+ce_21_71=0;if d_net_dalys_21_71_1_adults gt 0 then ce_21_71=1;
 
 *nnt;
 *difference in number of VMMCs;
-d_n_vmmc_20_25_1 = n_new_vmmc1549_py_20_25_1 - n_new_vmmc1549_py_20_25_2;
-d_n_vmmc_20_40_1 = n_new_vmmc1549_py_20_40_1 - n_new_vmmc1549_py_20_40_2;
-d_n_vmmc_20_70_1 = n_new_vmmc1549_py_20_70_1 - n_new_vmmc1549_py_20_70_2;
+d_n_vmmc_21_26_1 = n_new_vmmc1549_py_21_26_1 - n_new_vmmc1549_py_21_26_2;
+d_n_vmmc_21_41_1 = n_new_vmmc1549_py_21_41_1 - n_new_vmmc1549_py_21_41_2;
+d_n_vmmc_21_71_1 = n_new_vmmc1549_py_21_71_1 - n_new_vmmc1549_py_21_71_2;
 
 *infections averted with continuation of VMMC;
-d_n_new_inf_20_25_1 = n_new_inf1549_20_25_2 - n_new_inf1549_20_25_1;
-d_n_new_inf_20_40_1 = n_new_inf1549_20_40_2 - n_new_inf1549_20_40_1;
-d_n_new_inf_20_70_1 = n_new_inf1549_20_70_2 - n_new_inf1549_20_70_1;
+d_n_new_inf_21_26_1 = n_new_inf1549_21_26_2 - n_new_inf1549_21_26_1;
+d_n_new_inf_21_41_1 = n_new_inf1549_21_41_2 - n_new_inf1549_21_41_1;
+d_n_new_inf_21_71_1 = n_new_inf1549_21_71_2 - n_new_inf1549_21_71_1;
 
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in number of VMMC is 
    maximum difference found above;
 /*
-proc univariate;var d_n_vmmc_20_25_1 d_n_vmmc_20_40_1 d_n_vmmc_20_70_1;run;
+proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 */
 
-/*lowart;nnt_20_25_1=143106; nnt_20_40_1=158930; nnt_20_70_1=188993;*/
-*base/5% disc/180/60;nnt_20_25_1=153761; nnt_20_40_1=155944; nnt_20_70_1=187050;
+/*lowart;nnt_21_26_1=143106; nnt_21_41_1=158930; nnt_21_71_1=188993;*/
+*base/5% disc/180/60;nnt_21_26_1=135057; nnt_21_41_1=116568; nnt_21_71_1=147090;
 
-if d_n_new_inf_20_25_1 gt 0 then nnt_20_25_1 = d_n_vmmc_20_25_1 / d_n_new_inf_20_25_1;
-if d_n_new_inf_20_40_1 gt 0 then nnt_20_40_1 = d_n_vmmc_20_40_1 / d_n_new_inf_20_40_1;
-if d_n_new_inf_20_70_1 gt 0 then nnt_20_70_1 = d_n_vmmc_20_70_1 / d_n_new_inf_20_70_1;
+if d_n_new_inf_21_26_1 gt 0 then nnt_21_26_1 = d_n_vmmc_21_26_1 / d_n_new_inf_21_26_1;
+if d_n_new_inf_21_41_1 gt 0 then nnt_21_41_1 = d_n_vmmc_21_41_1 / d_n_new_inf_21_41_1;
+if d_n_new_inf_21_71_1 gt 0 then nnt_21_71_1 = d_n_vmmc_21_71_1 / d_n_new_inf_21_71_1;
 
 
 
@@ -155,15 +155,15 @@ if d_n_new_inf_20_70_1 gt 0 then nnt_20_70_1 = d_n_vmmc_20_70_1 / d_n_new_inf_20
 *use discounted infections;
 
 *discounted infections averted with continuation of VMMC;
-d_n_d_new_inf_20_25_1 = d_n_infection_20_25_2 - d_n_infection_20_25_1;
-d_n_d_new_inf_20_40_1 = d_n_infection_20_40_2 - d_n_infection_20_40_1;
-d_n_d_new_inf_20_70_1 = d_n_infection_20_70_2 - d_n_infection_20_70_1;
+d_n_d_new_inf_21_26_1 = d_n_infection_21_26_2 - d_n_infection_21_26_1;
+d_n_d_new_inf_21_41_1 = d_n_infection_21_41_2 - d_n_infection_21_41_1;
+d_n_d_new_inf_21_71_1 = d_n_infection_21_71_2 - d_n_infection_21_71_1;
 
 
 ***For scenarios in which infections are not averted, assume 1 infection is averted and difference in cost is 
    max difference;
 /*
-proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
+proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 *base; max=17.0, 13.9, 13.6;
 *lower future art cov;: max=16.6, 13.9, 9.9;
 *5% disc; max=15.3, 9.6. 6.1;
@@ -171,26 +171,26 @@ proc univariate;var d_dcost_20_25_1 d_dcost_20_40_1 d_dcost_20_70_1;run;
 *60; max=9.6, 8.1, 9.4;
 */
 
-*base;cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=12.5*1000000; cost_inf_avert_20_70_1 = 12.6*1000000;
-/*lowart;cost_inf_avert_20_25_1=16.6*1000000; cost_inf_avert_20_40_1=13.9*1000000; cost_inf_avert_20_70_1 = 9.9*1000000;*/
-/*5% disc;cost_inf_avert_20_25_1=15.3*1000000; cost_inf_avert_20_40_1=9.6*1000000; cost_inf_avert_20_70_1 = 6.1*1000000;*/
-/*180;cost_inf_avert_20_25_1=24.8*1000000; cost_inf_avert_20_40_1=20.1*1000000; cost_inf_avert_20_70_1 = 17.9*1000000;*/
-/*60;cost_inf_avert_20_25_1=9.6*1000000; cost_inf_avert_20_40_1=8.1*1000000; cost_inf_avert_20_70_1 = 9.4*1000000;*/
+*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 5.9*1000000;
+/*lowart;cost_inf_avert_21_26_1=16.6*1000000; cost_inf_avert_21_41_1=13.9*1000000; cost_inf_avert_21_71_1 = 9.9*1000000;*/
+/*5% disc;cost_inf_avert_21_26_1=15.3*1000000; cost_inf_avert_21_41_1=9.6*1000000; cost_inf_avert_21_71_1 = 6.1*1000000;*/
+/*180;cost_inf_avert_21_26_1=24.8*1000000; cost_inf_avert_21_41_1=20.1*1000000; cost_inf_avert_21_71_1 = 17.9*1000000;*/
+/*60;cost_inf_avert_21_26_1=9.6*1000000; cost_inf_avert_21_41_1=8.1*1000000; cost_inf_avert_21_71_1 = 9.4*1000000;*/
 
-if d_n_new_inf_20_25_1 gt 0 then cost_inf_avert_20_25_1 = (d_dcost_20_25_1 / d_n_d_new_inf_20_25_1)*1000000;
-if d_n_new_inf_20_40_1 gt 0 then cost_inf_avert_20_40_1 = (d_dcost_20_40_1 / d_n_d_new_inf_20_40_1)*1000000;
-if d_n_new_inf_20_70_1 gt 0 then cost_inf_avert_20_70_1 = (d_dcost_20_70_1 / d_n_d_new_inf_20_70_1)*1000000;
+if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
+if d_n_new_inf_21_41_1 gt 0 then cost_inf_avert_21_41_1 = (d_dcost_21_41_1 / d_n_d_new_inf_21_41_1)*1000000;
+if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n_d_new_inf_21_71_1)*1000000;
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_20_25_1_adults=15.2*1000000;
-cost_daly_avert_20_40_1_adults=12.5*1000000;
-cost_daly_avert_20_70_1_adults=12.6*1000000;
+cost_daly_avert_21_26_1_adults=15.4*1000000;
+cost_daly_avert_21_41_1_adults=11.7*1000000;
+cost_daly_avert_21_71_1_adults=5.9*1000000;
 
 *check everything is the right way;
-if d_ddaly_adults_20_25_1 gt 0 then cost_daly_avert_20_25_1_adults = (d_dcost_20_25_1 / d_ddaly_adults_20_25_1)*1000000;
-if d_ddaly_adults_20_40_1 gt 0 then cost_daly_avert_20_40_1_adults = (d_dcost_20_40_1 / d_ddaly_adults_20_40_1)*1000000;
-if d_ddaly_adults_20_70_1 gt 0 then cost_daly_avert_20_70_1_adults = (d_dcost_20_70_1 / d_ddaly_adults_20_70_1)*1000000;
+if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
+if d_ddaly_adults_21_41_1 gt 0 then cost_daly_avert_21_41_1_adults = (d_dcost_21_41_1 / d_ddaly_adults_21_41_1)*1000000;
+if d_ddaly_adults_21_71_1 gt 0 then cost_daly_avert_21_71_1_adults = (d_dcost_21_71_1 / d_ddaly_adults_21_71_1)*1000000;
 
 run;
 
