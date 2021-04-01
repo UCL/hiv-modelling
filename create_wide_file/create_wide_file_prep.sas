@@ -788,7 +788,8 @@ prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox   
   eff_rate_choose_stop_prep   
           
   eff_prob_prep_restart_choice  
-          
+
+s_prep_newpg0 s_primary_prep 
 ;
 
 
@@ -1042,6 +1043,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * p_newp_ge1_age1549;			p_newp_ge1_age1549 = (s_w1549_newp_ge1 + s_m1549_newp_ge1) / (s_alive1549_w + s_alive1549_m) ;
 
+* p_m_newp_ge1_age1549;			p_m_newp_ge1_age1549 = (s_m1549_newp_ge1) / (s_alive1549_m) ;
+* p_w_newp_ge1_age1549;			p_w_newp_ge1_age1549 = (s_w1549_newp_ge1) / (s_alive1549_m) ;
+
 * p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_m1524_newp_ge1 ) 
 									/ (s_ageg1517m + s_ageg1819m + s_ageg1519m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
 
@@ -1127,6 +1131,10 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * p_prep_adhg80 ;				p_prep_adhg80 = s_prep_adhg80 / s_prep ;
 
+* note this is a different way to define p_prep_newp from that above;
+* p_prep_newp_x;				if s_prep > 0 then p_prep_newp_x = 1 - (s_prep_newpg0 / s_prep) ;
+
+* incidence_onprep ; 			if s_prep > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -1241,6 +1249,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
 * p_k65m;						if s_hiv1564 gt 0 then p_k65m = s_k65m_ / s_hiv1564 ;
 * p_m184m;						if s_hiv1564 gt 0 then p_m184m = s_m184m_ / s_hiv1564 ;
+
+* p_k65m_all;					p_k65m_all = s_k65m_ / (s_alive1564_w + s_alive1564_m) ;
+* p_m184m_all;					p_m184m_all = s_m184m_ / (s_alive1564_w + s_alive1564_m) ;
 
 * p_vlg1000_184m;				if s_vg1000 > 0 then p_vlg1000_184m = s_vlg1000_184m / s_vg1000 ;
 * p_vlg1000_65m;				if s_vg1000 > 0 then p_vlg1000_65m = s_vlg1000_65m / s_vg1000 ;
@@ -1453,13 +1464,16 @@ eff_rate_test_startprep   	eff_rate_test_restartprep
 eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep  prop_onprep_newpge1
 prop_onprep_newpge2 prop_onprep_newpge3
+
+p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_age1549
+
 ;
 
 
 proc sort data=y;by run option;run;
 
-* data a.prep_22_10_20_5pm_29_jan_21_1;
-  data a.prep_22_10_20_5pm_29_jan_21_2;
+* data a.prep_22_10_20_5pm_29_jan_21_1_;
+  data a.prep_22_10_20_5pm_29_jan_21_2_;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
 
@@ -1469,8 +1483,8 @@ set y;
 
 data y; 
 
-* set a.prep_22_10_20_5pm_29_jan_21_1;
-  set a.prep_22_10_20_5pm_29_jan_21_2;
+* set a.prep_22_10_20_5pm_29_jan_21_1_;
+  set a.prep_22_10_20_5pm_29_jan_21_2_;
 * set a.prep_29_jan_21_dis7p_2;
 * set a.prep_29_jan_21_prep_eff_0;
 
@@ -1582,6 +1596,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_newp);  %var(v=prop_1564m_onprep);  %var(v=prop_1564w_onprep);  %var(v=p_prep_elig_past_year);  %var(v=p_prep_elig_past_5year);  
 %var(v=mean_newp_ppers_prep); %var(v=prop_onprep_newpge1);   %var(v=prop_onprep_newpge2);    %var(v=prop_onprep_newpge3); 
 
+%var(v=p_m184m_all);  %var(v=p_k65m_all);  %var(v=incidence_onprep); %var(v=p_m_newp_ge1_age1549);  %var(v=p_w_newp_ge1_age1549);
+
 
 data   wide_outputs; merge 
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
@@ -1625,6 +1641,9 @@ p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc154
 p_vl1000_art_12m p_vl1000_art_12m_onart 
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep
 prop_onprep_newpge1 prop_onprep_newpge2 prop_onprep_newpge3
+
+p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_age1549
+
 ;
 
 proc contents; run;
@@ -1817,16 +1836,15 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-* data a.wide_prep_29_jan_21_1; 
-  data a.wide_prep_29_jan_21_2;
+* data a.wide_prep_29_jan_21_1_; 
+  data a.wide_prep_29_jan_21_2_;
 * data a.wide_prep_29_jan_21_dis7p_2;
 * data a.wide_prep_29_jan_21_prep_eff_0;
 
-  merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
+  merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
 * merge   wide_outputs  wide_par ;  
   by run;
-
 
 
 ods html;
