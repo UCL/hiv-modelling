@@ -217,6 +217,9 @@ d_p_m_newp_ge1_age1549_21_26_2 = p_m_newp_ge1_age1549_21_26_2 - p_m_newp_ge1_age
 d_p_w_newp_ge1_age1549_21_26_2 = p_w_newp_ge1_age1549_21_26_2 - p_w_newp_ge1_age1549_21_26_1 ;
 
 
+r_p_newp_ge1_age1549_17  = p_m_newp_ge1_age1549_17 / p_w_newp_ge1_age1549_17 ;
+r_p_newp_ge1_age1549_21  = p_m_newp_ge1_age1549_21 / p_w_newp_ge1_age1549_21 ;
+
 
 /*
 from create_wide_file_prep :
@@ -269,7 +272,7 @@ var	p_mcirc_1549m_17 prevalence1549m_17 prevalence1549w_17 prevalence1524m_17 pr
 p_diag_w_17	p_ai_no_arv_c_nnm_17   p_ai_no_arv_c_rt184m_17  p_ai_no_arv_c_rt65m_17  prop_w_1549_sw_17  prop_1564_hivneg_onprep_17  prop_w_1524_onprep_17 
 p_onart_diag_w_17 	p_onart_diag_m_17   p_vl1000_17	p_onart_vl1000_w_17 p_onart_vl1000_m_17 p_onart_cd4_l500_17  p_mcirc_1549m_17  p_startedline2_17  
 prop_sw_hiv_17 prop_sw_onprep_17 p_newp_sw_17  n_tested_17 aids_death_rate_17  p_newp_sw_17 p_newp_ge1_age1549_17 av_newp_ge1_non_sw_17 
-prevalence_vg1000_17 p_inf_newp_17 p_w_newp_ge1_age1549_17 p_m_newp_ge1_age1549_17 ;
+prevalence_vg1000_17 p_inf_newp_17 p_w_newp_ge1_age1549_17 p_m_newp_ge1_age1549_17 r_p_newp_ge1_age1549_17;
 run;
 ods html close;
 
@@ -279,7 +282,7 @@ var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 pr
 p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
 prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 
-prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 ;
+prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21;
 run;
 ods html close;
 
@@ -814,6 +817,7 @@ proc freq data=wide;   tables  ce_500_x / nocum norow binomial; * exact binomial
 * where 0.20 <= prevalence1549_21 < 5.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
+* where r_p_newp_ge1_age1549_21 > 1 ;
 run; 
   ods html close;
 
@@ -849,7 +853,8 @@ p_mcirc_1549m_21_g2
 p_mcirc_1549m_21_g3 
 
 av_newp_ge1_non_sw_21_g2 
-av_newp_ge1_non_sw_21_g3 
+av_newp_ge1_non_sw_21_g3
+ 
 ;
 run;
 
@@ -865,4 +870,17 @@ run;
 
 * --------------------------------------------------------------------------------------------------------------;
 
+
+
+proc logistic  data=wide  ;
+output out = out predicted=predicted;
+model ce_500_x = 
+
+prevalence_vg1000_21
+p_mcirc_1549m_21
+av_newp_ge1_non_sw_21
+r_p_newp_ge1_age1549_21
+p_newp_sw_21
+;
+run;
 
