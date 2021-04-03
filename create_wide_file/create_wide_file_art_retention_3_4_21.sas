@@ -650,7 +650,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
-if run = 862147528 ;
+proc freq; tables s_restart ; run;
 
 
 proc sort data=d; by run cald option;run;
@@ -1813,57 +1813,6 @@ ods html close;
 
 
 
-ods html;
-proc means n median p5 p95 min max ;
-var	
-n_onart_21_71_0
-n_onart_21_71_1
-n_onart_21_71_2
-n_onart_21_71_3
-n_onart_21_71_4
-
-p_onart_artexp_21_71_0 
-p_onart_artexp_21_71_1 
-p_onart_artexp_21_71_2 
-p_onart_artexp_21_71_3 
-p_onart_artexp_21_71_4
-
-p_onart_diag_w_21_71_0 
-p_onart_diag_w_21_71_1 
-p_onart_diag_w_21_71_2 
-p_onart_diag_w_21_71_3 
-p_onart_diag_w_21_71_4
-
-p_onart_diag_m_21_71_0 
-p_onart_diag_m_21_71_1 
-p_onart_diag_m_21_71_2 
-p_onart_diag_m_21_71_3 
-p_onart_diag_m_21_71_4
-
-n_death_hivrel_21_71_0
-n_death_hivrel_21_71_1
-n_death_hivrel_21_71_2
-n_death_hivrel_21_71_3
-n_death_hivrel_21_71_4 
-
-daly_21_71_0  
-daly_21_71_1  
-daly_21_71_2  
-daly_21_71_3  
-daly_21_71_4  
-
-incidence1549_21_71_0
-incidence1549_21_71_1
-incidence1549_21_71_2
-incidence1549_21_71_3
-incidence1549_21_71_4
-
-;
-
-where run = 862147528 ;
-run;
-ods html close;
-
 
 
 
@@ -1896,8 +1845,7 @@ zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater
 prep_strategy rate_sw_rred_rc
 ;
 
-
-proc export data = a.art_retention_29_3_21_xlsx
+proc export data = a.art_retention_xlsx
   dbms=xlsx 
   outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_29_3_21" replace;
 run;
