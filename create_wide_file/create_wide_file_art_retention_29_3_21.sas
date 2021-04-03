@@ -650,6 +650,9 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
+proc freq; tables s_restart ; run;
+
+
 proc sort data=d; by run cald option;run;
 
 
