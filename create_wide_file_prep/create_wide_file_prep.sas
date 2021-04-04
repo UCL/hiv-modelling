@@ -1,14 +1,17 @@
 
 
-* note this file tld_prep is used for prep also;
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname a '/home/rmjlaph/';
+
 
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_prep_eff_0";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
 
 
 input 
@@ -2269,11 +2272,12 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_29_jan_21_1a2 ;
+* data a.prep_22_10_20_5pm_29_jan_21_1a2 ;
 * data a.prep_22_10_20_5pm_29_jan_21_1 ;
 * data a.prep_22_10_20_5pm_29_jan_21_2 ;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
+  data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
 
 set y;
 
@@ -2281,7 +2285,8 @@ proc contents; run;
 
 data y; 
 
-  set a.prep_22_10_20_5pm_29_jan_21_1a2;
+* set a.prep_22_10_20_5pm_29_jan_21_1a2;
+  set a.prep_22_10_20_5pm_29_jan_21_ps12_1;
 * set a.prep_22_10_20_5pm_29_jan_21_1;
 * set a.prep_22_10_20_5pm_29_jan_21_2;
 * set a.prep_29_jan_21_dis7p_2;
@@ -2639,7 +2644,8 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_prep_29_jan_21_1a2;
+* data a.wide_prep_29_jan_21_1a2;
+  data a.wide_prep_29_jan_21_1_ps12;
 * data a.wide_prep_29_jan_21_1; 
 * data a.wide_prep_29_jan_21_2;
 * data a.wide_prep_29_jan_21_dis7p_2;
