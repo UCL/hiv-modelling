@@ -12,6 +12,7 @@ data d1;
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_prep_eff_0";
   infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_prep5yr";
 
 
 input 
@@ -804,14 +805,12 @@ dataset=1;
 
 
 
-data d2;  
+* data d2;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_prep_eff_0";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 
 
-input 
+* input 
 
 
 /*general*/
@@ -1388,6 +1387,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+
 * note these were incorrect in model run so are set to . to ensure we dont use here - now corrected in core;
 s_alive_w =.;
 s_alive_m =.;
@@ -1599,7 +1599,11 @@ if option=0 or option=1;
 dataset=2;
 
 
-data d; set d1 d2;
+  data d: 
+  set d1; 
+* set d1 d2;
+
+
 
 proc sort data=d; by run cald option;run;
 proc freq data=d; table run; where cald=2021;run;
