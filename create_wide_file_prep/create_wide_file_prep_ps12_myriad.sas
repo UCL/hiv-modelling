@@ -8,7 +8,7 @@
 
 data d1;  
 
-  infile "/home/rmjlaph/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
+  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
 
 
 input 
