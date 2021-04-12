@@ -5220,9 +5220,9 @@ end;
 
 
 * prob of infection from existing infected partner ;
-/* Note that the presence/absence of resistance mutatations in the infected partner is re-evaluated each time step, rather than tracking a specific partner through time. 
+/* Note that the presence/absence of resistance mutations in the infected partner is re-evaluated each time step, rather than tracking a specific partner through time. 
 This is a simplification, but transmission from partner to subject only occurs at one time step - at which point any mutations present will reflect the distribution 
-across the population. It would be complicated to track a specific partner's mutations as we do not explicitly model their drug regimen, acquistion of new mutations, or 
+across the population. It would be complicated to track a specific partner's mutations as we do not explicitly model their drug regimen, acquisition of new mutations, or 
 change in majority/minority virus over time. * JAS Mar2021
 */
 
