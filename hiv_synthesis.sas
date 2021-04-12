@@ -190,7 +190,6 @@ Note that the values must be separated by spaces, as must the probabilities.
 The list of probabilities must sum to 1.
 The lengths of the two lists (values and probabilities) must be equal.
 */
-
 %macro sample(name, v, p);
 	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
 	randvar = rand('uniform');
