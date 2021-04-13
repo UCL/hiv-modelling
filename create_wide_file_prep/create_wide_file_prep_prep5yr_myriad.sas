@@ -800,7 +800,7 @@ if option=0 or option=1;
 dataset=1;
 
 
-  data d: 
+  data d; 
   set d1; 
 
 
