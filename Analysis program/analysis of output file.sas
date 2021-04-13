@@ -9,7 +9,7 @@ if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete;
 run;
 
 data b;
-set a.wide_vmmc_29_03_21_6pm_temp;
+set a.wide_vmmc_29_03_21_6pm;
 run;
 proc contents;run;
 
@@ -143,7 +143,8 @@ proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 */
 
 /*lowart;nnt_21_26_1=143106; nnt_21_41_1=158930; nnt_21_71_1=188993;*/
-*base/5% disc/180/60;nnt_21_26_1=135057; nnt_21_41_1=116568; nnt_21_71_1=147090;
+
+*base/5% disc/180/60;nnt_21_26_1=143072; nnt_21_41_1=116568; nnt_21_71_1=148286;
 
 if d_n_new_inf_21_26_1 gt 0 then nnt_21_26_1 = d_n_vmmc_21_26_1 / d_n_new_inf_21_26_1;
 if d_n_new_inf_21_41_1 gt 0 then nnt_21_41_1 = d_n_vmmc_21_41_1 / d_n_new_inf_21_41_1;
@@ -171,7 +172,8 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 *60; max=9.6, 8.1, 9.4;
 */
 
-*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 5.9*1000000;
+
+*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 7.3*1000000;
 /*lowart;cost_inf_avert_21_26_1=16.6*1000000; cost_inf_avert_21_41_1=13.9*1000000; cost_inf_avert_21_71_1 = 9.9*1000000;*/
 /*5% disc;cost_inf_avert_21_26_1=15.3*1000000; cost_inf_avert_21_41_1=9.6*1000000; cost_inf_avert_21_71_1 = 6.1*1000000;*/
 /*180;cost_inf_avert_21_26_1=24.8*1000000; cost_inf_avert_21_41_1=20.1*1000000; cost_inf_avert_21_71_1 = 17.9*1000000;*/
@@ -185,7 +187,7 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
 cost_daly_avert_21_26_1_adults=15.4*1000000;
 cost_daly_avert_21_41_1_adults=11.7*1000000;
-cost_daly_avert_21_71_1_adults=5.9*1000000;
+cost_daly_avert_21_71_1_adults=7.3*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
@@ -197,15 +199,15 @@ run;
 
 ***table 2;
 proc means n p50 p5 p95;var
-prevalence1549_20 prevalence1549m_20 prevalence1549w_20
-incidence1549_20 incidence1549m_20 incidence1549w_20
-prop_1564_onprep_20 
-p_diag_20 p_diag_m_20 p_diag_w_20
-p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20
-p_vl1000_20 p_vl1000_m_20 p_vl1000_w_20
-p_onart_vl1000_20 p_onart_vl1000_m_20 p_onart_vl1000_w_20
-p_mcirc_1549m_20 p_mcirc_inc1014m_20 p_mcirc_1014m_20 p_mcirc_1519m_20 p_mcirc_2024m_20 p_mcirc_2529m_20 p_mcirc_3034m_20 p_mcirc_3539m_20 
-p_mcirc_4044m_20 p_mcirc_4549m_20;
+prevalence1549_21 prevalence1549m_21 prevalence1549w_21
+incidence1549_21 incidence1549m_21 incidence1549w_21
+prop_1564_onprep_21 
+p_diag_21 p_diag_m_21 p_diag_w_21
+p_onart_diag_21 p_onart_diag_m_21 p_onart_diag_w_21
+p_vl1000_21 p_vl1000_m_21 p_vl1000_w_21
+p_onart_vl1000_21 p_onart_vl1000_m_21 p_onart_vl1000_w_21
+p_mcirc_1549m_21 p_mcirc_inc1014m_21 p_mcirc_1014m_21 p_mcirc_1519m_21 p_mcirc_2024m_21 p_mcirc_2529m_21 p_mcirc_3034m_21 p_mcirc_3539m_21 
+p_mcirc_4044m_21 p_mcirc_4549m_21;
 run;
 
 ***table 2, vmmc in 2019;

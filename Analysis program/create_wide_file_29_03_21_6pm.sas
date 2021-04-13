@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_temp";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm";
 
 input 
 
@@ -1528,10 +1528,10 @@ s_sw_newp;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_29_03_21_6pm_temp; set y;run;
+data a.vmmc_29_03_21_6pm; set y;run;
 
 
-data y; set a.vmmc_29_03_21_6pm_temp; run;
+data y; set a.vmmc_29_03_21_6pm; run;
 
 proc freq;table option_new;run;
 
@@ -1549,7 +1549,9 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where
 
 ***outputs in 2040;
 proc means noprint data=y; var &v; output out=y_40_41 mean= &v._40_41; by run option_new ; where 2040.0 <= cald < 2041.0; 
-proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option_new ; where 2020.5 <= cald < 2021.5;
+
+proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option_new ; where 2021.5 <= cald < 2022.5;
+
 proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option_new ; where 2021.5 <= cald < 2026.50;
 proc means noprint data=y; var &v; output out=y_21_41 mean= &v._21_41; by run option_new ; where 2021.5 <= cald < 2041.50;
 proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option_new ; where 2021.5 <= cald < 2071.50;
@@ -1880,7 +1882,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_29_03_21_6pm_temp;
+  data a.wide_vmmc_29_03_21_6pm;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
