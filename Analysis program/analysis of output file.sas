@@ -210,7 +210,7 @@ p_mcirc_1549m_21 p_mcirc_inc1014m_21 p_mcirc_1014m_21 p_mcirc_1519m_21 p_mcirc_2
 p_mcirc_4044m_21 p_mcirc_4549m_21;
 run;
 
-***table 2, vmmc in 2019;
+***table 2, vmmc in 2020;
 proc means n p50 p5 p95;var
 n_new_vmmc1549_py_19_20_1  n_new_vmmc1049_py_19_20_1
 p_new_vmmc_1549m_u_19_20_1  p_new_vmmc_u_1049m_19_20_1  p_new_vmmc_1014m_u_19_20_1 p_new_vmmc_1519m_u_19_20_1 

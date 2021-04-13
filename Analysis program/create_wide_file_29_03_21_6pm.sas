@@ -1550,6 +1550,7 @@ proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where
 ***outputs in 2040;
 proc means noprint data=y; var &v; output out=y_40_41 mean= &v._40_41; by run option_new ; where 2040.0 <= cald < 2041.0; 
 
+proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option_new ; where 2020.5 <= cald < 2021.5;
 proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option_new ; where 2021.5 <= cald < 2022.5;
 
 proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option_new ; where 2021.5 <= cald < 2026.50;
@@ -1557,13 +1558,14 @@ proc means noprint data=y; var &v; output out=y_21_41 mean= &v._21_41; by run op
 proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option_new ; where 2021.5 <= cald < 2071.50;
 
 proc sort data=y_40_41; by run; proc transpose data=y_40_41 out=t_40_41 prefix=&v._40_41_; var &v._40_41; by run;
+proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;
 proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run;
 proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run;
 proc sort data=y_21_41; by run; proc transpose data=y_21_41 out=t_21_41 prefix=&v._21_41_; var &v._21_41; by run;
 proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;
 
 
-data &v ; merge  y_21 t_40_41  t_21_22 t_21_26 t_21_41 t_21_71 ;  
+data &v ; merge  y_21 t_40_41 t_20_21 t_21_22 t_21_26 t_21_41 t_21_71 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
