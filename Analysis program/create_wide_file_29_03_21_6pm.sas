@@ -1029,6 +1029,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * incidence1524m;				incidence1524m = ((s_primary1519m + s_primary2024m) * 4 * 100) / 
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
 
+* incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
@@ -1524,7 +1526,7 @@ n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549
 n_hiv8084w  n_hiv85plw
 n_onart n_diag n_start_line2 n_vl_test_done
 n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549 d_n_new_inf1549 d_n_infection
-s_sw_newp;
+s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
@@ -1570,7 +1572,7 @@ data &v ; merge  y_21 t_40_41 t_20_21 t_21_22 t_21_26 t_21_41 t_21_71 ;
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
-
+%var(v=incidence_sw);
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
@@ -1636,7 +1638,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_mcirc1549_py);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_py);%var (v=n_vmmc1549_3m);%var (v=n_new_vmmc1549_py);%var (v=n_new_vmmc1049_py);
 %var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=s_sw_newp); %var(v=d_n_new_inf1549);%var(v=d_n_infection);
 
-data   wide_outputs; merge 
+data   wide_outputs; merge incidence_sw
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
 p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
 p_tested_past_year_1549m  p_tested_past_year_1549w  
@@ -1934,7 +1936,10 @@ p_onart_cd4_l200_20_25_1  p_startedline2_20_25_1 prop_sw_newp0_20_25_1  prop_sw_
 run;
 
 
-proc means n p50 p5 p95;
+proc means n p50 p5 p95;var incidence_sw_21;run;
+
+
+
 var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
 p_newp_sw_20   n_tested_m_20
 p_mcirc_20	 		p_mcirc_1519m_20	p_mcirc_2024m_20	p_mcirc_2529m_20		p_mcirc_3039m_20	p_mcirc_4049m_20 	p_mcirc_50plm_20 
