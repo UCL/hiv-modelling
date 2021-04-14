@@ -1804,10 +1804,12 @@ red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_to
 red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
-if adh_pattern_prep=1 then adhav_pr = adhav*1.00; 
-if adh_pattern_prep=2 then adhav_pr = adhav*0.90;
-if adh_pattern_prep=3 then adhav_pr = adhav*0.70;
-if adh_pattern_prep=4 then adhav_pr = adhav*0.50;
+if adh_pattern_prep=1 then adhav_pr = adhav*1.10; 
+if adh_pattern_prep=2 then adhav_pr = adhav*1.00;
+if adh_pattern_prep=3 then adhav_pr = adhav*0.90;
+if adh_pattern_prep=4 then adhav_pr = adhav*0.70;
+
+adhav_pr = min(1,adhav_pr);
 
 
 * willingness to take prep if offered;
