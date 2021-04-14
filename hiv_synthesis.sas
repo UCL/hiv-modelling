@@ -445,7 +445,7 @@ hard_reach=0; * this is effectively reluctance to test - with effects on testing
 annual_testing_prep=0.25; *frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
 hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen);
 prep_efficacy=0.95; *PrEP effectiveness with 100% adherence ;
-rel_prep_adh_younger=0.5; * factor determining how much lower adh to prep is in people age < 25 than > 25; 
+rel_prep_adh_younger=0.7; * factor determining how much lower adh to prep is in people age < 25 than > 25; 
 rate_test_onprep=1.00; *Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
 * dependent_on_time_step_length ;
 pr_prep_b=0.75; * 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
