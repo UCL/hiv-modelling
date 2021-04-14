@@ -3,9 +3,12 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;  
-  set  a.wide_prep_29_jan_21_1  a.wide_prep_29_jan_21_2  ; 
+  set a.wide_prep_29_jan_21_1  a.wide_prep_29_jan_21_2  ; 
 * set a.wide_prep_29_jan_21_prep_eff_0 ;
-* set  a.wide_prep_29_jan_21_dis7p_1  a.wide_prep_29_jan_21_dis7p_2  ; 
+* set a.wide_prep_29_jan_21_dis7p_1  a.wide_prep_29_jan_21_dis7p_2  ; 
+* set a.wide_prep_29_jan_21_1_ps12 ;
+* set a.wide_prep_22_10_20_5pm_prep5yr ;
+
 
 
 * to give n = 1000 setting scenarios;
@@ -218,9 +221,10 @@ d_p_m_newp_ge1_age1549_21_26_2 = p_m_newp_ge1_age1549_21_26_2 - p_m_newp_ge1_age
 
 d_p_w_newp_ge1_age1549_21_26_2 = p_w_newp_ge1_age1549_21_26_2 - p_w_newp_ge1_age1549_21_26_1 ;
 
-
 r_p_newp_ge1_age1549_17  = p_m_newp_ge1_age1549_17 / p_w_newp_ge1_age1549_17 ;
 r_p_newp_ge1_age1549_21  = p_m_newp_ge1_age1549_21 / p_w_newp_ge1_age1549_21 ;
+
+d_p_inf_newp_21_26_2 = p_inf_newp_21_26_2 - p_inf_newp_21_26_1 ; 
 
 
 /*
@@ -427,6 +431,12 @@ proc means data=wide; var p_efa_21_71_1 p_efa_21_71_2 p_dol_21_71_1 p_dol_21_71_
 
 ods html;
 proc means n mean lclm uclm p5 p95 data=wide; var prop_w_1524_onprep_21_26_1  prop_w_1524_onprep_21_26_2 ;  
+ods html close;
+run;
+
+
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide; var d_p_inf_newp_21_26_2  p_inf_newp_21_26_1  p_inf_newp_21_26_2;
 ods html close;
 run;
 
@@ -833,7 +843,7 @@ run;
 
 
 
-proc means n mean median data=wide; var cost_per_infection_averted_21_26  ; where infections_averted_21_26 > 0 ;
+proc means n mean median uclm lclm p5 p95 data=wide; var cost_per_infection_averted_21_26  ; * where infections_averted_21_26 > 0 ;
 run;
  
 proc means n mean lclm uclm p5 p95 data=wide; var cost_per_infection_averted_21_71  ; where infections_averted_21_71 > 0 ;
@@ -848,9 +858,9 @@ proc freq data=wide; tables prevalence_vg1000_21 av_newp_ge1_non_sw_21 p_mcirc_1
 
 * for table / results;
   ods html;
-proc freq data=wide;   tables  ce_500_x / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ;
+proc freq data=wide;   tables    ce_500_x     / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.10<= prevalence_vg1000_21 < 0.55 ; 
+* where 0.01 <= prevalence_vg1000_21 < 5.55 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where 1.5 <= incidence1549_21 < 9.5 ;
