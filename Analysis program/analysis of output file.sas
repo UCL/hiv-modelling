@@ -103,10 +103,15 @@ d_ddaly_adults_21_71_1 = ddaly_adults_21_71_2 - ddaly_adults_21_71_1;
 
 d_ddaly_adults_21_71_2 = ddaly_adults_21_71_1 - ddaly_adults_21_71_2;
 
-*difference in costs;
+*difference in total costs;
 d_dcost_21_26_1 = dcost_21_26_1 - dcost_21_26_2;
 d_dcost_21_41_1 = dcost_21_41_1 - dcost_21_41_2;
 d_dcost_21_71_1 = dcost_21_71_1 - dcost_21_71_2;
+
+*difference in ART and clinical care costs;
+d_dcost_clin_care_21_26_1 = dcost_clin_care_21_26_1 - dcost_clin_care_21_26_2;
+d_dcost_clin_care_21_41_1 = dcost_clin_care_21_41_1 - dcost_clin_care_21_41_2;
+d_dcost_clin_care_21_71_1 = dcost_clin_care_21_71_1 - dcost_clin_care_21_71_2;
 
 *net dalys averted;
 ndb_500_21_26_1_adults =  ddaly_adults_21_26_1 + (dcost_21_26_1)/0.0005;
@@ -196,7 +201,6 @@ if d_ddaly_adults_21_71_1 gt 0 then cost_daly_avert_21_71_1_adults = (d_dcost_21
 
 run;
 
-
 ***table 2;
 proc means n p50 p5 p95;var
 prevalence1549_21 prevalence1549m_21 prevalence1549w_21
@@ -210,19 +214,19 @@ p_mcirc_1549m_21 p_mcirc_inc1014m_21 p_mcirc_1014m_21 p_mcirc_1519m_21 p_mcirc_2
 p_mcirc_4044m_21 p_mcirc_4549m_21;
 run;
 
-***table 2, vmmc in 2020;
+***table 2, vmmc in 2021;
 proc means n p50 p5 p95;var
-n_new_vmmc1549_py_19_20_1  n_new_vmmc1049_py_19_20_1
-p_new_vmmc_1549m_u_19_20_1  p_new_vmmc_u_1049m_19_20_1  p_new_vmmc_1014m_u_19_20_1 p_new_vmmc_1519m_u_19_20_1 
-p_new_vmmc_2024m_u_19_20_1  p_new_vmmc_2529m_u_19_20_1  p_new_vmmc_3034m_u_19_20_1  p_new_vmmc_3539m_u_19_20_1
-p_new_vmmc_4044m_u_19_20_1  p_new_vmmc_4549m_u_19_20_1; 
+n_new_vmmc1549_py_20_21_1  n_new_vmmc1049_py_20_21_1
+p_new_vmmc_1549m_u_20_21_1  p_new_vmmc_1519m_u_20_21_1 
+p_new_vmmc_2024m_u_20_21_1  p_new_vmmc_2529m_u_20_21_1  p_new_vmmc_3034m_u_20_21_1  p_new_vmmc_3539m_u_20_21_1
+p_new_vmmc_4044m_u_20_21_1  p_new_vmmc_4549m_u_20_21_1; 
 run;
 
 ***table 3, outputs in 2040 with continuation of VMMC and current ART assumptions;
 proc means n p50 p5 p95;var
 prevalence1549_40_41_1 
 incidence1549_40_41_1 
-prop_1564_onprep_20
+prop_1564_onprep_40_41_1
 p_diag_40_41_1 
 p_onart_diag_40_41_1 
 p_vl1000_40_41_1 
@@ -240,7 +244,7 @@ proc freq;table lower_future_art_cov;run;
 proc means n p50 p5 p95;var
 prevalence1549_40_41_1 
 incidence1549_40_41_1 
-prop_1564_onprep_20
+prop_1564_onprep_40_40_1
 p_diag_40_41_1 
 p_onart_diag_40_41_1 
 p_vl1000_40_41_1 
@@ -256,152 +260,153 @@ set c;
 **remember the options have been switched, 1=continuation, 2=no vmmc;
 ***vmmc rates by option;
 proc means n mean p50 p5 p95 lclm uclm;var 
-p_vmmc_1549m_20_25_1  p_vmmc_1549m_20_40_1  p_vmmc_1549m_20_70_1
-p_vmmc_1549m_20_25_2  p_vmmc_1549m_20_40_2  p_vmmc_1549m_20_70_2
-p_vmmc_inc1014m_20_25_1  p_vmmc_inc1014m_20_40_1  p_vmmc_inc1014m_20_70_1
-p_vmmc_inc1014m_20_25_2  p_vmmc_inc1014m_20_40_2  p_vmmc_inc1014m_20_70_2
-p_vmmc_1014m_20_25_1  p_vmmc_1014m_20_40_1  p_vmmc_1014m_20_70_1
-p_vmmc_1014m_20_25_2  p_vmmc_1014m_20_40_2  p_vmmc_1014m_20_70_2
-p_vmmc_1519m_20_25_1  p_vmmc_1519m_20_40_1  p_vmmc_1519m_20_70_1
-p_vmmc_1519m_20_25_2  p_vmmc_1519m_20_40_2  p_vmmc_1519m_20_70_2
-p_vmmc_2024m_20_25_1  p_vmmc_2024m_20_40_1  p_vmmc_2024m_20_70_1
-p_vmmc_2024m_20_25_2  p_vmmc_2024m_20_40_2  p_vmmc_2024m_20_70_2
-p_vmmc_2529m_20_25_1  p_vmmc_2529m_20_40_1  p_vmmc_2529m_20_70_1
-p_vmmc_2529m_20_25_2  p_vmmc_2529m_20_40_2  p_vmmc_2529m_20_70_2
-p_vmmc_3039m_20_25_1  p_vmmc_3039m_20_40_1  p_vmmc_3039m_20_70_1
-p_vmmc_3039m_20_25_2  p_vmmc_3039m_20_40_2  p_vmmc_3039m_20_70_2
-p_vmmc_4049m_20_25_1  p_vmmc_4049m_20_40_1  p_vmmc_4049m_20_70_1
-p_vmmc_4049m_20_25_2  p_vmmc_4049m_20_40_2  p_vmmc_4049m_20_70_2
+p_vmmc_1549m_21_26_1  p_vmmc_1549m_21_41_1  p_vmmc_1549m_21_71_1
+p_vmmc_1549m_21_26_2  p_vmmc_1549m_21_41_2  p_vmmc_1549m_21_71_2
+p_vmmc_inc1014m_21_26_1  p_vmmc_inc1014m_21_41_1  p_vmmc_inc1014m_21_71_1
+p_vmmc_inc1014m_21_26_2  p_vmmc_inc1014m_21_41_2  p_vmmc_inc1014m_21_71_2
+p_vmmc_1014m_21_26_1  p_vmmc_1014m_21_41_1  p_vmmc_1014m_21_71_1
+p_vmmc_1014m_21_26_2  p_vmmc_1014m_21_41_2  p_vmmc_1014m_21_71_2
+p_vmmc_1519m_21_26_1  p_vmmc_1519m_21_41_1  p_vmmc_1519m_21_71_1
+p_vmmc_1519m_21_26_2  p_vmmc_1519m_21_41_2  p_vmmc_1519m_21_71_2
+p_vmmc_2024m_21_26_1  p_vmmc_2024m_21_41_1  p_vmmc_2024m_21_71_1
+p_vmmc_2024m_21_26_2  p_vmmc_2024m_21_41_2  p_vmmc_2024m_21_71_2
+p_vmmc_2529m_21_26_1  p_vmmc_2529m_21_41_1  p_vmmc_2529m_21_71_1
+p_vmmc_2529m_21_26_2  p_vmmc_2529m_21_41_2  p_vmmc_2529m_21_71_2
+p_vmmc_3039m_21_26_1  p_vmmc_3039m_21_41_1  p_vmmc_3039m_21_71_1
+p_vmmc_3039m_21_26_2  p_vmmc_3039m_21_41_2  p_vmmc_3039m_21_71_2
+p_vmmc_4049m_21_26_1  p_vmmc_4049m_21_41_1  p_vmmc_4049m_21_71_1
+p_vmmc_4049m_21_26_2  p_vmmc_4049m_21_41_2  p_vmmc_4049m_21_71_2
 ;run;
 
 ***difference in vmmc rates according to option - Figure 1a;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_p_vmmc_inc1014m_20_25_1  d_p_vmmc_inc1014m_20_40_1  d_p_vmmc_inc1014m_20_70_1
-d_p_vmmc_1549m_20_25_1  d_p_vmmc_1549m_20_40_1  d_p_vmmc_1549m_20_70_1
-d_p_vmmc_1014m_20_25_1  d_p_vmmc_1014m_20_40_1  d_p_vmmc_1014m_20_70_1
-d_p_vmmc_1519m_20_25_1  d_p_vmmc_1519m_20_40_1  d_p_vmmc_1519m_20_70_1
-d_p_vmmc_2024m_20_25_1  d_p_vmmc_2024m_20_40_1  d_p_vmmc_2024m_20_70_1
-d_p_vmmc_2529m_20_25_1  d_p_vmmc_2529m_20_40_1  d_p_vmmc_2529m_20_70_1
-d_p_vmmc_3039m_20_25_1  d_p_vmmc_3039m_20_40_1  d_p_vmmc_3039m_20_70_1
-d_p_vmmc_4049m_20_25_1  d_p_vmmc_4049m_20_40_1  d_p_vmmc_4049m_20_70_1;
+/*d_p_vmmc_inc1014m_21_26_1  d_p_vmmc_inc1014m_21_41_1  d_p_vmmc_inc1014m_21_71_1*/
+d_p_vmmc_1549m_21_26_1  d_p_vmmc_1549m_21_41_1  d_p_vmmc_1549m_21_71_1
+/*d_p_vmmc_1014m_21_26_1  d_p_vmmc_1014m_21_41_1  d_p_vmmc_1014m_21_71_1*/
+d_p_vmmc_1519m_21_26_1  d_p_vmmc_1519m_21_41_1  d_p_vmmc_1519m_21_71_1
+d_p_vmmc_2024m_21_26_1  d_p_vmmc_2024m_21_41_1  d_p_vmmc_2024m_21_71_1
+d_p_vmmc_2529m_21_26_1  d_p_vmmc_2529m_21_41_1  d_p_vmmc_2529m_21_71_1
+d_p_vmmc_3039m_21_26_1  d_p_vmmc_3039m_21_41_1  d_p_vmmc_3039m_21_71_1
+d_p_vmmc_4049m_21_26_1  d_p_vmmc_4049m_21_41_1  d_p_vmmc_4049m_21_71_1;
 run;
 
 ***incidence - Figure 1b;
 proc means n mean p50 p5 p95 lclm uclm;var 
-incidence1549m_20_25_1  incidence1549m_20_40_1  incidence1549m_20_70_1
-incidence1549m_20_25_2  incidence1549m_20_40_2  incidence1549m_20_70_2
-d_incidence1549m_20_25_1  d_incidence1549m_20_40_1  d_incidence1549m_20_70_1
+incidence1549m_21_26_1  incidence1549m_21_41_1  incidence1549m_21_71_1
+incidence1549m_21_26_2  incidence1549m_21_41_2  incidence1549m_21_71_2
+d_incidence1549m_21_26_1  d_incidence1549m_21_41_1  d_incidence1549m_21_71_1
 
-incidence1549w_20_25_1  incidence1549w_20_40_1  incidence1549w_20_70_1
-incidence1549w_20_25_2  incidence1549w_20_40_2  incidence1549w_20_70_2
-d_incidence1549w_20_25_1  d_incidence1549w_20_40_1  d_incidence1549w_20_70_1
+incidence1549w_21_26_1  incidence1549w_21_41_1  incidence1549w_21_71_1
+incidence1549w_21_26_2  incidence1549w_21_41_2  incidence1549w_21_71_2
+d_incidence1549w_21_26_1  d_incidence1549w_21_41_1  d_incidence1549w_21_71_1
 ;run;
 
 ***prevalence;
 proc means n mean p50 p5 p95 lclm uclm;var 
-prevalence1549m_20_25_1 prevalence1549m_20_40_1 prevalence1549m_20_70_1
-prevalence1549m_20_25_2 prevalence1549m_20_40_2  prevalence1549m_20_70_2
-d_prevalence1549m_20_25_1 d_prevalence1549m_20_40_1  d_prevalence1549m_20_70_1
+prevalence1549m_21_26_1 prevalence1549m_21_41_1 prevalence1549m_21_71_1
+prevalence1549m_21_26_2 prevalence1549m_21_41_2  prevalence1549m_21_71_2
+d_prevalence1549m_21_26_1 d_prevalence1549m_21_41_1  d_prevalence1549m_21_71_1
 
-prevalence1549w_20_25_1 prevalence1549w_20_40_1 prevalence1549w_20_70_1
-prevalence1549w_20_25_2 prevalence1549w_20_40_2  prevalence1549w_20_70_2
-d_prevalence1549w_20_25_1 d_prevalence1549w_20_40_1  d_prevalence1549w_20_70_1
+prevalence1549w_21_26_1 prevalence1549w_21_41_1 prevalence1549w_21_71_1
+prevalence1549w_21_26_2 prevalence1549w_21_41_2  prevalence1549w_21_71_2
+d_prevalence1549w_21_26_1 d_prevalence1549w_21_41_1  d_prevalence1549w_21_71_1
 ;run;
 
 ***HIV death rate - Figure 1c;
 proc means n mean p50 p5 p95 lclm uclm;var 
-death_rate_hiv_m_20_25_1 death_rate_hiv_m_20_40_1 death_rate_hiv_m_20_70_1
-death_rate_hiv_m_20_25_2 death_rate_hiv_m_20_40_2 death_rate_hiv_m_20_70_2
-ddeath_rate_hiv_m_20_25_1 ddeath_rate_hiv_m_20_40_1  ddeath_rate_hiv_m_20_70_1
+death_rate_hiv_m_21_26_1 death_rate_hiv_m_21_41_1 death_rate_hiv_m_21_71_1
+death_rate_hiv_m_21_26_2 death_rate_hiv_m_21_41_2 death_rate_hiv_m_21_71_2
+ddeath_rate_hiv_m_21_26_1 ddeath_rate_hiv_m_21_41_1  ddeath_rate_hiv_m_21_71_1
 
-death_rate_hiv_all_m_20_25_1 death_rate_hiv_all_m_20_40_1 death_rate_hiv_all_m_20_70_1
-death_rate_hiv_all_m_20_25_2 death_rate_hiv_all_m_20_40_2 death_rate_hiv_all_m_20_70_2
-ddeath_rate_hiv_all_m_20_25_1 ddeath_rate_hiv_all_m_20_40_1  ddeath_rate_hiv_all_m_20_70_1
+death_rate_hiv_all_m_21_26_1 death_rate_hiv_all_m_21_41_1 death_rate_hiv_all_m_21_71_1
+death_rate_hiv_all_m_21_26_2 death_rate_hiv_all_m_21_41_2 death_rate_hiv_all_m_21_71_2
+ddeath_rate_hiv_all_m_21_26_1 ddeath_rate_hiv_all_m_21_41_1  ddeath_rate_hiv_all_m_21_71_1
 ;run;
 
 ***% infections averted - Figure 1d;
 proc means n mean p50 p5 p95 lclm uclm;var 
-inf_avert_20_25_1  inf_avert_20_40_1  inf_avert_20_70_1
+inf_avert_21_26_1  inf_avert_21_41_1  inf_avert_21_71_1
 ;run;
 
 
 ***VMMC cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dcost_circ_20_25_1  dcost_circ_20_40_1  dcost_circ_20_70_1
-dcost_circ_20_25_2  dcost_circ_20_40_2  dcost_circ_20_70_2
+dcost_circ_21_26_1  dcost_circ_21_41_1  dcost_circ_21_71_1
+dcost_circ_21_26_2  dcost_circ_21_41_2  dcost_circ_21_71_2
 ;run;
 
 **ART and clinical care cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dcost_clin_care_20_25_1  dcost_clin_care_20_40_1  dcost_clin_care_20_70_1
-dcost_clin_care_20_25_2  dcost_clin_care_20_40_2  dcost_clin_care_20_70_2
+dcost_clin_care_21_26_1  dcost_clin_care_21_41_1  dcost_clin_care_21_71_1
+dcost_clin_care_21_26_2  dcost_clin_care_21_41_2  dcost_clin_care_21_71_2
+d_dcost_clin_care_21_26_1  d_dcost_clin_care_21_41_1  d_dcost_clin_care_21_71_1
 ;run;
 
 ***HIV test cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dtest_cost_20_25_1  dtest_cost_20_40_1  dtest_cost_20_70_1
-dtest_cost_20_25_2  dtest_cost_20_40_2  dtest_cost_20_70_2
+dtest_cost_21_26_1  dtest_cost_21_41_1  dtest_cost_21_71_1
+dtest_cost_21_26_2  dtest_cost_21_41_2  dtest_cost_21_71_2
 ;run;
 
 ***Other costs;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dcost_condom_dn_20_25_1 dcost_drug_level_test_20_25_1  dcost_prep_visit_20_25_1
-dcost_prep_20_25_1 dcost_child_hiv_20_25_1  dcost_non_aids_pre_death_20_25_1
-dcost_condom_dn_20_40_1 dcost_drug_level_test_20_40_1  dcost_prep_visit_20_40_1
-dcost_prep_20_40_1 dcost_child_hiv_20_40_1  dcost_non_aids_pre_death_20_40_1
-dcost_condom_dn_20_70_1 dcost_drug_level_test_20_70_1  dcost_prep_visit_20_70_1
-dcost_prep_20_70_1 dcost_child_hiv_20_70_1  dcost_non_aids_pre_death_20_70_1
+dcost_condom_dn_21_26_1 dcost_drug_level_test_21_26_1  dcost_prep_visit_21_26_1
+dcost_prep_21_26_1 dcost_child_hiv_21_26_1  dcost_non_aids_pre_death_21_26_1
+dcost_condom_dn_21_41_1 dcost_drug_level_test_21_41_1  dcost_prep_visit_21_41_1
+dcost_prep_21_41_1 dcost_child_hiv_21_41_1  dcost_non_aids_pre_death_21_41_1
+dcost_condom_dn_21_71_1 dcost_drug_level_test_21_71_1  dcost_prep_visit_21_71_1
+dcost_prep_21_71_1 dcost_child_hiv_21_71_1  dcost_non_aids_pre_death_21_71_1
 
-dcost_condom_dn_20_25_2 dcost_drug_level_test_20_25_2  dcost_prep_visit_20_25_2
-dcost_prep_20_25_2 dcost_child_hiv_20_25_2  dcost_non_aids_pre_death_20_25_2
-dcost_condom_dn_20_40_2 dcost_drug_level_test_20_40_2  dcost_prep_visit_20_40_2
-dcost_prep_20_40_2 dcost_child_hiv_20_40_2  dcost_non_aids_pre_death_20_40_2
-dcost_condom_dn_20_70_2 dcost_drug_level_test_20_70_2  dcost_prep_visit_20_70_2
-dcost_prep_20_70_2 dcost_child_hiv_20_70_2  dcost_non_aids_pre_death_20_70_2;
+dcost_condom_dn_21_26_2 dcost_drug_level_test_21_26_2  dcost_prep_visit_21_26_2
+dcost_prep_21_26_2 dcost_child_hiv_21_26_2  dcost_non_aids_pre_death_21_26_2
+dcost_condom_dn_21_41_2 dcost_drug_level_test_21_41_2  dcost_prep_visit_21_41_2
+dcost_prep_21_41_2 dcost_child_hiv_21_41_2  dcost_non_aids_pre_death_21_41_2
+dcost_condom_dn_21_71_2 dcost_drug_level_test_21_71_2  dcost_prep_visit_21_71_2
+dcost_prep_21_71_2 dcost_child_hiv_21_71_2  dcost_non_aids_pre_death_21_71_2;
 run;
 
 
 ***Total cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-dcost_20_25_1  dcost_20_40_1  dcost_20_70_1 /*continuation*/
-dcost_20_25_2  dcost_20_40_2  dcost_20_70_2 /*no further vmmc*/
+dcost_21_26_1  dcost_21_41_1  dcost_21_71_1 /*continuation*/
+dcost_21_26_2  dcost_21_41_2  dcost_21_71_2 /*no further vmmc*/
 ;run;
 
 ***difference in total cost;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_dcost_20_25_1  d_dcost_20_40_1  d_dcost_20_70_1
+d_dcost_21_26_1  d_dcost_21_41_1  d_dcost_21_71_1
 ;run;
 
 ***cost per infection averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-cost_inf_avert_20_25_1  cost_inf_avert_20_40_1  cost_inf_avert_20_70_1
+cost_inf_avert_21_26_1  cost_inf_avert_21_41_1  cost_inf_avert_21_71_1
 ;run;
 
 ***DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_ddaly_adults_20_25_1  d_ddaly_adults_20_40_1  d_ddaly_adults_20_70_1
+d_ddaly_adults_21_26_1  d_ddaly_adults_21_41_1  d_ddaly_adults_21_71_1
 ;run;
 
 ***net DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
-d_net_dalys_20_25_1_adults  d_net_dalys_20_40_1_adults  d_net_dalys_20_70_1_adults
+d_net_dalys_21_26_1_adults  d_net_dalys_21_41_1_adults  d_net_dalys_21_71_1_adults
 ;run;
-proc freq;table ce_20_25 ce_20_40 ce_20_70;run;
+proc freq;table ce_21_26 ce_21_41 ce_21_71;run;
 
 ***cost per DALY averted - icer;
 proc means n mean p50 p5 p95 lclm uclm;var 
-cost_daly_avert_20_25_1_adults  cost_daly_avert_20_40_1_adults cost_daly_avert_20_70_1_adults
+cost_daly_avert_21_26_1_adults  cost_daly_avert_21_41_1_adults cost_daly_avert_21_71_1_adults
 ;run;
 
 
 ***NNT;
 proc means n mean p50 p5 p95 lclm uclm;var 
-nnt_20_25_1  nnt_20_40_1  nnt_20_70_1
+nnt_21_26_1  nnt_21_41_1  nnt_21_71_1
 ;run;
 
-proc means n mean p50 p5 p95 lclm uclm;var nnt_20_25_1;where d_n_new_inf_20_25_1 >0;run;
-proc means n mean p50 p5 p95 lclm uclm;var nnt_20_40_1;where d_n_new_inf_20_40_1 >0;run;
-proc means n mean p50 p5 p95 lclm uclm;var nnt_20_70_1;where d_n_new_inf_20_70_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var nnt_21_26_1;where d_n_new_inf_21_26_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var nnt_21_41_1;where d_n_new_inf_21_41_1 >0;run;
+proc means n mean p50 p5 p95 lclm uclm;var nnt_21_71_1;where d_n_new_inf_21_71_1 >0;run;
 
 
 

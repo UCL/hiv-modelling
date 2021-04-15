@@ -773,8 +773,8 @@ run;
 
 * all costs expressed as $ millions per year in 2018 USD;
 
-***Redefine VMMC costs to $120 to match those being used for Zimbabwe and Malawi;;
-s_cost_circ_new= s_cost_circ*(90/106);
+***Redefine VMMC costs to $90 (+/-30 in sens analyses) to match those being used for Zimbabwe and Malawi;;
+s_cost_circ_new= s_cost_circ*(120/106);
 s_dcost_circ_new=&discount*s_cost_circ_new;*use this to calculate dcost_circ below;
 
 * ts1m - 12 instead of 4; 
@@ -1231,7 +1231,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_covid;						n_covid = s_covid * sf_2021;
 								inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid;
 
-* n_death_discount;				n_death_discount = n_death*discount;
+* n_death_discount;				n_death_discount = n_death*&discount;
 * death_rate_all_discount;		death_rate_all_discount = (4 * 100 * s_dead_allage) / (s_alive_w + s_alive_m) ;
 
 
@@ -1255,8 +1255,8 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * n_new_inf1549;				n_new_inf1549=s_primary1549 * sf_2021 * 4;
 * n_infection;					n_infection  = s_primary     * sf_2021 * 4;
 
-* d_n_new_inf1549;				d_n_new_inf1549 = discount * n_new_inf1549;
-* d_n_infection;				d_n_infection = discount * n_infection;
+* d_n_new_inf1549;				d_n_new_inf1549 = &discount * n_new_inf1549;
+* d_n_infection;				d_n_infection = &discount * n_infection;
 
 
 * n_ageg1519m ;					n_ageg1519m = s_ageg1519m * sf_2021 ;
@@ -1530,10 +1530,10 @@ s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_29_03_21_6pm; set y;run;
+data a.vmmc_29_03_21_6pm_120; set y;run;
 
 
-data y; set a.vmmc_29_03_21_6pm; run;
+data y; set a.vmmc_29_03_21_6pm_120; run;
 
 proc freq;table option_new;run;
 
@@ -1886,7 +1886,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_29_03_21_6pm;
+  data a.wide_vmmc_29_03_21_6pm_120;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -1920,13 +1920,15 @@ p_mcirc_1549m_40_41_1;
 ;where lower_future_art_cov=1;run;
 
 
-proc means n p50 mean p5 p95;
-var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1549_20 incidence1549_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
-prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
-p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
-p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 ;
-run;
 
+proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1519w_21 	prevalence1519m_21 	prevalence1549m_21 prevalence1549w_21
+incidence1549w_21  incidence1549m_21 incidence_sw_21	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
+prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
+p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  
+p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_sw_21 
+m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21;
+run;
 * note this would need to be changed if option=1 is not the default/null policy option;
 proc means n p50 mean p5 p95;
 var p_w_giv_birth_this_per_20_25_1	p_mcirc_20_25_1	prevalence1549_20_25_1 incidence1549_20_25_1 	p_diag_20_25_1 	p_diag_m_20_25_1   p_diag_w_20_25_1	p_ai_no_arv_c_nnm_20_25_1   
