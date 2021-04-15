@@ -1713,10 +1713,12 @@ sw_program_visit=0;
 * ADHERENCE PATTERN;
 
 * remember that there are additional negative effects on adherence of younger age, tox, adc/tb, occasional drops i adh, 2nd line; 
+* deleted former adherence patterns 99, 98 and 101 *Apr2021;
 
 if adh_pattern=1 then do;  
 
 *adherence pattern 1;
+*formerly #100 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
@@ -1733,6 +1735,7 @@ end;
 if adh_pattern=2 then do;
 
 *adherence pattern 2;
+*formerly #1 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
@@ -1749,6 +1752,7 @@ end;
 if adh_pattern=3 then do;
 
 *adherence pattern 3;  
+*formerly #105 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1765,6 +1769,7 @@ end;
 if adh_pattern=4 then do;
 
 *adherence pattern 4;
+*formerly #2 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1781,6 +1786,7 @@ end;
 if adh_pattern=5 then do;
 
 * adherence pattern 5 ;
+*formerly #3 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; end;
@@ -1797,6 +1803,7 @@ end;
 if adh_pattern=6 then do;
 
 * adherence pattern 6 ;
+*formerly #4 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
@@ -1811,6 +1818,7 @@ end;
 if adh_pattern=7 then do;
 
 * adherence pattern 7 ;
+*formerly #5 *Apr2021;
 e=uniform(0);f=uniform(0);
 if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
