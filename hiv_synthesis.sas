@@ -656,8 +656,8 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * rate_return;  			%sample(rate_return, 
-								0.01	0.10 	0.10	0.50 	0.80, 
-								0.1 	0.15 	0.25	0.25 	0.25);
+								0.01	0.10 	0.50 	0.80, 
+								0.10 	0.40	0.25 	0.25);
 							/*r=uniform(0); if  r < 0.10 then rate_return = 0.01; if  0.10 <= r < 0.25 then rate_return = 0.10; 
 								if 0.25 <= r < 0.5 then rate_return = 0.10; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; */
 							* dependent_on_time_step_length
