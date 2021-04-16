@@ -3,18 +3,14 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;  
-  set a.wide_prep_29_jan_21_1  a.wide_prep_29_jan_21_2  ; 
+* set a.wide_prep_29_jan_21_1  a.wide_prep_29_jan_21_2  ; 
 * set a.wide_prep_29_jan_21_prep_eff_0 ;
 * set a.wide_prep_29_jan_21_dis7p_1  a.wide_prep_29_jan_21_dis7p_2  ; 
-* set a.wide_prep_29_jan_21_1_ps12 ;
+  set a.wide_prep_29_jan_21_1_ps12 ;
 * set a.wide_prep_22_10_20_5pm_prep5yr ;
 
 
-
-* to give n = 1000 setting scenarios;
-
-* if run > 837709993 then delete; * for file 1 to make 1000 setting scenarios;
-if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
+  if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
 
 
 * --------------------------------------------------------------------------------------------------------------;
@@ -868,7 +864,7 @@ proc freq data=wide;   tables    ce_500_x     / nocum norow binomial; * exact bi
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
 * where r_p_newp_ge1_age1549_21 > 1 ;
-  where 0.73 <= p_vl1000_21 < 0.99 ;
+* where 0.73 <= p_vl1000_21 < 0.99 ;
 run; 
   ods html close;
 
@@ -890,7 +886,7 @@ proc freq data=wide;  tables ce_500   ;
 run; 
   ods html close;
 
-
+* model used to produce figure 1;
 proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 

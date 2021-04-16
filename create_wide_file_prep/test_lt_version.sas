@@ -1539,8 +1539,8 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
  proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;
  proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2021.5 <= cald < 2026.50;
- proc means noprint data=y; var &v; output out=y_41 mean= &v._41; by run option ; where 2040.5 <= cald < 2041.50;
- proc means noprint data=y; var &v; output out=y_70 mean= &v._70; by run option ; where 2070.0 <= cald < 2071.00;
+/* proc means noprint data=y; var &v; output out=y_41 mean= &v._41; by run option ; where 2040.5 <= cald < 2041.50; */
+/* proc means noprint data=y; var &v; output out=y_70 mean= &v._70; by run option ; where 2070.0 <= cald < 2071.00;  */
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
@@ -1552,21 +1552,25 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
  proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run; 
  proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run; 
- proc sort data=y_41; by run; proc transpose data=y_41 out=t_41 prefix=&v._41_; var &v._41; by run; 
- proc sort data=y_70; by run; proc transpose data=y_70 out=t_70 prefix=&v._70_; var &v._70; by run; 
+/* proc sort data=y_41; by run; proc transpose data=y_41 out=t_41 prefix=&v._41_; var &v._41; by run; */
+/* proc sort data=y_70; by run; proc transpose data=y_70 out=t_70 prefix=&v._70_; var &v._70; by run; */
 /* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
 
-data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 t_41 t_70 ;  
+data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 /* t_41 t_70 */ ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
-%var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
+%var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_1524_newp_ge1);
+
+/*
+
+%var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
+ %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);  %var(v=prep_strategy);
 %var(v=n_tested_m);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
@@ -1630,9 +1634,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_m184m_all);  %var(v=p_k65m_all);  %var(v=incidence_onprep); %var(v=p_m_newp_ge1_age1549);  %var(v=p_w_newp_ge1_age1549);
 
+*/
+
 
 data   wide_outputs; merge 
-p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 ;
+
+
+/*
+p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep  prep_strategy
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3039m p_mcirc_4049m p_mcirc_50plm p_mcirc_1549m
@@ -1678,6 +1688,8 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 ;
 
+*/
+
 proc contents; run;
 
 proc sort; by run; run;
@@ -1694,7 +1706,11 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par; 
 
 %par(p=sf_2021);  %par(p=dataset);
-%par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
+%par(p=sex_beh_trans_matrix_m ); 
+
+/*
+
+%par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
 %par(p=external_exp_factor ); %par(p=rate_exp_set_lower_p_vl1000 ); %par(p=prob_pregnancy_base ); %par(p=fold_change_w );
@@ -1721,8 +1737,13 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
 %par(p=lower_future_art_cov);  %par(p=eff_adh_prep);  %par(p=sens_vct_test_type_3);  
 
+*/
+
 data wide_par; merge dataset
-sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2021 sex_beh_trans_matrix_m;
+
+/*
+sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1747,7 +1768,7 @@ zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater
   prep_strategy rate_sw_rred_rc 
 lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
 ;
-
+*/
 
 proc contents; run;
 
@@ -1770,6 +1791,8 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %mend par_ai1_option1; 
 
 %par_ai1(p=exp_setting_lower_p_vl1000 ); 
+
+/*
 %par_ai1(p=external_exp_factor );  %par_ai1(p=rate_exp_set_lower_p_vl1000 );   %par_ai1(p=max_freq_testing ); 
 %par_ai1(p=test_targeting );   %par_ai1(p=prob_loss_at_diag );  %par_ai1(p=pr_art_init );  
 %par_ai1(p=rate_lost );  %par_ai1(p=prob_lost_art );  %par_ai1(p=rate_return );  %par_ai1(p=rate_restart );  %par_ai1(p=rate_int_choice ); 
@@ -1799,12 +1822,15 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par_ai1(p=testing_disrup_covid);  %par_ai1(p=art_tld_disrup_covid);  %par_ai1(p=art_tld_eod_disrup_covid);   %par_ai1(p=art_init_disrup_covid);   
 %par_ai1(p=vl_adh_switch_disrup_covid);  %par_ai1(p=cotrim_disrup_covid);    %par_ai1(p=no_art_disrup_covid); 
 %par_ai1(p=inc_adeathr_disrup_covid); %par_ai1(p=art_low_adh_disrup_covid);  %par_ai1(p=cov_death_risk_mult); 
-
+*/
 run;
 
 
 data wide_par_after_int_option1; merge 
- exp_setting_lower_p_vl1000_ai1 
+ exp_setting_lower_p_vl1000_ai1;
+
+ /*
+ 
 external_exp_factor_ai1 rate_exp_set_lower_p_vl1000_ai1  max_freq_testing_ai1 
 test_targeting_ai1  prob_loss_at_diag_ai1 pr_art_init_ai1 
 rate_lost_ai1 prob_lost_art_ai1 rate_return_ai1 rate_restart_ai1 rate_int_choice_ai1 
@@ -1835,6 +1861,8 @@ art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_cov
 inc_adeathr_disrup_covid_ai1   art_low_adh_disrup_covid_ai1  cov_death_risk_mult_ai1
 
 ;
+
+*/
 
 proc contents; run;
 
@@ -1884,37 +1912,4 @@ proc sort; by run;run;
 
 
 
-ods html;
-proc means  n median p5 p95 min max ;
-var	p_mcirc_1549m_20 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20 prevalence4549m_20 incidence1549w_20 
-incidence1549m_20	p_diag_m_20   p_diag_w_20 p_ai_no_arv_c_nnm_20   p_ai_no_arv_c_rt184m_20  p_ai_no_arv_c_rt65m_20   prop_w_1549_sw_20    
-p_onart_diag_w_20 	p_onart_diag_m_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20 p_onart_cd4_l500_20  
-p_mcirc_1549m_20  p_startedline2_20  prop_sw_hiv_20 prop_sw_onprep_20 p_newp_sw_20  n_tested_20 aids_death_rate_20  p_newp_sw_20 ;
-run;
-ods html close;
-
-
-ods html;
-proc means  n median p5 p95 min max ;
-var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21 prevalence4549m_21 incidence1549w_21 
-incidence1549m_21	p_diag_m_21   p_diag_w_21 p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21   prop_w_1549_sw_21    
-p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21 p_onart_cd4_l500_21  
-p_mcirc_1549m_21  p_startedline2_21  prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 ;
-run;
-ods html close;
-
-
-
-ods html;
-proc means n median p5 p95 min max ;
-var	p_mcirc_1549m_70 prevalence1549m_70 prevalence1549w_70 prevalence1524m_70 prevalence1524w_70 prevalence4549m_70 incidence1549w_70 
-incidence1549m_70	p_diag_m_70   p_diag_w_70 p_ai_no_arv_c_nnm_70   p_ai_no_arv_c_rt184m_70  p_ai_no_arv_c_rt65m_70   prop_w_1549_sw_70    
-p_onart_diag_w_70 	p_onart_diag_m_70   p_vl1000_70	p_onart_vl1000_w_70	p_onart_vl1000_m_70 p_onart_cd4_l500_70  
-p_mcirc_1549m_70  p_startedline2_70  prop_sw_hiv_70 prop_sw_onprep_70 p_newp_sw_70  n_tested_70 aids_death_rate_70  p_newp_sw_70 ;
-run;
-ods html close;
-
-
-
-
-
+  proc print; var run ; run;
