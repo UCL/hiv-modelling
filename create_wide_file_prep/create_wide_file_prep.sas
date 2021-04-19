@@ -8,10 +8,10 @@
 
 data d1;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_prep_eff_0";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_prep5yr";
 
 
@@ -805,12 +805,12 @@ dataset=1;
 
 
 
-* data d2;  
+data d2;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
+infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 
 
-* input 
+input 
 
 
 /*general*/
@@ -1599,9 +1599,9 @@ if option=0 or option=1;
 dataset=2;
 
 
-  data d: 
-  set d1; 
-* set d1 d2;
+  data d; 
+* set d1; 
+  set d1 d2;
 
 
 
@@ -2276,12 +2276,12 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 proc sort data=y;by run option;run;
 
-* data a.prep_22_10_20_5pm_29_jan_21_1a2 ;
+  data a.prep_22_10_20_5pm_29_jan_21_1a2_myriad ;
 * data a.prep_22_10_20_5pm_29_jan_21_1 ;
 * data a.prep_22_10_20_5pm_29_jan_21_2 ;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
-  data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
+* data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
 
 set y;
 
@@ -2289,8 +2289,8 @@ proc contents; run;
 
 data y; 
 
-* set a.prep_22_10_20_5pm_29_jan_21_1a2;
-  set a.prep_22_10_20_5pm_29_jan_21_ps12_1;
+  set a.prep_22_10_20_5pm_29_jan_21_1a2_myriad;
+* set a.prep_22_10_20_5pm_29_jan_21_ps12_1;
 * set a.prep_22_10_20_5pm_29_jan_21_1;
 * set a.prep_22_10_20_5pm_29_jan_21_2;
 * set a.prep_29_jan_21_dis7p_2;
@@ -2324,8 +2324,9 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
- proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071
- - can change to 2071.5 once changes to program made;
+ proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071 ;
+ proc means noprint data=y; var &v; output out=y_21_41 mean= &v._21_41; by run option ; where 2021.5 <= cald < 2041.50;
+ 
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
 /* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
@@ -2338,8 +2339,9 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
+ proc sort data=y_21_41; by run; proc transpose data=y_21_41 out=t_21_41 prefix=&v._21_41_; var &v._21_41; by run;  
 
-data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 t_41 t_70 ;  
+data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_41 t_21_71 t_41 t_70 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -2648,8 +2650,9 @@ proc sort; by run;run;
 
 * To get one row per run;
 
+  data a.wide_prep_29_jan_21_1a2_myriad;
 * data a.wide_prep_29_jan_21_1a2;
-  data a.wide_prep_29_jan_21_1_ps12;
+* data a.wide_prep_29_jan_21_1_ps12;
 * data a.wide_prep_29_jan_21_1; 
 * data a.wide_prep_29_jan_21_2;
 * data a.wide_prep_29_jan_21_dis7p_2;
