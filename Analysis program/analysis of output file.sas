@@ -9,21 +9,13 @@ if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete;
 run;
 
 data b;
-set a.wide_vmmc_29_03_21_6pm;
+*set a.wide_vmmc_29_03_21_6pm;
+set a.wide_vmmc_29_03_21_6pm_60;
 run;
 proc contents;run;
 
 data c;
 set b;  
-*set a b;
-*set a.wide_vmmc_23_10_20_lowart_120;
-*set a.wide_vmmc_12_10_20_5pm_120_5p;***This is assuming 5% discount rate;
-*set a.wide_vmmc_12_10_20_5pm_140; ***This is assuming vmmc cost of $140;
-*et a.wide_vmmc_12_10_20_5pm_160; ***This is assuming vmmc cost of $160;
-*set a.wide_vmmc_12_10_20_5pm_180; ***This is assuming vmmc cost of $180;
-*set a.wide_vmmc_12_10_20_5pm_190; ***This is assuming vmmc cost of $190;
-*set a.wide_vmmc_12_10_20_5pm_185; ***This is assuming vmmc cost of $185;
-*set a.wide_vmmc_12_10_20_5pm_60; ***This is assuming vmmc cost of $60;
 
 **delete unless looking at lower future art cov (n=250);
 *if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
@@ -170,15 +162,15 @@ d_n_d_new_inf_21_71_1 = d_n_infection_21_71_2 - d_n_infection_21_71_1;
    max difference;
 /*
 proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
-*base; max=17.0, 13.9, 13.6;
-*lower future art cov;: max=16.6, 13.9, 9.9;
+*base; max= 15.4, 11.7, 7.3;
+*$120: max= 19.1, 13.2, 8.7;
+*$60: max= 19.1, 13.2, 8.7;
 *5% disc; max=15.3, 9.6. 6.1;
-*180; max=24.8, 20.1, 17.9;
-*60; max=9.6, 8.1, 9.4;
+*lower future art cov;: max=16.6, 13.9, 9.9;
 */
 
 
-*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 7.3*1000000;
+*base;cost_inf_avert_21_26_1=19.1*1000000; cost_inf_avert_21_41_1=13.2*1000000; cost_inf_avert_21_71_1 = 8.7*1000000;
 /*lowart;cost_inf_avert_21_26_1=16.6*1000000; cost_inf_avert_21_41_1=13.9*1000000; cost_inf_avert_21_71_1 = 9.9*1000000;*/
 /*5% disc;cost_inf_avert_21_26_1=15.3*1000000; cost_inf_avert_21_41_1=9.6*1000000; cost_inf_avert_21_71_1 = 6.1*1000000;*/
 /*180;cost_inf_avert_21_26_1=24.8*1000000; cost_inf_avert_21_41_1=20.1*1000000; cost_inf_avert_21_71_1 = 17.9*1000000;*/
@@ -190,9 +182,9 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=15.4*1000000;
-cost_daly_avert_21_41_1_adults=11.7*1000000;
-cost_daly_avert_21_71_1_adults=7.3*1000000;
+cost_daly_avert_21_26_1_adults=19.1*1000000;
+cost_daly_avert_21_41_1_adults=13.2*1000000;
+cost_daly_avert_21_71_1_adults=8.7*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;

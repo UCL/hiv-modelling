@@ -710,9 +710,10 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 
 %let year_start_disc=2021;
 discount_3py = 1/(1.03**(cald-&year_start_disc));
+discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
-%let discount=discount_3py;
+%let discount=discount_5py;
 
 * ================================================================================= ;
 
