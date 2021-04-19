@@ -6,12 +6,13 @@
 
 data y; 
 
-  set a.prep_22_10_20_5pm_29_jan_21_1a2;
+* set a.prep_22_10_20_5pm_29_jan_21_1a2;
 * set a.prep_22_10_20_5pm_29_jan_21_ps12_1;
 * set a.prep_22_10_20_5pm_29_jan_21_1;
 * set a.prep_22_10_20_5pm_29_jan_21_2;
 * set a.prep_29_jan_21_dis7p_2;
 * set a.prep_29_jan_21_prep_eff_0;
+  set a.prep_22_10_20_5pm_29_jan_21_ps14;
 
   options nomprint;
   option nospool;
@@ -363,13 +364,15 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_prep_29_jan_21_1a2_myriad_2;
+* data a.wide_prep_29_jan_21_1a2_myriad_2;
 * data a.wide_prep_29_jan_21_1a2;
 * data a.wide_prep_29_jan_21_1_ps12;
 * data a.wide_prep_29_jan_21_1; 
 * data a.wide_prep_29_jan_21_2;
 * data a.wide_prep_29_jan_21_dis7p_2;
 * data a.wide_prep_29_jan_21_prep_eff_0;
+  data a.wide_prep_29_jan_21_1_ps14;
+
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
