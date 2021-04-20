@@ -1,4 +1,4 @@
-
+***Check to see if VMMC cost is $90 and discount rate is 3% when running base file;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
@@ -775,7 +775,7 @@ run;
 * all costs expressed as $ millions per year in 2018 USD;
 
 ***Redefine VMMC costs to $90 (+/-30 in sens analyses) to match those being used for Zimbabwe and Malawi;;
-s_cost_circ_new= s_cost_circ*(60/106);
+s_cost_circ_new= s_cost_circ*(90/106);
 s_dcost_circ_new=&discount*s_cost_circ_new;*use this to calculate dcost_circ below;
 
 * ts1m - 12 instead of 4; 
@@ -1531,10 +1531,10 @@ s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_29_03_21_6pm_60; set y;run;
+data a.vmmc_29_03_21_6pm_disc5; set y;run;
 
 
-data y; set a.vmmc_29_03_21_6pm_60; run;
+data y; set a.vmmc_29_03_21_6pm_disc5; run;
 
 proc freq;table option_new;run;
 
@@ -1887,7 +1887,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_29_03_21_6pm_60;
+  data a.wide_vmmc_29_03_21_6pm_disc5;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
