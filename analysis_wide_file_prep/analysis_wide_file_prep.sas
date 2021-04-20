@@ -9,8 +9,8 @@ data wide;
 * set a.wide_prep_29_jan_21_1_ps12 ;
 * set a.wide_prep_22_10_20_5pm_prep5yr ;
 * set a.wide_prep_29_jan_21_1a2;
-  set a.wide_prep_29_jan_21_1a2_myriad;
-
+  set a.wide_prep_29_jan_21_1a2_myriad_2;
+* set a.wide_prep_29_jan_21_1_ps14 ;
 
   if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
 
@@ -226,6 +226,10 @@ cost_per_infection_averted_21_41 = 1000000 * (max(d_dcost_21_41_2 , 0)) / max(1,
 r_incidence_21_26_2 =  incidence1549_21_26_2 / incidence1549_21_26_1 ;
 r_incidence_21_71_2 =  incidence1549_21_71_2 / incidence1549_21_71_1 ;
 r_incidence_21_41_2 =  incidence1549_21_41_2 / incidence1549_21_41_1 ;
+
+r_incidence1524w_21_26_2 =  incidence1524w_21_26_2 / incidence1524w_21_26_1 ;
+r_incidence1524w_21_71_2 =  incidence1524w_21_71_2 / incidence1524w_21_71_1 ;
+r_incidence1524w_21_41_2 =  incidence1524w_21_41_2 / incidence1524w_21_41_1 ;
 
 d_prevalence1549_mw_20 = prevalence1549w_20 - prevalence1549m_20 ;
 l_r_prevalence1549_mw_20 = log( prevalence1549w_20 / prevalence1549m_20) ; 
@@ -715,7 +719,8 @@ ods html close;
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var incidence1549_21_71_1 incidence1549_21_71_2  r_incidence_21_71_2
  incidence1549m_41_1 incidence1549m_41_2  incidence1549m_70_1 incidence1549m_70_2 
-incidence1549w_41_1 incidence1549w_41_2  incidence1549w_70_1 incidence1549w_70_2;  
+incidence1549w_41_1 incidence1549w_41_2  incidence1549w_70_1 incidence1549w_70_2
+incidence1524w_70_1 incidence1524w_70_2 r_incidence1524w_21_71_2 ;  
 run; 
 ods html close;
 
@@ -950,7 +955,7 @@ run;
 
 
 
-proc freq data=wide; tables icer_2_20yr;  * icer_2_20yr ;
+proc freq data=wide; tables icer_2     ;  * icer_2_20yr ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.05 and prevalence1549_20 > 0.1 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.07 ;
 run;
