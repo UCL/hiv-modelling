@@ -8,13 +8,13 @@
 
 data d1;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_prep_eff_0";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_prep5yr";
-  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
+  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_prep_eff_0";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_prep5yr";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
 
 input 
 
@@ -805,11 +805,11 @@ if option=0 or option=1;
 dataset=1;
 
 
-/*
+  
 
 data d2;  
 
-infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
+infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 
 
 input 
@@ -2280,13 +2280,13 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 proc sort data=y;by run option;run;
 
-* data a.prep_22_10_20_5pm_29_jan_21_1a2_myriad ;
+  data a.prep_22_10_20_5pm_29_jan_21_1a2_myriad ;
 * data a.prep_22_10_20_5pm_29_jan_21_1 ;
 * data a.prep_22_10_20_5pm_29_jan_21_2 ;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
 * data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
-  data a.prep_22_10_20_5pm_29_jan_21_ps14   ;
+* data a.prep_22_10_20_5pm_29_jan_21_ps14   ;
 
 set y;
 
