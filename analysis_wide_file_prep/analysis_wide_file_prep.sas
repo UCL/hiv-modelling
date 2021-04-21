@@ -1143,4 +1143,5 @@ p_newp_sw_21
 p_vl1000_21
 ;
 run;
+* p_inf_newp_21;
 
