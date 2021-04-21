@@ -6,9 +6,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d ;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_29_3_21_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_3_4_21_1";
 
 input 
+
 
 /*general*/
 run   cald   option 
@@ -650,7 +651,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
-proc freq; tables s_restart ; run;
+* if run =   ;
+
 
 
 proc sort data=d; by run cald option;run;
@@ -1212,14 +1214,14 @@ prep_strategy rate_sw_rred_rc
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention;
+  data a.art_retention_3_4_21;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention; 
+  set a.art_retention_3_4_21; 
 run;
 
 
@@ -1673,14 +1675,16 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_29_3_21; 
-* data a.wide_art_retention_3_4_21; 
+  data a.wide_art_retention_3_4_21; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
 
 
 proc contents; run;
+
+proc freq; tables run; run;
+
 
 ods html;
 proc means n median p5 p95 min max ;
@@ -1814,11 +1818,64 @@ ods html close;
 
 
 
+ods html;
+proc means n median p5 p95 min max ;
+var	
+n_onart_21_71_0
+n_onart_21_71_1
+n_onart_21_71_2
+n_onart_21_71_3
+n_onart_21_71_4
+
+p_onart_artexp_21_71_0 
+p_onart_artexp_21_71_1 
+p_onart_artexp_21_71_2 
+p_onart_artexp_21_71_3 
+p_onart_artexp_21_71_4
+
+p_onart_diag_w_21_71_0 
+p_onart_diag_w_21_71_1 
+p_onart_diag_w_21_71_2 
+p_onart_diag_w_21_71_3 
+p_onart_diag_w_21_71_4
+
+p_onart_diag_m_21_71_0 
+p_onart_diag_m_21_71_1 
+p_onart_diag_m_21_71_2 
+p_onart_diag_m_21_71_3 
+p_onart_diag_m_21_71_4
+
+n_death_hivrel_21_71_0
+n_death_hivrel_21_71_1
+n_death_hivrel_21_71_2
+n_death_hivrel_21_71_3
+n_death_hivrel_21_71_4 
+
+daly_21_71_0  
+daly_21_71_1  
+daly_21_71_2  
+daly_21_71_3  
+daly_21_71_4  
+
+incidence1549_21_71_0
+incidence1549_21_71_1
+incidence1549_21_71_2
+incidence1549_21_71_3
+incidence1549_21_71_4
+
+;
+
+* where run =  ;
+run;
+ods html close;
 
 
-data a.art_retention_29_3_21_xlsx;
 
-set a.wide_art_retention_29_3_21;
+
+
+data a.art_retention_3_4_21_xlsx;
+
+set a.wide_art_retention_3_4_21;
 
 drop sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1847,7 +1904,7 @@ prep_strategy rate_sw_rred_rc
 
 proc export data = a.art_retention_xlsx
   dbms=xlsx 
-  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_29_3_21" replace;
+  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_3_4_21" replace;
 run;
 
 
