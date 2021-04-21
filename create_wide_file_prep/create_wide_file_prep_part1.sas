@@ -2243,7 +2243,7 @@ clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
 red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
 prob_return_adc   prob_lossdiag_adctb   prob_lossdiag_who3e  higher_newp_less_engagement  
-fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  
+fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  fold_tr_newp 
 
 condom_incr_2020     			cascade_care_improvements  incr_test_2020              decr_hard_reach_2020   
 decr_prob_loss_at_diag_2020  	decr_rate_lost_2020 		decr_rate_lost_art_2020     incr_rate_return_2020      
