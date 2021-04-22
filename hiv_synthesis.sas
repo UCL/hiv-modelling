@@ -296,7 +296,7 @@ fold_change_w = 1.5; *overwritten;
 fold_change_yw = 2; *overwritten;
 fold_change_sti = 3; *overwritten;
 fold_tr_newp = 0.3; 
-super_infection = 0; *overwritten;
+super_infection_pop = 0; *overwritten;
 res_trans_factor_nn = 0.60 ; *overwritten - factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost;
 res_trans_factor_ii = 1; *overwritten;
 rate_loss_persistence = 0.04; *overwritten - loss of persistence of tdr - at the moment rate same for each mutation, but rate transmission not same for each mutation; 
@@ -609,7 +609,7 @@ p_neph_stops_after_ten = 0.1;
 
 * fold_tr_newp;		fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;
 
-* super_infection; u=uniform(0); if u < 0.5 then super_infection=0; if u >= 0.5 then super_infection = 1;
+* super_infection_pop; u=uniform(0); if u < 0.5 then super_infection_pop=0; if u >= 0.5 then super_infection_pop = 1;
 
 ***** testing;
 
@@ -4993,7 +4993,7 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
 
-if hiv=1 then s_infection=0;
+if hiv=1 then super_infection=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
@@ -5152,7 +5152,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		a=uniform(0); if a < risk_nip then do;
 		    if hiv=1 then do;
-    		if onart    ne 1 then s_infection=1;  * may14 - added need to be off art to get super-infected;
+    		if onart    ne 1 then super_infection=1;  * may14 - added need to be off art to get super-infected;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
@@ -5334,7 +5334,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
 		    b=uniform(0);
-    		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
+    		super_infection=0; if onart    ne 1 and b < risk_eip then super_infection=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
 	end;
@@ -6147,8 +6147,8 @@ visit_tm1=visit;
 	this was due to the fact that super infection seemed to play a big role in our model,
 	while this has never been mentioned as a big problem by clinicians;
 	sx=uniform(0);
-	if super_infection=1 then do;
-		if s_infection=1 and sx<0.2 then do;
+	if super_infection_pop=1 then do;
+		if super_infection=1 and sx<0.2 then do;
 			c_rt103m=max(k103m,c_rt103m);c_rt181m=max(y181m,c_rt181m);c_rt190m=max(g190m,c_rt190m);
 			c_inpm=max(inpm,c_inpm); c_insm=max(insm,c_insm);
 			c_rttams= max(c_rttams,tam); c_rt184m= max(m184m,c_rt184m);
@@ -14900,7 +14900,7 @@ cald = caldate_never_dot ;
 
 
 * procs;
-proc print; var cald age hiv super_infection s_infection death ;
+proc print; var cald age hiv super_infection_pop super_infection death ;
 where serial_no<50 ;
 run;
 /*
@@ -15441,9 +15441,9 @@ drop serial_no ;
 
 keep
  
-s_: 
+run cald option s_: 
 /*general*/
-/*s_n*/  cald  run  option
+/*s_n cald  run  option*/
 																														 										  
 /*/*number alive and in each age group*/*/
 /*s_alive1549 	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m*/
@@ -15913,7 +15913,7 @@ year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infe
 /*s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   */
 /*s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   */
 /*s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   */
-/*s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  */
+/*s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead*/   sbi_proph_dead  
 /*s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb*/
 /*s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc */
 /*s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  */
@@ -15961,7 +15961,7 @@ year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infe
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti  super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -16035,7 +16035,7 @@ prep_strategy
 
 prevalence1549  prev_ratio_1524 incidence1549w incidence1549m cum_ratio_newp_mw
 
-/* variables created after proc univariate which are used in the body of the program in order to update*/
+/*/* variables created after proc univariate which are used in the body of the program in order to update*/*/
 /*s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  */
 /*s_prop_vlg1_rm0_diag  s_prop_vlg2_rm0_diag  s_prop_vlg3_rm0_diag  s_prop_vlg4_rm0_diag  s_prop_vlg5_rm0_diag  s_prop_vlg6_rm0_diag  */
 /*s_prop_vlg1_rm1_diag  s_prop_vlg2_rm1_diag  s_prop_vlg3_rm1_diag  s_prop_vlg4_rm1_diag  s_prop_vlg5_rm1_diag  s_prop_vlg6_rm1_diag  */
@@ -16081,7 +16081,7 @@ d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 
 r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
-m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
+m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  /*s_m_newp   s_w_newp*/
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
@@ -16266,7 +16266,13 @@ t_m_newp = s_m_newp;
 t_w_newp = s_w_newp;
 
 
-drop s_: ;
+drop s_: cald
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+sbi_proph_dead
+;
+
+
 /*drop */
 /**/
 /**/
@@ -16817,7 +16823,7 @@ drop s_: ;
 /*s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2yr_on   s_art_attrit_3yr   */
 /*s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_5yr   */
 /*s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   */
-/*s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_infection  s_m_newp */
+/*s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_m_newp */
 /*s_naive_m       		s_naive_w      s_npgt1conc_l4p_1519m    s_npgt1conc_l4p_1519w   s_npgt1conc_l4p_1524m */
 /*s_npgt1conc_l4p_1524w    s_npgt1conc_l4p_2449m    s_npgt1conc_l4p_2449w    s_npgt1conc_l4p_5064m    s_npgt1conc_l4p_5064w */
 /*s_prop_ageg1_m_vlg1    s_prop_ageg1_m_vlg2    s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4  s_prop_ageg1_m_vlg5 */
@@ -17576,7 +17582,7 @@ year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infe
 /*s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   */
 /*s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   */
 /*s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   */
-/*s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  */
+/*s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead  */ sbi_proph_dead  
 /*s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead     s_in_care_time_of_adc_tb*/
 /*s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc */
 /*s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  */
@@ -17619,7 +17625,7 @@ year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infe
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti  super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -17740,7 +17746,7 @@ d_hiv_epi_wm  d_hiv_epi_mw  r_hiv_epi_both  r_ep_mw
 
 r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55 
 
-m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
+m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  /*s_m_newp   s_w_newp*/
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
