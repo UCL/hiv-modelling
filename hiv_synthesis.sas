@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2020.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -14900,9 +14900,7 @@ cald = caldate_never_dot ;
 
 
 * procs;
-proc print; var cald age hiv super_infection_pop super_infection death ;
-where serial_no<50 ;
-run;
+
 /*
 
 proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
@@ -16270,6 +16268,7 @@ drop s_: cald
 year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
 year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
 sbi_proph_dead
+super_infection
 ;
 
 
