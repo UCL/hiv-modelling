@@ -1680,6 +1680,7 @@ run;
   merge   wide_outputs  wide_par  ; 
   by run;
 
+  if run = 145009460 ; * 627525923;
 
 proc contents; run;
 
@@ -1696,6 +1697,21 @@ p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0
 p_newp_sw_21_0  aids_death_rate_21_0  ;
 run;
 ods html close;
+
+
+
+ods html;
+proc print ;
+var	run 
+n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
+death_rate_hiv_ge15_21_0 ddaly_21_0 daly_21_0  incidence1549_21_0 incidence1549w_21_0 incidence1549m_21_0 prevalence1549_21_0 
+prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  p_onart_artexp_21_0
+p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0 p_mcirc_1549m_21_0  p_startedline2_21_0  prop_sw_hiv_21_0 
+p_newp_sw_21_0  aids_death_rate_21_0  ;
+run;
+ods html close;
+
+
 
 
 ods html;
@@ -1865,7 +1881,7 @@ incidence1549_21_71_4
 
 ;
 
-* where run =  ;
+where run = 145009460 ;
 run;
 ods html close;
 
