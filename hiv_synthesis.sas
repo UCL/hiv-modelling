@@ -313,7 +313,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample(inc_cat, 1 2 3, 1/3 1/3 1/3);
+* inc_cat; 					%sample_uniform(inc_cat, 1:3);
 							/*r=uniform(0); if r < 0.33 then inc_cat = 1; if 0.33 <= r < 0.66 then inc_cat = 2; if 0.66 <= r then inc_cat=3;*/
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
@@ -355,9 +355,9 @@ newp_seed = 7;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
 * rr_sw_prev_sw;			rr_sw_prev_sw = 10;
 
-* ch_risk_diag;  			%sample(ch_risk_diag, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);
+* ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 							/*r=uniform(0); if r < 0.25 then ch_risk_diag = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag = 0.9; if 0.75 <= r then ch_risk_diag = 1;*/
-* ch_risk_diag_newp;  		%sample(ch_risk_diag_newp, 0.7 0.8 0.9 1.0, 0.25 0.25 0.25 0.25);		*mf - aug18;
+* ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
 							/*r=uniform(0); if r < 0.25 then ch_risk_diag_newp = 0.7; if 0.25 <= r < 0.5 then ch_risk_diag_newp = 0.8; if 0.5 <= r < 0.75 then ch_risk_diag_newp = 0.9; if 0.75 <= r then ch_risk_diag_newp = 1; */
 * ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8, 0.2 0.6 0.2);
 							/*r=uniform(0); ych_risk_beh_newp = 0.70;  if r < 0.20 then ych_risk_beh_newp = 0.80;	if 0.80 <= r then ych_risk_beh_newp = 0.60;*/
@@ -365,16 +365,16 @@ newp_seed = 7;
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
 							/*r=uniform(0); if r < 0.05 then ych2_risk_beh_newp = 1/0.95; if 0.05 <= r < 0.1 then ych2_risk_beh_newp = 1/0.99; if 0.1 <= r < 0.9 then ych2_risk_beh_newp = 1.0; if 0.9 <= r < 0.95 then ych2_risk_beh_newp = 0.99; if 0.95 <= r then ych2_risk_beh_newp = 0.95; */
-* ych_risk_beh_ep;  		%sample(ych_risk_beh_ep, 0.8 0.9 0.95 1, 0.25 0.25 0.25 0.25);
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);
 							/*r=uniform(0); ych_risk_beh_ep = 1.00;  if  0.25 <= r < 0.5 then ych_risk_beh_ep = 0.95; if 0.5 <= r < 0.75 then ych_risk_beh_ep = 0.90; if 0.75 <= r then ych_risk_beh_ep = 0.80; */
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
-* newp_factor;  			%sample(newp_factor, 0.5 1 2, 1/3 1/3 1/3);								* 15_1_20 4pm ;
+* newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
 							/*r=uniform(0); newp_factor = 1 ; if r < 0.33 then newp_factor = 0.5 ; if r > 0.67 then newp_factor = 2   ; */
-* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 1/3 1/3 1/3);
+* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7);
 							/*r=uniform(0); if r < 0.33 then p_rred_p = 0.3; if 0.33 <= r < 0.67 then p_rred_p = 0.5; if 0.67 <= r  then p_rred_p = 0.7;  	*/
-* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 1/3 1/3 1/3);
+* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15);
 							/*r=uniform(0); if r < 0.33 then p_hsb_p = 0.05; if 0.33 <= r < 0.67 then p_hsb_p = 0.08; if 0.67 <= r then p_hsb_p = 0.15;*/
 
 * exp_setting_lower_p_vl1000;	
@@ -391,33 +391,33 @@ newp_seed = 7;
 								rate_exp_set_lower_p_vl1000 = 0; 
 							end;
 							* rate of exposure;  * rate_exp_set_lower_p_vl1000 * dependent_on_time_step_length ;
-* sex_beh_trans_matrix_m;	%sample(sex_beh_trans_matrix_m, 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15, 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15);
+* sex_beh_trans_matrix_m;	%sample_uniform(sex_beh_trans_matrix_m, 1:15);
 							/*e=uniform(0); 
 							if e < 1/15 then sex_beh_trans_matrix_m=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_m=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_m=3; 
 							if 3/15 <= e < 4/15 then sex_beh_trans_matrix_m=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_m=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_m=6; 
 							if 6/15 <= e < 7/15 then sex_beh_trans_matrix_m=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_m=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_m=9; 
 							if 9/15 <= e < 10/15 then sex_beh_trans_matrix_m=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_m=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_m=12;
 							if 12/15 <= e < 13/15 then sex_beh_trans_matrix_m=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_m=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_m=15;*/
-* sex_beh_trans_matrix_w;	%sample(sex_beh_trans_matrix_w, 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15, 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15 1/15);
+* sex_beh_trans_matrix_w;	%sample_uniform(sex_beh_trans_matrix_w, 1:15);
 							/*e=uniform(0); 
 							if e < 1/15 then sex_beh_trans_matrix_w=1;if 1/15 <= e < 2/15 then sex_beh_trans_matrix_w=2;if 2/15 <= e < 3/15 then sex_beh_trans_matrix_w=3; 
 							if 3/15 <= e < 4/15 then sex_beh_trans_matrix_w=4;if 4/15 <= e < 5/15 then sex_beh_trans_matrix_w=5;if 5/15 <= e < 6/15 then sex_beh_trans_matrix_w=6; 
 							if 6/15 <= e < 7/15 then sex_beh_trans_matrix_w=7;if 7/15 <= e < 8/15 then sex_beh_trans_matrix_w=8;if 8/15 <= e < 9/15 then sex_beh_trans_matrix_w=9; 
 							if 9/15 <= e < 10/15 then sex_beh_trans_matrix_w=10; if 10/15 <= e < 11/15 then sex_beh_trans_matrix_w=11;if 11/15 <= e < 12/15 then sex_beh_trans_matrix_w=12;
 							if 12/15 <= e < 13/15 then sex_beh_trans_matrix_w=13; if 13/15 <= e < 14/15 then sex_beh_trans_matrix_w=14;if 14/15 <= e < 15/15 then sex_beh_trans_matrix_w=15;*/
-* sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6, 1/6 1/6 1/6 1/6 1/6 1/6);
+* sex_age_mixing_matrix_m;	%sample_uniform(sex_age_mixing_matrix_m, 1:6);
 							/*e=uniform(0); 
 							if e < 1/6  then sex_age_mixing_matrix_m=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_m=2;
 							if 2/6 <= e < 3/6  then sex_age_mixing_matrix_m=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_m=4;
 							if 4/6 <= e < 5/6  then sex_age_mixing_matrix_m=5; if 5/6 <= e        then sex_age_mixing_matrix_m=6;*/
-* sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6, 1/6 1/6 1/6 1/6 1/6 1/6);
+* sex_age_mixing_matrix_w;	%sample_uniform(sex_age_mixing_matrix_w, 1:6);
 							/*e=uniform(0); 
 							if e < 1/6  then sex_age_mixing_matrix_w=1; if 1/6  <= e < 2/6 then sex_age_mixing_matrix_w=2;
 							if 2/6 <= e < 3/6  then sex_age_mixing_matrix_w=3; if 3/6 <= e < 4/6  then sex_age_mixing_matrix_w=4;
 							if 4/6 <= e < 5/6  then sex_age_mixing_matrix_w=5; if 5/6 <= e        then sex_age_mixing_matrix_w=6;*/
 * rred_a_p;					%sample(rred_a_p, 1 2 3 4, 0.15 0.15 0.35 0.35);
 							/*r=uniform(0); if r < 0.15 then rred_a_p=1; if 0.15 <= r < 0.30 then rred_a_p=2;  if 0.30 <= r < 0.65 then rred_a_p=3;  if r >= 0.65 then rred_a_p=4; */
-* conc_ep; 					%sample(conc_ep, 1/3 1 3, 1/3 1/3 1/3);
+* conc_ep; 					%sample_uniform(conc_ep, 1/3 1 3);
 							/*r=uniform(0); conc_ep = 1    ; if r < 0.33 then conc_ep = 0.333; if r > 0.67 then conc_ep=3;*/
 * higher_newp_with_lower_adhav;
 							%sample(higher_newp_with_lower_adhav, 0 1, 0.8 0.2);
@@ -433,21 +433,19 @@ newp_seed = 7;
 							* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
 							* dependent_on_time_step_length ;
 
-* fold_tr;					%sample(fold_tr, 1/1.5 1 1.5, 1/3 1/3 1/3);
+* fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
 							/*fold_tr= 1.0 ; r=uniform(0); if r < 0.33 then fold_tr = 0.67; if r > 0.67 then fold_tr = 1.5;*/
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 							/*r=uniform(0); if r < 0.05 then fold_change_w = 1; if 0.05 <= r < 0.30 then fold_change_w = 1.5; if 0.30 <= r then fold_change_w = 2; */
-* fold_change_yw; 			%sample(tmp, 1 3 5, 1/3 1/3 1/3); fold_change_yw=tmp*fold_change_w;
+* fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 							/*fold_change_yw = fold_change_w * 3    ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;	if r > 0.67 then fold_change_yw = fold_change_w * 5    ;*/
-* fold_change_sti; 			%sample(fold_change_sti, 2 3 5, 1/3 1/3 1/3);
+* fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
 							/*fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;*/
-* fold_tr_newp;				%sample(fold_tr_newp, 0.3 0.5 0.7, 1/3 1/3 1/3);
+* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5 0.7);
 							/*fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;*/
-* super_infection; 			%sample(super_infection, 0 1, 0.5 0.5);
+* super_infection; 			%sample_uniform(super_infection, 0 1);
 							/*u=uniform(0); if u < 0.5 then super_infection=0; if u >= 0.5 then super_infection = 1;*/
-* res_trans_factor_nn;		%sample(res_trans_factor_nn, 
-								0.5	0.7	0.8	0.9	1.0, 
-								0.2	0.2	0.2	0.2	0.2);
+* res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							/*r=uniform(0); if r < 0.20 then res_trans_factor_nn= 0.50; if 0.20 <= r < 0.40 then res_trans_factor_nn= 0.7; if 0.40 <= r < 0.60 then res_trans_factor_nn= 0.8; 
 							if 0.60 <= r < 0.80 then res_trans_factor_nn= 0.90;  if 0.80 <= r then res_trans_factor_nn= 1.00;  */
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
@@ -507,43 +505,41 @@ newp_seed = 7;
 							rel_rate_death_sbi_diag_e = 0.67 ; 		* effect of sbi being diagnosed early on rate of death from the sbi event; 
 * effect_visit_prob_diag_l;	effect_visit_prob_diag_l = 0.9; 		* effect of being under care on prob of an adc or tb being diagnosed late;
 
-* fx;						%sample(fx, 
-								0.70 	0.85 	1.0 	1/0.85 	1/0.70, 
-								0.2 	0.2 	0.2 	0.2 	0.2);
+* fx;						%sample_uniform(fx, 0.70 0.85 1.0 1/0.85 1/0.70);
 							/*r=uniform(0);  if r < 0.2 then fx = 0.7; if 0.2 <= r < 0.4 then fx = 0.85; if 0.4 <= r < 0.6 then fx = 1.0; if 0.6 <= r < 0.8 then fx = 1/0.85 ; if 0.8 <= r then fx=1/0.7; */
 							* factor determining rate of natural cd4 decline;
-* gx;						%sample(gx, 1.0 1.5 2.0, 1/3 1/3 1/3);
+* gx;						%sample_uniform(gx, 1.0 1.5 2.0);
 							/*r=uniform(0);  if r < 0.33 then gx = 1.0; if 0.33 <= r < 0.67 then gx = 1.5;  if 0.67 <= r  then gx = 2.0;  */
 
-* tb_base_prob_diag_l;		%sample(tb_base_prob_diag_l, 0.25 0.50 0.75, 1/3 1/3 1/3);
+* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75);
 							/*e=uniform(0); if e < 0.333 then tb_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then tb_base_prob_diag_l=0.50;
 								  if e >= 0.666 then tb_base_prob_diag_l=0.75;*/
-* crypm_base_prob_diag_l;	%sample(crypm_base_prob_diag_l, 0.25 0.50 0.75, 1/3 1/3 1/3);
+* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75);
 							/*e=uniform(0); if e < 0.333 then crypm_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then crypm_base_prob_diag_l=0.50;
 							  	if e >= 0.666 then crypm_base_prob_diag_l=0.75;*/
-* sbi_base_prob_diag_l;		%sample(sbi_base_prob_diag_l, 0.25 0.50 0.75, 1/3 1/3 1/3);
+* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75);
 							/*e=uniform(0); if e < 0.333 then sbi_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then sbi_base_prob_diag_l=0.50;
 								if e >= 0.666 then sbi_base_prob_diag_l=0.75;*/
-* oth_adc_base_prob_diag_l;	%sample(oth_adc_base_prob_diag_l, 0.25 0.50 0.75, 1/3 1/3 1/3);
+* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75);
 							/*e=uniform(0); if e < 0.333 then oth_adc_base_prob_diag_l=0.25; if 0.333 <= e < 0.666 then oth_adc_base_prob_diag_l=0.50;
 								if e >= 0.666 then oth_adc_base_prob_diag_l=0.75;*/
 
-* rel_rate_death_tb_diag_e;	%sample(rel_rate_death_tb_diag_e, 0.50 0.67 0.80, 1/3 1/3 1/3);
+* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80);
 							/*e=uniform(0); if e < 0.333 then rel_rate_death_tb_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_tb_diag_e=0.67;
 									 if e >= 0.666 then rel_rate_death_tb_diag_e=0.8 ;*/
 * rel_rate_death_crypm_diag_e;
-							%sample(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80, 1/3 1/3 1/3);
+							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);
 							/*e=uniform(0); if e < 0.333 then rel_rate_death_crypm_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_crypm_diag_e=0.67;
 								if e >= 0.666 then rel_rate_death_crypm_diag_e=0.8 ;*/
 * rel_rate_death_sbi_diag_e;
-							%sample(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80, 1/3 1/3 1/3);
+							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);
 							/*e=uniform(0); if e < 0.333 then rel_rate_death_sbi_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_sbi_diag_e=0.67;
 								if e >= 0.666 then rel_rate_death_sbi_diag_e=0.8 ;*/
 * rel_rate_death_oth_adc_diag_e;
-							%sample(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80, 1/3 1/3 1/3);
+							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);
 							/*e=uniform(0); if e < 0.333 then rel_rate_death_oth_adc_diag_e=0.5 ; if 0.333 <= e < 0.666 then rel_rate_death_oth_adc_diag_e=0.67;
 								if e >= 0.666 then rel_rate_death_oth_adc_diag_e=0.8 ;*/
-* effect_visit_prob_diag_l;	%sample(effect_visit_prob_diag_l, 0.50 0.67 0.80, 1/3 1/3 1/3);
+* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80);
 							/*e=uniform(0); if e < 0.333 then effect_visit_prob_diag_l=0.5 ; if 0.333 <= e < 0.666 then effect_visit_prob_diag_l=0.67;
 								  if e >= 0.666 then effect_visit_prob_diag_l=0.80;*/
 
@@ -568,7 +564,7 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample(rate_testanc_inc, 0.03 0.05 0.10, 1/3 1/3 1/3);	* jul18;
+* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.03 0.05 0.10);	* jul18;
 							/*r=uniform(0); if  r < 0.33 then rate_testanc_inc = 0.030; if 0.33 <= r < 0.66   then rate_testanc_inc = 0.050; if 0.66  <= r then rate_testanc_inc = 0.1; */
 * test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
 							/*r=uniform(0); test_targeting =1.25 ; if r < 0.20 then test_targeting = 1.5;*/
@@ -589,9 +585,7 @@ newp_seed = 7;
 								if r < 0.1  		then date_test_rate_plateau = 2011.5; if 0.1 <= r < 0.2 then date_test_rate_plateau = 2013.5; 
 								if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4 <= r < 0.7 then date_test_rate_plateau = 2017.5; 
 	 							if 0.7 <= r 		then date_test_rate_plateau = 2019.5;*/
-* incr_test_rate_sympt; 	%sample(incr_test_rate_sympt, 
-								1.05 	1.10 	1.15 	1.20 	1.25, 
-								0.2 	0.2 	0.2 	0.2 	0.2);
+* incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 							/*r=uniform(0); if r < 0.2 then incr_test_rate_sympt = 1.05 ; if 0.2 <= r < 0.4 then incr_test_rate_sympt = 1.10; if 0.4 <= r < 0.6 then incr_test_rate_sympt = 1.15; if 0.6 <= r < 0.8 then incr_test_rate_sympt = 1.20;	if 0.8 <= r then incr_test_rate_sympt = 1.25; */
 
@@ -696,12 +690,10 @@ newp_seed = 7;
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
-* rate_lost; 				%sample(rate_lost, 0.20 0.35 0.50, 1/3 1/3 1/3);
+* rate_lost; 				%sample_uniform(rate_lost, 0.20 0.35 0.50);
 							/*r=uniform(0); if r < 0.33 then rate_lost = 0.2; if 0.33 <= r < 0.66 then rate_lost = 0.35; if r >= 0.66 then rate_lost = 0.5;*/
 							* dependent_on_time_step_length ;
-* prob_lost_art; 			%sample(rate_lost, 
-								0.5		0.6 	0.7 	0.8 	0.9, 
-								0.2 	0.2 	0.2 	0.2 	0.2);
+* prob_lost_art; 			%sample_uniform(rate_lost, 0.5 0.6 0.7 0.8 0.9);
 							/*r=uniform(0); if r < 0.2 then prob_lost_art = 0.5; if 0.2 <= r < 0.4 then prob_lost_art = 0.6; if 0.4 <= r < 0.6 then prob_lost_art = 0.7; if 0.6 <= r < 0.8 then prob_lost_art = 0.8;	if 0.8 <= r then prob_lost_art = 0.9;*/
 							* dependent_on_time_step_length ;
 
@@ -712,10 +704,10 @@ newp_seed = 7;
 							/*r=uniform(0); if  r < 0.10 then rate_return = 0.01; if  0.10 <= r < 0.25 then rate_return = 0.10; 
 								if 0.25 <= r < 0.5 then rate_return = 0.10; if 0.5 <= r < 0.75 then rate_return = 0.50 ;	if 0.75 <= r then rate_return = 0.8; */
 							* dependent_on_time_step_length
-* rate_restart;  			%sample(rate_restart, 0.80 0.85 0.90 0.95, 0.25 0.25 0.25 0.25);
+* rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							/*r=uniform(0); if r < 0.25 then rate_restart = 0.8; if 0.25 <= r < 0.5 then rate_restart = 0.85; if 0.5 <= r < 0.75 then rate_restart = 0.9; if 0.75 <= r then rate_restart = 0.95;*/
 							* dependent_on_time_step_length ;
-* pr_art_init; 				%sample(pr_art_init, 0.4 0.5 0.6 0.7, 0.25 0.25 0.25 0.25);
+* pr_art_init; 				%sample_uniform(pr_art_init, 0.4 0.5 0.6 0.7);
 							/*r=uniform(0); if 0 <= r < 0.25 then pr_art_init = 0.4; if 0.25 <= r < 0.50 then pr_art_init = 0.5; if 0.5 <= r < 0.75 then pr_art_init = 0.6; if 0.75 <= r then pr_art_init = 0.7;	*/
 							* dependent_on_time_step_length ;
 * fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		* jan18;
@@ -731,7 +723,7 @@ newp_seed = 7;
 								if 0.80 <= r < 0.90 then adh_pattern=5;   if 0.90 <= r < 0.95 then adh_pattern=6; if 0.95 <= r  then adh_pattern=7; */
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(normal(0)*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
-* red_adh_tox_pop; 			%sample(tmp, 0.05 0.10, 0.5 0.5); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
+* red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
 							* reduced adherence in those with toxicity;
 							/*r=uniform(0); red_adh_tox_pop_v = 0.05; if r < 0.5 then red_adh_tox_pop_v = 0.10; 				
 								red_adh_tox_pop = red_adh_tox_pop_v * exp(normal(0)*0.5); red_adh_tox_pop=round(red_adh_tox_pop,.01);*/
@@ -745,10 +737,10 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * AP 19-7-19 ;
-* rate_int_choice;  		%sample(rate_int_choice, 0.0005 0.0020 0.0040 0.0080, 0.25 0.25 0.25 0.25); 
+* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
 							/*r=uniform(0);  if r < 0.25 then rate_int_choice = 0.0005; if 0.25 <= r < 0.50 then rate_int_choice = 0.002; 
 								if 0.50 <= r < 0.75 then rate_int_choice = 0.004; if 0.75 <= r then rate_int_choice = 0.008 ;*/
- * clinic_not_aw_int_frac;  %sample(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9, 0.2 0.2 0.2 0.2 0.2);
+ * clinic_not_aw_int_frac;  %sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							/*r=uniform(0); if r < 0.2 then clinic_not_aw_int_frac = 0.1; if 0.2 <= r < 0.4 then clinic_not_aw_int_frac = 0.3; if 0.4 <= r < 0.6 then clinic_not_aw_int_frac = 0.5; if 0.6 <= r < 0.8 then clinic_not_aw_int_frac = 0.7; if 0.8 <= r then clinic_not_aw_int_frac = 0.9;*/
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
@@ -776,24 +768,24 @@ newp_seed = 7;
 * zero_tdf_activity_k65r; 	%sample(zero_tdf_activity_k65r, 0 1, 0.8 0.2);
 							/*r=uniform(0); zero_tdf_activity_k65r = 0; if r < 0.2 then zero_tdf_activity_k65r = 1; */
 
-* poorer_cd4rise_fail_ii;  	%sample(poorer_cd4rise_fail_ii, 0 1, 0.5 0.5);
+* poorer_cd4rise_fail_ii;  	%sample_uniform(poorer_cd4rise_fail_ii, 0 1);
 							/*r=uniform(0); poorer_cd4rise_fail_ii=0; if r < 0.5 then poorer_cd4rise_fail_ii=1;*/
 							* dependent_on_time_step_length ;	
-* rate_res_ten;  			%sample(rate_res_ten, 0.1 0.2 0.3, 1/3 1/3 1/3);
+* rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							/*r=uniform(0); rate_res_ten=0.2; if r < 0.33 then rate_res_ten=0.1;  if r >= 0.67 then rate_res_ten=0.3;  */
 							* dependent_on_time_step_length ;	
 * cd4_monitoring;			r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
-* red_adh_multi_pill_pop; 	%sample(tmp, 0.05 0.10 0.15, 1/3 1/3 1/3); red_adh_multi_pill_pop=round(tmp * exp(normal(0)*0.5),.01);
+* red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(normal(0)*0.5),.01);
 							/*r=uniform(0); red_adh_multi_pill_pop_v = 0.05; if r < 0.33 then red_adh_multi_pill_pop_v = 0.10; 
 								if r > 0.67 then red_adh_multi_pill_pop_v = 0.15; 
 								red_adh_multi_pill_pop = red_adh_multi_pill_pop_v * exp(normal(0)*0.5); 
 								red_adh_multi_pill_pop=round(red_adh_multi_pill_pop,.01);*/
-* greater_disability_tox;  	%sample(greater_disability_tox, 0 1, 0.5 0.5);
+* greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
 							/*r=uniform(0); greater_disability_tox = 0; if r < 0.5 then greater_disability_tox = 1;*/
-* rr_int_tox ;				%sample(rr_int_tox, 2 10 30, 1/3 1/3 1/3);
+* rr_int_tox ;				%sample_uniform(rr_int_tox, 2 10 30);
 							/*r=uniform(0); if r < 0.33 then rr_int_tox = 2; if 0.33 <= r < 0.67 then rr_int_tox = 10;  
 								if 0.67 <= r then rr_int_tox = 30; */
-* greater_tox_zdv;			%sample(greater_tox_zdv, 0 1 2, 1/3 1/3 1/3);
+* greater_tox_zdv;			%sample_uniform(greater_tox_zdv, 0 1 2);
 							/*r = uniform(0); greater_tox_zdv = 0; if 0.33 <= r < 0.67 then greater_tox_zdv = 1;if 0.67 <= r then greater_tox_zdv = 2;*/
 							if greater_tox_zdv = 1 then do;	
 								r_nau_start_zdv_lpr = 	2 * r_nau_start_zdv_lpr ; 	r_lip_start_zdv = 2 * r_lip_start_zdv ;		r_ane_start_zdv = 2 * r_ane_start_zdv ; 
@@ -801,13 +793,13 @@ newp_seed = 7;
 							if greater_tox_zdv = 2 then do; 
 								r_nau_start_zdv_lpr = 	4 * r_nau_start_zdv_lpr ; 	r_lip_start_zdv = 4 * r_lip_start_zdv ;		r_ane_start_zdv = 4 * r_ane_start_zdv ; 
 								r_head_start_zdv = 		4 * r_head_start_zdv ; 		r_lac_start_zdv = 4 * r_lac_start_zdv ; 	end;
-* zdv_potency_p75;			%sample(zdv_potency_p75, 0 1, 0.5 0.5);
+* zdv_potency_p75;			%sample_uniform(zdv_potency_p75, 0 1);
 							/*r=uniform(0);  zdv_potency_p75 = 0; if r < 0.5 then zdv_potency_p75 = 1; */
 
-* double_rate_gas_tox_taz; 	%sample(double_rate_gas_tox_taz, 1 2, 0.5 0.5);
+* double_rate_gas_tox_taz; 	%sample_uniform(double_rate_gas_tox_taz, 1 2);
 							/*r=uniform(0); double_rate_gas_tox_taz = 1; if r < 0.5 then double_rate_gas_tox_taz=2;*/
 
-* tox_weightg_dol;			%sample(tox_weightg_dol, 0 1, 0.5 0.5);
+* tox_weightg_dol;			%sample_uniform(tox_weightg_dol, 0 1);
 							/*r=uniform(0); tox_weightg_dol = 0; if r < 0.5 then tox_weightg_dol = 1;		*/
 * higher_rate_res_dol;		%sample(higher_rate_res_dol, 0 1, 0.8 0.2);
 							/*r=uniform(0); higher_rate_res_dol = 0; if r < 0.2 then higher_rate_res_dol = 1; */
@@ -827,7 +819,7 @@ newp_seed = 7;
 								if 0.20 <= r < 0.60 then oth_dol_adv_birth_e_risk = 0.0015;
 								if 0.60 <= r < 0.80 then oth_dol_adv_birth_e_risk = 0.0020; 
 								if 0.80 <= r        then oth_dol_adv_birth_e_risk = 0.0030; */
-* prop_bmi_ge23;			%sample(prop_bmi_ge23, 0.5 0.75, 0.5 0.5);
+* prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 							/*r=uniform(0);  prop_bmi_ge23 = 0.5;  if r < 0.5 then prop_bmi_ge23 = 0.75;*/
 
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
@@ -845,21 +837,21 @@ newp_seed = 7;
 							/*r=uniform(0);  if  r < 0.20 then base_rate_sw = 0.0015;  if 0.20 <= r < 0.8 then base_rate_sw = 0.002 ; 
 								if 0.80 <= r then base_rate_sw = 0.0025 ;  */
 							* dependent_on_time_step_length ;
-* base_rate_stop_sexwork;	%sample(base_rate_stop_sexwork, 0.010 0.015 0.030, 1/3 1/3 1/3);
+* base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							/*r=uniform(0); base_rate_stop_sexwork = 0.03; if r < 0.33 then base_rate_stop_sexwork = 0.015;
 							 	if r > 0.67 then base_rate_stop_sexwork = 0.01;*/
 							* dependent_on_time_step_length ;
-* sw_trans_matrix;   		%sample(sw_trans_matrix, 1 2 3 4, 0.25 0.25 0.25 0.25);
+* sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:4);
 							/*r=uniform(0);  if r < 0.25 		then sw_trans_matrix = 1;  if 0.25 <= r < 0.50  then sw_trans_matrix = 2;  
 								if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r 		then sw_trans_matrix = 4;  */
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.5 0.5);
+* sw_init_newp;    			%sample_uniform(sw_init_newp, 1 2);
 							/*r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  */
-* p_rred_sw_newp;	 		%sample(p_rred_sw_newp, 0.01 0.03 0.10, 1/3 1/3 1/3);
+* p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							/*r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
 								if 0.67 <= r then p_rred_sw_newp = 0.10; */
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;			%sample(sw_art_disadv, 1 2, 0.5 0.5);
+* sw_art_disadv;			%sample_uniform(sw_art_disadv, 1 2);
 							/*r=uniform(0); if r < 0.50 then sw_art_disadv = 1; if 0.50 <= r  then sw_art_disadv = 2;  */
 					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; prob_sw_lower_adh = 0;		sw_higher_prob_loss_at_diag = 1; 	end;
 								if sw_art_disadv=2 	then do; sw_higher_int = 2; prob_sw_lower_adh = 0.1;	sw_higher_prob_loss_at_diag = 1.5; 	end;
@@ -868,24 +860,24 @@ newp_seed = 7;
 							/*r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;*/
 								if sw_program = 1 	then do; rate_engage_sw_program =0.10;	rate_disengage_sw_program = 0.025;  end;
 
-* effect_sw_prog_newp;  	%sample(effect_sw_prog_newp, 0.08 0.10 0.12, 1/3 1/3 1/3);
+* effect_sw_prog_newp;  	%sample_uniform(effect_sw_prog_newp, 0.08 0.10 0.12);
 							/*r=uniform(0); if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
 										  if r >= 0.66 then effect_sw_prog_newp = 0.12; */
-* effect_sw_prog_6mtest;	%sample(effect_sw_prog_6mtest, 0.25 0.50 0.75, 1/3 1/3 1/3);
+* effect_sw_prog_6mtest;	%sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
 							/*e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
 										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;*/
-* effect_sw_prog_int;		%sample(effect_sw_prog_int, 0.4 0.6 0.8, 1/3 1/3 1/3);
+* effect_sw_prog_int;		%sample_uniform(effect_sw_prog_int, 0.4 0.6 0.8);
 							/*e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
 										  if e >= 0.66 then effect_sw_prog_int=0.80;*/
-* effect_sw_prog_adh;		%sample(effect_sw_prog_adh, 1 1.5 3, 1/3 1/3 1/3);
+* effect_sw_prog_adh;		%sample_uniform(effect_sw_prog_adh, 1 1.5 3);
 							/*e=uniform(0); if e < 0.33 then effect_sw_prog_adh=3; if 0.33 <= e < 0.66 then effect_sw_prog_adh=1.5;
 										  if e >= 0.66 then effect_sw_prog_adh=1;*/
-* effect_sw_prog_lossdiag;	%sample(effect_sw_prog_lossdiag, 0.4 0.6 0.8, 1/3 1/3 1/3);
+* effect_sw_prog_lossdiag;	%sample_uniform(effect_sw_prog_lossdiag, 0.4 0.6 0.8);
 							/*e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;*/
-* effect_sw_prog_prep;      %sample(effect_sw_prog_prep, 0.8 0.95, 0.5 0.5);
+* effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
 							/*e=uniform(0); if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;*/
-* effect_sw_prog_pers_sti;	%sample(effect_sw_prog_pers_sti, 0.5 0.7, 0.5 0.5);
+* effect_sw_prog_pers_sti;	%sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
 							/*e=uniform(0); if e < 0.50 then effect_sw_prog_pers_sti=0.7; if e >= 0.50 then effect_sw_prog_pers_sti=0.5;*/
 
 
@@ -901,11 +893,11 @@ newp_seed = 7;
 							/*r=uniform(0); 	
 								if r < 0.10 then circ_inc_rate = 0.0001; if 0.10 <= r < 0.20 then circ_inc_rate = 0.001 ;
 								if 0.20 <= r < 0.8  then circ_inc_rate = 0.003; if 0.8 <= r < 0.9 then circ_inc_rate = 0.01;  if 0.90 <= r  then circ_inc_rate = 0.10;*/
-* circ_inc_15_19;			%sample(circ_inc_15_19, 1.5 2.0 3.0, 1/3 1/3 1/3);
+* circ_inc_15_19;			%sample_uniform(circ_inc_15_19, 1.5 2.0 3.0);
 							/*r=uniform(0); if r < 0.33 then circ_inc_15_19 = 1.5;  if 0.33 <= r < 0.66 then circ_inc_15_19 = 2.0;  if 0.66 <= r  then circ_inc_15_19=3.0; */
-* circ_red_20_30;			%sample(circ_red_20_30, 0.3 0.4 0.5, 1/3 1/3 1/3);
+* circ_red_20_30;			%sample_uniform(circ_red_20_30, 0.3 0.4 0.5);
 							/*r=uniform(0); if r < 0.33 then circ_red_20_30 = 0.30; if 0.33 <= r < 0.66 then circ_red_20_30 = 0.40; if 0.66 <= r  then circ_red_20_30=0.50; */
-* circ_red_30_50;			%sample(circ_red_30_50, 0.15 0.25 0.35, 1/3 1/3 1/3);
+* circ_red_30_50;			%sample_uniform(circ_red_30_50, 0.15 0.25 0.35);
 							/*r=uniform(0); if r < 0.33 then circ_red_30_50 = 0.15; if 0.33 <= r < 0.66 then circ_red_30_50 = 0.25; if 0.66 <= r  then circ_red_30_50=0.35; */
 * rel_incr_circ_post_2013;	%sample(rel_incr_circ_post_2013, 
 								0.8		1		3		7, 
@@ -949,18 +941,18 @@ if prep_willing=1;
 
 * adh_pattern_prep;  		%sample(adh_pattern_prep, 1 2 3 4, 0.3 0.3 0.3 0.1);
 							/*r=uniform(0); if r < 0.30 then adh_pattern_prep = 1; if 0.30 <= r < 0.6 then adh_pattern_prep = 2; if 0.6 <= r < 0.9  then adh_pattern_prep = 3; if 0.9  <= r then adh_pattern_prep = 4;	 */
-* rate_test_startprep; 		%sample(rate_test_startprep, 0.25 0.5 0.75, 1/3 1/3 1/3);
+* rate_test_startprep; 		%sample_uniform(rate_test_startprep, 0.25 0.5 0.75);
 							/*r=uniform(0); if r < 0.33 then rate_test_startprep = 0.25; if 0.33 <= r < 0.67 then rate_test_startprep = 0.5; if 0.67 <= r  then rate_test_startprep = 0.75;*/
 							*Additional rate of being tested for HIV before PrEP;	 
 							* dependent_on_time_step_length ;
-* rate_test_restartprep;  	%sample(rate_test_restartprep, 0.5 0.8, 0.5 0.5);
+* rate_test_restartprep;  	%sample_uniform(rate_test_restartprep, 0.5 0.8);
 							/*r=uniform(0); if r < 0.50 then rate_test_restartprep = 0.50; if 0.50 <= r  then rate_test_restartprep = 0.80;*/
 							* dependent_on_time_step_length ;
-* rate_choose_stop_prep; 	%sample(rate_choose_stop_prep, 0.05 0.15 0.30, 1/3 1/3 1/3);
+* rate_choose_stop_prep; 	%sample_uniform(rate_choose_stop_prep, 0.05 0.15 0.30);
 							/*r=uniform(0); if r < 0.33 then rate_choose_stop_prep = 0.05;  if 0.33 <= r < 0.67 then rate_choose_stop_prep = 0.15;
 								if 0.67 <= r        then rate_choose_stop_prep = 0.30;*/
 							* dependent_on_time_step_length ;
-* prob_prep_restart_choice; %sample(prob_prep_restart_choice, 0.05 0.10 0.20, 1/3 1/3 1/3);
+* prob_prep_restart_choice; %sample_uniform(prob_prep_restart_choice, 0.05 0.10 0.20);
 							/*r=uniform(0); if r < 0.33 then prob_prep_restart_choice=0.05; if 0.33 <= r < 0.67 then prob_prep_restart_choice=0.10;
 							if 0.67 <= r then prob_prep_restart_choice=0.20;*/
 							* dependent_on_time_step_length ;
@@ -1257,8 +1249,9 @@ drop i;
 data r1; set r1;
 
 
-s=uniform(0);
-if s < 0.5 then gender=1; else gender=2;
+/*s=uniform(0);*/
+/*if s < 0.5 then gender=1; else gender=2;*/
+%sample_uniform(gender, 1 2);
 
 if gender ne . then do; obs+1; end;
 
