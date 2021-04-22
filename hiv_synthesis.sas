@@ -205,6 +205,57 @@ The lengths of the two lists (values and probabilities) must be equal.
 	%end;
 %mend sample;
 
+/*
+Macro for sampling from a discrete uniform distribution.
+
+Usage:
+%sample_uniform(<variable name>, <list of possible values>)
+
+A variant of %sample where all the values have equal weights/probabilities,
+which therefore don't need to be specified.
+
+The values can be specified in two ways:
+(a) as a space-separated list, as for %sample: %sample_uniform(my_var, 1 2 3 4 5);
+(b) as a range of the form low:high, as in: %sample_uniform(my_var, 1:5);
+
+The two examples above are equivalent, and will result in 20% probability for
+each of the values 1-5. They are also equivalent to
+%sample(my_var, 1 2 3 4 5, 0.2 0.2 0.2 0.2 0.2);
+
+Form (a) is more flexible, allowing to choose from any set of values.
+Form (b) is more concise but can only be used for consecutive integer values.
+Note that the range does not have to start from 1; for example, integer ages
+between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
+*/
+%macro sample_uniform(name, v);
+	* First determine whether v is a range or not, by checking the presence of ':';
+	%let split_ind=%index(&v, :);
+	%if &split_ind = 0 %then
+		%do; * values enumerated explicitly, count them and use them directly;
+			%let cnt=%sysfunc(countw(&v,,s));
+			%let first_value=%scan(&v,1,,s);
+		%end;
+	%else
+		%do; * values given as range, infer length and get limits of range;
+			%let lower_value=%substr(&v, 1, %eval(&split_ind-1));
+			%let upper_value=%substr(&v, %eval(&split_ind+1));
+			%let cnt=%sysevalf(&upper_value - &lower_value + 1);
+			%let first_value=&lower_value;
+		%end;
+	randvar = rand('uniform');
+	if randvar < 1/&cnt then
+		&name = &first_value;
+	%do i=2 %to &cnt;
+		%if &split_ind = 0 %then
+			%let value=%scan(&v,&i,,S);
+		%else
+			%let value=%sysevalf(&lower_value + &i - 1);
+		else %if &i < &cnt %then if randvar < &i/&cnt then;
+			&name = &value;
+	%end;
+%mend sample_uniform;
+
+
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
 
