@@ -1635,3 +1635,10 @@ proc sort; by run;run;
 
 proc contents; run; 
 
+
+data e; set a.w_unaids_17_9_20_6pm_investigate ; 
+
+proc print; run;
+
+
+
