@@ -5,7 +5,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_lowart";
 
 input 
 
@@ -713,7 +713,7 @@ discount_3py = 1/(1.03**(cald-&year_start_disc));
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
-%let discount=discount_5py;
+%let discount=discount_3py;
 
 * ================================================================================= ;
 
@@ -1531,10 +1531,10 @@ s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_29_03_21_6pm_disc5; set y;run;
+data a.vmmc_29_03_21_6pm_lowart; set y;run;
 
 
-data y; set a.vmmc_29_03_21_6pm_disc5; run;
+data y; set a.vmmc_29_03_21_6pm_lowart; run;
 
 proc freq;table option_new;run;
 
@@ -1887,7 +1887,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_29_03_21_6pm_disc5;
+  data a.wide_vmmc_29_03_21_6pm_lowart;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
