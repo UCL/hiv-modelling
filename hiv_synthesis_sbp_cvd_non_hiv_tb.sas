@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -903,9 +903,9 @@ effect_gender_cvd_death = 0.4;
 effect_age_cvd_death = 0.03;
 
 ***** non_hiv_tb ;  * update_24_4_21;
-non_hiv_tb_risk = 0.0005;
-non_hiv_tb_death_risk = 0.3 ; * todo; 
-
+non_hiv_tb_risk = 0.0005;  
+non_hiv_tb_death_risk = 0.3 ;  
+non_hiv_tb_prob_diag_e = 0.5 ; 
 
 
 * ================ ;
@@ -2599,14 +2599,12 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	test_rate_who4 = min(0.9,test_rate_who4*incr_test_rate_sympt);  
 	test_rate_tb  = min(0.8,test_rate_tb*incr_test_rate_sympt);  
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
-end;	
-
 * testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
-if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
-	e=uniform(0); 
-	if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
-end;
-
+	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
+		e=uniform(0); 
+		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+	end;
+end;	
 
 
 
@@ -10078,7 +10076,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 	* DEATH - causes:  who4=1 / non-HIV =2 ;
 	
-	if dead=0 then do;
+	if dead=0 and death = . and dead_ ne 1 then do;  * update_24_4_21;
 
 	dead_diagnosed=.; dead_naive=.; dead_onart=.; dead_line1_lf0=.; dead_line1_lf1=.; dead_line2_lf1=.; dead_line2_lf2=.; dead_artexpoff=.; dead_nn=.;dead_pir=.;
 	dead_adc=.;  dead_oth_adc=.; dead_crypm=.; dead_sbi=.;
@@ -10151,45 +10149,51 @@ so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
 		end;
 
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
+
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+
+so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
+;
 
 
-
-* what death rates to use ?;
-
-		if gender=1 then do; * based on SA deeath rates in 1997 (pre most AIDS deaths);
+* based on SA death rates in 1997 (pre most AIDS deaths); 
+		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200;
 			if 20 <= age < 25 then ac_death_rate = 0.00320;
 			if 25 <= age < 30 then ac_death_rate = 0.00580;
 			if 30 <= age < 35 then ac_death_rate = 0.00750;
 			if 35 <= age < 40 then ac_death_rate = 0.00800;
-			if 40 <= age < 45 then ac_death_rate = 0.01000;
-			if 45 <= age < 50 then ac_death_rate = 0.01200;
-			if 50 <= age < 55 then ac_death_rate = 0.01900;
-			if 55 <= age < 60 then ac_death_rate = 0.02500;
-			if 60 <= age < 65 then ac_death_rate = 0.03500;
-			if 65 <= age < 70 then ac_death_rate = 0.04500;
-			if 70 <= age < 75 then ac_death_rate = 0.05500;
-			if 75 <= age < 80 then ac_death_rate = 0.06500;
-			if 80 <= age < 85 then ac_death_rate = 0.10000;
-			if 85 <= age  then ac_death_rate = 0.4000;
+			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97;
+			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97;
+			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90;
+			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90;
+			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90;
+			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90;
+			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90;
+			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90;
+			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90;
+			if 85 <= age  then ac_death_rate = 0.4000*0.90;
 		end;
 
-		if gender=2 then do; * based on SA deeath rates in 1997 (pre most AIDS deaths);
+		if gender=2 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00150;
 			if 20 <= age < 25 then ac_death_rate = 0.00280;
 			if 25 <= age < 30 then ac_death_rate = 0.00400;
 			if 30 <= age < 35 then ac_death_rate = 0.00400;
 			if 35 <= age < 40 then ac_death_rate = 0.00420;
-			if 40 <= age < 45 then ac_death_rate = 0.00550;
-			if 45 <= age < 50 then ac_death_rate = 0.00750;
-			if 50 <= age < 55 then ac_death_rate = 0.01100;
-			if 55 <= age < 60 then ac_death_rate = 0.01500;	
-			if 60 <= age < 65 then ac_death_rate = 0.02100;
-			if 65 <= age < 70 then ac_death_rate = 0.03000;
-			if 70 <= age < 75 then ac_death_rate = 0.03800;
-			if 75 <= age < 80 then ac_death_rate = 0.05000;
-			if 80 <= age < 85 then ac_death_rate = 0.07000;
-			if 85 <= age  then ac_death_rate = 0.15000;
+			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97;
+			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97;
+			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90;
+			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90;	
+			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90;
+			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90;
+			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90;
+			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90;
+			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90;
+			if 85 <= age  then ac_death_rate = 0.15000*0.90;
 		end;
 
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
@@ -10479,7 +10483,7 @@ cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_m
 
 * DEATH IN UNINFECTED ;
 
-if hiv ne 1 and age >= 15 and dead   =0 then do;
+if hiv ne 1 and age >= 15 and dead   =0 and dead_ ne 1 and death =. then do;  * update_24_4_21;
 
 * no death age under 15 - those with age  < 15 dont enter model properly until reach 15;
 * roughly close to zimbabwe - Lopman et al  Bull of the WHO  2006;
@@ -10488,43 +10492,59 @@ at time zero is the same as that in later years;
 
  * dependent_on_time_step_length ;
 
-* this is called all-cause (ac) death but it refers to non-hiv, non-tb, non-cvd, non-covid death;
+* this is called all-cause (ac) death but it now refers to non-hiv, non-tb, non-cvd, non-covid death;
 
-if gender=1 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
-		if 15 <= age < 20 then ac_death_rate = 0.00200;
-		if 20 <= age < 25 then ac_death_rate = 0.00320;
-		if 25 <= age < 30 then ac_death_rate = 0.00580;
-		if 30 <= age < 35 then ac_death_rate = 0.00750;
-		if 35 <= age < 40 then ac_death_rate = 0.00800;
-		if 40 <= age < 45 then ac_death_rate = 0.01000;
-		if 45 <= age < 50 then ac_death_rate = 0.01200;
-		if 50 <= age < 55 then ac_death_rate = 0.01900;
-		if 55 <= age < 60 then ac_death_rate = 0.02500;
-		if 60 <= age < 65 then ac_death_rate = 0.03500;
-		if 65 <= age < 70 then ac_death_rate = 0.04500;
-		if 70 <= age < 75 then ac_death_rate = 0.05500;
-		if 75 <= age < 80 then ac_death_rate = 0.06500;
-		if 80 <= age < 85 then ac_death_rate = 0.10000;
-		if 85 <= age  then ac_death_rate = 0.4000;
-	end;
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-	if gender=2 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
-		if 15 <= age < 20 then ac_death_rate = 0.00150;
-		if 20 <= age < 25 then ac_death_rate = 0.00280;
-		if 25 <= age < 30 then ac_death_rate = 0.00400;
-		if 30 <= age < 35 then ac_death_rate = 0.00400;
-		if 35 <= age < 40 then ac_death_rate = 0.00420;
-		if 40 <= age < 45 then ac_death_rate = 0.00550;
-		if 45 <= age < 50 then ac_death_rate = 0.00750;
-		if 50 <= age < 55 then ac_death_rate = 0.01100;
-		if 55 <= age < 60 then ac_death_rate = 0.01500;
-		if 60 <= age < 65 then ac_death_rate = 0.02100;
-		if 65 <= age < 70 then ac_death_rate = 0.03000;
-		if 70 <= age < 75 then ac_death_rate = 0.03800;
-		if 75 <= age < 80 then ac_death_rate = 0.05000;
-		if 80 <= age < 85 then ac_death_rate = 0.07000;
-		if 85 <= age  then ac_death_rate = 0.15000;
-	end;
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+
+so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
+
+TB death ~ 7% of deaths in > 15’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)    Cause-specific mortality in the Kombewa health
+
+so reduce all cause mortality by 0.93 since non-hiv tb now separated;
+
+
+* based on SA death rates in 1997 (pre most AIDS deaths); 
+		if gender=1 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00200*0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00320*0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00580*0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00750*0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00800*0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97*0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97*0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90*0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90*0.93;
+			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90*0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90*0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90*0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90*0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90*0.93;
+			if 85 <= age  then ac_death_rate = 0.4000*0.90*0.93;
+		end;
+
+		if gender=2 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00150*0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00280*0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00400*0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00400*0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00420*0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97*0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97*0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90*0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90*0.93;	
+			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90*0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90*0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90*0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90*0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90*0.93;
+			if 85 <= age  then ac_death_rate = 0.15000*0.90*0.93;
+		end;
+
 
 * if using tld_prep in whole population need to consider effects of dolutegravir on weight gain and any consequent effect on mortality;
 	if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;
@@ -10538,8 +10558,6 @@ if gender=1 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
 	if x3 le ac_deathrix then do;  * update_24_4_21;
 		dead   =1; death=caldate{t};  dcause=2; agedeath=age;
 	end;
-
-end;
 
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
@@ -10575,13 +10593,12 @@ end;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
 
-
 * incidence non_hiv_tb ;  * update_24_4_21;
 
 	non_hiv_tb = 0;
 	ynon_hiv_tb = uniform(0);
 	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
-		non_hiv_tb = 1; date_last_non_hiv_tb = cadate{t};  
+		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  
 	end;
 
 	non_hiv_tb_diag_e = .; 
@@ -10593,7 +10610,8 @@ end;
 * non-hiv tb mortality ;  * update_24_4_21;
 	* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
 
-	if non_hiv_tb=1 and hiv ne 1 then do; 
+	cur_non_hiv_tb_death_risk=.;
+	if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
 		cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
 		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
 	end;
@@ -10602,6 +10620,8 @@ end;
 	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
 		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
 	end;
+
+end;
 
 
 if tested=1 then ever_tested=1;
@@ -10649,6 +10669,10 @@ if  caldate{t} > death > . then do;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep=.; visit_prep=.; prepstart=.; ever_stopped_prep_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 end;
+
+
+* update_24_4_21;
+if death ne . then dead_ = 1;
 
 
 * END OF THE OVERALL LOOP;
@@ -15078,15 +15102,34 @@ end;
 
 cald = caldate_never_dot ;
 
+non_hiv_tb_death=.;
+if dead=0 or dead=1 then non_hiv_tb_death=0;
+if dcause=5 and caldate&j=death then non_hiv_tb_death=1;
 
+cvd_death=.;
+if dead=0 or dead=1 then cvd_death=0;
+if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print; var cald age  non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
 
-where age ge 15 ;
 
+proc print; var caldate&j cald age dead hiv date_last_non_hiv_tb  tested  test_rate_tb non_hiv_tb non_hiv_tb_death
+non_hiv_tb_risk non_hiv_tb_diag_e  non_hiv_tb_prob_diag_e 
+non_hiv_tb_diag_e cur_non_hiv_tb_death_risk  non_hiv_tb_death_risk  rel_rate_death_tb_diag_e death  dcause ; 
+where date_last_non_hiv_tb ne . ; 
 run; 
+
+proc means; var cald non_hiv_tb non_hiv_tb_death ;
+where age ge 15 and (death = . or caldate&j = death);
+run;
+
+proc means; var cald cvd_death ;
+where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run; 
+
+
+* calculate cvd death rate by age and use to adjust all cause death rate ;
+
 
 /*
 
