@@ -1,6 +1,6 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-***For the paper, use 12_10_20_5pm files, with 120 suffix denoting a change in VMMC costs;
+***For the paper, use 29_03_21_6pm files, with 120 suffix denoting a change in VMMC costs;
 
 data a;
 set a.wide_vmmc_12_10_20_5pm;
@@ -9,18 +9,17 @@ if run in (3224196, 5149305, 6994967, 11383263, 16805161, 16978644) then delete;
 run;
 
 data b;
-set a.wide_vmmc_29_03_21_6pm;
+*set a.wide_vmmc_29_03_21_6pm;
 *set a.wide_vmmc_29_03_21_6pm_120;
 *set a.wide_vmmc_29_03_21_6pm_60;
 *set a.wide_vmmc_29_03_21_6pm_disc5;
+set a.wide_vmmc_29_03_21_6pm_lowart;
 run;
-proc contents;run;
+proc freq;table lower_future_art_cov;run;
 
 data c;
 set b;  
 
-**delete unless looking at lower future art cov (n=250);
-*if lower_future_art_cov=1 then delete; ***This has now been removed from the core program so only considering runs in which lower_future_art_cov=0 here;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -142,9 +141,9 @@ d_n_new_inf_21_71_1 = n_new_inf1549_21_71_2 - n_new_inf1549_21_71_1;
 proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 */
 
-/*lowart;nnt_21_26_1=143106; nnt_21_41_1=158930; nnt_21_71_1=188993;*/
+*lowart;nnt_21_26_1=138543; nnt_21_41_1=122035; nnt_21_71_1=151377;
 
-*base/5% disc/180/60;nnt_21_26_1=143072; nnt_21_41_1=116568; nnt_21_71_1=148286;
+/*base/5% disc/120/60;nnt_21_26_1=143072; nnt_21_41_1=116568; nnt_21_71_1=148286;*/
 
 if d_n_new_inf_21_26_1 gt 0 then nnt_21_26_1 = d_n_vmmc_21_26_1 / d_n_new_inf_21_26_1;
 if d_n_new_inf_21_41_1 gt 0 then nnt_21_41_1 = d_n_vmmc_21_41_1 / d_n_new_inf_21_41_1;
@@ -169,11 +168,11 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 *$120: max= 19.1, 13.2, 8.7;
 *$60: max= 11.8, 10.2, 5.9;
 *5% disc; max= 14.9, 10.4, 4.4;
-*lower future art cov;: max=16.6, 13.9, 9.9;
+*lower future art cov;: max=13.9, 11.9, 5.3;
 */
 
 ***Change the below to reflect which cost/discount is being applied;
-*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 7.3*1000000;
+*base;cost_inf_avert_21_26_1=13.9*1000000; cost_inf_avert_21_41_1=11.9*1000000; cost_inf_avert_21_71_1 = 5.3*1000000;
 
 if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
 if d_n_new_inf_21_41_1 gt 0 then cost_inf_avert_21_41_1 = (d_dcost_21_41_1 / d_n_d_new_inf_21_41_1)*1000000;
@@ -181,9 +180,9 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=11.8*1000000;
-cost_daly_avert_21_41_1_adults=10.2*1000000;
-cost_daly_avert_21_71_1_adults=5.9*1000000;
+cost_daly_avert_21_26_1_adults=13.9*1000000;
+cost_daly_avert_21_41_1_adults=11.9*1000000;
+cost_daly_avert_21_71_1_adults=5.3*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
@@ -229,7 +228,7 @@ run;
 
 ***table 3, outputs in 2040 with continuation of VMMC and assumption of 20% lower ART coverage in 2020;
 data lowart;
-set a.wide_vmmc_23_10_20_lowart_120;
+set a.wide_vmmc_29_03_21_6pm_lowart;
 proc freq;table lower_future_art_cov;run;
 
 proc means n p50 p5 p95;var
