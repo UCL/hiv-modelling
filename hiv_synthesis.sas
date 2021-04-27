@@ -1810,7 +1810,6 @@ if adh_pattern_prep=3 then adhav_pr = adhav*0.80;
 if adh_pattern_prep=4 then adhav_pr = adhav*0.70;
 
 
-
 * willingness to take prep if offered;
 r1=uniform(0); prep_willing = 0; if r1 < prepuptake_pop then prep_willing =1;
 
