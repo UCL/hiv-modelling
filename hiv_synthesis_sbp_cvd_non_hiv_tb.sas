@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
