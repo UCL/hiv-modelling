@@ -10221,6 +10221,41 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	end;
 
 
+* covid and covid death (effectively assuming all get covid); * update_24_4_21;
+
+	covid = 0; a = uniform(0);
+	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
+
+	if covid = 1 and dead ne 1 then do;
+	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
+	if 20 <= age < 30 then cov_deathrix = 0.0003  ;
+	if 30 <= age < 40 then cov_deathrix = 0.0008  ;
+	if 40 <= age < 50 then cov_deathrix = 0.0016  ;
+	if 50 <= age < 60 then cov_deathrix = 0.006   ;
+	if 60 <= age < 70 then cov_deathrix = 0.019   ;
+	if 70 <= age < 80 then cov_deathrix = 0.043   ;
+	if 80 <= age      then cov_deathrix = 0.078   ;
+	if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
+	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
+	end;
+
+	xcovid = uniform(0);
+	if covid = 1 and xcovid le cov_deathrix then do;
+		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
+	end;
+
+* cvd mortality; * update_24_4_21;
+
+* risk of cvd death per 3 months according to sbp, age and gender ;
+	cvd_death_risk = 0.0002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+	xcvd = uniform(0);
+	if xcvd le cvd_death_risk then do;
+		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
+	end;
+
+
+
 * time known to have been virally suppressed at last vlm;
 
 * likely * dependent_on_time_step_length ;
