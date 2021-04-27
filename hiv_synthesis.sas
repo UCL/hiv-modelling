@@ -1809,7 +1809,6 @@ if adh_pattern_prep=2 then adhav_pr = adhav*0.90;
 if adh_pattern_prep=3 then adhav_pr = adhav*0.80;
 if adh_pattern_prep=4 then adhav_pr = adhav*0.70;
 
-adhav_pr = min(1,adhav_pr);
 
 
 * willingness to take prep if offered;
