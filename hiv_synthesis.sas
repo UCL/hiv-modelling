@@ -2471,7 +2471,7 @@ end;
 
 * pop_wide_tld_2020;	
 if pop_wide_tld_2020 = 1 then do;
-	pop_wide_tld = 1; prep_strategy = 13; prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -3937,7 +3937,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
-	if prep_strategy=13 then do;
+	if prep_strategy=4 then do;		* previously prep_strategy 13 *Apr2021
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
