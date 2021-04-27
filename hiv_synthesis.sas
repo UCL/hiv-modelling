@@ -3920,19 +3920,21 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=1 then do;
-	      r = rand('Uniform');
-	      if gender=2 and (sw=1 or 15<=age<25) and 
-	         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and (sw=1 or 15<=age<25) and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
+
 	if prep_strategy=2 then do;
-	      r = rand('Uniform');
-	      if gender=2 and sw=1 and 
-	         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and sw=1 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
+
 	if prep_strategy=3 then do;
-	      r = rand('Uniform');
-	      if gender=2 and 15<=age<25 and 
-	         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and 15<=age<25 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
 	if prep_strategy=13 then do;
@@ -3940,7 +3942,6 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
 	end;
-
 
 	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
 
