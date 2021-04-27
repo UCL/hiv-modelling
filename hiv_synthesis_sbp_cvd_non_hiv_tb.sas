@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -894,7 +894,7 @@ r=uniform(0); if r < 0.80 then cov_death_risk_mult = 1; if 0.8 <= r < 0.90 then 
 
 
 ***** sbp and cvd mortality risk ;   * update_24_4_21;
-prob_diag_hypertension = 0.02;
+prob_diag_hypertension = 0.2;
 prob_imm_anti_hypertensive = 0.2;
 prob_start_anti_hyptertensive = 0.01;
 prob_stop_anti_hypertensive = 0.03; 
@@ -2006,7 +2006,12 @@ caldate_never_dot = caldate_never_dot + (1/12);
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
-careful checking of whether serial_no = obs ; 
+careful checking of whether serial_no = obs 
+except where stated below (e.g. updated newp and for people with hiv) we are not conditioning on death ne . so people who are dead
+go through most of this code - the counting of attributes for living people only is dealth with in the sum statments in section 5.
+we can insert a "death =." condition on any specific blocks of code below to ensure that dead people do not go through that code
+but that should not be strictly necessary
+; 
 
 * Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
@@ -2844,33 +2849,34 @@ ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);
 if (sbp > 140 and diagnosed_hypertension ne 1 and d_sbp < prob_diag_hypertension) then do; 
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
+
 if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_start_anti_hyptertensive) then start_anti_hyp_this_per =1 ; 
 
-if start_anti_hyp_this_per = 1 and ever_on_anti_hyp ne 1 then do;
+if start_anti_hyp_this_per = 1 then do;
 	sbp_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t};on_anti_hypertensive =1; 
-	if sbp = 145 then do;
-		if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  
-	end;
-	if sbp = 155 then do;
-		if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  
-	if 0.9 <= ah  then effect_anti_hyp = 40;  
-	end;
-	if sbp = 165 then do;
-		if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-	if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  
-	end;
-	if sbp = 175 then do;
-		if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-	if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  
-	end;
-	if sbp = 185 then do;
-		if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-	if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  
+	if effect_anti_hyp = . then do;
+		if sbp = 145 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  
+		end;
+		if sbp = 155 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  
+		if 0.9 <= ah  then effect_anti_hyp = 40;  
+		end;
+		if sbp = 165 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  
+		end;
+		if sbp = 175 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  
+		end;
+		if sbp = 185 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  
+		end;
 	end;
 	sbp = sbp - effect_anti_hyp ;
 end;
-
-effect of effect_anti_hyp if re-starting
 
 
 
@@ -10664,8 +10670,12 @@ end;
 if tested=1 then ever_tested=1;
 
 
-if  caldate{t} > death > . then do;
-	hiv=.;newp=.;np=.;epi   =.; epmono=.;
+if  caldate{t} > death > . then do; * update_24_4_21;
+	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  
+	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
+	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
+	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
+	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
 	cd4=.;cc=.;vc=.;vl=.;age=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
@@ -15147,7 +15157,17 @@ cvd_death=.;
 if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
+
 * procs;
+
+/*
+
+* not sure if we should keep this commented out code on procs we ran to test changes ;
+
+proc print; var caldate&j cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  
+ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
+where age ge 15 and diagnosed_hypertension=1 and death =.;
+run; 
 
 proc print; var caldate&j cald age dead hiv date_last_non_hiv_tb  tested  test_rate_tb non_hiv_tb non_hiv_tb_death
 non_hiv_tb_risk non_hiv_tb_diag_e  non_hiv_tb_prob_diag_e 
@@ -15162,8 +15182,7 @@ run;
 proc means; var cald cvd_death ;
 where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run; 
 
-
-* calculate cvd death rate by age and use to adjust all cause death rate ;
+*/
 
 
 /*
