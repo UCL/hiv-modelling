@@ -895,7 +895,7 @@ r=uniform(0); if r < 0.80 then cov_death_risk_mult = 1; if 0.8 <= r < 0.90 then 
 
 ***** sbp and cvd mortality risk ;   * update_24_4_21;
 prob_diag_hypertension = 0.02;
-prob_imm_anti_hypertensive = 0.0;
+prob_imm_anti_hypertensive = 0.2;
 prob_start_anti_hyptertensive = 0.01;
 prob_stop_anti_hypertensive = 0.03; 
 effect_sbp_cvd_death = 0.05;
@@ -2834,15 +2834,15 @@ if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertens
 
 
 if on_anti_hypertensive =1 then do;
-	s_sbp=uniform(0);
-	if s_sbp < prob_stop_anti_hypertensive then do; on_anti_hypertensive =0; sbp = sbp_start_anti_hyp ; end;
+	z_sbp=uniform(0);
+	if z_sbp < prob_stop_anti_hypertensive then do; on_anti_hypertensive =0; sbp = sbp_start_anti_hyp ; end;
 end;
 
 
 start_anti_hyp_this_per = 0 ; 
 ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);
-if (sbp > 140 and diagnosed_hypertension ne 1 and d_sbp < 0.02) then do; diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive 
-	then start_anti_hyp_this_per =1 ; 
+if (sbp > 140 and diagnosed_hypertension ne 1 and d_sbp < prob_diag_hypertension) then do; 
+	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
 if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_start_anti_hyptertensive) then start_anti_hyp_this_per =1 ; 
 
@@ -2869,6 +2869,8 @@ if start_anti_hyp_this_per = 1 and ever_on_anti_hyp ne 1 then do;
 	end;
 	sbp = sbp - effect_anti_hyp ;
 end;
+
+effect of effect_anti_hyp if re-starting
 
 
 
@@ -15111,8 +15113,6 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
-
-
 
 proc print; var caldate&j cald age dead hiv date_last_non_hiv_tb  tested  test_rate_tb non_hiv_tb non_hiv_tb_death
 non_hiv_tb_risk non_hiv_tb_diag_e  non_hiv_tb_prob_diag_e 
