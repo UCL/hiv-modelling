@@ -17086,8 +17086,7 @@ end;
 
 data x; set cum_l1;
 
-*file "/home/rmjxxx/Scratch/_output_base_24_03_21_&dataset_id";  
-file "/home/rmjlja9/Scratch/_output_drop-s_-variables_27_04_21_&dataset_id";  
+file "/home/rmjxxx/Scratch/_output_base_24_03_21_&dataset_id";  
 
 put   
 
