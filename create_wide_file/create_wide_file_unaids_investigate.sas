@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm";  
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
 input   
@@ -1427,7 +1427,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_17_9_20_6pm_investigate; set y;  
+data unaids_17_9_20_6pm_22_4_21_inve; set y;  
 
 proc contents; run;
 
@@ -1435,7 +1435,7 @@ proc contents; run;
 * means n mean lclm uclm p5 p95 ; 
 
 
-data x; set unaids_17_9_20_6pm_investigate; 
+data x; set unaids_17_9_20_6pm_22_4_21_inve; 
 
 
   options nomprint;
@@ -1628,7 +1628,7 @@ run;
 proc sort; by run;run;
 
 
-  data a.w_unaids_17_9_20_6pm_investigate ; 
+  data a.w_unaids_17_9_20_6pm_22_4_21_inve ; 
 
   merge a.wide_misc a.wide_par ;  
   by run;run;
@@ -1636,7 +1636,7 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-data e; set a.w_unaids_17_9_20_6pm_investigate ; 
+data e; set a.w_unaids_17_9_20_6pm_22_4_21_inve ; 
 
 proc print; run;
 
