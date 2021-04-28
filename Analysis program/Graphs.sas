@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_02_03_21_2pm_nonewp";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_26_04_21";
 
 input 
 /*general*/
@@ -214,7 +214,11 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s
 s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep   prep_strategy
+s_pop_wide_tld_prep   
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_a2021	s_continuous_prep_ge1yr									
+s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
+
 										
 
 /*testing and diagnosis*/
@@ -247,6 +251,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
+year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
+year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -428,7 +435,7 @@ s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
-s_ever_sw  s_ever_sw1849_  s_ever_sw_hiv  s_ever_sw_diag
+s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
 s_i_fsw_v1_np 	s_i_fsw_v2_np   s_i_fsw_v3_np	s_i_fsw_v4_np  	s_i_fsw_v5_np	s_i_fsw_v6_np
 s_i_v1_ep 		s_i_v2_ep 		s_i_v3_ep 		s_i_v4_ep 		s_i_v5_ep  		s_i_v6_ep
@@ -439,7 +446,6 @@ s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw
 s_diag_sw s_onart_sw s_vs_sw 
 
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
-s_age_deb_sw_nm1519_  s_age_deb_sw_nm2024_  s_age_deb_sw_nm2529_  s_age_deb_sw_nm3039_  s_age_deb_sw_nmov40_ 
 
 s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  s_age_stop_swov40_ 
 
@@ -532,7 +538,7 @@ greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
-effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
+effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov
 
@@ -560,6 +566,8 @@ eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_2020
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
+
+prep_strategy
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -640,10 +648,9 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
-
 ;
 
-proc freq;table option;where cald ge 2020 and prep_strategy=.;;run;
+proc freq;table option;where cald ge 2021 ;run;
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
 
@@ -652,10 +659,10 @@ proc sort data=a;by run;run;
 data sf;
 set a ;
  
-if cald=2020;
+if cald=2021;
 s_alive = s_alive_m + s_alive_w ;
-sf_2020 = 10000000 / s_alive;
-keep run sf_2020;
+sf_2021 = 10000000 / s_alive;
+keep run sf_2021;
 proc sort; by run;run;
 
 data a1; 
@@ -667,8 +674,8 @@ data a2;
 set a1;
 
 if option=1 then do;
-* n_sw_1564;					n_sw_1564_1_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_1_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_1_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_1_ = s_sw_1549 * sf_2021;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_1_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_1_ = s_sw_1564 / s_alive1564_w ;
@@ -679,7 +686,7 @@ if option=1 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_1_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_1_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_1_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_1_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_1_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -697,8 +704,8 @@ if option=1 then do;
 
 ***no disadv;
 if sw_art_disadv=1 then do;
-* n_sw_1564;					n_sw_1564_nodis_1_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_nodis_1_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_nodis_1_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_nodis_1_ = s_sw_1549 * sf_2021;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_nodis_1_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_nodis_1_ = s_sw_1564 / s_alive1564_w ;
@@ -709,7 +716,7 @@ if sw_art_disadv=1 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_nodis_1_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_nodis_1_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_nodis_1_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_nodis_1_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_nodis_1_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -726,8 +733,8 @@ end;
 ***mild disadv;
 if sw_art_disadv=2 then do;
 
-* n_sw_1564;					n_sw_1564_mild_1_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_mild_1_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_mild_1_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_mild_1_ = s_sw_1549 * sf_2021;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mild_1_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mild_1_ = s_sw_1564 / s_alive1564_w ;
@@ -738,7 +745,7 @@ if sw_art_disadv=2 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_mild_1_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_mild_1_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_mild_1_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_mild_1_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_mild_1_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_mild_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -757,8 +764,8 @@ end;
 
 
 if option=2 then do;
-* n_sw_1564;					n_sw_1564_2_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_2_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_2_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_2_ = s_sw_1549 * sf_2021;
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_2_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_2_ = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				prop_w_ever_sw_2_ = s_ever_sw / s_alive1564_w ;
@@ -768,7 +775,7 @@ if option=2 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_2_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_2_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_2_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_2_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_2_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_2_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -788,8 +795,8 @@ if option=2 then do;
 ***nodis disadv;
 if sw_art_disadv=1 then do;
 
-* n_sw_1564;					n_sw_1564_nodis_2_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_nodis_2_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_nodis_2_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_nodis_2_ = s_sw_1549 * sf_2021;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_nodis_2_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_nodis_2_ = s_sw_1564 / s_alive1564_w ;
@@ -800,7 +807,7 @@ if sw_art_disadv=1 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_nodis_2_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_nodis_2_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_nodis_2_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_nodis_2_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_nodis_2_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_2_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -819,8 +826,8 @@ if sw_art_disadv=2 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* n_sw_1564;					n_sw_1564_mild_2_ = s_sw_1564 * sf_2020;
-* n_sw_1549;					n_sw_1549_mild_2_ = s_sw_1549 * sf_2020;
+* n_sw_1564;					n_sw_1564_mild_2_ = s_sw_1564 * sf_2021;
+* n_sw_1549;					n_sw_1549_mild_2_ = s_sw_1549 * sf_2021;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mild_2_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mild_2_ = s_sw_1564 / s_alive1564_w ;
@@ -831,7 +838,7 @@ if sw_art_disadv=2 then do;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
 								prop_sw_newp0_mild_2_ = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp_mild_2_ = s_sw_newp/s_sw_1564;
-* n_tested_sw;					n_tested_sw_mild_2_ = s_tested_sw * sf_2020 * 4;
+* n_tested_sw;					n_tested_sw_mild_2_ = s_tested_sw * sf_2021 * 4;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_mild_2_ = s_sw_newp / s_w_newp ;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_mild_2_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
