@@ -1448,8 +1448,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) %var(v=incidence_sw)
-%var (v=n_mcirc1549_3m) ;%var (v=n_vmmc1549_3m); %var (v=n_new_vmmc1049_py);
-%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;%var(v=d_n_infection);
+%var (v=n_mcirc1549_3m) ;%var (v=n_vmmc1549_3m); 
+%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -1501,8 +1501,8 @@ n_tested n_tested_sw test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
 n_prep  n_covid  n_death_covid  n_death  n_death_hivrel 
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m   incidence_sw
- n_mcirc1549_3m  n_vmmc1549_3m  n_new_vmmc1049_py
-n_new_inf1549m n_new_inf1549 d_n_infection
+ n_mcirc1549_3m  n_vmmc1549_3m  
+n_new_inf1549m n_new_inf1549 
 t_sw_newp
 ;
 
