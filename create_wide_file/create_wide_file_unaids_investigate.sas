@@ -1636,7 +1636,12 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-data e; set a.w_unaids_17_9_20_6pm_22_4_21 ; 
+data e; set a.w_unaids_17_9_20_6pm_5reps_ex ; * w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
+
+
+r_incidence1549w_21_2 = incidence1549w_21_2 / incidence1549w_21_1 ;
+
+proc univariate; var r_incidence1549w_21_2 incidence1549w_21_2 incidence1549w_21_1 ; run;
 
 proc print; run;
 
