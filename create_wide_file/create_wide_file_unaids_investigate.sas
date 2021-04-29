@@ -1649,10 +1649,12 @@ r_incidence1549_22_2 = incidence1549_22_2 / incidence1549_22_1 ;  l_r_incidence1
 proc univariate; var r_incidence1549_21_2 incidence1549_21_2 incidence1549_21_1 ; run;
 
 proc glm; 
-model l_r_incidence1549_21_2 = p_vl1000_20_1  prevalence_vg1000_20_1  / solution ; run;
+model l_r_incidence1549_21_2 =  p_vl1000_20_1   prevalence_vg1000_20_1  / solution ; run;
+
+proc sgplot; plot l_r_incidence1549_21_2 * p_vl1000_20_1 ; run;
 
 
-*
+* incidence1549_20_1
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
