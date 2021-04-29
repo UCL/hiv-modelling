@@ -1706,3 +1706,31 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;run;
 run;
+proc means  n mean p50 p5 p95;
+var p_w_giv_birth_this_per_20	p_mcirc_20	prevalence1519w_20 	prevalence1519m_20 	prevalence1549m_20 prevalence1549w_20
+incidence1549w_20  incidence1549m_20 	p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20   
+prop_w_1549_sw_20  mtct_prop_20  prop_1564_onprep_20
+p_onart_diag_20 p_onart_vl1000_20   p_vl1000_20	p_onart_vl1000_w_20	p_onart_vl1000_m_20   p_onart_cd4_l500_20  
+p_onart_cd4_l200_20  p_startedline2_20 prop_sw_newp0_20  prop_sw_hiv_20 p_newp_sw_20 
+m15r_20 m25r_20 m35r_20 m45r_20 m55r_20 w15r_20 w25r_20 w35r_20 w45r_20 w55r_20;
+run;
+
+
+
+proc contents;run;
+
+
+
+proc glm; class an_lin_incr_test;
+model p_diag_w_20 =  an_lin_incr_test;run;
+
+model p_diag_w_20 = incidence1549w_20 incidence1549m_20 an_lin_incr_test date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt;run;
+
+
+
+proc freq;table an_lin_incr_test;run;
+
+
+
+
+

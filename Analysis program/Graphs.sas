@@ -739,7 +739,7 @@ if sw_art_disadv=2 then do;
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw_mild_1_ = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw_mild_1_ = s_sw_1564 / s_alive1564_w ;
 * prop_w_ever_sw;				prop_w_ever_sw_mild_1_ = s_ever_sw / s_alive1564_w ;
-* p_sw_prog_vis;		p_sw_prog_vis_mild_1_ = s_sw_program_visit / s_sw_1564 ;
+* p_sw_prog_vis;				p_sw_prog_vis_mild_1_ = s_sw_program_visit / s_sw_1564 ;
 
 * prop_sw_hiv;					prop_sw_hiv_mild_1_ = s_hiv_sw / s_sw_1564 ;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then   
@@ -861,7 +861,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=60;  
+%let nfit=600;  
 run;
 
 data c;
@@ -951,7 +951,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\03Mar2021.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\28April 2021.doc' startpage=never; 
 
 
 
