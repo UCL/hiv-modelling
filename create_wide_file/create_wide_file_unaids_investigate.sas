@@ -1651,7 +1651,35 @@ proc univariate; var r_incidence1549_21_2 incidence1549_21_2 incidence1549_21_1 
 proc glm; 
 model l_r_incidence1549_21_2 =  p_vl1000_20_1   prevalence_vg1000_20_1  / solution ; run;
 
-proc sgplot; plot l_r_incidence1549_21_2 * p_vl1000_20_1 ; run;
+proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  l_r_incidence1549_21_2 ; run;
+
+ods html;
+proc sgplot ;
+  scatter x=p_vl1000_20_1 y=l_r_incidence1549_22_2  ; 
+  xaxis label			= 'p_vl1000_19_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'l_r_incidence1549_21_2'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+run;
+ods html close;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_newp_ge5_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
+label p50_p_newp_ge5__0 = "Option 0 (median) ";
+label p50_p_newp_ge5__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
 
 
 * incidence1549_20_1
