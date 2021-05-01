@@ -1,15 +1,15 @@
 
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
-* libname a '/home/rmjlaph/';
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname a '/home/rmjlaph/';
 
 
 
 data a.d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
-* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
+  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14a";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_prep_eff_0";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
@@ -805,7 +805,7 @@ if option=0 or option=1;
 dataset=1;
 
 
-  
+/*
 
 data a.d2;  
 
@@ -1599,13 +1599,13 @@ if option=0 or option=1;
 
 dataset=2;
 
-
+*/
 
 
 
   data d; 
-* set d1; 
-  set a.d1 a.d2;
+  set a.d1; 
+* set a.d1 a.d2;
 
 
 
@@ -2280,13 +2280,13 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 proc sort data=y;by run option;run;
 
-  data a.prep_22_10_20_5pm_29_jan_21_1a2_ ;
+* data a.prep_22_10_20_5pm_29_jan_21_1a2_ ;
 * data a.prep_22_10_20_5pm_29_jan_21_1 ;
 * data a.prep_22_10_20_5pm_29_jan_21_2 ;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
 * data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
-* data a.prep_22_10_20_5pm_29_jan_21_ps14   ;
+  data a.prep_22_10_20_5pm_29_jan_21_ps14a  ;
 
 set y;
 
