@@ -1,8 +1,8 @@
 
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
-* libname a '/home/rmjlaph/';
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname a '/home/rmjlaph/';
 
 
 
@@ -2286,7 +2286,7 @@ proc sort data=y;by run option;run;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
 * data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
-  data a.prep_22_10_20_5pm_29_jan_21_ps14a  ;
+  data a.prep_22_10_20_9_jan_21_ps14a  ;
 
 set y;
 

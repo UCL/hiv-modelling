@@ -12,7 +12,7 @@ data y;
 * set a.prep_22_10_20_5pm_29_jan_21_2;
 * set a.prep_29_jan_21_dis7p_2;
 * set a.prep_29_jan_21_prep_eff_0;
-  set a.prep_22_10_20_5pm_29_jan_21_ps14a;  
+  set a.prep_22_10_20_29_jan_21_ps14a;  
 
   options nomprint;
   option nospool;
