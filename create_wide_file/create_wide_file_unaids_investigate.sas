@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_2";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
 input   
@@ -1428,7 +1428,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_17_9_20_6pm_22_4_21; set y;  
+data unaids_17_9_20_6pm_22_4_21_2; set y;  
 
 proc contents; run;
 
@@ -1437,7 +1437,7 @@ proc contents; run;
 
 
 
-data x; set unaids_17_9_20_6pm_22_4_21; 
+data x; set unaids_17_9_20_6pm_22_4_21_2; 
 
 
   options nomprint;
@@ -1632,7 +1632,7 @@ run;
 proc sort; by run;run;
 
 
-  data a.w_unaids_17_9_20_6pm_22_4_21 ; 
+  data a.w_unaids_17_9_20_6pm_22_4_21_2 ; 
 
   merge a.wide_misc a.wide_par ;  
   by run;run;
@@ -1640,7 +1640,7 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-data e; set a.w_unaids_17_9_20_6pm_22_4_21 ; * w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
+data e; set a.w_unaids_17_9_20_6pm_22_4_21_2 ; * w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
 
 
 r_incidence1549_21_2 = incidence1549_21_2 / incidence1549_21_1 ;  l_r_incidence1549_21_2 = log(r_incidence1549_21_2);
@@ -1662,6 +1662,7 @@ run;
 ods html close;
 
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1679,7 +1680,7 @@ band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0
 
 run;quit;
 
-
+*/
 
 
 * incidence1549_20_1
