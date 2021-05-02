@@ -1,8 +1,8 @@
 
 
 
-* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
-  libname a '/home/rmjlaph/';
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+* libname a '/home/rmjlaph/';
 
 
 
