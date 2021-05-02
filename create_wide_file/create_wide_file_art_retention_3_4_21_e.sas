@@ -652,7 +652,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 * if run =   ;
-  if run = 145009460 ;
+* if run = 145009460 ;
 
 
 proc sort data=d; by run cald option;run;
@@ -1214,14 +1214,14 @@ prep_strategy rate_sw_rred_rc
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention_3_4_21_e;
+  data a.art_retention_3_4_21_e2;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention_3_4_21_e; 
+  set a.art_retention_3_4_21_e2; 
 run;
 
 
@@ -1675,16 +1675,22 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_3_4_21_e; 
+  data a.wide_art_retention_3_4_21_e2; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
 
-  if run = 145009460 ; * 627525923;
+* if run = 145009460 ; * 627525923;
 
 proc contents; run;
 
 proc freq; tables run; run;
+
+
+
+data r; set a.wide_art_retention_3_4_21_e2; 
+
+proc contents; run;
 
 
 ods html;
@@ -1886,12 +1892,9 @@ run;
 ods html close;
 
 
+data a.art_retention_3_4_21_e2_xlsx;
 
-
-
-data a.art_retention_3_4_21_e_xlsx;
-
-set a.wide_art_retention_3_4_21_e;
+set a.wide_art_retention_3_4_21_e2;
 
 drop sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1919,15 +1922,15 @@ prep_strategy rate_sw_rred_rc
 ;
 
 
-proc print data = a.art_retention_3_4_21_e_xlsx; 
+proc print data = a.art_retention_3_4_21_e2_xlsx; 
 var  death_rate_hiv_ge15:  ;
 run; 
 
 	
 
-proc export data = a.art_retention_3_4_21_e_xlsx
+proc export data = a.art_retention_3_4_21_e2_xlsx
   dbms=xlsx 
-  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_3_4_21_e" replace;
+  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_3_4_21_e2" replace;
 run;
 
 
