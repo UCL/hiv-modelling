@@ -2092,9 +2092,11 @@ end;
 to be re-distibuted amongst higher levels - to remove effect of art on transmission;
 
 if option = 3  and caldate{t} ge 2020 then do; 
-no_effect_vls_transmission=1;
-t_prop_ageg1_m_vlg1 = 10000000; t_prop_ageg2_m_vlg1 = 0; t_prop_ageg3_m_vlg1 = 0; t_prop_ageg4_m_vlg1 = 0; t_prop_ageg5_m_vlg1 = 0; 
-t_prop_ageg1_w_vlg1 = 10000000; t_prop_ageg2_w_vlg1 = 0; t_prop_ageg3_w_vlg1 = 0; t_prop_ageg4_w_vlg1 = 0; t_prop_ageg5_w_vlg1 = 0; 
+no_effect_vls_transmission=2;
+t_prop_ageg1_m_vlg1 = 10000000; t_prop_ageg2_m_vlg1 = 10000000; t_prop_ageg3_m_vlg1 = 10000000; t_prop_ageg4_m_vlg1 = 10000000; 
+t_prop_ageg5_m_vlg1 = 10000000; 
+t_prop_ageg1_w_vlg1 = 10000000; t_prop_ageg2_w_vlg1 = 10000000; t_prop_ageg3_w_vlg1 = 10000000; t_prop_ageg4_w_vlg1 = 10000000; 
+t_prop_ageg5_w_vlg1 = 10000000; 
 end; 
  * this forces the viral load distribution to be as if close to all people with hiv have viral suppression ;
 
