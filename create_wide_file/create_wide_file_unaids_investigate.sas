@@ -6,12 +6,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-<<<<<<< Updated upstream
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
-=======
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
   infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_22_4_21_allvs";  
->>>>>>> Stashed changes
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
 input   
@@ -589,14 +585,10 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
-<<<<<<< Updated upstream
-if option = 0 or option = 3;
-=======
 if option = 0 or option = 3 or option=4;  * option = 4 only applies to allvs ;
 
 
 /*
->>>>>>> Stashed changes
 
 
 data d2;  
@@ -607,15 +599,8 @@ data d2;
 input   
 
 
-<<<<<<< Updated upstream
-/*general*/
 run   cald   option 
 
-/*number alive and in each age group*/
-=======
-run   cald   option 
-
->>>>>>> Stashed changes
 s_alive1549	s_alive1549_w	s_alive1549_m	s_alive1564 	s_alive1564_w	s_alive1564_m
 s_ageg1517m		s_ageg1819m		s_ageg1519m  	s_ageg2024m		s_ageg2529m  	s_ageg3034m		s_ageg3539m		s_ageg4044m	
 s_ageg4549m		s_ageg5054m 	s_ageg5559m		s_ageg6064m		s_ageg1564m		s_ageg1549m		s_age_1844m		s_ageg1014m	
@@ -629,10 +614,6 @@ s_hiv6569m		s_hiv7074m		s_hiv7579m		s_hiv8084m	s_hiv85plm
 s_hiv6569w		s_hiv7074w		s_hiv7579w		s_hiv8084w  s_hiv85plw 
 s_alive_w s_alive_m
 
-<<<<<<< Updated upstream
-/*number and status of those with HIV*/
-=======
->>>>>>> Stashed changes
 s_hiv1564		s_hiv1549
 s_hiv1517m		s_hiv1819m		s_hiv1519m  	s_hiv2024m		s_hiv2529m  	s_hiv3034m		s_hiv3539m		s_hiv4044m	
 s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m		
@@ -640,10 +621,6 @@ s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
 
-<<<<<<< Updated upstream
-/*primary infection*/
-=======
->>>>>>> Stashed changes
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
 s_primary5054m	s_primary5559m	s_primary6064m
@@ -657,10 +634,6 @@ s_primary1524w_epnewp  s_primary2534w_epnewp  s_primary3544w_epnewp  s_primary45
 s_primary_sw  s_primary_sw1519_  s_primary_sw2024_  s_primary_sw2529_  s_primary_sw3039_
 s_inf_vlsupp  s_inf_newp  s_inf_ep  s_inf_diag  s_inf_naive 
 
-<<<<<<< Updated upstream
-/*outputs amongst those infected*/
-=======
->>>>>>> Stashed changes
 s_i_m_d_newp  s_i_w_d_newp   s_i_w_np   s_i_m_np  s_i_ep 
 
 s_i_m_1524_newp  s_i_m_2534_newp  s_i_m_3544_newp  s_i_m_4554_newp  s_i_m_5564_newp
@@ -672,10 +645,6 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-<<<<<<< Updated upstream
-/*Number ep and newp*/
-=======
->>>>>>> Stashed changes
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
@@ -719,10 +688,6 @@ s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
 s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
-<<<<<<< Updated upstream
-/*status of partner*/
-=======
->>>>>>> Stashed changes
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
 s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
@@ -783,12 +748,7 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r 
 
 s_i_m_1549_np  s_i_w_1549_np
-<<<<<<< Updated upstream
- 
-/*resistance*/
-=======
 
->>>>>>> Stashed changes
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
 s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
@@ -807,10 +767,6 @@ s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh0  s_o_dol_2nd_vlg1000_dolr1_ad
 s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_nnm_ontle s_ontld s_vlg1000_ontld  s_vlg1000_65m_ontld 
 s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld
 
-<<<<<<< Updated upstream
-/*prep*/
-=======
->>>>>>> Stashed changes
 s_prep s_prep_sw s_prep_w_1524 s_elig_prep_epdiag  s_infected_prep  s_prep_ever  s_primary_prep  s_hiv1_prep  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep   s_elig_prep  	 s_hr_noprep  s_primary_hr_noprep 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
@@ -850,13 +806,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   prep_strategy
-<<<<<<< Updated upstream
-										
 
-/*testing and diagnosis*/
-=======
-
->>>>>>> Stashed changes
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
@@ -887,10 +837,6 @@ s_diag_this_period_m_sympt  s_diag_this_period_f_sympt
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
 
-<<<<<<< Updated upstream
-/*VL and CD4*/
-=======
->>>>>>> Stashed changes
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
 s_line1_vlg1000 s_line2_vlg1000  s_res_vfail1
 s_u_vfail1_this_period  s_u_vfail1  s_vl_vfail1_g1 s_vl_vfail1_g2 s_vl_vfail1_g3 s_vl_vfail1_g4 s_vl_vfail1_g5 s_vl_vfail1_g6 
@@ -908,10 +854,6 @@ s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
-<<<<<<< Updated upstream
-/*ART*/
-=======
->>>>>>> Stashed changes
   s_naive    s_onart  s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
@@ -973,10 +915,6 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
 
-<<<<<<< Updated upstream
-/*costs and dalys*/
-=======
->>>>>>> Stashed changes
 s_cost       s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_who3_cost    s_cot_cost 
 s_tb_cost    s_cost_test   s_res_cost    s_cost_circ   s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost      s_cost_test_m    s_cost_test_f
 s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			  s_cost_cascade_intervention
@@ -1010,20 +948,11 @@ s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80 
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
 
-<<<<<<< Updated upstream
-
-/*visits*/
-=======
->>>>>>> Stashed changes
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
 s_pre_art_care  
 s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
 s_sv  s_sv_secondline   
 
-<<<<<<< Updated upstream
-/*deaths*/
-=======
->>>>>>> Stashed changes
 s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all
@@ -1037,10 +966,6 @@ s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_d
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
 
-<<<<<<< Updated upstream
-/*sex workers*/
-=======
->>>>>>> Stashed changes
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw1849_  s_ever_sw_hiv  s_ever_sw_diag
 s_hiv_sw  s_hiv_sw1849_  s_hiv_sw1549_  s_hiv_sw1519_  s_hiv_sw2024_  s_hiv_sw2529_  s_hiv_sw3039_  s_hiv_swov40_  
@@ -1068,17 +993,9 @@ s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog
 
 s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
 
-<<<<<<< Updated upstream
-/*ADC etc*/
 s_adc  s_who3_event  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
 s_adc_line2_lf2  s_adc_artexpoff 
 
-/*Pregnancy and children*/
-=======
-s_adc  s_who3_event  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
-s_adc_line2_lf2  s_adc_artexpoff 
-
->>>>>>> Stashed changes
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
@@ -1094,10 +1011,6 @@ s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
 
-<<<<<<< Updated upstream
-/*circumcision*/
-=======
->>>>>>> Stashed changes
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
 s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mcirc_7074m  s_mcirc_7579m  s_mcirc_8084m  s_mcirc_85plm 
 s_mcirc_50plm
@@ -1110,10 +1023,6 @@ s_new_vmmc4549m  s_new_vmmc50plm
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
-<<<<<<< Updated upstream
-/*parameters sampled*/
-=======
->>>>>>> Stashed changes
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
@@ -1134,10 +1043,6 @@ sw_program  eff_sw_program  sw_program_effect sw_higher_int  prob_sw_lower_adh  
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_weak_sw_prog_newp  effect_strong_sw_prog_newp  sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r
 
-<<<<<<< Updated upstream
-/*2020 interventions*/
-=======
->>>>>>> Stashed changes
 condom_incr_2020    			  cascade_care_improvements    incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
@@ -1156,10 +1061,6 @@ vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid test
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
-<<<<<<< Updated upstream
-/*supp material*/
-=======
->>>>>>> Stashed changes
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
 s_onart_vlg1_r   s_onart_vlg2_r   s_onart_vlg3_r   s_onart_vlg4_r   s_onart_vlg5_r 
 s_onart_who4_year1   s_onart_who4_year1_vlt1000  s_onart_who4_year3   s_onart_who4_year3_vlt1000  s_onart_cd4l200_year1  
@@ -1180,22 +1081,10 @@ s_npge10_l4p_1564m  s_npge10_l4p_1524m  s_npge10_l4p_2534m  s_npge10_l4p_3544m  
 s_npge50_l4p_1564m  s_npge50_l4p_1524m  s_npge50_l4p_2534m  s_npge50_l4p_3544m  s_npge50_l4p_4554m  s_npge50_l4p_5564m  s_npge50_l4p_1564w  s_npge50_l4p_1524w  s_npge50_l4p_2534w  s_npge50_l4p_3544w  s_npge50_l4p_4554w  s_npge50_l4p_5564w
 s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_npge2_l4p_1564_hivdiag  s_npge1_l4p_1564_hivneg  s_npge2_l4p_1564_hivneg
 
-<<<<<<< Updated upstream
-/* covid */
-
-s_covid
-
-/* used in abort statements */
-
-prevalence1549  prev_ratio_1524 incidence1549w  incidence1549m  cum_ratio_newp_mw
-
-/* variables created after proc univariate which are used in the body of the program in order to update*/
-=======
 s_covid
 
 prevalence1549  prev_ratio_1524 incidence1549w  incidence1549m  cum_ratio_newp_mw
 
->>>>>>> Stashed changes
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
 s_prop_vlg1_rm0_diag  s_prop_vlg2_rm0_diag  s_prop_vlg3_rm0_diag  s_prop_vlg4_rm0_diag  s_prop_vlg5_rm0_diag  s_prop_vlg6_rm0_diag  
 s_prop_vlg1_rm1_diag  s_prop_vlg2_rm1_diag  s_prop_vlg3_rm1_diag  s_prop_vlg4_rm1_diag  s_prop_vlg5_rm1_diag  s_prop_vlg6_rm1_diag  
@@ -1256,10 +1145,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 if option = 0 or option = 3;
 
 
-<<<<<<< Updated upstream
-=======
 */
->>>>>>> Stashed changes
 
 
 
@@ -1270,11 +1156,7 @@ if option = 0 or option = 3;
 
 proc freq; tables run; 
 
-<<<<<<< Updated upstream
-data a; set d1 d2 ;
-=======
 data a; set d1 ; * set d1 d2 ;
->>>>>>> Stashed changes
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
@@ -2330,11 +2212,7 @@ run;
 proc sort; by run;run;
 
 
-<<<<<<< Updated upstream
-  data a.w_unaids_17_9_20_6pm_22_4_21_2 ; 
-=======
   data a.w_unaids_17_9_20_22_4_21_allvs ;  * a.w_unaids_17_9_20_6pm_22_4_21_2 ; 
->>>>>>> Stashed changes
 
   merge a.wide_misc a.wide_par ;  
   by run;run;
@@ -2342,11 +2220,7 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-<<<<<<< Updated upstream
-data e; set a.w_unaids_17_9_20_6pm_22_4_21_2 ; * w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
-=======
-data e; set a.w_unaids_17_9_20_22_4_21_allvs ; * a.w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
->>>>>>> Stashed changes
+data e; set a.w_unaids_17_9_20_22_4_21_allvs ; * w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
 
 
 r_incidence1549_21_2 = incidence1549_21_2 / incidence1549_21_1 ;  l_r_incidence1549_21_2 = log(r_incidence1549_21_2);
