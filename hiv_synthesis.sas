@@ -588,7 +588,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_trans_matrix;   r=uniform(0);  if r < 0.25 			then sw_trans_matrix = 1;  if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
 									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r then sw_trans_matrix = 4;  
 
-* sw_init_newp;    r=uniform(0);  if r < 0.66 then sw_init_newp = 1;   if 0.33 <= r        then sw_init_newp = 2;  
+* sw_init_newp;    r=uniform(0);  if r < 0.66 then sw_init_newp = 1;   if 0.66 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 
 * p_rred_sw_newp;	 r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
