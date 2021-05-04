@@ -1902,10 +1902,10 @@ red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_to
 red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
-if adh_pattern_prep=1 then adhav_pr = adhav*1.00; 
-if adh_pattern_prep=2 then adhav_pr = adhav*0.90;
-if adh_pattern_prep=3 then adhav_pr = adhav*0.70;
-if adh_pattern_prep=4 then adhav_pr = adhav*0.50;
+if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
+if adh_pattern_prep=2 then adhav_prep = adhav*0.90;
+if adh_pattern_prep=3 then adhav_prep = adhav*0.80;
+if adh_pattern_prep=4 then adhav_prep = adhav*0.70;
 
 
 * willingness to take prep if offered;
@@ -2232,7 +2232,7 @@ if	higher_future_prep_cov=1 then do;
 						incr_adh_pattern_prep_2020 = 0;  
 						if _u25 < 0.95 then do; 
 							incr_adh_pattern_prep_2020 = 1; 
-							adhav_pr = adhav*1.00; 
+							adhav_prep = adhav*1.00; 
 						end;		
 
 * inc_r_test_startprep_2020; * dependent_on_time_step_length;
@@ -4358,8 +4358,8 @@ end;
 
 *Adherence to PrEP - modified Jan2017 f_prep;
 if prep = 1 then do;
-	adh=adhav_pr + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
-	if adhav_pr=0 then adh=0;
+	adh=adhav_prep + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
+	if adhav_prep=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age > 25 then do;
@@ -7356,7 +7356,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 * adherence between t-1 and t  (adh); 
 
 	if t ge 2 and onart_tm1=1 and (prep ne 1 or adh = .) then do;  * for person on prep whether pop wide tld or regular prep the adh should be
-	already defined, based on adhav_pr - if prep = 1 it means person does not know they have hiv ;
+	already defined, based on adhav_prep - if prep = 1 it means person does not know they have hiv ;
 		adh=adhav + adhvar*normal(0);
 
 * effect on adherence of alerts due to vl > 1000;
