@@ -441,7 +441,7 @@ newp_seed = 7;
 							/*fold_change_yw = fold_change_w * 3    ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;	if r > 0.67 then fold_change_yw = fold_change_w * 5    ;*/
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
 							/*fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;*/
-* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5 0.7);
+* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5);
 							/*fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;*/
 * super_infection; 			%sample_uniform(super_infection, 0 1);
 							/*u=uniform(0); if u < 0.5 then super_infection=0; if u >= 0.5 then super_infection = 1;*/
@@ -17180,7 +17180,6 @@ end;
 data x; set cum_l1;
 
 *file "/home/rmjxxx/Scratch/_output_base_24_03_21_&dataset_id";  
-file "/home/rmjlja9/Scratch/_output_base_26_04_26_&dataset_id";  
 
 put   
 
