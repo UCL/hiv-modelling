@@ -165,7 +165,7 @@ to do before starting testing in preparation for runs:
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000 ; 
-%let year_interv = 2020.5;
+%let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -889,8 +889,23 @@ if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_cir
 
 p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
-****** covid death risk ;
-r=uniform(0); if r < 0.40 then cov_death_risk_mult = 1; if 0.4 <= r < 0.80 then cov_death_risk_mult = 2; if 0.8 <= r then cov_death_risk_mult = 3;
+****** covid death risk ; * update_24_4_21;
+r=uniform(0); if r < 0.80 then cov_death_risk_mult = 1; if 0.8 <= r < 0.90 then cov_death_risk_mult = 2; if 0.9 <= r then cov_death_risk_mult = 3;
+
+
+***** sbp and cvd mortality risk ;   * update_24_4_21;
+prob_diag_hypertension = 0.2;
+prob_imm_anti_hypertensive = 0.2;
+prob_start_anti_hyptertensive = 0.01;
+prob_stop_anti_hypertensive = 0.03; 
+effect_sbp_cvd_death = 0.05;
+effect_gender_cvd_death = 0.4;
+effect_age_cvd_death = 0.03;
+
+***** non_hiv_tb ;  * update_24_4_21;
+non_hiv_tb_risk = 0.0005;  
+non_hiv_tb_death_risk = 0.3 ;  
+non_hiv_tb_prob_diag_e = 0.5 ; 
 
 
 * ================ ;
@@ -1597,6 +1612,24 @@ hbv=0;
 if e < 0.03 then hbv=1;
 
 
+* define sbp in 1989 ;  * update_24_4_21;
+
+if age < 25 then do; r=uniform(0); if r < 0.4 then sbp = 115 ;  if 0.4 <= r < 0.8 then sbp = 125 ; if 0.8 <= r       then sbp = 135 ;  end;
+if 25 <= age < 35 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.7 then sbp = 125 ; if 0.7 <= r       then sbp = 135 ;  end;
+if 35 <= age < 45 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.7 then sbp = 135 ; 
+		 if 0.7 <= r < 0.9 then sbp = 145 ; if 0.9 <= r       then sbp = 155 ; end;
+if 45 <= age < 55 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.65 then sbp = 135 ; 
+		 if 0.65 <= r < 0.8 then sbp = 145 ; if 0.8 <= r < 0.9 then sbp = 155 ;  if 0.9 <= r < 0.97 then sbp = 165 ; if 0.97 <= r  then sbp = 175 ; end;
+if 55 <= age < 65   then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.6 then sbp = 135 ; 
+		 if 0.6 <= r < 0.75 then sbp = 145 ; if 0.75 <= r < 0.85 then sbp = 155 ;  if 0.85 <= r < 0.95 then sbp = 165 ; if 0.95 <= r  then sbp = 175 ; end;
+if 65 <= age        then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.55 then sbp = 135 ; 
+		 if 0.55 <= r < 0.65 then sbp = 145 ; if 0.65 <= r < 0.75 then sbp = 155 ;  if 0.75 <= r < 0.85 then sbp = 165 ; if 0.85 <= r < 95 then sbp = 175 ; 
+		 if 0.95 <= r  then sbp = 185 ; end;
+
+* for simplicity assume nobody on anti-hypertensives at baseline in 1989;
+diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
+
+
 u=uniform(0);low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
@@ -1973,7 +2006,12 @@ caldate_never_dot = caldate_never_dot + (1/12);
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
-careful checking of whether serial_no = obs ; 
+careful checking of whether serial_no = obs 
+except where stated below (e.g. updated newp and for people with hiv) we are not conditioning on death ne . so people who are dead
+go through most of this code - the counting of attributes for living people only is dealth with in the sum statments in section 5.
+we can insert a "death =." condition on any specific blocks of code below to ensure that dead people do not go through that code
+but that should not be strictly necessary
+; 
 
 * Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
@@ -2562,11 +2600,17 @@ if reg_option in (112 114) and caldate{t}-yrart ge 1 then art_monitoring_strateg
 
 * RATE OF TESTING WHEN HAVE non_tb_who3, WHO4 or TB and for GENERAL POPULATION; 
 
-if date_start_testing lt caldate{t} le 2015  then do;
+if date_start_testing lt caldate{t} le 2015  then do; 
 	test_rate_who4 = min(0.9,test_rate_who4*incr_test_rate_sympt);  
-	test_rate_tb  = min(0.8,test_rate_tb*incr_test_rate_sympt);  * 0.8 mar19;
+	test_rate_tb  = min(0.8,test_rate_tb*incr_test_rate_sympt);  
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
+* testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
+	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
+		e=uniform(0); 
+		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+	end;
 end;	
+
 
 
 tested_anc=.;
@@ -2782,6 +2826,59 @@ if t ge 2 and gender=2 then do;
 	if cum_children ge 10 then prob_pregnancy = 0;
 
 end;
+
+
+
+* SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21;
+
+a_sbp=uniform(0);
+
+if on_anti_hypertensive ne 1 and a_sbp < 0.0025 then sbp = sbp + 10 ;
+
+if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
+
+
+if on_anti_hypertensive =1 then do;
+	z_sbp=uniform(0);
+	if z_sbp < prob_stop_anti_hypertensive then do; on_anti_hypertensive =0; sbp = sbp_start_anti_hyp ; end;
+end;
+
+
+start_anti_hyp_this_per = 0 ; 
+ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);
+if (sbp > 140 and diagnosed_hypertension ne 1 and d_sbp < prob_diag_hypertension) then do; 
+	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
+end;
+
+if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_start_anti_hyptertensive) then start_anti_hyp_this_per =1 ; 
+
+if start_anti_hyp_this_per = 1 then do;
+	sbp_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t};on_anti_hypertensive =1; 
+	if effect_anti_hyp = . then do;
+		if sbp = 145 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  
+		end;
+		if sbp = 155 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  
+		if 0.9 <= ah  then effect_anti_hyp = 40;  
+		end;
+		if sbp = 165 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  
+		end;
+		if sbp = 175 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  
+		end;
+		if sbp = 185 then do;
+			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
+		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  
+		end;
+	end;
+	sbp = sbp - effect_anti_hyp ;
+end;
+
+
 
 
 
@@ -3693,7 +3790,6 @@ np=0; newp=0; ep=0;
 newp_ever = 0;
 np_ever = 0;
 end;
-
 
 
 * EXISTING PARTNERS;
@@ -9941,7 +10037,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 	* DEATH - causes:  who4=1 / non-HIV =2 ;
 	
-	if dead=0 then do;
+	if dead=0 and death = . and dead_ ne 1 then do;  * update_24_4_21;
 
 	dead_diagnosed=.; dead_naive=.; dead_onart=.; dead_line1_lf0=.; dead_line1_lf1=.; dead_line2_lf1=.; dead_line2_lf2=.; dead_artexpoff=.; dead_nn=.;dead_pir=.;
 	dead_adc=.;  dead_oth_adc=.; dead_crypm=.; dead_sbi=.;
@@ -10014,45 +10110,51 @@ so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
 		end;
 
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
+
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+
+so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
+;
 
 
-
-* what death rates to use ?;
-
-		if gender=1 then do; * based on SA deeath rates in 1997 (pre most AIDS deaths);
+* based on SA death rates in 1997 (pre most AIDS deaths); 
+		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200;
 			if 20 <= age < 25 then ac_death_rate = 0.00320;
 			if 25 <= age < 30 then ac_death_rate = 0.00580;
 			if 30 <= age < 35 then ac_death_rate = 0.00750;
 			if 35 <= age < 40 then ac_death_rate = 0.00800;
-			if 40 <= age < 45 then ac_death_rate = 0.01000;
-			if 45 <= age < 50 then ac_death_rate = 0.01200;
-			if 50 <= age < 55 then ac_death_rate = 0.01900;
-			if 55 <= age < 60 then ac_death_rate = 0.02500;
-			if 60 <= age < 65 then ac_death_rate = 0.03500;
-			if 65 <= age < 70 then ac_death_rate = 0.04500;
-			if 70 <= age < 75 then ac_death_rate = 0.05500;
-			if 75 <= age < 80 then ac_death_rate = 0.06500;
-			if 80 <= age < 85 then ac_death_rate = 0.10000;
-			if 85 <= age  then ac_death_rate = 0.4000;
+			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97;
+			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97;
+			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90;
+			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90;
+			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90;
+			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90;
+			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90;
+			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90;
+			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90;
+			if 85 <= age  then ac_death_rate = 0.4000*0.90;
 		end;
 
-		if gender=2 then do; * based on SA deeath rates in 1997 (pre most AIDS deaths);
+		if gender=2 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00150;
 			if 20 <= age < 25 then ac_death_rate = 0.00280;
 			if 25 <= age < 30 then ac_death_rate = 0.00400;
 			if 30 <= age < 35 then ac_death_rate = 0.00400;
 			if 35 <= age < 40 then ac_death_rate = 0.00420;
-			if 40 <= age < 45 then ac_death_rate = 0.00550;
-			if 45 <= age < 50 then ac_death_rate = 0.00750;
-			if 50 <= age < 55 then ac_death_rate = 0.01100;
-			if 55 <= age < 60 then ac_death_rate = 0.01500;	
-			if 60 <= age < 65 then ac_death_rate = 0.02100;
-			if 65 <= age < 70 then ac_death_rate = 0.03000;
-			if 70 <= age < 75 then ac_death_rate = 0.03800;
-			if 75 <= age < 80 then ac_death_rate = 0.05000;
-			if 80 <= age < 85 then ac_death_rate = 0.07000;
-			if 85 <= age  then ac_death_rate = 0.15000;
+			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97;
+			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97;
+			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90;
+			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90;	
+			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90;
+			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90;
+			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90;
+			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90;
+			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90;
+			if 85 <= age  then ac_death_rate = 0.15000*0.90;
 		end;
 
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
@@ -10076,6 +10178,41 @@ so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
 		end;
 	end;
+
+
+* covid and covid death (effectively assuming all get covid); * update_24_4_21;
+
+	covid = 0; a = uniform(0);
+	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
+
+	if covid = 1 and dead ne 1 then do;
+	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
+	if 20 <= age < 30 then cov_deathrix = 0.0003  ;
+	if 30 <= age < 40 then cov_deathrix = 0.0008  ;
+	if 40 <= age < 50 then cov_deathrix = 0.0016  ;
+	if 50 <= age < 60 then cov_deathrix = 0.006   ;
+	if 60 <= age < 70 then cov_deathrix = 0.019   ;
+	if 70 <= age < 80 then cov_deathrix = 0.043   ;
+	if 80 <= age      then cov_deathrix = 0.078   ;
+	if cov_death_risk_mult = 2 then cov_deathrix = cov_deathrix * 2;
+	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
+	end;
+
+	xcovid = uniform(0);
+	if covid = 1 and xcovid le cov_deathrix then do;
+		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
+	end;
+
+* cvd mortality; * update_24_4_21;
+
+* risk of cvd death per 3 months according to sbp, age and gender ;
+	cvd_death_risk = 0.0002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+	xcvd = uniform(0);
+	if xcvd le cvd_death_risk then do;
+		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
+	end;
+
 
 
 * time known to have been virally suppressed at last vlm;
@@ -10342,7 +10479,7 @@ cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_m
 
 * DEATH IN UNINFECTED ;
 
-if hiv ne 1 and age >= 15 and dead   =0 then do;
+if hiv ne 1 and age >= 15 and dead   =0 and dead_ ne 1 and death =. then do;  * update_24_4_21;
 
 * no death age under 15 - those with age  < 15 dont enter model properly until reach 15;
 * roughly close to zimbabwe - Lopman et al  Bull of the WHO  2006;
@@ -10351,42 +10488,61 @@ at time zero is the same as that in later years;
 
  * dependent_on_time_step_length ;
 
-if gender=1 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
-		if 15 <= age < 20 then ac_death_rate = 0.00200;
-		if 20 <= age < 25 then ac_death_rate = 0.00320;
-		if 25 <= age < 30 then ac_death_rate = 0.00580;
-		if 30 <= age < 35 then ac_death_rate = 0.00750;
-		if 35 <= age < 40 then ac_death_rate = 0.00800;
-		if 40 <= age < 45 then ac_death_rate = 0.01000;
-		if 45 <= age < 50 then ac_death_rate = 0.01200;
-		if 50 <= age < 55 then ac_death_rate = 0.01900;
-		if 55 <= age < 60 then ac_death_rate = 0.02500;
-		if 60 <= age < 65 then ac_death_rate = 0.03500;
-		if 65 <= age < 70 then ac_death_rate = 0.04500;
-		if 70 <= age < 75 then ac_death_rate = 0.05500;
-		if 75 <= age < 80 then ac_death_rate = 0.06500;
-		if 80 <= age < 85 then ac_death_rate = 0.10000;
-		if 85 <= age  then ac_death_rate = 0.4000;
-	end;
+* this is called all-cause (ac) death but it now refers to non-hiv, non-tb, non-cvd, non-covid death;
 
-	if gender=2 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
-		if 15 <= age < 20 then ac_death_rate = 0.00150;
-		if 20 <= age < 25 then ac_death_rate = 0.00280;
-		if 25 <= age < 30 then ac_death_rate = 0.00400;
-		if 30 <= age < 35 then ac_death_rate = 0.00400;
-		if 35 <= age < 40 then ac_death_rate = 0.00420;
-		if 40 <= age < 45 then ac_death_rate = 0.00550;
-		if 45 <= age < 50 then ac_death_rate = 0.00750;
-		if 50 <= age < 55 then ac_death_rate = 0.01100;
-		if 55 <= age < 60 then ac_death_rate = 0.01500;
-		if 60 <= age < 65 then ac_death_rate = 0.02100;
-		if 65 <= age < 70 then ac_death_rate = 0.03000;
-		if 70 <= age < 75 then ac_death_rate = 0.03800;
-		if 75 <= age < 80 then ac_death_rate = 0.05000;
-		if 80 <= age < 85 then ac_death_rate = 0.07000;
-		if 85 <= age  then ac_death_rate = 0.15000;
-	end;
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+
+so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
+
+TB death ~ 7% of deaths in > 15’s
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)    Cause-specific mortality in the Kombewa health
+
+so reduce all cause mortality by 0.93 since non-hiv tb now separated;
+
+
+* based on SA death rates in 1997 (pre most AIDS deaths); 
+		if gender=1 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00200*0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00320*0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00580*0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00750*0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00800*0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97*0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97*0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90*0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90*0.93;
+			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90*0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90*0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90*0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90*0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90*0.93;
+			if 85 <= age  then ac_death_rate = 0.4000*0.90*0.93;
+		end;
+
+		if gender=2 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00150*0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00280*0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00400*0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00400*0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00420*0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97*0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97*0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90*0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90*0.93;	
+			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90*0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90*0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90*0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90*0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90*0.93;
+			if 85 <= age  then ac_death_rate = 0.15000*0.90*0.93;
+		end;
+
+
+* if using tld_prep in whole population need to consider effects of dolutegravir on weight gain and any consequent effect on mortality;
 	if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;
 	if pop_wide_tld_prep=1 then ac_death_rate = ac_death_rate  * i_mort_risk_dol_prep_weightg; 
 
@@ -10395,17 +10551,15 @@ if gender=1 then do; * based on SA death rates in 1997 (pre most AIDS deaths);
 	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=uniform(0);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
-	if x3 le ac_deathrix then do;
-		dead   =1; death=caldate{t}; timedead=death-infection; dcause=2; agedeath=age;
+	if x3 le ac_deathrix then do;  * update_24_4_21;
+		dead   =1; death=caldate{t};  dcause=2; agedeath=age;
 	end;
 
-end;
 
-
-* covid and covid death;
+* covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
 	covid = 0; a = uniform(0);
-	if age ge 15 and prev_covid ne 1 and 2020.25 <= caldate{t} < 2020.75 then do; covid = 1; prev_covid=1;  end; 
+	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
 	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
@@ -10422,16 +10576,59 @@ end;
 
 	xcovid = uniform(0);
 	if covid = 1 and xcovid le cov_deathrix then do;
-		dead   =1; death=caldate{t}; timedead=death-infection; dcause=3; agedeath=age; 
+		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
+* cvd mortality; * update_24_4_21;
+
+* risk of cvd death per 3 months according to sbp, age and gender ;
+	cvd_death_risk = 0.0002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+	xcvd = uniform(0);
+	if xcvd le cvd_death_risk then do;
+		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
+	end;
+
+* incidence non_hiv_tb ;  * update_24_4_21;
+
+	non_hiv_tb = 0;
+	ynon_hiv_tb = uniform(0);
+	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
+		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  
+	end;
+
+	non_hiv_tb_diag_e = .; 
+	if non_hiv_tb=1 then do;
+		ii=uniform(0); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
+	end;
+
+
+* non-hiv tb mortality ;  * update_24_4_21;
+	* note assumes tb treatment available - treatment not explicitly modelled but survival higher with early diagnosis;
+
+	cur_non_hiv_tb_death_risk=.;
+	if non_hiv_tb=1 and hiv ne 1 then do; * note rel_rate_death_tb_diag_e is the same parameter value for hiv and non hiv;
+		cur_non_hiv_tb_death_risk = non_hiv_tb_death_risk;
+		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
+	end;
+
+	xnon_hiv_tb = uniform(0);
+	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
+		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
+	end;
+
+end;
 
 
 if tested=1 then ever_tested=1;
 
 
-if  caldate{t} > death > . then do;
-	hiv=.;newp=.;np=.;epi   =.; epmono=.;
+if  caldate{t} > death > . then do; * update_24_4_21;
+	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  
+	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
+	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
+	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
+	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
 	cd4=.;cc=.;vc=.;vl=.;age=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
@@ -10472,6 +10669,10 @@ if  caldate{t} > death > . then do;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep=.; visit_prep=.; prepstart=.; ever_stopped_prep_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
 end;
+
+
+* update_24_4_21;
+if death ne . then dead_ = 1;
 
 
 * END OF THE OVERALL LOOP;
@@ -14900,9 +15101,52 @@ end;
 
 cald = caldate_never_dot ;
 
+non_hiv_tb_death=.;
+if dead=0 or dead=1 then non_hiv_tb_death=0;
+if dcause=5 and caldate&j=death then non_hiv_tb_death=1;
+
+cvd_death=.;
+if dead=0 or dead=1 then cvd_death=0;
+if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
+
+/*
+
+* not sure if we should keep this commented out code on procs we ran to test changes ;
+
+proc print; var caldate&j cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  
+ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
+where age ge 15 and diagnosed_hypertension=1 and death =.;
+run; 
+
+proc print; var caldate&j cald age dead hiv date_last_non_hiv_tb  tested  test_rate_tb non_hiv_tb non_hiv_tb_death
+non_hiv_tb_risk non_hiv_tb_diag_e  non_hiv_tb_prob_diag_e 
+non_hiv_tb_diag_e cur_non_hiv_tb_death_risk  non_hiv_tb_death_risk  rel_rate_death_tb_diag_e death  dcause ; 
+where date_last_non_hiv_tb ne . ; 
+run; 
+
+proc means; var cald non_hiv_tb non_hiv_tb_death ;
+where age ge 15 and (death = . or caldate&j = death);
+run;
+
+proc means; var cald cvd_death ;
+where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run; 
+
+*/
+
+
+/*
+
+proc print; var cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  ever_on_anti_hyp effect_anti_hyp
+cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
+
+where age ge 15 and ever_on_anti_hyp=1;
+
+run; 
+
+*/
 
 /*
 
@@ -17080,7 +17324,7 @@ end;
 
 data x; set cum_l1;
 
-file "/home/rmjxxx/Scratch/_output_base_24_03_21_&dataset_id";  
+file "/home/rmjaph/Scratch/_output_base_29_04_21_&dataset_id";  
 
 put   
 
@@ -17096,9 +17340,9 @@ data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
 
 keep
 
-
-
 */
+
+
 /*general*/
 run   cald   option 
 
