@@ -1144,8 +1144,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 if option = 0 or option = 3;
 
 
-*/
-
 
 
 * run sent to jeff - if run = 162349469 ;
@@ -1155,7 +1153,9 @@ if option = 0 or option = 3;
 
 proc freq; tables run; 
 
-data a; set d1 ; * set d1 d2 ;
+data a; 
+* set d1 ; 
+  set d1 d2 ;
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
@@ -1697,6 +1697,7 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_zld;						if s_onart > 0 then p_zld = s_zld / s_onart ;
 * p_zla;						if s_onart > 0 then p_zla = s_zla / s_onart ;
 * p_otherreg;					if s_onart > 0 then p_otherreg = s_otherreg / s_onart ;
+
 
 * p_o_zdv_tox;					if s_zdv gt 0 then p_o_zdv_tox = s_o_zdv_tox / s_zdv ;
 * p_o_3tc_tox;					if s_3tc gt 0 then p_o_3tc_tox = s_o_3tc_tox / s_3tc ;
