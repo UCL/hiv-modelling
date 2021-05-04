@@ -588,7 +588,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_trans_matrix;   r=uniform(0);  if r < 0.25 			then sw_trans_matrix = 1;  if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
 									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r then sw_trans_matrix = 4;  
 
-* sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
+* sw_init_newp;    r=uniform(0);  if r < 0.66 then sw_init_newp = 1;   if 0.66 <= r        then sw_init_newp = 2;  *lbm;
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 
 * p_rred_sw_newp;	 r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
@@ -664,10 +664,10 @@ p_neph_stops_after_ten = 0.1;
 
 ***** testing;
 
-* an_lin_incr_test;   r=uniform(0); if r < 0.1   then an_lin_incr_test = 0.0005 ; if 0.1   <= r < 0.3 then an_lin_incr_test = 0.0030; 
-					  if 0.3 <= r < 0.5   then an_lin_incr_test = 0.0100 ;  if 0.5    <= r < 0.7  then an_lin_incr_test = 0.0200;
-					  if 0.7    <= r < 0.9  then an_lin_incr_test = 0.0400;
-					  if 0.9    <= r        then an_lin_incr_test = 0.1000;
+* an_lin_incr_test;   r=uniform(0); if r < 0.2   then an_lin_incr_test = 0.0005 ; if 0.2   <= r < 0.4 then an_lin_incr_test = 0.0030; 
+					  if 0.4 <= r < 0.6   then an_lin_incr_test = 0.0100 ;  if 0.6    <= r < 0.8  then an_lin_incr_test = 0.0200;
+					  if 0.8    <= r then an_lin_incr_test = 0.0400;
+					  /*if 0.9    <= r        then an_lin_incr_test = 0.1000;*/*lbm;
 
 * date_test_rate_plateau;  r=uniform(0); if r < 0.1  then date_test_rate_plateau = 2011.5; if 0.1  <= r < 0.2  then date_test_rate_plateau = 2013.5; 
 			if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4  <= r < 0.7 then date_test_rate_plateau = 2017.5; 
@@ -799,14 +799,14 @@ p_neph_stops_after_ten = 0.1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.1; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.2;
-											if r >= 0.66 then effect_sw_prog_newp = 0.3; 
+											if r >= 0.66 then effect_sw_prog_newp = 0.3; *lbm;
 
 * effect_sw_prog_6mtest;	e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
 										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;
 * effect_sw_prog_int;		e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
 										  if e >= 0.66 then effect_sw_prog_int=0.80;
 * effect_sw_prog_adh;		e=uniform(0); if e < 0.33 then effect_sw_prog_adh=10; if 0.33 <= e < 0.66 then effect_sw_prog_adh=2;
-										  if e >= 0.66 then effect_sw_prog_adh=1;
+										  if e >= 0.66 then effect_sw_prog_adh=1;*lbm;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
 * effect_sw_prog_prep;      e=uniform(0);if e < 0.50 then effect_sw_prog_prep=0.95; if e >= 0.50 then effect_sw_prog_prep=0.80;
@@ -2098,7 +2098,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		if prep_willing=1 then eff_rate_test_startprep=1;
-		eff_rate_choose_stop_prep=0.05;
+		eff_rate_choose_stop_prep=0.05;***lbm;
 		
 
 		end;
@@ -2115,7 +2115,7 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 		eff_rate_test_startprep=rate_test_startprep;
-		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;
+		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;***lbm;
 
 end; 
 
