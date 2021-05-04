@@ -2091,7 +2091,7 @@ end;
  * this forces the viral load distribution of those with viral suppression 
 to be re-distibuted amongst higher levels - to remove effect of art on transmission;
 
-if option = 3  and caldate{t} ge 2020 then do; 
+if option = 4  and caldate{t} ge 2020 then do; 
 no_effect_vls_transmission=2;
 t_prop_ageg1_m_vlg1 = 10000000; t_prop_ageg2_m_vlg1 = 10000000; t_prop_ageg3_m_vlg1 = 10000000; t_prop_ageg4_m_vlg1 = 10000000; 
 t_prop_ageg5_m_vlg1 = 10000000; 

@@ -2006,11 +2006,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-<<<<<<< Updated upstream
-data unaids_17_9_20_6pm_22_4_21_2; set y;  
-=======
 data unaids_17_9_20_6pm_22_4_21_2_allvs; set y;  
->>>>>>> Stashed changes
 
 proc contents; run;
 
@@ -2019,11 +2015,7 @@ proc contents; run;
 
 
 
-<<<<<<< Updated upstream
-data x; set unaids_17_9_20_6pm_22_4_21_2; 
-=======
 data x; set unaids_17_9_20_6pm_22_4_21_2_allvs; 
->>>>>>> Stashed changes
 
 
   options nomprint;
@@ -2228,11 +2220,7 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-<<<<<<< Updated upstream
-data e; set a.w_unaids_17_9_20_6pm_22_4_21_2 ; * w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
-=======
 data e; set a.w_unaids_17_9_20_22_4_21_allvs ; * w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
->>>>>>> Stashed changes
 
 
 r_incidence1549_21_2 = incidence1549_21_2 / incidence1549_21_1 ;  l_r_incidence1549_21_2 = log(r_incidence1549_21_2);
@@ -2243,22 +2231,14 @@ w = (1 - (incidence1549_21_1 / incidence1549_21_2)) ;
 
 proc univariate; var r_incidence1549_21_2 incidence1549_21_2 incidence1549_21_1 ; run;
 
-<<<<<<< Updated upstream
-/*
-=======
 
->>>>>>> Stashed changes
 proc print data=e; var 
 incidence1549_19_1 incidence1549_20_1 incidence1549_21_1 incidence1549_22_1 incidence1549_23_1 
 incidence1549_19_2 incidence1549_20_2 incidence1549_21_2 incidence1549_22_2 incidence1549_23_2 
 incidence1549_19_3 incidence1549_20_3 incidence1549_21_3 incidence1549_22_3 incidence1549_23_3 
 ; 
 run;
-<<<<<<< Updated upstream
-*/
-=======
 
->>>>>>> Stashed changes
 
 proc glm; 
 model w = p_vl500_newp_20_1 / solution ; run; * l_r_incidence1549_22_2  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
