@@ -10009,7 +10009,7 @@ so a proportion (15%) are classified as non-who4_;
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
 CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
-* kombewa kenya dhs 2011-2015 (includes AIDS deaths)  
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 ;
@@ -10374,7 +10374,7 @@ cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_m
 
 * DEATH IN UNINFECTED ;
 
-if hiv ne 1 and age >= 15 and dead 	=0 and dead_ ne 1 and death =. then do;	* update_24_4_21;
+if hiv ne 1 and age >= 15 and dead  =0 and dead_ ne 1 and death =. then do;	 * update_24_4_21;
 
 * no death age under 15 - those with age  < 15 dont enter model properly until reach 15;
 * roughly close to zimbabwe - Lopman et al  Bull of the WHO  2006;
