@@ -15044,6 +15044,7 @@ run;
 */
 
 /*
+
 proc print; var cald cd4 tb_rate tb_risk  tb who3_rate non_tb_who3_rate  non_tb_who3_risk non_tb_who3_ev who3_event dead ; 
 where age ge 15 and hiv=1 and (death = . or death=caldate&j) and 0 <= cd4 < 100;
 run;
