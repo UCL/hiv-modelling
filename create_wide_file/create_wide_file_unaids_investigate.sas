@@ -2223,8 +2223,8 @@ proc contents; run;
 data e; set a.w_unaids_17_9_20_22_4_21_1a2 ; * w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
 
 
-r_incidence1549_21_2 = incidence1549_21_2 / incidence1549_21_1 ;  l_r_incidence1549_21_2 = log(r_incidence1549_21_2);
-r_incidence1549_22_2 = incidence1549_22_2 / incidence1549_22_1 ;  l_r_incidence1549_22_2 = log(r_incidence1549_22_2);
+r_incidence1549_21   = incidence1549_21_1 / incidence1549_21_2 ;  l_r_incidence1549_21   = log(r_incidence1549_21  );
+r_incidence1549_22   = incidence1549_22_1 / incidence1549_22_2 ;  l_r_incidence1549_22   = log(r_incidence1549_22  );
 
 w = (1 - (incidence1549_21_1 / incidence1549_21_2)) ; 
 
@@ -2241,17 +2241,36 @@ run;
 */
 
 proc glm; 
-model w = p_vl500_newp_20_1 / solution ; run; * l_r_incidence1549_22_2  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
+model w = p_vl500_newp_20_1 / solution ; run; * l_r_incidence1549_22  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
 
-proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1 l_r_incidence1549_21_2 w ; run;
+proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1 l_r_incidence1549_21 w ; run;
 
 
 ods html;
 proc sgplot ;
   scatter x=p_vl500_newp_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
-  xaxis label			= 'p_vl500_newp_19_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'l_r_incidence1549_21_2'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+  xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
 run;
+
+proc sgplot ;
+  scatter x=p_vl1000_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
+  xaxis label			= 'p_vl1000_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+run;
+
+proc sgplot ;
+  scatter x=p_vl500_newp_20_1 y= l_r_incidence1549_21 ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
+  xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'l_r_incidence1549_21'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+run;
+
+proc sgplot ;
+  scatter x=p_vl1000_20_1 y= l_r_incidence1549_21 ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
+  xaxis label			= 'p_vl1000_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'l_r_incidence1549_21'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+run;
+
 ods html close;
 
 
