@@ -748,7 +748,7 @@ newp_seed = 7;
 
 * PREP;
 
-* PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
+* PREP assumed introduced in fsw/agyw 2018 - with level of coverage and retention; 
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
 if prep_willing=1;
@@ -10009,8 +10009,8 @@ so a proportion (15%) are classified as non-who4_;
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
 CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
-* kombewa kenya dhs 2011-2015 (includes AIDS deaths) 
- 
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths)
+
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 ;
 
