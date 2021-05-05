@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_22_4_21_allvs";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
@@ -588,7 +588,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * if option = 0 or option = 3 or option=4;  * option = 4 only applies to allvs ;
   if option = 0 or option = 3 ;
 
-
+/*
 
 data d2;  
 
@@ -1143,7 +1143,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 if option = 0 or option = 3;
 
-
+*/
 
 
 * run sent to jeff - if run = 162349469 ;
@@ -1154,8 +1154,8 @@ if option = 0 or option = 3;
 proc freq; tables run; 
 
 data a; 
-* set d1 ; 
-  set d1 d2 ;
+  set d1 ; 
+* set d1 d2 ;
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
@@ -2006,7 +2006,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_17_9_20_6pm_22_4_21_1a2; set y;  * unaids_17_9_20_6pm_22_4_21_2_allvs;
+data unaids_17_9_20_6pm_orig; set y;  * unaids_17_9_20_6pm_22_4_21_2_allvs   unaids_17_9_20_6pm_22_4_21_1a2;
 
 proc contents; run;
 
@@ -2015,7 +2015,7 @@ proc contents; run;
 
 
 
-data x; set unaids_17_9_20_6pm_22_4_21_1a2; * unaids_17_9_20_6pm_22_4_21_2_allvs;
+data x; set unaids_17_9_20_6pm_orig; * unaids_17_9_20_6pm_22_4_21_2_allvs  unaids_17_9_20_6pm_22_4_21_1a2;
 
 
   options nomprint;
@@ -2145,7 +2145,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 
-data   a.wide_misc; merge 
+data   wide_misc; merge 
 prevalence1549m prevalence1549w prevalence1524m prevalence1524w incidence1549w incidence1549m incidence1549 p_mcirc_1549m  p_diag_m  p_diag_w	
 p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  p_mcirc_1549m  p_startedline2 prevalence_vg1000  p_vl1000
 p_vl500_newp  p_onart
@@ -2185,7 +2185,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
 run;
 
-data a.wide_par; merge 
+data wide_par; merge 
 sf_2020 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -2212,24 +2212,21 @@ run;
 proc sort; by run;run;
 
 
-  data a.w_unaids_17_9_20_22_4_21_1a2 ;  * a.w_unaids_17_9_20_6pm_22_4_21_2 ; 
+  data a.w_unaids_17_9_20_6pm_orig ;  * a.w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_22_4_21_1a2; 
 
-  merge a.wide_misc a.wide_par ;  
+  merge wide_misc wide_par ;  
   by run;run;
 
 proc contents; run; 
 
 
-data e; set a.w_unaids_17_9_20_22_4_21_1a2 ; * w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex;
-
-
-r_incidence1549_21   = incidence1549_21_1 / incidence1549_21_2 ;  l_r_incidence1549_21   = log(r_incidence1549_21  );
-r_incidence1549_22   = incidence1549_22_1 / incidence1549_22_2 ;  l_r_incidence1549_22   = log(r_incidence1549_22  );
+data e; set a.w_unaids_17_9_20_6pm_orig ; 
+* w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex w_unaids_17_9_20_22_4_21_1a2;
 
 w = (1 - (incidence1549_21_1 / incidence1549_21_2)) ; 
 
 
-proc univariate; var r_incidence1549_21_2 incidence1549_21_2 incidence1549_21_1 ; run;
+proc univariate; var incidence1549_21_2 incidence1549_21_1 ; run;
 
 /*
 proc print data=e; var 
@@ -2241,34 +2238,22 @@ run;
 */
 
 proc glm; 
-model w = p_vl500_newp_20_1 / solution ; run; * l_r_incidence1549_22  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
+model w = p_onart_20_1  / solution ; run; * l_r_incidence1549_22  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
 
-proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1 l_r_incidence1549_21 w ; run;
+proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1  ; run;
 
 
 ods html;
 proc sgplot ;
   scatter x=p_vl500_newp_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
   xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 run;
 
 proc sgplot ;
   scatter x=p_vl1000_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
   xaxis label			= 'p_vl1000_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
-run;
-
-proc sgplot ;
-  scatter x=p_vl500_newp_20_1 y= l_r_incidence1549_21 ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
-  xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'l_r_incidence1549_21'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
-run;
-
-proc sgplot ;
-  scatter x=p_vl1000_20_1 y= l_r_incidence1549_21 ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
-  xaxis label			= 'p_vl1000_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'l_r_incidence1549_21'		labelattrs=(size=12)  values = (0 to 1.5 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 run;
 
 ods html close;
