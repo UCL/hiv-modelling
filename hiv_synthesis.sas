@@ -588,7 +588,7 @@ p_neph_stops_after_ten = 0.1;
 * sw_trans_matrix;   r=uniform(0);  if r < 0.25 			then sw_trans_matrix = 1;  if 0.25 <= r < 0.50 then sw_trans_matrix = 2;  
 									if 0.50 <= r < 0.75 	then sw_trans_matrix = 3;  if 0.75 <= r then sw_trans_matrix = 4;  
 
-* sw_init_newp;    r=uniform(0);  if r < 0.50 then sw_init_newp = 1;   if 0.50 <= r        then sw_init_newp = 2;  
+* sw_init_newp;    r=uniform(0);  if r < 0.66 then sw_init_newp = 1;   if 0.66 <= r        then sw_init_newp = 2;  
 								if 1.00 <= r then sw_init_newp = 3; *nobody in this category for now;
 
 * p_rred_sw_newp;	 r=uniform(0); if r < 0.33 then p_rred_sw_newp=0.01;   if 0.33 <= r < 0.67 then p_rred_sw_newp = 0.03;  
@@ -664,10 +664,16 @@ p_neph_stops_after_ten = 0.1;
 
 ***** testing;
 
-* an_lin_incr_test;   r=uniform(0); if r < 0.1   then an_lin_incr_test = 0.0005 ; if 0.1   <= r < 0.3 then an_lin_incr_test = 0.0030; 
-					  if 0.3 <= r < 0.5   then an_lin_incr_test = 0.0100 ;  if 0.5    <= r < 0.7  then an_lin_incr_test = 0.0200;
-					  if 0.7    <= r < 0.9  then an_lin_incr_test = 0.0400;
-					  if 0.9    <= r        then an_lin_incr_test = 0.1000;
+* an_lin_incr_test;
+
+r=uniform(0); 
+if r < 0.05   then an_lin_incr_test = 0.0001;
+if 0.05 <= r < 0.20  then an_lin_incr_test = 0.0005 ;
+if 0.2 <= r < 0.4  then an_lin_incr_test = 0.0030; 
+if 0.4 <= r < 0.6  then an_lin_incr_test = 0.0100 ;  
+if 0.6 <= r < 0.8  then an_lin_incr_test = 0.0200;
+if 0.8 <= r < 0.95 then an_lin_incr_test = 0.0400;
+if 0.95    <= r    then an_lin_incr_test = 0.1000;
 
 * date_test_rate_plateau;  r=uniform(0); if r < 0.1  then date_test_rate_plateau = 2011.5; if 0.1  <= r < 0.2  then date_test_rate_plateau = 2013.5; 
 			if 0.2  <= r < 0.4  then date_test_rate_plateau = 2015.5; if 0.4  <= r < 0.7 then date_test_rate_plateau = 2017.5; 
@@ -798,14 +804,14 @@ p_neph_stops_after_ten = 0.1;
 * sw_program;				r=uniform(0); sw_program=0;  if r < 0.20 then sw_program=1;
 							if sw_program = 1 then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
-* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.08; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.10;
-											if r >= 0.66 then effect_sw_prog_newp = 0.12; 
+* effect_sw_prog_newp;  	r=uniform(0); 	if r < 0.33 then  effect_sw_prog_newp = 0.1; if 0.33 <= r < 0.66 then effect_sw_prog_newp=0.2;
+											if r >= 0.66 then effect_sw_prog_newp = 0.3; 
 
 * effect_sw_prog_6mtest;	e=uniform(0); if e < 0.33 then effect_sw_prog_6mtest=0.5; if 0.33 <= e < 0.66 then effect_sw_prog_6mtest=0.25;
 										  if e >= 0.66 then effect_sw_prog_6mtest=0.75;
 * effect_sw_prog_int;		e=uniform(0); if e < 0.33 then effect_sw_prog_int=0.4; if 0.33 <= e < 0.66 then effect_sw_prog_int=0.60;
 										  if e >= 0.66 then effect_sw_prog_int=0.80;
-* effect_sw_prog_adh;		e=uniform(0); if e < 0.33 then effect_sw_prog_adh=3; if 0.33 <= e < 0.66 then effect_sw_prog_adh=1.5;
+* effect_sw_prog_adh;		e=uniform(0); if e < 0.33 then effect_sw_prog_adh=10; if 0.33 <= e < 0.66 then effect_sw_prog_adh=1.5;
 										  if e >= 0.66 then effect_sw_prog_adh=1;
 * effect_sw_prog_lossdiag;	e=uniform(0); if e < 0.33 then effect_sw_prog_lossdiag=0.80; if 0.33 <= e < 0.66 then effect_sw_prog_lossdiag=0.60;
 										  if e >= 0.66 then effect_sw_prog_lossdiag=0.40;
@@ -880,9 +886,6 @@ if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1
 
 * prob_birth_circ; r=uniform(0); if r < 0.33 then prob_birth_circ = 0.03; if 0.33 <= r < 0.65 then prob_birth_circ = 0.05; 
 if 0.65 <= r < 0.98 then prob_birth_circ = 0.1; if r >= 0.98 then prob_birth_circ = 0.5;
-
-***LBM Jul19 check data on circ;
-
 
 * p_hard_reach_w;  p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men;  hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
@@ -1007,7 +1010,7 @@ cost_t_adh_int = 0.010;
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
-circ_cost_a = 0.106;  *LBM Jan 2019 VMMC trial 51.34+54.29 =106 ;
+circ_cost_a = 0.90;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder;
 
@@ -2052,15 +2055,15 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 
 
-* PREP introduction in fsw/agyw 2017; 
+* PREP introduction in fsw/agyw 2018; 
 
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
-
-if caldate_never_dot = 2017.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
+*May21 - changed from 2017.25 after Coding Call discussion;
+if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
 value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=1; sens=0; date_prep_intro=2017.25; hivtest_type=3;
+prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
@@ -2136,6 +2139,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		if prep_willing=1 then eff_rate_test_startprep=1;
+		eff_rate_choose_stop_prep=0.05;
 
 		end;
 	end;
@@ -2151,6 +2155,7 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 		eff_rate_test_startprep=rate_test_startprep;
+		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;
 end; 
 
 end;
@@ -2722,10 +2727,7 @@ if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 ***Circumcision at birth;
 
-***DHS 2015 states 2/3 of muslim men circumcised, approx 1% muslim population (CIA);
-
-***LBM Nov2019 - above staement is for Zim only, other SSA countries likely to differ. I think code is okay
-   as prob_birth_circ is being sampled;
+***DHS Zimbabwe 2015 states 2/3 of muslim men circumcised, approx 1% muslim population (CIA);
 
 new_mcirc=0; 
 u=uniform(0);
@@ -4292,7 +4294,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and 
 
 			prep   =1; pop_wide_tld_prep=1;  prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 			end;
-	end;*LBM Jul19;
+	end;
 
 	if prep_ever = 1 and dt_prep_s ne caldate{t} then do;   * dependent_on_time_step_length;
 			if r < (1-eff_rate_choose_stop_prep) then do; prep   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; end;
@@ -4311,7 +4313,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and 
 				end;  
 				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
-	end;*LBM Jul19;
+	end;
 end;
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
