@@ -1437,9 +1437,9 @@ if sw = 1 then do;
 	end;
 	else do;
 		select;
-			when (0.5 <= e < 0.95) do; newp_lower = 7; newp_higher = 20; end;
+			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
-			when (0.99 <= e) do; newp_lower = 51; newp_higher = 151; end;
+			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + uniform(0) * (newp_higher - newp_lower), 1);
@@ -1531,18 +1531,24 @@ if e < 0.03 then hbv=1;
 /*		 if 0.95 <= r  then sbp = 185 ; end;*/
 
 select;
-	when (age < 25) 		sample(sbp, 115		125 	135, 
-										0.40 	0.40 	0.20);
-	when (25 <= age < 35) 	sample(sbp, 115 	125 	135, 
-										0.20 	0.50 	0.30);
-	when (35 <= age < 45) 	sample(sbp, 115 	125 	135 	145 	155,
-										0.20 	0.30 	0.20 	0.20 	0.1);
-	when (45 <= age < 55) 	sample(sbp, 115 	125 	135 	145 	155 	165 	175, 
-										0.20 	0.30 	0.15 	0.15 	0.10 	0.07 	0.03);
-	when (55 <= age < 65) 	sample(sbp, 115 	125 	135 	145 	155 	165 	175, 
-										0.20 	0.20 	0.20 	0.15 	0.10 	0.10 	0.05);
-	when (65 <= age) 		sample(sbp, 115 	125 	135 	145 	155 	165 	175 	185, 
-										0.20 	0.20 	0.15 	0.10 	0.10 	0.10 	0.10 	0.05);
+	when (age < 25) 		do; %sample(sbp,	115		125 	135, 
+												0.40 	0.40 	0.20); 
+							end;
+	when (25 <= age < 35) 	do; %sample(sbp, 	115 	125 	135, 
+												0.20 	0.50 	0.30); 
+							end;
+	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155,
+												0.20 	0.30 	0.20 	0.20 	0.1); 
+							end;
+	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175, 
+												0.20 	0.30 	0.15 	0.15 	0.10 	0.07 	0.03); 
+							end;
+	when (55 <= age < 65) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175, 
+												0.20 	0.20 	0.20 	0.15 	0.10 	0.10 	0.05); 
+							end;
+	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
+												0.20 	0.20 	0.15 	0.10 	0.10 	0.10 	0.10 	0.05); 
+end;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -2758,11 +2764,11 @@ if start_anti_hyp_this_per = 1 then do;
 /*		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  */
 /*		end;*/
 		select;
-			when (sbp = 145)	sample(effect_anti_hyp, 10 20 30, 		0.2 0.5 0.3);
-			when (sbp = 155)	sample(effect_anti_hyp, 10 20 30 40, 	0.2 0.2 0.3 0.1);
-			when (sbp = 165)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.35 0.05);
-			when (sbp = 175)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.3 0.1);
-			when (sbp = 185)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.2 0.2);
+			when (sbp = 145)	do; %sample(effect_anti_hyp, 10 20 30, 			0.2 0.5 0.3); end;
+			when (sbp = 155)	do; %sample(effect_anti_hyp, 10 20 30 40, 		0.2 0.2 0.3 0.1); end;
+			when (sbp = 165)	do; %sample(effect_anti_hyp, 10 20 30 40 50,	0.2 0.2 0.2 0.35 0.05); end;
+			when (sbp = 175)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.3 0.1); end;
+			when (sbp = 185)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.2 0.2); end;
 		end;
 	end;
 	sbp = sbp - effect_anti_hyp ;
@@ -3459,11 +3465,11 @@ if sw = 1 then do;
 if t ge 2 then do;
 	* probabilities of transitioning to each level, depending on the current one;
 	select;
-		when (newp_tm1 = 0) do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
-		when (1 <= newp_tm1 <= 6) do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
-		when (7 <= newp_tm1 <= 20) do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
+		when (newp_tm1 = 0) 		do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
+		when (1 <= newp_tm1 <= 6) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
+		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
-		when (50 < newp_tm1) do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
+		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
 	end;
 
 	* transition to a new level with these probabilities and select newp;
@@ -15032,16 +15038,16 @@ where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run;
 */
 
 
-/*
 
+/*
 proc print; var cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  ever_on_anti_hyp effect_anti_hyp
 cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
 
 where age ge 15 and ever_on_anti_hyp=1;
 
 run; 
-
 */
+
 
 /*
 
