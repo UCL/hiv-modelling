@@ -10078,7 +10078,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
 	covid = 0; a = uniform(0);
-	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
+	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1; end;
 
 	if covid = 1 and dead ne 1 then do;
 	if 15 <= age < 20 then cov_deathrix = 0.0001  ;
