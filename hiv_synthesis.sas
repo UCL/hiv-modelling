@@ -2149,7 +2149,7 @@ if	higher_future_prep_cov=1 then do;
 						end;	
 
 * prep_strategy;
-						prep_strategy = 9;
+						prep_strategy = 1;
 
 end;
 
@@ -2441,7 +2441,7 @@ end;
 
 * pop_wide_tld_2020;	
 if pop_wide_tld_2020 = 1 then do;
-	pop_wide_tld = 1; prep_strategy = 9;prob_prep_pop_wide_tld = 0.10; 
+	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
 end;
 
@@ -3950,76 +3950,29 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
-	if prep_strategy=1 then do; 
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if prep_strategy=1 then do;
+      r = rand('Uniform');
+      if gender=2 and (sw=1 or 15<=age<25) and 
+         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
 	if prep_strategy=2 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if gender=2 and 15<=age<25 and (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+      r = rand('Uniform');
+      if gender=2 and sw=1 and 
+         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
 	if prep_strategy=3 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if gender=2 and 15<=age<25 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+      r = rand('Uniform');
+      if gender=2 and 15<=age<25 and 
+         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
-	if prep_strategy=4 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if gender=2 and 15<=age<25 and (newp_tm1 ge 1 or (ep_tm1=1 and epvls_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (ep=1 and epvls ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=5 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if gender=2 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and gender=2 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=6 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if 15<=age<25 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if 15<=age<25 and prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=7 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=8 then do;
-	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
-	if (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
-	if prep_ever=1 and (newp ge 2 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=9 then do;
-	if (newp ge 1 or (epdiag=1 and epart ne 1)) and (sw=1 or 15<=age<25) and (gender=2) then prep_elig=1; 
-	end;
-
-	if prep_strategy=10 then do;
-	if (newp ge 1  or newp_tm1 ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
-	end;
-
-	if prep_strategy=11 then do;
-	r = rand('Uniform');
-	if (newp ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and (r < 0.05 or (r < 0.5 and epi=1 )))) then prep_elig=1; 
-	end;
-
-	if prep_strategy=12 then do;
-	r = rand('Uniform');
-	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
-	end;
-
-	if prep_strategy=13 then do;
-	r = rand('Uniform');
-	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
-	end;
+    if prep_strategy=4 then do;
+      r = rand('Uniform');
+      if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      (gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+    end;
 
 	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
 
@@ -12724,8 +12677,8 @@ if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
 
-elig_prep_epdiag=0; if prep_elig=1 and (epdiag=1 and epart ne 1) and ((newp = 0 and prep_strategy=9) or (newp = 0 and newp_tm1 =0 and prep_strategy=10))
-then elig_prep_epdiag=1;
+elig_prep_epdiag=0; if prep_elig=1 and ((epdiag=1 and epart ne 1) or (ep=1 and epart ne 1)) and newp=0 
+	then elig_prep_epdiag=1;
 
 * so can calculate proportion of newp with person on prep;
 newp_prep = 0; if prep=1 then newp_prep=newp;
