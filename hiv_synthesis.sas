@@ -10374,7 +10374,7 @@ cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_m
 
 * DEATH IN UNINFECTED ;
 
-if hiv ne 1 and age >= 15 and dead  =0 and dead_ ne 1 and death =. then do;	 * update_24_4_21;
+if hiv ne 1 and age >= 15 and dead =0 and dead_ ne 1 and death =. then do; * update_24_4_21;
 
 * no death age under 15 - those with age  < 15 dont enter model properly until reach 15;
 * roughly close to zimbabwe - Lopman et al  Bull of the WHO  2006;
