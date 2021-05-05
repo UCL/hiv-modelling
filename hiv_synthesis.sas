@@ -746,7 +746,6 @@ newp_seed = 7;
 
 
 
-
 * PREP;
 
 * PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
@@ -913,7 +912,7 @@ cost_t_adh_int = 0.010;
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
-circ_cost_a = 0.106;  *LBM Jan 2019 VMMC trial 51.34+54.29 =106 ;
+circ_cost_a = 0.90;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder;
 
@@ -1887,10 +1886,12 @@ caldate_never_dot = caldate_never_dot + (1/12);
 
 
  * note that age variable continues to increase after death so need to be aware of death status - dont try to change this without
-careful checking of whether serial_no = obs except where stated below (e.g. updated newp and for people with hiv) we are not conditioning on death ne . so people who are dead
+careful checking of whether serial_no = obs 
+except where stated below (e.g. updated newp and for people with hiv) we are not conditioning on death ne . so people who are dead
 go through most of this code - the counting of attributes for living people only is dealth with in the sum statments in section 5.
 we can insert a "death =." condition on any specific blocks of code below to ensure that dead people do not go through that code
-but that should not be strictly necessary ; 
+but that should not be strictly necessary
+; 
 
 * Variables tracked at previous time steps;
 tested_tm3=tested_tm2; 
@@ -1931,15 +1932,15 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 
 
-* PREP introduction in fsw/agyw 2017; 
+* PREP introduction in fsw/agyw 2018; 
 
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
 
-
-if caldate_never_dot = 2017.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
+*May21 - changed from 2017.25 after Coding Call discussion;
+if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
 value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=9; sens=0; date_prep_intro=2017.25; hivtest_type=3;
+prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
@@ -2014,6 +2015,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		if prep_willing=1 then eff_rate_test_startprep=1;
+		eff_rate_choose_stop_prep=0.05;
 
 		end;
 	end;
@@ -2029,6 +2031,7 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 		eff_rate_test_startprep=rate_test_startprep;
+		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;
 end; 
 
 end;
@@ -2490,6 +2493,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 end;	
 
 
+
 tested_anc=.;
 
 * Jan2017 - modified testing criteria so that prep_tm1 =0 as people previously on prep would only test for prep purposes;
@@ -2599,10 +2603,7 @@ if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 ***Circumcision at birth;
 
-***DHS 2015 states 2/3 of muslim men circumcised, approx 1% muslim population (CIA);
-
-***LBM Nov2019 - above staement is for Zim only, other SSA countries likely to differ. I think code is okay
-   as prob_birth_circ is being sampled;
+***DHS Zimbabwe 2015 states 2/3 of muslim men circumcised, approx 1% muslim population (CIA);
 
 new_mcirc=0; 
 u=uniform(0);
@@ -2761,6 +2762,7 @@ if start_anti_hyp_this_per = 1 then do;
 	end;
 	sbp = sbp - effect_anti_hyp ;
 end;
+
 
 
 
@@ -3674,7 +3676,6 @@ np_ever = 0;
 end;
 
 
-
 * EXISTING PARTNERS;
 
 ep=0; ep= np-newp;
@@ -4222,7 +4223,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and 
 
 			prep   =1; pop_wide_tld_prep=1;  prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 			end;
-	end;*LBM Jul19;
+	end;
 
 	if prep_ever = 1 and dt_prep_s ne caldate{t} then do;   * dependent_on_time_step_length;
 			if r < (1-eff_rate_choose_stop_prep) then do; prep   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; end;
@@ -4241,7 +4242,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and 
 				end;  
 				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
-	end;*LBM Jul19;
+	end;
 end;
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
@@ -9972,7 +9973,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 	* DEATH - causes:  who4=1 / non-HIV =2 ;
 	
-	if dead=0 and death = . and dead_ ne 1 then do; * update_24_4_21;
+	if dead=0 and death = . and dead_ ne 1 then do;  * update_24_4_21;
 
 	dead_diagnosed=.; dead_naive=.; dead_onart=.; dead_line1_lf0=.; dead_line1_lf1=.; dead_line2_lf1=.; dead_line2_lf2=.; dead_artexpoff=.; dead_nn=.;dead_pir=.;
 	dead_adc=.;  dead_oth_adc=.; dead_crypm=.; dead_sbi=.;
@@ -10047,7 +10048,7 @@ so a proportion (15%) are classified as non-who4_;
 
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
-CVD death ~ 10% of deaths in > 50?s  3% in 15-49?s
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 ;
@@ -10423,13 +10424,18 @@ at time zero is the same as that in later years;
 
 * this is called all-cause (ac) death but it now refers to non-hiv, non-tb, non-cvd, non-covid death;
 
+
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
-CVD death ~ 10% of deaths in > 50?s  3% in 15-49?s
+
+CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
-TB death ~ 7% of deaths in > 15?s
+
+TB death ~ 7% of deaths in > 15’s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)    Cause-specific mortality in the Kombewa health
+
 so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 
