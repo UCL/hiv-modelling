@@ -755,7 +755,7 @@ if prep_willing=1;
 
 * annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
 * prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
-* factor_prep_adh_older;	factor_prep_adh_older=0.5; 	* factor determining how much higher adh to prep is in people age > 25 than < 25; 
+* rel_prep_adh_younger;		rel_prep_adh_younger=0.7; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
 * rate_test_onprep;			rate_test_onprep=1.00; 		* Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
 							* dependent_on_time_step_length ;
 * pr_prep_b;				pr_prep_b=0.75; 			* 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
@@ -1088,8 +1088,6 @@ drop i;
 data r1; set r1;
 
 
-/*s=uniform(0);*/
-/*if s < 0.5 then gender=1; else gender=2;*/
 %sample_uniform(gender, 1 2);
 
 if gender ne . then do; obs+1; end;
@@ -1520,26 +1518,32 @@ if e < 0.03 then hbv=1;
 
 * define sbp in 1989 ;  * update_24_4_21;
 
-if age < 25 then do; r=uniform(0); if r < 0.4 then sbp = 115 ;  if 0.4 <= r < 0.8 then sbp = 125 ; if 0.8 <= r       then sbp = 135 ;  end;
-if 25 <= age < 35 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.7 then sbp = 125 ; if 0.7 <= r       then sbp = 135 ;  end;
-if 35 <= age < 45 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.7 then sbp = 135 ; 
-		 if 0.7 <= r < 0.9 then sbp = 145 ; if 0.9 <= r       then sbp = 155 ; end;
-if 45 <= age < 55 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.65 then sbp = 135 ; 
-		 if 0.65 <= r < 0.8 then sbp = 145 ; if 0.8 <= r < 0.9 then sbp = 155 ;  if 0.9 <= r < 0.97 then sbp = 165 ; if 0.97 <= r  then sbp = 175 ; end;
-if 55 <= age < 65   then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.6 then sbp = 135 ; 
-		 if 0.6 <= r < 0.75 then sbp = 145 ; if 0.75 <= r < 0.85 then sbp = 155 ;  if 0.85 <= r < 0.95 then sbp = 165 ; if 0.95 <= r  then sbp = 175 ; end;
-if 65 <= age        then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.55 then sbp = 135 ; 
-		 if 0.55 <= r < 0.65 then sbp = 145 ; if 0.65 <= r < 0.75 then sbp = 155 ;  if 0.75 <= r < 0.85 then sbp = 165 ; if 0.85 <= r < 95 then sbp = 175 ; 
-		 if 0.95 <= r  then sbp = 185 ; end;
+/*if age < 25 then do; r=uniform(0); if r < 0.4 then sbp = 115 ;  if 0.4 <= r < 0.8 then sbp = 125 ; if 0.8 <= r       then sbp = 135 ;  end;*/
+/*if 25 <= age < 35 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.7 then sbp = 125 ; if 0.7 <= r       then sbp = 135 ;  end;*/
+/*if 35 <= age < 45 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.7 then sbp = 135 ; */
+/*		 if 0.7 <= r < 0.9 then sbp = 145 ; if 0.9 <= r       then sbp = 155 ; end;*/
+/*if 45 <= age < 55 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.65 then sbp = 135 ; */
+/*		 if 0.65 <= r < 0.8 then sbp = 145 ; if 0.8 <= r < 0.9 then sbp = 155 ;  if 0.9 <= r < 0.97 then sbp = 165 ; if 0.97 <= r  then sbp = 175 ; end;*/
+/*if 55 <= age < 65   then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.6 then sbp = 135 ; */
+/*		 if 0.6 <= r < 0.75 then sbp = 145 ; if 0.75 <= r < 0.85 then sbp = 155 ;  if 0.85 <= r < 0.95 then sbp = 165 ; if 0.95 <= r  then sbp = 175 ; end;*/
+/*if 65 <= age        then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.55 then sbp = 135 ; */
+/*		 if 0.55 <= r < 0.65 then sbp = 145 ; if 0.65 <= r < 0.75 then sbp = 155 ;  if 0.75 <= r < 0.85 then sbp = 165 ; if 0.85 <= r < 95 then sbp = 175 ; */
+/*		 if 0.95 <= r  then sbp = 185 ; end;*/
 
-/*select;*/
-/*	when (age < 25) 		sample(sbp, 115 125 135, 0.4 0.4 0.2);*/
-/*	when (25 <= age < 35) 	sample(sbp, 115 125 135, 0.2 0.5 0.3);*/
-/*	when (35 <= age < 45) 	sample(sbp, 115 125 135 145 155, 0.2 0.3 0.2 0.2 0.1);*/
-/*	when (45 <= age < 55) 	sample(sbp, 115 125 135 145 155 165 175, 0.2 0.3 0.15 0.15 0.1 0.07 0.03);*/
-/*	when (55 <= age < 65) 	sample(sbp, 115 125 135 145 155 165 175, 0.2 0.2 0.2 0.15 0.1 0.1 0.05);*/
-/*	when (65 <= age) 		sample(sbp, 115 125 135 145 155 165 175 185, 0.2 0.2 0.15 0.1 0.1 0.1 0.1 0.05);*/
-/*end;*/
+select;
+	when (age < 25) 		sample(sbp, 115		125 	135, 
+										0.40 	0.40 	0.20);
+	when (25 <= age < 35) 	sample(sbp, 115 	125 	135, 
+										0.20 	0.50 	0.30);
+	when (35 <= age < 45) 	sample(sbp, 115 	125 	135 	145 	155,
+										0.20 	0.30 	0.20 	0.20 	0.1);
+	when (45 <= age < 55) 	sample(sbp, 115 	125 	135 	145 	155 	165 	175, 
+										0.20 	0.30 	0.15 	0.15 	0.10 	0.07 	0.03);
+	when (55 <= age < 65) 	sample(sbp, 115 	125 	135 	145 	155 	165 	175, 
+										0.20 	0.20 	0.20 	0.15 	0.10 	0.10 	0.05);
+	when (65 <= age) 		sample(sbp, 115 	125 	135 	145 	155 	165 	175 	185, 
+										0.20 	0.20 	0.15 	0.10 	0.10 	0.10 	0.10 	0.05);
+end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
 diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
@@ -2010,6 +2014,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 
 		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
+
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
@@ -2733,35 +2738,36 @@ if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_st
 if start_anti_hyp_this_per = 1 then do;
 	sbp_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t};on_anti_hypertensive =1; 
 	if effect_anti_hyp = . then do;
-		if sbp = 145 then do;
-			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  
-		end;
-		if sbp = 155 then do;
-			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  
-		if 0.9 <= ah  then effect_anti_hyp = 40;  
-		end;
-		if sbp = 165 then do;
-			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-		if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  
-		end;
-		if sbp = 175 then do;
-			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-		if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  
-		end;
-		if sbp = 185 then do;
-			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  
-		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  
-		end;
-/*		select;*/
-/*			when (sbp = 145)	sample(effect_anti_hyp, 10 20 30, 		0.2 0.5 0.3);*/
-/*			when (sbp = 155)	sample(effect_anti_hyp, 10 20 30 40, 	0.2 0.2 0.3 0.1);*/
-/*			when (sbp = 165)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.35 0.05);*/
-/*			when (sbp = 175)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.3 0.1);*/
-/*			when (sbp = 185)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.2 0.2);*/
+/*		if sbp = 145 then do;*/
+/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  */
 /*		end;*/
+/*		if sbp = 155 then do;*/
+/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  */
+/*		if 0.9 <= ah  then effect_anti_hyp = 40;  */
+/*		end;*/
+/*		if sbp = 165 then do;*/
+/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
+/*		if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  */
+/*		end;*/
+/*		if sbp = 175 then do;*/
+/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
+/*		if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  */
+/*		end;*/
+/*		if sbp = 185 then do;*/
+/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
+/*		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  */
+/*		end;*/
+		select;
+			when (sbp = 145)	sample(effect_anti_hyp, 10 20 30, 		0.2 0.5 0.3);
+			when (sbp = 155)	sample(effect_anti_hyp, 10 20 30 40, 	0.2 0.2 0.3 0.1);
+			when (sbp = 165)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.35 0.05);
+			when (sbp = 175)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.3 0.1);
+			when (sbp = 185)	sample(effect_anti_hyp, 10 20 30 40 50, 0.2 0.2 0.2 0.2 0.2);
+		end;
 	end;
 	sbp = sbp - effect_anti_hyp ;
 end;
+
 
 
 
@@ -3951,28 +3957,28 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=1 then do;
-      r = rand('Uniform');
-      if gender=2 and (sw=1 or 15<=age<25) and 
-         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and (sw=1 or 15<=age<25) and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
 	if prep_strategy=2 then do;
-      r = rand('Uniform');
-      if gender=2 and sw=1 and 
-         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and sw=1 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
 	if prep_strategy=3 then do;
-      r = rand('Uniform');
-      if gender=2 and 15<=age<25 and 
-         (newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		r = rand('Uniform');
+		if gender=2 and 15<=age<25 and 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
 	end;
 
-    if prep_strategy=4 then do;
-      r = rand('Uniform');
-      if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      (gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
-    end;
+	if prep_strategy=4 then do;		* previously prep_strategy 13 *Apr2021 ;
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+	end;
 
 	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
 
@@ -4249,9 +4255,9 @@ if prep = 1 then do;
 	if adhav_prep=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
-	if age > 25 then do;
+	if age < 25 then do;		* JAS Apr2021 ;
 		f=uniform(0);
-		if f<0.5 then adh = adh + ((1-adh) * factor_prep_adh_older) ;
+		if f<0.5 then adh = adh * rel_prep_adh_younger ;
 	end;
 end;
 
@@ -10001,8 +10007,10 @@ so a proportion (15%) are classified as non-who4_;
 
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
+
 CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
-* kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
+* kombewa kenya dhs 2011-2015 (includes AIDS deaths) 
+ 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 ;
 
@@ -10366,7 +10374,7 @@ cost_child_hiv_mo_art = 0; if ev_birth_with_inf_ch_onart=1 then cost_child_hiv_m
 
 * DEATH IN UNINFECTED ;
 
-if hiv ne 1 and age >= 15 and dead =0 and dead_ ne 1 and death =. then do; * update_24_4_21;
+if hiv ne 1 and age >= 15 and dead =0 and dead_ ne 1 and death =. then do;	* update_24_4_21;
 
 * no death age under 15 - those with age  < 15 dont enter model properly until reach 15;
 * roughly close to zimbabwe - Lopman et al  Bull of the WHO  2006;
@@ -10376,7 +10384,6 @@ at time zero is the same as that in later years;
  * dependent_on_time_step_length ;
 
 * this is called all-cause (ac) death but it now refers to non-hiv, non-tb, non-cvd, non-covid death;
-
 
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
@@ -12677,8 +12684,7 @@ if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
 
-elig_prep_epdiag=0; if prep_elig=1 and ((epdiag=1 and epart ne 1) or (ep=1 and epart ne 1)) and newp=0 
-	then elig_prep_epdiag=1;
+elig_prep_epdiag=0; if prep_elig=1 and ((epdiag=1 and epart ne 1) or (ep=1 and epart ne 1)) and newp=0 then elig_prep_epdiag=1;
 
 * so can calculate proportion of newp with person on prep;
 newp_prep = 0; if prep=1 then newp_prep=newp;
@@ -17212,7 +17218,7 @@ end;
 
 data x; set cum_l1;
 
-*file "/home/rmjxxx/Scratch/_output_base_24_03_21_&dataset_id";  
+*file "/home/rmjxxx/Scratch/_output_base_29_04_21_&dataset_id";  
 
 put   
 
