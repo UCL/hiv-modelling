@@ -1538,7 +1538,7 @@ select;
 												0.20 	0.50 	0.30); 
 							end;
 	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155,
-												0.20 	0.30 	0.20 	0.20 	0.1); 
+												0.20 	0.30 	0.20 	0.20 	0.10); 
 							end;
 	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175, 
 												0.20 	0.30 	0.15 	0.15 	0.10 	0.07 	0.03); 
@@ -1548,7 +1548,7 @@ select;
 							end;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
 												0.20 	0.20 	0.15 	0.10 	0.10 	0.10 	0.10 	0.05); 
-end;
+							end;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -15038,16 +15038,16 @@ where gender=1 and 60 <= age < 99 and (death = . or caldate&j = death); run;
 */
 
 
-
 /*
+
 proc print; var cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  ever_on_anti_hyp effect_anti_hyp
 cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
 
 where age ge 15 and ever_on_anti_hyp=1;
 
 run; 
-*/
 
+*/
 
 /*
 
@@ -17225,7 +17225,7 @@ end;
 
 data x; set cum_l1;
 
-*file "/home/rmjxxx/Scratch/_output_base_29_04_21_&dataset_id";  
+*file "/home/rmjlxxx/Scratch/_output_base_29_04_21_&dataset_id";  
 
 put   
 
