@@ -585,6 +585,9 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ; 
 
 
+if option =0 or option = 3;
+
+
 * run sent to jeff - if run = 162349469 ;
 
 * note need to keep one s_n ! ;
@@ -1139,6 +1142,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
+
+  if option = 0 or option = 3 ;
 
 
 proc freq; tables run; 

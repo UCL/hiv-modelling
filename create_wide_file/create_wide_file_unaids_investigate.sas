@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_22_4_21_allvs";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
@@ -588,12 +588,11 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * if option = 0 or option = 3 or option=4;  * option = 4 only applies to allvs ;
   if option = 0 or option = 3 ;
 
-/*
+
 
 data d2;  
 
   infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_2";  
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
 input   
 
@@ -1143,7 +1142,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 if option = 0 or option = 3;
 
-*/
 
 
 * run sent to jeff - if run = 162349469 ;
@@ -1154,8 +1152,8 @@ if option = 0 or option = 3;
 proc freq; tables run; 
 
 data a; 
-  set d1 ; 
-* set d1 d2 ;
+*set d1 ; 
+  set d1 d2 ;
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
@@ -2006,7 +2004,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_17_9_20_6pm_orig; set y;  * unaids_17_9_20_6pm_22_4_21_2_allvs   unaids_17_9_20_6pm_22_4_21_1a2;
+data unaids_17_9_20_6pm_22_4_21_1a2; set y;  * unaids_17_9_20_6pm_22_4_21_2_allvs   unaids_17_9_20_6pm_22_4_21_1a2;
 
 proc contents; run;
 
@@ -2015,7 +2013,7 @@ proc contents; run;
 
 
 
-data x; set unaids_17_9_20_6pm_orig; * unaids_17_9_20_6pm_22_4_21_2_allvs  unaids_17_9_20_6pm_22_4_21_1a2;
+data x; set unaids_17_9_20_6pm_22_4_21_1a2; * unaids_17_9_20_6pm_22_4_21_2_allvs  unaids_17_9_20_6pm_22_4_21_1a2;
 
 
   options nomprint;
@@ -2212,7 +2210,7 @@ run;
 proc sort; by run;run;
 
 
-  data a.w_unaids_17_9_20_6pm_orig ;  * a.w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_22_4_21_1a2; 
+  data a.w_unaids_17_9_20_22_4_21_1a2;  * a.w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_22_4_21_1a2; 
 
   merge wide_misc wide_par ;  
   by run;run;
@@ -2220,11 +2218,15 @@ proc sort; by run;run;
 proc contents; run; 
 
 
-data e; set a.w_unaids_17_9_20_6pm_orig ; 
-* w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 w_unaids_17_9_20_6pm_5reps_ex w_unaids_17_9_20_22_4_21_1a2;
+data e; set a.w_unaids_17_9_20_22_4_21_1a2 ; 
+* w_unaids_17_9_20_6pm_22_4_21_2 w_unaids_17_9_20_6pm_investigate w_unaids_17_9_20_6pm_22_4_21 
+w_unaids_17_9_20_6pm_5reps_ex w_unaids_17_9_20_22_4_21_1a2;
 
 w = (1 - (incidence1549_21_1 / incidence1549_21_2)) ; 
 
+omega_onart = w / p_onart_20_1;
+omega_vl1000 = w / p_vl1000_20_1;
+omega_vl500_newp = w / p_vl500_newp_20_1;
 
 proc univariate; var incidence1549_21_2 incidence1549_21_1 ; run;
 
@@ -2240,21 +2242,30 @@ run;
 proc glm; 
 model w = p_onart_20_1  / solution ; run; * l_r_incidence1549_22  prevalence_vg1000_20_1  p_onart_20_1   p_vl500_newp_20_1  p_vl1000_20_1 ;
 
-proc corr spearman; var p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1  ; run;
+proc corr spearman; var w p_vl1000_20_1  prevalence_vg1000_20_1  p_vl500_newp_20_1   p_onart_20_1  ; run;
 
+proc univariate; var omega_onart omega_vl1000 omega_vl500_newp ; run;
 
 ods html;
+
 proc sgplot ;
-  scatter x=p_vl500_newp_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
-  xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+  scatter x=p_onart_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
+  xaxis label			= 'p_onart_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= '(1 – (incidence / incidence without effect of ART on transmission)) '		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 run;
 
 proc sgplot ;
   scatter x=p_vl1000_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
   xaxis label			= 'p_vl1000_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'w'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= '(1 – (incidence / incidence without effect of ART on transmission)) '		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 run;
+
+proc sgplot ;
+  scatter x=p_vl500_newp_20_1 y= w ; * p_vl500_newp_20_1   l_r_incidence1549_21_2 ;
+  xaxis label			= 'p_vl500_newp_20_1'		labelattrs=(size=12)  values = (0 to 1 by 0.1)	 	 valueattrs=(size=10); 
+yaxis grid label	= '(1 – (incidence / incidence without effect of ART on transmission)) '		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+run;
+
 
 ods html close;
 
