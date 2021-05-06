@@ -2769,6 +2769,7 @@ if start_anti_hyp_this_per = 1 then do;
 			when (sbp = 165)	do; %sample(effect_anti_hyp, 10 20 30 40 50,	0.2 0.2 0.2 0.35 0.05); end;
 			when (sbp = 175)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.3 0.1); end;
 			when (sbp = 185)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.2 0.2); end;
+			otherwise			effect_anti_hyp=.;
 		end;
 	end;
 	sbp = sbp - effect_anti_hyp ;
@@ -17225,7 +17226,8 @@ end;
 
 data x; set cum_l1;
 
-*file "/home/rmjlxxx/Scratch/_output_base_29_04_21_&dataset_id";  
+file "/home/rmjlxxx/Scratch/_output_base_29_04_21_&dataset_id";  
+
 
 put   
 
