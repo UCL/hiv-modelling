@@ -252,7 +252,7 @@ set c;
 proc means n mean p50 p5 p95 lclm uclm;var 
 p_vmmc_1549m_21_26_1  p_vmmc_1549m_21_41_1  p_vmmc_1549m_21_71_1
 p_vmmc_1549m_21_26_2  p_vmmc_1549m_21_41_2  p_vmmc_1549m_21_71_2
-p_vmmc_inc1014m_21_26_1  p_vmmc_inc1014m_21_41_1  p_vmmc_inc1014m_21_71_1
+/*p_vmmc_inc1014m_21_26_1  p_vmmc_inc1014m_21_41_1  p_vmmc_inc1014m_21_71_1
 p_vmmc_inc1014m_21_26_2  p_vmmc_inc1014m_21_41_2  p_vmmc_inc1014m_21_71_2
 p_vmmc_1014m_21_26_1  p_vmmc_1014m_21_41_1  p_vmmc_1014m_21_71_1
 p_vmmc_1014m_21_26_2  p_vmmc_1014m_21_41_2  p_vmmc_1014m_21_71_2
@@ -265,7 +265,7 @@ p_vmmc_2529m_21_26_2  p_vmmc_2529m_21_41_2  p_vmmc_2529m_21_71_2
 p_vmmc_3039m_21_26_1  p_vmmc_3039m_21_41_1  p_vmmc_3039m_21_71_1
 p_vmmc_3039m_21_26_2  p_vmmc_3039m_21_41_2  p_vmmc_3039m_21_71_2
 p_vmmc_4049m_21_26_1  p_vmmc_4049m_21_41_1  p_vmmc_4049m_21_71_1
-p_vmmc_4049m_21_26_2  p_vmmc_4049m_21_41_2  p_vmmc_4049m_21_71_2
+p_vmmc_4049m_21_26_2  p_vmmc_4049m_21_41_2  p_vmmc_4049m_21_71_2*/
 ;run;
 
 ***difference in vmmc rates according to option - Figure 1a;
