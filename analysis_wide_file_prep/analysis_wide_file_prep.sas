@@ -1085,6 +1085,7 @@ proc freq data=wide;   tables    ce_500_x     / nocum norow binomial; * exact bi
 * where p_prep_adhg80_21_26_2 < 0.5 ;
 * where r_p_newp_ge1_age1549_21 > 1 ;
 * where 0.73 <= p_vl1000_21 < 0.99 ;
+  where 0.06 <= p_newp_ge1_age1549_21 < 1.00; 
 run; 
   ods html close;
 
