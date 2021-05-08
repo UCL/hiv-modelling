@@ -3,7 +3,6 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;  
-* set a.wide_prep_29_jan_21_1  a.wide_prep_29_jan_21_2  ; 
 * set a.wide_prep_29_jan_21_prep_eff_0 ;
 * set a.wide_prep_29_jan_21_dis7p_1  a.wide_prep_29_jan_21_dis7p_2  ; 
 * set a.wide_prep_29_jan_21_1_ps12 ;
@@ -276,6 +275,15 @@ if 3     <= av_newp_ge1_non_sw_21         then av_newp_ge1_non_sw_21_g  = 3;
 
 av_newp_ge1_non_sw_21_g2 = 0; if av_newp_ge1_non_sw_21_g = 2 then av_newp_ge1_non_sw_21_g2 = 1;
 av_newp_ge1_non_sw_21_g3 = 0; if av_newp_ge1_non_sw_21_g = 3 then av_newp_ge1_non_sw_21_g3 = 1;
+
+if 0 <=  p_newp_ge1_age1549_21 < 0.02 then p_newp_ge1_age1549_21_g = 1;
+if 0.02 <=  p_newp_ge1_age1549_21 < 0.04 then p_newp_ge1_age1549_21_g = 2;
+if 0.04 <=  p_newp_ge1_age1549_21 < 0.06 then p_newp_ge1_age1549_21_g = 3;
+if 0.06 <=  p_newp_ge1_age1549_21        then p_newp_ge1_age1549_21_g = 4;
+
+p_newp_ge1_age1549_21_g2 = 0; if p_newp_ge1_age1549_21_g = 2 then p_newp_ge1_age1549_21_g2 = 1;
+p_newp_ge1_age1549_21_g3 = 0; if p_newp_ge1_age1549_21_g = 3 then p_newp_ge1_age1549_21_g3 = 1;
+p_newp_ge1_age1549_21_g4 = 0; if p_newp_ge1_age1549_21_g = 4 then p_newp_ge1_age1549_21_g4 = 1;
 
 dcost_prep_drug_vis_21_26_1 = dcost_prep_21_26_1 + dcost_prep_visit_21_26_1 ;
 dcost_prep_drug_vis_21_26_2 = dcost_prep_21_26_2 + dcost_prep_visit_21_26_2 ;
@@ -1113,15 +1121,45 @@ p_mcirc_1549m_21_g3
 
 av_newp_ge1_non_sw_21_g2 
 av_newp_ge1_non_sw_21_g3
+
+p_newp_ge1_age1549_21_g2
+p_newp_ge1_age1549_21_g3
+p_newp_ge1_age1549_21_g4
  
 ;
 run;
 
 data r; set out; 
-proc sort; by av_newp_ge1_non_sw_21_g p_mcirc_1549m_21_g prevalence_vg1000_21_g ;
+proc sort; by prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  p_mcirc_1549m_21_g ;
 proc print; 
-var av_newp_ge1_non_sw_21_g p_mcirc_1549m_21_g prevalence_vg1000_21_g predicted; 
+var prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  p_mcirc_1549m_21_g  predicted; 
 run; 
+
+
+
+
+* model used to produce figure 2; * ce_100_x ;
+proc logistic  data=wide  ;
+output out = out predicted=predicted;
+model ce_500_x = 
+
+prevalence_vg1000_21_g2
+prevalence_vg1000_21_g3
+prevalence_vg1000_21_g4
+prevalence_vg1000_21_g5
+ 
+;
+run;
+
+data r; set out; 
+proc sort; by prevalence_vg1000_21_g  ;
+proc print; 
+var prevalence_vg1000_21_g   predicted; 
+run; 
+
+
+
+
 
 
 
@@ -1163,11 +1201,14 @@ output out = out predicted=predicted;
 model ce_500_x = 
 prevalence_vg1000_21
 p_mcirc_1549m_21
-av_newp_ge1_21
-p_m_newp_ge1_age1549_21
+av_newp_ge1_non_sw_21
+p_newp_ge1_age1549_21 
 ;
 run;
 
+* 
+av_newp_ge1_non_sw_21
+p_newp_ge1_age1549_21 ;
 
 *
 av_newp_ge1_non_sw_21
