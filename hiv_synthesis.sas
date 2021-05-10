@@ -1518,19 +1518,7 @@ if e < 0.03 then hbv=1;
 
 * define sbp in 1989 ;  * update_24_4_21;
 
-/*if age < 25 then do; r=uniform(0); if r < 0.4 then sbp = 115 ;  if 0.4 <= r < 0.8 then sbp = 125 ; if 0.8 <= r       then sbp = 135 ;  end;*/
-/*if 25 <= age < 35 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.7 then sbp = 125 ; if 0.7 <= r       then sbp = 135 ;  end;*/
-/*if 35 <= age < 45 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.7 then sbp = 135 ; */
-/*		 if 0.7 <= r < 0.9 then sbp = 145 ; if 0.9 <= r       then sbp = 155 ; end;*/
-/*if 45 <= age < 55 then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.5 then sbp = 125 ; if 0.5 <= r < 0.65 then sbp = 135 ; */
-/*		 if 0.65 <= r < 0.8 then sbp = 145 ; if 0.8 <= r < 0.9 then sbp = 155 ;  if 0.9 <= r < 0.97 then sbp = 165 ; if 0.97 <= r  then sbp = 175 ; end;*/
-/*if 55 <= age < 65   then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.6 then sbp = 135 ; */
-/*		 if 0.6 <= r < 0.75 then sbp = 145 ; if 0.75 <= r < 0.85 then sbp = 155 ;  if 0.85 <= r < 0.95 then sbp = 165 ; if 0.95 <= r  then sbp = 175 ; end;*/
-/*if 65 <= age        then do; r=uniform(0); if r < 0.2 then sbp = 115 ;  if 0.2 <= r < 0.4 then sbp = 125 ; if 0.4 <= r < 0.55 then sbp = 135 ; */
-/*		 if 0.55 <= r < 0.65 then sbp = 145 ; if 0.65 <= r < 0.75 then sbp = 155 ;  if 0.75 <= r < 0.85 then sbp = 165 ; if 0.85 <= r < 95 then sbp = 175 ; */
-/*		 if 0.95 <= r  then sbp = 185 ; end;*/
-
-select;
+select;	* JAS May2021 ;
 	when (age < 25) 		do; %sample(sbp,	115		125 	135, 
 												0.40 	0.40 	0.20); 
 							end;
@@ -2744,26 +2732,7 @@ if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_st
 if start_anti_hyp_this_per = 1 then do;
 	sbp_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t};on_anti_hypertensive =1; 
 	if effect_anti_hyp = . then do;
-/*		if sbp = 145 then do;*/
-/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.7 then effect_anti_hyp = 20; if 0.7 <= ah then effect_anti_hyp = 30;  */
-/*		end;*/
-/*		if sbp = 155 then do;*/
-/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.9 then effect_anti_hyp = 30;  */
-/*		if 0.9 <= ah  then effect_anti_hyp = 40;  */
-/*		end;*/
-/*		if sbp = 165 then do;*/
-/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
-/*		if 0.6 <= ah < 0.95 then effect_anti_hyp = 40;  if 0.95 <= ah   then effect_anti_hyp = 50;  */
-/*		end;*/
-/*		if sbp = 175 then do;*/
-/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
-/*		if 0.6 <= ah < 0.90 then effect_anti_hyp = 40;  if 0.90 <= ah   then effect_anti_hyp = 50;  */
-/*		end;*/
-/*		if sbp = 185 then do;*/
-/*			if ah < 0.2 then effect_anti_hyp = 10; if 0.2 <= ah < 0.4 then effect_anti_hyp = 20; if 0.4 <= ah < 0.6 then effect_anti_hyp = 30;  */
-/*		if 0.6 <= ah < 0.80 then effect_anti_hyp = 40;  if 0.80 <= ah   then effect_anti_hyp = 50;  */
-/*		end;*/
-		select;
+		select;		* JAS May2021 ;
 			when (sbp = 145)	do; %sample(effect_anti_hyp, 10 20 30, 			0.2 0.5 0.3); end;
 			when (sbp = 155)	do; %sample(effect_anti_hyp, 10 20 30 40, 		0.2 0.2 0.3 0.1); end;
 			when (sbp = 165)	do; %sample(effect_anti_hyp, 10 20 30 40 50,	0.2 0.2 0.2 0.35 0.05); end;
