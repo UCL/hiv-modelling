@@ -648,6 +648,7 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
+
 ;
 
 proc freq;table option;where cald ge 2021 ;run;
@@ -959,7 +960,7 @@ proc sgplot data=e;
 Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000 )  valueattrs=(size=10);
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
 label p50_n_sw_1549_1_	                  = "model age 15-49 (median)";
 
 label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
