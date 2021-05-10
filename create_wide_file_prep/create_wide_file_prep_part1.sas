@@ -673,7 +673,7 @@ prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox   
   adh_pattern_prep  
   base_rate_sw  
   condom_incr_2020  
-  cascade_care_improvements   
+  cascade_care_improvements   fold_tr_newp
           
   incr_test_2020  
   decr_hard_reach_2020   
