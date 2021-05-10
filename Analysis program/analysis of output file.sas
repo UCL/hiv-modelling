@@ -6,15 +6,6 @@ set a.wide_fsw_22_02_21_8am ;
 
 
 
-
-
-
-
-
-
-
-
-
 ***table 1;
 proc means n p50 p5 p95;var
 prevalence1549_15 prevalence1549m_15 prevalence1549w_15

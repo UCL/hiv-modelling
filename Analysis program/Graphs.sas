@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_26_04_21";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_06_05_21";
 
 input 
 /*general*/
@@ -951,7 +951,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\28April 2021.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\10May2021.doc' startpage=never; 
 
 
 
