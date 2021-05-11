@@ -763,9 +763,6 @@ if prep_willing=1;
 							* dependent_on_time_step_length ;
 * prob_prep_visit_counsel;	prob_prep_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
 * add_prepuptake_sw;		add_prepuptake_sw=0; 		***this may be sampled at a later date;
-
-* prob_prep_restart_choice;	prob_prep_restart_choice=0.10; 	* probability of restarting PrEP after discontinuation even when newp>1;
-							* dependent_on_time_step_length ; 
 * pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 							* dependent_on_time_step_length ;
 
@@ -776,10 +773,8 @@ if prep_willing=1;
 * rate_test_restartprep;  	%sample_uniform(rate_test_restartprep, 0.5 0.8);
 							* dependent_on_time_step_length ;
 * rate_choose_stop_prep; 	%sample_uniform(rate_choose_stop_prep, 0.05 0.15 0.30);
-								if 0.67 <= r        then rate_choose_stop_prep = 0.30;*/
 							* dependent_on_time_step_length ;
 * prob_prep_restart_choice; %sample_uniform(prob_prep_restart_choice, 0.05 0.10 0.20);
-							if 0.67 <= r then prob_prep_restart_choice=0.20;*/
 							* dependent_on_time_step_length ;
 * prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 							*Probability of PrEP uptake if eligible for general population;
