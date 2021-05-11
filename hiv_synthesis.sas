@@ -5949,7 +5949,7 @@ naive=1;
 primary infection and hence stop prep;  
 * lapr - the same should happen with lapr - except there will be the tail of cab drug levels for several months 
 after stopping - this should be fine so long as person immediately starts art ;
-* dpv-vr 
+* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check)
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
@@ -5961,7 +5961,7 @@ if t ge 2 then do;
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
 			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
-			if prep   =1 and pop_wide_tld_prep ne 1 then do;
+			if prep   =1 and pop_wide_tld_prep ne 1 then do;	* lapr and dpv-vr - will need to add code here to indicate that cabotegravir / dapivirine monotherapy stopped;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;
 		end;
@@ -5981,7 +5981,7 @@ end;
 
 * note these lines only apply in period of infection;
 
-if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;
+if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;	* lapr and dpv-vr - add code for o_cab = 1, o_dpv = 1, etc;
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 
@@ -6050,7 +6050,7 @@ visit_tm1=visit;
    
 	if onart   =1 then tcur   =tcur_tm1 +0.25;   
 * ts1m:  	if onart   =1 then tcur   =tcur_tm1  + (1/12) ;
-	if prep   =1 then tcur =  tcur_tm1 +0.25;   
+	if prep   =1 then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - I think we would need equivalent code for lapr and dpv-vr; 
 * ts1m:  	if prep   =1 then tcur   =tcur_tm1  + (1/12) ;
 
 	if prep   =0 and caldate{t} ge date_prep_intro and onart    ne 1 then tcur   =.;
@@ -6069,7 +6069,7 @@ visit_tm1=visit;
 
 
 	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
-	if prep = 1 and pop_wide_tld_prep = 1 then do;
+	if prep = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
 	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
@@ -6110,7 +6110,7 @@ visit_tm1=visit;
  * ts1m:
 		toffart=toffart_tm1+ (1/12);   
 
-		if prep    ne 1 then do;
+		if prep    ne 1 then do;	* lapr and dpv-vr  - any changes needed ?;
 			if interrupt_supply_tm1 =1 then interrupt_supply   =1;
 			if interrupt_choice_tm1 =1 then interrupt_choice   =1;
 		end;
@@ -6221,7 +6221,8 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;
+if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;	
+	* lapr and dpv-vr - will need to do a similar thing for o_cab and o_dpv; 
 if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 
@@ -6272,7 +6273,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			* some lost straight after diagnosis (unless already on tld);
 			d=uniform(0);  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
-			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;
+			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;	  * lapr and dpv-vr - not sure this part needs any changes;
 					if d < e_eff_prob_loss_at_diag      then do; visit=0; lost   =1; end;
 					if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then do; 
 					if d < e_eff_prob_loss_at_diag*1.5      then do; visit=0; lost   =1; end; * mar19;
@@ -6293,7 +6294,8 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep = 0;  end;
 
 
-* AP 21-7-19; * dont stop if have been taking tld prep ;
+* AP 21-7-19; * dont stop if have been taking tld prep ; 
+	* lapr and dpv-vr - needs code adding for o_cab and o_dpv - also distinguish between infected_cab and infected_dpv?;
 	if (infected_prep=1 or (hiv=1 and prep = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
 	end;
