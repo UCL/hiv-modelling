@@ -5439,7 +5439,7 @@ end;
 com_test=.;
 if tested=1 and hiv ne 1 then do;
 	cost_test= cost_test_c;
-	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;
+	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
 	unispec=uniform(0);
@@ -5828,6 +5828,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
+	* lapr and dpv-vr - we will need a line here below for lapr and dpv-vr;
 if prep   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
 
@@ -5900,6 +5901,9 @@ naive=1;
 *If HIV test type=3 (window period=3 months) then dont get diagnosed during primary infection ;
 *If HIV test type=4 (window period=1 months) or HIV test type=1 (window period=10 days) then can get diagnosed during 
 primary infection and hence stop prep;  
+* lapr - the same should happen with lapr - except there will be the tail of cab drug levels for several months 
+after stopping - this should be fine so long as person immediately starts art ;
+* dpv-vr 
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
