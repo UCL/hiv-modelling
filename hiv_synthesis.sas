@@ -752,24 +752,36 @@ newp_seed = 7;
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
 if prep_willing=1;
+* lapr and dpv-vr - assume following all apply unless stated ;
+
 
 * annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
 * prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
+														* lapr - define lapr_efficacy;
+														* dpv-vr - define dpv_efficacy;
 * rel_prep_adh_younger;		rel_prep_adh_younger=0.7; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
+														* lapr and dpv-vr - may need to define different values;
 * rate_test_onprep;			rate_test_onprep=1.00; 		* Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
 							* dependent_on_time_step_length ;
 * pr_prep_b;				pr_prep_b=0.75; 			* 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
+														* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_b - we may need to 
+														redefine prep_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * prob_prep_restart;		prob_prep_restart=1.00; 	* set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
 							* dependent_on_time_step_length ;
 * prob_prep_visit_counsel;	prob_prep_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
 * add_prepuptake_sw;		add_prepuptake_sw=0; 		***this may be sampled at a later date;
+														* lapr and dpv-vr may need different values to oral prep
 
 * prob_prep_restart_choice;	prob_prep_restart_choice=0.10; 	* probability of restarting PrEP after discontinuation even when newp>1;
 							* dependent_on_time_step_length ; 
 * pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 							* dependent_on_time_step_length ;
+														* not applicable for lapr or dpv-vr;
 
 * adh_pattern_prep;  		%sample(adh_pattern_prep, 1 2 3 4, 0.3 0.3 0.3 0.1);
+							* lapr - we will need a separate variable that indicates lapr drug level - which I suggest we assume optimal for the 3 month period a person is on
+							it but then falls in periods where lapr=0 and lapr_tm1=1 or lapr_tm2=1 - in which periods there will be increased risk of cab drug resistance; 
+							* dpv-vr - similar to lapr but with 1-month time period;
 * rate_test_startprep; 		%sample_uniform(rate_test_startprep, 0.25 0.5 0.75);
 							* Additional rate of being tested for HIV before PrEP;	 
 							* dependent_on_time_step_length ;
@@ -778,12 +790,17 @@ if prep_willing=1;
 * rate_choose_stop_prep; 	%sample_uniform(rate_choose_stop_prep, 0.05 0.15 0.30);
 								if 0.67 <= r        then rate_choose_stop_prep = 0.30;*/
 							* dependent_on_time_step_length ;
+							* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
 * prob_prep_restart_choice; %sample_uniform(prob_prep_restart_choice, 0.05 0.10 0.20);
 							if 0.67 <= r then prob_prep_restart_choice=0.20;*/
 							* dependent_on_time_step_length ;
+							* lapr and dpv-vr - I suggest this might be teh same for lapr and dpv-vr - we will have to consider people switching between prep modalities;
 * prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 							*Probability of PrEP uptake if eligible for general population;
+							* lapr and dpv-vr - this determines prep_willing and so we will change this to reflect the various categories of prep willing;
+							* dpv-vr to be used alongside oral prep?
 * higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
+							* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
 
 
 
@@ -889,8 +906,10 @@ redn_in_vis_cost_vlm_supp = 0.010 ;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
 prep_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+	* lapr and dpv-vr - will need costs;
 prep_drug_cost_tld = (0.065 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 cost_prep_clinic = 0.010; *Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
+	* lapr and dpv-vr - will need lapr and dpv-vr cost - higher lapr due to injection?;
 cost_prep_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
  
 * not * dependent_on_time_step_length ;
@@ -1551,6 +1570,8 @@ if low_preg_risk=1 then prob_pregnancy_b=0;
 *** 'eff' variables are defined for specific parameters which may change as a result of the code. Values of the original
 	parameters are stored and only 'eff_' variables are used throughout the code;
 
+* lapr and dpv-vr - we might need to create new eff_ variables for lapr and dpv-vr parameters ;
+
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
@@ -1766,6 +1787,7 @@ red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_to
 red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
+* lapr and dpv-vr - we will have to remember that this below only applies to oral prep;
 if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
 if adh_pattern_prep=2 then adhav_prep = adhav*0.90;
 if adh_pattern_prep=3 then adhav_prep = adhav*0.80;
@@ -1779,6 +1801,7 @@ hiv=0;
 nip=0;
 pcp_p  = 0;
 prep  = 0;
+* lapr and dpv-vr - we will need separate variables ;
 tot_yrs_prep = 0;
 tcur=.;
 dead_tm1=0;
@@ -1934,14 +1957,17 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
+	* will need a similar but separate variable for lapr and dpv-vr - la inj prep may well not be effective against virus with dol resistance;
 
 *May21 - changed from 2017.25 after Coding Call discussion;
 if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
 value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
 prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
+	* lapr and dpv-vr - do we need to consider different prep strategy for oral prep vs lapr vs dpv-vr ? ;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
+	* lapr and dpv-vr;
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
 
@@ -1957,6 +1983,7 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 if caldate{t} < date_prep_intro then prob_prep_b = 0;
 else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
 else prob_prep_b = pr_prep_b;
+	* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
 
 * MONITORING AND ART STRATEGIES;
 
@@ -2002,9 +2029,9 @@ if caldate{t} = 2015 then eff_sw_program=sw_program;
 if eff_sw_program=1 and sw=1 then do;
 
 if sw_program_visit=0 then do; e=uniform(0);
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+	if e < rate_engage_sw_program then do; 	* dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
-		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+		date_1st_sw_prog_vis=caldate{t};	* this refers to first date of either first visit or first visit after restarting sw;
 
 		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
@@ -2015,6 +2042,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		if prep_willing=1 then eff_rate_test_startprep=1;
 		eff_rate_choose_stop_prep=0.05;
+		* lapr and dpv-vr - consider if any needs to change ;
 
 		end;
 	end;
@@ -2030,7 +2058,9 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 		eff_rate_test_startprep=rate_test_startprep;
-		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;
+		eff_rate_choose_stop_prep=rate_choose_stop_prep;	* due to availability of prep;
+		* lapr and dpv-vr - consider if any needs to change ;
+
 end; 
 
 end;
@@ -2099,6 +2129,7 @@ end;
 
 *higher future prep coverage;
 if	higher_future_prep_cov=1 then do;
+	* lapr and dpv-vr - consider inclusion of scale up of lapr and dpv-vr ;
 
 * incr_adh_pattern_prep_2020;
 						incr_adh_pattern_prep_2020 = 0;  
@@ -2221,7 +2252,7 @@ pop_wide_tld = 0;
 *covid disruption variables;
 vmmc_disrup_covid = 0 ; 
 condom_disrup_covid = 0; 
-prep_disrup_covid = 0; 
+prep_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
 testing_disrup_covid = 0; 
 art_init_disrup_covid = 0; 
 vl_adh_switch_disrup_covid = 0; 
@@ -2439,7 +2470,7 @@ end;
 
 
 * pop_wide_tld_2020;	
-if pop_wide_tld_2020 = 1 then do;
+if pop_wide_tld_2020 = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
 	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
 end;
@@ -2663,7 +2694,7 @@ cost=0;cost_test=0;
 
 adc_tm1=adc; adc=0;
 
-visit_prep=.;
+visit_prep=.;	* lapr / dpv-vr - oral prep or lapr or dpv-vr ;
 ageg_ep=.;
 
 end;
@@ -3349,7 +3380,7 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
 	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
 		r = uniform(0);
-		if r < add_prepuptake_sw then prep_willing = 1;
+		if r < add_prepuptake_sw then prep_willing = 1;	* lapr and dpv-vr - no need to change ? ;
 	end;
 end;
 end;
@@ -3394,7 +3425,7 @@ if t ge 2 then do;
 			eff_sw_higher_int = sw_higher_int;
 			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-			eff_prepuptake_sw=prepuptake_sw;
+			eff_prepuptake_sw=prepuptake_sw;	* lapr and dpv-vr - not sure if any change needed;
 		end;
 	end;
 end;
@@ -3930,6 +3961,9 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
 
+* lapr and dpv-vr - will need to consider how this changes - perhaps it will not change - the main difference might be in the prep willing variable
+and hence deciding what type of prep is taken ;
+
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=1 then do;
@@ -4025,12 +4059,13 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
 		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and prep_willing=1  then do;
+			* lapr and dpv-vr - I guess this will change to specify if prep_willing for lapr or dpv-vr or oral prep then do...;
 			a=uniform(0); if a < eff_rate_test_startprep then do;	
 				tested=1;ever_tested=1;testfor_prep=1;dt_last_test=caldate{t};np_lasttest=0;
 			end; 
 		end;
 
-		*Routine testing while on PREP;
+		*Routine testing while on PREP;		* lapr and dpv-vr - I don't see this changing;
 		else if prep_ever=1 and prep_elig=1 then do;
 			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
 				if annual_testing_prep=1 and caldate{t}-dt_last_test >= 1.0 then do;
@@ -4090,13 +4125,15 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	if prep_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
 	 
 			if prep_willing=1 then do; 
+			* lapr and dpv-vr - I guess both which prep type available and which prep type willing (none, lapr, oral, dpv-vr either) will
+			determine what type of prep is started - we will need to consider switching between prep methods;
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
 				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
 
 	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
 	end;
-	* continuing PrEP;
+	* continuing PrEP;		* lapr and dpv-vr - also switching between prep options;
 	if prep_ever=1 and dt_prep_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
 		if prep_tm1 = 1 then do; * dependent_on_time_step_length;
 			if annual_testing_prep=1 then do;
@@ -4142,12 +4179,13 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	end;
 end;
 
-if prep=0 then continuous_prep_use=0;
+if prep=0 then continuous_prep_use=0;	* lapr and dpv-vr - we will need to create an any_prep variable to indicate if a person is on any prep;
 
 if pop_wide_tld=1 and prep=1 then pop_wide_tld_prep=1; 
 
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
+* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
 if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
 
 	if prep_ever ne 1 then do;   * dependent_on_time_step_length; 
@@ -4190,6 +4228,9 @@ if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
 
 
 *PrEP clinic visits - modified Jan2017 f_prep;
+	* lapr and dpv-vr - I think for simplicity we will assume lapr operates with 3 monthly visits - I understand this
+	is right for women - for men I think they may need 2 monthly injections rather than 3; * dpv-vr is monthly but I 
+	understand it is self-administered (?) so 3-montly clinic visits or less may be fine;
 if caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 and pop_wide_tld ne 1 then do;
 	if prep   =0 then do;
 		if prep_ever ne 1 then visit_prep=.;
@@ -4226,6 +4267,9 @@ end;
 
 
 *Adherence to PrEP - modified Jan2017 f_prep;
+	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
+	be fixed while on injections / ring, and efficacy will drop / resistance risk increase in the periods after stopping 
+	(two for lapr, less for dpv-vr?);
 if prep = 1 then do;
 	adh=adhav_prep + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
 	if adhav_prep=0 then adh=0;
@@ -4241,7 +4285,7 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that prep is tenofovir/ftc;
 
-prep_all_past_year=.;
+prep_all_past_year=.; 	* lapr an dpv-vr - this will use our any_prep variable I suppose, we may want separate variables for each prep type?;
 if prep   =1 then do; 
 tot_yrs_prep = tot_yrs_prep+0.25; * dependent_on_time_step_length ;  
 * ts1m ; * change this line to: 
@@ -4250,7 +4294,7 @@ tot_yrs_prep = tot_yrs_prep + (1/12);
 
 
 
-prep_effectiveness_non_res_v = adh* prep_efficacy ;
+prep_effectiveness_non_res_v = adh* prep_efficacy ;	* lapr and dpv-vr - this will depend on time since last lapr=1 or time since last dpv=1;
 if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1;
 * dependent_on_time_step_length ;  
 end;
@@ -4966,6 +5010,7 @@ k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.
 p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  inpm=.; insm=.;
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
 p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  inpm_p=.;  insm_p=.;
+* lapr and dpv-vr - do we need to define new mutations?
 
 *prob infection in 3mths from the infected partner;
 
@@ -5102,7 +5147,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
 		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
-		if prep   =1 then do; 
+		if prep   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
@@ -5128,6 +5173,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		    	if vl_source_inf=6 then infected_primary=1; 
 				age_source_inf=age_newp;
 				infected_prep=0; if prep   =1 then do; 
+					* lapr and dpv-vr - need to have these prep variables separately also for lapr and dpv-vr;
 				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
 				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 				end;
@@ -5275,7 +5321,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if sti=1                  then risk_eip = risk_eip * fold_change_sti;  * higher transmission risk with sti;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
-		if prep   =1 then do; 
+		if prep   =1 then do; * lapr and dpv-vr as above for risk_nip ;
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
@@ -5297,7 +5343,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
 			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
-			infected_prep=0; if prep   =1 then do; 
+			infected_prep=0; if prep   =1 then do; * lapr and dpv-vr - as above for infected_newp;
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
 			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 			end;
@@ -5404,7 +5450,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep    ne 1 then do;
+		if prep    ne 1 then do;	* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
 			if tam ge 1 then do; u=uniform(0); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=uniform(0); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=uniform(0); if u < 0.8  then k65m =0; end; 
