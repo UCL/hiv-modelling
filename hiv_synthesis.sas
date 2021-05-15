@@ -283,7 +283,7 @@ call symput('dataset_id',dataset_id);
 caldate1=1989;
 caldate_never_dot=1989;
 
-* these used after 2020 - code is here so value the same for all people;
+* these used after year_interv - code is here so value the same for all people;
 _u1 = uniform(0); _u2 = uniform(0); _u3 = uniform(0); _u4 = uniform(0); _u5 = uniform(0);  _u6 = uniform(0); _u7 = uniform(0); _u8 = uniform(0);
 _u9 = uniform(0); _u10 = uniform(0); _u11 = uniform(0); _u12 = uniform(0); _u13 = uniform(0); _u14 = uniform(0); _u15 = uniform(0); _u16 = uniform(0);
 _u17 = uniform(0); _u18 = uniform(0); _u19 = uniform(0); _u20 = uniform(0); _u21 = uniform(0); _u22 = uniform(0); _u23 = uniform(0); _u24 = uniform(0);
@@ -345,7 +345,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_2020;			condom_incr_2020 = 0; 			* mar19; * initialising condom_incr_2020 - this is set again in 2020 variables section
+* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section
 * rr_sw_age_1519;			rr_sw_age_1519 = 1.00;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -490,7 +490,7 @@ newp_seed = 7;
 * hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
 * date_pmtct;				date_pmtct=2004;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
-* incr_test_2020;			incr_test_2020 = 0;
+* incr_test_year_i;			incr_test_year_i = 0;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
 * rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;			* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
@@ -1058,7 +1058,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 * SECTION 2
 
-Create the 100000 people who will be alive and aged 15+ at some point between 1989 and 2071 (50 year time horizon from 2020)
+Create the 100000 people who will be alive and aged 15+ at some point between 1989 and 2071 (50 year time horizon from 2021)
 
 Define fixed or initial values for each person individually
 
@@ -2095,50 +2095,50 @@ end;
 *higher future prep coverage;
 if	higher_future_prep_cov=1 then do;
 
-* incr_adh_pattern_prep_2020;
-						incr_adh_pattern_prep_2020 = 0;  
+* incr_adh_pattern_prep_year_i;
+						incr_adh_pattern_prep_year_i = 0;  
 						if _u25 < 0.95 then do; 
-							incr_adh_pattern_prep_2020 = 1; 
+							incr_adh_pattern_prep_year_i = 1; 
 							adhav_prep = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_2020; * dependent_on_time_step_length;
-						inc_r_test_startprep_2020 = 0;  if _u26 <= 0.95 then do; 
-							inc_r_test_startprep_2020 = 1; 
+* inc_r_test_startprep_year_i; * dependent_on_time_step_length;
+						inc_r_test_startprep_year_i = 0;  if _u26 <= 0.95 then do; 
+							inc_r_test_startprep_year_i = 1; 
 							eff_rate_test_startprep = 0.9; 
 							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
 						end;		
 
-* incr_r_test_restartprep_2020; * dependent_on_time_step_length;
-						incr_r_test_restartprep_2020 = 0;  
+* incr_r_test_restartprep_year_i; * dependent_on_time_step_length;
+						incr_r_test_restartprep_year_i = 0;  
 						if _u28 <= 0.95 then do; 
-							incr_r_test_restartprep_2020 = 1; 
+							incr_r_test_restartprep_year_i = 1; 
 							eff_rate_test_restartprep = 0.9; 
 							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
 						end;		
 
-* decr_r_choose_stop_prep_2020; * dependent_on_time_step_length;
-						decr_r_choose_stop_prep_2020 = 0;  
+* decr_r_choose_stop_prep_year_i; * dependent_on_time_step_length;
+						decr_r_choose_stop_prep_year_i = 0;  
 						if _u30 < 0.95 then do; 
-							decr_r_choose_stop_prep_2020 = 1; 
+							decr_r_choose_stop_prep_year_i = 1; 
 							eff_rate_choose_stop_prep = 0.03 ; 
 							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
 						end;		
 
-* inc_p_prep_restart_choi_2020; * dependent_on_time_step_length;
-						inc_p_prep_restart_choi_2020 = 0;  
+* inc_p_prep_restart_choi_year_i; * dependent_on_time_step_length;
+						inc_p_prep_restart_choi_year_i = 0;  
 						if _u32 < 0.95 then do; 
-							inc_p_prep_restart_choi_2020 = 1; 
+							inc_p_prep_restart_choi_year_i = 1; 
 							eff_prob_prep_restart_choice = 0.8 ; 
 							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
 						end;		
 
 	
 
-* incr_prepuptake_pop_2020;
-						incr_prepuptake_pop_2020 = 0;  
+* incr_prepuptake_pop_year_i;
+						incr_prepuptake_pop_year_i = 0;  
 						if _u36 < 0.95 then do; 
-							incr_prepuptake_pop_2020 = 1; 
+							incr_prepuptake_pop_year_i = 1; 
 							r= uniform(0); if r < 0.8 and prep_willing = 0 then prep_willing = 1;
 						end;	
 
@@ -2147,68 +2147,68 @@ if	higher_future_prep_cov=1 then do;
 
 end;
 
-*Other potential changes after 2020.5 which can be turned on in the Options code;
+*Other potential changes after year_i which can be turned on in the Options code;
 *(impact of changes are coded below the options code);
 
 *increase in testing;
-incr_test_2020 = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
+incr_test_year_i = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
 
 *decrease in the proportion of people hard to reach;
-decr_hard_reach_2020 = 0;
+decr_hard_reach_year_i = 0;
 
 *decrease in probability of being lost at diagnosis; 
-decr_prob_loss_at_diag_2020 = 0;
+decr_prob_loss_at_diag_year_i = 0;
 
 *decrease in the rate of being lost;
-decr_rate_lost_2020 = 0;
+decr_rate_lost_year_i = 0;
 
 *decrease in the rate of being lost whilst on ART;
-decr_rate_lost_art_2020 = 0; 
+decr_rate_lost_art_year_i = 0; 
 
 *increase in the rate of return;
-incr_rate_return_2020 = 0 ;
+incr_rate_return_year_i = 0 ;
 
 *increase in the rate of restarting ART;
-incr_rate_restart_2020 = 0;
+incr_rate_restart_year_i = 0;
 
 *increase in the rate of ART initiation;
-incr_rate_init_2020 = 0 ;
+incr_rate_init_year_i = 0 ;
 
 *increase in adherence;
-incr_adh_2020 = 0;
+incr_adh_year_i = 0;
 
 *decrease in the rate of interruption by choice;
-decr_rate_int_choice_2020 = 0 ;
+decr_rate_int_choice_year_i = 0 ;
 
 *increase in the the probability of a VL measure being done;
-incr_prob_vl_meas_done_2020 = 0;  
+incr_prob_vl_meas_done_year_i = 0;  
 
 *ART monitoring drug levels;
-art_mon_drug_levels_2020 = 0;
+art_mon_drug_levels_year_i = 0;
 
 *increase in the probabilty of switching lines;
-incr_pr_switch_line_2020 = 0 ;
+incr_pr_switch_line_year_i = 0 ;
 
 *increase in test targeting;
-incr_test_targeting_2020 = 0;
+incr_test_targeting_year_i = 0;
 
 *increase in the maximum frequency of testing;
-incr_max_freq_testing_2020 = 0;
+incr_max_freq_testing_year_i = 0;
 
 *testing SW every 6 months;
-sw_test_6mthly_2020 = 0;
+sw_test_6mthly_year_i = 0;
 
 *switching regimens;
-reg_option_switch_2020 = 0;
+reg_option_switch_year_i = 0;
 
 *tenofovir is taf, rather than tdf as it is by default;
-ten_is_taf_2020 = 0; *coded within core (not below options code);
+ten_is_taf_year_i = 0; *coded within core (not below options code);
 
 *increase in rates of circumcision;
-circ_inc_rate_2020 = 0; *variations coded in circumcision section;
+circ_inc_rate_year_i = 0; *variations coded in circumcision section;
 
 *increase in condom use;
-condom_incr_2020 = 0; *coded within core (not below options code);
+condom_incr_year_i = 0; *coded within core (not below options code);
 
 *population wide tld;
 pop_wide_tld = 0;
@@ -2311,9 +2311,9 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 * SECTION 3 - OPTIONS ;
 
 * code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
-* I suggest that we just leave this shell in the core program as we are not running beyond 2020.50 ;
+* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
 
-* INTERVENTIONS / CHANGES in 2020;
+* INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
 
@@ -2322,9 +2322,9 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-* can add in potential changes in policy after 2020.5 here -  set specific '2020' variables to '1' and specify proportion of
+* can add in potential changes in policy after year_interv here -  set specific 'year_i' variables to '1' and specify proportion of
   runs for which the option should take place;
-	/*E.g. u=uniform(0); if u<0.90 then incr_test_2020=1;*/
+	/*E.g. u=uniform(0); if u<0.90 then incr_test_year_i=1;*/
 
 
 	if option = 0 then do;  
@@ -2338,103 +2338,103 @@ end;
 
 * ==========================================================================================================================================;
 
-***Impact of potential changes in policy after 2020;
+***Impact of potential changes in policy after year_i;
 
-* decr_hard_reach_2020; 
-if decr_hard_reach_2020 = 1 then do;
-	if _u6 < 0.5 then e_decr_hard_reach_2020 = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_2020 = 0.75; 
+* decr_hard_reach_year_i; 
+if decr_hard_reach_year_i = 1 then do;
+	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.75; 
 	if hard_reach=1 then do;
-		e = uniform(0); if e < e_decr_hard_reach_2020 then hard_reach = 0; 
+		e = uniform(0); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
 	end; 
 end;
 
-* decr_prob_loss_at_diag_2020; 
-if	decr_prob_loss_at_diag_2020 = 1 then do;
+* decr_prob_loss_at_diag_year_i; 
+if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
 
-* decr_rate_lost_2020; 	
-if decr_rate_lost_2020 = 1 then do;
+* decr_rate_lost_year_i; 	
+if decr_rate_lost_year_i = 1 then do;
 	eff_rate_lost = eff_rate_lost * _u10 / 3; eff_rate_lost=round(eff_rate_lost,0.01); 
 end;
 
-* decr_rate_lost_art_2020; 
-if decr_rate_lost_art_2020 = 1 then do;
+* decr_rate_lost_art_year_i; 
+if decr_rate_lost_art_year_i = 1 then do;
 	eff_prob_lost_art = eff_prob_lost_art + ((0.5 + 0.5*_u12) * (1 - eff_prob_lost_art) ) ; eff_prob_lost_art = round(eff_prob_lost_art, 0.01); 
 end;
 
-* incr_rate_return_2020; 
-if incr_rate_return_2020 = 1 then do;
+* incr_rate_return_year_i; 
+if incr_rate_return_year_i = 1 then do;
 	eff_rate_return = eff_rate_return * (2 + 3*_u14);  eff_rate_return = round(eff_rate_return,0.01);  
 end;
 
-* incr_rate_restart_2020; 
-if incr_rate_restart_2020 = 1 then do;
+* incr_rate_restart_year_i; 
+if incr_rate_restart_year_i = 1 then do;
 	eff_rate_restart = eff_rate_restart * (2 + 3*_u18);  eff_rate_restart = round(eff_rate_restart,0.01);  
 end;
 
-* incr_rate_init_2020; 	
-if incr_rate_init_2020 = 1 then do;
+* incr_rate_init_year_i; 	
+if incr_rate_init_year_i = 1 then do;
 	eff_pr_art_init = eff_pr_art_init + ( (0.5 + 0.5*_u20) * (1 - eff_pr_art_init) ); eff_pr_art_init=round(eff_pr_art_init,0.01); 
 end;
 
-* incr_adh_2020;  		
-if incr_adh_2020 = 1 then do;
+* incr_adh_year_i;  		
+if incr_adh_year_i = 1 then do;
 	if adhav < 0.8 then do; 
-		if _u4 < 0.5 then e_incr_adh_2020 = 0.5; if _u4 ge 0.5 then e_incr_adh_2020 = 0.75; 
-		e = uniform(0); if e < e_incr_adh_2020 then adhav = 0.9; 
+		if _u4 < 0.5 then e_incr_adh_year_i = 0.5; if _u4 ge 0.5 then e_incr_adh_year_i = 0.75; 
+		e = uniform(0); if e < e_incr_adh_year_i then adhav = 0.9; 
 	end;
 end;
 
-* decr_rate_int_choice_2020; 
-if	decr_rate_int_choice_2020 = 1 then do;
+* decr_rate_int_choice_year_i; 
+if	decr_rate_int_choice_year_i = 1 then do;
 	eff_rate_int_choice = eff_rate_int_choice * _u22/3; eff_rate_int_choice = round(eff_rate_int_choice,0.001); 
 end;
 
-* incr_prob_vl_meas_done_2020; 
-if	incr_prob_vl_meas_done_2020 = 1 then do;
+* incr_prob_vl_meas_done_year_i; 
+if	incr_prob_vl_meas_done_year_i = 1 then do;
 	eff_prob_vl_meas_done = 0.85; 
 	cd4_monitoring=0; * this needed because cd4_monitoring was = 1 in half of people with no vl; 
 end;
 
-* art_mon_drug_levels_2020;
-if art_mon_drug_levels_2020 = 1 then do;
+* art_mon_drug_levels_year_i;
+if art_mon_drug_levels_year_i = 1 then do;
 	if reg_option = 103 then reg_option = 119;
 	if reg_option = 104 then reg_option = 118;
 	if reg_option = 113 then reg_option = 115;
 	if reg_option = 116 then reg_option = 117; 
 end;
 
-* incr_pr_switch_line_2020; 
-if incr_pr_switch_line_2020 = 1 then do;
+* incr_pr_switch_line_year_i; 
+if incr_pr_switch_line_year_i = 1 then do;
 	eff_pr_switch_line = 0.80; 
 end;
 
-* incr_test_targeting_2020;	
-if incr_test_targeting_2020 = 1 then do;
+* incr_test_targeting_year_i;	
+if incr_test_targeting_year_i = 1 then do;
 	if _u42 < 0.45 then eff_test_targeting = 2;
 	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
 end;						
 
-* incr_max_freq_testing_2020;
-if incr_max_freq_testing_2020=1 then do;
+* incr_max_freq_testing_year_i;
+if incr_max_freq_testing_year_i=1 then do;
 	if eff_max_freq_testing = 2 then eff_max_freq_testing = 4; 
 	if eff_max_freq_testing = 1 then eff_max_freq_testing = 2;
 end;  
 
-* sw_test_6mthly_2020; 
-if sw_test_6mthly_2020 = 1 then sw_test_6mthly =1; 
+* sw_test_6mthly_year_i; 
+if sw_test_6mthly_year_i = 1 then sw_test_6mthly =1; 
 
-* reg_option_switch_2020;	
-if reg_option_switch_2020 = 1 then do;
+* reg_option_switch_year_i;	
+if reg_option_switch_year_i = 1 then do;
 	if _u49 < 0.30 then reg_option = 104; 
 	if 0.30 <= _u49 < 0.6 then  reg_option = 116;
 	if 0.60 <= _u49 < 0.9 then  reg_option = 119;
 end;
 
 
-* pop_wide_tld_2020;	
-if pop_wide_tld_2020 = 1 then do;
+* pop_wide_tld_year_i;	
+if pop_wide_tld_year_i = 1 then do;
 	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
 	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
 end;
@@ -2461,7 +2461,7 @@ if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_s
 if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
 
-if single_vl_switch_efa_2020 = 1 then do;
+if single_vl_switch_efa_year_i = 1 then do;
 art_monitoring_strategy=150;
 if (o_efa=1 or (int_clinic_not_aw=1 and mr_efa=1) or o_nev=1 or (int_clinic_not_aw=1 and mr_nev=1)) and linefail=0 then art_monitoring_strategy=153; 
 end;
@@ -2501,8 +2501,8 @@ if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do;
 end;
 
 
-if caldate{t} >= &year_interv and incr_test_2020 = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
-if caldate{t} >= &year_interv and incr_test_2020 = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -2564,26 +2564,26 @@ end;
 
 end;
 
-* this is the default if note circ_inc_rate_2020 = .  - no change in circ policy ;
-if t ge 2 and 2019 < caldate{t} and circ_inc_rate_2020=0         then do;
+* this is the default if note circ_inc_rate_year_i = .  - no change in circ policy ;
+if t ge 2 and 2019 < caldate{t} and circ_inc_rate_year_i=0         then do;
 if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-* note circ_inc_rate_2020 = 1 means circ stops in 10-15 year olds;
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
+* note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age_tm1 lt 15 then prob_circ =0;
 if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
 if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 2 then do; *option=2 - no further circ;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
 prob_circ = 0;test_link_circ_prob=0;
 end;
 
-if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_2020 = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age_tm1 lt 15 then prob_circ =0;
 if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
@@ -3552,7 +3552,7 @@ end;
 
 
 * Reducing newp by 50% if condom incr =1;
-if caldate{t} = &year_interv and condom_incr_2020 = 1 then do;
+if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
 	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
@@ -10033,7 +10033,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 		if o_dol=1 and incr_mort_risk_dol_weightg ge 1 then ac_death_rate = ac_death_rate  * incr_mort_risk_dol_weightg_i; 
 
-		if o_ten=1 and ten_is_taf_2020=1 then ac_death_rate = ac_death_rate  * 1.25; 
+		if o_ten=1 and ten_is_taf_year_i=1 then ac_death_rate = ac_death_rate  * 1.25; 
 
 		ac_deathrix = 1 - exp(-0.25*ac_death_rate);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
@@ -10175,7 +10175,7 @@ end;
 
 * nucs;
     cost_zdv=0;if o_zdv=1 then cost_zdv=cost_zdv_a;       
-    cost_ten=0;	if o_ten=1 then do; cost_ten=cost_ten_a; if ten_is_taf_2020 = 1 then cost_ten = cost_taf ;  end; 
+    cost_ten=0;	if o_ten=1 then do; cost_ten=cost_ten_a; if ten_is_taf_year_i = 1 then cost_ten = cost_taf ;  end; 
 	cost_3tc=0;if o_3tc=1 then cost_3tc=cost_3tc_a;     
 
 * nnrtis;
@@ -12665,8 +12665,8 @@ if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
 if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_3year=1;
 if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_5year=1;
 
-prop_elig_years_onprep_a2021=0;
-if cum_years_prep_elig_a2021 > 0 and registd ne 1 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
+prop_elig_years_onprep_ayear_i=0;
+if cum_years_prep_elig_ayear_i > 0 and registd ne 1 then prop_elig_years_onprep_ayear_i =  cum_years_onprep_ayear_i / cum_years_prep_elig_ayear_i;
 
 continuous_prep_ge1yr=0; if prep=1 and continuous_prep_use >= 1 then continuous_prep_ge1yr=1;
 
@@ -13020,7 +13020,7 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 2.75 then nac_ge2p75_a_zld_if_reg_op_1
 if a_zld_if_reg_op_116 = 1 and nactive >= 2.00 then nac_ge2p00_a_zld_if_reg_op_116 = 1; 
 if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_116 = 1; 
 
-*Discounting from 2021 (129th step); * 3%;  * dependent_on_time_step_length ;  
+*Discounting from year_i (129th step); * 3%;  * dependent_on_time_step_length ;  
 discount = 1;
 if caldate&j ge &year_interv+1 then discount = 1/(1.03**(caldate&j-(&year_interv+1)));
 
@@ -14409,7 +14409,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_tot_yrs_prep_gt_5 + tot_yrs_prep_gt_5 ; s_tot_yrs_prep_gt_10 + tot_yrs_prep_gt_10 ; s_tot_yrs_prep_gt_20 + tot_yrs_prep_gt_20 ;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;    
 	s_prep_elig_past_year + prep_elig_past_year ; s_prep_elig_past_3year + prep_elig_past_3year ; s_prep_elig_past_5year + prep_elig_past_5year ;
-	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_a2021 + prop_elig_years_onprep_a2021 ;  s_continuous_prep_ge1yr + continuous_prep_ge1yr;
+	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_ge1yr + continuous_prep_ge1yr;
 	s_newp_this_per_hivneg_m  +  newp_this_per_hivneg_m ; s_newp_this_per_hivneg_w +  newp_this_per_hivneg_w ;   
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
@@ -15757,7 +15757,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	 								
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_ge1yr
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
@@ -16094,21 +16094,21 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
-/*2020 interventions*/
+/*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
-condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
-decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
-incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
-incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
-inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
- circ_inc_rate_2020 		     incr_test_targeting_2020   
-incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020  single_vl_switch_efa_2020
+condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+decr_prob_loss_at_diag_year_i 	  decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_pattern_prep_year_i 
+inc_r_test_startprep_year_i   incr_r_test_restartprep_year_i decr_r_choose_stop_prep_year_i 
+inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_pop_year_i   prep_strategy_year_i 
+ circ_inc_rate_year_i 		     incr_test_targeting_year_i   
+incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
+art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_year_i  eff_test_targeting
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
@@ -16584,7 +16584,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep	 							
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_a2021  s_continuous_prep_ge1yr
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_ge1yr
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
@@ -17419,7 +17419,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_a2021	s_continuous_prep_ge1yr									
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_ayear_i	s_continuous_prep_ge1yr									
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
@@ -17753,20 +17753,20 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 
-/*2020 interventions*/
-condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
-decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
-incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
-incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
-inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-	  circ_inc_rate_2020 		     incr_test_targeting_2020   
-incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
+/*year_i interventions*/
+condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+decr_prob_loss_at_diag_year_i 	  decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_pattern_prep_year_i 
+inc_r_test_startprep_year_i   incr_r_test_restartprep_year_i decr_r_choose_stop_prep_year_i 
+inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_pop_year_i   prep_strategy_year_i 
+	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
+incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
+art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_year_i  eff_test_targeting
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
