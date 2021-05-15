@@ -159,7 +159,7 @@ to do before starting testing in preparation for runs:
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
-
+  libname a '/home/rmjlaph/Scratch/';
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
