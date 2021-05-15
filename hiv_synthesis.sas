@@ -15792,8 +15792,8 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag  
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
 
 
@@ -16619,8 +16619,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
+
 
 
 /*VL and CD4*/
@@ -17454,8 +17455,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
+
 
 
 /*VL and CD4*/
