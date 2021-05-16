@@ -681,23 +681,23 @@ red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop
 prob_return_adc   higher_newp_less_engagement  
 fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  
 
-condom_incr_2020     		 incr_test_2020              decr_hard_reach_2020   
-decr_prob_loss_at_diag_2020  	decr_rate_lost_2020 		decr_rate_lost_art_2020     incr_rate_return_2020      
-incr_rate_restart_2020         incr_rate_init_2020        decr_rate_int_choice_2020  
-incr_prob_vl_meas_done_2020  
-incr_pr_switch_line_2020          	incr_adh_pattern_prep_2020  
-inc_r_test_startprep_2020  incr_r_test_restartprep_2020  decr_r_choose_stop_prep_2020  
-inc_p_prep_restart_choi_2020 incr_prepuptake_sw_2020    incr_prepuptake_pop_2020   
-circ_inc_rate_2020  		incr_test_targeting_2020    pop_wide_tld_2020 
-incr_max_freq_testing_2020     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_2020  
-art_mon_drug_levels_2020       ten_is_taf_2020    lower_future_art_cov    
+condom_incr_year_i     		 incr_test_year_i              decr_hard_reach_year_i   
+decr_prob_loss_at_diag_year_i  	decr_rate_lost_year_i 		decr_rate_lost_art_year_i     incr_rate_return_year_i      
+incr_rate_restart_year_i         incr_rate_init_year_i        decr_rate_int_choice_year_i  
+incr_prob_vl_meas_done_year_i  
+incr_pr_switch_line_year_i          	incr_adh_pattern_prep_year_i  
+inc_r_test_startprep_year_i  incr_r_test_restartprep_year_i  decr_r_choose_stop_prep_year_i  
+inc_p_prep_restart_choi_year_i incr_prepuptake_sw_year_i    incr_prepuptake_pop_year_i   
+circ_inc_rate_year_i  		incr_test_targeting_year_i    pop_wide_tld_year_i 
+incr_max_freq_testing_year_i     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_year_i  
+art_mon_drug_levels_year_i       ten_is_taf_year_i    lower_future_art_cov    
 
 eff_max_freq_testing  		eff_rate_restart   		eff_prob_loss_at_diag   		eff_rate_lost   		
 eff_prob_lost_art   		eff_rate_return   
 eff_pr_art_init   	eff_rate_int_choice   	eff_prob_vl_meas_done   		eff_pr_switch_line   	
 eff_rate_test_startprep   	eff_rate_test_restartprep   	
 eff_rate_choose_stop_prep   		eff_prob_prep_restart_choice   	
-e_decr_hard_reach_2020  eff_test_targeting  prep_strategy 
+e_decr_hard_reach_year_i  eff_test_targeting  prep_strategy 
 vmmc_disrup_covid  condom_disrup_covid  prep_disrup_covid  swprog_disrup_covid  
 testing_disrup_covid  art_tld_disrup_covid  art_tld_eod_disrup_covid   art_init_disrup_covid   
 vl_adh_switch_disrup_covid  cotrim_disrup_covid    no_art_disrup_covid 
@@ -983,23 +983,23 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par_ai1(p=prob_return_adc );   %par_ai1(p=higher_newp_less_engagement ); 
 %par_ai1(p=fold_tr );  %par_ai1(p=switch_for_tox );  %par_ai1(p=adh_pattern_prep );   %par_ai1(p=base_rate_sw ); 
 
-%par_ai1(p=condom_incr_2020 );    			 %par_ai1(p=incr_test_2020 );             %par_ai1(p=decr_hard_reach_2020 );  
-%par_ai1(p=decr_prob_loss_at_diag_2020 ); 	%par_ai1(p=decr_rate_lost_2020 );		%par_ai1(p=decr_rate_lost_art_2020 );    %par_ai1(p=incr_rate_return_2020 );     
-%par_ai1(p=incr_rate_restart_2020 );        %par_ai1(p=incr_rate_init_2020 );       %par_ai1(p=decr_rate_int_choice_2020 ); 
-%par_ai1(p=incr_prob_vl_meas_done_2020 ); 
-%par_ai1(p=incr_pr_switch_line_2020 )          	%par_ai1(p=incr_adh_pattern_prep_2020 ); 
-%par_ai1(p=inc_r_test_startprep_2020 ); %par_ai1(p=incr_r_test_restartprep_2020 ); %par_ai1(p=decr_r_choose_stop_prep_2020 ); 
-%par_ai1(p=inc_p_prep_restart_choi_2020 );%par_ai1(p=incr_prepuptake_sw_2020 );   %par_ai1(p=incr_prepuptake_pop_2020 );   
-%par_ai1(p=circ_inc_rate_2020 ); 		%par_ai1(p=incr_test_targeting_2020 );   %par_ai1(p=pop_wide_tld_2020 );
-%par_ai1(p=incr_max_freq_testing_2020 );    %par_ai1(p=initial_pr_switch_line );    %par_ai1(p=initial_prob_vl_meas_done );  %par_ai1(p=sw_test_6mthly_2020 ); 
-%par_ai1(p=art_mon_drug_levels_2020 );      %par_ai1(p=ten_is_taf_2020 );   
+%par_ai1(p=condom_incr_year_i );    			 %par_ai1(p=incr_test_year_i );             %par_ai1(p=decr_hard_reach_year_i );  
+%par_ai1(p=decr_prob_loss_at_diag_year_i ); 	%par_ai1(p=decr_rate_lost_year_i );		%par_ai1(p=decr_rate_lost_art_year_i );    %par_ai1(p=incr_rate_return_year_i );     
+%par_ai1(p=incr_rate_restart_year_i );        %par_ai1(p=incr_rate_init_year_i );       %par_ai1(p=decr_rate_int_choice_year_i ); 
+%par_ai1(p=incr_prob_vl_meas_done_year_i ); 
+%par_ai1(p=incr_pr_switch_line_year_i )          	%par_ai1(p=incr_adh_pattern_prep_year_i ); 
+%par_ai1(p=inc_r_test_startprep_year_i ); %par_ai1(p=incr_r_test_restartprep_year_i ); %par_ai1(p=decr_r_choose_stop_prep_year_i ); 
+%par_ai1(p=inc_p_prep_restart_choi_year_i );%par_ai1(p=incr_prepuptake_sw_year_i );   %par_ai1(p=incr_prepuptake_pop_year_i );   
+%par_ai1(p=circ_inc_rate_year_i ); 		%par_ai1(p=incr_test_targeting_year_i );   %par_ai1(p=pop_wide_tld_year_i );
+%par_ai1(p=incr_max_freq_testing_year_i );    %par_ai1(p=initial_pr_switch_line );    %par_ai1(p=initial_prob_vl_meas_done );  %par_ai1(p=sw_test_6mthly_year_i ); 
+%par_ai1(p=art_mon_drug_levels_year_i );      %par_ai1(p=ten_is_taf_year_i );   
 
 %par_ai1(p=eff_max_freq_testing ); 		%par_ai1(p=eff_rate_restart );  		%par_ai1(p=eff_prob_loss_at_diag );  		%par_ai1(p=eff_rate_lost );  		
 %par_ai1(p=eff_prob_lost_art );  		%par_ai1(p=eff_rate_return );  
 %par_ai1(p=eff_pr_art_init );  	%par_ai1(p=eff_rate_int_choice );  	%par_ai1(p=eff_prob_vl_meas_done );  		%par_ai1(p=eff_pr_switch_line );  	
 %par_ai1(p=eff_rate_test_startprep );  	%par_ai1(p=eff_rate_test_restartprep );  	
 %par_ai1(p=eff_rate_choose_stop_prep );  		%par_ai1(p=eff_prob_prep_restart_choice );  	
-%par_ai1(p=e_decr_hard_reach_2020 ); %par_ai1(p=eff_test_targeting ); %par_ai1(p=prep_strategy );
+%par_ai1(p=e_decr_hard_reach_year_i ); %par_ai1(p=eff_test_targeting ); %par_ai1(p=prep_strategy );
 %par_ai1(p=vmmc_disrup_covid);  %par_ai1(p=condom_disrup_covid);  %par_ai1(p=prep_disrup_covid);  %par_ai1(p=swprog_disrup_covid);  
 %par_ai1(p=testing_disrup_covid);  %par_ai1(p=art_tld_disrup_covid);  %par_ai1(p=art_tld_eod_disrup_covid);   %par_ai1(p=art_init_disrup_covid);   
 %par_ai1(p=vl_adh_switch_disrup_covid);  %par_ai1(p=cotrim_disrup_covid);    %par_ai1(p=no_art_disrup_covid); 
@@ -1019,22 +1019,22 @@ red_adh_tb_adc_ai1 red_adh_tox_pop_ai1 add_eff_adh_nnrti_ai1 altered_adh_sec_lin
 prob_return_adc_ai1  higher_newp_less_engagement_ai1 
 fold_tr_ai1 switch_for_tox_ai1 adh_pattern_prep_ai1   base_rate_sw_ai1 
 
-condom_incr_2020_ai1    			incr_test_2020_ai1             decr_hard_reach_2020_ai1  
-decr_prob_loss_at_diag_2020_ai1 	decr_rate_lost_2020_ai1 		decr_rate_lost_art_2020_ai1    incr_rate_return_2020_ai1     
-incr_rate_restart_2020_ai1        	incr_rate_init_2020_ai1       	decr_rate_int_choice_2020_ai1  incr_prob_vl_meas_done_2020_ai1 
-incr_pr_switch_line_2020_ai1         	incr_adh_pattern_prep_2020_ai1 
-inc_r_test_startprep_2020_ai1 	incr_r_test_restartprep_2020_ai1 decr_r_choose_stop_prep_2020_ai1 
-inc_p_prep_restart_choi_2020_ai1 incr_prepuptake_sw_2020_ai1   	incr_prepuptake_pop_2020_ai1   
-circ_inc_rate_2020_ai1 		incr_test_targeting_2020_ai1   pop_wide_tld_2020_ai1 
-incr_max_freq_testing_2020_ai1     initial_pr_switch_line_ai1 	    initial_prob_vl_meas_done_ai1  sw_test_6mthly_2020_ai1 
-art_mon_drug_levels_2020_ai1   ten_is_taf_2020_ai1 	
+condom_incr_year_i_ai1    			incr_test_year_i_ai1             decr_hard_reach_year_i_ai1  
+decr_prob_loss_at_diag_year_i_ai1 	decr_rate_lost_year_i_ai1 		decr_rate_lost_art_year_i_ai1    incr_rate_return_year_i_ai1     
+incr_rate_restart_year_i_ai1        	incr_rate_init_year_i_ai1       	decr_rate_int_choice_year_i_ai1  incr_prob_vl_meas_done_year_i_ai1 
+incr_pr_switch_line_year_i_ai1         	incr_adh_pattern_prep_year_i_ai1 
+inc_r_test_startprep_year_i_ai1 	incr_r_test_restartprep_year_i_ai1 decr_r_choose_stop_prep_year_i_ai1 
+inc_p_prep_restart_choi_year_i_ai1 incr_prepuptake_sw_year_i_ai1   	incr_prepuptake_pop_year_i_ai1   
+circ_inc_rate_year_i_ai1 		incr_test_targeting_year_i_ai1   pop_wide_tld_year_i_ai1 
+incr_max_freq_testing_year_i_ai1     initial_pr_switch_line_ai1 	    initial_prob_vl_meas_done_ai1  sw_test_6mthly_year_i_ai1 
+art_mon_drug_levels_year_i_ai1   ten_is_taf_year_i_ai1 	
 
 eff_max_freq_testing_ai1 		eff_rate_restart_ai1  		eff_prob_loss_at_diag_ai1  		eff_rate_lost_ai1  		
 eff_prob_lost_art_ai1  		eff_rate_return_ai1  		
 eff_pr_art_init_ai1  	eff_rate_int_choice_ai1  	eff_prob_vl_meas_done_ai1  		eff_pr_switch_line_ai1  	
 eff_rate_test_startprep_ai1  	eff_rate_test_restartprep_ai1  	
 eff_rate_choose_stop_prep_ai1  		eff_prob_prep_restart_choice_ai1  	  
-e_decr_hard_reach_2020_ai1 eff_test_targeting_ai1   prep_strategy_ai1 
+e_decr_hard_reach_year_i_ai1 eff_test_targeting_ai1   prep_strategy_ai1 
 
 vmmc_disrup_covid_ai1 condom_disrup_covid_ai1 prep_disrup_covid_ai1 swprog_disrup_covid_ai1 testing_disrup_covid_ai1 art_tld_disrup_covid_ai1
 art_tld_eod_disrup_covid_ai1  art_init_disrup_covid_ai1 vl_adh_switch_disrup_covid_ai1 cotrim_disrup_covid_ai1 no_art_disrup_covid_ai1 
@@ -1057,12 +1057,12 @@ data &p._ai0 ; set  y_ ; drop _TYPE_ _FREQ_;
 
 %mend par_ai0; 
 
-%par_ai0(p=option_0_prep_continue_2020 );	 
+%par_ai0(p=option_0_prep_continue_year_i );	 
 %par_ai0(p=eff_rate_test_startprep );  	%par_ai0(p=eff_rate_test_restartprep );  	
 %par_ai0(p=eff_rate_choose_stop_prep );  		%par_ai0(p=eff_prob_prep_restart_choice );  	
 
 data wide_par_after_int_option0; merge 
-option_0_prep_continue_2020_ai0   eff_rate_test_startprep_ai0  	eff_rate_test_restartprep_ai0   	
+option_0_prep_continue_year_i_ai0   eff_rate_test_startprep_ai0  	eff_rate_test_restartprep_ai0   	
 eff_rate_choose_stop_prep_ai0   eff_prob_prep_restart_choice_ai0  	
 ; 
 run;
