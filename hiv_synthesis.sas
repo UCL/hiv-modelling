@@ -2739,8 +2739,7 @@ if start_anti_hyp_this_per = 1 then do;
 	sbp = sbp - effect_anti_hyp ;
 end;
 
-
-
+hypertension = 0; if sbp > 140 or on_anti_hypertensive=1 then hypertension = 1;
 
 
 * SEXUAL BEHAVIOUR;
@@ -9944,7 +9943,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 * some of these deaths are related to CD4 but wont go down as who4_ related (eg other cancers, but not incl liver death)
 so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4;agedeath=age;
-			if tb=1 then dead_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
+			if tb=1 then death_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
 
 			dead_diagnosed=0; if registd=1 then dead_diagnosed=1;  dead_naive=0; if naive=1 then dead_naive=1;
 			dead_onart=0; if onart=1 then dead_onart=1; dead_line1_lf0=0; if artline=1 and linefail=0 then dead_line1_lf0 =1;
@@ -12175,7 +12174,6 @@ if prep   ne 1 then do;
 	if onart_gt6m_iicu=1 then vl1000_art_gt6m_iicu = vl1000; 
 end;
 
-* here ;
 
 * hiv+ and started art due to being on tld_prep, currently hiv+ and on tld_prep, and vl1000 for these ;
 
@@ -13597,6 +13595,26 @@ if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 200 then do;
 	if crypm=1 then crypm_tcur6m_cd4t0l200=1; if sbi=1 then sbi_tcur6m_cd4t0l200=1; 
 end;
 
+dead_hivpos_cause1=0;dead_hivpos_tb=0; dead_hivpos_crypm=0; dead_hivpos_sbi=0; dead_hivpos_oth_adc=0; dead_hivpos_cause2=0;dead_hivpos_cause3=0;
+dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_hivneg_cause3=0;dead_hivneg_cause2=0; 
+dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; 
+* death by cause and hiv status ;
+if dead=1 and caldate&j = death then do;
+if hiv=1 and dcause=1 then dead_hivpos_cause1=1;
+if hiv=1 and dcause=1 and death_tb=1 then dead_hivpos_tb=1; 
+if hiv=1 and dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
+if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
+if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_oth_adc=1; 
+if hiv=1 and dcause=2 then dead_hivpos_cause2=1;
+if hiv=1 and dcause=3 then dead_hivpos_cause3=1;
+if hiv=1 and dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
+if hiv ne 1 and dcause=2 then dead_hivneg_cause2=1;
+if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
+if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
+if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
+end;
+
+
 
 ***Newp groups;
 newp_g_m_0 = .; newp_g_m_1 = .; newp_g_m_2 = .; newp_g_m_3 = .; newp_g_m_4 = .;newp_g_m_5 = .;newp_g_m_6 = .;
@@ -14057,6 +14075,43 @@ s1_f =. ; if gender = 2 then s1_f = s1;
 s2_f =. ; if gender = 2 then s2_f = s2;
 
 newp_sw = 0;  if sw = 1 then newp_sw = newp; 
+
+
+*** hypertension by age;
+
+diagnosed_hypertension_1549 = 0 ; on_anti_hypertensive_1549 = 0; hypertension_1549 = 0;
+diagnosed_hypertension_5059 = 0 ; on_anti_hypertensive_5059 = 0; hypertension_5059 = 0;
+diagnosed_hypertension_6069 = 0 ; on_anti_hypertensive_6069 = 0; hypertension_6069 = 0;
+diagnosed_hypertension_7079 = 0 ; on_anti_hypertensive_7079 = 0; hypertension_7079 = 0;
+diagnosed_hypertension_ge80 = 0 ; on_anti_hypertensive_ge80 = 0; hypertension_ge80 = 0;
+if 15 <= age < 50 then do; 
+	if diagnosed_hypertension = 1 then diagnosed_hypertension_1549 = 1 ;
+	if on_anti_hypertensive = 1 then on_anti_hypertensive_1549 = 1 ;
+	if hypertension = 1 then hypertension_1549 = 1;
+end;
+if 50 <= age < 59 then do; 
+	if diagnosed_hypertension = 1 then diagnosed_hypertension_5059 = 1 ;
+	if on_anti_hypertensive = 1 then on_anti_hypertensive_5059 = 1 ;
+	if hypertension = 1 then hypertension_5059 = 1;
+end;
+if 60 <= age < 69 then do; 
+	if diagnosed_hypertension = 1 then diagnosed_hypertension_6069 = 1 ;
+	if on_anti_hypertensive = 1 then on_anti_hypertensive_6069 = 1 ;
+	if hypertension = 1 then hypertension_6069 = 1;
+end;
+if 70 <= age < 79 then do; 
+	if diagnosed_hypertension = 1 then diagnosed_hypertension_7079 = 1 ;
+	if on_anti_hypertensive = 1 then on_anti_hypertensive_7079 = 1 ;
+	if hypertension = 1 then hypertension_7079 = 1;
+end;
+
+if 80 <= age      then do; 
+	if diagnosed_hypertension = 1 then diagnosed_hypertension_ge80 = 1 ;
+	if on_anti_hypertensive = 1 then on_anti_hypertensive_ge80 = 1 ;
+	if hypertension = 1 then hypertension_ge80 = 1;
+end;
+
+	
 
 
 
@@ -14698,7 +14753,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_hivneg_uncirc_2024 + hivneg_uncirc_2024 ; s_hivneg_uncirc_2529 + hivneg_uncirc_2529 ; s_hivneg_uncirc_3034 + hivneg_uncirc_3034 ; 
 	s_hivneg_uncirc_3539 + hivneg_uncirc_3539 ; s_hivneg_uncirc_4044 + hivneg_uncirc_4044 ; s_hivneg_uncirc_4549 + hivneg_uncirc_4549 ;
 
-            
+         
 	/*supp mat*/
 
 	s_onart_vlg1 + onart_vlg1 ; s_onart_vlg2 + onart_vlg2 ; s_onart_vlg3 + onart_vlg3 ; s_onart_vlg4 + onart_vlg4 ; s_onart_vlg5 + onart_vlg5 ;
@@ -14774,6 +14829,28 @@ if 15 <= age and (death = . or caldate&j = death ) then do;
 	s_hiv6569m + hiv6569m ; s_hiv7074m + hiv7074m ; s_hiv7579m + hiv7579m ; s_hiv8084m + hiv8084m ; s_hiv6569w + hiv6569w ;
     s_hiv7074w + hiv7074w ; s_hiv7579w + hiv7579w ; s_hiv8084w + hiv8084w ; s_hiv85plw + hiv85plw ;s_hiv85plm + hiv85plm ; 
 	s_alive_w + alive_w ; s_alive_m + alive_m ; 
+
+	/* blood pressure */
+
+	s_diagnosed_hypertension_1549 + diagnosed_hypertension_1549 ;  s_on_anti_hypertensive_1549 + on_anti_hypertensive_1549 ;  
+	s_hypertension_1549 + hypertension_1549 ;	
+	s_diagnosed_hypertension_5059 + diagnosed_hypertension_5059 ;  s_on_anti_hypertensive_5059 + on_anti_hypertensive_5059 ;  
+	s_hypertension_5059 + hypertension_5059 ;	
+	s_diagnosed_hypertension_6069 + diagnosed_hypertension_6069 ;  s_on_anti_hypertensive_6069 + on_anti_hypertensive_6069 ;  
+	s_hypertension_6069 + hypertension_6069 ;	
+	s_diagnosed_hypertension_7079 + diagnosed_hypertension_7079 ;  s_on_anti_hypertensive_7079 + on_anti_hypertensive_7079 ;  
+	s_hypertension_7079 + hypertension_7079 ;	
+	s_diagnosed_hypertension_ge80 + diagnosed_hypertension_ge80 ;  s_on_anti_hypertensive_ge80 + on_anti_hypertensive_ge80 ;  
+	s_hypertension_ge80 + hypertension_ge80 ;	
+
+	/* deaths by cause - age 15+ */
+
+	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
+	s_dead_hivpos_sbi + dead_hivpos_sbi ; s_dead_hivpos_oth_adc + dead_hivpos_oth_adc ; s_dead_hivpos_cause2 + dead_hivpos_cause2 ; 
+	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
+	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
+	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; s_dead_cvd + dead_cvd ; 
+	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ; s_dead_tb + dead_tb ; 
 
 end;
 
@@ -15975,6 +16052,12 @@ s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_d
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
 
+/* deaths by cause - age 15+ */
+
+s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
+s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
@@ -16064,6 +16147,13 @@ s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
+/* blood pressure */
+
+s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 	
+s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 	
+s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 	
+s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 	
+s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 	
 
 
 /*parameters sampled*/
@@ -16803,6 +16893,11 @@ s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_d
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead  s_dead_allage   s_death_dcause3_allage  s_death_hivrel_allage
 
+/* deaths by cause - age 15+ */
+s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
+s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
@@ -16890,6 +16985,14 @@ s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc
 s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
+
+/* blood pressure */
+
+s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 	
+s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 	
+s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 	
+s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 	
+s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 
 
 /* covid */
 
@@ -17638,6 +17741,11 @@ s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_d
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
 
+/* deaths by cause - age 15+ */
+s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
+s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
@@ -17724,7 +17832,18 @@ s_new_vmmc4549m  s_new_vmmc50plm
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
+
+/* blood pressure */
+
+s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 	
+s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 	
+s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 	
+s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 	
+s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 
+
+
 /*parameters sampled*/
+
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
