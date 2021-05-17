@@ -1092,6 +1092,26 @@ p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_s
 m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21;
 run;
 
+proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1519w_40 	prevalence1519m_40 	prevalence1549m_40 prevalence1549w_40
+incidence1549w_40  incidence1549m_40  incidence_sw_40 	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
+prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
+p_onart_diag_40 p_onart_vl1000_40   p_vl1000_40	p_onart_vl1000_w_40	p_onart_vl1000_m_40   p_onart_cd4_l500_40  
+p_onart_cd4_l200_40  p_startedline2_40 prop_sw_newp0_40  prop_sw_hiv_40 p_newp_sw_40 
+m15r_40 m25r_40 m35r_40 m45r_40 m55r_40 w15r_40 w25r_40 w35r_40 w45r_40 w55r_40;
+run;
+
+proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_70	p_mcirc_70	prevalence1519w_70 	prevalence1519m_70 	prevalence1549m_70 prevalence1549w_70
+incidence1549w_70  incidence1549m_70  incidence_sw_70 	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
+prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
+p_onart_diag_70 p_onart_vl1000_70   p_vl1000_70	p_onart_vl1000_w_70	p_onart_vl1000_m_70   p_onart_cd4_l500_70  
+p_onart_cd4_l200_70  p_startedline2_70 prop_sw_newp0_70  prop_sw_hiv_70 p_newp_sw_70 
+m15r_70 m25r_70 m35r_70 m45r_70 m55r_70 w15r_70 w25r_70 w35r_70 w45r_70 w55r_70;
+run;
+
+
+
 /*
 
 proc means n p50 p5 p95;
