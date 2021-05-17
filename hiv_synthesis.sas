@@ -5976,7 +5976,7 @@ end;
 
 * note these lines only apply in period of infection;
 
-if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;	* lapr and dpv-vr - add code for o_cab = 1, o_dpv = 1, etc;
+if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;	* lapr and dpv-vr - add code for o_cab = 1 but not dpv (topical);
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 
@@ -6217,7 +6217,7 @@ non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
 if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;	
-	* lapr and dpv-vr - will need to do a similar thing for o_cab and o_dpv; 
+	* lapr and dpv-vr - will need to do a similar thing for o_cab only; 
 if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 
@@ -6290,7 +6290,7 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ; 
-	* lapr and dpv-vr - needs code adding for o_cab and o_dpv - also distinguish between infected_cab and infected_dpv?;
+	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
 	if (infected_prep=1 or (hiv=1 and prep = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
 	end;
@@ -6348,7 +6348,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * viral load changes from t-1 to t, if ART-naive at time t-1;
 
-	if t ge 2 and prep    ne 1 then do;
+	if t ge 2 and prep    ne 1 then do;  * lapr - any_prep ? ;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
 			vc_tm1 =(gx*0.02275 + (0.05 * normal(0)))+ ((age_tm1-35)*0.00075);
@@ -6364,7 +6364,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 
 * CD4 changes from t-1 to t, if ART-naive at time t-1;
-	if t ge 3 and prep    ne 1 then do;
+	if t ge 3 and prep    ne 1 then do; * lapr - anyprep ?;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart    gt 0
 		and (resumec_tm1 =1 or resumec_tm2 =1)) then do;
@@ -6631,7 +6631,7 @@ res_test=.;
 	end;
 
 
-	* interruption of prep before diagnosis;
+	* interruption of prep before diagnosis; * lapr - to add code for cab ;
 	* dependent_on_time_step_length ; 
 	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
 		interrupt   =1;
