@@ -772,8 +772,6 @@ if prep_willing=1;
 * add_prepuptake_sw;		add_prepuptake_sw=0; 		***this may be sampled at a later date;
 														* lapr and dpv-vr may need different values to oral prep
 
-* prob_prep_restart_choice;	prob_prep_restart_choice=0.10; 	* probability of restarting PrEP after discontinuation even when newp>1;
-							* dependent_on_time_step_length ; 
 * pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 							* dependent_on_time_step_length ;
 														* not applicable for lapr or dpv-vr;
@@ -788,11 +786,9 @@ if prep_willing=1;
 * rate_test_restartprep;  	%sample_uniform(rate_test_restartprep, 0.5 0.8);
 							* dependent_on_time_step_length ;
 * rate_choose_stop_prep; 	%sample_uniform(rate_choose_stop_prep, 0.05 0.15 0.30);
-								if 0.67 <= r        then rate_choose_stop_prep = 0.30;*/
 							* dependent_on_time_step_length ;
 							* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
 * prob_prep_restart_choice; %sample_uniform(prob_prep_restart_choice, 0.05 0.10 0.20);
-							if 0.67 <= r then prob_prep_restart_choice=0.20;*/
 							* dependent_on_time_step_length ;
 							* lapr and dpv-vr - I suggest this might be teh same for lapr and dpv-vr - we will have to consider people switching between prep modalities;
 * prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
@@ -15849,8 +15845,8 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag  
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
 
 
@@ -16676,8 +16672,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
+
 
 
 /*VL and CD4*/
@@ -17511,8 +17508,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
+
 
 
 /*VL and CD4*/
