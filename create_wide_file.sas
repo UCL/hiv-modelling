@@ -715,10 +715,12 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 proc sort data=y;by run option;run;
 
-data base; set y;  
+
+* l.base is the long file after adding in newly defined variables and selecting only variable of interest;
+data a.l_base; set y;  
 
 
-data y; set base; 
+data y; set a.l_base; 
 
 
   options nomprint;
