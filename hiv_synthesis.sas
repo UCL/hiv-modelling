@@ -9943,7 +9943,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 * some of these deaths are related to CD4 but wont go down as who4_ related (eg other cancers, but not incl liver death)
 so a proportion (15%) are classified as non-who4_;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4;agedeath=age;
-			if tb=1 then death_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
+			if tb=1 then dead_hiv_tb=1; if crypm=1 then dead_crypm=1; if sbi=1 then dead_sbi=1; if oth_adc=1 then dead_oth_adc=1;  
 
 			dead_diagnosed=0; if registd=1 then dead_diagnosed=1;  dead_naive=0; if naive=1 then dead_naive=1;
 			dead_onart=0; if onart=1 then dead_onart=1; dead_line1_lf0=0; if artline=1 and linefail=0 then dead_line1_lf0 =1;
@@ -13601,10 +13601,10 @@ dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0
 * death by cause and hiv status ;
 if dead=1 and caldate&j = death then do;
 if hiv=1 and dcause=1 then dead_hivpos_cause1=1;
-if hiv=1 and dcause=1 and death_tb=1 then dead_hivpos_tb=1; 
+if hiv=1 and dcause=1 and dead_hiv_tb=1 then dead_hivpos_tb=1; 
 if hiv=1 and dcause=1 and dead_crypm=1 then dead_hivpos_crypm=1; 
 if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_sbi=1; 
-if hiv=1 and dcause=1 and dead_sbi=1 then dead_hivpos_oth_adc=1; 
+if hiv=1 and dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1; 
 if hiv=1 and dcause=2 then dead_hivpos_cause2=1;
 if hiv=1 and dcause=3 then dead_hivpos_cause3=1;
 if hiv=1 and dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
