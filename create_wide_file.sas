@@ -884,7 +884,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
 %var(v=p_hypertension_1549); %var(v=p_hypertension_5059); %var(v=p_hypertension_6069); %var(v=p_hypertension_7079); %var(v=p_hypertension_ge80);
 %var(v=p_diagnosed_hypertension_1549); %var(v=p_diagnosed_hypertension_5059); %var(v=p_diagnosed_hypertension_6069); %var(v=p_diagnosed_hypertension_7079); 
-%var(v=p_diagnosed_hypertension_ge80  %var(v=p_on_anti_hypertensive_1549); %var(v=p_on_anti_hypertensive_5059); %var(v=p_on_anti_hypertensive_6069); 
+%var(v=p_diagnosed_hypertension_ge80);  %var(v=p_on_anti_hypertensive_1549); %var(v=p_on_anti_hypertensive_5059); %var(v=p_on_anti_hypertensive_6069); 
 %var(v=p_on_anti_hypertensive_7079); %var(v=p_on_anti_hypertensive_ge80);
 %var(v=n_dead_hivpos_cause1 ); %var(rate_dead_hivpos_cause1); %var(v=n_dead_hivpos_tb ); %var(rate_dead_hivpos_tb); %var(v=n_dead_hivpos_cause4 ); 
 %var(rate_dead_hivpos_cause4 );%var(v=n_dead_hivpos_crypm ); %var(rate_dead_hivpos_crypm); %var(v=n_dead_hivpos_sbi ); %var(rate_dead_hivpos_sbi);
