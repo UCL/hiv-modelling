@@ -6,7 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d ;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_3_4_21_5r_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_20_5_21_5r_1";
 
 input 
 
@@ -535,7 +535,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  rate_sw_rred_rc  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
@@ -558,11 +558,7 @@ inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2
 incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
 art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
 
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting
-
-eff_prob_return_adc 
+prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
@@ -649,6 +645,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 
 ; 
+
+* note need to keep one s_n ! ;
 
 
 * if run =   ;
@@ -1214,14 +1212,14 @@ prep_strategy rate_sw_rred_rc
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention_3_4_21_5r;
+  data a.art_retention_20_5_21_5r;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention_3_4_21_5r; 
+  set a.art_retention_20_5_21_5r; 
 run;
 
 
@@ -1675,7 +1673,7 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_3_4_21_5r; 
+  data a.wide_art_retention_20_5_21_5r; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
@@ -1691,7 +1689,7 @@ proc freq; tables run; run;
 
 
 
-data r; set a.wide_art_retention_3_4_21_5r; 
+data r; set a.wide_art_retention_20_5_21_5r; 
 
 proc contents; run;
 
@@ -1895,9 +1893,9 @@ run;
 ods html close;
 
 
-data a.art_retention_3_4_21_5r_xlsx;
+data a.art_retention_20_5_21_5r_xlsx;
 
-set a.wide_art_retention_3_4_21_5r;
+set a.wide_art_retention_20_5_21_5r;
 
 drop sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1925,15 +1923,15 @@ prep_strategy rate_sw_rred_rc
 ;
 
 
-proc print data = a.art_retention_3_4_21_5r_xlsx; 
+proc print data = a.art_retention_20_5_21_5r_xlsx; 
 var  death_rate_hiv_ge15:  ;
 run; 
 
 	
 
-proc export data = a.art_retention_3_4_21_5r_xlsx
+proc export data = a.art_retention_20_5_21_5r_xlsx
   dbms=xlsx 
-  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_3_4_21_5r" replace;
+  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_20_5_21_5r" replace;
 run;
 
 
