@@ -9,12 +9,13 @@
 data a.d1;  
 
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep\c_output_tld_prep_22_10_20_5pm_29_jan_21_1";
-  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14a";
+* infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14a";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_2";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_prep_eff_0";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps12_1";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_prep5yr";
 * infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_5pm_29_jan_21_ps14";
+  infile "/home/rmjlaph/Scratch/c_output_tld_prep_22_10_20_29_jan_21_s1";
 
 input 
 
@@ -2286,7 +2287,8 @@ proc sort data=y;by run option;run;
 * data a.prep_29_jan_21_dis7p_2;
 * data a.prep_29_jan_21_prep_eff_0;
 * data a.prep_22_10_20_5pm_29_jan_21_ps12_1 ;
-  data a.prep_22_10_20_9_jan_21_ps14a  ;
+* data a.prep_22_10_20_29_jan_21_ps14a  ;
+  data a.prep_22_10_20_29_jan_21_s1  ;
 
 set y;
 
