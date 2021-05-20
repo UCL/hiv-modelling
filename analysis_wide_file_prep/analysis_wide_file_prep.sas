@@ -8,9 +8,9 @@ data wide;
 * set a.wide_prep_29_jan_21_1_ps12 ;
 * set a.wide_prep_22_10_20_5pm_prep5yr ;
 * set a.wide_prep_29_jan_21_1a2;
-* set a.wide_prep_29_jan_21_1a2_myriad_2;
+  set a.wide_prep_29_jan_21_1a2_myriad_2;
 * set a.wide_prep_29_jan_21_1_ps14 ;
-  set a.wide_prep_29_jan_21_ps14a;
+* set a.wide_prep_29_jan_21_ps14a;
 
   if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
 
@@ -1209,7 +1209,8 @@ model ce_500_x =
 prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
-p_newp_ge1_age1549_21 
+p_newp_ge1_age1549_21
+prop_1564_hivneg_onprep_21_26_2
 ;
 run;
 
@@ -1229,6 +1230,11 @@ p_newp_sw_21
 p_vl1000_21 
 p_m_newp_ge1_age1549_21
 p_w_newp_ge1_age1549_21
+;
+
+* 
+prop_1564_hivneg_onprep_21_26_2 
+prop_elig_on_prep_21_26_2
 ;
 
 
