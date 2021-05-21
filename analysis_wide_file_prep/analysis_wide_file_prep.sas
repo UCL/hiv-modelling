@@ -8,11 +8,12 @@ data wide;
 * set a.wide_prep_29_jan_21_1_ps12 ;
 * set a.wide_prep_22_10_20_5pm_prep5yr ;
 * set a.wide_prep_29_jan_21_1a2;
-  set a.wide_prep_29_jan_21_1a2_myriad_2;
+* set a.wide_prep_29_jan_21_1a2_myriad_2;
 * set a.wide_prep_29_jan_21_1_ps14 ;
 * set a.wide_prep_29_jan_21_ps14a;
+  set a.wide_prep_29_jan_21_s4;
 
-  if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
+* if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
 
 
 
@@ -644,7 +645,7 @@ mean_newp_ppers_prep_21_26_1; run;
 ods html close;
 
 
-ods html;
+ods html; * here;
 proc means n mean  p5 p95 lclm uclm data=wide; var p_newp_this_per_prep_21_26_1  p_newp_this_per_prep_21_26_2 ;  
 * where prep_strategy_21_26_2 = 11 ;
 run; 
