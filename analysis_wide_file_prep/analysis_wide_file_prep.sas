@@ -8,15 +8,15 @@ data wide;
 * set a.wide_prep_29_jan_21_1_ps12 ;
 * set a.wide_prep_22_10_20_5pm_prep5yr ;
 * set a.wide_prep_29_jan_21_1a2;
-  set a.wide_prep_29_jan_21_1a2_myriad_2;
+* set a.wide_prep_29_jan_21_1a2_myriad_2;
 * set a.wide_prep_29_jan_21_1_ps14 ;
-* set a.wide_prep_29_jan_21_ps14a;
+  set a.wide_prep_29_jan_21_ps14a;
 * set a.wide_prep_29_jan_21_s2;
 
 
-  if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
+* if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
   
-* if run > 551635952 then delete;  * for n=300 for ps14a;
+  if run > 551635952 then delete;  * for n=300 for ps14a;
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -1081,7 +1081,7 @@ prop_elig_on_prep_21_26_2   p_prep_adhg80_21_26_2  p_newp_sw_21
   ods html;
 proc freq data=wide;   tables ce_500_x   / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-  where 0.02 <= prevalence_vg1000_21 < 5.55 ; 
+* where 0.02 <= prevalence_vg1000_21 < 5.55 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where 1.5 <= incidence1549_21 < 9.5 ;
