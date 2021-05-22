@@ -11,11 +11,12 @@ data wide;
 * set a.wide_prep_29_jan_21_1a2_myriad_2;
 * set a.wide_prep_29_jan_21_1_ps14 ;
 * set a.wide_prep_29_jan_21_ps14a;
-  set a.wide_prep_29_jan_21_s4;
+  set a.wide_prep_29_jan_21_s2;
+
 
 * if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
-
-
+  
+* if run > 551635952 then delete;  * for n=300 for ps14a;
 
 * --------------------------------------------------------------------------------------------------------------;
 
