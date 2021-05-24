@@ -5,9 +5,11 @@
 
 *
 
-mae risk informed prep gender neutral - not just the women with ep 
+make risk informed prep gender neutral - not just the women with ep 
 
 separate our hiv tests done for prep and other hiv tests and their costs
+
+include in primary setting scenarios greater probability of low use and lower adherence (as in sensitivity analyses)
 
 ;
 
