@@ -5,7 +5,8 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_lowart";
+*  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_lowart";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm";
 
 input 
 
@@ -1022,8 +1023,11 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 * ts1m - below change 4 to 12;
 * incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1564;				incidence1564 = (s_primary * 4 * 100) / (s_alive1564  - s_hiv1564  + s_primary);
+
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+
 
 * incidence1524w;				incidence1524w = ((s_primary1519w + s_primary2024w) * 4 * 100) / 
 									(s_ageg1519w + s_ageg2024w - s_hiv1519w - s_hiv2024w + s_primary1519w + s_primary2024w);
@@ -1423,7 +1427,7 @@ prevalence1549m prevalence1549w prevalence1549
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
-incidence1549 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary mtct_prop
+incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary mtct_prop
 p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
@@ -1532,11 +1536,13 @@ proc sort data=y;by run option_new;run;
 
 
 data a.vmmc_29_03_21_6pm_lowart; set y;run;
-
-
 data y; set a.vmmc_29_03_21_6pm_lowart; run;
 
 proc freq;table option_new;run;
+
+
+data a.timeseries;set y;run;
+data y;set a.timeseries;run;
 
   options nomprint;
   option nospool;
@@ -1570,9 +1576,237 @@ proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&
 
 data &v ; merge  y_21 t_40_41 t_20_21 t_21_22 t_21_26 t_21_41 t_21_71 ;  
 /* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
+
+/*
+%macro var(v=);
+proc means noprint data=y; var &v; output out=y_20_ mean= &v._20_; by run option_new ; where 2020 <= cald < 2021;
+proc means noprint data=y; var &v; output out=y_21_ mean= &v._21_; by run option_new ; where 2021 <= cald < 2022;
+proc means noprint data=y; var &v; output out=y_22_ mean= &v._22_; by run option_new ; where 2022 <= cald < 2023;
+proc means noprint data=y; var &v; output out=y_23_ mean= &v._23_; by run option_new ; where 2023 <= cald < 2024;
+proc means noprint data=y; var &v; output out=y_24_ mean= &v._24_; by run option_new ; where 2024 <= cald < 2025;
+proc means noprint data=y; var &v; output out=y_25_ mean= &v._25_; by run option_new ; where 2025 <= cald < 2026;
+proc means noprint data=y; var &v; output out=y_26_ mean= &v._26_; by run option_new ; where 2026 <= cald < 2027;
+proc means noprint data=y; var &v; output out=y_27_ mean= &v._27_; by run option_new ; where 2027 <= cald < 2028;
+proc means noprint data=y; var &v; output out=y_28_ mean= &v._28_; by run option_new ; where 2028 <= cald < 2029;
+proc means noprint data=y; var &v; output out=y_29_ mean= &v._29_; by run option_new ; where 2029 <= cald < 2030;
+proc means noprint data=y; var &v; output out=y_30_ mean= &v._30_; by run option_new ; where 2030 <= cald < 2031;
+
+proc means noprint data=y; var &v; output out=y_31_ mean= &v._31_; by run option_new ; where 2031 <= cald < 2032;
+proc means noprint data=y; var &v; output out=y_32_ mean= &v._32_; by run option_new ; where 2032 <= cald < 2033;
+proc means noprint data=y; var &v; output out=y_33_ mean= &v._33_; by run option_new ; where 2033 <= cald < 2034;
+proc means noprint data=y; var &v; output out=y_34_ mean= &v._34_; by run option_new ; where 2034 <= cald < 2035;
+proc means noprint data=y; var &v; output out=y_35_ mean= &v._35_; by run option_new ; where 2035 <= cald < 2036;
+proc means noprint data=y; var &v; output out=y_36_ mean= &v._36_; by run option_new ; where 2036 <= cald < 2037;
+proc means noprint data=y; var &v; output out=y_37_ mean= &v._37_; by run option_new ; where 2037 <= cald < 2038;
+proc means noprint data=y; var &v; output out=y_38_ mean= &v._38_; by run option_new ; where 2038 <= cald < 2039;
+proc means noprint data=y; var &v; output out=y_39_ mean= &v._39_; by run option_new ; where 2039 <= cald < 2040;
+proc means noprint data=y; var &v; output out=y_40_ mean= &v._40_; by run option_new ; where 2040 <= cald < 2041;
+
+proc means noprint data=y; var &v; output out=y_41_ mean= &v._41_; by run option_new ; where 2041 <= cald < 2042;
+proc means noprint data=y; var &v; output out=y_42_ mean= &v._42_; by run option_new ; where 2042 <= cald < 2043;
+proc means noprint data=y; var &v; output out=y_43_ mean= &v._43_; by run option_new ; where 2043 <= cald < 2044;
+proc means noprint data=y; var &v; output out=y_44_ mean= &v._44_; by run option_new ; where 2044 <= cald < 2045;
+proc means noprint data=y; var &v; output out=y_45_ mean= &v._45_; by run option_new ; where 2045 <= cald < 2046;
+proc means noprint data=y; var &v; output out=y_46_ mean= &v._46_; by run option_new ; where 2046 <= cald < 2047;
+proc means noprint data=y; var &v; output out=y_47_ mean= &v._47_; by run option_new ; where 2047 <= cald < 2048;
+proc means noprint data=y; var &v; output out=y_48_ mean= &v._48_; by run option_new ; where 2048 <= cald < 2049;
+proc means noprint data=y; var &v; output out=y_49_ mean= &v._49_; by run option_new ; where 2049 <= cald < 2050;
+proc means noprint data=y; var &v; output out=y_50_ mean= &v._50_; by run option_new ; where 2050 <= cald < 2051;
+
+proc means noprint data=y; var &v; output out=y_51_ mean= &v._51_; by run option_new ; where 2051 <= cald < 2052;
+proc means noprint data=y; var &v; output out=y_52_ mean= &v._52_; by run option_new ; where 2052 <= cald < 2053;
+proc means noprint data=y; var &v; output out=y_53_ mean= &v._53_; by run option_new ; where 2053 <= cald < 2054;
+proc means noprint data=y; var &v; output out=y_54_ mean= &v._54_; by run option_new ; where 2054 <= cald < 2055;
+proc means noprint data=y; var &v; output out=y_55_ mean= &v._55_; by run option_new ; where 2055 <= cald < 2056;
+proc means noprint data=y; var &v; output out=y_56_ mean= &v._56_; by run option_new ; where 2056 <= cald < 2057;
+proc means noprint data=y; var &v; output out=y_57_ mean= &v._57_; by run option_new ; where 2057 <= cald < 2058;
+proc means noprint data=y; var &v; output out=y_58_ mean= &v._58_; by run option_new ; where 2058 <= cald < 2059;
+proc means noprint data=y; var &v; output out=y_59_ mean= &v._59_; by run option_new ; where 2059 <= cald < 2060;
+proc means noprint data=y; var &v; output out=y_60_ mean= &v._60_; by run option_new ; where 2060 <= cald < 2061;
+
+proc means noprint data=y; var &v; output out=y_61_ mean= &v._61_; by run option_new ; where 2061 <= cald < 2062;
+proc means noprint data=y; var &v; output out=y_62_ mean= &v._62_; by run option_new ; where 2062 <= cald < 2063;
+proc means noprint data=y; var &v; output out=y_63_ mean= &v._63_; by run option_new ; where 2063 <= cald < 2064;
+proc means noprint data=y; var &v; output out=y_64_ mean= &v._64_; by run option_new ; where 2064 <= cald < 2065;
+proc means noprint data=y; var &v; output out=y_65_ mean= &v._65_; by run option_new ; where 2065 <= cald < 2066;
+proc means noprint data=y; var &v; output out=y_66_ mean= &v._66_; by run option_new ; where 2066 <= cald < 2067;
+proc means noprint data=y; var &v; output out=y_67_ mean= &v._67_; by run option_new ; where 2067 <= cald < 2068;
+proc means noprint data=y; var &v; output out=y_68_ mean= &v._68_; by run option_new ; where 2068 <= cald < 2069;
+proc means noprint data=y; var &v; output out=y_69_ mean= &v._69_; by run option_new ; where 2069 <= cald < 2070;
+proc means noprint data=y; var &v; output out=y_70_ mean= &v._70_; by run option_new ; where 2070 <= cald < 2071;
+
+proc sort data=y_20_; by run; proc transpose data=y_20_ out=t_20_ prefix=&v._20_; var &v._20_; by run;
+proc sort data=y_21_; by run; proc transpose data=y_21_ out=t_21_ prefix=&v._21_; var &v._21_; by run;
+proc sort data=y_22_; by run; proc transpose data=y_22_ out=t_22_ prefix=&v._22_; var &v._22_; by run;
+proc sort data=y_23_; by run; proc transpose data=y_23_ out=t_23_ prefix=&v._23_; var &v._23_; by run;
+proc sort data=y_24_; by run; proc transpose data=y_24_ out=t_24_ prefix=&v._24_; var &v._24_; by run;
+proc sort data=y_25_; by run; proc transpose data=y_25_ out=t_25_ prefix=&v._25_; var &v._25_; by run;
+proc sort data=y_26_; by run; proc transpose data=y_26_ out=t_26_ prefix=&v._26_; var &v._26_; by run;
+proc sort data=y_27_; by run; proc transpose data=y_27_ out=t_27_ prefix=&v._27_; var &v._27_; by run;
+proc sort data=y_28_; by run; proc transpose data=y_28_ out=t_28_ prefix=&v._28_; var &v._28_; by run;
+proc sort data=y_29_; by run; proc transpose data=y_29_ out=t_29_ prefix=&v._29_; var &v._29_; by run;
+proc sort data=y_30_; by run; proc transpose data=y_30_ out=t_30_ prefix=&v._30_; var &v._30_; by run;
+
+proc sort data=y_31_; by run; proc transpose data=y_31_ out=t_31_ prefix=&v._31_; var &v._31_; by run;
+proc sort data=y_32_; by run; proc transpose data=y_32_ out=t_32_ prefix=&v._32_; var &v._32_; by run;
+proc sort data=y_33_; by run; proc transpose data=y_33_ out=t_33_ prefix=&v._33_; var &v._33_; by run;
+proc sort data=y_34_; by run; proc transpose data=y_34_ out=t_34_ prefix=&v._34_; var &v._34_; by run;
+proc sort data=y_35_; by run; proc transpose data=y_35_ out=t_35_ prefix=&v._35_; var &v._35_; by run;
+proc sort data=y_36_; by run; proc transpose data=y_36_ out=t_36_ prefix=&v._36_; var &v._36_; by run;
+proc sort data=y_37_; by run; proc transpose data=y_37_ out=t_37_ prefix=&v._37_; var &v._37_; by run;
+proc sort data=y_38_; by run; proc transpose data=y_38_ out=t_38_ prefix=&v._38_; var &v._38_; by run;
+proc sort data=y_39_; by run; proc transpose data=y_39_ out=t_39_ prefix=&v._39_; var &v._39_; by run;
+proc sort data=y_40_; by run; proc transpose data=y_40_ out=t_40_ prefix=&v._40_; var &v._40_; by run;
+
+proc sort data=y_41_; by run; proc transpose data=y_41_ out=t_41_ prefix=&v._41_; var &v._41_; by run;
+proc sort data=y_42_; by run; proc transpose data=y_42_ out=t_42_ prefix=&v._42_; var &v._42_; by run;
+proc sort data=y_43_; by run; proc transpose data=y_43_ out=t_43_ prefix=&v._43_; var &v._43_; by run;
+proc sort data=y_44_; by run; proc transpose data=y_44_ out=t_44_ prefix=&v._44_; var &v._44_; by run;
+proc sort data=y_45_; by run; proc transpose data=y_45_ out=t_45_ prefix=&v._45_; var &v._45_; by run;
+proc sort data=y_46_; by run; proc transpose data=y_46_ out=t_46_ prefix=&v._46_; var &v._46_; by run;
+proc sort data=y_47_; by run; proc transpose data=y_47_ out=t_47_ prefix=&v._47_; var &v._47_; by run;
+proc sort data=y_48_; by run; proc transpose data=y_48_ out=t_48_ prefix=&v._48_; var &v._48_; by run;
+proc sort data=y_49_; by run; proc transpose data=y_49_ out=t_49_ prefix=&v._49_; var &v._49_; by run;
+proc sort data=y_50_; by run; proc transpose data=y_50_ out=t_50_ prefix=&v._50_; var &v._50_; by run;
+
+proc sort data=y_51_; by run; proc transpose data=y_51_ out=t_51_ prefix=&v._51_; var &v._51_; by run;
+proc sort data=y_52_; by run; proc transpose data=y_52_ out=t_52_ prefix=&v._52_; var &v._52_; by run;
+proc sort data=y_53_; by run; proc transpose data=y_53_ out=t_53_ prefix=&v._53_; var &v._53_; by run;
+proc sort data=y_54_; by run; proc transpose data=y_54_ out=t_54_ prefix=&v._54_; var &v._54_; by run;
+proc sort data=y_55_; by run; proc transpose data=y_55_ out=t_55_ prefix=&v._55_; var &v._55_; by run;
+proc sort data=y_56_; by run; proc transpose data=y_56_ out=t_56_ prefix=&v._56_; var &v._56_; by run;
+proc sort data=y_57_; by run; proc transpose data=y_57_ out=t_57_ prefix=&v._57_; var &v._57_; by run;
+proc sort data=y_58_; by run; proc transpose data=y_58_ out=t_58_ prefix=&v._58_; var &v._58_; by run;
+proc sort data=y_59_; by run; proc transpose data=y_59_ out=t_59_ prefix=&v._59_; var &v._59_; by run;
+proc sort data=y_60_; by run; proc transpose data=y_60_ out=t_60_ prefix=&v._60_; var &v._60_; by run;
+
+proc sort data=y_61_; by run; proc transpose data=y_61_ out=t_61_ prefix=&v._61_; var &v._61_; by run;
+proc sort data=y_62_; by run; proc transpose data=y_62_ out=t_62_ prefix=&v._62_; var &v._62_; by run;
+proc sort data=y_63_; by run; proc transpose data=y_63_ out=t_63_ prefix=&v._63_; var &v._63_; by run;
+proc sort data=y_64_; by run; proc transpose data=y_64_ out=t_64_ prefix=&v._64_; var &v._64_; by run;
+proc sort data=y_65_; by run; proc transpose data=y_65_ out=t_65_ prefix=&v._65_; var &v._65_; by run;
+proc sort data=y_66_; by run; proc transpose data=y_66_ out=t_66_ prefix=&v._66_; var &v._66_; by run;
+proc sort data=y_67_; by run; proc transpose data=y_67_ out=t_67_ prefix=&v._67_; var &v._67_; by run;
+proc sort data=y_68_; by run; proc transpose data=y_68_ out=t_68_ prefix=&v._68_; var &v._68_; by run;
+proc sort data=y_69_; by run; proc transpose data=y_69_ out=t_69_ prefix=&v._69_; var &v._69_; by run;
+proc sort data=y_70_; by run; proc transpose data=y_70_ out=t_70_ prefix=&v._70_; var &v._70_; by run;
+
+
+data &v ; merge  
+t_20_ t_21_ t_22_ t_23_ t_24_ t_25_ t_26_ t_27_ t_28_ t_29_ t_30_
+t_30_ t_31_ t_32_ t_33_ t_34_ t_35_ t_36_ t_37_ t_38_ t_39_ t_40_
+t_40_ t_41_ t_42_ t_43_ t_44_ t_45_ t_46_ t_47_ t_48_ t_49_ t_50_
+t_50_ t_51_ t_52_ t_53_ t_54_ t_55_ t_56_ t_57_ t_58_ t_59_ t_60_
+t_60_ t_61_ t_62_ t_63_ t_64_ t_65_ t_66_ t_67_ t_68_ t_69_ t_70_
+; 
+
+
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
+%var(v=p_mcirc_1549m);%var(v=p_onart);%var(v=incidence1564);%var(v=p_vl1000_m);%var(v=p_onart_vl1000_m); run;
+
+data   wide_outputs; 
+merge p_mcirc_1549m p_onart incidence1564 p_vl1000_m p_onart_vl1000_m;run;
+
+
+proc means n p50 p5 p95;var
+p_mcirc_1549m_20_1 p_mcirc_1549m_21_1 p_mcirc_1549m_22_1 p_mcirc_1549m_23_1 p_mcirc_1549m_24_1 
+p_mcirc_1549m_25_1 p_mcirc_1549m_26_1 p_mcirc_1549m_27_1 p_mcirc_1549m_28_1 p_mcirc_1549m_29_1 
+p_mcirc_1549m_30_1 p_mcirc_1549m_31_1 p_mcirc_1549m_32_1 p_mcirc_1549m_33_1 p_mcirc_1549m_34_1 
+p_mcirc_1549m_35_1 p_mcirc_1549m_36_1 p_mcirc_1549m_37_1 p_mcirc_1549m_38_1 p_mcirc_1549m_39_1 
+p_mcirc_1549m_40_1 p_mcirc_1549m_41_1 p_mcirc_1549m_42_1 p_mcirc_1549m_43_1 p_mcirc_1549m_44_1 
+p_mcirc_1549m_45_1 p_mcirc_1549m_46_1 p_mcirc_1549m_47_1 p_mcirc_1549m_48_1 p_mcirc_1549m_49_1 
+p_mcirc_1549m_50_1 p_mcirc_1549m_51_1 p_mcirc_1549m_52_1 p_mcirc_1549m_53_1 p_mcirc_1549m_54_1
+p_mcirc_1549m_55_1 p_mcirc_1549m_56_1 p_mcirc_1549m_57_1 p_mcirc_1549m_58_1 p_mcirc_1549m_59_1 
+p_mcirc_1549m_60_1 p_mcirc_1549m_61_1 p_mcirc_1549m_62_1 p_mcirc_1549m_63_1 p_mcirc_1549m_64_1
+p_mcirc_1549m_65_1 p_mcirc_1549m_66_1 p_mcirc_1549m_67_1 p_mcirc_1549m_68_1 p_mcirc_1549m_69_1 p_mcirc_1549m_70_1
+
+p_mcirc_1549m_21_2 p_mcirc_1549m_22_2 p_mcirc_1549m_23_2 p_mcirc_1549m_24_2 
+p_mcirc_1549m_25_2 p_mcirc_1549m_26_2 p_mcirc_1549m_27_2 p_mcirc_1549m_28_2 p_mcirc_1549m_29_2 
+p_mcirc_1549m_30_2 p_mcirc_1549m_31_2 p_mcirc_1549m_32_2 p_mcirc_1549m_33_2 p_mcirc_1549m_34_2 
+p_mcirc_1549m_35_2 p_mcirc_1549m_36_2 p_mcirc_1549m_37_2 p_mcirc_1549m_38_2 p_mcirc_1549m_39_2 
+p_mcirc_1549m_40_2 p_mcirc_1549m_41_2 p_mcirc_1549m_42_2 p_mcirc_1549m_43_2 p_mcirc_1549m_44_2 
+p_mcirc_1549m_45_2 p_mcirc_1549m_46_2 p_mcirc_1549m_47_2 p_mcirc_1549m_48_2 p_mcirc_1549m_49_2 
+p_mcirc_1549m_50_2 p_mcirc_1549m_51_2 p_mcirc_1549m_52_2 p_mcirc_1549m_53_2 p_mcirc_1549m_54_2
+p_mcirc_1549m_55_2 p_mcirc_1549m_56_2 p_mcirc_1549m_57_2 p_mcirc_1549m_58_2 p_mcirc_1549m_59_2 
+p_mcirc_1549m_60_2 p_mcirc_1549m_61_2 p_mcirc_1549m_62_2 p_mcirc_1549m_63_2 p_mcirc_1549m_64_2
+p_mcirc_1549m_65_2 p_mcirc_1549m_66_2 p_mcirc_1549m_67_2 p_mcirc_1549m_68_2 p_mcirc_1549m_69_2 p_mcirc_1549m_70_2;run;
+
+proc means n p50 p5 p95;var
+p_onart_20_1 p_onart_21_1 p_onart_22_1 p_onart_23_1 p_onart_24_1 
+p_onart_25_1 p_onart_26_1 p_onart_27_1 p_onart_28_1 p_onart_29_1 
+p_onart_30_1 p_onart_31_1 p_onart_32_1 p_onart_33_1 p_onart_34_1 
+p_onart_35_1 p_onart_36_1 p_onart_37_1 p_onart_38_1 p_onart_39_1 
+p_onart_40_1 p_onart_41_1 p_onart_42_1 p_onart_43_1 p_onart_44_1 
+p_onart_45_1 p_onart_46_1 p_onart_47_1 p_onart_48_1 p_onart_49_1 
+p_onart_50_1 p_onart_51_1 p_onart_52_1 p_onart_53_1 p_onart_54_1
+p_onart_55_1 p_onart_56_1 p_onart_57_1 p_onart_58_1 p_onart_59_1 
+p_onart_60_1 p_onart_61_1 p_onart_62_1 p_onart_63_1 p_onart_64_1
+p_onart_65_1 p_onart_66_1 p_onart_67_1 p_onart_68_1 p_onart_69_1 p_onart_70_1
+
+p_onart_21_2 p_onart_22_2 p_onart_23_2 p_onart_24_2 
+p_onart_25_2 p_onart_26_2 p_onart_27_2 p_onart_28_2 p_onart_29_2 
+p_onart_30_2 p_onart_31_2 p_onart_32_2 p_onart_33_2 p_onart_34_2 
+p_onart_35_2 p_onart_36_2 p_onart_37_2 p_onart_38_2 p_onart_39_2 
+p_onart_40_2 p_onart_41_2 p_onart_42_2 p_onart_43_2 p_onart_44_2 
+p_onart_45_2 p_onart_46_2 p_onart_47_2 p_onart_48_2 p_onart_49_2 
+p_onart_50_2 p_onart_51_2 p_onart_52_2 p_onart_53_2 p_onart_54_2
+p_onart_55_2 p_onart_56_2 p_onart_57_2 p_onart_58_2 p_onart_59_2 
+p_onart_60_2 p_onart_61_2 p_onart_62_2 p_onart_63_2 p_onart_64_2
+p_onart_65_2 p_onart_66_2 p_onart_67_2 p_onart_68_2 p_onart_69_2 p_onart_70_2;run;
+
+proc means n p50 p5 p95;var
+incidence1564_20_1 incidence1564_21_1 incidence1564_22_1 incidence1564_23_1 incidence1564_24_1 
+incidence1564_25_1 incidence1564_26_1 incidence1564_27_1 incidence1564_28_1 incidence1564_29_1 
+incidence1564_30_1 incidence1564_31_1 incidence1564_32_1 incidence1564_33_1 incidence1564_34_1 
+incidence1564_35_1 incidence1564_36_1 incidence1564_37_1 incidence1564_38_1 incidence1564_39_1 
+incidence1564_40_1 incidence1564_41_1 incidence1564_42_1 incidence1564_43_1 incidence1564_44_1 
+incidence1564_45_1 incidence1564_46_1 incidence1564_47_1 incidence1564_48_1 incidence1564_49_1 
+incidence1564_50_1 incidence1564_51_1 incidence1564_52_1 incidence1564_53_1 incidence1564_54_1
+incidence1564_55_1 incidence1564_56_1 incidence1564_57_1 incidence1564_58_1 incidence1564_59_1 
+incidence1564_60_1 incidence1564_61_1 incidence1564_62_1 incidence1564_63_1 incidence1564_64_1
+incidence1564_65_1 incidence1564_66_1 incidence1564_67_1 incidence1564_68_1 incidence1564_69_1 incidence1564_70_1
+
+incidence1564_21_2 incidence1564_22_2 incidence1564_23_2 incidence1564_24_2 
+incidence1564_25_2 incidence1564_26_2 incidence1564_27_2 incidence1564_28_2 incidence1564_29_2 
+incidence1564_30_2 incidence1564_31_2 incidence1564_32_2 incidence1564_33_2 incidence1564_34_2 
+incidence1564_35_2 incidence1564_36_2 incidence1564_37_2 incidence1564_38_2 incidence1564_39_2 
+incidence1564_40_2 incidence1564_41_2 incidence1564_42_2 incidence1564_43_2 incidence1564_44_2 
+incidence1564_45_2 incidence1564_46_2 incidence1564_47_2 incidence1564_48_2 incidence1564_49_2 
+incidence1564_50_2 incidence1564_51_2 incidence1564_52_2 incidence1564_53_2 incidence1564_54_2
+incidence1564_55_2 incidence1564_56_2 incidence1564_57_2 incidence1564_58_2 incidence1564_59_2 
+incidence1564_60_2 incidence1564_61_2 incidence1564_62_2 incidence1564_63_2 incidence1564_64_2
+incidence1564_65_2 incidence1564_66_2 incidence1564_67_2 incidence1564_68_2 incidence1564_69_2 incidence1564_70_2;run;
+
+***internal use;
+proc means n p50 p5 p95;var
+p_vl1000_m_20_1 p_vl1000_m_21_1 p_vl1000_m_22_1 p_vl1000_m_23_1 p_vl1000_m_24_1 
+p_vl1000_m_25_1 p_vl1000_m_26_1 p_vl1000_m_27_1 p_vl1000_m_28_1 p_vl1000_m_29_1 
+p_vl1000_m_30_1 p_vl1000_m_31_1 p_vl1000_m_32_1 p_vl1000_m_33_1 p_vl1000_m_34_1 
+p_vl1000_m_35_1 p_vl1000_m_36_1 p_vl1000_m_37_1 p_vl1000_m_38_1 p_vl1000_m_39_1 
+p_vl1000_m_40_1 p_vl1000_m_41_1 p_vl1000_m_42_1 p_vl1000_m_43_1 p_vl1000_m_44_1 
+p_vl1000_m_45_1 p_vl1000_m_46_1 p_vl1000_m_47_1 p_vl1000_m_48_1 p_vl1000_m_49_1 
+p_vl1000_m_50_1 p_vl1000_m_51_1 p_vl1000_m_52_1 p_vl1000_m_53_1 p_vl1000_m_54_1
+p_vl1000_m_55_1 p_vl1000_m_56_1 p_vl1000_m_57_1 p_vl1000_m_58_1 p_vl1000_m_59_1 
+p_vl1000_m_60_1 p_vl1000_m_61_1 p_vl1000_m_62_1 p_vl1000_m_63_1 p_vl1000_m_64_1
+p_vl1000_m_65_1 p_vl1000_m_66_1 p_vl1000_m_67_1 p_vl1000_m_68_1 p_vl1000_m_69_1 p_vl1000_m_70_1
+
+p_onart_vl1000_m_21_1 p_onart_vl1000_m_22_1 p_onart_vl1000_m_23_1 p_onart_vl1000_m_24_1 
+p_onart_vl1000_m_25_1 p_onart_vl1000_m_26_1 p_onart_vl1000_m_27_1 p_onart_vl1000_m_28_1 p_onart_vl1000_m_29_1 
+p_onart_vl1000_m_30_1 p_onart_vl1000_m_31_1 p_onart_vl1000_m_32_1 p_onart_vl1000_m_33_1 p_onart_vl1000_m_34_1 
+p_onart_vl1000_m_35_1 p_onart_vl1000_m_36_1 p_onart_vl1000_m_37_1 p_onart_vl1000_m_38_1 p_onart_vl1000_m_39_1 
+p_onart_vl1000_m_40_1 p_onart_vl1000_m_41_1 p_onart_vl1000_m_42_1 p_onart_vl1000_m_43_1 p_onart_vl1000_m_44_1 
+p_onart_vl1000_m_45_1 p_onart_vl1000_m_46_1 p_onart_vl1000_m_47_1 p_onart_vl1000_m_48_1 p_onart_vl1000_m_49_1 
+p_onart_vl1000_m_50_1 p_onart_vl1000_m_51_1 p_onart_vl1000_m_52_1 p_onart_vl1000_m_53_1 p_onart_vl1000_m_54_1
+p_onart_vl1000_m_55_1 p_onart_vl1000_m_56_1 p_onart_vl1000_m_57_1 p_onart_vl1000_m_58_1 p_onart_vl1000_m_59_1 
+p_onart_vl1000_m_60_1 p_onart_vl1000_m_61_1 p_onart_vl1000_m_62_1 p_onart_vl1000_m_63_1 p_onart_vl1000_m_64_1
+p_onart_vl1000_m_65_1 p_onart_vl1000_m_66_1 p_onart_vl1000_m_67_1 p_onart_vl1000_m_68_1 p_onart_vl1000_m_69_1 p_onart_vl1000_m_70_1;run;
+
+*/
+
+%mend var;
+
 %var(v=incidence_sw);
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
