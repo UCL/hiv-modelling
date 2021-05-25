@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000  ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1182,19 +1182,19 @@ inc13=0.016; * 55 to 65;
 end;
 
 if inc_cat=3 then do;
-inc1=0.1280;
-inc2=0.1190;
-inc3=0.1130;
-inc4=0.1040;
-inc5=0.0970;
+inc1=0.0920;
+inc2=0.0920;
+inc3=0.0920;
+inc4=0.0920;
+inc5=0.0900;
 inc6=0.0900;
-inc7=0.0810;
-inc8=0.074;
-inc9 =0.060;
-inc10=0.050;
-inc11=0.038;
-inc12=0.026;
-inc13=0.020;
+inc7=0.0880;
+inc8=0.084;
+inc9 =0.078;
+inc10=0.070;
+inc11=0.056;
+inc12=0.043;
+inc13=0.033;
 end;
 
 
@@ -10590,6 +10590,12 @@ if 25 <= age < 35 then ageg=2;
 if 35 <= age < 45 then ageg=3;
 if 45 <= age < 55 then ageg=4;
 if 55 <= age < 65 then ageg=5;
+if 60 <= age < 70 then ageg=6;
+if 65 <= age < 75 then ageg=7;
+if 70 <= age < 80 then ageg=8;
+if 75 <= age < 85 then ageg=9;
+if 80 <= age then ageg=10;
+
 
 if gender=1 then do;
 	if 15 <= age < 25 then ageg1m=1;else ageg1m=0;
@@ -15055,6 +15061,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
+proc freq; tables inc_cat cald ageg ; 
+where 15 <= age and death = .;
+run;
+
+
 /*
 
 * not sure if we should keep this commented out code on procs we ran to test changes ;
@@ -16174,7 +16185,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
-sw_program eff_sw_program sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov
@@ -16196,9 +16207,7 @@ inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_p
 incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
 
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_year_i  eff_test_targeting
+prepuptake_sw  prepuptake_pop e_decr_hard_reach_year_i  
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
@@ -17507,7 +17516,7 @@ put
 * libname b '/home/rmjljes/Scratch/';
 
 
-data b.out_base_name_&dataset_id(compress=binary); set cum_l1;
+data b.out_base_&dataset_id(compress=binary); set cum_l1;
 
 keep
 
@@ -18059,7 +18068,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
@@ -18082,9 +18091,7 @@ inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_p
 incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_year_i  eff_test_targeting
+prepuptake_sw  prepuptake_pop e_decr_hard_reach_year_i 
 
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
