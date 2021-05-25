@@ -313,7 +313,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:3);
+* inc_cat; 					%sample_uniform(inc_cat, 1:4); inc_cat=3;
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -1181,7 +1181,27 @@ inc12=0.021; * 45 to 55;
 inc13=0.016; * 55 to 65;
 end;
 
+
 if inc_cat=3 then do;
+inc1=0.1280;
+inc2=0.1190;
+inc3=0.1130;
+inc4=0.1040;
+inc5=0.0970;
+inc6=0.0900;
+inc7=0.0810;
+inc8=0.074;
+inc9 =0.060;
+inc10=0.050;
+inc11=0.038;
+inc12=0.026;
+inc13=0.020;
+end;
+
+
+
+
+if inc_cat=4 then do;
 inc1=0.0920;
 inc2=0.0920;
 inc3=0.0920;
