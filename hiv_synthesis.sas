@@ -14730,6 +14730,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_totdur_sw_10to19 + totdur_sw_10to19;  
 	s_totdur_eversw_0to3 + totdur_eversw_0to3; s_totdur_eversw_3to5 + totdur_eversw_3to5; s_totdur_eversw_6to9 + totdur_eversw_6to9;
 	s_totdur_eversw_10to19 + totdur_eversw_10to19;  
+	s_act_dur_sw + act_dur_sw;  s_tot_dur_sw + tot_dur_sw;
 
 	s_sw_program_visit + sw_program_visit ;
 	s_diag_sw_noprog + diag_sw_noprog; 	s_diag_sw_inprog + diag_sw_inprog;
@@ -16106,7 +16107,7 @@ s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  
 
 s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19  
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
-s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 
+s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
 s_sw_program_visit
 
@@ -16943,7 +16944,7 @@ s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  
 
 s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19  
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
-s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 
+s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw s_tot_dur_sw
 
 s_sw_program_visit
 
@@ -17991,7 +17992,7 @@ s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  
 
 s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19  
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
-s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 
+s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_tot_dur_sw  s_tot_dur_sw
 
 s_sw_program_visit
 
