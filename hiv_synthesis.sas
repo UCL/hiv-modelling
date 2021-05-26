@@ -1854,6 +1854,11 @@ call symput('dataset_id',dataset_id);
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+* SECTION 3A - this section runs for all 100,000 people ;
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
 
@@ -2329,9 +2334,9 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 * ==========================================================================================================================================;
 
-* SECTION 3 - OPTIONS ;
+* OPTIONS TO IMPLEMENT FROM year_i onwards;
 
-* code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
+* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
 * I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
 
 * INTERVENTIONS / CHANGES in year_interv ;
@@ -2783,8 +2788,18 @@ ch_risk_beh_ep=1.0;
 if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995);
 if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
 
-* note this is a key point in the model program in that after this point through to the end of the overall loop at xx55 we are only giving
-values to people aged 15 or over ;
+
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
+* SECTION 3B 
+
+* note this is a key point in the model program in that after this point through to the end of the overall loop at xx55 (end of section 4) 
+we are only giving values to people aged 15 or over, not the whole 100,000 people - this section includes section 3_hiv - this is important
+to consider when creating s_ variables in section 5 from which we take the value for the 100,000th person;
+
+* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+
 
 if age    < 15 then do; hiv=.; goto xx55; end;
 
@@ -3710,7 +3725,7 @@ we will have to modify the value when we have data to compare with;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* RISK OF NEW INFECTION ;  * part of SECTION 3 - updating variables that exist for all adults, regardless of HIV status ;
+* RISK OF NEW INFECTION ;  * part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
@@ -5484,7 +5499,7 @@ end;
 
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-* SECTION 3A - SETTING AND UPDATING VARIABLES FOR PEOPLE WITH HIV ;
+* SECTION 3_HIV - SETTING AND UPDATING VARIABLES FOR PEOPLE WITH HIV - ONLY RUNS FOR PEOPLE AGED OVER 15;
 
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
@@ -10180,7 +10195,7 @@ end;
 
 * ------------------------------------------------------------------------------------------------------------------------------------------;
 
-* End of SECTION 3A ;
+* End of SECTION 3_HIV ;
 
 * ------------------------------------------------------------------------------------------------------------------------------------------;
 
