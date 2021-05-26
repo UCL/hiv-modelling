@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_11_05_21";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_19_05_21";
 
 input 
 
@@ -216,7 +216,7 @@ s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep
 s_prepuptake_sw 	 s_prepuptake_pop  	  s_prob_prep_restart_choice
 s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
 s_pop_wide_tld_prep   
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_a2021	s_continuous_prep_ge1yr									
+s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_ayear_i	s_continuous_prep_ge1yr									
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
@@ -252,8 +252,9 @@ s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_peri
 s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
 s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
-year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
-year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag 
+s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
+s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
+
 
 
 /*VL and CD4*/
@@ -434,6 +435,11 @@ s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_d
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
 
+/* deaths by cause - age 15+ */
+s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
+s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
 s_ever_sw  s_ever_sw_hiv  s_ever_sw_diag
@@ -520,7 +526,18 @@ s_new_vmmc4549m  s_new_vmmc50plm
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
+
+/* blood pressure */
+
+s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 	
+s_diagnosed_hypertension_5059 s_on_anti_hypertensive_5059 s_hypertension_5059 	
+s_diagnosed_hypertension_6069 s_on_anti_hypertensive_6069 s_hypertension_6069 	
+s_diagnosed_hypertension_7079 s_on_anti_hypertensive_7079 s_hypertension_7079 	
+s_diagnosed_hypertension_ge80 s_on_anti_hypertensive_ge80 s_hypertension_ge80 
+
+
 /*parameters sampled*/
+
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
@@ -537,7 +554,7 @@ prob_prep_restart_choice 	prepuptake_sw 		prepuptake_pop   cd4_monitoring   base
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program  eff_sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  /*eff_sw_program*/  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
@@ -549,21 +566,22 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 
-/*2020 interventions*/
-condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
-decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
-incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
-incr_pr_switch_line_2020    	 prep_improvements       	 incr_adh_pattern_prep_2020 
-inc_r_test_startprep_2020   incr_r_test_restartprep_2020 decr_r_choose_stop_prep_2020 
-inc_p_prep_restart_choi_2020  incr_prepuptake_sw_2020      incr_prepuptake_pop_2020   prep_strategy_2020 
-	  circ_inc_rate_2020 		     incr_test_targeting_2020   
-incr_max_freq_testing_2020      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_2020   reg_option_switch_2020 
-art_mon_drug_levels_2020   ten_is_taf_2020  	pop_wide_tld_2020 single_vl_switch_efa_2020
+/*year_i interventions*/
+condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
+decr_prob_loss_at_diag_year_i 	  decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_pattern_prep_year_i 
+inc_r_test_startprep_year_i   incr_r_test_restartprep_year_i decr_r_choose_stop_prep_year_i 
+inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_pop_year_i   prep_strategy_year_i 
+	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
+incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
+art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
+/*
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting
-
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice  e_decr_hard_reach_year_i  eff_test_targeting
+*/prepuptake_sw  prepuptake_pop e_decr_hard_reach_year_i
 vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
@@ -649,13 +667,11 @@ m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
-
 ; 
 
 * note need to keep one s_n ! ;
 
 run;
-
 proc freq;table option;where cald ge 2021 ;run;
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
@@ -708,6 +724,12 @@ if option=1 then do;
 * incidence1549w;				incidence1549w_1_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_1_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* duration of sw;				dur0to3_sw_1_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_1_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_1_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_1_= s_actdur_sw_10to19/ s_sw_1564;
+	
+								 
 ***no disadv;
 if sw_art_disadv=1 then do;
 * n_sw_1564;					n_sw_1564_nodis_1_ = s_sw_1564 * sf_2021;
@@ -734,6 +756,11 @@ if sw_art_disadv=1 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
+* duration of sw;				dur0to3_sw_nodis_1_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_nodis_1_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_nodis_1_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_nodis_1_= s_actdur_sw_10to19/ s_sw_1564;
+	
 end;
 
 ***mild disadv;
@@ -762,10 +789,14 @@ if sw_art_disadv=2 then do;
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_mild_1_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
+* duration of sw;				dur0to3_sw_mild_1_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_mild_1_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_mild_1_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_mild_1_= s_actdur_sw_10to19/ s_sw_1564;
 end;
 
 end;
-
 
 
 
@@ -797,6 +828,10 @@ if option=2 then do;
 * incidence1549w;				incidence1549w_2_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_2_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* duration of sw;				dur0to3_sw_2_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_2_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_2_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_2_= s_actdur_sw_10to19/ s_sw_1564;
 
 ***nodis disadv;
 if sw_art_disadv=1 then do;
@@ -824,6 +859,12 @@ if sw_art_disadv=1 then do;
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_nodis_2_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
+* duration of sw;				dur0to3_sw_nodis_2_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_nodis_2_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_nodis_2_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_nodis_2_= s_actdur_sw_10to19/ s_sw_1564;
+
 end;
 
 ***mild disadv;
@@ -855,6 +896,12 @@ if sw_art_disadv=2 then do;
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw_mild_2_ = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+
+* duration of sw;				dur0to3_sw_mild_2_= s_actdur_sw_0to3/ s_sw_1564;
+								dur3to5_sw_mild_2_= s_actdur_sw_3to5/ s_sw_1564;
+								dur6to9_sw_mild_2_= s_actdur_sw_6to9/ s_sw_1564;
+								dur10to19_sw_mild_2_= s_actdur_sw_10to19/ s_sw_1564;
+
 end;
 
 end;
@@ -874,6 +921,13 @@ data c;
 set b;
 
 %let var =  
+dur0to3_sw_1_  dur3to5_sw_1_  dur6to9_sw_1_  dur10to19_sw_1_
+dur0to3_sw_nodis_1_  dur3to5_sw_nodis_1_  dur6to9_sw_nodis_1_  dur10to19_sw_nodis_1_
+dur0to3_sw_mild_1_  dur3to5_sw_mild_1_  dur6to9_sw_mild_1_  dur10to19_sw_mild_1_
+
+dur0to3_sw_2_  dur3to5_sw_2_  dur6to9_sw_2_  dur10to19_sw_2_
+dur0to3_sw_nodis_2_  dur3to5_sw_nodis_2_  dur6to9_sw_nodis_2_  dur10to19_sw_nodis_2_
+dur0to3_sw_mild_2_  dur3to5_sw_mild_2_  dur6to9_sw_mild_2_  dur10to19_sw_mild_2_
 
 n_sw_1564_1_  n_sw_1549_1_  prop_w_1564_sw_1_  prop_w_1549_sw_1_  prop_w_ever_sw_1_  p_sw_prog_vis_1_  prop_sw_hiv_1_  prop_sw_newp0_1_
 t_sw_newp_1_  n_tested_sw_1_  p_newp_sw_1_  prop_sw_onprep_1_  prevalence_sw_1_  incidence_sw_1_  p_diag_sw_1_  p_onart_diag_sw_1_
@@ -900,6 +954,13 @@ p_onart_vl1000_sw_mild_2_
 
 incidence1549_1_  incidence1549w_1_  incidence1549m_1_  incidence1549_2_  incidence1549w_2_  incidence1549m_2_
 
+dur0to3_sw_1_  dur3to5_sw_1_  dur6to9_sw_1_  dur10to19_sw_1_
+dur0to3_sw_nodis_1_  dur3to5_sw_nodis_1_  dur6to9_sw_nodis_1_  dur10to19_sw_nodis_1_
+dur0to3_sw_mild_1_  dur3to5_sw_mild_1_  dur6to9_sw_mild_1_  dur10to19_sw_mild_1_
+
+dur0to3_sw_2_  dur3to5_sw_2_  dur6to9_sw_2_  dur10to19_sw_2_
+dur0to3_sw_nodis_2_  dur3to5_sw_nodis_2_  dur6to9_sw_nodis_2_  dur10to19_sw_nodis_2_
+dur0to3_sw_mild_2_  dur3to5_sw_mild_2_  dur6to9_sw_mild_2_  dur10to19_sw_mild_2_
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -942,9 +1003,9 @@ a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  
 a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
 a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
-a105 a106 a107 a108 /* a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
+a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
 a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
-a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
+/*a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
 a183 a184 a185 a186 a187 a188 a189 a190 a191 a192 a193 a194 a195 a196 a197 a198 a199 a200 a201 a202 a203 a204 a205 a206 a207 a208
 a209 a210 a211 a212 a213 a214 a215 a216 a217 a218 a219 a220 a221 a222 a223 a224 a225 a226 a227 a228 a229 a230 a231 a232 a233 a234
 a235 a236 a237 a238 a239 a240 a241 a242 a243 a244 a245 a246 a247 a248 a249 a250 a251 a252*/;
@@ -957,8 +1018,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\12May2021.doc' startpage=never; 
-
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\24May2021.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -993,6 +1053,27 @@ band    x=cald lower=p5_prop_w_1549_sw_1_ 	 upper=p95_prop_w_1549_sw_1_ / transp
 scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
 										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Duration of sex work";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  valueattrs=(size=10);
+label p50_dur0to3_sw_1_	                  = "0 to 3 years (median)";
+label p50_dur3to5_sw_1_	                  = "3 to 5 years (median)";
+label p50_dur6to9_sw_1_	                  = "6 to 9 years (median)";
+label p50_dur10to19_sw_1_	              = "9+ years (median)";
+
+series  x=cald y=p50_dur0to3_sw_1_  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_dur0to3_sw_1_      upper=p95_dur0to3_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "0 to 3y 90% range";
+series  x=cald y=p50_dur3to5_sw_1_  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_dur3to5_sw_1_      upper=p95_dur3to5_sw_1_ / transparency=0.9 fillattrs = (color=green) legendlabel= "3 to 5y 90% range";
+series  x=cald y=p50_dur6to9_sw_1_  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_dur6to9_sw_1_      upper=p95_dur6to9_sw_1_ / transparency=0.9 fillattrs = (color=red) legendlabel= "6 to 9y 90% range";
+series  x=cald y=p50_dur10to19_sw_1_  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_dur10to19_sw_1_      upper=p95_dur10to19_sw_1_ / transparency=0.9 fillattrs = (color=orange) legendlabel= "9+ y 90% range";
+
 run;quit;
 
 proc sgplot data=e; 
