@@ -412,47 +412,48 @@ proc means n mean p50 p5 p95 lclm uclm;var nnt_21_71_1;where d_n_new_inf_21_71_1
 ***Predictors of CE scenarios;
 data one;
 set c;
+if 0  le incidence1549_21 le 0.10 then incid=0;
+if 0.10  lt incidence1549_21 le 0.20 then incid=1;
+if 0.20 lt incidence1549_21 le 0.30 then incid=2;
+if 0.30 lt incidence1549_21 le 0.50 then incid=3;
+if 0.50 lt incidence1549_21 le 1 then incid=4;
+if 1 lt incidence1549_21 le 2 then incid=5;
+if 2 lt incidence1549_21         then incid=6;
 
-if 0  le incidence1549_20 le 0.20 then incid=1;
-if 0.20 lt incidence1549_20 le 0.30 then incid=2;
-if 0.30 lt incidence1549_20 le 0.50 then incid=3;
-if 0.50 lt incidence1549_20 le 1 then incid=4;
-if 1 lt incidence1549_20 le 2 then incid=5;
-if 2 lt incidence1549_20         then incid=6;
 
 *incidence;
-if 0  le incidence1549_20 le 0.30 then incid_cat3=1;
-if 0.30 lt incidence1549_20 le 0.60 then incid_cat3=2;
-if 0.60 lt incidence1549_20 then incid_cat3=3;
+if 0  le incidence1549_21 le 0.30 then incid_cat3=1;
+if 0.30 lt incidence1549_21 le 0.60 then incid_cat3=2;
+if 0.60 lt incidence1549_21 then incid_cat3=3;
 
 if 0  le incidence1549_40_41_1 le 0.30 then incid_cat2040_3=1;
 if 0.30 lt incidence1549_40_41_1 le 0.60 then incid_cat2040_3=2;
 if 0.60 lt incidence1549_40_41_1 then incid_cat2040_3=3;
 
 *prop diag;
-if 60 le p_diag_20 le 85 then p_diag=1;
-if 85 lt p_diag_20 le 92 then p_diag=2;
-if 92 lt p_diag_20 le 100 then p_diag=3;
+if 60 le p_diag_21 le 85 then p_diag=1;
+if 85 lt p_diag_21 le 92 then p_diag=2;
+if 92 lt p_diag_21 le 100 then p_diag=3;
 
 *on ART of those diag;
-if 0.60 le p_onart_diag_20 le 0.75 then artcov=1;
-if 0.75 lt p_onart_diag_20 le 0.90 then artcov=2;
-if 0.90 lt p_onart_diag_20 le 1 then artcov=3;
+if 0.60 le p_onart_diag_21 le 0.75 then artcov=1;
+if 0.75 lt p_onart_diag_21 le 0.90 then artcov=2;
+if 0.90 lt p_onart_diag_21 le 1 then artcov=3;
 
 *HIV+ with VL<1000;
-if 0.50 le p_vl1000_20 le 0.65 then p_vl1000=1;
-if 0.65 lt p_vl1000_20 le 0.75 then p_vl1000=2;
-if 0.75 lt p_vl1000_20 le 1.00 then p_vl1000=3;
+if 0.50 le p_vl1000_21 le 0.65 then p_vl1000=1;
+if 0.65 lt p_vl1000_21 le 0.75 then p_vl1000=2;
+if 0.75 lt p_vl1000_21 le 1.00 then p_vl1000=3;
 
 *On ART with VL<1000;
-if 0.50 le p_onart_vl1000_20 le 0.80 then onart_vl1000=1;
-if 0.80 lt p_onart_vl1000_20 le 0.90 then onart_vl1000=2;
-if 0.90 lt p_onart_vl1000_20 le 1.00 then onart_vl1000=3;
+if 0.50 le p_onart_vl1000_21 le 0.80 then onart_vl1000=1;
+if 0.80 lt p_onart_vl1000_21 le 0.90 then onart_vl1000=2;
+if 0.90 lt p_onart_vl1000_21 le 1.00 then onart_vl1000=3;
 
 *circ by 2020;
-if 0 le p_mcirc_1549m_20 le 0.40 then p_circ=1;
-if 0.40 lt p_mcirc_1549m_20 le 0.60 then p_circ=2;
-if 0.60 lt p_mcirc_1549m_20 le 1 then p_circ=3;
+if 0 le p_mcirc_1549m_21 le 0.40 then p_circ=1;
+if 0.40 lt p_mcirc_1549m_21 le 0.60 then p_circ=2;
+if 0.60 lt p_mcirc_1549m_21 le 1 then p_circ=3;
 
 proc freq;table p_circ;run;
 
@@ -477,8 +478,8 @@ Proc logistic desc;class incid_cat3 (ref="1") incid_cat2040_3 (ref="1")  p_circ 
 model  ce_20_70  = incid_cat3 incid_cat2040_3 p_vl1000 p_circ;run;
 
 
-
-proc freq;table ce_20_70*incid;run;
+***Table 5;
+proc freq;table ce_21_71*incid;run;
 
 proc freq;table incid_cat2040_3;run;
 
