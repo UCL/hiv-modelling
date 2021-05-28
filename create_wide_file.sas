@@ -373,11 +373,27 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
-
+* incidence1564;                incidence1564 = (s_primary * 4 * 100) / (s_alive1564  - s_hiv1564  + s_primary);
 * incidence1524w;				incidence1524w = ((s_primary1519w + s_primary2024w) * 4 * 100) / 
 									(s_ageg1519w + s_ageg2024w - s_hiv1519w - s_hiv2024w + s_primary1519w + s_primary2024w);
 * incidence1524m;				incidence1524m = ((s_primary1519m + s_primary2024m) * 4 * 100) / 
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
+* incidence2534w;				incidence2534w = ((s_primary2529w + s_primary3034w) * 4 * 100) / 
+									(s_ageg2529w + s_ageg3034w - s_hiv2529w - s_hiv3034w + s_primary2529w + s_primary3034w);
+* incidence2534m;				incidence2534m = ((s_primary2529m + s_primary3034m) * 4 * 100) / 
+									(s_ageg2529m + s_ageg3034m - s_hiv2529m - s_hiv3034m + s_primary2529m + s_primary3034m);
+* incidence3544w;				incidence3544w = ((s_primary3539w + s_primary4044w) * 4 * 100) / 
+									(s_ageg3539w + s_ageg4044w - s_hiv3539w - s_hiv4044w + s_primary3539w + s_primary4044w);
+* incidence3544m;				incidence3544m = ((s_primary3539m + s_primary4044m) * 4 * 100) / 
+									(s_ageg3539m + s_ageg4044m - s_hiv3539m - s_hiv4044m + s_primary3539m + s_primary4044m);
+* incidence4554w;				incidence4554w = ((s_primary4549w + s_primary5054w) * 4 * 100) / 
+									(s_ageg4549w + s_ageg5054w - s_hiv4549w - s_hiv5054w + s_primary4549w + s_primary5054w);
+* incidence4554m;				incidence4554m = ((s_primary4549m + s_primary5054m) * 4 * 100) / 
+									(s_ageg4549m + s_ageg5054m - s_hiv4549m - s_hiv5054m + s_primary4549m + s_primary5054m);
+* incidence5564w;				incidence5564w = ((s_primary5559w + s_primary6064w) * 4 * 100) / 
+									(s_ageg5559w + s_ageg6064w - s_hiv5559w - s_hiv6064w + s_primary5559w + s_primary6064w);
+* incidence5564m;				incidence5564m = ((s_primary5559m + s_primary6064m) * 4 * 100) / 
+									(s_ageg5559m + s_ageg6064m - s_hiv5559m - s_hiv6064m + s_primary5559m + s_primary6064m);
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
@@ -653,7 +669,7 @@ prevalence1549m prevalence1549w prevalence1549
 prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  prevalence2529w 	  prevalence2529m   prevalence3034w   
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
-incidence1549 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
+incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop
 p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
@@ -682,7 +698,8 @@ n_new_inf1549m n_new_inf1549 p_iime_   p_pime_   p_nnme_  n_pregnant_ntd  n_preg
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
-p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m  incidence_sw test_prop_positive  p_newp_prep  
+p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
+incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
 
 p_hypertension_1549  p_hypertension_5059 p_hypertension_6069  p_hypertension_7079  p_hypertension_ge80  p_diagnosed_hypertension_1549 
@@ -835,7 +852,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence1519w);  	%var(v=prevalence1519m);  	  %var(v=prevalence2024w);  	  %var(v=prevalence2024m);  	  %var(v=prevalence2529w);  	  
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
 %var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
-%var(v=prevalence_vg1000); %var(v=incidence1549);   %var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
+%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
 %var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
 %var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
@@ -879,7 +896,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
-%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) %var(v=incidence_sw)
+%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
+%var(v=incidence2534w);   %var(v=incidence2534m) ; %var(v=incidence3544w);   %var(v=incidence3544m) ;%var(v=incidence4554w);   %var(v=incidence4554m) ;
+%var(v=incidence5564w);   %var(v=incidence5564m) ;
+%var(v=incidence_sw);
 %var (v=n_mcirc1549_3m) ;%var (v=n_vmmc1549_3m); 
 %var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
 %var(v=p_hypertension_1549); %var(v=p_hypertension_5059); %var(v=p_hypertension_6069); %var(v=p_hypertension_7079); %var(v=p_hypertension_ge80);
@@ -909,7 +929,7 @@ prevalence1549m  prevalence1549w  prevalence1549  prevalence1519w  prevalence151
 prevalence2529w  prevalence2529m  prevalence3034w prevalence3034m  prevalence3539w  prevalence3539m  	  
 prevalence4044w  prevalence4044m  prevalence4549w prevalence4549m  
 prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw
-incidence1549w  incidence1549m incidence_sw
+incidence1564 incidence1549w  incidence1549m incidence_sw
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary 
 mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw  p_diag_m1524  p_diag_w1524
 p_ai_no_arv_c_nnm  p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m  p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm 
@@ -945,20 +965,22 @@ n_birth_with_inf_child
 n_tested n_tested_sw test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
 n_prep  n_covid  n_death_covid  n_death  n_death_hivrel 
-p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m   incidence_sw
+p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
+incidence4554w   incidence4554m incidence5564w   incidence5564m    incidence_sw
  n_mcirc1549_3m  n_vmmc1549_3m 
 n_new_inf1549m n_new_inf1549 
 t_sw_newp
 p_hypertension_1549  p_hypertension_5059 p_hypertension_6069  p_hypertension_7079  p_hypertension_ge80  p_diagnosed_hypertension_1549 
 p_diagnosed_hypertension_5059  p_diagnosed_hypertension_6069  p_diagnosed_hypertension_7079  p_diagnosed_hypertension_ge80  p_on_anti_hypertensive_1549 
 p_on_anti_hypertensive_5059  p_on_anti_hypertensive_6069  p_on_anti_hypertensive_7079  p_on_anti_hypertensive_ge80
-
+/*
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
 n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_hivpos_cause3 	n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 
+*/
 ;
 
 proc sort; by run; run;
@@ -1161,7 +1183,9 @@ incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21 
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
 p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  
 p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_sw_21 
-m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21;
+m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21 p_newp_ge1_21 p_newp_ge5_21 p_iime__21 prevalence_vg1000_21
+s_alive_21;
+where inc_cat = 3;
 run;
 
 proc means n mean p50 p5 p95;
@@ -1170,7 +1194,8 @@ incidence1549w_40  incidence1549m_40  incidence_sw_40 	p_diag_40 	p_diag_m_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
 p_onart_diag_40 p_onart_vl1000_40   p_vl1000_40	p_onart_vl1000_w_40	p_onart_vl1000_m_40   p_onart_cd4_l500_40  
 p_onart_cd4_l200_40  p_startedline2_40 prop_sw_newp0_40  prop_sw_hiv_40 p_newp_sw_40 
-m15r_40 m25r_40 m35r_40 m45r_40 m55r_40 w15r_40 w25r_40 w35r_40 w45r_40 w55r_40;
+m15r_40 m25r_40 m35r_40 m45r_40 m55r_40 w15r_40 w25r_40 w35r_40 w45r_40 w55r_40 p_newp_ge1_40 p_newp_ge5_40 p_iime__40 prevalence_vg1000_40
+s_alive_40;
 run;
 
 proc means n mean p50 p5 p95;
@@ -1179,7 +1204,9 @@ incidence1549w_70  incidence1549m_70  incidence_sw_70 	p_diag_70 	p_diag_m_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
 p_onart_diag_70 p_onart_vl1000_70   p_vl1000_70	p_onart_vl1000_w_70	p_onart_vl1000_m_70   p_onart_cd4_l500_70  
 p_onart_cd4_l200_70  p_startedline2_70 prop_sw_newp0_70  prop_sw_hiv_70 p_newp_sw_70 
-m15r_70 m25r_70 m35r_70 m45r_70 m55r_70 w15r_70 w25r_70 w35r_70 w45r_70 w55r_70;
+m15r_70 m25r_70 m35r_70 m45r_70 m55r_70 w15r_70 w25r_70 w35r_70 w45r_70 w55r_70 p_newp_ge1_70 p_newp_ge5_70 p_iime__70 prevalence_vg1000_70
+s_alive_70;
+where inc_cat = 3;
 run;
 
 
