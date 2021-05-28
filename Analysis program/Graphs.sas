@@ -4,7 +4,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a;  
 
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_26_05_21";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\c_output_fsw_27_05_21";
 
 input 
 
@@ -458,7 +458,7 @@ s_age_stop_sw1519_  s_age_stop_sw2024_  s_age_stop_sw2529_  s_age_stop_sw3039_  
 
 s_actdur_sw_0to3  s_actdur_sw_3to5  s_actdur_sw_6to9  s_actdur_sw_10to19  
 s_totdur_sw_0to3  s_totdur_sw_3to5  s_totdur_sw_6to9  s_totdur_sw_10to19 
-s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_tot_dur_sw  s_tot_dur_sw
+s_totdur_eversw_0to3  s_totdur_eversw_3to5  s_totdur_eversw_6to9  s_totdur_eversw_10to19 s_act_dur_sw  s_tot_dur_sw
 
 s_sw_program_visit
 
@@ -670,12 +670,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 * note need to keep one s_n ! ;
 
 run;
-
-
-
-* note need to keep one s_n ! ;
-
-run;
 proc freq;table option;where cald ge 2021 ;run;
 proc freq;table option cald;run;
 proc sort data=a;by run;run;
@@ -728,10 +722,9 @@ if option=1 then do;
 * incidence1549w;				incidence1549w_1_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_1_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-* duration of sw;				tot_dur_sw= s_actdur_sw/ s_sw_1564;
-								dur3to5_sw_1_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_1_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_1_= s_actdur_sw_10to19/ s_sw_1564;
+* duration of sw;				tot_dur_sw_1_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_1_= s_act_dur_sw/ s_sw_1564;
+	
 	
 								 
 ***no disadv;
@@ -760,10 +753,8 @@ if sw_art_disadv=1 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* duration of sw;				dur0to3_sw_nodis_1_= s_actdur_sw_0to3/ s_sw_1564;
-								dur3to5_sw_nodis_1_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_nodis_1_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_nodis_1_= s_actdur_sw_10to19/ s_sw_1564;
+* duration of sw;				tot_dur_sw_nodis_1_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_nodis_1_= s_act_dur_sw/ s_sw_1564;
 	
 end;
 
@@ -794,10 +785,8 @@ if sw_art_disadv=2 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_1_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_1_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* duration of sw;				dur0to3_sw_mild_1_= s_actdur_sw_0to3/ s_sw_1564;
-								dur3to5_sw_mild_1_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_mild_1_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_mild_1_= s_actdur_sw_10to19/ s_sw_1564;
+* duration of sw;				tot_dur_sw_mild_1_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_mild_1_= s_act_dur_sw/ s_sw_1564;
 end;
 
 end;
@@ -832,10 +821,8 @@ if option=2 then do;
 * incidence1549w;				incidence1549w_2_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_2_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-* duration of sw;				dur0to3_sw_2_= s_actdur_sw_0to3/ s_sw_1564;
-								dur3to5_sw_2_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_2_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_2_= s_actdur_sw_10to19/ s_sw_1564;
+* duration of sw;				tot_dur_sw_2_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_2_= s_act_dur_sw/ s_sw_1564;
 
 ***nodis disadv;
 if sw_art_disadv=1 then do;
@@ -864,10 +851,8 @@ if sw_art_disadv=1 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_nodis_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_nodis_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* duration of sw;				dur0to3_sw_nodis_2_= s_actdur_sw_0to3/ s_sw_1564;
-								dur3to5_sw_nodis_2_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_nodis_2_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_nodis_2_= s_actdur_sw_10to19/ s_sw_1564;
+* duration of sw;				tot_dur_sw_nodis_2_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_nodis_2_= s_act_dur_sw/ s_sw_1564;
 
 end;
 
@@ -901,11 +886,8 @@ if sw_art_disadv=2 then do;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw_mild_2_ = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw_mild_2_ = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
-* duration of sw;				dur0to3_sw_mild_2_= s_actdur_sw_0to3/ s_sw_1564;
-								dur3to5_sw_mild_2_= s_actdur_sw_3to5/ s_sw_1564;
-								dur6to9_sw_mild_2_= s_actdur_sw_6to9/ s_sw_1564;
-								dur10to19_sw_mild_2_= s_actdur_sw_10to19/ s_sw_1564;
-
+* duration of sw;				tot_dur_sw_mild_2_= s_tot_dur_sw/ s_sw_1564;
+								act_dur_sw_mild_2_= s_act_dur_sw/ s_sw_1564;
 end;
 
 end;
