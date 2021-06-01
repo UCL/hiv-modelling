@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 1000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -15113,7 +15113,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
-proc print;var caldate&j  age prob_circ circ_inc_rate circ_red_30_50 rel_incr_circ_post_2013;where gender=1 and age gt 9;run;
 
 /*
 
@@ -18580,7 +18579,7 @@ data r1; set a;
 
 data x; set cum_l1;
 
-file "/home/rmjllob/Scratch/_output_vmmc_28_05_21_&dataset_id";  
+file "/home/rmjllob/Scratch/_output_vmmc_28_05_21_10am_&dataset_id";  
 
 
 put   

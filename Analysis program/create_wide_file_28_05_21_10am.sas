@@ -6,7 +6,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 data d1;  
 
 *  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_lowart";
-  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_28_05_21";
+  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_28_05_21_temp";
 
 input 
 
@@ -668,6 +668,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ;
 run;
+proc freq;table s_new_mcirc;where cald=2023 and option=2;run;
+proc freq;table s_new_mcirc;where cald=2023 and option=4;run;
 
 
 data a; set d1  ;
@@ -680,7 +682,7 @@ if option=2 then option_new=2;
 proc sort; by run cald option_new;run;
 proc freq;table run;where cald=2014;run;
 
-
+proc freq data=a;table option;run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 set a ;
@@ -1551,8 +1553,13 @@ s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
-data a.vmmc_29_03_21_6pm_lowart; set y;run;
-data y; set a.vmmc_29_03_21_6pm_lowart; run;
+
+
+
+
+
+data a.vmmc_28_05_21_10am; set y;run;
+data y; set a.vmmc_28_05_21_10am; run;
 
 proc freq;table option_new;run;
 
