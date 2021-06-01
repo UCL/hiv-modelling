@@ -2362,12 +2362,12 @@ who may be dead and hence have caldate{t} missing;
 
 *	No VMMC;
 	if option = 2 then do;
-	circ_inc_rate_i = 2;
+	circ_inc_rate_year_i = 2;
 	end;
 
 	**Continuation of VMMC for 5 years;
     if option = 4 then do;
-    circ_inc_rate_i = 4;
+    circ_inc_rate_year_i = 4;
     end;
 
 end;
