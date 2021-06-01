@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 1000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2365,7 +2365,7 @@ who may be dead and hence have caldate{t} missing;
 	circ_inc_rate_i = 2;
 	end;
 
-	**no VMMC in under 15s and NO increased rate in 15-19 year olds and stop VMMC after 5 years in 2026.5;
+	**Continuation of VMMC for 5 years;
     if option = 4 then do;
     circ_inc_rate_i = 4;
     end;
@@ -15113,6 +15113,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
+proc print;var caldate&j  age prob_circ circ_inc_rate circ_red_30_50 rel_incr_circ_post_2013;where gender=1 and age gt 9;run;
 
 /*
 
