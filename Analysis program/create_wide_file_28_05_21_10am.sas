@@ -670,7 +670,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 run;
 proc freq;table s_new_mcirc;where cald=2023 and option=2;run;
 proc freq;table s_new_mcirc;where cald=2023 and option=4;run;
-
+proc freq;table run;where cald=2023;run;
 
 data a; set d1  ;
 
@@ -1558,14 +1558,18 @@ proc sort data=y;by run option_new;run;
 
 
 
-data a.vmmc_28_05_21_10am; set y;run;
-data y; set a.vmmc_28_05_21_10am; run;
+data a.vmmc_28_05_21_10am_temp; set y;run;
+data y; set a.vmmc_28_05_21_10am_temp; 
+
+proc freq;table prob_birth_circ;run;
+
+
+run;
+
 
 proc freq;table option_new;run;
 
 
-data a.timeseries;set y;run;
-data y;set a.timeseries;run;
 
   options nomprint;
   option nospool;
@@ -1801,6 +1805,8 @@ incidence1564_50_2 incidence1564_51_2 incidence1564_52_2 incidence1564_53_2 inci
 incidence1564_55_2 incidence1564_56_2 incidence1564_57_2 incidence1564_58_2 incidence1564_59_2 
 incidence1564_60_2 incidence1564_61_2 incidence1564_62_2 incidence1564_63_2 incidence1564_64_2
 incidence1564_65_2 incidence1564_66_2 incidence1564_67_2 incidence1564_68_2 incidence1564_69_2 incidence1564_70_2;run;
+
+
 
 ***internal use;
 proc means n p50 p5 p95;var
@@ -2144,7 +2150,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_29_03_21_6pm_lowart;
+  data a.wide_vmmc_28_05_21_10am;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -2153,7 +2159,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 run;
 
 data a;
-set a.wide_vmmc_05_03_21_temp;run;
+set a.wide_vmmc_28_05_21_10am;run;
 
 proc means n p50 mean p5 p95;
 var p_onart_diag_20 p_onart_diag_m_20 p_onart_diag_w_20;run;
@@ -2180,13 +2186,20 @@ p_mcirc_1549m_40_41_1;
 
 
 proc means n mean p50 p5 p95;
-var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1519w_21 	prevalence1519m_21 	prevalence1549m_21 prevalence1549w_21
+var p_mcirc_21	prevalence1519w_21 	prevalence1519m_21 	prevalence1549m_21 prevalence1549w_21
 incidence1549w_21  incidence1549m_21 incidence_sw_21	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
 p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  
 p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_sw_21 
-m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21;
-run;
+;run;
+proc means n mean p50 p5 p95;
+var p_mcirc_40_41	prevalence1519w_40_41 	prevalence1519m_40_41 	prevalence1549m_40_41 prevalence1549w_40_41
+incidence1549w_40_41  incidence1549m_40_41 incidence_sw_40_41	p_diag_40_41 	p_diag_m_40_41   p_diag_w_40_41	p_ai_no_arv_c_nnm_40_41   
+prop_w_1549_sw_40_41  mtct_prop_40_41  prop_1564_onprep_40_41
+p_onart_diag_40_41 p_onart_vl1000_40_41   p_vl1000_40_41	p_onart_vl1000_w_40_41	p_onart_vl1000_m_40_41   p_onart_cd4_l500_40_41  
+p_onart_cd4_l200_40_41  p_startedline2_40_41 prop_sw_newp0_40_41  prop_sw_hiv_40_41 p_newp_sw_40_41 
+;run;
+
 * note this would need to be changed if option=1 is not the default/null policy option;
 proc means n p50 mean p5 p95;
 var p_w_giv_birth_this_per_20_25_1	p_mcirc_20_25_1	prevalence1549_20_25_1 incidence1549_20_25_1 	p_diag_20_25_1 	p_diag_m_20_25_1   p_diag_w_20_25_1	p_ai_no_arv_c_nnm_20_25_1   
