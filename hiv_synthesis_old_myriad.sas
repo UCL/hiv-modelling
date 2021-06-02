@@ -15557,12 +15557,25 @@ drop serial_no ;
 keep
 
 /* TEST BIT */ 
-run cald option s_: 
+
+/*all s_ variables*/
+s_: 
+
+/*general*/
+run cald option 
+
+/*number ep and newp*/
 npgt1conc_l4p_1524m  npgt1conc_l4p_1524w  npgt1conc_l4p_1519m  npgt1conc_l4p_1519w  npgt1conc_l4p_2549m 
 npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w 
+
+/*s_diag*/
 year_1_infection  year_2_infection  year_3_infection  year_4_infection  year_5_infection  
 year_1_infection_diag  year_2_infection_diag  year_3_infection_diag  year_4_infection_diag  year_5_infection_diag  
 
+/* outputs for advanced hiv disease */ 
+sbi_proph_dead
+
+/*parameters sampled*/
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
@@ -15589,6 +15602,8 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
+/*2020 interventions*/
+/* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_2020    			  incr_test_2020             decr_hard_reach_2020  incr_adh_2020 
 decr_prob_loss_at_diag_2020 	  decr_rate_lost_2020 		    decr_rate_lost_art_2020    incr_rate_return_2020     
 incr_rate_restart_2020          incr_rate_init_2020          decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020 
@@ -15609,8 +15624,10 @@ cov_death_risk_mult
 
 prep_strategy
 
+/* used in abort statements */
 prevalence1549  prev_ratio_1524 incidence1549w incidence1549m cum_ratio_newp_mw
 
+/* variables created after proc univariate which are used in the body of the program in order to update*/
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
 incidence1524m_epnewp  incidence2534m_epnewp  incidence3544m_epnewp  incidence4554m_epnewp  incidence5564m_epnewp
@@ -15634,7 +15651,7 @@ ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
 ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
-sbi_proph_dead
+
 ;
 
 
@@ -17286,7 +17303,7 @@ end;
 data x; set cum_l1;
 
 *file "/home/rmjlxxx/Scratch/_output_base_29_04_21_&dataset_id";  
-file "/home/rmjlja9/Scratch/_output_drop_keep_s_vars_12_05_21_&dataset_id";  
+file "/home/rmjlja9/Scratch/_output_old_myr_s_vars_18_05_21_&dataset_id";  
 
 
 put   

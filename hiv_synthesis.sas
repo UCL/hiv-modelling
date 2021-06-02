@@ -159,9 +159,6 @@ to do before starting testing in preparation for runs:
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
-%let outputdir = %scan(&sysparm,1," ");
-libname a "&outputdir/";
-%let tmpfilename = %scan(&sysparm,2," ");
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -17301,7 +17298,7 @@ put
 * libname b '/home/rmjlvca/Scratch/';
  libname b '/home/rmjlja9/Scratch/';
 
-data b.out_drop_keep_s_vars_12_05_21_12pm_&dataset_id(compress=binary); set cum_l1;
+data b.out_drop_keep_s_vars_18_05_21_12pm_&dataset_id(compress=binary); set cum_l1;
 
 
 keep
