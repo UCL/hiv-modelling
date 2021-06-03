@@ -742,8 +742,8 @@ newp_seed = 7;
 								0.10	0.25	0.25	0.40);
 								if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
 * prob_birth_circ; 			%sample(prob_birth_circ, 
-								0.03	0.05	0.1		0.5, 
-								0.33	0.32	0.33	0.02);
+								0.05	0.1		0.39	0.9, 
+								0.33	0.32	0.25	0.10);
 
 
 
@@ -1834,13 +1834,12 @@ dead_tm1=0;
 
 
 
-***LBM Mar 2017 - Prev_circ now relates to males aged > 15 at t=1 (1989) - a % of this population is assumed already circumcised;
+***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
 mcirc =0;birth_circ=0;
-prev_circ=prob_birth_circ;
 
-if  gender=1 and age gt 0.5 then do;
+if  gender=1 and age gt 0.25 then do;
 h = uniform(0); 
-if h < prev_circ then do;mcirc =1;birth_circ=1;end;
+if h < prob_birth_circ then do;mcirc =1;birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
 end;
 
@@ -2656,15 +2655,27 @@ if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_re
 if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
 end;
 
+if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
+	if caldate{t} <= 2025.5 then do;
+      if age_tm1 lt 15 then prob_circ =0;
+      if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+	  if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
+	  if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+    end;
+
+    if caldate{t} > 2025.5 then do;
+      prob_circ = 0;test_link_circ_prob=0;
+    end;
+end;
+
+
+
 if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 
 ***Circumcision at birth;
-
-***DHS Zimbabwe 2015 states 2/3 of muslim men circumcised, approx 1% muslim population (CIA);
-
 new_mcirc=0; 
 u=uniform(0);
 if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
@@ -17589,7 +17600,7 @@ end;
 
 data x; set cum_l1;
 
-file "/home/rmjlxxx/Scratch/_output_base_29_04_21_&dataset_id";  
+file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
 
 
 put   
