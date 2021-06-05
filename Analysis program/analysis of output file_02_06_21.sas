@@ -165,15 +165,11 @@ d_n_d_new_inf_21_71_1 = d_n_infection_21_71_2 - d_n_infection_21_71_1;
    max difference;
 /*
 proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
-*base; max= 15.4, 11.7, 7.3;
-*$120: max= 19.1, 13.2, 8.7;
-*$60: max= 11.8, 10.2, 5.9;
-*5% disc; max= 14.9, 10.4, 4.4;
-*lower future art cov;: max=13.9, 11.9, 5.3;
+
 */
 
 ***Change the below to reflect which cost/discount is being applied;
-*base;cost_inf_avert_21_26_1=15.4*1000000; cost_inf_avert_21_41_1=11.7*1000000; cost_inf_avert_21_71_1 = 7.3*1000000;
+*base;cost_inf_avert_21_26_1=15.1*1000000; cost_inf_avert_21_41_1=6.3*1000000; cost_inf_avert_21_71_1 = 8.6*1000000;
 
 if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
 if d_n_new_inf_21_41_1 gt 0 then cost_inf_avert_21_41_1 = (d_dcost_21_41_1 / d_n_d_new_inf_21_41_1)*1000000;
@@ -181,9 +177,9 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=15.4*1000000;
-cost_daly_avert_21_41_1_adults=11.7*1000000;
-cost_daly_avert_21_71_1_adults=7.3*1000000;
+cost_daly_avert_21_26_1_adults=15.1*1000000;
+cost_daly_avert_21_41_1_adults=6.3*1000000;
+cost_daly_avert_21_71_1_adults=8.6*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;

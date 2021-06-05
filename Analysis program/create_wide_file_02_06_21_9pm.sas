@@ -668,9 +668,13 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ;
 run;
-proc freq;table s_new_mcirc;where cald=2023 and option=2;run;
-proc freq;table s_new_mcirc;where cald=2023 and option=4;run;
+proc freq;table s_new_mcirc;where cald=2029 and option=2;run;
+proc freq;table s_new_mcirc;where cald=2029 and option=4;run;
+
 proc freq;table run;where cald=2023;run;
+
+
+
 
 data a; set d1  ;
 
@@ -793,8 +797,12 @@ run;
 
 * all costs expressed as $ millions per year in 2018 USD;
 
+**************ERROR IN CIRC COST IN CORE PROGRAM - NEED TO DIVIDE BY 10;*********;
+
+
 ***Redefine VMMC costs to $90 (+/-30 in sens analyses) to match those being used for Zimbabwe and Malawi;;
-s_cost_circ_new= s_cost_circ*(90/90);
+
+s_cost_circ_new= (s_cost_circ*(90/90))/10;*For sensitivity analyses change to 60/90 and 120/90;
 s_dcost_circ_new=&discount*s_cost_circ_new;*use this to calculate dcost_circ below;
 
 * ts1m - 12 instead of 4; 
