@@ -800,6 +800,11 @@ data y; set a.l_base;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
+proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
+proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2004.5 <= cald < 2005.5; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where 2009.5 <= cald < 2010.5; 
+proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2014.5 <= cald < 2015.5; 
 proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
 proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
@@ -830,8 +835,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
 
-data &v ; merge y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
-/* data &v ; merge    y_19 y_20 t_20b t_21 t_20_21  t_20_25  t_20_70 ; */ 
+data &v ; merge y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
@@ -973,14 +977,13 @@ t_sw_newp
 p_hypertension_1549  p_hypertension_5059 p_hypertension_6069  p_hypertension_7079  p_hypertension_ge80  p_diagnosed_hypertension_1549 
 p_diagnosed_hypertension_5059  p_diagnosed_hypertension_6069  p_diagnosed_hypertension_7079  p_diagnosed_hypertension_ge80  p_on_anti_hypertensive_1549 
 p_on_anti_hypertensive_5059  p_on_anti_hypertensive_6069  p_on_anti_hypertensive_7079  p_on_anti_hypertensive_ge80
-/*
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
 n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_hivpos_cause3 	n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 
-*/
+
 ;
 
 proc sort; by run; run;
@@ -1178,79 +1181,113 @@ proc sort; by run;run;
 proc contents;run;
 
 proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1519w_95 	prevalence1519m_95 	prevalence1549m_95 prevalence1549w_95
+incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
+prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
+p_onart_diag_95 p_onart_vl1000_95   p_vl1000_95	p_onart_vl1000_w_95	p_onart_vl1000_m_95   p_onart_cd4_l500_95  
+p_onart_cd4_l200_95  p_startedline2_95 prop_sw_newp0_95  prop_sw_hiv_95 p_newp_sw_95 
+m15r_95 m25r_95 m35r_95 m45r_95 m55r_95 w15r_95 w25r_95 w35r_95 w45r_95 w55r_95 p_newp_ge1_95 p_newp_ge5_95 p_iime__95 prevalence_vg1000_95
+s_alive_95
+p_hypertension_1549_95  p_hypertension_5059_95 p_hypertension_6069  p_hypertension_7079_95  p_hypertension_ge80_95  p_diagnosed_hypertension_1549_95 
+p_diagnosed_hypertension_5059_95  p_diagnosed_hypertension_6069_95  p_diagnosed_hypertension_7079_95  p_diagnosed_hypertension_ge80_95  
+p_on_anti_hypertensive_1549_95  p_on_anti_hypertensive_5059_95  p_on_anti_hypertensive_6069_95  p_on_anti_hypertensive_7079_95  
+p_on_anti_hypertensive_ge80_95 rate_dead_hivpos_cause1_95   rate_dead_hivpos_tb_95  rate_dead_hivpos_cause4_95 rate_dead_hivpos_crypm_95 
+rate_dead_hivpos_sbi_95  rate_dead_hivpos_oth_adc_95  rate_dead_hivpos_cause2_95  rate_dead_hivpos_cause3_95  rate_dead_hivpos_cvd_95 
+rate_dead_cvd rate_dead_tb_95  rate_dead_hivneg_cvd_95  rate_dead_hivneg_tb_95  rate_dead_hivneg_cause2_95 rate_dead_hivneg_cause3_95 
+rate_dead_hivneg_cause4_95 rate_dead_hivneg_cause5_95
+;
+run;
+
+proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_05	p_mcirc_05	prevalence1519w_05 	prevalence1519m_05 	prevalence1549m_05 prevalence1549w_05
+incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
+prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
+p_onart_diag_05 p_onart_vl1000_05   p_vl1000_05	p_onart_vl1000_w_05	p_onart_vl1000_m_05   p_onart_cd4_l500_05  
+p_onart_cd4_l200_05  p_startedline2_05 prop_sw_newp0_05  prop_sw_hiv_05 p_newp_sw_05 
+m15r_05 m25r_05 m35r_05 m45r_05 m55r_05 w15r_05 w25r_05 w35r_05 w45r_05 w55r_05 p_newp_ge1_05 p_newp_ge5_05 p_iime__05 prevalence_vg1000_05
+s_alive_05
+p_hypertension_1549_05  p_hypertension_5059_05 p_hypertension_6069  p_hypertension_7079_05  p_hypertension_ge80_05  p_diagnosed_hypertension_1549_05 
+p_diagnosed_hypertension_5059_05  p_diagnosed_hypertension_6069_05  p_diagnosed_hypertension_7079_05  p_diagnosed_hypertension_ge80_05  
+p_on_anti_hypertensive_1549_05  p_on_anti_hypertensive_5059_05  p_on_anti_hypertensive_6069_05  p_on_anti_hypertensive_7079_05  
+p_on_anti_hypertensive_ge80_05 rate_dead_hivpos_cause1_05   rate_dead_hivpos_tb_05  rate_dead_hivpos_cause4_05 rate_dead_hivpos_crypm_05 
+rate_dead_hivpos_sbi_05  rate_dead_hivpos_oth_adc_05  rate_dead_hivpos_cause2_05  rate_dead_hivpos_cause3_05  rate_dead_hivpos_cvd_05 
+rate_dead_cvd rate_dead_tb_05  rate_dead_hivneg_cvd_05  rate_dead_hivneg_tb_05  rate_dead_hivneg_cause2_05 rate_dead_hivneg_cause3_05 
+rate_dead_hivneg_cause4_05 rate_dead_hivneg_cause5_05
+;
+run;
+
+proc means n mean p50 p5 p95;
+var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1519w_15 	prevalence1519m_15 	prevalence1549m_15 prevalence1549w_15
+incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
+prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
+p_onart_diag_15 p_onart_vl1000_15   p_vl1000_15	p_onart_vl1000_w_15	p_onart_vl1000_m_15   p_onart_cd4_l500_15  
+p_onart_cd4_l200_15  p_startedline2_15 prop_sw_newp0_15  prop_sw_hiv_15 p_newp_sw_15 
+m15r_15 m25r_15 m35r_15 m45r_15 m55r_15 w15r_15 w25r_15 w35r_15 w45r_15 w55r_15 p_newp_ge1_15 p_newp_ge5_15 p_iime__15 prevalence_vg1000_15
+s_alive_15
+p_hypertension_1549_15  p_hypertension_5059_15 p_hypertension_6069  p_hypertension_7079_15  p_hypertension_ge80_15  p_diagnosed_hypertension_1549_15 
+p_diagnosed_hypertension_5059_15  p_diagnosed_hypertension_6069_15  p_diagnosed_hypertension_7079_15  p_diagnosed_hypertension_ge80_15  
+p_on_anti_hypertensive_1549_15  p_on_anti_hypertensive_5059_15  p_on_anti_hypertensive_6069_15  p_on_anti_hypertensive_7079_15  
+p_on_anti_hypertensive_ge80_15 rate_dead_hivpos_cause1_15   rate_dead_hivpos_tb_15  rate_dead_hivpos_cause4_15 rate_dead_hivpos_crypm_15 
+rate_dead_hivpos_sbi_15  rate_dead_hivpos_oth_adc_15  rate_dead_hivpos_cause2_15  rate_dead_hivpos_cause3_15  rate_dead_hivpos_cvd_15 
+rate_dead_cvd rate_dead_tb_15  rate_dead_hivneg_cvd_15  rate_dead_hivneg_tb_15  rate_dead_hivneg_cause2_15 rate_dead_hivneg_cause3_15 
+rate_dead_hivneg_cause4_15 rate_dead_hivneg_cause5_15
+;
+run;
+
+proc means n mean p50 p5 p95;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1519w_21 	prevalence1519m_21 	prevalence1549m_21 prevalence1549w_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
 p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  
 p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_sw_21 
 m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21 p_newp_ge1_21 p_newp_ge5_21 p_iime__21 prevalence_vg1000_21
-s_alive_21;
-where inc_cat = 3;
+s_alive_21
+p_hypertension_1549_21  p_hypertension_5059_21 p_hypertension_6069  p_hypertension_7079_21  p_hypertension_ge80_21  p_diagnosed_hypertension_1549_21 
+p_diagnosed_hypertension_5059_21  p_diagnosed_hypertension_6069_21  p_diagnosed_hypertension_7079_21  p_diagnosed_hypertension_ge80_21  
+p_on_anti_hypertensive_1549_21  p_on_anti_hypertensive_5059_21  p_on_anti_hypertensive_6069_21  p_on_anti_hypertensive_7079_21  
+p_on_anti_hypertensive_ge80_21 rate_dead_hivpos_cause1_21   rate_dead_hivpos_tb_21  rate_dead_hivpos_cause4_21 rate_dead_hivpos_crypm_21 
+rate_dead_hivpos_sbi_21  rate_dead_hivpos_oth_adc_21  rate_dead_hivpos_cause2_21  rate_dead_hivpos_cause3_21  rate_dead_hivpos_cvd_21 
+rate_dead_cvd rate_dead_tb_21  rate_dead_hivneg_cvd_21  rate_dead_hivneg_tb_21  rate_dead_hivneg_cause2_21 rate_dead_hivneg_cause3_21 
+rate_dead_hivneg_cause4_21 rate_dead_hivneg_cause5_21
+;
 run;
 
 proc means n mean p50 p5 p95;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1519w_40 	prevalence1519m_40 	prevalence1549m_40 prevalence1549w_40
-incidence1549w_40  incidence1549m_40  incidence_sw_40 	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
+incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
 p_onart_diag_40 p_onart_vl1000_40   p_vl1000_40	p_onart_vl1000_w_40	p_onart_vl1000_m_40   p_onart_cd4_l500_40  
 p_onart_cd4_l200_40  p_startedline2_40 prop_sw_newp0_40  prop_sw_hiv_40 p_newp_sw_40 
 m15r_40 m25r_40 m35r_40 m45r_40 m55r_40 w15r_40 w25r_40 w35r_40 w45r_40 w55r_40 p_newp_ge1_40 p_newp_ge5_40 p_iime__40 prevalence_vg1000_40
-s_alive_40;
+s_alive_40
+p_hypertension_1549_40  p_hypertension_5059_40 p_hypertension_6069  p_hypertension_7079_40  p_hypertension_ge80_40  p_diagnosed_hypertension_1549_40 
+p_diagnosed_hypertension_5059_40  p_diagnosed_hypertension_6069_40  p_diagnosed_hypertension_7079_40  p_diagnosed_hypertension_ge80_40  
+p_on_anti_hypertensive_1549_40  p_on_anti_hypertensive_5059_40  p_on_anti_hypertensive_6069_40  p_on_anti_hypertensive_7079_40  
+p_on_anti_hypertensive_ge80_40 rate_dead_hivpos_cause1_40   rate_dead_hivpos_tb_40  rate_dead_hivpos_cause4_40 rate_dead_hivpos_crypm_40 
+rate_dead_hivpos_sbi_40  rate_dead_hivpos_oth_adc_40  rate_dead_hivpos_cause2_40  rate_dead_hivpos_cause3_40  rate_dead_hivpos_cvd_40 
+rate_dead_cvd rate_dead_tb_40  rate_dead_hivneg_cvd_40  rate_dead_hivneg_tb_40  rate_dead_hivneg_cause2_40 rate_dead_hivneg_cause3_40 
+rate_dead_hivneg_cause4_40 rate_dead_hivneg_cause5_40
+;
 run;
 
 proc means n mean p50 p5 p95;
 var p_w_giv_birth_this_per_70	p_mcirc_70	prevalence1519w_70 	prevalence1519m_70 	prevalence1549m_70 prevalence1549w_70
-incidence1549w_70  incidence1549m_70  incidence_sw_70 	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
+incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
 p_onart_diag_70 p_onart_vl1000_70   p_vl1000_70	p_onart_vl1000_w_70	p_onart_vl1000_m_70   p_onart_cd4_l500_70  
 p_onart_cd4_l200_70  p_startedline2_70 prop_sw_newp0_70  prop_sw_hiv_70 p_newp_sw_70 
 m15r_70 m25r_70 m35r_70 m45r_70 m55r_70 w15r_70 w25r_70 w35r_70 w45r_70 w55r_70 p_newp_ge1_70 p_newp_ge5_70 p_iime__70 prevalence_vg1000_70
-s_alive_70;
-where inc_cat = 3;
+s_alive_70
+p_hypertension_1549_70  p_hypertension_5059_70 p_hypertension_6069  p_hypertension_7079_70  p_hypertension_ge80_70  p_diagnosed_hypertension_1549_70 
+p_diagnosed_hypertension_5059_70  p_diagnosed_hypertension_6069_70  p_diagnosed_hypertension_7079_70  p_diagnosed_hypertension_ge80_70  
+p_on_anti_hypertensive_1549_70  p_on_anti_hypertensive_5059_70  p_on_anti_hypertensive_6069_70  p_on_anti_hypertensive_7079_70  
+p_on_anti_hypertensive_ge80_70 rate_dead_hivpos_cause1_70   rate_dead_hivpos_tb_70  rate_dead_hivpos_cause4_70 rate_dead_hivpos_crypm_70 
+rate_dead_hivpos_sbi_70  rate_dead_hivpos_oth_adc_70  rate_dead_hivpos_cause2_70  rate_dead_hivpos_cause3_70  rate_dead_hivpos_cvd_70 
+rate_dead_cvd rate_dead_tb_70  rate_dead_hivneg_cvd_70  rate_dead_hivneg_tb_70  rate_dead_hivneg_cause2_70 rate_dead_hivneg_cause3_70 
+rate_dead_hivneg_cause4_70 rate_dead_hivneg_cause5_70
+;
 run;
 
 
 
-/*
 
-proc means n p50 p5 p95;
-var s_alive_20			p_w_giv_birth_this_per_20	p_newp_ge1_20  p_newp_ge5_20 
-p_newp_sw_20   n_tested_m_20
-p_mcirc_20	 		p_mcirc_1519m_20	p_mcirc_2024m_20	p_mcirc_2529m_20		p_mcirc_3039m_20	p_mcirc_4049m_20 	p_mcirc_50plm_20 
-prop_w_1549_sw_20	prop_w_ever_sw_20 	prop_sw_hiv_20 	prop_w_1524_onprep_20  prop_1564_onprep_20 	prevalence1549m_20 prevalence1549w_20
-prevalence1549_20 
-prevalence1519w_20 	prevalence1519m_20 	  prevalence2024w_20 	  prevalence2024m_20 	  prevalence2529w_20 	  prevalence2529m_20   prevalence3034w_20   
-prevalence3034m_20 	prevalence3539w_20 	  prevalence3539m_20 	  prevalence4044w_20 	 prevalence4044m_20 	  prevalence4549w_20  prevalence4549m_20 
-prevalence_vg1000_20 incidence1549_20 incidence1549w_20  incidence1549m_20 
-p_inf_vlsupp_20   p_inf_newp_20   p_inf_ep_20   p_inf_diag_20   p_inf_naive_20 p_inf_primary_20
-mtct_prop_20 		p_diag_20 	p_diag_m_20   p_diag_w_20	p_ai_no_arv_c_nnm_20    p_artexp_diag_20
-p_onart_diag_20	p_onart_diag_w_20 	p_onart_diag_m_20 	p_efa_20 	p_taz_20		p_ten_20 	p_zdv_20	p_dol_20	p_3tc_20 	p_lpr_20 	p_nev_20 
-p_onart_vl1000_20   p_vl1000_20		p_vg1000_20 			p_onart_m_20 	p_onart_w_20 
-p_onart_vl1000_w_20				p_onart_vl1000_m_20  prev_vg1000_newp_m_20   prev_vg1000_newp_w_20 p_startedline2_20
-p_tle_20	 p_tld_20	 p_zld_20	 p_zla_20	 p_otherreg_20	 p_drug_level_test_20	 p_linefail_ge1_20  
-r_efa_hiv_20  p_onart_cd4_l500_20  p_onart_cd4_l200_20  p_startedline2_20 prop_art_or_prep_20 n_sw_1564_20 
-p_k65m_20 p_m184m_20 ;
-run;
-
-proc contents;run;
-
-ods html;
-proc means n median min p5 p95 max mean lclm uclm;
-var	p_mcirc_1549m_20_21 
-prevalence1549m_20_21 prevalence1549w_20_21 prevalence1524m_20_21 prevalence1524w_20_21
-incidence1549w_20_21 incidence1549m_20_21	p_diag_m_20_21   p_diag_w_20_21	
-p_ai_no_arv_c_nnm_20_21   p_ai_no_arv_c_rt184m_20_21  p_ai_no_arv_c_rt65m_20_21   
-prop_w_1549_sw_20_21    prop_1564_onprep_20_21  prop_w_1524_onprep_20_21 
-p_onart_diag_w_20_21 	p_onart_diag_m_20_21   p_vl1000_20_21	p_onart_vl1000_w_20_21	p_onart_vl1000_m_20_21 
-p_onart_cd4_l500_20_21  p_mcirc_1549m_20_21  p_startedline2_20_21  prop_sw_hiv_20_21 
-prop_sw_onprep_20_21 p_newp_sw_20_21  n_tested_20_21 
-aids_death_rate_20_21  p_newp_sw_20_21 ;
-run;
-ods html close;
-
-
-proc glm; 
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w adh_pattern;
-model prop_w_1549_sw_20 = 
-
-*/
