@@ -188,6 +188,8 @@ if d_ddaly_adults_21_71_1 gt 0 then cost_daly_avert_21_71_1_adults = (d_dcost_21
 
 run;
 
+proc print;var d_dcost_21_71_1 d_ddaly_adults_21_71_1 cost_daly_avert_21_71_1_adults;run;
+
 ***table 2;
 proc means n p50 p5 p95;var
 prevalence1549_21 prevalence1549m_21 prevalence1549w_21
@@ -414,8 +416,8 @@ if 0.10  lt incidence1549_21 le 0.20 then incid=1;
 if 0.20 lt incidence1549_21 le 0.30 then incid=2;
 if 0.30 lt incidence1549_21 le 0.50 then incid=3;
 if 0.50 lt incidence1549_21 le 1 then incid=4;
-if 1 lt incidence1549_21 le 2 then incid=5;
-if 2 lt incidence1549_21         then incid=6;
+if         incidence1549_21 gt 1 then incid=5;
+
 
 
 *incidence;
