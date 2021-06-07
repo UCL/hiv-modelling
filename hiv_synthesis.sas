@@ -790,7 +790,8 @@ if prep_willing=1;
 
 
 * SBP AND CVD MORTALITY RISK ;   * update_24_4_21;
-prob_diag_hypertension = 0.2;
+prob_sbp_increase = 0.05;
+prob_diag_hypertension = 0.01; * for people with undiagnosed hypertension, this is probability per 3 months of being diagnosed ;
 prob_imm_anti_hypertensive = 0.2;
 prob_start_anti_hyptertensive = 0.01;
 prob_stop_anti_hypertensive = 0.03; 
@@ -915,7 +916,7 @@ cost_t_adh_int = 0.010;
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
 cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
-circ_cost_a = 0.90;  *Jan21 - in consensus with modelling groups and PEPFAR;
+circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder;
 
@@ -2751,7 +2752,7 @@ end;
 
 a_sbp=uniform(0);
 
-if on_anti_hypertensive ne 1 and a_sbp < 0.0025 then sbp = sbp + 10 ;
+if on_anti_hypertensive ne 1 and a_sbp < prob_sbp_increase then sbp = sbp + 10 ;
 
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
@@ -13653,7 +13654,7 @@ end;
 
 dead_hivpos_cause1=0;dead_hivpos_tb=0; dead_hivpos_crypm=0; dead_hivpos_sbi=0; dead_hivpos_oth_adc=0; dead_hivpos_cause2=0;dead_hivpos_cause3=0;
 dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_hivneg_cause3=0;dead_hivneg_cause2=0; 
-dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; 
+dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; dead_hivpos_anycause=0;dead_hivneg_anycause=0;
 * death by cause and hiv status ;
 if dead=1 and caldate&j = death then do;
 if hiv=1 and dcause=1 then dead_hivpos_cause1=1;
@@ -13664,10 +13665,12 @@ if hiv=1 and dcause=1 and dead_oth_adc=1 then dead_hivpos_oth_adc=1;
 if hiv=1 and dcause=2 then dead_hivpos_cause2=1;
 if hiv=1 and dcause=3 then dead_hivpos_cause3=1;
 if hiv=1 and dcause=4 then do; dead_hivpos_cause4=1; dead_hivpos_cvd=1; dead_cvd=1; end;
+if hiv=1 then dead_hivpos_anycause=1;
 if hiv ne 1 and dcause=2 then dead_hivneg_cause2=1;
 if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
 if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
 if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
+if hiv ne 1 then dead_hivneg_anycause=1;
 end;
 
 
@@ -14454,7 +14457,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_inpm_ + inpm_ ; s_insm_ + insm_ ; s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
- 	s_rme_ + rme_ ; s_iime_ = iime_ ; s_nnme_ = nnme_ ; s_pime_ = pime_ ; s_nrtime_ = nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
+ 	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
 	s_nnm_art + nnm_art ; s_nnm_art_m + nnm_art_m ; s_nnm_art_w + nnm_art_w ; s_r_art + r_art ; s_acq_rt65m + acq_rt65m ; s_acq_rt184m + acq_rt184m ;
 	s_acq_rtm + acq_rtm ; s_onart_iicu_res + onart_iicu_res ; s_nactive_art_start_lt2 + nactive_art_start_lt2 ; s_nactive_art_start_lt3 + nactive_art_start_lt3 ;
 	s_nactive_art_start_lt1p5 + nactive_art_start_lt1p5 ; s_nactive_line2_lt4 + nactive_line2_lt4 ; s_nactive_line2_lt3 + nactive_line2_lt3 ;
@@ -14906,8 +14909,9 @@ if 15 <= age and (death = . or caldate&j = death ) then do;
 	s_dead_hivpos_sbi + dead_hivpos_sbi ; s_dead_hivpos_oth_adc + dead_hivpos_oth_adc ; s_dead_hivpos_cause2 + dead_hivpos_cause2 ; 
 	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
-	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; s_dead_cvd + dead_cvd ; 
+	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; 
 	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ; s_dead_tb + dead_tb ; 
+	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
 
 end;
 
@@ -16107,13 +16111,14 @@ s_sdg_1     s_sdg_2     s_sdg_3     s_sdg_4     s_sdg_5     s_sdg_6     s_sdg_7 
 s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr_7  s_sdg_hr_8  s_sdg_hr_9  s_sdg_hr_99
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
- s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
+ s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage  
+ s_dead_hivneg_anycause  s_dead_hivpos_anycause 
 
 /* deaths by cause - age 15+ */
 
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -16947,11 +16952,12 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead  s_dead_allage   s_death_dcause3_allage  s_death_hivrel_allage
+s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -17994,11 +18000,12 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
+s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_cvd s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
