@@ -577,6 +577,7 @@ newp_seed = 7;
 * rate_loss_acq_pim_offart;	rate_loss_acq_pim_offart = 0.2;
 * rate_loss_acq_iim_offart;	rate_loss_acq_iim_offart = 0.2;
 
+		* lapr - add code from LAI model ("cla");
 * all * dependent_on_time_step_length ;
 * r_otx_start;				r_otx_start = 			0.03;
 * r_ane_start_zdv;			r_ane_start_zdv = 		0.03; 
@@ -753,7 +754,7 @@ newp_seed = 7;
 * note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
 if prep_willing=1;
-* lapr and dpv-vr - assume following all apply unless stated ;
+* lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
 
 
 * annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
@@ -4116,7 +4117,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			end; 
 		end;
 
-		*Routine testing while on PREP;		* lapr and dpv-vr - I don't see this changing;
+		*Routine testing while on PREP;		* lapr and dpv-vr - I don't see this changing - what about VL / NAAT testing for WHO analysis;
 		else if prep_ever=1 and prep_elig=1 then do;
 			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
 				if annual_testing_prep=1 and caldate{t}-dt_last_test >= 1.0 then do;
@@ -5092,7 +5093,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;
+		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;	* lapr - change to inprim_p? for ep and newp sections;
 		  mut_p=.;
 
 		  e=uniform(0); if e < t_prop_rm  then do;
@@ -6012,7 +6013,7 @@ if t ge 2 then do;
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
 			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
-			if prep   =1 and pop_wide_tld_prep ne 1 then do;	* lapr and dpv-vr - will need to add code here to indicate that cabotegravir / dapivirine monotherapy stopped;
+			if prep   =1 and pop_wide_tld_prep ne 1 then do;	* lapr and dpv-vr - will need to add code here to indicate that cabotegravir monotherapy stopped;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;
 		end;
@@ -6687,7 +6688,7 @@ res_test=.;
 	end;
 
 
-	* interruption of prep before diagnosis; * lapr - to add code for cab ;
+	* interruption of prep before diagnosis; * lapr - to add code for cab - add o_cab - accounting for tail ;
 	* dependent_on_time_step_length ; 
 	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
 		interrupt   =1;
@@ -6847,7 +6848,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end;
+	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -7285,7 +7286,7 @@ wont switch anyway;
 
 
 * current number of drugs on;
-	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol;
+	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol; * lapr - add cab;
 
 
 * current number of nucs on;
@@ -7294,7 +7295,7 @@ wont switch anyway;
 
 	if t ge 2 and onart=1 and restart   =0 then toffart   =.;
 	
-	if onart=1 then do;
+	if onart=1 then do;	* lapr - add cab;
 		mr_zdv=o_zdv;
 		mr_3tc=o_3tc;
 		mr_ten=o_ten;
@@ -7306,7 +7307,7 @@ wont switch anyway;
 	end;
 
 
-* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);
+* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);	* lapr - add cab;
 	if o_zdv=1 then p_zdv=1;
 	if o_3tc=1 then p_3tc=1;
 	if o_ten=1 then p_ten=1;
@@ -7318,7 +7319,7 @@ wont switch anyway;
 	if o_dol=1 then p_dol=1;
 
 
-* date first start specific drugs;
+* date first start specific drugs;	* lapr - add cab (& taz from LAI?);
 if o_dol=1 and p_dol_tm1 ne 1 then date_start_dol = caldate{t};
 if o_efa=1 and p_efa_tm1 ne 1 then date_start_efa = caldate{t};
 if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
@@ -8464,6 +8465,8 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
+	* lapr - cab, add specific mutations (see LAI-ART code);
+
 	d=uniform(0);
 
 	if t ge 2 and d lt newmut_tm1 then do;
@@ -8509,6 +8512,8 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=uniform(0); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 
+		* lapr - add - o_rla here (from LAI) even though we're not considering RPV for this analysis? ;
+
 
 * pr mutations ;
 
@@ -8537,6 +8542,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=uniform(0); if cx < 0.03 then c_pr88m=1;
 		end;
 
+		* lapr - add code from LAI (cla)? pr_res_dol used x2 for CAB - any more specific data? ;
 * dol;
 		if o_dol_tm1=1 then do; 
 		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
@@ -8612,7 +8618,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
     +e_pr82m+e_pr84m+e_pr88m+e_pr90m;
 
     e_inmut=.;
-    e_inmut=e_inpm+e_insm;
+    e_inmut=e_inpm+e_insm;	* lapr - change to inprim;
 
 
 * LOSS OF MUTATIONS AFTER STOPPING (or return to mutations at infection - expect for m184v)
@@ -8662,7 +8668,7 @@ and starting another, non-x-resistant, regimen;
 
 	* integrase inhibitor; 
 
-		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;
+		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	* lapr change to inprim?;
 		a=uniform(0);if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
 
 end;
@@ -9478,7 +9484,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));	* lapr - add cab & consider tail code from LAI;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
