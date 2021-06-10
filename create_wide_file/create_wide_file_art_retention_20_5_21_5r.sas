@@ -1204,7 +1204,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy rate_sw_rred_rc
+prep_strategy rate_sw_rred_rc  p_onart
 
 ;
 
@@ -1590,16 +1590,17 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_diag_m);   %var(v=prop_w_1549_sw);  %var(v=p_onart_diag_w); 	%var(v=p_onart_diag_m);   %var(v=p_vl1000);	 %var(v=p_onart_vl1000_w);	
 %var(v=p_onart_vl1000_m);   %var(v=p_onart_cd4_l500);  %var(v=p_mcirc_1549m);  %var(v=p_startedline2);  %var(v=prop_sw_hiv)  %var(v=p_newp_sw);  
-%var(v=aids_death_rate);  %var(v=n_onart); %var(v=n_death_hivrel);  %var(v=prevalence_vg1000);
+%var(v=aids_death_rate);  %var(v=n_onart); %var(v=n_death_hivrel);  %var(v=prevalence_vg1000);  %var(v=p_onart);
 
 data   wide_outputs; merge 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
 incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m 
 
 p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
-p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate  n_onart   n_death_hivrel    prevalence_vg1000
+p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate  n_onart   n_death_hivrel    prevalence_vg1000  p_onart
 ;
 
+proc contents; run;
 
 proc sort; by run; run;
 
@@ -1690,8 +1691,6 @@ proc freq; tables run; run;
 
 
 data r; set a.wide_art_retention_20_5_21_5r_1; 
-
-proc contents; run;
 
 
 ods html;
@@ -1844,6 +1843,63 @@ ods html close;
 ods html;
 proc means n median p5 p95 min max ;
 var	
+n_onart_21_0
+n_onart_21_1
+n_onart_21_2
+n_onart_21_3
+n_onart_21_4
+
+p_onart_artexp_21_0 
+p_onart_artexp_21_1 
+p_onart_artexp_21_2 
+p_onart_artexp_21_3 
+p_onart_artexp_21_4
+
+p_onart_21_0 
+p_onart_21_1 
+p_onart_21_2 
+p_onart_21_3 
+p_onart_21_4
+
+p_onart_diag_w_21_0 
+p_onart_diag_w_21_1 
+p_onart_diag_w_21_2 
+p_onart_diag_w_21_3 
+p_onart_diag_w_21_4
+
+p_onart_diag_m_21_0 
+p_onart_diag_m_21_1 
+p_onart_diag_m_21_2 
+p_onart_diag_m_21_3 
+p_onart_diag_m_21_4
+
+n_death_hivrel_21_0
+n_death_hivrel_21_1
+n_death_hivrel_21_2
+n_death_hivrel_21_3
+n_death_hivrel_21_4 
+
+daly_21_0  
+daly_21_1  
+daly_21_2  
+daly_21_3  
+daly_21_4  
+
+incidence1549_21_0
+incidence1549_21_1
+incidence1549_21_2
+incidence1549_21_3
+incidence1549_21_4
+
+;
+
+run;
+ods html close;
+
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
 n_onart_21_71_0
 n_onart_21_71_1
 n_onart_21_71_2
@@ -1855,6 +1911,12 @@ p_onart_artexp_21_71_1
 p_onart_artexp_21_71_2 
 p_onart_artexp_21_71_3 
 p_onart_artexp_21_71_4
+
+p_onart_21_71_0 
+p_onart_21_71_1 
+p_onart_21_71_2 
+p_onart_21_71_3 
+p_onart_21_71_4
 
 p_onart_diag_w_21_71_0 
 p_onart_diag_w_21_71_1 
@@ -1887,8 +1949,7 @@ incidence1549_21_71_3
 incidence1549_21_71_4
 
 ;
-
-where run = 145009460 ;
+where p_onart_artexp_21_0 < 0.9;
 run;
 ods html close;
 
@@ -1924,10 +1985,9 @@ prep_strategy rate_sw_rred_rc
 
 
 proc print data = a.art_retention_20_5_21_5r_1_xlsx; 
-var  death_rate_hiv_ge15:  ;
+var  death_rate_hiv_ge15: p_onart_21: ;
 run; 
 
-	
 
 proc export data = a.art_retention_20_5_21_5r_1_xlsx
   dbms=xlsx 
