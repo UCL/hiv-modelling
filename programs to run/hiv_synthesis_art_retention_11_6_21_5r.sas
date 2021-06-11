@@ -557,6 +557,7 @@ p_neph_stops_after_ten = 0.1;
 						rate_exp_set_lower_p_vl1000 = uniform(0) * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
 						* rate of exposure;  * rate_exp_set_lower_p_vl1000 * dependent_on_time_step_length ;
 						end;
+						exp_setting_lower_p_vl1000 = 0;
 * higher_newp_with_lower_adhav;
 				r=uniform(0); higher_newp_with_lower_adhav = 0; if r < 0.2 then higher_newp_with_lower_adhav = 1;
 
@@ -670,7 +671,9 @@ p_neph_stops_after_ten = 0.1;
 * prob_lossdiag_non_tb_who3e;  prob_lossdiag_non_tb_who3e = rand('beta',15,85);prob_lossdiag_non_tb_who3e = round(prob_lossdiag_non_tb_who3e,0.01);
 
 * lower_future_art_cov; r=uniform(0); if 0 <= r < 0.97 then lower_future_art_cov=0;if 0.97 <= r  then lower_future_art_cov=1;
+										lower_future_art_cov=0;
 * higher_future_prep_cov;r=uniform(0); if 0 <= r < 0.80 then higher_future_prep_cov=0;if 0.80 <= r  then higher_future_prep_cov=1;
+									higher_future_prep_cov=0;
 
 
 * higher_newp_less_engagement; r=uniform(0);higher_newp_less_engagement = 0; if r < 0.2 then higher_newp_less_engagement = 1; * are people with more newp less likely to be engaged with care; 
@@ -5045,7 +5048,7 @@ p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.;
 
 *prob infection in 3mths from the infected partner;
 
-
+risk_nip=0; ge1nip =0 ; if nip ge 1 then ge1nip=1;
 if t ge 2 and nip gt 0 then do;
 	d=1;do until (d gt nip);
 		risk_nip=0;  * dependent_on_time_step_length ;  
@@ -14173,9 +14176,11 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
  
 	s_eponart + epart ;  s_s_m_newp + t_m_newp ; s_s_w_newp + t_w_newp ;
 
+	s_risk_nip + risk_nip ;  s_ge1nip + ge1nip ;  
+
 	/*status of partner*/
 
-	s_eph0_m + eph0_m ; s_eph0_w + eph0_w ; s_nip + nip ; s_epi + epi ; 
+	s_eph0_m + eph0_m ; s_eph0_w + eph0_w ; s_nip + nip ; s_epi + epi ; s_risk_eip + risk_eip ;
 
 	s_newp_hiv + newp_hiv ; s_newp_ge1_hiv_diag + newp_ge1_hiv_diag ; s_epdiag + epdiag ; s_diag_epun + diag_epun ; s_epart + epart ;
 	s_epvls + epvls ; s_hiv1epi0_w + hiv1epi0_w ; s_hiv0epi1_w + hiv0epi1_w ; s_hiv1epi0_m + hiv1epi0_m ; s_hiv0epi1_m + hiv0epi1_m ;
@@ -15527,9 +15532,11 @@ s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
 s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg  s_newp_this_per_hivneg_1549  s_newp_this_per_1549 
-  
+
+s_risk_nip  s_ge1nip 
+ 
 /*status of partner*/
-s_eph0_m  s_eph0_w  s_nip   s_epi
+s_eph0_m  s_eph0_w  s_nip   s_epi  s_risk_eip 
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
 s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
 s_hiv0epprim
@@ -16345,8 +16352,11 @@ s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_th
 
 s_s_m_newp  s_s_w_newp
 
+s_risk_nip  s_ge1nip 
+ 
 /*status of partner*/
-s_eph0_m  s_eph0_w  s_nip   s_epi
+s_eph0_m  s_eph0_w  s_nip   s_epi  s_risk_eip 
+
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
 s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
 s_hiv0epprim
@@ -22171,7 +22181,7 @@ data r1; set a;
 
 data x; set cum_l1;
 * file "C:\Loveleen\Synthesis model\Multiple enhancements\multiple_enhancements_&dataset_id";  
-  file "/home/rmjlaph/Scratch/_output_art_retention_20_5_21_5r_&dataset_id";  
+  file "/home/rmjlaph/Scratch/_output_art_retention_11_6_21_5r_&dataset_id";  
 
 put   
 
@@ -22278,8 +22288,10 @@ s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
 s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
+s_risk_nip  s_ge1nip 
+ 
 /*status of partner*/
-s_eph0_m  s_eph0_w  s_nip   s_epi
+s_eph0_m  s_eph0_w  s_nip   s_epi  s_risk_eip 
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
 s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
 s_hiv0epprim
