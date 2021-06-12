@@ -957,6 +957,9 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
 * incidencege15;				incidencege15 = (s_primaryge15 * 4 * 100) / (s_alive  + s_primaryge15);
 
+* mean_risk_nip; 				mean_risk_nip = s_risk_nip / s_ge1nip ; 
+* mean_risk_eip; 				mean_risk_eip = s_risk_eip / s_epi ; 
+
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
@@ -1230,20 +1233,22 @@ s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_v
 
 prev_vg1000_newp_m p_vl1000_m  prev_vg1000_newp_w p_vl1000_w  p_newp_prep
 
+mean_risk_nip  mean_risk_eip
+
 ;
 
 
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention_20_5_21_5r_1;
+  data a.art_retention_11_6_21_5r_1;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention_20_5_21_5r_1; 
+  set a.art_retention_11_6_21_5r_1; 
 run;
 
 
@@ -1259,43 +1264,21 @@ run;
 * &v ;
 
 proc means noprint data=y; var &v; output out=y_22p5_0 mean= &v._22p5_0; by run ; where cald = 2022.5 and option=0; 
-proc means noprint data=y; var &v; output out=y_22p5_1 mean= &v._22p5_1; by run ; where cald = 2022.5 and option=1; 
-proc means noprint data=y; var &v; output out=y_22p5_2 mean= &v._22p5_2; by run ; where cald = 2022.5 and option=2; 
-proc means noprint data=y; var &v; output out=y_22p5_3 mean= &v._22p5_3; by run ; where cald = 2022.5 and option=3; 
 proc means noprint data=y; var &v; output out=y_22p5_4 mean= &v._22p5_4; by run ; where cald = 2022.5 and option=4; 
-
 
 proc means noprint data=y; var &v; output out=y_21_0 mean= &v._21_0; by run ; where 2021 <= cald < 2022 and option=0; 
 proc means noprint data=y; var &v; output out=y_22_0 mean= &v._22_0; by run ; where 2022 <= cald < 2023 and option=0; 
-
-proc means noprint data=y; var &v; output out=y_21_1 mean= &v._21_1; by run ; where 2021 <= cald < 2022 and option=1; 
-proc means noprint data=y; var &v; output out=y_22_1 mean= &v._22_1; by run ; where 2022 <= cald < 2023 and option=1; 
-
-proc means noprint data=y; var &v; output out=y_21_2 mean= &v._21_2; by run ; where 2021 <= cald < 2022 and option=2; 
-proc means noprint data=y; var &v; output out=y_22_2 mean= &v._22_2; by run ; where 2022 <= cald < 2023 and option=2; 
-
-proc means noprint data=y; var &v; output out=y_21_3 mean= &v._21_3; by run ; where 2021 <= cald < 2022 and option=3; 
-proc means noprint data=y; var &v; output out=y_22_3 mean= &v._22_3; by run ; where 2022 <= cald < 2023 and option=3; 
 
 proc means noprint data=y; var &v; output out=y_21_4 mean= &v._21_4; by run ; where 2021 <= cald < 2022 and option=4; 
 proc means noprint data=y; var &v; output out=y_22_4 mean= &v._22_4; by run ; where 2022 <= cald < 2023 and option=4; 
 
 proc means noprint data=y; var &v; output out=y_21_22_0 mean= &v._21_22_0; by run ; where 2021.5 <= cald < 2022.50 and option = 0;  
-proc means noprint data=y; var &v; output out=y_21_22_1 mean= &v._21_22_1; by run ; where 2021.5 <= cald < 2022.50 and option = 1;  
-proc means noprint data=y; var &v; output out=y_21_22_2 mean= &v._21_22_2; by run ; where 2021.5 <= cald < 2022.50 and option = 2;  
-proc means noprint data=y; var &v; output out=y_21_22_3 mean= &v._21_22_3; by run ; where 2021.5 <= cald < 2022.50 and option = 3;  
 proc means noprint data=y; var &v; output out=y_21_22_4 mean= &v._21_22_4; by run ; where 2021.5 <= cald < 2022.50 and option = 4; 
 
 proc means noprint data=y; var &v; output out=y_21_24_0 mean= &v._21_24_0; by run ; where 2021.5 <= cald < 2024.50 and option = 0;  
-proc means noprint data=y; var &v; output out=y_21_24_1 mean= &v._21_24_1; by run ; where 2021.5 <= cald < 2024.50 and option = 1;  
-proc means noprint data=y; var &v; output out=y_21_24_2 mean= &v._21_24_2; by run ; where 2021.5 <= cald < 2024.50 and option = 2;  
-proc means noprint data=y; var &v; output out=y_21_24_3 mean= &v._21_24_3; by run ; where 2021.5 <= cald < 2024.50 and option = 3;  
 proc means noprint data=y; var &v; output out=y_21_24_4 mean= &v._21_24_4; by run ; where 2021.5 <= cald < 2024.50 and option = 4;  
 
 proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
-proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
-proc means noprint data=y; var &v; output out=y_21_71_2 mean= &v._21_71_2; by run ; where 2021.5 <= cald < 2071.50 and option = 2;  
-proc means noprint data=y; var &v; output out=y_21_71_3 mean= &v._21_71_3; by run ; where 2021.5 <= cald < 2071.50 and option = 3;  
 proc means noprint data=y; var &v; output out=y_21_71_4 mean= &v._21_71_4; by run ; where 2021.5 <= cald < 2071.50 and option = 4;  
 
 data &v ; merge 
@@ -1305,12 +1288,6 @@ y_21_24_0 y_21_24_1 y_21_24_2 y_21_24_3 y_21_24_4
 y_21_71_0 y_21_71_1 y_21_71_2 y_21_71_3 y_21_71_4 
 
 y_21_0 y_22_0 
-
-y_21_1 y_22_1 
-
-y_21_2 y_22_2 
-
-y_21_3 y_22_3 
 
 y_21_4 y_22_4 
 
@@ -1346,7 +1323,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=prev_vg1000_newp_m); %var(v=p_vl1000_m);  %var(v=prev_vg1000_newp_w); %var(v=p_vl1000_w);
 
-%var(v=p_newp_prep);
+%var(v=p_newp_prep);  %var(v=mean_risk_nip);  %var(v=mean_risk_eip);
+
 
 data   wide_outputs; merge 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
@@ -1372,6 +1350,8 @@ s_prop_ageg4_w_vlg1  s_prop_ageg4_w_vlg2  s_prop_ageg4_w_vlg3   s_prop_ageg4_w_v
 s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4   s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6  
 
 prev_vg1000_newp_m p_vl1000_m  prev_vg1000_newp_w p_vl1000_w  p_newp_prep
+
+mean_risk_nip  mean_risk_eip
 
 ;
 
@@ -1453,7 +1433,7 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_20_5_21_5r_1; 
+  data a.wide_art_retention_11_6_21_5r_1; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
@@ -1469,7 +1449,7 @@ proc freq; tables run; run;
 
 
 
-data r; set a.wide_art_retention_20_5_21_5r_1; 
+data r; set a.wide_art_retention_11_6_21_5r_1; 
 
 r_prev_vg1000_newp_w_22_4 = prev_vg1000_newp_w_22_4 / prev_vg1000_newp_w_22_0 ;
 r_prev_vg1000_newp_m_22_4 = prev_vg1000_newp_m_22_4 / prev_vg1000_newp_m_22_0 ;
@@ -1486,6 +1466,7 @@ d_p_vl1000_21_22_4 = p_vl1000_21_22_0 - p_vl1000_21_22_4 ;
 d_prevalence_vg1000_21_22_4 = prevalence_vg1000_21_22_0 - prevalence_vg1000_21_22_4;
 r_prev_vg1000_newp_m_21_22_4 = prev_vg1000_newp_m_21_22_4 / prev_vg1000_newp_m_21_22_0 ;
 r_prev_vg1000_newp_w_21_22_4 = prev_vg1000_newp_w_21_22_4 / prev_vg1000_newp_w_21_22_0 ;
+r_mean_risk_nip_21_22_4 = mean_risk_nip_21_22_4 / mean_risk_nip_21_22_0 ;
 
 d_incidence1549_21_24_4 = incidence1549_21_24_0 - incidence1549_21_24_4 ; 
 r_incidence1549_21_24_4 = incidence1549_21_24_4 / incidence1549_21_24_0 ;
@@ -1495,6 +1476,7 @@ d_p_vl1000_21_24_4 = p_vl1000_21_24_0 - p_vl1000_21_24_4 ;
 d_prevalence_vg1000_21_24_4 = prevalence_vg1000_21_24_0 - prevalence_vg1000_21_24_4;
 r_prev_vg1000_newp_m_21_24_4 = prev_vg1000_newp_m_21_24_4 / prev_vg1000_newp_m_21_24_0 ;
 r_prev_vg1000_newp_w_21_24_4 = prev_vg1000_newp_w_21_24_4 / prev_vg1000_newp_w_21_24_0 ;
+r_mean_risk_nip_21_24_4 = mean_risk_nip_21_24_4 / mean_risk_nip_21_24_0 ;
 
 d_incidence1549_21_71_4 = incidence1549_21_71_0 - incidence1549_21_71_4 ; 
 r_incidence1549_21_71_4 = incidence1549_21_71_4 / incidence1549_21_71_0 ;
@@ -1502,7 +1484,7 @@ d_p_vl1000_21_71_4 = p_vl1000_21_71_0 - p_vl1000_21_71_4 ;
 d_prevalence_vg1000_21_71_4 = prevalence_vg1000_21_71_0 - prevalence_vg1000_21_71_4;
 r_prev_vg1000_newp_m_21_71_4 = prev_vg1000_newp_m_21_71_4 / prev_vg1000_newp_m_21_71_0 ;
 r_prev_vg1000_newp_w_21_71_4 = prev_vg1000_newp_w_21_71_4 / prev_vg1000_newp_w_21_71_0 ;
-
+r_mean_risk_nip_21_71_4 = mean_risk_nip_21_71_4 / mean_risk_nip_21_71_0 ;
 
 ods html;
 proc means n median p5 p95 min max ;
@@ -1520,7 +1502,6 @@ proc glm;
 model r_incidence1549_21_71_4 = 
 p_onart_diag_w_21_0 	p_onart_diag_m_21_0     ; 
 ; 
-where higher_future_prep_cov=0;
 run;
 
 * n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
@@ -1531,139 +1512,6 @@ p_newp_sw_21_0  aids_death_rate_21_0 ;
 
 
 
-ods html;
-proc print ;
-var	run 
-n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
-death_rate_hiv_ge15_21_0 ddaly_21_0 daly_21_0  incidence1549_21_0 incidence1549w_21_0 incidence1549m_21_0 prevalence1549_21_0 
-prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  p_onart_artexp_21_0
-p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0 p_mcirc_1549m_21_0  p_startedline2_21_0  prop_sw_hiv_21_0 
-p_newp_sw_21_0  aids_death_rate_21_0  ;
-run;
-ods html close;
-
-
-
-
-ods html;
-proc means n median p5 p95 min max ;
-var	
-n_alive_21_24_0 p_onart_artexp_21_24_0 n_art_initiation_21_24_0 n_restart_21_24_0 p_onart_vl1000_21_24_0 n_hivge15_21_24_0 
-death_rate_hiv_ge15_all_21_24_0 
-death_rate_hiv_ge15_21_24_0 ddaly_21_24_0 daly_21_24_0  incidence1549_21_24_0 incidence1549w_21_24_0 incidence1549m_21_24_0 
-prevalence1549_21_24_0 
-prevalence1549w_21_24_0 prevalence1549m_21_24_0  p_diag_m_21_24_0  prop_w_1549_sw_21_24_0 p_onart_diag_w_21_24_0 	
-p_onart_diag_m_21_24_0  
-p_vl1000_21_24_0	p_onart_vl1000_w_21_24_0  p_onart_vl1000_m_21_24_0 p_onart_cd4_l500_21_24_0 p_mcirc_1549m_21_24_0  
-p_startedline2_21_24_0  prop_sw_hiv_21_24_0 
-p_newp_sw_21_24_0  aids_death_rate_21_24_0  n_onart_21_24_0  n_death_hivrel_21_24_0    prevalence_vg1000_21_24_0
-
-n_alive_21_24_1 p_onart_artexp_21_24_1 n_art_initiation_21_24_1 n_restart_21_24_1 p_onart_vl1000_21_24_1 n_hivge15_21_24_1 
-death_rate_hiv_ge15_all_21_24_1 
-death_rate_hiv_ge15_21_24_1 ddaly_21_24_1 daly_21_24_1  incidence1549_21_24_1 incidence1549w_21_24_1 incidence1549m_21_24_1 
-prevalence1549_21_24_1 
-prevalence1549w_21_24_1 prevalence1549m_21_24_1  p_diag_m_21_24_1  prop_w_1549_sw_21_24_1 p_onart_diag_w_21_24_1 	
-p_onart_diag_m_21_24_1  
-p_vl1000_21_24_1	p_onart_vl1000_w_21_24_1  p_onart_vl1000_m_21_24_1 p_onart_cd4_l500_21_24_1 p_mcirc_1549m_21_24_1  
-p_startedline2_21_24_1  prop_sw_hiv_21_24_1 
-p_newp_sw_21_24_1  aids_death_rate_21_24_1  n_onart_21_24_1 n_death_hivrel_21_24_1  prevalence_vg1000_21_24_1
-
-n_alive_21_24_2 p_onart_artexp_21_24_2 n_art_initiation_21_24_2 n_restart_21_24_2 p_onart_vl1000_21_24_2 n_hivge15_21_24_2 
-death_rate_hiv_ge15_all_21_24_2 
-death_rate_hiv_ge15_21_24_2 ddaly_21_24_2 daly_21_24_2  incidence1549_21_24_2 incidence1549w_21_24_2 incidence1549m_21_24_2 
-prevalence1549_21_24_2 
-prevalence1549w_21_24_2 prevalence1549m_21_24_2  p_diag_m_21_24_2  prop_w_1549_sw_21_24_2 p_onart_diag_w_21_24_2 	
-p_onart_diag_m_21_24_2  
-p_vl1000_21_24_2	p_onart_vl1000_w_21_24_2  p_onart_vl1000_m_21_24_2 p_onart_cd4_l500_21_24_2 p_mcirc_1549m_21_24_2  
-p_startedline2_21_24_2  prop_sw_hiv_21_24_2 
-p_newp_sw_21_24_2  aids_death_rate_21_24_2  n_onart_21_24_2 n_death_hivrel_21_24_2  prevalence_vg1000_21_24_2
-
-n_alive_21_24_3 p_onart_artexp_21_24_3 n_art_initiation_21_24_3 n_restart_21_24_3 p_onart_vl1000_21_24_3 n_hivge15_21_24_3 
-death_rate_hiv_ge15_all_21_24_3 
-death_rate_hiv_ge15_21_24_3 ddaly_21_24_3 daly_21_24_3  incidence1549_21_24_3 incidence1549w_21_24_3 incidence1549m_21_24_3 
-prevalence1549_21_24_3 
-prevalence1549w_21_24_3 prevalence1549m_21_24_3  p_diag_m_21_24_3  prop_w_1549_sw_21_24_3 p_onart_diag_w_21_24_3 	
-p_onart_diag_m_21_24_3  
-p_vl1000_21_24_3	p_onart_vl1000_w_21_24_3  p_onart_vl1000_m_21_24_3 p_onart_cd4_l500_21_24_3 p_mcirc_1549m_21_24_3  
-p_startedline2_21_24_3  prop_sw_hiv_21_24_3 
-p_newp_sw_21_24_3  aids_death_rate_21_24_3  n_onart_21_24_3 n_death_hivrel_21_24_3  prevalence_vg1000_21_24_3
-
-n_alive_21_24_4 p_onart_artexp_21_24_4 n_art_initiation_21_24_4 n_restart_21_24_4 p_onart_vl1000_21_24_4 n_hivge15_21_24_4 
-death_rate_hiv_ge15_all_21_24_4 
-death_rate_hiv_ge15_21_24_4 ddaly_21_24_4 daly_21_24_4  incidence1549_21_24_4 incidence1549w_21_24_4 incidence1549m_21_24_4 
-prevalence1549_21_24_4 
-prevalence1549w_21_24_4 prevalence1549m_21_24_4  p_diag_m_21_24_4  prop_w_1549_sw_21_24_4 p_onart_diag_w_21_24_4 	
-p_onart_diag_m_21_24_4  
-p_vl1000_21_24_4	p_onart_vl1000_w_21_24_4  p_onart_vl1000_m_21_24_4 p_onart_cd4_l500_21_24_4 p_mcirc_1549m_21_24_4  
-p_startedline2_21_24_4  prop_sw_hiv_21_24_4 
-p_newp_sw_21_24_4  aids_death_rate_21_24_4  n_onart_21_24_4 n_death_hivrel_21_24_4  prevalence_vg1000_21_24_4
-
-;
-run;
-ods html close;
-
-
-
-
-ods html;
-proc means n median p5 p95 min max ;
-var	
-n_alive_21_71_0 p_onart_artexp_21_71_0 n_art_initiation_21_71_0 n_restart_21_71_0 p_onart_vl1000_21_71_0 n_hivge15_21_71_0 
-death_rate_hiv_ge15_all_21_71_0 
-death_rate_hiv_ge15_21_71_0 ddaly_21_71_0 daly_21_71_0  incidence1549_21_71_0 incidence1549w_21_71_0 incidence1549m_21_71_0 
-prevalence1549_21_71_0 
-prevalence1549w_21_71_0 prevalence1549m_21_71_0  p_diag_m_21_71_0  prop_w_1549_sw_21_71_0 p_onart_diag_w_21_71_0 	
-p_onart_diag_m_21_71_0  
-p_vl1000_21_71_0	p_onart_vl1000_w_21_71_0  p_onart_vl1000_m_21_71_0 p_onart_cd4_l500_21_71_0 p_mcirc_1549m_21_71_0  
-p_startedline2_21_71_0  prop_sw_hiv_21_71_0 
-p_newp_sw_21_71_0  aids_death_rate_21_71_0  n_onart_21_71_0  n_death_hivrel_21_71_0    prevalence_vg1000_21_71_0
-
-n_alive_21_71_1 p_onart_artexp_21_71_1 n_art_initiation_21_71_1 n_restart_21_71_1 p_onart_vl1000_21_71_1 n_hivge15_21_71_1 
-death_rate_hiv_ge15_all_21_71_1 
-death_rate_hiv_ge15_21_71_1 ddaly_21_71_1 daly_21_71_1  incidence1549_21_71_1 incidence1549w_21_71_1 incidence1549m_21_71_1 
-prevalence1549_21_71_1 
-prevalence1549w_21_71_1 prevalence1549m_21_71_1  p_diag_m_21_71_1  prop_w_1549_sw_21_71_1 p_onart_diag_w_21_71_1 	
-p_onart_diag_m_21_71_1  
-p_vl1000_21_71_1	p_onart_vl1000_w_21_71_1  p_onart_vl1000_m_21_71_1 p_onart_cd4_l500_21_71_1 p_mcirc_1549m_21_71_1  
-p_startedline2_21_71_1  prop_sw_hiv_21_71_1 
-p_newp_sw_21_71_1  aids_death_rate_21_71_1  n_onart_21_71_1 n_death_hivrel_21_71_1  prevalence_vg1000_21_71_1
-
-n_alive_21_71_2 p_onart_artexp_21_71_2 n_art_initiation_21_71_2 n_restart_21_71_2 p_onart_vl1000_21_71_2 n_hivge15_21_71_2 
-death_rate_hiv_ge15_all_21_71_2 
-death_rate_hiv_ge15_21_71_2 ddaly_21_71_2 daly_21_71_2  incidence1549_21_71_2 incidence1549w_21_71_2 incidence1549m_21_71_2 
-prevalence1549_21_71_2 
-prevalence1549w_21_71_2 prevalence1549m_21_71_2  p_diag_m_21_71_2  prop_w_1549_sw_21_71_2 p_onart_diag_w_21_71_2 	
-p_onart_diag_m_21_71_2  
-p_vl1000_21_71_2	p_onart_vl1000_w_21_71_2  p_onart_vl1000_m_21_71_2 p_onart_cd4_l500_21_71_2 p_mcirc_1549m_21_71_2  
-p_startedline2_21_71_2  prop_sw_hiv_21_71_2 
-p_newp_sw_21_71_2  aids_death_rate_21_71_2  n_onart_21_71_2 n_death_hivrel_21_71_2  prevalence_vg1000_21_71_2
-
-n_alive_21_71_3 p_onart_artexp_21_71_3 n_art_initiation_21_71_3 n_restart_21_71_3 p_onart_vl1000_21_71_3 n_hivge15_21_71_3 
-death_rate_hiv_ge15_all_21_71_3 
-death_rate_hiv_ge15_21_71_3 ddaly_21_71_3 daly_21_71_3  incidence1549_21_71_3 incidence1549w_21_71_3 incidence1549m_21_71_3 
-prevalence1549_21_71_3 
-prevalence1549w_21_71_3 prevalence1549m_21_71_3  p_diag_m_21_71_3  prop_w_1549_sw_21_71_3 p_onart_diag_w_21_71_3 	
-p_onart_diag_m_21_71_3  
-p_vl1000_21_71_3	p_onart_vl1000_w_21_71_3  p_onart_vl1000_m_21_71_3 p_onart_cd4_l500_21_71_3 p_mcirc_1549m_21_71_3  
-p_startedline2_21_71_3  prop_sw_hiv_21_71_3 
-p_newp_sw_21_71_3  aids_death_rate_21_71_3  n_onart_21_71_3 n_death_hivrel_21_71_3  prevalence_vg1000_21_71_3
-
-n_alive_21_71_4 p_onart_artexp_21_71_4 n_art_initiation_21_71_4 n_restart_21_71_4 p_onart_vl1000_21_71_4 n_hivge15_21_71_4 
-death_rate_hiv_ge15_all_21_71_4 
-death_rate_hiv_ge15_21_71_4 ddaly_21_71_4 daly_21_71_4  incidence1549_21_71_4 incidence1549w_21_71_4 incidence1549m_21_71_4 
-prevalence1549_21_71_4 
-prevalence1549w_21_71_4 prevalence1549m_21_71_4  p_diag_m_21_71_4  prop_w_1549_sw_21_71_4 p_onart_diag_w_21_71_4 	
-p_onart_diag_m_21_71_4  
-p_vl1000_21_71_4	p_onart_vl1000_w_21_71_4  p_onart_vl1000_m_21_71_4 p_onart_cd4_l500_21_71_4 p_mcirc_1549m_21_71_4  
-p_startedline2_21_71_4  prop_sw_hiv_21_71_4 
-p_newp_sw_21_71_4  aids_death_rate_21_71_4  n_onart_21_71_4 n_death_hivrel_21_71_4  prevalence_vg1000_21_71_4
-
-;
-run;
-ods html close;
-
-
-proc freq;tables run; run;
 
 ods html;
 proc means n mean median p5 p95 min max ;
@@ -1673,51 +1521,27 @@ exp_setting_lower_p_vl1000
 higher_future_prep_cov
 
 n_onart_21_0
-n_onart_21_1
-n_onart_21_2
-n_onart_21_3
 n_onart_21_4
 
 p_onart_artexp_21_0 
-p_onart_artexp_21_1 
-p_onart_artexp_21_2 
-p_onart_artexp_21_3 
 p_onart_artexp_21_4
 
 p_onart_21_0 
-p_onart_21_1 
-p_onart_21_2 
-p_onart_21_3 
 p_onart_21_4
 
 p_onart_diag_w_21_0 
-p_onart_diag_w_21_1 
-p_onart_diag_w_21_2 
-p_onart_diag_w_21_3 
 p_onart_diag_w_21_4
 
 p_onart_diag_m_21_0 
-p_onart_diag_m_21_1 
-p_onart_diag_m_21_2 
-p_onart_diag_m_21_3 
 p_onart_diag_m_21_4
 
 n_death_hivrel_21_0
-n_death_hivrel_21_1
-n_death_hivrel_21_2
-n_death_hivrel_21_3
 n_death_hivrel_21_4 
 
 daly_21_0  
-daly_21_1  
-daly_21_2  
-daly_21_3  
 daly_21_4  
 
 incidence1549_21_0
-incidence1549_21_1
-incidence1549_21_2
-incidence1549_21_3
 incidence1549_21_4
 
 p_inf_vlsupp_21_0 
@@ -1757,9 +1581,10 @@ s_prop_ageg5_w_vlg1_21_0  s_prop_ageg5_w_vlg2_21_0  s_prop_ageg5_w_vlg3_21_0   s
 
 prev_vg1000_newp_m_21_0 p_vl1000_m_21_0  prev_vg1000_newp_w_21_0 p_vl1000_w_21_0
 
+mean_risk_nip_21_0 mean_risk_eip_21_0 
+
 ;
 * where p_onart_artexp_21_0 < 0.85;
-* where exp_setting_lower_p_vl1000=0 and run = 983503844;
 run;
 ods html close;
 
@@ -1768,67 +1593,37 @@ ods html;
 proc means n mean median p5 p95 min max ;
 var	
 n_onart_21_71_0
-n_onart_21_71_1
-n_onart_21_71_2
-n_onart_21_71_3
 n_onart_21_71_4
 
 p_onart_artexp_21_71_0 
-p_onart_artexp_21_71_1 
-p_onart_artexp_21_71_2 
-p_onart_artexp_21_71_3 
 p_onart_artexp_21_71_4
 
 p_onart_21_71_0 
-p_onart_21_71_1 
-p_onart_21_71_2 
-p_onart_21_71_3 
 p_onart_21_71_4
 
 p_vl1000_21_71_0 
-p_vl1000_21_71_1 
-p_vl1000_21_71_2 
-p_vl1000_21_71_3 
 p_vl1000_21_71_4
 
 d_p_vl1000_21_71_4
 
 p_onart_diag_w_21_71_0 
-p_onart_diag_w_21_71_1 
-p_onart_diag_w_21_71_2 
-p_onart_diag_w_21_71_3 
 p_onart_diag_w_21_71_4
 
 p_onart_diag_m_21_71_0 
-p_onart_diag_m_21_71_1 
-p_onart_diag_m_21_71_2 
-p_onart_diag_m_21_71_3 
 p_onart_diag_m_21_71_4
 
 n_death_hivrel_21_71_0
-n_death_hivrel_21_71_1
-n_death_hivrel_21_71_2
-n_death_hivrel_21_71_3
 n_death_hivrel_21_71_4 
 
 daly_21_71_0  
-daly_21_71_1  
-daly_21_71_2  
-daly_21_71_3  
 daly_21_71_4  
 
 incidence1549_21_71_0
-incidence1549_21_71_1
-incidence1549_21_71_2
-incidence1549_21_71_3
 incidence1549_21_71_4
 r_incidence1549_21_71_4
 d_incidence1549_21_71_4
  
 prevalence_vg1000_21_71_0
-prevalence_vg1000_21_71_1
-prevalence_vg1000_21_71_2
-prevalence_vg1000_21_71_3
 prevalence_vg1000_21_71_4
 d_prevalence_vg1000_21_71_4
 
@@ -1904,10 +1699,12 @@ r_prev_vg1000_newp_w_21_71_4
 p_newp_prep_21_71_0
 p_newp_prep_21_71_4
 
+mean_risk_nip_21_71_0 mean_risk_eip_21_71_0 
+mean_risk_nip_21_71_4 mean_risk_eip_21_71_4 
+r_mean_risk_nip_21_71_4
 
 ;
 * where p_onart_artexp_21_0 < 0.85;
-  where exp_setting_lower_p_vl1000=0;
 run;
 ods html close;
 
@@ -1922,7 +1719,6 @@ r_incidence1549_22p5_4
 r_prev_vg1000_newp_w_22p5_4 
 r_prev_vg1000_newp_m_22p5_4 
 ;
-  where exp_setting_lower_p_vl1000=0;
 run;
 ods html close;
 
@@ -1930,59 +1726,32 @@ ods html;
 proc means n mean median p5 p95 min max ;
 var	
 n_onart_21_24_0
-n_onart_21_24_1
-n_onart_21_24_2
-n_onart_21_24_3
 n_onart_21_24_4
 
 p_onart_artexp_21_24_0 
-p_onart_artexp_21_24_1 
-p_onart_artexp_21_24_2 
-p_onart_artexp_21_24_3 
 p_onart_artexp_21_24_4
 
 p_onart_21_24_0 
-p_onart_21_24_1 
-p_onart_21_24_2 
-p_onart_21_24_3 
 p_onart_21_24_4
 
 p_vl1000_21_24_0 
-p_vl1000_21_24_1 
-p_vl1000_21_24_2 
-p_vl1000_21_24_3 
 p_vl1000_21_24_4
 
 d_p_vl1000_21_24_4
 
 p_onart_diag_w_21_24_0 
-p_onart_diag_w_21_24_1 
-p_onart_diag_w_21_24_2 
-p_onart_diag_w_21_24_3 
 p_onart_diag_w_21_24_4
 
 p_onart_diag_m_21_24_0 
-p_onart_diag_m_21_24_1 
-p_onart_diag_m_21_24_2 
-p_onart_diag_m_21_24_3 
 p_onart_diag_m_21_24_4
 
 n_death_hivrel_21_24_0
-n_death_hivrel_21_24_1
-n_death_hivrel_21_24_2
-n_death_hivrel_21_24_3
 n_death_hivrel_21_24_4 
 
 daly_21_24_0  
-daly_21_24_1  
-daly_21_24_2  
-daly_21_24_3  
 daly_21_24_4  
 
 incidence1549_21_24_0
-incidence1549_21_24_1
-incidence1549_21_24_2
-incidence1549_21_24_3
 incidence1549_21_24_4
 r_incidence1549_21_24_4
 r_incidence1549m_21_24_4
@@ -1990,9 +1759,6 @@ r_incidence1549w_21_24_4
 d_incidence1549_21_24_4
  
 prevalence_vg1000_21_24_0
-prevalence_vg1000_21_24_1
-prevalence_vg1000_21_24_2
-prevalence_vg1000_21_24_3
 prevalence_vg1000_21_24_4
 d_prevalence_vg1000_21_24_4
 
@@ -2065,10 +1831,12 @@ p_vl1000_w_21_24_4
 r_prev_vg1000_newp_m_21_24_4
 r_prev_vg1000_newp_w_21_24_4 
 
+mean_risk_nip_21_24_0 mean_risk_eip_21_24_0 
+mean_risk_nip_21_24_4 mean_risk_eip_21_24_4 
+r_mean_risk_nip_21_24_4
+
 ;
-* where run = 983503844;
-  where p_onart_artexp_21_24_0 < 0.90;
-* where exp_setting_lower_p_vl1000=0 and higher_future_prep_cov=0;
+* where p_onart_artexp_21_24_0 < 0.90;
 run;
 ods html close;
 
@@ -2079,59 +1847,32 @@ ods html;
 proc means n mean median p5 p95 min max ;
 var	
 n_onart_21_22_0
-n_onart_21_22_1
-n_onart_21_22_2
-n_onart_21_22_3
 n_onart_21_22_4
 
 p_onart_artexp_21_22_0 
-p_onart_artexp_21_22_1 
-p_onart_artexp_21_22_2 
-p_onart_artexp_21_22_3 
 p_onart_artexp_21_22_4
 
 p_onart_21_22_0 
-p_onart_21_22_1 
-p_onart_21_22_2 
-p_onart_21_22_3 
 p_onart_21_22_4
 
 p_vl1000_21_22_0 
-p_vl1000_21_22_1 
-p_vl1000_21_22_2 
-p_vl1000_21_22_3 
 p_vl1000_21_22_4
 
 d_p_vl1000_21_22_4
 
 p_onart_diag_w_21_22_0 
-p_onart_diag_w_21_22_1 
-p_onart_diag_w_21_22_2 
-p_onart_diag_w_21_22_3 
 p_onart_diag_w_21_22_4
 
 p_onart_diag_m_21_22_0 
-p_onart_diag_m_21_22_1 
-p_onart_diag_m_21_22_2 
-p_onart_diag_m_21_22_3 
 p_onart_diag_m_21_22_4
 
 n_death_hivrel_21_22_0
-n_death_hivrel_21_22_1
-n_death_hivrel_21_22_2
-n_death_hivrel_21_22_3
 n_death_hivrel_21_22_4 
 
 daly_21_22_0  
-daly_21_22_1  
-daly_21_22_2  
-daly_21_22_3  
 daly_21_22_4  
 
 incidence1549_21_22_0
-incidence1549_21_22_1
-incidence1549_21_22_2
-incidence1549_21_22_3
 incidence1549_21_22_4
 r_incidence1549_21_22_4
 r_incidence1549m_21_22_4
@@ -2139,9 +1880,6 @@ r_incidence1549w_21_22_4
 d_incidence1549_21_22_4
  
 prevalence_vg1000_21_22_0
-prevalence_vg1000_21_22_1
-prevalence_vg1000_21_22_2
-prevalence_vg1000_21_22_3
 prevalence_vg1000_21_22_4
 d_prevalence_vg1000_21_22_4
 
@@ -2214,11 +1952,15 @@ p_vl1000_w_21_22_4
 r_prev_vg1000_newp_m_21_22_4
 r_prev_vg1000_newp_w_21_22_4 
 
+mean_risk_nip_21_22_0 mean_risk_eip_21_22_0 
+mean_risk_nip_21_22_4 mean_risk_eip_21_22_4 
+
+r_mean_risk_nip_21_22_4
+
 ;
 
-  where run = 983503844;
 * where p_onart_artexp_21_0 < 0.85;
-* where exp_setting_lower_p_vl1000=0 and higher_future_prep_cov = 0;
+
 run;
 ods html close;
 
