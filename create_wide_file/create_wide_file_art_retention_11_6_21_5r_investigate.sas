@@ -1467,6 +1467,7 @@ d_prevalence_vg1000_21_22_4 = prevalence_vg1000_21_22_0 - prevalence_vg1000_21_2
 r_prev_vg1000_newp_m_21_22_4 = prev_vg1000_newp_m_21_22_4 / prev_vg1000_newp_m_21_22_0 ;
 r_prev_vg1000_newp_w_21_22_4 = prev_vg1000_newp_w_21_22_4 / prev_vg1000_newp_w_21_22_0 ;
 r_mean_risk_nip_21_22_4 = mean_risk_nip_21_22_4 / mean_risk_nip_21_22_0 ;
+r_mean_risk_eip_21_22_4 = mean_risk_eip_21_22_4 / mean_risk_eip_21_22_0 ;
 
 d_incidence1549_21_24_4 = incidence1549_21_24_0 - incidence1549_21_24_4 ; 
 r_incidence1549_21_24_4 = incidence1549_21_24_4 / incidence1549_21_24_0 ;
@@ -1477,14 +1478,23 @@ d_prevalence_vg1000_21_24_4 = prevalence_vg1000_21_24_0 - prevalence_vg1000_21_2
 r_prev_vg1000_newp_m_21_24_4 = prev_vg1000_newp_m_21_24_4 / prev_vg1000_newp_m_21_24_0 ;
 r_prev_vg1000_newp_w_21_24_4 = prev_vg1000_newp_w_21_24_4 / prev_vg1000_newp_w_21_24_0 ;
 r_mean_risk_nip_21_24_4 = mean_risk_nip_21_24_4 / mean_risk_nip_21_24_0 ;
+r_mean_risk_eip_21_24_4 = mean_risk_eip_21_24_4 / mean_risk_eip_21_24_0 ;
 
 d_incidence1549_21_71_4 = incidence1549_21_71_0 - incidence1549_21_71_4 ; 
 r_incidence1549_21_71_4 = incidence1549_21_71_4 / incidence1549_21_71_0 ;
+r_incidence1549m_21_71_4 = incidence1549m_21_71_4 / incidence1549m_21_71_0 ;
+r_incidence1549w_21_71_4 = incidence1549w_21_71_4 / incidence1549w_21_71_0 ;
 d_p_vl1000_21_71_4 = p_vl1000_21_71_0 - p_vl1000_21_71_4 ; 
 d_prevalence_vg1000_21_71_4 = prevalence_vg1000_21_71_0 - prevalence_vg1000_21_71_4;
 r_prev_vg1000_newp_m_21_71_4 = prev_vg1000_newp_m_21_71_4 / prev_vg1000_newp_m_21_71_0 ;
 r_prev_vg1000_newp_w_21_71_4 = prev_vg1000_newp_w_21_71_4 / prev_vg1000_newp_w_21_71_0 ;
 r_mean_risk_nip_21_71_4 = mean_risk_nip_21_71_4 / mean_risk_nip_21_71_0 ;
+r_mean_risk_eip_21_71_4 = mean_risk_eip_21_71_4 / mean_risk_eip_21_71_0 ;
+
+
+
+
+
 
 ods html;
 proc means n median p5 p95 min max ;
@@ -1621,6 +1631,8 @@ daly_21_71_4
 incidence1549_21_71_0
 incidence1549_21_71_4
 r_incidence1549_21_71_4
+r_incidence1549m_21_71_4
+r_incidence1549w_21_71_4
 d_incidence1549_21_71_4
  
 prevalence_vg1000_21_71_0
@@ -1701,26 +1713,17 @@ p_newp_prep_21_71_4
 
 mean_risk_nip_21_71_0 mean_risk_eip_21_71_0 
 mean_risk_nip_21_71_4 mean_risk_eip_21_71_4 
+
 r_mean_risk_nip_21_71_4
+r_mean_risk_eip_21_71_4
 
 ;
 * where p_onart_artexp_21_0 < 0.85;
 run;
 ods html close;
 
-ods html;
-proc means n mean median p5 p95 min max ;
-var	
-r_incidence1549_22_4
-r_prev_vg1000_newp_w_22_4 
-r_prev_vg1000_newp_m_22_4 
 
-r_incidence1549_22p5_4
-r_prev_vg1000_newp_w_22p5_4 
-r_prev_vg1000_newp_m_22p5_4 
-;
-run;
-ods html close;
+
 
 ods html;
 proc means n mean median p5 p95 min max ;
@@ -1833,7 +1836,9 @@ r_prev_vg1000_newp_w_21_24_4
 
 mean_risk_nip_21_24_0 mean_risk_eip_21_24_0 
 mean_risk_nip_21_24_4 mean_risk_eip_21_24_4 
+
 r_mean_risk_nip_21_24_4
+r_mean_risk_eip_21_24_4
 
 ;
 * where p_onart_artexp_21_24_0 < 0.90;
@@ -1956,6 +1961,7 @@ mean_risk_nip_21_22_0 mean_risk_eip_21_22_0
 mean_risk_nip_21_22_4 mean_risk_eip_21_22_4 
 
 r_mean_risk_nip_21_22_4
+r_mean_risk_eip_21_22_4
 
 ;
 
