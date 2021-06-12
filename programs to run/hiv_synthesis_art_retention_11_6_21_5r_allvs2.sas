@@ -2389,6 +2389,7 @@ who may be dead and hence have caldate{t} missing;
  	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 1) ; 
  	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 1) ; 
 
+	option4_vl1=1;
 
 	end;
 
@@ -8371,8 +8372,7 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 
-
-vl = 1 ;
+if option4_vl1=1 then vl = 1 ;
 
 
 
