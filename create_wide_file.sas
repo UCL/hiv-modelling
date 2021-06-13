@@ -1142,7 +1142,7 @@ proc contents;run;
 
 ods html;
 
-proc means data=a.w_base n mean p50 p5 p95;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
@@ -1174,7 +1174,7 @@ r_prev_6064m_4549w_95 r_prev_65plm_4549w_95
 ;
 run;
 
-proc means data=a.w_base n mean p50 p5 p95;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1206,7 +1206,7 @@ r_prev_6064m_4549w_05 r_prev_65plm_4549w_05
 ;
 run;
 
-proc means data=a.w_base n mean p50 p5 p95;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1238,7 +1238,7 @@ r_prev_6064m_4549w_15 r_prev_65plm_4549w_15
 ;
 run;
 
-proc means data=a.w_base n mean p50 p5 p95 min max;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1270,7 +1270,7 @@ r_prev_6064m_4549w_21 r_prev_65plm_4549w_21
 ;
 run;
 
-proc means data=a.w_base n mean p50 p5 p95;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1302,7 +1302,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40
 ;
 run;
 
-proc means data=a.w_base n mean p50 p5 p95;
+proc means data=a.w_base n median p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
