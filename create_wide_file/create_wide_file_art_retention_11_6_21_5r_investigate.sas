@@ -1492,7 +1492,9 @@ r_prev_vg1000_newp_w_21_71_4 = prev_vg1000_newp_w_21_71_4 / prev_vg1000_newp_w_2
 r_mean_risk_nip_21_71_4 = mean_risk_nip_21_71_4 / mean_risk_nip_21_71_0 ;
 r_mean_risk_eip_21_71_4 = mean_risk_eip_21_71_4 / mean_risk_eip_21_71_0 ;
 
-
+p_epvls_21_0 = s_epvls_21_0 / s_epi_21_0 ;
+p_epvls_21_24_0 = s_epvls_21_24_0 / s_epi_21_24_0 ;
+p_epvls_21_24_4 = s_epvls_21_24_4 / s_epi_21_24_4 ;
 
 
 
@@ -1727,7 +1729,7 @@ ods html close;
 
 
 ods html;
-proc means n mean median p5 p95 min max ;
+proc means data=r n mean median p5 p95 min max ;
 var	
 n_onart_21_24_0
 n_onart_21_24_4
@@ -1840,6 +1842,10 @@ mean_risk_nip_21_24_4 mean_risk_eip_21_24_4
 
 r_mean_risk_nip_21_24_4
 r_mean_risk_eip_21_24_4
+
+p_epvls_21_0 
+p_epvls_21_24_0 
+p_epvls_21_24_4 
 
 ;
 * where p_onart_artexp_21_24_0 < 0.90;
