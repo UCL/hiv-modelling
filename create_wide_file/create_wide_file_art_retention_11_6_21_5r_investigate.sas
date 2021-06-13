@@ -6,7 +6,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d ;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_11_6_21_5r_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_11_6_21_5r_allvs2";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_11_6_21_5r_1";
 
 input 
 
