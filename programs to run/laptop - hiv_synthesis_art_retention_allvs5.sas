@@ -573,6 +573,7 @@ p_neph_stops_after_ten = 0.1;
 * fold_change_yw; fold_change_yw = fold_change_w * 3    ;  r=uniform(0); if r < 0.33 then fold_change_yw = fold_change_w * 1    ;
 					if r > 0.67 then fold_change_yw = fold_change_w * 5    ;
 
+
 * fold_change_sti; fold_change_sti=3 ;  r=uniform(0); if r < 0.333 then fold_change_sti=2 ;  if r > 0.67 then fold_change_sti=5 ;
 
 * fold_tr_newp;		fold_tr_newp = 0.3; r=uniform(0); if r < 0.33 then fold_tr_newp = 0.5; if r > 0.67 then fold_tr_newp = 0.7;
@@ -1897,6 +1898,9 @@ call symput('dataset_id',dataset_id);
 
 * options mprint;
 
+
+
+fold_change_w=2; fold_change_yw=10; fold_change_sti=5; fold_tr_newp = 0.7;
 
 
 * primary - currently in primary infection;
@@ -5231,10 +5235,10 @@ risk_eip=0;  ep_primary=0;
 
 d=uniform(0);
 if epi=1 then do;  * dependent_on_time_step_length ;  
-	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));          vl_source=1;	t_prop_rm=t_prop_vlg1_rm; end;
+	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));          vl_source_ep=1;	t_prop_rm=t_prop_vlg1_rm; end;
 	if epvls ne 1 then do;
-		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*normal(0))); ep_primary=1; vl_source=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
-		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*normal(0)));               vl_source=4;	t_prop_rm=t_prop_vlg4_rm; end;
+		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*normal(0))); ep_primary=1; vl_source_ep=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
+		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*normal(0)));               vl_source_ep=4;	t_prop_rm=t_prop_vlg4_rm; end;
 	end;* ie average risk for those with detectable vl;
 
 
@@ -5375,10 +5379,10 @@ risk_eip_actual = risk_eip;
 	if b < risk_eip then do;
 
 		if hiv=0 then do;
-			vl_source_inf = vl_source ;
+			vl_source_inf = vl_source_ep ;
 			hiv=1; infected_ep=1;infected_newp=0; infection=caldate{t};
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
-			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
+			infected_vlsupp=0;  if vl_source_ep=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
 			infected_prep=0; if prep   =1 then do; 
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
@@ -14942,10 +14946,11 @@ cald = caldate_never_dot ;
 proc freq; tables cald hiv;
 */
 
+/*
 
 proc freq; tables cald hiv ; run; 
 
-proc means; var vl1000 s_epvls  s_epart; where hiv =1 and death=.; run;
+
 
 proc freq; tables risk_nip_actual risk_eip_actual risk_nip risk_eip ;
 
@@ -14955,10 +14960,24 @@ where hiv_tm1 ne 1 and death = . and 15 <= age < 30 and serial_no < 5000 and (ni
 run;
 
 proc freq; tables infected_primary ; where primary=1; run;
+
+*/
+
+
+/*
+proc means; var vl1000 s_epvls  s_epart; where hiv =1 and death=.; run;
+
+proc print; var serial_no option cald  gender risk_nip tr_rate_undetec_vl nip newp_tm1 cu_1 cu_2 cu_3 cu_4 cu_5 cu_6 risk_eip ep epi epvls epart epi_tm1 
+primary hiv infected_primary infected_diagnosed infected_vlsupp infected_newp infected_ep vl_source d_vls p_onart_vls p_onart_epvls tr_rate_undetec_vl;
+  where hiv_tm1 ne 1 and death = . and (nip ge 1 or epi=1);
+run;
+
 proc freq; tables primary; run;
+*/
 
-proc means p0 p100 ; tables risk_nip risk_eip; where where hiv_tm1 ne 1 and death = . and (nip ge 1 or epi=1) and vl_source=1; run;
 
+proc means min max ; var risk_nip; where hiv_tm1 ne 1 and death = . and nip ge 1 and vl_source=1; run;
+proc means min max ; var risk_eip; where hiv_tm1 ne 1 and death = . and epi=1 and vl_source_ep=1; run;
 
 /*
 
