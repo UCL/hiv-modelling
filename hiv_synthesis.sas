@@ -395,7 +395,7 @@ newp_seed = 7;
 * TRANSMISSION;
 
 * tr_rate_primary;			tr_rate_primary = 0.16; 
-* tr_rate_undetec_vl;		tr_rate_undetec_vl = 0.001;
+* tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.7 0.2 0.1);
 * rate_loss_nnres_pmtct_maj;rate_loss_nnres_pmtct_maj = 0.75;  rate_loss_nnres_pmtct_min = rate_loss_nnres_pmtct_maj; 
 							* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
 							* dependent_on_time_step_length ;
