@@ -3871,7 +3871,7 @@ end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
 
-epdiag=0; epart=0; 
+epdiag=0; epart=0; epvls=0; 
 if epi=1 then do;
 
 	if epdiag_tm1=1 then epdiag=1;
