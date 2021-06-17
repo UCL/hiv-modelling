@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #$ -S /bin/bash
 #$ -pe smp 4
-#$ -l mem=6G
+#$ -l mem=16G
 #$ -j y
 #$ -o /dev/null
 #$ -e /dev/null
