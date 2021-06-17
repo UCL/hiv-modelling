@@ -10,11 +10,8 @@ run;
 
 data b;
 set a.wide_vmmc_02_06_21_9pm;
-*set a.wide_vmmc_29_03_21_6pm;
-*set a.wide_vmmc_29_03_21_6pm_120;
-*set a.wide_vmmc_29_03_21_6pm_60;
-*set a.wide_vmmc_29_03_21_6pm_disc5;
-*set a.wide_vmmc_29_03_21_6pm_lowart;
+*set a.wide_vmmc_02_06_21_9pm_lowart;
+
 run;
 proc freq;table lower_future_art_cov;run;
 
@@ -142,7 +139,7 @@ d_n_new_inf_21_71_1 = n_new_inf1549_21_71_2 - n_new_inf1549_21_71_1;
 proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 */
 
-/*lowart;nnt_21_26_1=138543; nnt_21_41_1=122035; nnt_21_71_1=15674;*/
+/*lowart;nnt_21_26_1=130697; nnt_21_41_1=34464; nnt_21_71_1=13785;*/
 
 *base/5% disc/120/60;nnt_21_26_1=149205; nnt_21_41_1=39185; nnt_21_71_1=15674;
 
@@ -170,6 +167,7 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 
 ***Change the below to reflect which cost/discount is being applied;
 *base;cost_inf_avert_21_26_1=15.1*1000000; cost_inf_avert_21_41_1=6.3*1000000; cost_inf_avert_21_71_1 = 8.6*1000000;
+/*lowart;cost_inf_avert_21_26_1=11.9*1000000; cost_inf_avert_21_41_1=3.9*1000000; cost_inf_avert_21_71_1 = 3.5*1000000;*/
 
 if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
 if d_n_new_inf_21_41_1 gt 0 then cost_inf_avert_21_41_1 = (d_dcost_21_41_1 / d_n_d_new_inf_21_41_1)*1000000;
@@ -188,7 +186,10 @@ if d_ddaly_adults_21_71_1 gt 0 then cost_daly_avert_21_71_1_adults = (d_dcost_21
 
 run;
 
-proc print;var d_dcost_21_71_1 d_ddaly_adults_21_71_1 cost_daly_avert_21_71_1_adults;run;
+proc means n sum p50 p5 p95; var cost_daly_avert_21_71_1_adults;run;
+proc print;var run cost_daly_avert_21_71_1_adults d_dcost_21_71_1 d_ddaly_adults_21_71_1;where 103  < cost_daly_avert_21_71_1_adults < 104;run;
+
+
 
 ***table 2;
 proc means n p50 p5 p95;var
@@ -406,8 +407,6 @@ proc means n mean p50 p5 p95 lclm uclm;var nnt_21_71_1;where d_n_new_inf_21_71_1
 
 
 
-
-
 ***Predictors of CE scenarios;
 data one;
 set c;
@@ -419,7 +418,6 @@ if 0.50 lt incidence1549_21 le 1 then incid=4;
 if         incidence1549_21 gt 1 then incid=5;
 
 
-
 *incidence;
 if 0  le incidence1549_21 le 0.30 then incid_cat3=1;
 if 0.30 lt incidence1549_21 le 0.60 then incid_cat3=2;
@@ -428,6 +426,9 @@ if 0.60 lt incidence1549_21 then incid_cat3=3;
 if 0  le incidence1549_40_41_1 le 0.30 then incid_cat2040_3=1;
 if 0.30 lt incidence1549_40_41_1 le 0.60 then incid_cat2040_3=2;
 if 0.60 lt incidence1549_40_41_1 then incid_cat2040_3=3;
+
+incidence1549_scaled=incidence1549_21 * 10;
+
 
 *prop diag;
 if 60 le p_diag_21 le 85 then p_diag=1;
@@ -444,6 +445,8 @@ if 0.50 le p_vl1000_21 le 0.65 then p_vl1000=1;
 if 0.65 lt p_vl1000_21 le 0.75 then p_vl1000=2;
 if 0.75 lt p_vl1000_21 le 1.00 then p_vl1000=3;
 
+p_vl1000_21_scaled=p_vl1000_21 * 100;
+
 *On ART with VL<1000;
 if 0.50 le p_onart_vl1000_21 le 0.80 then onart_vl1000=1;
 if 0.80 lt p_onart_vl1000_21 le 0.90 then onart_vl1000=2;
@@ -454,7 +457,10 @@ if 0 le p_mcirc_1549m_21 le 0.40 then p_circ=1;
 if 0.40 lt p_mcirc_1549m_21 le 0.60 then p_circ=2;
 if 0.60 lt p_mcirc_1549m_21 le 1 then p_circ=3;
 
-proc freq;table p_circ;run;
+p_mcirc_1549m_21_scaled=p_mcirc_1549m_21*100;
+
+prevalence_vg1000_scaled=prevalence_vg1000_21*100;
+
 
 Proc logistic desc;class incid_cat3 (ref="1") p_diag (ref="3") artcov (ref="3") onart_vl1000 (ref="1") p_circ (ref="1");
 model  ce_20_70  = incid_cat3;run;
@@ -469,12 +475,19 @@ model  ce_20_70  = onart_vl1000;run;
 Proc logistic desc;class incid_cat3 (ref="1") p_diag (ref="1") artcov (ref="1") onart_vl1000 (ref="1") p_circ (ref="1");
 model  ce_20_70  = p_circ;run;
 
-Proc logistic desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
-model  ce_20_70  = incid_cat3 p_vl1000 p_circ;run;
+Proc logistic desc;class incid_cat3 (ref="1") p_diag (ref="1") artcov (ref="1") onart_vl1000 (ref="1") p_circ (ref="1");
+model    = p_circ;run;
+
+Proc logistic data=one desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
+model  ce_21_71  = incidence1549_scaled  p_vl1000_21_scaled p_mcirc_1549m_21_scaled;run;
+
+
+Proc logistic data=one desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
+model  ce_21_71  = incidence1549_scaled  p_mcirc_1549m_21_scaled prevalence_vg1000_scaled;run;
 
 ***And with incidence in 2040;
-Proc logistic desc;class incid_cat3 (ref="1") incid_cat2040_3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
-model  ce_20_70  = incid_cat3 incid_cat2040_3 p_vl1000 p_circ;run;
+Proc logistic data=one desc;class incid_cat3 (ref="1") incid_cat2040_3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
+model  ce_20_70  = incid_cat3 incid_cat2040_3 p_vl1000 p_mcirc_1549m_21 prevalence_vg1000_scaled;run;
 
 
 ***Table 5;
