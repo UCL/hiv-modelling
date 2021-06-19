@@ -6,8 +6,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d ;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_13_6_21_5r_1";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_11_6_21_5r_1";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_13_6_21_5r";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_14_6_21_5r_temp";
 
 input 
 
@@ -1208,9 +1208,6 @@ rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 prep_strategy rate_sw_rred_rc  higher_future_prep_cov
 
@@ -1242,14 +1239,14 @@ mean_risk_nip  mean_risk_eip
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention_11_6_21_5r_1;
+  data a.art_retention_14_6_21_5r  ;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention_11_6_21_5r_1; 
+  set a.art_retention_14_6_21_5r  ; 
 run;
 
 
@@ -1392,12 +1389,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );   %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
 %par(p= incr_mort_risk_dol_weightg );
-%par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
-%par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
-%par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
-%par(p=eff_rate_test_startprep );  	%par(p=eff_rate_test_restartprep );  	%par(p=prep_strategy );
-%par(p=eff_rate_choose_stop_prep );  		%par(p=eff_prob_prep_restart_choice );  %par(p=sw_init_newp); %par(p=sw_trans_matrix);
-%par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
+%par(p=prep_strategy );  %par(p=sw_init_newp); %par(p=sw_trans_matrix); %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
 %par(p=higher_future_prep_cov) ;
 
@@ -1421,9 +1413,6 @@ rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 prep_strategy rate_sw_rred_rc higher_future_prep_cov
 ;
@@ -1434,7 +1423,7 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_11_6_21_5r_1; 
+  data a.wide_art_retention_14_6_21_5r  ; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
@@ -1450,7 +1439,7 @@ proc freq; tables run; run;
 
 
 
-data r; set a.wide_art_retention_11_6_21_5r_1; 
+data r; set a.wide_art_retention_14_6_21_5r  ; 
 
 r_prev_vg1000_newp_w_22_4 = prev_vg1000_newp_w_22_4 / prev_vg1000_newp_w_22_0 ;
 r_prev_vg1000_newp_m_22_4 = prev_vg1000_newp_m_22_4 / prev_vg1000_newp_m_22_0 ;
@@ -1600,131 +1589,6 @@ mean_risk_nip_21_0 mean_risk_eip_21_0
 * where p_onart_artexp_21_0 < 0.85;
 run;
 ods html close;
-
-
-ods html;
-proc means n mean median p5 p95 min max ;
-var	
-n_onart_21_71_0
-n_onart_21_71_4
-
-p_onart_artexp_21_71_0 
-p_onart_artexp_21_71_4
-
-p_onart_21_71_0 
-p_onart_21_71_4
-
-p_vl1000_21_71_0 
-p_vl1000_21_71_4
-
-d_p_vl1000_21_71_4
-
-p_onart_diag_w_21_71_0 
-p_onart_diag_w_21_71_4
-
-p_onart_diag_m_21_71_0 
-p_onart_diag_m_21_71_4
-
-n_death_hivrel_21_71_0
-n_death_hivrel_21_71_4 
-
-daly_21_71_0  
-daly_21_71_4  
-
-incidence1549_21_71_0
-incidence1549_21_71_4
-r_incidence1549_21_71_4
-r_incidence1549m_21_71_4
-r_incidence1549w_21_71_4
-d_incidence1549_21_71_4
- 
-prevalence_vg1000_21_71_0
-prevalence_vg1000_21_71_4
-d_prevalence_vg1000_21_71_4
-
-p_inf_vlsupp_21_71_0 
-p_inf_vlsupp_21_71_4 
-
-p_inf_newp_21_71_0  
-p_inf_newp_21_71_4 
-
-p_inf_ep_21_71_0
-p_inf_ep_21_71_4 
-
-p_inf_diag_21_71_0
-p_inf_diag_21_71_4 
-
-p_inf_naive_21_71_0
-p_inf_naive_21_71_4 
-
-p_inf_primary_21_71_0 
-p_inf_primary_21_71_4 
-
-s_epi_21_71_0  
-s_epdiag_21_71_0  
-s_eponart_21_71_0  
-s_epvls_21_71_0
-s_epi_21_71_4  
-s_epdiag_21_71_4  
-s_eponart_21_71_4  
-s_epvls_21_71_4
-
-s_prop_ageg1_m_vlg1_21_71_0  s_prop_ageg1_m_vlg2_21_71_0  s_prop_ageg1_m_vlg3_21_71_0   s_prop_ageg1_m_vlg4_21_71_0   s_prop_ageg1_m_vlg5_21_71_0   s_prop_ageg1_m_vlg6_21_71_0  
-s_prop_ageg2_m_vlg1_21_71_0  s_prop_ageg2_m_vlg2_21_71_0  s_prop_ageg2_m_vlg3_21_71_0   s_prop_ageg2_m_vlg4_21_71_0   s_prop_ageg2_m_vlg5_21_71_0   s_prop_ageg2_m_vlg6_21_71_0  
-s_prop_ageg3_m_vlg1_21_71_0  s_prop_ageg3_m_vlg2_21_71_0  s_prop_ageg3_m_vlg3_21_71_0   s_prop_ageg3_m_vlg4_21_71_0   s_prop_ageg3_m_vlg5_21_71_0   s_prop_ageg3_m_vlg6_21_71_0  
-s_prop_ageg4_m_vlg1_21_71_0  s_prop_ageg4_m_vlg2_21_71_0  s_prop_ageg4_m_vlg3_21_71_0   s_prop_ageg4_m_vlg4_21_71_0   s_prop_ageg4_m_vlg5_21_71_0   s_prop_ageg4_m_vlg6_21_71_0  
-s_prop_ageg5_m_vlg1_21_71_0  s_prop_ageg5_m_vlg2_21_71_0  s_prop_ageg5_m_vlg3_21_71_0   s_prop_ageg5_m_vlg4_21_71_0   s_prop_ageg5_m_vlg5_21_71_0   s_prop_ageg5_m_vlg6_21_71_0  
-
-s_prop_ageg1_w_vlg1_21_71_0  s_prop_ageg1_w_vlg2_21_71_0  s_prop_ageg1_w_vlg3_21_71_0   s_prop_ageg1_w_vlg4_21_71_0   s_prop_ageg1_w_vlg5_21_71_0   s_prop_ageg1_w_vlg6_21_71_0  
-s_prop_ageg2_w_vlg1_21_71_0  s_prop_ageg2_w_vlg2_21_71_0  s_prop_ageg2_w_vlg3_21_71_0   s_prop_ageg2_w_vlg4_21_71_0   s_prop_ageg2_w_vlg5_21_71_0   s_prop_ageg2_w_vlg6_21_71_0  
-s_prop_ageg3_w_vlg1_21_71_0  s_prop_ageg3_w_vlg2_21_71_0  s_prop_ageg3_w_vlg3_21_71_0   s_prop_ageg3_w_vlg4_21_71_0   s_prop_ageg3_w_vlg5_21_71_0   s_prop_ageg3_w_vlg6_21_71_0  
-s_prop_ageg4_w_vlg1_21_71_0  s_prop_ageg4_w_vlg2_21_71_0  s_prop_ageg4_w_vlg3_21_71_0   s_prop_ageg4_w_vlg4_21_71_0   s_prop_ageg4_w_vlg5_21_71_0   s_prop_ageg4_w_vlg6_21_71_0  
-s_prop_ageg5_w_vlg1_21_71_0  s_prop_ageg5_w_vlg2_21_71_0  s_prop_ageg5_w_vlg3_21_71_0   s_prop_ageg5_w_vlg4_21_71_0   s_prop_ageg5_w_vlg5_21_71_0   s_prop_ageg5_w_vlg6_21_71_0  
-
-s_prop_ageg1_m_vlg1_21_71_4  s_prop_ageg1_m_vlg2_21_71_4  s_prop_ageg1_m_vlg3_21_71_4   s_prop_ageg1_m_vlg4_21_71_4   s_prop_ageg1_m_vlg5_21_71_4   s_prop_ageg1_m_vlg6_21_71_4  
-s_prop_ageg2_m_vlg1_21_71_4  s_prop_ageg2_m_vlg2_21_71_4  s_prop_ageg2_m_vlg3_21_71_4   s_prop_ageg2_m_vlg4_21_71_4   s_prop_ageg2_m_vlg5_21_71_4   s_prop_ageg2_m_vlg6_21_71_4  
-s_prop_ageg3_m_vlg1_21_71_4  s_prop_ageg3_m_vlg2_21_71_4  s_prop_ageg3_m_vlg3_21_71_4   s_prop_ageg3_m_vlg4_21_71_4   s_prop_ageg3_m_vlg5_21_71_4   s_prop_ageg3_m_vlg6_21_71_4  
-s_prop_ageg4_m_vlg1_21_71_4  s_prop_ageg4_m_vlg2_21_71_4  s_prop_ageg4_m_vlg3_21_71_4   s_prop_ageg4_m_vlg4_21_71_4   s_prop_ageg4_m_vlg5_21_71_4   s_prop_ageg4_m_vlg6_21_71_4  
-s_prop_ageg5_m_vlg1_21_71_4  s_prop_ageg5_m_vlg2_21_71_4  s_prop_ageg5_m_vlg3_21_71_4   s_prop_ageg5_m_vlg4_21_71_4   s_prop_ageg5_m_vlg5_21_71_4   s_prop_ageg5_m_vlg6_21_71_4  
-
-s_prop_ageg1_w_vlg1_21_71_4  s_prop_ageg1_w_vlg2_21_71_4  s_prop_ageg1_w_vlg3_21_71_4   s_prop_ageg1_w_vlg4_21_71_4   s_prop_ageg1_w_vlg5_21_71_4   s_prop_ageg1_w_vlg6_21_71_4  
-s_prop_ageg2_w_vlg1_21_71_4  s_prop_ageg2_w_vlg2_21_71_4  s_prop_ageg2_w_vlg3_21_71_4   s_prop_ageg2_w_vlg4_21_71_4   s_prop_ageg2_w_vlg5_21_71_4   s_prop_ageg2_w_vlg6_21_71_4  
-s_prop_ageg3_w_vlg1_21_71_4  s_prop_ageg3_w_vlg2_21_71_4  s_prop_ageg3_w_vlg3_21_71_4   s_prop_ageg3_w_vlg4_21_71_4   s_prop_ageg3_w_vlg5_21_71_4   s_prop_ageg3_w_vlg6_21_71_4  
-s_prop_ageg4_w_vlg1_21_71_4  s_prop_ageg4_w_vlg2_21_71_4  s_prop_ageg4_w_vlg3_21_71_4   s_prop_ageg4_w_vlg4_21_71_4   s_prop_ageg4_w_vlg5_21_71_4   s_prop_ageg4_w_vlg6_21_71_4  
-s_prop_ageg5_w_vlg1_21_71_4  s_prop_ageg5_w_vlg2_21_71_4  s_prop_ageg5_w_vlg3_21_71_4   s_prop_ageg5_w_vlg4_21_71_4   s_prop_ageg5_w_vlg5_21_71_4   s_prop_ageg5_w_vlg6_21_71_4  
-
-p_onart_diag_m_21_71_0
-p_onart_diag_m_21_71_4
-
-p_onart_diag_w_21_71_0
-p_onart_diag_w_21_71_4
-
-prev_vg1000_newp_m_21_71_0 
-p_vl1000_m_21_71_0  
-prev_vg1000_newp_w_21_71_0
-p_vl1000_w_21_71_0
-prev_vg1000_newp_m_21_71_4 
-p_vl1000_m_21_71_4  
-prev_vg1000_newp_w_21_71_4
-p_vl1000_w_21_71_4
-
-r_prev_vg1000_newp_m_21_71_4
-r_prev_vg1000_newp_w_21_71_4 
-
-p_newp_prep_21_71_0
-p_newp_prep_21_71_4
-
-mean_risk_nip_21_71_0 mean_risk_eip_21_71_0 
-mean_risk_nip_21_71_4 mean_risk_eip_21_71_4 
-
-r_mean_risk_nip_21_71_4
-r_mean_risk_eip_21_71_4
-
-;
-* where p_onart_artexp_21_0 < 0.85;
-run;
-ods html close;
-
 
 
 
@@ -1978,5 +1842,131 @@ run;
 ods html close;
 
 
+
+
+
+
+ods html;
+proc means n mean median p5 p95 min max ;
+var	
+n_onart_21_71_0
+n_onart_21_71_4
+
+p_onart_artexp_21_71_0 
+p_onart_artexp_21_71_4
+
+p_onart_21_71_0 
+p_onart_21_71_4
+
+p_vl1000_21_71_0 
+p_vl1000_21_71_4
+
+d_p_vl1000_21_71_4
+
+p_onart_diag_w_21_71_0 
+p_onart_diag_w_21_71_4
+
+p_onart_diag_m_21_71_0 
+p_onart_diag_m_21_71_4
+
+n_death_hivrel_21_71_0
+n_death_hivrel_21_71_4 
+
+daly_21_71_0  
+daly_21_71_4  
+
+incidence1549_21_71_0
+incidence1549_21_71_4
+r_incidence1549_21_71_4
+r_incidence1549m_21_71_4
+r_incidence1549w_21_71_4
+d_incidence1549_21_71_4
+ 
+prevalence_vg1000_21_71_0
+prevalence_vg1000_21_71_4
+d_prevalence_vg1000_21_71_4
+
+p_inf_vlsupp_21_71_0 
+p_inf_vlsupp_21_71_4 
+
+p_inf_newp_21_71_0  
+p_inf_newp_21_71_4 
+
+p_inf_ep_21_71_0
+p_inf_ep_21_71_4 
+
+p_inf_diag_21_71_0
+p_inf_diag_21_71_4 
+
+p_inf_naive_21_71_0
+p_inf_naive_21_71_4 
+
+p_inf_primary_21_71_0 
+p_inf_primary_21_71_4 
+
+s_epi_21_71_0  
+s_epdiag_21_71_0  
+s_eponart_21_71_0  
+s_epvls_21_71_0
+s_epi_21_71_4  
+s_epdiag_21_71_4  
+s_eponart_21_71_4  
+s_epvls_21_71_4
+
+s_prop_ageg1_m_vlg1_21_71_0  s_prop_ageg1_m_vlg2_21_71_0  s_prop_ageg1_m_vlg3_21_71_0   s_prop_ageg1_m_vlg4_21_71_0   s_prop_ageg1_m_vlg5_21_71_0   s_prop_ageg1_m_vlg6_21_71_0  
+s_prop_ageg2_m_vlg1_21_71_0  s_prop_ageg2_m_vlg2_21_71_0  s_prop_ageg2_m_vlg3_21_71_0   s_prop_ageg2_m_vlg4_21_71_0   s_prop_ageg2_m_vlg5_21_71_0   s_prop_ageg2_m_vlg6_21_71_0  
+s_prop_ageg3_m_vlg1_21_71_0  s_prop_ageg3_m_vlg2_21_71_0  s_prop_ageg3_m_vlg3_21_71_0   s_prop_ageg3_m_vlg4_21_71_0   s_prop_ageg3_m_vlg5_21_71_0   s_prop_ageg3_m_vlg6_21_71_0  
+s_prop_ageg4_m_vlg1_21_71_0  s_prop_ageg4_m_vlg2_21_71_0  s_prop_ageg4_m_vlg3_21_71_0   s_prop_ageg4_m_vlg4_21_71_0   s_prop_ageg4_m_vlg5_21_71_0   s_prop_ageg4_m_vlg6_21_71_0  
+s_prop_ageg5_m_vlg1_21_71_0  s_prop_ageg5_m_vlg2_21_71_0  s_prop_ageg5_m_vlg3_21_71_0   s_prop_ageg5_m_vlg4_21_71_0   s_prop_ageg5_m_vlg5_21_71_0   s_prop_ageg5_m_vlg6_21_71_0  
+
+s_prop_ageg1_w_vlg1_21_71_0  s_prop_ageg1_w_vlg2_21_71_0  s_prop_ageg1_w_vlg3_21_71_0   s_prop_ageg1_w_vlg4_21_71_0   s_prop_ageg1_w_vlg5_21_71_0   s_prop_ageg1_w_vlg6_21_71_0  
+s_prop_ageg2_w_vlg1_21_71_0  s_prop_ageg2_w_vlg2_21_71_0  s_prop_ageg2_w_vlg3_21_71_0   s_prop_ageg2_w_vlg4_21_71_0   s_prop_ageg2_w_vlg5_21_71_0   s_prop_ageg2_w_vlg6_21_71_0  
+s_prop_ageg3_w_vlg1_21_71_0  s_prop_ageg3_w_vlg2_21_71_0  s_prop_ageg3_w_vlg3_21_71_0   s_prop_ageg3_w_vlg4_21_71_0   s_prop_ageg3_w_vlg5_21_71_0   s_prop_ageg3_w_vlg6_21_71_0  
+s_prop_ageg4_w_vlg1_21_71_0  s_prop_ageg4_w_vlg2_21_71_0  s_prop_ageg4_w_vlg3_21_71_0   s_prop_ageg4_w_vlg4_21_71_0   s_prop_ageg4_w_vlg5_21_71_0   s_prop_ageg4_w_vlg6_21_71_0  
+s_prop_ageg5_w_vlg1_21_71_0  s_prop_ageg5_w_vlg2_21_71_0  s_prop_ageg5_w_vlg3_21_71_0   s_prop_ageg5_w_vlg4_21_71_0   s_prop_ageg5_w_vlg5_21_71_0   s_prop_ageg5_w_vlg6_21_71_0  
+
+s_prop_ageg1_m_vlg1_21_71_4  s_prop_ageg1_m_vlg2_21_71_4  s_prop_ageg1_m_vlg3_21_71_4   s_prop_ageg1_m_vlg4_21_71_4   s_prop_ageg1_m_vlg5_21_71_4   s_prop_ageg1_m_vlg6_21_71_4  
+s_prop_ageg2_m_vlg1_21_71_4  s_prop_ageg2_m_vlg2_21_71_4  s_prop_ageg2_m_vlg3_21_71_4   s_prop_ageg2_m_vlg4_21_71_4   s_prop_ageg2_m_vlg5_21_71_4   s_prop_ageg2_m_vlg6_21_71_4  
+s_prop_ageg3_m_vlg1_21_71_4  s_prop_ageg3_m_vlg2_21_71_4  s_prop_ageg3_m_vlg3_21_71_4   s_prop_ageg3_m_vlg4_21_71_4   s_prop_ageg3_m_vlg5_21_71_4   s_prop_ageg3_m_vlg6_21_71_4  
+s_prop_ageg4_m_vlg1_21_71_4  s_prop_ageg4_m_vlg2_21_71_4  s_prop_ageg4_m_vlg3_21_71_4   s_prop_ageg4_m_vlg4_21_71_4   s_prop_ageg4_m_vlg5_21_71_4   s_prop_ageg4_m_vlg6_21_71_4  
+s_prop_ageg5_m_vlg1_21_71_4  s_prop_ageg5_m_vlg2_21_71_4  s_prop_ageg5_m_vlg3_21_71_4   s_prop_ageg5_m_vlg4_21_71_4   s_prop_ageg5_m_vlg5_21_71_4   s_prop_ageg5_m_vlg6_21_71_4  
+
+s_prop_ageg1_w_vlg1_21_71_4  s_prop_ageg1_w_vlg2_21_71_4  s_prop_ageg1_w_vlg3_21_71_4   s_prop_ageg1_w_vlg4_21_71_4   s_prop_ageg1_w_vlg5_21_71_4   s_prop_ageg1_w_vlg6_21_71_4  
+s_prop_ageg2_w_vlg1_21_71_4  s_prop_ageg2_w_vlg2_21_71_4  s_prop_ageg2_w_vlg3_21_71_4   s_prop_ageg2_w_vlg4_21_71_4   s_prop_ageg2_w_vlg5_21_71_4   s_prop_ageg2_w_vlg6_21_71_4  
+s_prop_ageg3_w_vlg1_21_71_4  s_prop_ageg3_w_vlg2_21_71_4  s_prop_ageg3_w_vlg3_21_71_4   s_prop_ageg3_w_vlg4_21_71_4   s_prop_ageg3_w_vlg5_21_71_4   s_prop_ageg3_w_vlg6_21_71_4  
+s_prop_ageg4_w_vlg1_21_71_4  s_prop_ageg4_w_vlg2_21_71_4  s_prop_ageg4_w_vlg3_21_71_4   s_prop_ageg4_w_vlg4_21_71_4   s_prop_ageg4_w_vlg5_21_71_4   s_prop_ageg4_w_vlg6_21_71_4  
+s_prop_ageg5_w_vlg1_21_71_4  s_prop_ageg5_w_vlg2_21_71_4  s_prop_ageg5_w_vlg3_21_71_4   s_prop_ageg5_w_vlg4_21_71_4   s_prop_ageg5_w_vlg5_21_71_4   s_prop_ageg5_w_vlg6_21_71_4  
+
+p_onart_diag_m_21_71_0
+p_onart_diag_m_21_71_4
+
+p_onart_diag_w_21_71_0
+p_onart_diag_w_21_71_4
+
+prev_vg1000_newp_m_21_71_0 
+p_vl1000_m_21_71_0  
+prev_vg1000_newp_w_21_71_0
+p_vl1000_w_21_71_0
+prev_vg1000_newp_m_21_71_4 
+p_vl1000_m_21_71_4  
+prev_vg1000_newp_w_21_71_4
+p_vl1000_w_21_71_4
+
+r_prev_vg1000_newp_m_21_71_4
+r_prev_vg1000_newp_w_21_71_4 
+
+p_newp_prep_21_71_0
+p_newp_prep_21_71_4
+
+mean_risk_nip_21_71_0 mean_risk_eip_21_71_0 
+mean_risk_nip_21_71_4 mean_risk_eip_21_71_4 
+
+r_mean_risk_nip_21_71_4
+r_mean_risk_eip_21_71_4
+
+;
+* where p_onart_artexp_21_0 < 0.85;
+run;
+ods html close;
 
 
