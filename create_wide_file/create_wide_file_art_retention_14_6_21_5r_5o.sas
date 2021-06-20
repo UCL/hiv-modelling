@@ -6,8 +6,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d ;  
 
-* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_14_6_21_5r";
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_14_6_21_5r_ntp";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\c_output_art_retention_14_6_21_5r_5o";
 
 input 
 
@@ -100,10 +99,8 @@ s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp
 s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
 s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
-s_risk_nip  s_ge1nip 
- 
 /*status of partner*/
-s_eph0_m  s_eph0_w  s_nip   s_epi  s_risk_eip 
+s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
 s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
 s_hiv0epprim
@@ -649,8 +646,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 ; 
 
-
-
 * note need to keep one s_n ! ;
 
 
@@ -958,9 +953,6 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 									(s_ageg1519m + s_ageg2024m - s_hiv1519m - s_hiv2024m + s_primary1519m + s_primary2024m);
 * incidencege15;				incidencege15 = (s_primaryge15 * 4 * 100) / (s_alive  + s_primaryge15);
 
-* mean_risk_nip; 				mean_risk_nip = s_risk_nip / s_ge1nip ; 
-* mean_risk_eip; 				mean_risk_eip = s_risk_eip / s_epi ; 
-
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
@@ -1187,7 +1179,7 @@ run option cald
 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15
 ddaly daly incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w prevalence1549m
-p_diag_m p_diag_w  prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
+p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
 p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate n_onart n_death_hivrel  prevalence_vg1000
 
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1208,30 +1200,11 @@ rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy rate_sw_rred_rc  higher_future_prep_cov
-
-p_onart
-
-p_inf_vlsupp p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary p_inf_primary 
-
-s_epi  s_epdiag  s_eponart  s_epvls
-
-s_prop_ageg1_m_vlg1  s_prop_ageg1_m_vlg2  s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4   s_prop_ageg1_m_vlg5   s_prop_ageg1_m_vlg6  
-s_prop_ageg2_m_vlg1  s_prop_ageg2_m_vlg2  s_prop_ageg2_m_vlg3   s_prop_ageg2_m_vlg4   s_prop_ageg2_m_vlg5   s_prop_ageg2_m_vlg6  
-s_prop_ageg3_m_vlg1  s_prop_ageg3_m_vlg2  s_prop_ageg3_m_vlg3   s_prop_ageg3_m_vlg4   s_prop_ageg3_m_vlg5   s_prop_ageg3_m_vlg6  
-s_prop_ageg4_m_vlg1  s_prop_ageg4_m_vlg2  s_prop_ageg4_m_vlg3   s_prop_ageg4_m_vlg4   s_prop_ageg4_m_vlg5   s_prop_ageg4_m_vlg6  
-s_prop_ageg5_m_vlg1  s_prop_ageg5_m_vlg2  s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4   s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6  
-
-s_prop_ageg1_w_vlg1  s_prop_ageg1_w_vlg2  s_prop_ageg1_w_vlg3   s_prop_ageg1_w_vlg4   s_prop_ageg1_w_vlg5   s_prop_ageg1_w_vlg6  
-s_prop_ageg2_w_vlg1  s_prop_ageg2_w_vlg2  s_prop_ageg2_w_vlg3   s_prop_ageg2_w_vlg4   s_prop_ageg2_w_vlg5   s_prop_ageg2_w_vlg6  
-s_prop_ageg3_w_vlg1  s_prop_ageg3_w_vlg2  s_prop_ageg3_w_vlg3   s_prop_ageg3_w_vlg4   s_prop_ageg3_w_vlg5   s_prop_ageg3_w_vlg6  
-s_prop_ageg4_w_vlg1  s_prop_ageg4_w_vlg2  s_prop_ageg4_w_vlg3   s_prop_ageg4_w_vlg4   s_prop_ageg4_w_vlg5   s_prop_ageg4_w_vlg6  
-s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4   s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6  
-
-prev_vg1000_newp_m p_vl1000_m  prev_vg1000_newp_w p_vl1000_w  p_newp_prep
-
-mean_risk_nip  mean_risk_eip
+prep_strategy rate_sw_rred_rc  p_onart
 
 ;
 
@@ -1239,14 +1212,14 @@ mean_risk_nip  mean_risk_eip
 
 proc sort data=y;by run option;run;
 
-  data a.art_retention_14_6_21_5r  ;
+  data a.art_retention_14_6_21_5r_5o;
 
 
 set y;
 
 data y; 
 
-  set a.art_retention_14_6_21_5r  ; 
+  set a.art_retention_14_6_21_5r_5o; 
 run;
 
 
@@ -1262,32 +1235,347 @@ run;
 * &v ;
 
 proc means noprint data=y; var &v; output out=y_22p5_0 mean= &v._22p5_0; by run ; where cald = 2022.5 and option=0; 
+proc means noprint data=y; var &v; output out=y_22p5_1 mean= &v._22p5_1; by run ; where cald = 2022.5 and option=1; 
+proc means noprint data=y; var &v; output out=y_22p5_2 mean= &v._22p5_2; by run ; where cald = 2022.5 and option=2; 
+proc means noprint data=y; var &v; output out=y_22p5_3 mean= &v._22p5_3; by run ; where cald = 2022.5 and option=3; 
 proc means noprint data=y; var &v; output out=y_22p5_4 mean= &v._22p5_4; by run ; where cald = 2022.5 and option=4; 
 
+proc means noprint data=y; var &v; output out=y_89_0 mean= &v._89_0; by run ; where 1989 <= cald < 1990 and option=0; 
+proc means noprint data=y; var &v; output out=y_90_0 mean= &v._90_0; by run ; where 1990 <= cald < 1991 and option=0; 
+proc means noprint data=y; var &v; output out=y_91_0 mean= &v._91_0; by run ; where 1991 <= cald < 1992 and option=0; 
+proc means noprint data=y; var &v; output out=y_92_0 mean= &v._92_0; by run ; where 1992 <= cald < 1993 and option=0; 
+proc means noprint data=y; var &v; output out=y_93_0 mean= &v._93_0; by run ; where 1993 <= cald < 1994 and option=0; 
+proc means noprint data=y; var &v; output out=y_94_0 mean= &v._94_0; by run ; where 1994 <= cald < 1995 and option=0; 
+proc means noprint data=y; var &v; output out=y_95_0 mean= &v._95_0; by run ; where 1995 <= cald < 1996 and option=0; 
+proc means noprint data=y; var &v; output out=y_96_0 mean= &v._96_0; by run ; where 1996 <= cald < 1997 and option=0; 
+proc means noprint data=y; var &v; output out=y_97_0 mean= &v._97_0; by run ; where 1997 <= cald < 1998 and option=0; 
+proc means noprint data=y; var &v; output out=y_98_0 mean= &v._98_0; by run ; where 1998 <= cald < 1999 and option=0; 
+proc means noprint data=y; var &v; output out=y_99_0 mean= &v._99_0; by run ; where 1999 <= cald < 2000 and option=0; 
+proc means noprint data=y; var &v; output out=y_00_0 mean= &v._00_0; by run ; where 2000 <= cald < 2001 and option=0; 
+proc means noprint data=y; var &v; output out=y_01_0 mean= &v._01_0; by run ; where 2001 <= cald < 2002 and option=0; 
+proc means noprint data=y; var &v; output out=y_02_0 mean= &v._02_0; by run ; where 2002 <= cald < 2003 and option=0; 
+proc means noprint data=y; var &v; output out=y_03_0 mean= &v._03_0; by run ; where 2003 <= cald < 2004 and option=0; 
+proc means noprint data=y; var &v; output out=y_04_0 mean= &v._04_0; by run ; where 2004 <= cald < 2005 and option=0; 
+proc means noprint data=y; var &v; output out=y_05_0 mean= &v._05_0; by run ; where 2005 <= cald < 2006 and option=0; 
+proc means noprint data=y; var &v; output out=y_06_0 mean= &v._06_0; by run ; where 2006 <= cald < 2007 and option=0; 
+proc means noprint data=y; var &v; output out=y_07_0 mean= &v._07_0; by run ; where 2007 <= cald < 2008 and option=0; 
+proc means noprint data=y; var &v; output out=y_08_0 mean= &v._08_0; by run ; where 2008 <= cald < 2009 and option=0; 
+proc means noprint data=y; var &v; output out=y_09_0 mean= &v._09_0; by run ; where 2009 <= cald < 2010 and option=0; 
+proc means noprint data=y; var &v; output out=y_10_0 mean= &v._10_0; by run ; where 2010 <= cald < 2011 and option=0; 
+proc means noprint data=y; var &v; output out=y_11_0 mean= &v._11_0; by run ; where 2011 <= cald < 2012 and option=0; 
+proc means noprint data=y; var &v; output out=y_12_0 mean= &v._12_0; by run ; where 2012 <= cald < 2013 and option=0; 
+proc means noprint data=y; var &v; output out=y_13_0 mean= &v._13_0; by run ; where 2013 <= cald < 2014 and option=0; 
+proc means noprint data=y; var &v; output out=y_14_0 mean= &v._14_0; by run ; where 2014 <= cald < 2015 and option=0; 
+proc means noprint data=y; var &v; output out=y_15_0 mean= &v._15_0; by run ; where 2015 <= cald < 2016 and option=0; 
+proc means noprint data=y; var &v; output out=y_16_0 mean= &v._16_0; by run ; where 2016 <= cald < 2017 and option=0; 
+proc means noprint data=y; var &v; output out=y_17_0 mean= &v._17_0; by run ; where 2017 <= cald < 2018 and option=0; 
+proc means noprint data=y; var &v; output out=y_18_0 mean= &v._18_0; by run ; where 2018 <= cald < 2019 and option=0; 
+proc means noprint data=y; var &v; output out=y_19_0 mean= &v._19_0; by run ; where 2019 <= cald < 2020 and option=0; 
+proc means noprint data=y; var &v; output out=y_20_0 mean= &v._20_0; by run ; where 2020 <= cald < 2021 and option=0; 
 proc means noprint data=y; var &v; output out=y_21_0 mean= &v._21_0; by run ; where 2021 <= cald < 2022 and option=0; 
 proc means noprint data=y; var &v; output out=y_22_0 mean= &v._22_0; by run ; where 2022 <= cald < 2023 and option=0; 
+proc means noprint data=y; var &v; output out=y_23_0 mean= &v._23_0; by run ; where 2023 <= cald < 2024 and option=0; 
+proc means noprint data=y; var &v; output out=y_24_0 mean= &v._24_0; by run ; where 2024 <= cald < 2025 and option=0; 
+proc means noprint data=y; var &v; output out=y_25_0 mean= &v._25_0; by run ; where 2025 <= cald < 2026 and option=0; 
+proc means noprint data=y; var &v; output out=y_26_0 mean= &v._26_0; by run ; where 2026 <= cald < 2027 and option=0; 
+proc means noprint data=y; var &v; output out=y_27_0 mean= &v._27_0; by run ; where 2027 <= cald < 2028 and option=0; 
+proc means noprint data=y; var &v; output out=y_28_0 mean= &v._28_0; by run ; where 2028 <= cald < 2029 and option=0; 
+proc means noprint data=y; var &v; output out=y_29_0 mean= &v._29_0; by run ; where 2029 <= cald < 2030 and option=0; 
+proc means noprint data=y; var &v; output out=y_30_0 mean= &v._30_0; by run ; where 2030 <= cald < 2031 and option=0; 
+proc means noprint data=y; var &v; output out=y_31_0 mean= &v._31_0; by run ; where 2031 <= cald < 2032 and option=0; 
+proc means noprint data=y; var &v; output out=y_32_0 mean= &v._32_0; by run ; where 2032 <= cald < 2033 and option=0; 
+proc means noprint data=y; var &v; output out=y_33_0 mean= &v._33_0; by run ; where 2033 <= cald < 2034 and option=0; 
+proc means noprint data=y; var &v; output out=y_34_0 mean= &v._34_0; by run ; where 2034 <= cald < 2035 and option=0; 
+proc means noprint data=y; var &v; output out=y_35_0 mean= &v._35_0; by run ; where 2035 <= cald < 2036 and option=0; 
+proc means noprint data=y; var &v; output out=y_36_0 mean= &v._36_0; by run ; where 2036 <= cald < 2037 and option=0; 
+proc means noprint data=y; var &v; output out=y_37_0 mean= &v._37_0; by run ; where 2037 <= cald < 2038 and option=0; 
+proc means noprint data=y; var &v; output out=y_38_0 mean= &v._38_0; by run ; where 2038 <= cald < 2039 and option=0; 
+proc means noprint data=y; var &v; output out=y_39_0 mean= &v._39_0; by run ; where 2039 <= cald < 2040 and option=0; 
+proc means noprint data=y; var &v; output out=y_40_0 mean= &v._40_0; by run ; where 2040 <= cald < 2041 and option=0; 
+proc means noprint data=y; var &v; output out=y_41_0 mean= &v._41_0; by run ; where 2041 <= cald < 2042 and option=0; 
+proc means noprint data=y; var &v; output out=y_42_0 mean= &v._42_0; by run ; where 2042 <= cald < 2043 and option=0; 
+proc means noprint data=y; var &v; output out=y_43_0 mean= &v._43_0; by run ; where 2043 <= cald < 2044 and option=0; 
+proc means noprint data=y; var &v; output out=y_44_0 mean= &v._44_0; by run ; where 2044 <= cald < 2045 and option=0; 
+proc means noprint data=y; var &v; output out=y_45_0 mean= &v._45_0; by run ; where 2045 <= cald < 2046 and option=0; 
+proc means noprint data=y; var &v; output out=y_46_0 mean= &v._46_0; by run ; where 2046 <= cald < 2047 and option=0; 
+proc means noprint data=y; var &v; output out=y_47_0 mean= &v._47_0; by run ; where 2047 <= cald < 2048 and option=0; 
+proc means noprint data=y; var &v; output out=y_48_0 mean= &v._48_0; by run ; where 2048 <= cald < 2049 and option=0; 
+proc means noprint data=y; var &v; output out=y_49_0 mean= &v._49_0; by run ; where 2049 <= cald < 2050 and option=0; 
+proc means noprint data=y; var &v; output out=y_50_0 mean= &v._50_0; by run ; where 2050 <= cald < 2051 and option=0; 
+proc means noprint data=y; var &v; output out=y_51_0 mean= &v._51_0; by run ; where 2051 <= cald < 2052 and option=0; 
+proc means noprint data=y; var &v; output out=y_52_0 mean= &v._52_0; by run ; where 2052 <= cald < 2053 and option=0; 
+proc means noprint data=y; var &v; output out=y_53_0 mean= &v._53_0; by run ; where 2053 <= cald < 2054 and option=0; 
+proc means noprint data=y; var &v; output out=y_54_0 mean= &v._54_0; by run ; where 2054 <= cald < 2055 and option=0; 
+proc means noprint data=y; var &v; output out=y_55_0 mean= &v._55_0; by run ; where 2055 <= cald < 2056 and option=0; 
+proc means noprint data=y; var &v; output out=y_56_0 mean= &v._56_0; by run ; where 2056 <= cald < 2057 and option=0; 
+proc means noprint data=y; var &v; output out=y_57_0 mean= &v._57_0; by run ; where 2057 <= cald < 2058 and option=0; 
+proc means noprint data=y; var &v; output out=y_58_0 mean= &v._58_0; by run ; where 2058 <= cald < 2059 and option=0; 
+proc means noprint data=y; var &v; output out=y_59_0 mean= &v._59_0; by run ; where 2059 <= cald < 2060 and option=0; 
+proc means noprint data=y; var &v; output out=y_60_0 mean= &v._60_0; by run ; where 2060 <= cald < 2061 and option=0; 
+proc means noprint data=y; var &v; output out=y_61_0 mean= &v._61_0; by run ; where 2061 <= cald < 2062 and option=0; 
+proc means noprint data=y; var &v; output out=y_62_0 mean= &v._62_0; by run ; where 2062 <= cald < 2063 and option=0; 
+proc means noprint data=y; var &v; output out=y_63_0 mean= &v._63_0; by run ; where 2063 <= cald < 2064 and option=0; 
+proc means noprint data=y; var &v; output out=y_64_0 mean= &v._64_0; by run ; where 2064 <= cald < 2065 and option=0; 
+proc means noprint data=y; var &v; output out=y_65_0 mean= &v._65_0; by run ; where 2065 <= cald < 2066 and option=0; 
+proc means noprint data=y; var &v; output out=y_66_0 mean= &v._66_0; by run ; where 2066 <= cald < 2067 and option=0; 
+proc means noprint data=y; var &v; output out=y_67_0 mean= &v._67_0; by run ; where 2067 <= cald < 2068 and option=0; 
+proc means noprint data=y; var &v; output out=y_68_0 mean= &v._68_0; by run ; where 2068 <= cald < 2069 and option=0; 
+proc means noprint data=y; var &v; output out=y_69_0 mean= &v._69_0; by run ; where 2069 <= cald < 2070 and option=0; 
+proc means noprint data=y; var &v; output out=y_70_0 mean= &v._70_0; by run ; where 2070 <= cald < 2071 and option=0; 
+
+proc means noprint data=y; var &v; output out=y_21_1 mean= &v._21_1; by run ; where 2021 <= cald < 2022 and option=1; 
+proc means noprint data=y; var &v; output out=y_22_1 mean= &v._22_1; by run ; where 2022 <= cald < 2023 and option=1; 
+proc means noprint data=y; var &v; output out=y_23_1 mean= &v._23_1; by run ; where 2023 <= cald < 2024 and option=1; 
+proc means noprint data=y; var &v; output out=y_24_1 mean= &v._24_1; by run ; where 2024 <= cald < 2025 and option=1; 
+proc means noprint data=y; var &v; output out=y_25_1 mean= &v._25_1; by run ; where 2025 <= cald < 2026 and option=1; 
+proc means noprint data=y; var &v; output out=y_26_1 mean= &v._26_1; by run ; where 2026 <= cald < 2027 and option=1; 
+proc means noprint data=y; var &v; output out=y_27_1 mean= &v._27_1; by run ; where 2027 <= cald < 2028 and option=1; 
+proc means noprint data=y; var &v; output out=y_28_1 mean= &v._28_1; by run ; where 2028 <= cald < 2029 and option=1; 
+proc means noprint data=y; var &v; output out=y_29_1 mean= &v._29_1; by run ; where 2029 <= cald < 2030 and option=1; 
+proc means noprint data=y; var &v; output out=y_30_1 mean= &v._30_1; by run ; where 2030 <= cald < 2031 and option=1; 
+proc means noprint data=y; var &v; output out=y_31_1 mean= &v._31_1; by run ; where 2031 <= cald < 2032 and option=1; 
+proc means noprint data=y; var &v; output out=y_32_1 mean= &v._32_1; by run ; where 2032 <= cald < 2033 and option=1; 
+proc means noprint data=y; var &v; output out=y_33_1 mean= &v._33_1; by run ; where 2033 <= cald < 2034 and option=1; 
+proc means noprint data=y; var &v; output out=y_34_1 mean= &v._34_1; by run ; where 2034 <= cald < 2035 and option=1; 
+proc means noprint data=y; var &v; output out=y_35_1 mean= &v._35_1; by run ; where 2035 <= cald < 2036 and option=1; 
+proc means noprint data=y; var &v; output out=y_36_1 mean= &v._36_1; by run ; where 2036 <= cald < 2037 and option=1; 
+proc means noprint data=y; var &v; output out=y_37_1 mean= &v._37_1; by run ; where 2037 <= cald < 2038 and option=1; 
+proc means noprint data=y; var &v; output out=y_38_1 mean= &v._38_1; by run ; where 2038 <= cald < 2039 and option=1; 
+proc means noprint data=y; var &v; output out=y_39_1 mean= &v._39_1; by run ; where 2039 <= cald < 2040 and option=1; 
+proc means noprint data=y; var &v; output out=y_40_1 mean= &v._40_1; by run ; where 2040 <= cald < 2041 and option=1; 
+proc means noprint data=y; var &v; output out=y_41_1 mean= &v._41_1; by run ; where 2041 <= cald < 2042 and option=1; 
+proc means noprint data=y; var &v; output out=y_42_1 mean= &v._42_1; by run ; where 2042 <= cald < 2043 and option=1; 
+proc means noprint data=y; var &v; output out=y_43_1 mean= &v._43_1; by run ; where 2043 <= cald < 2044 and option=1; 
+proc means noprint data=y; var &v; output out=y_44_1 mean= &v._44_1; by run ; where 2044 <= cald < 2045 and option=1; 
+proc means noprint data=y; var &v; output out=y_45_1 mean= &v._45_1; by run ; where 2045 <= cald < 2046 and option=1; 
+proc means noprint data=y; var &v; output out=y_46_1 mean= &v._46_1; by run ; where 2046 <= cald < 2047 and option=1; 
+proc means noprint data=y; var &v; output out=y_47_1 mean= &v._47_1; by run ; where 2047 <= cald < 2048 and option=1; 
+proc means noprint data=y; var &v; output out=y_48_1 mean= &v._48_1; by run ; where 2048 <= cald < 2049 and option=1; 
+proc means noprint data=y; var &v; output out=y_49_1 mean= &v._49_1; by run ; where 2049 <= cald < 2050 and option=1; 
+proc means noprint data=y; var &v; output out=y_50_1 mean= &v._50_1; by run ; where 2050 <= cald < 2051 and option=1; 
+proc means noprint data=y; var &v; output out=y_51_1 mean= &v._51_1; by run ; where 2051 <= cald < 2052 and option=1; 
+proc means noprint data=y; var &v; output out=y_52_1 mean= &v._52_1; by run ; where 2052 <= cald < 2053 and option=1; 
+proc means noprint data=y; var &v; output out=y_53_1 mean= &v._53_1; by run ; where 2053 <= cald < 2054 and option=1; 
+proc means noprint data=y; var &v; output out=y_54_1 mean= &v._54_1; by run ; where 2054 <= cald < 2055 and option=1; 
+proc means noprint data=y; var &v; output out=y_55_1 mean= &v._55_1; by run ; where 2055 <= cald < 2056 and option=1; 
+proc means noprint data=y; var &v; output out=y_56_1 mean= &v._56_1; by run ; where 2056 <= cald < 2057 and option=1; 
+proc means noprint data=y; var &v; output out=y_57_1 mean= &v._57_1; by run ; where 2057 <= cald < 2058 and option=1; 
+proc means noprint data=y; var &v; output out=y_58_1 mean= &v._58_1; by run ; where 2058 <= cald < 2059 and option=1; 
+proc means noprint data=y; var &v; output out=y_59_1 mean= &v._59_1; by run ; where 2059 <= cald < 2060 and option=1; 
+proc means noprint data=y; var &v; output out=y_60_1 mean= &v._60_1; by run ; where 2060 <= cald < 2061 and option=1; 
+proc means noprint data=y; var &v; output out=y_61_1 mean= &v._61_1; by run ; where 2061 <= cald < 2062 and option=1; 
+proc means noprint data=y; var &v; output out=y_62_1 mean= &v._62_1; by run ; where 2062 <= cald < 2063 and option=1; 
+proc means noprint data=y; var &v; output out=y_63_1 mean= &v._63_1; by run ; where 2063 <= cald < 2064 and option=1; 
+proc means noprint data=y; var &v; output out=y_64_1 mean= &v._64_1; by run ; where 2064 <= cald < 2065 and option=1; 
+proc means noprint data=y; var &v; output out=y_65_1 mean= &v._65_1; by run ; where 2065 <= cald < 2066 and option=1; 
+proc means noprint data=y; var &v; output out=y_66_1 mean= &v._66_1; by run ; where 2066 <= cald < 2067 and option=1; 
+proc means noprint data=y; var &v; output out=y_67_1 mean= &v._67_1; by run ; where 2067 <= cald < 2068 and option=1; 
+proc means noprint data=y; var &v; output out=y_68_1 mean= &v._68_1; by run ; where 2068 <= cald < 2069 and option=1; 
+proc means noprint data=y; var &v; output out=y_69_1 mean= &v._69_1; by run ; where 2069 <= cald < 2070 and option=1; 
+proc means noprint data=y; var &v; output out=y_70_1 mean= &v._70_1; by run ; where 2070 <= cald < 2071 and option=1; 
+
+proc means noprint data=y; var &v; output out=y_21_2 mean= &v._21_2; by run ; where 2021 <= cald < 2022 and option=2; 
+proc means noprint data=y; var &v; output out=y_22_2 mean= &v._22_2; by run ; where 2022 <= cald < 2023 and option=2; 
+proc means noprint data=y; var &v; output out=y_23_2 mean= &v._23_2; by run ; where 2023 <= cald < 2024 and option=2; 
+proc means noprint data=y; var &v; output out=y_24_2 mean= &v._24_2; by run ; where 2024 <= cald < 2025 and option=2; 
+proc means noprint data=y; var &v; output out=y_25_2 mean= &v._25_2; by run ; where 2025 <= cald < 2026 and option=2; 
+proc means noprint data=y; var &v; output out=y_26_2 mean= &v._26_2; by run ; where 2026 <= cald < 2027 and option=2; 
+proc means noprint data=y; var &v; output out=y_27_2 mean= &v._27_2; by run ; where 2027 <= cald < 2028 and option=2; 
+proc means noprint data=y; var &v; output out=y_28_2 mean= &v._28_2; by run ; where 2028 <= cald < 2029 and option=2; 
+proc means noprint data=y; var &v; output out=y_29_2 mean= &v._29_2; by run ; where 2029 <= cald < 2030 and option=2; 
+proc means noprint data=y; var &v; output out=y_30_2 mean= &v._30_2; by run ; where 2030 <= cald < 2031 and option=2; 
+proc means noprint data=y; var &v; output out=y_31_2 mean= &v._31_2; by run ; where 2031 <= cald < 2032 and option=2; 
+proc means noprint data=y; var &v; output out=y_32_2 mean= &v._32_2; by run ; where 2032 <= cald < 2033 and option=2; 
+proc means noprint data=y; var &v; output out=y_33_2 mean= &v._33_2; by run ; where 2033 <= cald < 2034 and option=2; 
+proc means noprint data=y; var &v; output out=y_34_2 mean= &v._34_2; by run ; where 2034 <= cald < 2035 and option=2; 
+proc means noprint data=y; var &v; output out=y_35_2 mean= &v._35_2; by run ; where 2035 <= cald < 2036 and option=2; 
+proc means noprint data=y; var &v; output out=y_36_2 mean= &v._36_2; by run ; where 2036 <= cald < 2037 and option=2; 
+proc means noprint data=y; var &v; output out=y_37_2 mean= &v._37_2; by run ; where 2037 <= cald < 2038 and option=2; 
+proc means noprint data=y; var &v; output out=y_38_2 mean= &v._38_2; by run ; where 2038 <= cald < 2039 and option=2; 
+proc means noprint data=y; var &v; output out=y_39_2 mean= &v._39_2; by run ; where 2039 <= cald < 2040 and option=2; 
+proc means noprint data=y; var &v; output out=y_40_2 mean= &v._40_2; by run ; where 2040 <= cald < 2041 and option=2; 
+proc means noprint data=y; var &v; output out=y_41_2 mean= &v._41_2; by run ; where 2041 <= cald < 2042 and option=2; 
+proc means noprint data=y; var &v; output out=y_42_2 mean= &v._42_2; by run ; where 2042 <= cald < 2043 and option=2; 
+proc means noprint data=y; var &v; output out=y_43_2 mean= &v._43_2; by run ; where 2043 <= cald < 2044 and option=2; 
+proc means noprint data=y; var &v; output out=y_44_2 mean= &v._44_2; by run ; where 2044 <= cald < 2045 and option=2; 
+proc means noprint data=y; var &v; output out=y_45_2 mean= &v._45_2; by run ; where 2045 <= cald < 2046 and option=2; 
+proc means noprint data=y; var &v; output out=y_46_2 mean= &v._46_2; by run ; where 2046 <= cald < 2047 and option=2; 
+proc means noprint data=y; var &v; output out=y_47_2 mean= &v._47_2; by run ; where 2047 <= cald < 2048 and option=2; 
+proc means noprint data=y; var &v; output out=y_48_2 mean= &v._48_2; by run ; where 2048 <= cald < 2049 and option=2; 
+proc means noprint data=y; var &v; output out=y_49_2 mean= &v._49_2; by run ; where 2049 <= cald < 2050 and option=2; 
+proc means noprint data=y; var &v; output out=y_50_2 mean= &v._50_2; by run ; where 2050 <= cald < 2051 and option=2; 
+proc means noprint data=y; var &v; output out=y_51_2 mean= &v._51_2; by run ; where 2051 <= cald < 2052 and option=2; 
+proc means noprint data=y; var &v; output out=y_52_2 mean= &v._52_2; by run ; where 2052 <= cald < 2053 and option=2; 
+proc means noprint data=y; var &v; output out=y_53_2 mean= &v._53_2; by run ; where 2053 <= cald < 2054 and option=2; 
+proc means noprint data=y; var &v; output out=y_54_2 mean= &v._54_2; by run ; where 2054 <= cald < 2055 and option=2; 
+proc means noprint data=y; var &v; output out=y_55_2 mean= &v._55_2; by run ; where 2055 <= cald < 2056 and option=2; 
+proc means noprint data=y; var &v; output out=y_56_2 mean= &v._56_2; by run ; where 2056 <= cald < 2057 and option=2; 
+proc means noprint data=y; var &v; output out=y_57_2 mean= &v._57_2; by run ; where 2057 <= cald < 2058 and option=2; 
+proc means noprint data=y; var &v; output out=y_58_2 mean= &v._58_2; by run ; where 2058 <= cald < 2059 and option=2; 
+proc means noprint data=y; var &v; output out=y_59_2 mean= &v._59_2; by run ; where 2059 <= cald < 2060 and option=2; 
+proc means noprint data=y; var &v; output out=y_60_2 mean= &v._60_2; by run ; where 2060 <= cald < 2061 and option=2; 
+proc means noprint data=y; var &v; output out=y_61_2 mean= &v._61_2; by run ; where 2061 <= cald < 2062 and option=2; 
+proc means noprint data=y; var &v; output out=y_62_2 mean= &v._62_2; by run ; where 2062 <= cald < 2063 and option=2; 
+proc means noprint data=y; var &v; output out=y_63_2 mean= &v._63_2; by run ; where 2063 <= cald < 2064 and option=2; 
+proc means noprint data=y; var &v; output out=y_64_2 mean= &v._64_2; by run ; where 2064 <= cald < 2065 and option=2; 
+proc means noprint data=y; var &v; output out=y_65_2 mean= &v._65_2; by run ; where 2065 <= cald < 2066 and option=2; 
+proc means noprint data=y; var &v; output out=y_66_2 mean= &v._66_2; by run ; where 2066 <= cald < 2067 and option=2; 
+proc means noprint data=y; var &v; output out=y_67_2 mean= &v._67_2; by run ; where 2067 <= cald < 2068 and option=2; 
+proc means noprint data=y; var &v; output out=y_68_2 mean= &v._68_2; by run ; where 2068 <= cald < 2069 and option=2; 
+proc means noprint data=y; var &v; output out=y_69_2 mean= &v._69_2; by run ; where 2069 <= cald < 2070 and option=2; 
+proc means noprint data=y; var &v; output out=y_70_2 mean= &v._70_2; by run ; where 2070 <= cald < 2071 and option=2; 
+
+proc means noprint data=y; var &v; output out=y_21_3 mean= &v._21_3; by run ; where 2021 <= cald < 2022 and option=3; 
+proc means noprint data=y; var &v; output out=y_22_3 mean= &v._22_3; by run ; where 2022 <= cald < 2023 and option=3; 
+proc means noprint data=y; var &v; output out=y_23_3 mean= &v._23_3; by run ; where 2023 <= cald < 2024 and option=3; 
+proc means noprint data=y; var &v; output out=y_24_3 mean= &v._24_3; by run ; where 2024 <= cald < 2025 and option=3; 
+proc means noprint data=y; var &v; output out=y_25_3 mean= &v._25_3; by run ; where 2025 <= cald < 2026 and option=3; 
+proc means noprint data=y; var &v; output out=y_26_3 mean= &v._26_3; by run ; where 2026 <= cald < 2027 and option=3; 
+proc means noprint data=y; var &v; output out=y_27_3 mean= &v._27_3; by run ; where 2027 <= cald < 2028 and option=3; 
+proc means noprint data=y; var &v; output out=y_28_3 mean= &v._28_3; by run ; where 2028 <= cald < 2029 and option=3; 
+proc means noprint data=y; var &v; output out=y_29_3 mean= &v._29_3; by run ; where 2029 <= cald < 2030 and option=3; 
+proc means noprint data=y; var &v; output out=y_30_3 mean= &v._30_3; by run ; where 2030 <= cald < 2031 and option=3; 
+proc means noprint data=y; var &v; output out=y_31_3 mean= &v._31_3; by run ; where 2031 <= cald < 2032 and option=3; 
+proc means noprint data=y; var &v; output out=y_32_3 mean= &v._32_3; by run ; where 2032 <= cald < 2033 and option=3; 
+proc means noprint data=y; var &v; output out=y_33_3 mean= &v._33_3; by run ; where 2033 <= cald < 2034 and option=3; 
+proc means noprint data=y; var &v; output out=y_34_3 mean= &v._34_3; by run ; where 2034 <= cald < 2035 and option=3; 
+proc means noprint data=y; var &v; output out=y_35_3 mean= &v._35_3; by run ; where 2035 <= cald < 2036 and option=3; 
+proc means noprint data=y; var &v; output out=y_36_3 mean= &v._36_3; by run ; where 2036 <= cald < 2037 and option=3; 
+proc means noprint data=y; var &v; output out=y_37_3 mean= &v._37_3; by run ; where 2037 <= cald < 2038 and option=3; 
+proc means noprint data=y; var &v; output out=y_38_3 mean= &v._38_3; by run ; where 2038 <= cald < 2039 and option=3; 
+proc means noprint data=y; var &v; output out=y_39_3 mean= &v._39_3; by run ; where 2039 <= cald < 2040 and option=3; 
+proc means noprint data=y; var &v; output out=y_40_3 mean= &v._40_3; by run ; where 2040 <= cald < 2041 and option=3; 
+proc means noprint data=y; var &v; output out=y_41_3 mean= &v._41_3; by run ; where 2041 <= cald < 2042 and option=3; 
+proc means noprint data=y; var &v; output out=y_42_3 mean= &v._42_3; by run ; where 2042 <= cald < 2043 and option=3; 
+proc means noprint data=y; var &v; output out=y_43_3 mean= &v._43_3; by run ; where 2043 <= cald < 2044 and option=3; 
+proc means noprint data=y; var &v; output out=y_44_3 mean= &v._44_3; by run ; where 2044 <= cald < 2045 and option=3; 
+proc means noprint data=y; var &v; output out=y_45_3 mean= &v._45_3; by run ; where 2045 <= cald < 2046 and option=3; 
+proc means noprint data=y; var &v; output out=y_46_3 mean= &v._46_3; by run ; where 2046 <= cald < 2047 and option=3; 
+proc means noprint data=y; var &v; output out=y_47_3 mean= &v._47_3; by run ; where 2047 <= cald < 2048 and option=3; 
+proc means noprint data=y; var &v; output out=y_48_3 mean= &v._48_3; by run ; where 2048 <= cald < 2049 and option=3; 
+proc means noprint data=y; var &v; output out=y_49_3 mean= &v._49_3; by run ; where 2049 <= cald < 2050 and option=3; 
+proc means noprint data=y; var &v; output out=y_50_3 mean= &v._50_3; by run ; where 2050 <= cald < 2051 and option=3; 
+proc means noprint data=y; var &v; output out=y_51_3 mean= &v._51_3; by run ; where 2051 <= cald < 2052 and option=3; 
+proc means noprint data=y; var &v; output out=y_52_3 mean= &v._52_3; by run ; where 2052 <= cald < 2053 and option=3; 
+proc means noprint data=y; var &v; output out=y_53_3 mean= &v._53_3; by run ; where 2053 <= cald < 2054 and option=3; 
+proc means noprint data=y; var &v; output out=y_54_3 mean= &v._54_3; by run ; where 2054 <= cald < 2055 and option=3; 
+proc means noprint data=y; var &v; output out=y_55_3 mean= &v._55_3; by run ; where 2055 <= cald < 2056 and option=3; 
+proc means noprint data=y; var &v; output out=y_56_3 mean= &v._56_3; by run ; where 2056 <= cald < 2057 and option=3; 
+proc means noprint data=y; var &v; output out=y_57_3 mean= &v._57_3; by run ; where 2057 <= cald < 2058 and option=3; 
+proc means noprint data=y; var &v; output out=y_58_3 mean= &v._58_3; by run ; where 2058 <= cald < 2059 and option=3; 
+proc means noprint data=y; var &v; output out=y_59_3 mean= &v._59_3; by run ; where 2059 <= cald < 2060 and option=3; 
+proc means noprint data=y; var &v; output out=y_60_3 mean= &v._60_3; by run ; where 2060 <= cald < 2061 and option=3; 
+proc means noprint data=y; var &v; output out=y_61_3 mean= &v._61_3; by run ; where 2061 <= cald < 2062 and option=3; 
+proc means noprint data=y; var &v; output out=y_62_3 mean= &v._62_3; by run ; where 2062 <= cald < 2063 and option=3; 
+proc means noprint data=y; var &v; output out=y_63_3 mean= &v._63_3; by run ; where 2063 <= cald < 2064 and option=3; 
+proc means noprint data=y; var &v; output out=y_64_3 mean= &v._64_3; by run ; where 2064 <= cald < 2065 and option=3; 
+proc means noprint data=y; var &v; output out=y_65_3 mean= &v._65_3; by run ; where 2065 <= cald < 2066 and option=3; 
+proc means noprint data=y; var &v; output out=y_66_3 mean= &v._66_3; by run ; where 2066 <= cald < 2067 and option=3; 
+proc means noprint data=y; var &v; output out=y_67_3 mean= &v._67_3; by run ; where 2067 <= cald < 2068 and option=3; 
+proc means noprint data=y; var &v; output out=y_68_3 mean= &v._68_3; by run ; where 2068 <= cald < 2069 and option=3; 
+proc means noprint data=y; var &v; output out=y_69_3 mean= &v._69_3; by run ; where 2069 <= cald < 2070 and option=3; 
+proc means noprint data=y; var &v; output out=y_70_3 mean= &v._70_3; by run ; where 2070 <= cald < 2071 and option=3; 
 
 proc means noprint data=y; var &v; output out=y_21_4 mean= &v._21_4; by run ; where 2021 <= cald < 2022 and option=4; 
 proc means noprint data=y; var &v; output out=y_22_4 mean= &v._22_4; by run ; where 2022 <= cald < 2023 and option=4; 
-
-proc means noprint data=y; var &v; output out=y_21_22_0 mean= &v._21_22_0; by run ; where 2021.5 <= cald < 2022.50 and option = 0;  
-proc means noprint data=y; var &v; output out=y_21_22_4 mean= &v._21_22_4; by run ; where 2021.5 <= cald < 2022.50 and option = 4; 
+proc means noprint data=y; var &v; output out=y_23_4 mean= &v._23_4; by run ; where 2023 <= cald < 2024 and option=4; 
+proc means noprint data=y; var &v; output out=y_24_4 mean= &v._24_4; by run ; where 2024 <= cald < 2025 and option=4; 
+proc means noprint data=y; var &v; output out=y_25_4 mean= &v._25_4; by run ; where 2025 <= cald < 2026 and option=4; 
+proc means noprint data=y; var &v; output out=y_26_4 mean= &v._26_4; by run ; where 2026 <= cald < 2027 and option=4; 
+proc means noprint data=y; var &v; output out=y_27_4 mean= &v._27_4; by run ; where 2027 <= cald < 2028 and option=4; 
+proc means noprint data=y; var &v; output out=y_28_4 mean= &v._28_4; by run ; where 2028 <= cald < 2029 and option=4; 
+proc means noprint data=y; var &v; output out=y_29_4 mean= &v._29_4; by run ; where 2029 <= cald < 2030 and option=4; 
+proc means noprint data=y; var &v; output out=y_30_4 mean= &v._30_4; by run ; where 2030 <= cald < 2031 and option=4; 
+proc means noprint data=y; var &v; output out=y_31_4 mean= &v._31_4; by run ; where 2031 <= cald < 2032 and option=4; 
+proc means noprint data=y; var &v; output out=y_32_4 mean= &v._32_4; by run ; where 2032 <= cald < 2033 and option=4; 
+proc means noprint data=y; var &v; output out=y_33_4 mean= &v._33_4; by run ; where 2033 <= cald < 2034 and option=4; 
+proc means noprint data=y; var &v; output out=y_34_4 mean= &v._34_4; by run ; where 2034 <= cald < 2035 and option=4; 
+proc means noprint data=y; var &v; output out=y_35_4 mean= &v._35_4; by run ; where 2035 <= cald < 2036 and option=4; 
+proc means noprint data=y; var &v; output out=y_36_4 mean= &v._36_4; by run ; where 2036 <= cald < 2037 and option=4; 
+proc means noprint data=y; var &v; output out=y_37_4 mean= &v._37_4; by run ; where 2037 <= cald < 2038 and option=4; 
+proc means noprint data=y; var &v; output out=y_38_4 mean= &v._38_4; by run ; where 2038 <= cald < 2039 and option=4; 
+proc means noprint data=y; var &v; output out=y_39_4 mean= &v._39_4; by run ; where 2039 <= cald < 2040 and option=4; 
+proc means noprint data=y; var &v; output out=y_40_4 mean= &v._40_4; by run ; where 2040 <= cald < 2041 and option=4; 
+proc means noprint data=y; var &v; output out=y_41_4 mean= &v._41_4; by run ; where 2041 <= cald < 2042 and option=4; 
+proc means noprint data=y; var &v; output out=y_42_4 mean= &v._42_4; by run ; where 2042 <= cald < 2043 and option=4; 
+proc means noprint data=y; var &v; output out=y_43_4 mean= &v._43_4; by run ; where 2043 <= cald < 2044 and option=4; 
+proc means noprint data=y; var &v; output out=y_44_4 mean= &v._44_4; by run ; where 2044 <= cald < 2045 and option=4; 
+proc means noprint data=y; var &v; output out=y_45_4 mean= &v._45_4; by run ; where 2045 <= cald < 2046 and option=4; 
+proc means noprint data=y; var &v; output out=y_46_4 mean= &v._46_4; by run ; where 2046 <= cald < 2047 and option=4; 
+proc means noprint data=y; var &v; output out=y_47_4 mean= &v._47_4; by run ; where 2047 <= cald < 2048 and option=4; 
+proc means noprint data=y; var &v; output out=y_48_4 mean= &v._48_4; by run ; where 2048 <= cald < 2049 and option=4; 
+proc means noprint data=y; var &v; output out=y_49_4 mean= &v._49_4; by run ; where 2049 <= cald < 2050 and option=4; 
+proc means noprint data=y; var &v; output out=y_50_4 mean= &v._50_4; by run ; where 2050 <= cald < 2051 and option=4; 
+proc means noprint data=y; var &v; output out=y_51_4 mean= &v._51_4; by run ; where 2051 <= cald < 2052 and option=4; 
+proc means noprint data=y; var &v; output out=y_52_4 mean= &v._52_4; by run ; where 2052 <= cald < 2053 and option=4; 
+proc means noprint data=y; var &v; output out=y_53_4 mean= &v._53_4; by run ; where 2053 <= cald < 2054 and option=4; 
+proc means noprint data=y; var &v; output out=y_54_4 mean= &v._54_4; by run ; where 2054 <= cald < 2055 and option=4; 
+proc means noprint data=y; var &v; output out=y_55_4 mean= &v._55_4; by run ; where 2055 <= cald < 2056 and option=4; 
+proc means noprint data=y; var &v; output out=y_56_4 mean= &v._56_4; by run ; where 2056 <= cald < 2057 and option=4; 
+proc means noprint data=y; var &v; output out=y_57_4 mean= &v._57_4; by run ; where 2057 <= cald < 2058 and option=4; 
+proc means noprint data=y; var &v; output out=y_58_4 mean= &v._58_4; by run ; where 2058 <= cald < 2059 and option=4; 
+proc means noprint data=y; var &v; output out=y_59_4 mean= &v._59_4; by run ; where 2059 <= cald < 2060 and option=4; 
+proc means noprint data=y; var &v; output out=y_60_4 mean= &v._60_4; by run ; where 2060 <= cald < 2061 and option=4; 
+proc means noprint data=y; var &v; output out=y_61_4 mean= &v._61_4; by run ; where 2061 <= cald < 2062 and option=4; 
+proc means noprint data=y; var &v; output out=y_62_4 mean= &v._62_4; by run ; where 2062 <= cald < 2063 and option=4; 
+proc means noprint data=y; var &v; output out=y_63_4 mean= &v._63_4; by run ; where 2063 <= cald < 2064 and option=4; 
+proc means noprint data=y; var &v; output out=y_64_4 mean= &v._64_4; by run ; where 2064 <= cald < 2065 and option=4; 
+proc means noprint data=y; var &v; output out=y_65_4 mean= &v._65_4; by run ; where 2065 <= cald < 2066 and option=4; 
+proc means noprint data=y; var &v; output out=y_66_4 mean= &v._66_4; by run ; where 2066 <= cald < 2067 and option=4; 
+proc means noprint data=y; var &v; output out=y_67_4 mean= &v._67_4; by run ; where 2067 <= cald < 2068 and option=4; 
+proc means noprint data=y; var &v; output out=y_68_4 mean= &v._68_4; by run ; where 2068 <= cald < 2069 and option=4; 
+proc means noprint data=y; var &v; output out=y_69_4 mean= &v._69_4; by run ; where 2069 <= cald < 2070 and option=4; 
+proc means noprint data=y; var &v; output out=y_70_4 mean= &v._70_4; by run ; where 2070 <= cald < 2071 and option=4; 
 
 proc means noprint data=y; var &v; output out=y_21_24_0 mean= &v._21_24_0; by run ; where 2021.5 <= cald < 2024.50 and option = 0;  
+proc means noprint data=y; var &v; output out=y_21_24_1 mean= &v._21_24_1; by run ; where 2021.5 <= cald < 2024.50 and option = 1;  
+proc means noprint data=y; var &v; output out=y_21_24_2 mean= &v._21_24_2; by run ; where 2021.5 <= cald < 2024.50 and option = 2;  
+proc means noprint data=y; var &v; output out=y_21_24_3 mean= &v._21_24_3; by run ; where 2021.5 <= cald < 2024.50 and option = 3;  
 proc means noprint data=y; var &v; output out=y_21_24_4 mean= &v._21_24_4; by run ; where 2021.5 <= cald < 2024.50 and option = 4;  
 
 proc means noprint data=y; var &v; output out=y_21_71_0 mean= &v._21_71_0; by run ; where 2021.5 <= cald < 2071.50 and option = 0;  
+proc means noprint data=y; var &v; output out=y_21_71_1 mean= &v._21_71_1; by run ; where 2021.5 <= cald < 2071.50 and option = 1;  
+proc means noprint data=y; var &v; output out=y_21_71_2 mean= &v._21_71_2; by run ; where 2021.5 <= cald < 2071.50 and option = 2;  
+proc means noprint data=y; var &v; output out=y_21_71_3 mean= &v._21_71_3; by run ; where 2021.5 <= cald < 2071.50 and option = 3;  
 proc means noprint data=y; var &v; output out=y_21_71_4 mean= &v._21_71_4; by run ; where 2021.5 <= cald < 2071.50 and option = 4;  
 
 data &v ; merge 
-y_22p5_0  y_22p5_4 
-y_21_22_0  y_21_22_4
-y_21_24_0  y_21_24_4
-y_21_71_0  y_21_71_4 
+y_22p5_0 y_22p5_1 y_22p5_2 y_22p5_3 y_22p5_4 
+y_21_24_0 y_21_24_1 y_21_24_2 y_21_24_3 y_21_24_4
+y_21_71_0 y_21_71_1 y_21_71_2 y_21_71_3 y_21_71_4 
 
-y_21_0 y_22_0 
+y_89_0 y_90_0 y_91_0 y_92_0 y_93_0 y_94_0 y_95_0 y_96_0 y_97_0 y_98_0 y_99_0 y_00_0  
+y_01_0 y_02_0 y_03_0 y_04_0 y_05_0 y_06_0 y_07_0 y_08_0 y_09_0 y_10_0  
+y_11_0 y_12_0 y_13_0 y_14_0 y_15_0 y_16_0 y_17_0 y_18_0 y_19_0 y_20_0 
+y_21_0 y_22_0 y_23_0 y_24_0 y_25_0 y_26_0 y_27_0 y_28_0 y_29_0 y_30_0 
+y_31_0 y_32_0 y_33_0 y_34_0 y_35_0 y_36_0 y_37_0 y_38_0 y_39_0 y_40_0 
+y_41_0 y_42_0 y_43_0 y_44_0 y_45_0 y_46_0 y_47_0 y_48_0 y_49_0 y_50_0 
+y_51_0 y_52_0 y_53_0 y_54_0 y_55_0 y_56_0 y_57_0 y_58_0 y_59_0 y_60_0 
+y_61_0 y_62_0 y_63_0 y_64_0 y_65_0 y_66_0 y_67_0 y_68_0 y_69_0 y_70_0 
 
-y_21_4 y_22_4 
+y_21_1 y_22_1 y_23_1 y_24_1 y_25_1 y_26_1 y_27_1 y_28_1 y_29_1 y_30_1 
+y_31_1 y_32_1 y_33_1 y_34_1 y_35_1 y_36_1 y_37_1 y_38_1 y_39_1 y_40_1 
+y_41_1 y_42_1 y_43_1 y_44_1 y_45_1 y_46_1 y_47_1 y_48_1 y_49_1 y_50_1 
+y_51_1 y_52_1 y_53_1 y_54_1 y_55_1 y_56_1 y_57_1 y_58_1 y_59_1 y_60_1 
+y_61_1 y_62_1 y_63_1 y_64_1 y_65_1 y_66_1 y_67_1 y_68_1 y_69_1 y_70_1  
+
+y_21_2 y_22_2 y_23_2 y_24_2 y_25_2 y_26_2 y_27_2 y_28_2 y_29_2 y_30_2 
+y_31_2 y_32_2 y_33_2 y_34_2 y_35_2 y_36_2 y_37_2 y_38_2 y_39_2 y_40_2 
+y_41_2 y_42_2 y_43_2 y_44_2 y_45_2 y_46_2 y_47_2 y_48_2 y_49_2 y_50_2 
+y_51_2 y_52_2 y_53_2 y_54_2 y_55_2 y_56_2 y_57_2 y_58_2 y_59_2 y_60_2 
+y_61_2 y_62_2 y_63_2 y_64_2 y_65_2 y_66_2 y_67_2 y_68_2 y_69_2 y_70_2  
+
+y_21_3 y_22_3 y_23_3 y_24_3 y_25_3 y_26_3 y_27_3 y_28_3 y_29_3 y_30_3 
+y_31_3 y_32_3 y_33_3 y_34_3 y_35_3 y_36_3 y_37_3 y_38_3 y_39_3 y_40_3 
+y_41_3 y_42_3 y_43_3 y_44_3 y_45_3 y_46_3 y_47_3 y_48_3 y_49_3 y_50_3 
+y_51_3 y_52_3 y_53_3 y_54_3 y_55_3 y_56_3 y_57_3 y_58_3 y_59_3 y_60_3 
+y_61_3 y_62_3 y_63_3 y_64_3 y_65_3 y_66_3 y_67_3 y_68_3 y_69_3 y_70_3  
+
+y_21_4 y_22_4 y_23_4 y_24_4 y_25_4 y_26_4 y_27_4 y_28_4 y_29_4 y_30_4 
+y_31_4 y_32_4 y_33_4 y_34_4 y_35_4 y_36_4 y_37_4 y_38_4 y_39_4 y_40_4 
+y_41_4 y_42_4 y_43_4 y_44_4 y_45_4 y_46_4 y_47_4 y_48_4 y_49_4 y_50_4 
+y_51_4 y_52_4 y_53_4 y_54_4 y_55_4 y_56_4 y_57_4 y_58_4 y_59_4 y_60_4 
+y_61_4 y_62_4 y_63_4 y_64_4 y_65_4 y_66_4 y_67_4 y_68_4 y_69_4 y_70_4  
 
 ; 
 
@@ -1303,26 +1591,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_diag_m);   %var(v=prop_w_1549_sw);  %var(v=p_onart_diag_w); 	%var(v=p_onart_diag_m);   %var(v=p_vl1000);	 %var(v=p_onart_vl1000_w);	
 %var(v=p_onart_vl1000_m);   %var(v=p_onart_cd4_l500);  %var(v=p_mcirc_1549m);  %var(v=p_startedline2);  %var(v=prop_sw_hiv)  %var(v=p_newp_sw);  
 %var(v=aids_death_rate);  %var(v=n_onart); %var(v=n_death_hivrel);  %var(v=prevalence_vg1000);  %var(v=p_onart);
-%var(v=p_inf_vlsupp); %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);  %var(v=p_inf_primary); %var(v=p_inf_primary);
-
-%var(v=s_epi);  %var(v=s_epdiag);  %var(v=s_eponart);  %var(v=s_epvls);
-
-%var(v=s_prop_ageg1_m_vlg1 );  %var(v=s_prop_ageg1_m_vlg2 );  %var(v=s_prop_ageg1_m_vlg3  );  %var(v=s_prop_ageg1_m_vlg4  );  %var(v=s_prop_ageg1_m_vlg5  );  %var(v=s_prop_ageg1_m_vlg6 ); 
-%var(v=s_prop_ageg2_m_vlg1 );  %var(v=s_prop_ageg2_m_vlg2 );  %var(v=s_prop_ageg2_m_vlg3  );  %var(v=s_prop_ageg2_m_vlg4  );  %var(v=s_prop_ageg2_m_vlg5  );  %var(v=s_prop_ageg2_m_vlg6 ); 
-%var(v=s_prop_ageg3_m_vlg1 );  %var(v=s_prop_ageg3_m_vlg2 );  %var(v=s_prop_ageg3_m_vlg3  );  %var(v=s_prop_ageg3_m_vlg4  );  %var(v=s_prop_ageg3_m_vlg5  );  %var(v=s_prop_ageg3_m_vlg6 ); 
-%var(v=s_prop_ageg4_m_vlg1 );  %var(v=s_prop_ageg4_m_vlg2 );  %var(v=s_prop_ageg4_m_vlg3  );  %var(v=s_prop_ageg4_m_vlg4  );  %var(v=s_prop_ageg4_m_vlg5  );  %var(v=s_prop_ageg4_m_vlg6 ); 
-%var(v=s_prop_ageg5_m_vlg1 );  %var(v=s_prop_ageg5_m_vlg2 );  %var(v=s_prop_ageg5_m_vlg3  );  %var(v=s_prop_ageg5_m_vlg4  );  %var(v=s_prop_ageg5_m_vlg5  );  %var(v=s_prop_ageg5_m_vlg6 ); 
-
-%var(v=s_prop_ageg1_w_vlg1 );  %var(v=s_prop_ageg1_w_vlg2 );  %var(v=s_prop_ageg1_w_vlg3  );  %var(v=s_prop_ageg1_w_vlg4  );  %var(v=s_prop_ageg1_w_vlg5  );  %var(v=s_prop_ageg1_w_vlg6 ); 
-%var(v=s_prop_ageg2_w_vlg1 );  %var(v=s_prop_ageg2_w_vlg2 );  %var(v=s_prop_ageg2_w_vlg3  );  %var(v=s_prop_ageg2_w_vlg4  );  %var(v=s_prop_ageg2_w_vlg5  );  %var(v=s_prop_ageg2_w_vlg6 ); 
-%var(v=s_prop_ageg3_w_vlg1 );  %var(v=s_prop_ageg3_w_vlg2 );  %var(v=s_prop_ageg3_w_vlg3  );  %var(v=s_prop_ageg3_w_vlg4  );  %var(v=s_prop_ageg3_w_vlg5  );  %var(v=s_prop_ageg3_w_vlg6 ); 
-%var(v=s_prop_ageg4_w_vlg1 );  %var(v=s_prop_ageg4_w_vlg2 );  %var(v=s_prop_ageg4_w_vlg3  );  %var(v=s_prop_ageg4_w_vlg4  );  %var(v=s_prop_ageg4_w_vlg5  );  %var(v=s_prop_ageg4_w_vlg6 ); 
- %var(v=s_prop_ageg5_w_vlg1 );  %var(v=s_prop_ageg5_w_vlg2 );  %var(v=s_prop_ageg5_w_vlg3  );  %var(v=s_prop_ageg5_w_vlg4  );  %var(v=s_prop_ageg5_w_vlg5  );  %var(v=s_prop_ageg5_w_vlg6);  
-
-%var(v=prev_vg1000_newp_m); %var(v=p_vl1000_m);  %var(v=prev_vg1000_newp_w); %var(v=p_vl1000_w);
-
-%var(v=p_newp_prep);  %var(v=mean_risk_nip);  %var(v=mean_risk_eip);
-
 
 data   wide_outputs; merge 
 n_alive p_onart_artexp n_art_initiation n_restart p_onart_vl1000 n_hivge15 death_rate_hiv_ge15_all death_rate_hiv_ge15 ddaly daly
@@ -1330,31 +1598,7 @@ incidence1549 incidence1549w incidence1549m prevalence1549 prevalence1549w preva
 
 p_diag_m   prop_w_1549_sw p_onart_diag_w 	p_onart_diag_m   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500  
 p_mcirc_1549m  p_startedline2  prop_sw_hiv p_newp_sw  aids_death_rate  n_onart   n_death_hivrel    prevalence_vg1000  p_onart
-
-p_inf_vlsupp p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary p_inf_primary 
-
-s_epi  s_epdiag  s_eponart  s_epvls
-
-s_prop_ageg1_m_vlg1  s_prop_ageg1_m_vlg2  s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4   s_prop_ageg1_m_vlg5   s_prop_ageg1_m_vlg6  
-s_prop_ageg2_m_vlg1  s_prop_ageg2_m_vlg2  s_prop_ageg2_m_vlg3   s_prop_ageg2_m_vlg4   s_prop_ageg2_m_vlg5   s_prop_ageg2_m_vlg6  
-s_prop_ageg3_m_vlg1  s_prop_ageg3_m_vlg2  s_prop_ageg3_m_vlg3   s_prop_ageg3_m_vlg4   s_prop_ageg3_m_vlg5   s_prop_ageg3_m_vlg6  
-s_prop_ageg4_m_vlg1  s_prop_ageg4_m_vlg2  s_prop_ageg4_m_vlg3   s_prop_ageg4_m_vlg4   s_prop_ageg4_m_vlg5   s_prop_ageg4_m_vlg6  
-s_prop_ageg5_m_vlg1  s_prop_ageg5_m_vlg2  s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4   s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6  
-
-s_prop_ageg1_w_vlg1  s_prop_ageg1_w_vlg2  s_prop_ageg1_w_vlg3   s_prop_ageg1_w_vlg4   s_prop_ageg1_w_vlg5   s_prop_ageg1_w_vlg6  
-s_prop_ageg2_w_vlg1  s_prop_ageg2_w_vlg2  s_prop_ageg2_w_vlg3   s_prop_ageg2_w_vlg4   s_prop_ageg2_w_vlg5   s_prop_ageg2_w_vlg6  
-s_prop_ageg3_w_vlg1  s_prop_ageg3_w_vlg2  s_prop_ageg3_w_vlg3   s_prop_ageg3_w_vlg4   s_prop_ageg3_w_vlg5   s_prop_ageg3_w_vlg6  
-s_prop_ageg4_w_vlg1  s_prop_ageg4_w_vlg2  s_prop_ageg4_w_vlg3   s_prop_ageg4_w_vlg4   s_prop_ageg4_w_vlg5   s_prop_ageg4_w_vlg6  
-s_prop_ageg5_w_vlg1  s_prop_ageg5_w_vlg2  s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4   s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6  
-
-prev_vg1000_newp_m p_vl1000_m  prev_vg1000_newp_w p_vl1000_w  p_newp_prep
-
-mean_risk_nip  mean_risk_eip
-
 ;
-
-
-
 
 proc contents; run;
 
@@ -1389,9 +1633,13 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );   %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
 %par(p= incr_mort_risk_dol_weightg );
-%par(p=prep_strategy );  %par(p=sw_init_newp); %par(p=sw_trans_matrix); %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
+%par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
+%par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
+%par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
+%par(p=eff_rate_test_startprep );  	%par(p=eff_rate_test_restartprep );  	%par(p=prep_strategy );
+%par(p=eff_rate_choose_stop_prep );  		%par(p=eff_prob_prep_restart_choice );  %par(p=sw_init_newp); %par(p=sw_trans_matrix);
+%par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=rate_sw_rred_rc);
-%par(p=higher_future_prep_cov) ;
 
 
 data wide_par; merge dataset
@@ -1413,8 +1661,11 @@ rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy rate_sw_rred_rc higher_future_prep_cov
+prep_strategy rate_sw_rred_rc
 ;
 
 
@@ -1423,7 +1674,7 @@ run;
 
 * To get one row per run;
 
-  data a.wide_art_retention_14_6_21_5r  ; 
+  data a.wide_art_retention_14_6_21_5r_5o; 
 
   merge   wide_outputs  wide_par  ; 
   by run;
@@ -1439,53 +1690,7 @@ proc freq; tables run; run;
 
 
 
-data r; set a.wide_art_retention_14_6_21_5r  ; 
-
-r_prev_vg1000_newp_w_22_4 = prev_vg1000_newp_w_22_4 / prev_vg1000_newp_w_22_0 ;
-r_prev_vg1000_newp_m_22_4 = prev_vg1000_newp_m_22_4 / prev_vg1000_newp_m_22_0 ;
-r_prev_vg1000_newp_w_22p5_4 = prev_vg1000_newp_w_22p5_4 / prev_vg1000_newp_w_22p5_0 ;
-r_prev_vg1000_newp_m_22p5_4 = prev_vg1000_newp_m_22p5_4 / prev_vg1000_newp_m_22p5_0 ;
-r_incidence1549_22_4 = incidence1549_22_4 / incidence1549_22_0 ;
-r_incidence1549_22p5_4 = incidence1549_22p5_4 / incidence1549_22p5_0 ;
-
-d_incidence1549_21_22_4 = incidence1549_21_22_0 - incidence1549_21_22_4 ; 
-r_incidence1549_21_22_4 = incidence1549_21_22_4 / incidence1549_21_22_0 ;
-r_incidence1549m_21_22_4 = incidence1549m_21_22_4 / incidence1549m_21_22_0 ;
-r_incidence1549w_21_22_4 = incidence1549w_21_22_4 / incidence1549w_21_22_0 ;
-d_p_vl1000_21_22_4 = p_vl1000_21_22_0 - p_vl1000_21_22_4 ; 
-d_prevalence_vg1000_21_22_4 = prevalence_vg1000_21_22_0 - prevalence_vg1000_21_22_4;
-r_prev_vg1000_newp_m_21_22_4 = prev_vg1000_newp_m_21_22_4 / prev_vg1000_newp_m_21_22_0 ;
-r_prev_vg1000_newp_w_21_22_4 = prev_vg1000_newp_w_21_22_4 / prev_vg1000_newp_w_21_22_0 ;
-r_mean_risk_nip_21_22_4 = mean_risk_nip_21_22_4 / mean_risk_nip_21_22_0 ;
-r_mean_risk_eip_21_22_4 = mean_risk_eip_21_22_4 / mean_risk_eip_21_22_0 ;
-
-d_incidence1549_21_24_4 = incidence1549_21_24_0 - incidence1549_21_24_4 ; 
-r_incidence1549_21_24_4 = incidence1549_21_24_4 / incidence1549_21_24_0 ;
-r_incidence1549m_21_24_4 = incidence1549m_21_24_4 / incidence1549m_21_24_0 ;
-r_incidence1549w_21_24_4 = incidence1549w_21_24_4 / incidence1549w_21_24_0 ;
-d_p_vl1000_21_24_4 = p_vl1000_21_24_0 - p_vl1000_21_24_4 ; 
-d_prevalence_vg1000_21_24_4 = prevalence_vg1000_21_24_0 - prevalence_vg1000_21_24_4;
-r_prev_vg1000_newp_m_21_24_4 = prev_vg1000_newp_m_21_24_4 / prev_vg1000_newp_m_21_24_0 ;
-r_prev_vg1000_newp_w_21_24_4 = prev_vg1000_newp_w_21_24_4 / prev_vg1000_newp_w_21_24_0 ;
-r_mean_risk_nip_21_24_4 = mean_risk_nip_21_24_4 / mean_risk_nip_21_24_0 ;
-r_mean_risk_eip_21_24_4 = mean_risk_eip_21_24_4 / mean_risk_eip_21_24_0 ;
-
-d_incidence1549_21_71_4 = incidence1549_21_71_0 - incidence1549_21_71_4 ; 
-r_incidence1549_21_71_4 = incidence1549_21_71_4 / incidence1549_21_71_0 ;
-r_incidence1549m_21_71_4 = incidence1549m_21_71_4 / incidence1549m_21_71_0 ;
-r_incidence1549w_21_71_4 = incidence1549w_21_71_4 / incidence1549w_21_71_0 ;
-d_p_vl1000_21_71_4 = p_vl1000_21_71_0 - p_vl1000_21_71_4 ; 
-d_prevalence_vg1000_21_71_4 = prevalence_vg1000_21_71_0 - prevalence_vg1000_21_71_4;
-r_prev_vg1000_newp_m_21_71_4 = prev_vg1000_newp_m_21_71_4 / prev_vg1000_newp_m_21_71_0 ;
-r_prev_vg1000_newp_w_21_71_4 = prev_vg1000_newp_w_21_71_4 / prev_vg1000_newp_w_21_71_0 ;
-r_mean_risk_nip_21_71_4 = mean_risk_nip_21_71_4 / mean_risk_nip_21_71_0 ;
-r_mean_risk_eip_21_71_4 = mean_risk_eip_21_71_4 / mean_risk_eip_21_71_0 ;
-
-p_epvls_21_0 = s_epvls_21_0 / s_epi_21_0 ;
-p_epvls_21_24_0 = s_epvls_21_24_0 / s_epi_21_24_0 ;
-p_epvls_21_24_4 = s_epvls_21_24_4 / s_epi_21_24_4 ;
-
-
+data r; set a.wide_art_retention_14_6_21_5r_5o; 
 
 
 ods html;
@@ -1500,473 +1705,294 @@ run;
 ods html close;
 
 
-proc glm; 
-model r_incidence1549_21_71_4 = 
-p_onart_diag_w_21_0 	p_onart_diag_m_21_0     ; 
-; 
-run;
 
-* n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
+ods html;
+proc print ;
+var	run 
+n_alive_21_0 p_onart_artexp_21_0 n_art_initiation_21_0 n_restart_21_0 p_onart_vl1000_21_0 n_hivge15_21_0 death_rate_hiv_ge15_all_21_0 
 death_rate_hiv_ge15_21_0 ddaly_21_0 daly_21_0  incidence1549_21_0 incidence1549w_21_0 incidence1549m_21_0 prevalence1549_21_0 
 prevalence1549w_21_0 prevalence1549m_21_0  p_diag_m_21_0  prop_w_1549_sw_21_0 p_onart_diag_w_21_0 	p_onart_diag_m_21_0  p_onart_artexp_21_0
 p_vl1000_21_0	p_onart_vl1000_w_21_0  p_onart_vl1000_m_21_0 p_onart_cd4_l500_21_0 p_mcirc_1549m_21_0  p_startedline2_21_0  prop_sw_hiv_21_0 
-p_newp_sw_21_0  aids_death_rate_21_0 ;
+p_newp_sw_21_0  aids_death_rate_21_0  ;
+run;
+ods html close;
 
 
 
 
 ods html;
-proc means n mean median p5 p95 min max ;
+proc means n median p5 p95 min max ;
 var	
+n_alive_21_24_0 p_onart_artexp_21_24_0 n_art_initiation_21_24_0 n_restart_21_24_0 p_onart_vl1000_21_24_0 n_hivge15_21_24_0 
+death_rate_hiv_ge15_all_21_24_0 
+death_rate_hiv_ge15_21_24_0 ddaly_21_24_0 daly_21_24_0  incidence1549_21_24_0 incidence1549w_21_24_0 incidence1549m_21_24_0 
+prevalence1549_21_24_0 
+prevalence1549w_21_24_0 prevalence1549m_21_24_0  p_diag_m_21_24_0  prop_w_1549_sw_21_24_0 p_onart_diag_w_21_24_0 	
+p_onart_diag_m_21_24_0  
+p_vl1000_21_24_0	p_onart_vl1000_w_21_24_0  p_onart_vl1000_m_21_24_0 p_onart_cd4_l500_21_24_0 p_mcirc_1549m_21_24_0  
+p_startedline2_21_24_0  prop_sw_hiv_21_24_0 
+p_newp_sw_21_24_0  aids_death_rate_21_24_0  n_onart_21_24_0  n_death_hivrel_21_24_0    prevalence_vg1000_21_24_0
 
-exp_setting_lower_p_vl1000
-higher_future_prep_cov
+n_alive_21_24_1 p_onart_artexp_21_24_1 n_art_initiation_21_24_1 n_restart_21_24_1 p_onart_vl1000_21_24_1 n_hivge15_21_24_1 
+death_rate_hiv_ge15_all_21_24_1 
+death_rate_hiv_ge15_21_24_1 ddaly_21_24_1 daly_21_24_1  incidence1549_21_24_1 incidence1549w_21_24_1 incidence1549m_21_24_1 
+prevalence1549_21_24_1 
+prevalence1549w_21_24_1 prevalence1549m_21_24_1  p_diag_m_21_24_1  prop_w_1549_sw_21_24_1 p_onart_diag_w_21_24_1 	
+p_onart_diag_m_21_24_1  
+p_vl1000_21_24_1	p_onart_vl1000_w_21_24_1  p_onart_vl1000_m_21_24_1 p_onart_cd4_l500_21_24_1 p_mcirc_1549m_21_24_1  
+p_startedline2_21_24_1  prop_sw_hiv_21_24_1 
+p_newp_sw_21_24_1  aids_death_rate_21_24_1  n_onart_21_24_1 n_death_hivrel_21_24_1  prevalence_vg1000_21_24_1
 
+n_alive_21_24_2 p_onart_artexp_21_24_2 n_art_initiation_21_24_2 n_restart_21_24_2 p_onart_vl1000_21_24_2 n_hivge15_21_24_2 
+death_rate_hiv_ge15_all_21_24_2 
+death_rate_hiv_ge15_21_24_2 ddaly_21_24_2 daly_21_24_2  incidence1549_21_24_2 incidence1549w_21_24_2 incidence1549m_21_24_2 
+prevalence1549_21_24_2 
+prevalence1549w_21_24_2 prevalence1549m_21_24_2  p_diag_m_21_24_2  prop_w_1549_sw_21_24_2 p_onart_diag_w_21_24_2 	
+p_onart_diag_m_21_24_2  
+p_vl1000_21_24_2	p_onart_vl1000_w_21_24_2  p_onart_vl1000_m_21_24_2 p_onart_cd4_l500_21_24_2 p_mcirc_1549m_21_24_2  
+p_startedline2_21_24_2  prop_sw_hiv_21_24_2 
+p_newp_sw_21_24_2  aids_death_rate_21_24_2  n_onart_21_24_2 n_death_hivrel_21_24_2  prevalence_vg1000_21_24_2
+
+n_alive_21_24_3 p_onart_artexp_21_24_3 n_art_initiation_21_24_3 n_restart_21_24_3 p_onart_vl1000_21_24_3 n_hivge15_21_24_3 
+death_rate_hiv_ge15_all_21_24_3 
+death_rate_hiv_ge15_21_24_3 ddaly_21_24_3 daly_21_24_3  incidence1549_21_24_3 incidence1549w_21_24_3 incidence1549m_21_24_3 
+prevalence1549_21_24_3 
+prevalence1549w_21_24_3 prevalence1549m_21_24_3  p_diag_m_21_24_3  prop_w_1549_sw_21_24_3 p_onart_diag_w_21_24_3 	
+p_onart_diag_m_21_24_3  
+p_vl1000_21_24_3	p_onart_vl1000_w_21_24_3  p_onart_vl1000_m_21_24_3 p_onart_cd4_l500_21_24_3 p_mcirc_1549m_21_24_3  
+p_startedline2_21_24_3  prop_sw_hiv_21_24_3 
+p_newp_sw_21_24_3  aids_death_rate_21_24_3  n_onart_21_24_3 n_death_hivrel_21_24_3  prevalence_vg1000_21_24_3
+
+n_alive_21_24_4 p_onart_artexp_21_24_4 n_art_initiation_21_24_4 n_restart_21_24_4 p_onart_vl1000_21_24_4 n_hivge15_21_24_4 
+death_rate_hiv_ge15_all_21_24_4 
+death_rate_hiv_ge15_21_24_4 ddaly_21_24_4 daly_21_24_4  incidence1549_21_24_4 incidence1549w_21_24_4 incidence1549m_21_24_4 
+prevalence1549_21_24_4 
+prevalence1549w_21_24_4 prevalence1549m_21_24_4  p_diag_m_21_24_4  prop_w_1549_sw_21_24_4 p_onart_diag_w_21_24_4 	
+p_onart_diag_m_21_24_4  
+p_vl1000_21_24_4	p_onart_vl1000_w_21_24_4  p_onart_vl1000_m_21_24_4 p_onart_cd4_l500_21_24_4 p_mcirc_1549m_21_24_4  
+p_startedline2_21_24_4  prop_sw_hiv_21_24_4 
+p_newp_sw_21_24_4  aids_death_rate_21_24_4  n_onart_21_24_4 n_death_hivrel_21_24_4  prevalence_vg1000_21_24_4
+
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
+n_alive_21_71_0 p_onart_artexp_21_71_0 n_art_initiation_21_71_0 n_restart_21_71_0 p_onart_vl1000_21_71_0 n_hivge15_21_71_0 
+death_rate_hiv_ge15_all_21_71_0 
+death_rate_hiv_ge15_21_71_0 ddaly_21_71_0 daly_21_71_0  incidence1549_21_71_0 incidence1549w_21_71_0 incidence1549m_21_71_0 
+prevalence1549_21_71_0 
+prevalence1549w_21_71_0 prevalence1549m_21_71_0  p_diag_m_21_71_0  prop_w_1549_sw_21_71_0 p_onart_diag_w_21_71_0 	
+p_onart_diag_m_21_71_0  
+p_vl1000_21_71_0	p_onart_vl1000_w_21_71_0  p_onart_vl1000_m_21_71_0 p_onart_cd4_l500_21_71_0 p_mcirc_1549m_21_71_0  
+p_startedline2_21_71_0  prop_sw_hiv_21_71_0 
+p_newp_sw_21_71_0  aids_death_rate_21_71_0  n_onart_21_71_0  n_death_hivrel_21_71_0    prevalence_vg1000_21_71_0
+
+n_alive_21_71_1 p_onart_artexp_21_71_1 n_art_initiation_21_71_1 n_restart_21_71_1 p_onart_vl1000_21_71_1 n_hivge15_21_71_1 
+death_rate_hiv_ge15_all_21_71_1 
+death_rate_hiv_ge15_21_71_1 ddaly_21_71_1 daly_21_71_1  incidence1549_21_71_1 incidence1549w_21_71_1 incidence1549m_21_71_1 
+prevalence1549_21_71_1 
+prevalence1549w_21_71_1 prevalence1549m_21_71_1  p_diag_m_21_71_1  prop_w_1549_sw_21_71_1 p_onart_diag_w_21_71_1 	
+p_onart_diag_m_21_71_1  
+p_vl1000_21_71_1	p_onart_vl1000_w_21_71_1  p_onart_vl1000_m_21_71_1 p_onart_cd4_l500_21_71_1 p_mcirc_1549m_21_71_1  
+p_startedline2_21_71_1  prop_sw_hiv_21_71_1 
+p_newp_sw_21_71_1  aids_death_rate_21_71_1  n_onart_21_71_1 n_death_hivrel_21_71_1  prevalence_vg1000_21_71_1
+
+n_alive_21_71_2 p_onart_artexp_21_71_2 n_art_initiation_21_71_2 n_restart_21_71_2 p_onart_vl1000_21_71_2 n_hivge15_21_71_2 
+death_rate_hiv_ge15_all_21_71_2 
+death_rate_hiv_ge15_21_71_2 ddaly_21_71_2 daly_21_71_2  incidence1549_21_71_2 incidence1549w_21_71_2 incidence1549m_21_71_2 
+prevalence1549_21_71_2 
+prevalence1549w_21_71_2 prevalence1549m_21_71_2  p_diag_m_21_71_2  prop_w_1549_sw_21_71_2 p_onart_diag_w_21_71_2 	
+p_onart_diag_m_21_71_2  
+p_vl1000_21_71_2	p_onart_vl1000_w_21_71_2  p_onart_vl1000_m_21_71_2 p_onart_cd4_l500_21_71_2 p_mcirc_1549m_21_71_2  
+p_startedline2_21_71_2  prop_sw_hiv_21_71_2 
+p_newp_sw_21_71_2  aids_death_rate_21_71_2  n_onart_21_71_2 n_death_hivrel_21_71_2  prevalence_vg1000_21_71_2
+
+n_alive_21_71_3 p_onart_artexp_21_71_3 n_art_initiation_21_71_3 n_restart_21_71_3 p_onart_vl1000_21_71_3 n_hivge15_21_71_3 
+death_rate_hiv_ge15_all_21_71_3 
+death_rate_hiv_ge15_21_71_3 ddaly_21_71_3 daly_21_71_3  incidence1549_21_71_3 incidence1549w_21_71_3 incidence1549m_21_71_3 
+prevalence1549_21_71_3 
+prevalence1549w_21_71_3 prevalence1549m_21_71_3  p_diag_m_21_71_3  prop_w_1549_sw_21_71_3 p_onart_diag_w_21_71_3 	
+p_onart_diag_m_21_71_3  
+p_vl1000_21_71_3	p_onart_vl1000_w_21_71_3  p_onart_vl1000_m_21_71_3 p_onart_cd4_l500_21_71_3 p_mcirc_1549m_21_71_3  
+p_startedline2_21_71_3  prop_sw_hiv_21_71_3 
+p_newp_sw_21_71_3  aids_death_rate_21_71_3  n_onart_21_71_3 n_death_hivrel_21_71_3  prevalence_vg1000_21_71_3
+
+n_alive_21_71_4 p_onart_artexp_21_71_4 n_art_initiation_21_71_4 n_restart_21_71_4 p_onart_vl1000_21_71_4 n_hivge15_21_71_4 
+death_rate_hiv_ge15_all_21_71_4 
+death_rate_hiv_ge15_21_71_4 ddaly_21_71_4 daly_21_71_4  incidence1549_21_71_4 incidence1549w_21_71_4 incidence1549m_21_71_4 
+prevalence1549_21_71_4 
+prevalence1549w_21_71_4 prevalence1549m_21_71_4  p_diag_m_21_71_4  prop_w_1549_sw_21_71_4 p_onart_diag_w_21_71_4 	
+p_onart_diag_m_21_71_4  
+p_vl1000_21_71_4	p_onart_vl1000_w_21_71_4  p_onart_vl1000_m_21_71_4 p_onart_cd4_l500_21_71_4 p_mcirc_1549m_21_71_4  
+p_startedline2_21_71_4  prop_sw_hiv_21_71_4 
+p_newp_sw_21_71_4  aids_death_rate_21_71_4  n_onart_21_71_4 n_death_hivrel_21_71_4  prevalence_vg1000_21_71_4
+
+;
+run;
+ods html close;
+
+
+
+
+ods html;
+proc means n median p5 p95 min max ;
+var	
 n_onart_21_0
+n_onart_21_1
+n_onart_21_2
+n_onart_21_3
 n_onart_21_4
 
 p_onart_artexp_21_0 
+p_onart_artexp_21_1 
+p_onart_artexp_21_2 
+p_onart_artexp_21_3 
 p_onart_artexp_21_4
 
 p_onart_21_0 
+p_onart_21_1 
+p_onart_21_2 
+p_onart_21_3 
 p_onart_21_4
 
 p_onart_diag_w_21_0 
+p_onart_diag_w_21_1 
+p_onart_diag_w_21_2 
+p_onart_diag_w_21_3 
 p_onart_diag_w_21_4
 
 p_onart_diag_m_21_0 
+p_onart_diag_m_21_1 
+p_onart_diag_m_21_2 
+p_onart_diag_m_21_3 
 p_onart_diag_m_21_4
 
 n_death_hivrel_21_0
+n_death_hivrel_21_1
+n_death_hivrel_21_2
+n_death_hivrel_21_3
 n_death_hivrel_21_4 
 
 daly_21_0  
+daly_21_1  
+daly_21_2  
+daly_21_3  
 daly_21_4  
 
 incidence1549_21_0
+incidence1549_21_1
+incidence1549_21_2
+incidence1549_21_3
 incidence1549_21_4
 
-p_inf_vlsupp_21_0 
-p_inf_vlsupp_21_4 
-
-p_inf_newp_21_0  
-p_inf_newp_21_4 
-
-p_inf_ep_21_0
-p_inf_ep_21_4 
-
-p_inf_diag_21_0
-p_inf_diag_21_4 
-
-p_inf_naive_21_0
-p_inf_naive_21_4 
-
-p_inf_primary_21_0 
-p_inf_primary_21_4 
-
-s_epi_21_0  
-s_epdiag_21_0  
-s_eponart_21_0  
-s_epvls_21_0
-
-s_prop_ageg1_m_vlg1_21_0  s_prop_ageg1_m_vlg2_21_0  s_prop_ageg1_m_vlg3_21_0   s_prop_ageg1_m_vlg4_21_0   s_prop_ageg1_m_vlg5_21_0   s_prop_ageg1_m_vlg6_21_0  
-s_prop_ageg2_m_vlg1_21_0  s_prop_ageg2_m_vlg2_21_0  s_prop_ageg2_m_vlg3_21_0   s_prop_ageg2_m_vlg4_21_0   s_prop_ageg2_m_vlg5_21_0   s_prop_ageg2_m_vlg6_21_0  
-s_prop_ageg3_m_vlg1_21_0  s_prop_ageg3_m_vlg2_21_0  s_prop_ageg3_m_vlg3_21_0   s_prop_ageg3_m_vlg4_21_0   s_prop_ageg3_m_vlg5_21_0   s_prop_ageg3_m_vlg6_21_0  
-s_prop_ageg4_m_vlg1_21_0  s_prop_ageg4_m_vlg2_21_0  s_prop_ageg4_m_vlg3_21_0   s_prop_ageg4_m_vlg4_21_0   s_prop_ageg4_m_vlg5_21_0   s_prop_ageg4_m_vlg6_21_0  
-s_prop_ageg5_m_vlg1_21_0  s_prop_ageg5_m_vlg2_21_0  s_prop_ageg5_m_vlg3_21_0   s_prop_ageg5_m_vlg4_21_0   s_prop_ageg5_m_vlg5_21_0   s_prop_ageg5_m_vlg6_21_0  
-
-s_prop_ageg1_w_vlg1_21_0  s_prop_ageg1_w_vlg2_21_0  s_prop_ageg1_w_vlg3_21_0   s_prop_ageg1_w_vlg4_21_0   s_prop_ageg1_w_vlg5_21_0   s_prop_ageg1_w_vlg6_21_0  
-s_prop_ageg2_w_vlg1_21_0  s_prop_ageg2_w_vlg2_21_0  s_prop_ageg2_w_vlg3_21_0   s_prop_ageg2_w_vlg4_21_0   s_prop_ageg2_w_vlg5_21_0   s_prop_ageg2_w_vlg6_21_0  
-s_prop_ageg3_w_vlg1_21_0  s_prop_ageg3_w_vlg2_21_0  s_prop_ageg3_w_vlg3_21_0   s_prop_ageg3_w_vlg4_21_0   s_prop_ageg3_w_vlg5_21_0   s_prop_ageg3_w_vlg6_21_0  
-s_prop_ageg4_w_vlg1_21_0  s_prop_ageg4_w_vlg2_21_0  s_prop_ageg4_w_vlg3_21_0   s_prop_ageg4_w_vlg4_21_0   s_prop_ageg4_w_vlg5_21_0   s_prop_ageg4_w_vlg6_21_0  
-s_prop_ageg5_w_vlg1_21_0  s_prop_ageg5_w_vlg2_21_0  s_prop_ageg5_w_vlg3_21_0   s_prop_ageg5_w_vlg4_21_0   s_prop_ageg5_w_vlg5_21_0   s_prop_ageg5_w_vlg6_21_0  
-
-prev_vg1000_newp_m_21_0 p_vl1000_m_21_0  prev_vg1000_newp_w_21_0 p_vl1000_w_21_0
-
-mean_risk_nip_21_0 mean_risk_eip_21_0 
-
 ;
-* where p_onart_artexp_21_0 < 0.85;
-run;
-ods html close;
-
-
-
-ods html;
-proc means data=r n mean median p5 p95 min max ;
-var	
-n_onart_21_24_0
-n_onart_21_24_4
-
-p_onart_artexp_21_24_0 
-p_onart_artexp_21_24_4
-
-p_onart_21_24_0 
-p_onart_21_24_4
-
-p_vl1000_21_24_0 
-p_vl1000_21_24_4
-
-d_p_vl1000_21_24_4
-
-p_onart_diag_w_21_24_0 
-p_onart_diag_w_21_24_4
-
-p_onart_diag_m_21_24_0 
-p_onart_diag_m_21_24_4
-
-n_death_hivrel_21_24_0
-n_death_hivrel_21_24_4 
-
-daly_21_24_0  
-daly_21_24_4  
-
-incidence1549_21_24_0
-incidence1549_21_24_4
-r_incidence1549_21_24_4
-r_incidence1549m_21_24_4
-r_incidence1549w_21_24_4
-d_incidence1549_21_24_4
- 
-prevalence_vg1000_21_24_0
-prevalence_vg1000_21_24_4
-d_prevalence_vg1000_21_24_4
-
-p_inf_vlsupp_21_24_0 
-p_inf_vlsupp_21_24_4 
-
-p_inf_newp_21_24_0  
-p_inf_newp_21_24_4 
-
-p_inf_ep_21_24_0
-p_inf_ep_21_24_4 
-
-p_inf_diag_21_24_0
-p_inf_diag_21_24_4 
-
-p_inf_naive_21_24_0
-p_inf_naive_21_24_4 
-
-p_inf_primary_21_24_0 
-p_inf_primary_21_24_4 
-
-s_epi_21_24_0  
-s_epdiag_21_24_0  
-s_eponart_21_24_0  
-s_epvls_21_24_0
-s_epi_21_24_4  
-s_epdiag_21_24_4  
-s_eponart_21_24_4  
-s_epvls_21_24_4
-
-s_prop_ageg1_m_vlg1_21_24_0  s_prop_ageg1_m_vlg2_21_24_0  s_prop_ageg1_m_vlg3_21_24_0   s_prop_ageg1_m_vlg4_21_24_0   s_prop_ageg1_m_vlg5_21_24_0   s_prop_ageg1_m_vlg6_21_24_0  
-s_prop_ageg2_m_vlg1_21_24_0  s_prop_ageg2_m_vlg2_21_24_0  s_prop_ageg2_m_vlg3_21_24_0   s_prop_ageg2_m_vlg4_21_24_0   s_prop_ageg2_m_vlg5_21_24_0   s_prop_ageg2_m_vlg6_21_24_0  
-s_prop_ageg3_m_vlg1_21_24_0  s_prop_ageg3_m_vlg2_21_24_0  s_prop_ageg3_m_vlg3_21_24_0   s_prop_ageg3_m_vlg4_21_24_0   s_prop_ageg3_m_vlg5_21_24_0   s_prop_ageg3_m_vlg6_21_24_0  
-s_prop_ageg4_m_vlg1_21_24_0  s_prop_ageg4_m_vlg2_21_24_0  s_prop_ageg4_m_vlg3_21_24_0   s_prop_ageg4_m_vlg4_21_24_0   s_prop_ageg4_m_vlg5_21_24_0   s_prop_ageg4_m_vlg6_21_24_0  
-s_prop_ageg5_m_vlg1_21_24_0  s_prop_ageg5_m_vlg2_21_24_0  s_prop_ageg5_m_vlg3_21_24_0   s_prop_ageg5_m_vlg4_21_24_0   s_prop_ageg5_m_vlg5_21_24_0   s_prop_ageg5_m_vlg6_21_24_0  
-
-s_prop_ageg1_w_vlg1_21_24_0  s_prop_ageg1_w_vlg2_21_24_0  s_prop_ageg1_w_vlg3_21_24_0   s_prop_ageg1_w_vlg4_21_24_0   s_prop_ageg1_w_vlg5_21_24_0   s_prop_ageg1_w_vlg6_21_24_0  
-s_prop_ageg2_w_vlg1_21_24_0  s_prop_ageg2_w_vlg2_21_24_0  s_prop_ageg2_w_vlg3_21_24_0   s_prop_ageg2_w_vlg4_21_24_0   s_prop_ageg2_w_vlg5_21_24_0   s_prop_ageg2_w_vlg6_21_24_0  
-s_prop_ageg3_w_vlg1_21_24_0  s_prop_ageg3_w_vlg2_21_24_0  s_prop_ageg3_w_vlg3_21_24_0   s_prop_ageg3_w_vlg4_21_24_0   s_prop_ageg3_w_vlg5_21_24_0   s_prop_ageg3_w_vlg6_21_24_0  
-s_prop_ageg4_w_vlg1_21_24_0  s_prop_ageg4_w_vlg2_21_24_0  s_prop_ageg4_w_vlg3_21_24_0   s_prop_ageg4_w_vlg4_21_24_0   s_prop_ageg4_w_vlg5_21_24_0   s_prop_ageg4_w_vlg6_21_24_0  
-s_prop_ageg5_w_vlg1_21_24_0  s_prop_ageg5_w_vlg2_21_24_0  s_prop_ageg5_w_vlg3_21_24_0   s_prop_ageg5_w_vlg4_21_24_0   s_prop_ageg5_w_vlg5_21_24_0   s_prop_ageg5_w_vlg6_21_24_0  
-
-s_prop_ageg1_m_vlg1_21_24_4  s_prop_ageg1_m_vlg2_21_24_4  s_prop_ageg1_m_vlg3_21_24_4   s_prop_ageg1_m_vlg4_21_24_4   s_prop_ageg1_m_vlg5_21_24_4   s_prop_ageg1_m_vlg6_21_24_4  
-s_prop_ageg2_m_vlg1_21_24_4  s_prop_ageg2_m_vlg2_21_24_4  s_prop_ageg2_m_vlg3_21_24_4   s_prop_ageg2_m_vlg4_21_24_4   s_prop_ageg2_m_vlg5_21_24_4   s_prop_ageg2_m_vlg6_21_24_4  
-s_prop_ageg3_m_vlg1_21_24_4  s_prop_ageg3_m_vlg2_21_24_4  s_prop_ageg3_m_vlg3_21_24_4   s_prop_ageg3_m_vlg4_21_24_4   s_prop_ageg3_m_vlg5_21_24_4   s_prop_ageg3_m_vlg6_21_24_4  
-s_prop_ageg4_m_vlg1_21_24_4  s_prop_ageg4_m_vlg2_21_24_4  s_prop_ageg4_m_vlg3_21_24_4   s_prop_ageg4_m_vlg4_21_24_4   s_prop_ageg4_m_vlg5_21_24_4   s_prop_ageg4_m_vlg6_21_24_4  
-s_prop_ageg5_m_vlg1_21_24_4  s_prop_ageg5_m_vlg2_21_24_4  s_prop_ageg5_m_vlg3_21_24_4   s_prop_ageg5_m_vlg4_21_24_4   s_prop_ageg5_m_vlg5_21_24_4   s_prop_ageg5_m_vlg6_21_24_4  
-
-s_prop_ageg1_w_vlg1_21_24_4  s_prop_ageg1_w_vlg2_21_24_4  s_prop_ageg1_w_vlg3_21_24_4   s_prop_ageg1_w_vlg4_21_24_4   s_prop_ageg1_w_vlg5_21_24_4   s_prop_ageg1_w_vlg6_21_24_4  
-s_prop_ageg2_w_vlg1_21_24_4  s_prop_ageg2_w_vlg2_21_24_4  s_prop_ageg2_w_vlg3_21_24_4   s_prop_ageg2_w_vlg4_21_24_4   s_prop_ageg2_w_vlg5_21_24_4   s_prop_ageg2_w_vlg6_21_24_4  
-s_prop_ageg3_w_vlg1_21_24_4  s_prop_ageg3_w_vlg2_21_24_4  s_prop_ageg3_w_vlg3_21_24_4   s_prop_ageg3_w_vlg4_21_24_4   s_prop_ageg3_w_vlg5_21_24_4   s_prop_ageg3_w_vlg6_21_24_4  
-s_prop_ageg4_w_vlg1_21_24_4  s_prop_ageg4_w_vlg2_21_24_4  s_prop_ageg4_w_vlg3_21_24_4   s_prop_ageg4_w_vlg4_21_24_4   s_prop_ageg4_w_vlg5_21_24_4   s_prop_ageg4_w_vlg6_21_24_4  
-s_prop_ageg5_w_vlg1_21_24_4  s_prop_ageg5_w_vlg2_21_24_4  s_prop_ageg5_w_vlg3_21_24_4   s_prop_ageg5_w_vlg4_21_24_4   s_prop_ageg5_w_vlg5_21_24_4   s_prop_ageg5_w_vlg6_21_24_4  
-
-p_onart_diag_m_21_24_0
-p_onart_diag_m_21_24_4
-
-p_onart_diag_w_21_24_0
-p_onart_diag_w_21_24_4
-
-prev_vg1000_newp_m_21_24_0 
-p_vl1000_m_21_24_0  
-prev_vg1000_newp_w_21_24_0
-p_vl1000_w_21_24_0
-prev_vg1000_newp_m_21_24_4 
-p_vl1000_m_21_24_4  
-prev_vg1000_newp_w_21_24_4
-p_vl1000_w_21_24_4
-
-r_prev_vg1000_newp_m_21_24_4
-r_prev_vg1000_newp_w_21_24_4 
-
-mean_risk_nip_21_24_0 mean_risk_eip_21_24_0 
-mean_risk_nip_21_24_4 mean_risk_eip_21_24_4 
-
-r_mean_risk_nip_21_24_4
-r_mean_risk_eip_21_24_4
-
-p_epvls_21_0 
-p_epvls_21_24_0 
-p_epvls_21_24_4 
-
-;
-* where p_onart_artexp_21_24_0 < 0.90;
-run;
-ods html close;
-
-
-
-
-ods html;
-proc means n mean median p5 p95 min max ;
-var	
-n_onart_21_22_0
-n_onart_21_22_4
-
-p_onart_artexp_21_22_0 
-p_onart_artexp_21_22_4
-
-p_onart_21_22_0 
-p_onart_21_22_4
-
-p_vl1000_21_22_0 
-p_vl1000_21_22_4
-
-d_p_vl1000_21_22_4
-
-p_onart_diag_w_21_22_0 
-p_onart_diag_w_21_22_4
-
-p_onart_diag_m_21_22_0 
-p_onart_diag_m_21_22_4
-
-n_death_hivrel_21_22_0
-n_death_hivrel_21_22_4 
-
-daly_21_22_0  
-daly_21_22_4  
-
-incidence1549_21_22_0
-incidence1549_21_22_4
-r_incidence1549_21_22_4
-r_incidence1549m_21_22_4
-r_incidence1549w_21_22_4
-d_incidence1549_21_22_4
- 
-prevalence_vg1000_21_22_0
-prevalence_vg1000_21_22_4
-d_prevalence_vg1000_21_22_4
-
-p_inf_vlsupp_21_22_0 
-p_inf_vlsupp_21_22_4 
-
-p_inf_newp_21_22_0  
-p_inf_newp_21_22_4 
-
-p_inf_ep_21_22_0
-p_inf_ep_21_22_4 
-
-p_inf_diag_21_22_0
-p_inf_diag_21_22_4 
-
-p_inf_naive_21_22_0
-p_inf_naive_21_22_4 
-
-p_inf_primary_21_22_0 
-p_inf_primary_21_22_4 
-
-s_epi_21_22_0  
-s_epdiag_21_22_0  
-s_eponart_21_22_0  
-s_epvls_21_22_0
-s_epi_21_22_4  
-s_epdiag_21_22_4  
-s_eponart_21_22_4  
-s_epvls_21_22_4
-
-s_prop_ageg1_m_vlg1_21_22_0  s_prop_ageg1_m_vlg2_21_22_0  s_prop_ageg1_m_vlg3_21_22_0   s_prop_ageg1_m_vlg4_21_22_0   s_prop_ageg1_m_vlg5_21_22_0   s_prop_ageg1_m_vlg6_21_22_0  
-s_prop_ageg2_m_vlg1_21_22_0  s_prop_ageg2_m_vlg2_21_22_0  s_prop_ageg2_m_vlg3_21_22_0   s_prop_ageg2_m_vlg4_21_22_0   s_prop_ageg2_m_vlg5_21_22_0   s_prop_ageg2_m_vlg6_21_22_0  
-s_prop_ageg3_m_vlg1_21_22_0  s_prop_ageg3_m_vlg2_21_22_0  s_prop_ageg3_m_vlg3_21_22_0   s_prop_ageg3_m_vlg4_21_22_0   s_prop_ageg3_m_vlg5_21_22_0   s_prop_ageg3_m_vlg6_21_22_0  
-s_prop_ageg4_m_vlg1_21_22_0  s_prop_ageg4_m_vlg2_21_22_0  s_prop_ageg4_m_vlg3_21_22_0   s_prop_ageg4_m_vlg4_21_22_0   s_prop_ageg4_m_vlg5_21_22_0   s_prop_ageg4_m_vlg6_21_22_0  
-s_prop_ageg5_m_vlg1_21_22_0  s_prop_ageg5_m_vlg2_21_22_0  s_prop_ageg5_m_vlg3_21_22_0   s_prop_ageg5_m_vlg4_21_22_0   s_prop_ageg5_m_vlg5_21_22_0   s_prop_ageg5_m_vlg6_21_22_0  
-
-s_prop_ageg1_w_vlg1_21_22_0  s_prop_ageg1_w_vlg2_21_22_0  s_prop_ageg1_w_vlg3_21_22_0   s_prop_ageg1_w_vlg4_21_22_0   s_prop_ageg1_w_vlg5_21_22_0   s_prop_ageg1_w_vlg6_21_22_0  
-s_prop_ageg2_w_vlg1_21_22_0  s_prop_ageg2_w_vlg2_21_22_0  s_prop_ageg2_w_vlg3_21_22_0   s_prop_ageg2_w_vlg4_21_22_0   s_prop_ageg2_w_vlg5_21_22_0   s_prop_ageg2_w_vlg6_21_22_0  
-s_prop_ageg3_w_vlg1_21_22_0  s_prop_ageg3_w_vlg2_21_22_0  s_prop_ageg3_w_vlg3_21_22_0   s_prop_ageg3_w_vlg4_21_22_0   s_prop_ageg3_w_vlg5_21_22_0   s_prop_ageg3_w_vlg6_21_22_0  
-s_prop_ageg4_w_vlg1_21_22_0  s_prop_ageg4_w_vlg2_21_22_0  s_prop_ageg4_w_vlg3_21_22_0   s_prop_ageg4_w_vlg4_21_22_0   s_prop_ageg4_w_vlg5_21_22_0   s_prop_ageg4_w_vlg6_21_22_0  
-s_prop_ageg5_w_vlg1_21_22_0  s_prop_ageg5_w_vlg2_21_22_0  s_prop_ageg5_w_vlg3_21_22_0   s_prop_ageg5_w_vlg4_21_22_0   s_prop_ageg5_w_vlg5_21_22_0   s_prop_ageg5_w_vlg6_21_22_0  
-
-s_prop_ageg1_m_vlg1_21_22_4  s_prop_ageg1_m_vlg2_21_22_4  s_prop_ageg1_m_vlg3_21_22_4   s_prop_ageg1_m_vlg4_21_22_4   s_prop_ageg1_m_vlg5_21_22_4   s_prop_ageg1_m_vlg6_21_22_4  
-s_prop_ageg2_m_vlg1_21_22_4  s_prop_ageg2_m_vlg2_21_22_4  s_prop_ageg2_m_vlg3_21_22_4   s_prop_ageg2_m_vlg4_21_22_4   s_prop_ageg2_m_vlg5_21_22_4   s_prop_ageg2_m_vlg6_21_22_4  
-s_prop_ageg3_m_vlg1_21_22_4  s_prop_ageg3_m_vlg2_21_22_4  s_prop_ageg3_m_vlg3_21_22_4   s_prop_ageg3_m_vlg4_21_22_4   s_prop_ageg3_m_vlg5_21_22_4   s_prop_ageg3_m_vlg6_21_22_4  
-s_prop_ageg4_m_vlg1_21_22_4  s_prop_ageg4_m_vlg2_21_22_4  s_prop_ageg4_m_vlg3_21_22_4   s_prop_ageg4_m_vlg4_21_22_4   s_prop_ageg4_m_vlg5_21_22_4   s_prop_ageg4_m_vlg6_21_22_4  
-s_prop_ageg5_m_vlg1_21_22_4  s_prop_ageg5_m_vlg2_21_22_4  s_prop_ageg5_m_vlg3_21_22_4   s_prop_ageg5_m_vlg4_21_22_4   s_prop_ageg5_m_vlg5_21_22_4   s_prop_ageg5_m_vlg6_21_22_4  
-
-s_prop_ageg1_w_vlg1_21_22_4  s_prop_ageg1_w_vlg2_21_22_4  s_prop_ageg1_w_vlg3_21_22_4   s_prop_ageg1_w_vlg4_21_22_4   s_prop_ageg1_w_vlg5_21_22_4   s_prop_ageg1_w_vlg6_21_22_4  
-s_prop_ageg2_w_vlg1_21_22_4  s_prop_ageg2_w_vlg2_21_22_4  s_prop_ageg2_w_vlg3_21_22_4   s_prop_ageg2_w_vlg4_21_22_4   s_prop_ageg2_w_vlg5_21_22_4   s_prop_ageg2_w_vlg6_21_22_4  
-s_prop_ageg3_w_vlg1_21_22_4  s_prop_ageg3_w_vlg2_21_22_4  s_prop_ageg3_w_vlg3_21_22_4   s_prop_ageg3_w_vlg4_21_22_4   s_prop_ageg3_w_vlg5_21_22_4   s_prop_ageg3_w_vlg6_21_22_4  
-s_prop_ageg4_w_vlg1_21_22_4  s_prop_ageg4_w_vlg2_21_22_4  s_prop_ageg4_w_vlg3_21_22_4   s_prop_ageg4_w_vlg4_21_22_4   s_prop_ageg4_w_vlg5_21_22_4   s_prop_ageg4_w_vlg6_21_22_4  
-s_prop_ageg5_w_vlg1_21_22_4  s_prop_ageg5_w_vlg2_21_22_4  s_prop_ageg5_w_vlg3_21_22_4   s_prop_ageg5_w_vlg4_21_22_4   s_prop_ageg5_w_vlg5_21_22_4   s_prop_ageg5_w_vlg6_21_22_4  
-
-p_onart_diag_m_21_22_0
-p_onart_diag_m_21_22_4
-
-p_onart_diag_w_21_22_0
-p_onart_diag_w_21_22_4
-
-prev_vg1000_newp_m_21_22_0 
-p_vl1000_m_21_22_0  
-prev_vg1000_newp_w_21_22_0
-p_vl1000_w_21_22_0
-prev_vg1000_newp_m_21_22_4 
-p_vl1000_m_21_22_4  
-prev_vg1000_newp_w_21_22_4
-p_vl1000_w_21_22_4
-
-r_prev_vg1000_newp_m_21_22_4
-r_prev_vg1000_newp_w_21_22_4 
-
-mean_risk_nip_21_22_0 mean_risk_eip_21_22_0 
-mean_risk_nip_21_22_4 mean_risk_eip_21_22_4 
-
-r_mean_risk_nip_21_22_4
-r_mean_risk_eip_21_22_4
-
-;
-
-* where p_onart_artexp_21_0 < 0.85;
 
 run;
 ods html close;
 
 
-
-
-
-
 ods html;
-proc means n mean median p5 p95 min max ;
+proc means n median p5 p95 min max ;
 var	
 n_onart_21_71_0
+n_onart_21_71_1
+n_onart_21_71_2
+n_onart_21_71_3
 n_onart_21_71_4
 
 p_onart_artexp_21_71_0 
+p_onart_artexp_21_71_1 
+p_onart_artexp_21_71_2 
+p_onart_artexp_21_71_3 
 p_onart_artexp_21_71_4
 
 p_onart_21_71_0 
+p_onart_21_71_1 
+p_onart_21_71_2 
+p_onart_21_71_3 
 p_onart_21_71_4
 
-p_vl1000_21_71_0 
-p_vl1000_21_71_4
-
-d_p_vl1000_21_71_4
-
 p_onart_diag_w_21_71_0 
+p_onart_diag_w_21_71_1 
+p_onart_diag_w_21_71_2 
+p_onart_diag_w_21_71_3 
 p_onart_diag_w_21_71_4
 
 p_onart_diag_m_21_71_0 
+p_onart_diag_m_21_71_1 
+p_onart_diag_m_21_71_2 
+p_onart_diag_m_21_71_3 
 p_onart_diag_m_21_71_4
 
 n_death_hivrel_21_71_0
+n_death_hivrel_21_71_1
+n_death_hivrel_21_71_2
+n_death_hivrel_21_71_3
 n_death_hivrel_21_71_4 
 
 daly_21_71_0  
+daly_21_71_1  
+daly_21_71_2  
+daly_21_71_3  
 daly_21_71_4  
 
 incidence1549_21_71_0
+incidence1549_21_71_1
+incidence1549_21_71_2
+incidence1549_21_71_3
 incidence1549_21_71_4
-r_incidence1549_21_71_4
-r_incidence1549m_21_71_4
-r_incidence1549w_21_71_4
-d_incidence1549_21_71_4
- 
-prevalence_vg1000_21_71_0
-prevalence_vg1000_21_71_4
-d_prevalence_vg1000_21_71_4
-
-p_inf_vlsupp_21_71_0 
-p_inf_vlsupp_21_71_4 
-
-p_inf_newp_21_71_0  
-p_inf_newp_21_71_4 
-
-p_inf_ep_21_71_0
-p_inf_ep_21_71_4 
-
-p_inf_diag_21_71_0
-p_inf_diag_21_71_4 
-
-p_inf_naive_21_71_0
-p_inf_naive_21_71_4 
-
-p_inf_primary_21_71_0 
-p_inf_primary_21_71_4 
-
-s_epi_21_71_0  
-s_epdiag_21_71_0  
-s_eponart_21_71_0  
-s_epvls_21_71_0
-s_epi_21_71_4  
-s_epdiag_21_71_4  
-s_eponart_21_71_4  
-s_epvls_21_71_4
-
-s_prop_ageg1_m_vlg1_21_71_0  s_prop_ageg1_m_vlg2_21_71_0  s_prop_ageg1_m_vlg3_21_71_0   s_prop_ageg1_m_vlg4_21_71_0   s_prop_ageg1_m_vlg5_21_71_0   s_prop_ageg1_m_vlg6_21_71_0  
-s_prop_ageg2_m_vlg1_21_71_0  s_prop_ageg2_m_vlg2_21_71_0  s_prop_ageg2_m_vlg3_21_71_0   s_prop_ageg2_m_vlg4_21_71_0   s_prop_ageg2_m_vlg5_21_71_0   s_prop_ageg2_m_vlg6_21_71_0  
-s_prop_ageg3_m_vlg1_21_71_0  s_prop_ageg3_m_vlg2_21_71_0  s_prop_ageg3_m_vlg3_21_71_0   s_prop_ageg3_m_vlg4_21_71_0   s_prop_ageg3_m_vlg5_21_71_0   s_prop_ageg3_m_vlg6_21_71_0  
-s_prop_ageg4_m_vlg1_21_71_0  s_prop_ageg4_m_vlg2_21_71_0  s_prop_ageg4_m_vlg3_21_71_0   s_prop_ageg4_m_vlg4_21_71_0   s_prop_ageg4_m_vlg5_21_71_0   s_prop_ageg4_m_vlg6_21_71_0  
-s_prop_ageg5_m_vlg1_21_71_0  s_prop_ageg5_m_vlg2_21_71_0  s_prop_ageg5_m_vlg3_21_71_0   s_prop_ageg5_m_vlg4_21_71_0   s_prop_ageg5_m_vlg5_21_71_0   s_prop_ageg5_m_vlg6_21_71_0  
-
-s_prop_ageg1_w_vlg1_21_71_0  s_prop_ageg1_w_vlg2_21_71_0  s_prop_ageg1_w_vlg3_21_71_0   s_prop_ageg1_w_vlg4_21_71_0   s_prop_ageg1_w_vlg5_21_71_0   s_prop_ageg1_w_vlg6_21_71_0  
-s_prop_ageg2_w_vlg1_21_71_0  s_prop_ageg2_w_vlg2_21_71_0  s_prop_ageg2_w_vlg3_21_71_0   s_prop_ageg2_w_vlg4_21_71_0   s_prop_ageg2_w_vlg5_21_71_0   s_prop_ageg2_w_vlg6_21_71_0  
-s_prop_ageg3_w_vlg1_21_71_0  s_prop_ageg3_w_vlg2_21_71_0  s_prop_ageg3_w_vlg3_21_71_0   s_prop_ageg3_w_vlg4_21_71_0   s_prop_ageg3_w_vlg5_21_71_0   s_prop_ageg3_w_vlg6_21_71_0  
-s_prop_ageg4_w_vlg1_21_71_0  s_prop_ageg4_w_vlg2_21_71_0  s_prop_ageg4_w_vlg3_21_71_0   s_prop_ageg4_w_vlg4_21_71_0   s_prop_ageg4_w_vlg5_21_71_0   s_prop_ageg4_w_vlg6_21_71_0  
-s_prop_ageg5_w_vlg1_21_71_0  s_prop_ageg5_w_vlg2_21_71_0  s_prop_ageg5_w_vlg3_21_71_0   s_prop_ageg5_w_vlg4_21_71_0   s_prop_ageg5_w_vlg5_21_71_0   s_prop_ageg5_w_vlg6_21_71_0  
-
-s_prop_ageg1_m_vlg1_21_71_4  s_prop_ageg1_m_vlg2_21_71_4  s_prop_ageg1_m_vlg3_21_71_4   s_prop_ageg1_m_vlg4_21_71_4   s_prop_ageg1_m_vlg5_21_71_4   s_prop_ageg1_m_vlg6_21_71_4  
-s_prop_ageg2_m_vlg1_21_71_4  s_prop_ageg2_m_vlg2_21_71_4  s_prop_ageg2_m_vlg3_21_71_4   s_prop_ageg2_m_vlg4_21_71_4   s_prop_ageg2_m_vlg5_21_71_4   s_prop_ageg2_m_vlg6_21_71_4  
-s_prop_ageg3_m_vlg1_21_71_4  s_prop_ageg3_m_vlg2_21_71_4  s_prop_ageg3_m_vlg3_21_71_4   s_prop_ageg3_m_vlg4_21_71_4   s_prop_ageg3_m_vlg5_21_71_4   s_prop_ageg3_m_vlg6_21_71_4  
-s_prop_ageg4_m_vlg1_21_71_4  s_prop_ageg4_m_vlg2_21_71_4  s_prop_ageg4_m_vlg3_21_71_4   s_prop_ageg4_m_vlg4_21_71_4   s_prop_ageg4_m_vlg5_21_71_4   s_prop_ageg4_m_vlg6_21_71_4  
-s_prop_ageg5_m_vlg1_21_71_4  s_prop_ageg5_m_vlg2_21_71_4  s_prop_ageg5_m_vlg3_21_71_4   s_prop_ageg5_m_vlg4_21_71_4   s_prop_ageg5_m_vlg5_21_71_4   s_prop_ageg5_m_vlg6_21_71_4  
-
-s_prop_ageg1_w_vlg1_21_71_4  s_prop_ageg1_w_vlg2_21_71_4  s_prop_ageg1_w_vlg3_21_71_4   s_prop_ageg1_w_vlg4_21_71_4   s_prop_ageg1_w_vlg5_21_71_4   s_prop_ageg1_w_vlg6_21_71_4  
-s_prop_ageg2_w_vlg1_21_71_4  s_prop_ageg2_w_vlg2_21_71_4  s_prop_ageg2_w_vlg3_21_71_4   s_prop_ageg2_w_vlg4_21_71_4   s_prop_ageg2_w_vlg5_21_71_4   s_prop_ageg2_w_vlg6_21_71_4  
-s_prop_ageg3_w_vlg1_21_71_4  s_prop_ageg3_w_vlg2_21_71_4  s_prop_ageg3_w_vlg3_21_71_4   s_prop_ageg3_w_vlg4_21_71_4   s_prop_ageg3_w_vlg5_21_71_4   s_prop_ageg3_w_vlg6_21_71_4  
-s_prop_ageg4_w_vlg1_21_71_4  s_prop_ageg4_w_vlg2_21_71_4  s_prop_ageg4_w_vlg3_21_71_4   s_prop_ageg4_w_vlg4_21_71_4   s_prop_ageg4_w_vlg5_21_71_4   s_prop_ageg4_w_vlg6_21_71_4  
-s_prop_ageg5_w_vlg1_21_71_4  s_prop_ageg5_w_vlg2_21_71_4  s_prop_ageg5_w_vlg3_21_71_4   s_prop_ageg5_w_vlg4_21_71_4   s_prop_ageg5_w_vlg5_21_71_4   s_prop_ageg5_w_vlg6_21_71_4  
-
-p_onart_diag_m_21_71_0
-p_onart_diag_m_21_71_4
-
-p_onart_diag_w_21_71_0
-p_onart_diag_w_21_71_4
-
-prev_vg1000_newp_m_21_71_0 
-p_vl1000_m_21_71_0  
-prev_vg1000_newp_w_21_71_0
-p_vl1000_w_21_71_0
-prev_vg1000_newp_m_21_71_4 
-p_vl1000_m_21_71_4  
-prev_vg1000_newp_w_21_71_4
-p_vl1000_w_21_71_4
-
-r_prev_vg1000_newp_m_21_71_4
-r_prev_vg1000_newp_w_21_71_4 
-
-p_newp_prep_21_71_0
-p_newp_prep_21_71_4
-
-mean_risk_nip_21_71_0 mean_risk_eip_21_71_0 
-mean_risk_nip_21_71_4 mean_risk_eip_21_71_4 
-
-r_mean_risk_nip_21_71_4
-r_mean_risk_eip_21_71_4
 
 ;
-* where p_onart_artexp_21_0 < 0.85;
+where p_onart_artexp_21_0 < 0.9;
 run;
 ods html close;
+
+
+data a.art_retention_14_6_21_5r_5o_xlsx;
+
+set a.wide_art_retention_14_6_21_5r_5o;
+
+drop sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+zzexternal_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy rate_sw_rred_rc
+;
+
+
+proc print data = a.art_retention_14_6_21_5r_5o_xlsx; 
+var  death_rate_hiv_ge15: p_onart_21: ;
+run; 
+
+
+proc export data = a.art_retention_14_6_21_5r_5o_xlsx
+  dbms=xlsx 
+  outfile = "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\art_retention\output_14_6_21_5r_5o" replace;
+run;
+
 
 
