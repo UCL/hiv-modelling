@@ -789,14 +789,31 @@ if prep_willing=1;
 
 
 
-* SBP AND CVD MORTALITY RISK ;   * update_24_4_21;
-prob_sbp_increase = 0.05;
-prob_diag_hypertension = 0.01; * for people with undiagnosed hypertension, this is probability per 3 months of being diagnosed ;
-prob_imm_anti_hypertensive = 0.2;
-prob_start_anti_hyptertensive = 0.01;
+* SBP AND CVD MORTALITY RISK ;   
+* probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
+prob_sbp_increase = 0.30; 
+* probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
+prob_test_sbp_undiagnosed = 0.01; 
+* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
+hypertension, per period;
+prob_test_sbp_diagnosed = 0.1; 
+* probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
+prob_imm_anti_hypertensive = 0.9; 
+* for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
+starting anti-hypertensive;
+prob_start_anti_hyptertensive = 0.01; 
+* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no lonegr under care for hypertension 
+(visit_hypertenion = 0);
 prob_stop_anti_hypertensive = 0.03; 
+* for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
+prob_intensify_1_2 = 0.1; 
+* for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
+prob_intensify_2_3 = 0.1; 
+* effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
+* effect of gender on risk of cvd death;
 effect_gender_cvd_death = 0.4;
+* effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
 
 
@@ -1549,22 +1566,27 @@ select;	* JAS May2021 ;
 	when (25 <= age < 35) 	do; %sample(sbp, 	115 	125 	135, 
 												0.20 	0.50 	0.30); 
 							end;
-	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155,
-												0.20 	0.30 	0.20 	0.20 	0.10); 
+	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185,
+												0.20 	0.25 	0.15 	0.15 	0.15 	0.05 	0.04 	0.01);
 							end;
-	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175, 
-												0.20 	0.30 	0.15 	0.15 	0.10 	0.07 	0.03); 
+	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
+												0.20 	0.15 	0.15 	0.15 	0.15 	0.10 	0.08 	0.02);
 							end;
-	when (55 <= age < 65) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175, 
-												0.20 	0.20 	0.20 	0.15 	0.10 	0.10 	0.05); 
+	when (55 <= age < 65) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
+												0.15 	0.15 	0.15 	0.15 	0.15 	0.10 	0.10 	0.05); 
 							end;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.20 	0.20 	0.15 	0.10 	0.10 	0.10 	0.10 	0.05); 
+												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
 							end;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
 diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
+
+* define person-specific effect of 1, 2 and 3 anti-hypertensives;
+%sample(effect_anti_hyp_1, 10 20 30, 0.7 0.2 0.1); 
+%sample(effect_anti_hyp_2, 10 20 30, 0.7 0.2 0.1); 
+%sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 
 u=uniform(0);low_preg_risk=0;
@@ -1934,6 +1956,9 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
+visit_hypertension_tm1 = visit_hypertension;
+tested_bp_tm1 = tested_bp;
+sbp_m_tm1 = sbp_m;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -2750,43 +2775,96 @@ end;
 
 * SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21;
 
-a_sbp=uniform(0);
-
-if on_anti_hypertensive ne 1 and a_sbp < prob_sbp_increase then sbp = sbp + 10 ;
-
+* initially at age 15 nobody has hypertension;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
+* underlying increases in blood pressure in people not on anti-hypertensives;
+a_sbp=uniform(0);
+if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
-if on_anti_hypertensive =1 then do;
-	z_sbp=uniform(0);
-	if z_sbp < prob_stop_anti_hypertensive then do; on_anti_hypertensive =0; sbp = sbp_start_anti_hyp ; end;
+* symptoms of hypertension ;
+symp_hypertension=0;
+d=uniform(0);
+if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
+if symp_hypertension_tm1 = 1 then symp_hypertension=1;
+if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0; 
+
+* tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
+tested_bp = 0; sbp_m=.; 
+if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
+	e=uniform(0); 
+	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
+	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
 end;
 
+* measurement of bp at clinic visit for hypertension;
+if visit_hypertension=1 then tested_bp=1;
 
+* sbp_m = measured value of sbp in this period, . if unmeasured;
+if tested_bp = 1 then sbp_m = sbp + (7*normal(0)); sbp_m = round(sbp_m, 1);
+
+* effect of stopping anti-hypertensive on sbp ;
+if on_anti_hypertensive ge 1 then do;
+	z_sbp=uniform(0);
+	if z_sbp < prob_stop_anti_hypertensive then do; 
+		previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ;
+		date_last_stop_anti_hyp = caldate{t}; 
+	end;
+end;
+
+* clinic visit for hypertension;
+visit_hypertension=0;
+if visit_hypertension_tm1 = 0 then do;
+if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1;
+end;
+
+* continuation of visits for hypertension;
+if visit_hypertension_tm1 = 1 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
+
+* initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
 start_anti_hyp_this_per = 0 ; 
-ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);
-if (sbp > 140 and diagnosed_hypertension ne 1 and d_sbp < prob_diag_hypertension) then do; 
+ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);  
+if (visit_hypertension=1 and (sbp_m_tm1 > 140 or sbp_m > 140) and diagnosed_hypertension ne 1) then do; 
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
 
-if (diagnosed_hypertension = 1 and on_anti_hypertensive ne 1 and i_sbp < prob_start_anti_hyptertensive) then start_anti_hyp_this_per =1 ; 
-
+if (diagnosed_hypertension = 1 and on_anti_hypertensive = 0 and visit_hypertension_tm1 =0 
+and i_sbp < prob_start_anti_hyptertensive) then do; start_anti_hyp_this_per =1 ; visit_hypertension=1; end;
 if start_anti_hyp_this_per = 1 then do;
-	sbp_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t};on_anti_hypertensive =1; 
-	if effect_anti_hyp = . then do;
-		select;		* JAS May2021 ;
-			when (sbp = 145)	do; %sample(effect_anti_hyp, 10 20 30, 			0.2 0.5 0.3); end;
-			when (sbp = 155)	do; %sample(effect_anti_hyp, 10 20 30 40, 		0.2 0.2 0.3 0.1); end;
-			when (sbp = 165)	do; %sample(effect_anti_hyp, 10 20 30 40 50,	0.2 0.2 0.2 0.35 0.05); end;
-			when (sbp = 175)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.3 0.1); end;
-			when (sbp = 185)	do; %sample(effect_anti_hyp, 10 20 30 40 50, 	0.2 0.2 0.2 0.2 0.2); end;
-			otherwise			effect_anti_hyp=.;
-		end;
-	end;
-	sbp = sbp - effect_anti_hyp ;
+	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; 
+	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
+	if on_anti_hypertensive =2 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 ;
+	if on_anti_hypertensive =3 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 - effect_anti_hyp_3;
 end;
 
-hypertension = 0; if sbp > 140 or on_anti_hypertensive=1 then hypertension = 1;
+* restarting anti-hypertensives;
+restart_anti_hyp_this_per = 0;
+if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m > 140 and diagnosed_hypertension = 1 
+and ever_on_anti_hyp = 1 and on_anti_hypertensive=0) then do; restart_anti_hyp_this_per =1 ; sbp_last_start_anti_hyp = sbp; end;
+
+if restart_anti_hyp_this_per = 1 then do;
+	sbp_restart_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_anti_hypertensive = previous_anti_hyp; 
+	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
+	if on_anti_hypertensive =2 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 ;
+	if on_anti_hypertensive =3 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 - effect_anti_hyp_3;
+end;
+
+* intensification of anti-hypertensives;
+intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
+if  visit_hypertension=1 and sbp_m > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
+	e=uniform(0); 
+	if 160 <= sbp_m < 180 then e = e /2; if 180 <= sbp_m < 200 then e = e / 4; if 200 <= sbp_m       then e = e / 10; 
+	if on_anti_hypertensive=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_anti_hypertensive=3; end; 
+	if on_anti_hypertensive=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_anti_hypertensive=2; end; 
+end;
+
+* effect of intensification of anti-hypertensive on sbp;
+if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
+if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
+
+hypertension = 0; if sbp > 140 or on_anti_hypertensive ge 1 then hypertension = 1;
+
+max_sbp = max(sbp, sbp_last_start_anti_hyp);
 
 
 * SEXUAL BEHAVIOUR;
@@ -15135,6 +15213,17 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * not sure if we should keep this commented out code on procs we ran to test changes ;
 
+
+proc print; var caldate&j
+age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
+start_anti_hyp_this_per 
+restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
+effect_anti_hyp_1 effect_anti_hyp_2 effect_anti_hyp_3 date_restart_anti_hyp 
+intensify_anti_hyp_this_per_1_2 intensify_anti_hyp_this_per_2_3 symp_hypertension cvd_death death
+;
+where age ge 50 and (death = . or caldate&j = death) and hypertension=1 and max_sbp ge 180  ;
+run;
+
 proc print; var caldate&j cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  
 ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
 where age ge 15 and diagnosed_hypertension=1 and death =.;
@@ -16260,6 +16349,10 @@ effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_p
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+
+non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
+prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death 
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -18147,6 +18240,9 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
+non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
+prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death 
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
