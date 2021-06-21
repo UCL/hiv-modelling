@@ -164,7 +164,7 @@ to do before starting testing in preparation for runs:
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -789,20 +789,32 @@ if prep_willing=1;
 
 
 
-* SBP AND CVD MORTALITY RISK ;   * update_24_4_21;
-prob_sbp_increase = 0.30;
-prob_test_sbp_undiagnosed = 0.05; * 0.01 ;
-prob_test_sbp_diagnosed = 0.1;
-prob_imm_anti_hypertensive = 0.9;
-prob_start_anti_hyptertensive = 0.01;
+* SBP AND CVD MORTALITY RISK ;   
+* probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
+prob_sbp_increase = 0.30; 
+* probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
+prob_test_sbp_undiagnosed = 0.01; 
+* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
+hypertension, per period;
+prob_test_sbp_diagnosed = 0.1; 
+* probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
+prob_imm_anti_hypertensive = 0.9; 
+* for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
+starting anti-hypertensive;
+prob_start_anti_hyptertensive = 0.01; 
+* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no lonegr under care for hypertension 
+(visit_hypertenion = 0);
 prob_stop_anti_hypertensive = 0.03; 
-prob_intensify_1_2 = 0.1;
-prob_intensify_2_3 = 0.1;
+* for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
+prob_intensify_1_2 = 0.1; 
+* for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
+prob_intensify_2_3 = 0.1; 
+* effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
+* effect of gender on risk of cvd death;
 effect_gender_cvd_death = 0.4;
+* effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
-
-* todo: remember to save above parameter values ;
 
 
 
@@ -2816,7 +2828,8 @@ if (visit_hypertension=1 and (sbp_m_tm1 > 140 or sbp_m > 140) and diagnosed_hype
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
 
-if (diagnosed_hypertension = 1 and on_anti_hypertensive = 0 and i_sbp < prob_start_anti_hyptertensive) then start_anti_hyp_this_per =1 ; 
+if (diagnosed_hypertension = 1 and on_anti_hypertensive = 0 and visit_hypertension_tm1 =0 
+and i_sbp < prob_start_anti_hyptertensive) then do; start_anti_hyp_this_per =1 ; visit_hypertension=1; end;
 if start_anti_hyp_this_per = 1 then do;
 	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; 
 	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
@@ -15196,6 +15209,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
+/*
+
+* not sure if we should keep this commented out code on procs we ran to test changes ;
+
+
 proc print; var caldate&j
 age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
 start_anti_hyp_this_per 
@@ -15205,11 +15223,6 @@ intensify_anti_hyp_this_per_1_2 intensify_anti_hyp_this_per_2_3 symp_hypertensio
 ;
 where age ge 50 and (death = . or caldate&j = death) and hypertension=1 and max_sbp ge 180  ;
 run;
-
-
-/*
-
-* not sure if we should keep this commented out code on procs we ran to test changes ;
 
 proc print; var caldate&j cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  
 ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
