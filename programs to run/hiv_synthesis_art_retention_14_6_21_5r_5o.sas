@@ -1,8 +1,8 @@
 
 
 
-* 13 6 21 - add in epvls=0
-* 14 6 21 - tr_rate_undetec_vl = 0.0001 instead of 0.001
+* 13 6 21 - add in epvls=0;
+* 14 6 21 - tr_rate_undetec_vl = 0.0001 instead of 0.001;
 
 
 
