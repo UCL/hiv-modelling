@@ -159,6 +159,9 @@ to do before starting testing in preparation for runs:
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
+%let outputdir = %scan(&sysparm,1," ");
+libname a "&outputdir/";
+%let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
@@ -802,7 +805,7 @@ prob_imm_anti_hypertensive = 0.9;
 * for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
 starting anti-hypertensive;
 prob_start_anti_hyptertensive = 0.01; 
-* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no lonegr under care for hypertension 
+* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no longer under care for hypertension 
 (visit_hypertenion = 0);
 prob_stop_anti_hypertensive = 0.03; 
 * for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
@@ -1560,7 +1563,9 @@ if e < 0.03 then hbv=1;
 * define sbp in 1989 ;  * update_24_4_21;
 
 select;	* JAS May2021 ;
-	when (age < 25) 		do; %sample(sbp,	115		125 	135, 
+	when ( age < 15) 		do; sbp=.;
+							end;	
+	when (15 <= age < 25) 		do; %sample(sbp,	115		125 	135, 
 												0.40 	0.40 	0.20); 
 							end;
 	when (25 <= age < 35) 	do; %sample(sbp, 	115 	125 	135, 
@@ -10205,7 +10210,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 * cvd mortality; * update_24_4_21;
 
-* risk of cvd death per 3 months according to sbp, age and gender ;
+* risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
 	cvd_death_risk = 0.0002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = uniform(0);
@@ -10581,7 +10586,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 * cvd mortality; * update_24_4_21;
 
-* risk of cvd death per 3 months according to sbp, age and gender ;
+* risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
 	cvd_death_risk = 0.0002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = uniform(0);
@@ -10624,7 +10629,7 @@ if tested=1 then ever_tested=1;
 
 
 if  caldate{t} > death > . then do; * update_24_4_21;
-	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  
+	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
 	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
@@ -15211,18 +15216,16 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 /*
 
-* not sure if we should keep this commented out code on procs we ran to test changes ;
-
-
 proc print; var caldate&j
 age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
-start_anti_hyp_this_per 
-restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
+start_anti_hyp_this_per restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
 effect_anti_hyp_1 effect_anti_hyp_2 effect_anti_hyp_3 date_restart_anti_hyp 
 intensify_anti_hyp_this_per_1_2 intensify_anti_hyp_this_per_2_3 symp_hypertension cvd_death death
 ;
-where age ge 50 and (death = . or caldate&j = death) and hypertension=1 and max_sbp ge 180  ;
+where age ge 60 and (death = . or caldate&j = death) and serial_no < 1000   ;
 run;
+
+* not sure if we should keep this commented out code on procs we ran to test changes ;
 
 proc print; var caldate&j cald age sbp diagnosed_hypertension on_anti_hypertensive sbp_start_anti_hyp start_anti_hyp_this_per  
 ever_on_anti_hyp effect_anti_hyp cvd_death_risk non_hiv_tb  cur_non_hiv_tb_death_risk death dcause; 
@@ -17666,17 +17669,18 @@ file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";
 
 
 put   
-
-*/
-  
+ 
 
   libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
+*/
 
-data b.out_project_name_&dataset_id(compress=binary); set cum_l1;
+
+data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
+
 
 keep
 
