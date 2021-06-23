@@ -358,7 +358,7 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8, 0.2 0.6 0.2);
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8, 0.2 0.3 0.5); * change jun21;
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
@@ -794,7 +794,7 @@ if prep_willing=1;
 
 * SBP AND CVD MORTALITY RISK ;   
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
-prob_sbp_increase = 0.30; 
+prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
 prob_test_sbp_undiagnosed = 0.01; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
