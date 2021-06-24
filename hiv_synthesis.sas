@@ -2659,14 +2659,14 @@ if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_re
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
-	if caldate{t} <= 2025.5 then do;
+	if caldate{t} <= 2026.5 then do;
       if age_tm1 lt 15 then prob_circ =0;
       if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
 	  if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
 	  if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
     end;
 
-    if caldate{t} > 2025.5 then do;
+    if caldate{t} > 2026.5 then do;
       prob_circ = 0;test_link_circ_prob=0;
     end;
 end;
