@@ -793,6 +793,9 @@ if prep_willing=1;
 
 
 * SBP AND CVD MORTALITY RISK ;   
+
+* values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
+
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
@@ -2818,6 +2821,9 @@ if on_anti_hypertensive ge 1 then do;
 end;
 
 * clinic visit for hypertension;
+
+* todo: once sbp < 140 allow people to be on antihypertensive without having a clinic visit;
+
 visit_hypertension=0;
 if visit_hypertension_tm1 = 0 then do;
 if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1;
