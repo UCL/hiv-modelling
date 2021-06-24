@@ -15,6 +15,8 @@ include in primary setting scenarios greater probability of low use and lower ad
 
 ? epvl=0
 
+consider addressing questions in katy godfrey proposal
+
 ;
 
 
