@@ -6,7 +6,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data d1;  
 
-  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";
+  infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_24_6_21";
+* infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_22_4_21_1";
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm";  
 * infile "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\c_output_unaids_17_9_20_6pm_5reps";  
 
@@ -592,6 +593,7 @@ if option =0 or option = 3;
 
 * note need to keep one s_n ! ;
 
+/*
 
 data d2;  
 
@@ -1145,10 +1147,12 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
   if option = 0 or option = 3 ;
 
-
 proc freq; tables run; 
 
-data a; set d1 d2 ;
+*/
+
+
+data a; set d1 ;
 
 proc sort; by run cald option;run;
 proc freq;table run;where cald=2020;run;
@@ -1981,7 +1985,7 @@ n_hiv8084w  n_hiv85plw
 
 proc sort data=y;by run option;run;
 
-data unaids_17_9_20_22_4_21_1a2_2; set y;  * unaids_17_9_20_6pm_5reps ;
+data unaids_24_6_21; set y;  * unaids_17_9_20_6pm_5reps ;
 
 proc contents; run;
 
@@ -1989,7 +1993,7 @@ proc contents; run;
 * means n mean lclm uclm p5 p95 ; 
 
 
-data x; set unaids_17_9_20_22_4_21_1a2_2; * unaids_17_9_20_6pm_5reps ;  
+data x; set unaids_24_6_21; * unaids_17_9_20_6pm_5reps ;  
 
 
   options nomprint;
@@ -2268,7 +2272,7 @@ run;
 proc sort; by run;run;
 
 
-  data a.w_unaids_17_9_20_22_4_21_1a2_2 ; * w_unaids_17_9_20_6pm_5reps_ex ;
+  data a.w_unaids_24_6_21 ; * w_unaids_17_9_20_6pm_5reps_ex ;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
@@ -2301,25 +2305,25 @@ p_onart_diag p_onart_diag_m  	p_onart_vl1000_w	p_onart_vl1000_m p_onart_cd4_l500
 
 
 proc export 
-data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex_2" replace; run;
+data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex_3" replace; run;
 
 proc export 
-data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults_all_2" replace; run;
+data=a.wide_age dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_adults_all_3" replace; run;
 
 proc export 
-data=a.wide_onart dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_onart_all_2" replace; run;
+data=a.wide_onart dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_onart_all_3" replace; run;
 
 proc export 
-data=a.wide_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_mcirc_all_2" replace; run;
+data=a.wide_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_mcirc_all_3" replace; run;
 
 proc export 
-data=a.wide_new_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_mcirc_all_2" replace; run;
+data=a.wide_new_mcirc dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_mcirc_all_3" replace; run;
 
 proc export 
-data=a.wide_new_inf dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_inf_all_2" replace; run;
+data=a.wide_new_inf dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_new_inf_all_3" replace; run;
 
 proc export 
-data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_hiv_all_2" replace; run;
+data=a.wide_n_hiv dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_n_hiv_all_3" replace; run;
 
 proc export 
-data=a.wide_par dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\parameters_2" replace; run;
+data=a.wide_par dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\parameters_3" replace; run;
