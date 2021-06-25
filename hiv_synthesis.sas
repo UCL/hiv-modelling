@@ -13223,7 +13223,7 @@ if caldate&j =death and death ne . then do;
 	total_yll=80-agedeath;
 	
 	i=0;
-	do until (i = total_yll+0.25);
+	do until (i >= total_yll+0.25);
 		dyll_80 = dyll_80 + (0.25 *  (1/1.03)**i);
 	i=i+0.25;
 	end;
