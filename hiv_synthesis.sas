@@ -799,7 +799,9 @@ if prep_willing=1;
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01; 
+prob_test_sbp_undiagnosed = 0.01;
+* measurement error and variability in sbp ;
+measurement_error_var_sbp = 7; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
 hypertension, per period;
 prob_test_sbp_diagnosed = 0.1; 
@@ -808,6 +810,10 @@ prob_imm_anti_hypertensive = 0.9;
 * for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
 starting anti-hypertensive;
 prob_start_anti_hyptertensive = 0.01; 
+* probability of having a clinic visitfor hypertension if on antihypertensives and due a visit (currently programmed as annual);
+prob_visit_hypertension = 0.7;
+* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+interval_visit_hypertension=1;
 * for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no longer under care for hypertension 
 (visit_hypertenion = 0);
 prob_stop_anti_hypertensive = 0.03; 
@@ -942,6 +948,8 @@ cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder;
+cost_antihyp = 0.0015; * drug cost per drug ;
+cost_vis_hypert = 0.0015; * clinic cost per hypertension visit;
 
 * based on salomom et al lancet 2012;
 util_tox = rand('beta',10,2); util_tox = 0.95;
@@ -2787,7 +2795,8 @@ end;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=uniform(0);
+a_sbp=uniform(0); if 50 <= age < 60 then a_sbp = a_sbp / 1.5; if 60 <= age < 70 then a_sbp = a_sbp / (1.5**2)  ;
+if 70 <= age then a_sbp = a_sbp / (1.5**3) ;  
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
@@ -2805,11 +2814,23 @@ if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do;
 	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
 end;
 
+* clinic visit for hypertension;
+visit_hypertension=0;
+if visit_hypertension_tm1 = 0 then do;
+if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1; date_last_visit_hypertension = caldate{t};
+end;
+
+* visits for hypertension while on anti-hypertensive; 
+if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
+e=uniform(0); if e < prob_visit_hypertension then visit_hypertension = 1;
+end;
+if visit_hypertension_tm1=1 and sbp_m_tm1 > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
+
 * measurement of bp at clinic visit for hypertension;
 if visit_hypertension=1 then tested_bp=1;
 
 * sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (7*normal(0)); sbp_m = round(sbp_m, 1);
+if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*normal(0)); sbp_m = round(sbp_m, 1);
 
 * effect of stopping anti-hypertensive on sbp ;
 if on_anti_hypertensive ge 1 then do;
@@ -2819,18 +2840,6 @@ if on_anti_hypertensive ge 1 then do;
 		date_last_stop_anti_hyp = caldate{t}; 
 	end;
 end;
-
-* clinic visit for hypertension;
-
-* todo: once sbp < 140 allow people to be on antihypertensive without having a clinic visit;
-
-visit_hypertension=0;
-if visit_hypertension_tm1 = 0 then do;
-if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1;
-end;
-
-* continuation of visits for hypertension;
-if visit_hypertension_tm1 = 1 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
 
 * initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
 start_anti_hyp_this_per = 0 ; 
@@ -10449,7 +10458,9 @@ cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=c
 
 cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
-
+cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hypert ; 
+cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
+ 
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep) + max(0,cost_prep_visit)
 +  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
@@ -13252,6 +13263,8 @@ _dcost_test_f_sympt = cost_test_f_sympt*discount ;
 _dcost_test_f_sw = cost_test_f_sw *discount ;
 _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
+_cost_hypert_vis  = cost_hypert_vis*discount ; 
+_cost_hypert_drug = cost_hypert_drug*discount ; 
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -14804,7 +14817,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
     s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_art_init + _dcost_art_init ;               
    	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;		  		
   	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test + _dcost_drug_level_test ;    	   		   		
+ 	s_dcost_drug_level_test + _dcost_drug_level_test ; s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;     	   		   		
      		
 	/*visits and linkage*/
 
@@ -15054,7 +15067,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
     s_dcost_child_hiv_80 + _dcost_child_hiv ; s_dcost_child_hiv_mo_art_80 + _dcost_child_hiv_mo_art ; s_dcost_art_init_80 + _dcost_art_init ;               
    	s_dart_1_cost_80 + _dart_1_cost ; s_dart_2_cost_80 + _dart_2_cost ; s_dart_3_cost_80 + _dart_3_cost ; s_dcost_vl_not_done_80 + _dcost_vl_not_done ;		  		
   	s_dcost_non_aids_pre_death_80 + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death_80 + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test_80 + _dcost_drug_level_test ;    	   		   		
+ 	s_dcost_drug_level_test_80 + _dcost_drug_level_test ;    	 
+	s_cost_hypert_vis_80 + _cost_hypert_vis; s_cost_hypert_drug_80 + _cost_hypert_drug;  
+	 	
 
 	/* death by time on art */
 
@@ -15220,16 +15235,19 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-/*
 
 proc print; var caldate&j
 age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
 start_anti_hyp_this_per restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
 effect_anti_hyp_1 effect_anti_hyp_2 effect_anti_hyp_3 date_restart_anti_hyp 
 intensify_anti_hyp_this_per_1_2 intensify_anti_hyp_this_per_2_3 symp_hypertension cvd_death death
+s_cost_hypert_vis_80 s_cost_hypert_drug_80  
 ;
 where age ge 60 and (death = . or caldate&j = death) and serial_no < 1000   ;
 run;
+
+
+/*
 
 * not sure if we should keep this commented out code on procs we ran to test changes ;
 
@@ -16179,6 +16197,7 @@ s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
 	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
 s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
+s_cost_hypert_vis s_cost_hypert_drug
 
 s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
 
@@ -16204,7 +16223,7 @@ s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-
+s_cost_hypert_vis_80 s_cost_hypert_drug_80
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -17023,6 +17042,7 @@ s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
 	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
 s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
+s_cost_hypert_vis s_cost_hypert_drug
 
 s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
 
@@ -17048,7 +17068,7 @@ s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-
+s_cost_hypert_vis_80 s_cost_hypert_drug_80
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -18072,6 +18092,7 @@ s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_
 s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
   	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
 s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
+s_cost_hypert_vis s_cost_hypert_drug
 
 s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
 
@@ -18097,7 +18118,7 @@ s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 
 s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
 s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
 s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-
+s_cost_hypert_vis_80 s_cost_hypert_drug_80
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
