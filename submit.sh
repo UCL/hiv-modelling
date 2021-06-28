@@ -1,11 +1,11 @@
 #!/bin/bash -l
 inputdir="${HOME}"
 tmpfiles="out"
-combinedsas="combined_data"
-runs="100"
+combinedsas="base"
+runs="3"
 jobname="hivmodel"
-model="hiv_synthesis.sas"
-clock="h_rt=08:00:00"
+model="example_hiv_synthesis.sas"
+clock="h_rt=03:00:00"
 account="HIVSynthMod"
 
 while getopts a:i:o:r:j:m:c:t: flag
