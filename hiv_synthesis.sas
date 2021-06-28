@@ -336,7 +336,7 @@ newp_seed = 7;
 							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
 							* dependent_on_time_step_length ;
 
-* prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.03 + r*0.08;  
+* prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.06 + r*0.05;  
 							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 							if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 2.00 ;
