@@ -10,7 +10,7 @@ data d1;
 
 input 
 
-
+spare /*this was wrongly inputted in the core file*/
 /*general*/
 run   cald   option 
 
@@ -669,16 +669,12 @@ r_s_ep_m15w15 r_s_ep_m25w25 r_s_ep_m35w35 r_s_ep_m45w45 r_s_ep_m55w55
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r  s_m_newp   s_w_newp
 ptnewp15_m  ptnewp25_m  ptnewp35_m  ptnewp45_m  ptnewp55_m
-ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
-
-
-; 
-;
+ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w;
 run;
-proc freq;table s_new_mcirc;where cald=2029 and option=2;run;
-proc freq;table s_new_mcirc;where cald=2029 and option=4;run;
+proc freq;table s_new_mcirc;where cald=2027 and option=2;run;
+proc freq;table s_new_mcirc;where cald=2027 and option=4;run;
 
-proc freq;table run;where cald=2023;run;
+proc freq;table option;run;
 
 
 
@@ -1567,12 +1563,8 @@ proc sort data=y;by run option_new;run;
 
 
 
-
-
-
-
-data a.vmmc_02_06_21_9pm_temp; set y;run;
-data y; set a.vmmc_02_06_21_9pm_temp;run;
+data a.vmmc_25_06_21_1pm_temp; set y;run;
+data y; set a.vmmc_25_06_21_1pm_temp;run;
 
 
 proc freq;table option_new;run;
@@ -2161,7 +2153,7 @@ proc sort; by run;run;
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_02_06_21_9pm;
+  data a.wide_vmmc_25_06_21_1pm_temp;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
