@@ -948,8 +948,9 @@ cost_drug_level_test = 0.015; * assume tdf drug level test can be $15 ;
 circ_cost_a = 0.090;  *Jan21 - in consensus with modelling groups and PEPFAR;
 condom_dn_cost = 0.001  ; * average cost per adult aged 15-64 in population ;
 sw_program_cost = 0.010 ; * placeholder;
-cost_antihyp = 0.0015; * drug cost per drug ;
-cost_vis_hypert = 0.0015; * clinic cost per hypertension visit;
+cost_antihyp = 0.0015; * cost per 3 months of anti-hypertensive drug (in $1000) ;
+cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
+
 
 * based on salomom et al lancet 2012;
 util_tox = rand('beta',10,2); util_tox = 0.95;
@@ -2795,8 +2796,8 @@ end;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=uniform(0); if 50 <= age < 60 then a_sbp = a_sbp / 1.5; if 60 <= age < 70 then a_sbp = a_sbp / (1.5**2)  ;
-if 70 <= age then a_sbp = a_sbp / (1.5**3) ;  
+a_sbp=uniform(0); if 140 <= sbp <  160 then a_sbp = a_sbp / 1.5; if 160 <= sbp < 180 then a_sbp = a_sbp / (1.5**2)  ;
+if 180 <= abp then a_sbp = a_sbp / (1.5**3) ;  
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
@@ -2817,20 +2818,20 @@ end;
 * clinic visit for hypertension;
 visit_hypertension=0;
 if visit_hypertension_tm1 = 0 then do;
-if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1; date_last_visit_hypertension = caldate{t};
+if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1; 
 end;
 
 * visits for hypertension while on anti-hypertensive; 
 if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
 e=uniform(0); if e < prob_visit_hypertension then visit_hypertension = 1;
 end;
-if visit_hypertension_tm1=1 and sbp_m_tm1 > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
+if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
+
+if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
+
 
 * measurement of bp at clinic visit for hypertension;
 if visit_hypertension=1 then tested_bp=1;
-
-* sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*normal(0)); sbp_m = round(sbp_m, 1);
 
 * effect of stopping anti-hypertensive on sbp ;
 if on_anti_hypertensive ge 1 then do;
@@ -2844,7 +2845,7 @@ end;
 * initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
 start_anti_hyp_this_per = 0 ; 
 ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);  
-if (visit_hypertension=1 and (sbp_m_tm1 > 140 or sbp_m > 140) and diagnosed_hypertension ne 1) then do; 
+if (visit_hypertension=1 and (sbp_m_tm1 > 140) and diagnosed_hypertension ne 1) then do; 
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
 
@@ -2859,7 +2860,7 @@ end;
 
 * restarting anti-hypertensives;
 restart_anti_hyp_this_per = 0;
-if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m > 140 and diagnosed_hypertension = 1 
+if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m_tm1 > 140 and diagnosed_hypertension = 1 
 and ever_on_anti_hyp = 1 and on_anti_hypertensive=0) then do; restart_anti_hyp_this_per =1 ; sbp_last_start_anti_hyp = sbp; end;
 
 if restart_anti_hyp_this_per = 1 then do;
@@ -2871,9 +2872,9 @@ end;
 
 * intensification of anti-hypertensives;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
-if  visit_hypertension=1 and sbp_m > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
+if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
 	e=uniform(0); 
-	if 160 <= sbp_m < 180 then e = e /2; if 180 <= sbp_m < 200 then e = e / 4; if 200 <= sbp_m       then e = e / 10; 
+	if 160 <= sbp_m_tm1 < 180 then e = e /2; if 180 <= sbp_m_tm1 < 200 then e = e / 4; if 200 <= sbp_m_tm1       then e = e / 10; 
 	if on_anti_hypertensive=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_anti_hypertensive=3; end; 
 	if on_anti_hypertensive=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_anti_hypertensive=2; end; 
 end;
@@ -2882,9 +2883,14 @@ end;
 if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
 if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
+
+* sbp_m = measured value of sbp in this period, . if unmeasured;
+if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*normal(0)); sbp_m = round(sbp_m, 1);
+
 hypertension = 0; if sbp > 140 or on_anti_hypertensive ge 1 then hypertension = 1;
 
 max_sbp = max(sbp, sbp_last_start_anti_hyp);
+if sbp_m ne . then most_recent_sbp_m = sbp_m;
 
 
 * SEXUAL BEHAVIOUR;
@@ -15235,7 +15241,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
+/*
 
+ods html;
 proc print; var caldate&j
 age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
 start_anti_hyp_this_per restart_anti_hyp_this_per ever_on_anti_hyp date_start_anti_hyp date_last_stop_anti_hyp 
@@ -15245,9 +15253,7 @@ s_cost_hypert_vis_80 s_cost_hypert_drug_80
 ;
 where age ge 60 and (death = . or caldate&j = death) and serial_no < 1000   ;
 run;
-
-
-/*
+ods html close;
 
 * not sure if we should keep this commented out code on procs we ran to test changes ;
 
