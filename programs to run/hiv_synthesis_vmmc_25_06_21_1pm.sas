@@ -156,13 +156,13 @@ to do before starting testing in preparation for runs:
 ;
 
 
-
+/*
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
 libname a "&outputdir/";
 %let tmpfilename = %scan(&sysparm,2," ");
-
+*/
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -23595,26 +23595,26 @@ data r1; set a;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
 
 data x; set cum_l1;
 
-file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
+file "/home/rmjllob/Scratch/_output_vmmc_25_06_21_1pm_&dataset_id";  
 
 
 put   
  
-
-  libname b '/home/rmjlaph/Scratch/';
+/*
+* libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-*/
+
+
 
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
-
+*/
 
 keep
 
