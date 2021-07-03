@@ -100,6 +100,11 @@ explore metrics for how to monitor prep programmes
 
 to do before starting testing in preparation for runs:
 
+- we should consider these sections and probably delete all or most and put in issues in github instead
+
+- this is to note that for advanced hiv disease we so far have measurement of cd4 each time a person returns to care, but we do not have use of 
+  measurement if crag or tblam switched on - we also do not have any use of prophylaxis for tb, sbi or crypm switched on
+
 - consider effect of sw_program_visit on prob of starting and continuing on prep in sw
 
 - add in exposure at birth (mother infected), mother vl, child prophylaxis, infection at birth based on mtct rate and at least risk of aids death, 
@@ -544,6 +549,11 @@ newp_seed = 7;
 * is_red_activity;			is_red_activity=0;  				* extent to which number of active drugs is under or over-estimated by interpretation systems;
 * sd_patient_cd4_rise_art;	sd_patient_cd4_rise_art= 0.2; 		* inter-patient variation in rate of CD4 rise - when CD4 is rising;
 * prob_cd4_meas_done;		prob_cd4_meas_done=0.85; 			* consider whether effectively * dependent_on_time_step_length ;
+* cm_1stvis_return_vlmg1000; cm_1stvis_return_vlmg1000=1;		* whether cd4 is measured each time a person comes back into care to see if have advanced hiv disease;
+* crag_cd4_l100;			crag_cd4_l100=0;					* whether cryp antigen testing done if measured cd4 count < 100;
+* crag_cd4_l200;			crag_cd4_l200=0;					* whether cryp antigen testing done if measured cd4 count < 200;
+* tblam_cd4_l100; 			tblam_cd4_l100=0;					* whether tblam test done if measured cd4 count < 100;
+* tblam_cd4_l200; 			tblam_cd4_l200=0;					* whether tblam test done if measured cd4 count < 200;
 * prob_who3_diagnosed;		prob_who3_diagnosed=0.50; 
 * prob_who4_diagnosed;		prob_who4_diagnosed=0.80;
 * res_test_6m_if_vlg1000;	res_test_6m_if_vlg1000=0;
@@ -13680,7 +13690,7 @@ cd4_g1_adc = 0; cd4_g2_adc = 0; cd4_g3_adc = 0; cd4_g4_adc = 0; cd4_g5_adc = 0; 
 vl_g1_adc = 0; vl_g2_adc = 0; vl_g3_adc = 0; vl_g4_adc = 0; vl_g5_adc = 0; 
 age_g1_adc = 0; age_g2_adc = 0; age_g3_adc = 0; age_g4_adc = 0; age_g5_adc = 0; 
 onart_adc=0; pcpp_adc=0;
-adclam_measured_this_per_adc = 0; adc_proph_adc = 1;
+adclam_measured_this_per_adc = 0; adc_proph_adc = 0;
 if adc=1 then do;
 	if cd4_g1=1 then cd4_g1_adc = 1; if cd4_g2=1 then cd4_g2_adc = 1; if cd4_g3=1 then cd4_g3_adc = 1; 
 	if cd4_g4=1 then cd4_g4_adc = 1; if cd4_g5=1 then cd4_g5_adc = 1; if cd4_g6=1 then cd4_g6_adc = 1; 
@@ -13697,7 +13707,7 @@ cd4_g1_crypm = 0; cd4_g2_crypm = 0; cd4_g3_crypm = 0; cd4_g4_crypm = 0; cd4_g5_c
 vl_g1_crypm = 0; vl_g2_crypm = 0; vl_g3_crypm = 0; vl_g4_crypm = 0; vl_g5_crypm = 0; 
 age_g1_crypm = 0; age_g2_crypm = 0; age_g3_crypm = 0; age_g4_crypm = 0; age_g5_crypm = 0; 
 onart_crypm=0; pcpp_crypm=0;
-crag_measured_this_per_crypm = 0; crypm_proph_crypm = 1;
+crag_measured_this_per_crypm = 0; crypm_proph_crypm = 0;
 if crypm=1 then do;
 	if cd4_g1=1 then cd4_g1_crypm = 1; if cd4_g2=1 then cd4_g2_crypm = 1; if cd4_g3=1 then cd4_g3_crypm = 1; 
 	if cd4_g4=1 then cd4_g4_crypm = 1; if cd4_g5=1 then cd4_g5_crypm = 1; if cd4_g6=1 then cd4_g6_crypm = 1; 
