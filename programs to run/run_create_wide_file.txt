@@ -1,0 +1,21 @@
+#!/bin/bash -l
+#$ -S /bin/bash
+#$ -l h_rt=48:00:00
+#$ -pe smp 4
+#$ -t 1-1
+#$ -A Create_wide_file
+#$ -l mem=6G
+#$ -j y
+#$ -N vmmc
+#$ -wd /home/rmjllob/Scratch
+#$ -o /dev/null
+#$ -e /dev/null
+#$ -l tmpfs=100G
+module load sas/9.4/64
+cd $TMPDIR
+for file in `echo $addinfiles | tr ':' ' '` 
+do 
+ cp $file . 
+done
+sleep $[(RANDOM % 10) +  1]s
+sas $sas_infile

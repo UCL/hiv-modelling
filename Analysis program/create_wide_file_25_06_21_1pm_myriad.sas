@@ -5,7 +5,7 @@ libname a "/home/rmjllob/Scratch";
 
 data d1;  
 
-*  infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_29_03_21_6pm_lowart";
+* infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_25_06_21_10r"; 
 * infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_25_06_21_temp";
  infile "/home/rmjllob/Scratch/c_output_vmmc_25_06_21_10r_all";
 input 
@@ -1563,13 +1563,13 @@ s_sw_newp incidence_sw;
 proc sort data=y;by run option_new;run;
 
 
-/*
-data a.vmmc_25_06_21_1pm_temp; set y;run;
-data y; set a.vmmc_25_06_21_1pm_temp;run;
+
+data a.vmmc_25_06_21_10r; set y;run;
+data y; set a.vmmc_25_06_21_10r;run;
 
 
 proc freq;table option_new;run;
-*/
+
 
 
   options nomprint;
@@ -2152,7 +2152,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
+*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
   data a.wide_vmmc_25_06_21_1pm_10r;
 
