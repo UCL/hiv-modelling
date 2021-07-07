@@ -6131,7 +6131,7 @@ naive=1;
 primary infection and hence stop prep;  
 * lapr - the same should happen with lapr - except there will be the tail of cab drug levels for several months 
 after stopping - this should be fine so long as person immediately starts art ;
-* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check)
+* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
@@ -7599,7 +7599,7 @@ then do; current_adh_dl = .; current_adh_dl_tm1 = .;
 end;
 
 
-/* 
+*/ 
 
 
 
