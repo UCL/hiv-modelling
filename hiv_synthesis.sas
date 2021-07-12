@@ -2806,8 +2806,13 @@ end;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=uniform(0); if 140 <= sbp <  160 then a_sbp = a_sbp / 1.5; if 160 <= sbp < 180 then a_sbp = a_sbp / (1.5**2)  ;
-if 180 <= abp then a_sbp = a_sbp / (1.5**3) ;  
+a_sbp=uniform(0); 
+	select;
+		when (140 <= sbp < 160) a_sbp = a_sbp / 1.5; 
+		when (160 <= sbp < 180) a_sbp = a_sbp / (1.5**2)  ;
+		when (180 <= abp) 	  a_sbp = a_sbp / (1.5**3) ;  
+		otherwise a_sbp = a_sbp;
+	end;
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
@@ -2882,10 +2887,16 @@ end;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
 if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
 	e=uniform(0); 
-	if 160 <= sbp_m_tm1 < 180 then e = e /2; if 180 <= sbp_m_tm1 < 200 then e = e / 4; if 200 <= sbp_m_tm1       then e = e / 10; 
+	select; 
+		when (160 <= sbp_m_tm1 < 180) e = e /2; 
+		when (180 <= sbp_m_tm1 < 200) e = e / 4; 
+		when (200 <= sbp_m_tm1)       e = e / 10; 
+		otherwise e = e;
+	end;
 	if on_anti_hypertensive=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_anti_hypertensive=3; end; 
 	if on_anti_hypertensive=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_anti_hypertensive=2; end; 
 end;
+
 
 * effect of intensification of anti-hypertensive on sbp;
 if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
