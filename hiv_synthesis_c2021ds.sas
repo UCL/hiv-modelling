@@ -19844,6 +19844,7 @@ proc sort; by run;run;
 proc contents;run;
 
 
+proc printto print='a.printout_&dataset_id';
 
 title 'dataset id = &dataset_id';
 
