@@ -19841,10 +19841,27 @@ proc sort; by run;run;
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;run;
+
+
+keep p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_95 prevalence1549w_95 prevalence1549m_05 prevalence1549w_05
+prevalence1549m_10 prevalence1549w_10 prevalence1549m_15 prevalence1549w_15 prevalence1549m_21 prevalence1549w_21
+incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	
+prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21  p_onart_21 
+p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  p_onart_m_age50pl_21 
+p_onart_w_age50pl_21  
+p_onart_cd4_l200_21  p_startedline2_21 ;
+
+run;
+
+
+
+
+/*
+
 proc contents;run;
 
 
-proc printto print='a.printout_&dataset_id';
+proc printto print= a.printout_&dataset_id ;
 
 title 'dataset id = &dataset_id';
 
@@ -19963,3 +19980,5 @@ r_prev_2529m_4549w_21 r_prev_3034m_4549w_21 r_prev_3539m_4549w_21 r_prev_4044m_4
 r_prev_6064m_4549w_21 r_prev_65plm_4549w_21 p_age1549_hivneg_21 p_age1549_hiv_21
 ;
 run;
+
+*/
