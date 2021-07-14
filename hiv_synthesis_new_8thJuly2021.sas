@@ -2169,7 +2169,6 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;
 		eff_prob_prep_all_restart_choice=prob_prep_all_restart_choice;
 		* lapr and dpv-vr - consider if any needs to change ;
-
 end; 
 
 end;
@@ -2247,7 +2246,7 @@ if	higher_future_prep_oral_cov=1 then do;
 							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_all_year_i; 	* dependent_on_time_step_length;
+* inc_r_test_startprep_all_year_i; * dependent_on_time_step_length;
 						inc_r_test_startprep_all_year_i = 0;  if _u26 <= 0.95 then do; 
 							inc_r_test_startprep_all_year_i = 1; 
 							eff_rate_test_startprep_all = 0.9; 
@@ -2575,6 +2574,7 @@ if reg_option_switch_year_i = 1 then do;
 	if 0.60 <= _u49 < 0.9 then  reg_option = 119;
 end;
 
+
 * pop_wide_tld_year_i;	
 if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
 	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
@@ -2812,7 +2812,7 @@ cost=0;cost_test=0;
 
 adc_tm1=adc; adc=0;
 
-visit_prep=.;	* lapr / dpv-vr - oral prep or lapr or dpv-vr ;
+visit_prep=.;
 ageg_ep=.;
 
 end;
@@ -3563,7 +3563,7 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
 	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
 		r = uniform(0);
-		if r < add_prep_oral_uptake_sw then prep_willing = 1;	* lapr and dpv-vr - no need to change ? ;
+		if r < add_prep_oral_uptake_sw then prep_willing = 1;
 	end;
 end;
 end;
@@ -3608,7 +3608,7 @@ if t ge 2 then do;
 			eff_sw_higher_int = sw_higher_int;
 			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-
+			
 		end;
 	end;
 end;
@@ -4144,9 +4144,6 @@ prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different 
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
 
-* lapr and dpv-vr - will need to consider how this changes - perhaps it will not change - the main difference might be in the prep willing variable
-and hence deciding what type of prep is taken ;
-
 if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 	if prep_strategy=1 then do;
@@ -4242,13 +4239,12 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
 		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and prep_willing=1  then do;
-			* lapr and dpv-vr - I guess this will change to specify if prep_willing for lapr or dpv-vr or oral prep then do...;
 			a=uniform(0); if a < eff_rate_test_startprep_all then do;	
 				tested=1;ever_tested=1;testfor_prep=1;dt_last_test=caldate{t};np_lasttest=0;
 			end; 
 		end;
 
-		*Routine testing while on PREP;		* lapr and dpv-vr - I don't see this changing - what about VL / NAAT testing for WHO analysis;
+		*Routine testing while on PREP;
 		else if prep_ever=1 and prep_elig=1 then do;
 			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
 				if annual_testing_prep_oral=1 and caldate{t}-dt_last_test >= 1.0 then do;
@@ -4308,15 +4304,13 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	if prep_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
 	 
 			if prep_willing=1 then do; 
-			* lapr and dpv-vr - I guess both which prep type available and which prep type willing (none, lapr, oral, dpv-vr either) will
-			determine what type of prep is started - we will need to consider switching between prep methods;
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
 				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
 
 	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
 	end;
-	* continuing PrEP;		* lapr and dpv-vr - also switching between prep options;
+	* continuing PrEP;
 	if prep_ever=1 and dt_prep_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
 		if prep_tm1 = 1 then do; * dependent_on_time_step_length;
 			if annual_testing_prep_oral=1 then do;
@@ -4344,7 +4338,7 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 		else if prep_tm1 ne 1 then do;
 			*if people discontinued even if they had newp>1 previously (stop_prep_choice=1), then the probability of restart is
 			given by eff_prob_prep_all_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
-			stop_prep_choice ne 1) then the probability of restart is given by prob_prep_restart;
+			stop_prep_choice ne 1) then the probability of restart is given by prob_prep_all_restart;
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
 
 			if tested=1 then do; * dependent_on_time_step_length;
@@ -4362,13 +4356,12 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	end;
 end;
 
-if prep=0 then continuous_prep_use=0;	* lapr and dpv-vr - we will need to create an any_prep variable to indicate if a person is on any prep;
+if prep=0 then continuous_prep_use=0;
 
 if pop_wide_tld=1 and prep=1 then pop_wide_tld_prep=1; 
 
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
-* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
 if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
 
 	if prep_ever ne 1 then do;   * dependent_on_time_step_length; 
@@ -4411,9 +4404,6 @@ if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
 
 
 *PrEP clinic visits - modified Jan2017 f_prep;
-	* lapr and dpv-vr - I think for simplicity we will assume lapr operates with 3 monthly visits - I understand this
-	is right for women - for men I think they may need 2 monthly injections rather than 3; * dpv-vr is monthly but I 
-	understand it is self-administered (?) so 3-montly clinic visits or less may be fine;
 if caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 and pop_wide_tld ne 1 then do;
 	if prep   =0 then do;
 		if prep_ever ne 1 then visit_prep=.;
@@ -4450,9 +4440,6 @@ end;
 
 
 *Adherence to PrEP - modified Jan2017 f_prep;
-	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
-	be fixed while on injections / ring, and efficacy will drop / resistance risk increase in the periods after stopping 
-	(two for lapr, less for dpv-vr?);
 if prep = 1 then do;
 	adh=adhav_prep_oral + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
 	if adhav_prep_oral=0 then adh=0;
@@ -4468,7 +4455,7 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that prep is tenofovir/ftc;
 
-prep_all_past_year=.; 	* lapr an dpv-vr - this will use our any_prep variable I suppose, we may want separate variables for each prep type?;
+prep_all_past_year=.;
 if prep   =1 then do; 
 tot_yrs_prep = tot_yrs_prep+0.25; * dependent_on_time_step_length ;  
 * ts1m ; * change this line to: 
@@ -4477,7 +4464,7 @@ tot_yrs_prep = tot_yrs_prep + (1/12);
 
 
 
-prep_effectiveness_non_res_v = adh* prep_oral_efficacy ;	* lapr and dpv-vr - this will depend on time since last lapr=1 or time since last dpv=1;
+prep_effectiveness_non_res_v = adh* prep_oral_efficacy ;
 if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1;
 * dependent_on_time_step_length ;  
 end;
@@ -5193,7 +5180,6 @@ k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.
 p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  inpm=.; insm=.;
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
 p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  inpm_p=.;  insm_p=.;
-* lapr and dpv-vr - do we need to define new mutations?
 
 *prob infection in 3mths from the infected partner;
 
@@ -5224,7 +5210,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;	* lapr - change to inprim_p? for ep and newp sections;
+		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;
 		  mut_p=.;
 
 		  e=uniform(0); if e < t_prop_rm  then do;
@@ -5330,7 +5316,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
 		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
-		if prep   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
+		if prep   =1 then do; 
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
@@ -5356,7 +5342,6 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		    	if vl_source_inf=6 then infected_primary=1; 
 				age_source_inf=age_newp;
 				infected_prep=0; if prep   =1 then do; 
-					* lapr and dpv-vr - need to have these prep variables separately also for lapr and dpv-vr;
 				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
 				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 				end;
@@ -5504,7 +5489,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if sti=1                  then risk_eip = risk_eip * fold_change_sti;  * higher transmission risk with sti;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
-		if prep   =1 then do; * lapr and dpv-vr as above for risk_nip ;
+		if prep   =1 then do; 
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
@@ -5526,7 +5511,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
 			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
-			infected_prep=0; if prep   =1 then do; * lapr and dpv-vr - as above for infected_newp;
+			infected_prep=0; if prep   =1 then do; 
 			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
 			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
 			end;
@@ -5633,7 +5618,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep    ne 1 then do;	* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
+		if prep    ne 1 then do;
 			if tam ge 1 then do; u=uniform(0); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=uniform(0); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=uniform(0); if u < 0.8  then k65m =0; end; 
@@ -5668,7 +5653,7 @@ end;
 com_test=.;
 if tested=1 and hiv ne 1 then do;
 	cost_test= cost_test_c;
-	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
+	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
 	unispec=uniform(0);
@@ -6057,7 +6042,6 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
-	* lapr and dpv-vr - we will need a line here below for lapr and dpv-vr;
 if prep   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
 
@@ -6130,9 +6114,6 @@ naive=1;
 *If HIV test type=3 (window period=3 months) then dont get diagnosed during primary infection ;
 *If HIV test type=4 (window period=1 months) or HIV test type=1 (window period=10 days) then can get diagnosed during 
 primary infection and hence stop prep;  
-* lapr - the same should happen with lapr - except there will be the tail of cab drug levels for several months 
-after stopping - this should be fine so long as person immediately starts art ;
-* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
@@ -6144,7 +6125,7 @@ if t ge 2 then do;
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
 			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
-			if prep   =1 and pop_wide_tld_prep ne 1 then do;	* lapr and dpv-vr - will need to add code here to indicate that cabotegravir monotherapy stopped;
+			if prep   =1 and pop_wide_tld_prep ne 1 then do;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;
 		end;
@@ -6164,7 +6145,7 @@ end;
 
 * note these lines only apply in period of infection;
 
-if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;	* lapr and dpv-vr - add code for o_cab = 1 but not dpv (topical);
+if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 
@@ -6233,7 +6214,7 @@ visit_tm1=visit;
    
 	if onart   =1 then tcur   =tcur_tm1 +0.25;   
 * ts1m:  	if onart   =1 then tcur   =tcur_tm1  + (1/12) ;
-	if prep   =1 then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - I think we would need equivalent code for lapr and dpv-vr; 
+	if prep   =1 then tcur =  tcur_tm1 +0.25;   
 * ts1m:  	if prep   =1 then tcur   =tcur_tm1  + (1/12) ;
 
 	if prep   =0 and caldate{t} ge date_prep_intro and onart    ne 1 then tcur   =.;
@@ -6252,7 +6233,7 @@ visit_tm1=visit;
 
 
 	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
-	if prep = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
+	if prep = 1 and pop_wide_tld_prep = 1 then do;
 	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
 	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
@@ -6293,7 +6274,7 @@ visit_tm1=visit;
  * ts1m:
 		toffart=toffart_tm1+ (1/12);   
 
-		if prep    ne 1 then do;	* lapr and dpv-vr  - any changes needed ?;
+		if prep    ne 1 then do;
 			if interrupt_supply_tm1 =1 then interrupt_supply   =1;
 			if interrupt_choice_tm1 =1 then interrupt_choice   =1;
 		end;
@@ -6404,8 +6385,7 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;	
-	* lapr and dpv-vr - will need to do a similar thing for o_cab only; 
+if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;
 if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 
@@ -6456,7 +6436,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			* some lost straight after diagnosis (unless already on tld);
 			d=uniform(0);  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
-			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;	  * lapr and dpv-vr - not sure this part needs any changes;
+			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;
 					if d < e_eff_prob_loss_at_diag      then do; visit=0; lost   =1; end;
 					if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then do; 
 					if d < e_eff_prob_loss_at_diag*1.5      then do; visit=0; lost   =1; end; * mar19;
@@ -6477,8 +6457,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep = 0;  end;
 
 
-* AP 21-7-19; * dont stop if have been taking tld prep ; 
-	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
+* AP 21-7-19; * dont stop if have been taking tld prep ;
 	if (infected_prep=1 or (hiv=1 and prep = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
 	end;
@@ -6536,7 +6515,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * viral load changes from t-1 to t, if ART-naive at time t-1;
 
-	if t ge 2 and prep    ne 1 then do;  * lapr - any_prep ? ;
+	if t ge 2 and prep    ne 1 then do;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
 			vc_tm1 =(gx*0.02275 + (0.05 * normal(0)))+ ((age_tm1-35)*0.00075);
@@ -6552,7 +6531,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 
 * CD4 changes from t-1 to t, if ART-naive at time t-1;
-	if t ge 3 and prep    ne 1 then do; * lapr - anyprep ?;
+	if t ge 3 and prep    ne 1 then do;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart    gt 0
 		and (resumec_tm1 =1 or resumec_tm2 =1)) then do;
@@ -6819,7 +6798,7 @@ res_test=.;
 	end;
 
 
-	* interruption of prep before diagnosis; * lapr - to add code for cab - add o_cab - accounting for tail ;
+	* interruption of prep before diagnosis;
 	* dependent_on_time_step_length ; 
 	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
 		interrupt   =1;
@@ -6833,13 +6812,12 @@ res_test=.;
 		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
 		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
 		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
-		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	* lapr - add rla and cab;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
-	* lapr - see changes in LAI code - this section deleted?;
 	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_tm1 =1 and prep=0))
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
@@ -6852,7 +6830,7 @@ res_test=.;
 		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
 		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
 		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
 		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
 		v_inter=vl_tm1; tcur_inter=tcur;
@@ -6883,7 +6861,7 @@ end;
 
 * RE-INITIATION OF THERAPY AFTER INTERRUPTING -  restart = 1 means restart at time t;
 
-	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
+	e_rate_restart=eff_rate_restart;
 	restart   =0;d=uniform(0);
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
@@ -6935,7 +6913,7 @@ end;
 		o_efa=mr_efa_tm1;
 		o_lpr=mr_lpr_tm1;
 		o_taz=mr_taz_tm1;
-		o_dol=mr_dol_tm1;	* lapr - add rla and cab;
+		o_dol=mr_dol_tm1;
 
 		* if return    =1 then do; * jan18 - think this should apply when restarting even if return ne 1;
 
@@ -6980,7 +6958,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep? ;
+	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end;
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -7014,7 +6992,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	end;
 
 
-	* restart_pi_after_dtg_fail   -  may18;	* lapr - do we need to consider CAB fail as well? ;
+	* restart_pi_after_dtg_fail   -  may18;
 	if reg_option in (103 104 110 111 114 116 117 118 119) and f_dol=1 and o_dol=1 and o_taz ne 1 and o_lpr ne 1 and (p_taz=1 or p_lpr=1) then do;
 		if t ge 2  and interrupt=0 and visit=1 then do;   
 			q=uniform(0); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
@@ -7030,7 +7008,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 			start_line3=1; 
 		end;
 
-	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; * lapr - consider f_cab? - see reg_option 501 in lai code ;
+	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
@@ -7048,7 +7026,6 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 	if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 	restart pi so have added on 104 here, along with 111); 
-		* lapr - does f_dol imply f_cab and vice versa? ;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
 			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
@@ -7234,7 +7211,6 @@ if prep=0 and switch_for_tox = 1 then do;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
  
-* lapr - add rla and cla;
 
 	end;
 
@@ -7247,14 +7223,14 @@ start_line2_this_period=.;
 
 
 	if art_intro_date <= caldate{t} < 2010.5 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_lpr=0 then o_lpr=1;
 			if t_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
  	if caldate{t} >= 2010.5 and caldate{t} < 2014 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_lpr=0 and t_lpr=0 then o_lpr=1;
 			if o_lpr=0 and f_nev=0 and t_nev=0 then o_nev=1;  if o_lpr=0 and f_nev=0 and t_nev=1 and t_efa=0 then o_efa=1;
@@ -7263,7 +7239,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2014 and caldate{t} < 2015 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -7280,7 +7256,7 @@ start_line2_this_period=.;
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1) and (caldate{t} < 2018.75 or reg_option in (101 102 107 108 109 112 113 115 ) ) 
 	then do; * dec17; * note 100 is for msfm;
 	* note if returing to former definition of policy 103 then need to add 103 in here;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -7291,14 +7267,14 @@ start_line2_this_period=.;
 	end;
 
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
 			o_zdv=1; goto vv66; 
 	end;
 
  	if caldate{t} >= 2015 and (f_taz=1 or f_lpr=1) and reg_option in (107 ) then do;  
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			* if t_lpr=1 and t_taz=1 and t_nev=0 then o_nev=1; 
@@ -7307,7 +7283,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if o_taz=0 and (t_nev=0 and f_nev=0) then o_nev=1;
@@ -7317,20 +7293,20 @@ start_line2_this_period=.;
 	end;
 
 	if reg_option in (999) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			o_dol=1;
 			o_zdv=1; goto vv66; 
 	end;
 	
 	if reg_option in (105) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_ten=0 then o_ten=1; if t_ten=1 then o_zdv=1; goto vv66; 
 	end;
 	if reg_option in (106) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_zdv=0 then o_zdv=1; if t_zdv=1 then o_ten=1; goto vv66; 
@@ -7346,7 +7322,7 @@ vv66:
 			if o_dar_tm1=1  and o_dar=0 then do;  tss_dar=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	* lapr - add o_cab, o_rla ;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
 	end;
 end;
 
@@ -7366,13 +7342,13 @@ if choose_line3=1  then do;
 			if o_taz_tm1=1  and o_taz=0 then do;  tss_taz=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	* lapr - add o_cab, o_rla ;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
 	end;
 
 if pi_after_dtg_fail=1  then do;  
 			pi_after_dtg_fail=.;
 			if artline=2 then artline=3; line3=1;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla; 
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -7381,11 +7357,11 @@ end;
 
 end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;		* lapr - updated code for LAI? ;
+* restart_pi_after_dtg_fail -  ;  * dec17;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla; 
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -7408,7 +7384,7 @@ then do;
 		if o_lpr=1 then f_lpr=1;
 		if o_taz=1 then f_taz=1;
 		if o_dar=1 then f_dar=1;
-		if o_dol=1 then f_dol=1;	* lapr - add o_cab, o_rla; 
+		if o_dol=1 then f_dol=1;
 end;
 end;
 end; 
@@ -7420,7 +7396,7 @@ wont switch anyway;
 
 
 * current number of drugs on;
-	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol; * lapr - add cab, rla?;
+	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol;
 
 
 * current number of nucs on;
@@ -7429,7 +7405,7 @@ wont switch anyway;
 
 	if t ge 2 and onart=1 and restart   =0 then toffart   =.;
 	
-	if onart=1 then do;	* lapr - add cab;
+	if onart=1 then do;
 		mr_zdv=o_zdv;
 		mr_3tc=o_3tc;
 		mr_ten=o_ten;
@@ -7441,7 +7417,7 @@ wont switch anyway;
 	end;
 
 
-* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);	* lapr - add cab;
+* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);
 	if o_zdv=1 then p_zdv=1;
 	if o_3tc=1 then p_3tc=1;
 	if o_ten=1 then p_ten=1;
@@ -7453,7 +7429,7 @@ wont switch anyway;
 	if o_dol=1 then p_dol=1;
 
 
-* date first start specific drugs;	* lapr - add cab (& taz from LAI?);
+* date first start specific drugs;
 if o_dol=1 and p_dol_tm1 ne 1 then date_start_dol = caldate{t};
 if o_efa=1 and p_efa_tm1 ne 1 then date_start_efa = caldate{t};
 if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
@@ -7582,25 +7558,6 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
-/*	* lapr - add o_cab, o_rla here? ie adh = 1. see LAI code for section on cla / rla - copied below
-
-if o_cla = 1 and o_rla = 1 then adh{t} = 1;
-
-current_adh_dl = .; 
-if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
-
-
-if o_cla ne 1 and tss_cla ge 1/12 and 
-(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-	if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-	if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
-end;
-
-
-*/ 
 
 
 
@@ -8618,8 +8575,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
-	* lapr - cab, add specific mutations (see LAI-ART code);
-
 	d=uniform(0);
 
 	if t ge 2 and d lt newmut_tm1 then do;
@@ -8665,8 +8620,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=uniform(0); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 
-		* lapr - add - o_rla here (from LAI) even though we're not considering RPV for this analysis? ;
-
 
 * pr mutations ;
 
@@ -8695,7 +8648,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=uniform(0); if cx < 0.03 then c_pr88m=1;
 		end;
 
-		* lapr - add code from LAI (cla)? pr_res_dol used x2 for CAB - any more specific data? ;
 * dol;
 		if o_dol_tm1=1 then do; 
 		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
@@ -8771,7 +8723,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
     +e_pr82m+e_pr84m+e_pr88m+e_pr90m;
 
     e_inmut=.;
-    e_inmut=e_inpm+e_insm;	* lapr - change to inprim;
+    e_inmut=e_inpm+e_insm;
 
 
 * LOSS OF MUTATIONS AFTER STOPPING (or return to mutations at infection - expect for m184v)
@@ -8821,7 +8773,7 @@ and starting another, non-x-resistant, regimen;
 
 	* integrase inhibitor; 
 
-		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	* lapr change to inprim?;
+		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;
 		a=uniform(0);if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
 
 end;
@@ -9637,7 +9589,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));	* lapr - add cab & consider tail code from LAI;
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -10546,11 +10498,11 @@ non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_
 
 	if t ge 2 and dead_tm1=1 then dead   =.;
 
-* f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
-cost_prep_oral=0; cost_prep_visit=0;cost_prep_ac_adh=0;
+* f_prep - Cost of PrEP - tests costed separately - from kzn mar19;
+cost_prep=0; cost_prep_visit=0;cost_prep_ac_adh=0;
 if prep=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
-	cost_prep_oral = prep_oral_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
+	cost_prep = prep_oral_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -10558,7 +10510,7 @@ if prep=1 and pop_wide_tld_prep ne 1 then do;
 end;
 if pop_wide_tld_prep = 1 then do;
 	cost_ten=0;	cost_3tc=0; cost_dol=0;
-	cost_prep_oral = prep_tld_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
+	cost_prep = prep_tld_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
 	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
 	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
@@ -10573,7 +10525,7 @@ cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
 
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
-+max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0,cost_prep_visit)
++max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep) + max(0,cost_prep_visit)
 +  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
@@ -10599,7 +10551,7 @@ cost_test_f_sw=0; if gender=2 and tested_as_sw=1 and tested_anc ne 1 and
 cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=cost_test;
 
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
-res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
+res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep=0; cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
  cost_prep_visit=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
@@ -13383,7 +13335,7 @@ _dcost_sw_program = cost_sw_program*discount;
 _dcost_switch_line = cost_switch_line*discount;
 _dcost_child_hiv = cost_child_hiv*discount;
 _dcost_child_hiv_mo_art = cost_child_hiv_mo_art*discount;
-_dcost_prep = cost_prep_oral*discount;
+_dcost_prep = cost_prep*discount;
 _dcost_prep_ac_adh = cost_prep_ac_adh*discount;
 _dcost_prep_visit = cost_prep_visit*discount;
 _dcost_art_init = cost_art_init*discount;
@@ -14907,7 +14859,7 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_full_vis_cost + full_vis_cost ; s_non_tb_who3_cost + non_tb_who3_cost ; s_cot_cost + cot_cost ; s_tb_cost + tb_cost ; s_cost_test + cost_test ;
 	s_res_cost + res_cost ; s_cost_circ + cost_circ ; s_cost_condom_dn + cost_condom_dn ; s_cost_sw_program + cost_sw_program ;  
 	s_t_adh_int_cost + t_adh_int_cost ; s_cost_test_m + cost_test_m ; 
-	s_cost_test_f + cost_test_f ; s_cost_prep + cost_prep_oral ; s_cost_prep_visit + cost_prep_visit ; s_cost_prep_ac_adh + cost_prep_ac_adh ; 
+	s_cost_test_f + cost_test_f ; s_cost_prep + cost_prep ; s_cost_prep_visit + cost_prep_visit ; s_cost_prep_ac_adh + cost_prep_ac_adh ; 
 	s_cost_test_m_sympt + cost_test_m_sympt ; s_cost_test_f_sympt + cost_test_f_sympt ;                         
     s_cost_test_m_circ + cost_test_m_circ ; s_cost_test_f_anc + cost_test_f_anc ; s_cost_test_f_sw + cost_test_f_sw ;                      
   	s_cost_test_f_non_anc + cost_test_f_non_anc ; s_pi_cost + pi_cost ;	s_cost_switch_line + cost_switch_line ; s_cost_child_hiv + cost_child_hiv ;   			
@@ -15157,7 +15109,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_full_vis_cost_80 + full_vis_cost ; s_non_tb_who3_cost_80 + non_tb_who3_cost ; s_cot_cost_80 + cot_cost ; s_tb_cost_80 + tb_cost ; s_cost_test_80 + cost_test ;
 	s_res_cost_80 + res_cost ; s_cost_circ_80 + cost_circ ; s_cost_condom_dn_80 + cost_condom_dn ; s_cost_sw_program_80 + cost_sw_program ;  
 	s_t_adh_int_cost_80 + t_adh_int_cost ; s_cost_test_m_80 + cost_test_m ; 
-	s_cost_test_f_80 + cost_test_f ; s_cost_prep_80 + cost_prep_oral ; s_cost_prep_visit_80 + cost_prep_visit ; s_cost_prep_ac_adh_80 + cost_prep_ac_adh ; 
+	s_cost_test_f_80 + cost_test_f ; s_cost_prep_80 + cost_prep ; s_cost_prep_visit_80 + cost_prep_visit ; s_cost_prep_ac_adh_80 + cost_prep_ac_adh ; 
 	s_cost_test_m_sympt_80 + cost_test_m_sympt ; s_cost_test_f_sympt_80 + cost_test_f_sympt ;                         
     s_cost_test_m_circ_80 + cost_test_m_circ ; s_cost_test_f_anc_80 + cost_test_f_anc ; s_cost_test_f_sw_80 + cost_test_f_sw ;                      
   	s_cost_test_f_non_anc_80 + cost_test_f_non_anc ; s_pi_cost_80 + pi_cost ;	s_cost_switch_line_80 + cost_switch_line ; s_cost_child_hiv_80 + cost_child_hiv ;   			
@@ -15344,7 +15296,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 proc print; var caldate&j cald age death; 
 where age ge 15 and serial_no<50 and death =.;
 run; 
-
 
 /*
 
