@@ -19840,7 +19840,7 @@ proc sort; by run;run;
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
-  by run;run;
+  by run;
 
 
 keep p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_95 prevalence1549w_95 prevalence1549m_05 prevalence1549w_05
