@@ -19428,25 +19428,25 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-%var(v=p_w_giv_birth_this_per); 	%var(v=p_mcirc); 	%var(v=prevalence1549m);  %var(v=prevalence1549w); 
-%var(v=incidence1549w);  %var(v=incidence1549m);    %var(v=incidence_sw);   	%var(v=p_diag);  	%var(v=p_diag_m);    %var(v=p_diag_w); 	
-%var(v=p_w_1549_sw);   %var(v=mtct_prop);   %var(v=p_1564_onprep);   %var(v=p_onart);  
+%var(v=prevalence1549m);  %var(v=prevalence1549w); 
+%var(v=incidence1549w);  %var(v=incidence1549m);    %var(v=incidence_sw);   %var(v=prop_w_1549_sw);  %var(v=p_mcirc);
+%var(v=p_diag);  	%var(v=p_diag_m);    %var(v=p_diag_w);  %var(v=p_onart);  
 %var(v=p_onart_diag);  %var(v=p_onart_vl1000);    %var(v=p_vl1000); 	%var(v=p_onart_vl1000_w); 	%var(v=p_onart_vl1000_m);    
-%var(v=p_onart_cd4_l500);  %var(v=p_onart_m_age50pl);  %var(v=p_onart_w_age50pl);   %var(v=p_onart_cd4_l200);   %var(v=p_startedline2); 
+%var(v=p_startedline2)  %var(v=mtct_prop);   %var(v=prop_1564_onprep);  %var(v=p_w_giv_birth_this_per); 	 ; 
 
 
 data a.w_&dataset_id; merge 
 p_w_giv_birth_this_per	p_mcirc	prevalence1549m prevalence1549w incidence1549w  incidence1549m   incidence_sw  	p_diag 	p_diag_m   p_diag_w	
-prop_w_1549_sw  mtct_prop  prop_1564_onprep  p_onart p_onart_diag p_onart_vl1000   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m   p_onart_cd4_l500  
-p_onart_m_age50pl p_onart_w_age50pl  p_onart_cd4_l200  p_startedline2
+prop_w_1549_sw  mtct_prop  prop_1564_onprep  p_onart p_onart_diag p_onart_vl1000   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m   
+p_startedline2
 ; * above must match lower part of keep statement above;
 
 keep 	prevalence1549m_95 prevalence1549w_95 prevalence1549m_05 prevalence1549w_05
 prevalence1549m_10 prevalence1549w_10 prevalence1549m_15 prevalence1549w_15 prevalence1549m_21 prevalence1549w_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21  p_onart_21 
-p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  p_onart_m_age50pl_21 
-p_onart_w_age50pl_21  p_onart_cd4_l200_21  p_startedline2_21  p_w_giv_birth_this_per_21	p_mcirc_21;
+p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   
+p_startedline2_21  p_w_giv_birth_this_per_21	p_mcirc_21;
 
 run;
 
