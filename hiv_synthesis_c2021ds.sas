@@ -19385,8 +19385,8 @@ n_new_inf1549 = s_primary1549 * &sf * 4;
 keep run option cald 
 
 p_w_giv_birth_this_per	p_mcirc	prevalence1549m prevalence1549w incidence1549w  incidence1549m   incidence_sw  	p_diag 	p_diag_m   p_diag_w	
-prop_w_1549_sw  mtct_prop  prop_1564_onprep  p_onart p_onart_diag p_onart_vl1000   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m   p_onart_cd4_l500  
-p_onart_m_age50pl p_onart_w_age50pl  p_onart_cd4_l200  p_startedline2
+prop_w_1549_sw  mtct_prop  prop_1564_onprep  p_onart p_onart_diag p_onart_vl1000   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m   
+p_startedline2
 
 ;
 
