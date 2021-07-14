@@ -366,7 +366,7 @@ newp_seed = 7;
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
 * ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
-							* #south_africa ; %sample(ych_risk_beh_newp, 0.7 0.8 0.9, 0.2 0.1 0.5 0.4);
+							* #south_africa ; %sample(ych_risk_beh_newp, 0.7 0.8 0.9, 0.1 0.5 0.4);
 
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
@@ -19458,7 +19458,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_startedline2)  %var(v=mtct_prop);   %var(v=prop_1564_onprep);  %var(v=p_w_giv_birth_this_per); 	 ; 
 
 
-data a.w_sa_&dataset_id; merge 
+data a.w_sa_c2021ds_&dataset_id; merge 
 p_w_giv_birth_this_per	p_mcirc	prevalence1549m prevalence1549w incidence1549w  incidence1549m   incidence_sw  	p_diag 	p_diag_m   p_diag_w	
 prop_w_1549_sw  mtct_prop  prop_1564_onprep  p_onart p_onart_diag p_onart_vl1000   p_vl1000	p_onart_vl1000_w	p_onart_vl1000_m   
 p_startedline2
