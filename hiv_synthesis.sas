@@ -321,7 +321,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:4);
+* inc_cat; 					%sample_uniform(inc_cat, 1:4);  * #south_africa ;  inc_cat = 4;
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -363,10 +363,14 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
+							* #south_africa ;ych_risk_beh_newp =1;
+
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
+							* #south_africa ;ych_risk_beh_newp = 0.9;
+
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
@@ -621,6 +625,13 @@ newp_seed = 7;
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
 								0.2 	0.2 	0.2 	0.2		0.1		0.1);
+
+							* #south_africa ;  
+							%sample(prob_loss_at_diag, 
+								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
+								0.00	0.00	0.1 	0.5		0.30	0.1);
+
+
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
@@ -633,6 +644,12 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.01	0.10 	0.50 	0.80, 
 								0.10 	0.40	0.25 	0.25);
+
+							* #south_africa ;  
+							%sample(rate_return, 
+								0.01	0.10   0.3 		0.50 , 
+								0.10 	0.40   0.25 	0.25 );
+
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
@@ -658,11 +675,20 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 * AP 19-7-19 ;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
+
+							* #south_africa ;  %sample_uniform(rate_int_choice, 0.0060 0.0080); 
+
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
+							
+							* #south_africa ;
+							%sample(prob_vl_meas_done, 
+								0.0		0.1		0.7		1,
+								0.00	0.00	0.50	0.50);
+
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
 * prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.2 0.3 0.5);
@@ -758,6 +784,11 @@ newp_seed = 7;
 								0.05	0.1		0.39	0.9, 
 								0.33	0.32	0.25	0.10);
 
+							* #south_africa ;  
+							%sample(prob_birth_circ, 
+								0.1 	0.2		0.3 	0.5, 
+								0.2 	0.3 	0.3 	0.2 );	
+									
 
 
 * PREP;
@@ -809,14 +840,14 @@ if prep_willing=1;
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.005;
+prob_test_sbp_undiagnosed = 0.01;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 7; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
 hypertension, per period;
 prob_test_sbp_diagnosed = 0.1; 
 * probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
-prob_imm_anti_hypertensive = 0.8; 
+prob_imm_anti_hypertensive = 0.9; 
 * for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
 starting anti-hypertensive;
 prob_start_anti_hyptertensive = 0.01; 
