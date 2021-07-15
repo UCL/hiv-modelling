@@ -500,6 +500,9 @@ end;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart;						if s_hiv1564 gt 0 then p_onart = s_onart / s_hiv1564;
+* n_onart_w;					n_onart_w = s_onart_w * &sf;
+* n_onart_m;					n_onart_m = s_onart_m * &sf;
+* n_onart  ;					n_onart   = s_onart   * &sf;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
