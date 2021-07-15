@@ -10,7 +10,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 	s_alive = s_alive_&yr; p_w_giv_birth_this_per = p_w_giv_birth_this_per_&yr;
 	prevalence1549 = prevalence1549_&yr;  prevalence1549m = prevalence1549m_&yr; prevalence1549w = prevalence1549w_&yr; 
-	incidence1549 = incidence1549; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
+	incidence1549 = incidence1549_&yr; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
 	p_diag = p_diag_&yr; p_diag_m = p_diag_m_&yr; p_diag_w = p_diag_w_&yr;
 	p_onart_diag = p_onart_diag_&yr;	p_onart_vl1000 = p_onart_vl1000_&yr; p_onart_vl1000_w = p_onart_vl1000_w_&yr;	p_onart_vl1000_m = p_onart_vl1000_m_&yr;
 	p_vl1000 = p_vl1000_&yr;	prevalence_vg1000 = prevalence_vg1000_&yr;
@@ -18,7 +18,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 	p_ai_no_arv_c_nnm = p_ai_no_arv_c_nnm_&yr; mtct_prop = mtct_prop_&yr; prop_1564_onprep = prop_1564_onprep_&yr;
 	p_onart_cd4_l500 = p_onart_cd4_l500_&yr; p_onart_m_age50pl = p_onart_m_age50pl_&yr;p_onart_w_age50pl = p_onart_w_age50pl_&yr;
 	p_onart_cd4_l200 = p_onart_cd4_l200_&yr; p_startedline2 = p_startedline2_&yr;
-	p_newp_ge1 = p_newp_ge1_&yr; p_newp_ge5 = p_newp_ge5_&yr; p_iime =  p_newp_ge5_&yr;
+	p_newp_ge1 = p_newp_ge1_&yr; p_newp_ge5 = p_newp_ge5_&yr; p_iime =  p_iime_&yr;
 
 	rate_dead_cvd = rate_dead_cvd_&yr; rate_dead_tb = rate_dead_tb_&yr;
 	rate_dead_hivpos_sbi = rate_dead_hivpos_sbi_&yr; rate_dead_hivpos_oth_adc = rate_dead_hivpos_oth_adc_&yr;
@@ -42,7 +42,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 	prevalence3539m = prevalence3539m_&yr; prevalence4044w = prevalence4044w_&yr; prevalence4044m = prevalence4044m_&yr;
 	prevalence4549w = prevalence4549w_&yr; prevalence4549m = prevalence4549m_&yr; prevalence5054w = prevalence5054w_&yr; 
 	prevalence5054m = prevalence5054m_&yr; prevalence5054w = prevalence5054w_&yr;	prevalence5054m = prevalence5054m_&yr;
-	prevalence5559w = prevalence5054m_&yr; prevalence5559m = prevalence5559m_&yr; prevalence6064w = prevalence6064w_&yr;
+	prevalence5559w = prevalence5559w_&yr; prevalence5559m = prevalence5559m_&yr; prevalence6064w = prevalence6064w_&yr;
 	prevalence6064m = prevalence6064m_&yr; prevalence65plw = prevalence65plw_&yr; prevalence65plm = prevalence65plm_&yr;
 
 	r_prev_1519w_4549w = r_prev_1519w_4549w_&yr; r_prev_2024w_4549w = r_prev_2024w_4549w_&yr; r_prev_2529w_4549w = r_prev_2529w_4549w_&yr;
