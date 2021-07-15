@@ -41,8 +41,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 	prevalence3034w = prevalence3034w_&yr; prevalence3034m = prevalence3034m_&yr; prevalence3539w = prevalence3539w_&yr;
 	prevalence3539m = prevalence3539m_&yr; prevalence4044w = prevalence4044w_&yr; prevalence4044m = prevalence4044m_&yr;
 	prevalence4549w = prevalence4549w_&yr; prevalence4549m = prevalence4549m_&yr; prevalence5054w = prevalence5054w_&yr; 
-	prevalence5054m = prevalence5054m_&yr; prevalence5054w = prevalence5054w_&yr;	prevalence5054m = prevalence5054m_&yr;
-	prevalence5559w = prevalence5559w_&yr; prevalence5559m = prevalence5559m_&yr; prevalence6064w = prevalence6064w_&yr;
+	prevalence5054m = prevalence5054m_&yr; prevalence5559w = prevalence5559w_&yr; prevalence5559m = prevalence5559m_&yr; prevalence6064w = prevalence6064w_&yr;
 	prevalence6064m = prevalence6064m_&yr; prevalence65plw = prevalence65plw_&yr; prevalence65plm = prevalence65plm_&yr;
 
 	r_prev_1519w_4549w = r_prev_1519w_4549w_&yr; r_prev_2024w_4549w = r_prev_2024w_4549w_&yr; r_prev_2529w_4549w = r_prev_2529w_4549w_&yr;
