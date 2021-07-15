@@ -253,8 +253,24 @@ h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  
 
 ;
 by cald;
-run;
 
+
+
+if cald = 2012 then n_onart_obs_sa = 2200000 / 5.85 ;
+if cald = 2013 then n_onart_obs_sa = 2660000 / 5.85 ;
+if cald = 2014 then n_onart_obs_sa = 3080000 / 5.85 ;
+if cald = 2015 then n_onart_obs_sa = 3430000 / 5.85 ;
+if cald = 2016 then n_onart_obs_sa = 3770000 / 5.85 ;
+if cald = 2017 then n_onart_obs_sa = 4250000 / 5.85 ;
+if cald = 2018 then n_onart_obs_sa = 4630000 / 5.85 ;
+if cald = 2019 then n_onart_obs_sa = 5060000 / 5.85 ;
+if cald = 2020 then n_onart_obs_sa = 5330000 / 5.85 ;
+
+
+if cald=2008 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
+if cald=2012 then do; prev_obs_sa = 0.169 ; end;
+if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
+if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.188 ; end;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
@@ -482,6 +498,10 @@ series  x=cald y=p50_prevalence1549w_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+
+series  x=cald y=prev_obs_sa/	lineattrs = (color=red thickness = 2) ;
+series  x=cald y=prev_w_obs_sa /	lineattrs = (color=red thickness = 2);
+series  x=cald y=prev_m_obs_sa/	lineattrs = (color=red thickness = 2) ;
 
 run;quit;
 
@@ -881,6 +901,7 @@ series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_onart_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=n_onart_obs_sa;
 
 run;quit;
 

@@ -364,20 +364,20 @@ newp_seed = 7;
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
 * ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
-							* #south_africa ;ych_risk_beh_newp =1;
+							* #south_africa ;ych_risk_beh_newp =1.0;
 
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
-							* #south_africa ;ych_risk_beh_newp = 0.9;
+							* #south_africa ;ych_risk_beh_newp = 1.0;
 
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  * #south_africa ;%sample_uniform(ych_risk_beh_ep, 0.9 0.95 1);
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
-* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7);
-* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15);
+* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); * #south_africa ;  %sample_uniform(p_rred_p, 0.1 0.2 0.3);
+* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); * #south_africa ;  %sample_uniform(p_hsb_p, 0.08 0.15 0.30);
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -676,7 +676,7 @@ newp_seed = 7;
 * AP 19-7-19 ;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
 
-							* #south_africa ;  %sample_uniform(rate_int_choice, 0.0060 0.0080); 
+							* #south_africa ;  %sample_uniform(rate_int_choice, 0.01  0.02  0.05 ); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
