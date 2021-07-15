@@ -256,9 +256,6 @@ by cald;
 run;
 
 
-proc print; var cald p50_p_vl1000__0 p50_p_vl1000__1; run;
-
-
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
