@@ -376,8 +376,8 @@ newp_seed = 7;
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
-* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); * #south_africa ; * %sample_uniform(p_rred_p, 0.2 0.3 0.5);
-* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); * #south_africa ; * %sample_uniform(p_hsb_p, 0.08 0.15 0.30);
+* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); * #south_africa ; * %sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
+* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); * #south_africa ; * %sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -629,7 +629,7 @@ newp_seed = 7;
 							* #south_africa ;  
 							* %sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.00	0.00	0.1 	0.5		0.30	0.1);
+								0.00	0.00	0.1 	0.4		0.40	0.1);
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
