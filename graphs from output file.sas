@@ -498,9 +498,9 @@ band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transp
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
-series  x=cald y=prev_obs_sa/	lineattrs = (color=red thickness = 2) ;
-series  x=cald y=prev_w_obs_sa /	lineattrs = (color=red thickness = 2);
-series  x=cald y=prev_m_obs_sa/	lineattrs = (color=red thickness = 2) ;
+series  x=cald y=prev_obs_sa/	lineattrs = (color=black thickness = 3) ;
+series  x=cald y=prev_w_obs_sa /	lineattrs = (color=blue  thickness = 3);
+series  x=cald y=prev_m_obs_sa/	lineattrs = (color=green thickness = 3) ;
 
 run;quit;
 

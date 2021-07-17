@@ -521,6 +521,11 @@ newp_seed = 7;
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
+							* #south_africa; * 
+						    %sample(date_test_rate_plateau, 
+								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
+								0.0 	0.0 	0.0 	1.0 	0.0);
+
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
@@ -739,6 +744,8 @@ newp_seed = 7;
 * SEX WORKERS;
 
 * base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+							* #south_africa; * %sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.8 0.2 0.0);
+							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
