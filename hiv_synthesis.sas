@@ -209,7 +209,7 @@ newp_seed = 7;
 								0.05 	0.05 	0.8 	0.05	0.05);
 							* #south_africa ; * ych_risk_beh_newp = 1.0;
 
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  * #south_africa ; * %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  * #south_africa ; * ych_risk_beh_ep=1;
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
@@ -582,7 +582,7 @@ newp_seed = 7;
 * SEX WORKERS;
 
 * base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-							* #south_africa; * %sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.4 0.4 0.2 0.0);
+							* #south_africa; * %sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);

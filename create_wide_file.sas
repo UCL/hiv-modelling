@@ -1,6 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds\";
+libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\";
 
 /** show the contents of the input SAS file */
 * proc contents data=a.hiv_synthesis_base;
