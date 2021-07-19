@@ -3746,7 +3746,8 @@ we will have to modify the value when we have data to compare with;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* RISK OF NEW INFECTION ;  * part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
+* Updating variables only relevant for 15-64 year olds ;  
+* part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
@@ -4012,7 +4013,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 end;
 
 
-* HIV TESTING;
+* HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65;
 
 tested_as_sw=.;
  
