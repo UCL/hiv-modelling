@@ -2169,7 +2169,6 @@ else if sw_program_visit=1 then do; e=uniform(0);
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;
 		eff_prob_prep_all_restart_choice=prob_prep_all_restart_choice;
 		* lapr and dpv-vr - consider if any needs to change ;
-
 end; 
 
 end;
@@ -4344,7 +4343,7 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 		else if prep_tm1 ne 1 then do;
 			*if people discontinued even if they had newp>1 previously (stop_prep_choice=1), then the probability of restart is
 			given by eff_prob_prep_all_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
-			stop_prep_choice ne 1) then the probability of restart is given by prob_prep_restart;
+			stop_prep_choice ne 1) then the probability of restart is given by prob_prep_all_restart;
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
 
 			if tested=1 then do; * dependent_on_time_step_length;
@@ -5193,7 +5192,7 @@ k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.
 p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  inpm=.; insm=.;
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
 p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  inpm_p=.;  insm_p=.;
-* lapr and dpv-vr - do we need to define new mutations?
+* lapr and dpv-vr - do we need to define new mutations? ;
 
 *prob infection in 3mths from the infected partner;
 
@@ -6404,7 +6403,7 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;	
+if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;
 	* lapr and dpv-vr - will need to do a similar thing for o_cab only; 
 if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
@@ -6477,7 +6476,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep = 0;  end;
 
 
-* AP 21-7-19; * dont stop if have been taking tld prep ; 
+* AP 21-7-19; * dont stop if have been taking tld prep ;
 	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
 	if (infected_prep=1 or (hiv=1 and prep = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
@@ -7030,7 +7029,8 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 			start_line3=1; 
 		end;
 
-	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; * lapr - consider f_cab? - see reg_option 501 in lai code ;
+	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
+	* lapr - consider f_cab? - see reg_option 501 in lai code ;
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
@@ -8665,7 +8665,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=uniform(0); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 
-		* lapr - add - o_rla here (from LAI) even though we're not considering RPV for this analysis? ;
+		* lapr - add - o_rla here (from LAI) even though we are not considering RPV for this analysis? ;
 
 
 * pr mutations ;
