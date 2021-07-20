@@ -1,167 +1,5 @@
 
 
-* === ABOUT THIS PROGRAM  === *
-
---
- 
-This is the unified hiv synthesis  program for sub saharan africa.
-
-All programs run on legion/myriad for presentations/publications will use this program.
-
-When running to address a specific research question the only parts of the program that may differ from this core program are 
-the "options code" section and the the "update code" and the file name specified in the output file at the end of the program.  
-
-In addition the section parameter values sampled can be replaced by reading an existing set of values for these parameters.  
-
-Proposed approach to new evaluations:  For example, consider the evaluation of 6 potential art strategies.  Suggest we use two approaches for the 
-evaluation. 
-1. (as currently programmed below as of 29 aug 2019) the reference (comparator) art strategy is option 0, for each run there is a possibility of 
-each of the 6 alternatives as option 1.  Several evaluations for different questions can be evaluated simultaneously. A regression model of 
-difference between option 1 and 0 (on some outcome such as incidence, DALYS, net DALYs) on the parameters relevant for each evaluation is fitted on 
-the outputs to isolate the effects for each evaluation.  (an alterative to this that we could consider is to run 2 random "option 1s" for each run
-rather than always run an option 0 (no new intervention)
-2. all 6 options are run simultaneously for each model run (options 0 to 5), with no other interventions differing across these 6 options. The 
-programming of other interventions means that we are able to consider this comaparison against a background of different future changes in other
-interventions but, unlike in approach 1 above, these other interventions would be the same across the 6 options. 
-This latter aapproach (2) is the approach we have been using for several years.  Running both approaches 1 and 2 will help us ascertain whether approach 1 
-has potential to replace approach 2 in future.
-
-
-NOTES / CONSIDERATIONS / ISSUES
-
-
-- prep:  is > 80% adh enough for max efficacy ?
-
-- check that suppressed viral load levels are low enough - % with vl < 1000 looks fine but check % with vl < 50 / 500 also looks ok
-
-- no change in efficacy with m184v in partner ?
-  lower rate transmission m184v (and/or lower persistence) ?
-
-- note that the scale factor to scale up to a population of 10 million (say) will differ according to inc_cat
-- perhaps need to scale up per run according to t_alive1565 
-
-- abort early based on plausible gender-specific prevalence
-
-- infected_prep applies for starting prep when in primary, but not when starting prep due to test sensitivity 
-
-- take account of fact that in namsal it took longer than 1 year for people with > 1 million VL at baseline to decline to < 50
-(but less time to decline to < 1000) - regardless of regimen - not sure that adding this will add anything but keep considering
-
-- could add in possibility of greater rate of initiation of art in hiv+ people who are diagnosed but off art (pop_wide_tld) due to easier access
-but will leave out for now to err on side of being conservative about the strategy
-
-- for country calibrations will calibrate to past trend in pop size and hiv prevalence and then current values of the wide range of measures
-
-- add sw modelling to this and run sex worker interventions at same time ? (include fsw interventions so this can show generalisability of sex worker 
-modelling done in zim context) - or is it better to stick to country specific models for that ?  
-
-- can use this exact multiple enhancements program in the context of specific country contexts
-
-- when these runs are done can add new intervetnions to evaluate - but need to add only one new intervention at a time and add it to the overall 
-number of runs - if try to add more than one change at the time time we lose the independent sampling of parameters
-
-- what about the fact that the enhancements are a mixture of introducing new strategies and somehow enhancing the extent or effectiveness
-of interventions already in place - I think OK so long as all sampling of enhancements is independent
-
-- considered that some interventions can be time limited (esp hiv testing increases) - but decided to keep as is because may be problematic 
-to assume a derease again in x years 
-
-- conceive of an additional average annual cost per hiv diagnosed person (without sv = 1) to help to improve all below: 
-incr_adh_2020 decr_hard_reach_2020 decr_prob_loss_at_diag_2020 decr_rate_lost_2020 decr_rate_lost_art_2020
-incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_init_2020  decr_rate_int_choice_2020  
-
-- consider higher pr_art_init if diagnosed while on prep
-
-- proposed options: (i) no improvements  (ii) improvements (incl cascade of care, prep, circumcision, condoms,  tld in all on art (can sample from each of the 4 
-alternatives below), alternative monitoring strategies of tld art initiators, tld for all men (except if tested -ve and np=0, start tld if np goes >= 1)
-sample these)
-
-- is it plausible that so people have very low adherence to prep and dont re-test within the 3 month period before re-starting (assume they will be 
-instructed to take PrEP every day and if they have a break of x days they need to test again) ? 
-- how will progress if want to do a new project on kzn ?  add back in demographics and c_score code from kzn 
-- keep leigh and gesine involved
-- at some point model effect of sti testing on sti ?
-
-- for future consideration: how can prep programs for agyw in KZN assess if they are cost effective ?  consider:
-a. proportion of (re-)starters testing +ve within 3 months (the higher, the more cost effective)  b. proportion of people on prep > 3 months testing 
-+ve per 3 months (the lower, the more cost effective)  vary adherence, propensity to want to take, elig criteria (fsw only, >= 1 newp, >=2 newp, 
->= 3 newp), incidence in 2017 (which varies anyway), efficacy, predict ce from a, b, cost prep/visits (or will they be equal across KZN ?)
-(this applies assing rdt for the first test - proportion of (re-)starters testing +ve within 3 months will vary with window period of first test)
-explore metrics for how to monitor prep programmes
-
-- review gender differences in HIV prevalence and proportion diagnosed - larger differences seen in PHIA data
-
-
-* === LOVELEEN NOTES 
-
-
-
-* === ANDREW NOTES 
-
-to do before starting testing in preparation for runs:
-
-- we should consider these sections and probably delete all or most and put in issues in github instead
-
-- this is to note that for advanced hiv disease we so far have measurement of cd4 each time a person returns to care, but we do not have use of 
-  measurement if crag or tblam switched on - we also do not have any use of prophylaxis for tb, sbi or crypm switched on
-
-- consider effect of sw_program_visit on prob of starting and continuing on prep in sw
-
-- add in exposure at birth (mother infected), mother vl, child prophylaxis, infection at birth based on mtct rate and at least risk of aids death, 
-	resistance, diagnosed, onart, up to age 15 (would need to create a variable for each pregnancy for hiv+ women as to whether has transmitted to
-    the child, which can happen up to end of breastfeeding) - this would be based on woman-specific probabilities while the risk of babies being
-    infected would depend on the distribution of uch probabilities across all pregnant women in the period. probably will have to stick with having 
-    pregnant = 1 only in one period for the period of childbirth (and not counting still births or miscarriages) but can include probabilities
-	of infection during breastfeeding based on dn of breastfeeding and viral load during the breastfeeding period.
-
-- model ipt ?
-
-- make parameters like rare_int_choice so that they vary between individuals ?
-
-- todo: add in the variables to take medians of (cd4diag  measured_cd4art  years_since_start_prep n_test_prev_4p_onprep age_deb_sw  tot_dur_sw)
-
-- consider effects on transmission of increases in gx
-
-- consider again early mismatch in newp by gender, and also growing newp_ge1 / newp_ge5 in first years to 1995: considered acceptable so long as resolved 
-  by around 1995.   We could have a  burn in period for newp before hiv introduced in 1989 but wonder if it is worth the disruption when everything seems 
-  generally OK  	
-
-- re-visit costs (particularly of testing)
-
-- sample rate of leaving sex work 
-
-- vmmc needs to depend on age
-
-- conceive of an additional average annual cost per hiv diagnosed person (without sv = 1) to help to improve all below: 
-  incr_adh_2020 decr_hard_reach_2020 decr_prob_loss_at_diag_2020 decr_rate_lost_2020 decr_rate_lost_art_2020
-  incr_rate_return_2020 incr_rate_return_2020 incr_rate_restart_2020 incr_rate_init_2020  decr_rate_int_choice_2020  
-
-- consider extra costs testing sw - currently sw_test_6mthly_2020 intervention is assumed to cost only the cost of the extra tests 
-- more generally, have included an annual cost for people with diagnosed hiv and sv ne 1 to improve cascade but have not included additional costs beyond
-  unit costs for increased switch of increased viral load measure done, prep or circumcision - still no specific costs for lower newp / more condom use
-
-- consider that cascade of care enhancements can be general or in sex workers only 
-
-* ==== VALE NOTES 
-
-
-
-
-* ==== DOCUMENTATION NOTES AND IDEAS
-
-
-- new outputs:  AIDS death rate by CD4 at start of ART and ahd{t} in first period
-
-***testing merge;
-
-
-
-* ==== GENERAL NOTES AND CONSIDERATIONS  
-
-;
-
-
-
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
@@ -321,7 +159,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:4);
+* inc_cat; 					%sample_uniform(inc_cat, 1:4);  * #south_africa ; *  inc_cat = 4;
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -363,17 +201,21 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
+							* #south_africa ; * %sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.1 0.4 0.3 0.2);
+
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);
+							* #south_africa ; * ych_risk_beh_newp = 1.0;
+
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  * #south_africa ; * ych_risk_beh_ep=1;
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
-* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7);
-* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15);
+* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); * #south_africa ; * %sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
+* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); * #south_africa ; * %sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -517,6 +359,11 @@ newp_seed = 7;
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
+							* #south_africa; * 
+						    %sample(date_test_rate_plateau, 
+								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
+								0.0 	0.0 	0.0 	1.0 	0.0);
+
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
@@ -621,6 +468,13 @@ newp_seed = 7;
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
 								0.2 	0.2 	0.2 	0.2		0.1		0.1);
+
+							* #south_africa ;  
+							* %sample(prob_loss_at_diag, 
+								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
+								0.00	0.00	0.1 	0.4		0.40	0.1);
+
+
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
@@ -633,6 +487,12 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.01	0.10 	0.50 	0.80, 
 								0.10 	0.40	0.25 	0.25);
+
+							* #south_africa ;  
+							* %sample(rate_return, 
+								0.01	0.10   0.3 		0.50 , 
+								0.10 	0.40   0.25 	0.25 );
+
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
@@ -658,11 +518,20 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 * AP 19-7-19 ;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
+
+							* #south_africa ; * %sample_uniform(rate_int_choice, 0.01  0.02  0.05 ); 
+
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
+							
+							* #south_africa ;
+							* %sample(prob_vl_meas_done, 
+								0.0		0.1		0.7		1,
+								0.00	0.00	0.50	0.50);
+
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
 * prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.2 0.3 0.5);
@@ -713,6 +582,8 @@ newp_seed = 7;
 * SEX WORKERS;
 
 * base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+							* #south_africa; * %sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);
+							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
@@ -758,6 +629,11 @@ newp_seed = 7;
 								0.05	0.1		0.39	0.9, 
 								0.33	0.32	0.25	0.10);
 
+							* #south_africa ;  
+							* %sample(prob_birth_circ, 
+								0.1 	0.2		0.3 	0.5, 
+								0.2 	0.3 	0.3 	0.2 );	
+									
 
 
 * PREP;
@@ -809,14 +685,14 @@ if prep_willing=1;
 * probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.005;
+prob_test_sbp_undiagnosed = 0.01;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 7; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
 hypertension, per period;
 prob_test_sbp_diagnosed = 0.1; 
 * probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
-prob_imm_anti_hypertensive = 0.8; 
+prob_imm_anti_hypertensive = 0.9; 
 * for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
 starting anti-hypertensive;
 prob_start_anti_hyptertensive = 0.01; 
@@ -11208,9 +11084,9 @@ if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and
 
 * ahd_re_enter_care;
 ahd_re_enter_care_100=0; if 0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then cd4_re_enter_care_100=1;
+or cm=1 then ahd_re_enter_care_100=1;
 ahd_re_enter_care_200=0; if 0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then cd4_re_enter_care_200=1;
+or cm=1 then ahd_re_enter_care_200=1;
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
