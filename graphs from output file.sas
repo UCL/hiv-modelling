@@ -135,7 +135,7 @@ incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ 
 incidence5564w_ incidence5564m_ 
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
-p_onart_w p_onart_m  p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
+p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart ;
@@ -190,7 +190,7 @@ incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ 
 incidence5564w_ incidence5564m_ 
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
-p_onart_w p_onart_m  p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
+p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart ;
@@ -508,7 +508,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1 = "Option 1  (median) ";
@@ -856,36 +856,6 @@ series  x=cald y=p50_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_onart_m_0 = "Option 0 (median) ";
-label p50_p_onart_m_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_onart_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of women on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_onart_w_0 = "Option 0 (median) ";
-label p50_p_onart_w_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_onart_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
 
 
 proc sgplot data=d; 
