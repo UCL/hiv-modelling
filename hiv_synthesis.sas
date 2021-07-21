@@ -416,6 +416,7 @@ newp_seed = 7;
 * rate_ch_art_init_str_2011;	
 							rate_ch_art_init_str_2011 = 0.4;	* rate of change in art initiation strategy in 2011;
 							* dependent_on_time_step_length ;
+							* #south_africa; * rate_ch_art_init_str_2011 = 0.1;
 
 * 26_11_19; 
 * all * dependent_on_time_step_length ;
@@ -2652,7 +2653,7 @@ end;
 
 
 
-* PREGNANCY AND CHILDREN;
+* PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
 
 if t ge 2 and gender=2 then do;
 	pregnant=0;anc=0;on_sd_nvp=0;on_dual_nvp=0;
@@ -3923,7 +3924,7 @@ end;
 
 
 
-* OCCURRENCE OF PREGNANCY;
+* OCCURRENCE OF PREGNANCY; * also note pregnancy code higher up in section 3A;
 
 u=uniform(0);
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;

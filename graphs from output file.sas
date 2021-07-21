@@ -2,7 +2,7 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c2021ds\";
+libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c2021ds_sa\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
@@ -115,7 +115,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  20  ;
+%let nfit =  300  ;
 %let year_end = 2021.00 ;
 run;
 proc sort;by cald option ;run;
