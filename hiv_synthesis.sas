@@ -413,9 +413,10 @@ newp_seed = 7;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
 * dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
 
-* rate_ch_art_init_str_2011;	
-							rate_ch_art_init_str_2011 = 0.4;	* rate of change in art initiation strategy in 2011;
+* rate_ch_art_init_str;	
+							rate_ch_art_init_str = 0.4;	* rate of change in art initiation strategy in 2011;
 							* dependent_on_time_step_length ;
+							* #south_africa; * rate_ch_art_init_str = 0.1;
 
 * 26_11_19; 
 * all * dependent_on_time_step_length ;
@@ -851,7 +852,7 @@ util_adc = rand('beta',2,6); util_adc = 0.46;
 /*
 * ts1m: running with monthly time steps - transformation of rate parameters  ;
 
-rate_ch_art_init_str_2011 = 1 - (1 - rate_ch_art_init_str_2011)**(1/3) ;
+rate_ch_art_init_str = 1 - (1 - rate_ch_art_init_str)**(1/3) ;
 rate_want_no_more_children = 1 - (1 - rate_want_no_more_children )**(1/3) ;
 rate_sti = 1 - (1 - rate_sti )**(1/3) ;
 rate_persist_sti = 1 - (1 - rate_persist_sti )**(1/3) ;
@@ -1940,15 +1941,17 @@ if 2005.5 <= caldate{t} then do;
 	hiv_monitoring_strategy = 2; 
 end;  * few facilities measuring cd4 early on;
 
-if 2008 <= caldate{t} then do;
-	art_initiation_strategy=4;
-end;
-
 q=uniform(0);
-if art_initiation_strategy=4 and 2011.5 <= caldate{t} and q < rate_ch_art_init_str_2011 then art_initiation_strategy=9;  
+if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str  then art_initiation_strategy=4;  
 * dependent_on_time_step_length ; 
 
-if 2014 <= caldate{t} then art_initiation_strategy=10;
+q=uniform(0);
+if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str  then art_initiation_strategy=9;  
+* dependent_on_time_step_length ; 
+
+q=uniform(0);
+if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str  then art_initiation_strategy=10;  
+* dependent_on_time_step_length ; 
 
 * SW programs starts in 2015;
 if caldate{t} = 2015 then eff_sw_program=sw_program;
@@ -2021,7 +2024,9 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 end;
 
 
-if 2016.5 <= caldate{t} then art_initiation_strategy=3;
+q=uniform(0);
+if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str then art_initiation_strategy=3;  
+* dependent_on_time_step_length ;
 
 
 if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early so can assess 2 year influence of v alert before baseline;
@@ -2033,7 +2038,7 @@ if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
-
+ 
 
 
 
@@ -2652,7 +2657,7 @@ end;
 
 
 
-* PREGNANCY AND CHILDREN;
+* PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
 
 if t ge 2 and gender=2 then do;
 	pregnant=0;anc=0;on_sd_nvp=0;on_dual_nvp=0;
@@ -3746,7 +3751,8 @@ we will have to modify the value when we have data to compare with;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* RISK OF NEW INFECTION ;  * part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
+* Updating variables only relevant for 15-64 year olds ;  
+* part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
@@ -3922,7 +3928,7 @@ end;
 
 
 
-* OCCURRENCE OF PREGNANCY;
+* OCCURRENCE OF PREGNANCY; * also note pregnancy code higher up in section 3A;
 
 u=uniform(0);
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
@@ -4012,7 +4018,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 end;
 
 
-* HIV TESTING;
+* HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65;
 
 tested_as_sw=.;
  
