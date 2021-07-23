@@ -159,7 +159,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:4);  * #south_africa ; *  inc_cat = 4;
+* inc_cat; 					%sample_uniform(inc_cat, 1:4);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -202,20 +202,19 @@ newp_seed = 7;
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
 * ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
-							* #south_africa ; * %sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.1 0.4 0.3 0.2);
+							
 
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
-							* #south_africa ; * ych_risk_beh_newp = 1.0;
 
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  * #south_africa ; * ych_risk_beh_ep=1;
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
-* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); * #south_africa ; * %sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
-* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); * #south_africa ; * %sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
+* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); 
+* p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); 
 
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
@@ -359,10 +358,7 @@ newp_seed = 7;
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-							* #south_africa; * 
-						    %sample(date_test_rate_plateau, 
-								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
-								0.0 	0.0 	0.0 	1.0 	0.0);
+
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
@@ -416,7 +412,6 @@ newp_seed = 7;
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str = 0.4;	* rate of change in art initiation strategy in 2011;
 							* dependent_on_time_step_length ;
-							* #south_africa; * rate_ch_art_init_str = 0.1;
 
 * 26_11_19; 
 * all * dependent_on_time_step_length ;
@@ -470,11 +465,6 @@ newp_seed = 7;
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
 								0.2 	0.2 	0.2 	0.2		0.1		0.1);
 
-							* #south_africa ;  
-							* %sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.00	0.00	0.1 	0.4		0.40	0.1);
-
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
@@ -489,10 +479,6 @@ newp_seed = 7;
 								0.01	0.10 	0.50 	0.80, 
 								0.10 	0.40	0.25 	0.25);
 
-							* #south_africa ;  
-							* %sample(rate_return, 
-								0.01	0.10   0.3 		0.50 , 
-								0.10 	0.40   0.25 	0.25 );
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -520,18 +506,13 @@ newp_seed = 7;
 * AP 19-7-19 ;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
 
-							* #south_africa ; * %sample_uniform(rate_int_choice, 0.01  0.02  0.05 ); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
-							
-							* #south_africa ;
-							* %sample(prob_vl_meas_done, 
-								0.0		0.1		0.7		1,
-								0.00	0.00	0.50	0.50);
+
 
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
@@ -583,7 +564,6 @@ newp_seed = 7;
 * SEX WORKERS;
 
 * base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-							* #south_africa; * %sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
@@ -630,10 +610,6 @@ newp_seed = 7;
 								0.05	0.1		0.39	0.9, 
 								0.33	0.32	0.25	0.10);
 
-							* #south_africa ;  
-							* %sample(prob_birth_circ, 
-								0.1 	0.2		0.3 	0.5, 
-								0.2 	0.3 	0.3 	0.2 );	
 									
 
 
@@ -721,6 +697,9 @@ effect_age_cvd_death = 0.03;
 non_hiv_tb_risk = 0.0005;  
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
+
+* OVERWRITES country specific parameters;
+%include "/home/rmjlxxx/SA_parameters.sas";
 
 
 * ===================== ;
