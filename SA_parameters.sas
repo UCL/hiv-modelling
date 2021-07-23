@@ -8,8 +8,7 @@
 
 
 * SEXUAL BEHAVIOUR;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.1 0.4 0.3 0.2);
-* ych2_risk_beh_newp;  		ych2_risk_beh_newp = 1.0;*I assumed this was a typo, it was ych_risk_beh_newp;
+* ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
 * ych_risk_beh_ep;  		ych_risk_beh_ep=1;
 * p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
