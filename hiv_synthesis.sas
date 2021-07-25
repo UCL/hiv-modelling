@@ -297,36 +297,22 @@ newp_seed = 7;
 * tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
 * crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of crag test on crypm being diagnosed late;  
 
-* tb_base_prob_diag_l;		tb_base_prob_diag_l = 0.5; 				* base probability that tb is diagnosed late ;
-* crypm_base_prob_diag_l;	crypm_base_prob_diag_l = 0.5; 			* base probability that crypm is diagnosed late ; 
-* sbi_base_prob_diag_l;		sbi_base_prob_diag_l = 0.5; 			* base probability that sbi is diagnosed late ;
-* oth_adc_base_prob_diag_l;	oth_adc_base_prob_diag_l = 0.5; 		* base probability that other adc is diagnosed late; 
-* rel_rate_death_tb_diag_e;	rel_rate_death_tb_diag_e = 0.67; 		* effect of tb being diagnosed early on rate of death from the tb event; 
+* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
+* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
+* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that sbi is diagnosed late ;
+* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that other adc is diagnosed late; 
+* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80); 		* effect of tb being diagnosed early on rate of death from the tb event; 
 * rel_rate_death_oth_adc_diag_e;
-							rel_rate_death_oth_adc_diag_e = 0.9;	* effect of oth_adc being diagnosed early on rate of death from the other adc event; 
+							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);	* effect of oth_adc being diagnosed early on rate of death from the other adc event; 
 * rel_rate_death_crypm_diag_e;	
-							rel_rate_death_crypm_diag_e = 0.67 ; 	* effect of crypm being diagnosed early on rate of death from the crypm event; 
+							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);	* effect of crypm being diagnosed early on rate of death from the crypm event; 
 * rel_rate_death_sbi_diag_e;
-							rel_rate_death_sbi_diag_e = 0.67 ; 		* effect of sbi being diagnosed early on rate of death from the sbi event; 
-* effect_visit_prob_diag_l;	effect_visit_prob_diag_l = 0.9; 		* effect of being under care on prob of an adc or tb being diagnosed late;
+							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);	* effect of sbi being diagnosed early on rate of death from the sbi event; 
+* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80); 		* effect of being under care on prob of an adc or tb being diagnosed late;
 
 * fx;						%sample_uniform(fx, 0.70 0.85 1.00 1/0.85 1/0.70);
 							* factor determining rate of natural cd4 decline;
 * gx;						%sample_uniform(gx, 1.0 1.5 2.0);
-
-* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75);
-* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75);
-* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75);
-* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75);
-
-* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_crypm_diag_e;
-							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_sbi_diag_e;
-							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_oth_adc_diag_e;
-							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);
-* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80);
 
 
 
