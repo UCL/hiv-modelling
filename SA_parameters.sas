@@ -8,8 +8,8 @@
 
 
 * SEXUAL BEHAVIOUR;
-* ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
-* ych_risk_beh_ep;  		ych_risk_beh_ep=1;
+* ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp, 0.8 1);
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 1);
 * p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
 
@@ -23,7 +23,7 @@
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
-* rate_ch_art_init_str;		rate_ch_art_init_str = 0.1;
+* rate_ch_art_init_str;		rate_ch_art_init_str = 0.05 ;
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
 								0.00	0.00	0.1 	0.4		0.40	0.1);
