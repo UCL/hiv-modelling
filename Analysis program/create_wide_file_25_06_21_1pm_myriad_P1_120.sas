@@ -859,7 +859,7 @@ dcost_prep_ac_adh = s_dcost_prep_ac_adh_80 * &sf * 4 / 1000;
 
 * note this below can be used if outputs are from program beyond 1-1-20;
 * dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
-  dcost_non_aids_pre_death = ddaly_non_aids_pre_death_80 * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death_80 * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost_80 * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ_new * &sf * 4 / 1000; 
