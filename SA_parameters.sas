@@ -17,6 +17,10 @@
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
 
 * HIV TESTING;
+
+* an_lin_incr_test;   		%sample(an_lin_incr_test, 
+								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 	0.1000, 
+								0.0		0.35	0.35	0.15	0.15 	0.0 	0.00);
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.0 	0.0 	0.0 	1.0 	0.0);
