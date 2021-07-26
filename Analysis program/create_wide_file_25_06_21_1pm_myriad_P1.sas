@@ -785,8 +785,8 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 
-ddaly_adults = ddaly + ddaly_non_aids_pre_death_80;
-ddaly_adults_Op = ddaly_Op + ddaly_non_aids_pre_death_80;
+ddaly_adults = ddaly;
+ddaly_adults_Op = ddaly_Op;
 
 
 
@@ -1568,7 +1568,7 @@ n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549
 n_hiv8084w  n_hiv85plw
 n_onart n_diag n_start_line2 n_vl_test_done
 n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549 d_n_new_inf1549 d_n_infection
-s_sw_newp incidence_sw ddaly ddaly_adults_Op;
+s_sw_newp incidence_sw ddaly ddaly_Op;
 proc sort data=y;by run option_new;run;
 
 

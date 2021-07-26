@@ -753,6 +753,7 @@ ly = s_ly * &sf;
 dly = s_dly * &sf;
 
 s_ddaly = s_dead_ddaly_80 + s_live_ddaly_80;
+s_ddaly_Op=s_dyll_80 + s_live_ddaly_80;
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
@@ -760,6 +761,7 @@ dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058);
 
 
 ddaly = s_ddaly * &sf * 4;
+ddaly_Op = s_ddaly_Op * &sf * 4;
 
 
 * sensitivity analysis;
@@ -783,7 +785,9 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 
-ddaly_adults = ddaly + ddaly_non_aids_pre_death_80;
+ddaly_adults = ddaly;
+ddaly_adults_Op = ddaly_Op;
+
 
 
 
@@ -1564,7 +1568,7 @@ n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w n_hiv4549
 n_hiv8084w  n_hiv85plw
 n_onart n_diag n_start_line2 n_vl_test_done
 n_mcirc1549_py  n_mcirc1549_3m  n_vmmc1549_py n_vmmc1549_3m  n_new_vmmc1549_py n_new_vmmc1049_py  n_new_inf1549m  n_new_inf1549 d_n_new_inf1549 d_n_infection
-s_sw_newp incidence_sw;
+s_sw_newp incidence_sw ddaly ddaly_Op;
 proc sort data=y;by run option_new;run;
 
 
