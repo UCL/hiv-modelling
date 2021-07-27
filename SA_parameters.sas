@@ -38,7 +38,8 @@
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
-
+* rate_ch_art_init_str;	
+							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.0;rate_ch_art_init_str_10 = 0.1;rate_ch_art_init_str_3 = 0.1;	
 
 * SEX WORKERS;				
 * base_rate_sw; 			%sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);
