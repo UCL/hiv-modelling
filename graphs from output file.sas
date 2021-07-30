@@ -9,7 +9,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 data b;
 set a.l_base;
 
-if ych_risk_beh_ep =1   and ych_risk_beh_newp = 1  ;
+if ych_risk_beh_ep = 1 and ych_risk_beh_newp =1  ;
+
 
 p_onart_vl1000_all = .;
 
