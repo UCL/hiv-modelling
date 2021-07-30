@@ -25,6 +25,10 @@
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.0 	0.0 	0.0 	0.0 	1.0);
 
+* NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
+
+* fold_decr_hivdeath;		fold_decr_hivdeath=0.4 ; 	* degree to which hiv death rate is lower than aids rate;
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 * rate_ch_art_init_str;		rate_ch_art_init_str = 0.10 ;
