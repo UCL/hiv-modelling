@@ -9,6 +9,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 data b;
 set a.l_base;
 
+p_onart_vl1000_all = .;
+
 /*
 if option =0 or (prep_improvements  = 1 and option =1);
 
