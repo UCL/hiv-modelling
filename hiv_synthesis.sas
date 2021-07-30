@@ -297,36 +297,22 @@ newp_seed = 7;
 * tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
 * crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of crag test on crypm being diagnosed late;  
 
-* tb_base_prob_diag_l;		tb_base_prob_diag_l = 0.5; 				* base probability that tb is diagnosed late ;
-* crypm_base_prob_diag_l;	crypm_base_prob_diag_l = 0.5; 			* base probability that crypm is diagnosed late ; 
-* sbi_base_prob_diag_l;		sbi_base_prob_diag_l = 0.5; 			* base probability that sbi is diagnosed late ;
-* oth_adc_base_prob_diag_l;	oth_adc_base_prob_diag_l = 0.5; 		* base probability that other adc is diagnosed late; 
-* rel_rate_death_tb_diag_e;	rel_rate_death_tb_diag_e = 0.67; 		* effect of tb being diagnosed early on rate of death from the tb event; 
+* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
+* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
+* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that sbi is diagnosed late ;
+* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75); 		* base probability that other adc is diagnosed late; 
+* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80); 		* effect of tb being diagnosed early on rate of death from the tb event; 
 * rel_rate_death_oth_adc_diag_e;
-							rel_rate_death_oth_adc_diag_e = 0.9;	* effect of oth_adc being diagnosed early on rate of death from the other adc event; 
+							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);	* effect of oth_adc being diagnosed early on rate of death from the other adc event; 
 * rel_rate_death_crypm_diag_e;	
-							rel_rate_death_crypm_diag_e = 0.67 ; 	* effect of crypm being diagnosed early on rate of death from the crypm event; 
+							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);	* effect of crypm being diagnosed early on rate of death from the crypm event; 
 * rel_rate_death_sbi_diag_e;
-							rel_rate_death_sbi_diag_e = 0.67 ; 		* effect of sbi being diagnosed early on rate of death from the sbi event; 
-* effect_visit_prob_diag_l;	effect_visit_prob_diag_l = 0.9; 		* effect of being under care on prob of an adc or tb being diagnosed late;
+							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);	* effect of sbi being diagnosed early on rate of death from the sbi event; 
+* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80); 		* effect of being under care on prob of an adc or tb being diagnosed late;
 
 * fx;						%sample_uniform(fx, 0.70 0.85 1.00 1/0.85 1/0.70);
 							* factor determining rate of natural cd4 decline;
 * gx;						%sample_uniform(gx, 1.0 1.5 2.0);
-
-* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75);
-* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.25 0.50 0.75);
-* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.25 0.50 0.75);
-* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.25 0.50 0.75);
-
-* rel_rate_death_tb_diag_e;	%sample_uniform(rel_rate_death_tb_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_crypm_diag_e;
-							%sample_uniform(rel_rate_death_crypm_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_sbi_diag_e;
-							%sample_uniform(rel_rate_death_sbi_diag_e, 0.50 0.67 0.80);
-* rel_rate_death_oth_adc_diag_e;
-							%sample_uniform(rel_rate_death_oth_adc_diag_e, 0.50 0.67 0.80);
-* effect_visit_prob_diag_l;	%sample_uniform(effect_visit_prob_diag_l, 0.50 0.67 0.80);
 
 
 
@@ -410,7 +396,7 @@ newp_seed = 7;
 * dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
 
 * rate_ch_art_init_str;	
-							rate_ch_art_init_str = 0.4;	* rate of change in art initiation strategy in 2011;
+							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
 							* dependent_on_time_step_length ;
 
 * 26_11_19; 
@@ -1921,15 +1907,15 @@ if 2005.5 <= caldate{t} then do;
 end;  * few facilities measuring cd4 early on;
 
 q=uniform(0);
-if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str  then art_initiation_strategy=4;  
+if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str_4  then art_initiation_strategy=4;  
 * dependent_on_time_step_length ; 
 
 q=uniform(0);
-if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str  then art_initiation_strategy=9;  
+if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str_9  then art_initiation_strategy=9;  
 * dependent_on_time_step_length ; 
 
 q=uniform(0);
-if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str  then art_initiation_strategy=10;  
+if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
 * dependent_on_time_step_length ; 
 
 * SW programs starts in 2015;
@@ -2004,7 +1990,7 @@ end;
 
 
 q=uniform(0);
-if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str then art_initiation_strategy=3;  
+if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then art_initiation_strategy=3;  
 * dependent_on_time_step_length ;
 
 
@@ -12891,6 +12877,9 @@ if gender=1 then do;
 	if 35 <= age < 40 then dead3539m_all=dead;
 	if 40 <= age < 45 then dead4044m_all=dead;
 	if 45 <= age < 50 then dead4549m_all=dead;
+	if 50 <= age < 55 then dead4549m_all=dead;
+	if 55 <= age < 60 then dead4549m_all=dead;
+	if 60 <= age < 65 then dead4549m_all=dead;
 end;
 if gender=2 then do;
 	dead_w=dead;
@@ -12901,6 +12890,9 @@ if gender=2 then do;
 	if 35 <= age < 40 then dead3539w_all=dead;
 	if 40 <= age < 45 then dead4044w_all=dead;
 	if 45 <= age < 50 then dead4549w_all=dead;
+	if 50 <= age < 55 then dead4549w_all=dead;
+	if 55 <= age < 60 then dead4549w_all=dead;
+	if 60 <= age < 65 then dead4549w_all=dead;
 end;
 
 if 15 <= age < 65 then dead1564_all=dead;
@@ -14808,8 +14800,10 @@ if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 	s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ; 
 	s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;  
 	s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
+	s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
 	s_dead1519w_all + dead1519w_all ; s_dead2024w_all + dead2024w_all ; s_dead2529w_all + dead2529w_all ; s_dead3034w_all + dead3034w_all ;  
 	s_dead3539w_all + dead3539w_all ; s_dead4044w_all + dead4044w_all ; s_dead4549w_all + dead4549w_all ;
+	s_dead5054w_all + dead5054w_all ;s_dead5559w_all + dead5559w_all ;s_dead6064w_all + dead6064w_all ;
 	s_death_hivrel + death_hivrel ;	s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead1564_ + dead1564_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; 
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
@@ -16217,6 +16211,7 @@ s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_c
    s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
 s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
 s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
+s_ddaly_non_aids_pre_death_80
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
@@ -16241,8 +16236,8 @@ s_sv  s_sv_secondline
 
 /*deaths*/
 s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
-s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all
-s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all
+s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
+s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -16384,7 +16379,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -17081,6 +17077,7 @@ s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_c
    s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
 s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
 s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
+s_ddaly_non_aids_pre_death_80
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
@@ -17105,8 +17102,8 @@ s_sv  s_sv_secondline
 
 /*deaths*/
 s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
-s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all
-s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all
+s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
+s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -18150,6 +18147,7 @@ s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_c
 	   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
 s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
 s_dead_ddaly_ntd  s_ddaly_mtct    s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
+s_ddaly_non_aids_pre_death_80
 
 s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
 s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
@@ -18174,8 +18172,8 @@ s_sv  s_sv_secondline
 
 /*deaths*/
 s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
-s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all
-s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all
+s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
+s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -18314,7 +18312,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
