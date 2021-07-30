@@ -1,6 +1,6 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\";
+libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\";
 
 /** show the contents of the input SAS file */
 * proc contents data=a.hiv_synthesis_base;
@@ -14,7 +14,7 @@ by run cald option;run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.base ;
+set a.base_ahd ;
 
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -26,7 +26,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 %let sf=sf_2021;
 
 data y; 
-merge a.base sf;
+merge a.base_ahd sf;
 by run ;
 
 
@@ -896,6 +896,11 @@ incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 prep_strategy 
 
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+
 exp_setting_lower_p_vl1000  
 external_exp_factor   rate_exp_set_lower_p_vl1000    max_freq_testing  
 test_targeting    prob_loss_at_diag   pr_art_init   
@@ -1222,7 +1227,15 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rate_choose_stop_prep ); %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );     %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
-%par(p= incr_mort_risk_dol_weightg ); %par(p=prep_strategy ); %par(p=sw_init_newp); %par(p=sw_trans_matrix);
+%par(p= incr_mort_risk_dol_weightg ); %par(p=prep_strategy ); 
+
+%par(p=effect_visit_prob_diag_l);  %par(p=tb_base_prob_diag_l); %par(p=crypm_base_prob_diag_l); %par(p=tblam_eff_prob_diag_l);  
+%par(p=crag_eff_prob_diag_l);%par(p=sbi_base_prob_diag_l); %par(p=rel_rate_death_tb_diag_e); %par(p=rel_rate_death_oth_adc_diag_e); 
+%par(p=rel_rate_death_crypm_diag_e);%par(p=rel_rate_death_sbi_diag_e);  %par(p=incr_death_rate_tb); %par(p=incr_death_rate_oth_adc);
+%par(p=incr_death_rate_crypm); %par(p=incr_death_rate_sbi);%par(p=cm_1stvis_return_vlmg1000);  %par(p=crag_cd4_l200); %par(p=crag_cd4_l100);  
+%par(p=tblam_cd4_l200);  %par(p=tblam_cd4_l100);    %par(p=effect_tb_proph);   %par(p=effect_crypm_proph);  %par(p=effect_sbi_proph);
+
+%par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 run;
@@ -1248,6 +1261,10 @@ rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 prep_strategy 
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 ;
 
 proc contents; run;
