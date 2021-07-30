@@ -9,9 +9,6 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 data b;
 set a.l_base;
 
-p_onart_vl1000_all = .;
-
-
 /*
 if option =0 or (prep_improvements  = 1 and option =1);
 
@@ -115,7 +112,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 100   ;
+%let nfit = 257   ;
 %let year_end = 2021.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1252,8 +1249,22 @@ ods html close;
 run;
 
 
+/*
+ 
+proc format;
+value my_fmt
+0 = 'no second line'
+1 = 'clinical monitoring'
+;
 
 
+
+proc gchart;
+ format option my_fmt.;
+ hbar option / discrete type=sum sumvar=nmb nostats group=cet;  
+ run;
+
+*/
 
 
 	
