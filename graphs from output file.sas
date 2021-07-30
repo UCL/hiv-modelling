@@ -9,6 +9,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 data b;
 set a.l_base;
 
+if ych_risk_beh_ep =1   and ych_risk_beh_newp = 1  ;
 
 p_onart_vl1000_all = .;
 
@@ -1218,13 +1219,13 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 50000 by 5000) valueattrs=(size=10);
 
 label p50_n_death_2059_w_0 = "Option 0 (median) ";
 label p50_n_death_2059_w_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_n_death_2059_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_w_0 	upper=n_death_2059_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
@@ -1237,13 +1238,13 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 50000 by 5000) valueattrs=(size=10);
 
 label p50_n_death_2059_m_0 = "Option 0 (median) ";
 label p50_n_death_2059_m_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_n_death_2059_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_m_0 	upper=n_death_2059_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
