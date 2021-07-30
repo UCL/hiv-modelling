@@ -685,7 +685,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlxxx/SA_parameters.sas";
+  %include "/home/rmjlaph/SA_parameters.sas";
 
 
 * ===================== ;
@@ -17512,9 +17512,11 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
-
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+
+/*
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -17587,6 +17589,11 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+
+*/
+
+/*
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
@@ -17712,6 +17719,7 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
 
+*/
 
 * ts1m:  need more update statements ;
 
