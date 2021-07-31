@@ -1404,6 +1404,19 @@ n_onart_21  n_dead_hivpos_cause1_21  n_death_hivpos_anycause_21
 ;
 run;
 
+proc glm data=a.w_base; model rate_dead_hivpos_tb_21 = effect_visit_prob_diag_l  tb_base_prob_diag_l  tblam_cd4_l200  tblam_cd4_l100  
+rel_rate_death_tb_diag_e ;
+run;
+
+
+
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+
+
+
 proc means data=a.w_base n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
