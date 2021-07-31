@@ -7,7 +7,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_16 ;
+data g; set  a.base_sa_17 ;
 
 
 proc sort data=g; 
@@ -778,9 +778,6 @@ end;
 * n_death_hivneg_anycause;		n_death_hivneg_anycause = s_dead_hivneg_anycause * &sf;
 * n_death_hivpos_anycause;		n_death_hivpos_anycause = s_dead_hivpos_anycause * &sf;
 
-s_dead5054m_all = s_dead4549m_all; s_dead5559m_all = s_dead4549m_all;
-s_dead5054w_all = s_dead4549w_all; s_dead5559w_all = s_dead4549w_all;
-
 * n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all) * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
@@ -936,7 +933,6 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 ;
-
 
 
 proc sort data=y;by run option;run;
@@ -1505,6 +1501,26 @@ ods html close;
 
 
 
+data q1; set a.w_base;
+if 0.186 < prevalence1549_17 < 0.226 ;
+
+run_keep = run;
+
+keep run run_keep;
+
+proc print; 
+run;
+
+data a.l_base_keep; merge a.l_base q1 ; by run;
+
+if run_keep ne .;
+
+proc print; 
+var run cald run_keep;
+run;
+
+
+
 
 proc univariate; var r_prev_sex_1549_17 ; run;
 
@@ -1562,24 +1578,6 @@ proc freq; tables ych_risk_beh_ep ; run;
 
 proc means data=s; var prevalence1549_17;
 where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
-run;
-
-
-
-data q1; set a.w_base;
-if 0.186 < prevalence1549_17 < 0.226 ;
-
-run_keep = run;
-
-keep run run_keep;
-
-proc print; 
-run;
-
-data q2; merge a.l_base q1 ; by run;
-
-proc print; 
-var run cald run_keep;
 run;
 
 

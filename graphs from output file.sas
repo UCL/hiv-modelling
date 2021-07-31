@@ -8,6 +8,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data b;
 set a.l_base;
+* set a.l_base_keep;
+
 
 if ych_risk_beh_ep = 1 and ych_risk_beh_newp =1  ;
 
@@ -1332,8 +1334,6 @@ run;quit;
 
 title;
 
-ods html close;
-
 * ods rtf close;
 * ods listing;
 run;
@@ -1421,7 +1421,6 @@ p95_prevalence4549w_0 	p95_prevalence4549m_0 p95_prevalence5054w_0 	p95_prevalen
 p95_prevalence5559w_0 	p95_prevalence5559m_0 
 ;
 
-ods html;
 
 proc sgplot data=all; Title 'prevalence by age - women'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 55 by 5)	 	 valueattrs=(size=10); 
