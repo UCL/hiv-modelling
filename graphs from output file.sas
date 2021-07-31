@@ -286,10 +286,13 @@ if cald = 2018 then n_onart_obs_sa = 4630000  ;
 if cald = 2019 then n_onart_obs_sa = 5060000  ;
 if cald = 2020 then n_onart_obs_sa = 5330000  ;
 
-if cald=2008 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
-if cald=2012 then do; prev_obs_sa = 0.169 ; end;
-if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
-if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.188 ; end;
+
+if cald=2005 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
+if cald=2008 then do; prev_obs_sa = 0.169 ; end;
+if cald=2012 then do; prev_w_obs_sa = 0.232 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
+if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.144 ; prev_obs_sa = 0.212 ; end;
+if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.206 ; end;
+
 
 if cald=2011 then n_tested_obs_sa = 9523400 ;
 if cald=2012 then n_tested_obs_sa = 8772000 ;
