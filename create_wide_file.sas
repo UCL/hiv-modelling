@@ -1548,7 +1548,7 @@ trend_prev = prevalence1549_17 / prevalence1549_05;
 
 proc glm data=s; 
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model trend_prev = ych_risk_beh_ep  / solution ; 
+model trend_prev = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p p_hsb_p  / solution ; 
 run;
 
 proc glm data=s;

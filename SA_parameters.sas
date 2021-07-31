@@ -20,14 +20,14 @@
 
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 	0.1000, 
-								0.0		0.0 	0.25	0.50	0.25 	0.00	0.00);
+								0.0		0.0 	0.75	0.25	0.0 	0.00	0.00);
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.0 	0.0 	0.0 	0.0 	1.0);
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
-* fold_decr_hivdeath;		fold_decr_hivdeath=0.4 ; 	* degree to which hiv death rate is lower than aids rate;
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.3 ; 	* degree to which hiv death rate is lower than aids rate;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
