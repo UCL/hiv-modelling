@@ -21,7 +21,7 @@ set g ;
 
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
+sf_2021 = 58500000 / s_alive;
 keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
@@ -1563,3 +1563,29 @@ proc freq; tables ych_risk_beh_ep ; run;
 proc means data=s; var prevalence1549_17;
 where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
 run;
+
+
+
+data q1; set a.w_base;
+if 0.186 < prevalence1549_17 < 0.226 ;
+
+run_keep = run;
+
+keep run run_keep;
+
+proc print; 
+run;
+
+data q2; merge a.l_base q1 ; by run;
+
+proc print; 
+var run cald run_keep;
+run;
+
+
+
+
+
+
+
+

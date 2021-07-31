@@ -155,6 +155,8 @@ prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65pl
 %let p75_var = p75_&var_0;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
+%let p2p5_var = p2p5_&var_0;
+%let p97p5_var = p97p5_&var_0;
 %let p50_var = median_&var_0;
 
 %let count = 0;
@@ -169,9 +171,11 @@ p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
+p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
+p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -215,6 +219,8 @@ prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65pl
 %let p75_var = p75_&var_1;
 %let p5_var = p5_&var_1;
 %let p95_var = p95_&var_1;
+%let p2p5_var = p2p5_&var_1;
+%let p97p5_var = p97p5_&var_1;
 %let p50_var = median_&var_1;
 
 %let count = 0;
@@ -229,9 +235,11 @@ p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
+p2p5_&varb._1  = PCTL(2.5,of &varb.1-&varb.&nfit);
+p97p5_&varb._1 = PCTL(97.5,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 p2p5_&varb._1 p97p5_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -268,54 +276,54 @@ by cald;
 
 
 
-if cald = 2012 then n_onart_obs_sa = 2200000 / 5.85 ;
-if cald = 2013 then n_onart_obs_sa = 2660000 / 5.85 ;
-if cald = 2014 then n_onart_obs_sa = 3080000 / 5.85 ;
-if cald = 2015 then n_onart_obs_sa = 3430000 / 5.85 ;
-if cald = 2016 then n_onart_obs_sa = 3770000 / 5.85 ;
-if cald = 2017 then n_onart_obs_sa = 4250000 / 5.85 ;
-if cald = 2018 then n_onart_obs_sa = 4630000 / 5.85 ;
-if cald = 2019 then n_onart_obs_sa = 5060000 / 5.85 ;
-if cald = 2020 then n_onart_obs_sa = 5330000 / 5.85 ;
+if cald = 2012 then n_onart_obs_sa = 2200000  ;
+if cald = 2013 then n_onart_obs_sa = 2660000  ;
+if cald = 2014 then n_onart_obs_sa = 3080000  ;
+if cald = 2015 then n_onart_obs_sa = 3430000  ;
+if cald = 2016 then n_onart_obs_sa = 3770000  ;
+if cald = 2017 then n_onart_obs_sa = 4250000  ;
+if cald = 2018 then n_onart_obs_sa = 4630000  ;
+if cald = 2019 then n_onart_obs_sa = 5060000  ;
+if cald = 2020 then n_onart_obs_sa = 5330000  ;
 
 if cald=2008 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
 if cald=2012 then do; prev_obs_sa = 0.169 ; end;
 if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
 if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.188 ; end;
 
-if cald=2011 then n_tested_obs_sa = 9523400 / 5.85;
-if cald=2012 then n_tested_obs_sa = 8772000 / 5.85;
-if cald=2013 then n_tested_obs_sa = 8978177 / 5.85;
-if cald=2014 then n_tested_obs_sa = 7334942 / 5.85;
-if cald=2015 then n_tested_obs_sa = 8636033 / 5.85;
-if cald=2016 then n_tested_obs_sa = 11324134 / 5.85;
-if cald=2017 then n_tested_obs_sa = 12465313 / 5.85;
-if cald=2018 then n_tested_obs_sa = 11902403 / 5.85;
-if cald=2019 then n_tested_obs_sa = 12714196 / 5.85;
-if cald=2020 then n_tested_obs_sa = 16316808 / 5.85;
+if cald=2011 then n_tested_obs_sa = 9523400 ;
+if cald=2012 then n_tested_obs_sa = 8772000 ;
+if cald=2013 then n_tested_obs_sa = 8978177 ;
+if cald=2014 then n_tested_obs_sa = 7334942 ;
+if cald=2015 then n_tested_obs_sa = 8636033 ;
+if cald=2016 then n_tested_obs_sa = 11324134 ;
+if cald=2017 then n_tested_obs_sa = 12465313 ;
+if cald=2018 then n_tested_obs_sa = 11902403 ;
+if cald=2019 then n_tested_obs_sa = 12714196 ;
+if cald=2020 then n_tested_obs_sa = 16316808 ;
 
-if cald=1997 then do; n_death_2059_m_obs_sa = 115537 / 5.85 ; n_death_2059_w_obs_sa = 66911 / 5.85 ; end; 
-if cald=1998 then do; n_death_2059_m_obs_sa = 131371 / 5.85 ; n_death_2059_w_obs_sa = 81303 / 5.85 ; end; 
-if cald=1999 then do; n_death_2059_m_obs_sa = 136451 / 5.85 ; n_death_2059_w_obs_sa = 91656 / 5.85 ; end; 	
-if cald=2000 then do; n_death_2059_m_obs_sa = 144959 / 5.85 ; n_death_2059_w_obs_sa = 107525 / 5.85 ; end; 	
-if cald=2001 then do; n_death_2059_m_obs_sa = 156573 / 5.85 ; n_death_2059_w_obs_sa = 121161 / 5.85 ; end; 	
-if cald=2002 then do; n_death_2059_m_obs_sa = 169707 / 5.85 ; n_death_2059_w_obs_sa = 140914 / 5.85 ; end; 	
-if cald=2003 then do; n_death_2059_m_obs_sa = 186280 / 5.85 ; n_death_2059_w_obs_sa = 159532 / 5.85 ; end; 	
-if cald=2004 then do; n_death_2059_m_obs_sa = 190226 / 5.85 ; n_death_2059_w_obs_sa = 170724 / 5.85 ; end; 	
-if cald=2005 then do; n_death_2059_m_obs_sa = 196105 / 5.85 ; n_death_2059_w_obs_sa = 176422 / 5.85 ; end; 	
-if cald=2006 then do; n_death_2059_m_obs_sa = 199390 / 5.85 ; n_death_2059_w_obs_sa = 176962 / 5.85 ; end; 	
-if cald=2007 then do; n_death_2059_m_obs_sa = 197873 / 5.85 ; n_death_2059_w_obs_sa = 170664 / 5.85 ; end; 	
-if cald=2008 then do; n_death_2059_m_obs_sa = 194377 / 5.85 ; n_death_2059_w_obs_sa = 164922 / 5.85 ; end; 	
-if cald=2009 then do; n_death_2059_m_obs_sa = 187914 / 5.85 ; n_death_2059_w_obs_sa = 155059 / 5.85 ; end; 	
-if cald=2010 then do; n_death_2059_m_obs_sa = 174745 / 5.85 ; n_death_2059_w_obs_sa = 142594 / 5.85 ; end; 	
-if cald=2011 then do; n_death_2059_m_obs_sa = 161976 / 5.85 ; n_death_2059_w_obs_sa = 126743 / 5.85 ; end; 	
-if cald=2012 then do; n_death_2059_m_obs_sa = 152903 / 5.85 ; n_death_2059_w_obs_sa = 115430 / 5.85 ; end; 	
-if cald=2013 then do; n_death_2059_m_obs_sa = 145703 / 5.85 ; n_death_2059_w_obs_sa = 106876 / 5.85 ; end; 	
-if cald=2014 then do; n_death_2059_m_obs_sa = 142996 / 5.85 ; n_death_2059_w_obs_sa = 102250 / 5.85 ; end; 	
-if cald=2015 then do; n_death_2059_m_obs_sa = 142352 / 5.85 ; n_death_2059_w_obs_sa = 98790 / 5.85 ; end; 	
-if cald=2016 then do; n_death_2059_m_obs_sa = 141533 / 5.85 ; n_death_2059_w_obs_sa = 95949 / 5.85 ; end; 	
-if cald=2017 then do; n_death_2059_m_obs_sa = 136433 / 5.85 ; n_death_2059_w_obs_sa = 91772 / 5.85 ; end; 	
-if cald=2018 then do; n_death_2059_m_obs_sa = 132870 / 5.85 ; n_death_2059_w_obs_sa = 88730 / 5.85 ; end; 	
+if cald=1997 then do; n_death_2059_m_obs_sa = 115537  ; n_death_2059_w_obs_sa = 66911  ; end; 
+if cald=1998 then do; n_death_2059_m_obs_sa = 131371  ; n_death_2059_w_obs_sa = 81303  ; end; 
+if cald=1999 then do; n_death_2059_m_obs_sa = 136451  ; n_death_2059_w_obs_sa = 91656  ; end; 	
+if cald=2000 then do; n_death_2059_m_obs_sa = 144959  ; n_death_2059_w_obs_sa = 107525  ; end; 	
+if cald=2001 then do; n_death_2059_m_obs_sa = 156573  ; n_death_2059_w_obs_sa = 121161  ; end; 	
+if cald=2002 then do; n_death_2059_m_obs_sa = 169707  ; n_death_2059_w_obs_sa = 140914  ; end; 	
+if cald=2003 then do; n_death_2059_m_obs_sa = 186280  ; n_death_2059_w_obs_sa = 159532  ; end; 	
+if cald=2004 then do; n_death_2059_m_obs_sa = 190226  ; n_death_2059_w_obs_sa = 170724  ; end; 	
+if cald=2005 then do; n_death_2059_m_obs_sa = 196105  ; n_death_2059_w_obs_sa = 176422  ; end; 	
+if cald=2006 then do; n_death_2059_m_obs_sa = 199390  ; n_death_2059_w_obs_sa = 176962  ; end; 	
+if cald=2007 then do; n_death_2059_m_obs_sa = 197873  ; n_death_2059_w_obs_sa = 170664  ; end; 	
+if cald=2008 then do; n_death_2059_m_obs_sa = 194377  ; n_death_2059_w_obs_sa = 164922  ; end; 	
+if cald=2009 then do; n_death_2059_m_obs_sa = 187914  ; n_death_2059_w_obs_sa = 155059  ; end; 	
+if cald=2010 then do; n_death_2059_m_obs_sa = 174745  ; n_death_2059_w_obs_sa = 142594  ; end; 	
+if cald=2011 then do; n_death_2059_m_obs_sa = 161976  ; n_death_2059_w_obs_sa = 126743  ; end; 	
+if cald=2012 then do; n_death_2059_m_obs_sa = 152903  ; n_death_2059_w_obs_sa = 115430  ; end; 	
+if cald=2013 then do; n_death_2059_m_obs_sa = 145703  ; n_death_2059_w_obs_sa = 106876  ; end; 	
+if cald=2014 then do; n_death_2059_m_obs_sa = 142996  ; n_death_2059_w_obs_sa = 102250  ; end; 	
+if cald=2015 then do; n_death_2059_m_obs_sa = 142352  ; n_death_2059_w_obs_sa = 98790  ; end; 	
+if cald=2016 then do; n_death_2059_m_obs_sa = 141533  ; n_death_2059_w_obs_sa = 95949  ; end; 	
+if cald=2017 then do; n_death_2059_m_obs_sa = 136433  ; n_death_2059_w_obs_sa = 91772  ; end; 	
+if cald=2018 then do; n_death_2059_m_obs_sa = 132870  ; n_death_2059_w_obs_sa = 88730  ; end; 	
 
 
 
@@ -331,10 +339,10 @@ label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 label p50_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
 
 series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_w_giv_birth_this_per_0 	upper=p95_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 
 series  x=cald y=p50_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_w_giv_birth_this_per_1 	upper=p95_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+band    x=cald lower=p2p5_p_w_giv_birth_this_per_1 	upper=p97p5_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
 
 run;
 
@@ -395,7 +403,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 3000000 by 500000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 18000000 by 1000000) valueattrs=(size=10);
 label p50_n_tested_0 = "Option 0 (median) ";
 label p50_n_tested_1 = "Option 1 (median) ";
 
@@ -959,7 +967,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number on ART";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
 
 label p50_n_onart_0 = "Option 0 (median) ";
 label p50_n_onart_1 = "Option 1  (median) ";
@@ -1220,7 +1228,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 50000 by 5000) valueattrs=(size=10);
+yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 300000 by 10000) valueattrs=(size=10);
 
 label p50_n_death_2059_w_0 = "Option 0 (median) ";
 label p50_n_death_2059_w_1 = "Option 1  (median) ";
@@ -1239,7 +1247,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 50000 by 5000) valueattrs=(size=10);
+yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 300000 by 50000) valueattrs=(size=10);
 
 label p50_n_death_2059_m_0 = "Option 0 (median) ";
 label p50_n_death_2059_m_1 = "Option 1  (median) ";
