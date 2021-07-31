@@ -5,7 +5,7 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 4;
-* fold_change_ac_death_rate; fold_change_ac_death_rate = 0.5 ;
+* fold_change_ac_death_rate; fold_change_ac_death_rate = 0.4 ;
 
 
 * SEXUAL BEHAVIOUR;
@@ -28,7 +28,7 @@
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.30 ; 	* degree to which hiv death rate is lower than aids rate;
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.70 ; 	* degree to which hiv death rate is lower than aids rate;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -44,7 +44,11 @@
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
 * rate_ch_art_init_str;	
-							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.0;rate_ch_art_init_str_10 = 0.01; rate_ch_art_init_str_3 = 0.4;	
+							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.0;rate_ch_art_init_str_10 = 0.01; rate_ch_art_init_str_3 = 0.1;	
+
+* adh_pattern; 				%sample(adh_pattern, 
+								1		2		3		4		5		6		7, 
+								0.00	0.50	0.50	0.50	0.00	0.00	0.00);
 
 * SEX WORKERS;				
 * base_rate_sw; 			%sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);

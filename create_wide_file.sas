@@ -7,7 +7,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_17 ;
+data g; set  a.base_sa_18 ;
 
 
 proc sort data=g; 
