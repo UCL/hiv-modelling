@@ -11,8 +11,8 @@
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp,     1);
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep,     1);
-* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.5 0.3 0.2);
-* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.45 0.45);
+* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.7 0.3 0.0);
+* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.3 0.6 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
