@@ -2,12 +2,17 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\";
 
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
+
+data a.base_sa_20; set b.out:;
+
+
 /** show the contents of the input SAS file */
 * proc contents data=a.hiv_synthesis_base;
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_19 ;
+data g; set  a.base_sa_20 ;
 
 
 proc sort data=g; 
@@ -1511,21 +1516,12 @@ run_keep = run;
 
 keep run run_keep;
 
-proc print; 
-run;
 
 data a.l_base_keep; merge a.l_base q1 ; by run;
 
 if run_keep ne .;
 
-proc print; 
-var run cald run_keep;
-run;
 
-
-
-
-proc univariate; var r_prev_sex_1549_17 ; run;
 
 
 proc glm; 
@@ -1577,7 +1573,6 @@ run;
 
 ods html close; 
 
-proc freq; tables ych_risk_beh_ep ; run;
 
 proc means data=s; var prevalence1549_17;
 where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
