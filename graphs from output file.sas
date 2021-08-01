@@ -10,7 +10,6 @@ data b;
 set a.l_base;
 * set a.l_base_keep;
 
-
 if ych_risk_beh_ep = 1 and ych_risk_beh_newp =1  ;
 
 

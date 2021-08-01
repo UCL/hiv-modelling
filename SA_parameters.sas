@@ -20,26 +20,25 @@
 * HIV TESTING;
 
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 	0.1000, 
+								0.0001	0.0005 	0.0030 	0.0700 	0.0200 	0.0400 	0.1000, 
 								0.0		0.0 	0.75	0.25	0.0 	0.00	0.00);
-* date_test_rate_plateau;   %sample(date_test_rate_plateau, 
-								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
-								0.0 	0.0 	0.0 	0.0 	1.0);
+* date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
+
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.70 ; 	* degree to which hiv death rate is lower than aids rate;
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.90 ; 	* degree to which hiv death rate is lower than aids rate;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
-* rate_ch_art_init_str;		rate_ch_art_init_str = 0.10 ;
+
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.00	0.00	0.0 	0.5		0.50	0.0);
+								0.00	0.00	0.0 	0.5		0.0 	0.0);
 * rate_return;  			%sample(rate_return, 
 								0.01	0.10   0.3 		0.50 , 
 								0.00 	0.20   0.80 	0.00 );
-* rate_int_choice;  		%sample_uniform(rate_int_choice,  0.02  0.05 ); 					
+* rate_int_choice;  		%sample_uniform(rate_int_choice,  0.02  0.03 ); 					
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
