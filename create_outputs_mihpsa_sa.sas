@@ -57,19 +57,34 @@ data option_0;
 set b;
 if option =1 then delete;
 
+*
+HIV prevalence in age group 15-49  m  f   ---- prevalence1549m prevalence1549w
+HIV prevalence in pregnant women  ----
+ART coverage m f 15+  ---- p_onart_m  p_onart_w
+Total number on ART  m f 15+
+% of men age 15-49 who have been circumcised (medically or traditionally)  15 - 49
+% of HIV-positive individuals who have been diagnosed  m f 15+ 
+% of adult ART patients (ages 15+) who are virally suppressed (if possible, at a threshold of <1000) m+f together
+HIV incidence in 15-49 year olds  m f
+New HIV infections in 15-49 year olds  m f
+AIDS deaths m f 15+
+Total deaths (all causes) over ages 20-59
+Total HIV tests performed in adults (15+)  m  f
+Proportion of adult HIV tests with positive results (ages 15+)  m+f together
+;
+
 %let var =  
 
 p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m	 		
-prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
+prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	
 prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
-incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m
+ n_tested n_tested_m
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
-p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+p_onart_vl1000_w				p_onart_vl1000_m  
 n_onart n_death_2059_m n_death_2059_w 
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
@@ -192,6 +207,10 @@ proc print; run;
 
 /*
 
+
+
+proc export 
+data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex_3" replace; run;
 
 
 
