@@ -11,8 +11,8 @@
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp,     1);
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep,     1);
-* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.7 0.3 0.0);
-* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15, 0.1 0.3 0.6 );
+* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.8 0.2 0.0);
+* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.1 0.3 0.5 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
@@ -27,7 +27,7 @@
 * HIV TESTING;
 
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0700 	0.0200 	0.0400 	0.1000, 
+								0.0001	0.0005 	0.0030 	0.0070 	0.0200 	0.0400 	0.1000, 
 								0.0		0.0 	0.75	0.25	0.0 	0.00	0.00);
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
@@ -53,20 +53,17 @@
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
 * rate_ch_art_init_str;	
-							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.0;rate_ch_art_init_str_10 = 0.1 ; rate_ch_art_init_str_3 = 0.1;	
+							rate_ch_art_init_str_4 = 0.7; rate_ch_art_init_str_9 = 0.0; rate_ch_art_init_str_10 = 0.1 ; rate_ch_art_init_str_3 = 0.1;	
 
-* adh_pattern; 				%sample(adh_pattern, 
-								1		2		3		4		5		6		7, 
-								0.00	0.00	0.00	1.00	0.00	0.00	0.00);
+* adh_pattern; 				adh_pattern = 5;
 
 * SEX WORKERS;				
 * base_rate_sw; 			%sample(base_rate_sw, 0.0010  0.0015  0.0020 0.0025, 0.7 0.2 0.1 0.0);
 
 
 * CIRCUMCISION;
-* prob_birth_circ; 			%sample(prob_birth_circ, 
-								0.1 	0.2		0.39	0.5, 
-								0.0 	0.0 	1.0 	0.0 );	
+* prob_birth_circ; 			prob_birth_circ=0.39;
+
 
 
 
