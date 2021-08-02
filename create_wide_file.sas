@@ -1425,7 +1425,6 @@ n_tb_21 tb_diag_e_21 n_sbi_21 sbi_diag_e_21 n_crypm_21 n_crypm_diag_e_21
 run;
 
 proc glm data=a.w_base; model rate_dead_hivpos_crypm_15 = effect_visit_prob_diag_l  crypm_base_prob_diag_l rel_rate_death_crypm_diag_e ;
-where crag_cd4_l200 = 1;
 run;
 
 
@@ -1494,6 +1493,14 @@ r_prev_6064m_4549w_70 r_prev_65plm_4549w_70 p_age1549_hivneg_70 p_age1549_hiv_70
 run;
 
 ods html close;
+
+proc glm data = a.l_base;
+model rate_dead_hivpos_sbi = effect_visit_prob_diag_l  sbi_base_prob_diag_l rel_rate_death_sbi_diag_e;
+run;
+
+
+
+
 
 
 
