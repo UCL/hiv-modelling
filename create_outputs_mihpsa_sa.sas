@@ -59,18 +59,18 @@ if option =1 then delete;
 
 *
 HIV prevalence in age group 15-49  m  f   ---- prevalence1549m prevalence1549w
-HIV prevalence in pregnant women  ----
-ART coverage m f 15+  ---- p_onart_m  p_onart_w
-Total number on ART  m f 15+
-% of men age 15-49 who have been circumcised (medically or traditionally)  15 - 49
-% of HIV-positive individuals who have been diagnosed  m f 15+ 
-% of adult ART patients (ages 15+) who are virally suppressed (if possible, at a threshold of <1000) m+f together
-HIV incidence in 15-49 year olds  m f
-New HIV infections in 15-49 year olds  m f
-AIDS deaths m f 15+
-Total deaths (all causes) over ages 20-59
-Total HIV tests performed in adults (15+)  m  f
-Proportion of adult HIV tests with positive results (ages 15+)  m+f together
+HIV prevalence in pregnant women  ---- not to be reported
+ART coverage m f 15+  ----  not yet in create wide file
+Total number on ART  m f 15+  ---- not yet in create wide file
+% of men age 15-49 who have been circumcised (medically or traditionally)  15 - 49 ----  p_mcirc_1549m
+% of HIV-positive individuals who have been diagnosed  m f 15+ ---- not yet in create wide file
+% of adult ART patients (ages 15+) who are virally suppressed (if possible, at a threshold of <1000) m+f together - not yet in create wide file
+HIV incidence in 15-49 year olds  m f ----- incidence1549w incidence1549m 
+New HIV infections in 15-49 year olds  m f ---- not yet in create wide file
+AIDS deaths m f 15+ ---- n_death_hivrel
+Total deaths (all causes) over ages 20-59 - n_death_2059_m
+Total HIV tests performed in adults (15+)  m  f  -  n_tested_m n_tested_w
+Proportion of adult HIV tests with positive results (ages 15+)  m+f together ---- not yet in create wide file
 ;
 
 %let var =  
