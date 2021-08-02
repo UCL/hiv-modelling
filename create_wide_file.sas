@@ -1,6 +1,8 @@
 * options user="/folders/myfolders/";
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\base_ahd_out\";
+libname c "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\base_ahd2_out\";
 
 /** show the contents of the input SAS file */
 * proc contents data=a.hiv_synthesis_base;
@@ -8,7 +10,9 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *run;
 
 
-data g; set  a.base_sa_16 ;
+data a.base_ahd_1; set  b.out: c.out: ;
+
+data g; set a.base_ahd_1;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1408,16 +1412,15 @@ n_onart_21  n_dead_hivpos_cause1_21  n_death_hivpos_anycause_21
 ;
 run;
 
-proc glm data=a.w_base; model rate_dead_hivpos_tb_21 = effect_visit_prob_diag_l  tb_base_prob_diag_l  tblam_cd4_l200  tblam_cd4_l100  
-rel_rate_death_tb_diag_e ;
+proc glm data=a.w_base; model rate_dead_hivpos_tb_21 = effect_visit_prob_diag_l  tb_base_prob_diag_l  tblam_cd4_l200 rel_rate_death_tb_diag_e ;
 run;
 
-
-
+*
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+;
 
 
 
