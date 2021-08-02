@@ -285,8 +285,12 @@ newp_seed = 7;
 * incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
 * incr_death_rate_sbi;		incr_death_rate_sbi = 5 ;
 * incr_death_rate_tb;		incr_death_rate_tb = 5 ;
-* fold_change_ac_death_rate;
-							fold_change_ac_death_rate = 1;
+* fold_change_ac_death_rate;fold_change_ac_death_rate = 1;
+* rr_non_aids_death_hiv_off_art;
+							rr_non_aids_death_hiv_off_art = 2;
+* rr_non_aids_death_hiv_on_art;
+							rr_non_aids_death_hiv_on_art = 1.3;
+
 * prop_adc_crypm;			prop_adc_crypm = 0.15;
 * prop_adc_sbi;				prop_adc_sbi = 0.15;
 
@@ -10055,8 +10059,8 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate; * apr14 these death rates increased to reflect better pop pyramid;
 
-	if onart ne 1 then ac_death_rate = 2 * ac_death_rate;
-	if onart =1 then ac_death_rate = 1.3 * ac_death_rate;
+	if onart ne 1 then ac_death_rate = rr_non_aids_death_hiv_off_art * ac_death_rate;
+	if onart =1 then ac_death_rate = rr_non_aids_death_hiv_on_art * ac_death_rate;
 
 		if o_dol=1 and incr_mort_risk_dol_weightg ge 1 then ac_death_rate = ac_death_rate  * incr_mort_risk_dol_weightg_i; 
 

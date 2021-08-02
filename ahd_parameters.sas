@@ -1,5 +1,8 @@
 
-
+* rr_non_aids_death_hiv_off_art;
+							%sample(rr_non_aids_death_hiv_off_art(1.5 2, 0.8 0.2);
+* rr_non_aids_death_hiv_on_art;
+							%sample(rr_non_aids_death_hiv_off_art(1.15 1.3, 0.5 0.5);
 * incr_death_rate_oth_adc;	%sample_uniform(incr_death_rate_oth_adc, 3 10);
 * incr_death_rate_crypm;	%sample_uniform(incr_death_rate_crypm, 3 10);
 * incr_death_rate_sbi;		%sample_uniform(incr_death_rate_sbi, 3 10);
