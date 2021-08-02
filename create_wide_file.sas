@@ -10,7 +10,7 @@ libname c "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *run;
 
 
-data a.base_ahd_1; set  b.out: c.out: ;
+* data a.base_ahd_1; * set  b.out: c.out: ;
 
 data g; set a.base_ahd_1;
 
@@ -788,6 +788,14 @@ end;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * &sf ;
 
+* n_tb;							n_tb = s_tb * &sf;
+* tb_diag_e;					n_tb_diag_e = s_tb_diag_e * &sf;
+* n_sbi;						n_sbi = s_sbi * &sf;
+* sbi_diag_e;					n_sbi_diag_e = s_sbi_diag_e * &sf;
+* n_crypm;						n_crypm = s_crypm * &sf;
+* crypm_diag_e;					n_crypm_diag_e = s_crypm_diag_e * &sf;
+
+
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
@@ -880,7 +888,7 @@ n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_h
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause n_death_2059_m n_death_2059_w
-p_age1549_hivneg p_age1549_hiv
+n_tb n_tb_diag_e n_sbi n_sbi_diag_e n_crypm n_crypm_diag_e p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1118,6 +1126,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_dead_cvd_ge80m); %var(v=rate_dead_cvd_3039w); 
 %var(v=rate_dead_cvd_4049w); %var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
 %var(v=n_death_hivpos_anycause); %var(v= n_death_2059_m);  %var(v=n_death_2059_w);
+%var(v=n_tb);  %var(v=n_tb_diag_e);  %var(v=n_sbi);  %var(v=n_sbi_diag_e);  %var(v=n_crypm);  %var(v=n_crypm_diag_e);  
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); 
 %var(v=n_onart);
 
@@ -1202,7 +1211,7 @@ n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
-p_onart_m_age50pl p_onart_w_age50pl  n_onart
+n_tb n_tb_diag_e n_sbi n_sbi_diag_e n_crypm n_crypm_diag_e  p_onart_m_age50pl p_onart_w_age50pl  n_onart
 ;
 
 proc sort; by run; run;
@@ -1316,6 +1325,7 @@ r_prev_1519w_4549w_95 r_prev_2024w_4549w_95 r_prev_2529w_4549w_95 r_prev_3034w_4
 r_prev_4044w_4549w_95 r_prev_5054w_4549w_95 r_prev_5559w_4549w_95 r_prev_6064w_4549w_95 r_prev_65plw_4549w_95 r_prev_1519m_4549w_95 r_prev_2024m_4549w_95 
 r_prev_2529m_4549w_95 r_prev_3034m_4549w_95 r_prev_3539m_4549w_95 r_prev_4044m_4549w_95 r_prev_4549m_4549w_95 r_prev_5054m_4549w_95 r_prev_5559m_4549w_95 
 r_prev_6064m_4549w_95 r_prev_65plm_4549w_95  p_age1549_hivneg_95 p_age1549_hiv_95  n_dead_hivpos_cause1_95 n_death_hivpos_anycause_95
+n_tb_95 tb_diag_e_95 n_sbi_95 sbi_diag_e_95 n_crypm_95 n_crypm_diag_e_95
 ;
 run;
 
@@ -1342,6 +1352,7 @@ r_prev_1519w_4549w_05 r_prev_2024w_4549w_05 r_prev_2529w_4549w_05 r_prev_3034w_4
 r_prev_4044w_4549w_05 r_prev_5054w_4549w_05 r_prev_5559w_4549w_05 r_prev_6064w_4549w_05 r_prev_65plw_4549w_05 r_prev_1519m_4549w_05 r_prev_2024m_4549w_05 
 r_prev_2529m_4549w_05 r_prev_3034m_4549w_05 r_prev_3539m_4549w_05 r_prev_4044m_4549w_05 r_prev_4549m_4549w_05 r_prev_5054m_4549w_05 r_prev_5559m_4549w_05 
 r_prev_6064m_4549w_05 r_prev_65plm_4549w_05 p_age1549_hivneg_05 p_age1549_hiv_05  n_onart_05  n_dead_hivpos_cause1_05  n_death_hivpos_anycause_05
+n_tb_05 n_tb_diag_e_05 n_sbi_05 n_sbi_diag_e_05 n_crypm_05 n_crypm_diag_e_05
 ;
 run;
 
@@ -1368,7 +1379,7 @@ r_prev_1519w_4549w_15 r_prev_2024w_4549w_15 r_prev_2529w_4549w_15 r_prev_3034w_4
 r_prev_4044w_4549w_15 r_prev_5054w_4549w_15 r_prev_5559w_4549w_15 r_prev_6064w_4549w_15 r_prev_65plw_4549w_15 r_prev_1519m_4549w_15 r_prev_2024m_4549w_15 
 r_prev_2529m_4549w_15 r_prev_3034m_4549w_15 r_prev_3539m_4549w_15 r_prev_4044m_4549w_15 r_prev_4549m_4549w_15 r_prev_5054m_4549w_15 r_prev_5559m_4549w_15 
 r_prev_6064m_4549w_15 r_prev_65plm_4549w_15 p_age1549_hivneg_15 p_age1549_hiv_15  n_onart_15  n_dead_hivpos_cause1_15  n_death_hivpos_anycause_15
-
+n_tb_15 tb_diag_e_15 n_sbi_15 sbi_diag_e_15 n_crypm_15 n_crypm_diag_e_15
 ;
 run;
 
@@ -1409,10 +1420,12 @@ p_on1drug_antihyp_1549_21  p_on2drug_antihyp_1549_21 	p_on3drug_antihyp_1549_21 
 p_on3drug_antihyp_5059_21 	p_on1drug_antihyp_6069_21 	p_on2drug_antihyp_6069_21 	p_on3drug_antihyp_6069_21 	p_on1drug_antihyp_7079_21 		
 p_on2drug_antihyp_7079_21 	p_on3drug_antihyp_7079_21 	p_on1drug_antihyp_ge80_21 	p_on2drug_antihyp_ge80_21 	p_on3drug_antihyp_ge80_21 
 n_onart_21  n_dead_hivpos_cause1_21  n_death_hivpos_anycause_21
+n_tb_21 tb_diag_e_21 n_sbi_21 sbi_diag_e_21 n_crypm_21 n_crypm_diag_e_21
 ;
 run;
 
-proc glm data=a.w_base; model rate_dead_hivpos_tb_05 = effect_visit_prob_diag_l  tb_base_prob_diag_l  tblam_cd4_l200 rel_rate_death_tb_diag_e ;
+proc glm data=a.w_base; model rate_dead_hivpos_crypm_15 = effect_visit_prob_diag_l  crypm_base_prob_diag_l rel_rate_death_crypm_diag_e ;
+where crag_cd4_l200 = 1;
 run;
 
 
@@ -1424,6 +1437,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 ;
 run;
 
+ods html close;
 
 
 
