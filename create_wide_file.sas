@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
 
-data a.base_sa_22; set b.out:;
+* data a.base_sa_23; * set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -12,7 +12,7 @@ data a.base_sa_22; set b.out:;
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_22 ;
+data g; set  a.base_sa_23 ;
 
 
 proc sort data=g; 
@@ -1567,8 +1567,8 @@ model trend_prev = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_
 run;
 
 proc glm data=s;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model prevalence1549_17 = ych_risk_beh_ep ych_risk_beh_newp p_rred_p p_hsb_p/ solution; 
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w fold_tr ;
+model prevalence1549_17 = p_rred_p p_hsb_p fold_tr fold_tr_newp /  solution; 
 run;
 
 ods html close; 
