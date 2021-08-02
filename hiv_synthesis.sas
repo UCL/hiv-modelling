@@ -295,6 +295,9 @@ newp_seed = 7;
 * prop_adc_sbi;				prop_adc_sbi = 0.15;
 
 * following values are placeholders - should result in similar aids and death rate to previous coding;
+* rate_crypm_proph_init;	rate_crypm_proph_init = 0;
+* rate_tb_proph_init; 		rate_tb_proph_init = 0;
+* rate_sbi_proph_init;		rate_sbi_proph_init = 0;
 * effect_tb_proph;			effect_tb_proph = 0.5; 					* effect of tb prophylaxis on risk of tb;
 * effect_crypm_proph;		effect_crypm_proph = 0.5; 				* as above for crypm;
 * effect_sbi_proph;			effect_sbi_proph = 0.5;
@@ -9582,18 +9585,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if  cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
 
 
-	* TB preventive prophylaxis ;
-
-	d=uniform(0);
-
-	* todo: model latent tb and risk of re-infection ? ;
+	* TB preventive prophylaxis ;  
 
 	tb_proph_tm1=tb_proph;
 
 	tb_proph = 0;	
-	* todo: to determine when tb_proph = 1;
-	if tb_proph=1 then date_most_recent_tb_proph = caldate{t};
-
+	u=uniform(0);
+	if caldate{t} - max(date_most_recent_tb_proph, date_last_tb) > 1 and u < rate_tb_proph_init then do; 
+		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
+	end;
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
 	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
@@ -9603,8 +9603,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	crypm_proph_tm1=crypm_proph;
 
 	crypm_proph = 0;	
-	* todo: to determine when crypm_proph = 1;
-	if crypt_proph=1 then date_most_recent_crypt_proph = caldate{t};
+	u=uniform(0);
+	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 
+		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
+	end;
 
 	* SBI preventive prophylaxis ;
 
@@ -9613,8 +9615,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	sbi_proph_tm1=sbi_proph;
 
 	sbi_proph = 0;	
-	* todo: to determine when sbi_proph = 1;
-	if sbi_proph=1 then date_most_recent_sbi_proph = caldate{t};
+	u=uniform(0);
+	if caldate{t} - max(date_most_recent_sbi_proph, date_last_sbi) > 1 and u < rate_sbi_proph_init then do; 
+		sbi_proph = 1; date_most_recent_sbi_proph = caldate{t};
+	end;
 
 
 	* latest measured cd4;
@@ -9698,6 +9702,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		tb_diag_e = .; tb_prob_diag_l = .;
 		if tb=1 then do;
+			date_last_tb = caldate{t};
 			tb_prob_diag_l = tb_base_prob_diag_l; 
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
@@ -10493,7 +10498,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	non_hiv_tb = 0;
 	ynon_hiv_tb = uniform(0);
 	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
-		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  
+		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_last_tb = caldate{t};
 	end;
 
 	non_hiv_tb_diag_e = .; 
@@ -16398,7 +16403,8 @@ ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zd
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
+rate_tb_proph_init rate_sbi_proph_init
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -18332,7 +18338,8 @@ sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rat
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
+rate_tb_proph_init rate_sbi_proph_init
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
