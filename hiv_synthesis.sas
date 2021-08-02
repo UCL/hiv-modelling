@@ -3990,7 +3990,7 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 end;
 
 
-* HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65;
+* HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
 tested_as_sw=.;
  
