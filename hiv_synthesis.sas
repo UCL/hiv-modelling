@@ -4821,10 +4821,10 @@ end;
 /*
 if sex_age_mixing_matrix_m=6 then do;
 w15m15 =0.94 *s_m_1524_newp; w15m25=0.50*s_m_2534_newp; w15m35=0.50*s_m_3544_newp; w15m45=0.50*s_m_4554_newp; w15m55=0.50*s_m_5564_newp;
-w25m15 =0.05 *s_m_1524_newp; w25m25=0.40*s_m_2534_newp; w25m35=0.35*s_m_3544_newp; w25m45=0.35*s_m_4554_newp; w25m55=0.35*s_m_5564_newp;
+w25m15 =0.05 *s_m_1524_newp; w25m25=0.40*s_m_2534_newp; w25m35=0.35*s_m_3544_newp; w25m45=0.35*s_m_4554_newp; w25m55=0.30*s_m_5564_newp;
 w35m15 =0.01 *s_m_1524_newp; w35m25=0.10*s_m_2534_newp; w35m35=0.10*s_m_3544_newp; w35m45=0.10*s_m_4554_newp; w35m55=0.10*s_m_5564_newp;
 w45m15 =0.00 *s_m_1524_newp; w45m25=0.00*s_m_2534_newp; w45m35=0.05*s_m_3544_newp; w45m45=0.05*s_m_4554_newp; w45m55=0.05*s_m_5564_newp;
-w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_newp; w55m45=0.00*s_m_4554_newp; w55m55=0.00*s_m_5564_newp;
+w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_newp; w55m45=0.00*s_m_4554_newp; w55m55=0.05*s_m_5564_newp;
 end;
 */
 
@@ -4854,9 +4854,10 @@ else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_new
 end;
 else if 55 <= age < 65 then do;e=uniform(0);
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
-else if 0.50 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
-else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
-else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
+else if 0.50 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
+else if 0.80 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
+else if 0.90 <= e <= 0.95 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
+else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
 
 end;
@@ -15811,10 +15812,10 @@ end;
 
 if sex_age_mixing_matrix_m=6 then do;
 ptnewp15_w=(0.94 *s_m_1524_newp)+(0.50*s_m_2534_newp)+(0.50*s_m_3544_newp)+(0.50*s_m_4554_newp)+(0.50*s_m_5564_newp);
-ptnewp25_w=(0.05*s_m_1524_newp)+(0.40*s_m_2534_newp)+(0.35*s_m_3544_newp)+(0.35*s_m_4554_newp)+(0.35*s_m_5564_newp);
+ptnewp25_w=(0.05*s_m_1524_newp)+(0.40*s_m_2534_newp)+(0.35*s_m_3544_newp)+(0.35*s_m_4554_newp)+(0.30*s_m_5564_newp);
 ptnewp35_w=(0.01 *s_m_1524_newp)+(0.08*s_m_2534_newp)+(0.10*s_m_3544_newp)+(0.10*s_m_4554_newp)+(0.10*s_m_5564_newp);
 ptnewp45_w=(0.00*s_m_1524_newp)+(0.02*s_m_2534_newp)+(0.05*s_m_3544_newp)+(0.05*s_m_4554_newp)+(0.05*s_m_5564_newp);
-ptnewp55_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.00*s_m_4554_newp)+(0.00*s_m_5564_newp);
+ptnewp55_w=(0.00*s_m_1524_newp)+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.00*s_m_4554_newp)+(0.05*s_m_5564_newp);
 end;
 
 
