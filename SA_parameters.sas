@@ -17,8 +17,6 @@
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
 
-* newp_factor;  			%sample(newp_factor, 0.5 1 2 5, 0.1 0.1 0.3 0.5 );
-* newp_seed;				%sample_uniform(newp_seed, 3 7);
 
 * TRANSMISSION;
 

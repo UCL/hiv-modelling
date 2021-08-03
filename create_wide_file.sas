@@ -780,6 +780,8 @@ end;
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage * &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage * &sf;
 * n_death;						n_death = s_dead_allage * &sf;
+* n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * &sf;
+* n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * &sf;
 * n_covid;						n_covid = s_covid * &sf;
 * n_death_hivneg_anycause;		n_death_hivneg_anycause = s_dead_hivneg_anycause * &sf;
 * n_death_hivpos_anycause;		n_death_hivpos_anycause = s_dead_hivpos_anycause * &sf;
@@ -883,7 +885,7 @@ n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_h
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause n_death_2059_m n_death_2059_w
-p_age1549_hivneg p_age1549_hiv
+n_death_hiv_m n_death_hiv_w p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1121,6 +1123,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_dead_cvd_ge80m); %var(v=rate_dead_cvd_3039w); 
 %var(v=rate_dead_cvd_4049w); %var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
 %var(v=n_death_hivpos_anycause); %var(v= n_death_2059_m);  %var(v=n_death_2059_w);
+%var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); 
 %var(v=n_onart);
 
@@ -1205,6 +1208,7 @@ n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
+n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 ;
 
