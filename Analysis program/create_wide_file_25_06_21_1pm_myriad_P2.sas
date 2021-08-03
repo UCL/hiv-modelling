@@ -342,7 +342,7 @@ p_onart_vl1000_m_65_1 p_onart_vl1000_m_66_1 p_onart_vl1000_m_67_1 p_onart_vl1000
 %var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m)
 %var(v=n_mcirc1549_py);%var (v=n_mcirc1549_3m);%var(v=n_vmmc1549_py);%var (v=n_vmmc1549_3m);%var (v=n_new_vmmc1549_py);%var (v=n_new_vmmc1049_py);
 %var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=s_sw_newp); %var(v=d_n_new_inf1549);%var(v=d_n_infection)
-%var(v=ddaly);%var(v=ddaly_Op);%var(v=ddaly_adults_Op);
+%var(v=ddaly);%var(v=ddaly_adults_Op);
 
 data   wide_outputs; merge incidence_sw
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -397,7 +397,7 @@ n_prep  n_covid  n_death_covid  n_death  n_death_hivrel
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m
 n_mcirc1549_py n_mcirc1549_3m n_vmmc1549_py  n_vmmc1549_3m  n_new_vmmc1549_py  n_new_vmmc1049_py
 n_new_inf1549m n_new_inf1549 d_n_new_inf1549 d_n_infection
-s_sw_newp ddaly ddaly_Op ddaly_adults_Op;
+s_sw_newp ddaly ddaly_adults_Op;
 ;
 
 proc contents; run;
