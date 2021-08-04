@@ -9,8 +9,13 @@
 
 
 * SEXUAL BEHAVIOUR;
-* ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp, 0.85 1);
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.85 1);
+* ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp, 1);
+* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 1);
+
+* ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
+								0.95 	0.99 	1		1/0.99 	1/0.95, 
+								0.15 	0.15 	0.7 	0   0   );
+
 * p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.8 0.2 0.0);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.1 0.3 0.5 );
 
@@ -45,6 +50,10 @@
 * sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
 * oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
 
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 10 ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 10;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 10 ;
+* incr_death_rate_tb;		incr_death_rate_tb = 10 ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -65,7 +74,7 @@
 * adh_pattern; 				adh_pattern = 5;
 
 * SEX WORKERS;				
-* base_rate_sw; 			%sample(base_rate_sw, 0.0010  0.0015  , 0.7 0.3 );
+* base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.2  0.7  0.1 );
 
 
 * CIRCUMCISION;
