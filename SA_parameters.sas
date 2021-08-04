@@ -40,6 +40,13 @@
 
 * gx;						%sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
 
+* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
+* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
+* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
+* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
+
+
+
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 

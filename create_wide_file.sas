@@ -1602,7 +1602,7 @@ where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
 run;
 
 
-proc glm data=a.w_base; model n_death_2059_m_05 = gx ; run;   
+proc glm data=a.l_base; model n_death_2059_m = gx crypm_base_prob_diag_l ; run;   
 
 
 
