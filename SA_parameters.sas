@@ -76,6 +76,9 @@
 
 * adh_pattern; 				adh_pattern = 5;
 
+* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.4;
+
+
 * SEX WORKERS;				
 * base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.5  0.5  0.0 );
 
