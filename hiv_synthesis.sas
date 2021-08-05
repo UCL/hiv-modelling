@@ -285,7 +285,7 @@ newp_seed = 7;
 * incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
 * incr_death_rate_sbi;		incr_death_rate_sbi = 5 ;
 * incr_death_rate_tb;		incr_death_rate_tb = 5 ;
-* fold_change_ac_death_rate;fold_change_ac_death_rate = 1;
+* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 1; fold_change_ac_death_rate_m = 1; 
 * rr_non_aids_death_hiv_off_art;
 							rr_non_aids_death_hiv_off_art = 2;
 * rr_non_aids_death_hiv_on_art;
@@ -10066,7 +10066,8 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
 		if c_lac=1 then ac_death_rate=ac_death_rate+0.10;
 
-	ac_death_rate = ac_death_rate * fold_change_ac_death_rate; * apr14 these death rates increased to reflect better pop pyramid;
+	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
+	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
 	if onart ne 1 then ac_death_rate = rr_non_aids_death_hiv_off_art * ac_death_rate;
 	if onart =1 then ac_death_rate = rr_non_aids_death_hiv_on_art * ac_death_rate;
@@ -10454,7 +10455,8 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;
 	if pop_wide_tld_prep=1 then ac_death_rate = ac_death_rate  * i_mort_risk_dol_prep_weightg; 
 
-	ac_death_rate = ac_death_rate * fold_change_ac_death_rate ; 
+	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
+	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
 	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=uniform(0);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
