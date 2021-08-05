@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
 
-  data a.base_sa_29;   set b.out:;
+* data a.base_sa_29; * set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -1600,7 +1600,7 @@ run;
 
 proc glm data=s;
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p ;
-model prevalence1549_95 = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor/  solution; 
+model prevalence1549_17 = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor/  solution; 
 run;
 
 ods html close; 
@@ -1611,7 +1611,7 @@ where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
 run;
 
 
-proc glm data=a.l_base; model n_death_2059_m = gx crypm_base_prob_diag_l ; run;   
+proc glm data=a.l_base; model n_death_2059_m = gx fx  ; run;   
 
 
 proc freq data=a.l_base; tables run; where cald = 2021; run;

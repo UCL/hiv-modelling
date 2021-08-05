@@ -10,6 +10,7 @@ data b;
 * set a.l_base;
   set a.l_base_keep;
 
+  if fx = 1/0.70;
 
 p_onart_vl1000_all = .;
 

@@ -5,7 +5,7 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 4;
-* fold_change_ac_death_rate; fold_change_ac_death_rate = 0.3 ;
+* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.2; fold_change_ac_death_rate_m = 0.6;
 
 
 * SEXUAL BEHAVIOUR;
@@ -16,7 +16,7 @@
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.8 0.2 0.0);
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5 0.7, 0.7 0.2 0.1 0.0);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.1 0.3 0.5 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
@@ -40,11 +40,11 @@
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							fold_change_in_risk_base_rate = 2;
+							%sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
 
 * fold_decr_hivdeath;		fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
 
-* fx;						%sample_uniform(fx, 1.00 1/0.85 1/0.70);
+* fx;						%sample_uniform(fx, 1/0.85 1/0.70  1/0.5);
 
 * gx;						%sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
 
