@@ -40,7 +40,7 @@
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							fold_change_in_risk_base_rate = 1;
+							fold_change_in_risk_base_rate = 2;
 
 * fold_decr_hivdeath;		fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
 
