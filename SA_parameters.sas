@@ -39,6 +39,9 @@
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
+* fold_change_in_risk_base_rate;
+							fold_change_in_risk_base_rate = 1;
+
 * fold_decr_hivdeath;		fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
 
 * fx;						%sample_uniform(fx, 1.00 1/0.85 1/0.70);
@@ -74,7 +77,7 @@
 * adh_pattern; 				adh_pattern = 5;
 
 * SEX WORKERS;				
-* base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.2  0.7  0.1 );
+* base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.5  0.5  0.0 );
 
 
 * CIRCUMCISION;
