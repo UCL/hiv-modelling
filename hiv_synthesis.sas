@@ -9592,7 +9592,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	tb_proph = 0;	
 	u=uniform(0);
-	if caldate{t} - max(date_most_recent_tb_proph, date_last_tb) > 1 and u < rate_tb_proph_init then do; 
+	if caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1 and u < rate_tb_proph_init then do; 
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
 
@@ -9703,7 +9703,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 		tb_diag_e = .; tb_prob_diag_l = .;
 		if tb=1 then do;
-			date_last_tb = caldate{t};
+			date_most_recent_tb = caldate{t};
 			tb_prob_diag_l = tb_base_prob_diag_l; 
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
@@ -10499,7 +10499,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	non_hiv_tb = 0;
 	ynon_hiv_tb = uniform(0);
 	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
-		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_last_tb = caldate{t};
+		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
 	end;
 
 	non_hiv_tb_diag_e = .; 
