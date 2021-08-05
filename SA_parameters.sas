@@ -5,7 +5,11 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 4;
-* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.2; fold_change_ac_death_rate_m = 0.6;
+
+
+
+* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.2; fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
+
 
 
 * SEXUAL BEHAVIOUR;
@@ -21,6 +25,8 @@
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
+
+* newp_factor;  			%sample(newp_factor, 0.5 1 2 3, 0.1 0.3 0.3 0.3);	
 
 
 * TRANSMISSION;

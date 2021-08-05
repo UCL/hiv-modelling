@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
 
-* data a.base_sa_29; * set b.out:;
+  data a.base_sa_30;   set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -12,7 +12,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_29 ;
+data g; set  a.base_sa_30 ;
 
 
 proc sort data=g; 
@@ -1542,11 +1542,39 @@ ods html close;
 
 
 data q1; set a.w_base;
-if 0.132 <= prevalence1549_05 < 0.192  and 0.176 < prevalence1549_17 < 0.236;
+
+if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246
+   and 1.58 <= r_prev_sex_1549_17 < 2 and n_death_2059_m_05 > 170000 ;
 
 run_keep = run;
 
 keep run run_keep;
+
+run;
+
+/*
+
+rrr=0; if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246
+   and 1.58 <= r_prev_sex_1549_17 < 2 and n_death_2059_m_05 > 170000 then rrr=1; ;
+
+run_keep = run;
+
+* keep run run_keep;
+
+proc logistic ;
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p ;
+model rrr = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
+
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl 
+; 
+run;
+*/
+
+ods html close; 
 
 
 data a.l_base_keep; merge a.l_base q1 ; by run;
@@ -1598,10 +1626,7 @@ class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_
 model trend_prev = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p p_hsb_p  / solution ; 
 run;
 
-proc glm data=s;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p ;
-model prevalence1549_17 = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor/  solution; 
-run;
+
 
 ods html close; 
 
