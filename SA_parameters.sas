@@ -20,13 +20,11 @@
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5 0.7, 0.7 0.2 0.1 0.0);
-* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.1 0.3 0.5 );
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5 0.7, 0.4 0.4 0.2 0.0);
+* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.3 0.3 0.3 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
-
-* newp_factor;  			%sample(newp_factor, 0.5 1 2 3, 0.1 0.3 0.3 0.3);	
 
 
 * TRANSMISSION;
@@ -46,7 +44,7 @@
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							%sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
+							* %sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
 
 * fold_decr_hivdeath;		* fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
 

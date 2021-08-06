@@ -299,7 +299,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
 
 * n_tested_m;					n_tested_m = s_tested_m * &sf * 4;
-* n_tested_w;					n_tested_w = s_tested_w * &sf * 4;
+* n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
 * n_tested_sw;					n_tested_sw = s_tested_sw * &sf * 4;
 * n_tested;						n_tested = s_tested * &sf * 4;
 
@@ -796,7 +796,7 @@ end;
 * n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
-													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * &sf ;
+													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
 													
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
@@ -1557,8 +1557,7 @@ ods html close;
 
 data q1; set a.w_base;
 
-if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246
- /* and 1.58 <= r_prev_sex_1549_17 < 2 and n_death_2059_m_05 > 170000 */ ;
+if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246 ;
 
 run_keep = run;
 

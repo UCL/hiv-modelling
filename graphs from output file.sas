@@ -39,6 +39,8 @@ incidence3544w_ = incidence3544w; incidence3544m_ = incidence3544m;
 incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
 incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
 
+n_cd4_lt200_ = n_cd4_lt200;
+
 p_onart_vl1000_ = p_onart_vl1000;
 p_vl1000_ = p_vl1000;
 p_vg1000_ = p_vg1000;
@@ -118,7 +120,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  92   ;
+%let nfit =  100  ;
 %let year_end = 2021.00 ;
 run;
 proc sort;by cald option ;run;
@@ -141,7 +143,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200
+n_onart n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -205,7 +207,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_2059_m n_death_2059_w n_death_hiv_m n_death_hiv_w  n_cd4_lt200
+n_onart n_death_2059_m n_death_2059_w n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
