@@ -59,18 +59,14 @@ if option =1 then delete;
 
 *
 
-New HIV infections in 15-49 year olds  m f ---- not yet in create wide file
-AIDS deaths m f 15+ ---- n_death_hivrel
-Total deaths (all causes) over ages 20-59 - n_death_2059_m
-Total HIV tests performed in adults (15+)  m  f  -  n_tested_m n_tested_w
 Proportion of adult HIV tests with positive results (ages 15+)  m+f together ---- not yet in create wide file
 ;
 
 %let var =  
 
 prevalence1549m prevalence1549w prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m p_mcirc_1549m p_diag_w p_diag_m p_onart_vl1000 
-incidence1549w incidence1549m 
-
+incidence1549w incidence1549m n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_death_2059_w n_death_2059_m n_tested_m n_tested_w
+test_prop_positive
 
 ;
 

@@ -395,9 +395,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * ts1m - below change 4 to 12;
 
-* n_new_infection1549w;			n_new_infection1549w = s_primary1549w * 4 * &sf;
-* n_new_infection1549m;			n_new_infection1549m = s_primary1549m * 4 * &sf;
-
 * incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
@@ -813,14 +810,14 @@ n_birth_with_inf_child = s_birth_with_inf_child * &sf * 4;
 s_pregnant_ntd = s_pregnant_ntd * (0.0022 / 0.0058);
 n_pregnant_ntd = s_pregnant_ntd    * &sf * 4 ; 
 n_preg_odabe = s_pregnant_oth_dol_adv_birth_e * &sf * 4;  * annual number;
-
-
 n_mcirc1549_ = s_mcirc_1549m * &sf * 4;
 n_mcirc1549_3m = s_mcirc_1549m * &sf;
 n_vmmc1549_ = s_vmmc1549m * &sf * 4;
 n_vmmc1549_3m = s_vmmc1549m * &sf;
 n_new_inf1549m = s_primary1549m * &sf * 4;
+n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
+
 
 keep run option cald cost
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
@@ -864,7 +861,7 @@ p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000 p_vlg1000_184m p_vlg1000_65m
 death_rate  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
-n_new_inf1549m n_new_inf1549 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
+n_new_inf1549m n_new_inf1549w n_new_inf1549 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
@@ -951,12 +948,16 @@ testing_disrup_covid  art_tld_disrup_covid  art_tld_eod_disrup_covid   art_init_
 vl_adh_switch_disrup_covid  cotrim_disrup_covid    no_art_disrup_covid 
 inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult 
 
-n_mcirc1549_  n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549 
+n_mcirc1549_  n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549w n_new_inf1549 
 
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep  prop_onprep_newpge1
 prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
+
+prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 
+ n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
+test_prop_positive
 ;
 
 
@@ -1100,7 +1101,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=incidence5564w);   %var(v=incidence5564m) ;
 %var(v=incidence_sw);
 %var (v=n_mcirc1549_3m) ;%var (v=n_vmmc1549_3m); 
-%var(v=n_new_inf1549m); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
+%var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
 %var(v=p_hypert_1549); %var(v=p_hypert_5059); %var(v=p_hypert_6069); %var(v=p_hypert_7079); %var(v=p_hypert_ge80);
 %var(v=p_diagnosed_hypert_1549); %var(v=p_diagnosed_hypert_5059); %var(v=p_diagnosed_hypert_6069); %var(v=p_diagnosed_hypert_7079); 
 %var(v=p_diagnosed_hypert_ge80);  %var(v=p_on_anti_hypert_1549); %var(v=p_on_anti_hypert_5059); %var(v=p_on_anti_hypert_6069); 
@@ -1136,8 +1137,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_dead_cvd_4049w); %var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
 %var(v=n_death_hivpos_anycause); %var(v= n_death_2059_m);  %var(v=n_death_2059_w);
 %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
-%var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); 
-%var(v=n_onart);
+%var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
+%var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
+%var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
+%var(v=n_tested_w); %var(v=test_prop_positive);
+
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -1195,7 +1199,7 @@ n_prep  n_covid  n_death_covid  n_death  n_death_hivrel
 p_death_hivrel_age_le64  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m    incidence_sw
  n_mcirc1549_3m  n_vmmc1549_3m 
-n_new_inf1549m n_new_inf1549 
+n_new_inf1549m n_new_inf1549w n_new_inf1549 
 t_sw_newp
 p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
 p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  p_on_anti_hypert_1549 
@@ -1223,6 +1227,8 @@ rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
+prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive
 ;
 
 proc sort; by run; run;
