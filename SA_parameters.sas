@@ -8,7 +8,7 @@
 
 
 
-* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.2; fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
+* fold_change_ac_death_rate;* fold_change_ac_death_rate_w = 0.2; * fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
 
 
 
@@ -48,21 +48,21 @@
 * fold_change_in_risk_base_rate;
 							%sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
+* fold_decr_hivdeath;		* fold_decr_hivdeath = 1.00 ; 	* degree to which hiv death rate is lower than aids rate;
 
-* fx;						%sample_uniform(fx, 1/0.85 1/0.70  1/0.5);
+* fx;						* %sample_uniform(fx, 1/0.85 1/0.70  1/0.5);
 
-* gx;						%sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
+* gx;						* %sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
 
-* tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
-* crypm_base_prob_diag_l;	%sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
-* sbi_base_prob_diag_l;		%sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
-* oth_adc_base_prob_diag_l;	%sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
+* tb_base_prob_diag_l;		* %sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
+* crypm_base_prob_diag_l;	* %sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
+* sbi_base_prob_diag_l;		* %sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
+* oth_adc_base_prob_diag_l;	* %sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
 
-* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 10 ;
-* incr_death_rate_crypm;	incr_death_rate_crypm = 10;
-* incr_death_rate_sbi;		incr_death_rate_sbi = 10 ;
-* incr_death_rate_tb;		incr_death_rate_tb = 10 ;
+* incr_death_rate_oth_adc;	* incr_death_rate_oth_adc = 10 ;
+* incr_death_rate_crypm;	* incr_death_rate_crypm = 10;
+* incr_death_rate_sbi;		* incr_death_rate_sbi = 10 ;
+* incr_death_rate_tb;		* incr_death_rate_tb = 10 ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
@@ -82,7 +82,7 @@
 
 * adh_pattern; 				adh_pattern = 5;
 
-* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.4;
+* ind_effect_art3_death_rate; *	ind_effect_art3_death_rate = 0.4;
 
 
 * SEX WORKERS;				

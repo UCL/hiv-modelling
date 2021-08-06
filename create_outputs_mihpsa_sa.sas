@@ -58,12 +58,7 @@ set b;
 if option =1 then delete;
 
 *
-ART coverage m f 15+  ----  not yet in create wide file
-Total number on ART  m f 15+  ---- not yet in create wide file
-% of men age 15-49 who have been circumcised (medically or traditionally)  15 - 49 ----  p_mcirc_1549m
-% of HIV-positive individuals who have been diagnosed  m f 15+ ---- not yet in create wide file
-% of adult ART patients (ages 15+) who are virally suppressed (if possible, at a threshold of <1000) m+f together - not yet in create wide file
-HIV incidence in 15-49 year olds  m f ----- incidence1549w incidence1549m 
+
 New HIV infections in 15-49 year olds  m f ---- not yet in create wide file
 AIDS deaths m f 15+ ---- n_death_hivrel
 Total deaths (all causes) over ages 20-59 - n_death_2059_m
@@ -73,7 +68,8 @@ Proportion of adult HIV tests with positive results (ages 15+)  m+f together ---
 
 %let var =  
 
-prevalence1549m prevalence1549w prevalence_hiv_preg 
+prevalence1549m prevalence1549w prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m p_mcirc_1549m p_diag_w p_diag_m p_onart_vl1000 
+incidence1549w incidence1549m 
 
 
 ;
