@@ -14862,7 +14862,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*deaths*/
 
-	s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ; 
+	s_dead + dead; s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ; 
 	s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;  
 	s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
 	s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
@@ -16244,7 +16244,7 @@ s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
@@ -17112,7 +17112,7 @@ s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
@@ -18183,7 +18183,7 @@ s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead  s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
