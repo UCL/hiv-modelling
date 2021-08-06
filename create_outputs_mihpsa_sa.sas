@@ -58,8 +58,6 @@ set b;
 if option =1 then delete;
 
 *
-HIV prevalence in age group 15-49  m  f   ---- prevalence1549m prevalence1549w
-HIV prevalence in pregnant women  ---- not to be reported
 ART coverage m f 15+  ----  not yet in create wide file
 Total number on ART  m f 15+  ---- not yet in create wide file
 % of men age 15-49 who have been circumcised (medically or traditionally)  15 - 49 ----  p_mcirc_1549m
@@ -75,7 +73,7 @@ Proportion of adult HIV tests with positive results (ages 15+)  m+f together ---
 
 %let var =  
 
-prevalence1549m prevalence1549w
+prevalence1549m prevalence1549w prevalence_hiv_preg 
 
 
 ;
