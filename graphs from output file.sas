@@ -11,6 +11,7 @@ data b;
 * set a.l_base_keep;
 
 
+
 p_onart_vl1000_all = .;
 
 
@@ -1231,7 +1232,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 300000 by 10000) valueattrs=(size=10);
+yaxis grid label	= 'Numeber'		labelattrs=(size=12)  values = (0 to 800000 by 50000) valueattrs=(size=10);
 
 label p50_n_death_2059_w_0 = "Option 0 (median) ";
 label p50_n_death_2059_w_1 = "Option 1  (median) ";
@@ -1253,7 +1254,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 300000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 800000 by 50000) valueattrs=(size=10);
 
 label p50_n_death_2059_m_0 = "Option 0 (median) ";
 label p50_n_death_2059_m_1 = "Option 1  (median) ";
@@ -1275,7 +1276,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_cd4_lt200";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 3000000 by 500000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 8000000 by 500000) valueattrs=(size=10);
 
 label p50_n_cd4_lt200_0 = "Option 0 (median) ";
 
