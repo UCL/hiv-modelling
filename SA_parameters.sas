@@ -57,21 +57,21 @@
 * sbi_base_prob_diag_l;		* %sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
 * oth_adc_base_prob_diag_l;	* %sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
 
-* incr_death_rate_oth_adc;	* incr_death_rate_oth_adc = 10 ;
-* incr_death_rate_crypm;	* incr_death_rate_crypm = 10;
-* incr_death_rate_sbi;		* incr_death_rate_sbi = 10 ;
-* incr_death_rate_tb;		* incr_death_rate_tb = 10 ;
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2  ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 2 ;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 2  ;
+* incr_death_rate_tb;		incr_death_rate_tb = 2  ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.00	0.00	0.5 	0.5		0.0 	0.0);
+								0.00	0.00	0.6 	0.4		0.0 	0.0);
 * rate_return;  			%sample(rate_return, 
 								0.01	0.10  0.2   0.3		0.50 , 
-								0.00 	0.2   0.6   0.2 	0.00 );
-* rate_int_choice;  		%sample(rate_int_choice,  0.02  0.03, 0.8 0.2 ); 					
+								0.00 	0.2   0.5   0.3 	0.00 );
+* rate_int_choice;  		%sample(rate_int_choice,  0.02  0.03, 0.9 0.1 ); 					
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
