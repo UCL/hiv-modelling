@@ -20,7 +20,7 @@
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5 0.7, 0.4 0.4 0.2 0.0);
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.7 0.2 0.1);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.3 0.3 0.3 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
@@ -36,8 +36,8 @@
 * HIV TESTING;
 
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0070 	0.0200 	0.0400 	0.1000, 
-								0.0		0.0 	0.75	0.25	0.0 	0.00	0.00);
+								0.0001	0.0005 	0.0030 	0.0070  0.01	0.0200 	0.0400 	0.1000, 
+								0.0		0.0 	0.0 	0.50	0.50  	0.0		0.00	0.00);
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
 
