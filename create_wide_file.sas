@@ -4,12 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
-  data a.base_sa_33;    set b.out:;
-
-
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
-
-  data a.base_sa_31;   set b.out:;
+  data a.base_sa_34;    set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -17,8 +12,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-
-data g; set  a.base_sa_33 ;
+data g; set  a.base_sa_34 ;
 
 
 proc sort data=g; 
@@ -792,7 +786,6 @@ end;
 			rate_dead_cvd_ge80w = (s_dead_cvd_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
 
 * n_alive;						n_alive = s_alive * &sf;
-
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage  * 4* &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
 * n_death;						n_death = s_dead_allage  * 4 * &sf;
@@ -807,7 +800,6 @@ end;
 
 * n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * 4 * &sf;
 * n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * 4 * &sf;
-
 													
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
@@ -971,7 +963,6 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 test_prop_positive
 
 n_alive
-
 ;
 
 
@@ -1155,7 +1146,6 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);
-
 
 
 data   wide_outputs; merge 
@@ -1573,7 +1563,6 @@ ods html close;
 data q1; set a.w_base;
 
 if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246 ;
-
 
 run_keep = run;
 
