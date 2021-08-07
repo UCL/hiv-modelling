@@ -20,7 +20,7 @@
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.7 0.2 0.1);
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.5 0.4 0.1);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.3 0.3 0.3 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
