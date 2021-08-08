@@ -15244,14 +15244,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc freq; tables cald hiv c_score
-c_n_tests c_incidence1549_16 c_n_onart c_prevalence1549 c_prevalence1549m_16  c_prevalence1549w_16  c_p_onart_vl1000 c_n_secondline_16
-c_p_nnm_art_start_15 
-; 
-run;
-
-
-
 /*
 
 ods html;
@@ -16707,6 +16699,15 @@ t_w_newp = s_w_newp;
 
 * &j values are all 1 in advance of the date we want because s_ values relate to the last period;
 
+
+
+
+* consider the scale factor .................................................................. ;
+
+
+
+
+
 if 61 <= &j < 65 then do; i_tests_04=max(0, i_tests_04)+s_tested;end;
 if &j ge 65 then n_tests_04 = i_tests_04 * 500;  if i_tests_04=. then i_tests_04=0;
 
@@ -16762,6 +16763,33 @@ n_tests_m_16_o = 993028 ;
 n_tests_f_non_anc_16_o = 1291520 ;
 n_tests_f_anc_16_o = 636122 ;
 
+n_tests_f_anc_21a_o = 155575; * of which 10724 positive;
+
+
+n_tests_21a_o = 670567;
+n_tests_m_21a_o = 670567 * 0.33;
+n_tests_f_21a_o = 670567 * 0.67;
+
+*  21a 277 newly started PrEP and 177 clients were retained on PrEP at the end of the quarter;
+
+* pep 3813 ;
+
+* pcp_p 660603 ;
+
+* 77% patients on ART were estimated to be 30 years or older. National guidelines require screening for hypertension for all adults 
+(30 years +) at the time of ART initiation and annually thereafter. 24% of these were screened for hypertension at least once in 2021 ;
+
+* A total of 29,858 were newly started on TPT during Q1 2021. 22,272 (75%) of these received a single 6-month course of isoniazid and
+pyridoxine (6H) and 7,586 (25%) were given 12 weekly doses of isoniazid and rifapentine (3HP) ;
+
+* 99% of people on art screened for tb in past 3 mths (or last visit) - 2,376 had tb - 99% treated;
+
+* 3,334
+patients were started on TB treatment this quarter and HIV status was ascertained for 3,334 (>99%) - 1,427 (43%) of these were HIV positive 
+and 1,410 (99%) of all HIV positives were already on ART when starting TB treatment ;
+
+
+
 ever_tested_w_1549_04_o = 0.17;
 ever_tested_m_1549_04_o = 0.17;
 ever_tested_w_1549_10_o = 0.716;
@@ -16800,6 +16828,11 @@ n_diag_15_o = 124280 ;
 n_diag_16_o = 157720 ;
 
 
+
+n_diag_21a_o = 20078 * 0.5;
+
+
+
 if &j = 67 then do; n_onart_05=s_onart_incl_int_cli_unaw * 500; end;
 if &j = 79 then do; n_onart_08=s_onart_incl_int_cli_unaw * 500; end;
 if &j = 91 then do;  n_onart_11=s_onart_incl_int_cli_unaw * 500; end;
@@ -16813,6 +16846,13 @@ n_onart_11_o = 294585 ;
 n_onart_14_o = 489775 ;
 n_onart_15_o = 540071;
 n_onart_16p5_o = 580222 ;
+
+
+n_onart_21a_o = 826138 ; * adults ;
+
+
+* proportion on tld = 0.97 ;
+
 
 
 if 65 <= &j < 69 then do; i_art_start_m_05=max(0, i_art_start_m_05)+s_art_start_m; end; if &j ge 69 then n_art_start_m_05 = i_art_start_m_05 * 500;
@@ -16845,6 +16885,21 @@ n_art_start_m_15_o = 32919 ;
 n_art_start_f_15_o = 58259 ;
 n_art_start_m_16_o = . ;
 n_art_start_f_16_o = . ;
+
+
+n_art_start_21a_o = 19682 ;
+
+* 3% of initiators started in stage 4 ;
+
+* ~ 7600 cd4 results in 2021a (27% 200 or less);
+
+* cumulative ever started art: 1,607,135 ;
+
+* number on pi  18131 - but transition to all on tld;
+
+
+* prop pregnant women on art 0.98 (of these 24% started at the pregnancy);
+
 
 if 1 <= &j < 69 then do; cum_i_art_start_m_05=max(0, cum_i_art_start_m_05)+s_art_start_m; end;  if &j ge 69 then cum_n_art_start_m_05 = cum_i_art_start_m_05 * 500;
 if 1 <= &j < 69 then do; cum_i_art_start_f_05=max(0, cum_i_art_start_f_05)+s_art_start_w; end; if &j ge 69 then cum_n_art_start_f_05 = cum_i_art_start_f_05 * 500;
@@ -16937,6 +16992,8 @@ if &j = 111 then  p_onart_vl1000_16 = p_onart_vl1000;
 p_onart_vl1000_14_o = 0.84;
 p_onart_vl1000_15_o = 0.86;
 p_onart_vl1000_16_o = 0.90;
+
+p_onart_vl1000_21a_o = 0.96;
 
 
 if &j = 111 then  p_vl1000_16 = p_vl1000;
