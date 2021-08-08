@@ -7,9 +7,10 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-* set a.l_base;
-  set a.l_base_keep;
+  set a.l_base;
+* set a.l_base_keep;
 
+  if newp_factor =2;
 
 p_onart_vl1000_all = .;
 
@@ -1282,7 +1283,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_cd4_lt200";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 8000000 by 500000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5000000 by 500000) valueattrs=(size=10);
 
 label p50_n_cd4_lt200__0 = "Option 0 (median) ";
 
@@ -1303,6 +1304,21 @@ label p50_n_alive_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_hiv";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+
+label p50_n_hiv_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
 

@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
-  data a.base_sa_36;    set b.out:;
+* data a.base_sa_36; *  set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -994,6 +994,7 @@ data y; set a.l_base;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
+proc means  noprint data=y; var &v; output out=y_90 mean= &v._90; by run ; where 1989.5 <= cald < 1990.5; 
 proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
 proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
 proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2004.5 <= cald < 2005.5; 
@@ -1029,7 +1030,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
 
-data &v ; merge y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
+data &v ; merge y_90 y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1661,5 +1662,30 @@ proc glm data=a.l_base; model n_death_2059_m = gx fx  ; run;
 
 
 proc freq data=a.l_base; tables run; where cald = 2021; run;
+
+
+
+data e; set a.w_base;
+
+ratio_p_newp_ge1_9000 = p_newp_ge1_00 / p_newp_ge1_90 ;
+lratio_p_newp_ge1_9000 = log(ratio_p_newp_ge1_9000) ;
+
+
+proc glm; 
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+model lratio_p_newp_ge1_9000 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+p_rred_p p_hsb_p newp_factor base_rate_sw / solution ; 
+run;
+
+proc glm; 
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p p_hsb_p newp_factor;
+model p_newp_ge1_10 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+p_rred_p p_hsb_p newp_factor base_rate_sw / solution ; 
+run;
+
+proc means; var ratio_p_newp_ge1_9000 ; where newp_factor = 2  ; run;
+
+
+
 
 
