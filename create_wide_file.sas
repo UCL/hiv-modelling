@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
-* data a.base_sa_36; *  set b.out:;
+  data a.base_sa_36;    set b.out:;
 
 
 /** show the contents of the input SAS file */

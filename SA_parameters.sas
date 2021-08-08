@@ -23,6 +23,7 @@
 * p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.5 0.4 0.1);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.1 0.3 0.3 0.3 );
 
+* rred_initial;				%sample_uniform(rred_initial, 2 3 5);
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
@@ -81,7 +82,7 @@
 
 * adh_pattern; 				adh_pattern = 5;
 
-* ind_effect_art3_death_rate; *	ind_effect_art3_death_rate = 0.4;
+* ind_effect_art3_death_rate;  	ind_effect_art3_death_rate = 0.4;
 
 
 * SEX WORKERS;				
