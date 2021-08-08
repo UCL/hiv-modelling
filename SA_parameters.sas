@@ -6,7 +6,7 @@
 * POPULATION GROWTH AND DEMOGRAPHY;
 * inc_cat; 					inc_cat = 4;
 
-
+* population aged >= 15 in 1990: 22 million ;
 
 * fold_change_ac_death_rate;* fold_change_ac_death_rate_w = 0.2; * fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
 
