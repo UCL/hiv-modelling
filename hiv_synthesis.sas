@@ -213,6 +213,7 @@ newp_seed = 7;
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
+* rred_initial;				rred_initial = 1;  * this is to allow changes to the initial proportions in newp categories (applies in first period only);
 * p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); 
 * p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); 
 
@@ -1256,7 +1257,7 @@ if 50 <= age < 55 then rred_a=rred_a_50m;
 if 55 <= age < 60 then rred_a=rred_a_55m;
 if 60 <= age < 65 then rred_a=rred_a_60m;
 
-rred= newp_factor * rred_a*rred_p;
+rred= newp_factor * rred_a*rred_p*rred_initial;
 
 * newp=0; s1=0.85; * newp1=1; s2=0.10   ;* newp >= 2; s3=0.05  ; * newp1 10x; s4=0.0030 ;
 
@@ -1290,7 +1291,7 @@ if 55 <= age < 60 then rred_a=rred_a_55w;
 if 60 <= age < 65 then rred_a=rred_a_60w;
 
 
-rred= newp_factor * rred_a*rred_p;
+rred= newp_factor * rred_a*rred_p*rred_initial;
 
 * newp=0; s1=0.97;* newp = 1-3; s2=0.03;
 s2=s2*rred;
