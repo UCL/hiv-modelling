@@ -91,5 +91,4 @@
 * prob_birth_circ; 			prob_birth_circ=0.39;
 
 
-* effect_gender_cvd_death ; effect_gender_cvd_death = 0.25;
 
