@@ -12,12 +12,9 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-<<<<<<< Updated upstream
 
 data g; set  a.base_sa_33 ;
-=======
-data g; set  a.base_sa_5 ;
->>>>>>> Stashed changes
+
 
 
 proc sort data=g; 
