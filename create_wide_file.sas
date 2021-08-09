@@ -1671,14 +1671,14 @@ proc freq data=a.l_base; tables run; where cald = 2021; run;
 
 data e; set a.w_base;
 
-ratio_p_newp_ge1_9000 = p_newp_ge1_00 / p_newp_ge1_90 ;
-lratio_p_newp_ge1_9000 = log(ratio_p_newp_ge1_9000) ;
+ratio_p_newp_ge1_8900 = p_newp_ge1_00 / p_newp_ge1_89 ;
+lratio_p_newp_ge1_8900 = log(ratio_p_newp_ge1_8900) ;
 
 
 proc glm; 
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
-model lratio_p_newp_ge1_9000 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
-p_rred_p p_hsb_p newp_factor base_rate_sw / solution ; 
+model lratio_p_newp_ge1_8900 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+p_rred_p p_hsb_p newp_factor base_rate_sw base_rate_stop_sexwork rred_a_p  sw_init_newp sw_trans_matrix / solution ; 
 run;
 
 proc glm data = a.w_base; 

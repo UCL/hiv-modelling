@@ -13,8 +13,8 @@
 
 
 * SEXUAL BEHAVIOUR;
-* ych_risk_beh_newp;  		%sample_uniform(ych_risk_beh_newp, 1);
-* ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 1);
+* ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
+* ych_risk_beh_ep;  		=ch_risk_beh_ep = 1;
 
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
@@ -76,7 +76,7 @@
 
 * pr_art_init; 				pr_art_init = 0.95; 
 
-* rate_int_choice;  		%sample(rate_int_choice,  0.02  0.03, 0.9 0.1 ); 					
+* rate_int_choice;  		%sample(rate_int_choice,  0.02  0.03, 0.1 0.9 ); 					
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.00	0.00	0.50	0.50);
@@ -85,7 +85,7 @@
 
 * adh_pattern; 				adh_pattern = 4;
 
-* ind_effect_art3_death_rate;  %sample_uniform(ind_effect_art3_death_rate, 0.2 0.4 0.6);
+* ind_effect_art3_death_rate;  %sample_uniform(ind_effect_art3_death_rate, 0.3  );
 
 
 * SEX WORKERS;				
