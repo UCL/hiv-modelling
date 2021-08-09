@@ -46,9 +46,7 @@
 * fold_change_in_risk_base_rate;
 							* %sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.25 / 2 ; 	* degree to which hiv death rate is lower than aids rate 
-																halved due to introduction of 2-fold increased death rate for adcs;
-
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.08 ; 	
 
 * fx;						* %sample_uniform(fx, 1/0.85 1/0.70  1/0.5);
 
@@ -85,7 +83,7 @@
 
 * adh_pattern; 				adh_pattern = 4;
 
-* ind_effect_art3_death_rate;  %sample_uniform(ind_effect_art3_death_rate, 0.3  );
+* ind_effect_art3_death_rate; ind_effect_art3_death_rate =0.3 ;
 
 
 * SEX WORKERS;				

@@ -279,6 +279,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_ep;							p_ep = s_ep / s_alive1564 ;
 
+* av_newp;						av_newp = s_newp / s_alive1564;
+
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
 
 * av number of newp amongst people with newp ge 1, exlcuding sw;
@@ -975,7 +977,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive  n_hiv  p_ep
+n_alive  n_hiv  p_ep  av_newp
 ;
 
 
@@ -1161,7 +1163,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_hiv);  %var(v=p_ep); 
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_hiv);  %var(v=p_ep);  %var(v=av_newp);
 
 
 data   wide_outputs; merge 
@@ -1250,7 +1252,7 @@ rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w 
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_hiv  p_ep
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_hiv  p_ep  av_newp
 ;
 
 proc sort; by run; run;
