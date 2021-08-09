@@ -16815,7 +16815,7 @@ n_tests_f_anc_20a_o  = 167545       ;
 n_tests_f_anc_20b_o  = 162127       ;
 n_tests_f_anc_20c_o  = 155128       ;
 n_tests_f_anc_20d_o  = 150492       ;
-n_tests_f_anc_21a_o  =        ;
+n_tests_f_anc_21a_o  = 155575       ;
 
 
 
@@ -16921,8 +16921,8 @@ n_onart_15_o = 540071 ;
 n_onart_16_o = 625689      ;  
 n_onart_17_o = 700360   ;  
 n_onart_18_o = 759782  ;
-n_onart_19_o = 787609;
-n_onart_20_o =
+n_onart_19_o = 787609  ;
+n_onart_20_o = 818218  ; 
 n_onart_21a_o = 826138 ; * adults ;
 
 
@@ -16983,7 +16983,7 @@ n_art_start_19d_o = 25354      ;
 n_art_start_20a_o = 27737      ;
 n_art_start_20b_o = 18804      ;
 n_art_start_20c_o = 19384      ;
-n_art_start_20d_o =       ;
+n_art_start_20d_o = 21655      ;
 
 n_art_start_21a_o = 19682 ;
 
