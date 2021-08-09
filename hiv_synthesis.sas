@@ -16785,10 +16785,10 @@ n_tests_19b_0 =  974000 ;
 n_tests_19c_0 =  987000 ;
 n_tests_19d_0 =  992000 ;
 
-n_tests_20a_0 =         ;
-n_tests_20b_0 =         ;
-n_tests_20c_0 =         ;
-n_tests_20d_0 =         ;
+n_tests_20a_0 =  941000 ;
+n_tests_20b_0 =  613000 ;
+n_tests_20c_0 =  675000 ;
+n_tests_20d_0 =  743000 ;
 
 n_tests_21a_o = 670567;
 n_tests_m_21a_o = 670567 * 0.33;
@@ -16811,10 +16811,10 @@ n_tests_f_anc_19a_o  = 152908       ;
 n_tests_f_anc_19b_o  = 160860       ;
 n_tests_f_anc_19c_o  = 168033       ;
 n_tests_f_anc_19d_o  = 157171       ;
-n_tests_f_anc_20a_o  =        ;
-n_tests_f_anc_20b_o  =        ;
-n_tests_f_anc_20c_o  =        ;
-n_tests_f_anc_20d_o  =        ;
+n_tests_f_anc_20a_o  = 167545       ;
+n_tests_f_anc_20b_o  = 162127       ;
+n_tests_f_anc_20c_o  = 155128       ;
+n_tests_f_anc_20d_o  = 150492       ;
 n_tests_f_anc_21a_o  =        ;
 
 
@@ -16895,10 +16895,10 @@ n_diag_19b_o = 28912      ;
 n_diag_19c_o = 28376      ;
 n_diag_19d_o = 26276      ; 
 
-n_diag_20a_o =       ;
-n_diag_20b_o =       ;
-n_diag_20c_o =       ;
-n_diag_20d_o =       ; 
+n_diag_20a_o = 28852      ;
+n_diag_20b_o = 18882      ;
+n_diag_20c_o = 20206      ;
+n_diag_20d_o = 22634      ; 
 
 n_diag_21a_o = 20078 * 0.5;
 
@@ -16980,9 +16980,9 @@ n_art_start_19b_o = 28318      ;
 n_art_start_19c_o = 27624      ;
 n_art_start_19d_o = 25354      ;
 
-n_art_start_20a_o =       ;
-n_art_start_20b_o =       ;
-n_art_start_20c_o =       ;
+n_art_start_20a_o = 27737      ;
+n_art_start_20b_o = 18804      ;
+n_art_start_20c_o = 19384      ;
 n_art_start_20d_o =       ;
 
 n_art_start_21a_o = 19682 ;
