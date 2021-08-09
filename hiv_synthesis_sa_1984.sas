@@ -5485,7 +5485,7 @@ if tested=1   and hiv ne 1 and cost_test=0 then cost_test= cost_test_c;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=uniform(0);
-if caldate{t}=1989    and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+if caldate{t}=1992    and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
