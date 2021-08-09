@@ -14,7 +14,7 @@
 
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
-* ych_risk_beh_ep;  		=ch_risk_beh_ep = 1;
+* ych_risk_beh_ep;  		ch_risk_beh_ep = 1;
 
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 

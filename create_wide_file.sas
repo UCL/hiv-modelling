@@ -269,6 +269,12 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
 
+* p_newp_ge1_w;					p_newp_ge1_w = (s_w1524_newp_ge1 + s_w2534_newp_ge1 + s_w3544_newp_ge1 + s_w4554_newp_ge1 + s_w5564_newp_ge1 )   
+												/ s_alive1549_w ;
+ 
+* p_newp_ge1_m;					p_newp_ge1_m = (s_m1524_newp_ge1 + s_m2534_newp_ge1 + s_m3544_newp_ge1 + s_m4554_newp_ge1 + s_m5564_newp_ge1 )   
+												/ s_alive1549_m ;
+ 
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
 
 * p_ep;							p_ep = s_ep / s_alive1564 ;
@@ -288,7 +294,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
-
 
 * n_sw_1564;					n_sw_1564 = s_sw_1564 * &sf;
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * &sf;
@@ -827,7 +832,11 @@ n_new_inf1549 = s_primary1549 * &sf * 4;
 
 
 keep run option cald cost
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+s_alive gender_r_newp p_w_giv_birth_this_per 
+
+p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549  
+av_newp_ge1  av_newp_ge1_non_sw p_newp_ge1_w p_newp_ge1_m  p_npge2_l4p_1549m  p_npge2_l4p_1549w 
+
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
@@ -1042,6 +1051,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %mend var;
 
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
+%var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw); %var(v=p_newp_ge1_w); %var(v=p_newp_ge1_m);  %var(v=p_npge2_l4p_1549m);  %var(v=p_npge2_l4p_1549w); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
@@ -1156,6 +1166,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
+av_newp_ge1   av_newp_ge1_non_sw  p_newp_ge1_w  p_newp_ge1_m   p_npge2_l4p_1549m   p_npge2_l4p_1549w  
 p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
 p_tested_past_year_1549m  p_tested_past_year_1549w  
 p_mcirc   p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m 
