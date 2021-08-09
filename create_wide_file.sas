@@ -4,7 +4,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
-  data a.base_sa_37;    set b.out:;
+  data a.base_sa_38;    set b.out:;
 
 
 
@@ -13,7 +13,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_37 ;
+data g; set  a.base_sa_38 ;
 
 
 proc sort data=g; 
@@ -270,6 +270,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
 
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
+
+* p_ep;							p_ep = s_ep / s_alive1564 ;
 
 * av_newp_ge1;					av_newp_ge1 = s_newp / s_newp_ge1 ;
 
@@ -919,7 +921,7 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy 
+prep_strategy rred_initial
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -964,7 +966,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive  n_hiv
+n_alive  n_hiv  p_ep
 ;
 
 
@@ -995,6 +997,7 @@ data y; set a.l_base;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
+proc means  noprint data=y; var &v; output out=y_89 mean= &v._89; by run ; where 1989.0 <= cald < 1989.5; 
 proc means  noprint data=y; var &v; output out=y_90 mean= &v._90; by run ; where 1989.5 <= cald < 1990.5; 
 proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
 proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
@@ -1031,7 +1034,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 
  proc sort data=y_21_71; by run; proc transpose data=y_21_71 out=t_21_71 prefix=&v._21_71_; var &v._21_71; by run;  
 
-data &v ; merge y_90 y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
+data &v ; merge y_89 y_90 y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_21_26 t_21_22 t_21_71 ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1148,7 +1151,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_hiv);
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_hiv);  %var(v=p_ep); 
 
 
 data   wide_outputs; merge 
@@ -1236,7 +1239,7 @@ rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w 
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_hiv
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_hiv  p_ep
 ;
 
 proc sort; by run; run;
@@ -1269,7 +1272,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rate_choose_stop_prep ); %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );     %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
-%par(p= incr_mort_risk_dol_weightg ); %par(p=prep_strategy ); 
+%par(p= incr_mort_risk_dol_weightg ); %par(p=prep_strategy ); %par(p=rred_initial);
 
 %par(p=effect_visit_prob_diag_l);  %par(p=tb_base_prob_diag_l); %par(p=crypm_base_prob_diag_l); %par(p=tblam_eff_prob_diag_l);  
 %par(p=crag_eff_prob_diag_l);%par(p=sbi_base_prob_diag_l); %par(p=rel_rate_death_tb_diag_e); %par(p=rel_rate_death_oth_adc_diag_e); 
@@ -1302,7 +1305,7 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy 
+prep_strategy rred_initial
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
@@ -1504,7 +1507,7 @@ p_on_anti_hypert_5059w_21  p_on_anti_hypert_6069w_21 		 p_on_anti_hypert_7079w_2
 p_on1drug_antihyp_1549_21  p_on2drug_antihyp_1549_21 	p_on3drug_antihyp_1549_21 	p_on1drug_antihyp_5059_21 	p_on2drug_antihyp_5059_21 		
 p_on3drug_antihyp_5059_21 	p_on1drug_antihyp_6069_21 	p_on2drug_antihyp_6069_21 	p_on3drug_antihyp_6069_21 	p_on1drug_antihyp_7079_21 		
 p_on2drug_antihyp_7079_21 	p_on3drug_antihyp_7079_21 	p_on1drug_antihyp_ge80_21 	p_on2drug_antihyp_ge80_21 	p_on3drug_antihyp_ge80_21 
-n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21 n_hiv_21
+n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21 n_hiv_21 p_ep_21
 ;
 run;
 
@@ -1678,15 +1681,23 @@ model lratio_p_newp_ge1_9000 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex
 p_rred_p p_hsb_p newp_factor base_rate_sw / solution ; 
 run;
 
-proc glm; 
+proc glm data = a.w_base; 
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p p_hsb_p newp_factor;
-model p_newp_ge1_10 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
-p_rred_p p_hsb_p newp_factor base_rate_sw / solution ; 
+model p_newp_ge1_89 = sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+p_rred_p p_hsb_p newp_factor base_rate_sw rred_initial / solution ; 
 run;
 
-proc means; var ratio_p_newp_ge1_9000 ; where newp_factor = 2  ; run;
+proc sort data = e; by rred_initial;
+proc means data = e; var p_newp_ge1_89 ratio_p_newp_ge1_9000; 
+by rred_initial  ; 
+run;
+
+proc sort data = e; by newp_factor;
+proc means data = e; var p_newp_ge1_89 ratio_p_newp_ge1_9000; 
+by newp_factor ; 
+run;
 
 
-
+proc freq; tables prob_lossdiag_adctb ; run;  
 
 
