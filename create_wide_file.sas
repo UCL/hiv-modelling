@@ -26,7 +26,7 @@ set g ;
 
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 58500000 / s_alive;
+sf_2021 = 10000000 / s_alive;
 keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
