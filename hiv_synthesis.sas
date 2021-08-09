@@ -16765,10 +16765,59 @@ n_tests_f_anc_16_o = 636122 ;
 
 n_tests_f_anc_21a_o = 155575; * of which 10724 positive;
 
+n_tests_16a_0 = 832000 ;
+n_tests_16b_0 = 838000 ;
+n_tests_16c_0 = 832000 ;
+n_tests_16d_0 = 750000 ;
+
+n_tests_17a_0 =        ;
+n_tests_17b_0 =        ;
+n_tests_17c_0 =        ;
+n_tests_17d_0 =        ;
+
+n_tests_18a_0 =        ;
+n_tests_18b_0 =        ;
+n_tests_18c_0 =        ;
+n_tests_18d_0 =        ;
+
+n_tests_19a_0 =        ;
+n_tests_19b_0 =        ;
+n_tests_19c_0 =        ;
+n_tests_19d_0 =        ;
+
+n_tests_20a_0 =        ;
+n_tests_20b_0 =        ;
+n_tests_20c_0 =        ;
+n_tests_20d_0 =        ;
 
 n_tests_21a_o = 670567;
 n_tests_m_21a_o = 670567 * 0.33;
 n_tests_f_21a_o = 670567 * 0.67;
+
+
+n_tests_f_anc_16a_o  = 147765 ;
+n_tests_f_anc_16b_o  = 140475 ;
+n_tests_f_anc_16c_o  = 146596       ;
+n_tests_f_anc_16d_o  = 149150       ;
+n_tests_f_anc_17a_o  =        ;
+n_tests_f_anc_17b_o  =        ;
+n_tests_f_anc_17c_o  =        ;
+n_tests_f_anc_17d_o  =        ;
+n_tests_f_anc_18a_o  =        ;
+n_tests_f_anc_18b_o  =        ;
+n_tests_f_anc_18c_o  =        ;
+n_tests_f_anc_18d_o  =        ;
+n_tests_f_anc_19a_o  =        ;
+n_tests_f_anc_19b_o  =        ;
+n_tests_f_anc_19c_o  =        ;
+n_tests_f_anc_19d_o  =        ;
+n_tests_f_anc_20a_o  =        ;
+n_tests_f_anc_20b_o  =        ;
+n_tests_f_anc_20c_o  =        ;
+n_tests_f_anc_20d_o  =        ;
+n_tests_f_anc_21a_o  =        ;
+
+
 
 *  21a 277 newly started PrEP and 177 clients were retained on PrEP at the end of the quarter;
 
@@ -16825,9 +16874,31 @@ n_diag_12_o = 146210 ;
 n_diag_13_o = 136743 ;
 n_diag_14_o = 116959 ;
 n_diag_15_o = 124280 ;
-n_diag_16_o = 157720 ;
 
+n_diag_16a_o = 41901      ;
+n_diag_16b_o = 39176      ;
+n_diag_16c_o = 36253      ;
+n_diag_16d_o = 32987      ; 
 
+n_diag_17a_o =       ;
+n_diag_17b_o =       ;
+n_diag_17c_o =       ;
+n_diag_17d_o =       ; 
+
+n_diag_18a_o =       ;
+n_diag_18b_o =       ;
+n_diag_18c_o =       ;
+n_diag_18d_o =       ; 
+
+n_diag_19a_o =       ;
+n_diag_19b_o =       ;
+n_diag_19c_o =       ;
+n_diag_19d_o =       ; 
+
+n_diag_20a_o =       ;
+n_diag_20b_o =       ;
+n_diag_20c_o =       ;
+n_diag_20d_o =       ; 
 
 n_diag_21a_o = 20078 * 0.5;
 
@@ -16840,19 +16911,22 @@ if &j = 103 then do;  n_onart_14=s_onart_incl_int_cli_unaw * 500; end;
 if &j = 107 then do;  n_onart_15=s_onart_incl_int_cli_unaw * 500; end;
 if &j = 109 then do;  n_onart_16p5=s_onart_incl_int_cli_unaw * 500; end;
 
+* this is number at end of year;
+
 n_onart_05_o = 26705 ;
 n_onart_08_o = 135681 ;
 n_onart_11_o = 294585 ;
 n_onart_14_o = 489775 ;
-n_onart_15_o = 540071;
-n_onart_16p5_o = 580222 ;
-
-
+n_onart_15_o = 540071 ;
+n_onart_16_o = 625689      ;  
+n_onart_17_o =       
+n_onart_18_o =
+n_onart_19_o =
+n_onart_20_o =
 n_onart_21a_o = 826138 ; * adults ;
 
 
 * proportion on tld = 0.97 ;
-
 
 
 if 65 <= &j < 69 then do; i_art_start_m_05=max(0, i_art_start_m_05)+s_art_start_m; end; if &j ge 69 then n_art_start_m_05 = i_art_start_m_05 * 500;
@@ -16883,13 +16957,35 @@ n_art_start_m_14_o = 35792 ;
 n_art_start_f_14_o = 65018 ;
 n_art_start_m_15_o = 32919 ;
 n_art_start_f_15_o = 58259 ;
-n_art_start_m_16_o = . ;
-n_art_start_f_16_o = . ;
 
+n_art_start_16a_o = 28052      ;
+n_art_start_16b_o = 28657      ;
+n_art_start_16c_o = 41994      ;
+n_art_start_16d_o = 30221      ;
+
+n_art_start_17a_o =       ;
+n_art_start_17b_o =       ;
+n_art_start_17c_o =       ;
+n_art_start_17d_o =       ;
+
+n_art_start_18a_o =       ;
+n_art_start_18b_o =       ;
+n_art_start_18c_o =       ;
+n_art_start_18d_o =       ;
+
+n_art_start_19a_o =       ;
+n_art_start_19b_o =       ;
+n_art_start_19c_o =       ;
+n_art_start_19d_o =       ;
+
+n_art_start_20a_o =       ;
+n_art_start_20b_o =       ;
+n_art_start_20c_o =       ;
+n_art_start_20d_o =       ;
 
 n_art_start_21a_o = 19682 ;
 
-* 3% of initiators started in stage 4 ;
+* 2021 3% of initiators started in stage 4 - 2016 this was 4%;
 
 * ~ 7600 cd4 results in 2021a (27% 200 or less);
 
@@ -16934,9 +17030,6 @@ cum_n_art_start_f_14_o = 448663 ;
 
 cum_n_art_start_m_15_o = 285853 ;
 cum_n_art_start_f_15_o = 508183 ;
-
-cum_n_art_start_m_16_o = . ;
-cum_n_art_start_f_16_o = . ;
 
 incidence1549 = 100 * 4 * s_primary1549/(s_alive1549_m+s_alive1549_w-s_hiv1549m_+s_primary1549m-s_hiv1549w_+s_primary1549w);
 
