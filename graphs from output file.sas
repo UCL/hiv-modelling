@@ -362,7 +362,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_ep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1.0 by 0.1 ) valueattrs=(size=10);
 label p50_p_ep_0 = "Option 0 (median) ";
 label p50_p_ep_1 = "Option 1 (median) ";
 

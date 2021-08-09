@@ -2,7 +2,7 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\";
 
-data g; set  a.base_sa_32 ;
+data g; set  a.base_sa_37 ;
 
 proc sort data=g; 
 by run cald option;run;
