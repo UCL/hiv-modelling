@@ -7,8 +7,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-* set a.l_base;
-  set a.l_base_keep;
+  set a.l_base;
+* set a.l_base_keep;
 
 
 * if sex_beh_trans_matrix_m ne 15 and sex_beh_trans_matrix_w ne 2 and sex_beh_trans_matrix_w ne 3 and sex_beh_trans_matrix_w ne 11;
@@ -340,7 +340,7 @@ if cald=2017 then do; n_death_2059_m_obs_sa = 136433  ; n_death_2059_w_obs_sa = 
 if cald=2018 then do; n_death_2059_m_obs_sa = 132870  ; n_death_2059_w_obs_sa = 88730  ; end; 	
 
 
-%let start = 1984;
+%let start = 1990;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
