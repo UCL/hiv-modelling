@@ -4,7 +4,8 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
-  data a.base_sa_40;    set b.out:;
+  data a.base_sa_41;    set b.out:;
+
 
 
 
@@ -13,7 +14,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_40;
+data g; set  a.base_sa_41;
 
 
 proc sort data=g; 

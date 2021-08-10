@@ -10,7 +10,7 @@
 
 * fold_change_ac_death_rate;* fold_change_ac_death_rate_w = 0.2; * fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
 
-
+newp_seed = 10 ;
 
 * SEXUAL BEHAVIOUR;
 * ych_risk_beh_newp;  		ych_risk_beh_newp = 1;
@@ -48,7 +48,7 @@
 
 * fold_decr_hivdeath;		fold_decr_hivdeath = 0.08 ; 	
 
-* fx;						* %sample_uniform(fx, 1/0.85 1/0.70  1/0.5);
+* fx;						%sample_uniform(fx, 1 0.85 0.70 );
 
 * gx;						* %sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
 
