@@ -664,6 +664,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ;
 run;
 
+proc freq;table run;where cald=2017;run;
 
 data b;  
 
@@ -1330,7 +1331,9 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ;
 run;
 
-data b;  
+proc freq;table run;where cald=2017;run;
+
+data c;  
 
   infile "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\c_output_vmmc_25_06_21_10r";
 
@@ -1995,6 +1998,8 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 ;
 run;
 
-data c;
-set a b;
+proc freq;table run;where cald=2017;run;
+
+data d;
+set a b c;
 run;

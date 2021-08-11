@@ -3,6 +3,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data b;
 set a.wide_vmmc_25_06_21_1pm_10r;
+*set a.wide_vmmc_25_06_21_1pm_10r_5disc;
 run;
 proc freq;table run;run;
 
@@ -103,7 +104,7 @@ ndb_500_21_26_2_adults =  ddaly_adults_21_26_2 + (dcost_21_26_2)/0.0005;
 ndb_500_21_41_1_adults =  ddaly_adults_21_41_1 + (dcost_21_41_1)/0.0005;
 ndb_500_21_41_2_adults =  ddaly_adults_21_41_2 + (dcost_21_41_2)/0.0005; 
 ndb_500_21_71_1_adults =  ddaly_adults_21_71_1 + (dcost_21_71_1)/0.0005;
-ndb_500_21_71_2_adults =  ddaly_adults_21_71_2 + (dcost_21_71_2)/0.0005; 
+ndb_500_21_71_2_adults =  ddaly_adults_21_71_2 + (dcost_21_71_2)/0.0005;
 
 *net dalys averted;
 d_net_dalys_21_26_1_adults = ndb_500_21_26_2_adults - ndb_500_21_26_1_adults;
@@ -133,7 +134,7 @@ proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 
 /*lowart;nnt_21_26_1; nnt_21_26_1=149205; nnt_21_41_1=39185; nnt_21_71_1=15674;*/
 
-*base/5% disc/120/60;nnt_21_26_1=143201; nnt_21_41_1=37864; nnt_21_71_1=15146;
+*base/5% disc/120/60;nnt_21_26_1=143203; nnt_21_41_1=37864; nnt_21_71_1=15146;
 
 
 if d_n_new_inf_21_26_1 gt 0 then nnt_21_26_1 = d_n_vmmc_21_26_1 / d_n_new_inf_21_26_1;
@@ -159,7 +160,13 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 */
 
 ***Change the below to reflect which cost/discount is being applied;
-*base;cost_inf_avert_21_26_1=13.0*1000000; cost_inf_avert_21_41_1=4.0*1000000; cost_inf_avert_21_71_1 = 4.9*1000000;
+*base;cost_inf_avert_21_26_1= 12.9*1000000; cost_inf_avert_21_41_1= 3.9*1000000; cost_inf_avert_21_71_1 = 4.4*1000000;
+/*60;cost_inf_avert_21_26_1= 9.6*1000000; cost_inf_avert_21_41_1= 3.0*1000000; cost_inf_avert_21_71_1 = 4.4*1000000;*/
+/*120;cost_inf_avert_21_26_1= 16.8*1000000; cost_inf_avert_21_41_1= 4.7*1000000; cost_inf_avert_21_71_1 = 4.5*1000000;*/
+/*5% disc;cost_inf_avert_21_26_1= 12.3*1000000; cost_inf_avert_21_41_1= 3.7*1000000; cost_inf_avert_21_71_1 = 3.6*1000000;*/
+
+
+
 /*lowart;cost_inf_avert_21_26_1=11.9*1000000; cost_inf_avert_21_41_1=3.9*1000000; cost_inf_avert_21_71_1 = 3.5*1000000;*/
 
 if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
@@ -168,15 +175,46 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=13.0*1000000;
-cost_daly_avert_21_41_1_adults=4.0*1000000;
-cost_daly_avert_21_71_1_adults=4.9*1000000;
+cost_daly_avert_21_26_1_adults=12.9*1000000;
+cost_daly_avert_21_41_1_adults=3.9*1000000;
+cost_daly_avert_21_71_1_adults=4.4*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
 if d_ddaly_adults_21_41_1 gt 0 then cost_daly_avert_21_41_1_adults = (d_dcost_21_41_1 / d_ddaly_adults_21_41_1)*1000000;
 if d_ddaly_adults_21_71_1 gt 0 then cost_daly_avert_21_71_1_adults = (d_dcost_21_71_1 / d_ddaly_adults_21_71_1)*1000000;
 
+***Optima method;
+*DALYs averted;
+d_ddaly_adults_Op_21_26_1 = ddaly_adults_Op_21_26_2 - ddaly_adults_Op_21_26_1;
+d_ddaly_adults_Op_21_41_1 = ddaly_adults_Op_21_41_2 - ddaly_adults_Op_21_41_1;
+d_ddaly_adults_Op_21_71_1 = ddaly_adults_Op_21_71_2 - ddaly_adults_Op_21_71_1;
+
+*ICER;
+cost_daly_avert_Op_21_26=12.9*1000000;
+cost_daly_avert_Op_21_41=3.9*1000000;
+cost_daly_avert_Op_21_71=4.4*1000000;
+
+if d_ddaly_adults_Op_21_26_1 gt 0 then cost_daly_avert_Op_21_26 = (d_dcost_21_26_1 / d_ddaly_adults_Op_21_26_1)*1000000;
+if d_ddaly_adults_Op_21_41_1 gt 0 then cost_daly_avert_Op_21_41 = (d_dcost_21_41_1 / d_ddaly_adults_Op_21_41_1)*1000000;
+if d_ddaly_adults_Op_21_71_1 gt 0 then cost_daly_avert_Op_21_71 = (d_dcost_21_71_1 / d_ddaly_adults_Op_21_71_1)*1000000;
+
+*Net DALYs averted;
+ndb_500_21_71_1_Op =  ddaly_adults_Op_21_71_1 + (dcost_21_71_1)/0.0005;
+ndb_500_21_71_2_Op =  ddaly_adults_Op_21_71_2 + (dcost_21_71_2)/0.0005; 
+d_net_dalys_21_71_1_Op = ndb_500_21_71_2_Op - ndb_500_21_71_1_Op;
+
+
+
+
+***Difference in DALYs comparing Optima method with our method;
+diff_daly_avert_21_26=d_ddaly_adults_Op_21_26_1 - d_ddaly_adults_21_26_1;
+diff_daly_avert_21_41=d_ddaly_adults_Op_21_41_1 - d_ddaly_adults_21_41_1;
+diff_daly_avert_21_71=d_ddaly_adults_Op_21_71_1 - d_ddaly_adults_21_71_1;
+
+diff_icer_21_26 = cost_daly_avert_Op_21_26 - cost_daly_avert_21_26_1_adults;
+diff_icer_21_41 = cost_daly_avert_Op_21_41 - cost_daly_avert_21_41_1_adults;
+diff_icer_21_71 = cost_daly_avert_Op_21_71 - cost_daly_avert_21_71_1_adults;
 run;
 
 proc means n sum p50 p5 p95; var cost_daly_avert_21_71_1_adults;run;
@@ -378,7 +416,9 @@ cost_inf_avert_21_26_1  cost_inf_avert_21_41_1  cost_inf_avert_21_71_1
 ***DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
 d_ddaly_adults_21_26_1  d_ddaly_adults_21_41_1  d_ddaly_adults_21_71_1
+d_ddaly_adults_Op_21_26_1 d_ddaly_adults_Op_21_41_1 d_ddaly_adults_Op_21_71_1
 ;run;
+
 
 ***net DALYs averted;
 proc means n mean p50 p5 p95 lclm uclm;var 
@@ -389,8 +429,14 @@ proc freq;table ce_21_26 ce_21_41 ce_21_71;run;
 ***cost per DALY averted - icer;
 proc means n mean p50 p5 p95 lclm uclm ;var 
 cost_daly_avert_21_26_1_adults  cost_daly_avert_21_41_1_adults cost_daly_avert_21_71_1_adults
+cost_daly_avert_Op_21_26 cost_daly_avert_Op_21_41 cost_daly_avert_Op_21_71
 ;run;
 
+***Optima vs Synthesis;
+proc means n mean p50 p5 p95 lclm uclm ;var 
+diff_daly_avert_21_26  diff_daly_avert_21_41  diff_daly_avert_21_71
+diff_icer_21_26 diff_icer_21_41 diff_icer_21_71;
+run;
 proc univariate CIPCTLDF CIPCTLNORMAL; var cost_daly_avert_21_71_1_adults;run;
 
 ***NNT;
@@ -403,6 +449,13 @@ proc means n mean p50 p5 p95 lclm uclm;var nnt_21_41_1;where d_n_new_inf_21_41_1
 proc means n mean p50 p5 p95 lclm uclm;var nnt_21_71_1;where d_n_new_inf_21_71_1 >0;run;
 
 
+
+proc print;var ddaly_adults_21_71_2 ddaly_adults_21_71_1 d_ddaly_adults_21_71_1 d_dcost_21_71_1 cost_daly_avert_21_71_1_adults
+ndb_500_21_71_2_adults ndb_500_21_71_1_adults d_net_dalys_21_71_1_adults;run;
+
+proc print;var ddaly_adults_Op_21_71_2 ddaly_adults_Op_21_71_1 d_ddaly_adults_Op_21_71_1  cost_daly_avert_Op_21_71
+ndb_500_21_71_2_Op ndb_500_21_71_1_Op d_net_dalys_21_71_1_Op;
+;run;
 
 
 
