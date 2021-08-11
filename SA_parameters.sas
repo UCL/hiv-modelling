@@ -26,6 +26,7 @@ newp_seed = 10 ;
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
 
+* rred_a_p;					%sample(rred_a_p, 1 2 3 4, 0.15 0.15 0.35 0.35);
 
 * TRANSMISSION;
 
