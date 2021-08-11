@@ -13074,7 +13074,7 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_1
 
 *Discounting from year_i + 1 (ie when j = ((year_i - 1989) x 4)) + 1); * 3%;  * dependent_on_time_step_length ;  
 discount = 1;
-if caldate&j ge &year_interv+1 then discount = 1/(1.03**(caldate&j-(&year_interv+1)));
+if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
 
 
 
