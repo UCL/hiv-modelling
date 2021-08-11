@@ -7,8 +7,9 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base;
-* set a.l_base_keep;
+* set a.l_base;
+  set a.l_base_keep;
+
 
 
 * if sex_beh_trans_matrix_m ne 15 and sex_beh_trans_matrix_w ne 2 and sex_beh_trans_matrix_w ne 3 and sex_beh_trans_matrix_w ne 11;

@@ -44,13 +44,13 @@ newp_seed = 10 ;
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							* %sample_uniform(fold_change_in_risk_base_rate, 1 2 3);
+							%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
 
 * fold_decr_hivdeath;		fold_decr_hivdeath = 0.08 ; 	
 
-* fx;						%sample_uniform(fx, 1 0.85 0.70 );
+* fx;						%sample_uniform(fx, 0.70 0.50 );
 
-* gx;						* %sample(gx, 1.0 1.5 2.0, 0.05 0.1 0.85);
+* gx;						%sample_uniform(gx, 0.5 1.0 );
 
 * tb_base_prob_diag_l;		* %sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	* %sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
@@ -72,7 +72,7 @@ newp_seed = 10 ;
 								0.01	0.10  0.2   0.3		0.50 , 
 								0.00 	0.2   0.5   0.3 	0.00 );
 
-* prob_return_adc; 			prob_return_adc = 0.9 ;
+* prob_return_adc; 			prob_return_adc = 0.95 ;
 
 * art_intro_date;			art_intro_date = 2005.5;
 
