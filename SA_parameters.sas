@@ -20,8 +20,8 @@ newp_seed = 10 ;
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.3 0.6 0.1);
-* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15     , 0.1 0.5 0.4     );
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.3 0.5, 0.3 0.5 0.2);
+* p_hsb_p; 					%sample(p_hsb_p, 0.05 0.08 0.15     , 0.1 0.7 0.2     );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
@@ -46,11 +46,11 @@ newp_seed = 10 ;
 * fold_change_in_risk_base_rate;
 							%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.08 ; 	
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; 	
 
 * fx;						%sample_uniform(fx, 0.70 0.50 );
 
-* gx;						%sample_uniform(gx, 0.5 1.0 );
+* gx;						gx = 1;
 
 * tb_base_prob_diag_l;		* %sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	* %sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
