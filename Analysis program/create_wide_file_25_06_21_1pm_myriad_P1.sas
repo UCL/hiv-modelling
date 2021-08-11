@@ -752,7 +752,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 ly = s_ly * &sf;
 dly = s_dly * &sf;
 
-s_ddaly = s_dead_ddaly_80 + s_live_ddaly_80;
+s_ddaly = (s_dead_ddaly_80* &discount) + s_live_ddaly_80;
 s_ddaly_Op=s_dyll_80 + s_live_ddaly_80;
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
