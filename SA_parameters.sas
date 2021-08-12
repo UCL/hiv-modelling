@@ -20,7 +20,7 @@ newp_seed = 10 ;
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.15 	0.15 	0.7 	0   0   );
 
-* p_rred_p; 				%sample(p_rred_p, 0.1 0.2 0.3 0.5, 0.3 0.4 0.3 0.0);
+* p_rred_p; 				%sample(p_rred_p, 0.1 0.2 0.3, 0.3 0.4 0.3);
 * p_hsb_p; 					%sample(p_hsb_p, 0.05 0.10 0.15 0.20, 0.1 0.3 0.5 0.1 );
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
@@ -91,7 +91,7 @@ newp_seed = 10 ;
 
 
 * SEX WORKERS;				
-* base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.6  0.4  0.0 );
+* base_rate_sw; 			%sample(base_rate_sw, 0.0007 0.0010 0.0015, 0.4  0.5  0.1 );
 
 
 * CIRCUMCISION;
