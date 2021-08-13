@@ -7,8 +7,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base;
-* set a.l_base_keep;
+* set a.l_base;
+  set a.l_base_keep;
 
  
 

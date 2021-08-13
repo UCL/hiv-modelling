@@ -1589,9 +1589,20 @@ if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246 ;
 
 run_keep = run;
 
-keep run run_keep;
+* keep run run_keep;
+
+proc freq; tables run
+
+fold_tr_newp rred_a_p newp_factor
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl 
+; 
 
 run;
+
 
 
 
@@ -1599,10 +1610,11 @@ data a.l_base_keep; merge a.l_base q1 ; by run;
 
 if run_keep ne .;
 
-
-proc freq; tables run; 
-
+proc freq; tables run;
 run;
+
+
+
 
 /*
 
