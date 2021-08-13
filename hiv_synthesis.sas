@@ -16995,8 +16995,16 @@ n_art_start_21a_o = 19682 ;
 
 * number on pi  18131 - but transition to all on tld;
 
-
 * prop pregnant women on art 0.98 (of these 24% started at the pregnancy);
+
+
+
+
+
+* NOTE ALSO BRING IN DATA FROM TARA;
+
+
+
 
 
 if 1 <= &j < 69 then do; cum_i_art_start_m_05=max(0, cum_i_art_start_m_05)+s_art_start_m; end;  if &j ge 69 then cum_n_art_start_m_05 = cum_i_art_start_m_05 * 500;
