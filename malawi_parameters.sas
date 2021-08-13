@@ -4,6 +4,7 @@
 
 
 * POPULATION GROWTH AND DEMOGRAPHY;
+<<<<<<< Updated upstream
 * inc_cat; 					inc_cat = 4;
 
 
@@ -25,10 +26,18 @@
 
 * sex_age_mixing_matrix_m;	%sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.1 0.1 0.1 0.1 0.1 0.5);
 * sex_age_mixing_matrix_w;	%sample(sex_age_mixing_matrix_w, 1 2 3 4 5 6 , 0.3 0.3 0.1 0.1 0.1 0.1);
+=======
+* inc_cat; 					inc_cat = %sample_uniform(1 ,2);
+
+
+* SEXUAL BEHAVIOUR;
+
+>>>>>>> Stashed changes
 
 
 * TRANSMISSION;
 
+<<<<<<< Updated upstream
 * fold_tr;					fold_tr = 1;
 * fold_tr_newp;				%sample(fold_tr_newp, 0.3 0.4 0.5, 0.2 0.6 0.2);
 
@@ -89,6 +98,23 @@
 
 * CIRCUMCISION;
 * prob_birth_circ; 			prob_birth_circ=0.39;
+=======
+
+* HIV TESTING;
+
+
+* NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
+
+
+* LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
+
+
+* SEX WORKERS;				
+
+
+* CIRCUMCISION;
+
+>>>>>>> Stashed changes
 
 
 
