@@ -5,7 +5,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
 
-  data a.base_sa_44;    set b.out: ;
+  data a.base_sa_46;    set b.out: ;
 
 
 
@@ -15,7 +15,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_44 ;
+data g; set  a.base_sa_46 ;
 
 
 proc sort data=g; 
@@ -1585,13 +1585,14 @@ ods html close;
 
 data q1; set a.w_base;
 
-if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246 ;
+if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246 ;
 
 run_keep = run;
 
 keep run run_keep;
 
 run;
+
 
 data q1; set a.w_base;
 
@@ -1620,6 +1621,11 @@ ods html close;
 data a.l_base_keep; merge a.l_base q1 ; by run;
 
 if run_keep ne .;
+
+
+proc freq; tables run; 
+
+run;
 
 
 
