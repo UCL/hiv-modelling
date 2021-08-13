@@ -1594,6 +1594,18 @@ keep run run_keep;
 run;
 
 
+
+data a.l_base_keep; merge a.l_base q1 ; by run;
+
+if run_keep ne .;
+
+
+proc freq; tables run; 
+
+run;
+
+/*
+
 data q1; set a.w_base;
 
 rrr=0; if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246 then rrr=1; ;
@@ -1613,22 +1625,11 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl 
 ; 
 
-
-
-ods html close; 
-
-
-data a.l_base_keep; merge a.l_base q1 ; by run;
-
-if run_keep ne .;
-
-
-proc freq; tables run; 
-
-run;
+*/
 
 
 
+/*
 
 proc glm; 
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
@@ -1725,3 +1726,4 @@ proc glm data=a.w_base; class gx fx ;
 model n_death_2059_m_05 = gx fx / solution ;
 run;
 
+*/

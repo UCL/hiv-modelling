@@ -16524,7 +16524,9 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
-
+if cald = 2017.5 and (prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
+abort abend;
+end;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -17548,11 +17550,13 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+
+data a.sa_2021_&dataset_id; set r1;
+
+data r1; set a.sa_2021_&dataset_id;
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-
-/*
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
@@ -17637,6 +17641,9 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
+
+/*
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
