@@ -542,6 +542,7 @@ if cald=2015.5 then n_secondline_obs_mlw= 6758 ; * 2nd  quarter of 2015;
 if cald=2016.5 then n_secondline_obs_mlw= 8811 ; * 2nd  quarter of 2016;
 
 
+
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
@@ -1475,10 +1476,10 @@ band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transpar
 series  x=cald y=p50_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-* series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=black thickness = 2);
-* band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=n_death_2059_w_obs_sa;
+* series  x=cald y=n_death_2059_w_obs_sa;
 
 run;quit;
 
@@ -1497,10 +1498,10 @@ band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transpar
 series  x=cald y=p50_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-* series  x=cald y=p50_n_death_hiv_m_0/	lineattrs = (color=black thickness = 2);
-* band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hiv_m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
-series  x=cald y=n_death_2059_m_obs_sa;
+* series  x=cald y=n_death_2059_m_obs_sa;
 
 run;quit;
 
