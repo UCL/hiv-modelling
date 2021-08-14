@@ -15241,12 +15241,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-p_newp_ge1 = s_newp_ge1 / s_alive1564; 
-
-proc means; var cald hiv p_newp_ge1 ; 
-
-
-
 
 /*
 

@@ -15241,12 +15241,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-p_newp_ge1 = s_newp_ge1 / s_alive1564; 
-
-proc means; var cald hiv p_newp_ge1 ; 
-
-
-
 
 /*
 
@@ -16524,8 +16518,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
-if cald = 2017.5 and (. < prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
-
+if cald = 2017.5 and (prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
 abort abend;
 end;
 
