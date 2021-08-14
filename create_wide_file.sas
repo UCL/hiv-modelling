@@ -2,9 +2,9 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_malawi_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_out\";
 
-  data a.base_sa_33;    set b.out:;
+  data a.base_mlw_1;    set b.out:;
 
 
 /** show the contents of the input SAS file */
@@ -13,7 +13,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *run;
 
 
-data g; set  a.base_sa_33 ;
+data g; set  a.base_mlw_1 ;
 
 
 
