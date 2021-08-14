@@ -16524,11 +16524,8 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
-<<<<<<< Updated upstream
-if cald = 2017.5 and (prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
-=======
 if cald = 2017.5 and (. < prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
->>>>>>> Stashed changes
+
 abort abend;
 end;
 
