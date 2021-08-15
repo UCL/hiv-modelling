@@ -5,7 +5,7 @@ libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
 
 
-  data a.base_sa_46;    set b.out: ;
+  data a.base_sa_47;    set b.out: ;
 
 
 
@@ -15,7 +15,7 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_46 ;
+data g; set  a.base_sa_47 ;
 
 
 proc sort data=g; 
@@ -652,6 +652,7 @@ end;
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000 = s_vg1000 / s_alive;
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
 * prev_vg1000_newp_w;			prev_vg1000_newp_w = (s_i_w_newp - s_i_vl1000_w_newp) /  s_w_newp;
+* prev_vg1000_newp  ;			prev_vg1000_newp   = ((s_i_w_newp + s_i_m_newp) - (s_i_vl1000_w_newp + s_i_vl1000_m_newp)) /  (s_w_newp + s_m_newp);
 * r_efa_hiv;					if s_hivge15 > 0 then r_efa_hiv = s_r_efa / s_hivge15 ;
 * p_dol_2vg1000_dolr1_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh0 = s_o_dol_2nd_vlg1000_dolr1_adh0 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr1_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh1 = s_o_dol_2nd_vlg1000_dolr1_adh1 / s_o_dol_2nd_vlg1000 ;
@@ -864,7 +865,7 @@ p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
 p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
 p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
-prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
+prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w prev_vg1000_newp p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dclin_cost     dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
@@ -1090,7 +1091,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
 %var(v=p_onart_m); %var(v=p_onart_w); 
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
-%var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;
+%var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);  %var(v=prev_vg1000_newp);  %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 %var(v=aids_death_rate);  %var(v=death_rate_onart);   %var(v=dcost);  %var(v= dart_cost_y);
 %var(v=dadc_cost);   %var(v=dcd4_cost);   %var(v=dvl_cost);   %var(v=dvis_cost);    %var(v=dcot_cost);   %var(v=dtb_cost);   
@@ -1194,7 +1195,7 @@ p_artexp_diag  p_onart_diag  p_onart_diag_w  p_onart_diag_m  p_onart_diag_sw
 p_efa  p_taz  p_ten  p_zdv  p_dol  p_3tc  p_lpr  p_nev  
 p_onart_vl1000  p_artexp_vl1000  p_vl1000  p_vg1000  p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
 p_vl1000_art_12m  p_vl1000_art_12m_onart  p_onart_m p_onart_w  p_onart_vl1000_w  p_onart_vl1000_m   p_onart_vl1000_1524  p_onart_vl1000_sw
-prev_vg1000_newp_m  prev_vg1000_newp_w  p_startedline2
+prev_vg1000_newp_m  prev_vg1000_newp_w prev_vg1000_newp p_startedline2
 p_tle  p_tld  p_zld  p_zla  p_otherreg  p_drug_level_test p_linefail_ge1
 aids_death_rate  death_rate_onart  dcost   dart_cost_y
 dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dcot_cost  dtb_cost   
@@ -1585,7 +1586,7 @@ ods html close;
 
 data q1; set a.w_base;
 
-if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246 ;
+if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
 
 run_keep = run;
 
@@ -1610,9 +1611,11 @@ data a.l_base_keep; merge a.l_base q1 ; by run;
 
 if run_keep ne .;
 
-proc freq; tables run;
+ods html;
+proc print noobs; var run;
+where cald = 2021;
 run;
-
+ods html close;
 
 
 
