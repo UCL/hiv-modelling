@@ -97,6 +97,7 @@ s_alive = s_alive_m + s_alive_w ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
+* prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 * prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
@@ -104,6 +105,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
 * n_onart_w;					n_onart_w = s_onart_w * &sf;
 * n_onart_m;					n_onart_m = s_onart_m * &sf;
+* n_onart;						n_onart = n_onart_w + n_onart_m;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
 * p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  p_diag_m = p_diag_m * 100;
 * p_diag_w;						if s_hivge15w  > 0 then p_diag_w = s_diag_w / s_hivge15w ;  p_diag_w = p_diag_w * 100;
@@ -123,9 +125,9 @@ s_alive = s_alive_m + s_alive_w ;
 
 keep run option cald 
 
-prevalence1549m prevalence1549w prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m p_mcirc_1549m p_diag_w p_diag_m p_onart_vl1000_
-incidence1549w incidence1549m n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_death_2059_w n_death_2059_m n_tested_m n_tested_w
-test_prop_positive
+prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w p_diag_m 
+p_onart_vl1000_ incidence1549w incidence1549m n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_death_2059_w n_death_2059_m n_tested_m 
+n_tested_w test_prop_positive
 
 ;
 
@@ -252,7 +254,7 @@ proc univariate noprint data=y; var &v; output out=y_2728 mean= &v._2728 ; by ru
 proc univariate noprint data=y_2728; var &v._2728; output out=t_2728 median= &v._2728_med pctlpts=2.5 97.5 pctlpre= &v._2728_; 
 proc transpose data=t_2728 out = r_2728; data e_2728; set r_2728; y2728 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_2829 mean= &v._2829 ; by run ; where 2028.5 <= cald < 2029.5; 
-proc univariate noprint data=y_2829; var &v._2819; output out=t_2829 median= &v._2829_med pctlpts=2.5 97.5 pctlpre= &v._2829_; 
+proc univariate noprint data=y_2829; var &v._2829; output out=t_2829 median= &v._2829_med pctlpts=2.5 97.5 pctlpre= &v._2829_; 
 proc transpose data=t_2829 out = r_2829; data e_2829; set r_2829; y2829 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_2930 mean= &v._2930 ; by run ; where 2029.5 <= cald < 2030.5; 
 proc univariate noprint data=y_2930; var &v._2930; output out=t_2930 median= &v._2930_med pctlpts=2.5 97.5 pctlpre= &v._2930_; 
@@ -264,7 +266,7 @@ proc transpose data=t_3031 out = r_3031; data e_3031; set r_3031; y3031 = COL1; 
 proc univariate noprint data=y; var &v; output out=y_3132 mean= &v._3132 ; by run ; where 2031.5 <= cald < 2032.5; 
 proc univariate noprint data=y_3132; var &v._3132; output out=t_3132 median= &v._3132_med pctlpts=2.5 97.5 pctlpre= &v._3132_; 
 proc transpose data=t_3132 out = r_3132; data e_3132; set r_3132; y3132 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_3223 mean= &v._3233 ; by run ; where 2032.5 <= cald < 2033.5; 
+proc univariate noprint data=y; var &v; output out=y_3233 mean= &v._3233 ; by run ; where 2032.5 <= cald < 2033.5; 
 proc univariate noprint data=y_3233; var &v._3233; output out=t_3233 median= &v._3233_med pctlpts=2.5 97.5 pctlpre= &v._3233_; 
 proc transpose data=t_3233 out = r_3233; data e_3233; set r_3233; y3233 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_3334 mean= &v._3334 ; by run ; where 2033.5 <= cald < 2034.5; 
@@ -283,29 +285,193 @@ proc univariate noprint data=y; var &v; output out=y_3738 mean= &v._3738 ; by ru
 proc univariate noprint data=y_3738; var &v._3738; output out=t_3738 median= &v._3738_med pctlpts=2.5 97.5 pctlpre= &v._3738_; 
 proc transpose data=t_3738 out = r_3738; data e_3738; set r_3738; y3738 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_3839 mean= &v._3839 ; by run ; where 2038.5 <= cald < 2039.5; 
-proc univariate noprint data=y_3839; var &v._3819; output out=t_3839 median= &v._3839_med pctlpts=2.5 97.5 pctlpre= &v._3839_; 
+proc univariate noprint data=y_3839; var &v._3839; output out=t_3839 median= &v._3839_med pctlpts=2.5 97.5 pctlpre= &v._3839_; 
 proc transpose data=t_3839 out = r_3839; data e_3839; set r_3839; y3839 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_3930 mean= &v._3930 ; by run ; where 2039.5 <= cald < 2040.5; 
-proc univariate noprint data=y_3930; var &v._3930; output out=t_3930 median= &v._3940_med pctlpts=2.5 97.5 pctlpre= &v._3940_; 
+proc univariate noprint data=y; var &v; output out=y_3940 mean= &v._3940 ; by run ; where 2039.5 <= cald < 2040.5; 
+proc univariate noprint data=y_3940; var &v._3940; output out=t_3940 median= &v._3940_med pctlpts=2.5 97.5 pctlpre= &v._3940_; 
 proc transpose data=t_3940 out = r_3940; data e_3940; set r_3940; y3940 = COL1; drop _label_ _name_ COL1 ;
 
 proc univariate noprint data=y; var &v; output out=y_4041 mean= &v._4041 ; by run ; where 2040.5 <= cald < 2041.5; 
 proc univariate noprint data=y_4041; var &v._4041; output out=t_4041 median= &v._4041_med pctlpts=2.5 97.5 pctlpre= &v._4041_; 
 proc transpose data=t_4041 out = r_4041; data e_4041; set r_4041; y4041 = COL1; drop _label_ _name_ COL1 ;
 
-data &v; merge e9091 e9192 e9293 e9394 e9495 e9596 e_9697 e_9798 e_9899 e_9900 e_0001 e_0102 e_0203 e_0304 e_0405 e_0506 e_0607 e_0708 e_0809 e_0910 
-e_1011 e_1112 e_1213 e_1314 e_1415 e_1516 e_1617 e_1718 e_1819 e_1920 e_2021 e_2122 e_2223 e_2324 e_2425 e_2526 e_2627 e_2728 e_2829 e_2930 
-e_3031 e_3132 e_3233 e_3334 e_3435 e_3536 e_3637 e_3738 e_3839 e_3940 e_4041
+
+
+proc univariate noprint data=y; var &v; output out=y_90   mean= &v._90   ; by run ; where cald = 1990.5; 
+proc univariate noprint data=y_90  ; var &v._90  ; output out=t_90   median= &v._90  _med pctlpts=2.5 97.5 pctlpre= &v._90_; 
+proc transpose data=t_90 out = r_90; data e_90; set r_90; y90 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_91   mean= &v._91   ; by run ; where cald = 1991.5; 
+proc univariate noprint data=y_91  ; var &v._91  ; output out=t_91   median= &v._91  _med pctlpts=2.5 97.5 pctlpre= &v._91_; 
+proc transpose data=t_91 out = r_91; data e_91; set r_91; y91 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_92   mean= &v._92   ; by run ; where cald = 1992.5; 
+proc univariate noprint data=y_92  ; var &v._92  ; output out=t_92   median= &v._92  _med pctlpts=2.5 97.5 pctlpre= &v._92_; 
+proc transpose data=t_92 out = r_92; data e_92; set r_92; y92 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_93   mean= &v._93   ; by run ; where cald = 1993.5; 
+proc univariate noprint data=y_93  ; var &v._93  ; output out=t_93   median= &v._93  _med pctlpts=2.5 97.5 pctlpre= &v._93_; 
+proc transpose data=t_93 out = r_93; data e_93; set r_93; y93 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_94   mean= &v._94   ; by run ; where cald = 1994.5; 
+proc univariate noprint data=y_94  ; var &v._94  ; output out=t_94   median= &v._94  _med pctlpts=2.5 97.5 pctlpre= &v._94_; 
+proc transpose data=t_94 out = r_94; data e_94; set r_94; y94 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_95   mean= &v._95   ; by run ; where cald = 1995.5; 
+proc univariate noprint data=y_95  ; var &v._95  ; output out=t_95   median= &v._95  _med pctlpts=2.5 97.5 pctlpre= &v._95_; 
+proc transpose data=t_95 out = r_95; data e_95; set r_95; y95 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_96   mean= &v._96   ; by run ; where cald = 1996.5; 
+proc univariate noprint data=y_96  ; var &v._96  ; output out=t_96   median= &v._96  _med pctlpts=2.5 97.5 pctlpre= &v._96_; 
+proc transpose data=t_96 out = r_96; data e_96; set r_96; y96 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_97   mean= &v._97   ; by run ; where cald = 1997.5; 
+proc univariate noprint data=y_97  ; var &v._97  ; output out=t_97   median= &v._97  _med pctlpts=2.5 97.5 pctlpre= &v._97_; 
+proc transpose data=t_97 out = r_97; data e_97; set r_97; y97 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_98   mean= &v._98   ; by run ; where cald = 1998.5; 
+proc univariate noprint data=y_98  ; var &v._98  ; output out=t_98   median= &v._98  _med pctlpts=2.5 97.5 pctlpre= &v._98_; 
+proc transpose data=t_98 out = r_98; data e_98; set r_98; y98 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_99   mean= &v._99   ; by run ; where cald = 1999.5; 
+proc univariate noprint data=y_99  ; var &v._99  ; output out=t_99   median= &v._99  _med pctlpts=2.5 97.5 pctlpre= &v._99_; 
+proc transpose data=t_99 out = r_99; data e_99; set r_99; y99 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_00   mean= &v._00   ; by run ; where cald = 2000.5; 
+proc univariate noprint data=y_00  ; var &v._00  ; output out=t_00   median= &v._00  _med pctlpts=2.5 97.5 pctlpre= &v._00_; 
+proc transpose data=t_00 out = r_00; data e_00; set r_00; y00 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_01   mean= &v._01   ; by run ; where cald = 2001.5; 
+proc univariate noprint data=y_01  ; var &v._01  ; output out=t_01   median= &v._01  _med pctlpts=2.5 97.5 pctlpre= &v._01_; 
+proc transpose data=t_01 out = r_01; data e_01; set r_01; y01 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_02   mean= &v._02   ; by run ; where cald = 2002.5; 
+proc univariate noprint data=y_02  ; var &v._02  ; output out=t_02   median= &v._02  _med pctlpts=2.5 97.5 pctlpre= &v._02_; 
+proc transpose data=t_02 out = r_02; data e_02; set r_02; y02 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_03   mean= &v._03   ; by run ; where cald = 2003.5; 
+proc univariate noprint data=y_03  ; var &v._03  ; output out=t_03   median= &v._03  _med pctlpts=2.5 97.5 pctlpre= &v._03_; 
+proc transpose data=t_03 out = r_03; data e_03; set r_03; y03 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_04   mean= &v._04   ; by run ; where cald = 2004.5; 
+proc univariate noprint data=y_04  ; var &v._04  ; output out=t_04   median= &v._04  _med pctlpts=2.5 97.5 pctlpre= &v._04_; 
+proc transpose data=t_04 out = r_04; data e_04; set r_04; y04 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_05   mean= &v._05   ; by run ; where cald = 2005.5; 
+proc univariate noprint data=y_05  ; var &v._05  ; output out=t_05   median= &v._05  _med pctlpts=2.5 97.5 pctlpre= &v._05_; 
+proc transpose data=t_05 out = r_05; data e_05; set r_05; y05 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_06   mean= &v._06   ; by run ; where cald = 2006.5; 
+proc univariate noprint data=y_06  ; var &v._06  ; output out=t_06   median= &v._06  _med pctlpts=2.5 97.5 pctlpre= &v._06_; 
+proc transpose data=t_06 out = r_06; data e_06; set r_06; y06 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_07   mean= &v._07   ; by run ; where cald = 2007.5; 
+proc univariate noprint data=y_07  ; var &v._07  ; output out=t_07   median= &v._07  _med pctlpts=2.5 97.5 pctlpre= &v._07_; 
+proc transpose data=t_07 out = r_07; data e_07; set r_07; y07 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_08   mean= &v._08   ; by run ; where cald = 2008.5; 
+proc univariate noprint data=y_08  ; var &v._08  ; output out=t_08   median= &v._08  _med pctlpts=2.5 97.5 pctlpre= &v._08_; 
+proc transpose data=t_08 out = r_08; data e_08; set r_08; y08 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_09   mean= &v._09   ; by run ; where cald = 2009.5; 
+proc univariate noprint data=y_09  ; var &v._09  ; output out=t_09   median= &v._09  _med pctlpts=2.5 97.5 pctlpre= &v._09_; 
+proc transpose data=t_09 out = r_09; data e_09; set r_09; y09 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_10   mean= &v._10   ; by run ; where cald = 2010.5; 
+proc univariate noprint data=y_10  ; var &v._10  ; output out=t_10   median= &v._10  _med pctlpts=2.5 97.5 pctlpre= &v._10_; 
+proc transpose data=t_10 out = r_10; data e_10; set r_10; y10 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_11   mean= &v._11   ; by run ; where cald = 2011.5; 
+proc univariate noprint data=y_11  ; var &v._11  ; output out=t_11   median= &v._11  _med pctlpts=2.5 97.5 pctlpre= &v._11_; 
+proc transpose data=t_11 out = r_11; data e_11; set r_11; y11 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_12   mean= &v._12   ; by run ; where cald = 2012.5; 
+proc univariate noprint data=y_12  ; var &v._12  ; output out=t_12   median= &v._12  _med pctlpts=2.5 97.5 pctlpre= &v._12_; 
+proc transpose data=t_12 out = r_12; data e_12; set r_12; y12 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_13   mean= &v._13   ; by run ; where cald = 2013.5; 
+proc univariate noprint data=y_13  ; var &v._13  ; output out=t_13   median= &v._13  _med pctlpts=2.5 97.5 pctlpre= &v._13_; 
+proc transpose data=t_13 out = r_13; data e_13; set r_13; y13 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_14   mean= &v._14   ; by run ; where cald = 2014.5; 
+proc univariate noprint data=y_14  ; var &v._14  ; output out=t_14   median= &v._14  _med pctlpts=2.5 97.5 pctlpre= &v._14_; 
+proc transpose data=t_14 out = r_14; data e_14; set r_14; y14 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_15   mean= &v._15   ; by run ; where cald = 2015.5; 
+proc univariate noprint data=y_15  ; var &v._15  ; output out=t_15   median= &v._15  _med pctlpts=2.5 97.5 pctlpre= &v._15_; 
+proc transpose data=t_15 out = r_15; data e_15; set r_15; y15 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_16   mean= &v._16   ; by run ; where cald = 2016.5; 
+proc univariate noprint data=y_16  ; var &v._16  ; output out=t_16   median= &v._16  _med pctlpts=2.5 97.5 pctlpre= &v._16_; 
+proc transpose data=t_16 out = r_16; data e_16; set r_16; y16 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_17   mean= &v._17   ; by run ; where cald = 2017.5; 
+proc univariate noprint data=y_17  ; var &v._17  ; output out=t_17   median= &v._17  _med pctlpts=2.5 97.5 pctlpre= &v._17_; 
+proc transpose data=t_17 out = r_17; data e_17; set r_17; y17 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_18   mean= &v._18   ; by run ; where cald = 2018.5; 
+proc univariate noprint data=y_18  ; var &v._18  ; output out=t_18   median= &v._18  _med pctlpts=2.5 97.5 pctlpre= &v._18_; 
+proc transpose data=t_18 out = r_18; data e_18; set r_18; y18 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_19   mean= &v._19   ; by run ; where cald = 2019.5; 
+proc univariate noprint data=y_19  ; var &v._19  ; output out=t_19   median= &v._19  _med pctlpts=2.5 97.5 pctlpre= &v._19_; 
+proc transpose data=t_19 out = r_19; data e_19; set r_19; y19 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_20   mean= &v._20   ; by run ; where cald = 2020.5; 
+proc univariate noprint data=y_20  ; var &v._20  ; output out=t_20   median= &v._20  _med pctlpts=2.5 97.5 pctlpre= &v._20_; 
+proc transpose data=t_20 out = r_20; data e_20; set r_20; y20 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_21   mean= &v._21   ; by run ; where cald = 2021.5; 
+proc univariate noprint data=y_21  ; var &v._21  ; output out=t_21   median= &v._21  _med pctlpts=2.5 97.5 pctlpre= &v._21_; 
+proc transpose data=t_21 out = r_21; data e_21; set r_21; y21 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_22   mean= &v._22   ; by run ; where cald = 2022.5; 
+proc univariate noprint data=y_22  ; var &v._22  ; output out=t_22   median= &v._22  _med pctlpts=2.5 97.5 pctlpre= &v._22_; 
+proc transpose data=t_22 out = r_22; data e_22; set r_22; y22 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_23   mean= &v._23   ; by run ; where cald = 2023.5; 
+proc univariate noprint data=y_23  ; var &v._23  ; output out=t_23   median= &v._23  _med pctlpts=2.5 97.5 pctlpre= &v._23_; 
+proc transpose data=t_23 out = r_23; data e_23; set r_23; y23 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_24   mean= &v._24   ; by run ; where cald = 2024.5; 
+proc univariate noprint data=y_24  ; var &v._24  ; output out=t_24   median= &v._24  _med pctlpts=2.5 97.5 pctlpre= &v._24_; 
+proc transpose data=t_24 out = r_24; data e_24; set r_24; y24 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_25   mean= &v._25   ; by run ; where cald = 2025.5; 
+proc univariate noprint data=y_25  ; var &v._25  ; output out=t_25   median= &v._25  _med pctlpts=2.5 97.5 pctlpre= &v._25_; 
+proc transpose data=t_25 out = r_25; data e_25; set r_25; y25 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_26   mean= &v._26   ; by run ; where cald = 2026.5; 
+proc univariate noprint data=y_26  ; var &v._26  ; output out=t_26   median= &v._26  _med pctlpts=2.5 97.5 pctlpre= &v._26_; 
+proc transpose data=t_26 out = r_26; data e_26; set r_26; y26 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_27   mean= &v._27   ; by run ; where cald = 2027.5; 
+proc univariate noprint data=y_27  ; var &v._27  ; output out=t_27   median= &v._27  _med pctlpts=2.5 97.5 pctlpre= &v._27_; 
+proc transpose data=t_27 out = r_27; data e_27; set r_27; y27 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_28   mean= &v._28   ; by run ; where cald = 2028.5; 
+proc univariate noprint data=y_28  ; var &v._28  ; output out=t_28   median= &v._28  _med pctlpts=2.5 97.5 pctlpre= &v._28_; 
+proc transpose data=t_28 out = r_28; data e_28; set r_28; y28 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_29   mean= &v._29   ; by run ; where cald = 2029.5; 
+proc univariate noprint data=y_29  ; var &v._29  ; output out=t_29   median= &v._29  _med pctlpts=2.5 97.5 pctlpre= &v._29_; 
+proc transpose data=t_29 out = r_29; data e_29; set r_29; y29 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_30   mean= &v._30   ; by run ; where cald = 2030.5; 
+proc univariate noprint data=y_30  ; var &v._30  ; output out=t_30   median= &v._30  _med pctlpts=2.5 97.5 pctlpre= &v._30_; 
+proc transpose data=t_30 out = r_30; data e_30; set r_30; y30 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_31   mean= &v._31   ; by run ; where cald = 2031.5; 
+proc univariate noprint data=y_31  ; var &v._31  ; output out=t_31   median= &v._31  _med pctlpts=2.5 97.5 pctlpre= &v._31_; 
+proc transpose data=t_31 out = r_31; data e_31; set r_31; y31 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_32   mean= &v._32   ; by run ; where cald = 2032.5; 
+proc univariate noprint data=y_32  ; var &v._32  ; output out=t_32   median= &v._32  _med pctlpts=2.5 97.5 pctlpre= &v._32_; 
+proc transpose data=t_32 out = r_32; data e_32; set r_32; y32 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_33   mean= &v._33   ; by run ; where cald = 2033.5; 
+proc univariate noprint data=y_33  ; var &v._33  ; output out=t_33   median= &v._33  _med pctlpts=2.5 97.5 pctlpre= &v._33_; 
+proc transpose data=t_33 out = r_33; data e_33; set r_33; y33 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_34   mean= &v._34   ; by run ; where cald = 2034.5; 
+proc univariate noprint data=y_34  ; var &v._34  ; output out=t_34   median= &v._34  _med pctlpts=2.5 97.5 pctlpre= &v._34_; 
+proc transpose data=t_34 out = r_34; data e_34; set r_34; y34 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_35   mean= &v._35   ; by run ; where cald = 2035.5; 
+proc univariate noprint data=y_35  ; var &v._35  ; output out=t_35   median= &v._35  _med pctlpts=2.5 97.5 pctlpre= &v._35_; 
+proc transpose data=t_35 out = r_35; data e_35; set r_35; y35 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_36   mean= &v._36   ; by run ; where cald = 2036.5; 
+proc univariate noprint data=y_36  ; var &v._36  ; output out=t_36   median= &v._36  _med pctlpts=2.5 97.5 pctlpre= &v._36_; 
+proc transpose data=t_36 out = r_36; data e_36; set r_36; y36 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_37   mean= &v._37   ; by run ; where cald = 2037.5; 
+proc univariate noprint data=y_37  ; var &v._37  ; output out=t_37   median= &v._37  _med pctlpts=2.5 97.5 pctlpre= &v._37_; 
+proc transpose data=t_37 out = r_37; data e_37; set r_37; y37 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_38   mean= &v._38   ; by run ; where cald = 2038.5; 
+proc univariate noprint data=y_38  ; var &v._38  ; output out=t_38   median= &v._38  _med pctlpts=2.5 97.5 pctlpre= &v._38_; 
+proc transpose data=t_38 out = r_38; data e_38; set r_38; y38 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_39   mean= &v._39   ; by run ; where cald = 2039.5; 
+proc univariate noprint data=y_39  ; var &v._39  ; output out=t_39   median= &v._39  _med pctlpts=2.5 97.5 pctlpre= &v._39_; 
+proc transpose data=t_39 out = r_39; data e_39; set r_39; y39 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_40   mean= &v._40   ; by run ; where cald = 2040.5; 
+proc univariate noprint data=y_40  ; var &v._40  ; output out=t_40   median= &v._40  _med pctlpts=2.5 97.5 pctlpre= &v._40_; 
+proc transpose data=t_40 out = r_40; data e_40; set r_40; y40 = COL1; drop _label_ _name_ COL1 ;
+proc univariate noprint data=y; var &v; output out=y_41   mean= &v._41   ; by run ; where cald = 2041.5; 
+proc univariate noprint data=y_41  ; var &v._41  ; output out=t_41   median= &v._41  _med pctlpts=2.5 97.5 pctlpre= &v._41_; 
+proc transpose data=t_41 out = r_41; data e_41; set r_41; y41 = COL1; drop _label_ _name_ COL1 ;
+
+
+data &v; merge e_9091 e_9192 e_9293 e_9394 e_9495 e_9596 e_9697 e_9798 e_9899 e_9900 e_0001 e_0102 e_0203 e_0304 e_0405 e_0506 e_0607 e_0708 
+e_0809 e_0910 e_1011 e_1112 e_1213 e_1314 e_1415 e_1516 e_1617 e_1718 e_1819 e_1920 e_2021 e_2122 e_2223 e_2324 e_2425 e_2526 e_2627 e_2728 
+e_2829 e_2930 e_3031 e_3132 e_3233 e_3334 e_3435 e_3536 e_3637 e_3738 e_3839 e_3940 e_4041
+
+e_90 e_91 e_92 e_93 e_94 e_95 e_96 e_97 e_98 e_99 e_00 e_01 e_02 e_03 e_04 e_05 e_06 e_07 
+e_08 e_09 e_10 e_11 e_12 e_13 e_14 e_15 e_16 e_17 e_18 e_19 e_20 e_21 e_22 e_23 e_24 e_25 e_26 e_27 
+e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 ;
 
 %mend var;
 
-%var(v=prevalence1549w); 
+%var(v=prevalence1549);
 
 /*
 
-%var(v=prevalence1549m);
+%var(v=prevalence1549m);%var(v=prevalence1549w);
 %var(v=p_mcirc_1549m);  %var(v=p_diag_w);  %var(v=p_diag_m);  %var(v=p_onart_vl1000_); %var(v=incidence1549w); 
 %var(v=incidence1549m); %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
 %var(v=n_death_2059_w); %var(v=n_death_2059_m); %var(v=n_tested_m); %var(v=n_tested_w);  %var(v=test_prop_positive);
@@ -322,9 +488,26 @@ p_diag_w p_diag_m p_onart_vl1000_ incidence1549w incidence1549m n_new_inf1549m n
 n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive;
 */
 
-proc print;
-run;
 
+ods html;
+title '';
+proc print noobs;
+var 
+y9091 y9192 y9293 y9394 y9495 y9596 y9697 y9798 y9899 y9900 y0001 y0102 y0203 y0304 y0405 y0506 y0607 y0708 
+y0809 y0910 y1011 y1112 y1213 y1314 y1415 y1516 y1617 y1718 y1819 y1920 y2021 y2122 y2223 y2324 y2425 y2526 y2627 y2728 
+y2829 y2930 y3031 y3132 y3233 y3334 y3435 y3536 y3637 y3738 y3839 y3940 y4041 ;
+run;
+ods html close;
+
+ods html;
+title '';
+proc print noobs;
+var 
+y90 y91 y92 y93 y94 y95 y96 y97 y98 y99 y00 y01 y02 y03 y04 y05 y06 y07 
+y08 y09 y10 y11 y12 y13 y14 y15 y16 y17 y18 y19 y20 y21 y22 y23 y24 y25 y26 y27 
+y28 y29 y30 y31 y32 y33 y34 y35 y36 y37 y38 y39 y40;
+run;
+ods html close;
 
 
 
@@ -332,10 +515,8 @@ run;
 /*
 
 
-
 proc export 
 data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex_3" replace; run;
-
 
 
 */
