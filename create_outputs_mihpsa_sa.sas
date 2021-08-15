@@ -66,7 +66,6 @@ if run in (
 
 
 
-
 proc sort data=g; 
 by run cald option;run;
 
@@ -101,33 +100,40 @@ s_alive = s_alive_m + s_alive_w ;
 * prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+* incidence1549 ;				incidence1549  = (s_primary1549  * 4 * 100) / (s_alive1549_w + s_alive1549_m - s_hiv1549w - s_hiv1549m + s_primary1549 );
 * p_onart_w;					if s_hivge15w gt 0 then p_onart_w = s_onart_w / s_hivge15w;
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
+* p_onart;						p_onart = (s_onart_m + s_onart_w) / (s_hivge15m + s_hivge15w);
 * n_onart_w;					n_onart_w = s_onart_w * &sf;
 * n_onart_m;					n_onart_m = s_onart_m * &sf;
 * n_onart;						n_onart = n_onart_w + n_onart_m;
 * p_mcirc_1549m;				p_mcirc_1549m = s_mcirc_1549m / s_ageg1549m ;
 * p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  p_diag_m = p_diag_m * 100;
 * p_diag_w;						if s_hivge15w  > 0 then p_diag_w = s_diag_w / s_hivge15w ;  p_diag_w = p_diag_w * 100;
+* p_diag;						p_diag = (s_diag_w + s_diag_m) / (s_hivge15w + s_hivge15m) ;  p_diag = p_diag * 100;
 * p_onart_vl1000_;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000_ = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu ;
 * n_new_inf1549m; 				n_new_inf1549m = s_primary1549m * &sf * 4;
 * n_new_inf1549w;				n_new_inf1549w = s_primary1549w * &sf * 4;
+* n_new_inf1549 ;				n_new_inf1549  = n_new_inf1549m + n_new_inf1549w ;
 * n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * &sf * 4;
 * n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * &sf * 4;
+* n_death_hiv;					n_death_hiv = n_death_hiv_m + n_death_hiv_w ;
 * n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
+* n_death_2059;					n_death_2059 = n_death_2059_m + n_death_2059_w;
 * n_tested_m;					n_tested_m = s_tested_m * &sf * 4;
 * n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
+* n_tested  ;					n_tested   = n_tested_w + n_tested_m ;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
 
 keep run option cald 
 
-prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w p_diag_m 
-p_onart_vl1000_ incidence1549w incidence1549m n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_death_2059_w n_death_2059_m n_tested_m 
-n_tested_w test_prop_positive
+prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
+p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
+n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
 
 ;
 
@@ -139,31 +145,31 @@ n_tested_w test_prop_positive
 proc univariate noprint data=y; var &v; output out=y_9091 mean= &v._9091 ; by run ; where 1990.5 <= cald < 1991.5; 
 proc univariate noprint data=y_9091; var &v._9091; output out=t_9091 median= &v._9091_med pctlpts=2.5 97.5 pctlpre= &v._9091_; 
 proc transpose data=t_9091 out = r_9091; data e_9091; set r_9091; y9091 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9192 mean= &v._9192 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9192 mean= &v._9192 ; by run ; where 1991.5 <= cald < 1992.5; 
 proc univariate noprint data=y_9192; var &v._9192; output out=t_9192 median= &v._9192_med pctlpts=2.5 97.5 pctlpre= &v._9192_; 
 proc transpose data=t_9192 out = r_9192; data e_9192; set r_9192; y9192 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9293 mean= &v._9293 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9293 mean= &v._9293 ; by run ; where 1992.5 <= cald < 1993.5; 
 proc univariate noprint data=y_9293; var &v._9293; output out=t_9293 median= &v._9293_med pctlpts=2.5 97.5 pctlpre= &v._9293_; 
 proc transpose data=t_9293 out = r_9293; data e_9293; set r_9293; y9293 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9394 mean= &v._9394 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9394 mean= &v._9394 ; by run ; where 1993.5 <= cald < 1994.5; 
 proc univariate noprint data=y_9394; var &v._9394; output out=t_9394 median= &v._9394_med pctlpts=2.5 97.5 pctlpre= &v._9394_; 
 proc transpose data=t_9394 out = r_9394; data e_9394; set r_9394; y9394 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_9495 mean= &v._9495 ; by run ; where 1994.5 <= cald < 1995.5; 
 proc univariate noprint data=y_9495; var &v._9495; output out=t_9495 median= &v._9495_med pctlpts=2.5 97.5 pctlpre= &v._9495_; 
 proc transpose data=t_9495 out = r_9495; data e_9495; set r_9495; y9495 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9596 mean= &v._9596 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9596 mean= &v._9596 ; by run ; where 1995.5 <= cald < 1996.5; 
 proc univariate noprint data=y_9596; var &v._9596; output out=t_9596 median= &v._9596_med pctlpts=2.5 97.5 pctlpre= &v._9596_; 
 proc transpose data=t_9596 out = r_9596; data e_9596; set r_9596; y9596 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9697 mean= &v._9697 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9697 mean= &v._9697 ; by run ; where 1996.5 <= cald < 1997.5; 
 proc univariate noprint data=y_9697; var &v._9697; output out=t_9697 median= &v._9697_med pctlpts=2.5 97.5 pctlpre= &v._9697_; 
 proc transpose data=t_9697 out = r_9697; data e_9697; set r_9697; y9697 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9798 mean= &v._9798 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9798 mean= &v._9798 ; by run ; where 1997.5 <= cald < 1998.5; 
 proc univariate noprint data=y_9798; var &v._9798; output out=t_9798 median= &v._9798_med pctlpts=2.5 97.5 pctlpre= &v._9798_; 
 proc transpose data=t_9798 out = r_9798; data e_9798; set r_9798; y9798 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9899 mean= &v._9899 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9899 mean= &v._9899 ; by run ; where 1998.5 <= cald < 1999.5; 
 proc univariate noprint data=y_9899; var &v._9899; output out=t_9899 median= &v._9899_med pctlpts=2.5 97.5 pctlpre= &v._9899_; 
 proc transpose data=t_9899 out = r_9899; data e_9899; set r_9899; y9899 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_9900 mean= &v._9900 ; by run ; where 1994.5 <= cald < 1995.5; 
+proc univariate noprint data=y; var &v; output out=y_9900 mean= &v._9900 ; by run ; where 1999.5 <= cald < 2000.5; 
 proc univariate noprint data=y_9900; var &v._9900; output out=t_9900 median= &v._9900_med pctlpts=2.5 97.5 pctlpre= &v._9900_; 
 proc transpose data=t_9900 out = r_9900; data e_9900; set r_9900; y9900 = COL1; drop _label_ _name_ COL1 ;
 
@@ -467,17 +473,17 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v=prevalence1549);
+%var(v = n_tested   );
 
 /*
 
 %var(v=prevalence1549m);%var(v=prevalence1549w);
 %var(v=p_mcirc_1549m);  %var(v=p_diag_w);  %var(v=p_diag_m);  %var(v=p_onart_vl1000_); %var(v=incidence1549w); 
-%var(v=incidence1549m); %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
+%var(v=incidence1549m); %var(v=incidence1549 ); %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); 
 %var(v=n_death_2059_w); %var(v=n_death_2059_m); %var(v=n_tested_m); %var(v=n_tested_w);  %var(v=test_prop_positive);
-%var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); 
-%var(v=p_diag_m); %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); 
-%var(v=n_death_hiv_w); 
+%var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=p_onart); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); 
+%var(v=p_diag_m); %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_new_inf1549); %var(v=n_death_hiv_m); 
+%var(v=n_death_hiv_w); %var(v=n_death_hiv); %var(v=n_death_2059);
 
 */
 
@@ -499,6 +505,8 @@ y2829 y2930 y3031 y3132 y3233 y3334 y3435 y3536 y3637 y3738 y3839 y3940 y4041 ;
 run;
 ods html close;
 
+/*
+
 ods html;
 title '';
 proc print noobs;
@@ -509,15 +517,7 @@ y28 y29 y30 y31 y32 y33 y34 y35 y36 y37 y38 y39 y40;
 run;
 ods html close;
 
-
-
-
-/*
-
-
-proc export 
-data=a.wide_misc_ex dbms=xlsx outfile="C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\unaids\unaids_synthesis_misc_all_ex_3" replace; run;
-
-
 */
+
+
 
