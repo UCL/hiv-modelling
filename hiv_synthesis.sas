@@ -762,7 +762,6 @@ else if hivtest_type=3 	then do; sens_primary=0; 	sens_primary_ts1m = 0;  	sens_
 else if hivtest_type=4 	then do; sens_primary=0.65; sens_primary_ts1m = 0; 		sens_vct=0.98; spec_vct=1; 		test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
 
 
-
 * COSTS;
 
 * todo:  ALL COSTS BELOW TO BE REVIEWED ;
