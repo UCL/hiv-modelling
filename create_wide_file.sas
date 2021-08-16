@@ -2,9 +2,7 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_out\";
-libname c "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw2_out\";
-libname d "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw3_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_a_out\";
 
   data g;    set b.out: ;
 
@@ -30,6 +28,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 data y; 
 merge g sf;
 by run ;
+
 
 
 * preparatory code ;
@@ -802,6 +801,8 @@ end;
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 
+* n_hiv ;						n_hiv = s_hivge15 * &sf ;
+
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * number of women with hiv giving birth per year;
@@ -960,7 +961,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive  n_diagnosed
+n_alive  n_diagnosed  n_hiv 
 
 ;
 
@@ -977,6 +978,8 @@ data a.l_base_mlw; set y;
 487363680
 
 ;
+
+
 
 
 data y; set a.l_base_mlw; 
@@ -1144,7 +1147,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed); 
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested);
 
 
 
@@ -1233,7 +1236,7 @@ rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w 
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 ;
 
 proc sort; by run; run;
@@ -1661,5 +1664,57 @@ proc glm data=a.l_base_mlw; model n_death_2059_m = gx fx  ; run;
 
 
 proc freq data=a.l_base_mlw; tables run; where cald = 2021; run;
+
+
+
+
+
+libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
+
+data ggg; set a.l_base_mlw_old;  
+
+if cald = 2016;
+
+rrr=0; if 0.08 <= prevalence1549 < 0.12 and 0.125 <=  prevalence5054m < 0.225 and  0.104 <=  prevalence5054w < 0.224  then rrr=1; ;
+
+proc univariate; var prevalence5054m prevalence5054w ; run;
+
+proc logistic ;
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
+ych_risk_beh_newp ych2_risk_beh_newp
+;
+model rrr = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl 
+; 
+run;
+
+
+
+proc glm ;
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
+ych_risk_beh_newp ych2_risk_beh_newp
+;
+model prevalence5054w = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl / solution
+; 
+run;
+
+
+
+
+
+
+
+
+
+
 
 

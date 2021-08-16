@@ -120,8 +120,8 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  7    ;
-%let year_end = 2041.00 ;
+%let nfit =  32   ;
+%let year_end = 2021.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -148,7 +148,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed
+n_alive n_diagnosed n_hiv
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -213,7 +213,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed
+n_alive n_diagnosed  n_hiv
 ;
 
 
@@ -491,6 +491,7 @@ if cald=2021.00 then p_onart_vl1000_obs_mlw= 0.96;
 if cald=2014.5 then n_secondline_obs_mlw= 5700 ;
 if cald=2015.5 then n_secondline_obs_mlw= 6758 ; * 2nd  quarter of 2015;
 if cald=2016.5 then n_secondline_obs_mlw= 8811 ; * 2nd  quarter of 2016;
+
 
 
 
@@ -1665,9 +1666,9 @@ ods html;
 proc sgplot data=all; Title 'prevalence by age - women'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
-series  x=ageg y=p50_prevalence/	lineattrs = (color=blue thickness = 2);
+series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-  series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);
+  series x=ageg y=prev_obs_mlw / lineattrs = (color=blue thickness = 2);
 where sex=2;
 run;
 
@@ -1675,9 +1676,9 @@ run;
 proc sgplot data=all; Title 'prevalence by age - men'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
-series  x=ageg y=p50_prevalence/	lineattrs = (color=blue thickness = 2);
+series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series x=ageg y=prev_obs_mlw / lineattrs = (color=black thickness = 2);
+series x=ageg y=prev_obs_mlw / lineattrs = (color=blue thickness = 2);
 where sex=1;
 run;
 

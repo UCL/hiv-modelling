@@ -10,14 +10,17 @@
 * SEXUAL BEHAVIOUR;
 
 * ych_risk_beh_newp;        %sample(ych_risk_beh_newp,  0.6 0.7 ,  0.5 0.5); 
-* ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95);
-* p_rred_p;                 %sample_uniform(p_rred_p, 0.4 0.5 0.6);
-* p_hsb_p;                  %sample_uniform(p_hsb_p, 0.05 0.08 0.15 0.25);
-* newp_factor;              %sample_uniform(newp_factor, 1 2 3 5); 
+* ych_risk_beh_ep;          %sample_uniform(ych_risk_beh_ep, 0.8 0.9);
+* p_rred_p;                 %sample_uniform(p_rred_p, 0.5 0.6);
+* p_hsb_p;                  %sample(p_hsb_p, 0.05 0.08 0.15 0.25, 0.7 0.2 0.07  0.03);
+* newp_factor;              %sample_uniform(newp_factor, 1 2 3 ); 
 
 * ych2_risk_beh_newp;       %sample(ych2_risk_beh_newp,
                                 0.95    0.99    1   ,
                                 0.4     0.4     0.2 );
+
+* sex_age_mixing_matrix_m;  %sample(sex_age_mixing_matrix_m, 1 2 3 4 5 6 , 0.3 0.033 0.033 0.034 0.3 0.3);
+
 
 * HIV TESTING;
 
