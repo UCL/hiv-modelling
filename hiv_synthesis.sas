@@ -331,7 +331,7 @@ newp_seed = 7;
 * test_rate_who4;			test_rate_who4=0.10;  					* dependent_on_time_step_length ;
 * test_rate_tb;				test_rate_tb  =0.10;  					* dependent_on_time_step_length ;
 * test_rate_non_tb_who3;	test_rate_non_tb_who3=0.05; 			* dependent_on_time_step_length ;
-* hivtest_type;				hivtest_type=1; 						* HIV test type (1=3rd gen Ab test, 2=PCR test, 3=self-testing); *JAS Aug2021; 
+* hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 2=self-test, 3=3rd gen, 4=4th gen); *JAS Aug2021; 
 * date_pmtct;				date_pmtct=2004;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
 * incr_test_year_i;			incr_test_year_i = 0;
@@ -752,12 +752,15 @@ end;
 
 * test type; * JAS Aug2021;
 
-*1= 3rd gen Ab tests - assume window period of 3 months; 
-*2= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
-*3= self-testing - at home / in pharmacy - assume window period of 1?? month;
-if hivtest_type=1 		then do; sens_primary=0; 	sens_primary_ts1m = 0;  	sens_vct=0.98; spec_vct=0.992;	end; 
-else if hivtest_type=2 	then do; sens_primary=0.86; sens_primary_ts1m = 0.67; 	sens_vct=0.98; spec_vct=1; 		end;
-else if hivtest_type=3 	then do; sens_primary=0; 	sens_primary_ts1m = 0;  	sens_vct=0.98; spec_vct=0.992;  end;
+*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*2= self-testing - at home / in pharmacy - assume window period of 1?? month;
+*3= 3rd gen (Ab) tests / community-based POC tests / rapid tests - assume window period of 3 months; 
+*4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
+if 		hivtest_type=1 	then do; sens_primary=0.86; sens_primary_ts1m = 0.67; 	sens_vct=0.98; spec_vct=1;     	end; 
+else if hivtest_type=2 	then do; sens_primary=0; 	sens_primary_ts1m = 0;  	sens_vct=0.98; spec_vct=0.992;  end;
+else if hivtest_type=3 	then do; sens_primary=0; 	sens_primary_ts1m = 0;  	sens_vct=0.98; spec_vct=0.992; 	end;
+else if hivtest_type=4 	then do; sens_primary=0.65; sens_primary_ts1m = 0; 		sens_vct=0.98; spec_vct=1; 		test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
+
 
 
 * COSTS;
@@ -1867,7 +1870,7 @@ prep_effectiveness_non_res_v = .;  * we only want this defined for people curren
 *May21 - changed from 2017.25 after Coding Call discussion;
 if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
 value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=1;
+prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
 end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
@@ -5927,14 +5930,25 @@ naive=1;
 
 
 *allow for diagnosis in primary infection, i.e. caldate{t}=infection;
-*If HIV test type=1 or 3 (window period=3 months) then dont get diagnosed during primary infection ;
-*If HIV test type=2 (window period=10 days) then can get diagnosed during primary infection and hence stop prep;  
+*If HIV test type=3 (window period=3 months) then dont get diagnosed during primary infection ;
+*If HIV test type=4 (window period=1 months) or HIV test type=1 (window period=10 days) then can get diagnosed during 
+primary infection and hence stop prep;  
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
 
 if t ge 2 then do; 
-	if hivtest_type=2 then do;
+	if hivtest_type=4 then do;
+		u=uniform(0);
+		if primary   =1 and tested=1 and u lt sens_primary then do;
+			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
+			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
+			if prep   =1 and pop_wide_tld_prep ne 1 then do;
+				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
+			end;
+		end;
+	end;
+	if hivtest_type=1 then do;
 		u=uniform(0);
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
