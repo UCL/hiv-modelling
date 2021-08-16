@@ -282,59 +282,6 @@ h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h
 by cald;
 
  
-
-if cald = 2012 then n_onart_obs_sa = 2200000  ;
-if cald = 2013 then n_onart_obs_sa = 2660000  ;
-if cald = 2014 then n_onart_obs_sa = 3080000  ;
-if cald = 2015 then n_onart_obs_sa = 3430000  ;
-if cald = 2016 then n_onart_obs_sa = 3770000  ;
-if cald = 2017 then n_onart_obs_sa = 4250000  ;
-if cald = 2018 then n_onart_obs_sa = 4630000  ;
-if cald = 2019 then n_onart_obs_sa = 5060000  ;
-if cald = 2020 then n_onart_obs_sa = 5330000  ;
-
-
-if cald=2005 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
-if cald=2008 then do; prev_obs_sa = 0.169 ; end;
-if cald=2012 then do; prev_w_obs_sa = 0.232 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
-if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.144 ; prev_obs_sa = 0.212 ; end;
-if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.206 ; end;
-
-
-if cald=2011 then n_tested_obs_sa = 9523400 ;
-if cald=2012 then n_tested_obs_sa = 8772000 ;
-if cald=2013 then n_tested_obs_sa = 8978177 ;
-if cald=2014 then n_tested_obs_sa = 7334942 ;
-if cald=2015 then n_tested_obs_sa = 8636033 ;
-if cald=2016 then n_tested_obs_sa = 11324134 ;
-if cald=2017 then n_tested_obs_sa = 12465313 ;
-if cald=2018 then n_tested_obs_sa = 11902403 ;
-if cald=2019 then n_tested_obs_sa = 12714196 ;
-if cald=2020 then n_tested_obs_sa = 16316808 ;
-
-if cald=1997 then do; n_death_2059_m_obs_sa = 115537  ; n_death_2059_w_obs_sa = 66911  ; end; 
-if cald=1998 then do; n_death_2059_m_obs_sa = 131371  ; n_death_2059_w_obs_sa = 81303  ; end; 
-if cald=1999 then do; n_death_2059_m_obs_sa = 136451  ; n_death_2059_w_obs_sa = 91656  ; end; 	
-if cald=2000 then do; n_death_2059_m_obs_sa = 144959  ; n_death_2059_w_obs_sa = 107525  ; end; 	
-if cald=2001 then do; n_death_2059_m_obs_sa = 156573  ; n_death_2059_w_obs_sa = 121161  ; end; 	
-if cald=2002 then do; n_death_2059_m_obs_sa = 169707  ; n_death_2059_w_obs_sa = 140914  ; end; 	
-if cald=2003 then do; n_death_2059_m_obs_sa = 186280  ; n_death_2059_w_obs_sa = 159532  ; end; 	
-if cald=2004 then do; n_death_2059_m_obs_sa = 190226  ; n_death_2059_w_obs_sa = 170724  ; end; 	
-if cald=2005 then do; n_death_2059_m_obs_sa = 196105  ; n_death_2059_w_obs_sa = 176422  ; end; 	
-if cald=2006 then do; n_death_2059_m_obs_sa = 199390  ; n_death_2059_w_obs_sa = 176962  ; end; 	
-if cald=2007 then do; n_death_2059_m_obs_sa = 197873  ; n_death_2059_w_obs_sa = 170664  ; end; 	
-if cald=2008 then do; n_death_2059_m_obs_sa = 194377  ; n_death_2059_w_obs_sa = 164922  ; end; 	
-if cald=2009 then do; n_death_2059_m_obs_sa = 187914  ; n_death_2059_w_obs_sa = 155059  ; end; 	
-if cald=2010 then do; n_death_2059_m_obs_sa = 174745  ; n_death_2059_w_obs_sa = 142594  ; end; 	
-if cald=2011 then do; n_death_2059_m_obs_sa = 161976  ; n_death_2059_w_obs_sa = 126743  ; end; 	
-if cald=2012 then do; n_death_2059_m_obs_sa = 152903  ; n_death_2059_w_obs_sa = 115430  ; end; 	
-if cald=2013 then do; n_death_2059_m_obs_sa = 145703  ; n_death_2059_w_obs_sa = 106876  ; end; 	
-if cald=2014 then do; n_death_2059_m_obs_sa = 142996  ; n_death_2059_w_obs_sa = 102250  ; end; 	
-if cald=2015 then do; n_death_2059_m_obs_sa = 142352  ; n_death_2059_w_obs_sa = 98790  ; end; 	
-if cald=2016 then do; n_death_2059_m_obs_sa = 141533  ; n_death_2059_w_obs_sa = 95949  ; end; 	
-if cald=2017 then do; n_death_2059_m_obs_sa = 136433  ; n_death_2059_w_obs_sa = 91772  ; end; 	
-if cald=2018 then do; n_death_2059_m_obs_sa = 132870  ; n_death_2059_w_obs_sa = 88730  ; end; 	
-
 * these are annual totals, put at 0.5 through the year;
 if cald=2004.5 then n_tests_obs_mlw=  283467 ;
 if cald=2008.5 then n_tests_obs_mlw=  746400 ;
