@@ -5938,6 +5938,7 @@ primary infection and hence stop prep;
 
 
 if t ge 2 then do; 
+
 	if hivtest_type=4 then do;
 		u=uniform(0);
 		if primary   =1 and tested=1 and u lt sens_primary then do;
