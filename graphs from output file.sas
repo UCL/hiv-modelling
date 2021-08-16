@@ -7,8 +7,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-* set a.l_base_mlw;
-  set a.l_base_keep;
+  set a.l_base_mlw;
+* set a.l_base_keep;
 
 
 p_onart_vl1000_all = .;
@@ -120,8 +120,8 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  750  ;
-%let year_end = 2021.00 ;
+%let nfit =  7    ;
+%let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -288,12 +288,15 @@ if cald=2008.5 then n_tests_obs_mlw=  746400 ;
 if cald=2011.5 then n_tests_m_obs_mlw= 489100 ;
 if cald=2011.5 then n_tests_f_non_anc_obs_mlw= 488583 ;
 if cald=2011.5 then n_tests_f_anc_obs_mlw= 503264 ;
+if cald=2011.5 then n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;
 if cald=2014.5 then n_tests_m_obs_mlw= 539486 ;
 if cald=2014.5 then n_tests_f_non_anc_obs_mlw= 475691 ;
 if cald=2014.5 then n_tests_f_anc_obs_mlw= 604001 ;
+if cald=2014.5 then n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;
 if cald=2015.5 then n_tests_m_obs_mlw= 701041 ;
 if cald=2015.5 then n_tests_f_non_anc_obs_mlw= 715458 ;
 if cald=2015.5 then n_tests_f_anc_obs_mlw= 595720 ;
+if cald=2015.5 then n_tests_obs_mlw= n_tests_m_obs_mlw + n_tests_f_non_anc_obs_mlw + n_tests_f_anc_obs_mlw ;
 if cald=2016.5 then n_tests_m_obs_mlw= 993028 ;
 if cald=2016.5 then n_tests_f_non_anc_obs_mlw= 1291520 ;
 if cald=2016.5 then n_tests_f_anc_obs_mlw= 636122 ;
@@ -397,7 +400,8 @@ if cald=2020.25 then n_diag_obs_mlw= 18882 * 4      ;
 if cald=2020.50 then n_diag_obs_mlw= 20206 * 4      ;
 if cald=2020.75 then n_diag_obs_mlw= 22634 * 4      ; 
 
-if cald=2021.00 then n_diag_obs_mlw= 20078 * 0.5  * 4; * note 0.5 is due to correction of testing in people previously diagnosed ;
+if cald=2021.00 then n_diag_obs_mlw= 20078 * 4; * note reports say multiply this by about 0.5 
+due to correction of testing in people previously diagnosed ;
 
 * this is number at end of year;
 
@@ -755,9 +759,7 @@ series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-series x=cald y = incidence1549_obs_mlw;
-
+scatter x=cald y=incidence1549_obs_mlw / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
@@ -1566,15 +1568,15 @@ keep
 p5_prevalence1519w_0 	p5_prevalence1519m_0 p5_prevalence2024w_0 	p5_prevalence2024m_0 p5_prevalence2529w_0 	p5_prevalence2529m_0
 p5_prevalence3034w_0 	p5_prevalence3034m_0 p5_prevalence3539w_0 	p5_prevalence3539m_0 p5_prevalence4044w_0 	p5_prevalence4044m_0 
 p5_prevalence4549w_0 	p5_prevalence4549m_0 p5_prevalence5054w_0 	p5_prevalence5054m_0 p5_prevalence5054w_0 	p5_prevalence5054m_0
-p5_prevalence5559w_0 	p5_prevalence5559m_0 
+p5_prevalence5559w_0 	p5_prevalence5559m_0 p5_prevalence6064w_0 	p5_prevalence6064m_0 p5_prevalence6064w_0 
 p50_prevalence1519w_0 	p50_prevalence1519m_0 p50_prevalence2024w_0 	p50_prevalence2024m_0 p50_prevalence2529w_0 	p50_prevalence2529m_0
 p50_prevalence3034w_0 	p50_prevalence3034m_0 p50_prevalence3539w_0 	p50_prevalence3539m_0 p50_prevalence4044w_0 	p50_prevalence4044m_0 
 p50_prevalence4549w_0 	p50_prevalence4549m_0 p50_prevalence5054w_0 	p50_prevalence5054m_0 p50_prevalence5054w_0 	p50_prevalence5054m_0
-p50_prevalence5559w_0 	p50_prevalence5559m_0 
+p50_prevalence5559w_0 	p50_prevalence5559m_0 p50_prevalence6064w_0 	p50_prevalence6064m_0 p50_prevalence6064w_0 
 p95_prevalence1519w_0 	p95_prevalence1519m_0 p95_prevalence2024w_0 	p95_prevalence2024m_0 p95_prevalence2529w_0 	p95_prevalence2529m_0
 p95_prevalence3034w_0 	p95_prevalence3034m_0 p95_prevalence3539w_0 	p95_prevalence3539m_0 p95_prevalence4044w_0 	p95_prevalence4044m_0 
 p95_prevalence4549w_0 	p95_prevalence4549m_0 p95_prevalence5054w_0 	p95_prevalence5054m_0 p95_prevalence5054w_0 	p95_prevalence5054m_0
-p95_prevalence5559w_0 	p95_prevalence5559m_0 
+p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalence6064m_0 p95_prevalence6056w_0 
 
 ;
 
@@ -1598,7 +1600,7 @@ data age50w ; set f;  ageg=50; sex=2; p5_prevalence = p5_prevalence5054w_0 ; p50
 p95_prevalence = p95_prevalence5054w_0 ; prev_obs_mlw = 0.164 ;
 data age55w ; set f;  ageg=55; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;
 p95_prevalence = p95_prevalence5559w_0 ;prev_obs_mlw = 0.161 ;
-data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
+data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
 p95_prevalence = p95_prevalence6064w_0 ;prev_obs_mlw = 0.139 ;
 
 
@@ -1620,7 +1622,7 @@ data age50m ; set f;  ageg=50; sex=1; p5_prevalence = p5_prevalence5054m_0 ; p50
  p95_prevalence = p95_prevalence5054m_0 ;prev_obs_mlw = 0.175 ;
 data age55m ; set f;  ageg=55; sex=1; p5_prevalence = p5_prevalence5559m_0 ;p50_prevalence = p50_prevalence5559m_0 ;
 p95_prevalence = p95_prevalence5559m_0 ;prev_obs_mlw = 0.145 ;
-data age60m ; set f;  ageg=60; sex=1; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence6064m_0 ;
+data age60m ; set f;  ageg=60; sex=1; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064m_0 ;
 p95_prevalence = p95_prevalence6064m_0 ;prev_obs_mlw = 0.106 ;
 
 data all; set age15w age20w age25w age30w age35w age40w age45w age50w age55w age60w
@@ -1642,9 +1644,10 @@ p95_prevalence4549w_0 	p95_prevalence4549m_0 p95_prevalence5054w_0 	p95_prevalen
 p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064m_0 p95_prevalence6064w_0 p95_prevalence6064_0 
 ;
 
+ods html;
 
 proc sgplot data=all; Title 'prevalence by age - women'   height=1.5 justify=center ;
-xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 55 by 5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=blue thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
@@ -1654,7 +1657,7 @@ run;
 
 
 proc sgplot data=all; Title 'prevalence by age - men'   height=1.5 justify=center ;
-xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 55 by 5)	 	 valueattrs=(size=10); 
+xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=blue thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
