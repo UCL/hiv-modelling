@@ -126,8 +126,8 @@ run = rand('uniform')*1000000000;  run=round(run,1);
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
 
-caldate1=1989;
-caldate_never_dot=1989;
+caldate1=1984;
+caldate_never_dot=1984;
 
 * these used after year_interv - code is here so value the same for all people;
 _u1 = uniform(0); _u2 = uniform(0); _u3 = uniform(0); _u4 = uniform(0); _u5 = uniform(0);  _u6 = uniform(0); _u7 = uniform(0); _u8 = uniform(0);
@@ -141,7 +141,7 @@ _u57 = uniform(0); _u58 = uniform(0); _u59 = uniform(0); _u60 = uniform(0); _u61
 
 
 * start of epidemic;
-startyr = 1989 + 0.25;
+startyr = 1984 + 0.25;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -1335,8 +1335,8 @@ if sw=1 then do;
     ever_sw=1;
 
     u=uniform(0);
-    date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
-    age_deb_sw= age - (1989-date_start_sw);
+    date_start_sw = 1979+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
+    age_deb_sw= age - (1984-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
@@ -2245,7 +2245,7 @@ all art stopped (no_art_disrup_covid)
 
 ;
 
-if caldate{t} ge 2019.5 then reg_option = 120;
+if caldate{t} ge 2019.5 then reg_option = 104; * malawi ;
 
 
 
@@ -5488,7 +5488,7 @@ if tested=1   and hiv ne 1 and cost_test=0 then cost_test= cost_test_c;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=uniform(0);
-if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do;
+if caldate{t}=1989    and newp >= newp_seed and d < 0.8   and infection=.  then do;
         hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
         infected_ep=0;infection=caldate{t}; primary   =1;
         tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0;
@@ -18219,8 +18219,6 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-/*
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -18241,6 +18239,9 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+
+/*
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);

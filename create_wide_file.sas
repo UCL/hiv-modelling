@@ -1572,7 +1572,7 @@ ods html close;
 
 data q1; set a.w_base;
 
-if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246 ;
+if 0.107 <= prevalence1549_05 < 0.147 and 0.08 <= prevalence1549_15 < 0.12  ;
 
 
 run_keep = run;
@@ -1581,17 +1581,19 @@ keep run run_keep;
 
 run;
 
-/*
 
-rrr=0; if 0.122 <= prevalence1549_05 < 0.202  and 0.166 < prevalence1549_17 < 0.246
-   and 1.58 <= r_prev_sex_1549_17 < 2 and n_death_2059_m_05 > 170000 then rrr=1; ;
+data t; set a.w_base;
+
+rrr=0; if 0.107 <= prevalence1549_05 < 0.147 and 0.08 <= prevalence1549_15 < 0.12  then rrr=1; ;
 
 run_keep = run;
 
 * keep run run_keep;
 
 proc logistic ;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p ;
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
+ych_risk_beh_newp ych2_risk_beh_newp
+;
 model rrr = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
 
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1601,16 +1603,16 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl 
 ; 
 run;
-*/
+
 
 ods html close; 
 
 
-data a.l_base_keep; merge a.l_base q1 ; by run;
+data a.l_base_keep; merge a.l_base_mlw q1 ; by run;
 
 if run_keep ne .;
 
-
+run;
 
 
 proc glm; 
