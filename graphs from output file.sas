@@ -7,7 +7,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base;
+  set a.l_base_mlw;
 * set a.l_base_keep;
 
 
@@ -120,7 +120,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  100  ;
+%let nfit =  750  ;
 %let year_end = 2021.00 ;
 run;
 proc sort;by cald option ;run;
@@ -148,7 +148,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive
+n_alive n_diagnosed
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -213,7 +213,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive
+n_alive n_diagnosed
 ;
 
 
@@ -263,7 +263,7 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
-
+g103
 /*
 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -277,7 +277,7 @@ h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
 h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99  h100 h101 h102
-
+h103
 ;
 by cald;
 
@@ -566,7 +566,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 18000000 by 1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 100000) valueattrs=(size=10);
 label p50_n_tested_0 = "Option 0 (median) ";
 label p50_n_tested_1 = "Option 1 (median) ";
 
@@ -1150,7 +1150,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number on ART";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000 by 1000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100000) valueattrs=(size=10);
 
 label p50_n_onart_0 = "Option 0 (median) ";
 label p50_n_onart_1 = "Option 1  (median) ";
@@ -1413,7 +1413,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
 label p50_n_death_2059_w_0 = "Option 0 (median) ";
 label p50_n_death_2059_w_1 = "Option 1  (median) ";
@@ -1435,7 +1435,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
 label p50_n_death_2059_m_0 = "Option 0 (median) ";
 label p50_n_death_2059_m_1 = "Option 1  (median) ";
@@ -1457,12 +1457,12 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_cd4_lt200";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 8000000 by 500000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
 
-label p50_n_cd4_lt200_0 = "Option 0 (median) ";
+label p50_n_cd4_lt200__0 = "Option 0 (median) ";
 
-series  x=cald y=p50_n_cd4_lt200_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_cd4_lt200_0 	upper=p95_n_cd4_lt200_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_cd4_lt200__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_cd4_lt200__0 	upper=p95_n_cd4_lt200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1472,7 +1472,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000000 by 10000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000000 by 10000000) valueattrs=(size=10);
 
 label p50_n_alive_0 = "Option 0 (median) ";
 
@@ -1581,47 +1581,47 @@ p95_prevalence5559w_0 	p95_prevalence5559m_0
 if cald=2016;
 
 data age15w ; set f;  ageg=15; sex=2; 	p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;
-p95_prevalence = p95_prevalence1519w_0 ; prev_obs_sa = 0.020 ;
+p95_prevalence = p95_prevalence1519w_0 ; prev_obs_mlw = 0.020 ;
 data age20w ; set f;  ageg=20; sex=2; p5_prevalence = p5_prevalence2024w_0 ; p50_prevalence = p50_prevalence2024w_0 ; 
-p95_prevalence = p95_prevalence2024w_0 ; prev_obs_sa = 0.052 ;
+p95_prevalence = p95_prevalence2024w_0 ; prev_obs_mlw = 0.052 ;
 data age25w ; set f;  ageg=25; sex=2; p5_prevalence = p5_prevalence2529w_0 ;p50_prevalence = p50_prevalence2529w_0 ;
-p95_prevalence = p95_prevalence2529w_0 ;prev_obs_sa = 0.136 ;
+p95_prevalence = p95_prevalence2529w_0 ;prev_obs_mlw = 0.136 ;
 data age30w ; set f;  ageg=30; sex=2; p5_prevalence = p5_prevalence3034w_0 ; p50_prevalence = p50_prevalence3034w_0 ; 
-p95_prevalence = p95_prevalence3034w_0 ; prev_obs_sa = 0.175 ;
+p95_prevalence = p95_prevalence3034w_0 ; prev_obs_mlw = 0.175 ;
 data age35w ; set f;  ageg=35; sex=2; p5_prevalence = p5_prevalence3539w_0 ; p50_prevalence = p50_prevalence3539w_0 ; 
-p95_prevalence = p95_prevalence3539w_0 ; prev_obs_sa = 0.221 ;
+p95_prevalence = p95_prevalence3539w_0 ; prev_obs_mlw = 0.221 ;
 data age40w ; set f;  ageg=40; sex=2; p5_prevalence = p5_prevalence4044w_0 ;p50_prevalence = p50_prevalence4044w_0 ;
-p95_prevalence = p95_prevalence4044w_0 ;prev_obs_sa = 0.246 ;
+p95_prevalence = p95_prevalence4044w_0 ;prev_obs_mlw = 0.246 ;
 data age45w ; set f;  ageg=45; sex=2; p5_prevalence = p5_prevalence4549w_0 ; p50_prevalence = p50_prevalence4549w_0 ;
- p95_prevalence = p95_prevalence4549w_0 ;prev_obs_sa = 0.203 ;
+ p95_prevalence = p95_prevalence4549w_0 ;prev_obs_mlw = 0.203 ;
 data age50w ; set f;  ageg=50; sex=2; p5_prevalence = p5_prevalence5054w_0 ; p50_prevalence = p50_prevalence5054w_0 ; 
-p95_prevalence = p95_prevalence5054w_0 ; prev_obs_sa = 0.164 ;
+p95_prevalence = p95_prevalence5054w_0 ; prev_obs_mlw = 0.164 ;
 data age55w ; set f;  ageg=55; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;
-p95_prevalence = p95_prevalence5559w_0 ;prev_obs_sa = 0.161 ;
+p95_prevalence = p95_prevalence5559w_0 ;prev_obs_mlw = 0.161 ;
 data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
-p95_prevalence = p95_prevalence6064w_0 ;prev_obs_sa = 0.139 ;
+p95_prevalence = p95_prevalence6064w_0 ;prev_obs_mlw = 0.139 ;
 
 
 data age15m ; set f;  ageg=15; sex=1; p5_prevalence = p5_prevalence1519m_0 ; p50_prevalence = p50_prevalence1519m_0 ; 
-p95_prevalence = p95_prevalence1519m_0 ; prev_obs_sa = 0.009 ;
+p95_prevalence = p95_prevalence1519m_0 ; prev_obs_mlw = 0.009 ;
 data age20m ; set f;  ageg=20; sex=1; p5_prevalence = p5_prevalence2024m_0 ; p50_prevalence = p50_prevalence2024m_0 ; 
-p95_prevalence = p95_prevalence2024m_0 ; prev_obs_sa = 0.023 ;
+p95_prevalence = p95_prevalence2024m_0 ; prev_obs_mlw = 0.023 ;
 data age25m ; set f;  ageg=25; sex=1; p5_prevalence = p5_prevalence2529m_0 ; p50_prevalence = p50_prevalence2529m_0 ; 
-p95_prevalence = p95_prevalence2529m_0 ; prev_obs_sa = 0.047 ;
+p95_prevalence = p95_prevalence2529m_0 ; prev_obs_mlw = 0.047 ;
 data age30m ; set f;  ageg=30; sex=1; p5_prevalence = p5_prevalence3034m_0 ;p50_prevalence = p50_prevalence3034m_0 ;
-p95_prevalence = p95_prevalence3034m_0 ;prev_obs_sa = 0.121 ;
+p95_prevalence = p95_prevalence3034m_0 ;prev_obs_mlw = 0.121 ;
 data age35m ; set f;  ageg=35; sex=1; p5_prevalence = p5_prevalence3539m_0 ;p50_prevalence = p50_prevalence3539m_0 ;
-p95_prevalence = p95_prevalence3539m_0 ;prev_obs_sa = 0.145 ;
+p95_prevalence = p95_prevalence3539m_0 ;prev_obs_mlw = 0.145 ;
 data age40m ; set f;  ageg=40; sex=1; p5_prevalence = p5_prevalence4044m_0 ;p50_prevalence = p50_prevalence4044m_0 ;
-p95_prevalence = p95_prevalence4044m_0 ;prev_obs_sa = 0.186 ;
+p95_prevalence = p95_prevalence4044m_0 ;prev_obs_mlw = 0.186 ;
 data age45m ; set f;  ageg=45; sex=1; p5_prevalence = p5_prevalence4549m_0 ;p50_prevalence = p50_prevalence4549m_0 ;
-p95_prevalence = p95_prevalence4549m_0 ;prev_obs_sa = 0.221 ;
+p95_prevalence = p95_prevalence4549m_0 ;prev_obs_mlw = 0.221 ;
 data age50m ; set f;  ageg=50; sex=1; p5_prevalence = p5_prevalence5054m_0 ; p50_prevalence = p50_prevalence5054m_0 ;
- p95_prevalence = p95_prevalence5054m_0 ;prev_obs_sa = 0.175 ;
+ p95_prevalence = p95_prevalence5054m_0 ;prev_obs_mlw = 0.175 ;
 data age55m ; set f;  ageg=55; sex=1; p5_prevalence = p5_prevalence5559m_0 ;p50_prevalence = p50_prevalence5559m_0 ;
-p95_prevalence = p95_prevalence5559m_0 ;prev_obs_sa = 0.145 ;
+p95_prevalence = p95_prevalence5559m_0 ;prev_obs_mlw = 0.145 ;
 data age60m ; set f;  ageg=60; sex=1; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence6064m_0 ;
-p95_prevalence = p95_prevalence6064m_0 ;prev_obs_sa = 0.106 ;
+p95_prevalence = p95_prevalence6064m_0 ;prev_obs_mlw = 0.106 ;
 
 data all; set age15w age20w age25w age30w age35w age40w age45w age50w age55w age60w
  age15m age20m age25m age30m age35m age40m age45m age50m age55m age60m
