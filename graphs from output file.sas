@@ -8,7 +8,7 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
 
 data b;
   set a.l_base_mlw;
-* set a.l_base_keep;
+* set a.l_base_keep_mlw;
 
 
 p_onart_vl1000_all = .;

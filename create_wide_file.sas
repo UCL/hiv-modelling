@@ -2,7 +2,7 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_a_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_b_out\";
 
   data g;    set b.out: ;
 
@@ -16,7 +16,7 @@ data sf;
 
 set g ;
 
-if cald=2021.5;
+if cald=2021.25;
 s_alive = s_alive_m + s_alive_w ;
 sf_2021 = (19000000 * 0.57) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
 keep run sf_2021;
@@ -28,7 +28,6 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 data y; 
 merge g sf;
 by run ;
-
 
 
 * preparatory code ;
