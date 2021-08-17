@@ -465,7 +465,7 @@ newp_seed = 7;
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
 * rate_lost; 				%sample_uniform(rate_lost, 0.20 0.35 0.50);
 							* dependent_on_time_step_length ;
-* prob_lost_art; 			%sample_uniform(rate_lost, 0.5 0.6 0.7 0.8 0.9);
+* prob_lost_art; 			%sample_uniform(prob_lost_art, 0.5 0.6 0.7 0.8 0.9);
 							* dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
