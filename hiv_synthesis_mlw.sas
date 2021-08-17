@@ -429,45 +429,46 @@ newp_seed = 7;
 * rate_loss_acq_iim_offart; rate_loss_acq_iim_offart = 0.2;
 
 * all * dependent_on_time_step_length ;
-* r_otx_start;              r_otx_start =           0.03;
-* r_ane_start_zdv;          r_ane_start_zdv =       0.03;
-* p_ane_stops_zdv;          p_ane_stops_zdv =       0.8;
-* r_lip_start_zdv;          r_lip_start_zdv =       0.015;
-* r_lac_start_zdv;          r_lac_start_zdv =       0.0002;
-* r_head_start_zdv;         r_head_start_zdv =      0.1;
-* p_head_stops_zdv;         p_head_stops_zdv =      0.6 ;
-* r_nau_start_zdv_lpr;      r_nau_start_zdv_lpr =   0.03;
-* p_nau_stops_zdv_lpr;      p_nau_stops_zdv_lpr =   0.5 ;
-* r_dia_start_lpr;          r_dia_start_lpr =       0.02;
-* p_dia_stops_lpr;          p_dia_stops_lpr =       0.5 ;
-* r_dia_start_taz_dar;      r_dia_start_taz_dar =   0.01;
-* p_dia_stops_taz_dar;      p_dia_stops_taz_dar =   0.5 ;
-* r_res_start_nev;          r_res_start_nev =       0.10;
-* r_hep_start_nev;          r_hep_start_nev =       0.02;
-* r_weightg_start_dol;      r_weightg_start_dol =   0.01;
-* r_cns_start_dol;          r_cns_start_dol =       0.05;
-* p_cns_stops_dol;          p_cns_stops_dol =       0.6;
-* r_cns_start_efa;          r_cns_start_efa =       0.1;
-* p_cns_stops_efa;          p_cns_stops_efa =       0.2;
-* r_ras_start_efa;          r_ras_start_efa =       0.03;
-* r_neph_start_ten;         r_neph_start_ten =      0.0035;
-* p_neph_stops_ten;         p_neph_stops_ten =      0 ;
-* p_neph_stops_after_ten;   p_neph_stops_after_ten = 0.1;
 
-                            * AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;
-* reduced higher values as middle 90 not consistent with phias with those values ;
-* prob_loss_at_diag;        %sample(prob_loss_at_diag,
-                                0.02    0.05    0.20    0.35    0.50    0.80,
-                                0.2     0.2     0.2     0.2     0.1     0.1);
+* r_otx_start;				r_otx_start = 			0.03;
+* r_ane_start_zdv;			r_ane_start_zdv = 		0.03; 
+* p_ane_stops_zdv;			p_ane_stops_zdv = 		0.8;
+* r_lip_start_zdv;			r_lip_start_zdv = 		0.015;
+* r_lac_start_zdv;			r_lac_start_zdv = 		0.0002;
+* r_head_start_zdv;			r_head_start_zdv = 		0.1;  
+* p_head_stops_zdv;			p_head_stops_zdv = 		0.6 ;
+* r_nau_start_zdv_lpr;		r_nau_start_zdv_lpr = 	0.03;
+* p_nau_stops_zdv_lpr;		p_nau_stops_zdv_lpr = 	0.5 ;
+* r_dia_start_lpr;			r_dia_start_lpr = 		0.02;
+* p_dia_stops_lpr;			p_dia_stops_lpr = 		0.5 ;
+* r_dia_start_taz_dar;		r_dia_start_taz_dar = 	0.01;
+* p_dia_stops_taz_dar;		p_dia_stops_taz_dar = 	0.5 ;
+* r_res_start_nev;			r_res_start_nev = 		0.10;
+* r_hep_start_nev;			r_hep_start_nev = 		0.02;
+* r_weightg_start_dol;		r_weightg_start_dol = 	0.01;
+* r_cns_start_dol;			r_cns_start_dol = 		0.05;
+* p_cns_stops_dol;			p_cns_stops_dol = 		0.6;
+* r_cns_start_efa;			r_cns_start_efa = 		0.1;
+* p_cns_stops_efa;			p_cns_stops_efa = 		0.2;
+* r_ras_start_efa;			r_ras_start_efa = 		0.03;
+* r_neph_start_ten;			r_neph_start_ten = 		0.0035;
+* p_neph_stops_ten;			p_neph_stops_ten = 		0 ;
+* p_neph_stops_after_ten;	p_neph_stops_after_ten = 0.1;
+
+							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
+* reduced higher values as middle 90 not consistent with phias with those values ; 
+* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
+								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
+								0.2 	0.2 	0.2 	0.2		0.1		0.1);
 
 
-* prob_lossdiag_adctb;      prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
-* prob_lossdiag_non_tb_who3e;
-                            prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
-* rate_lost;                %sample_uniform(rate_lost, 0.20 0.35 0.50);
-                            * dependent_on_time_step_length ;
-* prob_lost_art;            %sample_uniform(rate_lost, 0.5 0.6 0.7 0.8 0.9);
-                            * dependent_on_time_step_length ;
+* prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
+* prob_lossdiag_non_tb_who3e;  
+							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
+* rate_lost; 				%sample_uniform(rate_lost, 0.20 0.35 0.50);
+							* dependent_on_time_step_length ;
+* prob_lost_art; 			%sample_uniform(prob_lost_art, 0.5 0.6 0.7 0.8 0.9);
+							* dependent_on_time_step_length ;
 
 * AP 19-7-19 ;
 * rate_return;              %sample(rate_return,
@@ -18228,9 +18229,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
-
-/*
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
