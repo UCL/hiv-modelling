@@ -40,7 +40,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * CIRCUMCISION;
 
-* circ_inc_rate;            circ_inc_rate = 0.003; 
+* circ_inc_rate;            circ_inc_rate = 0.001; 
 
 * prob_birth_circ;          prob_birth_circ = 0.2 ; 
 
