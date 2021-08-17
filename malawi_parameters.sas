@@ -5,7 +5,7 @@
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					 %sample_uniform(inc_cat, 1 2) ;
+* inc_cat; 					 inc_cat = 1 ;  
 
 * SEXUAL BEHAVIOUR;
 

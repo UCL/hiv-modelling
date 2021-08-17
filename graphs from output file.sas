@@ -1475,7 +1475,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990   to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
 
 label p50_n_hiv_0 = "Option 0 (median) ";
 

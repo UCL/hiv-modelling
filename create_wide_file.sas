@@ -2,7 +2,7 @@
 
 libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_c_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_d_out\";
 
   data g;    set b.out: ;
 
@@ -982,6 +982,13 @@ data a.l_base_mlw; set y;
 
 
 data y; set a.l_base_mlw; 
+
+/*
+if cald = 2017;
+out=0;
+if prevalence1549 > 0.2 then out=1;
+proc logistic....
+*/
 
   options nomprint;
   option nospool;
