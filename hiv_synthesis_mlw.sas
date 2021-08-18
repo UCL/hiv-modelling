@@ -12889,30 +12889,40 @@ pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or . lt time0 le caldate
 
 ***Deaths;
 if gender=1 then do;
-    dead_m=dead  ;
-    if 15 <= age < 20 then dead1519m_all=dead;
-    if 20 <= age < 25 then dead2024m_all=dead;
-    if 25 <= age < 30 then dead2529m_all=dead;
-    if 30 <= age < 35 then dead3034m_all=dead;
-    if 35 <= age < 40 then dead3539m_all=dead;
-    if 40 <= age < 45 then dead4044m_all=dead;
-    if 45 <= age < 50 then dead4549m_all=dead;
-    if 50 <= age < 55 then dead5054m_all=dead;
-    if 55 <= age < 60 then dead5559m_all=dead;
-    if 60 <= age < 65 then dead6064m_all=dead;
+	dead_m=dead  ;
+	if 15 <= age < 20 then dead1519m_all=dead;
+	if 20 <= age < 25 then dead2024m_all=dead;
+	if 25 <= age < 30 then dead2529m_all=dead;
+	if 30 <= age < 35 then dead3034m_all=dead;
+	if 35 <= age < 40 then dead3539m_all=dead;
+	if 40 <= age < 45 then dead4044m_all=dead;
+	if 45 <= age < 50 then dead4549m_all=dead;
+	if 50 <= age < 55 then dead5054m_all=dead;
+	if 55 <= age < 60 then dead5559m_all=dead;
+	if 60 <= age < 65 then dead6064m_all=dead;
+	if 65 <= age < 70 then dead6569m_all=dead;
+	if 70 <= age < 75 then dead7074m_all=dead;
+	if 75 <= age < 80 then dead7579m_all=dead;
+	if 80 <= age < 85 then dead8084m_all=dead;
+	if 85 <= age      then dead85plm_all=dead;
 end;
 if gender=2 then do;
-    dead_w=dead;
-    if 15 <= age < 20 then dead1519w_all=dead;
-    if 20 <= age < 25 then dead2024w_all=dead;
-    if 25 <= age < 30 then dead2529w_all=dead;
-    if 30 <= age < 35 then dead3034w_all=dead;
-    if 35 <= age < 40 then dead3539w_all=dead;
-    if 40 <= age < 45 then dead4044w_all=dead;
-    if 45 <= age < 50 then dead4549w_all=dead;
-    if 50 <= age < 55 then dead5054w_all=dead;
-    if 55 <= age < 60 then dead5559w_all=dead;
-    if 60 <= age < 65 then dead6064w_all=dead;
+	dead_w=dead;
+	if 15 <= age < 20 then dead1519w_all=dead;
+	if 20 <= age < 25 then dead2024w_all=dead;
+	if 25 <= age < 30 then dead2529w_all=dead;
+	if 30 <= age < 35 then dead3034w_all=dead;
+	if 35 <= age < 40 then dead3539w_all=dead;
+	if 40 <= age < 45 then dead4044w_all=dead;
+	if 45 <= age < 50 then dead4549w_all=dead;
+	if 50 <= age < 55 then dead5054w_all=dead;
+	if 55 <= age < 60 then dead5559w_all=dead;
+	if 60 <= age < 65 then dead6064w_all=dead;
+	if 65 <= age < 70 then dead6569w_all=dead;
+	if 70 <= age < 75 then dead7074w_all=dead;
+	if 75 <= age < 80 then dead7579w_all=dead;
+	if 80 <= age < 85 then dead8084w_all=dead;
+	if 85 <= age      then dead85plw_all=dead;
 end;
 
 if 15 <= age < 65 then dead1564_all=dead;
@@ -14865,18 +14875,24 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_pre_art_care + pre_art_care ; s_visit_prep_no + visit_prep_no ; s_visit_prep_d + visit_prep_d ; s_visit_prep_dt + visit_prep_dt ;
     s_visit_prep_dtc + visit_prep_dtc ; s_sv + sv ; s_sv_secondline + sv_secondline ;
 
-    /*deaths*/
+	/*deaths*/
 
-    s_dead + dead; s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ;
-    s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;
-    s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
-    s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
-    s_dead1519w_all + dead1519w_all ; s_dead2024w_all + dead2024w_all ; s_dead2529w_all + dead2529w_all ; s_dead3034w_all + dead3034w_all ;
-    s_dead3539w_all + dead3539w_all ; s_dead4044w_all + dead4044w_all ; s_dead4549w_all + dead4549w_all ;
-    s_dead5054w_all + dead5054w_all ;s_dead5559w_all + dead5559w_all ;s_dead6064w_all + dead6064w_all ;
-    s_death_hivrel + death_hivrel ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead1564_ + dead1564_ ;
-    s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ;
-    s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
+	s_dead + dead; s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ; 
+	s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;  
+	s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
+	s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
+	s_dead1519w_all + dead1519w_all ; s_dead2024w_all + dead2024w_all ; s_dead2529w_all + dead2529w_all ; s_dead3034w_all + dead3034w_all ;  
+	s_dead3539w_all + dead3539w_all ; s_dead4044w_all + dead4044w_all ; s_dead4549w_all + dead4549w_all ;
+	s_dead5054w_all + dead5054w_all ;s_dead5559w_all + dead5559w_all ;s_dead6064w_all + dead6064w_all ;
+	s_dead6569w_all + dead6569w_all;  s_dead7074w_all + dead7074w_all; s_dead7579w_all + dead7579w_all;  s_dead8084w_all + dead8084w_all;
+	s_dead85plw_all + dead85plw_all; 	
+	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
+	s_dead85plm_all + dead85plm_all; 
+
+	s_death_hivrel + death_hivrel ;	s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead1564_ + dead1564_ ;
+	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; 
+	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
+
     s_dead_line1_lf1 + dead_line1_lf1 ; s_dead_line2_lf1 + dead_line2_lf1 ; s_dead_line2_lf2 + dead_line2_lf2 ; s_dead_artexp + dead_artexp ;
     s_dead_artexpoff + dead_artexpoff ; s_dead_nn + dead_nn ; s_dead_pir + dead_pir ; s_dead_adc + dead_adc ; s_dead_line1 + dead_line1 ;
     s_dead_line2 + dead_line2 ; s_dead_art_1p + dead_art_1p ; s_dead_u_vfail1 + dead_u_vfail1 ; s_dead_line1_vlg1000 + dead_line1_vlg1000 ;
@@ -16252,6 +16268,7 @@ s_sv  s_sv_secondline
 s_dead s_dead1564_all      s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
+s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p
@@ -17818,6 +17835,7 @@ s_sv  s_sv_secondline
 s_dead s_dead1564_all      s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
+s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p
@@ -18900,6 +18918,7 @@ s_sv  s_sv_secondline
 s_dead  s_dead1564_all     s_dead1564m_all    s_dead1564w_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
+s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_dead1564_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p
