@@ -1330,60 +1330,6 @@ proc sort; by run;run;
   by run;
 
 
-data e; set a.w_base_mlw; 
-
-
-rel_prev_4525w = log( prevalence4549w_17 / prevalence2529w_17) ; 
-
-proc glm; 
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ; 
-model rel_prev_4525w = sex_age_mixing_matrix_m sex_age_mixing_matrix_w  / solution ;
-run;
-
-
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
-var 
-prevalence1519w_17 	prevalence1519m_17 prevalence2024w_17 	prevalence2024m_17 prevalence2529w_17 	prevalence2529m_17
-prevalence3034w_17 	prevalence3034m_17 prevalence3539w_17 	prevalence3539m_17 prevalence4044w_17 	prevalence4044m_17 
-prevalence4549w_17 	prevalence4549m_17 prevalence5054w_17 	prevalence5054m_17 prevalence5054w_17 	prevalence5054m_17
-prevalence5559w_17 	prevalence5559m_17 
-;
-run;
-
-proc freq data=a.w_base_mlw;
-tables run; 
-run;
-
-
-
-*
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
-test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
-rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy 
-;
-
-
-proc contents;run;
-
-proc contents;run;
-
 ods html;
 
 proc means data=a.w_base_mlw n p50 p5 p95 mean;
@@ -1571,7 +1517,7 @@ ods html close;
 
 data q1; set a.w_base_mlw;
 
-if 0.107 <= prevalence1549_05 < 0.147 and 0.08 <= prevalence1549_15 < 0.12  ;
+if n_onart_15 < 700000 and prevalence4554w_17 < 0.35  ;
 
 
 run_keep = run;
@@ -1581,38 +1527,19 @@ keep run run_keep;
 run;
 
 
-data t; set a.w_base_mlw;
-
-rrr=0; if 0.107 <= prevalence1549_05 < 0.147 and 0.08 <= prevalence1549_15 < 0.12  then rrr=1; ;
-
-run_keep = run;
-
-* keep run run_keep;
-
-proc logistic ;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
-ych_risk_beh_newp ych2_risk_beh_newp
-;
-model rrr = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
-
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl 
-; 
-run;
-
-
-ods html close; 
 
 
 data a.l_base_keep_mlw; merge a.l_base_mlw q1 ; by run;
 
 if run_keep ne .;
 
+proc print; var run; 
+where cald = 2021.25;
+
 run;
 
+
+/*
 
 proc glm; 
 class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
@@ -1647,91 +1574,4 @@ zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater
 prep_strategy 
 ;
 
-data s; set a.w_base_mlw;
-
-trend_prev = prevalence1549_17 / prevalence1549_05;
-
-proc glm data=s; 
-model n_onart_21 = 
-an_lin_incr_test
-rate_testanc_inc incr_test_rate_sympt max_freq_testing
-test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac  incr_rate_int_low_adh  
-pr_switch_line prob_vl_meas_done
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat sw_init_newp sw_trans_matrix
-prevalence1549_21
-/ solution ; 
-run;
-
-
-
-
-ods html close; 
-
-
-proc means data=s; var prevalence1549_17;
-where ych_risk_beh_ep =1   and ych_risk_beh_newp = 1 and p_rred_p = 0.3 ;
-run;
-
-
-proc glm data=a.l_base_mlw; model n_death_2059_m = gx fx  ; run;   
-
-
-proc freq data=a.l_base_mlw; tables run; where cald = 2021; run;
-
-
-
-
-
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
-
-data ggg; set a.l_base_mlw_old;  
-
-if cald = 2016;
-
-rrr=0; if 0.08 <= prevalence1549 < 0.12 and 0.125 <=  prevalence5054m < 0.225 and  0.104 <=  prevalence5054w < 0.224  then rrr=1; ;
-
-proc univariate; var prevalence5054m prevalence5054w ; run;
-
-proc logistic ;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
-ych_risk_beh_newp ych2_risk_beh_newp
-;
-model rrr = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl 
-; 
-run;
-
-
-
-proc glm ;
-class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p p_rred_p p_hsb_p newp_factor
-ych_risk_beh_newp ych2_risk_beh_newp
-;
-model prevalence5054w = p_rred_p p_hsb_p fold_tr_newp rred_a_p newp_factor
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl / solution
-; 
-run;
-
-
-
-
-
-
-
-
-
-
-
-
+*/
