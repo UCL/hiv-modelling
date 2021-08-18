@@ -7,8 +7,8 @@ libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output fil
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_mlw;
-* set a.l_base_keep_mlw;
+* set a.l_base_mlw;
+  set a.l_base_keep_mlw;
 
 
 p_onart_vl1000_all = .;
@@ -120,8 +120,8 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  84   ;
-%let year_end = 2021.00 ;
+%let nfit =  25   ;
+%let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
 

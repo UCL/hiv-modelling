@@ -416,6 +416,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
+
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 * prevalence2024m;				prevalence2024m = s_hiv2024m  / s_ageg2024m ;
 * prevalence2529w;				prevalence2529w = s_hiv2529w  / s_ageg2529w ;
@@ -437,8 +438,13 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence65plw;				prevalence65plw = s_hiv65plw  / s_ageg65plw ;
 * prevalence65plm;				prevalence65plm = s_hiv65plm  / s_ageg65plm ;
 
-* prevalence1524w;				prevalence1524w =  s_hiv1524w  / (s_ageg1519w + s_ageg2024w) ;
-* prevalence1524m;				prevalence1524m =  s_hiv1524m  / (s_ageg1519m + s_ageg2024m) ;
+* prevalence1524w;				prevalence1524w = ( s_hiv1519w + s_hiv2024w ) / (s_ageg1519w + s_ageg2024w) ;
+* prevalence1524m;				prevalence1524m = ( s_hiv1519m + s_hiv2024m ) / (s_ageg1519m + s_ageg2024m) ;
+* prevalence2549w;				prevalence1524w = ( s_hiv2529w + s_hiv3034w +  s_hiv3539w + s_hiv4044w +  s_hiv4549w ) / 
+													(s_ageg2529w + s_ageg3034w + s_ageg3539w + s_ageg4044w + s_ageg4549w) ;
+* prevalence2549m;				prevalence1524m = ( s_hiv2529m + s_hiv3034m +  s_hiv3539m + s_hiv4044m +  s_hiv4549m ) / 
+													(s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg4044m + s_ageg4549m) ;
+
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
 
@@ -960,7 +966,8 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive  n_diagnosed  n_hiv 
+n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw
+
 
 ;
 
@@ -1153,7 +1160,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested);
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
+%var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
+;
 
 
 
@@ -1517,10 +1526,37 @@ ods html close;
 
 data q1; set a.w_base_mlw;
 
-if n_onart_15 < 700000 and prevalence4554w_17 < 0.35  ;
-
+if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12;
 
 run_keep = run;
+
+/*
+proc freq; tables sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
+fold_tr fold_tr_newp switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy 
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+; run;
+*/
 
 keep run run_keep;
 
@@ -1533,10 +1569,11 @@ data a.l_base_keep_mlw; merge a.l_base_mlw q1 ; by run;
 
 if run_keep ne .;
 
-proc print; var run; 
+ods html;
+proc print noobs; var run; 
 where cald = 2021.25;
-
 run;
+ods html close;
 
 
 /*

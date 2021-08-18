@@ -6,6 +6,36 @@ libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa un
 
   data g;    set b.out: ;
 
+if run in (
+6667456 
+7654350 
+76413798 
+164479966 
+275096361 
+308002243 
+334090623 
+371598612 
+461449244 
+476661538 
+513872681 
+586727294 
+646362246 
+668311093 
+702630229 
+717466584 
+725327392 
+727098581 
+777849763 
+842608327 
+853307842 
+891246265 
+957283890 
+987060908 
+988064628 
+);
+
+
+
 proc sort data=g; 
 by run cald option;run;
 
@@ -37,6 +67,16 @@ s_alive = s_alive_m + s_alive_w ;
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
+
+* prevalence1524w;				prevalence1524w = ( s_hiv1519w + s_hiv2024w ) / (s_ageg1519w + s_ageg2024w) ;
+* prevalence1524m;				prevalence1524m = ( s_hiv1519m + s_hiv2024m ) / (s_ageg1519m + s_ageg2024m) ;
+* prevalence2549w;				prevalence2549w = ( s_hiv2529w + s_hiv3034w +  s_hiv3539w + s_hiv4044w +  s_hiv4549w ) / 
+													(s_ageg2529w + s_ageg3034w + s_ageg3539w + s_ageg4044w + s_ageg4549w) ;
+* prevalence2549m;				prevalence2549m = ( s_hiv2529m + s_hiv3034m +  s_hiv3539m + s_hiv4044m +  s_hiv4549m ) / 
+													(s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg4044m + s_ageg4549m) ;
+
+* prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
+
 * prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
@@ -63,6 +103,12 @@ s_alive = s_alive_m + s_alive_w ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
 * n_death_2059;					n_death_2059 = n_death_2059_m + n_death_2059_w;
+* n_death;						n_death = s_dead_allage  * 4 * &sf;
+* n_death__m;					n_death__m = (s_dead1519m_all + s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
+													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all+ s_dead6064m_all
+													+ s_dead6569m_all+ s_dead7074m_all+ s_dead7579m_all+ s_dead8084m_all+ s_dead85plm_all)  * 4 * &sf ;
+
+
 * n_tested_m;					n_tested_m = s_tested_m * &sf * 4;
 * n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
 * n_tested  ;					n_tested   = n_tested_w + n_tested_m ;
@@ -74,6 +120,7 @@ keep run option cald
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
 p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
 n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
+prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw n_death 
 
 ;
 
@@ -413,17 +460,18 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v = test_prop_positive );
+%var(v=prevalence_sw);
 
 /*
 
-%var(v=prevalence1549m);%var(v=prevalence1549w);
+%var(v=prevalence1549m);%var(v=prevalence1549w);%var(v = test_prop_positive );
 %var(v=p_mcirc_1549m);  %var(v=p_diag_w);  %var(v=p_diag_m);  %var(v=p_onart_vl1000_); %var(v=incidence1549w); 
 %var(v=incidence1549m); %var(v=incidence1549 ); %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); 
 %var(v=n_death_2059_w); %var(v=n_death_2059_m); %var(v=n_tested_m); %var(v=n_tested_w);  %var(v=test_prop_positive);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=p_onart); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); 
 %var(v=p_diag_m); %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_new_inf1549); %var(v=n_death_hiv_m); 
 %var(v=n_death_hiv_w); %var(v=n_death_hiv); %var(v=n_death_2059);
+%var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
 
 */
 
@@ -445,7 +493,6 @@ y2829 y2930 y3031 y3132 y3233 y3334 y3435 y3536 y3637 y3738 y3839 y3940 y4041 ;
 run;
 ods html close;
 
-/*
 
 ods html;
 title '';
@@ -457,7 +504,7 @@ y28 y29 y30 y31 y32 y33 y34 y35 y36 y37 y38 y39 y40;
 run;
 ods html close;
 
-*/
+
 
 
 

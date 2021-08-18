@@ -36,6 +36,10 @@
 
 rate_ch_art_init_str_9 = 0.1 ;
 
+* adh_pattern;              %sample(adh_pattern,
+                                1       2       3       4       5     ,
+                                0.05    0.55    0.20    0.10    0.10  );
+
 * SEX WORKERS;				
 
 * CIRCUMCISION;
