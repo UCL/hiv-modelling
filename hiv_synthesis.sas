@@ -356,7 +356,7 @@ newp_seed = 7;
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
-							* dependent_on_time_step_length - ;
+							* dependent_on_time_step_length ;
 
 
 
@@ -644,34 +644,6 @@ if prep_willing=1;
 							*Probability of PrEP uptake if eligible for general population;
 * higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
 
-/*
-
-From tld_prep program used for submitted gems ms
-
-* PREP;
-
-* PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
-annual_testing_prep=0.25; *frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
-hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen);
-eff_adh_prep=0.95; *PrEP effectiveness with 100% adherence ; 
-factor_prep_adh_older=0.5; * factor determining how much higher adh to prep is in people age > 25 than < 25; 
-rate_test_onprep=1.00; *Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
-* dependent_on_time_step_length ;
-pr_prep_b=0.75; * 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
-
-prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
-* dependent_on_time_step_length ;
-
-prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
-tot_yrs_prep=0; cum_years_onprep_a2021=0;cum_years_prep_elig_a2021=0;
-prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
-* dependent_on_time_step_length ; 
-prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
-prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
-pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
-* dependent_on_time_step_length ;
-
-*/
 
 * COVID-19
 
