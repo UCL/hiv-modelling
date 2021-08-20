@@ -159,7 +159,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:4);
+* inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -182,7 +182,6 @@ newp_seed = 7;
 * prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.06 + r*0.05;  
 							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
-							if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 2.00 ;
 							prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
@@ -1100,23 +1099,6 @@ inc10=0.050;
 inc11=0.038;
 inc12=0.026;
 inc13=0.020;
-end;
-
-
-if inc_cat=4 then do;
-inc1=0.1150;
-inc2=0.1100;
-inc3=0.1050;
-inc4=0.1000;
-inc5=0.0950;
-inc6=0.0900;
-inc7=0.0850;
-inc8=0.0750;
-inc9 =0.063;
-inc10=0.055;
-inc11=0.046;
-inc12=0.033;
-inc13=0.028;
 end;
 
 
