@@ -687,7 +687,8 @@ effect_sbp_cvd_death = 0.05;
 effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
-
+* base risk of cvd (before adding effects of age, gender, sbp);
+base_cvd_death_risk = 0.00002;
 
 
 * NON-HIV TB ;  * update_24_4_21;
@@ -10110,7 +10111,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 * cvd mortality; * update_24_4_21;
 
 * risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
-	cvd_death_risk = 0.00002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = uniform(0);
 	if xcvd le cvd_death_risk then do;
@@ -10489,7 +10490,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * cvd mortality; * update_24_4_21;
 
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
-	cvd_death_risk = 0.00002 * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = uniform(0);
 	if xcvd le cvd_death_risk then do;
@@ -16425,7 +16426,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   e
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death 
+prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -18368,7 +18369,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death 
+prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
