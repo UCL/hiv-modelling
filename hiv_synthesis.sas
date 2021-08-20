@@ -159,7 +159,7 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					%sample_uniform(inc_cat, 1:3);
+* inc_cat; 					%sample_uniform(inc_cat, 1:4);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -182,6 +182,7 @@ newp_seed = 7;
 * prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.06 + r*0.05;  
 							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
+							if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 2.00 ;
 							prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
@@ -643,7 +644,34 @@ if prep_willing=1;
 							*Probability of PrEP uptake if eligible for general population;
 * higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
 
+/*
 
+From tld_prep program used for submitted gems ms
+
+* PREP;
+
+* PREP assumed introduced in fsw/agyw 2017 - with level of coverage and retention; 
+annual_testing_prep=0.25; *frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
+hivtest_type=3; *HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen);
+eff_adh_prep=0.95; *PrEP effectiveness with 100% adherence ; 
+factor_prep_adh_older=0.5; * factor determining how much higher adh to prep is in people age > 25 than < 25; 
+rate_test_onprep=1.00; *Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
+* dependent_on_time_step_length ;
+pr_prep_b=0.75; * 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
+
+prob_prep_restart=1.00; * set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
+* dependent_on_time_step_length ;
+
+prob_prep_visit_counsel=0; *Probability of PrEP adherence counselling happening at drug pick-up;
+tot_yrs_prep=0; cum_years_onprep_a2021=0;cum_years_prep_elig_a2021=0;
+prob_prep_restart_choice=0.10; * probability of restarting PrEP after discontinuation even when newp>1;
+* dependent_on_time_step_length ; 
+prepuptake_sw=0.50; *Probability of PrEP uptake if eligible for female sex workers;
+prepuptake_pop=0.20; **Probability of PrEP uptake if eligible for general population;
+pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
+* dependent_on_time_step_length ;
+
+*/
 
 * COVID-19
 
@@ -1099,6 +1127,23 @@ inc10=0.050;
 inc11=0.038;
 inc12=0.026;
 inc13=0.020;
+end;
+
+
+if inc_cat=4 then do;
+inc1=0.1150;
+inc2=0.1100;
+inc3=0.1050;
+inc4=0.1000;
+inc5=0.0950;
+inc6=0.0900;
+inc7=0.0850;
+inc8=0.0750;
+inc9 =0.063;
+inc10=0.055;
+inc11=0.046;
+inc12=0.033;
+inc13=0.028;
 end;
 
 
