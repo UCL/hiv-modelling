@@ -645,7 +645,7 @@ if prep_willing=1;
 
 /*
 
-From tld_prep program used for submitted gems ms
+from submitted version 
 
 * PREP;
 
@@ -1700,8 +1700,8 @@ red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_
 
 if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
 if adh_pattern_prep=2 then adhav_prep = adhav*0.90;
-if adh_pattern_prep=3 then adhav_prep = adhav*0.80;
-if adh_pattern_prep=4 then adhav_prep = adhav*0.70;
+if adh_pattern_prep=3 then adhav_prep = adhav*0.70;
+if adh_pattern_prep=4 then adhav_prep = adhav*0.50;
 
 
 * willingness to take prep if offered;
@@ -1884,6 +1884,23 @@ prep_tm2=prep_tm1; prep_tm1=prep;
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
 
+/*
+
+from submitted version
+												 
+prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
+														   
+if caldate{t} = 2017.25 then do;
+																													   
+prep_strategy=3; sens=0; date_prep_intro=2017.25; annual_testing_prep=0.25; hivtest_type=3; 
+end;
+
+prep_tm3=prep_tm2; prep_tm2=prep_tm1; prep_tm1=prep;    
+tcur_tm1=tcur;
+* dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
+
+*/
+
 * ts1m :;
 /*
 newp_tm12 = max(0,newp_tm11); newp_tm11 = max(0,newp_tm10); newp_tm10 = max(0,newp_tm9);  newp_tm9 = max(0,newp_tm8); newp_tm8 = max(0,newp_tm7); 
@@ -1896,6 +1913,16 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 if caldate{t} < date_prep_intro then prob_prep_b = 0;
 else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
 else prob_prep_b = pr_prep_b;
+
+/*
+
+from submitted version
+
+* prep scale-up over 4 years;
+prob_prep_b = pr_prep_b;
+if caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );   
+	
+*/
 
 * MONITORING AND ART STRATEGIES;
 
@@ -2258,33 +2285,71 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 * ==========================================================================================================================================;
 
-* OPTIONS TO IMPLEMENT FROM year_i onwards;
 
-* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
-* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
+* from submitted version ;
 
-* INTERVENTIONS / CHANGES in year_interv ;
+
+* code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
+
+* INTERVENTIONS / CHANGES in 2020;
 
 option = &s;
 
 
-if caldate_never_dot = &year_interv then do;
+* AP 20-7_19 ;
+if caldate_never_dot = 2021.5 then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-* can add in potential changes in policy after year_interv here -  set specific 'year_i' variables to '1' and specify proportion of
-  runs for which the option should take place;
-	/*E.g. u=uniform(0); if u<0.90 then incr_test_year_i=1;*/
+	if option = 0 then do;
 
-
-	if option = 0 then do;  
-
-	end; 
+		* note for prep 2020;
+		if _u46 <= 1.0 then do;  
+		prep_willing_sw = 0;
+		prep_willing_pop = 0;
+		prep_strategy = 0;
+		eff_rate_test_startprep = 0 ;
+		eff_rate_test_restartprep = 0 ;
+		eff_rate_choose_stop_prep = 1 ;
+		eff_prob_prep_restart_choice = 0 ;	
+																		
+		end;
+																															 
+	end;
 
 	if option = 1 then do;
 
+		prep_strategy = 13;   
+		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
+		eff_rate_choose_stop_prep = 0.05 ; 
+		eff_prob_prep_restart_choice = 0.7 ;
+		adhav_pr = adhav*1.00;
+		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.50  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75 then prep_willing_pop = 1; end;
+		if 0.666 <= _u38         then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
+		r=rand('Uniform'); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
+													 
 	end;
+											  
+	if option = 2 then do;
+										   
+	
+		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
+		prep_strategy = 13;
+		prob_prep_pop_wide_tld = 0.50; 
+		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
+		eff_rate_choose_stop_prep = 0.05 ;  
+		eff_prob_prep_restart_choice = 0.7 ;
+		adhav_pr = adhav*1.00;
+		if _u38 < 0.333 then do;  			r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.50  then prep_willing_pop = 1; end;
+		if 0.333 <= _u38 < 0.666 then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.75 then prep_willing_pop = 1; end;
+		if 0.666 <= _u38         then do;  	r=rand('Uniform'); if prep_willing_pop = 0 and r < 0.95 then prep_willing_pop = 1; end;
+		r=rand('Uniform'); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;														
+														   
+	end;
+									  								  								  
 end;
+
 
 * ==========================================================================================================================================;
 
@@ -3999,6 +4064,91 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
 
 end;
 
+/*
+
+from submitted version
+
+	if prep_strategy=1 then do; 
+					  
+										   
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	end;
+
+	if prep_strategy=2 then do;
+					  
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if gender=2 and 15<=age<25 and (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=3 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if gender=2 and 15<=age<25 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=4 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if gender=2 and 15<=age<25 and (newp_tm1 ge 1 or (ep_tm1=1 and epvls_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and gender=2 and 15<=age<25 and (newp ge 1 or (ep=1 and epvls ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=5 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if gender=2 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and gender=2 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=6 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if 15<=age<25 and (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if 15<=age<25 and prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=7 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if (newp_tm1 ge 1 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=8 then do;
+	if sw_tm1=1 and newp_tm1 ge 1 then prep_elig=1; if prep_ever=1 and sw=1 and newp ge 1 then prep_elig=1; 
+	if (newp_tm1 ge 2 or (epdiag_tm1=1 and epart_tm1 ne 1)) then prep_elig=1; 
+	if prep_ever=1 and (newp ge 2 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=9 then do;
+	if (newp ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=10 then do;
+	if (newp ge 1  or newp_tm1 ge 1 or (epdiag=1 and epart ne 1)) then prep_elig=1; 
+	end;
+
+	if prep_strategy=11 then do;
+	r = rand('Uniform');
+	if (newp ge 1 or (epdiag=1 and epart ne 1) or (gender=2 and age < 50 and ep=1 and (r < 0.05 or (r < 0.5 and epi=1 )))) then prep_elig=1; 
+	end;
+
+	if prep_strategy=12 then do;
+	r = rand('Uniform');
+	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
+	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+	end;
+
+	if prep_strategy=13 then do;
+	r = rand('Uniform');
+	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+	end;
+
+	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
+
+end;
+
+
+*/
+
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
@@ -4296,6 +4446,7 @@ end;
 
 
 
+if prep_elig=1 and caldate{t} ge 2021.5 then cum_years_prep_elig_a2021 = cum_years_prep_elig_a2021 + 0.25;
 
 
 
@@ -12723,6 +12874,11 @@ if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_5year=1;
 
 prop_elig_years_onprep_ayear_i=0;
 if cum_years_prep_elig_ayear_i > 0 and registd ne 1 then prop_elig_years_onprep_ayear_i =  cum_years_onprep_ayear_i / cum_years_prep_elig_ayear_i;
+
+/*
+prop_elig_years_onprep_a2021=0;
+if cum_years_prep_elig_a2021 > 0 and registd ne 1 then prop_elig_years_onprep_a2021 =  cum_years_onprep_a2021 / cum_years_prep_elig_a2021;
+*/
 
 continuous_prep_ge1yr=0; if prep=1 and continuous_prep_use >= 1 then continuous_prep_ge1yr=1;
 
