@@ -356,7 +356,7 @@ newp_seed = 7;
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
-							* dependent_on_time_step_length ;
+							* dependent_on_time_step_length - ;
 
 
 
