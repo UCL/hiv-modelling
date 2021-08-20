@@ -16611,6 +16611,16 @@ vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid test
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
+/*
+
+from submitted version
+
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
+
+*/
+
 prep_strategy
 
 /*supp material*/
@@ -18516,7 +18526,20 @@ prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_e
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
-prob_prep_restart_choice 			prepuptake_pop  add_prepuptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
+prob_prep_restart_choice 			prepuptake_pop  add_prepuptake_sw 
+
+/*
+
+from submitted version
+
+eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
+eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
+eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
+
+*/
+
+
+cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
