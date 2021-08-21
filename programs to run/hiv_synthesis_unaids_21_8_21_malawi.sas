@@ -15241,6 +15241,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 
 
+if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.25 ) then do; abort abend; end;
+if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
+if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
+
+
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
