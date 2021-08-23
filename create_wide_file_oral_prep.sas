@@ -9,7 +9,7 @@ data a.oral_prep; set b.out: ;
 
 data y; 
 
-  set a...............;  
+  set a.oral_prep;  
 
 
   options nomprint;
