@@ -3,8 +3,7 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
 data wide;  
-* set a.wide_..........;
-
+  set a.wide_oral_prep;
 
 * --------------------------------------------------------------------------------------------------------------;
 
