@@ -322,16 +322,16 @@ sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_m
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_strategy_21_22_2  eff_adh_prep
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_strategy_21_22_2  prep_efficacy
 ;
 run;
 
 
 title '';
 proc univariate data=wide;
-var s_alive_21			p_w_giv_birth_this_per_21	p_newp_ge1_21  p_newp_ge5_21 
+var 		p_w_giv_birth_this_per_21	p_newp_ge1_21  p_newp_ge5_21 
 p_newp_sw_21   n_tested_m_21  p_mcirc_1549m_21
 p_mcirc_21	 		p_mcirc_1519m_21	p_mcirc_2024m_21	p_mcirc_2529m_21		p_mcirc_3039m_21	p_mcirc_4049m_21 	p_mcirc_50plm_21 
 prop_w_1549_sw_21	prop_w_ever_sw_21 	prop_sw_hiv_21 	prop_w_1524_onprep_21  prop_1564_hivneg_onprep_21 	prevalence1549m_21 prevalence1549w_21
@@ -446,85 +446,6 @@ p_onart_diag_w_21 	p_onart_diag_m_21  p_onart_vl1000_w_21	p_onart_vl1000_m_21
 * where sex_age_mixing_matrix_w=6 and base_rate_sw = 0.001;
 * where base_rate_sw = 0.001;
 run;
-
-/*
-
-* propose to changet o.. 
-* base_rate_sw; r=uniform(0);  if r < 0.40 then base_rate_sw = 0.0005;   if 0.40 <= r < 0.80 then base_rate_sw = 0.001;  
-								if 0.80 <= r then base_rate_sw = 0.015;   
-
-and vary fold_tr_newp 
-
-turn continuous like fold_tr_sti into categorical
-
-*/
-
-
-/*
-
-proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
-prep_strategy_21_22_2;
-model r_incidence_21_71_2 = 
-sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w
-p_rred_p  p_hsb_p rred_a_p 
-newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
-prep_strategy_21_22_2 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx 
- adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
- res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  
-fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  
-prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  
-hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-greater_disability_tox 	 prop_1564_hivneg_onprep_21_71_2 prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21
-p_prep_adhg80_21_71_2 eff_adh_prep  av_newp_ge1_non_sw_21
-/ selection=stepwise ;  run;
-
-
-proc glmselect data=wide; class prep_strategy_21_22_2;
-model r_incidence_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
-p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21
-/ selection=stepwise ;  run;
-
-
-
-proc glmselect data=wide; class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w rred_a_p adh_pattern
-prep_strategy_21_22_2;
-model d_ddaly_all_21_71_2 = 
-sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w
-p_rred_p  p_hsb_p rred_a_p 
-newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
-prep_strategy_21_22_2 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx 
- adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
- res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  
-fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
-prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  
-prob_lossdiag_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  
-hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-greater_disability_tox 	 prop_1564_hivneg_onprep_21_71_2 prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21
-p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21
-/ selection=stepwise ;  run;
-
-proc glmselect data=wide; class prep_strategy_21_22_2;
-model d_ddaly_all_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
-p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21 prep_strategy_21_22_2
-/ selection=stepwise ;  run;
-
-
-proc glmselect data=wide; class prep_strategy_21_22_2;
-model ndb_500_21_71_2 = prop_elig_on_prep_21_71_2 p_vlg1000_65m_21_71_2  incidence1549_21 p_prep_adhg80_21_71_2 eff_adh_prep 
-p_prep_adhg80_21_71_2 av_newp_ge1_non_sw_21 prep_strategy_21_22_2
-/ selection=stepwise ;  run;
-
-*/
-
-
-* --------------------------------------------------------------------------------------------------------------;
 
 * prep analysis;
 
@@ -700,7 +621,7 @@ ods html close;
 
 * 95% CI for median ;
 ods html;
-proc univariate p5 p95 CIPCTLDF  data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
+proc means p5 p95 CIPCTLDF  data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
 run; 
 ods html close;
 

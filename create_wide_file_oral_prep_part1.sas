@@ -66,7 +66,7 @@ rate_exp_set_lower_p_vl1000    prob_pregnancy_base   fold_change_w   fold_change
   prob_lost_art    rate_return    rate_restart   rate_int_choice   clinic_not_aw_int_frac   res_trans_factor_nn    rate_loss_persistence   incr_rate_int_low_adh   
         poorer_cd4rise_fail_nn    poorer_cd4rise_fail_ii    rate_res_ten    fold_change_mut_risk    adh_effect_of_meas_alert   pr_switch_line  
   prob_vl_meas_done   red_adh_tb_adc    red_adh_tox_pop    add_eff_adh_nnrti   altered_adh_sec_line_pop    prob_return_adc   prob_lossdiag_adctb 
-prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox    adh_pattern_prep   rate_test_startprep   rate_test_restartprep   
+prob_lossdiag_non_tb_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox    adh_pattern_prep   rate_test_startprep   rate_test_restartprep   
    rate_choose_stop_prep   circ_inc_rate    p_hard_reach_w    hard_reach_higher_in_men    p_hard_reach_m   inc_cat    base_rate_sw  base_rate_stop_sexwork   
         rred_a_p    rr_int_tox    nnrti_res_no_effect    double_rate_gas_tox_taz     incr_mort_risk_dol_weightg    sw_init_newp    sw_trans_matrix  
   eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
@@ -76,8 +76,7 @@ prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox   
   rate_sw_rred_rc    exp_setting_lower_p_vl1000     external_exp_factor    rate_exp_set_lower_p_vl1000    max_freq_testing   test_targeting  
   prob_loss_at_diag   pr_art_init   rate_lost   prob_lost_art   rate_return  rate_restart   rate_int_choice  clinic_not_aw_int_frac   
     rate_loss_persistence          incr_rate_int_low_adh     fold_change_mut_risk     adh_effect_of_meas_alert   pr_switch_line  
-  prob_vl_meas_done    red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop   prob_return_adc   prob_lossdiag_adctb   
-      prob_lossdiag_who3e   higher_newp_less_engagement   fold_tr    switch_for_tox  
+  prob_vl_meas_done    red_adh_tb_adc   red_adh_tox_pop  altered_adh_sec_line_pop   prob_return_adc   higher_newp_less_engagement   fold_tr    switch_for_tox  
   adh_pattern_prep  
   base_rate_sw  
   condom_incr_2020  
@@ -136,7 +135,7 @@ prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox   
   ten_is_taf_2020  
   lower_future_art_cov   
           
-  eff_adh_prep  
+  prep_efficacy   
   sens_vct_test_type_3   
           
   eff_max_freq_testing   
@@ -779,7 +778,7 @@ n_infection  = s_primary     * sf_2021 * 4;
 
 
 
-keep run option cald dataset cost
+keep run option cald dataset cost  s_alive_m   s_alive_w s_alive
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -831,7 +830,7 @@ clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_l
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e higher_newp_less_engagement
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
 fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
@@ -849,9 +848,7 @@ test_targeting    prob_loss_at_diag   pr_art_init
 rate_lost   prob_lost_art   rate_return   rate_restart   rate_int_choice  
 clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh  
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
-red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
-prob_return_adc   prob_lossdiag_adctb   prob_lossdiag_who3e  higher_newp_less_engagement  
-fold_tr   switch_for_tox   adh_pattern_prep    base_rate_sw  fold_tr_newp 
+base_rate_sw  fold_tr_newp 
 
 condom_incr_2020     			cascade_care_improvements  incr_test_2020              decr_hard_reach_2020   
 decr_prob_loss_at_diag_2020  	decr_rate_lost_2020 		decr_rate_lost_art_2020     incr_rate_return_2020      
@@ -861,7 +858,7 @@ incr_pr_switch_line_2020     	prep_improvements
 inc_r_test_startprep_2020  incr_r_test_restartprep_2020  
 circ_improvements  			circ_inc_rate_2020  		incr_test_targeting_2020    pop_wide_tld_2020 
 incr_max_freq_testing_2020     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_2020  
-reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  
+reg_option_switch_2020      art_mon_drug_levels_2020       ten_is_taf_2020    lower_future_art_cov  prep_efficacy  sens_vct_test_type_3  
 
 eff_max_freq_testing  		eff_rate_restart   		eff_prob_loss_at_diag   		eff_rate_lost   		
 eff_prob_lost_art   		eff_rate_return   
