@@ -2,10 +2,7 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\base_tld_prep_out";
 * libname a '/home/rmjlaph/';
-
-data a.oral_prep; set b.out: ; 
 
 data y; 
 
@@ -362,7 +359,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_.............;
+  data a.wide_oral_prep;
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
