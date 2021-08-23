@@ -1,22 +1,9 @@
 
 * note using tld_prep runs;
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
 data wide;  
-* set a.wide_prep_29_jan_21_prep_eff_0 ;
-* set a.wide_prep_29_jan_21_dis7p_1  a.wide_prep_29_jan_21_dis7p_2  ; 
-* set a.wide_prep_29_jan_21_1_ps12 ;
-* set a.wide_prep_22_10_20_5pm_prep5yr ;
-* set a.wide_prep_29_jan_21_1a2;
-  set a.wide_prep_29_jan_21_1a2_myriad_2;
-* set a.wide_prep_29_jan_21_1_ps14 ;
-* set a.wide_prep_29_jan_21_ps14a;
-* set a.wide_prep_29_jan_21_s5; * s1 s2 s3 s4 s5 ;
-
-
-  if run > 916729945 then delete; * to give 3000 setting scenarios with files 1 and 2; 
-* if run > 551635952 then delete;  * for n=300 for ps14a;
-* if run > 679077969 then delete; * for prep_eff_0 ;
+* set a.wide_..........;
 
 
 * --------------------------------------------------------------------------------------------------------------;
