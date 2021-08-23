@@ -367,8 +367,6 @@ proc sort; by run;run;
   by run;
 
 
-
-
 ods html;
 proc means  n median p5 p95 min max ;
 var	p_mcirc_1549m_20 prevalence1549m_20 prevalence1549w_20 prevalence1524m_20 prevalence1524w_20 prevalence4549m_20 incidence1549w_20 

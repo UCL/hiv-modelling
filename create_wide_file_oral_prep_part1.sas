@@ -216,7 +216,6 @@ dataset=1;
   set d1; 
 
 
-
 proc sort data=d; by run cald option;run;
 proc freq data=d; table run; where cald=2021;run;
 
@@ -446,7 +445,7 @@ s_mcirc_4049m = s_mcirc_4044m + s_mcirc_4549m;
 s_hiv1524m = s_hiv1519m + s_hiv2024m ;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 
-* s_alive;						* s_alive = s_alive_m + s_alive_w ;
+* s_alive;						s_alive = s_alive_m + s_alive_w ;
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
