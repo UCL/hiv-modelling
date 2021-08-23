@@ -16,10 +16,6 @@ separate our hiv tests done for prep and other hiv tests and their costs
 
 include in primary setting scenarios greater probability of low use and lower adherence (as in sensitivity analyses)
 
-? include lower tr_rate_undetec_vl in some setting scenarios (will lead to lower base incidence so maybe not)
-
-? epvl=0
-
 consider addressing questions in katy godfrey proposal
 
 17 8 21 - added r=uniform(0) to tld_prep part
