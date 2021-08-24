@@ -192,11 +192,6 @@ if d_ddaly_all_21_71_2 > 0 then icer_2 = 99999;
 icer_2_20yr = (d_dcost_21_41_2 * 1000000) / (- d_ddaly_all_21_41_2) ; 
 if d_ddaly_all_21_41_2 > 0 then icer_2_20yr = 99999;
 
-optimal_standard_prep_ai1=0;
-if prep_improvements_ai1 = 1 and incr_adh_pattern_prep_2020_ai1 = 1 and inc_r_test_startprep_2020_ai1 = 1 and incr_r_test_restartprep_2020_ai1 = 1
-and decr_r_choose_stop_prep_2020_ai1 = 1 and inc_p_prep_restart_choi_2020_ai1 = 1 and incr_prepuptake_sw_2020_ai1 = 1 and 
-incr_prepuptake_pop_2020_ai1 = 1 and expand_prep_to_all_2020_ai1 = 1 and prep_strategy_ai1 = 7 then optimal_standard_prep_ai1=1;
-
 cost_per_test_20 = ( dtest_cost_20 / n_tested_20 ) * 1000000 ; 
 
 d_n_death_hivrel_21_26_2 = n_death_hivrel_21_26_1 - n_death_hivrel_21_26_2 ;
