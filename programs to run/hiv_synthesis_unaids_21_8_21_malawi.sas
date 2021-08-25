@@ -15244,9 +15244,10 @@ if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.25 ) then do;
 if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 if cald = 2016.5 and (prevalence1549 < 0.085 or prevalence1549 > 0.115) then do; abort abend; end;
 
+/*
 if cald = 2015.75 and (s_onart_iicu*400) > 650000 or (s_onart_iicu*400) < 450000 then do; abort abend; end;
 if cald = 2019.75 and (s_onart_iicu*400) > 850000 or (s_onart_iicu*400) < 720000 then do; abort abend; end;
-
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
