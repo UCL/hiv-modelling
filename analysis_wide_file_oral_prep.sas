@@ -831,6 +831,54 @@ ods html close;
 
 
 
+ods html;
+proc means n mean lclm uclm p5 p95 data=wide;  
+var    incidence1549_41_1 incidence1549_41_2 
+dcost_41_1   dcost_41_2
+n_tested_41_1 n_tested_41_2
+n_prep_41_1 n_prep_41_2
+dvis_cost_41_1 dvis_cost_41_2 
+dtest_cost_41_1 dtest_cost_41_2
+dart_cost_y_41_1 dart_cost_y_41_2 
+dclin_cost_41_1 dclin_cost_41_2 
+dcost_clin_care_41_1 dcost_clin_care_41_2
+dcost_prep_41_1 dcost_prep_41_2 
+dcost_prep_visit_41_1 dcost_prep_visit_41_2  
+p_onart_41_1 p_onart_41_2 
+p_vl1000_41_1 p_vl1000_41_2 
+prevalence_vg1000_41_1 prevalence_vg1000_41_2 
+prev_vg1000_newp_m_41_1 prev_vg1000_newp_m_41_2 
+prev_vg1000_newp_w_41_1 prev_vg1000_newp_w_41_2 
+prop_1564_hivneg_onprep_41_1  prop_1564_hivneg_onprep_41_2
+p_prep_ever_41_1 p_prep_ever_41_2
+p_hiv1_prep_41_1 p_hiv1_prep_41_2
+p_mcirc_1549m_41_1 p_mcirc_1549m_41_2 
+prop_elig_on_prep_41_1 prop_elig_on_prep_41_2
+dadc_cost_41_1   dadc_cost_41_2   
+dcd4_cost_41_1   dcd4_cost_41_2   
+dvl_cost_41_1   dvl_cost_41_2   
+dvis_cost_41_1  dvis_cost_41_2   
+dnon_tb_who3_cost_41_1   dnon_tb_who3_cost_41_2   
+dcot_cost_41_1   dcot_cost_41_2   
+dtb_cost_41_1   dtb_cost_41_2   
+dres_cost_41_1   dres_cost_41_2 
+dtest_cost_41_1  dtest_cost_41_2  
+d_t_adh_int_cost_41_1  d_t_adh_int_cost_41_2   
+dswitchline_cost_41_1 dswitchline_cost_41_2
+dtaz_cost_41_1 dtaz_cost_41_2 
+dcost_drug_level_test_41_1   dcost_drug_level_test_41_2   
+dclin_cost_41_1  dclin_cost_41_2   
+dcost_circ_41_1  dcost_circ_41_2
+dcost_condom_dn_41_1 dcost_condom_dn_41_2
+dcost_drug_level_test_41_1 dcost_drug_level_test_41_2  
+dcost_child_hiv_41_1 dcost_child_hiv_41_2
+dcost_non_aids_pre_death_41_1 dcost_non_aids_pre_death_41_2 
+;
+run; 
+ods html close;
+
+
+
 * dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dtaz_cost dcost_drug_level_test   dclin_cost dcost_cascade_interventions     dcost_circ dcost_condom_dn dcost_prep_visit  dcost_prep ;
 
