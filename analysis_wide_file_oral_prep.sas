@@ -5,6 +5,7 @@
 data wide;  
   set a.wide_oral_prep;
 
+
 * --------------------------------------------------------------------------------------------------------------;
 
 * general code;
@@ -30,7 +31,7 @@ dadc_cost_21_71_1   +
 dcd4_cost_21_71_1     +    
 dvl_cost_21_71_1    +      
 dvis_cost_21_71_1   + 
-dwho3_cost_21_71_1    +    
+dnon_tb_who3_cost_21_71_1    +    
 dcot_cost_21_71_1   +       
 dtb_cost_21_71_1   +       
 dres_cost_21_71_1   +      
@@ -55,7 +56,7 @@ dadc_cost_21_71_2   +
 dcd4_cost_21_71_2     +    
 dvl_cost_21_71_2    +      
 dvis_cost_21_71_2   + 
-dwho3_cost_21_71_2    +    
+dnon_tb_who3_cost_21_71_2    +    
 dcot_cost_21_71_2   +       
 dtb_cost_21_71_2   +       
 dres_cost_21_71_2   +      
@@ -80,7 +81,7 @@ dadc_cost_21_41_1   +
 dcd4_cost_21_41_1     +    
 dvl_cost_21_41_1    +      
 dvis_cost_21_41_1   + 
-dwho3_cost_21_41_1    +    
+dnon_tb_who3_cost_21_41_1    +    
 dcot_cost_21_41_1   +       
 dtb_cost_21_41_1   +       
 dres_cost_21_41_1   +      
@@ -105,7 +106,7 @@ dadc_cost_21_41_2   +
 dcd4_cost_21_41_2     +    
 dvl_cost_21_41_2    +      
 dvis_cost_21_41_2   + 
-dwho3_cost_21_41_2    +    
+dnon_tb_who3_cost_21_41_2    +    
 dcot_cost_21_41_2   +       
 dtb_cost_21_41_2   +       
 dres_cost_21_41_2   +      
@@ -616,7 +617,7 @@ ods html close;
 
 * 95% CI for median ;
 ods html;
-proc means p5 p95 CIPCTLDF  data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
+proc means n mean p50 p5 p95 lclm uclm data=wide; var incidence1549_21_26_1 incidence1549_21_26_2  r_incidence_21_26_2 ;  
 run; 
 ods html close;
 
@@ -776,7 +777,7 @@ dadc_cost_21_71_1   dadc_cost_21_71_2
 dcd4_cost_21_71_1   dcd4_cost_21_71_2   
 dvl_cost_21_71_1   dvl_cost_21_71_2   
 dvis_cost_21_71_1  dvis_cost_21_71_2   
-dwho3_cost_21_71_1   dwho3_cost_21_71_2   
+dnon_tb_who3_cost_21_71_1   dnon_tb_who3_cost_21_71_2   
 dcot_cost_21_71_1   dcot_cost_21_71_2   
 dtb_cost_21_71_1   dtb_cost_21_71_2   
 dres_cost_21_71_1   dres_cost_21_71_2 
@@ -833,7 +834,7 @@ dadc_cost_21_41_1   dadc_cost_21_41_2
 dcd4_cost_21_41_1   dcd4_cost_21_41_2   
 dvl_cost_21_41_1   dvl_cost_21_41_2   
 dvis_cost_21_41_1  dvis_cost_21_41_2   
-dwho3_cost_21_41_1   dwho3_cost_21_41_2   
+dnon_tb_who3_cost_21_41_1   dnon_tb_who3_cost_21_41_2   
 dcot_cost_21_41_1   dcot_cost_21_41_2   
 dtb_cost_21_41_1   dtb_cost_21_41_2   
 dres_cost_21_41_1   dres_cost_21_41_2 
