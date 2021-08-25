@@ -70,8 +70,6 @@ dcost_child_hiv_21_71_2  +
 dcost_non_aids_pre_death_21_71_2 ; 
 
 
-
-
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_41_1 =      
 dart_cost_y_21_41_1 +       
