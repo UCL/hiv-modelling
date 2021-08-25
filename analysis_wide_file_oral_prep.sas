@@ -53,7 +53,7 @@ dart_cost_y_21_71_2 +
 (dcost_prep_21_71_2  * 1 *  60  / 60 ) +
 (dcost_prep_visit_21_71_2 * 1)     + 
 dadc_cost_21_71_2   +      
-dcd4_cost_21_71_2     +    
+dcd4_cost_21_71_2   +    
 dvl_cost_21_71_2    +      
 dvis_cost_21_71_2   + 
 dnon_tb_who3_cost_21_71_2    +    
