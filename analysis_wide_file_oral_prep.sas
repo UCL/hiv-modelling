@@ -368,18 +368,6 @@ ods html close;
 
 
 ods html;
-proc means n median p5 p95 data=wide; 
-var	p_mcirc_1549m_40 prevalence1549m_40 prevalence1549w_40 prevalence1524m_40 prevalence1524w_40  incidence1549w_40 incidence1549m_40	p_diag_m_40   
-p_diag_w_40	p_ai_no_arv_c_nnm_40   p_ai_no_arv_c_rt184m_40  p_ai_no_arv_c_rt65m_40  prop_w_1549_sw_40  prop_1564_hivneg_onprep_40  prop_w_1524_onprep_40 
-p_onart_diag_w_40 	p_onart_diag_m_40   p_vl1000_40	p_onart_vl1000_w_40 p_onart_vl1000_m_40 p_onart_cd4_l500_40  p_mcirc_1549m_40  p_startedline2_40  
-prop_sw_hiv_40 prop_sw_onprep_40 p_newp_sw_40  n_tested_40 aids_death_rate_40  p_newp_sw_40 p_newp_ge1_age1549_40 av_newp_ge1_non_sw_40 
-prevalence_vg1000_40 p_inf_newp_40 p_w_newp_ge1_age1549_40 p_m_newp_ge1_age1549_40 ;
-run;
-ods html close;
-
-
-
-ods html;
 proc means n mean p5 p95 data=wide; 
 var	p_mcirc_1549m_41_1 prevalence1549m_41_1 prevalence1549w_41_1 prevalence1524m_41_1 prevalence1524w_41_1  incidence1549w_41_1 incidence1549m_41_1	p_diag_m_41_1   
 p_diag_w_41_1	p_ai_no_arv_c_nnm_41_1   p_ai_no_arv_c_rt184m_41_1  p_ai_no_arv_c_rt65m_41_1  prop_w_1549_sw_41_1  prop_1564_hivneg_onprep_41_1  prop_w_1524_onprep_41_1 
@@ -734,7 +722,7 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide;  
+proc means n mean lclm uclm p50 p5 p95 data=wide;  
 var    d_ddaly_all_21_71_2  d_ndb_500_21_71_2  d_dcost_21_71_2  incidence1549_21_71_1 incidence1549_21_71_2 
 dcost_21_71_1   dcost_21_71_2
 n_tested_21_71_1 n_tested_21_71_2
