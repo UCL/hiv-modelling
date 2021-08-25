@@ -490,6 +490,7 @@ ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var prop_sw_onprep_21_26_1  prop_sw_onprep_21_26_2 ;  
 run; 
 ods html close;
+
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var prop_sw_onprep_21_71_1  prop_sw_onprep_21_71_2 ;  
 run; 
@@ -600,9 +601,6 @@ ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var p_prep_ever_21_26_1  p_prep_ever_21_26_2 p_prep_ever_21_71_1  p_prep_ever_21_71_2 ;  
 run; 
 ods html close;
-
-
-
 
 
 ods html;
@@ -794,7 +792,7 @@ dcost_child_hiv_21_71_1 dcost_child_hiv_21_71_2
 dcost_non_aids_pre_death_21_71_1 dcost_non_aids_pre_death_21_71_2 
 dtotcost_prep_21_71_1 dtotcost_prep_21_71_2  d_dtotcost_prep_21_71_2 
 ;
-* where 0.00 <= incidence1549_20 < 0.30 ;
+  where 0.30 <= incidence1549_21        ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.05 ;
 * where prep_strategy_21_26_2  = 11 ;
@@ -985,7 +983,7 @@ prop_elig_on_prep_21_26_2   p_prep_adhg80_21_26_2  p_newp_sw_21
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.05 <= prevalence_vg1000_21 < 5.05 ; 
+  where 0.02 <= prevalence_vg1000_21 < 5.05 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where 1.5 <= incidence1549_21 < 9.5 ;

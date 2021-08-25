@@ -243,9 +243,8 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9 1.0, 0.1 0.2 0.4 0.2 0.1); * change jun21;  
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9 1.0, 0.05 0.1 0.4 0.3 0.15); * change jun21;  
 							
-
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
 								0.05 	0.05 	0.8 	0.05	0.05);
@@ -661,8 +660,11 @@ and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person
 if prep_willing=1;
 
 * annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
-* prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
-* rel_prep_adh_younger;		rel_prep_adh_younger=0.7; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
+* prep_efficacy;			%sample_uniform(prep_efficacy, 0.90 0.95); 		* PrEP effectiveness with 100% adherence ;
+* rel_prep_adh_younger;		rel_prep_adh_younger=0.9; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
+
+	* changed to value of 0.9 from 0.7 for revision to gems prep ms to be more consistent with assumptions in submitted version;
+
 * rate_test_onprep;			rate_test_onprep=1.00; 		* Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
 							* dependent_on_time_step_length ;
 * pr_prep_b;				pr_prep_b=0.75; 			* 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
@@ -4327,6 +4329,7 @@ if prep = 1 then do;
 		if f<0.5 then adh = adh * rel_prep_adh_younger ;
 	end;
 end;
+
 
 * this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
 between 0 and 1 rather than binary 0 or 1; 

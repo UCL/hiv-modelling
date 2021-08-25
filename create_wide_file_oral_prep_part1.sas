@@ -7,6 +7,7 @@
 data d1 ; set b.out: ; 
 
 
+
 keep 
 
 run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos  s_alive_w s_alive_m
