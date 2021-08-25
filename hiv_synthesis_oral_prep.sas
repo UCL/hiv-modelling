@@ -399,7 +399,7 @@ newp_seed = 7;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
-* sens_vct_test_type_3;     r=uniform(0; sens_vct_test_type_3 = 0.98 ; if r < 0.2 then sens_vct_test_type_3 = 0.95 ;
+* sens_vct_test_type_3;     r=uniform(0); sens_vct_test_type_3 = 0.98 ; if r < 0.2 then sens_vct_test_type_3 = 0.95 ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;

@@ -357,7 +357,7 @@ run;
 ods html close;
 
 ods html;
-proc means n median p5 p95 data=wide; 
+proc means n median p5 p95 mean lclm uclm  data=wide; 
 var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21  incidence1549w_21 incidence1549m_21	p_diag_m_21   
 p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
@@ -374,17 +374,6 @@ p_diag_w_40	p_ai_no_arv_c_nnm_40   p_ai_no_arv_c_rt184m_40  p_ai_no_arv_c_rt65m_
 p_onart_diag_w_40 	p_onart_diag_m_40   p_vl1000_40	p_onart_vl1000_w_40 p_onart_vl1000_m_40 p_onart_cd4_l500_40  p_mcirc_1549m_40  p_startedline2_40  
 prop_sw_hiv_40 prop_sw_onprep_40 p_newp_sw_40  n_tested_40 aids_death_rate_40  p_newp_sw_40 p_newp_ge1_age1549_40 av_newp_ge1_non_sw_40 
 prevalence_vg1000_40 p_inf_newp_40 p_w_newp_ge1_age1549_40 p_m_newp_ge1_age1549_40 ;
-run;
-ods html close;
-
-
-ods html;
-proc means n median p5 p95 data=wide; 
-var	p_mcirc_1549m_70 prevalence1549m_70 prevalence1549w_70 prevalence1524m_70 prevalence1524w_70  incidence1549w_70 incidence1549m_70	p_diag_m_70   
-p_diag_w_70	p_ai_no_arv_c_nnm_70   p_ai_no_arv_c_rt184m_70  p_ai_no_arv_c_rt65m_70  prop_w_1549_sw_70  prop_1564_hivneg_onprep_70  prop_w_1524_onprep_70 
-p_onart_diag_w_70 	p_onart_diag_m_70   p_vl1000_70	p_onart_vl1000_w_70 p_onart_vl1000_m_70 p_onart_cd4_l500_70  p_mcirc_1549m_70  p_startedline2_70  
-prop_sw_hiv_70 prop_sw_onprep_70 p_newp_sw_70  n_tested_70 aids_death_rate_70  p_newp_sw_70 p_newp_ge1_age1549_70 av_newp_ge1_non_sw_70 
-prevalence_vg1000_70 p_inf_newp_70 p_w_newp_ge1_age1549_70 p_m_newp_ge1_age1549_70 ;
 run;
 ods html close;
 
@@ -792,7 +781,7 @@ dcost_child_hiv_21_71_1 dcost_child_hiv_21_71_2
 dcost_non_aids_pre_death_21_71_1 dcost_non_aids_pre_death_21_71_2 
 dtotcost_prep_21_71_1 dtotcost_prep_21_71_2  d_dtotcost_prep_21_71_2 
 ;
-  where 0.30 <= incidence1549_21        ;
+* where 0.30 <= incidence1549_21        ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.05 ;
 * where prep_strategy_21_26_2  = 11 ;
@@ -983,7 +972,7 @@ prop_elig_on_prep_21_26_2   p_prep_adhg80_21_26_2  p_newp_sw_21
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-  where 0.02 <= prevalence_vg1000_21 < 5.05 ; 
+* where 0.02 <= prevalence_vg1000_21 < 5.05 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where 1.5 <= incidence1549_21 < 9.5 ;
@@ -996,6 +985,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where 0.00 <= prop_elig_on_prep_21_26_2 < 0.65 ;
 * where 0.80 <= p_prep_adhg80_21_26_2 < 0.90;
 * where 0.75  <= p_newp_sw_21 < 1.00 ;
+* where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
 run; 
   ods html close;
 
