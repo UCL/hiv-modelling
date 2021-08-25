@@ -9,7 +9,7 @@ data d1 ; set b.out: ;
 
 keep 
 
-run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos
+run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos  s_alive_w s_alive_m
 s_m_1524_newp  s_m_2534_newp s_m_3544_newp s_m_4554_newp s_m_5564_newp s_w_1524_newp  s_w_2534_newp s_w_3544_newp s_w_4554_newp s_w_5564_newp 
 s_i_age1_m_newp s_i_age2_m_newp s_i_age3_m_newp s_i_age4_m_newp s_i_age5_m_newp s_i_age1_w_newp s_i_age2_w_newp s_i_age3_w_newp s_i_age4_w_newp 
 s_i_age5_w_newp s_dcost_ s_cost_ s_ly s_dly s_dead_ddaly s_live_ddaly  s_dead_ddaly_ntd s_dead_ddaly_oth_dol_adv_birth_e s_ddaly_mtct 
@@ -74,7 +74,7 @@ eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_
 eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   
 eff_prob_prep_restart_choice    eff_test_targeting    zero_tdf_activity_k65r     zero_3tc_activity_m184    red_adh_multi_pill_pop   
 greater_disability_tox     greater_tox_zdv       prep_strategy  
-rate_sw_rred_rc    exp_setting_lower_p_vl1000     external_exp_factor    rate_exp_set_lower_p_vl1000    max_freq_testing   test_targeting  
+exp_setting_lower_p_vl1000     external_exp_factor    rate_exp_set_lower_p_vl1000    max_freq_testing   test_targeting  
 prob_loss_at_diag   pr_art_init   rate_lost   prob_lost_art   rate_return  rate_restart   rate_int_choice  clinic_not_aw_int_frac   
 rate_loss_persistence          incr_rate_int_low_adh     fold_change_mut_risk     adh_effect_of_meas_alert   pr_switch_line  
 prob_vl_meas_done    red_adh_tb_adc   red_adh_tox_pop  altered_adh_sec_line_pop   prob_return_adc   higher_newp_less_engagement   fold_tr    switch_for_tox  
@@ -91,7 +91,6 @@ art_init_disrup_covid  vl_adh_switch_disrup_covid   cotrim_disrup_covid  no_art_
 eff_rate_test_startprep   eff_rate_test_restartprep  eff_prob_prep_restart_choice  s_prep_newpg0 s_primary_prep  
 s_dnon_tb_who3_cost s_dead_hivpos_anycause
 ;
-
 
 
 * to focus on prep and not tld_prep;
@@ -116,15 +115,17 @@ set d ;
 if cald=2021.25;
 s_alive = s_alive_m + s_alive_w ;
 sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
+* keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2021;
 
+
 data y; 
 merge d sf;
 by run ;
+
 
 
 
@@ -917,7 +918,7 @@ n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * sf_2021 * 4;
 
-keep run option cald cost dataset
+keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -1059,7 +1060,7 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
-test_prop_positive   eff_rate_choose_stop_prep
+test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy
 ;
 
 
@@ -1738,6 +1739,8 @@ proc sort data=y;by run option;run;
 
 data a.oral_prep ;
 set y;
+
+proc print; var n_tested sf_2021 option; run;
 
 proc contents; run;
 
