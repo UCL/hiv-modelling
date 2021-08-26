@@ -632,6 +632,12 @@ proc means n mean  p5 p95 lclm uclm data=wide;  var prevalence1549_70_1 prevalen
 run; 
 ods html close;
 
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var prop_onprep_newpge1_21_26_1 prop_onprep_newpge1_21_26_2  ; 
+run; 
+ods html close;
+
+
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide; var      ddaly_all_21_26_1  ddaly_all_21_26_2  d_ddaly_all_21_26_2 d_ndb_500_21_26_2  ndb_500_21_26_2  ndb_500_21_26_1
