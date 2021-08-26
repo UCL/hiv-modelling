@@ -134,7 +134,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  20   ;
+%let nfit = 120   ;
 %let year_end = 2071.00 ;
 run;
 proc sort;by cald option ;run;
@@ -506,7 +506,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label p50_prevalence1549__1 = "All Option 1  (median) ";
@@ -530,17 +530,13 @@ band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transp
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_obs_mlw /	lineattrs = (color=black thickness = 3);
-series  x=cald y=prevalence1549w_obs_mlw /	lineattrs = (color=blue  thickness = 3);
-series  x=cald y=prevalence1549m_obs_mlw/	lineattrs = (color=green thickness = 3) ;
-
 run;quit;
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.5) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1 = "Option 1  (median) ";
@@ -549,7 +545,6 @@ series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_obs_mlw / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
