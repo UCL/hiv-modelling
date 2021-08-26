@@ -243,11 +243,11 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9 1.0, 0.05 0.1 0.4 0.3 0.15); * change jun21;  
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.7 0.8 0.9 1.0, 0.05 0.45 0.30 0.20 ); * change jun21;  
 							
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.95 	0.99 	1		1/0.99 	1/0.95, 
-								0.05 	0.05 	0.8 	0.05	0.05);
+								0.00 	0.10 	0.8 	0.10	0.00);
 
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
 * eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
@@ -286,7 +286,7 @@ newp_seed = 7;
 * TRANSMISSION;
 
 * tr_rate_primary;			tr_rate_primary = 0.16; 
-* tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.7 0.2 0.1);
+* tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.4 0.4 0.2);
 * rate_loss_nnres_pmtct_maj;rate_loss_nnres_pmtct_maj = 0.75;  rate_loss_nnres_pmtct_min = rate_loss_nnres_pmtct_maj; 
 							* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
 							* dependent_on_time_step_length ;
@@ -323,10 +323,10 @@ newp_seed = 7;
 * rate_persist_sti;			rate_persist_sti = 1 / 5 ;
 							* dependent_on_time_step_length ;
 
-* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 5 ;
-* incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
-* incr_death_rate_sbi;		incr_death_rate_sbi = 5 ;
-* incr_death_rate_tb;		incr_death_rate_tb = 5 ;
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2 ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 2 ;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 2 ;
+* incr_death_rate_tb;		incr_death_rate_tb = 2 ;
 * fold_change_ac_death_rate;fold_change_ac_death_rate_w = 1; fold_change_ac_death_rate_m = 1; 
 * rr_non_aids_death_hiv_off_art;
 							rr_non_aids_death_hiv_off_art = 2;
@@ -512,8 +512,8 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * rate_return;  			%sample(rate_return, 
-								0.01	0.10 	0.50 	0.80, 
-								0.10 	0.40	0.25 	0.25);
+								0.01	0.10 	0.30 	0.60, 
+								0.10 	0.60	0.15 	0.15);
 
 
 							* dependent_on_time_step_length
@@ -526,7 +526,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.65	0.10	0.05	0.05	0.05	0.05);
+								0.05	0.40	0.20	0.20	0.05	0.05	0.05);
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(normal(0)*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
@@ -540,7 +540,7 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * AP 19-7-19 ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
+* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080); 
 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
@@ -602,7 +602,7 @@ newp_seed = 7;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+* base_rate_sw; 			%sample(base_rate_sw, 0.001 0.0015 0.0020 0.0025, 0.25 0.25 0.25 0.25);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
@@ -637,7 +637,7 @@ newp_seed = 7;
 
 * circ_inc_rate; 			%sample(circ_inc_rate, 
 								0.0001	0.001	0.003	0.01	0.1, 
-								0.1		0.1		0.6		0.1		0.1);
+								0.1		0.3 	0.4		0.1		0.1);
 * circ_inc_15_19;			%sample_uniform(circ_inc_15_19, 1.5 2.0 3.0);
 * circ_red_20_30;			%sample_uniform(circ_red_20_30, 0.3 0.4 0.5);
 * circ_red_30_50;			%sample_uniform(circ_red_30_50, 0.15 0.25 0.35);
@@ -646,8 +646,8 @@ newp_seed = 7;
 								0.10	0.25	0.25	0.40);
 								if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
 * prob_birth_circ; 			%sample(prob_birth_circ, 
-								0.05	0.1		0.39	0.9, 
-								0.33	0.32	0.25	0.10);
+								0.05	0.1		0.40	0.9, 
+								0.30	0.40	0.20	0.10);
 
 									
 
