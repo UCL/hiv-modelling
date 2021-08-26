@@ -5,7 +5,6 @@
 data wide;  
   set a.wide_oral_prep;
 
-
 * --------------------------------------------------------------------------------------------------------------;
 
 * general code;
@@ -327,7 +326,7 @@ title '';
 proc univariate data=wide;
 var 		p_w_giv_birth_this_per_21	p_newp_ge1_21  p_newp_ge5_21 
 p_newp_sw_21   n_tested_m_21  p_mcirc_1549m_21
-p_mcirc_21	 		p_mcirc_1519m_21	p_mcirc_2024m_21	p_mcirc_2529m_21		p_mcirc_3039m_21	p_mcirc_4049m_21 	p_mcirc_50plm_21 
+p_mcirc_21	 		p_mcirc_1519m_21	p_mcirc_2024m_21	p_mcirc_2529m_21	
 prop_w_1549_sw_21	prop_w_ever_sw_21 	prop_sw_hiv_21 	prop_w_1524_onprep_21  prop_1564_hivneg_onprep_21 	prevalence1549m_21 prevalence1549w_21
 prevalence1549_21 
 prevalence1519w_21 	prevalence1519m_21 	  prevalence2024w_21 	  prevalence2024m_21 	  prevalence2529w_21 	  prevalence2529m_21   prevalence3034w_21   
@@ -503,7 +502,7 @@ run;
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; 
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_prep_newp_21_26_2  p_prep_newp_21_26_2  p_prep_newp_21_26_1; run;
 * where prep_strategy_21_26_2 = 11 ; 
 ods html close;
 
@@ -1009,7 +1008,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where 0.05 <= prevalence_vg1000_21 < 5.05 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-* where 1.5 <= incidence1549_21 < 9.5 ;
+  where 1.0 <= incidence1549_21 < 9.5 ;
 * where 0.20 <= prevalence1549_21 < 5.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;

@@ -261,7 +261,7 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par_ai1_option1; 
 
-%par_ai1(p=exp_setting_lower_p_vl1000 ); 
+%par_ai1(p=exp_setting_lower_p_vl1000 ); %par_ai1(p=circ_improvements ); 
 %par_ai1(p=external_exp_factor );  %par_ai1(p=rate_exp_set_lower_p_vl1000 );   %par_ai1(p=max_freq_testing ); 
 %par_ai1(p=test_targeting );   %par_ai1(p=prob_loss_at_diag );  %par_ai1(p=pr_art_init );  
 %par_ai1(p=rate_lost );  %par_ai1(p=prob_lost_art );  %par_ai1(p=rate_return );  %par_ai1(p=rate_restart );  %par_ai1(p=rate_int_choice ); 
@@ -275,7 +275,7 @@ data &p._ai1 ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par_ai1(p=eff_prob_lost_art );  		%par_ai1(p=eff_rate_return );  
 %par_ai1(p=eff_pr_art_init );  	%par_ai1(p=eff_rate_int_choice );  	%par_ai1(p=eff_prob_vl_meas_done );  		%par_ai1(p=eff_pr_switch_line );  	
 %par_ai1(p=eff_rate_test_startprep );  	%par_ai1(p=eff_rate_test_restartprep );  	
-%par_ai1(p=eff_prob_prep_restart_choice );  	
+%par_ai1(p=eff_prob_prep_restart_choice );  	%par_ai1(p=eff_rate_choose_stop_prep ); 
 %par_ai1(p=eff_test_targeting ); %par_ai1(p=prep_strategy );
 %par_ai1(p=vmmc_disrup_covid);  %par_ai1(p=condom_disrup_covid);  %par_ai1(p=prep_disrup_covid);  %par_ai1(p=swprog_disrup_covid);  
 %par_ai1(p=testing_disrup_covid);  %par_ai1(p=art_tld_disrup_covid);  %par_ai1(p=art_tld_eod_disrup_covid);   %par_ai1(p=art_init_disrup_covid);   
