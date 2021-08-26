@@ -15302,13 +15302,20 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 
+prep_no_need=0; if prep=1 and (newp = 0 and epi ne 1) then prep_no_need=1;
+
+
 * procs;
 
 proc print; var cald sw newp ep epdiag epart prep_elig prep_willing  prep _dcost_prep _dcost_prep_visit ;
-where 15 <= age < 25;
+where prep=1 and death=. ;
 run;
 
-proc freq; tables cald newp ep hiv ; where age ge 15 and death = .; run; 
+proc freq; tables newp prep_no_need; 
+where prep=1 and death=. ;
+run;
+
+
 
 /*
 

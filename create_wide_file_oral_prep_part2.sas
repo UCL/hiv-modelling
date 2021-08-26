@@ -123,6 +123,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_m184m_all);  %var(v=p_k65m_all);  %var(v=incidence_onprep); %var(v=p_m_newp_ge1_age1549);  %var(v=p_w_newp_ge1_age1549);
 
+%var(v=p_ep);
+
 
 data   wide_outputs; merge 
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 p_m_newp_ge1_age1549 p_w_newp_ge1_age1549
@@ -167,7 +169,7 @@ p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m n_mcirc1549_ n_mcirc154
 p_vl1000_art_12m p_vl1000_art_12m_onart 
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep
 prop_onprep_newpge1 prop_onprep_newpge2 prop_onprep_newpge3
-p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_age1549
+p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_age1549  p_ep
 
 ;
 
@@ -364,7 +366,7 @@ proc means  n median p5 p95 min max ;
 var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21 prevalence4549m_21 incidence1549w_21 
 incidence1549m_21	p_diag_m_21   p_diag_w_21 p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21   prop_w_1549_sw_21    
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21 p_onart_cd4_l500_21  
-p_mcirc_1549m_21  p_startedline2_21  prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 ;
+p_mcirc_1549m_21  p_startedline2_21  prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_ep_21;
 run;
 ods html close;
 
