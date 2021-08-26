@@ -1006,20 +1006,21 @@ prop_elig_on_prep_21_26_2   p_prep_adhg80_21_26_2  p_newp_sw_21
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.05 <= prevalence_vg1000_21 < 5.05 ; 
+* where 0.02 <= prevalence_vg1000_21 < 5.05 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-  where 1.0 <= incidence1549_21 < 9.5 ;
+* where 1.0 <= incidence1549_21 < 9.5 ;
 * where 0.20 <= prevalence1549_21 < 5.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
 * where r_p_newp_ge1_age1549_21 > 1 ;
-* where 0.73 <= p_vl1000_21 < 0.99 ;
+* where         p_vl1000_21 < 0.73 ;
 * where 0.06 <= p_newp_ge1_age1549_21 < 1.00; 
 * where 0.00 <= prop_elig_on_prep_21_26_2 < 0.65 ;
 * where 0.80 <= p_prep_adhg80_21_26_2 < 0.90;
 * where 0.75  <= p_newp_sw_21 < 1.00 ;
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
+* where incidence1549_41_1 > 0.7;
 run; 
   ods html close;
 
