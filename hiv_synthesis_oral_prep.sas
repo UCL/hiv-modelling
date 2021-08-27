@@ -388,12 +388,11 @@ newp_seed = 7;
 * test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 	0.1000, 
-								0.1		0.2 	0.2 	0.2 	0.15 	0.1 	0.05);
+								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 , 
+								0.1		0.2 	0.40	0.2 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
