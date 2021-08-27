@@ -777,6 +777,8 @@ prop_sw_hiv_21_71_1 prop_sw_hiv_21_71_2
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and prevalence1549_20 > 0.05 ;
 * where prep_strategy_21_26_2  = 11 ;
+* where fold_tr_newp = 0.5;
+* where prop_w_1549_sw_21 < 0.012; 
 run; 
 ods html close;
 
@@ -1028,6 +1030,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
 * where incidence1549_41_1 > 0.7;
 * where fold_tr_newp = 0.5;
+* where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
 run; 
   ods html close;
 
@@ -1124,11 +1127,11 @@ run;
 proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 
-prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
+p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21  incidence1549w_21 incidence1549m_21	p_diag_m_21   
+p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
 prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 
-prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21 
-fold_tr_newp  tr_rate_undetec_vl
+prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 prob_vl_meas_done fold_tr_newp
 / selection = stepwise
 ;
 run;
@@ -1160,13 +1163,14 @@ prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
-prop_1564_hivneg_onprep_21_26_2
+
 ;
 run;
 
 * 
 av_newp_ge1_non_sw_21
-p_newp_ge1_age1549_21 ;
+p_newp_ge1_age1549_21 
+prop_1564_hivneg_onprep_21_26_2;
 
 *
 av_newp_ge1_non_sw_21

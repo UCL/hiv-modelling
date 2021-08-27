@@ -1,7 +1,7 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_out_3";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_3_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
