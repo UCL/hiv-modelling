@@ -37,7 +37,7 @@ consider addressing questions in katy godfrey proposal
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population =  3000 ; 
+%let population =  10000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -15307,13 +15307,14 @@ prep_no_need=0; if prep=1 and (newp = 0 and epi ne 1) then prep_no_need=1;
 
 * procs;
 
-proc print; var cald sw newp ep epdiag epart prep_elig prep_willing  prep _dcost_prep _dcost_prep_visit ;
+proc print; var cald sw newp ep epi epdiag epart prep_elig prep_willing  prep  prep_no_need _dcost_prep _dcost_prep_visit ;
 where prep=1 and death=. ;
 run;
 
 proc freq; tables newp prep_no_need; 
 where prep=1 and death=. ;
 run;
+
 
 
 
@@ -17471,6 +17472,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -17603,10 +17605,12 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 
-data a.saveprep1; set r1; 
+data a.saveprep2; set r1; 
+
+*/
 
 
-data r1; set a.saveprep1;
+data r1; set a.saveprep2;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=1);

@@ -1,7 +1,7 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_out_2";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_out_3";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
@@ -84,7 +84,7 @@ decr_prob_loss_at_diag_2020     decr_rate_lost_2020       decr_rate_lost_art_202
 incr_rate_init_2020    decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020  incr_pr_switch_line_2020 inc_r_test_startprep_2020   
 incr_r_test_restartprep_2020  circ_improvements   circ_inc_rate_2020  incr_test_targeting_2020  pop_wide_tld_2020 incr_max_freq_testing_2020   
 initial_pr_switch_line  initial_prob_vl_meas_done  sw_test_6mthly_2020 reg_option_switch_2020  art_mon_drug_levels_2020   ten_is_taf_2020  
-lower_future_art_cov   prep_efficacy  sens_vct_test_type_3  eff_rate_restart   eff_prob_loss_at_diag   eff_rate_lost  
+lower_future_art_cov   prep_efficacy  sens_vct_test_type_3  eff_rate_restart   eff_prob_loss_at_diag   eff_rate_lost  tr_rate_undetec_vl
 eff_prob_lost_art  eff_rate_return   eff_pr_art_init  eff_rate_int_choice  eff_prob_vl_meas_done eff_pr_switch_line eff_rate_test_startprep   
 eff_rate_test_restartprep    eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting  prep_strategy  
 vmmc_disrup_covid  condom_disrup_covid   prep_disrup_covid  swprog_disrup_covid  testing_disrup_covid   art_tld_disrup_covid art_tld_eod_disrup_covid   

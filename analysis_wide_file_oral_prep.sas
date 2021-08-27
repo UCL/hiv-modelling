@@ -1027,6 +1027,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where 0.75  <= p_newp_sw_21 < 1.00 ;
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
 * where incidence1549_41_1 > 0.7;
+* where fold_tr_newp = 0.5;
 run; 
   ods html close;
 
@@ -1115,6 +1116,20 @@ model ce_500_x =
 prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
+fold_tr_newp
+;
+run;
+
+
+proc logistic  data=wide  ;
+output out = out predicted=predicted;
+model ce_500_x = 
+prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
+p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
+prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 
+prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21 
+fold_tr_newp  tr_rate_undetec_vl
+/ selection = stepwise
 ;
 run;
 

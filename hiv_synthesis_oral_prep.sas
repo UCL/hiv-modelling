@@ -295,7 +295,7 @@ newp_seed = 7;
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
-* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5);
+* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5 0.7);
 * super_infection; 			%sample_uniform(super_infection, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
@@ -501,7 +501,6 @@ newp_seed = 7;
 								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
 								0.2 	0.2 	0.2 	0.2		0.1		0.1);
 
-
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
 							prob_lossdiag_non_tb_who3e = round(rand('beta',15,85),0.01);
@@ -514,7 +513,6 @@ newp_seed = 7;
 * rate_return;  			%sample(rate_return, 
 								0.01	0.10 	0.30 	0.60, 
 								0.10 	0.60	0.15 	0.15);
-
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -548,7 +546,6 @@ newp_seed = 7;
 * prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
-
 
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
@@ -602,7 +599,7 @@ newp_seed = 7;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.001 0.0015 0.0020 0.0025, 0.25 0.25 0.25 0.25);
+* base_rate_sw; 			%sample(base_rate_sw, 0.0005 0.001 0.0015 , 0.33 0.34 0.33);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
