@@ -6,11 +6,9 @@
 
 data d1 ; set b.out: ; 
 
-
-
 keep 
 
-run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos  s_alive_w s_alive_m
+run cald option s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos  s_alive_w s_alive_m s_year_1_infection s_year_1_infection_diag
 s_m_1524_newp  s_m_2534_newp s_m_3544_newp s_m_4554_newp s_m_5564_newp s_w_1524_newp  s_w_2534_newp s_w_3544_newp s_w_4554_newp s_w_5564_newp 
 s_i_age1_m_newp s_i_age2_m_newp s_i_age3_m_newp s_i_age4_m_newp s_i_age5_m_newp s_i_age1_w_newp s_i_age2_w_newp s_i_age3_w_newp s_i_age4_w_newp 
 s_i_age5_w_newp s_dcost_ s_cost_ s_ly s_dly s_dead_ddaly s_live_ddaly  s_dead_ddaly_ntd s_dead_ddaly_oth_dol_adv_birth_e s_ddaly_mtct 
@@ -402,6 +400,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested;						n_tested = s_tested * &sf * 4;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
+
+* of people alive and within 1 year of infection, proportion diagnosed ;
+* prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
 
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -941,7 +942,7 @@ r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_p
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop  incidence_onprep
-p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
+p_diag p_diag_m p_diag_w prop_diag_infection_1yr p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 

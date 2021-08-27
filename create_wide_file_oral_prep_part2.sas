@@ -9,7 +9,6 @@ data y;
   set a.oral_prep;  
 
 
-
   options nomprint;
   option nospool;
 
@@ -83,7 +82,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000);  %var(v=p_artexp_vl1000);
 %var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
-%var(v=p_onart_m); %var(v=p_onart_w); 
+%var(v=p_onart_m); %var(v=p_onart_w); %var(v=prop_diag_infection_1yr);
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);     %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
@@ -139,7 +138,7 @@ prevalence1519w 	prevalence1519m 	  prevalence2024w 	  prevalence2024m 	  preval
 prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevalence4044m 	  prevalence4549w 	  prevalence4549m 			
 prevalence1524w prevalence1524m  prevalence_sw
 incidence1549 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary mtct_prop
-p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0
+p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0 prop_diag_infection_1yr 
 p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
