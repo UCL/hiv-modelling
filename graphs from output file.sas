@@ -7,7 +7,10 @@
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.oral_prep; 
+  set a.oral_prep_4; 
+
+
+
 
 /*
 
@@ -73,7 +76,7 @@ logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
-n_death_hiv = n_death_hiv_w + n_death_hiv_m ;
+n_death_hivrel = n_death_hivrel_w + n_death_hivrel_m ;
 
 /*
 
@@ -134,7 +137,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 264   ;
+%let nfit = 242   ;
 %let year_end = 2071.00 ;
 run;
 proc sort;by cald option ;run;
@@ -157,7 +160,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_hiv  n_cd4_lt200_
+n_onart n_death_hivrel  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -222,7 +225,7 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_hiv  n_cd4_lt200_
+n_onart n_death_hivrel  n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
@@ -1001,7 +1004,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence_vg1000__0 = "Option 0 (median) ";
 label p50_prevalence_vg1000__1 = "Option 1  (median) ";
@@ -1017,33 +1020,20 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_death_hiv";
+Title    height=1.5 justify=center "n_death_hivrel";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 50000) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "Option 0 (median) ";
-label p50_n_death_hiv_1 = "Option 1  (median) ";
+label p50_n_death_hivrel_0 = "Option 0 (median) ";
+label p50_n_death_hivrel_1 = "Option 1  (median) ";
 
-series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hivrel_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hivrel_0 	upper=p95_n_death_hivrel_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 
 * series  x=cald y=n_death_2059_m_obs_sa;
 
 run;quit;
 
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "n_cd4_lt200";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000 by 100000) valueattrs=(size=10);
-
-label p50_n_cd4_lt200__0 = "Option 0 (median) ";
-
-series  x=cald y=p50_n_cd4_lt200__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_cd4_lt200__0 	upper=p95_n_cd4_lt200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-run;quit;
 
 
 
@@ -1116,4 +1106,7 @@ title;
 * ods rtf close;
 * ods listing;
 run;
+
+ods html close;
+
 
