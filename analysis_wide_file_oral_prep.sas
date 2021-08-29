@@ -1032,7 +1032,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where incidence1549_41_1 > 0.7;
 * where fold_tr_newp >= 0.7;
 * where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
-  where p_inf_newp_21 < 0.58  ;
+* where p_inf_newp_21 < 0.58  ;
 run; 
   ods html close;
 
