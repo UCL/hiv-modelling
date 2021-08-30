@@ -3,7 +3,7 @@
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
 data wide;  
-  set a.wide_oral_prep_4;
+  set a.wide_oral_prep_5r  ;
 
 * --------------------------------------------------------------------------------------------------------------;
 
@@ -360,7 +360,8 @@ p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
 prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 
 prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21 prop_diag_infection_1yr_21;
-  where /* 0.13 <= incidence1549_21 and */ p_inf_newp_21 < 0.58  ;
+* where p_inf_newp_21 < 0.67  ;
+* where incidence1549w_21 > 0.16;
 run;
 ods html close;
 
@@ -1032,7 +1033,9 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where incidence1549_41_1 > 0.7;
 * where fold_tr_newp >= 0.7;
 * where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
-* where p_inf_newp_21 < 0.58  ;
+* where incidence1549w_21 > 0.16 and 0.02 <= prevalence_vg1000_21  ;
+* where incidence1549w_21 > 0.16  ;
+* where p_inf_newp_21 < 0.67  ;
 run; 
   ods html close;
 
