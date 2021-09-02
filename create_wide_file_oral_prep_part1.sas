@@ -1,7 +1,7 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_5rr_out";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_5_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
@@ -1745,7 +1745,7 @@ p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_ag
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_5rr;
+data a.oral_prep_5;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
