@@ -6,7 +6,7 @@
 
 data y; 
 
-  set a.oral_prep_5;  
+  set a.oral_prep_5rrr;  
 
 
   options nomprint;
@@ -342,7 +342,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_oral_prep_5 ;
+  data a.wide_oral_prep_5rrr ;
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
