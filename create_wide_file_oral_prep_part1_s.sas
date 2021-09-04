@@ -1,10 +1,9 @@
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_5rrr_out";
-* libname a '/home/rmjlaph/';
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
-data d1 ; set b.out: ; 
+
+data d1 ; set a.sample_submitted ; 
 
 
 keep 
@@ -67,7 +66,7 @@ rate_testanc_inc   incr_test_rate_sympt    max_freq_testing   test_targeting  fx
 prob_lost_art    rate_return    rate_restart   rate_int_choice   clinic_not_aw_int_frac   res_trans_factor_nn    rate_loss_persistence   incr_rate_int_low_adh   
 poorer_cd4rise_fail_nn    poorer_cd4rise_fail_ii    rate_res_ten    fold_change_mut_risk    adh_effect_of_meas_alert   pr_switch_line  
 prob_vl_meas_done   red_adh_tb_adc    red_adh_tox_pop    add_eff_adh_nnrti   altered_adh_sec_line_pop    prob_return_adc   prob_lossdiag_adctb 
-prob_lossdiag_non_tb_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox    adh_pattern_prep   rate_test_startprep   rate_test_restartprep   
+prob_lossdiag_who3e    higher_newp_less_engagement   fold_tr   switch_for_tox    adh_pattern_prep   rate_test_startprep   rate_test_restartprep   
 rate_choose_stop_prep   circ_inc_rate    p_hard_reach_w    hard_reach_higher_in_men    p_hard_reach_m   inc_cat    base_rate_sw  base_rate_stop_sexwork   
 rred_a_p    rr_int_tox    nnrti_res_no_effect    double_rate_gas_tox_taz     incr_mort_risk_dol_weightg    sw_init_newp    sw_trans_matrix  
 eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
@@ -83,13 +82,13 @@ decr_prob_loss_at_diag_2020     decr_rate_lost_2020       decr_rate_lost_art_202
 incr_rate_init_2020    decr_rate_int_choice_2020  incr_prob_vl_meas_done_2020  incr_pr_switch_line_2020 inc_r_test_startprep_2020   
 incr_r_test_restartprep_2020  circ_improvements   circ_inc_rate_2020  incr_test_targeting_2020  pop_wide_tld_2020 incr_max_freq_testing_2020   
 initial_pr_switch_line  initial_prob_vl_meas_done  sw_test_6mthly_2020 reg_option_switch_2020  art_mon_drug_levels_2020   ten_is_taf_2020  
-lower_future_art_cov   prep_efficacy  sens_vct_test_type_3  eff_rate_restart   eff_prob_loss_at_diag   eff_rate_lost  tr_rate_undetec_vl
+lower_future_art_cov   eff_adh_prep  sens_vct_test_type_3  eff_rate_restart   eff_prob_loss_at_diag   eff_rate_lost  tr_rate_undetec_vl
 eff_prob_lost_art  eff_rate_return   eff_pr_art_init  eff_rate_int_choice  eff_prob_vl_meas_done eff_pr_switch_line eff_rate_test_startprep   
 eff_rate_test_restartprep    eff_prob_prep_restart_choice  e_decr_hard_reach_2020  eff_test_targeting  prep_strategy  
 vmmc_disrup_covid  condom_disrup_covid   prep_disrup_covid  swprog_disrup_covid  testing_disrup_covid   art_tld_disrup_covid art_tld_eod_disrup_covid   
 art_init_disrup_covid  vl_adh_switch_disrup_covid   cotrim_disrup_covid  no_art_disrup_covid   art_low_adh_disrup_covid  cov_death_risk_mult   
 eff_rate_test_startprep   eff_rate_test_restartprep  eff_prob_prep_restart_choice  s_prep_newpg0 s_primary_prep  
-s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep 
+s_dwho3_cost s_dead_hivpos_anycause s_ep 
 ;
 
 
@@ -260,7 +259,7 @@ dart_cost = s_dart_cost * &sf * 4 / 1000;
 dvl_cost = s_dvl_cost * &sf * 4 / 1000;
 dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
 dadc_cost = s_dadc_cost * &sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
+dwho3_cost = s_dwho3_cost * &sf * 4 / 1000;
 dtb_cost = s_dtb_cost * &sf * 4 / 1000;
 dtest_cost = s_dtest_cost * &sf * 4 / 1000;
 dcot_cost = s_dcot_cost * &sf * 4 / 1000;
@@ -285,7 +284,7 @@ dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
  
 
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
+dclin_cost = dadc_cost+dwho3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
@@ -301,14 +300,14 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
 
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
 
 
 s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
 
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
+dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dwho3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
 
 if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
@@ -951,7 +950,7 @@ p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1
 p_onart_m p_onart_w p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
-dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
+dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dwho3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dclin_cost     dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
 dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
 defa_cost   ddol_cost
@@ -1012,7 +1011,7 @@ clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_l
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
 red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e  higher_newp_less_engagement
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_who3e  higher_newp_less_engagement
 fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
@@ -1068,7 +1067,7 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
-test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
+test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  eff_adh_prep   p_ep
 ;
 
 
@@ -1080,7 +1079,7 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_eff
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_5rrr;
+data a.oral_prep_s;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
