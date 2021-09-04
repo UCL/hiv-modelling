@@ -2,11 +2,12 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 * libname a '/home/rmjlaph/';
 
 data y; 
 
-  set a.oral_prep_s;  
+  set b.oral_prep_s;  
 
 
   options nomprint;
@@ -89,7 +90,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=aids_death_rate);  %var(v=death_rate_onart); %var(v=ddaly);  %var(v=ddaly_all);  %var(v=dcost);  %var(v=cost);  %var(v= dart_cost_y);
 %var(v=dadc_cost);   %var(v=dcd4_cost);   %var(v=dvl_cost);   %var(v=dvis_cost);    %var(v=dcot_cost);   %var(v=dtb_cost);   
 %var(v=dres_cost);  %var(v=dtest_cost);   %var(v=d_t_adh_int_cost);   %var(v=dswitchline_cost);  %var(v=dtaz_cost);   %var(v=dcost_drug_level_test);
-%var(v=dclin_cost );  %var(v=dnon_tb_who3_cost);
+%var(v=dclin_cost );  %var(v=dwho3_cost);
 %var(v=dcost_circ );  %var(v=dcost_condom_dn);
 %var(v=dcost_prep_visit );   %var(v=dcost_prep );   %var(v=dcost_drug_level_test );  
 %var(v=dcost_clin_care );  %var(v=dcost_non_aids_pre_death );  %var(v=dcost_child_hiv );  %var(v=dzdv_cost );   %var(v=dten_cost );   %var(v=d3tc_cost );   
@@ -125,6 +126,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_ep);
 
 
+
 data   wide_outputs; merge 
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 p_m_newp_ge1_age1549 p_w_newp_ge1_age1549
 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
@@ -149,7 +151,7 @@ prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost    dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
 dclin_cost   dcost_circ  dcost_condom_dn dcost_prep_visit  dcost_prep  dcost_drug_level_test
 dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost   d3tc_cost   dnev_cost   dlpr_cost   ddar_cost   dtaz_cost    
-defa_cost   ddol_cost dnon_tb_who3_cost
+defa_cost   ddol_cost dwho3_cost
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
 p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
 n_sw_1564  prop_sw_onprep  p_onart 
@@ -213,7 +215,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=eff_rate_choose_stop_prep );  		%par(p=eff_prob_prep_restart_choice );  %par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=tr_rate_undetec_vl);
-%par(p=lower_future_art_cov);  %par(p=prep_efficacy);  %par(p=sens_vct_test_type_3);  %par(p=fold_tr_newp) ;
+%par(p=lower_future_art_cov);  %par(p=eff_adh_prep);  %par(p=sens_vct_test_type_3);  %par(p=fold_tr_newp) ;
 
 data wide_par; merge dataset
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -238,7 +240,7 @@ eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 
 eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-  prep_strategy lower_future_art_cov  prep_efficacy  sens_vct_test_type_3  fold_tr_newp tr_rate_undetec_vl
+  prep_strategy lower_future_art_cov  eff_adh_prep  sens_vct_test_type_3  fold_tr_newp tr_rate_undetec_vl
 ;
 
 
@@ -342,13 +344,14 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_oral_prep_s ;
+  data b.wide_oral_prep_s ;
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
 * merge   wide_outputs  wide_par ;  
   by run;
 
+  proc contents; run;
 
 ods html;
 proc means  n median p5 p95 min max ;

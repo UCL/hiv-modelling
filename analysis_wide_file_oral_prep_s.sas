@@ -1,10 +1,12 @@
 
 * note using tld_prep runs;
-* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
 
 data wide;  
-  set a.wide_sample_submitted   ;
+* set a.wide_sample_submitted   ;
+  set a.wide_oral_prep_s ;
+
 
 * --------------------------------------------------------------------------------------------------------------;
 

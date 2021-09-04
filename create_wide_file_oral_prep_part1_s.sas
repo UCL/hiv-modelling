@@ -1,6 +1,7 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
 
 data d1 ; set a.sample_submitted ; 
@@ -124,9 +125,6 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 data y; 
 merge d sf;
 by run ;
-
-
-
 
 * preparatory code ;
 
@@ -1072,18 +1070,14 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  eff_adh_
 
 
 
-
-
-
-
-
 proc sort data=y;by run option;run;
 
-data a.oral_prep_s;
+data b.oral_prep_s;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
 
 proc contents; run;
+
 
 
