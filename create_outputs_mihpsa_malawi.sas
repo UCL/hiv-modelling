@@ -64,6 +64,13 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
 s_alive = s_alive_m + s_alive_w ;
 
+* n_alive_m;					n_alive_m = s_alive_m * &sf;
+* n_alive_w;					n_alive_w = s_alive_w * &sf;
+* n_alive;						n_alive = s_alive * &sf;
+* n_hiv_m;						n_hiv_m = s_hivge15m * &sf;
+* n_hiv_w;						n_hiv_w = s_hivge15w * &sf;
+* n_hiv;						n_hiv = s_hivge15 * &sf;
+
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
@@ -137,8 +144,7 @@ s_alive = s_alive_m + s_alive_w ;
 * n_diag_w;						n_diag_w = s_diag_w * &sf ;
 * n_diag_m;						n_diag_m = s_diag_m * &sf ;
 
-keep run option cald 
-
+keep run option cald n_alive_m n_alive_w n_hiv_m n_hiv_w
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
 p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
 n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
@@ -482,10 +488,11 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v = p_mcirc_1549m    );
+%var(v=n_hiv_m); 
 
 /*
 
+%var(v=n_alive_m);  %var(v=n_hiv_w);  
 %var(v=prevalence1549m);%var(v=prevalence1549w);%var(v = test_prop_positive );
 %var(v=p_mcirc_1549m);  %var(v=p_diag_w);  %var(v=p_diag_m);  %var(v=p_onart_vl1000_); %var(v=incidence1549w); 
 %var(v=incidence1549m); %var(v=incidence1549 ); %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); 
