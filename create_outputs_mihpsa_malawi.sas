@@ -144,7 +144,7 @@ s_alive = s_alive_m + s_alive_w ;
 * n_diag_w;						n_diag_w = s_diag_w * &sf ;
 * n_diag_m;						n_diag_m = s_diag_m * &sf ;
 
-keep run option cald n_alive_m n_alive_w n_hiv_m n_hiv_w
+keep run option cald n_alive_m n_alive_w n_alive n_hiv_m n_hiv_w n_hiv
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
 p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
 n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
@@ -259,7 +259,8 @@ proc transpose data=t_2122 out = r_2122; data e_2122; set r_2122; y2122 = COL1; 
 proc univariate noprint data=y; var &v; output out=y_2223 mean= &v._2223 ; by run ; where 2022.5 <= cald < 2023.5; 
 proc univariate noprint data=y_2223; var &v._2223; output out=t_2223 median= &v._2223_med pctlpts=2.5 97.5 pctlpre= &v._2223_; 
 proc transpose data=t_2223 out = r_2223; data e_2223; set r_2223; y2223 = COL1; drop _label_ _name_ COL1 ;
-proc univariate noprint data=y; var &v; output out=y_2324 mean= &v._2324 ; by run ; where 2023.5 <= cald < 2024.5; 
+proc univariat
+e noprint data=y; var &v; output out=y_2324 mean= &v._2324 ; by run ; where 2023.5 <= cald < 2024.5; 
 proc univariate noprint data=y_2324; var &v._2324; output out=t_2324 median= &v._2324_med pctlpts=2.5 97.5 pctlpre= &v._2324_; 
 proc transpose data=t_2324 out = r_2324; data e_2324; set r_2324; y2324 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_2425 mean= &v._2425 ; by run ; where 2024.5 <= cald < 2025.5; 
@@ -488,7 +489,7 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v=n_hiv_m); 
+%var(v=n_hiv  ); 
 
 /*
 
