@@ -2,13 +2,13 @@
 * note using tld_prep runs;
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
-/*
+  
 
 data wide;  
-  set a.wide_oral_prep_5rrr ;  
+  set a.wide_oral_prep_7    ;  
 
-*/
-
+  
+/*
 
   data a.wide_oral_prep_5;   set a.wide_oral_prep_5;  reg_option_104 = 0;   five=1;
 
@@ -17,6 +17,7 @@ data wide;
 
 if reg_option_104 = 0 ;
 
+*/
 
 * --------------------------------------------------------------------------------------------------------------;
 
