@@ -1,13 +1,13 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_6_out";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_5r_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
 
 * this below to be removed for datasets 6 and above ;
-* reg_option_104 = 0 ;
+  reg_option_104 = 0 ;
 
 keep 
 
@@ -1082,7 +1082,7 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_eff
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_6   ;
+data a.oral_prep_5r  ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
