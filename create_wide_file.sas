@@ -1,18 +1,10 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\xxxxxx\";
+libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_e_out\";
 
-  data a.base_sa_31;   set b.out:;
-
-
-/** show the contents of the input SAS file */
-* proc contents data=a.hiv_synthesis_base;
-*	title "Compressed SAS Input Data"
-*run;
-
-data g; set  a.base_sa_31 ;
+  data g;    set b.out: ;
 
 
 proc sort data=g; 
@@ -24,9 +16,9 @@ data sf;
 
 set g ;
 
-if cald=2021.5;
+if cald=2021.25;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
+sf_2021 = (19000000 * 0.57) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
 keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
@@ -330,7 +322,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
-* prop_w_ever_sw;				if s_alive_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
+* prop_w_ever_sw;				if s_alive1564_w gt 0 then prop_w_ever_sw = s_ever_sw / s_alive_w ;
 * prop_sw_program_visit;		prop_sw_program_visit = s_sw_program_visit / s_sw_1564 ;
 * prop_sw_hiv;					prop_sw_hiv = s_hiv_sw / s_sw_1564 ;
 * prop_sw_newp0;				if (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5) gt 0 then  
@@ -424,6 +416,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
+
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 * prevalence2024m;				prevalence2024m = s_hiv2024m  / s_ageg2024m ;
 * prevalence2529w;				prevalence2529w = s_hiv2529w  / s_ageg2529w ;
@@ -445,10 +438,17 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence65plw;				prevalence65plw = s_hiv65plw  / s_ageg65plw ;
 * prevalence65plm;				prevalence65plm = s_hiv65plm  / s_ageg65plm ;
 
-* prevalence1524w;				prevalence1524w =  s_hiv1524w  / (s_ageg1519w + s_ageg2024w) ;
-* prevalence1524m;				prevalence1524m =  s_hiv1524m  / (s_ageg1519m + s_ageg2024m) ;
+* prevalence1524w;				prevalence1524w = ( s_hiv1519w + s_hiv2024w ) / (s_ageg1519w + s_ageg2024w) ;
+* prevalence1524m;				prevalence1524m = ( s_hiv1519m + s_hiv2024m ) / (s_ageg1519m + s_ageg2024m) ;
+* prevalence2549w;				prevalence1524w = ( s_hiv2529w + s_hiv3034w +  s_hiv3539w + s_hiv4044w +  s_hiv4549w ) / 
+													(s_ageg2529w + s_ageg3034w + s_ageg3539w + s_ageg4044w + s_ageg4549w) ;
+* prevalence2549m;				prevalence1524m = ( s_hiv2529m + s_hiv3034m +  s_hiv3539m + s_hiv4044m +  s_hiv4549m ) / 
+													(s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg4044m + s_ageg4549m) ;
+
 
 * prevalence_sw;				prevalence_sw = s_hiv_sw / s_sw_1564; 
+
+* n_diagnosed (per yr);			n_diagnosed = s_diag_this_period * 4 * &sf;
 
 * r_prev_1519w_4549w;			r_prev_1519w_4549w = prevalence1519w / prevalence4549w ;
 * r_prev_2024w_4549w;			r_prev_2024w_4549w = prevalence2024w / prevalence4549w ;
@@ -785,6 +785,7 @@ end;
 			rate_dead_cvd_7079w = (s_dead_cvd_7079w * 4 * 100) / (s_ageg7074w + s_ageg7579w) ;
 			rate_dead_cvd_ge80w = (s_dead_cvd_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
 
+* n_alive;						n_alive = s_alive * &sf;
 
 * n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage  * 4* &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
@@ -797,9 +798,15 @@ end;
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
+
+* n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * 4 * &sf;
+* n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * 4 * &sf;
+
 													
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
+
+* n_hiv ;						n_hiv = s_hivge15 * &sf ;
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
@@ -902,7 +909,7 @@ external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_
 fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection an_lin_incr_test
 date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+rate_lost rate_return rate_restart rate_int_choice
 clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
 poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
 fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
@@ -958,6 +965,10 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
+
+n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw
+
+
 ;
 
 
@@ -965,7 +976,7 @@ test_prop_positive
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base; set y;  
+data a.l_base_mlw; set y;  
 
 *
 
@@ -975,7 +986,16 @@ data a.l_base; set y;
 ;
 
 
-data y; set a.l_base; 
+
+
+data y; set a.l_base_mlw; 
+
+/*
+if cald = 2017;
+out=0;
+if prevalence1549 > 0.2 then out=1;
+proc logistic....
+*/
 
   options nomprint;
   option nospool;
@@ -1140,7 +1160,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg); %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
-%var(v=n_tested_w); %var(v=test_prop_positive);
+%var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive);  %var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
+%var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
+;
+
 
 
 data   wide_outputs; merge 
@@ -1228,7 +1251,7 @@ rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w 
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_diagnosed  n_hiv
 ;
 
 proc sort; by run; run;
@@ -1309,19 +1332,16 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base; 
+  data a.w_base_mlw; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
   by run;
 
 
-
-proc contents;run;
-
 ods html;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
@@ -1348,7 +1368,7 @@ r_prev_6064m_4549w_95 r_prev_65plm_4549w_95  p_age1549_hivneg_95 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1376,7 +1396,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1406,7 +1426,7 @@ run;
 
 
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1447,7 +1467,7 @@ n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1473,7 +1493,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_mlw n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1502,3 +1522,93 @@ run;
 ods html close;
 
 
+
+
+data q1; set a.w_base_mlw;
+
+if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12;
+
+run_keep = run;
+
+/*
+proc freq; tables sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
+fold_tr fold_tr_newp switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy 
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+; run;
+*/
+
+keep run run_keep;
+
+run;
+
+
+
+
+data a.l_base_keep_mlw; merge a.l_base_mlw q1 ; by run;
+
+if run_keep ne .;
+
+ods html;
+proc print noobs; var run; 
+where cald = 2021.25;
+run;
+ods html close;
+
+
+/*
+
+proc glm; 
+class sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+
+model r_prev_sex_1549_17 =    ych_risk_beh_ep fold_change_w base_rate_sw   rred_a_p 
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w  / solution ; run;
+
+* p_rred_p p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep  fold_change_w
+fold_change_yw  base_rate_sw base_rate_stop_sexwork   rred_a_p
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w 
+/ solution;
+run;
+
+*
+exp_setting_lower_p_vl1000  external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base
+fold_change_sti tr_rate_undetec_vl super_infection an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
+fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
+rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat 
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+prep_strategy 
+;
+
+*/
