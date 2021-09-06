@@ -1,11 +1,13 @@
 
 
   libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_5rrr_out";
+  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_6_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
 
+* this below to be removed for datasets 6 and above ;
+* reg_option_104 = 0 ;
 
 keep 
 
@@ -89,7 +91,7 @@ eff_rate_test_restartprep    eff_prob_prep_restart_choice  e_decr_hard_reach_202
 vmmc_disrup_covid  condom_disrup_covid   prep_disrup_covid  swprog_disrup_covid  testing_disrup_covid   art_tld_disrup_covid art_tld_eod_disrup_covid   
 art_init_disrup_covid  vl_adh_switch_disrup_covid   cotrim_disrup_covid  no_art_disrup_covid   art_low_adh_disrup_covid  cov_death_risk_mult   
 eff_rate_test_startprep   eff_rate_test_restartprep  eff_prob_prep_restart_choice  s_prep_newpg0 s_primary_prep  
-s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep 
+s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep reg_option_104
 ;
 
 
@@ -1025,7 +1027,7 @@ eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_
 eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   
 eff_prob_prep_restart_choice    eff_test_targeting 
 
-circ_improvements rate_choose_stop_prep 
+circ_improvements rate_choose_stop_prep reg_option_104
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1080,7 +1082,7 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_eff
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_5rrr;
+data a.oral_prep_6   ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
