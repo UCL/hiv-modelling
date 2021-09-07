@@ -12839,11 +12839,11 @@ end;
 
 year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
 year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
-if 0 <= caldate&j - infection < 1 and registd ne 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
-if 1 <= caldate&j - infection < 2 and registd ne 1 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
-if 2 <= caldate&j - infection < 3 and registd ne 1 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
-if 3 <= caldate&j - infection < 4 and registd ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
-if 4 <= caldate&j - infection < 5 and registd ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
+if 0 <= caldate&j - infection < 1 and registd_tm1 ne 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
+if 1 <= caldate&j - infection < 2 and registd_tm1 ne 1 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
+if 2 <= caldate&j - infection < 3 and registd_tm1 ne 1 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
+if 3 <= caldate&j - infection < 4 and registd_tm1 ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
+if 4 <= caldate&j - infection < 5 and registd_tm1 ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
 
 
 
