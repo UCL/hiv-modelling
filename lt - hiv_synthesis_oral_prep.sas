@@ -15307,6 +15307,8 @@ prep_no_need=0; if prep=1 and (newp = 0 and epi ne 1) then prep_no_need=1;
 
 * procs;
 
+/*
+
 proc print; var cald sw newp ep epi epdiag epart prep_elig prep_willing  prep  prep_no_need _dcost_prep _dcost_prep_visit ;
 where prep=1 and death=. ;
 run;
@@ -15315,7 +15317,13 @@ proc freq; tables newp prep_no_need;
 where prep=1 and death=. ;
 run;
 
+*/
 
+proc freq; tables prep ; where death=. and age ge 65 ; run;
+
+proc print; var s_cost_prep ; where serial_no = &population ;
+
+proc means sum; var cost_prep ; where age ge 15 and (death = . or caldate&j = death ); run;
 
 
 /*

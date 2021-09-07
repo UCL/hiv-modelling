@@ -1023,6 +1023,8 @@ prop_elig_on_prep_21_26_2   p_prep_adhg80_21_26_2  p_newp_sw_21
 ; run;  
 
 
+proc freq; tables icer_2 ; run;
+
 
 * for table / results;
   ods html;

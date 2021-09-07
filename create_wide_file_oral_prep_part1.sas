@@ -164,7 +164,7 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * note discounting is from 2021 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
 
-%let year_start_disc=2021;
+%let year_start_disc=2022.5;
 discount_3py = 1/(1.03**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
