@@ -368,7 +368,7 @@ run;
 ods html close;
 
 ods html;
-proc means n median p5 p95 mean lclm uclm  data=wide; 
+proc means n median p5 p95 mean   data=wide; 
 var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21  incidence1549w_21 incidence1549m_21	p_diag_m_21   
 p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
@@ -401,7 +401,7 @@ ods html close;
 
 
 ods html;
-proc means n mean p5 p95 data=wide; 
+proc means n mean median p5 p95 data=wide; 
 var	p_mcirc_1549m_70_1 prevalence1549m_70_1 prevalence1549w_70_1 prevalence1524m_70_1 prevalence1524w_70_1  incidence1549w_70_1 incidence1549m_70_1	p_diag_m_70_1   
 p_diag_w_70_1	p_ai_no_arv_c_nnm_70_1   p_ai_no_arv_c_rt184m_70_1  p_ai_no_arv_c_rt65m_70_1  prop_w_1549_sw_70_1  prop_1564_hivneg_onprep_70_1  prop_w_1524_onprep_70_1 
 p_onart_diag_w_70_1 	p_onart_diag_m_70_1   p_vl1000_70_1	p_onart_vl1000_w_70_1 p_onart_vl1000_m_70_1 p_onart_cd4_l500_70_1  p_mcirc_1549m_70_1  p_startedline2_70_1  
@@ -412,7 +412,7 @@ ods html close;
 
 
 ods html;
-proc means n mean p5 p95 data=wide; 
+proc means n mean median p5 p95 data=wide; 
 var	p_mcirc_1549m_70_2 prevalence1549m_70_2 prevalence1549w_70_2 prevalence1524m_70_2 prevalence1524w_70_2  incidence1549w_70_2 incidence1549m_70_2	p_diag_m_70_2   
 p_diag_w_70_2	p_ai_no_arv_c_nnm_70_2   p_ai_no_arv_c_rt184m_70_2  p_ai_no_arv_c_rt65m_70_2  prop_w_1549_sw_70_2  prop_1564_hivneg_onprep_70_2  prop_w_1524_onprep_70_2 
 p_onart_diag_w_70_2 	p_onart_diag_m_70_2   p_vl1000_70_2	p_onart_vl1000_w_70_2 p_onart_vl1000_m_70_2 p_onart_cd4_l500_70_2  p_mcirc_1549m_70_2  p_startedline2_70_2  
