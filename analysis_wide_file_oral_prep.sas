@@ -186,6 +186,19 @@ ndb_500_21_41_2 =  ddaly_all_21_41_2 + (dcost_21_41_2)/0.0005;
 ndb_500_21_41_1 =  ddaly_all_21_41_1 + (dcost_21_41_1)/0.0005;
 
 
+d_ddaly_80_21_71_2 = ddaly_80_21_71_2 - ddaly_80_21_71_1 ;
+d_ddaly_80_21_41_2 = ddaly_80_21_41_2 - ddaly_80_21_41_1 ;
+
+d_dcost_80_21_71_2 = dcost_80_21_71_2 - dcost_80_21_71_1 ;
+d_dcost_80_21_41_2 = dcost_80_21_41_2 - dcost_80_21_41_1 ;
+
+ndb_80_500_21_71_2 =  ddaly_80_21_71_2 + (dcost_80_21_71_2)/0.0005;
+ndb_80_500_21_71_1 =  ddaly_80_21_71_1 + (dcost_80_21_71_1)/0.0005;
+
+d_ndb_80_500_21_71_2 = ndb_80_500_21_71_2 - ndb_80_500_21_71_1 ;
+
+if d_ndb_80_500_21_71_2 >= 0 then ce_80_500 = 0; if d_ndb_80_500_21_71_2 < 0 then ce_80_500 = 1;
+
 * sensitivity analysis;  * TO COMMENT OUT ;
 * ndb_500_21_71_2 =  ddaly_all_21_71_2 + (dcost_21_71_2)/0.0001;
 * ndb_500_21_71_1 =  ddaly_all_21_71_1 + (dcost_21_71_1)/0.0001;
@@ -242,6 +255,7 @@ if 1.0 < incidence1549_20 < 1.5 then incidence1549_20_g = 4; if incidence1549_20
 if 1.5 < incidence1549_20       then incidence1549_20_g = 5; if incidence1549_20_g=5 then incidence1549_20_g5=1;else incidence1549_20_g5=0;
 
 ce_500_x = 1 - ce_500 ;
+ce_80_500_x = 1 - ce_80_500 ;
 ce_100_x = 1 - ce_100 ;
 ce_500_20yr_x = 1 - ce_500_20yr;
 
@@ -787,6 +801,9 @@ dtotcost_prep_21_71_1 dtotcost_prep_21_71_2  d_dtotcost_prep_21_71_2
 prop_sw_hiv_21_71_1 prop_sw_hiv_21_71_2
 s_cost_prep_21_71_1 s_cost_prep_21_71_2
 s_cost_prep_visit_21_71_1 s_cost_prep_visit_21_71_2
+dcost_80_21_71_1   dcost_80_21_71_2   d_dcost_80_21_71_2 
+ddaly_80_21_71_1   ddaly_80_21_71_2   d_ddaly_80_21_71_2
+ndb_80_500_21_71_1 ndb_80_500_21_71_2   d_ndb_80_500_21_71_2
 ;
 * where 0.30 <= incidence1549_21        ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;
@@ -1185,7 +1202,6 @@ prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
-
 ;
 run;
 
@@ -1225,7 +1241,7 @@ run;
 
 
 proc logistic  data=wide  ;
-class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w sw_trans_matrix ;
 output out = out predicted=predicted;
 model ce_500_x = 
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
@@ -1234,8 +1250,8 @@ rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  ad
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
-zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_strategy_21_22_2  prep_efficacy fold_tr_newp
-reg_option_104
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_efficacy fold_tr_newp
+reg_option_104 sw_trans_matrix
 / selection = stepwise  ;
 run;
 
