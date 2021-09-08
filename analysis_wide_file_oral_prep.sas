@@ -1031,10 +1031,10 @@ proc freq; tables icer_2 ; run;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.05 <= prevalence_vg1000_21 < 5.05 ; 
+* where 0.02 <= prevalence_vg1000_21 < 0.03 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-* where        incidence1549_21 < 0.30;
+* where  0.2 <= incidence1549_21     ;
 * where 0.20 <= prevalence1549_21 < 5.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
@@ -1178,6 +1178,7 @@ run;
 
 
 proc logistic  data=wide  ;
+class sex_beh_trans_matrix_m ;
 output out = out predicted=predicted;
 model ce_500_x = 
 prevalence_vg1000_21
