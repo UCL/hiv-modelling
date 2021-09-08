@@ -737,8 +737,6 @@ run;
 ods html close;
 
 
-
-
 ods html;
 proc means n mean lclm uclm p50 p5 p95 data=wide;  
 var    d_ddaly_all_21_71_2  d_ndb_500_21_71_2  d_dcost_21_71_2  incidence1549_21_71_1 incidence1549_21_71_2 
