@@ -20,6 +20,8 @@ consider addressing questions in katy godfrey proposal
 
 17 8 21 - added r=uniform(0) to tld_prep part
 
+self testing  - less likely to link to care if +ve
+
 ;
 
 
