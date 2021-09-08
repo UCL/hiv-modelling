@@ -93,6 +93,7 @@ vmmc_disrup_covid  condom_disrup_covid   prep_disrup_covid  swprog_disrup_covid 
 art_init_disrup_covid  vl_adh_switch_disrup_covid   cotrim_disrup_covid  no_art_disrup_covid   art_low_adh_disrup_covid  cov_death_risk_mult   
 eff_rate_test_startprep   eff_rate_test_restartprep  eff_prob_prep_restart_choice  s_prep_newpg0 s_primary_prep  
 s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep reg_option_104 s_cost_prep s_cost_prep_visit
+s_dcost__80 s_live_ddaly_80 s_dead_ddaly_80
 ;
 
 
@@ -214,7 +215,7 @@ ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odab
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
 
-
+ddaly_80 = (s_live_ddaly_80 + s_dead_ddaly_80) * &sf * 4;
 
 * ================================================================================= ;
 
@@ -317,6 +318,8 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
 
 if &discount gt 0 then cost = dcost / &discount;
+
+dcost_80 = s_dcost__80 * &sf * 4 / 1000;
 
 * ================================================================================= ;
 
@@ -1074,6 +1077,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
  s_cost_prep s_cost_prep_visit
 
+dcost_80 ddaly_80
 ;
 
 
