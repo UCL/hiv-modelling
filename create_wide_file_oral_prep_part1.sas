@@ -92,7 +92,7 @@ eff_rate_test_restartprep    eff_prob_prep_restart_choice  e_decr_hard_reach_202
 vmmc_disrup_covid  condom_disrup_covid   prep_disrup_covid  swprog_disrup_covid  testing_disrup_covid   art_tld_disrup_covid art_tld_eod_disrup_covid   
 art_init_disrup_covid  vl_adh_switch_disrup_covid   cotrim_disrup_covid  no_art_disrup_covid   art_low_adh_disrup_covid  cov_death_risk_mult   
 eff_rate_test_startprep   eff_rate_test_restartprep  eff_prob_prep_restart_choice  s_prep_newpg0 s_primary_prep  
-s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep reg_option_104
+s_dnon_tb_who3_cost s_dead_hivpos_anycause s_ep reg_option_104 s_cost_prep s_cost_prep_visit
 ;
 
 
@@ -1072,6 +1072,8 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
+ s_cost_prep s_cost_prep_visit
+
 ;
 
 

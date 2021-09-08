@@ -787,6 +787,8 @@ dcost_child_hiv_21_71_1 dcost_child_hiv_21_71_2
 dcost_non_aids_pre_death_21_71_1 dcost_non_aids_pre_death_21_71_2 
 dtotcost_prep_21_71_1 dtotcost_prep_21_71_2  d_dtotcost_prep_21_71_2 
 prop_sw_hiv_21_71_1 prop_sw_hiv_21_71_2
+s_cost_prep_21_71_1 s_cost_prep_21_71_2
+s_cost_prep_visit_21_71_1 s_cost_prep_visit_21_71_2
 ;
 * where 0.30 <= incidence1549_21        ;
 * where prop_1564_hivneg_onprep_21_71_2 < 0.10 and incidence1549_20 > 0.30 ;

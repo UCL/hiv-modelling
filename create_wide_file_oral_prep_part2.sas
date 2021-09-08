@@ -122,7 +122,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_m184m_all);  %var(v=p_k65m_all);  %var(v=incidence_onprep); %var(v=p_m_newp_ge1_age1549);  %var(v=p_w_newp_ge1_age1549);
 
-%var(v=p_ep);
+%var(v=p_ep);  %var(v= s_cost_prep); %var(v=s_cost_prep_visit);
 
 
 data   wide_outputs; merge 
@@ -169,7 +169,7 @@ p_vl1000_art_12m p_vl1000_art_12m_onart
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep
 prop_onprep_newpge1 prop_onprep_newpge2 prop_onprep_newpge3
 p_m184m_all  p_k65m_all  incidence_onprep  p_m_newp_ge1_age1549  p_w_newp_ge1_age1549  p_ep
-
+s_cost_prep s_cost_prep_visit
 ;
 
 proc contents; run;
