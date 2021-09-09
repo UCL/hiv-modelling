@@ -171,7 +171,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 100000; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -13172,7 +13172,7 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_1
 
 *Discounting from year_i + 1 (ie when j = ((year_i - 1989) x 4)) + 1); * 3%;  * dependent_on_time_step_length ;  
 discount = 1;
-if caldate&j ge &year_interv+1 then discount = 1/(1.03**(caldate&j-(&year_interv+1)));
+if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
 
 
 
@@ -15227,6 +15227,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 * procs;
 
 /*
+
 
 proc print; var caldate&j
 age tested_bp_tm1  tested_bp hypertension max_sbp sbp sbp_m_tm1  sbp_m   on_anti_hypertensive   diagnosed_hypertension  visit_hypertension 
@@ -25640,19 +25641,19 @@ data r1; set a;
 
 
 data x; set cum_l1;
-
+/*
 file "/home/rmjllob/Scratch/_out_vmmc_25_06_21_20r_&dataset_id";  
  
 
 
 put   
  
-/*
+
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
-
+*/
 
 
 
@@ -25660,7 +25661,7 @@ put
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 keep
 
-*/
+
 
 
 
