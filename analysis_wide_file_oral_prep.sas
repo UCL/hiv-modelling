@@ -1261,7 +1261,7 @@ run;
 proc logistic  data=wide  ;
 class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w sw_trans_matrix ;
 model ce_500_x = 
-sex_beh_trans_matrix_m  ;
+sw_trans_matrix ;
 run;
 
 

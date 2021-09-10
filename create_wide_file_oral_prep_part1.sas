@@ -60,7 +60,7 @@ s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 s_iime_  s_pime_  
 s_death_hiv  s_death_hiv_m s_death_hiv_w s_death_hivrel_allage s_death_dcause3_allage  s_dead_allage  s_covid  s_death_hivrel_allage 
 s_give_birth_with_hiv  s_birth_with_inf_child  s_pregnant_ntd  s_pregnant_oth_dol_adv_birth_e s_primary1549m s_primary1549 
 s_primary  s_ageg2529w s_ageg3034w  s_ageg3539w  s_ageg4044w  s_ageg4549w  s_vlg1000_tams_ontld  s_x_n_zld_if_reg_op_116 s_onart_gt6m_iicu 
-inc_death_rate_aids_disrup_covid 
+inc_death_rate_aids_disrup_covid higher_future_prep_cov higher_newp_with_lower_adhav
 
 dataset     m15r    m25r    m35r    m45r    m55r    w15r    w25r    w35r    w45r    w55r    sex_beh_trans_matrix_m   
 sex_beh_trans_matrix_w     sex_age_mixing_matrix_m    sex_age_mixing_matrix_w   p_rred_p   p_hsb_p    newp_factor   eprate    conc_ep    ch_risk_diag  
@@ -1025,7 +1025,7 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy 
+prep_strategy higher_future_prep_coverage
 
 eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
 eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   
@@ -1045,7 +1045,7 @@ rate_lost   prob_lost_art   rate_return   rate_restart   rate_int_choice
 clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh  
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
 red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
-prob_return_adc   higher_newp_less_engagement  
+prob_return_adc   higher_newp_less_engagement  higher_newp_with_lower_adhav
 fold_tr fold_tr_newp  switch_for_tox   adh_pattern_prep    base_rate_sw  
 
 condom_incr_year_i     		 incr_test_year_i              decr_hard_reach_year_i   
