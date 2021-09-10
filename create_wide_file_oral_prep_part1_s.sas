@@ -1,10 +1,9 @@
 
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\tld_prep";
-  libname b "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
+  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
 
 
-data d1 ; set a.sample_submitted ; 
+data d1 ; set a.oral_prep_2s_stage0 ; 
 
 
 keep 
@@ -1072,7 +1071,7 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  eff_adh_
 
 proc sort data=y;by run option;run;
 
-data b.oral_prep_s;
+data a.oral_prep_2s;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
