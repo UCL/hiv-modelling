@@ -1233,10 +1233,10 @@ prop_elig_on_prep_21_26_2
 
 
 proc logistic  data=wide  ;
+class sex_beh_trans_matrix_m;
 output out = out predicted=predicted;
 model ce_500_x = 
-prevalence_vg1000_21
-p_mcirc_1549m_21
+sex_beh_trans_matrix_m
 ;
 run;
 

@@ -1048,7 +1048,7 @@ proc freq; tables icer_2 ; run;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.02 <= prevalence_vg1000_21 < 0.03 ; 
+* where 0.03 <= prevalence_vg1000_21 < 5.03 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where  0.2 <= incidence1549_21     ;
@@ -1069,6 +1069,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where incidence1549w_21 > 0.16  ;
 * where p_inf_newp_21 < 0.62  ;
 * where reg_option_104 = 1;
+* where sex_beh_trans_matrix_m in (1 2 3 4 5 6 7 8 9 10 15);
 run; 
   ods html close;
 
@@ -1251,11 +1252,17 @@ res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4ris
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
 zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_efficacy fold_tr_newp
-reg_option_104 sw_trans_matrix
+reg_option_104 sw_trans_matrix 
 / selection = stepwise  ;
 run;
 
 
+
+proc logistic  data=wide  ;
+class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w sw_trans_matrix ;
+model ce_500_x = 
+sex_beh_trans_matrix_m  ;
+run;
 
 
 *
