@@ -607,6 +607,36 @@ if cald=2013.5 then do;                          o_prev1524w_Z_anc_garcpr=0.098;
 if cald=2012.5 then o_prev_Z_anc_Cowan=0.126;
 if cald=2014.5 then o_prev_Z_anc_Cowan=0.136;
 
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
+if cald=2000.5 then do; o_prev1519w_Z_anc=0.256; o_prev2024w_Z_anc=0.322; o_prev2529w_Z_anc=0.371; 
+						o_prev3034w_Z_anc=0.414; o_prev3539w_Z_anc=0.295; o_prev4044w_Z_anc=0.119;
+						o_prev4549w_Z_anc=; 
+						o_prev1549w_Z_anc=0.325;end;
+if cald=2001.5 then do; o_prev1519w_Z_anc=0.196; o_prev2024w_Z_anc=0.290; o_prev2529w_Z_anc=0.366; 
+						o_prev3034w_Z_anc=0.402; o_prev3539w_Z_anc=0.310; o_prev4044w_Z_anc=0.231;
+						o_prev4549w_Z_anc=0.182; 
+						o_prev1549w_Z_anc=0.295;end;
+if cald=2002.5 then do; o_prev1519w_Z_anc=0.191; o_prev2024w_Z_anc=0.290; o_prev2529w_Z_anc=0.385; 
+						o_prev3034w_Z_anc=0.374; o_prev3539w_Z_anc=0.364; o_prev4044w_Z_anc=0.239;
+						o_prev4549w_Z_anc=0.143; 
+						o_prev1549w_Z_anc=0.296;end;
+if cald=2004.5 then do; o_prev1519w_Z_anc=0.137; o_prev2024w_Z_anc=0.241; o_prev2529w_Z_anc=0.308; 
+						o_prev3034w_Z_anc=0.304; o_prev3539w_Z_anc=0.284; o_prev4044w_Z_anc=0.172;
+						o_prev4549w_Z_anc=0.318; 
+						o_prev1549w_Z_anc=0.239;end;
+if cald=2006.5 then do; o_prev1519w_Z_anc=0.085; o_prev2024w_Z_anc=0.156; o_prev2529w_Z_anc=0.249; 
+						o_prev3034w_Z_anc=0.256; o_prev3539w_Z_anc=0.230; o_prev4044w_Z_anc=0.190;
+						o_prev4549w_Z_anc=0.187; 
+						o_prev1549w_Z_anc=0.181;end;
+if cald=2009.5 then do; o_prev1519w_Z_anc=0.07; o_prev2024w_Z_anc=0.141; o_prev2529w_Z_anc=0.203; 
+						o_prev3034w_Z_anc=0.250; o_prev3539w_Z_anc=0.249; o_prev4044w_Z_anc=0.203;
+						o_prev4549w_Z_anc=0.2; 
+						o_prev1549w_Z_anc=0.164;end;
+if cald=2012.5 then do; o_prev1519w_Z_anc=0.041; o_prev2024w_Z_anc=0.053; o_prev2529w_Z_anc=0.667; 
+						o_prev3034w_Z_anc=0.736; o_prev3539w_Z_anc=0.740; o_prev4044w_Z_anc=0.595;
+						o_prev4549w_Z_anc=0.12; 
+						o_prev1549w_Z_anc=0.059;end;
+
 
 
 *** General population;
@@ -669,12 +699,12 @@ reported in Hogan et al. 2012 for HIV prevalence age 15-49 in 2006.
 For 2011 and for the prevalence 15-24, we applied the same relative increase/decrease as for the estimate for 
 prevalence 15-49 in 2005-06;
 
-if cald=2006 then do; 
 
+if cald=2006 then do; 
 ***Lower and upper limits reported in DHS 2010-2011, page 218;
-	o_prev1549_Z_DHS=0.181; ;o_prev1549_ll_Z_DHS=0.169; o_prev1549_ul_Z_DHS=0.193; 
-	o_prev1549m_Z_DHS=0.145;;o_prev1549m_ll_Z_DHS=0.132;o_prev1549m_ul_Z_DHS=0.159; 
-	o_prev1549w_Z_DHS=0.211;;o_prev1549w_ll_Z_DHS=0.196;o_prev1549w_ul_Z_DHS=0.226;
+	o_prev1549_Z_DHS=0.181; o_prev1549_ll_Z_DHS=0.169; o_prev1549_ul_Z_DHS=0.193; 
+	o_prev1549m_Z_DHS=0.145;o_prev1549m_ll_Z_DHS=0.132;o_prev1549m_ul_Z_DHS=0.159; 
+	o_prev1549w_Z_DHS=0.211;o_prev1549w_ll_Z_DHS=0.196;o_prev1549w_ul_Z_DHS=0.226;
 
 	o_prev1519_Z_DHS=0.046; o_prev1519m_Z_DHS=0.031; o_prev1519w_Z_DHS=0.062;
 	o_prev2024_Z_DHS=0.116; o_prev2024m_Z_DHS=0.058; o_prev2024w_Z_DHS=0.163;
@@ -699,6 +729,9 @@ if cald=2006 then do;
 
 end;
 
+
+
+
 *Source: DHS 2010-2011, Page 218;
 
 if cald=2011 then do; 
@@ -706,7 +739,7 @@ if cald=2011 then do;
 	o_prev1549m_Z_DHS=0.123;o_prev1549w_ll_Z_DHS=0.113;o_prev1549w_ul_Z_DHS=0.133;
 	o_prev1549w_Z_DHS=0.177;o_prev1549w_ll_Z_DHS=0.166;o_prev1549w_ul_Z_DHS=0.188;
 
-	o_prev1519_Z_DHS=0.038; o_prev1519m_Z_DHS=0.034; o_prev1519w_Z_DHS=0.042;
+	o_prev1519_Z_DHS=0.038; o_prev1519m_Z_DHS=0.033;*0.034; o_prev1519w_Z_DHS=0.042;
 	o_prev2024_Z_DHS=0.075; o_prev2024m_Z_DHS=0.038; o_prev2024w_Z_DHS=0.106;
 	o_prev2529_Z_DHS=0.158; o_prev2529m_Z_DHS=0.103; o_prev2529w_Z_DHS=0.201;
 	o_prev3034_Z_DHS=0.237; o_prev3034m_Z_DHS=0.173; o_prev3034w_Z_DHS=0.290;
@@ -727,6 +760,7 @@ if cald=2011 then do;
 	o_prev2549m_Z_DHS=0.166; o_prev2549w_Z_DHS=0.253;
 	o_prev50plm_Z_DHS=0.194; o_prev50plw_Z_DHS=0.296;
 end;
+
 
 ***LBM Update Jan 2017 - DHS 2015;
 if cald=2015.75 then do; 
@@ -759,9 +793,9 @@ if cald=2015 then o_prev1549_CIA=0.147;
 *Zimphia 2015-2016;
 
 if cald=2016.25 then do;
-o_prev_1549_zimphia=0.140;o_prev_1549_ll_zimphia=0.133;o_prev_1549_ul_zimphia=0.147;
-o_prev_1549m_zimphia=0.112;o_prev_1549m_ll_zimphia=0.104;o_prev_1549m_ul_zimphia=0.121;
-o_prev_1549w_zimphia=0.166;o_prev_1549f_ll_zimphia=0.158;o_prev_1549f_ul_zimphia=0.174;
+o_prev_1549_zimphia=0.134;*0.140;o_prev_1549_ll_zimphia=0.133;o_prev_1549_ul_zimphia=0.147;*Modified based on Isac;
+o_prev_1549m_zimphia=0.107;*0.112;o_prev_1549m_ll_zimphia=0.104;o_prev_1549m_ul_zimphia=0.121;
+o_prev_1549w_zimphia=0.159;*0.166;o_prev_1549f_ll_zimphia=0.158;o_prev_1549f_ul_zimphia=0.174;
 o_prev_1564m_zimphia=0.124;o_prev_1564m_ll_zimphia=0.115;o_prev_1564m_ul_zimphia=0.132;
 o_prev_1564w_zimphia=0.167;o_prev_1564f_ll_zimphia=0.160;o_prev_1564f_ul_zimphia=0.174;
 end;
@@ -769,23 +803,29 @@ end;
 ***LBM Update Jan2017;
 *Age-gender-specific rates
 *Source:	PHIV-age-specific-prevalence-viralsuppression_2016-12-08;
+*I have not checked the CI using data from Isaac;
 if cald=2016.25 then do;
-o_prev_1519m_zimphia=0.03;o_prev_1519m_ll_zimphia=0.02;o_prev_1519m_ul_zimphia=0.04;
-o_prev_2024m_zimphia=0.03;o_prev_2024m_ll_zimphia=0.02;o_prev_2024m_ul_zimphia=0.04;
-o_prev_2529m_zimphia=0.07;o_prev_2529m_ll_zimphia=0.05;o_prev_2529m_ul_zimphia=0.08;
-o_prev_3034m_zimphia=0.13;o_prev_3034m_ll_zimphia=0.10;o_prev_3034m_ul_zimphia=0.15;
-o_prev_3539m_zimphia=0.20;o_prev_3539m_ll_zimphia=0.17;o_prev_3539m_ul_zimphia=0.23;
-o_prev_4044m_zimphia=0.26;o_prev_4044m_ll_zimphia=0.23;o_prev_4044m_ul_zimphia=0.30;
-o_prev_4549m_zimphia=0.29;o_prev_4549m_ll_zimphia=0.24;o_prev_4549m_ul_zimphia=0.33;
+o_prev_1519m_zimphia=0.032;o_prev_1519m_ll_zimphia=0.02;o_prev_1519m_ul_zimphia=0.04;
+o_prev_2024m_zimphia=0.027;o_prev_2024m_ll_zimphia=0.02;o_prev_2024m_ul_zimphia=0.04;
+o_prev_2529m_zimphia=0.066;o_prev_2529m_ll_zimphia=0.05;o_prev_2529m_ul_zimphia=0.08;
+o_prev_3034m_zimphia=0.122;o_prev_3034m_ll_zimphia=0.10;o_prev_3034m_ul_zimphia=0.15;
+o_prev_3539m_zimphia=0.194;o_prev_3539m_ll_zimphia=0.17;o_prev_3539m_ul_zimphia=0.23;
+o_prev_4044m_zimphia=0.254;o_prev_4044m_ll_zimphia=0.23;o_prev_4044m_ul_zimphia=0.30;
+o_prev_4549m_zimphia=0.281;o_prev_4549m_ll_zimphia=0.24;o_prev_4549m_ul_zimphia=0.33;
 
-o_prev_1519w_zimphia=0.04;o_prev_1519w_ll_zimphia=0.03;o_prev_1519w_ul_zimphia=0.05;
-o_prev_2024w_zimphia=0.09;o_prev_2024w_ll_zimphia=0.07;o_prev_2024w_ul_zimphia=0.10;
-o_prev_2529w_zimphia=0.15;o_prev_2529w_ll_zimphia=0.13;o_prev_2529w_ul_zimphia=0.17;
+o_prev_5054m_zimphia=0.28;
+o_prev_5559m_zimphia=0.244;
+
+
+o_prev_1519w_zimphia=0.039;o_prev_1519w_ll_zimphia=0.03;o_prev_1519w_ul_zimphia=0.05;
+o_prev_2024w_zimphia=0.081;o_prev_2024w_ll_zimphia=0.07;o_prev_2024w_ul_zimphia=0.10;
+o_prev_2529w_zimphia=0.143;o_prev_2529w_ll_zimphia=0.13;o_prev_2529w_ul_zimphia=0.17;
 o_prev_3034w_zimphia=0.22;o_prev_3034w_ll_zimphia=0.20;o_prev_3034w_ul_zimphia=0.24;
-o_prev_3539w_zimphia=0.27;o_prev_3539w_ll_zimphia=0.24;o_prev_3539w_ul_zimphia=0.29;
-o_prev_4044w_zimphia=0.30;o_prev_4044w_ll_zimphia=0.27;o_prev_4044w_ul_zimphia=0.33;
-o_prev_4549w_zimphia=0.29;o_prev_4549w_ll_zimphia=0.26;o_prev_4549w_ul_zimphia=0.32;
-
+o_prev_3539w_zimphia=0.266;o_prev_3539w_ll_zimphia=0.24;o_prev_3539w_ul_zimphia=0.29;
+o_prev_4044w_zimphia=0.296;o_prev_4044w_ll_zimphia=0.27;o_prev_4044w_ul_zimphia=0.33;
+o_prev_4549w_zimphia=0.289;o_prev_4549w_ll_zimphia=0.26;o_prev_4549w_ul_zimphia=0.32;
+o_prev_5054w_zimphia=0.21;
+o_prev_5559w_zimphia=0.17;
 end;
 
 ***LBM Update Jan 2017;
@@ -798,6 +838,56 @@ https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryrep
 if cald=2010.5 then o_prev_1549_garpr=0.151;
 if cald=2019.5 then o_prev_1549_garpr=0.128;
 if cald=2025.5 then o_prev_1549_garpr=0.104;*less than 10.4%;
+
+
+*Essential & optional data for MIHPSA;
+if cald in (2006 2011) then do;
+o_prev1549_Z_ess=o_prev1549_Z_DHS;   o_prev1549_ll_Z_ess=o_prev1549_ll_Z_DHS;   o_prev1549_ul_Z_ess=o_prev1549_ul_Z_DHS; 
+o_prev1549m_Z_ess=o_prev1549m_Z_DHS; o_prev1549m_ll_Z_ess=o_prev1549m_ll_Z_DHS; o_prev1549m_ul_Z_ess=o_prev1549m_ul_Z_DHS; 
+o_prev1549w_Z_ess=o_prev1549w_Z_DHS; o_prev1549w_ll_Z_ess=o_prev1549w_ll_Z_DHS; o_prev1549w_ul_Z_ess=o_prev1549w_ul_Z_DHS; 
+
+o_prev1519m_Z_ess=o_prev1519m_Z_DHS; o_prev1519w_Z_ess=o_prev1519w_Z_DHS;
+o_prev2024m_Z_ess=o_prev2024m_Z_DHS; o_prev2024w_Z_ess=o_prev2024w_Z_DHS;
+
+o_prev2529m_Z_ess=o_prev2529m_Z_DHS; o_prev2529w_Z_ess=o_prev2529w_Z_DHS;
+o_prev3034m_Z_ess=o_prev3034m_Z_DHS; o_prev3034w_Z_ess=o_prev3034w_Z_DHS;
+o_prev3539m_Z_ess=o_prev3539m_Z_DHS; o_prev3539w_Z_ess=o_prev3539w_Z_DHS;
+o_prev4044m_Z_ess=o_prev4044m_Z_DHS; o_prev4044w_Z_ess=o_prev4044w_Z_DHS;
+o_prev4549m_Z_ess=o_prev4549m_Z_DHS; o_prev4549w_Z_ess=o_prev4549w_Z_DHS;
+
+o_prev5054m_Z_ess=o_prev5054m_Z_DHS;
+end;
+if cald=2016.25 then do;
+o_prev1549_Z_ess=o_prev_1549_zimphia;   o_prev_1549_ll_ess=o_prev_1549_ll_zimphia; o_prev_1549_ul_ess=o_prev_1549_ul_zimphia;
+o_prev1549m_Z_ess=o_prev_1549m_zimphia; o_prev_1549m_ll_ess=o_prev_1549m_ll_zimphia; o_prev_1549m_ul_ess=o_prev_1549m_ul_zimphia;
+o_prev1549w_Z_ess=o_prev_1549w_zimphia; o_prev_1549w_ll_ess=o_prev_1549w_ll_zimphia; o_prev_1549w_ul_ess=o_prev_1549w_ul_zimphia;
+
+o_prev_1519m_ess=o_prev_1519m_zimphia; o_prev_1519m_ll_ess=o_prev_1519m_ll_zimphia; o_prev_1519m_ul_ess=o_prev_1519m_ul_zimphia;
+o_prev_2024m_ess=o_prev_2024m_zimphia; o_prev_2024m_ll_ess=o_prev_2024m_ll_zimphia; o_prev_2024m_ul_ess=o_prev_2024m_ul_zimphia;
+o_prev_2529m_ess=o_prev_2529m_zimphia; o_prev_2529m_ll_ess=o_prev_2529m_ll_zimphia; o_prev_2529m_ul_ess=o_prev_2529m_ul_zimphia;
+o_prev_3034m_ess=o_prev_3034m_zimphia; o_prev_3034m_ll_ess=o_prev_3034m_ll_zimphia; o_prev_3034m_ul_ess=o_prev_3034m_ul_zimphia;
+o_prev_3539m_ess=o_prev_3539m_zimphia; o_prev_3539m_ll_ess=o_prev_3539m_ll_zimphia; o_prev_3539m_ul_ess=o_prev_3539m_ul_zimphia;
+o_prev_4044m_ess=o_prev_4044m_zimphia; o_prev_4044m_ll_ess=o_prev_4044m_ll_zimphia; o_prev_4044m_ul_ess=o_prev_4044m_ul_zimphia;
+o_prev_4549m_ess=o_prev_4549m_zimphia; o_prev_4549m_ll_ess=o_prev_4549m_ll_zimphia; o_prev_4549m_ul_ess=o_prev_4549m_ul_zimphia;
+
+o_prev_5054m_ess=o_prev_5054m_zimphia;
+o_prev_5559m_ess=o_prev_5559m_zimphia;
+
+o_prev_1519w_ess=o_prev_1519w_zimphia; o_prev_1519w_ll_ess=o_prev_1519w_ll_zimphia; o_prev_1519w_ul_ess=o_prev_1519w_ul_zimphia;
+o_prev_2024w_ess=o_prev_2024w_zimphia; o_prev_2024w_ll_ess=o_prev_2024w_ll_zimphia; o_prev_2024w_ul_ess=o_prev_2024w_ul_zimphia;
+o_prev_2529w_ess=o_prev_2529w_zimphia; o_prev_2529w_ll_ess=o_prev_2529w_ll_zimphia; o_prev_2529w_ul_ess=o_prev_2529w_ul_zimphia;
+o_prev_3034w_ess=o_prev_3034w_zimphia; o_prev_3034w_ll_ess=o_prev_3034w_ll_zimphia; o_prev_3034w_ul_ess=o_prev_3034w_ul_zimphia;
+o_prev_3539w_ess=o_prev_3539w_zimphia; o_prev_3539w_ll_ess=o_prev_3539w_ll_zimphia; o_prev_3539w_ul_ess=o_prev_3539w_ul_zimphia;
+o_prev_4044w_ess=o_prev_4044w_zimphia; o_prev_4044w_ll_ess=o_prev_4044w_ll_zimphia; o_prev_4044w_ul_ess=o_prev_4044w_ul_zimphia;
+o_prev_4549w_ess=o_prev_4549w_zimphia; o_prev_4549w_ll_ess=o_prev_4549w_ll_zimphia; o_prev_4549w_ul_ess=o_prev_4549w_ul_zimphia;
+
+o_prev_5054w_ess=o_prev_5054w_zimphia;
+o_prev_5559w_ess=o_prev_5559w_zimphia;
+
+end;
+
+
+
 
 
 
@@ -1778,23 +1868,58 @@ if cald=2015.75 then do;o_s_onart_adults_garpr = 817722; o_s_onart_adults_ll = 7
 if cald=2019.75 then do;o_s_onart_adults_garpr = 1149191;end;
 
 
+
+
+*Source: "Zimbabwe data.xls" sent by David Wilson
+		  Also reported in "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
+         (Slide 4&5 in Zim_ePMS Data Completeness.ppt);
+
+*In this presentation they reported "Private ART Study (2014) revealed that private sector Pharmacies reported a total of 
+96,607 ART clients  whilst Surgeries and Clinics reported 4,524 active ART clients";
+
+*NOTE: David wilson indicated the number of people on 2nd line as subsequent lines but on the presentation these are indicated as number of people on 2nd line
+and it says "Number of Patients on 3rd-line ART are will be collected (from Parirenyatwa Group of Hospitals, Harare Hospital, Newlands Clinic & Mpilo Central Hospital) and shared in the next presentation. ";
+
+if cald=2004.75 then do; o_s_all_on1stline_NAC = 10890;  o_s_all_2ndline_NAC = 110;   o_s_all_onart_MoH = 11000;  end;
+if cald=2005.75 then do; o_s_all_on1stline_NAC = 25608;  o_s_all_2ndline_NAC = 259;   o_s_all_onart_NAC = 25867;  end;
+
+if cald=2006.75 then do; o_s_all_on1stline_NAC = 59705;  o_s_all_2ndline_NAC = 603;   o_s_all_onart_NAC = 60308;  end;
+if cald=2007.75 then do; o_s_all_on1stline_NAC = 98911;  o_s_all_2ndline_NAC = 999;   o_s_all_onart_NAC = 99910;  end;
+if cald=2008.75 then do; o_s_all_on1stline_NAC = 147720; o_s_all_2ndline_NAC = 1493;  o_s_all_onart_NAC = 149213; end;
+if cald=2009.75 then do; o_s_all_on1stline_NAC = 219056; o_s_all_2ndline_NAC = 2213;  o_s_all_onart_NAC = 221269; end;
+if cald=2010.75 then do; o_s_all_on1stline_NAC = 359628; o_s_all_2ndline_NAC = 3633;  o_s_all_onart_NAC = 363261; end;
+if cald=2011.75 then do; o_s_all_on1stline_NAC = 474962; o_s_all_2ndline_NAC = 9693;  o_s_all_onart_NAC = 484655; end;
+if cald=2012.75 then do; o_s_all_on1stline_NAC = 554362; o_s_all_2ndline_NAC = 11313; o_s_all_onart_NAC = 565675; end;
+if cald=2013.75 then do; o_s_all_on1stline_NAC = 647601; o_s_all_2ndline_NAC = 17598; o_s_all_onart_NAC = 665199; end;
+if cald=2014.75 then do; o_s_all_on1stline_NAC = 767134; o_s_all_2ndline_NAC = 20846; o_s_all_onart_NAC = 787980; end;
+if cald=2015.5  then do; o_s_all_on1stline_NAC = 831584; o_s_all_2ndline_NAC = 22597; o_s_all_onart_NAC = 854181; end;*Up to Sept 2015;
+
+
+
 ***LBM Update Mar 2017;
 *  Tsitsi Apollo, received 23rd Feb 2017 'Zim_Adults on ART by gender';
-if cald=2004.5 then do;	o_s_allmale_onart_NAC = 4857;   o_s_allfemale_onart_NAC = 6143; 	o_s_all_onart_NAC=11000; end;
-if cald=2005.5 then do;	o_s_allmale_onart_NAC = 11305;  o_s_allfemale_onart_NAC = 14562;	o_s_all_onart_NAC=25867; end;
-if cald=2006.5 then do;	o_s_allmale_onart_NAC = 25184;  o_s_allfemale_onart_NAC = 28448;	o_s_all_onart_NAC=53632; end;
-if cald=2007.5 then do;	o_s_allmale_onart_NAC = 33235;  o_s_allfemale_onart_NAC = 56854;	o_s_all_onart_NAC=90089; end;
-if cald=2008.5 then do;	o_s_allmale_onart_NAC = 47210;  o_s_allfemale_onart_NAC = 87513;	o_s_all_onart_NAC=134723;end;
-if cald=2009.5 then do;	o_s_allmale_onart_NAC = 72571;  o_s_allfemale_onart_NAC = 127059; 	o_s_all_onart_NAC=199630;end;
-if cald=2010.5 then do;	o_s_allmale_onart_NAC = 117261; o_s_allfemale_onart_NAC = 213118;	o_s_all_onart_NAC=330379;end;
-if cald=2011.5 then do;	o_s_allmale_onart_NAC = 161627; o_s_allfemale_onart_NAC = 283036;	o_s_all_onart_NAC=444663;end;
-if cald=2012.5 then do;	o_s_allmale_onart_NAC = 188595; o_s_allfemale_onart_NAC = 330206;	o_s_all_onart_NAC=518801;end;
-if cald=2013.5 then do;	o_s_allmale_onart_NAC = 226291; o_s_allfemale_onart_NAC = 392589;	o_s_all_onart_NAC=618880;end;
-if cald=2014.5 then do;	o_s_allmale_onart_NAC = 264614; o_s_allfemale_onart_NAC = 468305; 	o_s_all_onart_NAC=732919;end;
-if cald=2015.5 then do;	o_s_allmale_onart_NAC = 301650; o_s_allfemale_onart_NAC = 516557;	o_s_all_onart_NAC=818207;end;
+* "all refers to adults";
+if cald=2004.75 then do;	o_s_allmale_onart_NAC = 4857;   o_s_allfemale_onart_NAC = 6143; 	o_s_all_onart_NAC=11000; end;
+if cald=2005.75 then do;	o_s_allmale_onart_NAC = 11305;  o_s_allfemale_onart_NAC = 14562;	o_s_all_onart_NAC=25867; end;
+if cald=2006.75 then do;	o_s_allmale_onart_NAC = 25184;  o_s_allfemale_onart_NAC = 28448;	o_s_all_onart_NAC=53632; end;
+if cald=2007.75 then do;	o_s_allmale_onart_NAC = 33235;  o_s_allfemale_onart_NAC = 56854;	o_s_all_onart_NAC=90089; end;
+if cald=2008.75 then do;	o_s_allmale_onart_NAC = 47210;  o_s_allfemale_onart_NAC = 87513;	o_s_all_onart_NAC=134723;end;
+if cald=2009.75 then do;	o_s_allmale_onart_NAC = 72571;  o_s_allfemale_onart_NAC = 127059; 	o_s_all_onart_NAC=199630;end;
+if cald=2010.75 then do;	o_s_allmale_onart_NAC = 117261; o_s_allfemale_onart_NAC = 213118;	o_s_all_onart_NAC=330379;end;
+if cald=2011.75 then do;	o_s_allmale_onart_NAC = 161627; o_s_allfemale_onart_NAC = 283036;	o_s_all_onart_NAC=444663;end;
 
+if cald=2012.75 then do;	o_s_allmale_onart_NAC = 188595; o_s_allfemale_onart_NAC = 330206;	o_s_all_onart_NAC=518801;end;
+if cald=2013.75 then do;	o_s_allmale_onart_NAC = 226291; o_s_allfemale_onart_NAC = 392589;	o_s_all_onart_NAC=618880;end;
+if cald=2014.75 then do;	o_s_allmale_onart_NAC = 264614; o_s_allfemale_onart_NAC = 468305; 	o_s_all_onart_NAC=732919;end;
+if cald=2015.75 then do;	o_s_allmale_onart_NAC = 301650; o_s_allfemale_onart_NAC = 516557;	o_s_all_onart_NAC=818207;end;
 
-
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,
+from 2012 they are listed as well in this excel spreadhsett and they correspond;
+if cald=2016.75 the o_s_all_onart_NAC=909508;
+if cald=2017.75 the o_s_all_onart_NAC=1051790;
+if cald=2018.75 the o_s_all_onart_NAC=1086674;
+if cald=2019.75 the o_s_all_onart_NAC=1087360;
+if cald=2020.75 the o_s_all_onart_NAC=1128432;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
@@ -1858,34 +1983,6 @@ if cald=2016.5 then  o_s_onart_adults_jm=853544;
 ***Total number of people living with HIV receiving ART (Jan 2004-Sept2015)
    Number of people on first-line and on second line;
 
-*Source: "Zimbabwe data.xls" sent by David Wilson
-		  Also reported in "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
-         (Slide 4&5 in Zim_ePMS Data Completeness.ppt);
-
-*In this presentation they reported "Private ART Study (2014) revealed that private sector Pharmacies reported a total of 
-96,607 ART clients  whilst Surgeries and Clinics reported 4,524 active ART clients";
-
-*NOTE: David wilson indicated the number of people on 2nd line as subsequent lines but on the presentation these are indicated as number of people on 2nd line
-and it says "Number of Patients on 3rd-line ART are will be collected (from Parirenyatwa Group of Hospitals, Harare Hospital, Newlands Clinic & Mpilo Central Hospital) and shared in the next presentation. ";
-
-if cald=2004.75 then do; o_s_all_on1stline_NAC = 10890;  o_s_all_2ndline_NAC = 110;   o_s_all_onart_MoH = 11000;  end;
-if cald=2005.75 then do; o_s_all_on1stline_NAC = 25608;  o_s_all_2ndline_NAC = 259;   o_s_all_onart_NAC = 25867;  end;
-
-if cald=2006.75 then do; o_s_all_on1stline_NAC = 59705;  o_s_all_2ndline_NAC = 603;   o_s_all_onart_NAC = 60308;  end;
-if cald=2007.75 then do; o_s_all_on1stline_NAC = 98911;  o_s_all_2ndline_NAC = 999;   o_s_all_onart_NAC = 99910;  end;
-if cald=2008.75 then do; o_s_all_on1stline_NAC = 147720; o_s_all_2ndline_NAC = 1493;  o_s_all_onart_NAC = 149213; end;
-if cald=2009.75 then do; o_s_all_on1stline_NAC = 219056; o_s_all_2ndline_NAC = 2213;  o_s_all_onart_NAC = 221269; end;
-if cald=2010.75 then do; o_s_all_on1stline_NAC = 359628; o_s_all_2ndline_NAC = 3633;  o_s_all_onart_NAC = 363261; end;
-if cald=2011.75 then do; o_s_all_on1stline_NAC = 474962; o_s_all_2ndline_NAC = 9693;  o_s_all_onart_NAC = 484655; end;
-if cald=2012.75 then do; o_s_all_on1stline_NAC = 554362; o_s_all_2ndline_NAC = 11313; o_s_all_onart_NAC = 565675; end;
-if cald=2013.75 then do; o_s_all_on1stline_NAC = 647601; o_s_all_2ndline_NAC = 17598; o_s_all_onart_NAC = 665199; end;
-if cald=2014.75 then do; o_s_all_on1stline_NAC = 767134; o_s_all_2ndline_NAC = 20846; o_s_all_onart_NAC = 787980; end;
-if cald=2015.5  then do; o_s_all_on1stline_NAC = 831584; o_s_all_2ndline_NAC = 22597; o_s_all_onart_NAC = 854181; end;*Up to Sept 2015;
-
-
-*National ART Programme data (March, 2016) cited in "Zimbabwe HIV treatment cascade_15.07.2016.ppt 
-presented by Tsitsi Apollo at AIDS conference in Durban;
-if cald=2016.25 then o_s_all_onart_NAC = 891621;
 
 ***Number of adults on second line ART;
 *Source: Email on 19June2015 to Andrew Phillips from Joseph Murungu referencing National Logistics Management Information System
@@ -2212,6 +2309,15 @@ if cald=2009 then o_p_switch2nd_17mart_Mutasa=0.104;
 
 
 ***Virological success
+*% of public sector ART patients who are virally suppressed at a threshold of <1000 RNA copies/ml, 6 months after ART initiation
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021
+referencing https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf;
+if cald=2018.5 then o_p_vll1000_6mart_garcpr=0.85;
+if cald=2019.5 then o_p_vll1000_6mart_garcpr=0.82;
+if cald=2020.5 then o_p_vll1000_6mart_garcpr=0.889;
+
+
+
 ***Virological rebound
 ***Virological failure
 *Currently no data but check old observed file to see what % to look for;
@@ -2479,24 +2585,36 @@ if cald = 2011.5 then obs_s_new_mcirc=36603;
 ***LBM Update Sep 2016;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3
 		 Numbers calcuated by adding up >15 year olds;
+*Updated using HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
 if cald = 2009.5  then obs_s_new_mcirc=2784 ;
-if cald = 2010.5  then obs_s_new_mcirc=9384;
-if cald = 2011.5  then obs_s_new_mcirc=27971 ;
-if cald = 2012.5  then obs_s_new_mcirc=29625;
-if cald = 2013.5  then obs_s_new_mcirc=65613 ;
-if cald = 2014.5  then obs_s_new_mcirc=111369;
-if cald = 2015.5  then obs_s_new_mcirc=146105 ;
+if cald = 2010.5  then obs_s_new_mcirc=9381;*9384;  *slightly updated based on Isaac;
+if cald = 2011.5  then obs_s_new_mcirc=27973;*27971;*slightly updated based on Isaac;
+if cald = 2012.5  then obs_s_new_mcirc=29321;*29625;*slightly updated based on Isaac;
+if cald = 2013.5  then obs_s_new_mcirc=65679;*65613;*slightly updated based on Isaac;
+
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
+if cald = 2014.5  then obs_s_new_mcirc=110163;
+if cald = 2015.5  then obs_s_new_mcirc=133012;
+if cald = 2016.5  then obs_s_new_mcirc=136986;
+if cald = 2017.5  then obs_s_new_mcirc=159476;
+if cald = 2018.5  then obs_s_new_mcirc=197705;
+if cald = 2019.5  then obs_s_new_mcirc=207375;
+if cald = 2020.5  then obs_s_new_mcirc=53743;
+
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 22;
 *Note: the age range is not indicated so probably all ages;
-if cald = 2013.5  then obs_s_new_mcirc=112084;
-if cald = 2014.5  then obs_s_new_mcirc=209125;
-if cald = 2015.5  then obs_s_new_mcirc=188732;
-if cald = 2016.5  then obs_s_new_mcirc=205784;
-if cald = 2017.5  then obs_s_new_mcirc=301366;
-if cald = 2018.5  then obs_s_new_mcirc=326012;
-if cald = 2019.5  then obs_s_new_mcirc=354819;
+if cald = 2013.5  then obs_s_new_mcirc_all=112084;
+if cald = 2014.5  then obs_s_new_mcirc_all=209125;
+if cald = 2015.5  then obs_s_new_mcirc_all=188732;
+if cald = 2016.5  then obs_s_new_mcirc_all=205784;
+if cald = 2017.5  then obs_s_new_mcirc_all=301366;
+if cald = 2018.5  then obs_s_new_mcirc_all=326012;
+if cald = 2019.5  then obs_s_new_mcirc_all=354819;
+
+
+
 
 
 *** Cumulative number of males circumcised according to national standards;
@@ -2542,6 +2660,12 @@ if cald=2015.75 then do;
 	o_circ_3039m=0.116;
 	o_circ_4049m=0.104;
 end;
+
+***Proportion of men aged 15+ who report that they have been circumcised (household surveys) - MIHPSA optional;
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
+if cald=2006   then o_p_circ_15pl=0.105;
+if cald=2010.5 then o_p_circ_15pl=0.091;
+if cald=2016   then o_p_circ_15pl=0.143;
 
 
 

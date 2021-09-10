@@ -2,16 +2,18 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\base_zim_a_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_1_out\";
 
   data g;    set b.out: ;
 
 
 proc sort data=g; 
 by run cald option;run;
+/*proc freq;table cald;run;*/
+*500 simulation 66500 observations, from 1980 to 2021.75;
 
 
-* calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
+* calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
 data sf;
 
 set g ;
@@ -842,9 +844,9 @@ prevalence3034m 	prevalence3539w 	  prevalence3539m 	  prevalence4044w 	 prevale
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
 prevalence1524w prevalence1524m  prevalence_sw  r_prev_sex_1549  prevalence_hiv_preg
 r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
-r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
-r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
-r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
+r_prev_4044w_4549w r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
+r_prev_1519m_4549w r_prev_2024m_4549w r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w 
+r_prev_4044m_4549w r_prev_4549m_4549w r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1549 incidence1564 incidence1549w  incidence1549m  p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive p_inf_primary 
 p_sw_newinf p_w1524_newinf p_w25ov_newinf p_m1524_newinf p_m25ov_newinf mtct_prop
 p_diag p_diag_m p_diag_w p_ai_no_arv_c_nnm prop_sw_newp0  t_sw_newp
@@ -988,7 +990,7 @@ data a.l_base_zim; set y;
 ;
 
 
-
+*arrivata qua: re-run from here and check that it is ok;
 
 data y; set a.l_base_zim; 
 
@@ -1118,7 +1120,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
-%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
+*%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
 %var(v=incidence2534w);   %var(v=incidence2534m) ; %var(v=incidence3544w);   %var(v=incidence3544m) ;%var(v=incidence4554w);   %var(v=incidence4554m) ;
 %var(v=incidence5564w);   %var(v=incidence5564m) ;
 %var(v=incidence_sw);
@@ -1166,7 +1168,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prevalence1524w);  %var(v=prevalence1524m);  %var(v=prevalence2549w);  %var(v=prevalence2549m);  %var(v=prevalence_sw); 
 ;
 
-
+*arrivata qua;
 
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
@@ -1181,7 +1183,7 @@ prevalence2529w  prevalence2529m  prevalence3034w prevalence3034m  prevalence353
 prevalence4044w  prevalence4044m  prevalence4549w prevalence4549m  
 prevalence5054w prevalence5054m prevalence5559w prevalence5559m prevalence6064w prevalence6064m prevalence65plw prevalence65plm
 prevalence_vg1000  incidence1549  prevalence1524w prevalence1524m   prevalence_sw  r_prev_sex_1549 prevalence_hiv_preg
-r_prev_1519w_4549w r_prev_2024w_4549w r_prev_2529w_4549w r_prev_3034w_4549w r_prev_3539w_4549w 	
+r_prev_1519w_4549w /*r_prev_2024w_4549w r_prev_2529w_4549w*/ r_prev_3034w_4549w r_prev_3539w_4549w 	
 r_prev_4044w_4549w  r_prev_5054w_4549w r_prev_5559w_4549w r_prev_6064w_4549w r_prev_65plw_4549w 
 r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_prev_3539m_4549w r_prev_4044m_4549w r_prev_4549m_4549w
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
@@ -1530,7 +1532,7 @@ data q1; set a.w_base_zim;
 *Source for:
 - number on ART in 2015: Tsitsi Apollo, received 23rd Feb 2017 Zim_Adults on ART by gender
 - prevalence1549 ZIMPHIA Zimbabwe;
-if n_onart_15 < 818207 and 0.13 <= prevalence1549_16 < 0.15;
+if n_onart_15 < 818207 and 0.13 <= prevalence1549_15 < 0.15;
 
 run_keep = run;
 
