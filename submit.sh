@@ -1,11 +1,11 @@
 #!/bin/bash -l
 inputdir="${HOME}"
 tmpfiles="out"
-combinedsas="combined_data"
-runs="100"
-jobname="hivmodel"
-model="hiv_synthesis.sas"
-clock="h_rt=08:00:00"
+combinedsas="mihpsa_zim_1"
+runs="500"
+jobname="mihpsa_zim_1"
+model="hiv_synthesis_zim.sas"
+clock="h_rt=05:00:00"
 account="HIVSynthMod"
 
 while getopts a:i:o:r:j:m:c:t: flag
@@ -41,6 +41,6 @@ echo "clock is set to: $clock";
 echo "using SAS HIV model file: $model";
 echo "job is run on account: $account";
 qsub -N $jobname -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
-qsub -hold_jid $jobname -N concatenate -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/concatenate.sh 
-
+qsub -hold_jid $jobname -N concatenate -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles 
+$inputdir/concatenate.sh 
 
