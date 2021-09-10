@@ -1,8 +1,8 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
+libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_e_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\base_zim_a_out\";
 
   data g;    set b.out: ;
 
@@ -18,7 +18,9 @@ set g ;
 
 if cald=2021.25;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = (19000000 * 0.57) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+sf_2021 = (15117400 * 0.581) / s_alive;  
+*Source for Zimbabwe population is https://www.worldometers.info/world-population/zimbabwe-population/ accessed 6/9/2021;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
 keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
@@ -976,7 +978,7 @@ n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w pre
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_mlw; set y;  
+data a.l_base_zim; set y;  
 
 *
 
@@ -988,7 +990,7 @@ data a.l_base_mlw; set y;
 
 
 
-data y; set a.l_base_mlw; 
+data y; set a.l_base_zim; 
 
 /*
 if cald = 2017;
@@ -1332,7 +1334,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_mlw; 
+  data a.w_base_zim; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1341,7 +1343,7 @@ proc sort; by run;run;
 
 ods html;
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
@@ -1368,7 +1370,7 @@ r_prev_6064m_4549w_95 r_prev_65plm_4549w_95  p_age1549_hivneg_95 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1396,7 +1398,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1426,7 +1428,7 @@ run;
 
 
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1467,7 +1469,7 @@ n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21
 ;
 run;
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1493,7 +1495,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base_mlw n p50 p5 p95 mean;
+proc means data=a.w_base_zim n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1524,9 +1526,11 @@ ods html close;
 
 
 
-data q1; set a.w_base_mlw;
-
-if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12;
+data q1; set a.w_base_zim;
+*Source for:
+- number on ART in 2015: Tsitsi Apollo, received 23rd Feb 2017 Zim_Adults on ART by gender
+- prevalence1549 ZIMPHIA Zimbabwe;
+if n_onart_15 < 818207 and 0.13 <= prevalence1549_16 < 0.15;
 
 run_keep = run;
 
@@ -1565,7 +1569,7 @@ run;
 
 
 
-data a.l_base_keep_mlw; merge a.l_base_mlw q1 ; by run;
+data a.l_base_keep_zim; merge a.l_base_zim q1 ; by run;
 
 if run_keep ne .;
 

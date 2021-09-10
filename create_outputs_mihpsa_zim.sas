@@ -24,7 +24,9 @@ set g ;
 
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = (19000000 * 0.57) / s_alive;  * 57% of malawi population in 2019 >= age 15 ;
+sf_2021 = (15117400 * 0.581) / s_alive;  
+*Source for Zimbabwe population is https://www.worldometers.info/world-population/zimbabwe-population/ accessed 6/9/2021;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
 keep run sf_2021;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
