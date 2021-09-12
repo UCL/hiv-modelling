@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep" ;
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
 
 data d; set a.oral_prep_2s_stage0  ;
 
@@ -174,6 +174,7 @@ dcost_cascade_interventions = s_dcost_cascade_interventions * sf_2021 * discount
 dcost_prep = s_dcost_prep * sf_2021* discount_adj * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * sf_2021* discount_adj * 4 / 1000; 			   
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf_2021* discount_adj * 4 / 1000; 
+
 
 * note this below can be used if outputs are from program beyond 1-1-20;
 * dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * sf_2021 * discount_adj * 4 / 1000;
