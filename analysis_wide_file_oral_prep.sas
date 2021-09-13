@@ -2,10 +2,12 @@
 * note using tld_prep runs;
   libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep";
 
-  
+data d8 ; set a.wide_oral_prep_8    ; d8r=0;  
+data d8r; set a.wide_oral_prep_8r    ;  d8r=1;  
 
 data wide;  
-  set a.wide_oral_prep_7    ;  
+set d8 d8r;
+*   set a.wide_oral_prep_8    ;  
 
   
 /*
@@ -81,6 +83,13 @@ dcost_circ_21_71_2  +
 dcost_condom_dn_21_71_2  +      
 dcost_child_hiv_21_71_2  +      
 dcost_non_aids_pre_death_21_71_2 ; 
+
+
+/*
+* considering adjustment to discounting;
+dcost_21_71_1 = dcost_21_71_1 / 1.06 ;
+dcost_21_71_2 = dcost_21_71_2 / 1.06 ;
+*/
 
 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
@@ -1234,8 +1243,7 @@ prop_elig_on_prep_21_26_2
 proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 
-prevalence_vg1000_21
-p_mcirc_1549m_21
+d8r
 ;
 run;
 
