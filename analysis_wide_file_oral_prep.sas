@@ -2,12 +2,8 @@
 * note using tld_prep runs;
   libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep";
 
-data d8 ; set a.wide_oral_prep_8    ; d8r=0;  
-data d8r; set a.wide_oral_prep_8r    ;  d8r=1;  
-
 data wide;  
-set d8 d8r;
-*   set a.wide_oral_prep_8    ;  
+ set a.wide_oral_prep_8rrr    ;  
 
   
 /*
@@ -1243,7 +1239,6 @@ prop_elig_on_prep_21_26_2
 proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 
-d8r
 ;
 run;
 

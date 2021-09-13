@@ -1,7 +1,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_8r_out";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_8rrr_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
@@ -1090,7 +1090,7 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_8r   ;
+data a.oral_prep_8rrr   ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
