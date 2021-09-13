@@ -113,3 +113,10 @@ if __name__ == "__main__":
     for name, count in c.items():
         if count > 1:
             print(f"{name}")
+    print()
+
+    sums_not_kept = set(all_sum_variables) - all_vars[0]
+    if sums_not_kept:
+        print("The following sum variables are not stored:")
+        for var in sums_not_kept:
+            print(var)
