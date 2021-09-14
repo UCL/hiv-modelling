@@ -4,14 +4,15 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 ***20 reps;
 
 data b;
-set a.wide_vmmc_25_06_21_1pm_20r;
-proc freq;table run;run;
+set a.wide_vmmc_25_06_21_1pm_20r_F;
+if prevalence1549_21 lt 0.01 then delete;
+proc freq;table run ;run;
 
 
 data c;
 set b;  
 
-*if run> 684173784 then delete;*keep 500 runs;
+*if run >=  906625371 then delete;*keep 100 runs;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
@@ -135,7 +136,7 @@ proc univariate;var d_n_vmmc_21_26_1 d_n_vmmc_21_41_1 d_n_vmmc_21_71_1;run;
 
 /*lowart;nnt_21_26_1; nnt_21_26_1=149205; nnt_21_41_1=39185; nnt_21_71_1=15674;*/
 
-*base/5% disc/120/60;nnt_21_26_1=122907; nnt_21_41_1=32456; nnt_21_71_1=12984;
+*base/5% disc/120/60;nnt_21_26_1=139049; nnt_21_41_1=36549; nnt_21_71_1=14620;
 
 
 if d_n_new_inf_21_26_1 gt 0 then nnt_21_26_1 = d_n_vmmc_21_26_1 / d_n_new_inf_21_26_1;
@@ -161,7 +162,7 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 */
 
 ***Change the below to reflect which cost/discount is being applied;
-*base;cost_inf_avert_21_26_1= 11.3*1000000; cost_inf_avert_21_41_1= 2.4*1000000; cost_inf_avert_21_71_1 = 1.1*1000000;
+*base;cost_inf_avert_21_26_1= 12.2*1000000; cost_inf_avert_21_41_1= 3.1*1000000; cost_inf_avert_21_71_1 = 1.6*1000000;
 /*60;cost_inf_avert_21_26_1= 9.6*1000000; cost_inf_avert_21_41_1= 3.0*1000000; cost_inf_avert_21_71_1 = 4.4*1000000;*/
 /*120;cost_inf_avert_21_26_1= 16.8*1000000; cost_inf_avert_21_41_1= 4.7*1000000; cost_inf_avert_21_71_1 = 4.5*1000000;*/
 /*5% disc;cost_inf_avert_21_26_1= 12.3*1000000; cost_inf_avert_21_41_1= 3.7*1000000; cost_inf_avert_21_71_1 = 3.6*1000000;*/
@@ -176,9 +177,9 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=11.3*1000000;
-cost_daly_avert_21_41_1_adults=2.4*1000000;
-cost_daly_avert_21_71_1_adults=1.1*1000000;
+cost_daly_avert_21_26_1_adults=12.2*1000000;
+cost_daly_avert_21_41_1_adults=3.1*1000000;
+cost_daly_avert_21_71_1_adults=1.6*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
