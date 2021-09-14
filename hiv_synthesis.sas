@@ -121,6 +121,9 @@ One  row of data defined, containing  parameter values that remain fixed for the
 
 data z;
 
+* for reproducing a run;
+call streaminit(5);
+
 run = rand('uniform')*1000000000;  run=round(run,1);
 										   
 dataset_id=trim(left(run));
@@ -985,6 +988,8 @@ drop i;
 
 data r1; set r1;
 
+* for reproducing a run;
+call streaminit(10);
 
 %sample_uniform(gender, 1 2);
 
@@ -16546,6 +16551,9 @@ end;
 drop i;
 
 data r&da2; merge r&da1 s   ;
+
+* for reproducing a run;
+call streaminit(&e);
 
 * these variables below need creating so that can use t_ version in main code and then use s_ in the sum statments - sum statements need the sum
 variable not to exist in the data set;
