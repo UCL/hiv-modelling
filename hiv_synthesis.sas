@@ -4924,7 +4924,7 @@ end;
 * risk of infected partner per new partner;
 nip=0;
 if risk_nippnp*newp > 0 then do;
-	nip = min(ranpoi(0,risk_nippnp*newp),newp);
+	nip = min(rand('poisson',risk_nippnp*newp),newp);
 end;
 
 
@@ -5039,7 +5039,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
                 g=rand('uniform');
-                if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
 				g=rand('uniform');
@@ -5212,7 +5212,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
                 g=rand('uniform');
-                if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
 				g=rand('uniform');
