@@ -130,14 +130,14 @@ caldate1=1989;
 caldate_never_dot=1989;
 
 * these used after year_interv - code is here so value the same for all people;
-_u1 = uniform(0); _u2 = uniform(0); _u3 = uniform(0); _u4 = uniform(0); _u5 = uniform(0);  _u6 = uniform(0); _u7 = uniform(0); _u8 = uniform(0);
-_u9 = uniform(0); _u10 = uniform(0); _u11 = uniform(0); _u12 = uniform(0); _u13 = uniform(0); _u14 = uniform(0); _u15 = uniform(0); _u16 = uniform(0);
-_u17 = uniform(0); _u18 = uniform(0); _u19 = uniform(0); _u20 = uniform(0); _u21 = uniform(0); _u22 = uniform(0); _u23 = uniform(0); _u24 = uniform(0);
-_u25 = uniform(0); _u26 = uniform(0); _u27 = uniform(0); _u28 = uniform(0); _u29 = uniform(0); _u30 = uniform(0); _u31 = uniform(0); _u32 = uniform(0);
-_u33 = uniform(0); _u34 = uniform(0); _u35 = uniform(0); _u36 = uniform(0); _u37 = uniform(0); _u38 = uniform(0); _u39 = uniform(0); _u40 = uniform(0);
-_u41 = uniform(0); _u42 = uniform(0); _u43 = uniform(0); _u44 = uniform(0); _u45 = uniform(0); _u46 = uniform(0); _u47 = uniform(0); _u48 = uniform(0);
-_u49 = uniform(0); _u50 = uniform(0); _u51 = uniform(0); _u52 = uniform(0); _u53 = uniform(0); _u54 = uniform(0); _u55 = uniform(0); _u56 = uniform(0);
-_u57 = uniform(0); _u58 = uniform(0); _u59 = uniform(0); _u60 = uniform(0); _u61 = uniform(0); _u62 = uniform(0); _u63 = uniform(0); _u64 = uniform(0);
+_u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
+_u9 = rand('uniform'); _u10 = rand('uniform'); _u11 = rand('uniform'); _u12 = rand('uniform'); _u13 = rand('uniform'); _u14 = rand('uniform'); _u15 = rand('uniform'); _u16 = rand('uniform');
+_u17 = rand('uniform'); _u18 = rand('uniform'); _u19 = rand('uniform'); _u20 = rand('uniform'); _u21 = rand('uniform'); _u22 = rand('uniform'); _u23 = rand('uniform'); _u24 = rand('uniform');
+_u25 = rand('uniform'); _u26 = rand('uniform'); _u27 = rand('uniform'); _u28 = rand('uniform'); _u29 = rand('uniform'); _u30 = rand('uniform'); _u31 = rand('uniform'); _u32 = rand('uniform');
+_u33 = rand('uniform'); _u34 = rand('uniform'); _u35 = rand('uniform'); _u36 = rand('uniform'); _u37 = rand('uniform'); _u38 = rand('uniform'); _u39 = rand('uniform'); _u40 = rand('uniform');
+_u41 = rand('uniform'); _u42 = rand('uniform'); _u43 = rand('uniform'); _u44 = rand('uniform'); _u45 = rand('uniform'); _u46 = rand('uniform'); _u47 = rand('uniform'); _u48 = rand('uniform');
+_u49 = rand('uniform'); _u50 = rand('uniform'); _u51 = rand('uniform'); _u52 = rand('uniform'); _u53 = rand('uniform'); _u54 = rand('uniform'); _u55 = rand('uniform'); _u56 = rand('uniform');
+_u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = rand('uniform'); _u61 = rand('uniform'); _u62 = rand('uniform'); _u63 = rand('uniform'); _u64 = rand('uniform');
 
 
 * start of epidemic;
@@ -162,8 +162,8 @@ newp_seed = 7;
 * inc_cat; 					%sample_uniform(inc_cat, 1:4);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
-* p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
-* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
 
@@ -179,7 +179,7 @@ newp_seed = 7;
 							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
 							* dependent_on_time_step_length ;
 
-* prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.06 + r*0.05;  
+* prob_pregnancy_base;  	r=rand('uniform'); prob_pregnancy_base=0.06 + r*0.05;  
 							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 							if inc_cat = 4 then prob_pregnancy_base = prob_pregnancy_base / 2.00 ;
@@ -209,7 +209,7 @@ newp_seed = 7;
 								0.05 	0.05 	0.8 	0.05	0.05);
 
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
-* eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
+* eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
@@ -220,10 +220,10 @@ newp_seed = 7;
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
 * rate_exp_set_lower_p_vl1000;	
-							r=uniform(0); if r < 0.20 then do; 
+							r=rand('uniform'); if r < 0.20 then do; 
 								exp_setting_lower_p_vl1000 = 1; * exposure to hiv in an external setting where p_vl1000 is lower - during short term out migration followed by return; 
-								external_exp_factor = 1 + uniform(0); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
-								rate_exp_set_lower_p_vl1000 = uniform(0) * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
+								external_exp_factor = 1 + rand('uniform'); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
+								rate_exp_set_lower_p_vl1000 = rand('uniform') * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
 							end;
 							else do;
 								exp_setting_lower_p_vl1000 = 0; 
@@ -485,16 +485,16 @@ newp_seed = 7;
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
 								0.05	0.55	0.10	0.10	0.10	0.05	0.05);
-* red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(normal(0)*0.5),.01);			
+* red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
-* red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
+* red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
 							* reduced adherence in those with toxicity;
-* add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(normal(0)*0.30),.01);	
+* add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* altered_adh_sec_line_pop; altered_adh_sec_line_pop = round(0.05 +(normal(0)*0.05),.01); 
+* altered_adh_sec_line_pop; altered_adh_sec_line_pop = round(0.05 +(rand('normal')*0.05),.01); 
 							* better adherence on second line (pi);
 * adh_effect_of_meas_alert; %sample(adh_effect_of_meas_alert, 0.35 0.70 0.90, 0.15 0.7 0.15); 
-* poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * normal(0)),1);	
+* poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * AP 19-7-19 ;
@@ -526,8 +526,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;	
-* cd4_monitoring;			r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
-* red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(normal(0)*0.5),.01);
+* cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
+* red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
 * rr_int_tox ;				%sample_uniform(rr_int_tox, 2 10 30);
 * greater_tox_zdv;			%sample_uniform(greater_tox_zdv, 0 1 2);
@@ -1122,20 +1122,20 @@ end;
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
-e=uniform(0);
-if 0.0 <= e < inc1    then age=-68+uniform(0)*13;   
-if inc1 <= e < cum2   then age=-55+uniform(0)*10;  
-if cum2 <= e < cum3   then age=-45+uniform(0)*10;  
-if cum3 <= e < cum4   then age=-35+uniform(0)*10;  
-if cum4 <= e < cum5   then age=-25+uniform(0)*10;  
-if cum5 <= e < cum6   then age=-15+uniform(0)*10;  
-if cum6 <= e < cum7   then age=-5+uniform(0)*10;  
-if cum7 <= e < cum8   then age=  5+uniform(0)*10;  
-if cum8 <= e < cum9   then age= 15+uniform(0)*10;  
-if cum9 <= e < cum10  then age= 25+uniform(0)*10;  
-if cum10 <= e < cum11  then age= 35+uniform(0)*10;  
-if cum11 <= e < cum12  then age= 45+uniform(0)*10;  
-if cum12 <= e          then age= 55+uniform(0)*10;  
+e=rand('uniform');
+if 0.0 <= e < inc1    then age=-68+rand('uniform')*13;   
+if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-25+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-15+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-5+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=  5+rand('uniform')*10;  
+if cum8 <= e < cum9   then age= 15+rand('uniform')*10;  
+if cum9 <= e < cum10  then age= 25+rand('uniform')*10;  
+if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
+if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
+if cum12 <= e          then age= 55+rand('uniform')*10;  
 
 
 age =round(age ,.25);
@@ -1147,17 +1147,17 @@ if age  >= year_start;
 hiv =0;
 
 if gender=2 and age >=15 then do;
-	if 15 <= age  < 25 then do;u=uniform(0);
+	if 15 <= age  < 25 then do;u=rand('uniform');
 		if       .   lt u lt 0.72 then cum_children=0;else if 0.72 le u lt 0.93 then cum_children=1;
 		else if 0.93 le u lt 0.99 then cum_children=2;else if 0.99 le u le 1     then cum_children=3;
 	end;
-	else if 25 <= age  < 35 then do;u=uniform(0);
+	else if 25 <= age  < 35 then do;u=rand('uniform');
 		if       .   lt u lt 0.25 then cum_children=0;else if 0.25 le u lt 0.55 then cum_children=1;
 		else if 0.55 le u lt 0.81 then cum_children=2;else if 0.81 le u lt 0.93 then cum_children=3;
 		else if 0.93 le u lt 0.98 then cum_children=4;else if 0.98 le u lt 0.99 then cum_children=5;
 		else if 0.99 le u lt 1    then cum_children=6;
 	end;
-	else if 35 <= age  < 45 then do;u=uniform(0);
+	else if 35 <= age  < 45 then do;u=rand('uniform');
 		if       .   lt u lt 0.11 then cum_children=0;else if 0.11 le u lt 0.24 then cum_children=1;
 		else if 0.24 le u lt 0.50 then cum_children=2;else if 0.50 le u lt 0.71 then cum_children=3;
 		else if 0.71 le u lt 0.85 then cum_children=4;else if 0.85 le u lt 0.92 then cum_children=5;
@@ -1165,7 +1165,7 @@ if gender=2 and age >=15 then do;
 		else if 0.98 le u lt 0.99 then cum_children=8;else if 0.99 le u lt 1    then cum_children=10;
 
 	end;
-	else if 45 <= age       then do;u=uniform(0);
+	else if 45 <= age       then do;u=rand('uniform');
 		if       .   lt u lt 0.11 then cum_children=0;else if 0.11 le u lt 0.21 then cum_children=1;
 		else if 0.21 le u lt 0.42 then cum_children=2;else if 0.42 le u lt 0.62 then cum_children=3;
 		else if 0.62 le u lt 0.76 then cum_children=4;else if 0.76 le u lt 0.86 then cum_children=5;
@@ -1182,7 +1182,7 @@ end;
 
 
 
-r=uniform(0);
+r=rand('uniform');
 if gender=2 then life_sex_risk=2; 
 rred_p=1;
 if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
@@ -1263,11 +1263,11 @@ rred= newp_factor * rred_a*rred_p*rred_initial;
 
 
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
-cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=uniform(0);
+cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=rand('uniform');
 if            a < cu1/cu4 then do; newp=0; end; 
-if cu1/cu4 <= a < cu2/cu4  then do; e=uniform(0); if e < 0.70 then newp=1; if 0.70 <= e < 0.90 then newp=2; 
+if cu1/cu4 <= a < cu2/cu4  then do; e=rand('uniform'); if e < 0.70 then newp=1; if 0.70 <= e < 0.90 then newp=2; 
 											if e ge 0.90 then newp=3; end;
-if cu2/cu4 <= a < cu3/cu4 then do; e=uniform(0); if e < 0.22 then newp=4; if 0.22 <= e < 0.42 then newp=5; if 0.42 <= e < 0.60 then newp=6; 
+if cu2/cu4 <= a < cu3/cu4 then do; e=rand('uniform'); if e < 0.22 then newp=4; if 0.22 <= e < 0.42 then newp=5; if 0.42 <= e < 0.60 then newp=6; 
 					if 0.60 <= e < 0.76 then newp=7; if 0.76 <= e < 0.90 then newp=8; if 0.90 <= e then newp=9; end;
 if cu3/cu4 <= a < cu4/cu4 then do; if e < 0.22 then newp=10; if 0.22 <= e < 0.42 then newp=15; if 0.42 <= e < 0.60 then newp=20; 
 					if 0.60 <= e < 0.76 then newp=25; if 0.76 <= e < 0.90 then newp=30; if 0.90 <= e then newp=35; end;
@@ -1295,10 +1295,10 @@ rred= newp_factor * rred_a*rred_p*rred_initial;
 
 * newp=0; s1=0.97;* newp = 1-3; s2=0.03;
 s2=s2*rred;
-cu1=s1;cu2=cu1+s2; a=uniform(0);
+cu1=s1;cu2=cu1+s2; a=rand('uniform');
 if            a < cu1/cu2 then newp=0; 
 if cu1/cu2 <= a < cu2/cu2 then do; 
-	e=uniform(0); if e < 0.85 then newp = 1; if 0.85 <= e < 0.95 then newp = 2; if e ge 0.95 then newp = 3; 
+	e=rand('uniform'); if e < 0.85 then newp = 1; if 0.85 <= e < 0.95 then newp = 2; if e ge 0.95 then newp = 3; 
 	if 15 <= age < 25 then do;
 	if e < 0.30 then newp=1; 		if 0.30 <= e < 0.50 then newp=2; 	if 0.50 <= e < 0.65 then newp=3; 
 	if 0.65 <= e < 0.77 then newp=4; 	if 0.77 <= e < 0.86 then newp=5; 	if 0.86 <= e < 0.92 then newp=6; 
@@ -1323,7 +1323,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
-	if uniform(0) < prob_sw_init then sw = 1;
+	if rand('uniform') < prob_sw_init then sw = 1;
 end;
 
 age_deb_sw=.;
@@ -1331,18 +1331,18 @@ age_deb_sw=.;
 if sw=1 then do;
 	ever_sw=1;
 
-	u=uniform(0);
-	date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
+	u=rand('uniform');
+	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
 	age_deb_sw= age - (1989-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
-	a=uniform(0);if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
+	a=rand('uniform');if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
 
-	e=uniform(0);
+	e=rand('uniform');
 	if e < 0.1 then newp=0;
-	else if 0.1 <= e < 0.5 then do; q=uniform(0);
+	else if 0.1 <= e < 0.5 then do; q=rand('uniform');
 		if         q < 0.7  then newp=1;
 		if 0.7  <= q < 0.8  then newp=2;
 		if 0.8  <= q < 0.9  then newp=3;
@@ -1357,7 +1357,7 @@ if sw = 1 then do;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
-		newp = round(newp_lower + uniform(0) * (newp_higher - newp_lower), 1);
+		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
 	end;
 	if age > 30 then newp = min(30,newp);
 end;
@@ -1369,12 +1369,12 @@ end;
 
 
 if 15 <= age < 65 then do; ep =0; ageg_ep=0; epmono=0; end;
-u=uniform(0);
-if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
-if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=uniform(0); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
+u=rand('uniform');
+if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
+if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=rand('uniform'); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
 
 if newp ge 1 then ever_newp=1;
 if ep=1 then ever_ep=1;
@@ -1394,7 +1394,7 @@ if age < 15 then do; ep=.; epi=.; np=.; newp=.; epmono=.; end;
 epi=.;
 
 sti =0;
-s=uniform(0); if s < newp/20 then sti=1;
+s=rand('uniform'); if s < newp/20 then sti=1;
 
 dead=0;
 dcause = . ; * can be who4_=1 / liver=2 / CVD=3 / drug death=4 / other=5 ( or 1=HIV - 2 = non-HIV in simpler version);
@@ -1423,10 +1423,10 @@ prevalence3544m = . ;  prevalence4554m = . ;  prevalence5564m = . ;   prevalence
 
 * co-infection with hep B and C - currently assume no change over calendar time in proportion co-infected
 with B or C and also that no new infections during HIV infection;
-d=uniform(0);
+d=rand('uniform');
 hcv=0;
 if d < 0.02 then hcv=1;
-e=uniform(0);
+e=rand('uniform');
 hbv=0;
 if e < 0.03 then hbv=1;
 
@@ -1465,7 +1465,7 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 
-u=uniform(0);low_preg_risk=0;
+u=rand('uniform');low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
@@ -1549,7 +1549,7 @@ if adh_pattern=1 then do;
 
 *adherence pattern 1;
 *formerly #100 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.02 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; end;
@@ -1566,7 +1566,7 @@ if adh_pattern=2 then do;
 
 *adherence pattern 2;
 *formerly #1 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; end;
@@ -1583,7 +1583,7 @@ if adh_pattern=3 then do;
 
 *adherence pattern 3;  
 *formerly #105 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.12 <= e < 0.20 then do; adhav = 0.9  ; adhvar=0.06; end;
@@ -1600,7 +1600,7 @@ if adh_pattern=4 then do;
 
 *adherence pattern 4;
 *formerly #2 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.15 <= e < 0.42 then do; adhav = 0.90 ; adhvar=0.06; end;
@@ -1617,7 +1617,7 @@ if adh_pattern=5 then do;
 
 * adherence pattern 5 ;
 *formerly #3 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; end;
 if 0.30 <= e < 0.42 then do; adhav = 0.9 ;  adhvar=0.06; end;
@@ -1634,7 +1634,7 @@ if adh_pattern=6 then do;
 
 * adherence pattern 6 ;
 *formerly #4 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.40 <= e < 0.80 then do; adhav = 0.9 ;  adhvar=0.06; end;
@@ -1649,7 +1649,7 @@ if adh_pattern=7 then do;
 
 * adherence pattern 7 ;
 *formerly #5 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');f=rand('uniform');
 if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
 if 0.60 <= e < 0.70 then do; adhav = 0.70;  adhvar=0.06; end;
@@ -1666,10 +1666,10 @@ end;
 * assume first measure of high vl leads to adh intervention with possible 6m or permanent increase in adherence - no additional effect after the 
 first measure of any type ;
 
-h=uniform(0); 
+h=rand('uniform'); 
 
 * person level effect of viral load high alert on adherence (and probability of restarting if interrupted art);
-a=uniform(0);
+a=rand('uniform');
 v_alert_perm_incr_adh=0;  v_alert_6m_incr_adh=0;
 if h <  adh_effect_of_meas_alert then do;
 	if a < 0.4 then v_alert_perm_incr_adh = 1; 
@@ -1679,13 +1679,13 @@ end;
 
 * ALTERED ADHERENCE SECOND LINE;
 
-altered_adh_sec_line = altered_adh_sec_line_pop * exp(normal(0)*1.0);  altered_adh_sec_line = round(altered_adh_sec_line,0.01);
+altered_adh_sec_line = altered_adh_sec_line_pop * exp(rand('normal')*1.0);  altered_adh_sec_line = round(altered_adh_sec_line,0.01);
 
 * effect of tox on adherence differs by individual;
-red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_tox,.01); 
+red_adh_tox = red_adh_tox_pop * exp(rand('normal')*0.3); red_adh_tox=round(red_adh_tox,.01); 
 
 * effect of multi_pill on adherence differs by individual;
-red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
+red_adh_multi_pill = red_adh_multi_pill_pop * exp(rand('normal')*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
 if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
@@ -1695,7 +1695,7 @@ if adh_pattern_prep=4 then adhav_prep = adhav*0.70;
 
 
 * willingness to take prep if offered;
-r1=uniform(0); prep_willing = 0; if r1 < prepuptake_pop then prep_willing =1;
+r1=rand('uniform'); prep_willing = 0; if r1 < prepuptake_pop then prep_willing =1;
 
 hiv=0;
 nip=0;
@@ -1713,13 +1713,13 @@ dead_tm1=0;
 mcirc =0;birth_circ=0;
 
 if  gender=1 and age gt 0.25 then do;
-h = uniform(0); 
+h = rand('uniform'); 
 if h < prob_birth_circ then do;mcirc =1;birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
 end;
 
 
-p=uniform(0); q=uniform(0);
+p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -1727,13 +1727,13 @@ if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then
 covid_disrup_extent = 1.0 ;
 
 covid_disrup_affected = 0;
-if covid_disrup_extent = 0.2 then do; w=uniform(0); if w < 0.2 then covid_disrup_affected = 1; end;
-if covid_disrup_extent = 0.5 then do; w=uniform(0); if w < 0.5 then covid_disrup_affected = 1; end;
-if covid_disrup_extent = 1   then do; w=uniform(0); if w <= 1.0 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 0.2 then do; w=rand('uniform'); if w < 0.2 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 0.5 then do; w=rand('uniform'); if w < 0.5 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_disrup_affected = 1; end;
 
 option=.;
 
-dataset_id=trim(left(round(uniform(0)*1000000)));
+dataset_id=trim(left(round(rand('uniform')*1000000)));
 call symput('dataset_id',dataset_id);
 
 
@@ -1913,15 +1913,15 @@ if 2005.5 <= caldate{t} then do;
 	hiv_monitoring_strategy = 2; 
 end;  * few facilities measuring cd4 early on;
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str_4  then art_initiation_strategy=4;  
 * dependent_on_time_step_length ; 
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str_9  then art_initiation_strategy=9;  
 * dependent_on_time_step_length ; 
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
 * dependent_on_time_step_length ; 
 
@@ -1932,18 +1932,18 @@ if caldate{t} = 2015 then eff_sw_program=sw_program;
 
 if eff_sw_program=1 and sw=1 then do;
 
-if sw_program_visit=0 then do; e=uniform(0);
+if sw_program_visit=0 then do; e=rand('uniform');
 	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
 		sw_program_visit=1 ; 
 		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
 
-		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
+		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
+		s= rand('uniform'); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
 		if prep_willing=1 then eff_rate_test_startprep=1;
 		eff_rate_choose_stop_prep=0.05;
 		eff_prob_prep_restart_choice=0.7;
@@ -1952,7 +1952,7 @@ if sw_program_visit=0 then do; e=uniform(0);
 	end;
 end; 
 
-else if sw_program_visit=1 then do; e=uniform(0);
+else if sw_program_visit=1 then do; e=rand('uniform');
 	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
 		sw_program_visit=0 ; 
 		date_last_sw_prog_vis=caldate{t};
@@ -1996,7 +1996,7 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 end;
 
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then art_initiation_strategy=3;  
 * dependent_on_time_step_length ;
 
@@ -2079,7 +2079,7 @@ if	higher_future_prep_cov=1 then do;
 						incr_prepuptake_pop_year_i = 0;  
 						if _u36 < 0.95 then do; 
 							incr_prepuptake_pop_year_i = 1; 
-							r= uniform(0); if r < 0.8 and prep_willing = 0 then prep_willing = 1;
+							r= rand('uniform'); if r < 0.8 and prep_willing = 0 then prep_willing = 1;
 						end;	
 
 * prep_strategy;
@@ -2264,7 +2264,7 @@ who may be dead and hence have caldate{t} missing;
 
 * can add in potential changes in policy after year_interv here -  set specific 'year_i' variables to '1' and specify proportion of
   runs for which the option should take place;
-	/*E.g. u=uniform(0); if u<0.90 then incr_test_year_i=1;*/
+	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
 
 	if option = 0 then do;  
@@ -2284,7 +2284,7 @@ end;
 if decr_hard_reach_year_i = 1 then do;
 	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.75; 
 	if hard_reach=1 then do;
-		e = uniform(0); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
+		e = rand('uniform'); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
 	end; 
 end;
 
@@ -2322,7 +2322,7 @@ end;
 if incr_adh_year_i = 1 then do;
 	if adhav < 0.8 then do; 
 		if _u4 < 0.5 then e_incr_adh_year_i = 0.5; if _u4 ge 0.5 then e_incr_adh_year_i = 0.75; 
-		e = uniform(0); if e < e_incr_adh_year_i then adhav = 0.9; 
+		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
 	end;
 end;
 
@@ -2421,7 +2421,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
 * testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
-		e=uniform(0); 
+		e=rand('uniform'); 
 		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
 	end;
 end;	
@@ -2552,7 +2552,7 @@ if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 ***Circumcision at birth;
 new_mcirc=0; 
-u=uniform(0);
+u=rand('uniform');
 if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
 		if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_birth_circ = 0;	
 		if u < prob_birth_circ then do;
@@ -2565,7 +2565,7 @@ end;
 
 
 * circumcision intervention ;
-u_circ=uniform(0);
+u_circ=rand('uniform');
 tested_circ=0;
 
 if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
@@ -2580,7 +2580,7 @@ and age < 50 then do;
 	end;
 
 	if test_link_circ=1 and t ge 2 and tested_tm1=1 and registd_tm1  ne 1 then do;
-		uc=uniform(0); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
+		uc=rand('uniform'); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
 	end;
 	
 	if mcirc=1 then date_mcirc=caldate{t};
@@ -2624,7 +2624,7 @@ age =age  + (1/12);
 
 
 if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
-u=uniform(0); if u < rate_want_no_more_children  then want_no_more_children = 1; * dependent_on_time_step_length ;
+u=rand('uniform'); if u < rate_want_no_more_children  then want_no_more_children = 1; * dependent_on_time_step_length ;
 end;
 
 
@@ -2659,7 +2659,7 @@ end;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=uniform(0); 
+a_sbp=rand('uniform'); 
 	select;
 		when (140 <= sbp < 160) a_sbp = a_sbp / 1.5; 
 		when (160 <= sbp < 180) a_sbp = a_sbp / (1.5**2)  ;
@@ -2670,7 +2670,7 @@ if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
 symp_hypertension=0;
-d=uniform(0);
+d=rand('uniform');
 if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
 if symp_hypertension_tm1 = 1 then symp_hypertension=1;
 if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0; 
@@ -2678,7 +2678,7 @@ if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0;
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
 tested_bp = 0; sbp_m=.; 
 if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
-	e=uniform(0); 
+	e=rand('uniform'); 
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
 	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
 end;
@@ -2691,7 +2691,7 @@ end;
 
 * visits for hypertension while on anti-hypertensive; 
 if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
-e=uniform(0); if e < prob_visit_hypertension then visit_hypertension = 1;
+e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
 end;
 if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
 
@@ -2703,7 +2703,7 @@ if visit_hypertension=1 then tested_bp=1;
 
 * effect of stopping anti-hypertensive on sbp ;
 if on_anti_hypertensive ge 1 then do;
-	z_sbp=uniform(0);
+	z_sbp=rand('uniform');
 	if z_sbp < prob_stop_anti_hypertensive then do; 
 		previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ;
 		date_last_stop_anti_hyp = caldate{t}; 
@@ -2712,7 +2712,7 @@ end;
 
 * initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
 start_anti_hyp_this_per = 0 ; 
-ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);  
+ah=rand('uniform'); i_sbp = rand('uniform');d_sbp=rand('uniform');  t_sbp = rand('uniform');  
 if (visit_hypertension=1 and (sbp_m_tm1 > 140) and diagnosed_hypertension ne 1) then do; 
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
@@ -2739,7 +2739,7 @@ end;
 * intensification of anti-hypertensives;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
 if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
-	e=uniform(0); 
+	e=rand('uniform'); 
 	select; 
 		when (160 <= sbp_m_tm1 < 180) e = e /2; 
 		when (180 <= sbp_m_tm1 < 200) e = e / 4; 
@@ -2757,7 +2757,7 @@ if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
 
 * sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*normal(0)); sbp_m = round(sbp_m, 1);
+if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
 
 hypertension = 0; if sbp > 140 or on_anti_hypertensive ge 1 then hypertension = 1;
 hypertens180 = 0; if sbp > 180 or (on_anti_hypertensive ge 1 and max_sbp > 180) then hypertens180 = 1;
@@ -2816,11 +2816,11 @@ epvls_tm1=epvls;
 * risk of having sti;
 sti_tm1=sti; sti=0;
 if t ge 2 and  sti_tm1=0 then  do; * dependent_on_time_step_length ;
-	d=uniform(0);  if d < (newp_tm1 * rate_sti) then sti=1;
+	d=rand('uniform');  if d < (newp_tm1 * rate_sti) then sti=1;
 end;
 
 if t ge 2 and sti_tm1=1 then  do;
-	d=uniform(0);  if d < (newp_tm1 * eff_rate_persist_sti) then sti=1;
+	d=rand('uniform');  if d < (newp_tm1 * eff_rate_persist_sti) then sti=1;
 end;
 
 
@@ -3371,12 +3371,12 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	* effect of previously having been a sex worker on becoming a sex worker;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
-	e = uniform(0);
+	e = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
 
 	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
 	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
-		r = uniform(0);
+		r = rand('uniform');
 		if r < add_prepuptake_sw then prep_willing = 1;
 	end;
 end;
@@ -3386,7 +3386,7 @@ end;
 
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
-	e=uniform(0);
+	e=rand('uniform');
 	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 6;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 20; 
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 50;
@@ -3414,7 +3414,7 @@ if sw=1 then  ever_sw = 1;
 rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork = rate_stop_sexwork * 3;
 if t ge 2 then do;
 	if sw_tm1=1 then do;
-		d_sw=uniform(0);
+		d_sw=rand('uniform');
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc)) or age ge 50 then do; 
 			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
 			date_last_sw_prog_vis=caldate{t};
@@ -3471,15 +3471,15 @@ if t ge 2 then do;
 	end;
 
 	* transition to a new level with these probabilities and select newp;
-	e = uniform(0);
+	e = rand('uniform');
 	if e < newp_lev1_prob then newp=0;
-	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=uniform(0);
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=rand('uniform');
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=uniform(0); newp = 7 + (q*14); newp = round(newp,1); end;
-	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=uniform(0); newp = 21 + (q*29); newp = round(newp,1); end;
-	else do; q=uniform(0); newp = 51 + (q*100); newp = round(newp,1);  end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 7 + (q*14); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=rand('uniform'); newp = 21 + (q*29); newp = round(newp,1); end;
+	else do; q=rand('uniform'); newp = 51 + (q*100); newp = round(newp,1);  end;
 end;
 
 if age > 30 then newp = min(30,newp);
@@ -3506,64 +3506,64 @@ end;
 if t ge 2 and newp_tm1 = 0 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_1_1 then newp=0;
-	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=uniform(0); 
+	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3; newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 1 <= newp_tm1 <= 6/3 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_2_1 then newp=0;
-	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=uniform(0); 
+	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 7/3 <= newp_tm1 <= 40/3 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_3_1 then newp=0;
-	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
+	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;   
 	end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and  41/3 <= newp_tm1 <= 100/3 then do;
 	if age > 30 then e=e*0.98; * older women cant be in highest category ;
 	if e < sw_newp_lev_4_1 then newp=0;
-	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
+	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3; newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and  100/3 <  newp_tm1 then do;
 	if e < sw_newp_lev_5_1 then newp=0;
-	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
+	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;  
 	end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;
 newp = round(newp,1);  end;
 end;
@@ -3575,24 +3575,24 @@ end;
 
 * Reducing newp for FSW according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-u=uniform(0); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
+u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
-	u=uniform(0); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
+	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
 
 
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
-	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
 
 
 
-e=uniform(0);
+e=rand('uniform');
 if gender=1 then do;
 	if      15 <= age < 25 then do;
 		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); end;
@@ -3638,7 +3638,7 @@ if  ep_tm1=1 and lep=1 and e < (1-(0.25*z)) then ep=1;
 if  ep_tm1=1 and lep=2 and e < (1-(0.05*z)) then ep=1; 
 if  ep_tm1=1 and lep=3 and e < (1-(0.02*z)) then ep=1; 
 
-u=uniform(0);
+u=rand('uniform');
 if       r_ep_mw >  1.2 and gender=2 then u=u/4;
 if 1.1 < r_ep_mw <= 1.2 and gender=2 then u=u/2;
 if 0.8 <= r_ep_mw < 0.9 and gender=1 then u=u/2;
@@ -3651,15 +3651,15 @@ if caldate{t} ge 1995 then u=u/ch_risk_beh_ep;
 * less chance of starting longer term unprotected sex partnership after hiv diagnosis
 in subject; * dependent_on_time_step_length ;
 if ep_tm1=0 and 15 <= age < 25 and u < eprate then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 25 <= age < 35 and u < eprate then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 35 <= age < 45 and u < eprate/2 then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 45 <= age < 55 and u < eprate/3 then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if ep_tm1=0 and 55 <= age < 65 and u < eprate/5 then do;
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
 
 if t ge 2 and newp ge 1 then ever_newp=1;
 if t ge 2 and ep =  1 then ever_ep=1;
@@ -3707,7 +3707,7 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 * OCCURRENCE OF NON-HIV SYMPTOMS THAT LEAD TO TESTING FOR HIV AS PART OF DIAGNOSTIC WORK UP (OR TRIGGERED BY DIAGNOSIS OF TB ETC);
 
 if t ge 2 then do;
-s=uniform(0);   * dependent_on_time_step_length ;
+s=rand('uniform');   * dependent_on_time_step_length ;
 tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
 tested_symptoms_not_hiv =1; tested=1; 
@@ -3747,7 +3747,7 @@ if ep >= 1 then epi=0;
 
 if t ge 2 and ep=1 and epi_tm1 =1 then epi=1;
 
-f=uniform(0);if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
+f=rand('uniform');if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
 
 if t ge 2 and ep_tm1=1 then do;
 	mr_epi=epi_tm1;
@@ -3779,14 +3779,14 @@ if . < d_hiv_epi_mw < -5000 then ep_incidence_factor_w  = ep_incidence_factor_w 
 
 if s_hiv1564 =0 then do; d_hiv_epi_mw=0; d_hiv_epi_wm=0; end;
 
-e=uniform(0);  
+e=rand('uniform');  
 * yes, it is this way around below;
 if gender=1 and ep_incidence_factor_w gt 0 then e=e/ep_incidence_factor_w; 
 if gender=2 and ep_incidence_factor_m gt 0 then e=e/ep_incidence_factor_m;
 
 
 epmono=.;
-s=uniform(0);
+s=rand('uniform');
 if ep=1 then do; epmono=0;
 	if (gender=2 and ((ageg_ep=1 and s < prop_mono_m_1524) or (ageg_ep=2 and s < prop_mono_m_2534) or (ageg_ep=3 and s < prop_mono_m_3544) 
 	or (ageg_ep=4 and s < prop_mono_m_4554) or (ageg_ep=5 and s < prop_mono_m_5564))) or 
@@ -3795,26 +3795,26 @@ if ep=1 then do; epmono=0;
 	if epmono=1 and epi ne 1 then do;
 		if hiv=1 then do;  * rep * dependent_on_time_step_length ;
 
-			if       .  <  vl_tm1 < 2.7 then rep = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));
-			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(0.01*fold_tr)+(0.0025*normal(0))); 
-			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(0.03*fold_tr)+(0.0075*normal(0)));
-			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(0.06*fold_tr)+(0.015*normal(0))); 
-			else if        vl_tm1 >=5.7 then rep = max(0,(0.10*fold_tr)+(0.025*normal(0)));  
-			if primary_tm1 =1 		    then rep = max(0,tr_rate_primary+(0.075*normal(0)));
+			if       .  <  vl_tm1 < 2.7 then rep = max(0,tr_rate_undetec_vl+(0.000025*rand('normal')));
+			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(0.01*fold_tr)+(0.0025*rand('normal'))); 
+			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(0.03*fold_tr)+(0.0075*rand('normal')));
+			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(0.06*fold_tr)+(0.015*rand('normal'))); 
+			else if        vl_tm1 >=5.7 then rep = max(0,(0.10*fold_tr)+(0.025*rand('normal')));  
+			if primary_tm1 =1 		    then rep = max(0,tr_rate_primary+(0.075*rand('normal')));
 
 * ts1m ; * replace lines above with:
 
-*			if       .  <  vl_tm1 < 2.7 then rep = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*normal(0)));
-*			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(( 1 - (1 - 0.01)**(1/3) )*fold_tr)+(0.0025/3*normal(0))); 
-*			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr)+(0.0075/3*normal(0)));
-*			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr)+(0.015/3*normal(0))); 
-*			else if        vl_tm1 >=5.7 then rep = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr)+(0.025/3*normal(0)));  
-*			if primary_tm1 =1 		    then rep = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*normal(0)));
+*			if       .  <  vl_tm1 < 2.7 then rep = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*rand('normal')));
+*			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(( 1 - (1 - 0.01)**(1/3) )*fold_tr)+(0.0025/3*rand('normal'))); 
+*			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr)+(0.0075/3*rand('normal')));
+*			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr)+(0.015/3*rand('normal'))); 
+*			else if        vl_tm1 >=5.7 then rep = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr)+(0.025/3*rand('normal')));  
+*			if primary_tm1 =1 		    then rep = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*rand('normal')));
 
 			if gender=1 and ageg_ep gt 1  then rep = rep * fold_change_w;  * higher transmission risk in women;
 			if gender=1 and ageg_ep =  1  then rep = rep * fold_change_yw;  * higher transmission risk in women;
 			if sti=1                  then rep = rep * fold_change_sti;  * higher transmission risk with sti;
-			a=uniform(0); if a < rep then do; epi=1; froms=1; end;
+			a=rand('uniform'); if a < rep then do; epi=1; froms=1; end;
 		end;
 	end;
 	else if epmono=0 and epi ne 1 then do;	
@@ -3843,8 +3843,8 @@ end;
 
 
 if hiv=1 and epi=1 then do;
-	if gender=2 and     r_hiv_epi_both > 1 then do; g=uniform(0); if g > 1/r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
-	if gender=1 and . < r_hiv_epi_both < 1 then do; g=uniform(0); if g >   r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
+	if gender=2 and     r_hiv_epi_both > 1 then do; g=rand('uniform'); if g > 1/r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
+	if gender=1 and . < r_hiv_epi_both < 1 then do; g=rand('uniform'); if g >   r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
 end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
@@ -3854,7 +3854,7 @@ if epi=1 then do;
 
 	if epdiag_tm1=1 then epdiag=1;
 	if epdiag_tm1 ne 1 then do;
-		epdiag=0; s=uniform(0);
+		epdiag=0; s=rand('uniform');
 
 		if gender=1 then do;
 			if    0 > d_diag_w     	   then j=0;
@@ -3873,9 +3873,9 @@ if epi=1 then do;
 	end;
 
 	if epdiag=1 then do; * remember some infected partners are lost to follow-up;
-		if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
+		if epart_tm1=1 then do; epart=0; f=rand('uniform'); if f < 0.98 then epart=1; end;
 		if epart_tm1 ne 1 and epdiag=1 then do;
-			epart=0; s=uniform(0);
+			epart=0; s=rand('uniform');
 
 					if 0   >   d_onart then j=0;
 					if 0   <=  d_onart < 0.05   then j=p_diag_onart/5;if 0.05   <=  d_onart < 0.1   then j=p_diag_onart/2;if 0.1  <=  d_onart    then j=p_diag_onart;
@@ -3887,13 +3887,13 @@ if epi=1 then do;
 
 	* rates of viral suppression;
 	epvls=0; if epart=1 then do;
-		if epvls_tm1=1 then do; epvls=1; f=uniform(0); if f < 0.03 then epvls=0; end;
+		if epvls_tm1=1 then do; epvls=1; f=rand('uniform'); if f < 0.03 then epvls=0; end;
 		if epvls_tm1 ne 1 and epart=1 then do;
 			if 0   >  d_vls then j=0;
 				if 0.05 > d_vls >=  0    then j=p_onart_vls/5; 
 				if 0.1 > d_vls >=  0.05  then j=p_onart_vls/2;  
 				if d_vls >=  0.1    then j=p_onart_vls;
-			epvls=0; s=uniform(0); if s < j  then epvls=1;
+			epvls=0; s=rand('uniform'); if s < j  then epvls=1;
 		end;
 	end;
 end;
@@ -3902,7 +3902,7 @@ end;
 
 * OCCURRENCE OF PREGNANCY; * also note pregnancy code higher up in section 3A;
 
-u=uniform(0);
+u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
 if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 1.25) or dt_lastbirth=.) then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
@@ -3913,17 +3913,17 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 1.25) or dt_lastbirth=.)
 	if pregnant ne 1 and newp_tm3  gt 1 then do; * dependent_on_time_step_length ;
 	* consider if pregnant will be 1 only for 1 period ;
 		uu=2;do until (uu gt newp_tm3 );
-			ua=uniform(0);
+			ua=rand('uniform');
 			if (. lt ua lt prob_pregnancy_newp) then do;
 				pregnant=1;dt_lastbirth=caldate{t};cum_children=cum_children+1; pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
 			end;
 		uu=uu+1;
 		end;
 	end;
-	if pregnant=1 and o_dol_tm3 =1 then do; u = uniform(0); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
+	if pregnant=1 and o_dol_tm3 =1 then do; u = rand('uniform'); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
 			pregnant_ntd=1;prev_pregnant_ntd=1; date_pregnancy_ntd = caldate{t}; 
 	end;  end;
-	if pregnant=1 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = uniform(0); if u < oth_dol_adv_birth_e_risk then do; 
+	if pregnant=1 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
 			pregnant_oth_dol_adv_birth_e=1; prev_oth_dol_adv_birth_e=1;
 	end;  end;
 
@@ -3931,7 +3931,7 @@ end;
 
 
 *HIV Testing in ANC;
-a=uniform(0);tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
 if pregnant=1 then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then do; * dec15 - remove age effect for malawi to simplify;
 		anc=1;
@@ -3941,7 +3941,7 @@ if pregnant=1 then do;  * dependent_on_time_step_length ;
         if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
 		if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
         *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-         u=uniform(0); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
+         u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
     end;
 end;
 
@@ -4005,7 +4005,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if hard_reach=0 then do;
 												
-		unitest=uniform(0);
+		unitest=rand('uniform');
 
 		* think not * dependent_on_time_step_length ;
  		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  if no_test_if_np0 = 1 and . < np_lasttest <= 0 then unitest = 1;
@@ -4054,7 +4054,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
 		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and prep_willing=1  then do;
-			a=uniform(0); if a < eff_rate_test_startprep then do;	
+			a=rand('uniform'); if a < eff_rate_test_startprep then do;	
 				tested=1;ever_tested=1;testfor_prep=1;dt_last_test=caldate{t};np_lasttest=0;
 			end; 
 		end;
@@ -4063,18 +4063,18 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		else if prep_ever=1 and prep_elig=1 then do;
 			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
 				if annual_testing_prep=1 and caldate{t}-dt_last_test >= 1.0 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
 				end;
 				else if annual_testing_prep=0.5 and caldate{t}-dt_last_test >= 0.5 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
+					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
 				end;
 				else if annual_testing_prep=0.25 and caldate{t}-dt_last_test >= 0.25 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
+					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
 				end;
 			end;
 			*re-initiation of PrEP;
 			else if prep_tm1  ne 1 then do; * dependent_on_time_step_length;
-				a=uniform(0); if a < eff_rate_test_restartprep and stop_prep_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
+				a=rand('uniform'); if a < eff_rate_test_restartprep and stop_prep_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
 			end; * jul17;
 		end;
 
@@ -4111,7 +4111,7 @@ end;
 *Jul2016 f_prep;
 if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 then do;
 
-	unisensprep=uniform(0);
+	unisensprep=rand('uniform');
 	*starting Prep;
 	*if prep_ever ne 1 and hiv=0 and tested=1 then do;
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
@@ -4120,7 +4120,7 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	 
 			if prep_willing=1 then do; 
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
-				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
+				else if testfor_prep ne 1 then do;r=rand('uniform'); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
 
 	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
@@ -4130,21 +4130,21 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 		if prep_tm1 = 1 then do; * dependent_on_time_step_length;
 			if annual_testing_prep=1 then do;
 				if 0 <= caldate{t}-dt_last_test <= 1.0 then do;
-					r=uniform(0); 
+					r=rand('uniform'); 
 					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25); end;
 					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
 				end;
 			end;
 			else if annual_testing_prep=0.5 then do;
 				if 0 <= caldate{t}-dt_last_test <= 0.5 then do;
-					r=uniform(0); 
+					r=rand('uniform'); 
 					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25);end;
 					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end;*variable for people who discontinued despite newp>1; 
 				end;
 			end;
 			else if annual_testing_prep=0.25 then do;
 				if 0 <= caldate{t}-dt_last_test <= 0.25 then do;
-					r=uniform(0); 
+					r=rand('uniform'); 
 					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t};continuous_prep_use = continuous_prep_use + (0.25); end;
 					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
 				end;
@@ -4158,11 +4158,11 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 
 			if tested=1 then do; * dependent_on_time_step_length;
 				if stop_prep_choice=1 then do;
-				r=uniform(0); 
+				r=rand('uniform'); 
 				if r < eff_prob_prep_restart_choice then do; prep=1; continuous_prep_use=0.25; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_choice=0; end;
 				end; 
 				else if stop_prep_choice ne 1 then do;
-				r=uniform(0); 
+				r=rand('uniform'); 
 				if r < prob_prep_restart then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use=0.25; dt_prep_c=caldate{t}; end;  * dt_prep_c is prep continuation in the sense
 				that they are now continuing prep again now they have np >= 1; 
 				end;
@@ -4180,10 +4180,10 @@ if pop_wide_tld=1 and prep=1 then pop_wide_tld_prep=1;
 if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
 
 	if prep_ever ne 1 then do;   * dependent_on_time_step_length; 
-			r=uniform(0); if prep_willing=1 and r < prob_prep_pop_wide_tld then do ;
+			r=rand('uniform'); if prep_willing=1 and r < prob_prep_pop_wide_tld then do ;
 
 * ts1m ; * replace line above with this:
-*			r=uniform(0); * if prep_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
+*			r=rand('uniform'); * if prep_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
 
 			prep   =1; pop_wide_tld_prep=1;  prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 			end;
@@ -4194,13 +4194,13 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and 
 			if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; pop_wide_tld_prep=0; end; 
 
 			if stop_prep_choice=1 then do;
-				r=uniform(0); 
+				r=rand('uniform'); 
 				if r < eff_prob_prep_restart_choice then do;  * dependent_on_time_step_length;
 					prep   =1;pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_choice=0; 
 				end;
 			end; 
 			else if stop_prep_choice ne 1 then do;
-				r=uniform(0); 
+				r=rand('uniform'); 
 				if r < prob_prep_restart then do;  * dependent_on_time_step_length;
 					prep   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_c=caldate{t};
 				end;  
@@ -4225,7 +4225,7 @@ if caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 and pop_wide_t
 		else if prep_ever=1 and (prep_tm1 =1) then visit_prep=0;
 	end;
 	if prep   =1 then do;
-		r=uniform(0);
+		r=rand('uniform');
 		visit_prep=1; *drug pick-up only;
 		if tested=1 then do;
 			visit_prep=2; *drug pick-up and HIV test;
@@ -4236,12 +4236,12 @@ if caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 and pop_wide_t
 end;
 
 if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - dt_prep_s > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
-r=uniform(0); if r < pop_wide_tld_prob_egfr then visit_prep=2; * note this is for egfr only not an hiv test;
+r=rand('uniform'); if r < pop_wide_tld_prob_egfr then visit_prep=2; * note this is for egfr only not an hiv test;
 end;
 
 * effect of weight gain due to use of dol as prep;
 if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;	
-r = uniform(0);
+r = rand('uniform');
 if caldate{t} = date_start_tld_prep and r < prop_bmi_ge23 then do;  
 		bmi_gt23_start_dol=1; 
 		if incr_mort_risk_dol_weightg = 1 then i_mort_risk_dol_prep_weightg = 1.00 ; 
@@ -4256,12 +4256,12 @@ end;
 
 *Adherence to PrEP - modified Jan2017 f_prep;
 if prep = 1 then do;
-	adh=adhav_prep + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
+	adh=adhav_prep + adhvar*rand('normal');  if adh gt 1 then adh=1; if adh < 0 then adh=0;
 	if adhav_prep=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age < 25 then do;		* JAS Apr2021 ;
-		f=uniform(0);
+		f=rand('uniform');
 		if f<0.5 then adh = adh * rel_prep_adh_younger ;
 	end;
 end;
@@ -4308,30 +4308,30 @@ w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_new
 */
 
 if gender=1 and sex_age_mixing_matrix_m=1 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.865  then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975  then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e          then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.47 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.30 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.80 <= e < 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 1.00 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.43 <= e < 0.73 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.73 <= e < 0.96 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.96 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <= e        then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.18 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.18 <= e < 0.36 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.36 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4354,35 +4354,35 @@ m55w15 =0.01*tnewp15_w; m55w25=0.02*tnewp25_w; m55w35=0.13*tnewp35_w; m55w45=0.7
 
 
 if gender=2 and sex_age_mixing_matrix_w=1 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.43 <= e < 0.77 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.77 <= e < 0.89 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.89 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.58 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.58 <= e < 0.88 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.88 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4413,32 +4413,32 @@ ptnewp55_w=(0.00*s_m_1524_newp )+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.07
 		   
 
 if gender=1 and sex_age_mixing_matrix_m=2 then do;
-if 15 <= age < 25 then do;e=uniform(0); * dec17;
+if 15 <= age < 25 then do;e=rand('uniform'); * dec17;
 if              e < 0.865 /*(then newp age 15-25)*/ then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975 /*(then newp age 25-35)*/ then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e         /*(then newp age 35-45)*/ then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 																												  
 																												  
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.47 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.55 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.38 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.63 <= e < 0.93 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.93 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4461,35 +4461,35 @@ ptnewp55_m=(0.005*s_w_1524_newp)+(0.01*s_w_2534_newp)+(0.13*s_w_3544_newp)+(0.25
 */
 
 if gender=2 and sex_age_mixing_matrix_w=2 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.43 <= e < 0.845 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.845 <= e < 0.965 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.965 <= e < 0.995 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.995 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.59 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.59 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.94 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <=1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4515,35 +4515,35 @@ w55m15 =0.01 *s_m_1524_newp; w55m25=0.01*s_m_2534_newp; w55m35=0.01*s_m_3544_new
 */
 
 if gender=1 and sex_age_mixing_matrix_m=3 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.90   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.90 <= e < 0.95   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.95 <= e < 0.97   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 else if 0.97 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.44 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.44 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.87 <= e < 0.97 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.97 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.54 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.54 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.94 <= e <= 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.38 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.63 <= e < 0.93 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.93 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4565,35 +4565,35 @@ m55w15 =0.02 *s_w_1524_newp; m55w25=0.01*s_w_2534_newp; m55w35=0.13*s_w_3544_new
 */
 
 if gender=2 and sex_age_mixing_matrix_w=3 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.25 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.25 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.59 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.59 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.94 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4620,35 +4620,35 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=4 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.93   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.93 <= e < 0.98   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 1.00 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.54 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.54 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e        then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 1.00 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.35 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.35 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.60 <= e < 0.97 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.97 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.33 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4674,35 +4674,35 @@ end;
 
 
 if gender=2 and sex_age_mixing_matrix_w=4 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.55 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.08 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.08 <= e < 0.65 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.65 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4728,33 +4728,33 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=5 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.99 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.40 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.40 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.30 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.95 <= e         then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.30 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4778,35 +4778,35 @@ end;
 */
 
 if gender=2 and sex_age_mixing_matrix_w=5 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.50 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.50 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.41 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.41 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.08 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.08 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.55 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.85 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4829,30 +4829,30 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=6 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.99 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.80 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4876,35 +4876,35 @@ end;
 */
 
 if gender=2 and sex_age_mixing_matrix_w=6 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.20 <= e < 0.40 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.40 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.60 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.80 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.25 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.25 <= e < 0.50 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.50 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.02 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.02 <= e < 0.34 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.34 <= e < 0.67 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.67 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4976,7 +4976,7 @@ end;
 
 * if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
 if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-	r=uniform(0);  * dependent_on_time_step_length;
+	r=rand('uniform');  * dependent_on_time_step_length;
 	if (gender = 1 and r < rate_exp_set_lower_p_vl1000) or (gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2) then do;
 		u1 = u1 / external_exp_factor;
 	end;
@@ -5003,22 +5003,22 @@ p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.;
 if t ge 2 and nip gt 0 then do;
 	d=1;do until (d gt nip);
 		risk_nip=0;  * dependent_on_time_step_length ;  
-		a=uniform(0);
-		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(tr_rate_undetec_vl*fold_tr_newp)+(0.000025*normal(0))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end; *new for prep;
-		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(0.01*fold_tr*fold_tr_newp)+(0.0025*normal(0)));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; *new for prep;
-		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(0.03*fold_tr*fold_tr_newp)+(0.0075*normal(0)));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end; *new for prep;
-		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(0.06*fold_tr*fold_tr_newp)+(0.015*normal(0)));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end; *new for prep;
-		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(0.10*fold_tr*fold_tr_newp)+(0.025*normal(0)));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; *new for prep;
-		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(tr_rate_primary*fold_tr_newp)+(0.075*normal(0)));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end; *new for prep;
+		a=rand('uniform');
+		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(tr_rate_undetec_vl*fold_tr_newp)+(0.000025*rand('normal'))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end; *new for prep;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(0.01*fold_tr*fold_tr_newp)+(0.0025*rand('normal')));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; *new for prep;
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(0.03*fold_tr*fold_tr_newp)+(0.0075*rand('normal')));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end; *new for prep;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(0.06*fold_tr*fold_tr_newp)+(0.015*rand('normal')));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end; *new for prep;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(0.10*fold_tr*fold_tr_newp)+(0.025*rand('normal')));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; *new for prep;
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(tr_rate_primary*fold_tr_newp)+(0.075*rand('normal')));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end; *new for prep;
 /*
 * ts1m ; * replace lines above with:
 
-		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_undetec_vl)**(1/3) )*fold_tr_newp)+(0.000025*normal(0))); vl_source=1; s_prop_rm=s_prop_vlg1_rm; end; *new for prep;
-		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(     ( 1 - (1 - 0.01)**(1/3) )     *fold_tr*fold_tr_newp)+(0.0025*normal(0)));       vl_source=2; s_prop_rm=s_prop_vlg2_rm; end; *new for prep;
-		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr*fold_tr_newp)+(0.0075*normal(0)));       vl_source=3; s_prop_rm=s_prop_vlg3_rm; end; *new for prep;
-		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr*fold_tr_newp)+(0.015*normal(0)));        vl_source=4; s_prop_rm=s_prop_vlg4_rm; end; *new for prep;
-		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr*fold_tr_newp)+(0.025*normal(0)));        vl_source=5; s_prop_rm=s_prop_vlg5_rm; end; *new for prep;
-		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_primary)**(1/3) )*fold_tr_newp)+(0.075*normal(0)));       vl_source=6; s_prop_rm=s_prop_vlg6_rm; end; *new for prep;
+		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_undetec_vl)**(1/3) )*fold_tr_newp)+(0.000025*rand('normal'))); vl_source=1; s_prop_rm=s_prop_vlg1_rm; end; *new for prep;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(     ( 1 - (1 - 0.01)**(1/3) )     *fold_tr*fold_tr_newp)+(0.0025*rand('normal')));       vl_source=2; s_prop_rm=s_prop_vlg2_rm; end; *new for prep;
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr*fold_tr_newp)+(0.0075*rand('normal')));       vl_source=3; s_prop_rm=s_prop_vlg3_rm; end; *new for prep;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr*fold_tr_newp)+(0.015*rand('normal')));        vl_source=4; s_prop_rm=s_prop_vlg4_rm; end; *new for prep;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr*fold_tr_newp)+(0.025*rand('normal')));        vl_source=5; s_prop_rm=s_prop_vlg5_rm; end; *new for prep;
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_primary)**(1/3) )*fold_tr_newp)+(0.075*rand('normal')));       vl_source=6; s_prop_rm=s_prop_vlg6_rm; end; *new for prep;
 */
 
 * NOTE: if the partner is in VL_source=6 (ie in primary infection) we should really check whether the partner was on prep (despite being infected) at the time
@@ -5029,7 +5029,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;
 		  mut_p=.;
 
-		  e=uniform(0); if e < t_prop_rm  then do;
+		  e=rand('uniform'); if e < t_prop_rm  then do;
 			*in order to have at least one mutation for all subjects who are supposed to have at least one;
 
 		  f=1;do until ((f=10) or (mut_p ge 1));  
@@ -5038,85 +5038,85 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
-                g=uniform(0);
+                g=rand('uniform');
                 if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_m184m  then m184m_p=1;
 	
 				* resistance virus in partner - k65m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k65m  then k65m_p=1;
 	
 				* resistance virus in partner - q151m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_q151m  then q151m_p=1;
 
 				* resistance virus in partner - nnrti;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k103m then k103m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_y181m then y181m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_g190m then g190m_p=1;
 
 				* resistance virus in partner - pr 32;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p32m  then p32m_p=1;
 
 				* resistance virus in partner - pr 33;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p33m  then p33m_p=1;
 
 				* resistance virus in partner - pr 46;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p46m  then p46m_p=1;
 
 				* resistance virus in partner - pr 47;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p47m  then p47m_p=1;
 
 				* resistance virus in partner - pr 50l;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50lm  then p50lm_p=1;
 
 				* resistance virus in partner - pr 50v;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50vm  then p50vm_p=1;
 
 				* resistance virus in partner - pr 54;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p54m  then p54m_p=1;
 
 				* resistance virus in partner - pr 76;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p76m  then p76m_p=1;
 
 				* resistance virus in partner - pr 82;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p82m  then p82m_p=1;
 
 				* resistance virus in partner - pr 84;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p84m  then p84m_p=1;
 
 				* resistance virus in partner - pr 88;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p88m  then p88m_p=1;
 
 				* resistance virus in partner - pr 90;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p90m  then p90m_p=1;
 
 				* resistance virus in partner - Integrase inhibitor primary mut;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_inpm  then inpm_p=1;
 
 				* resistance virus in partner - Integrase inhibitor secondary mut;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_insm  then insm_p=1;
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
@@ -5146,7 +5146,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 		end;
 
 
-		a=uniform(0); if a < risk_nip then do;
+		a=rand('uniform'); if a < risk_nip then do;
 		    if hiv=1 then do;
     		if onart    ne 1 then s_infection=1;  * may14 - added need to be off art to get super-infected;
 			end;
@@ -5178,20 +5178,20 @@ change in majority/minority virus over time. * JAS Mar2021
 
 risk_eip=0;  ep_primary=0;
 
-d=uniform(0);
+d=rand('uniform');
 if epi=1 then do;  * dependent_on_time_step_length ;  
-	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));          vl_source=1;	t_prop_rm=t_prop_vlg1_rm; end;
+	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*rand('normal')));          vl_source=1;	t_prop_rm=t_prop_vlg1_rm; end;
 	if epvls ne 1 then do;
-		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*normal(0))); ep_primary=1; vl_source=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
-		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*normal(0)));               vl_source=4;	t_prop_rm=t_prop_vlg4_rm; end;
+		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*rand('normal'))); ep_primary=1; vl_source=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
+		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*rand('normal')));               vl_source=4;	t_prop_rm=t_prop_vlg4_rm; end;
 	end;* ie average risk for those with detectable vl;
 
 
 * ts1m ; * replace lines above with:
-*	if epvls=1    then do; * risk_eip = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*normal(0))); * vl_source=1;  *	s_prop_rm=s_prop_vlg1_rm; * end;
+*	if epvls=1    then do; * risk_eip = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*rand('normal'))); * vl_source=1;  *	s_prop_rm=s_prop_vlg1_rm; * end;
 *	if epvls ne 1 then do;
-*		if epi_tm1 =0 then do; * risk_eip = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*normal(0))); * ep_primary=1; * vl_source=6;	* s_prop_rm=s_prop_vlg6_rm; * end;* infection in primary;
-*		if epi_tm1 =1 then do; * risk_eip = max(0,(( 1 - (1 - 0.05)**(1/3) )*fold_tr)+(0.0125/3*normal(0))); * vl_source=4; * s_prop_rm=s_prop_vlg4_rm; * end;
+*		if epi_tm1 =0 then do; * risk_eip = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*rand('normal'))); * ep_primary=1; * vl_source=6;	* s_prop_rm=s_prop_vlg6_rm; * end;* infection in primary;
+*		if epi_tm1 =1 then do; * risk_eip = max(0,(( 1 - (1 - 0.05)**(1/3) )*fold_tr)+(0.0125/3*rand('normal'))); * vl_source=4; * s_prop_rm=s_prop_vlg4_rm; * end;
 *	end;* ie average risk for those with detectable vl;
 
 
@@ -5204,92 +5204,92 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		  p76m_p=0;   p82m_p=0; p84m_p=0;  p88m_p=0;  p90m_p=0;  inpm_p=0;   insm_p=0;
 		  mut_p=.;
 
-		  e=uniform(0); if e < t_prop_rm  then do;
+		  e=rand('uniform'); if e < t_prop_rm  then do;
 			*in order to have at least one mutation for all subjects who are supposed to have at least one;
 
 			f=1;do until ((f=10) or (mut_p ge 1));  
 
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
-                g=uniform(0);
+                g=rand('uniform');
                 if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_m184m  then m184m_p=1;
 	
 				* resistance virus in partner - k65m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k65m  then k65m_p=1;
 
 				* resistance virus in partner - q151m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_q151m  then q151m_p=1;
 
 				* resistance virus in partner - nnrti;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k103m then k103m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_y181m then y181m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_g190m then g190m_p=1;
 
 				* resistance virus in partner - pr 32;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p32m  then p32m_p=1;
 
 				* resistance virus in partner - pr 33;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p33m  then p33m_p=1;
 
 				* resistance virus in partner - pr 46;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p46m  then p46m_p=1;
 
 				* resistance virus in partner - pr 47;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p47m  then p47m_p=1;
 
 				* resistance virus in partner - pr 50l;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50lm  then p50lm_p=1;
 
 				* resistance virus in partner - pr 50v;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50vm  then p50vm_p=1;
 
 				* resistance virus in partner - pr 54;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p54m  then p54m_p=1;
 
 				* resistance virus in partner - pr 76;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p76m  then p76m_p=1;
 
 				* resistance virus in partner - pr 82;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p82m  then p82m_p=1;
 
 				* resistance virus in partner - pr 84;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p84m  then p84m_p=1;
 
 				* resistance virus in partner - pr 88;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p88m  then p88m_p=1;
 
 				* resistance virus in partner - pr 90;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p90m  then p90m_p=1;
 
 				* resistance virus in partner - Integrase inhibitor primary mut;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_inpm  then inpm_p=1;
 
 				* resistance virus in partner - Integrase inhibitor secondary mut;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_insm  then insm_p=1;
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p
@@ -5318,7 +5318,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		end;
 
-	b=uniform(0);
+	b=rand('uniform');
 	if b < risk_eip then do;
 
 		if hiv=0 then do;
@@ -5334,7 +5334,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		end;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
-		    b=uniform(0);
+		    b=rand('uniform');
     		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
@@ -5358,14 +5358,14 @@ else if gender=2 then do;
 	if ageg_ep = 5 then prev=prevalence5564m;
 end;
 if ep_tm1=0 and ep=1 and epi    ne 1 then do;
-	s=uniform(0);a=uniform(0);epi   =0;
+	s=rand('uniform');a=rand('uniform');epi   =0;
 	if s <  0.5 then do; if mr_epi   =1 then do; epi   =1; old=1 ;end;end;
 	if a < prev then do; epi   =1; already=1; end;
 	if epi   =1 then do;
 		epdiag=0;
 		if epdiag_tm1=1 then epdiag=1;
 		if epdiag_tm1 ne 1 then do;
-			epdiag=0; s=uniform(0);
+			epdiag=0; s=rand('uniform');
 
 	if gender=1 then do; 
 			if 0    > d_diag_w      	then j=0;
@@ -5382,15 +5382,15 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 
 			if s < j then epdiag=1;
 
-			a=uniform(0);if (date_start_testing+3.5) <= caldate{t} then do;
+			a=rand('uniform');if (date_start_testing+3.5) <= caldate{t} then do;
 				if s <  0.9 then epdiag=mr_epdiag;
 				if s >=0.9 and a < j then epdiag=1;
 			end;
 		end;
 		epart=0; if epdiag=1 then do; * remember some infected partners are lost to follow-up;
-			if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
+			if epart_tm1=1 then do; epart=0; f=rand('uniform'); if f < 0.98 then epart=1; end;
 			if epart_tm1 ne 1 and epdiag=1 then do;
-				epart=0; s=uniform(0);
+				epart=0; s=rand('uniform');
 				
 					if 0    >  d_onart        then j=0;
 					if 0    <= d_onart < 0.05 then j=p_diag_onart/5;
@@ -5404,13 +5404,13 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 		end;
 		* rates of viral suppression;
 		epvls=0; if epart=1 then do;
-			if epvls_tm1=1 then do; epvls=1; f=uniform(0); if f < 0.03 then epvls=0; end;
+			if epvls_tm1=1 then do; epvls=1; f=rand('uniform'); if f < 0.03 then epvls=0; end;
 			if epvls_tm1 ne 1 and epart=1 then do;
 				if 0    > d_vls          then j=0;
 				if 0.05 > d_vls >=  0    then j=p_onart_vls/5;  
 				if 0.1  > d_vls >=  0.05 then j=p_onart_vls/2;  
 				if        d_vls >=  0.1  then j=p_onart_vls;
-				epvls=0; s=uniform(0); if s < j  then epvls=1;
+				epvls=0; s=rand('uniform'); if s < j  then epvls=1;
 			end;
 		end;
 	end;
@@ -5435,31 +5435,31 @@ if hiv=1 then do;
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
 		if prep    ne 1 then do;
-			if tam ge 1 then do; u=uniform(0); if u < 0.5  then tam = 0 ; end; * may17;
-			if m184m= 1 then do; u=uniform(0); if u < 0.8  then m184m=0; end;
-			if k65m = 1 then do; u=uniform(0); if u < 0.8  then k65m =0; end; 
+			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
+			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
+			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
 		end;
-        if q151m= 1 then do; u=uniform(0); if u < 0.5 then q151m=0; end; 
+        if q151m= 1 then do; u=rand('uniform'); if u < 0.5 then q151m=0; end; 
 
-		if k103m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then k103m=0; end;
-		if y181m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then y181m=0; end;
-		if g190m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then g190m=0; end;
+		if k103m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then k103m=0; end;
+		if y181m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then y181m=0; end;
+		if g190m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then g190m=0; end;
 
-		if p32m = 1 then do; u=uniform(0); if u < 0.5 then p32m=0; end;
-		if p33m = 1 then do; u=uniform(0); if u < 0.5 then p33m=0; end;
-		if p46m = 1 then do; u=uniform(0); if u < 0.5 then p46m=0; end;
-		if p47m = 1 then do; u=uniform(0); if u < 0.5 then p47m=0; end;
-		if p50lm = 1 then do; u=uniform(0); if u < 0.5 then p50lm=0; end;
-		if p50vm = 1 then do; u=uniform(0); if u < 0.5 then p50vm=0; end;
-		if p54m = 1 then do; u=uniform(0); if u < 0.5 then p54m=0; end;
-		if p76m = 1 then do; u=uniform(0); if u < 0.5 then p76m=0; end;
-		if p82m = 1 then do; u=uniform(0); if u < 0.5 then p82m=0; end;
-		if p84m = 1 then do; u=uniform(0); if u < 0.5 then p84m=0; end;
-		if p88m = 1 then do; u=uniform(0); if u < 0.5 then p88m=0; end;
-		if p90m = 1 then do; u=uniform(0); if u < 0.5 then p90m=0; end;
+		if p32m = 1 then do; u=rand('uniform'); if u < 0.5 then p32m=0; end;
+		if p33m = 1 then do; u=rand('uniform'); if u < 0.5 then p33m=0; end;
+		if p46m = 1 then do; u=rand('uniform'); if u < 0.5 then p46m=0; end;
+		if p47m = 1 then do; u=rand('uniform'); if u < 0.5 then p47m=0; end;
+		if p50lm = 1 then do; u=rand('uniform'); if u < 0.5 then p50lm=0; end;
+		if p50vm = 1 then do; u=rand('uniform'); if u < 0.5 then p50vm=0; end;
+		if p54m = 1 then do; u=rand('uniform'); if u < 0.5 then p54m=0; end;
+		if p76m = 1 then do; u=rand('uniform'); if u < 0.5 then p76m=0; end;
+		if p82m = 1 then do; u=rand('uniform'); if u < 0.5 then p82m=0; end;
+		if p84m = 1 then do; u=rand('uniform'); if u < 0.5 then p84m=0; end;
+		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
+		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
 
-		if inpm = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
-		if insm = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
+		if inpm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
+		if insm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
 
 end;
 
@@ -5469,10 +5469,10 @@ end;
 com_test=.;
 if tested=1 and hiv ne 1 then do;
 	cost_test= cost_test_c;
-	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;
+	u=rand('uniform'); if u lt 0.1365 and prep ne 1 then com_test=1;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
-	unispec=uniform(0);
+	unispec=rand('uniform');
 	if unispec gt spec_vct                then cost_test=cost_test_b;
 	if unispec gt spec_vct and com_test=1 then cost_test=cost_test_d;
 end;
@@ -5484,7 +5484,7 @@ if tested=1   and hiv ne 1 and cost_test=0 then cost_test= cost_test_c;
 
 * INTRODUCE HIV INTO POPULATION ;
 
-d=uniform(0);
+d=rand('uniform');
 if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
@@ -5550,7 +5550,7 @@ end;
 
 
 * viral load;
-vset = 4.075 + (0.5 * normal(0)) + ((age-35)*0.005) ;
+vset = 4.075 + (0.5 * rand('normal')) + ((age-35)*0.005) ;
 if gender=2 then vset=vset-0.2;
 if vset > 6.5 then vset=6.5;
 
@@ -5558,12 +5558,12 @@ if vset > 6.5 then vset=6.5;
 is more or less infectious than man with the same vl ?;
 vl = vset;
 
-vprimary=7.5 + (0.5 * normal(0));
+vprimary=7.5 + (0.5 * rand('normal'));
 * vprimary exists only for transmission risk - it does not affect progression - vset is used for first v;
 
 
 * CD4  - square root scale ;
-csqr    = (mean_sqrtcd4_inf - (1.5 * vset) + 2*normal(0)) - ((age-35)*0.05);
+csqr    = (mean_sqrtcd4_inf - (1.5 * vset) + 2*rand('normal')) - ((age-35)*0.05);
 if csqr    gt sqrt(1500) then csqr   =sqrt(1500); 
 if csqr    lt 0 then csqr   =0;
 if csqr    < 18 then csqr   =18; 
@@ -5572,9 +5572,9 @@ if cd4  < 324 then cd4 =324; cd4 =csqr**2;
 cd4_infection=cd4 ;
 
 * max CD4 count to which can return on ART;
-cmax=exp(6.6+normal(0)*0.25);
+cmax=exp(6.6+rand('normal')*0.25);
 
-patient_cd4_rise_art=exp(sd_patient_cd4_rise_art*normal(0));  * inter-patient variation in rate of CD4 rise - when CD4 is rising;
+patient_cd4_rise_art=exp(sd_patient_cd4_rise_art*rand('normal'));  * inter-patient variation in rate of CD4 rise - when CD4 is rising;
 
 age_infection=age;
 
@@ -5885,10 +5885,10 @@ if vl_source_inf=6 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg6_rm1_diag;t_pr
 
 if infected_newp=1 then do;	
 	infected_diagnosed=0; infected_naive=1;
-	g=uniform(0);
+	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
 	if infected_diagnosed=1 then do; 
-		s=uniform(0);
+		s=rand('uniform');
 		infected_naive=0; if s < t_prop_naive then infected_naive=1;
 	end;
 end;
@@ -5899,7 +5899,7 @@ if infected_ep=1 then do;
 	if epart_tm1=1 then infected_naive=0;
 	if epdiag_tm1=1 and epart_tm1=0 then do;
 		* have to make this approximation below because dont track naive status of ep;
-		a=uniform(0); infected_naive=0; if a < t_prop_naive then infected_naive=1;
+		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
 	end;
 end;
 
@@ -5937,7 +5937,7 @@ primary infection and hence stop prep;
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		u=uniform(0);
+		u=rand('uniform');
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
 			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
@@ -5947,7 +5947,7 @@ if t ge 2 then do;
 		end;
 	end;
 	if hivtest_type=1 then do;
-		u=uniform(0);
+		u=rand('uniform');
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
 			if prep   =1 and pop_wide_tld_prep ne 1 then do;
@@ -6147,7 +6147,7 @@ visit_tm1=visit;
 	*If super-infection is swicthed on only 20% can be re-infected,
 	this was due to the fact that super infection seemed to play a big role in our model,
 	while this has never been mentioned as a big problem by clinicians;
-	sx=uniform(0);
+	sx=rand('uniform');
 	if super_infection=1 then do;
 		if s_infection=1 and sx<0.2 then do;
 			c_rt103m=max(k103m,c_rt103m);c_rt181m=max(y181m,c_rt181m);c_rt190m=max(g190m,c_rt190m);
@@ -6221,7 +6221,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 		if non_tb_who3_ev_tm1 =1 and adc_tm1=0 and tb_tm1=0 then do; rate_test=test_rate_non_tb_who3; elig_test_non_tb_who3=1; end; *rate_test*incr_diag_rate_non_tb_who3;
 
 		if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) then do;
-			unitest=uniform(0);if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+			unitest=rand('uniform');if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 				tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;sympt_diag=1;
 				sympt_diag_ever=1;dt_last_test=caldate{t};np_lasttest=0;
 				newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
@@ -6237,7 +6237,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
 	if hiv=1 and tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
-		unisens=uniform(0);		
+		unisens=rand('uniform');		
 		if t ge 3 and unisens lt sens_vct then do; 
 			registd=1; date1pos=caldate{t}; 
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
@@ -6250,7 +6250,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			end;
 
 			* some lost straight after diagnosis (unless already on tld);
-			d=uniform(0);  * AP 22-7-19   ;
+			d=rand('uniform');  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
 			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;
 					if d < e_eff_prob_loss_at_diag      then do; visit=0; lost   =1; end;
@@ -6281,7 +6281,7 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 
 * Loss to follow-up while off ART;
 	if t ge 2 and onart   =0 and lost_tm1 =0 then do;
-		e=uniform(0); 
+		e=rand('uniform'); 
 		if 0.8 <= adhav       and e < eff_rate_lost     then do;lost=1;visit=0;return=0; end;
 		if 0.5 <= adhav < 0.8 and e < eff_rate_lost*1.5 then do;lost=1;visit=0;return=0; end;
 		if        adhav < 0.5 and e < eff_rate_lost*2   then do;lost=1;visit=0;return=0; end;
@@ -6292,7 +6292,7 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
 
-	s=uniform(0);
+	s=rand('uniform');
 	if adhav >= 0.8 then do;  
 		if t ge 2 and lost_tm1 =1 and registd_tm1=1 and
 		((adc_tm1=1 and s < prob_return_adc) or s < e_rate_return) then do;return=1;lost=0;visit=1;end;
@@ -6319,12 +6319,12 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * shift to x4 virus being present - depends on viral load;
 	if t ge 2 then do;
-		pr_x4_shift=(10**vl_tm1)*0.0000004; s=uniform(0); if s < pr_x4_shift then do; x4v=1; date_x4=caldate{t};end;
+		pr_x4_shift=(10**vl_tm1)*0.0000004; s=rand('uniform'); if s < pr_x4_shift then do; x4v=1; date_x4=caldate{t};end;
 	end;
 
 * ts1m - replace above code with:
 *	if t ge 2 then do;
-*		pr_x4_shift=(10**vl_tm1)*0.0000004; * s=uniform(0); * if s < ( 1 - (1 - pr_x4_shift)**(1/3) ) then do; * x4v=1; * date_x4=caldate{t}; * end;
+*		pr_x4_shift=(10**vl_tm1)*0.0000004; * s=rand('uniform'); * if s < ( 1 - (1 - pr_x4_shift)**(1/3) ) then do; * x4v=1; * date_x4=caldate{t}; * end;
 *	end;
 
 	
@@ -6334,7 +6334,7 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 	if t ge 2 and prep    ne 1 then do;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
-			vc_tm1 =(gx*0.02275 + (0.05 * normal(0)))+ ((age_tm1-35)*0.00075);
+			vc_tm1 =(gx*0.02275 + (0.05 * rand('normal')))+ ((age_tm1-35)*0.00075);
 
 * ts1m - add this line:
 *			vc_tm1  = vc_tm1  / 3;
@@ -6354,14 +6354,14 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 * resumec indicates that cd4 has fallen to cmin since interruption (before toffart=1) and so usual cd4 changes start;
 
 * dependent_on_time_step_length ;
-			if vl_tm1 < 3 then ccsqr_tm1 =+0.000*fx+(sd_cd4*normal(0));
-			if 3 <= vl_tm1 < 3.5 then ccsqr_tm1=-0.022*fx+(sd_cd4*normal(0));
-			if 3.5 <= vl_tm1 < 4 then ccsqr_tm1=-0.085*fx+(sd_cd4*normal(0));
-			if 4 <= vl_tm1 < 4.5 then ccsqr_tm1=-0.40*fx+(sd_cd4*normal(0));
-			if 4.5 <= vl_tm1 < 5 then ccsqr_tm1=-0.40*fx+(sd_cd4*normal(0));
-			if 5 <= vl_tm1 < 5.5 then ccsqr_tm1=-0.85*fx+(sd_cd4*normal(0));
-			if 5.5 <= vl_tm1 < 6 then ccsqr_tm1=-1.30*fx+(sd_cd4*normal(0));
-			if 6.0 <= vl_tm1 then ccsqr_tm1=-1.75*fx+(sd_cd4*normal(0));
+			if vl_tm1 < 3 then ccsqr_tm1 =+0.000*fx+(sd_cd4*rand('normal'));
+			if 3 <= vl_tm1 < 3.5 then ccsqr_tm1=-0.022*fx+(sd_cd4*rand('normal'));
+			if 3.5 <= vl_tm1 < 4 then ccsqr_tm1=-0.085*fx+(sd_cd4*rand('normal'));
+			if 4 <= vl_tm1 < 4.5 then ccsqr_tm1=-0.40*fx+(sd_cd4*rand('normal'));
+			if 4.5 <= vl_tm1 < 5 then ccsqr_tm1=-0.40*fx+(sd_cd4*rand('normal'));
+			if 5 <= vl_tm1 < 5.5 then ccsqr_tm1=-0.85*fx+(sd_cd4*rand('normal'));
+			if 5.5 <= vl_tm1 < 6 then ccsqr_tm1=-1.30*fx+(sd_cd4*rand('normal'));
+			if 6.0 <= vl_tm1 then ccsqr_tm1=-1.75*fx+(sd_cd4*rand('normal'));
 			* these values higher than european model because effect of black race;
 
 			if x4v_tm1 =1 then ccsqr_tm1 =ccsqr_tm1 -0.25;
@@ -6380,10 +6380,10 @@ res_test=.;
 
 
 * WHETHER CD4 WAS MEASURED ;
-	w=uniform(0);
+	w=rand('uniform');
 	if t ge 2 and  hiv_monitoring_strategy=2
 	and naive=1 and visit=1 and (date_latest_cm = . or (caldate{t} - date_latest_cm) > 0.25) and w < prob_cd4_meas_done then do;
-		cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc=1;
+		cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc=1;
 		if date_staging=. then do; date_staging = caldate{t}; cd4_staging = cm   ; who4_staging = who4_tm1; end;
 		if ((art_intro_date             le caldate{t} lt 2010 and . lt cm    le 200) or
       	    (                              caldate{t} ge 2010 and . lt cm    le 350)) or 
@@ -6398,7 +6398,7 @@ res_test=.;
 	if t ge 3 and  time0 = . and (((art_init_disrup_covid ne 1 or covid_disrup_affected ne 1) 
 							and (no_art_disrup_covid ne 1 or covid_disrup_affected ne 1))) then do;
 
-		u=uniform(0);
+		u=rand('uniform');
 		
 * hiv monitoring strategy
   1 - strategy for monitoring HIV positive people naive to ART 1: presence of tb or who4
@@ -6489,7 +6489,7 @@ res_test=.;
 		and diffcult to reconcile with these relatively high rates of nnrti resistance from nevirapine for pmtct;
 
 		if gender=2 and caldate{t} gt date_pmtct then do;
-			u=uniform(0); uu=uniform(0); 
+			u=rand('uniform'); uu=rand('uniform'); 
 			if anc=1 and naive=1 and uu < prob_pmtct then do;
 				if time0=. then do;
 					if caldate{t} le 2010.5 then do;
@@ -6524,27 +6524,27 @@ res_test=.;
 	if t ge 4 and 0 < toffart    <= 0.25 then do;
     	 vl=vmax_tm1;
      * assume rate cd4 fall depends on current viral load;
-     	 if        vl >= 5 then cc_tm1 =-200+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-160+10*normal(0);
-	     if        vl < 4.5 then cc_tm1=-120+10*normal(0);
+     	 if        vl >= 5 then cc_tm1 =-200+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-160+10*rand('normal');
+	     if        vl < 4.5 then cc_tm1=-120+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm1 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm1  then resumec   =1; 
 	end;
 	if t ge 4 and 0.25 < toffart    <= 0.5 and resumec_tm1  ne 1 then do;
 	     * assume rate cd4 fall depends on current viral load;
-    	 if vl >= 5 then cc_tm1=-100+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-90+10*normal(0);
-    	 if vl < 4.5 then cc_tm1=-80+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-100+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-90+10*rand('normal');
+    	 if vl < 4.5 then cc_tm1=-80+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm2 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm2  then resumec   =1;
 	end;
 	if 0.5 < toffart    <= 0.75 and t ge 4 and (resumec_tm1  ne 1 and resumec_tm2  ne 1) then do;
 	     * assume rate cd4 fall depends on current viral load;
-    	 if vl >= 5 then cc_tm1=-80+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-70+10*normal(0);
-	     if vl < 4.5 then cc_tm1=-60+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-80+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-70+10*rand('normal');
+	     if vl < 4.5 then cc_tm1=-60+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm3 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm3  then resumec   =1;
@@ -6552,9 +6552,9 @@ res_test=.;
 	c_200_gt_nad=0;if t ge 3 and toffart    gt 0 and cd4_tm1-cmin_tm1  > 300 then do;
     	 * assume rate cd4 fall depends on current viral load;
 	     c_200_gt_nad=1;
-    	 if vl >= 5 then cc_tm1=-200+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-160+10*normal(0);
-	     if vl < 4.5 then cc_tm1=-120+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-200+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-160+10*rand('normal');
+	     if vl < 4.5 then cc_tm1=-120+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm2 ,z); if cd4 lt 0 then cd4=0;
@@ -6593,9 +6593,9 @@ res_test=.;
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
-		r=uniform(0);if r < prointer then do; 
+		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
-				int_clinic_not_aw=0; f=uniform(0); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
+				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
 			end;
 		end;
 	end;
@@ -6607,7 +6607,7 @@ res_test=.;
 	and stop_tox ne 1 then do;
 
 		prointer_supply= prob_supply_interrupted  ;
-		s=uniform(0); if s < prointer_supply then interrupt_supply  =1;
+		s=rand('uniform'); if s < prointer_supply then interrupt_supply  =1;
 
 		if no_art_disrup_covid = 1 and covid_disrup_affected = 1 then do; interrupt_supply  =1; was_on_art_covid_disrup=1; end;
 
@@ -6658,7 +6658,7 @@ res_test=.;
 
 	* people leaving clinic as well as interrupting (if interruption due to choice);
 	if t ge 2 and interrupt=1 and (interrupt_choice   =1) then do;
-		f=uniform(0);
+		f=rand('uniform');
 	
 		if f < eff_prob_lost_art     and        adhav >= 0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*1.5 and 0.5 <= adhav <  0.8 then do;lost=1; visit=0; return=0;end;
@@ -6678,7 +6678,7 @@ end;
 * RE-INITIATION OF THERAPY AFTER INTERRUPTING -  restart = 1 means restart at time t;
 
 	e_rate_restart=eff_rate_restart;
-	restart   =0;d=uniform(0);
+	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
 
@@ -6785,7 +6785,7 @@ if reg_option in (105 106) and o_dol=1 then e_pr_switch_line=0; * effective pr_s
 if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start_line2=1 then start_line2=.; * mar18;
 
 		if t ge 2  and interrupt=0 and linefail_tm1 =1 and line2=0 and (artline_tm1 =1) and visit=1 and reg_option ne 105 and reg_option ne 106  then do;
-			q=uniform(0); if q < e_pr_switch_line then do; start_line2=1; date_start_line2=caldate{t}; cd4_start_line2 = cm   ; end;
+			q=rand('uniform'); if q < e_pr_switch_line then do; start_line2=1; date_start_line2=caldate{t}; cd4_start_line2 = cm   ; end;
 		end;
 
 
@@ -6803,7 +6803,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	if  third_line=1 then do;
 		if t ge 2  and interrupt=0 and linefail_tm1 =2 and line3=0 and (artline_tm1 =2)
 		and visit=1 then do;   
-			q=uniform(0); if q < e_pr_switch_line then start_line3=1;
+			q=rand('uniform'); if q < e_pr_switch_line then start_line3=1;
 		end;
 	end;
 
@@ -6811,7 +6811,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	* restart_pi_after_dtg_fail   -  may18;
 	if reg_option in (103 104 110 111 114 116 117 118 119) and f_dol=1 and o_dol=1 and o_taz ne 1 and o_lpr ne 1 and (p_taz=1 or p_lpr=1) then do;
 		if t ge 2  and interrupt=0 and visit=1 then do;   
-			q=uniform(0); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
+			q=rand('uniform'); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
 		end;
 	end;
 
@@ -6962,7 +6962,7 @@ if prep=0 and switch_for_tox = 1 then do;
 * tox risk and persistence 
 
 * efa;
-	s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_efa_tm1=1 and
+	s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_efa_tm1=1 and
 	((c_cns_tm1=1 and s < r_swi_efa_cns) or (c_ras_tm1=1 and r < r_swi_efa_ras ))
 	then do;
 		sw_toxicity=1;
@@ -6974,7 +6974,7 @@ if prep=0 and switch_for_tox = 1 then do;
 	
 
 * nev;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_nev_tm1=1 and
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_nev_tm1=1 and
 		((c_hep_tm1=1 and s < r_swi_nev_hep) or (c_ras_tm1=1 and r < r_swi_nev_ras ))
 		then do;
 			sw_toxicity=1;
@@ -6984,7 +6984,7 @@ if prep=0 and switch_for_tox = 1 then do;
 	x7: end;
 
 * zdv;
-            s=uniform(0); d=uniform(0); e=uniform(0); if t ge 2  and interrupt=0 and o_zdv_tm1=1 and
+            s=rand('uniform'); d=rand('uniform'); e=rand('uniform'); if t ge 2  and interrupt=0 and o_zdv_tm1=1 and
             ((c_nau_tm1=1 and s lt r_swi_zdv_nau) or (c_head_tm1=1 and d < r_swi_zdv_head) or (c_lip_tm1=1 and e < r_swi_zdv_lip)
             or (c_ane_tm1=1 and e < r_swi_zdv_ane) or c_lac_tm1=r_swi_zdv_lac )   then do;
                   sw_toxicity=1;
@@ -6994,14 +6994,14 @@ if prep=0 and switch_for_tox = 1 then do;
             x3:end;
 
 * ten;
-            s=uniform(0); if t ge 2  and interrupt=0 and o_ten_tm1=1 and (c_neph_tm1=1 and s lt r_swi_ten_neph) then do;
+            s=rand('uniform'); if t ge 2  and interrupt=0 and o_ten_tm1=1 and (c_neph_tm1=1 and s lt r_swi_ten_neph) then do;
                   sw_toxicity=1;
 	              if t_zdv_tm1=0  and o_zdv ne 1 then do; t_ten=1;tss_ten   =0; o_zdv=1;o_ten=0; goto x6; end;
 	              t_ten=1;tss_ten   =0;o_ten=0;
             x6:end;
 
 * lpr;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_lpr_tm1=1 and
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_lpr_tm1=1 and
 		((c_nau_tm1=1 and s < r_swi_lpr_nau ) or (c_dia_tm1=1 and r < r_swi_lpr_dia )) then do; *note nau currently does not occur with lpr;
 			sw_toxicity=1;
 			if caldate{t} ge 2014 and t_taz_tm1=0  and o_taz ne 1 then do; t_lpr=1;tss_lpr   =0; o_taz=1;o_lpr=0; goto x5; end;
@@ -7011,7 +7011,7 @@ if prep=0 and switch_for_tox = 1 then do;
 
 
 * taz;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_taz_tm1=1 and 
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_taz_tm1=1 and 
 		((c_nau_tm1=1 and s < r_swi_taz_nau ) or (c_dia_tm1=1 and r < r_swi_taz_dia )) then do; *note nau currently does not occur with taz;
 			sw_toxicity=1;
 			if t_lpr_tm1=0  and o_lpr ne 1 then do; t_taz=1;tss_taz   =0; o_lpr=1;o_taz=0; goto x8; end;
@@ -7022,7 +7022,7 @@ if prep=0 and switch_for_tox = 1 then do;
 * dar - assume no new tox after previous pi;
 
 * dol ;
-	s=uniform(0);  if t ge 2  and interrupt=0 and o_dol_tm1=1 and (c_cns_tm1=1 and s < r_swi_dol_cns) then do; 
+	s=rand('uniform');  if t ge 2  and interrupt=0 and o_dol_tm1=1 and (c_cns_tm1=1 and s < r_swi_dol_cns) then do; 
 		sw_toxicity=1;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
@@ -7256,13 +7256,13 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 	if t ge 2 and onart_tm1=1 and (prep ne 1 or adh = .) then do;  * for person on prep whether pop wide tld or regular prep the adh should be
 	already defined, based on adhav_prep - if prep = 1 it means person does not know they have hiv ;
-		adh=adhav + adhvar*normal(0);
+		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
 
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*normal(0));
+	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 
-	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*normal(0));
+	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
@@ -7272,7 +7272,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 
 * current tox can affect adherence;  
-		r=uniform(0); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
+		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
 		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 then adh = adh - red_adh_multi_pill ;
@@ -7282,7 +7282,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1) then adh=adh- red_adh_tb_adc ;
 
 * occasional severe drop in adherence / absorption (more likely when on PI) (only way I can think to explain v fail with no mutations on PI);
-	f=uniform(0);
+	f=rand('uniform');
 	if o_lpr=1 or o_taz=1 or o_dar=1 then  f=f/10;  
 	if f < 0.010   then adh = adh - 0.6;   * changed from 0.005 to 0.020 - mar16; * changed from 0.020 to 0.010 and f/10 above changed from f/5 
 	jun16 as cannot get levels of viral suppression higher than about 86%, even with adh_pattern_ 100 (best profile); * changed since nih talk 
@@ -7299,20 +7299,20 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 * apr 2019  - difference in adherence according to age and gender (at time 0 the adh pattern does not differ by age and gender - this code also moved
 	down so applies after tox, tb/adc, pi effects;
-e=uniform(0);
+e=rand('uniform');
 
 * note no effect when using e < 0.0;
-if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
 * _n6_ ;
-if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
 if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.3 then adh=0.90;
 if gender=2 and 30 <= age < 35 and adh < 0.8 and e < 0.5 then adh=0.90;
@@ -7321,8 +7321,8 @@ if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
-e=uniform(0);
-if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+e=rand('uniform');
+if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -7383,72 +7383,72 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive ge 3 - first 3 months ;
 	if t ge 2 and nactive_tm1 ge 3 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			 if adh >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if adh >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;   * _i20_ ;
-			 if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			 if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			 if adh >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*normal(0));   vc_tm1=vl-vl_tm1;
+ 			 if adh >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);    newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*normal(0));   vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );   newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 1/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 2/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
 */
 * nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh - vl depends on most recent and previous);
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if        adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if        adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 <  0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 <  0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
 	
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;   * oct 2014;
+			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;   * oct 2014;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1=  0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7461,37 +7461,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 2.75 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;   
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
   		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);   newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;   
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
 */
@@ -7499,35 +7499,35 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4.5 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.18*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.18*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7539,37 +7539,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 2.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);   newmut_tm1= 0.03*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);  newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
 */
@@ -7577,34 +7577,34 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 * nactive = 2.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.2+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -7615,37 +7615,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 2.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );   newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);  newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );  newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+  			if adh >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
  		end;
 */
@@ -7653,35 +7653,35 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-2  ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.4+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl= 1.4+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23); newmut_tm1= 0.08*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.6 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl= 1.6 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -7692,37 +7692,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 2 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1; 
+		 	if adh >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1; 
+		 	if adh >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30);  newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );   newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
  		end;
 */
@@ -7730,35 +7730,35 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7 ); newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*normal(0));
+		 	if adh >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
     		cc_tm1=cd4_art_adj+(-16 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -7770,37 +7770,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 1.75 first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.75  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
@@ -7808,35 +7808,35 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4); * may17; newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end; *may17;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-		 	if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.75 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-7.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7849,72 +7849,72 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 1.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
 * nactive = 1.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*rand('normal'));
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-17); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7927,72 +7927,72 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 1.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
 * nactive = 1.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-5  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7.5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+		 	if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8005,37 +8005,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 1  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 
@@ -8044,34 +8044,34 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 1 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));
+			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-18 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8083,37 +8083,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 0.8  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 */
@@ -8121,34 +8121,34 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.75- GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*normal(0));
+		 	if adh >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-10.5); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8160,37 +8160,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 0.5  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.5 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 */
@@ -8198,34 +8198,34 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8237,37 +8237,37 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * nactive = 0.25  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.25 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 */
@@ -8275,34 +8275,34 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14.5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.25*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.25*((vl+vl_tm1)/2);  end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 *  nactive = 0.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 	end;
@@ -8311,11 +8311,11 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * EFFECT OF NACTIVE = 0 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
 	if t ge 2 and nactive_tm1=0 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-15); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-17 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-18 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then 
 			newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 	end;
@@ -8339,9 +8339,9 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if . < cd4  lt 0 then cd4 =0;
 
 * add variability to cd4 for those on art;
-	if t ge 2 and nactive_tm1 ge 0 then do; cd4 =(sqrt(cd4 )+ sd_cd4*normal(0))**2; end;
+	if t ge 2 and nactive_tm1 ge 0 then do; cd4 =(sqrt(cd4 )+ sd_cd4*rand('normal'))**2; end;
 
-	if  t ge 2 and tcur_tm1 ge 0 and cd4  gt cmax then cd4 =cmax+(normal(0)*50);
+	if  t ge 2 and tcur_tm1 ge 0 and cd4  gt cmax then cd4 =cmax+(rand('normal')*50);
 	if . < vl lt 0 then vl=0;
 
 	if t ge 2 then do;
@@ -8366,7 +8366,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if pregnant=1 and hiv=1 and t ge 2 then do; 
 		give_birth_with_hiv=1;
-		u=uniform(0);
+		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
 		if 3 < vl <= 4 then u=u*2;
 		if 4 < vl <= 5 then u=u*1;
@@ -8391,33 +8391,33 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	if t ge 2 and d lt newmut_tm1 then do;
 
 * rt184;
-		m=uniform(0);if o_3tc_tm1=1 and c_rt184m_tm1=0 and m < 0.8 then c_rt184m=1;
+		m=rand('uniform');if o_3tc_tm1=1 and c_rt184m_tm1=0 and m < 0.8 then c_rt184m=1;
 
 * tams;
 		if o_zdv_tm1=1 and o_3tc_tm1=0 then do; 
-			m=uniform(0); m= m/fold_change_tams_risk;
+			m=rand('uniform'); m= m/fold_change_tams_risk;
 			if         m lt 0.20 then c_rttams=c_rttams_tm1+1; 
 			if 0.20 <= m <  0.21 then c_rttams = c_rttams_tm1+2; end;
 		if o_zdv_tm1=1 and o_3tc_tm1=1 then do; 
-			m=uniform(0);  m= m/fold_change_tams_risk;
+			m=rand('uniform');  m= m/fold_change_tams_risk;
 			if          m lt 0.12 then c_rttams=c_rttams_tm1+1; 
 			if  0.12 <= m < 0.13 then c_rttams = c_rttams_tm1+2; end;
 		if c_rttams gt 6 then c_rttams=6;
 	
 * rt151;
-		if  o_zdv_tm1=1 and c_rt151m_tm1=0 then do; m=uniform(0);m=m/fold_change_151_risk;
+		if  o_zdv_tm1=1 and c_rt151m_tm1=0 then do; m=rand('uniform');m=m/fold_change_151_risk;
 			if m lt 0.02 then c_rt151m=1;end;
 
 * rt65;
 		if o_ten_tm1=1 and o_zdv_tm1=1 and c_rt65m_tm1=0 then do;
-			m=uniform(0); if m lt 0.02 then c_rt65m=1; end;
+			m=rand('uniform'); if m lt 0.02 then c_rt65m=1; end;
 		if o_ten_tm1=1 and o_zdv_tm1=0  and c_rt65m_tm1=0 then do; 
-			m=uniform(0); if m lt rate_res_ten then c_rt65m=1; end; * mar16; * increase from 0.1 to 0.30 based on teneres paper in lancet id;
+			m=rand('uniform'); if m lt rate_res_ten then c_rt65m=1; end; * mar16; * increase from 0.1 to 0.30 based on teneres paper in lancet id;
 
 
 * NNRTI mutations; 
@@ -8425,15 +8425,15 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * dont use fx here as defined elsewhere;
 
 		if o_nev_tm1=1 then do;
-			ax=uniform(0); if ax < 0.2 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
-			bx=uniform(0); if bx < 0.4 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
-			cx=uniform(0); if cx < 0.2 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
+			ax=rand('uniform'); if ax < 0.2 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
+			bx=rand('uniform'); if bx < 0.4 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
+			cx=rand('uniform'); if cx < 0.2 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 	
 		if o_efa_tm1=1 then do;
-			ax=uniform(0); if ax < 0.6 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
-			bx=uniform(0); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
-			cx=uniform(0); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
+			ax=rand('uniform'); if ax < 0.6 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
+			bx=rand('uniform'); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
+			cx=rand('uniform'); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 
 
@@ -8441,35 +8441,35 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 * lpr;
         if o_lpr_tm1=1 then do;
-            ax=uniform(0); if ax < 0.01 then c_pr32m=1;
-            bx=uniform(0); if bx < 0.02 then c_pr46m=1;
-			cx=uniform(0); if cx < 0.01 then c_pr47m=1;
-			dx=uniform(0); if dx < 0.02 then c_pr54m=1;
-			ex=uniform(0); if ex < 0.02 then c_pr76m=1;
-            zx=uniform(0); if zx < 0.02 then c_pr82m=1;
+            ax=rand('uniform'); if ax < 0.01 then c_pr32m=1;
+            bx=rand('uniform'); if bx < 0.02 then c_pr46m=1;
+			cx=rand('uniform'); if cx < 0.01 then c_pr47m=1;
+			dx=rand('uniform'); if dx < 0.02 then c_pr54m=1;
+			ex=rand('uniform'); if ex < 0.02 then c_pr76m=1;
+            zx=rand('uniform'); if zx < 0.02 then c_pr82m=1;
          end;
 
 * dar;
 		if o_dar_tm1=1  then do;
-			ax=uniform(0); if ax < 0.01 then c_pr50vm=1;
-			ax=uniform(0); if ax < 0.01 then c_pr54m=1;
-			ax=uniform(0); if ax < 0.01 then c_pr76m=1;
-			bx=uniform(0); if bx < 0.01 then c_pr84m=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr50vm=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr54m=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr76m=1;
+			bx=rand('uniform'); if bx < 0.01 then c_pr84m=1;
 		end;
 
 * taz;
 		if o_taz_tm1=1  then do;
-			ax=uniform(0); if ax < 0.03 then c_pr50lm=1;
-			bx=uniform(0); if bx < 0.03 then c_pr84m=1;
-			cx=uniform(0); if cx < 0.03 then c_pr88m=1;
+			ax=rand('uniform'); if ax < 0.03 then c_pr50lm=1;
+			bx=rand('uniform'); if bx < 0.03 then c_pr84m=1;
+			cx=rand('uniform'); if cx < 0.03 then c_pr88m=1;
 		end;
 
 * dol;
 		if o_dol_tm1=1 then do; 
 		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
 		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
-			ax=uniform(0); if ax < pr_res_dol then c_inpm=1;  
-			bx=uniform(0); if bx < pr_res_dol then c_insm=1;
+			ax=rand('uniform'); if ax < pr_res_dol then c_inpm=1;  
+			bx=rand('uniform'); if bx < pr_res_dol then c_insm=1;
 		end;
 
 	end;
@@ -8491,9 +8491,9 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	containing an NNRTI may result in functional monotherapy because NNRTIs have much longer half-lives ; 
 
 	if interrupt=1 and (o_nev_tm1=1 or o_efa_tm1=1) and (c_rt103m_tm1=0 and c_rt181m_tm1=0 and c_rt190m_tm1=0) then do;
-		ax=uniform(0); if ax lt 0.018 then c_rt103m=1; 
-		bx=uniform(0); if bx lt 0.006 then c_rt181m=1; 
-		cx=uniform(0); if cx lt 0.006 then c_rt190m=1; 
+		ax=rand('uniform'); if ax lt 0.018 then c_rt103m=1; 
+		bx=rand('uniform'); if bx lt 0.006 then c_rt181m=1; 
+		cx=rand('uniform'); if cx lt 0.006 then c_rt190m=1; 
 	end;
 
 
@@ -8550,82 +8550,82 @@ and starting another, non-x-resistant, regimen;
 	if caldate{t} > yrart > . then do;
 
 	* nucs;
-		a=uniform(0);if c_rt184m=1 and (tss_3tc    ge 1/12 or p_3tc=0)
+		a=rand('uniform');if c_rt184m=1 and (tss_3tc    ge 1/12 or p_3tc=0)
 		and a < .8 then c_rt184m=0;
 
-		a=uniform(0);if c_rt151m=1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_3tc    ge 1/12 or p_3tc=0) 
+		a=rand('uniform');if c_rt151m=1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_3tc    ge 1/12 or p_3tc=0) 
 		and a < .6 then c_rt151m=c_rt151m_inf;
 	
-		a=uniform(0);if c_rt65m=1 and (tss_ten    ge 1/12 or p_ten=0) and (tss_3tc    ge 1/12 or p_3tc=0)
+		a=rand('uniform');if c_rt65m=1 and (tss_ten    ge 1/12 or p_ten=0) and (tss_3tc    ge 1/12 or p_3tc=0)
 		and a < .6 then c_rt65m=c_rt65m_inf;
 
-		a=uniform(0);if c_rttams ge 1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_ten    ge 1/12 or p_ten=0)
+		a=rand('uniform');if c_rttams ge 1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_ten    ge 1/12 or p_ten=0)
 		and a < .4 then c_rttams=c_rttams_inf;
 
 	* nns; 
-		a=uniform(0);if c_rt103m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt103m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt103m=c_rt103m_inf;
 
-		a=uniform(0);if c_rt181m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt181m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt181m=c_rt181m_inf;
 
-		a=uniform(0);if c_rt190m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt190m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt190m=c_rt190m_inf;
 
 	* pis;
 
-		a=uniform(0);if c_pr32m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
-		a=uniform(0);if c_pr33m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
-		a=uniform(0);if c_pr46m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
-		a=uniform(0);if c_pr47m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
-		a=uniform(0);if c_pr50vm ge 1 and (tss_dar ge 1/12 or p_dar=0)  and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
-		a=uniform(0);if c_pr54m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
-		a=uniform(0);if c_pr76m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
-		a=uniform(0);if c_pr82m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
-		a=uniform(0);if c_pr84m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
-		a=uniform(0);if c_pr50lm ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
-		a=uniform(0);if c_pr88m ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
-		a=uniform(0);if c_pr90m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
+		a=rand('uniform');if c_pr32m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
+		a=rand('uniform');if c_pr33m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
+		a=rand('uniform');if c_pr46m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
+		a=rand('uniform');if c_pr47m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
+		a=rand('uniform');if c_pr50vm ge 1 and (tss_dar ge 1/12 or p_dar=0)  and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
+		a=rand('uniform');if c_pr54m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
+		a=rand('uniform');if c_pr76m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
+		a=rand('uniform');if c_pr82m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
+		a=rand('uniform');if c_pr84m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
+		a=rand('uniform');if c_pr50lm ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
+		a=rand('uniform');if c_pr88m ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
+		a=rand('uniform');if c_pr90m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
 
 	* integrase inhibitor; 
 
-		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;
-		a=uniform(0);if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
+		a=rand('uniform');if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;
+		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
 
 end;
 
 
 * LOSS OF TRANSMITTED RESISTANCE MUTATIONS FROM MAJORITY VIRUS ("LOSS OF PERSISTENCE");
 
-x=uniform(0); if t ge 2 and c_rttams_inf ge 1 and naive=1 and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
-x=uniform(0); if c_rt184m_inf = 1 and naive=1 and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
-x=uniform(0); if c_rt65m_inf = 1 and naive=1 and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
-x=uniform(0); if c_rt151m_inf = 1 and naive=1 and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
-x=uniform(0); if c_rt103m_inf = 1 and naive=1 and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
-x=uniform(0); if c_rt181m_inf = 1 and naive=1 and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
-x=uniform(0); if c_rt190m_inf = 1 and naive=1 and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
-x=uniform(0); if c_pr32m_inf = 1 and naive=1 and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
-x=uniform(0); if c_pr33m_inf = 1 and naive=1 and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
-x=uniform(0); if c_pr46m_inf = 1 and naive=1 and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
-x=uniform(0); if c_pr47m_inf = 1 and naive=1 and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
-x=uniform(0); if c_pr50lm_inf = 1 and naive=1 and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
-x=uniform(0); if c_pr50vm_inf = 1 and naive=1 and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
-x=uniform(0); if c_pr54m_inf = 1 and naive=1 and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
-x=uniform(0); if c_pr76m_inf = 1 and naive=1 and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
-x=uniform(0); if c_pr82m_inf = 1 and naive=1 and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
-x=uniform(0); if c_pr84m_inf = 1 and naive=1 and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
-x=uniform(0); if c_pr88m_inf = 1 and naive=1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
-x=uniform(0); if c_pr90m_inf = 1 and naive=1 and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
-x=uniform(0); if c_inpm_inf = 1  and naive=1 and c_inpm=1 and x < rate_loss_persistence then c_inpm=0;
-x=uniform(0); if c_insm_inf = 1  and naive=1 and c_insm=1 and x < rate_loss_persistence then c_insm=0;
+x=rand('uniform'); if t ge 2 and c_rttams_inf ge 1 and naive=1 and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
+x=rand('uniform'); if c_rt184m_inf = 1 and naive=1 and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
+x=rand('uniform'); if c_rt65m_inf = 1 and naive=1 and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
+x=rand('uniform'); if c_rt151m_inf = 1 and naive=1 and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
+x=rand('uniform'); if c_rt103m_inf = 1 and naive=1 and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
+x=rand('uniform'); if c_rt181m_inf = 1 and naive=1 and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
+x=rand('uniform'); if c_rt190m_inf = 1 and naive=1 and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
+x=rand('uniform'); if c_pr32m_inf = 1 and naive=1 and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
+x=rand('uniform'); if c_pr33m_inf = 1 and naive=1 and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
+x=rand('uniform'); if c_pr46m_inf = 1 and naive=1 and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
+x=rand('uniform'); if c_pr47m_inf = 1 and naive=1 and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
+x=rand('uniform'); if c_pr50lm_inf = 1 and naive=1 and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
+x=rand('uniform'); if c_pr50vm_inf = 1 and naive=1 and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
+x=rand('uniform'); if c_pr54m_inf = 1 and naive=1 and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
+x=rand('uniform'); if c_pr76m_inf = 1 and naive=1 and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
+x=rand('uniform'); if c_pr82m_inf = 1 and naive=1 and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
+x=rand('uniform'); if c_pr84m_inf = 1 and naive=1 and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
+x=rand('uniform'); if c_pr88m_inf = 1 and naive=1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
+x=rand('uniform'); if c_pr90m_inf = 1 and naive=1 and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
+x=rand('uniform'); if c_inpm_inf = 1  and naive=1 and c_inpm=1 and x < rate_loss_persistence then c_inpm=0;
+x=rand('uniform'); if c_insm_inf = 1  and naive=1 and c_insm=1 and x < rate_loss_persistence then c_insm=0;
 
 
 * LOSS OF MUTATIONS ACQUIRED IN PMTCT FROM MAJORITY and minoririty VIRUS ;
 
 * dependent_on_time_step_length ;
 
-x=uniform(0);if c_rt103m=1 and                   c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_maj then c_rt103m=0;
-x=uniform(0);if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_min then e_rt103m=0;
+x=rand('uniform');if c_rt103m=1 and                   c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_maj then c_rt103m=0;
+x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_min then e_rt103m=0;
 
 
 	* "REGAINING" MUTATIONS AFTER RESTARTING;
@@ -8695,12 +8695,12 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 
 if t ge 2 and visit=1 and art_monitoring_strategy=3 and 0.5 <= caldate{t}-date_last_vlm_g1000 <= 1.0 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and 0.5 <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;
-	s=uniform(0); 
+	s=rand('uniform'); 
 	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
@@ -8728,10 +8728,10 @@ end;
 
 if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 
-		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=uniform(0);  * jan15;
-		cd4_cost_inc = 1; if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;  end;
+		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=rand('uniform');  * jan15;
+		cd4_cost_inc = 1; if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;  end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;  cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;  cd4_cost_inc = 2;
 			if . < conf_measured_c < 200 then do;
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; 
 				if o_zdv=1 then f_zdv=1;
@@ -8747,10 +8747,10 @@ if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clini
 			conf_measured_c=.;   
 		end;
 
-		if 1 <= caldate{t}-yrart < 3 and (time_since_last_cm >= 0.5 or time_since_last_cm =.) then do; s=uniform(0); *jan15;
-		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; end;
+		if 1 <= caldate{t}-yrart < 3 and (time_since_last_cm >= 0.5 or time_since_last_cm =.) then do; s=rand('uniform'); *jan15;
+		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; end;
 		if . < cm     < 100 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
 			if . < conf_measured_c < 100 then do;
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; 
 				if o_zdv=1 then f_zdv=1;
@@ -8779,17 +8779,17 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 		or 
 		(int_clinic_not_aw=1 and caldate{t}-yrart ge 1 and mod(toffart,0.5)=0 )
 		) then do; 
-			s=uniform(0); 
-			if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; 
+			s=rand('uniform'); 
+			if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; 
 		end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
 			if . < conf_measured_c < 200 then do; 
-				s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+				s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 				end;
 			end; 
 			vl_cost_inc = 1; 
@@ -8810,17 +8810,17 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 		end;
 
 		if (tcur in (1,1.5,2,2.5) or (int_clinic_not_aw=1 and 0 < caldate{t}-yrart < 3 and toffart    in (0.5,1,1.5,2,2.5))) then do; 
-			s=uniform(0); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; 
+			s=rand('uniform'); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; 
 		end;
 		if . < cm     < 100 then do;
-				s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 2;
+				s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 2;
 				if . < conf_measured_c < 100 then do;
-					s=uniform(0);	
+					s=rand('uniform');	
 					if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 				end;
 			vl_cost_inc = 1;
@@ -8851,14 +8851,14 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 		if (
 		(mod(tcur,0.5)=0 and tcur ge 3) 
 		or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1 and mod(toffart   ,0.5)=0 ))  and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5)
-		then do; s=uniform(0); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 1;  end;
+		then do; s=rand('uniform'); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 1;  end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 2;
-			if . < conf_measured_c < 200 then do; s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-			if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 2;
+			if . < conf_measured_c < 200 then do; s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 			end;  
 			end;
 			vl_cost_inc = 1; 
@@ -8868,15 +8868,15 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			conf_measured_c=.;
 		end;
 		if (tcur in (1,1.5,2,2.5) or (int_clinic_not_aw=1 and 0 < caldate{t}-yrart < 3 and toffart    in (0.5,1,1.5,2,2.5)))
-		and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5) then do; s=uniform(0); 
-		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 1; end;
+		and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5) then do; s=rand('uniform'); 
+		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 1; end;
 		if . < cm     < 100  then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
-			if . < conf_measured_c < 100 then do; s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			if . < conf_measured_c < 100 then do; s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		end;  
 		end;
 		vl_cost_inc = 1; 
@@ -8886,12 +8886,12 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			conf_measured_c=.;
 		end;
 
-		if t ge 3 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and 0.5 <= caldate{t}-date_cd4_switch_eval <= 1.0 then do;s=uniform(0);
+		if t ge 3 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and 0.5 <= caldate{t}-date_cd4_switch_eval <= 1.0 then do;s=rand('uniform');
 			if s < eff_prob_vl_meas_done then do; 
-			if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 			end;  
 			vl_cost_inc = 1;
 			if vm gt log10(1000) then do;
@@ -8919,11 +8919,11 @@ if art_monitoring_strategy=150  and visit=1 and (artline=1 or int_clinic_not_aw=
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
@@ -8964,11 +8964,11 @@ if art_monitoring_strategy=1500  and visit=1 and (artline=1 or int_clinic_not_aw
 and restart    ne 1 and restart_tm1  ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate{t} - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate{t} ; date_drug_level_test = caldate{t};
 		drug_level_test=1; end;
 		end;  
@@ -9013,11 +9013,11 @@ if art_monitoring_strategy=152  and visit=1 and (artline=1 or int_clinic_not_aw=
 and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (time_since_last_vm >= 1.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and 
 	(caldate&j - date_conf_vl_measure_done >= 2 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
@@ -9051,11 +9051,11 @@ end;
 if art_monitoring_strategy=153  and visit=1 and (artline=1 or int_clinic_not_aw=1) 
 and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (time_since_last_vm >= 0.75) then do; * jan15;
-		s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
@@ -9082,11 +9082,11 @@ if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy n
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then date_conf_vl_measure_done = caldate&j ;
 		end;  
 		vl_cost_inc = 1;
@@ -9123,11 +9123,11 @@ and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
 		drug_level_test=1;end;  
 		end;
@@ -9170,11 +9170,11 @@ if reg_option in (120 121) and linefail=1 and artline=2 and o_dol=1 and f_dol_tm
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
 		drug_level_test=1;end;  
 		end;
@@ -9224,7 +9224,7 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 * measure cd4 crag tb lam when (re)entering care;
 crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_re_enter_care=.; re_enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
-	if cm  =. then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; 
+	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
@@ -9238,11 +9238,11 @@ above at art monitoring strategy 150; * may18;
 
 if sv_secondline=1 and visit=1 and linefail ge 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do;  
 	if time_since_last_vm >= 0.75 or time_since_last_vm = . then do; 
-		s=uniform(0);  if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		vl_cost_inc=1;
 		end;  
 		end;
@@ -9253,11 +9253,11 @@ end;
 if res_test_6m_if_vlg1000=1 and t ge 2 then do;  * last_vm_gt_1000 only defined while linefail = 0;
 	
 	if visit=1 and 
-	(caldate{t} - yrart = 0.50 and ( onart = 1 or int_clinic_not_aw=1 )) then do;s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+	(caldate{t} - yrart = 0.50 and ( onart = 1 or int_clinic_not_aw=1 )) then do;s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 	end;  
 	vl_cost_inc = 1; end;
 			if vm gt log10(1000) then do; res_test=1; if date_v_alert=. then date_v_alert=caldate{t};end;
@@ -9463,7 +9463,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * below tox risk and persistence ;
 
 	c_nau=0;
-	r=uniform(0); if . < caldate{t}-yrart < 1 then r=r/5.0; * increased risk of nausea in first year;
+	r=rand('uniform'); if . < caldate{t}-yrart < 1 then r=r/5.0; * increased risk of nausea in first year;
 	if t ge 2 and (o_taz=1 or o_dar=1)               then do; 
 	if c_nau_tm1=0 and r < (r_nau_start_taz_dar * double_rate_gas_tox_taz) then c_nau=1; 
 	if c_nau_tm1=1 then c_nau=1; if c_nau_tm1=1 and r < p_nau_stops_taz_dar then c_nau=0;  
@@ -9474,25 +9474,25 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	end;
 
 	c_dia=0;
-	r=uniform(0);if . < caldate{t}-yrart < 1 then r=r/2.5; * increased risk of diarrhoea in first year;
+	r=rand('uniform');if . < caldate{t}-yrart < 1 then r=r/2.5; * increased risk of diarrhoea in first year;
 	if t ge 2 and o_lpr=1 then do; 
 	if c_dia_tm1=0 and r < r_dia_start_lpr then c_dia=1; 
 	if c_dia_tm1=1 then c_dia=1; if c_dia_tm1=1 and r < p_dia_stops_lpr then c_dia=0;  
 	end;
-	r=uniform(0);if . < caldate{t}-yrart < 1 then r=r/2.5;
+	r=rand('uniform');if . < caldate{t}-yrart < 1 then r=r/2.5;
 	if t ge 2 and (o_taz=1  or o_dar=1) then do; 	
 	if c_dia_tm1=0 and r < (r_dia_start_taz_dar * double_rate_gas_tox_taz) then c_dia=1; 
 	if c_dia_tm1=1 then c_dia=1; if c_dia_tm1=1 and r < p_dia_stops_taz_dar then c_dia=0;
 	end;
 
 	c_ras=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 3 and (o_efa=1 and 0 <= caldate{t}-date_start_efa <= 0.5 and r < r_ras_start_efa ) then c_ras=1;
 	if t ge 3 and (o_nev=1 and 0 <= caldate{t}-date_start_nev <= 0.5 and r < r_res_start_nev ) then c_ras=1;
 
 	if tox_weightg_dol=1 then do;
 	* note c_weightg is weight gain as a toxicity potentially affecting treatment interruption;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 3 and (o_dol=1 and 0 < (caldate{t} - date_start_dol) <= 1 and r < r_weightg_start_dol  ) then c_weightg=1;
 	if o_dol ne 1 or (caldate{t} - date_start_dol) > 1 then c_weightg = 0;
 	end;
@@ -9502,7 +9502,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	bmi above 23 for whom a rise could lead to increased risk of death (eg resulting fron diabetes) ;
 
 	if incr_mort_risk_dol_weightg_i = . then incr_mort_risk_dol_weightg_i = 1.00 ;	
-	r = uniform(0);
+	r = rand('uniform');
 	if caldate{t} = date_start_dol and (r < prop_bmi_ge23  or (date_start_tld_prep ne . and bmi_gt23_start_dol =1)) then do;  
 			bmi_gt23_start_dol=1;
 			if incr_mort_risk_dol_weightg = 1 then incr_mort_risk_dol_weightg_i = 1.00 ;  
@@ -9518,13 +9518,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if gender=2 and age < 55 and want_no_more_children ne 1 and bmi_gt23_start_dol = 1 then bmi_gt23_start_dol_wwc=1;
 
 	c_cns=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 2 and o_efa=1 then do;
 		if c_cns_tm1=0 and r < r_cns_start_efa and tcur < 1 then c_cns=1;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur < 1 and r < p_cns_stops_efa then c_cns=0;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur >= 1 and r < p_cns_stops_efa / 2 then c_cns=0;
 	end;
-	rr=uniform(0);
+	rr=rand('uniform');
 	if t ge 2 and o_dol=1 then do;  * take incidence as half for efa but with same persistence rate; * apr16; * changed since nih talk; 
 		if c_cns_tm1=0 and rr < (r_cns_start_dol * rel_dol_tox) and tcur < 1 then c_cns=1;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur < 1 and rr < p_cns_stops_dol then c_cns=0;
@@ -9532,32 +9532,32 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	end;
 
 	* no c_lip=0 because stays once have it even if stop drugs;
-	r=uniform(0);
+	r=rand('uniform');
 	if o_zdv=1 and r < r_lip_start_zdv then c_lip=1;
 	
 	c_hep=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if  o_nev=1 and tcur <= 0.5 and r < r_hep_start_nev then c_hep=1;
 	
 	c_otx=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of otox in first year;
 	if onart=1 and r < r_otx_start then c_otx=1;
 
 	c_ane=0;
-	r=uniform(0); if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of ane in first year;
+	r=rand('uniform'); if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of ane in first year;
 	if t ge 2 and o_zdv=1 and c_ane_tm1 =0 and r < r_ane_start_zdv then c_ane=1;
 	if o_zdv=1 and c_ane_tm1=1 then c_ane=1; if c_ane_tm1=1 and r < p_ane_stops_zdv then c_ane=0;
 
 	c_head=0;
-	d=uniform(0); if . < caldate{t}-yrart < 1 then d=d/1.5; * increased risk of head in first year;
+	d=rand('uniform'); if . < caldate{t}-yrart < 1 then d=d/1.5; * increased risk of head in first year;
 	if t ge 2 and o_zdv=1 and c_head_tm1 =0 and d < r_head_start_zdv then c_head=1;
 	if o_zdv=1 and c_head_tm1=1 then c_head=1; if c_head_tm1=1 and r < p_head_stops_zdv then c_head=0;
 
 	c_lac=0;
-	d=uniform(0); if o_zdv=1 and d < r_lac_start_zdv then c_lac=1;
+	d=rand('uniform'); if o_zdv=1 and d < r_lac_start_zdv then c_lac=1;
 
-	e=uniform(0);
+	e=rand('uniform');
 	c_neph=0;
 	if t ge 2 and o_ten=1 and c_neph_tm1=0 and e < r_neph_start_ten then c_neph=1;
 	if o_ten=1 and c_neph_tm1=1 then c_neph=1; if c_neph_tm1=1 and r < p_neph_stops_ten then c_neph=0;
@@ -9570,7 +9570,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	* PCP prophylaxis; * amended nov19;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	pcp_p_tm1=pcp_p;
 
@@ -9578,7 +9578,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if visit=1 and . < cm    < 350 and d lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 	end;
 
-	r=uniform(0);
+	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 
 	if caldate{t} ge 2015 and visit=1 and d < 0.8 then pcp_p   =1;
@@ -9591,7 +9591,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	tb_proph_tm1=tb_proph;
 
 	tb_proph = 0;	
-	u=uniform(0);
+	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1 and u < rate_tb_proph_init then do; 
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
@@ -9599,24 +9599,24 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
 	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	crypm_proph_tm1=crypm_proph;
 
 	crypm_proph = 0;	
-	u=uniform(0);
+	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 
 		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
 	end;
 
 	* SBI preventive prophylaxis ;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	sbi_proph_tm1=sbi_proph;
 
 	sbi_proph = 0;	
-	u=uniform(0);
+	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_sbi_proph, date_last_sbi) > 1 and u < rate_sbi_proph_init then do; 
 		sbi_proph = 1; date_most_recent_sbi_proph = caldate{t};
 	end;
@@ -9693,7 +9693,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if 0 <= (caldate{t} - date_most_recent_tb_proph) < 1 then tb_rate = tb_rate * effect_tb_proph;
 		tb_risk  = 1 - exp (-0.25* (tb_rate));
 
-		xy5=uniform(0); xy6=uniform(0);
+		xy5=rand('uniform'); xy6=rand('uniform');
 		if xy5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if xy6 le tb_risk then tb  =1;
  
@@ -9708,7 +9708,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
 			tb_prob_diag_e = 1 - tb_prob_diag_l ;
-			ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
+			ii=rand('uniform'); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
 		end;
 
 
@@ -9717,7 +9717,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			who3_event   =1;
 
 * ------------------------------------------------------------------------------------------------------- ;
-			f=uniform(0);
+			f=rand('uniform');
 
 			if t ge 3 and art_monitoring_strategy = 1 and f < prob_who3_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 
@@ -9737,11 +9737,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 			if t ge 3 and art_monitoring_strategy=2  and f < prob_who3_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 	* take account of time delay with dbs or plasma compared with poc;
@@ -9765,11 +9765,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if t ge 3 and art_monitoring_strategy = 3 and f < prob_who3_diagnosed  then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 and 
 				((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 			if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 			if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
@@ -9815,9 +9815,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		risk_crypm = 1 - exp (-0.25*crypm_rate);
 		risk_sbi = 1 - exp (-0.25*sbi_rate);
 
-		x2=uniform(0); if x2 le risk_oth_adc then oth_adc=1;
-		x2=uniform(0); if x2 le risk_crypm then crypm=1;
-		x2=uniform(0); if x2 le risk_sbi then sbi=1;
+		x2=rand('uniform'); if x2 le risk_oth_adc then oth_adc=1;
+		x2=rand('uniform'); if x2 le risk_crypm then crypm=1;
+		x2=rand('uniform'); if x2 le risk_sbi then sbi=1;
  
 		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill 
 		- i.e. low/zero effect of treatment  
@@ -9831,7 +9831,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then crypm_prob_diag_l = crypm_prob_diag_l * effect_visit_prob_diag_l ;
 			if crag_measured_this_per = 1 then crypm_prob_diag_l = crypm_prob_diag_l * crag_eff_prob_diag_l ;
 			crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
-			ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
+			ii=rand('uniform'); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
 		end;
 
 
@@ -9840,7 +9840,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			sbi_prob_diag_l = sbi_base_prob_diag_l ;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_l = sbi_prob_diag_l * effect_visit_prob_diag_l ;
 			sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
-			ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
+			ii=rand('uniform'); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
 		end;
 
 		oth_adc_prob_diag_l = .;  oth_adc_diag_e = .; 
@@ -9848,7 +9848,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			oth_adc_prob_diag_l = oth_adc_base_prob_diag_l ;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then oth_adc_prob_diag_l = oth_adc_prob_diag_l * effect_visit_prob_diag_l ;
 			oth_adc_prob_diag_e = 1 - oth_adc_prob_diag_l ;
-			ii=uniform(0); oth_adc_diag_e=0; if ii < oth_adc_prob_diag_e then oth_adc_diag_e=1 ;  
+			ii=rand('uniform'); oth_adc_diag_e=0; if ii < oth_adc_prob_diag_e then oth_adc_diag_e=1 ;  
 		end;
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
@@ -9859,7 +9859,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			adc_line2_lf2=0; if artline=2 and linefail=2 then adc_line2_lf2 =1; adc_artexpoff=0; if naive=0 and onart=0 then adc_artexpoff =1;
 
 * ------------------------------------------------------------------------------------------------------- ;
-			f=uniform(0);
+			f=rand('uniform');
 
 			if t ge 3 and art_monitoring_strategy = 1  and f < prob_who4_diagnosed  then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 then do;
@@ -9878,11 +9878,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 			if t ge 3 and art_monitoring_strategy=2  and f < prob_who4_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 then do;
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease;  	if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease;  	if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 
@@ -9906,11 +9906,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if t ge 3 and art_monitoring_strategy = 3  and f < prob_who4_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 
 				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
@@ -9973,7 +9973,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
-		x3=uniform(0);
+		x3=rand('uniform');
 		if x3 le death_rix then do;
 
 		rdcause=1;
@@ -9998,7 +9998,7 @@ so a proportion (15%) are classified as non-who4_;
 			dead_24m_onart=0;if onart=1 and . lt caldate{t}-yrart le 2   then dead_24m_onart=1;
 			dead_36m_onart=0;if onart=1 and . lt caldate{t}-yrart le 3   then dead_36m_onart=1;
 
-			r=uniform(0);
+			r=rand('uniform');
 			if r < 0.85 then do; dcause=1;if who4_=0 then do; who4_=1; who4_date=caldate{t}; cd4_who4_=cd4;end; end;
 			if r >= 0.85 then dcause=2;
 		end;
@@ -10007,7 +10007,7 @@ so a proportion (15%) are classified as non-who4_;
 			liverdra = base_rate / 6.0; * so liver death assumed closely CD4 related;
 
 * consider if * dependent_on_time_step_length ;
-			liverdri3 = 1 - exp(-0.25*liverdra); x3=uniform(0);
+			liverdri3 = 1 - exp(-0.25*liverdra); x3=rand('uniform');
 		end;
 		if x3 le liverdri3 then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
@@ -10016,7 +10016,7 @@ so a proportion (15%) are classified as non-who4_;
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+CVD death ~ 10% of deaths in > 50ï¿½s  3% in 15-49ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
@@ -10076,7 +10076,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		ac_deathrix = 1 - exp(-0.25*ac_death_rate);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
-		x3=uniform(0);
+		x3=rand('uniform');
 
 		if x3 le ac_deathrix then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
@@ -10086,7 +10086,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
-	covid = 0; a = uniform(0);
+	covid = 0; a = rand('uniform');
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
@@ -10102,7 +10102,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
-	xcovid = uniform(0);
+	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
@@ -10112,7 +10112,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 * risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
-	xcvd = uniform(0);
+	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
@@ -10399,12 +10399,12 @@ at time zero is the same as that in later years;
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+CVD death ~ 10% of deaths in > 50ï¿½s  3% in 15-49ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 
-TB death ~ 7% of deaths in > 15’s
+TB death ~ 7% of deaths in > 15ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)    Cause-specific mortality in the Kombewa health
 
 so reduce all cause mortality by 0.93 since non-hiv tb now separated;
@@ -10455,7 +10455,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
-	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=uniform(0);
+	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=rand('uniform');
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
 	if x3 le ac_deathrix then do;  * update_24_4_21;
@@ -10465,7 +10465,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
-	covid = 0; a = uniform(0);
+	covid = 0; a = rand('uniform');
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
@@ -10481,7 +10481,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
-	xcovid = uniform(0);
+	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
@@ -10491,7 +10491,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
-	xcvd = uniform(0);
+	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
@@ -10499,14 +10499,14 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * incidence non_hiv_tb ;  * update_24_4_21;
 
 	non_hiv_tb = 0;
-	ynon_hiv_tb = uniform(0);
+	ynon_hiv_tb = rand('uniform');
 	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
 		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
 	end;
 
 	non_hiv_tb_diag_e = .; 
 	if non_hiv_tb=1 then do;
-		ii=uniform(0); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
+		ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
 	end;
 
 
@@ -10519,7 +10519,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
 	end;
 
-	xnon_hiv_tb = uniform(0);
+	xnon_hiv_tb = rand('uniform');
 	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
 		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
 	end;
