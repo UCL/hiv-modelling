@@ -14379,7 +14379,7 @@ need to ensure that all s_ variables below are not included in data set
 * this set of sum statements applies to when we want to sum variables for all living people of any age >= 15;
 
 * 8r ;
-if 15 <= age      and (death = . or caldate&j = death ) then do;
+if 15 <= age < 65 and (death = . or caldate&j = death ) then do;
 
 	s_n + 1; 
 

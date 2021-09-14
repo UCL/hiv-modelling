@@ -3,7 +3,7 @@
   libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep";
 
 data wide;  
- set  a.wide_oral_prep_8rrr    ;  
+ set  a.wide_oral_prep_8r    ;  
 
 
 * 7 + 8 (n > 700):   					64%
