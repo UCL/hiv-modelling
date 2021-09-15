@@ -2,8 +2,16 @@
 * note using tld_prep runs;
   libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep";
 
+data a; set a.wide_oral_prep_7 ; disc=0; sge65=0;
+data b; set a.wide_oral_prep_8 ; disc=0; sge65=0;
+data c; set a.wide_oral_prep_8r ; disc=1; sge65=1;
+data d; set a.wide_oral_prep_8rr ; disc=1; sge65=0;
+data e; set a.wide_oral_prep_8rrr ; disc=0; sge65=1;
+
+
 data wide;  
- set  a.wide_oral_prep_8r    ;  
+   set a b c d e;
+*  set  a.wide_oral_prep_8r ;  
 
 
 * 7 + 8 (n > 700):   					64%
@@ -1083,6 +1091,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where p_inf_newp_21 < 0.62  ;
 * where reg_option_104 = 1;
 * where sex_beh_trans_matrix_m in (1 2 3 4 5 6 7 8 9 10 15);
+* where sge65=1;
 run; 
   ods html close;
 
@@ -1245,10 +1254,28 @@ prop_elig_on_prep_21_26_2
 
 
 proc logistic  data=wide  ;
-output out = out predicted=predicted;
 model ce_500_x = 
+disc sge65;
 ;
 run;
+
+
+proc glm  data=wide  ;
+model d_ddaly_all_21_71_2 = 
+disc sge65;
+run;
+
+proc glm  data=wide  ;
+model d_ndb_500_21_71_2 = 
+disc sge65;
+run;
+
+proc glm  data=wide  ;
+model d_dcost_21_71_2 = 
+disc sge65;
+run;
+
+
 
 
 
