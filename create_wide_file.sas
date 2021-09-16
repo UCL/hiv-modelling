@@ -1,40 +1,44 @@
-* options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\xxxxxx\";
-
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\base\";
+* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\hypertension";
+libname a "C:\Users\Matt Windows\Documents\HTN_Modeling\";
 
   data a.base_sa_31;   set b.out:;
 
+data hiv_synthesis_base; set a.out:;
+/* proc contents; run;
+* proc print; var cald s_hiv1549; run; */
 
 /** show the contents of the input SAS file */
 * proc contents data=a.hiv_synthesis_base;
 *	title "Compressed SAS Input Data"
 *run;
 
-data g; set  a.base_sa_31 ;
+/*
+proc print; var run cald option s_hiv1564 ; run;  
+*/
 
-
-proc sort data=g; 
+proc sort data=hiv_synthesis_base; 
 by run cald option;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set g ;
+set hiv_synthesis_base ;
 
-if cald=2021.5;
+* I had an error here ;
+if cald=2021.25;
 s_alive = s_alive_m + s_alive_w ;
 sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
+keep run sf_2021 s_alive;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2021;
 
 data y; 
-merge g sf;
+merge hiv_synthesis_base sf;
 by run ;
 
 
@@ -652,51 +656,71 @@ end;
 * blood pressure;
 
 * p_hypert_1549 ;			p_hypert_1549 = s_hypertension_1549 / s_alive1549 ;
+* p_hypert_1539 ;			p_hypert_1539 = s_hypertension_1539 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w);
+* p_hypert_4049 ;			p_hypert_4049 = s_hypertension_4049 / (s_ageg4044m + s_ageg4549m + s_ageg4044w + s_ageg4549w) ;
 * p_hypert_5059 ;			p_hypert_5059 = s_hypertension_5059 / (s_ageg5054m + s_ageg5559m + s_ageg5054w + s_ageg5559w) ;
 * p_hypert_6069 ;			p_hypert_6069 = s_hypertension_6069 / (s_ageg6064m + s_ageg6569m + s_ageg6064w + s_ageg6569w) ;
 * p_hypert_7079 ;			p_hypert_7079 = s_hypertension_7079 / (s_ageg7074m + s_ageg7579m + s_ageg7074w + s_ageg7579w) ;
 * p_hypert_ge80 ;			p_hypert_ge80 = s_hypertension_ge80 / (s_ageg8084m + s_ageg85plm + s_ageg8084w + s_ageg85plw) ;
 * p_hypert_1549m ;			p_hypert_1549m = s_hypertension_1549m / s_alive1549_m ;
+* p_hypert_1539m ;			p_hypert_1539m = s_hypertension_1539m / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m) ;
+* p_hypert_4049m ;			p_hypert_4049m = s_hypertension_4049m / (s_ageg4044m + s_ageg4549m ) ;
 * p_hypert_5059m ;			p_hypert_5059m = s_hypertension_5059m / (s_ageg5054m + s_ageg5559m ) ;
 * p_hypert_6069m ;			p_hypert_6069m = s_hypertension_6069m / (s_ageg6064m + s_ageg6569m ) ;
 * p_hypert_7079m ;			p_hypert_7079m = s_hypertension_7079m / (s_ageg7074m + s_ageg7579m ) ;
 * p_hypert_ge80m ;			p_hypert_ge80m = s_hypertension_ge80m / (s_ageg8084m + s_ageg85plm ) ;
 * p_hypert_1549w ;			p_hypert_1549w = s_hypertension_1549w / s_alive1549_w ;
+* p_hypert_1539w ;			p_hypert_1539w = s_hypertension_1539w / (s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w) ;
+* p_hypert_4049w ;			p_hypert_4049w = s_hypertension_4049w / (s_ageg4044w + s_ageg4549w ) ;
 * p_hypert_5059w ;			p_hypert_5059w = s_hypertension_5059w / (s_ageg5054w + s_ageg5559w ) ;
 * p_hypert_6069w ;			p_hypert_6069w = s_hypertension_6069w / (s_ageg6064w + s_ageg6569w ) ;
 * p_hypert_7079w ;			p_hypert_7079w = s_hypertension_7079w / (s_ageg7074w + s_ageg7579w ) ;
 * p_hypert_ge80w ;			p_hypert_ge80w = s_hypertension_ge80w / (s_ageg8084w + s_ageg85plw ) ;
 * p_hypert180_1549 ;		p_hypert180_1549 = s_hypertens180_1549 / s_alive1549 ;
+* p_hypert180_1539 ;		p_hypert180_1539 = s_hypertens180_1539 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w) ;
+* p_hypert180_4049 ;		p_hypert180_4049 = s_hypertens180_4049 / (s_ageg4044m + s_ageg4549m + s_ageg4044w + s_ageg4549w) ;
 * p_hypert180_5059 ;		p_hypert180_5059 = s_hypertens180_5059 / (s_ageg5054m + s_ageg5559m + s_ageg5054w + s_ageg5559w) ;
 * p_hypert180_6069 ;		p_hypert180_6069 = s_hypertens180_6069 / (s_ageg6064m + s_ageg6569m + s_ageg6064w + s_ageg6569w) ;
 * p_hypert180_7079 ;		p_hypert180_7079 = s_hypertens180_7079 / (s_ageg7074m + s_ageg7579m + s_ageg7074w + s_ageg7579w) ;
 * p_hypert180_ge80 ;		p_hypert180_ge80 = s_hypertens180_ge80 / (s_ageg8084m + s_ageg85plm + s_ageg8084w + s_ageg85plw) ;
 * p_diagnosed_hypert_1549 ;	p_diagnosed_hypert_1549 = s_diagnosed_hypertension_1549 / s_hypertension_1549 ;
+* p_diagnosed_hypert_1539 ;	p_diagnosed_hypert_1539 = s_diagnosed_hypertension_1539 / s_hypertension_1539 ;
+* p_diagnosed_hypert_4049 ;	p_diagnosed_hypert_4049 = s_diagnosed_hypertension_4049 / s_hypertension_4049 ;
 * p_diagnosed_hypert_5059 ;	p_diagnosed_hypert_5059 = s_diagnosed_hypertension_5059 / s_hypertension_5059 ;
 * p_diagnosed_hypert_6069 ;	p_diagnosed_hypert_6069 = s_diagnosed_hypertension_6069 / s_hypertension_6069 ;
 * p_diagnosed_hypert_7079 ;	p_diagnosed_hypert_7079 = s_diagnosed_hypertension_7079 / s_hypertension_7079 ;
 * p_diagnosed_hypert_ge80 ;	p_diagnosed_hypert_ge80 = s_diagnosed_hypertension_ge80 / s_hypertension_ge80 ;
 * p_diagnosed_hypert_1549m ;	p_diagnosed_hypert_1549m = s_diagnosed_hypertension_1549m / s_hypertension_1549m ;
+* p_diagnosed_hypert_1539m ;	p_diagnosed_hypert_1539m = s_diagnosed_hypertension_1539m / s_hypertension_1539m ;
+* p_diagnosed_hypert_4049m ;	p_diagnosed_hypert_4049m = s_diagnosed_hypertension_4049m / s_hypertension_4049m ;
 * p_diagnosed_hypert_5059m ;	p_diagnosed_hypert_5059m = s_diagnosed_hypertension_5059m / s_hypertension_5059m ;
 * p_diagnosed_hypert_6069m ;	p_diagnosed_hypert_6069m = s_diagnosed_hypertension_6069m / s_hypertension_6069m ;
 * p_diagnosed_hypert_7079m ;	p_diagnosed_hypert_7079m = s_diagnosed_hypertension_7079m / s_hypertension_7079m ;
 * p_diagnosed_hypert_ge80m ;	p_diagnosed_hypert_ge80m = s_diagnosed_hypertension_ge80m / s_hypertension_ge80m ;
 * p_diagnosed_hypert_1549w ;	p_diagnosed_hypert_1549w = s_diagnosed_hypertension_1549w / s_hypertension_1549w ;
+* p_diagnosed_hypert_1539w ;	p_diagnosed_hypert_1539w = s_diagnosed_hypertension_1539w / s_hypertension_1539w ;
+* p_diagnosed_hypert_4049w ;	p_diagnosed_hypert_4049w = s_diagnosed_hypertension_4049w / s_hypertension_4049w ;
 * p_diagnosed_hypert_5059w ;	p_diagnosed_hypert_5059w = s_diagnosed_hypertension_5059w / s_hypertension_5059w ;
 * p_diagnosed_hypert_6069w ;	p_diagnosed_hypert_6069w = s_diagnosed_hypertension_6069w / s_hypertension_6069w ;
 * p_diagnosed_hypert_7079w ;	p_diagnosed_hypert_7079w = s_diagnosed_hypertension_7079w / s_hypertension_7079w ;
 * p_diagnosed_hypert_ge80w ;	p_diagnosed_hypert_ge80w = s_diagnosed_hypertension_ge80w / s_hypertension_ge80w ;
 * p_on_anti_hypert_1549 ;		p_on_anti_hypert_1549 = s_on_anti_hypertensive_1549 / s_hypertension_1549 ;
+* p_on_anti_hypert_1539 ;		p_on_anti_hypert_1539 = s_on_anti_hypertensive_1539 / s_hypertension_1539 ;
+* p_on_anti_hypert_4049 ;		p_on_anti_hypert_4049 = s_on_anti_hypertensive_4049 / s_hypertension_4049 ;
 * p_on_anti_hypert_5059 ;		p_on_anti_hypert_5059 = s_on_anti_hypertensive_5059 / s_hypertension_5059 ;
 * p_on_anti_hypert_6069 ;		p_on_anti_hypert_6069 = s_on_anti_hypertensive_6069 / s_hypertension_6069 ;
 * p_on_anti_hypert_7079 ;		p_on_anti_hypert_7079 = s_on_anti_hypertensive_7079 / s_hypertension_7079 ;
 * p_on_anti_hypert_ge80 ;		p_on_anti_hypert_ge80 = s_on_anti_hypertensive_ge80 / s_hypertension_ge80 ;
 * p_on_anti_hypert_1549m ;		p_on_anti_hypert_1549m = s_on_anti_hypertensive_1549m / s_hypertension_1549m ;
+* p_on_anti_hypert_1539m ;		p_on_anti_hypert_1539m = s_on_anti_hypertensive_1539m / s_hypertension_1539m ;
+* p_on_anti_hypert_4049m ;		p_on_anti_hypert_4049m = s_on_anti_hypertensive_4049m / s_hypertension_4049m ;
 * p_on_anti_hypert_5059m ;		p_on_anti_hypert_5059m = s_on_anti_hypertensive_5059m / s_hypertension_5059m ;
 * p_on_anti_hypert_6069m ;		p_on_anti_hypert_6069m = s_on_anti_hypertensive_6069m / s_hypertension_6069m ;
 * p_on_anti_hypert_7079m ;		p_on_anti_hypert_7079m = s_on_anti_hypertensive_7079m / s_hypertension_7079m ;
 * p_on_anti_hypert_ge80m ;		p_on_anti_hypert_ge80m = s_on_anti_hypertensive_ge80m / s_hypertension_ge80m ;
 * p_on_anti_hypert_1549w ;		p_on_anti_hypert_1549w = s_on_anti_hypertensive_1549w / s_hypertension_1549w ;
+* p_on_anti_hypert_1539w ;		p_on_anti_hypert_1539w = s_on_anti_hypertensive_1539w / s_hypertension_1539w ;
+* p_on_anti_hypert_4049w ;		p_on_anti_hypert_4049w = s_on_anti_hypertensive_4049w / s_hypertension_4049w ;
 * p_on_anti_hypert_5059w ;		p_on_anti_hypert_5059w = s_on_anti_hypertensive_5059w / s_hypertension_5059w ;
 * p_on_anti_hypert_6069w ;		p_on_anti_hypert_6069w = s_on_anti_hypertensive_6069w / s_hypertension_6069w ;
 * p_on_anti_hypert_7079w ;		p_on_anti_hypert_7079w = s_on_anti_hypertensive_7079w / s_hypertension_7079w ;
@@ -704,6 +728,12 @@ end;
 * p_on1drug_antihyp_1549 ;		p_on1drug_antihyp_1549 = s_on1drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
 * p_on2drug_antihyp_1549 ;		p_on2drug_antihyp_1549 = s_on2drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
 * p_on3drug_antihyp_1549 ;		p_on3drug_antihyp_1549 = s_on3drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
+* p_on1drug_antihyp_1539 ;		p_on1drug_antihyp_1539 = s_on1drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
+* p_on2drug_antihyp_1539 ;		p_on2drug_antihyp_1539 = s_on2drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
+* p_on3drug_antihyp_1539 ;		p_on3drug_antihyp_1539 = s_on3drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
+* p_on1drug_antihyp_4049 ;		p_on1drug_antihyp_4049 = s_on1drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
+* p_on2drug_antihyp_4049 ;		p_on2drug_antihyp_4049 = s_on2drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
+* p_on3drug_antihyp_4049 ;		p_on3drug_antihyp_4049 = s_on3drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
 * p_on1drug_antihyp_5059 ;		p_on1drug_antihyp_5059 = s_on1drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
 * p_on2drug_antihyp_5059 ;		p_on2drug_antihyp_5059 = s_on2drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
 * p_on3drug_antihyp_5059 ;		p_on3drug_antihyp_5059 = s_on3drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
@@ -869,19 +899,23 @@ p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incide
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
 
-p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
-p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  p_on_anti_hypert_1549 
-p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80
-p_hypert_1549m  p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  p_diagnosed_hypert_1549m 
-p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
-p_on_anti_hypert_1549m p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
-p_hypert_1549w  p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  p_diagnosed_hypert_1549w 
-p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
-p_on_anti_hypert_1549w p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
-p_hypert180_1549 p_hypert180_5059 p_hypert180_6069 p_hypert180_7079 p_hypert180_ge80
-p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549  p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 
-p_on3drug_antihyp_5059  p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 
-p_on3drug_antihyp_7079  p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
+p_hypert_1549 p_hypert_1539 p_hypert_4049 p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  
+p_diagnosed_hypert_1549 p_diagnosed_hypert_1539 p_diagnosed_hypert_4049 p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  
+p_on_anti_hypert_1549 p_on_anti_hypert_1539 p_on_anti_hypert_4049 p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80
+p_hypert_1549m p_hypert_1539m p_hypert_4049m p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  
+p_diagnosed_hypert_1549m p_diagnosed_hypert_1539m p_diagnosed_hypert_4049m p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
+p_on_anti_hypert_1549m p_on_anti_hypert_1539m p_on_anti_hypert_4049m p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
+p_hypert_1549w p_hypert_1539w p_hypert_4049w p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  
+p_diagnosed_hypert_1549w p_diagnosed_hypert_1539w p_diagnosed_hypert_4049w p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
+p_on_anti_hypert_1549w p_on_anti_hypert_1539w p_on_anti_hypert_4049w p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
+p_hypert180_1549 p_hypert180_1539 p_hypert180_4049 p_hypert180_5059 p_hypert180_6069 p_hypert180_7079 p_hypert180_ge80
+p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549 
+p_on1drug_antihyp_1539 p_on2drug_antihyp_1539 p_on3drug_antihyp_1539 
+p_on1drug_antihyp_4049 p_on2drug_antihyp_4049 p_on3drug_antihyp_4049  
+p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 p_on3drug_antihyp_5059  
+p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  
+p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 p_on3drug_antihyp_7079  
+p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
 
 p_ahd_re_enter_care_100 p_ahd_re_enter_care_200
 
@@ -1030,6 +1064,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
+/*
+
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
@@ -1101,28 +1137,40 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=incidence5564w);   %var(v=incidence5564m) ;
 %var(v=incidence_sw);
 %var (v=n_mcirc1549_3m) ;%var (v=n_vmmc1549_3m); 
-%var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_new_inf1549);%var(v=t_sw_newp) ;
-%var(v=p_hypert_1549); %var(v=p_hypert_5059); %var(v=p_hypert_6069); %var(v=p_hypert_7079); %var(v=p_hypert_ge80);
-%var(v=p_diagnosed_hypert_1549); %var(v=p_diagnosed_hypert_5059); %var(v=p_diagnosed_hypert_6069); %var(v=p_diagnosed_hypert_7079); 
-%var(v=p_diagnosed_hypert_ge80);  %var(v=p_on_anti_hypert_1549); %var(v=p_on_anti_hypert_5059); %var(v=p_on_anti_hypert_6069); 
-%var(v=p_on_anti_hypert_7079); %var(v=p_on_anti_hypert_ge80); 
-%var(v=p_hypert180_1549);  %var(v=p_hypert180_5059);  %var(v=p_hypert180_6069);  %var(v=p_hypert180_7079);  %var(v=p_hypert180_ge80); 
-%var(v=p_on1drug_antihyp_1549);   %var(v=p_on2drug_antihyp_1549);   %var(v=p_on3drug_antihyp_1549);    %var(v=p_on1drug_antihyp_5059);   
-%var(v=p_on2drug_antihyp_5059); 
-%var(v=p_on3drug_antihyp_5059);    %var(v=p_on1drug_antihyp_6069);    %var(v=p_on2drug_antihyp_6069);    %var(v=p_on3drug_antihyp_6069);   
-%var(v=p_on1drug_antihyp_7079);    %var(v=p_on2drug_antihyp_7079); 
-%var(v=p_on3drug_antihyp_7079);    %var(v=p_on1drug_antihyp_ge80);    %var(v=p_on2drug_antihyp_ge80);    %var(v=p_on3drug_antihyp_ge80); 
 %var(v=p_ahd_re_enter_care_100);   %var(v=p_ahd_re_enter_care_200); 
-%var(v=p_hypert_1549m);  %var(v=p_hypert_5059m); %var(v=p_hypert_6069m);  %var(v=p_hypert_7079m);  %var(v=p_hypert_ge80m);  
-%var(v=p_diagnosed_hypert_1549m); 
-%var(v=p_diagnosed_hypert_5059m);  %var(v=p_diagnosed_hypert_6069m);  %var(v=p_diagnosed_hypert_7079m);  %var(v=p_diagnosed_hypert_ge80m);  
-%var(v=p_on_anti_hypert_1549m); %var(v=p_on_anti_hypert_5059m);  %var(v=p_on_anti_hypert_6069m);  %var(v=p_on_anti_hypert_7079m);  
-%var(v=p_on_anti_hypert_ge80m);
-%var(v=p_hypert_1549w);  %var(v=p_hypert_5059w); %var(v=p_hypert_6069w);  %var(v=p_hypert_7079w);  %var(v=p_hypert_ge80w);  
-%var(v=p_diagnosed_hypert_1549w); 
-%var(v=p_diagnosed_hypert_5059w);  %var(v=p_diagnosed_hypert_6069w);  %var(v=p_diagnosed_hypert_7079w);  %var(v=p_diagnosed_hypert_ge80w);  
-%var(v=p_on_anti_hypert_1549w); %var(v=p_on_anti_hypert_5059w);  %var(v=p_on_anti_hypert_6069w);  %var(v=p_on_anti_hypert_7079w);  
-%var(v=p_on_anti_hypert_ge80w);
+*/
+
+%var(v=p_hypert_1549); %var(v=p_hypert_1539); %var(v=p_hypert_4049); 
+	%var(v=p_hypert_5059); %var(v=p_hypert_6069); %var(v=p_hypert_7079); %var(v=p_hypert_ge80);
+%var(v=p_diagnosed_hypert_1549); %var(v=p_diagnosed_hypert_1539); %var(v=p_diagnosed_hypert_4049); 
+	%var(v=p_diagnosed_hypert_5059); %var(v=p_diagnosed_hypert_6069); %var(v=p_diagnosed_hypert_7079); %var(v=p_diagnosed_hypert_ge80);  
+%var(v=p_on_anti_hypert_1549); %var(v=p_on_anti_hypert_1539); %var(v=p_on_anti_hypert_4049);
+	%var(v=p_on_anti_hypert_5059); %var(v=p_on_anti_hypert_6069); %var(v=p_on_anti_hypert_7079); %var(v=p_on_anti_hypert_ge80); 
+%var(v=p_hypert180_1549);  %var(v=p_hypert180_1539); %var(v=p_hypert180_4049);
+	%var(v=p_hypert180_5059);  %var(v=p_hypert180_6069);  %var(v=p_hypert180_7079);  %var(v=p_hypert180_ge80); 
+%var(v=p_on1drug_antihyp_1549);   %var(v=p_on2drug_antihyp_1549);   %var(v=p_on3drug_antihyp_1549);
+%var(v=p_on1drug_antihyp_1539);   %var(v=p_on2drug_antihyp_1539);   %var(v=p_on3drug_antihyp_1539);
+%var(v=p_on1drug_antihyp_4049);   %var(v=p_on2drug_antihyp_4049);   %var(v=p_on3drug_antihyp_4049); 
+%var(v=p_on1drug_antihyp_5059);   %var(v=p_on2drug_antihyp_5059); 	%var(v=p_on3drug_antihyp_5059);    
+%var(v=p_on1drug_antihyp_6069);    %var(v=p_on2drug_antihyp_6069);  %var(v=p_on3drug_antihyp_6069);   
+%var(v=p_on1drug_antihyp_7079);    %var(v=p_on2drug_antihyp_7079); 	%var(v=p_on3drug_antihyp_7079);    
+%var(v=p_on1drug_antihyp_ge80);    %var(v=p_on2drug_antihyp_ge80);    %var(v=p_on3drug_antihyp_ge80); 
+%var(v=p_hypert_1549m);  %var(v=p_hypert_1539m);  %var(v=p_hypert_4049m);  
+	%var(v=p_hypert_5059m); %var(v=p_hypert_6069m);  %var(v=p_hypert_7079m);  %var(v=p_hypert_ge80m);  
+%var(v=p_diagnosed_hypert_1549m); %var(v=p_diagnosed_hypert_1539m); %var(v=p_diagnosed_hypert_4049m);
+	%var(v=p_diagnosed_hypert_5059m);  %var(v=p_diagnosed_hypert_6069m);  %var(v=p_diagnosed_hypert_7079m);  %var(v=p_diagnosed_hypert_ge80m);  
+%var(v=p_on_anti_hypert_1549m); %var(v=p_on_anti_hypert_1539m); %var(v=p_on_anti_hypert_4049m);
+	%var(v=p_on_anti_hypert_5059m);  %var(v=p_on_anti_hypert_6069m);  %var(v=p_on_anti_hypert_7079m);  %var(v=p_on_anti_hypert_ge80m);
+%var(v=p_hypert_1549w);  %var(v=p_hypert_1539w); %var(v=p_hypert_4049w); 
+	%var(v=p_hypert_5059w); %var(v=p_hypert_6069w);  %var(v=p_hypert_7079w);  %var(v=p_hypert_ge80w);  
+%var(v=p_diagnosed_hypert_1549w); %var(v=p_diagnosed_hypert_1539w); %var(v=p_diagnosed_hypert_4049w);
+	%var(v=p_diagnosed_hypert_5059w);  %var(v=p_diagnosed_hypert_6069w);  %var(v=p_diagnosed_hypert_7079w);  %var(v=p_diagnosed_hypert_ge80w);  
+%var(v=p_on_anti_hypert_1549w); %var(v=p_on_anti_hypert_1539w); %var(v=p_on_anti_hypert_4049w); 
+	%var(v=p_on_anti_hypert_5059w);  %var(v=p_on_anti_hypert_6069w);  %var(v=p_on_anti_hypert_7079w); %var(v=p_on_anti_hypert_ge80w);
+%var(v=rate_dead_cvd );
+
+/*
+
 %var(v=n_dead_hivpos_cause1 ); %var(v=rate_dead_hivpos_cause1); %var(v=n_dead_hivpos_tb ); %var(v=rate_dead_hivpos_tb); %var(v=n_dead_hivpos_cause4 ); 
 %var(v=rate_dead_hivpos_cause4 );%var(v=n_dead_hivpos_crypm ); %var(v=rate_dead_hivpos_crypm); %var(v=n_dead_hivpos_sbi ); %var(v=rate_dead_hivpos_sbi);
 %var(v=n_dead_hivpos_oth_adc ); %var(v=rate_dead_hivpos_oth_adc );%var(v=n_dead_hivpos_cause2 ); %var(v=rate_dead_hivpos_cause2 );
@@ -1142,8 +1190,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
 
+*/
 
 data   wide_outputs; merge 
+
+/*
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
 p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
 p_tested_past_year_1549m  p_tested_past_year_1549w  
@@ -1201,19 +1252,40 @@ incidence4554w   incidence4554m incidence5564w   incidence5564m    incidence_sw
  n_mcirc1549_3m  n_vmmc1549_3m 
 n_new_inf1549m n_new_inf1549w n_new_inf1549 
 t_sw_newp
-p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
-p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  p_on_anti_hypert_1549 
-p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80  
-p_hypert_1549m  p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  p_diagnosed_hypert_1549m 
-p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
-p_on_anti_hypert_1549m p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
-p_hypert_1549w  p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  p_diagnosed_hypert_1549w 
-p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
-p_on_anti_hypert_1549w p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
-p_hypert180_1549 p_hypert180_5059 p_hypert180_6069 p_hypert180_7079 p_hypert180_ge80
-p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549  p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 
-p_on3drug_antihyp_5059  p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 
-p_on3drug_antihyp_7079  p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
+
+*/
+
+p_hypert_1549 p_hypert_1539 p_hypert_4049 
+	p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  
+p_diagnosed_hypert_1549 p_diagnosed_hypert_1539 p_diagnosed_hypert_4049
+	p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  
+p_on_anti_hypert_1549 p_on_anti_hypert_1539 p_on_anti_hypert_4049 
+	p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80  
+p_hypert_1549m  p_hypert_1539m  p_hypert_4049m  
+	p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  
+p_diagnosed_hypert_1549m p_diagnosed_hypert_1539m p_diagnosed_hypert_4049m
+	p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
+p_on_anti_hypert_1549m p_on_anti_hypert_1539m p_on_anti_hypert_4049m 
+	p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
+p_hypert_1549w  p_hypert_1539w p_hypert_4049w
+	p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  
+p_diagnosed_hypert_1549w p_diagnosed_hypert_1539w p_diagnosed_hypert_4049w
+	p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
+p_on_anti_hypert_1549w p_on_anti_hypert_1539w p_on_anti_hypert_4049w
+	p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
+p_hypert180_1549 p_hypert180_1539 p_hypert180_4049
+	p_hypert180_5059 p_hypert180_6069 p_hypert180_7079 p_hypert180_ge80
+p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549
+p_on1drug_antihyp_1539 p_on2drug_antihyp_1539 p_on3drug_antihyp_1539
+p_on1drug_antihyp_4049 p_on2drug_antihyp_4049 p_on3drug_antihyp_4049 
+p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 p_on3drug_antihyp_5059  
+p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  
+p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 p_on3drug_antihyp_7079  
+p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80  
+rate_dead_cvd
+
+/*
+
 p_ahd_re_enter_care_100 p_ahd_re_enter_care_200
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
@@ -1229,6 +1301,7 @@ n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive
+*/
 ;
 
 proc sort; by run; run;
@@ -1275,7 +1348,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2021 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+/* sf_2021 dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1317,18 +1390,54 @@ proc sort; by run;run;
 
 
 
+  by run;run;
 proc contents;run;
 
 ods html;
 
 proc means data=a.w_base n p50 p5 p95 mean;
-var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
+var 
+
+/*
+p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
 p_onart_diag_95 p_onart_vl1000_95   p_vl1000_95	p_onart_vl1000_w_95	p_onart_vl1000_m_95   p_onart_cd4_l500_95  p_onart_m_age50pl_95 p_onart_w_age50pl_95
 p_onart_cd4_l200_95  p_startedline2_95 prop_sw_newp0_95  prop_sw_hiv_95 p_newp_sw_95 
 m15r_95 m25r_95 m35r_95 m45r_95 m55r_95 w15r_95 w25r_95 w35r_95 w45r_95 w55r_95 p_newp_ge1_95 p_newp_ge5_95 p_iime_95 prevalence_vg1000_95
 s_alive_95
+*/
+
+
+p_hypert_1549_95 p_hypert_1539_95 p_hypert_4049_95 p_hypert_5059_95 p_hypert_6069_95  p_hypert_7079_95  p_hypert_ge80_95  
+p_diagnosed_hypert_1549_95 p_diagnosed_hypert_1539_95 p_diagnosed_hypert_4049_95
+	p_diagnosed_hypert_5059_95  p_diagnosed_hypert_6069_95  p_diagnosed_hypert_7079_95  p_diagnosed_hypert_ge80_95  
+p_on_anti_hypert_1549_95 p_on_anti_hypert_1539_95 p_on_anti_hypert_4049_95 
+	p_on_anti_hypert_5059_95  p_on_anti_hypert_6069_95  p_on_anti_hypert_7079_95 p_on_anti_hypert_ge80_95 
+rate_dead_cvd_95
+
+p_hypert_1549_05 p_hypert_1539_05 p_hypert_4049_05 p_hypert_5059_05 p_hypert_6069_05  p_hypert_7079_05  p_hypert_ge80_05  
+p_diagnosed_hypert_1549_05 p_diagnosed_hypert_1539_05 p_diagnosed_hypert_4049_05
+	p_diagnosed_hypert_5059_05  p_diagnosed_hypert_6069_05  p_diagnosed_hypert_7079_05  p_diagnosed_hypert_ge80_05  
+p_on_anti_hypert_1549_05 p_on_anti_hypert_1539_05 p_on_anti_hypert_4049_05 
+	p_on_anti_hypert_5059_05  p_on_anti_hypert_6069_05  p_on_anti_hypert_7079_05 p_on_anti_hypert_ge80_05 
+rate_dead_cvd_05
+
+p_hypert_1549_15 p_hypert_1539_15 p_hypert_4049_15 p_hypert_5059_15 p_hypert_6069_15  p_hypert_7079_15  p_hypert_ge80_15  
+p_diagnosed_hypert_1549_15 p_diagnosed_hypert_1539_15 p_diagnosed_hypert_4049_15
+	p_diagnosed_hypert_5059_15  p_diagnosed_hypert_6069_15  p_diagnosed_hypert_7079_15  p_diagnosed_hypert_ge80_15  
+p_on_anti_hypert_1549_15  p_on_anti_hypert_1539_15 p_on_anti_hypert_4049_15
+	p_on_anti_hypert_5059_15  p_on_anti_hypert_6069_15  p_on_anti_hypert_7079_15 p_on_anti_hypert_ge80_15 
+rate_dead_cvd_15
+
+p_hypert_1549_21 p_hypert_1539_21 p_hypert_4049_21 p_hypert_5059_21 p_hypert_6069_21  p_hypert_7079_21  p_hypert_ge80_21  
+p_diagnosed_hypert_1549_21 p_diagnosed_hypert_1539_21 p_diagnosed_hypert_4049_21
+	p_diagnosed_hypert_5059_21  p_diagnosed_hypert_6069_21  p_diagnosed_hypert_7079_21  p_diagnosed_hypert_ge80_21  
+p_on_anti_hypert_1549_21  p_on_anti_hypert_1539_21 p_on_anti_hypert_4049_21
+	p_on_anti_hypert_5059_21  p_on_anti_hypert_6069_21  p_on_anti_hypert_7079_21 p_on_anti_hypert_ge80_21 
+rate_dead_cvd_21
+
+/*
 rate_dead_hivpos_cause1_95   rate_dead_hivpos_tb_95  rate_dead_hivpos_cause4_95 rate_dead_hivpos_crypm_95 
 rate_dead_hivpos_sbi_95  rate_dead_hivpos_oth_adc_95  rate_dead_hivpos_cause2_95  rate_dead_hivpos_cause3_95  rate_dead_hivpos_cvd_95 
 rate_dead_cvd_95 rate_dead_tb_95  rate_dead_hivneg_cvd_95  rate_dead_hivneg_tb_95  rate_dead_hivneg_cause2_95 rate_dead_hivneg_cause3_95 
@@ -1345,8 +1454,13 @@ r_prev_1519w_4549w_95 r_prev_2024w_4549w_95 r_prev_2529w_4549w_95 r_prev_3034w_4
 r_prev_4044w_4549w_95 r_prev_5054w_4549w_95 r_prev_5559w_4549w_95 r_prev_6064w_4549w_95 r_prev_65plw_4549w_95 r_prev_1519m_4549w_95 r_prev_2024m_4549w_95 
 r_prev_2529m_4549w_95 r_prev_3034m_4549w_95 r_prev_3539m_4549w_95 r_prev_4044m_4549w_95 r_prev_4549m_4549w_95 r_prev_5054m_4549w_95 r_prev_5559m_4549w_95 
 r_prev_6064m_4549w_95 r_prev_65plm_4549w_95  p_age1549_hivneg_95 p_age1549_hiv_95  n_death_hivpos_anycause_95  n_death_2059_m_95 n_death_2059_w_95
+
+*/
 ;
 run;
+
+
+/*
 
 proc means data=a.w_base n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
@@ -1356,7 +1470,10 @@ p_onart_diag_05 p_onart_vl1000_05   p_vl1000_05	p_onart_vl1000_w_05	p_onart_vl10
 p_onart_cd4_l200_05  p_startedline2_05 prop_sw_newp0_05  prop_sw_hiv_05 p_newp_sw_05 
 m15r_05 m25r_05 m35r_05 m45r_05 m55r_05 w15r_05 w25r_05 w35r_05 w45r_05 w55r_05 p_newp_ge1_05 p_newp_ge5_05 p_iime_05 prevalence_vg1000_05
 s_alive_05
-rate_dead_hivpos_cause1_05   rate_dead_hivpos_tb_05  rate_dead_hivpos_cause4_05 rate_dead_hivpos_crypm_05 
+p_hypert_1549_05  p_hypert_5059_05 p_hypert_6069_05  p_hypert_7079_05  p_hypert_ge80_05  p_diagnosed_hypert_1549_05 
+p_diagnosed_hypert_5059_05  p_diagnosed_hypert_6069_05  p_diagnosed_hypert_7079_05  p_diagnosed_hypert_ge80_05  
+p_on_anti_hypert_1549_05  p_on_anti_hypert_5059_05  p_on_anti_hypert_6069_05  p_on_anti_hypert_7079_05  
+p_on_anti_hypert_ge80_05 rate_dead_hivpos_cause1_05   rate_dead_hivpos_tb_05  rate_dead_hivpos_cause4_05 rate_dead_hivpos_crypm_05 
 rate_dead_hivpos_sbi_05  rate_dead_hivpos_oth_adc_05  rate_dead_hivpos_cause2_05  rate_dead_hivpos_cause3_05  rate_dead_hivpos_cvd_05 
 rate_dead_cvd_05 rate_dead_tb_05  rate_dead_hivneg_cvd_05  rate_dead_hivneg_tb_05  rate_dead_hivneg_cause2_05 rate_dead_hivneg_cause3_05 
 rate_dead_hivneg_cause4_05 rate_dead_hivneg_cause5_05  rate_dead_allage_05 rate_dead_hivneg_anycause_05 rate_dead_hivpos_anycause_05
@@ -1384,7 +1501,10 @@ p_onart_diag_15 p_onart_vl1000_15   p_vl1000_15	p_onart_vl1000_w_15	p_onart_vl10
 p_onart_cd4_l200_15  p_startedline2_15 prop_sw_newp0_15  prop_sw_hiv_15 p_newp_sw_15 
 m15r_15 m25r_15 m35r_15 m45r_15 m55r_15 w15r_15 w25r_15 w35r_15 w45r_15 w55r_15 p_newp_ge1_15 p_newp_ge5_15 p_iime_15 prevalence_vg1000_15
 s_alive_15
-rate_dead_hivpos_cause1_15   rate_dead_hivpos_tb_15  rate_dead_hivpos_cause4_15 rate_dead_hivpos_crypm_15 
+p_hypert_1549_15  p_hypert_5059_15 p_hypert_6069_15  p_hypert_7079_15  p_hypert_ge80_15  p_diagnosed_hypert_1549_15 
+p_diagnosed_hypert_5059_15  p_diagnosed_hypert_6069_15  p_diagnosed_hypert_7079_15  p_diagnosed_hypert_ge80_15  
+p_on_anti_hypert_1549_15  p_on_anti_hypert_5059_15  p_on_anti_hypert_6069_15  p_on_anti_hypert_7079_15  
+p_on_anti_hypert_ge80_15 rate_dead_hivpos_cause1_15   rate_dead_hivpos_tb_15  rate_dead_hivpos_cause4_15 rate_dead_hivpos_crypm_15 
 rate_dead_hivpos_sbi_15  rate_dead_hivpos_oth_adc_15  rate_dead_hivpos_cause2_15  rate_dead_hivpos_cause3_15  rate_dead_hivpos_cvd_15 
 rate_dead_cvd_15 rate_dead_tb_15  rate_dead_hivneg_cvd_15  rate_dead_hivneg_tb_15  rate_dead_hivneg_cause2_15 rate_dead_hivneg_cause3_15 
 rate_dead_hivneg_cause4_15 rate_dead_hivneg_cause5_15  rate_dead_allage_15 rate_dead_hivneg_anycause_15 rate_dead_hivpos_anycause_15
@@ -1414,7 +1534,10 @@ p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl10
 p_onart_cd4_l200_21  p_startedline2_21 prop_sw_newp0_21  prop_sw_hiv_21 p_newp_sw_21 
 m15r_21 m25r_21 m35r_21 m45r_21 m55r_21 w15r_21 w25r_21 w35r_21 w45r_21 w55r_21 p_newp_ge1_21 p_newp_ge5_21 p_iime_21 prevalence_vg1000_21
 s_alive_21
-rate_dead_hivpos_cause1_21   rate_dead_hivpos_tb_21  rate_dead_hivpos_cause4_21 rate_dead_hivpos_crypm_21 
+p_hypert_1549_21  p_hypert_5059_21 p_hypert_6069_21  p_hypert_7079_21  p_hypert_ge80_21  p_diagnosed_hypert_1549_21 
+p_diagnosed_hypert_5059_21  p_diagnosed_hypert_6069_21  p_diagnosed_hypert_7079_21  p_diagnosed_hypert_ge80_21  
+p_on_anti_hypert_1549_21  p_on_anti_hypert_5059_21  p_on_anti_hypert_6069_21  p_on_anti_hypert_7079_21  
+p_on_anti_hypert_ge80_21 rate_dead_hivpos_cause1_21   rate_dead_hivpos_tb_21  rate_dead_hivpos_cause4_21 rate_dead_hivpos_crypm_21 
 rate_dead_hivpos_sbi_21  rate_dead_hivpos_oth_adc_21  rate_dead_hivpos_cause2_21  rate_dead_hivpos_cause3_21  rate_dead_hivpos_cvd_21 
 rate_dead_cvd_21 rate_dead_tb_21  rate_dead_hivneg_cvd_21  rate_dead_hivneg_tb_21  rate_dead_hivneg_cause2_21 rate_dead_hivneg_cause3_21 
 rate_dead_hivneg_cause4_21 rate_dead_hivneg_cause5_21  rate_dead_allage_21  rate_dead_hivneg_anycause_21 rate_dead_hivpos_anycause_21
@@ -1430,20 +1553,6 @@ r_prev_1519w_4549w_21 r_prev_2024w_4549w_21 r_prev_2529w_4549w_21 r_prev_3034w_4
 r_prev_4044w_4549w_21 r_prev_5054w_4549w_21 r_prev_5559w_4549w_21 r_prev_6064w_4549w_21 r_prev_65plw_4549w_21 r_prev_1519m_4549w_21 r_prev_2024m_4549w_21 
 r_prev_2529m_4549w_21 r_prev_3034m_4549w_21 r_prev_3539m_4549w_21 r_prev_4044m_4549w_21 r_prev_4549m_4549w_21 r_prev_5054m_4549w_21 r_prev_5559m_4549w_21 
 r_prev_6064m_4549w_21 r_prev_65plm_4549w_21 p_age1549_hivneg_21 p_age1549_hiv_21
-p_hypert_1549_21 	p_hypert_5059_21 	p_hypert_6069_21 	p_hypert_7079_21 	p_hypert_ge80_21 	p_hypert_1549m_21 	p_hypert_5059m_21 	
-p_hypert_6069m_21 	p_hypert_7079m_21  p_hypert_ge80m_21 		p_hypert_1549w_21 		p_hypert_5059w_21 		p_hypert_6069w_21 		
-p_hypert_7079w_21 		p_hypert_ge80w_21 		p_hypert180_1549_21 	
-p_hypert180_5059_21 	p_hypert180_6069_21 	 p_hypert180_7079_21 	 p_hypert180_ge80_21 	p_diagnosed_hypert_1549_21 	p_diagnosed_hypert_5059_21 	
-p_diagnosed_hypert_6069_21 	 p_diagnosed_hypert_7079_21 	p_diagnosed_hypert_ge80_21 	p_diagnosed_hypert_1549m_21 	p_diagnosed_hypert_5059m_21 	
-p_diagnosed_hypert_6069m_21 	p_diagnosed_hypert_7079m_21 p_diagnosed_hypert_ge80m_21 	p_diagnosed_hypert_1549w_21 	p_diagnosed_hypert_5059w_21 	
-p_diagnosed_hypert_6069w_21 	p_diagnosed_hypert_7079w_21 	p_diagnosed_hypert_ge80w_21 	p_on_anti_hypert_1549_21 		
-p_on_anti_hypert_5059_21 	p_on_anti_hypert_6069_21 	p_on_anti_hypert_7079_21 	p_on_anti_hypert_ge80_21 		p_on_anti_hypert_1549m_21 		
-p_on_anti_hypert_5059m_21  p_on_anti_hypert_6069m_21 		p_on_anti_hypert_7079m_21 		p_on_anti_hypert_ge80m_21 		p_on_anti_hypert_1549w_21
-p_on_anti_hypert_5059w_21  p_on_anti_hypert_6069w_21 		 p_on_anti_hypert_7079w_21 		p_on_anti_hypert_ge80w_21 		
-p_on1drug_antihyp_1549_21  p_on2drug_antihyp_1549_21 	p_on3drug_antihyp_1549_21 	p_on1drug_antihyp_5059_21 	p_on2drug_antihyp_5059_21 		
-p_on3drug_antihyp_5059_21 	p_on1drug_antihyp_6069_21 	p_on2drug_antihyp_6069_21 	p_on3drug_antihyp_6069_21 	p_on1drug_antihyp_7079_21 		
-p_on2drug_antihyp_7079_21 	p_on3drug_antihyp_7079_21 	p_on1drug_antihyp_ge80_21 	p_on2drug_antihyp_ge80_21 	p_on3drug_antihyp_ge80_21 
-n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21
 ;
 run;
 
@@ -1455,7 +1564,10 @@ p_onart_diag_40 p_onart_vl1000_40   p_vl1000_40	p_onart_vl1000_w_40	p_onart_vl10
 p_onart_cd4_l200_40  p_startedline2_40 prop_sw_newp0_40  prop_sw_hiv_40 p_newp_sw_40 
 m15r_40 m25r_40 m35r_40 m45r_40 m55r_40 w15r_40 w25r_40 w35r_40 w45r_40 w55r_40 p_newp_ge1_40 p_newp_ge5_40 p_iime_40 prevalence_vg1000_40
 s_alive_40
-rate_dead_hivpos_cause1_40   rate_dead_hivpos_tb_40  rate_dead_hivpos_cause4_40 rate_dead_hivpos_crypm_40 
+p_hypert_1549_40  p_hypert_5059_40 p_hypert_6069_40  p_hypert_7079_40  p_hypert_ge80_40  p_diagnosed_hypert_1549_40 
+p_diagnosed_hypert_5059_40  p_diagnosed_hypert_6069_40  p_diagnosed_hypert_7079_40  p_diagnosed_hypert_ge80_40  
+p_on_anti_hypert_1549_40  p_on_anti_hypert_5059_40  p_on_anti_hypert_6069_40  p_on_anti_hypert_7079_40  
+p_on_anti_hypert_ge80_40 rate_dead_hivpos_cause1_40   rate_dead_hivpos_tb_40  rate_dead_hivpos_cause4_40 rate_dead_hivpos_crypm_40 
 rate_dead_hivpos_sbi_40  rate_dead_hivpos_oth_adc_40  rate_dead_hivpos_cause2_40  rate_dead_hivpos_cause3_40  rate_dead_hivpos_cvd_40 
 rate_dead_cvd_40 rate_dead_tb_40  rate_dead_hivneg_cvd_40  rate_dead_hivneg_tb_40  rate_dead_hivneg_cause2_40 rate_dead_hivneg_cause3_40 
 rate_dead_hivneg_cause4_40 rate_dead_hivneg_cause5_40  rate_dead_allage_40   rate_dead_hivneg_anycause_40 rate_dead_hivpos_anycause_40
@@ -1481,7 +1593,10 @@ p_onart_diag_70 p_onart_vl1000_70   p_vl1000_70	p_onart_vl1000_w_70	p_onart_vl10
 p_onart_cd4_l200_70  p_startedline2_70 prop_sw_newp0_70  prop_sw_hiv_70 p_newp_sw_70 
 m15r_70 m25r_70 m35r_70 m45r_70 m55r_70 w15r_70 w25r_70 w35r_70 w45r_70 w55r_70 p_newp_ge1_70 p_newp_ge5_70 p_iime_70 prevalence_vg1000_70
 s_alive_70
-rate_dead_hivpos_cause1_70   rate_dead_hivpos_tb_70  rate_dead_hivpos_cause4_70 rate_dead_hivpos_crypm_70 
+p_hypert_1549_70  p_hypert_5059_70 p_hypert_6069_70  p_hypert_7079_70  p_hypert_ge80_70  p_diagnosed_hypert_1549_70 
+p_diagnosed_hypert_5059_70  p_diagnosed_hypert_6069_70  p_diagnosed_hypert_7079_70  p_diagnosed_hypert_ge80_70  
+p_on_anti_hypert_1549_70  p_on_anti_hypert_5059_70  p_on_anti_hypert_6069_70  p_on_anti_hypert_7079_70  
+p_on_anti_hypert_ge80_70 rate_dead_hivpos_cause1_70   rate_dead_hivpos_tb_70  rate_dead_hivpos_cause4_70 rate_dead_hivpos_crypm_70 
 rate_dead_hivpos_sbi_70  rate_dead_hivpos_oth_adc_70  rate_dead_hivpos_cause2_70  rate_dead_hivpos_cause3_70  rate_dead_hivpos_cvd_70 
 rate_dead_cvd_70 rate_dead_tb_70  rate_dead_hivneg_cvd_70  rate_dead_hivneg_tb_70  rate_dead_hivneg_cause2_70 rate_dead_hivneg_cause3_70 
 rate_dead_hivneg_cause4_70 rate_dead_hivneg_cause5_70 rate_dead_allage_70  rate_dead_hivneg_anycause_70 rate_dead_hivpos_anycause_70
@@ -1498,6 +1613,8 @@ r_prev_2529m_4549w_70 r_prev_3034m_4549w_70 r_prev_3539m_4549w_70 r_prev_4044m_4
 r_prev_6064m_4549w_70 r_prev_65plm_4549w_70 p_age1549_hivneg_70 p_age1549_hiv_70
 ;
 run;
+
+*/
 
 ods html close;
 
