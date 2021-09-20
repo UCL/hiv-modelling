@@ -4,7 +4,7 @@
 
 
 data wide;  
-  set  a.wide_oral_prep_8rrr ;  
+  set  a.wide_oral_prep_8rrr  a.wide_oral_prep_9    ;  
 
 
 * 7 + 8 (n > 700):   					64%

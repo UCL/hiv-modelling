@@ -1,13 +1,13 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_8rrr_out";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_9_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
 
-* this below to be removed for datasets 6 and above ;
-  reg_option_104 = 0 ;
+* remove this below once this is defined;
+s_dtest_cost_prep = .;
  
 
 keep 
@@ -20,7 +20,7 @@ s_ddaly_non_aids_pre_death s_cost_zdv s_cost_ten s_cost_3tc s_cost_nev s_cost_lp
 s_dart_cost s_dcost_cascade_interventions s_dcost_prep s_dcost_prep_visit s_dcost_prep_ac_adh s_dcost_circ s_dcost_condom_dn
 s_dvis_cost  s_dart_1_cost  s_dart_2_cost  s_dart_3_cost  s_dart_cost  s_dvl_cost  s_dcd4_cost s_dadc_cost  s_dtb_cost  s_dtest_cost  
 s_dcot_cost  s_dres_cost  s_d_t_adh_int_cost  s_dcost_cascade_interventions  s_dcost_prep  s_dcost_prep_visit  s_dcost_prep_ac_adh s_dfull_vis_cost 
-s_dcost_circ s_dcost_condom_dn s_dcost_switch_line s_dcost_drug_level_test s_dcost_drug_level_test s_dcost_child_hiv 
+s_dcost_circ s_dcost_condom_dn s_dcost_switch_line s_dcost_drug_level_test s_dcost_drug_level_test s_dcost_child_hiv  s_dtest_cost_prep
 s_ai_naive_no_pmtct_c_nnm_ s_ai_naive_no_pmtct_c_pim_ s_ai_naive_no_pmtct_c_inm_ s_ai_naive_no_pmtct_c_rt184m_ s_ai_naive_no_pmtct_c_rt65m_ 
 s_ai_naive_no_pmtct_c_rttams_ s_mcirc_1519m  s_mcirc_2024m s_mcirc_2529m s_mcirc_3034m s_mcirc_3539m  s_mcirc_4044m s_mcirc_4549m  s_mcirc_3034m 
 s_mcirc_3539m s_mcirc_4044m s_mcirc_4549m s_hiv1519m   s_hiv2024m  s_hiv1519w  s_hiv2024w  s_pregnant  s_alive1564_w  s_m_newp  s_w_newp s_newp_ge1  
@@ -267,6 +267,7 @@ dadc_cost = s_dadc_cost * &sf * 4 / 1000;
 dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
 dtb_cost = s_dtb_cost * &sf * 4 / 1000;
 dtest_cost = s_dtest_cost * &sf * 4 / 1000;
+dtest_cost_prep = s_dtest_cost_prep * &sf * 4 / 1000;  * note that this cost is part of dtest_cost so if want to change this cost need to subtract first from total cost;
 dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
@@ -1090,7 +1091,7 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_8rrr   ;
+data a.oral_prep_9      ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
