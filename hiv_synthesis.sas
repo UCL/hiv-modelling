@@ -13,6 +13,9 @@ libname a "&outputdir/";
 %let population = 100000 ; 
 %let year_interv = 2021.5;
 
+* Set this to 1 to get repeatable runs. It should be kept to 0 normally.;
+%let run_with_fixed_seed = 0;
+
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 /*
@@ -102,6 +105,15 @@ between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
 %mend sample_uniform;
 
 
+/*
+Macro for setting the seed if so specified.
+This will do nothing if run_with_fixed_seed is set to 0 (the default).
+*/
+%macro fix_seed(seed);
+%if &run_with_fixed_seed = 1 %then %do; call streaminit(&seed); %end;
+%mend fix_seed;
+
+
 * creating a file cum_l1 that will be used to save outputs at the end of running each loop of the model , i.e. every 3 months  ;
 data cum_l1; 
 
@@ -122,7 +134,7 @@ One  row of data defined, containing  parameter values that remain fixed for the
 data z;
 
 * for reproducing a run;
-call streaminit(5);
+%fix_seed(5);
 
 run = rand('uniform')*1000000000;  run=round(run,1);
 										   
@@ -989,7 +1001,7 @@ drop i;
 data r1; set r1;
 
 * for reproducing a run;
-call streaminit(10);
+%fix_seed(10);
 
 %sample_uniform(gender, 1 2);
 
@@ -17314,7 +17326,7 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 data r&da2; set r&da2; 
 
 * for reproducing a run;
-call streaminit(&j);
+%fix_seed(&j);
 
 if age  >= year_start;
 
