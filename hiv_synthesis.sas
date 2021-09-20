@@ -16552,9 +16552,6 @@ drop i;
 
 data r&da2; merge r&da1 s   ;
 
-* for reproducing a run;
-call streaminit(&e);
-
 * these variables below need creating so that can use t_ version in main code and then use s_ in the sum statments - sum statements need the sum
 variable not to exist in the data set;
 
@@ -17315,6 +17312,9 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 
 
 data r&da2; set r&da2; 
+
+* for reproducing a run;
+call streaminit(&j);
 
 if age  >= year_start;
 
