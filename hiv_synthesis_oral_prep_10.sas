@@ -366,8 +366,8 @@ newp_seed = 7;
 
 * sens_vct_test_type_3;     r=uniform(0); sens_vct_test_type_3 = 0.98 ; if r < 0.2 then sens_vct_test_type_3 = 0.95 ;
 
-* sens_test_prep;			if sens_vct_test_type_3 = 0.95 then do;  %sample(sens_test_prep, 0.5 0.7 0.9 0.95 1, 0.0 0.0 0.0 1.0 0.0); end;  * oral_prep_10;	
-							if sens_vct_test_type_3 = 0.98 then do;  %sample(sens_test_prep, 0.5 0.7 0.9 0.98 1, 0.0 0.0 0.0 1.0 0.0); end;  * oral_prep_10;	
+* sens_test_prep;			if sens_vct_test_type_3 = 0.95 then do;  %sample(sens_test_prep, 0.5 0.7 0.9 0.95 1, 0.05 0.05 0.75 0.10 0.05); end;  * oral_prep_10;	
+							if sens_vct_test_type_3 = 0.98 then do;  %sample(sens_test_prep, 0.5 0.7 0.95 0.98 1, 0.05 0.05 0.75 0.10 0.05); end;  * oral_prep_10;	
 			
 							* note this can be higher than sens_vct_test_type_3 due to using vl testing or lower due to using self testing and also effect of being on prep on sensitivity;
 							* have chosen for prep paper to consider only test_type_3 but to consider that testing in general and vary sensitivity to represent different
@@ -378,7 +378,7 @@ newp_seed = 7;
 * art_monitoring_strategy;	art_monitoring_strategy = 8; 
 * base_res_test;			base_res_test=0;
 * flr;						flr=0;  
-* reg_option_104;			reg_option_104 = 0;
+* reg_option_104;			%sample(reg_option_104, 0 1 , 0.90 0.10);
 * third_line;				third_line=1; 						* this means third line with dar unavailable but it is possible to have 1st line efa, 2nd line dol, 3rd line taz or lpr;
 * art_intro_date;			art_intro_date = 2004;
 * v_min_art;				v_min_art=1.0;  
