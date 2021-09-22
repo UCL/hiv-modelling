@@ -1,7 +1,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_9_out";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_9a_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
@@ -60,7 +60,7 @@ s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 s_iime_  s_pime_  
 s_death_hiv  s_death_hiv_m s_death_hiv_w s_death_hivrel_allage s_death_dcause3_allage  s_dead_allage  s_covid  s_death_hivrel_allage 
 s_give_birth_with_hiv  s_birth_with_inf_child  s_pregnant_ntd  s_pregnant_oth_dol_adv_birth_e s_primary1549m s_primary1549 
 s_primary  s_ageg2529w s_ageg3034w  s_ageg3539w  s_ageg4044w  s_ageg4549w  s_vlg1000_tams_ontld  s_x_n_zld_if_reg_op_116 s_onart_gt6m_iicu 
-inc_death_rate_aids_disrup_covid higher_future_prep_cov higher_newp_with_lower_adhav
+inc_death_rate_aids_disrup_covid higher_future_prep_cov higher_newp_with_lower_adhav  prep_depends_on_pr_vl_1000
 
 dataset     m15r    m25r    m35r    m45r    m55r    w15r    w25r    w35r    w45r    w55r    sex_beh_trans_matrix_m   
 sex_beh_trans_matrix_w     sex_age_mixing_matrix_m    sex_age_mixing_matrix_w   p_rred_p   p_hsb_p    newp_factor   eprate    conc_ep    ch_risk_diag  
@@ -980,7 +980,7 @@ n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested 
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
-p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
+p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  
 
 p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
 p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  p_on_anti_hypert_1549 
@@ -1048,7 +1048,7 @@ clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
 red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
 prob_return_adc   higher_newp_less_engagement  higher_newp_with_lower_adhav
-fold_tr fold_tr_newp  switch_for_tox   adh_pattern_prep    base_rate_sw  
+fold_tr fold_tr_newp  switch_for_tox   adh_pattern_prep    base_rate_sw   prep_depends_on_pr_vl_1000
 
 condom_incr_year_i     		 incr_test_year_i              decr_hard_reach_year_i   
 decr_prob_loss_at_diag_year_i  	decr_rate_lost_year_i 		decr_rate_lost_art_year_i     incr_rate_return_year_i      
@@ -1091,7 +1091,7 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_9      ;
+data a.oral_prep_9a      ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;

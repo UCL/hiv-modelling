@@ -6,7 +6,7 @@
 
 data y; 
 
-  set a.oral_prep_9     ;  
+  set a.oral_prep_9a    ;  
 
 
   options nomprint;
@@ -205,7 +205,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=rate_choose_stop_prep ); %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );   %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
-%par(p= incr_mort_risk_dol_weightg );
+%par(p= incr_mort_risk_dol_weightg );  %par(p=prep_depends_on_pr_vl_1000);
 %par(p=eff_max_freq_testing ); 		%par(p=eff_rate_restart );  		%par(p=eff_prob_loss_at_diag );  		%par(p=eff_rate_lost );  		
 %par(p=eff_prob_lost_art );  		%par(p=eff_rate_return );  			
 %par(p=eff_pr_art_init );  	%par(p=eff_rate_int_choice );  	%par(p=eff_prob_vl_meas_done );  		%par(p=eff_pr_switch_line );  	
@@ -232,7 +232,7 @@ red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
 prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
 fold_tr switch_for_tox adh_pattern_prep rate_test_startprep rate_test_restartprep
 rate_choose_stop_prep circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p prep_depends_on_pr_vl_1000
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
@@ -344,12 +344,14 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_oral_prep_9      ;
+  data a.wide_oral_prep_9a     ;
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;
 * merge   wide_outputs  wide_par ;  
   by run;
+
+proc contents; run;
 
 
 ods html;

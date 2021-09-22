@@ -4,7 +4,7 @@
 
 
 data wide;  
-  set  a.wide_oral_prep_8r    a.wide_oral_prep_8rrr  a.wide_oral_prep_9    ;  
+  set    a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9    a.wide_oral_prep_9a    ;  
 
 
 * 7 + 8 (n > 700):   					64%
@@ -418,7 +418,7 @@ ods html close;
 
 
 ods html;
-proc means n mean p5 p95 data=wide; 
+proc means n mean p5 p25 p75 p95 data=wide; 
 var	p_mcirc_1549m_41_2 prevalence1549m_41_2 prevalence1549w_41_2 prevalence1524m_41_2 prevalence1524w_41_2  incidence1549w_41_2 incidence1549m_41_2	p_diag_m_41_2   
 p_diag_w_41_2	p_ai_no_arv_c_nnm_41_2   p_ai_no_arv_c_rt184m_41_2  p_ai_no_arv_c_rt65m_41_2  prop_w_1549_sw_41_2  prop_1564_hivneg_onprep_41_2  prop_w_1524_onprep_41_2 
 p_onart_diag_w_41_2 	p_onart_diag_m_41_2   p_vl1000_41_2	p_onart_vl1000_w_41_2 p_onart_vl1000_m_41_2 p_onart_cd4_l500_41_2  p_mcirc_1549m_41_2  p_startedline2_41_2  
@@ -429,7 +429,7 @@ ods html close;
 
 
 ods html;
-proc means n mean median p5 p95 data=wide; 
+proc means n mean median p5 p25 p75  p95 data=wide; 
 var	p_mcirc_1549m_70_1 prevalence1549m_70_1 prevalence1549w_70_1 prevalence1524m_70_1 prevalence1524w_70_1  incidence1549w_70_1 incidence1549m_70_1	p_diag_m_70_1   
 p_diag_w_70_1	p_ai_no_arv_c_nnm_70_1   p_ai_no_arv_c_rt184m_70_1  p_ai_no_arv_c_rt65m_70_1  prop_w_1549_sw_70_1  prop_1564_hivneg_onprep_70_1  prop_w_1524_onprep_70_1 
 p_onart_diag_w_70_1 	p_onart_diag_m_70_1   p_vl1000_70_1	p_onart_vl1000_w_70_1 p_onart_vl1000_m_70_1 p_onart_cd4_l500_70_1  p_mcirc_1549m_70_1  p_startedline2_70_1  
@@ -1062,10 +1062,10 @@ proc freq; tables icer_2 ; run;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.03 <= prevalence_vg1000_21 < 5.03 ; 
+* where 0.02 <= prevalence_vg1000_21 < 0.03 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  10;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-* where  0.2 <= incidence1549_21     ;
+* where  0.4 <= incidence1549_21 < 0.5 ;
 * where 0.20 <= prevalence1549_21 < 5.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
@@ -1080,7 +1080,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where fold_tr_newp >= 0.7;
 * where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
 * where incidence1549w_21 > 0.16 and 0.02 <= prevalence_vg1000_21  ;
-* where incidence1549w_21 > 0.16  ;
+* where 0.40 <= incidence1549w_21 < 0.5 ;
 * where p_inf_newp_21 < 0.62  ;
 * where reg_option_104 = 1;
 * where sex_beh_trans_matrix_m in (1 2 3 4 5 6 7 8 9 10 15);
@@ -1167,15 +1167,6 @@ run;
 
 * --------------------------------------------------------------------------------------------------------------;
 
-proc logistic  data=wide  ;
-output out = out predicted=predicted;
-model ce_500_x = 
-prevalence_vg1000_21
-p_mcirc_1549m_21
-av_newp_ge1_non_sw_21
-fold_tr_newp
-;
-run;
 
 
 proc logistic  data=wide  ;
@@ -1211,13 +1202,20 @@ run;
 
 
 proc logistic  data=wide  ;
-class sex_beh_trans_matrix_m ;
+output out = out predicted=predicted;
+model ce_500_x = 
+prep_depends_on_pr_vl_1000
+;
+run;
+
+proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 
 prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
+prep_depends_on_pr_vl_1000
 ;
 run;
 
