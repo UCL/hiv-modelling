@@ -1,8 +1,8 @@
 
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_e_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_e_out\";
 
   data g;    set b.out: ;
 
@@ -133,6 +133,10 @@ s_alive = s_alive_m + s_alive_w ;
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
+* n_death_2059_m;				n_death_2059_m = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
+													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all
+													+ s_dead6064m_all+ s_dead6569m_all+ s_dead7074m_all+ s_dead7599m_all
+													+ s_dead8084m_all+ s_dead85plm_all)  * 4 * &sf ;
 * n_death_2059;					n_death_2059 = n_death_2059_m + n_death_2059_w;
 * n_death;						n_death = s_dead_allage  * 4 * &sf;
 
@@ -489,7 +493,7 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v=n_hiv  ); 
+%var(v=n_death_hiv  ); 
 
 /*
 
