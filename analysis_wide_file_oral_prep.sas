@@ -4,7 +4,7 @@
 
 
 data wide;  
-  set    a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9    a.wide_oral_prep_9a    ;  
+  set   a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9   a.wide_oral_prep_9a    ;  
 
 
 * 7 + 8 (n > 700):   					64%
@@ -1085,6 +1085,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where reg_option_104 = 1;
 * where sex_beh_trans_matrix_m in (1 2 3 4 5 6 7 8 9 10 15);
 * where sge65=1;
+* where prep_depends_on_pr_vl_1000 = 1;
 run; 
   ods html close;
 
