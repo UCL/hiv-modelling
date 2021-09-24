@@ -417,6 +417,18 @@ if cald=2019.75 then n_onart_obs_mlw= 787609  ;
 if cald=2020.75 then n_onart_obs_mlw= 818218  ; 
 if cald=2021.75 then n_onart_obs_mlw= 826138 ; * adults ;
 
+/*
+
+from spectrum aims file
+
+2004	2005	2006	2007	2008	2009	2010	2011	2012	2013	2014	2015	2016	2017	2018	2019	2020
+																
+3,801	9,873	19,491	32,147	51,998	67,694	85,570	106,407	127,612	146,657	167,260	185,256	212,117	241,127	262,449	267,830	275,935   men
+6,192	17,222	35,090	59,139	91,352	119,024	149,650	196,873	252,412	296,740	339,462	374,506	425,914	464,023	506,730	517,118	542,294   women
+9,993	27,095	54,581	91,286	143,350	186,718	235,220	303,280	380,024	443,397	506,722	559,762	638,031	705,150	769,179	784,948	818,229   all adults
+
+*/
+
 if cald=2005.50 then n_art_start_m_obs_mlw= 9505 ;
 if cald=2005.50 then n_art_start_f_obs_mlw= 14836 ;
 if cald=2008.50 then n_art_start_m_obs_mlw= 26482 ;
@@ -480,7 +492,12 @@ if cald=2010.5 then prevalence2535m_obs_mlw= 0.087;
 if cald=2010.5 then prevalence3545m_obs_mlw= 0.192;
 if cald=2010.5 then prevalence4555m_obs_mlw= 0.141;
 
-if cald=1999.5 then prevalence1549_obs_mlw = 0.164;
+* if cald=1999.5 then prevalence1549_obs_mlw = 0.164;
+
+if cald=1992.5 then prevalence1549_obs_mlw = 0.108;  * spectrum aim outputs ;
+if cald=1995.5 then prevalence1549_obs_mlw = 0.140;  * spectrum aim outputs ;
+if cald=1998.5 then prevalence1549_obs_mlw = 0.152;  * spectrum aim outputs ;
+
 
 if cald=2014.5 then p_onart_vl1000_obs_mlw= 0.84;
 if cald=2015.5 then p_onart_vl1000_obs_mlw= 0.86;
