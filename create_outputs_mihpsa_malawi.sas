@@ -498,7 +498,7 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v=test_prop_positive    );
+%var(v=p_mcirc_1549m);
 
 /*
 
