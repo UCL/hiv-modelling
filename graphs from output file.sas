@@ -494,9 +494,9 @@ if cald=2010.5 then prevalence4555m_obs_mlw= 0.141;
 
 * if cald=1999.5 then prevalence1549_obs_mlw = 0.164;
 
-if cald=1992.5 then prevalence1549_obs_mlw = 0.108;  * spectrum aim outputs ;
-if cald=1995.5 then prevalence1549_obs_mlw = 0.140;  * spectrum aim outputs ;
-if cald=1998.5 then prevalence1549_obs_mlw = 0.152;  * spectrum aim outputs ;
+if cald=1992.5 then prevalence1549_obs_mlw = 0.108;  * spectrum aim outputs ;  * current median = 0.095 ;
+if cald=1995.5 then prevalence1549_obs_mlw = 0.140;  * spectrum aim outputs ;  * current median = 0.147 ;
+if cald=1998.5 then prevalence1549_obs_mlw = 0.152;  * spectrum aim outputs ;  * current median = 0.175 ;
 
 
 if cald=2014.5 then p_onart_vl1000_obs_mlw= 0.84;
