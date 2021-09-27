@@ -4,15 +4,22 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 ***20 reps;
 
 data b;
-set a.wide_vmmc_25_06_21_1pm_20r_F;
-if prevalence1549_21 lt 0.01 then delete;
-proc freq;table run ;run;
+set a.wide_vmmc_25_06_21_1pm_20r_F;;
+if prevalence1549m_21 lt 0.03 then delete;
+*if run ge   906625371 then delete;
+
+
+proc freq;table prevalence1549w_21;run;
+
+
+proc means n p50 p5 p95;var
+prevalence1549_21 prevalence1549m_21 prevalence1549w_21;run;
+proc freq;table run ;;run;
 
 
 data c;
 set b;  
 
-*if run >=  906625371 then delete;*keep 100 runs;
 
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;

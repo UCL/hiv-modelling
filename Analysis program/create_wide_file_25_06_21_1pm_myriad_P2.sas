@@ -1,11 +1,11 @@
 
-libname a "/home/rmjllob/Scratch";
+*libname a "/home/rmjllob/Scratch";
 
 
-data y; set a.vmmc_25_06_21_10r;run;
+data y; set a.vmmc_25_06_21_10r_20reps_F;run;
 
 
-proc freq;table option_new;run;
+proc freq;table run;where cald=2020;run;
 
 
 
@@ -587,7 +587,7 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_25_06_21_1pm_10r;
+  data a.wide_vmmc_25_06_21_1pm_20r_F;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
