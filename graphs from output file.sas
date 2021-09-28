@@ -477,9 +477,10 @@ if cald=2010.5 then prevalence1549_obs_mlw= 0.106;
 if cald=2010.5 then prevalence1549m_obs_mlw= 0.081;
 if cald=2010.5 then prevalence1549w_obs_mlw= 0.129;
 
-if cald=2016.5 then prevalence1549_obs_mlw= 0.100;
-if cald=2016.5 then prevalence1549m_obs_mlw= 0.075;
-if cald=2016.5 then prevalence1549w_obs_mlw= 0.124;
+if cald=2016.0 then prevalence1549_obs_mlw= 0.094; *between phia and dhs;
+if cald=2016.0 then prevalence1549m_obs_mlw= 0.071; *between phia and dhs;
+if cald=2016.0 then prevalence1549w_obs_mlw= 0.115; *between phia and dhs;
+
 
 if cald=2016.5 then incidence1549_obs_mlw= 0.32;
 
