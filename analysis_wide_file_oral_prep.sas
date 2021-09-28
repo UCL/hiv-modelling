@@ -4,8 +4,8 @@
 
 
 data wide;  
-  set   a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9   a.wide_oral_prep_9a    ;  
-
+* set   a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9   a.wide_oral_prep_9a    ;  
+  set 	a.wide_oral_prep_10  ;  
 
 * 7 + 8 (n > 700):   					64%
   8r (discount + age < 65) (n = 224) :	74%  

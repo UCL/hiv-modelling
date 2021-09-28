@@ -1,13 +1,13 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_9a_out";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_10_out";
 * libname a '/home/rmjlaph/';
 
 data d1 ; set b.out: ; 
 
 * remove this below once this is defined;
-s_dtest_cost_prep = .;
+* s_dtest_cost_prep = .;
  
 
 keep 
@@ -1091,7 +1091,7 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_9a      ;
+data a.oral_prep_10      ;
 set y;
 
 proc print; var n_tested sf_2021 option; run;
