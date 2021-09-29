@@ -76,7 +76,7 @@ rred_a_p    rr_int_tox    nnrti_res_no_effect    double_rate_gas_tox_taz     inc
 eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
 eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   
 eff_prob_prep_restart_choice    eff_test_targeting    zero_tdf_activity_k65r     zero_3tc_activity_m184    red_adh_multi_pill_pop   
-greater_disability_tox     greater_tox_zdv       prep_strategy  
+greater_disability_tox     greater_tox_zdv       prep_strategy  sens_test_prep
 exp_setting_lower_p_vl1000     external_exp_factor    rate_exp_set_lower_p_vl1000    max_freq_testing   test_targeting  
 prob_loss_at_diag   pr_art_init   rate_lost   prob_lost_art   rate_return  rate_restart   rate_int_choice  clinic_not_aw_int_frac   
 rate_loss_persistence          incr_rate_int_low_adh     fold_change_mut_risk     adh_effect_of_meas_alert   pr_switch_line  
@@ -1027,7 +1027,7 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy higher_future_prep_coverage
+prep_strategy higher_future_prep_coverage  sens_test_prep
 
 eff_max_freq_testing     eff_rate_restart    eff_prob_loss_at_diag     eff_rate_lost  eff_prob_lost_art   eff_rate_return   eff_pr_art_init  
 eff_rate_int_choice      eff_prob_vl_meas_done    eff_pr_switch_line    eff_rate_test_startprep     eff_rate_test_restartprep   eff_rate_choose_stop_prep   

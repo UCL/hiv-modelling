@@ -214,7 +214,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=eff_test_targeting );  %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); %par(p=tr_rate_undetec_vl);
 %par(p=lower_future_art_cov);  %par(p=prep_efficacy);  %par(p=sens_vct_test_type_3);  %par(p=fold_tr_newp) ; %par(p=reg_option_104);
-%par(p=higher_future_prep_cov);   %par(p= higher_newp_with_lower_adhav);
+%par(p=higher_future_prep_cov);   %par(p= higher_newp_with_lower_adhav);  %par(p=sens_test_prep);
 
 data wide_par; merge dataset
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -240,7 +240,7 @@ eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line
 eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	eff_test_targeting
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
   prep_strategy lower_future_art_cov  prep_efficacy  sens_vct_test_type_3  fold_tr_newp tr_rate_undetec_vl reg_option_104 higher_future_prep_cov
-  higher_newp_with_lower_adhav
+  higher_newp_with_lower_adhav  sens_test_prep
 ;
 
 
