@@ -1770,9 +1770,14 @@ r1=rand('uniform'); prep_all_willing = 0; if r1 < prep_all_uptake_pop then prep_
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on ratios defined at start		* lapr JAS Sept2021 ;
 * May want to update coding to allow these to change with age / through time ;
+/*
 * pref_prep_oral;				pref_prep_oral=rand('uniform'); 
 * pref_prep_inj;				pref_prep_inj=rand('uniform') * pref_prep_inj_ratio /  max(pref_prep_oral_ratio, 1e-6); 
-* pref_prep_vr;					pref_prep_vr=rand('uniform') * pref_prep_vr_ratio / max(pref_prep_oral_ratio, 1e-6); 
+* pref_prep_vr;					pref_prep_vr=rand('uniform') * pref_prep_vr_ratio / max(pref_prep_oral_ratio, 1e-6); */
+
+* pref_prep_oral;				pref_prep_oral=rand('beta',5,2); 
+* pref_prep_inj;				pref_prep_inj=rand('beta',2,2); 
+* pref_prep_vr;					pref_prep_vr=rand('beta',2,5); 
 
 
 hiv=0;
@@ -15408,7 +15413,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 proc print; var caldate&j age pref_prep_oral pref_prep_inj pref_prep_vr prep_all_elig; 
 where age ge 15 and serial_no<300 and death =.;
 run; 
-
+proc univariate; var pref_prep_oral pref_prep_inj pref_prep_vr ; 
 
 /*
 
