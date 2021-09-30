@@ -12,7 +12,6 @@ run;
 data c;
 set b;  
 
-
 ***option 1= continuation of VMMC;
 ***option 2= no further VMMC;
 
@@ -86,7 +85,6 @@ inf_avert_all_21_26_1 = ((n_infection_21_26_2 - n_infection_21_26_1)/n_infection
 inf_avert_all_21_41_1 = ((n_infection_21_41_2 - n_infection_21_41_1)/n_infection_21_41_2)*100;
 inf_avert_all_21_71_1 = ((n_infection_21_71_2 - n_infection_21_71_1)/n_infection_21_71_2)*100;
 
-proc contents;run;
 
 *dalys averted;
 d_ddaly_adults_21_26_1 = ddaly_adults_21_26_2 - ddaly_adults_21_26_1;
@@ -363,6 +361,8 @@ run;
 ***% infections averted - Figure 1d;
 proc means n mean p50 p5 p95 lclm uclm;var 
 inf_avert_21_26_1  inf_avert_21_41_1  inf_avert_21_71_1
+inf_avert_all_21_26_1  inf_avert_all_21_41_1  inf_avert_all_21_71_1
+
 ;run;
 
 
