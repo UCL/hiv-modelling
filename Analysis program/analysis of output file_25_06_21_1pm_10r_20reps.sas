@@ -7,15 +7,7 @@ data b;
 set a.wide_vmmc_25_06_21_1pm_20r_F;;
 if prevalence1549m_21 lt 0.03 then delete;
 *if run ge   906625371 then delete;
-
-
-proc freq;table prevalence1549w_21;run;
-
-
-proc means n p50 p5 p95;var
-prevalence1549_21 prevalence1549m_21 prevalence1549w_21;run;
-proc freq;table run ;;run;
-
+run;
 
 data c;
 set b;  
@@ -84,11 +76,17 @@ ddeath_rate_hiv_all_m_21_26_1 = (death_rate_hiv_all_m_21_26_1 - death_rate_hiv_a
 ddeath_rate_hiv_all_m_21_41_1 = (death_rate_hiv_all_m_21_41_1 - death_rate_hiv_all_m_21_41_2)*10;
 ddeath_rate_hiv_all_m_21_71_1 = (death_rate_hiv_all_m_21_71_1 - death_rate_hiv_all_m_21_71_2)*10;
  															   
-*% infections averted;
+*% infections averted 15-49;
 inf_avert_21_26_1 = ((n_new_inf1549_21_26_2 - n_new_inf1549_21_26_1)/n_new_inf1549_21_26_2)*100;
 inf_avert_21_41_1 = ((n_new_inf1549_21_41_2 - n_new_inf1549_21_41_1)/n_new_inf1549_21_41_2)*100;
 inf_avert_21_71_1 = ((n_new_inf1549_21_71_2 - n_new_inf1549_21_71_1)/n_new_inf1549_21_71_2)*100;
 
+*% infections averted all;
+inf_avert_all_21_26_1 = ((n_infection_21_26_2 - n_infection_21_26_1)/n_infection_21_26_2)*100;
+inf_avert_all_21_41_1 = ((n_infection_21_41_2 - n_infection_21_41_1)/n_infection_21_41_2)*100;
+inf_avert_all_21_71_1 = ((n_infection_21_71_2 - n_infection_21_71_1)/n_infection_21_71_2)*100;
+
+proc contents;run;
 
 *dalys averted;
 d_ddaly_adults_21_26_1 = ddaly_adults_21_26_2 - ddaly_adults_21_26_1;
@@ -226,7 +224,6 @@ diff_icer_21_41 = cost_daly_avert_Op_21_41 - cost_daly_avert_21_41_1_adults;
 diff_icer_21_71 = cost_daly_avert_Op_21_71 - cost_daly_avert_21_71_1_adults;
 run;
 
-proc means n sum p50 p5 p95; var cost_daly_avert_21_71_1_adults;run;
 proc print;var run cost_daly_avert_21_71_1_adults d_dcost_21_71_1 d_ddaly_adults_21_71_1;where 103  < cost_daly_avert_21_71_1_adults < 104;run;
 
 proc print;var run ddaly_adults_21_71_2 ddaly_adults_21_71_1  d_ddaly_adults_21_71_1;run;
@@ -551,8 +548,12 @@ Proc logistic data=one desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl100
 model  ce_21_71  = p_vl1000_21_scaled;run;
 Proc logistic data=one desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
 model  ce_21_71  = p_mcirc_1549m_21_scaled;run;
+
+
 Proc logistic data=one desc;class incid_cat3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
 model  ce_21_71  = incidence1549_scaled  p_mcirc_1549m_21_scaled prevalence_vg1000_scaled;run;
+
+
 
 ***And with incidence in 2040;
 Proc logistic data=one desc;class incid_cat3 (ref="1") incid_cat2040_3 (ref="1")  p_circ (ref="1") p_vl1000 (ref="1");
