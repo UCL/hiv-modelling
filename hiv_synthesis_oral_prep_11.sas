@@ -261,7 +261,7 @@ newp_seed = 7;
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
-* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0); * oral_prep_7 ;
+* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1/0.8 1/0.6 1/0.4); 
 * super_infection; 			%sample_uniform(super_infection, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
@@ -496,7 +496,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.40	0.20	0.20	0.05	0.05	0.05);
+								0.05	0.55	0.10	0.10	0.10	0.05	0.05);
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(normal(0)*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
@@ -2281,7 +2281,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-		prep_strategy = 5;   
+		prep_strategy = 4;   
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ; 
 		eff_prob_prep_restart_choice = 0.7 ;
@@ -2297,7 +2297,7 @@ who may be dead and hence have caldate{t} missing;
 										   
 	
 		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
-		prep_strategy = 5;
+		prep_strategy = 4;
 		prob_prep_pop_wide_tld = 0.50; 
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ;  
