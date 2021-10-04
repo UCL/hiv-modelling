@@ -1,7 +1,7 @@
 
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\vmmc20reps_out_vmmc20reps\";
 
-libname a "C:\Users\loveleen\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\vmmc20reps_out_vmmc20reps\";
+*libname a "C:\Users\loveleen\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\vmmc20reps_out_vmmc20reps\";
 
 
 ***20 reps;

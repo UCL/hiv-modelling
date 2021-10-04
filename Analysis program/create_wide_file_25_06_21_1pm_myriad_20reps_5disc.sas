@@ -1487,7 +1487,7 @@ proc sort; by run;run;
 
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\vmmc\";
 
-  data a.wide_vmmc_25_06_21_1pm_20r_F_5disc;
+  data a.wide_vmmc_25_06_21_1pm_20r_F_5d;
 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;

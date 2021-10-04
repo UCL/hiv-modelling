@@ -10,6 +10,7 @@ set a.out_vmmc20reps:;
 proc sort;by run cald option;run;
 proc freq;table run ;where cald=2020;run;
 
+
 data a; set b  ;
 
 **option_new=1 = continuation for 5 years;
