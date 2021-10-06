@@ -1696,6 +1696,8 @@ proc freq; tables run; run;
 
 data r; set a.wide_art_re_14_6_21_5r_5o_oct21; 
 
+proc freq; tables rate_int_choice; run;
+
 
 ods html;
 proc means n median p5 p95 min max ;
