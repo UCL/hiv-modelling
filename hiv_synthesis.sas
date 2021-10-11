@@ -10,7 +10,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -15234,9 +15234,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
-
-proc print; var hivtest_type prep_strategy;
-where serial_no < 50; run;
 
 /*
 
