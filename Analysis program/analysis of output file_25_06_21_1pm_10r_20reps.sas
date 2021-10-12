@@ -1,19 +1,19 @@
-*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\vmmc20reps_out_vmmc20reps\";
+libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\vmmc20reps_out_vmmc20reps\";
 
 *lowart;
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\";
+*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VMMC\";
 
 
 ***20 reps;
 
 data b;
-*set a.wide_vmmc_25_06_21_1pm_20r_F;
+set a.wide_vmmc_25_06_21_1pm_20r_F;
 *set a.wide_vmmc_25_06_21_1pm_20r_F_60;
 *set a.wide_vmmc_25_06_21_1pm_20r_F_120;
 *set a.wide_vmmc_25_06_21_1pm_20r_F_5d;
-set a.wide_vmmc_02_06_21_9pm_lowart;
+*set a.wide_vmmc_02_06_21_9pm_lowart;
 
-*if prevalence1549m_21 lt 0.03 then delete;
+if prevalence1549m_21 lt 0.03 then delete;
 *if run ge   906625371 then delete;
 run;
 
@@ -176,12 +176,11 @@ proc univariate;var d_dcost_21_26_1 d_dcost_21_41_1 d_dcost_21_71_1;run;
 */
 
 ***Change the below to reflect which cost/discount is being applied;
-/*base;cost_inf_avert_21_26_1= 12.2*1000000; cost_inf_avert_21_41_1= 3.1*1000000; cost_inf_avert_21_71_1 = 1.6*1000000;*/
+*base;cost_inf_avert_21_26_1= 12.2*1000000; cost_inf_avert_21_41_1= 3.1*1000000; cost_inf_avert_21_71_1 = 1.6*1000000;
 /*60;cost_inf_avert_21_26_1= 8.4*1000000; cost_inf_avert_21_41_1= 2.1*1000000; cost_inf_avert_21_71_1 = 1.5*1000000;*/
 /*120;cost_inf_avert_21_26_1= 16.1*1000000; cost_inf_avert_21_41_1= 4.0*1000000; cost_inf_avert_21_71_1 = 1.8*1000000;*/
 /*5% disc;cost_inf_avert_21_26_1= 11.6*1000000; cost_inf_avert_21_41_1= 2.9*1000000; cost_inf_avert_21_71_1 = 1.4*1000000;*/
-
-*lowart;cost_inf_avert_21_26_1=11.9*1000000; cost_inf_avert_21_41_1=3.9*1000000; cost_inf_avert_21_71_1 = 3.5*1000000;
+/*lowart;cost_inf_avert_21_26_1=11.9*1000000; cost_inf_avert_21_41_1=3.9*1000000; cost_inf_avert_21_71_1 = 3.5*1000000;*/
 
 if d_n_new_inf_21_26_1 gt 0 then cost_inf_avert_21_26_1 = (d_dcost_21_26_1 / d_n_d_new_inf_21_26_1)*1000000;
 if d_n_new_inf_21_41_1 gt 0 then cost_inf_avert_21_41_1 = (d_dcost_21_41_1 / d_n_d_new_inf_21_41_1)*1000000;
@@ -189,9 +188,9 @@ if d_n_new_inf_21_71_1 gt 0 then cost_inf_avert_21_71_1 = (d_dcost_21_71_1 / d_n
 
 
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
-cost_daly_avert_21_26_1_adults=11.9*1000000;
-cost_daly_avert_21_41_1_adults=3.9*1000000;
-cost_daly_avert_21_71_1_adults=3.5*1000000;
+cost_daly_avert_21_26_1_adults=12.2*1000000;
+cost_daly_avert_21_41_1_adults=3.1*1000000;
+cost_daly_avert_21_71_1_adults=1.6*1000000;
 
 *check everything is the right way;
 if d_ddaly_adults_21_26_1 gt 0 then cost_daly_avert_21_26_1_adults = (d_dcost_21_26_1 / d_ddaly_adults_21_26_1)*1000000;
@@ -373,7 +372,6 @@ run;
 proc means n mean p50 p5 p95 lclm uclm;var 
 inf_avert_21_26_1  inf_avert_21_41_1  inf_avert_21_71_1
 inf_avert_all_21_26_1  inf_avert_all_21_41_1  inf_avert_all_21_71_1
-
 ;run;
 
 
@@ -485,8 +483,8 @@ ndb_500_21_71_2_Op ndb_500_21_71_1_Op d_net_dalys_21_71_1_Op;
 ***Predictors of CE scenarios;
 data one;
 set c;
-if 0  le incidence1549_21 le 0.10 then incid=0;
-if 0.10  lt incidence1549_21 le 0.20 then incid=1;
+*if 0  le incidence1549_21 le 0.10 then incid=0;
+if 0.0  lt incidence1549_21 le 0.20 then incid=1;
 if 0.20 lt incidence1549_21 le 0.30 then incid=2;
 if 0.30 lt incidence1549_21 le 0.50 then incid=3;
 if 0.50 lt incidence1549_21 le 1 then incid=4;
