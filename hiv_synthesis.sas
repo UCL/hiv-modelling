@@ -4106,7 +4106,7 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep then do;
 				r=rand('uniform'); 
 				if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25); end;
-				else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
+				else do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
 			end;
 		end;
 		else if prep_tm1 ne 1 then do;
