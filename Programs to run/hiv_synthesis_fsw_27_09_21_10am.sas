@@ -570,8 +570,8 @@ newp_seed = 7;
 							* rate of sex workers moving to one category lower;
 
 * sw_art_disadv;			%sample_uniform(sw_art_disadv, 1 2);
-					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; sw_lower_adh = 1;		sw_higher_prob_loss_at_diag = 1; 	end;
-								if sw_art_disadv=2 	then do; sw_higher_int = 2; sw_lower_adh = 0.5;	sw_higher_prob_loss_at_diag = 1.5; 	end;
+					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; sw_lower_adh = 1;	sw_higher_prob_loss_at_diag = 1; 	end;
+								if sw_art_disadv=2 	then do; sw_higher_int = 2; sw_lower_adh = 0.5;	sw_higher_prob_loss_at_diag = 2; 	end;
 
 * sw_program;				%sample(sw_program, 0 1, 0.8 0.2);
 								if sw_program = 1 	then do; rate_engage_sw_program =0.10;	rate_disengage_sw_program = 0.025;  end;
@@ -6220,7 +6220,8 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	if sw=1 then do;
 
-	e_eff_prob_loss_at_diag=(e_eff_prob_loss_at_diag/(1-e_eff_prob_loss_at_diag)) * ((eff_sw_higher_prob_loss_at_diag)/(1+* eff_sw_higher_prob_loss_at_diag));
+	*odds;e_eff_prob_loss_at_diag=(e_eff_prob_loss_at_diag/(1-e_eff_prob_loss_at_diag)) * (eff_sw_higher_prob_loss_at_diag);
+	*prob;e_eff_prob_loss_at_diag=e_eff_prob_loss_at_diag/(1+e_eff_prob_loss_at_diag);
 
 	end;
 
