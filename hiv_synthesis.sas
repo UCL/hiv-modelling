@@ -558,6 +558,8 @@ newp_seed = 7;
 * ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
 * ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
 
+
+
 * SEX WORKERS;
 
 * base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
@@ -609,11 +611,11 @@ newp_seed = 7;
 
 									
 
-
 * ALL PREP ;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
+* prep_all_strategy;			prep_all_strategy=4; 			* Moved from within code Oct21 JAS ;
 * prob_prep_all_restart;		prob_prep_all_restart=1.00; 	* set to 1 given we have rate_test_restartprep_all; *Probability of restarting any form of PrEP after discontinuation due to not eligible; * may17;
 								* dependent_on_time_step_length ;
 * prob_prep_all_visit_counsel;	prob_prep_all_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -716,17 +718,16 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * TEMPORARY PARAMETER VALUES FOR TESTING LAPR CODE ;
 * date_prep_oral_intro;			date_prep_oral_intro=1990.25; 	* Introduction of oral PrEP ;
-* date_prep_inj_intro;			date_prep_oral_intro=1992.25; 	* Introduction of injectable PrEP ;
-* date_prep_vr_intro;			date_prep_oral_intro=1994.25; 	* Introduction of vaginal ring PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=1992.25; 	* Introduction of injectable PrEP ;
+* date_prep_vr_intro;			date_prep_vr_intro=1994.25; 	* Introduction of vaginal ring PrEP ;
 * prep_all_uptake_pop;			prep_all_uptake_pop=0.8;	*%sample(prep_all_uptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 
-prep_all_strategy=4; hivtest_type=3;	* in code this is turned on in year 2018.25 - why? ;
 * rate_test_startprep_all; 		rate_test_startprep_all=0.9;	*%sample_uniform(rate_test_startprep_all, 0.25 0.5 0.75);
 								* Additional rate of being tested for HIV before startin
 
 
-* COVID-19 ;
 
+* COVID-19 ;
 * cov_death_risk_mult;		%sample(cov_death_risk_mult, 1 2 3, 0.8 0.1 0.1);
 
 
@@ -1983,13 +1984,6 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * Oral PrEP effectiveness against non-resistant virus;
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
 	* lapr - this used in downstream analyses for oral prep so don't need equivalent here;
-
-*May21 - changed from 2017.25 after Coding Call discussion;
-if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
-value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_all_strategy=4; sens=0; hivtest_type=3;
-	* lapr and dpv-vr - using same prep strategy for all prep types ; * changed to strategy 4 for lapr analysis ;
-end;
 
 prep_all_tm2=	prep_all_tm1; 	prep_all_tm1=	prep_all;
 prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
@@ -4237,14 +4231,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 			* Oral PrEP ;
 			if prep_oral_tm1 =1 then do;  * dependent_on_time_step_length;
-				if annual_testing_prep_oral=1 and caldate{t}-dt_last_test >= 1.0 then do;
+				if caldate{t}-dt_last_test >= annual_testing_prep_oral then do;
 					a=rand('uniform'); if a < rate_test_onprep_all then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
-				end;
-				else if annual_testing_prep_oral=0.5 and caldate{t}-dt_last_test >= 0.5 then do;
-					a=rand('uniform'); if a < rate_test_onprep_all then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
-				end;
-				else if annual_testing_prep_oral=0.25 and caldate{t}-dt_last_test >= 0.25 then do;
-					a=rand('uniform'); if a < rate_test_onprep_all then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
 				end;
 			end;
 
@@ -4261,7 +4249,6 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					a=rand('uniform'); if a < rate_test_onprep_all then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
 				end;
 			end;
-
 
 			*re-initiation of PrEP;
 			else if prep_all_tm1 ne 1 then do; * dependent_on_time_step_length;
@@ -4320,13 +4307,13 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					r=rand('uniform'); 
 					select;
 						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 
-								prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	* add continuous prep variables (as above)?;
+								prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 								end; 
 						when (highest_prep_pref = 2) 	 if r < prob_prep_inj_b then do; 
-								prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	* add continuous prep variables (as above)?;
+								prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1;	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 								end; 
 						when (highest_prep_pref = 3) 	 if r < prob_prep_vr_b then do; 
-								prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	* add continuous prep variables (as above)?;
+								prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1;	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 								end; 
 					end; 
 				end;
@@ -4337,26 +4324,10 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	* continuing PrEP;		* lapr and dpv-vr - also switching between prep options;
 	if prep_all_ever=1 and dt_prep_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
 		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
-			if annual_testing_prep_oral=1 then do;
-				if 0 <= caldate{t}-dt_last_test <= 1.0 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral=1; dt_prep_e=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + (0.25); continuous_prep_all_use = continuous_prep_all_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep_oral) then do; stop_prep_oral_choice=1; stop_prep_all_choice=1; continuous_prep_oral_use=0; continuous_prep_all_use=0; end; *variable for people who discontinued despite newp>1; 
-				end;
-			end;
-			else if annual_testing_prep_oral=0.5 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.5 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral=1; dt_prep_e=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + (0.25); continuous_prep_all_use = continuous_prep_all_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep_oral) then do; stop_prep_oral_choice=1; stop_prep_all_choice=1; continuous_prep_oral_use=0; continuous_prep_all_use=0; end;*variable for people who discontinued despite newp>1; 
-				end;
-			end;
-			else if annual_testing_prep_oral=0.25 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.25 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral=1; dt_prep_e=caldate{t};continuous_prep_oral_use = continuous_prep_oral_use + (0.25); continuous_prep_all_use = continuous_prep_all_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep_oral) then do; stop_prep_oral_choice=1; stop_prep_all_choice=1; continuous_prep_oral_use=0; continuous_prep_all_use=0; end; *variable for people who discontinued despite newp>1; 
-				end;
+			if 0 <= caldate{t}-dt_last_test <= annual_testing_prep_oral then do;
+				r=rand('uniform'); 
+				if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral=1; dt_prep_e=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + (0.25); continuous_prep_all_use = continuous_prep_all_use + (0.25); end;
+				else do; stop_prep_oral_choice=1; stop_prep_all_choice=1; continuous_prep_oral_use=0; continuous_prep_all_use=0; end; *variable for people who discontinued despite newp>1; 
 			end;
 		end;
 		else if prep_oral_tm1 ne 1 then do;
