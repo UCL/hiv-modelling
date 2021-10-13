@@ -616,6 +616,8 @@ newp_seed = 7;
 and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
 if prep_willing=1;
 
+* date_prep_intro;			date_prep_intro=2018.25; 	* Moved from within code Oct21 JAS ; *May21 - changed from 2017.25 after Coding Call discussion;
+* prep_strategy;			prep_strategy=1; 			* Moved from within code Oct21 JAS ;
 * annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
 * prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
 * rel_prep_adh_younger;		rel_prep_adh_younger=0.7; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
@@ -642,6 +644,7 @@ if prep_willing=1;
 * prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 							*Probability of PrEP uptake if eligible for general population;
 * higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
+
 
 
 * COVID-19
@@ -1845,12 +1848,6 @@ if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 * PrEP effectiveness against non-resistant virus;
 prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
-
-*May21 - changed from 2017.25 after Coding Call discussion;
-if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
-value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
-end;
 
 prep_tm2=prep_tm1; prep_tm1=prep;
 tcur_tm1=tcur;
@@ -4046,14 +4043,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		*Routine testing while on PREP;
 		else if prep_ever=1 and prep_elig=1 then do;
 			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
-				if annual_testing_prep=1 and caldate{t}-dt_last_test >= 1.0 then do;
+				if caldate{t}-dt_last_test >= annual_testing_prep then do;
 					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
-				end;
-				else if annual_testing_prep=0.5 and caldate{t}-dt_last_test >= 0.5 then do;
-					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
-				end;
-				else if annual_testing_prep=0.25 and caldate{t}-dt_last_test >= 0.25 then do;
-					a=rand('uniform'); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
 				end;
 			end;
 			*re-initiation of PrEP;
@@ -4104,7 +4095,7 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	 
 			if prep_willing=1 then do; 
 				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
-				else if testfor_prep ne 1 then do;r=rand('uniform'); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
+				else if testfor_prep ne 1 then do;r=rand('uniform'); if r < prob_prep_b then do; prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
 			end;
 
 	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
@@ -4112,26 +4103,10 @@ if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 the
 	* continuing PrEP;
 	if prep_ever=1 and dt_prep_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
 		if prep_tm1 = 1 then do; * dependent_on_time_step_length;
-			if annual_testing_prep=1 then do;
-				if 0 <= caldate{t}-dt_last_test <= 1.0 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
-				end;
-			end;
-			else if annual_testing_prep=0.5 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.5 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25);end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end;*variable for people who discontinued despite newp>1; 
-				end;
-			end;
-			else if annual_testing_prep=0.25 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.25 then do;
-					r=rand('uniform'); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t};continuous_prep_use = continuous_prep_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
-				end;
+			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep then do;
+				r=rand('uniform'); 
+				if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25); end;
+				else do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
 			end;
 		end;
 		else if prep_tm1 ne 1 then do;
