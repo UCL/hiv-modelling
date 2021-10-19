@@ -4314,14 +4314,14 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					r=rand('uniform'); 
 					select;
 						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 
-								prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
-								end; 
+							prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
+						end; 
 						when (highest_prep_pref = 2) 	 if r < prob_prep_inj_b then do; 
-								prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1;	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
-								end; 
+							prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1;	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
+						end; 
 						when (highest_prep_pref = 3) 	 if r < prob_prep_vr_b then do; 
-								prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1;	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
-								end; 
+							prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1;	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
+						end; 
 					end; 
 				end;
 			end;
@@ -4359,16 +4359,41 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
 
 			if tested=1 then do; * dependent_on_time_step_length;
-				if stop_prep_oral_choice=1 then do;
+				if stop_prep_all_choice=1 then do;
 					r=rand('uniform'); 
-					if r < eff_prob_prep_all_restart_choice then do; prep_oral=1; continuous_prep_oral_use=0.25; continuous_prep_all_use=0.25; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_oral_choice=0; stop_prep_all_choice=0; end;
-				end; 
-				else if stop_prep_oral_choice ne 1 then do;
+					if r < eff_prob_prep_all_restart_choice then do;
+						select;			* lapr - last_prep_used does not yet exist! ************************ ;
+							when (last_prep_used=1)	do; 
+								prep_oral=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_e=caldate{t};	dt_prep_rs=caldate{t};	stop_prep_oral_choice=0;	stop_prep_all_choice=0; 
+							end; 					
+							when (last_prep_used=2)	do; 
+								prep_inj=1; 	continuous_prep_inj_use=0.25; 	continuous_prep_all_use=0.25; 	dt_prep_e=caldate{t}; 	dt_prep_rs=caldate{t}; 	stop_prep_inj_choice=0; 	stop_prep_all_choice=0; 
+							end; 					
+							when (last_prep_used=3)	do; 
+								prep_vr=1; 		continuous_prep_vr_use=0.25; 	continuous_prep_all_use=0.25; 	dt_prep_e=caldate{t}; 	dt_prep_rs=caldate{t}; 	stop_prep_vr_choice=0; 		stop_prep_all_choice=0; 
+							end; 					
+						end;
+					end;
+				end;
+
+				else if stop_prep_all_choice ne 1 then do;
 					r=rand('uniform'); 
-					if r < prob_prep_all_restart then do; prep_oral=1; dt_prep_e=caldate{t}; continuous_prep_oral_use=0.25; continuous_prep_all_use=0.25; dt_prep_c=caldate{t}; end;  * dt_prep_c is prep continuation in the sense
-					that they are now continuing prep again now they have np >= 1; 
+					if r < prob_prep_all_restart then do;
+						select;			* lapr - last_prep_used does not yet exist! ;
+							when (last_prep_used=1) do; 
+								prep_oral=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_e=caldate{t};	dt_prep_c=caldate{t};  * dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+							end;
+							when (last_prep_used=2) do; 
+								prep_inj=1;		continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_e=caldate{t};	dt_prep_c=caldate{t};  * dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+							end;
+							when (last_prep_used=3)	do; 
+								prep_vr=1;		continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_e=caldate{t};	dt_prep_c=caldate{t};  * dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+							end;
+						end;
+					end;
 				end;
 			end;
+
 		end; 
 	end;
 end;
