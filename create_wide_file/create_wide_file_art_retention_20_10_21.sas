@@ -40,7 +40,6 @@ by run ;
 
 
 
-
 * preparatory code ;
 
 * ================================================================================= ;
@@ -125,7 +124,7 @@ ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 ddaly_80 = (s_live_ddaly_80 + s_dead_ddaly_80) * &sf * 4;
 
-ddaly = (s_live_ddaly_80 + s_dead_ddaly_80) * &sf * 4 * discount_adj ;
+ddaly = (s_live_ddaly_80 + s_dead_ddaly_80) * &sf * 4  ;
 daly = (s_live_daly_80 + s_dead_daly_80) * &sf * 4 ;
 
 
@@ -881,7 +880,6 @@ n_mcirc1549_3m=s_mcirc_1549m * &sf;
 n_new_inf1549m = s_primary1549m * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * &sf * 4;
-
 
 keep 
 
