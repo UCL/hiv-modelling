@@ -112,6 +112,8 @@ dataset=1;
 proc sort data=d; 
 by run cald option;run;
 
+proc freq; tables run; run; 
+
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
