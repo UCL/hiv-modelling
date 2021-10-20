@@ -4472,26 +4472,26 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_all_elig = 1 or ( ever_newp = 1 
 			r=rand('uniform'); if prep_oral_willing=1 and r < prob_prep_pop_wide_tld then do ;		* lapr JAS Oct2021 - I have made this dependent on prep_oral_willing=1 (rather than prep_all_willing=1) ;
 
 * ts1m ; * replace line above with this:
-*			r=rand('uniform'); * if prep_all_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
+*			r=rand('uniform'); * if prep_oral_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
 
 			prep_oral=1; prep_all=1; pop_wide_tld_prep=1;  prep_oral_ever=1; prep_all_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 			end;
 	end;
 
 	if prep_oral_ever = 1 and dt_prep_s ne caldate{t} then do;   * dependent_on_time_step_length;
-			if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; end;
+			if r < (1-eff_rate_choose_stop_prep_oral) then do; prep_oral=1; prep_all=1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; end;
 			if r >= (1-eff_rate_choose_stop_prep_oral) then do; stop_prep_oral_choice=1; stop_prep_all_choice=1; pop_wide_tld_prep=0; end; 
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
 				if r < eff_prob_prep_all_restart_choice then do;  * dependent_on_time_step_length;
-					prep_oral   =1;pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_oral_choice=0; stop_prep_all_choice=0; 
+					prep_oral=1; prep_all=1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_oral_choice=0; stop_prep_all_choice=0; 
 				end;
 			end; 
 			else if stop_prep_oral_choice ne 1 then do;
 				r=rand('uniform'); 
 				if r < prob_prep_all_restart then do;  * dependent_on_time_step_length;
-					prep_oral   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_c=caldate{t};
+					prep_oral=1; prep_all=1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_c=caldate{t};
 				end;  
 				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
