@@ -1388,11 +1388,7 @@ run;
   merge   wide_outputs  wide_par  ; 
   by run;
 
-* if run = 145009460 ; * 627525923;
-
-* if run = 281373168 then delete; * no hiv in this run ;
-
-if p_onart_artexp_20_0 < 0.965;
+if p_onart_artexp_20_0 < 0.9642;
 
 
 proc contents; run;
