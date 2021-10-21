@@ -2,15 +2,30 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_11_out";
+* libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_11_out";
+
+libname b "C:\Users\w3sth\Documents\oral_prep_11_out";
+
+/*
+data d  ; set b.out: ;
+*/
 
 * libname a '/home/rmjlaph/';
 
-data d1 ; set b.out: ; 
+data d1 ; set b.out1: ; 
+data d2 ; set b.out2: ; 
+data d3 ; set b.out3: ; 
+data d4 ; set b.out4: ; 
+data d5 ; set b.out5: ; 
+data d6 ; set b.out6: ; 
+data d7 ; set b.out7: ; 
+data d8 ; set b.out8: ; 
+data d9 ; set b.out9: ; 
+
+data d; set d1 d2 d3 d4 d5 d6 d7 d8 d9;
 
 * remove this below once this is defined;
 * s_dtest_cost_prep = .;
- 
 
 keep 
 
@@ -103,10 +118,6 @@ s_dcost__80 s_live_ddaly_80 s_dead_ddaly_80
 if option=0 or option=1;
 
 dataset=1;
-
-
-  data d; 
-  set d1; 
 
 
 proc sort data=d; 
