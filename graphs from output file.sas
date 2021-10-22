@@ -9,7 +9,6 @@ proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\grph_log
 data b;
 set a.l_base;
 
-p_onart_vl1000_all = .;
 
 /*
 if option =0 or (prep_improvements  = 1 and option =1);
@@ -24,17 +23,6 @@ ods html close;
 
 
 * NB: note lines below, because variable names cannot end with a number;
-log_gender_r_newp  = log(gender_r_newp);
-prevalence1549_ = prevalence1549;
-incidence1549_ = incidence1549;
-incidence1564_ = incidence1564;
-
-incidence1524w_ = incidence1524w; incidence1524m_ = incidence1524m;
-incidence2534w_ = incidence2534w; incidence2534m_ = incidence2534m;
-incidence3544w_ = incidence3544w; incidence3544m_ = incidence3544m;
-incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
-incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
-
 p_hypert_1549_ = p_hypert_1549;
 p_hypert_1539_ = p_hypert_1539;
 p_hypert_4049_ = p_hypert_4049;
@@ -43,7 +31,7 @@ p_hypert_6069_ = p_hypert_6069;
 p_hypert_7079_  = p_hypert_7079;
 p_diagnosed_hypert_1549_ = p_diagnosed_hypert_1549;
 p_diagnosed_hypert_1539_ = p_diagnosed_hypert_1539;
-p_diagnosed_hypert_40549_ = p_diagnosed_hypert_4049;
+p_diagnosed_hypert_4049_ = p_diagnosed_hypert_4049;
 p_diagnosed_hypert_5059_  = p_diagnosed_hypert_5059;
 p_diagnosed_hypert_6069_  = p_diagnosed_hypert_6069;
 p_diagnosed_hypert_7079_  = p_diagnosed_hypert_7079;
@@ -55,25 +43,6 @@ p_on_anti_hypert_6069_  = p_on_anti_hypert_6069;
 p_on_anti_hypert_7079_ = p_on_anti_hypert_7079;
 rate_dead_cvd_ = rate_dead_cvd;
 
-p_onart_vl1000_ = p_onart_vl1000;
-p_vl1000_ = p_vl1000;
-p_vg1000_ = p_vg1000;
-prevalence_vg1000_ = prevalence_vg1000;
-p_newp_ge1_ = p_newp_ge1 ;
-p_newp_ge5_ = p_newp_ge5 ;
-
-loggender_r_newp = log(gender_r_newp+0.0001);
-
-logw15r = log(w15r+0.0001);
-logw25r = log(w25r+0.0001);
-logw35r = log(w35r+0.0001);
-logw45r = log(w45r+0.0001);
-logw55r = log(w55r+0.0001);
-logm15r = log(m15r+0.0001);
-logm25r = log(m25r+0.0001);
-logm35r = log(m35r+0.0001);
-logm45r = log(m45r+0.0001);
-logm55r = log(m55r+0.0001);
 
 /*
 

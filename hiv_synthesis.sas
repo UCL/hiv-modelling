@@ -10,7 +10,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-  proc printo log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log"; run;
+  proc printo log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 	
 %let population = 10000 ; 
 %let year_interv = 2021.5;
@@ -14877,9 +14877,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diagnosed_hypertension_1549w + diagnosed_hypertension_1549w ;  s_on_anti_hypertensive_1549w + on_anti_hypertensive_1549w ;  
 	s_hypertension_1549w + hypertension_1549w ;	
 	s_diagnosed_hypertension_1539w + diagnosed_hypertension_1539w ;  s_on_anti_hypertensive_1539w + on_anti_hypertensive_1539w ;  
-	s_hypertension_1539w + hypertension_1539w 
+	s_hypertension_1539w + hypertension_1539w ;
 	s_diagnosed_hypertension_4049w + diagnosed_hypertension_4049w ;  s_on_anti_hypertensive_4049w + on_anti_hypertensive_4049w ;  
-	s_hypertension_4049w + hypertension_4049w 
+	s_hypertension_4049w + hypertension_4049w ;
 	s_diagnosed_hypertension_5059w + diagnosed_hypertension_5059w ;  s_on_anti_hypertensive_5059w + on_anti_hypertensive_5059w ;  
 	s_hypertension_5059w + hypertension_5059w ;	
 	s_diagnosed_hypertension_6069w + diagnosed_hypertension_6069w ;  s_on_anti_hypertensive_6069w + on_anti_hypertensive_6069w ;  
