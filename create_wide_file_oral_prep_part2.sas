@@ -60,7 +60,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_w_newp_ge1_age1549); %var(v=av_newp_ge1);  %var(v=av_newp_ge1_non_sw);
 %var(v=p_1524_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);  %var(v=prep_strategy);
-%var(v=n_tested_m);%var(v=n_tested_w); %var(v=n_hiv);
+%var(v=n_tested_m);%var(v=n_tested_w); %var(v=n_hiv); %var(v=n_alive);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc); %var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);
 %var(v=p_mcirc_2529m);  %var(v=p_mcirc_1549m);
@@ -127,7 +127,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   wide_outputs; merge 
 p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 p_m_newp_ge1_age1549 p_w_newp_ge1_age1549
-gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw n_hiv
+gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw n_hiv n_alive
 p_newp_sw  n_tested_m n_tested_w  p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200  p_newp_prep  prep_strategy
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m  p_mcirc_1549m
