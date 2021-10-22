@@ -80,8 +80,8 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1 *  60  / 60 ) +
-(dcost_prep_visit_21_71_2 * 1)     + 
+(dcost_prep_21_71_2  * 0.5 *  60  / 60 ) +
+(dcost_prep_visit_21_71_2 * 0.5)     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2   +    
 dvl_cost_21_71_2    +      
@@ -1104,7 +1104,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where sge65=1;
 * where prep_depends_on_pr_vl_1000 = 1;
 * where sex_beh_trans_matrix_m le 10;
-  where sens_test_prep > 0.95;
+* where sens_test_prep > 0.95;
 run; 
   ods html close;
 
@@ -1122,9 +1122,11 @@ proc univariate; var av_newp_ge1_non_sw_21 ; where av_newp_ge1_non_sw_21 >= 3.5;
 * for figure;
   ods html;
 proc freq data=wide;  tables ce_500   ; 
-  where 0.05 <= prevalence_vg1000_21 < 0.55 and 1  <= av_newp_ge1_non_sw_21 < 2  and 0.000 <= p_mcirc_1549m_21 < 0.333 ;
+  where 0.00 <= prevalence_vg1000_21 < 0.02 and 1  <= av_newp_ge1_non_sw_21 < 2  and 0.000 <= p_newp_ge1_age1549_21 < 0.333 ;
 run; 
   ods html close;
+
+
 
 * model used to produce figure 1;
 proc logistic  data=wide  ;
@@ -1135,9 +1137,6 @@ prevalence_vg1000_21_g2
 prevalence_vg1000_21_g3
 prevalence_vg1000_21_g4
 prevalence_vg1000_21_g5
-
-p_mcirc_1549m_21_g2 
-p_mcirc_1549m_21_g3 
 
 av_newp_ge1_non_sw_21_g2 
 av_newp_ge1_non_sw_21_g3
@@ -1150,9 +1149,9 @@ p_newp_ge1_age1549_21_g4
 run;
 
 data r; set out; 
-proc sort; by prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  p_mcirc_1549m_21_g ;
+proc sort; by prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  ;
 proc print; 
-var prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  p_mcirc_1549m_21_g  predicted; 
+var prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  predicted; 
 run; 
 
 
@@ -1236,7 +1235,6 @@ output out = out predicted=predicted;
 model ce_500_x = 
 
 prevalence_vg1000_21
-
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
 ;
