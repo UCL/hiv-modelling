@@ -7,8 +7,15 @@ data wide;
 * set   a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9   a.wide_oral_prep_9a    ;  
   set 	a.wide_oral_prep_11  ;  
 
-if run le 980781635;
 
+if prevalence1549m_17 < 0.198 and incidence1549m_17 < 1.5 and incidence1549w_17 < 2.0 ; 
+
+* printing run numbers for included runs for use in graph program;
+/*
+ods html;
+proc print noobs; var run; run;
+ods html close;
+*/
 
 * 7 + 8 (n > 700):   					64%
   8r (discount + age < 65) (n = 224) :	74%  
@@ -404,7 +411,8 @@ var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 pr
 p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
 prop_sw_hiv_21 prop_sw_onprep_21 p_newp_sw_21  n_tested_21 aids_death_rate_21  p_newp_sw_21 p_newp_ge1_age1549_21 av_newp_ge1_non_sw_21 
-prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21 prop_diag_infection_1yr_21;
+prevalence_vg1000_21 p_inf_newp_21 p_w_newp_ge1_age1549_21 p_m_newp_ge1_age1549_21 r_p_newp_ge1_age1549_21 prop_diag_infection_1yr_21
+n_death_hivrel_21;
 run;
 ods html close;
 
@@ -657,7 +665,7 @@ ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var incidence1549_21_71_1 incidence1549_21_71_2  r_incidence_21_71_2
  incidence1549m_41_1 incidence1549m_41_2  incidence1549m_70_1 incidence1549m_70_2 
 incidence1549w_41_1 incidence1549w_41_2  incidence1549w_70_1 incidence1549w_70_2
-incidence1524w_70_1 incidence1524w_70_2 r_incidence1524w_21_71_2 ;  
+incidence1524w_70_1 incidence1524w_70_2 incidence1524w_21_71_1 incidence1524w_21_71_2  r_incidence1524w_21_71_2 ;  
 run; 
 ods html close;
 
@@ -1069,18 +1077,19 @@ proc freq; tables icer_2 ; run;
 * for table / results;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
-* where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
-* where 0.04 <= prevalence_vg1000_21 < 0.05 ; 
-* where 3  <= av_newp_ge1_non_sw_21 <  10;
+* where 0.666 <= p_mcirc_1549m_21 < 1.666 ;
+* where 0.05 <= prevalence_vg1000_21 < 0.55 ; 
+* where 3  <= av_newp_ge1_non_sw_21 <  6 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-* where  0.5 <= incidence1549w_21 < 0.6 ;
-* where 0.20 <= prevalence1549_21 < 5.20 ; 
+* where  1.5 <= incidence1549_21 < 3.5 ;
+* where 0.20 <= prevalence1549_21 < 0.50 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
 * where r_p_newp_ge1_age1549_21 > 1 ;
-* where         p_vl1000_21 < 0.73 ;
+* where   0.73 <= p_vl1000_21 < 1.73 ;
 * where 0.00 <=  p_m_newp_ge1_age1549_21 < 0.06; 
-* where 0.00 <= prop_elig_on_prep_21_26_2 < 0.65 ;
+* where 0.06 <=  p_newp_ge1_age1549_21 < 1.06; 
+* where 0.80 <= prop_elig_on_prep_21_26_2 < 1.00 ;
 * where 0.80 <= p_prep_adhg80_21_26_2 < 0.90;
 * where 0.75  <= p_newp_sw_21 < 1.00 ;
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
@@ -1094,8 +1103,8 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where sex_beh_trans_matrix_m in (1 2 3 4 5 6 7 8 9 10 15);
 * where sge65=1;
 * where prep_depends_on_pr_vl_1000 = 1;
-* where fold_tr_newp ge 0.5;
-* where sex_beh_trans_matrix_m le 10; 
+* where sex_beh_trans_matrix_m le 10;
+  where sens_test_prep > 0.95;
 run; 
   ods html close;
 

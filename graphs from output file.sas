@@ -2,12 +2,352 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-  libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\oral_prep";
+  libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.oral_prep_4; 
+  set a.oral_prep_11; 
+
+* restricting to runs selected in analysis program;
+if run in (
+1482074 
+4383181 
+4739158 
+13314748 
+23588635 
+24080117 
+25118897 
+29616255 
+33560400 
+34208907 
+37352777 
+41494681 
+43882060 
+44419507 
+45015154 
+49015387 
+50221178 
+52129007 
+53794871 
+54247699 
+58367880 
+59721623 
+60675368 
+63188328 
+68658839 
+70279595 
+73428189 
+76015549 
+77058100 
+83319395 
+88041791 
+90895455 
+91007493 
+99628963 
+104313884 
+104391989 
+107569516 
+108751816 
+112919250 
+114210561 
+115515639 
+115637551 
+116297259 
+116391295 
+117518613 
+120664450 
+120734503 
+120927978 
+123592818 
+130836087 
+131304216 
+136228648 
+137823143 
+141221516 
+149828956 
+159743168 
+167443793 
+170161889 
+171687218 
+171873628 
+174854237 
+181154707 
+183289428 
+183723148 
+185282022 
+185917447 
+185920451 
+186460178 
+188043456 
+197815893 
+204853660 
+208393648 
+208560587 
+213049000 
+214624952 
+219479159 
+219825340 
+223798172 
+226371445 
+228949440 
+231106392 
+231193037 
+237804529 
+237927968 
+254174540 
+255163511 
+256357135 
+262014458 
+264677863 
+270260459 
+275876007 
+278199801 
+281878688 
+284492845 
+289337457 
+290595429 
+292801899 
+294039031 
+294068766 
+302383882 
+302451286 
+306849937 
+310109543 
+313298574 
+315044204 
+318433922 
+318948905 
+324194254 
+325781524 
+329120556 
+331028304 
+335596375 
+341048525 
+345062729 
+347083970 
+347134784 
+349825894 
+354551520 
+357839637 
+359260353 
+363210469 
+363269142 
+364095460 
+364975081 
+366398967 
+366720665 
+371430768 
+374784930 
+375086468 
+391253758 
+392588178 
+393756757 
+394629320 
+398316215 
+398983859 
+404178410 
+404319294 
+405116065 
+406382426 
+411376152 
+413831782 
+415453470 
+417083848 
+418816155 
+419339471 
+420687317 
+424370355 
+428000631 
+431407074 
+436114008 
+444651249 
+446266741 
+447360156 
+451109457 
+457143626 
+458813839 
+458905847 
+460020192 
+460774609 
+462260959 
+462302037 
+463554199 
+465180989 
+466294768 
+469091341 
+470164656 
+470325765 
+477604816 
+478601771 
+478686078 
+479706040 
+479921253 
+481441841 
+482668263 
+490224401 
+491626324 
+510654733 
+513550424 
+515449946 
+519678424 
+523891558 
+524538599 
+526406160 
+527340490 
+528580878 
+530625482 
+532247099 
+534008369 
+534608110 
+535404078 
+540744349 
+541839264 
+545677491 
+546883310 
+550477811 
+551085954 
+551466078 
+561990441 
+562474864 
+580638010 
+586256728 
+587782039 
+587846327 
+592560761 
+593411317 
+604203603 
+605282816 
+607116401 
+608351636 
+615518519 
+623103542 
+624155056 
+624839921 
+629529920 
+631340108 
+631850813 
+637279946 
+642750468 
+643855185 
+644640981 
+646126349 
+646171902 
+648265348 
+650864294 
+658043146 
+661369409 
+662198520 
+663777666 
+667724039 
+668180105 
+679137163 
+680332233 
+681440608 
+683465383 
+685601790 
+690189349 
+692038734 
+696300203 
+699404687 
+701377758 
+704597330 
+706740182 
+722149798 
+725213019 
+737677156 
+738170956 
+741720511 
+742978025 
+743467876 
+747534703 
+748889169 
+757026152 
+757099309 
+760272925 
+772053179 
+781291193 
+782241222 
+786950494 
+788035378 
+790567518 
+797812952 
+798283269 
+798770005 
+799786532 
+801357627 
+803386557 
+811238748 
+813777766 
+816348070 
+819241868 
+821665884 
+822882886 
+824207385 
+824233018 
+824857147 
+826938119 
+828262225 
+828887532 
+829580710 
+832204828 
+833210328 
+835922377 
+842663473 
+842795203 
+846446344 
+847404404 
+855301858 
+868329124 
+870843557 
+871571155 
+872956619 
+876929836 
+879668195 
+887730879 
+889503829 
+889840335 
+890414741 
+894773306 
+896553830 
+899885655 
+900050587 
+900229612 
+901604834 
+903381124 
+904341384 
+905728543 
+905777361 
+906365928 
+919734860 
+927837902 
+928177424 
+932065706 
+933997397 
+935124998 
+935782209 
+937721543 
+943433978 
+946165407 
+947481282 
+955963779 
+958523893 
+964305139 
+966707084 
+969688324 
+970674830 
+971359278 
+974573687 
+976037466 
+977073342 
+980781635 
+983397495 
+986536370 
+989293491 
+998665707 
+);
+
+
 
 
 
@@ -76,7 +416,6 @@ logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
-n_death_hivrel = n_death_hivrel_w + n_death_hivrel_m ;
 
 /*
 
@@ -165,7 +504,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-
+n_hiv n_alive
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -230,7 +569,7 @@ prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-
+n_hiv  n_alive
 ;
 
 
@@ -279,18 +618,39 @@ merge
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98 g99  g100 
 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
-h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 
+h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99 h100 
 ;
 by cald;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000000 by 1000000) valueattrs=(size=10);
+
+label p50_n_alive_0 = "Option 0 (median) ";
+label p50_n_alive_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_alive_1/	lineattrs = (color=red   thickness = 2);
+band    x=cald lower=p5_n_alive_1 	upper=p95_n_alive_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+
+run;quit;
+
 
 ods html ;
 proc sgplot data=d; 
@@ -534,6 +894,50 @@ series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness =
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
+
+label p50_prevalence1549__0 = "All Option 0 (median) ";
+label p50_prevalence1549__1 = "All Option 1  (median) ";
+
+series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_hiv";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 5000000 by 500000) valueattrs=(size=10);
+
+label p50_n_hiv_0 = "Option 0 (median) ";
+label p50_n_hiv_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv_1/	lineattrs = (color=red   thickness = 2);
+band    x=cald lower=p5_n_hiv_1 	upper=p95_n_hiv_1  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "Model 90% range";
+
+
+run;quit;
+
+
+
+
 
 ods html;
 proc sgplot data=d; 
@@ -1022,13 +1426,15 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_hivrel";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000 by 1000) valueattrs=(size=10);
 
 label p50_n_death_hivrel_0 = "Option 0 (median) ";
 label p50_n_death_hivrel_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_n_death_hivrel_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hivrel_0 	upper=p95_n_death_hivrel_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hivrel_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_death_hivrel_1 	upper=p95_n_death_hivrel_1  / transparency=0.9 fillattrs = (color=red  ) legendlabel= "Model 90% range";
 
 * series  x=cald y=n_death_2059_m_obs_sa;
 
