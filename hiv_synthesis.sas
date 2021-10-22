@@ -4276,6 +4276,14 @@ cost_test=0;
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
 (or without been diagnosed with) hiv;
 
+if prep_all=1 then do;		* lapr - relies on prep types being mutually exclusive ;
+	select;
+		when (prep_oral=1)	last_prep_used=1;
+		when (prep_inj=1)	last_prep_used=2;
+		when (prep_vr=1)	last_prep_used=3;
+	end;
+end;
+
 prep_all=0; prep_oral=0; prep_inj=0; prep_vr=0;
 pop_wide_tld_prep=0; prep_falseneg=0; 
 
@@ -4306,21 +4314,21 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	 
 			if prep_all_willing=1 then do; 
 			*********** lapr and dpv-vr - CHECK MEN CANNOT START VR - ADD CONDITION TO START ON DATE_INTRO - we will need to add switching between prep methods; ******************* ;
-				if 		testfor_prep_oral = 1  	then do;	prep_oral=1; 	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t};	dt_prep_e=caldate{t};	last_prep_used=1;	end; 
-				else if	testfor_prep_inj = 1  	then do;	prep_inj=1; 	prep_all=1;	prep_inj_ever=1; 	prep_all_ever=1; 	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_s=caldate{t}; 	dt_prep_e=caldate{t}; 	last_prep_used=2;	end; 
-				else if	testfor_prep_vr = 1  	then do;	prep_vr=1; 		prep_all=1;	prep_vr_ever=1; 	prep_all_ever=1; 	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_s=caldate{t};	dt_prep_e=caldate{t}; 	last_prep_used=3;	end; 
+				if 		testfor_prep_oral = 1  	then do;	prep_oral=1; 	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t};	dt_prep_e=caldate{t};	end; 
+				else if	testfor_prep_inj = 1  	then do;	prep_inj=1; 	prep_all=1;	prep_inj_ever=1; 	prep_all_ever=1; 	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_s=caldate{t}; 	dt_prep_e=caldate{t};	end; 
+				else if	testfor_prep_vr = 1  	then do;	prep_vr=1; 		prep_all=1;	prep_vr_ever=1; 	prep_all_ever=1; 	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25; 	dt_prep_s=caldate{t};	dt_prep_e=caldate{t};	end; 
 
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
 						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 
-							prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	last_prep_used=1;
+							prep_oral=1;	prep_all=1;	prep_oral_ever=1;	prep_all_ever=1;	continuous_prep_oral_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	 if r < prob_prep_inj_b then do; 
-							prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1;	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	last_prep_used=2;
+							prep_inj=1;		prep_all=1;	prep_inj_ever=1;	prep_all_ever=1;	continuous_prep_inj_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 						end; 
 						when (highest_prep_pref = 3) 	 if r < prob_prep_vr_b then do; 
-							prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1;	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};	last_prep_used=3;
+							prep_vr=1;		prep_all=1;	prep_vr_ever=1;		prep_all_ever=1;	continuous_prep_vr_use=0.25;	continuous_prep_all_use=0.25;	dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
 						end; 
 					end; 
 				end;
@@ -4341,7 +4349,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					dt_prep_e=caldate{t}; 	
 					continuous_prep_oral_use = continuous_prep_oral_use + (0.25); 	
 					continuous_prep_all_use = continuous_prep_all_use + (0.25);	
-					last_prep_used=1;
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
 					stop_prep_oral_choice=1; 	
@@ -4359,7 +4366,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					dt_prep_e=caldate{t}; 
 					continuous_prep_inj_use = continuous_prep_inj_use + (0.25); 
 					continuous_prep_all_use = continuous_prep_all_use + (0.25); 
-					last_prep_used=2;
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
 					stop_prep_inj_choice=1; 
@@ -4377,7 +4383,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					dt_prep_e=caldate{t}; 
 					continuous_prep_vr_use = continuous_prep_vr_use + (0.25); 
 					continuous_prep_all_use = continuous_prep_all_use + (0.25); 
-					last_prep_used=3;
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
 					stop_prep_vr_choice=1; 
@@ -15609,10 +15614,14 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
-proc print; var caldate&j age prep_all_willing prep_oral_willing prep_inj_willing prep_vr_willing highest_prep_pref tested registd hard_reach prep_all_elig
-	testfor_prep_oral testfor_prep_inj testfor_prep_vr prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice;
-where age ge 15 and serial_no<200 and death =.;
+proc print; var caldate&j age highest_prep_pref tested registd hard_reach prep_all_elig
+	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
+	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
+	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice;
+where serial_no<60;
 run; 
+proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
+where age ge 15 and death = . and caldate&j=1995; run;
 /*proc univariate; var highest_prep_pref ; */
 /*proc univariate; var prep_oral_willing prep_inj_willing prep_vr_willing ; */
 /*proc univariate; var pref_prep_oral pref_prep_inj pref_prep_vr ; */
