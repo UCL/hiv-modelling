@@ -1,6 +1,3 @@
-
-* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\base\";
-* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\hypertension";
 libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
 
 

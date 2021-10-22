@@ -2,10 +2,9 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-* libname a "C:\Users\Toshiba\Dropbox\hiv synthesis ssa unified program\output files\c2021ds_sa\";
-libname a "C:\Users\Matt Windows\Documents\HTN_Modeling\";
+libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
 
-  proc printto  log="C:\Users\Matt Windows\Documents\HTN_Modeling\" ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
+proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\grph_log.log";   
 
 data b;
 set a.l_base;

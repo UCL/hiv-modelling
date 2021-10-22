@@ -2,15 +2,15 @@
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
-%let outputdir = C:\Users\Matt Windows\Documents\HTN_Modeling\;
+%let outputdir = C:\Users\sf124046\Box\sapphire_modelling\synthesis\;
 libname a "&outputdir/";
 %let tmpfilename = out;
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+* proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-  proc printo log="C:\Users\Matt Windows\Documents\HTN_Modeling\";
+  proc printo log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log"; run;
 	
 %let population = 10000 ; 
 %let year_interv = 2021.5;
@@ -14848,6 +14848,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_diagnosed_hypertension_1549 + diagnosed_hypertension_1549 ;  s_on_anti_hypertensive_1549 + on_anti_hypertensive_1549 ;  
 	s_hypertension_1549 + hypertension_1549 ;	s_hypertens180_1549 + hypertens180_1549 ;	
+	s_diagnosed_hypertension_1539 + diagnosed_hypertension_1539 ;  s_on_anti_hypertensive_1539 + on_anti_hypertensive_1539 ;  
+	s_hypertension_1539 + hypertension_1539 ;	s_hypertens180_1539 + hypertens180_1539 ;	
+	s_diagnosed_hypertension_4049 + diagnosed_hypertension_4049 ;  s_on_anti_hypertensive_4049 + on_anti_hypertensive_4049 ;  
+	s_hypertension_4049 + hypertension_4049 ;	s_hypertens180_4049 + hypertens180_4049 ;	
 	s_diagnosed_hypertension_5059 + diagnosed_hypertension_5059 ;  s_on_anti_hypertensive_5059 + on_anti_hypertensive_5059 ;  
 	s_hypertension_5059 + hypertension_5059 ;   s_hypertens180_5059 + hypertens180_5059 ;
 	s_diagnosed_hypertension_6069 + diagnosed_hypertension_6069 ;  s_on_anti_hypertensive_6069 + on_anti_hypertensive_6069 ;  
@@ -14857,7 +14861,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diagnosed_hypertension_ge80 + diagnosed_hypertension_ge80 ;  s_on_anti_hypertensive_ge80 + on_anti_hypertensive_ge80 ;  
 	s_hypertension_ge80 + hypertension_ge80 ;  s_hypertens180_ge80 + hypertens180_ge80 ; 
 	s_diagnosed_hypertension_1549m + diagnosed_hypertension_1549m ;  s_on_anti_hypertensive_1549m + on_anti_hypertensive_1549m ;  
-	s_hypertension_1549m + hypertension_1549m ;	
+	s_hypertension_1549m + hypertension_1549m ;
+	s_diagnosed_hypertension_1539m + diagnosed_hypertension_1539m ;  s_on_anti_hypertensive_1539m + on_anti_hypertensive_1539m ;  
+	s_hypertension_1539m + hypertension_1539m ;
+	s_diagnosed_hypertension_4049m + diagnosed_hypertension_4049m ;  s_on_anti_hypertensive_4049m + on_anti_hypertensive_4049m ;  
+	s_hypertension_4049m + hypertension_4049m ;	
 	s_diagnosed_hypertension_5059m + diagnosed_hypertension_5059m ;  s_on_anti_hypertensive_5059m + on_anti_hypertensive_5059m ;  
 	s_hypertension_5059m + hypertension_5059m ;	
 	s_diagnosed_hypertension_6069m + diagnosed_hypertension_6069m ;  s_on_anti_hypertensive_6069m + on_anti_hypertensive_6069m ;  
@@ -14868,6 +14876,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_hypertension_ge80m + hypertension_ge80m ;	
 	s_diagnosed_hypertension_1549w + diagnosed_hypertension_1549w ;  s_on_anti_hypertensive_1549w + on_anti_hypertensive_1549w ;  
 	s_hypertension_1549w + hypertension_1549w ;	
+	s_diagnosed_hypertension_1539w + diagnosed_hypertension_1539w ;  s_on_anti_hypertensive_1539w + on_anti_hypertensive_1539w ;  
+	s_hypertension_1539w + hypertension_1539w 
+	s_diagnosed_hypertension_4049w + diagnosed_hypertension_4049w ;  s_on_anti_hypertensive_4049w + on_anti_hypertensive_4049w ;  
+	s_hypertension_4049w + hypertension_4049w 
 	s_diagnosed_hypertension_5059w + diagnosed_hypertension_5059w ;  s_on_anti_hypertensive_5059w + on_anti_hypertensive_5059w ;  
 	s_hypertension_5059w + hypertension_5059w ;	
 	s_diagnosed_hypertension_6069w + diagnosed_hypertension_6069w ;  s_on_anti_hypertensive_6069w + on_anti_hypertensive_6069w ;  
@@ -14876,11 +14888,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_hypertension_7079w + hypertension_7079w ;	
 	s_diagnosed_hypertension_ge80w + diagnosed_hypertension_ge80w ;  s_on_anti_hypertensive_ge80w + on_anti_hypertensive_ge80w ;  
 	s_hypertension_ge80w + hypertension_ge80w ;	
-	s_on1drug_antihyp_1549 + on1drug_antihyp_1549 ; s_on1drug_antihyp_5059 + on1drug_antihyp_5059 ; s_on1drug_antihyp_6069 + on1drug_antihyp_6069 ;     
+	s_on1drug_antihyp_1549 + on1drug_antihyp_1549 ; 
+	s_on1drug_antihyp_1539 + on1drug_antihyp_1539 ; s_on1drug_antihyp_4049 + on1drug_antihyp_4049 ;
+	s_on1drug_antihyp_5059 + on1drug_antihyp_5059 ; s_on1drug_antihyp_6069 + on1drug_antihyp_6069 ;     
 	s_on1drug_antihyp_7079 + on1drug_antihyp_7079 ; s_on1drug_antihyp_ge80 + on1drug_antihyp_ge80 ;    
-	s_on2drug_antihyp_1549 + on2drug_antihyp_1549 ; s_on2drug_antihyp_5059 + on2drug_antihyp_5059 ; s_on2drug_antihyp_6069 + on2drug_antihyp_6069 ;     
+	s_on2drug_antihyp_1549 + on2drug_antihyp_1549 ; 
+	s_on2drug_antihyp_1539 + on2drug_antihyp_1539 ; s_on2drug_antihyp_4049 + on2drug_antihyp_4049 ;
+	s_on2drug_antihyp_5059 + on2drug_antihyp_5059 ; s_on2drug_antihyp_6069 + on2drug_antihyp_6069 ;     
 	s_on2drug_antihyp_7079 + on2drug_antihyp_7079 ; s_on2drug_antihyp_ge80 + on2drug_antihyp_ge80 ; 
-	s_on3drug_antihyp_1549 + on3drug_antihyp_1549 ; s_on3drug_antihyp_5059 + on3drug_antihyp_5059 ; s_on3drug_antihyp_6069 + on3drug_antihyp_6069 ;     
+	s_on3drug_antihyp_1549 + on3drug_antihyp_1549 ; 
+	s_on3drug_antihyp_1539 + on3drug_antihyp_1539 ; s_on3drug_antihyp_4049 + on3drug_antihyp_4049 ;
+	s_on3drug_antihyp_5059 + on3drug_antihyp_5059 ; s_on3drug_antihyp_6069 + on3drug_antihyp_6069 ;     
 	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ; 
 
 
@@ -15250,18 +15268,7 @@ if 15 <= age or death ne . then do;
 end;
 
 
-	s_diagnosed_hypertension_1539 + diagnosed_hypertension_1539 ;  s_on_anti_hypertensive_1539 + on_anti_hypertensive_1539 ;  
-	s_hypertension_1539 + hypertension_1539 ;	s_hypertens180_1539 + hypertens180_1539 ;
-	s_diagnosed_hypertension_4049 + diagnosed_hypertension_4049 ;  s_on_anti_hypertensive_4049 + on_anti_hypertensive_4049 ;  
-	s_hypertension_4049 + hypertension_4049 ;	s_hypertens180_4049 + hypertens180_4049 ;	
-	s_diagnosed_hypertension_1539m + diagnosed_hypertension_1539m ;  s_on_anti_hypertensive_1539m + on_anti_hypertensive_1539m ;  
-	s_hypertension_1539m + hypertension_1539m ;	
-	s_diagnosed_hypertension_4049m + diagnosed_hypertension_4049m ;  s_on_anti_hypertensive_4049m + on_anti_hypertensive_4049m ;  
-	s_hypertension_4049m + hypertension_4049m ;	
-	s_diagnosed_hypertension_1539w + diagnosed_hypertension_1539w ;  s_on_anti_hypertensive_1539w + on_anti_hypertensive_1539w ;  
-	s_hypertension_1539w + hypertension_1539w ;	
-	s_diagnosed_hypertension_4049w + diagnosed_hypertension_4049w ;  s_on_anti_hypertensive_4049w + on_anti_hypertensive_4049w ;  
-	s_hypertension_4049w + hypertension_4049w ;	
+	
 if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_birth_circ + birth_circ ; s_mcirc_1014m + mcirc_1014m ; s_new_mcirc_1014m + new_mcirc_1014m ;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
@@ -17837,11 +17844,11 @@ end;
 data x; set cum_l1;
 
 * file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
-file "C:\Users\Matt Windows\Documents\HTN_Modeling\_output_base_08_09_21_&dataset_id";
+file "C:\Users\sf124046\Box\sapphire_modelling\synthesis\_output_base_08_09_21_&dataset_id";
 
 put   
  
-libname b 'C:\Users\Matt Windows\Documents\HTN_Modeling\';
+libname b 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
