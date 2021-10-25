@@ -77,11 +77,13 @@ dcost_non_aids_pre_death_21_71_1 ;
 * cost of prep deliver from $115 to $75 is implemented as a cut in prep drug cost from $60 to $20 to give the $40 saving - the $40 lower cost would
 be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) ; 
 
+* $10 instead of $4 for tests - use 3 month cost of 35 / 29 ;  * 60 / 60 ;
+
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 0.5 *  60  / 60 ) +
-(dcost_prep_visit_21_71_2 * 0.5)     + 
+(dcost_prep_21_71_2  * 1   *  60 / 60 ) +
+(dcost_prep_visit_21_71_2 * 1  )     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2   +    
 dvl_cost_21_71_2    +      
@@ -524,12 +526,14 @@ run;
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_m184m_all_21_26_2   p_m184m_all_21_26_2  p_m184m_all_21_26_1 ;
+proc means n mean  p5 p95 lclm uclm data=wide;  var    p_m184m_all_21_26_1 p_m184m_all_21_26_2 d_p_m184m_all_21_26_2  ;
+where sens_test_prep  > 0.95 ;
 run; 
 ods html close;
 
 ods html;
-proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_k65m_all_21_26_2   p_k65m_all_21_26_2   p_k65m_all_21_26_1 ;
+proc means n mean  p5 p95 lclm uclm data=wide;  var   p_k65m_all_21_26_1 p_k65m_all_21_26_2  d_p_k65m_all_21_26_2  ;
+where sens_test_prep  > 0.95  ;
 run; 
 ods html close;
 
@@ -604,6 +608,11 @@ proc sort data=wide; by sens_test_prep;run;
 proc means n mean  p5 p95 lclm uclm data=wide; var p_hiv1_prep_21_26_1  p_hiv1_prep_21_26_2 ;  
 by sens_test_prep;
 run; 
+proc means n mean  p5 p95 lclm uclm data=wide; var p_hiv1_prep_21_26_1  p_hiv1_prep_21_26_2 ;  
+where sens_test_prep gt 0.95;
+run; 
+
+
 proc glm data=wide; proc glm; model p_hiv1_prep_21_26_2 = sens_test_prep; run;
 ods html close;
 
@@ -1104,7 +1113,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where sge65=1;
 * where prep_depends_on_pr_vl_1000 = 1;
 * where sex_beh_trans_matrix_m le 10;
-* where sens_test_prep > 0.95;
+* where sens_test_prep  > 0.95  ;
 run; 
   ods html close;
 
@@ -1237,6 +1246,7 @@ model ce_500_x =
 prevalence_vg1000_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
+
 ;
 run;
 
