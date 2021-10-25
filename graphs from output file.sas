@@ -4,13 +4,13 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-  proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
+proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 proc contents data=a.l_base_keep_zim;run;
 
 *Keep output to be able to create the following outputs:
 -	prevalence among pregnant women
-- annual number of new male circumcisions
+- annual number of new male circumcisions;
 
 data b;
 * set a.l_base_mlw;
@@ -52,6 +52,7 @@ p_vl1000_ = p_vl1000;
 p_vg1000_ = p_vg1000;
 prevalence_vg1000_ = prevalence_vg1000;
 p_newp_ge1_ = p_newp_ge1 ;
+p_1524_newp_ge1_ = p_1524_newp_ge1 ;
 p_newp_ge5_ = p_newp_ge5 ;  
 
 loggender_r_newp = log(gender_r_newp+0.0001);
@@ -126,11 +127,13 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  25   ;
-%let year_end = 2041.00 ;
+%let nfit =  20   ;
+%let year_end = 2022.00 ;
+*%let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
 
+/*proc freq data=b;table option;run;*/
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
@@ -139,22 +142,24 @@ if option =1 then delete;
 %let var =  
 
 p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m	 		
+p_mcirc_1549m p_mcirc n_new_vmmc1549m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
-prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
+prevalence1549_ prevalence_hiv_preg prevalence_vg1000_  incidence1549_ incidence1549w incidence1549m incidence1564_ 
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m
+incidence5564w_ incidence5564m_ n_tested n_tested_m test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+n_onart n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  rate_dead_allage rate_dead_allage_m rate_dead_allage_w
+n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
-n_alive n_diagnosed n_hiv
+n_alive 		n_diagnosed n_hiv
+p_1524_newp_ge1_
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -196,7 +201,7 @@ run;
 run;
 
 
-
+/*
 data option_1;
 set b;
 if option =0 then delete;
@@ -204,22 +209,24 @@ if option =0 then delete;
 %let var =  
 
 p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m 		
+p_mcirc_1549m p_mcirc n_new_vmmc1549m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
-prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
+prevalence1549_  prevalence_hiv_preg prevalence_vg1000_  incidence1549_  incidence1549w incidence1549m incidence1564_ 
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m
+incidence5564w_ incidence5564m_ n_tested n_tested_m test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_death_2059_m n_death_2059_w n_death_hiv_m n_death_hiv_w  n_cd4_lt200_
+n_onart n_death_2059_m n_death_2059_w n_death_hiv_m n_death_hiv_w rate_dead_allage rate_dead_allage_m rate_dead_allage_w n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
 prevalence4549w 	prevalence4549m prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
 n_alive n_diagnosed  n_hiv
+
+p_1524_newp_ge1_
 ;
 
 
@@ -260,7 +267,7 @@ run;
 
 %option_1;
 run;
-
+*/
 
 
 data d; * this is number of variables in %let var = above ;
@@ -269,33 +276,33 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
-g103 g104
+g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114
 
 /*
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
+g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 */
-
+/*
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
-h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
-h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99  h100 h101 h102
-h103 h104
+h51  h52  h53  h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
+h77  h78  h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99  h100 h101 h102
+h103 h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114*/
 ;
 by cald;
 
-<<<<<<< Updated upstream
-%include "C:/Users/ValentinaCambiano/OneDrive - University College London/Documents/GitHub/hiv-modelling/Observed data_Zimbabwe_Sep2021.sas";
-=======
->>>>>>> Stashed changes
 
+%include "C:/Users/ValentinaCambiano/OneDrive - University College London/Documents/GitHub/hiv-modelling/Observed data_Zimbabwe_Sep2021.sas";
+run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
+ods listing close;
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs.rtf";
 ods html ;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -304,15 +311,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.0
 label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 label p50_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
 
-series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
-
-series  x=cald y=p50_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p2p5_p_w_giv_birth_this_per_1 	upper=p97p5_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
-
+series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p2p5_p_w_giv_birth_this_per_0 	upper=p97p5_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Option 0 90% range";
+*series  x=cald y=p50_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p2p5_p_w_giv_birth_this_per_1 	upper=p97p5_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
 run;
 
 quit;
+
+
 
 ods html;
 proc sgplot data=d; 
@@ -324,10 +331,25 @@ label p50_p_newp_ge1__1 = "Option 1 (median) ";
 
 series  x=cald y=p50_p_newp_ge1__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge1__0 	upper=p95_p_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
 
-series  x=cald y=p50_p_newp_ge1__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_newp_ge1__1 	upper=p95_p_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_1524_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+label p50_p_1524_newp_ge1__0 = "Option 0 (median) ";
+label p50_p_1524_newp_ge1__1 = "Option 1 (median) ";
+label o_p_cls_last_1524m_zdhs = "CAL - DHS - No condom use at last sex - Men";
+label o_p_cls_last_1524w_zdhs = "CAL - DHS - No condom use at last sex - Women";
+series  x=cald y=p50_p_1524_newp_ge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_1524_newp_ge1__0 	upper=p95_p_1524_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_1524_newp_ge1__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_1524_newp_ge1__1 	upper=p95_p_1524_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_cls_last_1524w_zdhs/	markerattrs = (color=orange);
+scatter  x=cald y=o_p_cls_last_1524m_zdhs/	markerattrs = (color=blue);
 run;quit;
 
 
@@ -338,13 +360,10 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label p50_p_newp_ge5__0 = "Option 0 (median) ";
 label p50_p_newp_ge5__1 = "Option 1 (median) ";
-
 series  x=cald y=p50_p_newp_ge5__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_newp_ge5__0 	upper=p95_p_newp_ge5__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_newp_ge5__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_newp_ge5__1 	upper=p95_p_newp_ge5__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -355,35 +374,39 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'log_gender_r_newp'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
 label p50_log_gender_r_newp_0 = "Option 0 (median) ";
 label p50_log_gender_r_newp_1 = "Option 1 (median) ";
-
 series  x=cald y=p50_log_gender_r_newp_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_log_gender_r_newp_0 	upper=p95_log_gender_r_newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_log_gender_r_newp_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_log_gender_r_newp_1 	upper=p95_log_gender_r_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_log_gender_r_newp_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_log_gender_r_newp_1 	upper=p95_log_gender_r_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
-*Arrivata qua;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000 by 100000) valueattrs=(size=10);
 label p50_n_tested_0 = "Option 0 (median) ";
 label p50_n_tested_1 = "Option 1 (median) ";
-
+label o_s_test_15ov_py_z = "CAL - Number of tests performed 15+";
 series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-series  x=cald y=n_tests_obs_mlw/	lineattrs = (color=green thickness = 3) ;
-
+*series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
 run;quit;
 
-
+*test_prop_positive;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Positivity rate";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_test_prop_positive_0 = "Option 0 (median) ";
+label p50_test_prop_positive_1 = "Option 1 (median) ";
+label o_pos_rate_15ov_z = "CAL - Public sector";
+series  x=cald y=p50_test_prop_positive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_test_prop_positive_0 	upper=p95_test_prop_positive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_pos_rate_15ov_z/	markerattrs = (color=black ) ;
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549m";
@@ -391,13 +414,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549m_0 = "Option 0 (median) ";
 label p50_p_tested_past_year_1549m_1 = "Option 1 (median) ";
-
+label o_p_testedly_1549m_zdhs = "DHS";
 series  x=cald y=p50_p_tested_past_year_1549m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549m_0 	upper=p95_p_tested_past_year_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_tested_past_year_1549m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_tested_past_year_1549m_1 	upper=p95_p_tested_past_year_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_testedly_1549m_zdhs/	markerattrs = (color=black) ;
 run;quit;
 
 
@@ -408,13 +430,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549w_0 = "Option 0 (median) ";
 label p50_p_tested_past_year_1549w_1 = "Option 1 (median) ";
-
+label o_p_testedly_1549w_zdhs = "DHS";
 series  x=cald y=p50_p_tested_past_year_1549w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_tested_past_year_1549w_0 	upper=p95_p_tested_past_year_1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_tested_past_year_1549w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_tested_past_year_1549w_1 	upper=p95_p_tested_past_year_1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_testedly_1549w_zdhs/	markerattrs = (color=black) ;
 run;quit;
 
 
@@ -424,58 +445,87 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised (Data 15+)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
-label p50_p_mcirc_1549m_0 = "Option 0 (median) ";
+label p50_p_mcirc_1549m_0 = "Option 0 (median) - 15-49";
 label p50_p_mcirc_1549m_1 = "Option 1 (median) ";
-
-series  x=cald y=p50_p_mcirc_1549m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-*MIHPSA optional;
-series  x=cald y=o_p_circ_15pl /	lineattrs = (color=black thickness = 3);
+label p50_p_mcirc_0 = "Option 0 (median) - 15+?";
+label o_p_circ_15pl_DHIS2_z= "CAL - DHIS2 men 15+";
+series  x=cald y=p50_p_mcirc_1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_mcirc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_circ_15pl_DHIS2_z /	markerattrs = (color=blue);
 run;quit;
-*annual numver of new circumcisions;
-*obs_s_new_mcirc;
+
+ 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Annual # new circumcisions";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+label p50_n_tested_0 = "Option 0 (median) ";
+label p50_n_tested_1 = "Option 1 (median) ";
+label o_s_test_15ov_py_z = "CAL - Annual number of new circumcisions 10-49";
+series  x=cald y=p50_n_new_vmmc1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_vmmc1549m_0 	upper=p95_n_new_vmmc1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_new_mcirc/	markerattrs = (color=blue ) ;
+run;quit;
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1 by 0.02) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "Current FSW 15-49 op 0 (median) ";
 label p50_prop_w_1549_sw_1 = "Current FSW 15-49 op 1 (median) ";
-
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
 label p50_prop_w_ever_sw_1 = "Ever FSW 15-64 op 0 (median) ";
 
+label o_p_fsw_1849_Zim_garpr = "GARPR - current FSW 18-49";
+label o_p_fsw_1849_Bulaw_garpr = "GARPR - current FSW 18-49 - Bulaw";
+label o_p_fsw_1849_Harare_garpr = "GARPR - current FSW 18-49 - Harare";
+label o_p_ever_fsw_1ts_1849w_nbcs = "NBCS - Ever FSW 18-49";
 
-series  x=cald y=p50_prop_w_1549_sw_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_w_1549_sw_0 	upper=p95_prop_w_1549_sw_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_w_1549_sw_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_w_1549_sw_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prop_w_1549_sw_0 	upper=p95_prop_w_1549_sw_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prop_w_1549_sw_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prop_w_1549_sw_1 	upper=p95_prop_w_1549_sw_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_prop_w_ever_sw_0/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_prop_w_ever_sw_0 	upper=p95_prop_w_ever_sw_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);
-band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prop_w_ever_sw_1/	lineattrs = (color=lightgreen thickness = 2);
+*band    x=cald lower=p5_prop_w_ever_sw_1 	upper=p95_prop_w_ever_sw_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
+scatter  x=cald y=o_p_fsw_1849_Zim_garpr /	markerattrs = (color=orange);
+scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
+scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
+scatter  x=cald y=o_p_ever_fsw_1ts_1849w_nbcs /	markerattrs = (color=green);
 run;quit;
+
+
 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of FSW, proportion with HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
-
 label p50_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
 label p50_prop_sw_hiv_1 = "FSW with HIV 15-64 op 1 (median) ";
-
-series  x=cald y=p50_prop_sw_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+label o_prev_fsw_dw = "David Wilson";
+label o_prev_fsw_rdshm = "RDS Hwange and Mutare";
+label o_prev_fsw_rdsvf = "RDS Victoria Falls";
+label o_prev_fsw_tested_swvp = "Sisters with a Voice";
+label o_prev_fsw_rds = "RDS baseline SAPPH-IRe";
+series  x=cald y=p50_prop_sw_hiv_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_prev_fsw_dw /  yerrorlower=o_prev_fsw_ll_dw yerrorupper=o_prev_fsw_ul_dw markerattrs = (color=black) ERRORBARATTRS = (color = black) ;
+scatter x=cald y=o_prev_fsw_rdshm / markerattrs = (color=blue) ;
+scatter x=cald y=o_prev_fsw_rdsvf / markerattrs = (color=red) ;
+scatter x=cald y=o_prev_fsw_tested_swvp / markerattrs = (color=green) ;
+scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_prev_fsw_ul_rds markerattrs = (color=orange) ERRORBARATTRS = (color = orange) ;
 run;quit;
 
 
@@ -484,15 +534,13 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
-
 label p50_prop_w_1524_onprep_0 = "Option 0 (median) ";
 label p50_prop_w_1524_onprep_1 = "Option 1  (median) ";
 
-series  x=cald y=p50_prop_w_1524_onprep_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_w_1524_onprep_0 	upper=p95_prop_w_1524_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_w_1524_onprep_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_w_1524_onprep_1 	upper=p95_prop_w_1524_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_prop_w_1524_onprep_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prop_w_1524_onprep_0 	upper=p95_prop_w_1524_onprep_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prop_w_1524_onprep_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prop_w_1524_onprep_1 	upper=p95_prop_w_1524_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -500,15 +548,13 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Proportion of people aged 15-64 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
-
 label p50_prop_1564_onprep_0 = "Option 0 (median) ";
 label p50_prop_1564_onprep_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prop_1564_onprep_0 	upper=p95_prop_1564_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_prop_1564_onprep_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -517,7 +563,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label p50_prevalence1549__1 = "All Option 1  (median) ";
@@ -525,31 +571,47 @@ label p50_prevalence1549m_0 = "Men Option 0 (median) ";
 label p50_prevalence1549m_1 = "Men Option 1 (median) ";
 label p50_prevalence1549w_0 = "Women Option 0 (median) ";
 label p50_prevalence1549w_1 = "Women Option 1 (median) ";
+label o_prev1549_Z_ess = "CAL - ZIMPHIA or DHS";
+label o_prev1549m_Z_ess = "CAL - ZIMPHIA or DHS - men";
+label o_prev1549w_Z_ess = "CAL - ZIMPHIA or DHS - women";
+
 
 series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prevalence1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
+*band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_prevalence1549m_0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
-series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
-band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
+series  x=cald y=p50_prevalence1549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
+*band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_prevalence1549w_0/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
-band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 *MIHPSA essential;
-series  x=cald y=o_prev1549_Z_ess /	lineattrs = (color=black thickness = 3);
-series  x=cald y=o_prev1549w_Z_ess /	lineattrs = (color=blue  thickness = 3);
-series  x=cald y=o_prev1549m_Z_ess /	lineattrs = (color=green thickness = 3) ;
-
-*o_prev1549_ll_Z_DHS  o_prev1549_ul_Z_DHS
- o_prev1549m_ll_Z_DHS o_prev1549m_ul_Z_DHS
- o_prev1549w_ll_Z_DHS o_prev1549w_ul_Z_DHS;
+scatter x=cald y=o_prev1549_Z_ess  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=black) errorbarattrs = (color = black) ;
+scatter x=cald y=o_prev1549m_Z_ess /  yerrorlower=o_prev1549m_ll_Z_ess yerrorupper=o_prev1549m_ul_Z_ess markerattrs = (color=blue) errorbarattrs = (color = blue) ;
+scatter x=cald y=o_prev1549w_Z_ess /  yerrorlower=o_prev1549w_ll_Z_ess yerrorupper=o_prev1549w_ul_Z_ess markerattrs = (color=orange) errorbarattrs = (color = orange) ;
 run;quit;
 
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence among pregnant women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
+label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
+
+series  x=cald y=p50_prevalence_hiv_preg_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prevalence_hiv_preg_0 	upper=p95_prevalence_hiv_preg_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+*MIHPSA optional;
+scatter x=cald y=o_prev1549w_Z_anc  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=orange) errorbarattrs = (color = orange);
+run;quit;
 
 
 
@@ -558,16 +620,17 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
-
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1 = "Option 1  (median) ";
-
+label m_HIVIncid_Zim_GARPR = "GARPR 2020 model projection";
+label o_HIVincid_1549_Zimphia = "ZIMPHIA 15-49";
 series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_obs_mlw / 		markerattrs = (symbol=square color=green size = 10);
+*series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
+scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
@@ -576,168 +639,144 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1564__0 = "Option 0 (median) ";
 label p50_incidence1564__1 = "Option 1  (median) ";
-
+label o_HIVincid_1564_Zimphia = "ZIMPHIA 15-64";
 series  x=cald y=p50_incidence1564__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1564__0 	upper=p95_incidence1564__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence1564__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-
+*series  x=cald y=p50_incidence1564__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1564__1 	upper=p95_incidence1564__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_HIVincid_1564_Zimphia / yerrorlower=o_HIVincid_1564_ll_Zimphia yerrorupper=o_HIVincid_1564_ul_Zimphia markerattrs = (symbol=square color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
 
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 1524w";
+Title    height=1.5 justify=center "Incidence age 15-49";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence1524__0 = "Option 0 (median) ";
-label p50_incidence1524__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence1524w__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1524w__0 	upper=p95_incidence1524w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence1524w__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1524w__1 	upper=p95_incidence1524w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence1549m__0 = "Option 0 (median) - Men";
+label p50_incidence1549m__1 = "Option 1  (median) - Men";
+label p50_incidence1549w__0 = "Option 0 (median) - Women";
+label p50_incidence1549w__1 = "Option 1  (median) - Women";
+label o_HIVincid_1549m_Zimphia = "ZIMPHIA Men 15-49";
+label o_HIVincid_1549w_Zimphia = "ZIMPHIA Women 15-49";
+series  x=cald y=p50_incidence1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence1549m_0 	upper=p95_incidence1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1549m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1549m__1 	upper=p95_incidence1549m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1549w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1549w__1 	upper=p95_incidence1549w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_HIVincid_1549m_Zimphia / yerrorlower=o_HIVincid_1549m_ll_Zimphia yerrorupper=o_HIVincid_1549m_ul_Zimphia markerattrs = (color=blue) errorbarattrs = (color = blue);
+scatter x=cald y=o_HIVincid_1549w_Zimphia / yerrorlower=o_HIVincid_1549w_ll_Zimphia yerrorupper=o_HIVincid_1549w_ul_Zimphia markerattrs = (color=orange) errorbarattrs = (color = orange);
 run;
 quit;
+
+
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 1524m";
+Title    height=1.5 justify=center "Incidence age 15-24";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence1524__0 = "Option 0 (median) ";
-label p50_incidence1524__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence1524m__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1524m__0 	upper=p95_incidence1524m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence1524m__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence1524m__1 	upper=p95_incidence1524m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 2534w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence2534__0 = "Option 0 (median) ";
-label p50_incidence2534__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence2534w__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence2534w__0 	upper=p95_incidence2534w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence2534w__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence2534w__1 	upper=p95_incidence2534w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 2534m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence2534__0 = "Option 0 (median) ";
-label p50_incidence2534__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence2534m__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence2534m__0 	upper=p95_incidence2534m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence2534m__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence2534m__1 	upper=p95_incidence2534m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 3544w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence3544__0 = "Option 0 (median) ";
-label p50_incidence3544__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence3544w__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence3544w__0 	upper=p95_incidence3544w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence3544w__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence3544w__1 	upper=p95_incidence3544w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 3544m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence3544__0 = "Option 0 (median) ";
-label p50_incidence3544__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence3544m__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence3544m__0 	upper=p95_incidence3544m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence3544m__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence3544m__1 	upper=p95_incidence3544m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 4554w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence4554__0 = "Option 0 (median) ";
-label p50_incidence4554__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence4554w__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence4554w__0 	upper=p95_incidence4554w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence4554w__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence4554w__1 	upper=p95_incidence4554w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 4554m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence4554__0 = "Option 0 (median) ";
-label p50_incidence4554__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence4554m__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence4554m__0 	upper=p95_incidence4554m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence4554m__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence4554m__1 	upper=p95_incidence4554m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 5564w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence5564__0 = "Option 0 (median) ";
-label p50_incidence5564__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence5564w__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence5564w__0 	upper=p95_incidence5564w__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence5564w__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence5564w__1 	upper=p95_incidence5564w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-run;
-quit;
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence age 5564m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-label p50_incidence5564__0 = "Option 0 (median) ";
-label p50_incidence5564__1 = "Option 1  (median) ";
-series  x=cald y=p50_incidence5564m__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence5564m__0 	upper=p95_incidence5564m__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_incidence5564m__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_incidence5564m__1 	upper=p95_incidence5564m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence1524m__0 = "Option 0 (median) - Men";
+label p50_incidence1524m__1 = "Option 1  (median) - Men";
+label p50_incidence1524w__0 = "Option 0 (median) - Women";
+label p50_incidence1524w__1 = "Option 1  (median) - Women";
+
+series  x=cald y=p50_incidence1524m__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence1524m__0 	upper=p95_incidence1524m__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1524m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1524m__1 	upper=p95_incidence1524m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1524w__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence1524w__0 	upper=p95_incidence1524w__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1524w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1524w__1 	upper=p95_incidence1524w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p_inf_vlsupp";
+Title    height=1.5 justify=center "Incidence age 2534";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence2534m__0 = "Option 0 (median) - Men";
+label p50_incidence2534m__1 = "Option 1  (median) - Men";
+label p50_incidence2534w__0 = "Option 0 (median) - Women";
+label p50_incidence2534w__1 = "Option 1  (median) - Women";
+series  x=cald y=p50_incidence2534m__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence2534m__0 	upper=p95_incidence2534m__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence2534m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence2534m__1 	upper=p95_incidence2534m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence2534w__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence2534w__0 	upper=p95_incidence2534w__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence2534w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence2534w__1 	upper=p95_incidence2534w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;
+quit;
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence age 3544";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence3544m__0 = "Option 0 (median) - Men";
+label p50_incidence3544m__1 = "Option 1  (median) - Men";
+label p50_incidence3544w__0 = "Option 0 (median) - Women";
+label p50_incidence3544w__1 = "Option 1  (median) - Women";
+series  x=cald y=p50_incidence3544m__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence3544m__0 	upper=p95_incidence3544m__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence3544m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence3544m__1 	upper=p95_incidence3544m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence3544w__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence3544w__0 	upper=p95_incidence3544w__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence3544w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence3544w__1 	upper=p95_incidence3544w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;
+quit;
 
-label p50_p_inf_vlsupp_0 = "Option 0 (median) ";
-label p50_p_inf_vlsupp_1 = "Option 1  (median) ";
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence age 4554";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence4554m__0 = "Option 0 (median) - Men";
+label p50_incidence4554m__1 = "Option 1  (median) - Men";
+label p50_incidence4554w__0 = "Option 0 (median) - Women";
+label p50_incidence4554w__1 = "Option 1  (median) - Women";
+series  x=cald y=p50_incidence4554m__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence4554m__0 	upper=p95_incidence4554m__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence4554m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence4554m__1 	upper=p95_incidence4554m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence4554w__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence4554w__0 	upper=p95_incidence4554w__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence4554w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence4554w__1 	upper=p95_incidence4554w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;
+quit;
 
-series  x=cald y=p50_p_inf_vlsupp_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_inf_vlsupp_0 	upper=p95_p_inf_vlsupp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_vlsupp_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_vlsupp_1 	upper=p95_p_inf_vlsupp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-run;quit;
-
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence age 5564";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
+label p50_incidence5564m__0 = "Option 0 (median) - Men";
+label p50_incidence5564m__1 = "Option 1  (median) - Men";
+label p50_incidence5564w__0 = "Option 0 (median) - Women";
+label p50_incidence5564w__1 = "Option 1  (median) - Women";
+series  x=cald y=p50_incidence5564m__0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_incidence5564m__0 	upper=p95_incidence5564m__0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence5564m__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence5564m__1 	upper=p95_incidence5564m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence5564w__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_incidence5564w__0 	upper=p95_incidence5564w__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence5564w__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence5564w__1 	upper=p95_incidence5564w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;
+quit;
 
 
 
@@ -748,11 +787,10 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_inf_ep_0 = "Option 0 (median) ";
 label p50_p_inf_ep_1 = "Option 1  (median) ";
-
 series  x=cald y=p50_p_inf_ep_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_ep_0 	upper=p95_p_inf_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_ep_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_inf_ep_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -769,9 +807,23 @@ label p50_p_inf_newp_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_inf_newp_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_newp_0 	upper=p95_p_inf_newp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_newp_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_newp_1 	upper=p95_p_inf_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_inf_newp_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_newp_1 	upper=p95_p_inf_newp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prop infections coming from people VL suppressed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_inf_vlsupp_0 = "Option 0 (median) ";
+label p50_p_inf_vlsupp_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_p_inf_vlsupp_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_inf_vlsupp_0 	upper=p95_p_inf_vlsupp_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_inf_vlsupp_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_vlsupp_1 	upper=p95_p_inf_vlsupp_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -787,9 +839,8 @@ label p50_p_inf_primary_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_inf_primary_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_primary_0 	upper=p95_p_inf_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_primary_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_inf_primary_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -805,9 +856,8 @@ label p50_p_inf_naive_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_inf_naive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_naive_0 	upper=p95_p_inf_naive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_naive_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_naive_1 	upper=p95_p_inf_naive_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_inf_naive_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_naive_1 	upper=p95_p_inf_naive_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -823,9 +873,8 @@ label p50_p_inf_diag_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_inf_diag_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_inf_diag_0 	upper=p95_p_inf_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_inf_diag_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_inf_diag_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_inf_diag_1 	upper=p95_p_inf_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -840,12 +889,25 @@ label p50_mtct_prop_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_mtct_prop_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_mtct_prop_0 	upper=p95_mtct_prop_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_mtct_prop_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_mtct_prop_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_mtct_prop_1 	upper=p95_mtct_prop_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
+*To be removed;
+data d; set d;
+if cald=2011 then do;
+	o_p_diag_1549_dhs =63.7;
+	o_p_diag_m1549_dhs=51.4;
+	o_p_diag_w1549_dhs=71;
+end;
 
+*Zimphia 2015-2016;
+if cald=2016.25 then do;
+	o_p_diag_1564_zimphia=74.2;
+	o_p_diag_1564m_zimphia=69.7;	
+	o_p_diag_1564w_zimphia=77.1;
+end;
+run;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -853,12 +915,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10)
 
 label p50_p_diag_m_0 = "Option 0 (median) ";
 label p50_p_diag_m_1 = "Option 1  (median) ";
+label o_p_diag_m1549_dhs = "DHS - men 15-49";
+label o_p_diag_1564m_zimphia = "ZIMPHIA - men 15-64";
 
-series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_diag_m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_diag_m_1 	upper=p95_p_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_diag_m1549_dhs / markerattrs = (symbol=square color=black size = 10);
+scatter x=cald y=o_p_diag_1564m_zimphia / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
 proc sgplot data=d; 
@@ -868,27 +933,29 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100 by 10)
 
 label p50_p_diag_w_0 = "Option 0 (median) ";
 label p50_p_diag_w_1 = "Option 1  (median) ";
+label o_p_diag_w1549_dhs = "DHS - women 15-49";
+label o_p_diag_1564w_zimphia = "ZIMPHIA - women 15-64";
 
-series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_diag_w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_diag_w_1 	upper=p95_p_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_diag_w1549_dhs / markerattrs = (symbol=square color=orange size = 10);
+scatter x=cald y=o_p_diag_1564w_zimphia / markerattrs = (symbol=square color=red size = 10);
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of naive art initiators with NNRTI mutation";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.01) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
 label p50_p_ai_no_arv_c_nnm_0 = "Option 0 (median) ";
 label p50_p_ai_no_arv_c_nnm_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_ai_no_arv_c_nnm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ai_no_arv_c_nnm_0 	upper=p95_p_ai_no_arv_c_nnm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_ai_no_arv_c_nnm_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_ai_no_arv_c_nnm_1 	upper=p95_p_ai_no_arv_c_nnm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_ai_no_arv_c_nnm_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_ai_no_arv_c_nnm_1 	upper=p95_p_ai_no_arv_c_nnm_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -901,9 +968,8 @@ label p50_p_artexp_diag_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_artexp_diag_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_artexp_diag_0 	upper=p95_p_artexp_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_artexp_diag_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_artexp_diag_1 	upper=p95_p_artexp_diag_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -911,36 +977,36 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Proportion of diagnosed men on ART";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
 label p50_p_onart_diag_m_0 = "Option 0 (median) ";
 label p50_p_onart_diag_m_1 = "Option 1  (median) ";
+label o_p_onart_1564m_diag_zimphia = "ZIMPHIA";
 
-series  x=cald y=p50_p_onart_diag_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_diag_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_diag_m_1 	upper=p95_p_onart_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_p_onart_diag_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_onart_diag_m_0 	upper=p95_p_onart_diag_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_diag_m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_diag_m_1 	upper=p95_p_onart_diag_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_onart_1564m_diag_zimphia / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed women on ART";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
 label p50_p_onart_diag_w_0 = "Option 0 (median) ";
 label p50_p_onart_diag_w_1 = "Option 1  (median) ";
+label o_p_onart_1564f_diag_zimphia = "ZIMPHIA";
 
-series  x=cald y=p50_p_onart_diag_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_p_onart_diag_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_onart_1564f_diag_zimphia / markerattrs = (symbol=square color=orange size = 10);
 run;quit;
 
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number diagnosed with HIV";
+Title    height=1.5 justify=center "Number of new diagnoses with HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 
@@ -949,10 +1015,8 @@ label p50_n_diagnosed_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_diagnosed_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=n_diag_obs_mlw;
-
+*series  x=cald y=p50_n_diagnosed_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -964,14 +1028,14 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100
 
 label p50_n_onart_0 = "Option 0 (median) ";
 label p50_n_onart_1 = "Option 1  (median) ";
+label o_s_all_onart_NAC = "CAL - NAC";
 
 series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_onart_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_onart_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 *MIHPSA essential;
-series  x=cald y=o_s_all_onart_NAC;
-
+scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black size = 10);
 run;quit;
 
 proc sgplot data=d; 
@@ -984,9 +1048,8 @@ label p50_p_efa_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_efa_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_efa_0 	upper=p95_p_efa_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_efa_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_efa_1 	upper=p95_p_efa_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_efa_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_efa_1 	upper=p95_p_efa_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -999,9 +1062,8 @@ label p50_p_taz_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_taz_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_taz_0 	upper=p95_p_taz_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_taz_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_taz_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1014,9 +1076,8 @@ label p50_p_ten_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_ten_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ten_0 	upper=p95_p_ten_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_ten_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_ten_1 	upper=p95_p_ten_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_ten_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_ten_1 	upper=p95_p_ten_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1029,9 +1090,8 @@ label p50_p_zdv_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_zdv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_zdv_0 	upper=p95_p_zdv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_zdv_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_zdv_1 	upper=p95_p_zdv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_zdv_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_zdv_1 	upper=p95_p_zdv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1044,9 +1104,8 @@ label p50_p_dol_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_dol_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_dol_0 	upper=p95_p_dol_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_dol_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_dol_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1059,9 +1118,8 @@ label p50_p_3TC_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_3TC_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_3TC_0 	upper=p95_p_3TC_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_3TC_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_3TC_1 	upper=p95_p_3TC_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_3TC_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_3TC_1 	upper=p95_p_3TC_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1074,9 +1132,8 @@ label p50_p_lpr_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_lpr_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_lpr_0 	upper=p95_p_lpr_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_lpr_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_lpr_1 	upper=p95_p_lpr_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_lpr_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_lpr_1 	upper=p95_p_lpr_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1089,9 +1146,8 @@ label p50_p_nev_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_nev_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_nev_0 	upper=p95_p_nev_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_nev_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_nev_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_nev_1 	upper=p95_p_nev_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 ods html;
@@ -1102,15 +1158,44 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_onart_vl1000__0 = "Option 0 (median) ";
 label p50_p_onart_vl1000__1 = "Option 1  (median) ";
+label o_p_vll1000_6mart_garcpr = "CAL - GARCPR";
 
 series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 *MIHPSA optional;
-series x=cald y = o_p_vll1000_6mart_garcpr;
-
+scatter x=cald y=o_p_vll1000_6mart_garcpr / markerattrs = (symbol=square color=black size = 10);
 run;quit;
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men on ART >6 months with VL <1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_vl1000_m_0 = "Option 0 (median) ";
+label p50_p_onart_vl1000_m_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_p_onart_vl1000_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_m_0 	upper=p95_p_onart_vl1000_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_vl1000_m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of women on ART >6 months with VL <1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_onart_vl1000_w_0 = "Option 0 (median) ";
+label p50_p_onart_vl1000_w_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_p_onart_vl1000_w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_w_0 	upper=p95_p_onart_vl1000_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_vl1000_w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
@@ -1119,12 +1204,12 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 
 label p50_p_vl1000__0 = "Option 0 (median) ";
 label p50_p_vl1000__1 = "Option 1  (median) ";
-
+label o_p_vlsupp_plhiv_1564_Zimphia = "ZIMPHIA";
 series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=o_p_vlsupp_plhiv_1564_Zimphia / markerattrs = (symbol=square color=black size = 10);
 run;quit;
 
 proc sgplot data=d; 
@@ -1137,9 +1222,8 @@ label p50_p_vg1000__1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_vg1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vg1000__0 	upper=p95_p_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_vg1000__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_vg1000__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_vg1000__1 	upper=p95_p_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1150,11 +1234,10 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) 
 label p50_p_onart_m_0 = "Option 0 (median) ";
 label p50_p_onart_m_1 = "Option 1  (median) ";
 
-series  x=cald y=p50_p_onart_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_p_onart_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_onart_m_0 	upper=p95_p_onart_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_m_1 	upper=p95_p_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 proc sgplot data=d; 
@@ -1167,78 +1250,76 @@ label p50_p_onart_w_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_p_onart_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_w_0 	upper=p95_p_onart_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_w_1 	upper=p95_p_onart_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_p_onart_w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_w_1 	upper=p95_p_onart_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_onart_vl1000_m_0 = "Option 0 (median) ";
-label p50_p_onart_vl1000_m_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_onart_vl1000_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_m_0 	upper=p95_p_onart_vl1000_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_vl1000_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of women on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
-
-label p50_p_onart_vl1000_w_0 = "Option 0 (median) ";
-label p50_p_onart_vl1000_w_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_p_onart_vl1000_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_w_0 	upper=p95_p_onart_vl1000_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_p_onart_vl1000_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-run;quit;
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000_";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
-
 label p50_prevalence_vg1000__0 = "Option 0 (median) ";
 label p50_prevalence_vg1000__1 = "Option 1  (median) ";
 
 series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
+*series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
+data d;set d;
+if cald=1992.5 then o_r_death_cens=0.95;
+if cald=1993.5 then do;                     o_r_death_m_dhs=0.442;o_r_death_w_dhs=0.413;end;
+if cald=1999.5 then do;                     o_r_death_m_dhs=1.335;o_r_death_w_dhs=0.940;end;
+if cald=2002.5 then o_r_death_cens=1.72;
+if cald=2006   then do;                     o_r_death_m_dhs=1.330;o_r_death_w_dhs=1.270;end;
+if cald=2011   then do;                     o_r_death_m_dhs=1.150;o_r_death_w_dhs=1.140;end;
+if cald=2002.5 then o_r_death_cens=1.02;
+ods html;
+run;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Rate of death ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Rate (per 100 person-years)'		labelattrs=(size=12)  values = (0 to 10 by 1) valueattrs=(size=10);
+label p50_rate_dead_allage__0 = "Option 0 (median) - both";
+label p50_rate_dead_allage__1 = "Option 1  (median) ";
+label p50_rate_dead_allage_m_0 = "Option 0 (median) - Men";
+label p50_rate_dead_allage_w_0 = "Option 0 (median) - Women";
+label o_r_death_cens = "CAL - Census - both";
+label o_r_death_m_dhs = "CAL - DHS - Men";
+label o_r_death_w_dhs = "CAL - DHS - Women";
+
+series  x=cald y=p50_rate_dead_allage_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_0 	upper=p95_rate_dead_allage_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_rate_dead_allage_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_m_0 	upper=p95_rate_dead_allage_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_rate_dead_allage_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_w_0 	upper=p95_rate_dead_allage_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+*MIHPSA optional;
+scatter x=cald y=o_r_death_cens / markerattrs = (symbol=square color=black size = 10);
+scatter x=cald y=o_r_death_m_dhs / markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_r_death_w_dhs / markerattrs = (symbol=square color=orange size = 10);
+run;quit;
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
+label p50_n_death_2059_w_0 = "Option 0 (median) - Women 20-59";
+label p50_n_death_hiv_w_1 = "Option 0  (median) - women with HIV";
 
-label p50_n_death_2059_w_0 = "Option 0 (median) ";
-label p50_n_death_2059_w_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_n_death_2059_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-
-series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
+series  x=cald y=p50_n_death_2059_w_0/	lineattrs = (color=ORANGE thickness = 2);
+band    x=cald lower=p5_n_death_2059_w_0 	upper=p95_n_death_2059_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_death_2059_w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_death_2059_w_1 	upper=p95_n_death_2059_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hiv_w_0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_death_hiv_w_0 	upper=p95_n_death_hiv_w_0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 * series  x=cald y=n_death_2059_w_obs_sa;
-
 run;quit;
 
 
@@ -1248,16 +1329,16 @@ Title    height=1.5 justify=center "n_death_2059_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 
-label p50_n_death_2059_m_0 = "Option 0 (median) ";
-label p50_n_death_2059_m_1 = "Option 1  (median) ";
+label p50_n_death_2059_m_0 = "Option 0 (median) - Men 20-59";
+label p50_n_death_HIV_m_0 = "Option 1  (median) - Men with HIV";
 
-series  x=cald y=p50_n_death_2059_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_2059_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_death_2059_m_0 	upper=p95_n_death_2059_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_death_2059_m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_death_2059_m_1 	upper=p95_n_death_2059_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series  x=cald y=p50_n_death_hiv_m_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_death_hiv_m_0/	lineattrs = (color=lightblue thickness = 2);
+band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
 
 * series  x=cald y=n_death_2059_m_obs_sa;
 
@@ -1274,7 +1355,6 @@ label p50_n_cd4_lt200__0 = "Option 0 (median) ";
 
 series  x=cald y=p50_n_cd4_lt200__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_cd4_lt200__0 	upper=p95_n_cd4_lt200__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
 run;quit;
 
 
@@ -1289,7 +1369,6 @@ label p50_n_hiv_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
 run;quit;
 
 
@@ -1297,18 +1376,33 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_alive";
+Title    height=1.5 justify=center "n_alive 15+";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
-
 label p50_n_alive_0 = "Option 0 (median) ";
 
 series  x=cald y=p50_n_alive_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_alive_0 	upper=p95_n_alive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-
 run;quit;
 
-
+/*
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_alive 15-49";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
+label p50_s_alive1549_m_0 = "Option 0 (median) - Men";
+label p50_s_alive1549_w_0 = "Option 0 (median) - Women";
+label o_pop_1549m_Zi_cens = "CENSUS - Men";
+label o_pop_1549w_Zi_cens = "CENSUS - Women";
+series  x=cald y=p50_s_alive1549_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_s_alive1549_m_0 	upper=p95_s_alive1549_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_s_alive1549_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_s_alive1549_w_0 	upper=p95_s_alive1549_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+scatter x=cald y=o_pop_1549m_Zi_cens / markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_pop_1549w_Zi_cens / markerattrs = (symbol=square color=orange size = 10);
+run;quit;
+*/
 
 
 ods html;
@@ -1472,17 +1566,17 @@ ods html;
 
 proc sgplot data=all; Title 'prevalence by age - women'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
-band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-  series x=ageg y=o_prev_Z_ess / lineattrs = (color=blue thickness = 2);
+*band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+scatter x=ageg y=o_prev_Z_ess / markerattrs = (color=ORANGE);
 where sex=2;
 run;
 
 
 proc sgplot data=all; Title 'prevalence by age - men'   height=1.5 justify=center ;
 xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 0.7 by 0.1) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 series x=ageg y=o_prev_Z_ess / lineattrs = (color=blue thickness = 2);
@@ -1491,10 +1585,200 @@ run;
 
 quit;
 
+
+ods rtf close;
+run;
+
 ods html close;
 
 
+/************************************************************************************************************/
+/*										SELECTION MIHPSA													*/
+/************************************************************************************************************/
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\graphsMIHPSA.rtf";
 
+* 1a - HIV PREVALENCE 15-49 BY GENDER;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
+label p50_prevalence1549__0 = "All Option 0 (median) ";
+label p50_prevalence1549__1 = "All Option 1  (median) ";
+label p50_prevalence1549m_0 = "Men Option 0 (median) ";
+label p50_prevalence1549m_1 = "Men Option 1 (median) ";
+label p50_prevalence1549w_0 = "Women Option 0 (median) ";
+label p50_prevalence1549w_1 = "Women Option 1 (median) ";
+label o_prev1549_Z_ess = "CAL - ZIMPHIA or DHS";
+label o_prev1549m_Z_ess = "CAL - ZIMPHIA or DHS - men";
+label o_prev1549w_Z_ess = "CAL - ZIMPHIA or DHS - women";
+
+series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prevalence1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
+*band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_prevalence1549w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+*series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
+*band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "Model 90% range";
+
+*MIHPSA essential;
+scatter x=cald y=o_prev1549_Z_ess  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=black) errorbarattrs = (color = black) ;
+scatter x=cald y=o_prev1549m_Z_ess /  yerrorlower=o_prev1549m_ll_Z_ess yerrorupper=o_prev1549m_ul_Z_ess markerattrs = (color=blue) errorbarattrs = (color = blue) ;
+scatter x=cald y=o_prev1549w_Z_ess /  yerrorlower=o_prev1549w_ll_Z_ess yerrorupper=o_prev1549w_ul_Z_ess markerattrs = (color=orange) errorbarattrs = (color = orange) ;
+run;quit;
+
+
+* 2a - NUMBER OF ADULTS ON ART;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1200000 by 100000) valueattrs=(size=10);
+
+label p50_n_onart_0 = "Option 0 (median) ";
+label p50_n_onart_1 = "Option 1  (median) ";
+label o_s_all_onart_NAC = "CAL - NAC";
+
+series  x=cald y=p50_n_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_onart_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*MIHPSA essential;
+scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black size = 10);
+run;quit;
+
+
+* 2b - % VL<1000 among ADULTS ON ART;
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of people on ART for >6 months with VL<1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_onart_vl1000__0 = "Option 0 (median) ";
+label p50_p_onart_vl1000__1 = "Option 1  (median) ";
+label o_p_vll1000_6mart_garcpr = "CAL - GARCPR";
+
+series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*MIHPSA optional;
+scatter x=cald y=o_p_vll1000_6mart_garcpr / markerattrs = (symbol=square color=black size = 10);
+run;quit;
+
+
+* 3 - HIV PREVALENCE IN ANTENATAL CLIENTS;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence among pregnant women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
+label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
+
+series  x=cald y=p50_prevalence_hiv_preg_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prevalence_hiv_preg_0 	upper=p95_prevalence_hiv_preg_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+*MIHPSA optional;
+scatter x=cald y=o_prev1549w_Z_anc  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=orange) errorbarattrs = (color = orange);
+run;quit;
+
+* 4a - % EVER CIRCUMCISED;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised (Data 15+)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_p_mcirc_1549m_0 = "Option 0 (median) - 15-49";
+label p50_p_mcirc_1549m_1 = "Option 1 (median) ";
+label p50_p_mcirc_0 = "Option 0 (median) - 15+?";
+label o_p_circ_15pl_DHIS2_z= "CAL - DHIS2 men 15+";
+series  x=cald y=p50_p_mcirc_1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_mcirc_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_mcirc_0 	upper=p95_p_mcirc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_p_circ_15pl_DHIS2_z /	markerattrs = (color=blue);
+run;quit;
+
+
+* 4b - ANNUAL NUMBER OF NEW CIRCUMCISIONS;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Annual # new circumcisions";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+label p50_n_tested_0 = "Option 0 (median) ";
+label p50_n_tested_1 = "Option 1 (median) ";
+label o_s_test_15ov_py_z = "CAL - Annual number of new circumcisions 10-49";
+series  x=cald y=p50_n_new_vmmc1549m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_new_vmmc1549m_0 	upper=p95_n_new_vmmc1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_new_mcirc/	markerattrs = (color=blue ) ;
+run;quit;
+
+
+* 5a - NUMBER OF TESTS;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_tested";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000 by 100000) valueattrs=(size=10);
+label p50_n_tested_0 = "Option 0 (median) ";
+label p50_n_tested_1 = "Option 1 (median) ";
+label o_s_test_15ov_py_z = "CAL - Number of tests performed 15+";
+series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_tested_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
+run;quit;
+
+* 5b - POSITIVITY RATE;
+*test_prop_positive;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Positivity rate";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_test_prop_positive_0 = "Option 0 (median) ";
+label p50_test_prop_positive_1 = "Option 1 (median) ";
+label o_pos_rate_15ov_z = "CAL - Public sector";
+series  x=cald y=p50_test_prop_positive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_test_prop_positive_0 	upper=p95_test_prop_positive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_pos_rate_15ov_z/	markerattrs = (color=black ) ;
+run;quit;
+
+* 7 - DEATH RATE;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Rate of death ";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Rate (per 100 person-years)'		labelattrs=(size=12)  values = (0 to 10 by 1) valueattrs=(size=10);
+label p50_rate_dead_allage__0 = "Option 0 (median) - both";
+label p50_rate_dead_allage__1 = "Option 1  (median) ";
+label p50_rate_dead_allage_m_0 = "Option 0 (median) - Men";
+label p50_rate_dead_allage_w_0 = "Option 0 (median) - Women";
+label o_r_death_cens = "CAL - Census - both";
+label o_r_death_m_dhs = "CAL - DHS - Men";
+label o_r_death_w_dhs = "CAL - DHS - Women";
+
+series  x=cald y=p50_rate_dead_allage_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_0 	upper=p95_rate_dead_allage_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_rate_dead_allage_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_m_0 	upper=p95_rate_dead_allage_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_rate_dead_allage_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_rate_dead_allage_w_0 	upper=p95_rate_dead_allage_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+
+*MIHPSA optional;
+scatter x=cald y=o_r_death_cens / markerattrs = (symbol=square color=black size = 10);
+scatter x=cald y=o_r_death_m_dhs / markerattrs = (symbol=square color=blue size = 10);
+scatter x=cald y=o_r_death_w_dhs / markerattrs = (symbol=square color=orange size = 10);
+run;quit;
+
+ods rtf close; run;
 
 
 

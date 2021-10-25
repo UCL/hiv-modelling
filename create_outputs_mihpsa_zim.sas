@@ -2,11 +2,11 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\base_zim_a_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_1_out\";
 
   data g;    set b.out: ;
 *Based on print out of runs that fit prevalence and number on ART;
-if run in (
+*if run in (
 6667456 
 7654350 
 );
@@ -32,7 +32,8 @@ proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2021;
-
+run;
+proc contents;run;
 data y; 
 merge g sf;
 by run ;
@@ -122,6 +123,8 @@ s_alive = s_alive_m + s_alive_w ;
 * n_diag;						n_diag = s_diag * &sf ;
 * n_diag_w;						n_diag_w = s_diag_w * &sf ;
 * n_diag_m;						n_diag_m = s_diag_m * &sf ;
+
+*p_newp_ge1_w;
 
 keep run option cald n_alive_m n_alive_w n_alive n_hiv_m n_hiv_w n_hiv
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 

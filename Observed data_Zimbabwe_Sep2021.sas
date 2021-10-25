@@ -54,7 +54,7 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 75
+1.  Population...................................Line 76
 2.  Fertility....................................Line 338
 3.  Mortality....................................Line 434
 4.  Prevalence...................................Line 564
@@ -84,21 +84,21 @@
 *http://catalog.ihsn.org/index.php/catalog/4123;
 
 if cald=2002.5 then do;
-	obs_pop_all_Zi_census   =11631657;
-	obs_pop_allm_Zi_census  = 5634180;
-	obs_pop_allw_Zi_census  = 5997477;
+	o_pop_all_Zi_cens   =11631657;
+	o_pop_allm_Zi_cens  = 5634180;
+	o_pop_allw_Zi_cens  = 5997477;
 end;
 
 *Source: Zimbabwe Census 2012;
 *http://www.zimstat.co.zw/sites/default/files/img/National_Report.pdf;
 *Using Table 1.3 Page 18, 49.9% of total are aged 15-49. 24.7% men and 25.2% women;
 if cald=2012.5 then do;
-	obs_pop_all_Zi_census   =13061239;
-	obs_pop_allm_Zi_census  =6282456;
-	obs_pop_allw_Zi_census  =6778783;
-	obs_pop_1549_Zi_census	=6517558;
-	obs_pop_1549m_Zi_census	=3226126;
-	obs_pop_1549w_Zi_census	=3291432;
+	o_pop_all_Zi_cens   =13061239;
+	o_pop_allm_Zi_cens  =6282456;
+	o_pop_allw_Zi_cens  =6778783;
+	o_pop_1549_Zi_cens	=6517558;
+	o_pop_1549m_Zi_cens	=3226126;
+	o_pop_1549w_Zi_cens	=3291432;
 end;
 
 *Compare to:
@@ -134,32 +134,32 @@ o_pop_1549w_dw = o_pop_1524w_dw+o_pop_2549w_dw;
 
 *Source:USIDB, from Halteres report;
 if cald=2013.5 then do;
-	obs_pop_1549_Zi_USIDB=6700000;
-	obs_pop_w1549_Zi_USIDB=3300000;
-	obs_pop_m1549_Zi_USIDB=3400000;
+	o_pop_1549_Zi_USIDB=6700000;
+	o_pop_w1549_Zi_USIDB=3300000;
+	o_pop_m1549_Zi_USIDB=3400000;
 end;
 
 
 *Source CIA: https://www.cia.gov/library/publications/the-world-factbook/geos/zi.html (accessed 19/05/2013) (no longer available);
 if cald=2013.5 then do;
-	obs_pop_all_Zi_CIA  =13182908;
-	obs_pop_1565_Zi_CIA = 7514258;*13182908-(0.394*13182908)-(0.036*13182908);
-	obs_pop_1524_Zi_CIA = 2966154;*22.5% of total;
-	obs_pop_1524m_Zi_CIA= 1472186;
-	obs_pop_1524W_Zi_CIA= 1493816;
-	obs_pop_2554_Zi_CIA = 4060335;*30.8%;
-	obs_pop_2554m_Zi_CIA= 2039943;
-	obs_pop_2554W_Zi_CIA= 2018589;
-	obs_pop_5564_Zi_CIA =  487767;*3.7%;
-	obs_pop_5564m_Zi_CIA=  176951;
-	obs_pop_5564W_Zi_CIA=  311113;
+	o_pop_all_Zi_CIA  =13182908;
+	o_pop_1565_Zi_CIA = 7514258;*13182908-(0.394*13182908)-(0.036*13182908);
+	o_pop_1524_Zi_CIA = 2966154;*22.5% of total;
+	o_pop_1524m_Zi_CIA= 1472186;
+	o_pop_1524W_Zi_CIA= 1493816;
+	o_pop_2554_Zi_CIA = 4060335;*30.8%;
+	o_pop_2554m_Zi_CIA= 2039943;
+	o_pop_2554W_Zi_CIA= 2018589;
+	o_pop_5564_Zi_CIA =  487767;*3.7%;
+	o_pop_5564m_Zi_CIA=  176951;
+	o_pop_5564W_Zi_CIA=  311113;
 
-	obs_pop_1564m_Zi_CIA=  3512129;
+	o_pop_1564m_Zi_CIA=  3512129;
 
 	*From graph;
-	obs_pop_4064_Zi_CIA = 1506814;*55-64 176951, 50-54 100,000 45-49 185,000, 40-45 233750;
-	obs_pop_4064m_Zi_CIA=  695701;*55-64 176951, 50-54 100,000 45-49 185,000, 40-45 233750;
-	obs_pop_4064w_Zi_CIA=  811113;*55-64 311113, 50-54 170,000 45-49 160,000  40-44 170,000 ;
+	o_pop_4064_Zi_CIA = 1506814;*55-64 176951, 50-54 100,000 45-49 185,000, 40-45 233750;
+	o_pop_4064m_Zi_CIA=  695701;*55-64 176951, 50-54 100,000 45-49 185,000, 40-45 233750;
+	o_pop_4064w_Zi_CIA=  811113;*55-64 311113, 50-54 170,000 45-49 160,000  40-44 170,000 ;
 end;
 
 *0-14 years: 39.4% (male 2,623,606/female 2,570,028)
@@ -169,19 +169,19 @@ end;
 ***LBM update Sep2016 - CIA website updated in Sep 2016;
 *Source CIA: https://www.cia.gov/library/publications/the-world-factbook/geos/zi.html (Accessed Sep 2016);
 if cald=2016.75 then do;
-	obs_pop_all_Zi_CIA  =14546961;
-	obs_pop_1565_Zi_CIA = 8538412;
-	obs_pop_1524_Zi_CIA = 3096943;
-	obs_pop_1524m_Zi_CIA= 1560833;
-	obs_pop_1524W_Zi_CIA= 1536110;
-	obs_pop_2554_Zi_CIA = 4925135;
-	obs_pop_2554m_Zi_CIA= 2578142;
-	obs_pop_2554W_Zi_CIA= 2346993;
-	obs_pop_5564_Zi_CIA =  516334;
-	obs_pop_5564m_Zi_CIA=  188851;
-	obs_pop_5564W_Zi_CIA=  327483;
+	o_pop_all_Zi_CIA  =14546961;
+	o_pop_1565_Zi_CIA = 8538412;
+	o_pop_1524_Zi_CIA = 3096943;
+	o_pop_1524m_Zi_CIA= 1560833;
+	o_pop_1524W_Zi_CIA= 1536110;
+	o_pop_2554_Zi_CIA = 4925135;
+	o_pop_2554m_Zi_CIA= 2578142;
+	o_pop_2554W_Zi_CIA= 2346993;
+	o_pop_5564_Zi_CIA =  516334;
+	o_pop_5564m_Zi_CIA=  188851;
+	o_pop_5564W_Zi_CIA=  327483;
 
-	obs_pop_1564m_Zi_CIA=  4327826;
+	o_pop_1564m_Zi_CIA=  4327826;
 end;
 
 *0-14 years: 37.8% (male 2778806/female 2720033)
@@ -190,7 +190,7 @@ end;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *"according to the 2017 Inter -Censual Demographic Projections Report";
-if cald=2019.5 then obs_pop_all_Zi=15800000;
+if cald=2019.5 then o_pop_all_Zi=15800000;
 
 
 
@@ -319,7 +319,7 @@ end;
 *** Proportion of the population who have ever been FSW;
 *Source:  NBCP Presentation by Frances Cowan, Slide 15;
 *Sex worker definition: ever had transactional sex;
-if cald=2011.5 then o_p_ever_fsw_1ts_1849w_nbcs  =0.144;
+if cald=2011.5 then o_p_ever_fsw_1ts_1849w_nbcs=0.144;
 
 
 *** Age distribution among FSW;
@@ -330,7 +330,6 @@ if cald=2013.75 then do;
 	o_p_3039_fsw_rds= 0.360; o_p_3039_fsw_ll_rds= 0.286; o_p_3039_fsw_ul_rds= 0.417;
 	o_p_ab40_fsw_rds= 0.151; o_p_ab40_fsw_ll_rds= 0.090; o_p_ab40_fsw_ul_rds= 0.198;
 end;
-
 
 
 
@@ -362,8 +361,8 @@ if cald=2010 then o_s_fertility_te=3.3;
 if cald=2000 then o_s_fertility_1529=2.4;
 
 *Source: Zimbabwe Census 2002 and 2012;
-if cald=2002 then o_s_fertility_census=3.6;
-if cald=2012 then o_s_fertility_census=3.8;
+if cald=2002 then o_s_fertility_cens=3.6;
+if cald=2012 then o_s_fertility_cens=3.8;
 
 *Source: DHS 1994, 1999, 2005-6, 2010-11, 2015;
 if cald=1994 then o_s_fertility_dhs=4.3; *survey 1991-1994;
@@ -420,13 +419,13 @@ if cald=2016.5 then o_s_exppregn_MoH=433914;
 
 *Source: Census 2012 - Fertility rates by age, Page 111;
 if cald=2012 then do;
-	o_fert_1519_census=0.08;
-	o_fert_2024_census=0.195;
-	o_fert_2529_census=0.19;
-	o_fert_3034_census=0.155;
-	o_fert_3539_census=0.105;
-	o_fert_4044_census=0.04;
-	o_fert_4549_census=0.01;
+	o_fert_1519_cens=0.08;
+	o_fert_2024_cens=0.195;
+	o_fert_2529_cens=0.19;
+	o_fert_3034_cens=0.155;
+	o_fert_3539_cens=0.105;
+	o_fert_4044_cens=0.04;
+	o_fert_4549_cens=0.01;
 end;
 
 
@@ -510,7 +509,34 @@ death_rate1519m_all  death_rate2024m_all  death_rate2529m_all  death_rate3034m_a
 death_rate1519w_all  death_rate2024w_all  death_rate2529w_all  death_rate3034w_all  death_rate3539w_all  death_rate4044w_all  death_rate4549w_all 
 ;
 
+*Crude death rate, expressed in 100 person-years;	
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
+if cald=1992.5 then o_r_death_cens=0.95;
+if cald=1993.5 then do;                     o_r_death_m_dhs=0.00442;o_r_death_w_dhs=0.413;end;
+if cald=1999.5 then do;                     o_r_death_m_dhs=0.01335;o_r_death_w_dhs=0.940;end;
+if cald=2002.5 then o_r_death_cens=1.72;
+if cald=2006   then do;                     o_r_death_m_dhs=0.01330;o_r_death_w_dhs=1.270;end;
+if cald=2011   then do;                     o_r_death_m_dhs=0.01150;o_r_death_w_dhs=1.140;end;
+if cald=2002.5 then o_r_death_cens=1.02;
 
+*2012 Census Age Specific deaths, expressed in 100 perosn-years;
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
+if cald=2012   then do;
+	o_r_death_1519m_cens=0.204;o_r_death_1519w_cens=0.224;
+	o_r_death_2024m_cens=0.412;o_r_death_2024w_cens=0.426;
+	o_r_death_2529m_cens=0.651;o_r_death_2529w_cens=0.683;
+	o_r_death_3034m_cens=1.003;o_r_death_3034w_cens=0.960;
+	o_r_death_3539m_cens=1.343;o_r_death_3539w_cens=1.180;
+	o_r_death_4044m_cens=1.618;o_r_death_4044w_cens=1.222;
+	o_r_death_4549m_cens=1.909;o_r_death_4549w_cens=1.262;
+	o_r_death_5054m_cens=1.937;o_r_death_5054w_cens=1.061;
+	o_r_death_5559m_cens=1.944;o_r_death_5559w_cens=1.135;
+	o_r_death_6064m_cens=2.661;o_r_death_6064w_cens=1.568;
+	o_r_death_6569m_cens=2.915;o_r_death_6569w_cens=1.775;
+	o_r_death_7074m_cens=3.842;o_r_death_7074w_cens=2.489;
+	o_r_death_7579m_cens=5.447;o_r_death_7579w_cens=3.231;
+	o_r_death_80plm_cens=9.535;o_r_death_80plw_cens=7.129;
+end;
 
 *** HIV related deaths;
 
@@ -610,7 +636,7 @@ if cald=2014.5 then o_prev_Z_anc_Cowan=0.136;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
 if cald=2000.5 then do; o_prev1519w_Z_anc=0.256; o_prev2024w_Z_anc=0.322; o_prev2529w_Z_anc=0.371; 
 						o_prev3034w_Z_anc=0.414; o_prev3539w_Z_anc=0.295; o_prev4044w_Z_anc=0.119;
-						o_prev4549w_Z_anc=; 
+						o_prev4549w_Z_anc=.; 
 						o_prev1549w_Z_anc=0.325;end;
 if cald=2001.5 then do; o_prev1519w_Z_anc=0.196; o_prev2024w_Z_anc=0.290; o_prev2529w_Z_anc=0.366; 
 						o_prev3034w_Z_anc=0.402; o_prev3539w_Z_anc=0.310; o_prev4044w_Z_anc=0.231;
@@ -1035,17 +1061,17 @@ if cald=2015.5 then m_HIVIncid_GARPR=0.0074*100;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 11;
-if cald=2010.5 then do; m_HIVIncid_Zim_GARPR=0.00639*100;m_ll_HIVIncid_Zim_GARPR=0.0045*100;m_ll_HIVIncid_Zim_GARPR=0.0088*100;end;
-if cald=2011.5 then do; m_HIVIncid_Zim_GARPR=0.0056*100;m_ll_HIVIncid_Zim_GARPR=0.0040*100;m_ll_HIVIncid_Zim_GARPR=0.0078*100;end;
-if cald=2012.5 then do; m_HIVIncid_Zim_GARPR=0.0049*100;m_ll_HIVIncid_Zim_GARPR=0.0034*100;m_ll_HIVIncid_Zim_GARPR=0.0067*100;end;
-if cald=2013.5 then do; m_HIVIncid_Zim_GARPR=0.0046*100;m_ll_HIVIncid_Zim_GARPR=0.0032*100;m_ll_HIVIncid_Zim_GARPR=0.0064*100;end;
-if cald=2014.5 then do; m_HIVIncid_Zim_GARPR=0.0042*100;m_ll_HIVIncid_Zim_GARPR=0.0030*100;m_ll_HIVIncid_Zim_GARPR=0.0058*100;end;
-if cald=2015.5 then do; m_HIVIncid_Zim_GARPR=0.0039*100;m_ll_HIVIncid_Zim_GARPR=0.0027*100;m_ll_HIVIncid_Zim_GARPR=0.0055*100;end;
-if cald=2016.5 then do; m_HIVIncid_Zim_GARPR=0.0036*100;m_ll_HIVIncid_Zim_GARPR=0.0025*100;m_ll_HIVIncid_Zim_GARPR=0.00495*100;end;
-if cald=2017.5 then do; m_HIVIncid_Zim_GARPR=0.0033*100;m_ll_HIVIncid_Zim_GARPR=0.0023*100;m_ll_HIVIncid_Zim_GARPR=0.0045*100;end;
-if cald=2018.5 then do; m_HIVIncid_Zim_GARPR=0.0029*100;m_ll_HIVIncid_Zim_GARPR=0.00205*100;m_ll_HIVIncid_Zim_GARPR=0.0040*100;end;
+if cald=2010.5 then do; m_HIVIncid_Zim_GARPR=0.00639*100;m_ll_HIVIncid_Zim_GARPR=0.0045*100;m_ul_HIVIncid_Zim_GARPR=0.0088*100;end;
+if cald=2011.5 then do; m_HIVIncid_Zim_GARPR=0.0056*100;m_ll_HIVIncid_Zim_GARPR=0.0040*100;m_ul_HIVIncid_Zim_GARPR=0.0078*100;end;
+if cald=2012.5 then do; m_HIVIncid_Zim_GARPR=0.0049*100;m_ll_HIVIncid_Zim_GARPR=0.0034*100;m_ul_HIVIncid_Zim_GARPR=0.0067*100;end;
+if cald=2013.5 then do; m_HIVIncid_Zim_GARPR=0.0046*100;m_ll_HIVIncid_Zim_GARPR=0.0032*100;m_ul_HIVIncid_Zim_GARPR=0.0064*100;end;
+if cald=2014.5 then do; m_HIVIncid_Zim_GARPR=0.0042*100;m_ll_HIVIncid_Zim_GARPR=0.0030*100;m_ul_HIVIncid_Zim_GARPR=0.0058*100;end;
+if cald=2015.5 then do; m_HIVIncid_Zim_GARPR=0.0039*100;m_ll_HIVIncid_Zim_GARPR=0.0027*100;m_ul_HIVIncid_Zim_GARPR=0.0055*100;end;
+if cald=2016.5 then do; m_HIVIncid_Zim_GARPR=0.0036*100;m_ll_HIVIncid_Zim_GARPR=0.0025*100;m_ul_HIVIncid_Zim_GARPR=0.00495*100;end;
+if cald=2017.5 then do; m_HIVIncid_Zim_GARPR=0.0033*100;m_ll_HIVIncid_Zim_GARPR=0.0023*100;m_ul_HIVIncid_Zim_GARPR=0.0045*100;end;
+if cald=2018.5 then do; m_HIVIncid_Zim_GARPR=0.0029*100;m_ll_HIVIncid_Zim_GARPR=0.00205*100;m_ul_HIVIncid_Zim_GARPR=0.0040*100;end;
 if cald=2019.5 then do;
-	m_HIVIncid_Zim_GARPR=0.00281*100;m_ll_HIVIncid_Zim_GARPR=0.002*100;m_ll_HIVIncid_Zim_GARPR=0.0038*100;
+	m_HIVIncid_Zim_GARPR=0.00281*100;m_ll_HIVIncid_Zim_GARPR=0.002*100;m_ul_HIVIncid_Zim_GARPR=0.0038*100;
 	*The following are from page 9;
 	m_HIVIncid1549_Zim_GARPR=0.0049*100;
 	m_HIVIncid1549_MatS_GARPR=0.0098*100;*Matabeleland South having the highest incidence;
@@ -1290,6 +1316,8 @@ if cald=2011  then do; o_p_paidsex_ly_1554m_dhs=0.030;  o_p_paidsex_ly_1519m_dhs
 
 ***LBM Update Sep 2016 - no further updates in DHS Key Indicators Report 2015;
 
+
+
 ***Number of clients per week
  Source: Document “Sisters numbers v4” circulated in Mar2016, not sure whether the data are form the Sisters with a Voice programme or RDS
 36% 0-3  clients/week, 
@@ -1304,6 +1332,13 @@ if cald=2014.5 then do;
 end;
 
 
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
+*The data reported in this spreadhseet was Proportion of youth (aged 15-24) who report having used a condom the last time they had sex,
+I am reporting 1-this proportion so we can compare to CLS;
+if cald=2006 then do; o_p_cls_last_1524w_zdhs=0.58;o_p_cls_last_1524m_zdhs=0.32;end;
+if cald=2011 then do; o_p_cls_last_1524w_zdhs=0.61;o_p_cls_last_1524m_zdhs=0.49;end;
+if cald=2016 then do; o_p_cls_last_1524w_zdhs=0.56;o_p_cls_last_1524m_zdhs=0.34;end;
+*Zimphia in 2016 the same as DHS except for o_p_cls_last_1524m_zimphia=0.38;
 
 
 *******************************************************************************************
@@ -1319,14 +1354,14 @@ as not always consistent with DHS estimates below;
 
 *Source: DHS 1999;
 if cald=1999 then do; 
-	obs_p_evertested_1554m_zdhs=0.092;o_p_evertested_1554m_ll_zdhs=0.042;o_p_evertested_1554m_ul_zdhs=0.142;
-	obs_p_evertested_1549w_zdhs=0.118;o_p_evertested_1549w_ll_zdhs=0.068;o_p_evertested_1549w_ul_zdhs=0.168;
-	obs_p_evertested_1519m_zdhs=0.028;obs_p_evertested_1519w_zdhs=0.061;
+	o_p_evertested_1554m_zdhs=0.092;o_p_evertested_1554m_ll_zdhs=0.042;o_p_evertested_1554m_ul_zdhs=0.142;
+	o_p_evertested_1549w_zdhs=0.118;o_p_evertested_1549w_ll_zdhs=0.068;o_p_evertested_1549w_ul_zdhs=0.168;
+	o_p_evertested_1519m_zdhs=0.028;o_p_evertested_1519w_zdhs=0.061;
 	***LBM Update Sep 2016;
-	obs_p_evertested_2024m_zdhs=0.073;obs_p_evertested_2024w_zdhs=0.140;
-	obs_p_evertested_2529m_zdhs=0.120;obs_p_evertested_2529w_zdhs=0.166;
-	obs_p_evertested_3039m_zdhs=0.133;obs_p_evertested_3039w_zdhs=0.148;
-	obs_p_evertested_4049m_zdhs=0.157;obs_p_evertested_4049w_zdhs=0.073;
+	o_p_evertested_2024m_zdhs=0.073;o_p_evertested_2024w_zdhs=0.140;
+	o_p_evertested_2529m_zdhs=0.120;o_p_evertested_2529w_zdhs=0.166;
+	o_p_evertested_3039m_zdhs=0.133;o_p_evertested_3039w_zdhs=0.148;
+	o_p_evertested_4049m_zdhs=0.157;o_p_evertested_4049w_zdhs=0.073;
 end;
 
 *Source: DHS 2006, Page 202: 
@@ -1334,71 +1369,71 @@ end;
 as I could not find the confidence intervals;
 
 if cald=2006 then do; 
-	obs_p_evertested_1549m_zdhs=0.186;o_p_evertested_1549m_ll_zdhs=0.136;o_p_evertested_1549m_ul_zdhs=0.236;
-	obs_p_evertested_1549w_zdhs=0.258;o_p_evertested_1549w_ll_zdhs=0.208;o_p_evertested_1549w_ul_zdhs=0.308;
-	obs_p_evertested_1554m_zdhs=0.186;
-	obs_p_evertested_1519m_zdhs=0.084;obs_p_evertested_1519w_zdhs=0.147;
-	obs_p_evertested_2024m_zdhs=0.205;obs_p_evertested_2024w_zdhs=0.348;
-	obs_p_evertested_2529m_zdhs=0.248;obs_p_evertested_2529w_zdhs=0.339;
-	obs_p_evertested_3039m_zdhs=0.230;obs_p_evertested_3039w_zdhs=0.286;
-	obs_p_evertested_4049m_zdhs=0.221;obs_p_evertested_4049w_zdhs=0.174;
-	*obs_p_evertested_5054m_zdhs= not reported in 2006 DHS;
+	o_p_evertested_1549m_zdhs=0.186;o_p_evertested_1549m_ll_zdhs=0.136;o_p_evertested_1549m_ul_zdhs=0.236;
+	o_p_evertested_1549w_zdhs=0.258;o_p_evertested_1549w_ll_zdhs=0.208;o_p_evertested_1549w_ul_zdhs=0.308;
+	o_p_evertested_1554m_zdhs=0.186;
+	o_p_evertested_1519m_zdhs=0.084;o_p_evertested_1519w_zdhs=0.147;
+	o_p_evertested_2024m_zdhs=0.205;o_p_evertested_2024w_zdhs=0.348;
+	o_p_evertested_2529m_zdhs=0.248;o_p_evertested_2529w_zdhs=0.339;
+	o_p_evertested_3039m_zdhs=0.230;o_p_evertested_3039w_zdhs=0.286;
+	o_p_evertested_4049m_zdhs=0.221;o_p_evertested_4049w_zdhs=0.174;
+	*o_p_evertested_5054m_zdhs= not reported in 2006 DHS;
 	
-	obs_p_testedly_1549m_zdhs=0.067;obs_p_testedly_1549w_zdhs=0.066;
-	obs_p_testedly_1519m_zdhs=0.029;obs_p_testedly_1519w_zdhs=0.048;
-	obs_p_testedly_2024m_zdhs=0.086;obs_p_testedly_2024w_zdhs=0.090;
-	obs_p_testedly_2529m_zdhs=0.098;obs_p_testedly_2529w_zdhs=0.075;
-	obs_p_testedly_3039m_zdhs=0.073;obs_p_testedly_3039w_zdhs=0.068;
-	obs_p_testedly_4049m_zdhs=0.066;obs_p_testedly_4049w_zdhs=0.046;
-	*obs_p_testedly_5054m_zdhs= not reported;
-	obs_p_testedly_1554m_zdhs=0.066;
+	o_p_testedly_1549m_zdhs=0.067;o_p_testedly_1549w_zdhs=0.066;
+	o_p_testedly_1519m_zdhs=0.029;o_p_testedly_1519w_zdhs=0.048;
+	o_p_testedly_2024m_zdhs=0.086;o_p_testedly_2024w_zdhs=0.090;
+	o_p_testedly_2529m_zdhs=0.098;o_p_testedly_2529w_zdhs=0.075;
+	o_p_testedly_3039m_zdhs=0.073;o_p_testedly_3039w_zdhs=0.068;
+	o_p_testedly_4049m_zdhs=0.066;o_p_testedly_4049w_zdhs=0.046;
+	*o_p_testedly_5054m_zdhs= not reported;
+	o_p_testedly_1554m_zdhs=0.066;
 end;
 
 *Source: DHS 2010-11, Page 198;
 *The lower and upper limits for the % ever tested 15-49 are 0.05 absolute increase and decrease,
 as I could not find the confidence intervals;
 if cald=2011 then do; 
-	obs_p_evertested_1549m_zdhs=0.383;o_p_evertested_1549m_ll_zdhs=0.333;o_p_evertested_1549m_ul_zdhs=0.433;
-	obs_p_evertested_1549w_zdhs=0.597;o_p_evertested_1549w_ll_zdhs=0.547;o_p_evertested_1549w_ul_zdhs=0.647;
-	obs_p_evertested_1554m_zdhs=0.386;
-	obs_p_evertested_1519m_zdhs=0.116;obs_p_evertested_1519w_zdhs=0.265;
-	obs_p_evertested_2024m_zdhs=0.356;obs_p_evertested_2024w_zdhs=0.687;
-	obs_p_evertested_1524m_zdhs=0.222;obs_p_evertested_1524w_zdhs=0.47;
-	obs_p_evertested_2529m_zdhs=0.506;obs_p_evertested_2529w_zdhs=0.780;
-	obs_p_evertested_3039m_zdhs=0.506;obs_p_evertested_3039w_zdhs=0.700;
-	obs_p_evertested_4049m_zdhs=0.513;obs_p_evertested_4049w_zdhs=0.546;
-	obs_p_evertested_5054m_zdhs=0.448;
+	o_p_evertested_1549m_zdhs=0.383;o_p_evertested_1549m_ll_zdhs=0.333;o_p_evertested_1549m_ul_zdhs=0.433;
+	o_p_evertested_1549w_zdhs=0.597;o_p_evertested_1549w_ll_zdhs=0.547;o_p_evertested_1549w_ul_zdhs=0.647;
+	o_p_evertested_1554m_zdhs=0.386;
+	o_p_evertested_1519m_zdhs=0.116;o_p_evertested_1519w_zdhs=0.265;
+	o_p_evertested_2024m_zdhs=0.356;o_p_evertested_2024w_zdhs=0.687;
+	o_p_evertested_1524m_zdhs=0.222;o_p_evertested_1524w_zdhs=0.47;
+	o_p_evertested_2529m_zdhs=0.506;o_p_evertested_2529w_zdhs=0.780;
+	o_p_evertested_3039m_zdhs=0.506;o_p_evertested_3039w_zdhs=0.700;
+	o_p_evertested_4049m_zdhs=0.513;o_p_evertested_4049w_zdhs=0.546;
+	o_p_evertested_5054m_zdhs=0.448;
 
-	obs_p_testedly_1549m_zdhs=0.204;obs_p_testedly_1549w_zdhs=0.336;
-	obs_p_testedly_1519m_zdhs=0.070;obs_p_testedly_1519w_zdhs=0.184;
-	obs_p_testedly_2024m_zdhs=0.221;obs_p_testedly_2024w_zdhs=0.422;
-	obs_p_testedly_2529m_zdhs=0.280;obs_p_testedly_2529w_zdhs=0.441;
-	obs_p_testedly_3039m_zdhs=0.257;obs_p_testedly_3039w_zdhs=0.361;
-	obs_p_testedly_4049m_zdhs=0.231;obs_p_testedly_4049w_zdhs=0.264;
-	obs_p_testedly_5054m_zdhs=0.197;
+	o_p_testedly_1549m_zdhs=0.204;o_p_testedly_1549w_zdhs=0.336;
+	o_p_testedly_1519m_zdhs=0.070;o_p_testedly_1519w_zdhs=0.184;
+	o_p_testedly_2024m_zdhs=0.221;o_p_testedly_2024w_zdhs=0.422;
+	o_p_testedly_2529m_zdhs=0.280;o_p_testedly_2529w_zdhs=0.441;
+	o_p_testedly_3039m_zdhs=0.257;o_p_testedly_3039w_zdhs=0.361;
+	o_p_testedly_4049m_zdhs=0.231;o_p_testedly_4049w_zdhs=0.264;
+	o_p_testedly_5054m_zdhs=0.197;
 end;
 
 ***LBM Update Sep 2016;
 *Source: DHS Key Indicators 2015, Page 39;
 
 if cald=2015.5 then do; 
-	obs_p_evertested_1549m_zdhs=0.641;o_p_evertested_1549m_ll_zdhs=0.591;o_p_evertested_1549m_ul_zdhs=0.691;
-	obs_p_evertested_1549w_zdhs=0.806;o_p_evertested_1549w_ll_zdhs=0.756;o_p_evertested_1549w_ul_zdhs=0.856;
-	obs_p_evertested_1554m_zdhs=0.647;
+	o_p_evertested_1549m_zdhs=0.641;o_p_evertested_1549m_ll_zdhs=0.591;o_p_evertested_1549m_ul_zdhs=0.691;
+	o_p_evertested_1549w_zdhs=0.806;o_p_evertested_1549w_ll_zdhs=0.756;o_p_evertested_1549w_ul_zdhs=0.856;
+	o_p_evertested_1554m_zdhs=0.647;
 
-	obs_p_evertested_1519m_zdhs=0.376;obs_p_evertested_1519w_zdhs=0.479;
-	obs_p_evertested_2024m_zdhs=0.632;obs_p_evertested_2024w_zdhs=0.848;
-	obs_p_evertested_1524m_zdhs=0.475;obs_p_evertested_1524w_zdhs=0.639;
-	obs_p_evertested_2529m_zdhs=0.754;obs_p_evertested_2529w_zdhs=0.921;
-	obs_p_evertested_3039m_zdhs=0.783;obs_p_evertested_3039w_zdhs=0.934;
-	obs_p_evertested_4049m_zdhs=0.751;obs_p_evertested_4049w_zdhs=0.868;
+	o_p_evertested_1519m_zdhs=0.376;o_p_evertested_1519w_zdhs=0.479;
+	o_p_evertested_2024m_zdhs=0.632;o_p_evertested_2024w_zdhs=0.848;
+	o_p_evertested_1524m_zdhs=0.475;o_p_evertested_1524w_zdhs=0.639;
+	o_p_evertested_2529m_zdhs=0.754;o_p_evertested_2529w_zdhs=0.921;
+	o_p_evertested_3039m_zdhs=0.783;o_p_evertested_3039w_zdhs=0.934;
+	o_p_evertested_4049m_zdhs=0.751;o_p_evertested_4049w_zdhs=0.868;
 
-	obs_p_testedly_1549m_zdhs=0.359;obs_p_testedly_1549w_zdhs=0.488;
-	obs_p_testedly_1519m_zdhs=0.194;obs_p_testedly_1519w_zdhs=0.298;
-	obs_p_testedly_2024m_zdhs=0.377;obs_p_testedly_2024w_zdhs=0.578;
-	obs_p_testedly_2529m_zdhs=0.501;obs_p_testedly_2529w_zdhs=0.607;
-	obs_p_testedly_3039m_zdhs=0.427;obs_p_testedly_3039w_zdhs=0.541;
-	obs_p_testedly_4049m_zdhs=0.377;obs_p_testedly_4049w_zdhs=0.434;
+	o_p_testedly_1549m_zdhs=0.359;o_p_testedly_1549w_zdhs=0.488;
+	o_p_testedly_1519m_zdhs=0.194;o_p_testedly_1519w_zdhs=0.298;
+	o_p_testedly_2024m_zdhs=0.377;o_p_testedly_2024w_zdhs=0.578;
+	o_p_testedly_2529m_zdhs=0.501;o_p_testedly_2529w_zdhs=0.607;
+	o_p_testedly_3039m_zdhs=0.427;o_p_testedly_3039w_zdhs=0.541;
+	o_p_testedly_4049m_zdhs=0.377;o_p_testedly_4049w_zdhs=0.434;
 end;
 
 
@@ -1417,7 +1452,9 @@ if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.5; o_p_evertested_1844w_nbcp
 if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.588; o_p_evertested_1844w_nbcp=0.763; end;
 
 
-*** Number of HIV tests performed;
+
+*** Number of HIV tests performed & positivity rate;
+
 *Source: Global AIDS response country  progress report Zimbabwe 2015;
 if cald=2010.5 then o_s_tested_1549_py_garcpr =1653603;
 if cald=2011.5 then o_s_tested_1549_py_garcpr =1943694;
@@ -1435,13 +1472,25 @@ At page 15 the age range is not indicated, not sure whether it refers to all age
 for 2017-2019 they are the same values; 
 if cald=2013.5 then o_s_tested_1549_py_garcpr =2274328;
 if cald=2014.5 then do; o_s_tested_1549_py_garcpr =1755179;o_s_tested_py_garcpr =1795179;end;
-if cald=2015.5 then do; o_s_tested_1549_py_garcpr =2201246;o_s_tested_py_garcpr =1952278;end;*how can alla ges be higher than 15-49?
+if cald=2015.5 then do; o_s_tested_1549_py_garcpr =2201246;o_s_tested_py_garcpr =1952278;end;*how can alla ges be higher than 15-49?;
 if cald=2016.5 then do; o_s_tested_1549_py_garcpr =2664844;o_s_tested_py_garcpr =2580766;end;
 if cald=2017.5 then o_s_tested_1549_py_garcpr =2851049;
 if cald=2018.5 then o_s_tested_1549_py_garcpr =3011027;
 if cald=2019.5 then o_s_tested_1549_py_garcpr =2382768;
 
-    
+*HIV tests performed in adults (15+) in the public health sector, including first antenatal tests but not second antenatal tests;
+*Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
+if cald=2011.75 then do;o_s_test_15ov_py_z=1656719; o_pos_rate_15ov_z=0.2; end;
+if cald=2012.75 then do;o_s_test_15ov_py_z=1868842; o_pos_rate_15ov_z=0.16; end;
+if cald=2013.75 then do;o_s_test_15ov_py_z=1430246; o_pos_rate_15ov_z=0.13; end;
+if cald=2014.75 then do;o_s_test_15ov_py_z=1756524; o_pos_rate_15ov_z=0.11; end;
+if cald=2015.75 then do;o_s_test_15ov_py_z=2201250; o_pos_rate_15ov_z=0.09; end;
+if cald=2016.75 then do;o_s_test_15ov_py_z=2664844; o_pos_rate_15ov_z=0.07; end;
+if cald=2017.75 then do;o_s_test_15ov_py_z=3174630; o_pos_rate_15ov_z=0.06; end;
+if cald=2018.75 then do;o_s_test_15ov_py_z=3011027; o_pos_rate_15ov_z=0.06; end;
+if cald=2019.75 then do;o_s_test_15ov_py_z=2382768; o_pos_rate_15ov_z=0.05; end;
+if cald=2020.75 then do;o_s_test_15ov_py_z=1521942; o_pos_rate_15ov_z=0.06; end;
+
 
 
 *Source: Global fund reports - sent by Trevor 
@@ -1558,14 +1607,14 @@ Q4 - What is the denominator?
 
 *3Nov2015;
 *Source: "Zimbabwe data.xls" sent by David Wilson;
-if cald=2006 then obs_p_testedly_fsw_dw=0.07;
-if cald=2011 then obs_p_testedly_fsw_dw=0.34;
-if cald=2014 then obs_p_testedly_fsw_dw=0.5;
+if cald=2006 then o_p_testedly_fsw_dw=0.07;
+if cald=2011 then o_p_testedly_fsw_dw=0.34;
+if cald=2014 then o_p_testedly_fsw_dw=0.5;
 
 ***LBM Update Sep 2016 - Numbers below have been updated with numbers from manuscripts (previusly were extracted from slides);
 *Source: Sisters with A Voice 
 		 Cohort  Analysis of Program Data to Estimate HIV Incidence and uptake of HIV related services among FSW in Zim 2009-14, Hargreaves 2015;
-if cald=2012.5 then obs_p_evertested_fsw_swv=0.72;
+if cald=2012.5 then o_p_evertested_fsw_swv=0.72;
 
 *Source: Baseline RDS
 		 The HIV care cascade among female sex workers in Zimbabwe: results of a population-based survey from the Sisters Antiretroviral therapy
@@ -1574,7 +1623,7 @@ if cald=2012.5 then obs_p_evertested_fsw_swv=0.72;
 The upper limit is based on the fact that on the RDS the point estimate found was 0.922. 
 The lower limit is based on the fact that the point estimate in the Sisters with a voice demonstration project was 0.72;
 if cald=2013.75 then do;
-	obs_p_evertested_fsw_rds=0.922;obs_p_evertested_fsw_ll_rds=0.69;obs_p_evertested_fsw_rds=0.97;
+	o_p_evertested_fsw_rds=0.922;o_p_evertested_fsw_ll_rds=0.69;o_p_evertested_fsw_rds=0.97;
 end;
 
 *Number of FSW who attended Sisters clinics
@@ -1612,20 +1661,20 @@ end;
 
 *Source: RDS last quarter 2013 (reported in Document “Sisters numbers v4” & in cascade manuscript);
 if cald=2013.75 then do;
-	obs_p_diag_fsw_rds=0.64;*0.67 reported in the manuscript of trial citing
+	o_p_diag_fsw_rds=0.64;*0.67 reported in the manuscript of trial citing
 *Source: AIDS 2014 Conference, Cowan F. HIV care cascade among female sex workers in zimbabwe: Baseline results of the sAPPH-iRe trial;
-	obs_p_diag_fsw1524_rds=0.39;
-	obs_p_diag_fswge25_rds=0.69;
+	o_p_diag_fsw1524_rds=0.39;
+	o_p_diag_fswge25_rds=0.69;
 end;
 
 *Source: RDS endline 2016 (reported in "Cowan SAPPH-IRe IAS Results 2016 - 5", slide 17 control arm);
-if cald=2016.25 then obs_p_diag_fsw_rds=0.80;
+if cald=2016.25 then o_p_diag_fsw_rds=0.80;
 *Source: Global AIDS response country  progress report 2020, page 25,
 Note: not clear where these estimates come from;
-if cald=2016.5 then obs_p_diag_fsw_garpr=0.94;
-if cald=2017.5 then obs_p_diag_fsw_garpr=0.91;
-if cald=2018.5 then obs_p_diag_fsw_garpr=0.93;
-if cald=2019.5 then obs_p_diag_fsw_garpr=0.81;
+if cald=2016.5 then o_p_diag_fsw_garpr=0.94;
+if cald=2017.5 then o_p_diag_fsw_garpr=0.91;
+if cald=2018.5 then o_p_diag_fsw_garpr=0.93;
+if cald=2019.5 then o_p_diag_fsw_garpr=0.81;
 
 
 *Source: excel spreadsheet entitled "Testing yield 2013-2015_HIV_ stats_18_02_16" sent by Frances on 8July2016
@@ -1658,22 +1707,22 @@ if cald=2014.5 then o_p_anc_pregnant_Cowan=0.95;
 
 *Source: DHS 2005-2006, page 203;
 if cald=2006 then do;
-	obs_p_testedanc_1549_zdhs = 0.226;
-	obs_p_testedanc_1519_zdhs = 0.202;
-	obs_p_testedanc_2024_zdhs = 0.257;
-	obs_p_testedanc_2529_zdhs = 0.208;
-	obs_p_testedanc_3039_zdhs = 0.225;
-	obs_p_testedanc_4049_zdhs = 0.119;
+	o_p_testedanc_1549_zdhs = 0.226;
+	o_p_testedanc_1519_zdhs = 0.202;
+	o_p_testedanc_2024_zdhs = 0.257;
+	o_p_testedanc_2529_zdhs = 0.208;
+	o_p_testedanc_3039_zdhs = 0.225;
+	o_p_testedanc_4049_zdhs = 0.119;
 end;
 
 *Source: DHS 2010-2011, Page 201;
 if cald=2011 then do;
-	obs_p_testedanc_1549_zdhs = 0.591;
-	obs_p_testedanc_1519_zdhs = 0.449;
-	obs_p_testedanc_2024_zdhs = 0.596;
-	obs_p_testedanc_2529_zdhs = 0.665;
-	obs_p_testedanc_3039_zdhs = 0.588;
-	obs_p_testedanc_4049_zdhs = 0.491;
+	o_p_testedanc_1549_zdhs = 0.591;
+	o_p_testedanc_1519_zdhs = 0.449;
+	o_p_testedanc_2024_zdhs = 0.596;
+	o_p_testedanc_2529_zdhs = 0.665;
+	o_p_testedanc_3039_zdhs = 0.588;
+	o_p_testedanc_4049_zdhs = 0.491;
 end;
 
 ***LBM Update Sep 2016 - No further information in DHS 2015 Key Indicators Report;
@@ -1800,7 +1849,7 @@ if cald=2014.5 then o_p_PMTCTorART_pospreg_Cowan=0.65;
 
 ***Repeat testing;
 *Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16–32 Year Olds;
-if cald=2011 then obs_rct_max_p_repeat_test=0.28;
+if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
 
@@ -1915,11 +1964,11 @@ if cald=2015.75 then do;	o_s_allmale_onart_NAC = 301650; o_s_allfemale_onart_NAC
 
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,
 from 2012 they are listed as well in this excel spreadhsett and they correspond;
-if cald=2016.75 the o_s_all_onart_NAC=909508;
-if cald=2017.75 the o_s_all_onart_NAC=1051790;
-if cald=2018.75 the o_s_all_onart_NAC=1086674;
-if cald=2019.75 the o_s_all_onart_NAC=1087360;
-if cald=2020.75 the o_s_all_onart_NAC=1128432;
+if cald=2016.75 then o_s_all_onart_NAC=909508;
+if cald=2017.75 then o_s_all_onart_NAC=1051790;
+if cald=2018.75 then o_s_all_onart_NAC=1086674;
+if cald=2019.75 then o_s_all_onart_NAC=1087360;
+if cald=2020.75 then o_s_all_onart_NAC=1128432;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
@@ -1970,8 +2019,8 @@ if cald=2013.25    then do; *reporting rate 94%;
 *Source: Travor Mabugu personal comuunication by email on 30/07/2013;
 *It refers to the period between Jan 2012 to Dec 2012;
 if cald=2013 then do;
-		obs_s_started_art_ly=138842;*patients newly initiated on first line ART, not specified  whether all or only adults;
-		obs_s_swicth_2nd_line=2193; *patients switched to second line;
+		o_s_started_art_ly=138842;*patients newly initiated on first line ART, not specified  whether all or only adults;
+		o_s_swicth_2nd_line=2193; *patients switched to second line;
 end;
 
 
@@ -2096,7 +2145,6 @@ if cald=2014.5 then m_adults_elig_art_osdm=1207175;
 ***Proportion on ART of those PLHIV;
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
      	 (Slide 8 in Zim_ePMS Data Completeness.ppt);
-
 if cald=2004.75 then e_p_onart_15ovhivpos_nac=0.007;
 if cald=2005.75 then e_p_onart_15ovhivpos_nac=0.017;
 if cald=2006.75 then e_p_onart_15ovhivpos_nac=0.041;
@@ -2223,7 +2271,7 @@ if cald=2006.75 then do;
 end;
 
 *DART trial;
-if cald=2008.5 then obs_median_cd4art_DART=80;
+if cald=2008.5 then o_median_cd4art_DART=80;
 
 *Source: Pre-treatment drug resistance among patients initiating antiretroviral therapy (ART) in Zimbabwe: 2008–2010, Mungati 2016
 n=1610, new ART initiations from 2008-2010;
@@ -2567,9 +2615,9 @@ end;
 
 *** Prevalence;
 *Source: "Zimbabwe data.xls" sent by David Wilson;
-if cald=2006 then do; obs_p_mcirc_1524m_dw = 0.09; obs_p_mcirc_2549m_dw = 0.11; obs_p_mcirc_50plm_dw = 0.11; end;
-if cald=2011 then do; obs_p_mcirc_1524m_dw = 0.07; obs_p_mcirc_2549m_dw = 0.11; obs_p_mcirc_50plm_dw = 0.11; end;
-if cald=2014 then do; obs_p_mcirc_1524m_dw = 0.24; obs_p_mcirc_2549m_dw = 0.11; obs_p_mcirc_50plm_dw = 0.11; end;
+if cald=2006 then do; o_p_mcirc_1524m_dw = 0.09; o_p_mcirc_2549m_dw = 0.11; o_p_mcirc_50plm_dw = 0.11; end;
+if cald=2011 then do; o_p_mcirc_1524m_dw = 0.07; o_p_mcirc_2549m_dw = 0.11; o_p_mcirc_50plm_dw = 0.11; end;
+if cald=2014 then do; o_p_mcirc_1524m_dw = 0.24; o_p_mcirc_2549m_dw = 0.11; o_p_mcirc_50plm_dw = 0.11; end;
 
 
 *** New male circumcisions per year;
@@ -2577,41 +2625,43 @@ if cald=2014 then do; obs_p_mcirc_1524m_dw = 0.24; obs_p_mcirc_2549m_dw = 0.11; 
 		      Available from: URL: http://www.malecircumcision.org/country_updates/documents/FINAL%20VMMC%20Progress%20Report%20Jan-Dec%202011%20WHO.pdf;
 
 *(LBM: These reports go up to 2012 but same figures are reported in GARPR reports);
-if cald = 2008.5 then obs_s_new_mcirc=0;
-if cald = 2009.5 then obs_s_new_mcirc=2801;
-if cald = 2010.5 then obs_s_new_mcirc=11176;
-if cald = 2011.5 then obs_s_new_mcirc=36603;
+if cald = 2008.5 then o_s_new_mcirc=0;
+if cald = 2009.5 then o_s_new_mcirc=2801;
+if cald = 2010.5 then o_s_new_mcirc=11176;
+if cald = 2011.5 then o_s_new_mcirc=36603;
 
 ***LBM Update Sep 2016;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3
 		 Numbers calcuated by adding up >15 year olds;
-*Updated using HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
-if cald = 2009.5  then obs_s_new_mcirc=2784 ;
-if cald = 2010.5  then obs_s_new_mcirc=9381;*9384;  *slightly updated based on Isaac;
-if cald = 2011.5  then obs_s_new_mcirc=27973;*27971;*slightly updated based on Isaac;
-if cald = 2012.5  then obs_s_new_mcirc=29321;*29625;*slightly updated based on Isaac;
-if cald = 2013.5  then obs_s_new_mcirc=65679;*65613;*slightly updated based on Isaac;
+
+*Updated using HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,
+they are reported as 2008-2009, 2009-2010, age range 10-49;
+if cald = 2009.5  then o_s_new_mcirc=2784 ;
+if cald = 2010.5  then o_s_new_mcirc=9381;*9384;  *slightly updated based on Isaac;
+if cald = 2011.5  then o_s_new_mcirc=27973;*27971;*slightly updated based on Isaac;
+if cald = 2012.5  then o_s_new_mcirc=29321;*29625;*slightly updated based on Isaac;
+if cald = 2013.5  then o_s_new_mcirc=65679;*65613;*slightly updated based on Isaac;
 
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
-if cald = 2014.5  then obs_s_new_mcirc=110163;
-if cald = 2015.5  then obs_s_new_mcirc=133012;
-if cald = 2016.5  then obs_s_new_mcirc=136986;
-if cald = 2017.5  then obs_s_new_mcirc=159476;
-if cald = 2018.5  then obs_s_new_mcirc=197705;
-if cald = 2019.5  then obs_s_new_mcirc=207375;
-if cald = 2020.5  then obs_s_new_mcirc=53743;
+if cald = 2014.5  then o_s_new_mcirc=110163;
+if cald = 2015.5  then o_s_new_mcirc=133012;
+if cald = 2016.5  then o_s_new_mcirc=136986;
+if cald = 2017.5  then o_s_new_mcirc=159476;
+if cald = 2018.5  then o_s_new_mcirc=197705;
+if cald = 2019.5  then o_s_new_mcirc=207375;
+if cald = 2020.5  then o_s_new_mcirc=53743;
 
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 22;
 *Note: the age range is not indicated so probably all ages;
-if cald = 2013.5  then obs_s_new_mcirc_all=112084;
-if cald = 2014.5  then obs_s_new_mcirc_all=209125;
-if cald = 2015.5  then obs_s_new_mcirc_all=188732;
-if cald = 2016.5  then obs_s_new_mcirc_all=205784;
-if cald = 2017.5  then obs_s_new_mcirc_all=301366;
-if cald = 2018.5  then obs_s_new_mcirc_all=326012;
-if cald = 2019.5  then obs_s_new_mcirc_all=354819;
+if cald = 2013.5  then o_s_new_mcirc_all=112084;
+if cald = 2014.5  then o_s_new_mcirc_all=209125;
+if cald = 2015.5  then o_s_new_mcirc_all=188732;
+if cald = 2016.5  then o_s_new_mcirc_all=205784;
+if cald = 2017.5  then o_s_new_mcirc_all=301366;
+if cald = 2018.5  then o_s_new_mcirc_all=326012;
+if cald = 2019.5  then o_s_new_mcirc_all=354819;
 
 
 
@@ -2621,25 +2671,25 @@ if cald = 2019.5  then obs_s_new_mcirc_all=354819;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
 *page 10;
-if cald = 2013.5  then obs_cum_mcirc=112084; 
-if cald = 2014.5  then obs_cum_mcirc=400235;
-if cald = 2015.5  then obs_cum_mcirc=601303;
-if cald = 2016.5  then obs_cum_mcirc=839681;
-if cald = 2017.5  then obs_cum_mcirc=1141046;
-if cald = 2018.5  then obs_cum_mcirc=1466731;
-if cald = 2019.5  then obs_cum_mcirc=1821550;
+if cald = 2013.5  then o_cum_mcirc=112084; 
+if cald = 2014.5  then o_cum_mcirc=400235;
+if cald = 2015.5  then o_cum_mcirc=601303;
+if cald = 2016.5  then o_cum_mcirc=839681;
+if cald = 2017.5  then o_cum_mcirc=1141046;
+if cald = 2018.5  then o_cum_mcirc=1466731;
+if cald = 2019.5  then o_cum_mcirc=1821550;
 
 *Reply from Tsitsi on 5th July 2016: Circumcisions are performed both in the health facilities (mainly) and also by some NGOs such as PSI;
 
 ***Number of <15 year olds circumcised;
 *Source: Global AIDS Response Country Progress Report Zimbabwe 2016. Page 8 Table 3;
-if cald = 2009.5  then obs_s_child1314_mcirc=17;
-if cald = 2010.5 then obs_s_child1314_mcirc=1792;
-if cald = 2011.5  then obs_s_child1314_mcirc=8771 ;
-if cald = 2012.5 then obs_s_child1314_mcirc=11087;
-if cald = 2013.5  then obs_s_child1314_mcirc=46471 ;
-if cald = 2014.5 then obs_s_child1314_mcirc=97687;
-if cald = 2015.5  then obs_s_child1014_mcirc=78623;
+if cald = 2009.5  then o_s_child1314_mcirc=17;
+if cald = 2010.5 then o_s_child1314_mcirc=1792;
+if cald = 2011.5  then o_s_child1314_mcirc=8771 ;
+if cald = 2012.5 then o_s_child1314_mcirc=11087;
+if cald = 2013.5  then o_s_child1314_mcirc=46471 ;
+if cald = 2014.5 then o_s_child1314_mcirc=97687;
+if cald = 2015.5  then o_s_child1014_mcirc=78623;
 
  
 ***LBM Update feb 2017;
@@ -2663,9 +2713,9 @@ end;
 
 ***Proportion of men aged 15+ who report that they have been circumcised (household surveys) - MIHPSA optional;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
-if cald=2006   then o_p_circ_15pl=0.105;
-if cald=2010.5 then o_p_circ_15pl=0.091;
-if cald=2016   then o_p_circ_15pl=0.143;
+if cald=2006   then o_p_circ_15pl_DHIS2_z=0.105;
+if cald=2010.5 then o_p_circ_15pl_DHIS2_z=0.091;
+if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 
 
 
