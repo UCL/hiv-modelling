@@ -201,12 +201,11 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.7 0.8 0.9 1.0, 0.05 0.45 0.30 0.20 ); * change jun21;  
-
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.45 0.30 0.15 0.05); * change jun21;  
 							
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
-								0.95 	0.99 	1		1/0.99 	1/0.95, 
-								0.00 	0.10 	0.8 	0.10	0.00);
+								0.90  0.95  	1	, 
+								0.05  0.05  0.9 );
 
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
 * eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
@@ -3880,6 +3879,8 @@ end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
 
+if age >= 65 then do; ep=0; epi=0; end;
+
 epdiag=0; epart=0; epvls=0; 
 if epi=1 then do;
 
@@ -5251,7 +5252,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
                 g=rand('uniform');
-                if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
 				g=rand('uniform');
