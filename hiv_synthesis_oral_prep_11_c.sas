@@ -163,8 +163,8 @@ newp_seed = 7;
 * inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
-* p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
-* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
 
@@ -222,7 +222,7 @@ newp_seed = 7;
 							r=rand('uniform'); if r < 0.20 then do; 
 								exp_setting_lower_p_vl1000 = 1; * exposure to hiv in an external setting where p_vl1000 is lower - during short term out migration followed by return; 
 								external_exp_factor = 1 + rand('uniform'); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
-								rate_exp_set_lower_p_vl1000 = uniform(0) * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
+								rate_exp_set_lower_p_vl1000 = rand('uniform') * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
 							end;
 							else do;
 								exp_setting_lower_p_vl1000 = 0; 
@@ -244,7 +244,7 @@ newp_seed = 7;
 * TRANSMISSION;
 
 * tr_rate_primary;			tr_rate_primary = 0.16; 
-* tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.4 0.4 0.2);
+* tr_rate_undetec_vl;		%sample(tr_rate_undetec_vl, 0.0000 0.0001 0.0010, 0.7 0.2 0.1);
 * rate_loss_nnres_pmtct_maj;rate_loss_nnres_pmtct_maj = 0.75;  rate_loss_nnres_pmtct_min = rate_loss_nnres_pmtct_maj; 
 							* apr 2019 - increased from 0.25 due as part of reconciling model with higher proportion of men with viral suppression on art than women, when data are the opposite;
 							* dependent_on_time_step_length ;
@@ -1115,19 +1115,19 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-68+uniform(0)*13;   
-if inc1 <= e < cum2   then age=-55+uniform(0)*10;  
-if cum2 <= e < cum3   then age=-45+uniform(0)*10;  
-if cum3 <= e < cum4   then age=-35+uniform(0)*10;  
-if cum4 <= e < cum5   then age=-25+uniform(0)*10;  
-if cum5 <= e < cum6   then age=-15+uniform(0)*10;  
-if cum6 <= e < cum7   then age=-5+uniform(0)*10;  
-if cum7 <= e < cum8   then age=  5+uniform(0)*10;  
-if cum8 <= e < cum9   then age= 15+uniform(0)*10;  
-if cum9 <= e < cum10  then age= 25+uniform(0)*10;  
-if cum10 <= e < cum11  then age= 35+uniform(0)*10;  
-if cum11 <= e < cum12  then age= 45+uniform(0)*10;  
-if cum12 <= e          then age= 55+uniform(0)*10;  
+if 0.0 <= e < inc1    then age=-68+rand('uniform')*13;   
+if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-25+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-15+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-5+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=  5+rand('uniform')*10;  
+if cum8 <= e < cum9   then age= 15+rand('uniform')*10;  
+if cum9 <= e < cum10  then age= 25+rand('uniform')*10;  
+if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
+if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
+if cum12 <= e          then age= 55+rand('uniform')*10;  
 
 
 age =round(age ,.25);
@@ -1315,7 +1315,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
-	if uniform(0) < prob_sw_init then sw = 1;
+	if rand('uniform') < prob_sw_init then sw = 1;
 end;
 
 age_deb_sw=.;
@@ -1324,7 +1324,7 @@ if sw=1 then do;
 	ever_sw=1;
 
 	u=rand('uniform');
-	date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
+	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
 	age_deb_sw= age - (1989-date_start_sw);
 end;
 
@@ -1349,7 +1349,7 @@ if sw = 1 then do;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
-		newp = round(newp_lower + uniform(0) * (newp_higher - newp_lower), 1);
+		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
 	end;
 	if age > 30 then newp = min(30,newp);
 end;
@@ -1725,7 +1725,7 @@ if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_
 
 option=.;
 
-dataset_id=trim(left(round(uniform(0)*1000000)));
+dataset_id=trim(left(round(rand('uniform')*1000000)));
 call symput('dataset_id',dataset_id);
 
 
