@@ -5,7 +5,7 @@
 
 data wide;  
 * set   a.wide_oral_prep_8r  a.wide_oral_prep_8rrr  a.wide_oral_prep_9   a.wide_oral_prep_9a    ;  
-  set 	a.wide_oral_prep_11  ;  
+  set 	a.wide_oral_prep_11_n334  ;  
 
 
 if prevalence1549m_17 < 0.198 and incidence1549m_17 < 1.5 and incidence1549w_17 < 2.0 ; 
@@ -1103,7 +1103,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where 0.75  <= p_newp_sw_21 < 1.00 ;
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
 * where incidence1549_41_1 > 0.7;
-* where fold_tr_newp >= 0.7;
+  where fold_tr_newp <= 0.7 and reg_option_104=0;
 * where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
 * where incidence1549w_21 > 0.16 and 0.02 <= prevalence_vg1000_21  ;
 * where 0.40 <= incidence1549w_21 < 0.5 ;
@@ -1246,6 +1246,7 @@ model ce_500_x =
 prevalence_vg1000_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
+fold_tr_newp
 
 ;
 run;
