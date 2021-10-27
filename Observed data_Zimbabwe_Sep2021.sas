@@ -511,12 +511,13 @@ death_rate1519w_all  death_rate2024w_all  death_rate2529w_all  death_rate3034w_a
 
 *Crude death rate, expressed in 100 person-years;	
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021,;
+*The following are for all ages;
 if cald=1992.5 then o_r_death_cens=0.95;
-if cald=1993.5 then do;                     o_r_death_m_dhs=0.00442;o_r_death_w_dhs=0.413;end;
-if cald=1999.5 then do;                     o_r_death_m_dhs=0.01335;o_r_death_w_dhs=0.940;end;
+if cald=1993.5 then do;                     o_r_death_m_dhs=0.442;o_r_death_w_dhs=0.413;end;
+if cald=1999.5 then do;                     o_r_death_m_dhs=1.335;o_r_death_w_dhs=0.940;end;
 if cald=2002.5 then o_r_death_cens=1.72;
-if cald=2006   then do;                     o_r_death_m_dhs=0.01330;o_r_death_w_dhs=1.270;end;
-if cald=2011   then do;                     o_r_death_m_dhs=0.01150;o_r_death_w_dhs=1.140;end;
+if cald=2006   then do;                     o_r_death_m_dhs=1.330;o_r_death_w_dhs=1.270;end;
+if cald=2011   then do;                     o_r_death_m_dhs=1.150;o_r_death_w_dhs=1.140;end;
 if cald=2002.5 then o_r_death_cens=1.02;
 
 *2012 Census Age Specific deaths, expressed in 100 perosn-years;
@@ -536,6 +537,9 @@ if cald=2012   then do;
 	o_r_death_7074m_cens=3.842;o_r_death_7074w_cens=2.489;
 	o_r_death_7579m_cens=5.447;o_r_death_7579w_cens=3.231;
 	o_r_death_80plm_cens=9.535;o_r_death_80plw_cens=7.129;
+
+	o_r_death_15plm_cens=1.215;o_r_death_15plw_cens=0.984;
+
 end;
 
 *** HIV related deaths;
