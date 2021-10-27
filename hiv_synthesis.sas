@@ -555,8 +555,8 @@ newp_seed = 7;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.0005 0.001 0.0015 , 0.33 0.34 0.33);
-							
+%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
+
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
