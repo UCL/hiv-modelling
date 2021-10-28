@@ -1,10 +1,8 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep" ;
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_12_out";
 
-* libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\oral_prep\oral_prep_11_out";
-
-libname b "C:\Users\w3sth\Documents\oral_prep_11_out";
 
 /*
 data d  ; set b.out: ;
@@ -1109,7 +1107,7 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_11      ;
+data a.oral_prep_12      ;
 set y;
 
 
