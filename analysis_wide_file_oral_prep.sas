@@ -5,10 +5,13 @@
 
 data wide;  
 
-  set 	a.wide_oral_prep_12       ;  
+  set 	a.wide_oral_prep_13       ;  
 
 
-if prevalence1549m_17 < 0.198 and incidence1549m_17 < 1.5 and incidence1549w_17 < 2.0 ; 
+if prevalence1549m_17 < 0.20 and incidence1549m_17 < 1.5 and incidence1549w_17 < 2.0 ; 
+
+if incidence1549m_17 > 0.1 and incidence1549w_17 > 0.1 ; 
+
 
 * printing run numbers for included runs for use in graph program;
 /*
@@ -1087,7 +1090,7 @@ proc freq; tables icer_2 ; run;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.666 <= p_mcirc_1549m_21 < 1.666 ;
-* where 0.05 <= prevalence_vg1000_21 < 0.55 ; 
+  where 0.02 <= prevalence_vg1000_21 < 0.03 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  6 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where  1.5 <= incidence1549_21 < 3.5 ;

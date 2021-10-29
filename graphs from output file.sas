@@ -7,10 +7,10 @@
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.oral_prep_11; 
+  set a.oral_prep_13; 
 
 * restricting to runs selected in analysis program;
-if run in (
+* if run in (
 1482074 
 4383181 
 4739158 
