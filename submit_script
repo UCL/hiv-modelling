@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -J SASjob
+#SBATCH -N 1
+#SBATCH -n 28
+#SBATCH -o %N-%j.log
+#SBATCH -e %N-%j.err
+#SBATCH --mem=16G
+#SBATCH --time=08:00:00
+#SBATCH --array 1-3
+module add sas/9.4
+sas -time=08:00:00 -memsize 16G -cpucount 28 -threads -noterminal -nolog hiv_synthesis_oral_prep_13.sas

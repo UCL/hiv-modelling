@@ -1111,6 +1111,8 @@ data a.oral_prep_13      ;
 set y;
 
 
-proc contents; run;
+proc contents data=a.oral_prep_13; 
+proc freq data=a.oral_prep_13; tables run; where cald = 2020;
+run;
 
 
