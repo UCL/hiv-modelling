@@ -1215,7 +1215,6 @@ run;
 
 
 proc logistic  data=wide  ;
-output out = out predicted=predicted;
 model ce_500_x = 
 prevalence_vg1000_21
 p_mcirc_1549m_21
@@ -1230,6 +1229,22 @@ p_vl1000_21
 / selection = stepwise
 ;
 run;
+
+proc glm  data=wide  ;
+model d_ndb_500_21_71_2 = 
+prevalence_vg1000_21
+p_mcirc_1549m_21
+av_newp_ge1_non_sw_21
+p_newp_ge1_age1549_21
+prop_w_1549_sw_21
+p_newp_sw_21
+av_newp_ge1_21
+r_p_newp_ge1_age1549_21
+p_newp_sw_21
+p_vl1000_21 
+;
+run;
+
 
 
 proc freq; tables sens_test_prep * ce_500; run; 
