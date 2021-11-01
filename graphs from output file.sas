@@ -10,7 +10,7 @@ data b;
   set a.oral_prep_13; 
 
 * restricting to runs selected in analysis program;
-* if run in (
+  if run in (
 11604107 
 15148705 
 15937563 
@@ -145,9 +145,6 @@ data b;
 960364710 
 965718962 
 978999039 
-
-
-
 );
 
 
@@ -279,7 +276,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 242   ;
+%let nfit = 270   ;
 %let year_end = 2071.00 ;
 run;
 proc sort;by cald option ;run;

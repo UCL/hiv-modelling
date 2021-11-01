@@ -8,9 +8,9 @@ data wide;
   set 	a.wide_oral_prep_13       ;  
 
 
-  if prevalence1549m_17 < 0.20 and incidence1549m_17 < 1.5 and incidence1549w_17 < 2.0 ; 
+  if prevalence1549m_17 < 0.23 and incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
-  if incidence1549m_17 > 0.1 and incidence1549w_17 > 0.1 ; 
+  if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  ; 
 
 
 * printing run numbers for included runs for use in graph program;
@@ -401,7 +401,7 @@ run;
 
 
 ods html;
-proc means n median p5 p95 data=wide; 
+proc means n median p5 p95 mean lclm uclm data=wide; 
 var	p_mcirc_1549m_17 prevalence1549m_17 prevalence1549w_17 prevalence1524m_17 prevalence1524w_17  incidence1549w_17 incidence1549m_17	p_diag_m_17   
 p_diag_w_17	p_ai_no_arv_c_nnm_17   p_ai_no_arv_c_rt184m_17  p_ai_no_arv_c_rt65m_17  prop_w_1549_sw_17  prop_1564_hivneg_onprep_17  prop_w_1524_onprep_17 
 p_onart_diag_w_17 	p_onart_diag_m_17   p_vl1000_17	p_onart_vl1000_w_17 p_onart_vl1000_m_17 p_onart_cd4_l500_17  p_mcirc_1549m_17  p_startedline2_17  
@@ -1090,7 +1090,7 @@ proc freq; tables icer_2 ; run;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
 * where 0.666 <= p_mcirc_1549m_21 < 1.666 ;
-* where 0.02 <= prevalence_vg1000_21 < 0.03 ; 
+* where 0.00 <= prevalence_vg1000_21 < 0.01 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  6 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where  1.5 <= incidence1549_21 < 3.5 ;
@@ -1249,7 +1249,7 @@ model ce_500_x =
 prevalence_vg1000_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
-fold_tr_newp
+p_mcirc_1549m_21
 
 ;
 run;
@@ -1306,8 +1306,6 @@ model ce_500_x =
 reg_option_104  sens_test_prep sex_beh_trans_matrix_m adh_pattern;
 run;
 
-
-
 proc logistic  data=wide  ;
 output out = out predicted=predicted;
 model ce_500_x = 
@@ -1336,6 +1334,24 @@ p_newp_sw_21
 p_vl1000_21
 ;
 
+
+data r; set wide;
+
+x = p_w_newp_ge1_age1549_21 - p_w_newp_ge1_age1549_17 ; 
+
+proc glm; 
+class sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w ;
+model x =
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p  p_hsb_p  newp_factor  eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
+exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base fold_change_w  fold_change_yw  fold_change_sti  super_infection  an_lin_incr_test  date_test_rate_plateau  
+rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  adh_pattern  prob_loss_at_diag  pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  clinic_not_aw_int_frac 
+res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
+adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat base_rate_sw 
+zero_3tc_activity_m184   zero_tdf_activity_k65r   greater_disability_tox 	  greater_tox_zdv  prep_strategy_21_22_2  prep_efficacy fold_tr_newp
+reg_option_104 sens_test_prep / solution
+; 
+run;
 
 
 
