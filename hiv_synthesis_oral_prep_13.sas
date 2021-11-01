@@ -1,5 +1,4 @@
 
-options nolog;
 
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
@@ -10,8 +9,7 @@ libname a "&outputdir/";
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
- proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-
+  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000 ; 
 %let year_interv = 2021.5;
@@ -566,7 +564,7 @@ newp_seed = 7;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.0005 0.001 0.0015 , 0.33 0.34 0.33);
+* base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
