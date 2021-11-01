@@ -200,7 +200,7 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.45 0.30 0.15 0.05); * change jun21;  
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 , 0.05 0.45 0.30 0.15 0.05); * change jun21;  
 							
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.90  0.95  	1	, 
