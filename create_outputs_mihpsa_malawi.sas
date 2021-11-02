@@ -1,16 +1,38 @@
 
 
-libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\base_zim_a_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\base_mlw_e_out\";
 
   data g;    set b.out: ;
-*Based on print out of runs that fit prevalence and number on ART;
+
 if run in (
 6667456 
 7654350 
+76413798 
+164479966 
+275096361 
+308002243 
+334090623 
+371598612 
+461449244 
+476661538 
+513872681 
+586727294 
+646362246 
+668311093 
+702630229 
+717466584 
+725327392 
+727098581 
+777849763 
+842608327 
+853307842 
+891246265 
+957283890 
+987060908 
+988064628 
 );
-
 
 
 proc sort data=g; 
@@ -110,6 +132,16 @@ s_alive = s_alive_m + s_alive_w ;
 													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all)  * 4 * &sf ;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
+
+* n_death_m     ;				n_death_m      = 	(s_dead2024m_all+ s_dead2529m_all+ s_dead3034m_all+ s_dead3539m_all+
+													s_dead4044m_all+ s_dead4549m_all+ s_dead5054m_all+ s_dead5559m_all
+													+ s_dead6064m_all+ s_dead6569m_all+ s_dead7074m_all+ s_dead7599m_all
+													+ s_dead8084m_all+ s_dead85plm_all)  * 4 * &sf ;
+* n_death_w     ;				n_death_w      = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
+													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all
+													+ s_dead6064w_all+ s_dead6569w_all+ s_dead7074w_all+ s_dead7599w_all
+													+ s_dead8084w_all+ s_dead85plw_all)  * 4 * &sf ;
+
 * n_death_2059;					n_death_2059 = n_death_2059_m + n_death_2059_w;
 * n_death;						n_death = s_dead_allage  * 4 * &sf;
 
@@ -125,9 +157,10 @@ keep run option cald n_alive_m n_alive_w n_alive n_hiv_m n_hiv_w n_hiv
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
 p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
 n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
-prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw n_death 
+prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw n_death n_death_w  n_death_m
 n_new_inf1524w n_new_inf2549w incidence1524w  incidence2549w incidence1524m  incidence2549m n_diag  n_diag_m  n_diag_w
 ;
+
 
   options nomprint;
   option nospool;
@@ -236,8 +269,7 @@ proc transpose data=t_2122 out = r_2122; data e_2122; set r_2122; y2122 = COL1; 
 proc univariate noprint data=y; var &v; output out=y_2223 mean= &v._2223 ; by run ; where 2022.5 <= cald < 2023.5; 
 proc univariate noprint data=y_2223; var &v._2223; output out=t_2223 median= &v._2223_med pctlpts=2.5 97.5 pctlpre= &v._2223_; 
 proc transpose data=t_2223 out = r_2223; data e_2223; set r_2223; y2223 = COL1; drop _label_ _name_ COL1 ;
-proc univariat
-e noprint data=y; var &v; output out=y_2324 mean= &v._2324 ; by run ; where 2023.5 <= cald < 2024.5; 
+proc univariate noprint data=y; var &v; output out=y_2324 mean= &v._2324 ; by run ; where 2023.5 <= cald < 2024.5; 
 proc univariate noprint data=y_2324; var &v._2324; output out=t_2324 median= &v._2324_med pctlpts=2.5 97.5 pctlpre= &v._2324_; 
 proc transpose data=t_2324 out = r_2324; data e_2324; set r_2324; y2324 = COL1; drop _label_ _name_ COL1 ;
 proc univariate noprint data=y; var &v; output out=y_2425 mean= &v._2425 ; by run ; where 2024.5 <= cald < 2025.5; 
@@ -466,7 +498,7 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v=n_hiv  ); 
+%var(v=p_mcirc_1549m);
 
 /*
 
