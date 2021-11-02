@@ -2,7 +2,7 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_1_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_2_out\";
 
 data g;    set b.out: ;
 
@@ -10,7 +10,7 @@ data g;    set b.out: ;
 proc sort data=g; 
 by run cald option;run;
 /*proc freq;table cald;run;*/
-*500 simulation 66500 observations, from 1980 to 2021.75;
+*498 simulation 1060740 observations, from 1989 to 2041.75;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
@@ -463,9 +463,9 @@ s_dead_w_all = s_dead1564w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w
 
 * prevalence1524w;				prevalence1524w = ( s_hiv1519w + s_hiv2024w ) / (s_ageg1519w + s_ageg2024w) ;
 * prevalence1524m;				prevalence1524m = ( s_hiv1519m + s_hiv2024m ) / (s_ageg1519m + s_ageg2024m) ;
-* prevalence2549w;				prevalence1524w = ( s_hiv2529w + s_hiv3034w +  s_hiv3539w + s_hiv4044w +  s_hiv4549w ) / 
+* prevalence2549w;				prevalence2549w = ( s_hiv2529w + s_hiv3034w +  s_hiv3539w + s_hiv4044w +  s_hiv4549w ) / 
 													(s_ageg2529w + s_ageg3034w + s_ageg3539w + s_ageg4044w + s_ageg4549w) ;
-* prevalence2549m;				prevalence1524m = ( s_hiv2529m + s_hiv3034m +  s_hiv3539m + s_hiv4044m +  s_hiv4549m ) / 
+* prevalence2549m;				prevalence2549m = ( s_hiv2529m + s_hiv3034m +  s_hiv3539m + s_hiv4044m +  s_hiv4549m ) / 
 													(s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg4044m + s_ageg4549m) ;
 
 
@@ -900,11 +900,11 @@ s_a_zld_if_reg_op_116  p_nactive_ge2p75_xyz p_adh_hi_xyz_ot1  p_adh_hi_xyz_ot2  
 p_nactive_ge2p00_xyz  p_nactive_ge1p50_xyz  p_k65m  p_m184m  p_artexp_vl1000
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vlg1000   p_tams_ontld_vlg1000 p_vlg1000_184m p_vlg1000_65m
-death_rate  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
+death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 n_new_inf1549m n_new_inf1549w n_new_inf1549 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel n_death_hivrel_m n_death_hivrel_w p_death_hivrel_age_le64 
+prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64*/ 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
@@ -977,7 +977,7 @@ incr_rate_restart_year_i         incr_rate_init_year_i        decr_rate_int_choi
 incr_prob_vl_meas_done_year_i  
 incr_pr_switch_line_year_i          	incr_adh_pattern_prep_year_i  
 inc_r_test_startprep_year_i  incr_r_test_restartprep_year_i  decr_r_choose_stop_prep_year_i  
-inc_p_prep_restart_choi_year_i incr_prepuptake_sw_year_i    incr_prepuptake_pop_year_i   
+inc_p_prep_restart_choi_year_i /*incr_prepuptake_sw_year_i*/    incr_prepuptake_pop_year_i   
 circ_inc_rate_year_i  		incr_test_targeting_year_i    pop_wide_tld_year_i 
 incr_max_freq_testing_year_i     initial_pr_switch_line     initial_prob_vl_meas_done   sw_test_6mthly_year_i  
 art_mon_drug_levels_year_i       ten_is_taf_year_i    lower_future_art_cov    
@@ -1145,7 +1145,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
-%var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
+*%var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
 %var(v=death_rate_hiv_all);%var(v=death_rate_hiv_all_m);%var(v=death_rate_hiv_all_w);
 %var(v=p_iime);   %var(v=p_pime);   %var(v=p_nnme);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=n_birth_with_inf_child);
@@ -1250,7 +1250,7 @@ p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000   
 p_tams_ontle_vlg1000  p_tams_ontld_vlg1000  p_k65m p_m184m
-death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
+/*death_rate*/  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 p_iime   p_pime   p_nnme     n_pregnant_ntd   n_preg_odabe
 n_birth_with_inf_child
 n_tested n_tested_sw test_prop_positive
@@ -1375,6 +1375,8 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;
 run;
+*arrivata qua;
+
 
 ods html;
 
@@ -1565,7 +1567,10 @@ data q1; set a.w_base_zim;
 *Source for:
 - number on ART in 2015: Tsitsi Apollo, received 23rd Feb 2017 Zim_Adults on ART by gender
 - prevalence1549 ZIMPHIA Zimbabwe;
-if n_onart_15 < 818207 and 0.13 <= prevalence1549_15 < 0.15;
+*On 2nd Nov 2021:
+- it was decided to multiply n_onart by 1.1=900.027;
+*Consider restricting by relative prevalence & incidence;
+if n_onart_15 < 818207*1.1 and 0.13 <= prevalence1549_15 < 0.15;
 
 run_keep = run;
 
@@ -1609,6 +1614,7 @@ data a.l_base_keep_zim; merge a.l_base_zim q1 ; by run;
 if run_keep ne .;
 
 ods html;
+*The following print out the run we want to include;
 proc print noobs; var run; 
 where cald = 2021.25;
 run;
