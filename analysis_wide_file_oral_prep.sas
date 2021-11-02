@@ -7,10 +7,10 @@ data wide;
 
   set 	a.wide_oral_prep_13       ;  
 
-
   if prevalence1549m_17 < 0.23 and incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
   if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  ; 
+
 
 
 * printing run numbers for included runs for use in graph program;
@@ -1089,7 +1089,7 @@ proc freq; tables icer_2 ; run;
 * for table / results;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
-* where 0.666 <= p_mcirc_1549m_21 < 1.666 ;
+* where 0.000 <= p_mcirc_1549m_21 < 0.333 ;
 * where 0.00 <= prevalence_vg1000_21 < 0.01 ; 
 * where 3  <= av_newp_ge1_non_sw_21 <  6 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
@@ -1156,14 +1156,17 @@ av_newp_ge1_non_sw_21_g3
 p_newp_ge1_age1549_21_g2
 p_newp_ge1_age1549_21_g3
 p_newp_ge1_age1549_21_g4
+
+p_mcirc_1549m_21_g2
+p_mcirc_1549m_21_g3
  
 ;
 run;
 
 data r; set out; 
-proc sort; by prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  ;
+proc sort; by prevalence_vg1000_21_g  p_mcirc_1549m_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g   ;
 proc print; 
-var prevalence_vg1000_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  predicted; 
+var prevalence_vg1000_21_g p_mcirc_1549m_21_g p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  predicted; 
 run; 
 
 
