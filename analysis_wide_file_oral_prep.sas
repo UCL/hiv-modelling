@@ -5,7 +5,7 @@
 
 data wide;  
 
-  set 	a.wide_oral_prep_13       ;  
+  set 	a.wide_oral_prep_13a      ;  
 
   if prevalence1549m_17 < 0.23 and incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
