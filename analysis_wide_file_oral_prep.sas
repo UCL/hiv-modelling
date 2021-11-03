@@ -530,13 +530,13 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var    p_m184m_all_21_26_1 p_m184m_all_21_26_2 d_p_m184m_all_21_26_2  ;
-where sens_test_prep  > 0.95 ;
+by sens_test_prep ;
 run; 
 ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var   p_k65m_all_21_26_1 p_k65m_all_21_26_2  d_p_k65m_all_21_26_2  ;
-where sens_test_prep  > 0.95  ;
+by  sens_test_prep  ;
 run; 
 ods html close;
 
@@ -1089,24 +1089,24 @@ proc freq; tables icer_2 ; run;
 * for table / results;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
-* where 0.000 <= p_mcirc_1549m_21 < 0.333 ;
-* where 0.00 <= prevalence_vg1000_21 < 0.01 ; 
-* where 3  <= av_newp_ge1_non_sw_21 <  6 ;
+* where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
+* where 0.05 <= prevalence_vg1000_21 < 5.05 ; 
+* where 3  <= av_newp_ge1_non_sw_21 <  9 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
-* where  1.5 <= incidence1549_21 < 3.5 ;
-* where 0.20 <= prevalence1549_21 < 0.50 ; 
+* where  1.5 <= incidence1549_21 < 4.5 ;
+* where 0.20 <= prevalence1549_21 < 1.20 ; 
 * where 0.949 <= eff_adh_prep < 0.951 ;
 * where p_prep_adhg80_21_26_2 < 0.5 ;
 * where r_p_newp_ge1_age1549_21 > 1 ;
-* where   0.73 <= p_vl1000_21 < 1.73 ;
+* where   0.73 <= p_vl1000_21 < 1.00 ;
 * where 0.00 <=  p_m_newp_ge1_age1549_21 < 0.06; 
 * where 0.06 <=  p_newp_ge1_age1549_21 < 1.06; 
-* where 0.80 <= prop_elig_on_prep_21_26_2 < 1.00 ;
+* where 0.80 <= prop_elig_on_prep_21_26_2 < 1.80 ;
 * where 0.80 <= p_prep_adhg80_21_26_2 < 0.90;
-* where 0.75  <= p_newp_sw_21 < 1.00 ;
+* where 0.75  <= p_newp_sw_21 < 1.75 ;
 * where p_newp_ge1_age1549_21 < 0.03 and p_prep_adhg80_21_26_2 > 0.8;
 * where incidence1549_41_1 > 0.7;
-* where fold_tr_newp <= 0.7 and reg_option_104=0;
+* where fold_tr_newp <= 0.7 ;
 * where prop_w_1549_sw_21 < 0.02  and fold_tr_newp = 0.5;
 * where incidence1549w_21 > 0.16 and 0.02 <= prevalence_vg1000_21  ;
 * where 0.40 <= incidence1549w_21 < 0.5 ;
@@ -1116,9 +1116,11 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where sge65=1;
 * where prep_depends_on_pr_vl_1000 = 1;
 * where sex_beh_trans_matrix_m le 10;
-* where sens_test_prep  > 0.95  ;
+  where sens_test_prep  = 1.00 ;
 run; 
   ods html close;
+
+
 
 proc freq data=wide; tables p_prep_adhg80_21_26_2 ; run;
 
@@ -1164,9 +1166,9 @@ p_mcirc_1549m_21_g3
 run;
 
 data r; set out; 
-proc sort; by prevalence_vg1000_21_g  p_mcirc_1549m_21_g  p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g   ;
+proc sort; by prevalence_vg1000_21_g p_newp_ge1_age1549_21_g  p_mcirc_1549m_21_g  av_newp_ge1_non_sw_21_g  ;
 proc print; 
-var prevalence_vg1000_21_g p_mcirc_1549m_21_g p_newp_ge1_age1549_21_g  av_newp_ge1_non_sw_21_g  predicted; 
+var prevalence_vg1000_21_g p_newp_ge1_age1549_21_g  p_mcirc_1549m_21_g  av_newp_ge1_non_sw_21_g  predicted; 
 run; 
 
 
