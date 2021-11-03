@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\";
 
 data g; set  a.base_sa_47 ;
 
@@ -63,7 +63,6 @@ if run in (
 972235870 
 
 );
-
 
 
 proc sort data=g; 
