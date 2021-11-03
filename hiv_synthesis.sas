@@ -4530,7 +4530,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 				if tested=1 then do;
 					visit_prep_all=2; 	*drug pick-up and HIV test;
 					visit_prep_oral=2; 	
-					if r < prob_prep_all_visit_counsel then do; visit_prep_all=1; visit_prep_oral=3; end; *drug pick-up and counselling;
+					if r < prob_prep_all_visit_counsel then do; visit_prep_all=3; visit_prep_oral=3; end; *drug pick-up and counselling;
 				end;
 			end;
 			when (prep_inj=1) do;
@@ -4539,7 +4539,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 				if tested=1 then do;
 					visit_prep_all=2; 	*drug pick-up and HIV test;
 					visit_prep_inj=2; 	
-					if r < prob_prep_all_visit_counsel then do; visit_prep_all=1; visit_prep_inj=3; end; *drug pick-up and counselling;
+					if r < prob_prep_all_visit_counsel then do; visit_prep_all=3; visit_prep_inj=3; end; *drug pick-up and counselling;
 				end;
 			end;
 			when (prep_vr=1) do;
@@ -4548,7 +4548,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 				if tested=1 then do;
 					visit_prep_all=2; 	*drug pick-up and HIV test;
 					visit_prep_vr=2; 	
-					if r < prob_prep_all_visit_counsel then do; visit_prep_all=1; visit_prep_vr=3; end; *drug pick-up and counselling;
+					if r < prob_prep_all_visit_counsel then do; visit_prep_all=3; visit_prep_vr=3; end; *drug pick-up and counselling;
 				end;
 			end;
 		end;
@@ -4556,7 +4556,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 end;
 
 if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - dt_prep_oral_s > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
-r=rand('uniform'); if r < pop_wide_tld_prob_egfr then visit_prep_oral=2; * note this is for egfr only not an hiv test;
+r=rand('uniform'); if r < pop_wide_tld_prob_egfr then do; visit_prep_all=2; visit_prep_oral=2; end; * note this is for egfr only not an hiv test;
 end;
 
 * effect of weight gain due to use of dol as prep;
