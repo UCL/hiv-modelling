@@ -1375,7 +1375,7 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;
 run;
-*arrivata qua;
+
 
 
 ods html;
@@ -1605,6 +1605,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
+*n=20;
 
 
 
