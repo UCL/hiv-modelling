@@ -47,16 +47,9 @@ rate_ch_art_init_str_9 = 0.1 ;
 * CIRCUMCISION;
 
 * circ_inc_rate;            *circ_inc_rate = 0.001; 
-							*%sample(circ_inc_rate,		
+							%sample(circ_inc_rate,		
 							0.001	0.003	0.01	0.1, 
 				  	   		0.1		0.6		0.2		0.1);*Vale - 20211026;
-							%sample(circ_inc_rate,0.001 0.002 0.003, 
-<<<<<<< Updated upstream
-                                 				  0.25  0.5   0.25);*Vale - 20211104;
-=======
-                                 				  0.25  0.5   0.25);
->>>>>>> Stashed changes
-
 * prob_birth_circ;          *prob_birth_circ = 0.2 ; 
 							%sample(prob_birth_circ, 
 							0.05 0.1 0.15,
