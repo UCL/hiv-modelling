@@ -126,8 +126,9 @@ run = rand('uniform')*1000000000;  run=round(run,1);
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
 
-caldate1=1989;
-caldate_never_dot=1989;
+*Vale 20211104;
+caldate1=1984;
+caldate_never_dot=1984;
 
 * these used after year_interv - code is here so value the same for all people;
 _u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
@@ -2222,7 +2223,10 @@ all art stopped (no_art_disrup_covid)
 	
 ;
 
-if caldate{t} ge 2019.5 then reg_option = 104;*Vale - 20211026;
+*if caldate{t} ge 2019.5 then reg_option = 104;*Vale - 20211026;
+if caldate{t} ge 2019   then reg_option = 120;*Vale - 20211104;
+if caldate{t} ge 2020.5 then reg_option = 104;*Vale - 20211104;
+
 
 
 
@@ -2403,8 +2407,9 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
 		e=rand('uniform'); 
 		*Vale - 26102021;
-		if (e < test_rate_tb     and (caldate{t} le 2020.5 or caldate{t} gt 2021.5 )) or
-		   (e < test_rate_tb*0.5 and               2020.5 lt caldate{t} le 2021.5 ) then do;  
+		*Vale -20211104, drop start 0.25 earlier and finish 0.25 earlier;
+		if (e < test_rate_tb     and (caldate{t} lt 2020.5 or caldate{t} ge 2021.5 )) or
+		   (e < test_rate_tb*0.5 and               2020.5 le caldate{t} lt 2021.5 ) then do;  
 			tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 		end;
 	end;
@@ -2428,8 +2433,9 @@ if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = r
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
-*Vale - 26102021;
-if 2020.5 lt caldate{t} le 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
+*Vale - 20211026;
+*Vale -20211104, drop start 0.25 earlier and finish 0.25 earlier;
+if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;
 
 
 
@@ -2529,7 +2535,8 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 *vale - 20211026;
-if 2020.5 lt caldate{t} le 2021.5 then prob_circ = prob_circ*0.5;
+*Vale -20211104, drop start 0.25 earlier and finish 0.25 earlier;
+if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;
 
 if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
 
@@ -17627,7 +17634,9 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);/*
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+
+*Add 5 years as I am now starting running in 1984;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
@@ -17648,6 +17657,7 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
+/*
 %update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
