@@ -4230,11 +4230,11 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					when (caldate(t) ge date_prep_inj_intro and caldate(t) < date_prep_vr_intro) do;	
 
 						select;
-							when (highest_prep_pref = 1)	do;
+							when (highest_prep_pref = 1)	do;		*lapr - preference for oral PrEP;
 								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
 								testfor_prep_oral=1;
 							end;
-							when (highest_prep_pref = 2)	do;
+							when (highest_prep_pref = 2)	do;		*lapr - preference for inj PrEP;
 								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
 								testfor_prep_inj=1;
 							end;
