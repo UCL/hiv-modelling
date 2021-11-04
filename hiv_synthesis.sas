@@ -1781,22 +1781,17 @@ if adh_pattern_prep_oral=4 then adhav_prep_oral = adhav*0.70;
 * Individuals' values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 * May want to update coding to allow these to change with age / through time ;
 
-* pref_prep_oral;				pref_prep_oral=rand('beta',5,2); 	* median 0.73 ;
-* pref_prep_inj;				pref_prep_inj=rand('beta',2,2); 	* median 0.5 ;
-* pref_prep_vr;					pref_prep_vr=rand('beta',2,5); 		* median 0.26 ;		* lapr - where to encode VR for women only? ;
+* pref_prep_oral;				pref_prep_oral=rand('beta',5,2); 					* median 0.73 ;
+* pref_prep_inj;				pref_prep_inj=rand('beta',2,2); 					* median 0.5 ;
+* pref_prep_vr;					if gender=2 then pref_prep_vr=rand('beta',2,5); 	* median 0.26 (women only);		
+								else pref_prep_vr=0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
-if gender = 2 then do;			
-	if 		pref_prep_oral>pref_prep_inj and pref_prep_oral>pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
-	else if pref_prep_inj>pref_prep_oral and pref_prep_inj>pref_prep_vr then highest_prep_pref=2;	* 2=preference for injectable PrEP;
-	else highest_prep_pref=3;																		* 3=preference for vaginal ring;
-	end;
-else if gender = 1 then do;
-	if 		pref_prep_oral>pref_prep_inj then highest_prep_pref=1;	* 1=preference for oral PrEP;
-	else if pref_prep_inj>pref_prep_oral then highest_prep_pref=2;	* 2=preference for injectable PrEP;
-	end;
-	* lapr - encode no preference between types? / no type acceptable? ;
+if 		pref_prep_oral>pref_prep_inj and pref_prep_oral>pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
+else if pref_prep_inj>pref_prep_oral and pref_prep_inj>pref_prep_vr then highest_prep_pref=2;	* 2=preference for injectable PrEP;
+else highest_prep_pref=3;																		* 3=preference for vaginal ring;
+* lapr - encode no preference between types? / no type acceptable? ;
 
 
 * willingness to take prep if offered;
@@ -4217,14 +4212,57 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
 		if  prep_all_ever ne 1 and tested ne 1 and prep_all_elig=1 and prep_all_willing=1  then do;
-			* lapr and dpv-vr - I guess this will change to specify if prep_all_willing for lapr or dpv-vr or oral prep then do...;
 			a=rand('uniform'); if a < eff_rate_test_startprep_all then do;	
-				tested=1; ever_tested=1; testfor_prep_all=1; dt_last_test=caldate{t}; np_lasttest=0;
-				* lapr - split into different PrEP types - may be different tests used ;
+				*lapr - assumes order of introduction is oral -> inj -> vr;
 				select;
-					when (highest_prep_pref = 1)	testfor_prep_oral=1; 
-					when (highest_prep_pref = 2) 	testfor_prep_inj=1; 
-					when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
+
+					* All PrEP types available;
+					when (caldate{t} ge date_prep_vr_intro) do;											
+						tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+						select;
+							when (highest_prep_pref = 1)	testfor_prep_oral=1; 
+							when (highest_prep_pref = 2) 	testfor_prep_inj=1; 
+							when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
+						end;
+					end;
+
+					* Oral and injectable PrEP available;
+					when (caldate(t) ge date_prep_inj_intro and caldate(t) < date_prep_vr_intro) do;	
+
+						select;
+							when (highest_prep_pref = 1)	do;
+								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_oral=1;
+							end;
+							when (highest_prep_pref = 2)	do;
+								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_inj=1;
+							end;
+							when (highest_prep_pref = 3)	do;		*lapr - preference for DPV ring but not available;
+								*lapr - (1) prefer oral prep to inj and willing;
+								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_oral=1;
+								end; 
+								*lapr - (2) prefer inj prep to oral and willing;
+								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_inj=1;
+								end; 
+								*lapr - (3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+							end;
+						end;
+
+					end;
+
+					* Only oral PrEP available;
+					when (caldate(t) ge date_prep_oral_intro and caldate(t) < date_prep_inj_intro) do;	
+						if prep_oral_willing=1 then do;		*lapr - regardless of preference, person will test for oral PrEP if willing;
+							tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+							testfor_prep_oral=1;
+						end;
+					end;
+				
 				end;
 			end; 
 		end;
