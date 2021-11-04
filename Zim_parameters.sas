@@ -28,9 +28,22 @@
                                         0.50   0.50    0.00    );
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
-                          
+ 
+ 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
+*Vale - 20211026: all the changes in the section "NATURAL PROGRESSION...." are taken from SA;
+* fold_change_in_risk_base_rate;
+							%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
+
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; 	
+
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2  ;  * note values linked to adjustments to fold_decr_hivdeath ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 2 ;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 2  ;
+* incr_death_rate_tb;		incr_death_rate_tb = 2  ;
+
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -51,11 +64,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 							0.001	0.003	0.01	0.1, 
 				  	   		0.1		0.6		0.2		0.1);*Vale - 20211026;
 							%sample(circ_inc_rate,0.001 0.002 0.003, 
-<<<<<<< Updated upstream
                                  				  0.25  0.5   0.25);*Vale - 20211104;
-=======
-                                 				  0.25  0.5   0.25);
->>>>>>> Stashed changes
 
 * prob_birth_circ;          *prob_birth_circ = 0.2 ; 
 							%sample(prob_birth_circ, 
