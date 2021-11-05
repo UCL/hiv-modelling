@@ -825,7 +825,7 @@ if cald=2015 then o_prev1549_CIA=0.147;
 if cald=2016.25 then do;
 o_prev_1549_zimphia=0.134;*0.140;o_prev_1549_ll_zimphia=0.133;o_prev_1549_ul_zimphia=0.147;*Modified based on Isac;
 o_prev_1549m_zimphia=0.107;*0.112;o_prev_1549m_ll_zimphia=0.104;o_prev_1549m_ul_zimphia=0.121;
-o_prev_1549w_zimphia=0.159;*0.166;o_prev_1549f_ll_zimphia=0.158;o_prev_1549f_ul_zimphia=0.174;
+o_prev_1549w_zimphia=0.159;*0.166;o_prev_1549w_ll_zimphia=0.158;o_prev_1549w_ul_zimphia=0.174;
 o_prev_1564m_zimphia=0.124;o_prev_1564m_ll_zimphia=0.115;o_prev_1564m_ul_zimphia=0.132;
 o_prev_1564w_zimphia=0.167;o_prev_1564f_ll_zimphia=0.160;o_prev_1564f_ul_zimphia=0.174;
 end;

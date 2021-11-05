@@ -46,6 +46,15 @@ incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
 incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
 n_new_inf1549_ = n_new_inf1549;
 
+prev_hiv_preg_1519_ = prev_hiv_preg_1519;
+prev_hiv_preg_2024_	= prev_hiv_preg_2024;
+prev_hiv_preg_2529_ = prev_hiv_preg_2529;
+prev_hiv_preg_3034_ = prev_hiv_preg_3034;
+prev_hiv_preg_3539_ = prev_hiv_preg_3539;
+prev_hiv_preg_4044_ = prev_hiv_preg_4044;
+prev_hiv_preg_4549_ = prev_hiv_preg_4549;
+prev_hiv_preg_50pl_ = prev_hiv_preg_50pl;
+
 n_cd4_lt200_ = n_cd4_lt200;
 
 p_onart_vl1000_ = p_onart_vl1000;
@@ -130,7 +139,7 @@ ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  21   ;
+%let nfit =  14   ;
 *%let year_end = 2022.00 ;
 %let year_end = 2042.00 ;
 run;
@@ -147,7 +156,10 @@ if option =1 then delete;
 p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m p_mcirc n_new_vmmc1549m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
-prevalence1549_ prevalence_hiv_preg prevalence_vg1000_  incidence1549_ incidence1549w incidence1549m incidence1564_ 
+prevalence1549_ prevalence_hiv_preg 
+prev_hiv_preg_1519_	prev_hiv_preg_2024_	prev_hiv_preg_2529_	prev_hiv_preg_3034_
+prev_hiv_preg_3539_	prev_hiv_preg_4044_	prev_hiv_preg_4549_	prev_hiv_preg_50pl_
+prevalence_vg1000_  incidence1549_ incidence1549w incidence1549m incidence1564_ 
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
 incidence5564w_ incidence5564m_ n_tested n_tested_m test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
@@ -155,7 +167,8 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_onart_w n_onart_m n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  rate_dead_allage rate_dead_allage_m rate_dead_allage_w
+n_art_start_y 	/*n_all_ai_y */	n_onart n_onart_w n_onart_m 
+n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  rate_dead_allage rate_dead_allage_m rate_dead_allage_w
 n_cd4_lt200_
 prevalence1519w 	prevalence1519m prevalence2024w 	prevalence2024m prevalence2529w 	prevalence2529m
 prevalence3034w 	prevalence3034m prevalence3539w 	prevalence3539m prevalence4044w 	prevalence4044m 
@@ -280,11 +293,10 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
-g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125
+g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 
+g128 g129 g130 g131 g132 g133 g134 /*g135
 
-/*
-g126 g127 g128 g129 g130
-g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
+g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
@@ -306,7 +318,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 ods listing close;
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_20sim_20211103.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_14sim_20211105.rtf";
 ods html ;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -406,18 +418,7 @@ band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fil
 scatter  x=cald y=o_s_test_15ov_py_z/	markerattrs = (color=black ) ;
 run;quit;
 
-*test_prop_positive;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Positivity rate";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
-label p50_test_prop_positive_0 = "Option 0 (median) ";
-label p50_test_prop_positive_1 = "Option 1 (median) ";
-label o_pos_rate_15ov_z = "CAL - Public sector";
-series  x=cald y=p50_test_prop_positive_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_test_prop_positive_0 	upper=p95_test_prop_positive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-scatter  x=cald y=o_pos_rate_15ov_z/	markerattrs = (color=black ) ;
-run;quit;
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549m";
@@ -450,6 +451,56 @@ scatter  x=cald y=o_p_testedly_1549w_zdhs/	markerattrs = (color=black) ;
 run;quit;
 
 
+
+*test_prop_positive;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Positivity rate";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
+label p50_test_prop_positive_0 = "Option 0 (median) ";
+label p50_test_prop_positive_1 = "Option 1 (median) ";
+label o_pos_rate_15ov_z = "CAL - Public sector";
+series  x=cald y=p50_test_prop_positive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_test_prop_positive_0 	upper=p95_test_prop_positive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+scatter  x=cald y=o_pos_rate_15ov_z/	markerattrs = (color=black ) ;
+run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of new diagnoses with HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
+
+label p50_n_diagnosed_0 = "Option 0 (median) ";
+label p50_n_diagnosed_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+*series  x=cald y=p50_n_diagnosed_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of ART initiations";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
+
+*label p50_n_all_ai_y_0 = "Option 0 (median) - all";
+*label p50_n_all_ai_y_1 = "Option 1  (median) - all";
+label p50_n_art_start_y_0 = "Option 0 (median) - 1st";
+label p50_n_art_start_y_1 = "Option 1  (median) - 1st";
+*series  x=cald y=p50_n_all_ai_y_0/	lineattrs = (color=black thickness = 2);
+*band    x=cald lower=p5_n_all_ai_y_0 	upper=p95_n_all_ai_y_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range - all";
+*series  x=cald y=p50_n_all_ai_y_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_all_ai_y_1 	upper=p95_n_all_ai_y_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_art_start_y_0/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_art_start_y_0 	upper=p95_n_art_start_y_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range - 1st";
+*series  x=cald y=p50_n_art_start_y_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_n_art_start_y_1 	upper=p95_n_art_start_y_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
 
 *!!!!!Note that the observed data are 15+;
 proc sgplot data=d; 
@@ -624,8 +675,40 @@ band    x=cald lower=p5_prevalence_hiv_preg_0 	upper=p95_prevalence_hiv_preg_0  
 scatter x=cald y=o_prev1549w_Z_anc  /  yerrorlower=o_prev1549_ll_Z_ess yerrorupper=o_prev1549_ul_Z_ess markerattrs = (color=orange) errorbarattrs = (color = orange);
 run;quit;
 
+/*
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence among pregnant women - by age";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
+label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
+label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
 
+series  x=cald y=p50_prev_hiv_preg_1519__0/	lineattrs = (color=yellow thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_1519__0 	upper=p95_prev_hiv_preg_1519__0  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "Model 90% range";
+series  x=cald y=p50_prev_hiv_preg_2024__0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_2024__0 	upper=p95_prev_hiv_preg_2024__0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
+series  x=cald y=p50_prev_hiv_preg_2529__0/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_2529__0 	upper=p95_prev_hiv_preg_2529__0  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prev_hiv_preg_3034__0/	lineattrs = (color=purple thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_3034__0 	upper=p95_prev_hiv_preg_3034__0  / transparency=0.9 fillattrs = (color=purple) legendlabel= "Model 90% range";
+series  x=cald y=p50_prev_hiv_preg_3539__0/	lineattrs = (color=violet thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_3539__0 	upper=p95_prev_hiv_preg_3539__0  / transparency=0.9 fillattrs = (color=violet) legendlabel= "Model 90% range";
 
+series  x=cald y=p50_prev_hiv_preg_4044__0/	lineattrs = (color=brown thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_4044__0 	upper=p95_prev_hiv_preg_4044__0  / transparency=0.9 fillattrs = (color=brown) legendlabel= "Model 90% range";
+series  x=cald y=p50_prev_hiv_preg_4549__0/	lineattrs = (color=darkbrown thickness = 2);
+band    x=cald lower=p5_prev_hiv_preg_4549__0 	upper=p95_prev_hiv_preg_4549__0  / transparency=0.9 fillattrs = (color=darkbrown) legendlabel= "Model 90% range";
+
+*MIHPSA optional;
+scatter x=cald y=o_prev1519w_Z_anc  /  markerattrs = (color=yellow);
+scatter x=cald y=o_prev2024w_Z_anc  /  markerattrs = (color=orange);
+scatter x=cald y=o_prev2529w_Z_anc  /  markerattrs = (color=red);
+scatter x=cald y=o_prev3034w_Z_anc  /  markerattrs = (color=purple);
+scatter x=cald y=o_prev3539w_Z_anc  /  markerattrs = (color=violet);
+scatter x=cald y=o_prev4044w_Z_anc  /  markerattrs = (color=brown);
+scatter x=cald y=o_prev4549w_Z_anc  /  markerattrs = (color=darkbrown);
+run;quit;
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -998,22 +1081,6 @@ band    x=cald lower=p5_p_onart_diag_w_0 	upper=p95_p_onart_diag_w_0  / transpar
 *series  x=cald y=p50_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);
 *band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter x=cald y=o_p_onart_1564f_diag_zimphia / markerattrs = (symbol=square color=orange size = 10);
-run;quit;
-
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of new diagnoses with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
-
-label p50_n_diagnosed_0 = "Option 0 (median) ";
-label p50_n_diagnosed_1 = "Option 1  (median) ";
-
-series  x=cald y=p50_n_diagnosed_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_diagnosed_0 	upper=p95_n_diagnosed_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-*series  x=cald y=p50_n_diagnosed_1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_n_diagnosed_1 	upper=p95_n_diagnosed_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
 
@@ -1504,28 +1571,35 @@ p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalen
 
 ;
 
-
-
-data age15w ; set f;  ageg=15; sex=2; 	p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;
-p95_prevalence = p95_prevalence1519w_0 ; o_prev_Z_ess=0.039;
-data age20w ; set f;  ageg=20; sex=2; p5_prevalence = p5_prevalence2024w_0 ; p50_prevalence = p50_prevalence2024w_0 ; 
-p95_prevalence = p95_prevalence2024w_0 ; o_prev_Z_ess=0.081;
-data age25w ; set f;  ageg=25; sex=2; p5_prevalence = p5_prevalence2529w_0 ;p50_prevalence = p50_prevalence2529w_0 ;
-p95_prevalence = p95_prevalence2529w_0 ; o_prev_Z_ess=0.143;
-data age30w ; set f;  ageg=30; sex=2; p5_prevalence = p5_prevalence3034w_0 ; p50_prevalence = p50_prevalence3034w_0 ; 
-p95_prevalence = p95_prevalence3034w_0 ; o_prev_Z_ess=0.22;
-data age35w ; set f;  ageg=35; sex=2; p5_prevalence = p5_prevalence3539w_0 ; p50_prevalence = p50_prevalence3539w_0 ; 
-p95_prevalence = p95_prevalence3539w_0 ; o_prev_Z_ess=0.266;
-data age40w ; set f;  ageg=40; sex=2; p5_prevalence = p5_prevalence4044w_0 ;p50_prevalence = p50_prevalence4044w_0 ;
-p95_prevalence = p95_prevalence4044w_0 ; o_prev_Z_ess=0.296;
-data age45w ; set f;  ageg=45; sex=2; p5_prevalence = p5_prevalence4549w_0 ; p50_prevalence = p50_prevalence4549w_0 ;
- p95_prevalence = p95_prevalence4549w_0 ; o_prev_Z_ess=0.289;
-data age50w ; set f;  ageg=50; sex=2; p5_prevalence = p5_prevalence5054w_0 ; p50_prevalence = p50_prevalence5054w_0 ; 
-p95_prevalence = p95_prevalence5054w_0 ; o_prev_Z_ess=0.21;
-data age55w ; set f;  ageg=55; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;
-p95_prevalence = p95_prevalence5559w_0 ; o_prev_Z_ess=0.17;
-data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
-p95_prevalence = p95_prevalence6064w_0 ;
+data age15w ; set f;  ageg=15; sex=2; 	
+p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;p95_prevalence = p95_prevalence1519w_0 ; 
+o_prev_Z_ess=0.039;
+data age20w ; set f;  ageg=20; sex=2; 
+p5_prevalence = p5_prevalence2024w_0 ; p50_prevalence = p50_prevalence2024w_0 ; p95_prevalence = p95_prevalence2024w_0 ; 
+o_prev_Z_ess=0.081;
+data age25w ; set f;  ageg=25; sex=2; 
+p5_prevalence = p5_prevalence2529w_0 ;p50_prevalence = p50_prevalence2529w_0 ;p95_prevalence = p95_prevalence2529w_0 ;
+o_prev_Z_ess=0.143;
+data age30w ; set f;  ageg=30; sex=2; 
+p5_prevalence = p5_prevalence3034w_0 ; p50_prevalence = p50_prevalence3034w_0 ; p95_prevalence = p95_prevalence3034w_0 ;
+o_prev_Z_ess=0.22;
+data age35w ; set f;  ageg=35; sex=2; 
+p5_prevalence = p5_prevalence3539w_0 ; p50_prevalence = p50_prevalence3539w_0 ; p95_prevalence = p95_prevalence3539w_0 ;
+o_prev_Z_ess=0.266;
+data age40w ; set f;  ageg=40; sex=2; 
+p5_prevalence = p5_prevalence4044w_0 ;p50_prevalence = p50_prevalence4044w_0 ;p95_prevalence = p95_prevalence4044w_0 ; 
+o_prev_Z_ess=0.296;
+data age45w ; set f;  ageg=45; sex=2; 
+p5_prevalence = p5_prevalence4549w_0 ; p50_prevalence = p50_prevalence4549w_0 ; p95_prevalence = p95_prevalence4549w_0 ; 
+o_prev_Z_ess=0.289;
+data age50w ; set f;  ageg=50; sex=2; 
+p5_prevalence = p5_prevalence5054w_0 ; p50_prevalence = p50_prevalence5054w_0 ; p95_prevalence = p95_prevalence5054w_0 ; 
+o_prev_Z_ess=0.21;
+data age55w ; set f;  ageg=55; sex=2; 
+p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;p95_prevalence = p95_prevalence5559w_0 ; 
+o_prev_Z_ess=0.17;
+data age60w ; set f;  ageg=60; sex=2; 
+p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064w_0 ;p95_prevalence = p95_prevalence6064w_0 ;
 
 data age15m ; set f;  ageg=15; sex=1; p5_prevalence = p5_prevalence1519m_0 ; p50_prevalence = p50_prevalence1519m_0 ; 
 p95_prevalence = p95_prevalence1519m_0 ; o_prev_Z_ess=0.032 ;
