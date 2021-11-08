@@ -4215,6 +4215,43 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				*lapr - assumes order of introduction is oral -> inj -> vr;
 				select;
 
+					* Only oral PrEP available;
+					when (caldate(t) ge date_prep_oral_intro and caldate(t) < date_prep_inj_intro) do;	
+						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
+							tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+							testfor_prep_oral=1;
+						end;
+					end;
+
+					* Oral and injectable PrEP available;
+					when (caldate(t) ge date_prep_inj_intro and caldate(t) < date_prep_vr_intro) do;	
+
+						select;
+							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
+								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_oral=1;
+							end;
+							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
+								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_inj=1;
+							end;
+							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
+								*(1) prefer oral prep to inj and willing;
+								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_oral=1;
+								end; 
+								*(2) prefer inj prep to oral and willing;
+								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_inj=1;
+								end; 
+								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+							end;
+						end;
+
+					end;
+
 					* All PrEP types available;
 					when (caldate{t} ge date_prep_vr_intro) do;											
 						tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
@@ -4224,44 +4261,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
 						end;
 					end;
-
-					* Oral and injectable PrEP available;
-					when (caldate(t) ge date_prep_inj_intro and caldate(t) < date_prep_vr_intro) do;	
-
-						select;
-							when (highest_prep_pref = 1)	do;		*lapr - preference for oral PrEP;
-								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_oral=1;
-							end;
-							when (highest_prep_pref = 2)	do;		*lapr - preference for inj PrEP;
-								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_inj=1;
-							end;
-							when (highest_prep_pref = 3)	do;		*lapr - preference for DPV ring but not available;
-								*lapr - (1) prefer oral prep to inj and willing;
-								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_oral=1;
-								end; 
-								*lapr - (2) prefer inj prep to oral and willing;
-								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_inj=1;
-								end; 
-								*lapr - (3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
-							end;
-						end;
-
-					end;
-
-					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and caldate(t) < date_prep_inj_intro) do;	
-						if prep_oral_willing=1 then do;		*lapr - regardless of preference, person will test for oral PrEP if willing;
-							tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-							testfor_prep_oral=1;
-						end;
-					end;
-				
+	
 				end;
 			end; 
 		end;
@@ -4291,8 +4291,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			end;
 
 
-			*re-initiation of PrEP;
-			else if prep_all_tm1 ne 1 then do; * dependent_on_time_step_length;
+			*Re-initiation of PrEP;
+			else if prep_all_tm1 ne 1 then do; * dependent_on_time_step_length;		*lapr - do we need to add testing to restart specific method here?;
 				a=rand('uniform'); if a < eff_rate_test_restartprep_all and stop_prep_all_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
 			end; * jul17;
 		end;
@@ -4310,12 +4310,12 @@ cost_test=0;
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
 (or without been diagnosed with) hiv;
 
-if prep_all=1 then do;		* lapr - relies on prep types being mutually exclusive ;
+if prep_all_tm1=1 then do;		* lapr - relies on prep types being mutually exclusive ;
 	if prep_all_elig=0 then stop_prep_all_elig=1;
 	select;
-		when (prep_oral=1)	do;	last_prep_used=1; if prep_all_elig=0 then stop_prep_oral_elig=1;	end;
-		when (prep_inj=1)	do;	last_prep_used=2; if prep_all_elig=0 then stop_prep_inj_elig=1;		end;
-		when (prep_vr=1)	do;	last_prep_used=3; if prep_all_elig=0 then stop_prep_vr_elig=1;		end;
+		when (prep_oral_tm1=1)	do;	last_prep_used=1; if prep_all_elig=0 then stop_prep_oral_elig=1;	end;
+		when (prep_inj_tm1=1)	do;	last_prep_used=2; if prep_all_elig=0 then stop_prep_inj_elig=1;		end;
+		when (prep_vr_tm1=1)	do;	last_prep_used=3; if prep_all_elig=0 then stop_prep_vr_elig=1;		end;
 	end;
 end;
 
