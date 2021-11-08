@@ -9,8 +9,9 @@ data g;    set b.out: ;
 
 proc sort data=g; 
 by run cald option;run;
-/*proc freq;table cald;run;*/
-*173 simulation 40309 observations, from 1984 to 2041.75;
+quit;
+proc freq;table cald;run;
+*857 simulation 199681 observations, from 1984 to 2041.75;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
@@ -1620,7 +1621,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
-*n=14;
+*n=69 out of 857;
 
 
 

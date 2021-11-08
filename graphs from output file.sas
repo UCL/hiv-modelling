@@ -6,7 +6,7 @@ libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv syn
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
-proc contents data=a.l_base_keep_zim;run;
+/*proc contents data=a.l_base_keep_zim;run;*/
 
 *Keep output to be able to create the following outputs:
 -	prevalence among pregnant women
@@ -139,7 +139,7 @@ ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  14   ;
+%let nfit =  69   ;
 *%let year_end = 2022.00 ;
 %let year_end = 2042.00 ;
 run;
@@ -318,7 +318,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 ods listing close;
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_14sim_20211105.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_69sim_20211108.rtf";
 ods html ;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -993,10 +993,10 @@ Title    height=1.5 justify=center "of men with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
-label p50_p_diag_m_0 = "Option 0 (median) ";
+label p50_p_diag_m_0 = "Option 0 (median) - 15+";
 label p50_p_diag_m_1 = "Option 1  (median) ";
-label o_p_diag_m1549_dhs = "DHS - men 15-49";
-label o_p_diag_1564m_zimphia = "ZIMPHIA - men 15-64";
+label o_p_diag_m1549_dhs = "DHS - 15-49";
+label o_p_diag_1564m_zimphia = "ZIMPHIA - 15-64";
 
 series  x=cald y=p50_p_diag_m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_diag_m_0 	upper=p95_p_diag_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
@@ -1011,10 +1011,10 @@ Title    height=1.5 justify=center "of women with hiv, % diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
-label p50_p_diag_w_0 = "Option 0 (median) ";
+label p50_p_diag_w_0 = "Option 0 (median) _ 15+";
 label p50_p_diag_w_1 = "Option 1  (median) ";
-label o_p_diag_w1549_dhs = "DHS - women 15-49";
-label o_p_diag_1564w_zimphia = "ZIMPHIA - women 15-64";
+label o_p_diag_w1549_dhs = "DHS - 15-49";
+label o_p_diag_1564w_zimphia = "ZIMPHIA - 15-64";
 
 series  x=cald y=p50_p_diag_w_0/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_p_diag_w_0 	upper=p95_p_diag_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
@@ -1873,87 +1873,149 @@ run;quit;
 
 ods rtf close; run;
 
-
-*p50_prevalence1549m_0 p5_prevalence1549m_0 	p95_prevalence1549m_0
+data e;set d;
+where cald in 
+(1990.5 1991.5 1992.5 1993.5 1994.5 1995.5 1996.5 1997.5 1998.5 1999.5 
+2000.5 2001.5 2002.5 2003.5 2004.5 2005.5 2006.5 2007.5 2008.5 2009.5 
+2010.5 2011.5 2012.5 2013.5 2014.5 2015.5 2016.5 2017.5 2018.5 2019.5 
+2020.5 2021.5 2022.5 2023.5 2024.5 2025.5 2026.5 2027.5 2028.5 2029.5 
+2030.5 2031.5 2032.5 2033.5 2034.5 2035.5 2036.5 2037.5 2038.5 2039.5 
+2040.5);
+rename p50_prevalence1549m_0 = p50_prev1549m_0 ;
+rename p5_prevalence1549m_0  = p05_prev1549m_0;
+rename p95_prevalence1549m_0 = p95_prev1549m_0;
+rename p50_prevalence1549w_0 = p50_prev1549w_0 ;
+rename p5_prevalence1549w_0  = p05_prev1549w_0;
+rename p95_prevalence1549w_0 = p95_prev1549w_0;
+rename p50_prevalence1549__0 = p50_prev1549__0 ;
+rename p5_prevalence1549__0  = p05_prev1549__0;
+rename p95_prevalence1549__0 = p95_prev1549__0;
+rename p50_prevalence_hiv_preg_0 = p50_prev_preg_0;
+rename p5_prevalence_hiv_preg_0  = p05_prev_preg_0;
+rename p95_prevalence_hiv_preg_0 = p95_prev_preg_0;
+rename p5_p_onart_m_0 = p05_p_onart_m_0;
+rename p5_p_onart_w_0 = p05_p_onart_w_0;
+rename p5_n_onart_m_0 = p05_n_onart_m_0;
+rename p5_n_onart_w_0 = p05_n_onart_w_0;
+rename p5_p_mcirc_1549m_0 = p05_p_mcirc_1549m_0;
+rename p5_p_diag_m_0 = p05_p_diag_m_0;
+rename p5_p_diag_w_0 = p05_p_diag_w_0;
+rename p5_p_onart_vl1000__0 = p05_p_onart_vl1000__0;
+keep cald
+p50_prevalence1549m_0 p5_prevalence1549m_0 	p95_prevalence1549m_0
 p50_prevalence1549w_0 p5_prevalence1549w_0 	p95_prevalence1549w_0
 p50_prevalence1549__0 p5_prevalence1549__0 	p95_prevalence1549__0
-
 p50_prevalence_hiv_preg_0 	p5_prevalence_hiv_preg_0 	p95_prevalence_hiv_preg_0 
-
 p50_p_onart_m_0 	p5_p_onart_m_0 	p95_p_onart_m_0  
 p50_p_onart_w_0 	p5_p_onart_w_0 	p95_p_onart_w_0  
-n_onart_m
-n_onart_w
-p_mcirc_1549m
-p_diag_m
-p_diag_w
-p_onart_vl1000
 
+p50_n_onart_m_0 	p5_n_onart_m_0 	p95_n_onart_m_0  
+p50_n_onart_w_0 	p5_n_onart_w_0 	p95_n_onart_w_0  
+
+p50_p_mcirc_1549m_0 	p5_p_mcirc_1549m_0 	p95_p_mcirc_1549m_0  
+
+p50_p_diag_m_0 	p5_p_diag_m_0 	p95_p_diag_m_0  
+p50_p_diag_w_0 	p5_p_diag_w_0 	p95_p_diag_w_0  
+
+p50_p_onart_vl1000__0 	p5_p_onart_vl1000__0 	p95_p_onart_vl1000__0  
 ;
+run;
+proc transpose data=e out=mihpsa_zim_stock_20211108;run;
+data mihpsa_zim_stock_20211108;set mihpsa_zim_stock_20211108;
+sub = substr(_NAME_,1,3);
+var = substr(_NAME_,5,9);
+if sub="p50" then ord=1;
+if sub="p05" then ord=2;
+if sub="p95" then ord=3;
+if var="prev1549m" then var_n=1;
+if var="prev1549w" then var_n=2;
+if var="prev1549_" then var_n=3;
+if var="prev_preg" then var_n=4;
+if var="p_onart_m" then var_n=5;
+if var="p_onart_w" then var_n=6;
+if var="n_onart_m" then var_n=7;
+if var="n_onart_w" then var_n=8;
+if var="p_mcirc_1" then var_n=9;
+if var="p_diag_m_" then var_n=10;
+if var="p_diag_w_" then var_n=11;
+if var="p_onart_v" then var_n=12;
 
+run;
+proc sort; by var_n ord;run;
+proc print;run;
 
 *FLOW;
-*incidence1549m
+data f;set d;
+*note that 1991 would refer to the period 1990.5-1991.5;
+where cald in 
+(1991 1992 1993 1994 1995 1996 1997 1998 1999 
+2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 
+2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 
+2020 2021 2022 2023 2024 2025 2026 2027 2028 2029 
+2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 
+2040 2041);
+rename p5_incidence1549m_0 = p05_incidence1549m_0;
+rename p5_incidence1549w_0 = p05_incidence1549w_0;
+rename p5_incidence1549__0 = p05_incidence1549__0;
+rename p5_n_new_inf1549m_0 = p05_n_new_inf1549m_0;
+rename p5_n_new_inf1549w_0 = p05_n_new_inf1549w_0;
+rename p5_n_new_inf1549__0 = p05_n_new_inf1549__0;
+rename p5_n_death_hivrel_m_0 = p05_n_death_hivrel_m_0;
+rename p5_n_death_hivrel_w_0 = p05_n_death_hivrel_w_0;
+rename p5_n_death_2059_m_0 = p05_n_death_2059_m_0;
+rename p5_n_death_2059_w_0 = p05_n_death_2059_w_0;
+rename p5_n_tested_m_0 = p05_n_tested_m_0;
+rename p5_n_tested_0 = p05_n_tested_0;
+rename p5_test_prop_positive_0 = p05_test_prop_positive_0;
+keep cald
+p50_incidence1549m_0 p5_incidence1549m_0 p95_incidence1549m_0
+p50_incidence1549w_0 p5_incidence1549w_0 p95_incidence1549w_0
+p50_incidence1549__0 p5_incidence1549__0 p95_incidence1549__0
+p50_n_new_inf1549m_0 p5_n_new_inf1549m_0 p95_n_new_inf1549m_0
+p50_n_new_inf1549w_0 p5_n_new_inf1549w_0 p95_n_new_inf1549w_0
+p50_n_new_inf1549__0 p5_n_new_inf1549__0 p95_n_new_inf1549__0
+
+p50_n_death_hivrel_m_0 p5_n_death_hivrel_m_0 p95_n_death_hivrel_m_0
+p50_n_death_hivrel_w_0 p5_n_death_hivrel_w_0 p95_n_death_hivrel_w_0
+p50_n_death_2059_m_0   p5_n_death_2059_m_0 	 p95_n_death_2059_m_0
+p50_n_death_2059_w_0   p5_n_death_2059_w_0 	 p95_n_death_2059_w_0
+
+p50_n_tested_m_0 			p5_n_tested_m_0 		p95_n_tested_m_0
+p50_n_tested_0 			p5_n_tested_0 		p95_n_tested_0
+
+p50_test_prop_positive_0	p5_test_prop_positive_0 	p95_test_prop_positive_0;
+run;
+proc transpose data=f out=mihpsa_zim_flow_20211108;run;
+data mihpsa_zim_flow_20211108;set mihpsa_zim_flow_20211108;
+sub = substr(_NAME_,1,3);
+var = substr(_NAME_,5,16);
+if sub="p50" then ord=1;
+if sub="p05" then ord=2;
+if sub="p95" then ord=3;
+if var="incidence1549m_0" then var_n=1;
+if var="incidence1549w_0" then var_n=2;
+if var="incidence1549__0" then var_n=3;
+if var="n_new_inf1549m_0" then var_n=4;
+if var="n_new_inf1549w_0" then var_n=5;
+if var="n_new_inf1549__0" then var_n=6;
+if var="n_death_hivrel_m" then var_n=7;
+if var="n_death_hivrel_w" then var_n=8;
+
+if var="n_death_2059_m_0" then var_n=9;
+if var="n_death_2059_w_0" then var_n=10;
+
+if var="n_tested_m_0" then var_n=11;
+if var="n_tested_0" then var_n=12;
+if var="test_prop_positi" then var_n=13;
+run;
+proc sort; by var_n ord;run;
+proc print;run;
 
 
-incidence1549w
-
-
-incidence1549_
 
 
 
 
-n_new_inf1549m
 
 
-n_new_inf1549w
-
-
-n_new_inf1549
-
-
-
-
-n_death_hivrel_m
-
-
-n_death_hivrel_w
-
-
-NA
-
-
-NA
-
-
-
-
-n_death_2059_m
-
-
-n_death_2059_w
-
-
-ADD UP THE 2 ABOVE
-
-
-
-
-n_tested_m
-
-
-OBTAIN BY SUBSTRACTION
-
-
-n_tested
-
-
-
-
-test_prop_positive
-
-
-;
-
-
+run;
