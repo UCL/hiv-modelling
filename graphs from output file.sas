@@ -1874,5 +1874,86 @@ run;quit;
 ods rtf close; run;
 
 
+*p50_prevalence1549m_0 p5_prevalence1549m_0 	p95_prevalence1549m_0
+p50_prevalence1549w_0 p5_prevalence1549w_0 	p95_prevalence1549w_0
+p50_prevalence1549__0 p5_prevalence1549__0 	p95_prevalence1549__0
 
-	
+p50_prevalence_hiv_preg_0 	p5_prevalence_hiv_preg_0 	p95_prevalence_hiv_preg_0 
+
+p50_p_onart_m_0 	p5_p_onart_m_0 	p95_p_onart_m_0  
+p50_p_onart_w_0 	p5_p_onart_w_0 	p95_p_onart_w_0  
+n_onart_m
+n_onart_w
+p_mcirc_1549m
+p_diag_m
+p_diag_w
+p_onart_vl1000
+
+;
+
+
+*FLOW;
+*incidence1549m
+
+
+incidence1549w
+
+
+incidence1549_
+
+
+
+
+n_new_inf1549m
+
+
+n_new_inf1549w
+
+
+n_new_inf1549
+
+
+
+
+n_death_hivrel_m
+
+
+n_death_hivrel_w
+
+
+NA
+
+
+NA
+
+
+
+
+n_death_2059_m
+
+
+n_death_2059_w
+
+
+ADD UP THE 2 ABOVE
+
+
+
+
+n_tested_m
+
+
+OBTAIN BY SUBSTRACTION
+
+
+n_tested
+
+
+
+
+test_prop_positive
+
+
+;
+
+
