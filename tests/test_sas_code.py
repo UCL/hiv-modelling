@@ -5,31 +5,12 @@ import sys
 import pytest
 
 
-def get_values(range):
-    """Get the values indicated by a range expression.
-
-    :raises: ValueError if the range limits are not integers.
-    """
-    tokens = range.split(":")
-    assert len(tokens) == 2, "Range expression should only have one :"
-    low, high = [int(token.strip()) for token in tokens]
-    return list(range(low, high + 1))
-
-
 def get_length(argument):
     """Get the number of values in a list of arguments.
     
-    The argument string is either a space-separated list of values,
-    or a range of consecutive integer values indicated by a colon ":".
-    Returns None if any errors occurred.
+    The argument string should be a space-separated list of values.
     """
-    if ":" in argument:  # if this is a range
-        try:
-            values = get_values(argument)
-        except ValueError:
-            return None
-    else:  # if the values are explicitly given
-        values = re.split("\s+", argument)
+    values = re.split("\s+", argument)
     return len(values)
 
 
