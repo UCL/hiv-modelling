@@ -5,13 +5,15 @@
 
 data wide;  
 
-  set 	a.wide_oral_prep_13       ;  
+* set 	a.wide_oral_prep_13       ;  
+  set 	a.wide_oral_prep_13_s6    ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
   if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  ; 
 
 
+if zero_3tc_activity_m184m = 0 and  zero_tdf_activity_k65r = 0;
 
 * printing run numbers for included runs for use in graph program;
 /*
@@ -675,7 +677,8 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var incidence1549_21_71_1 incidence1549_21_71_2  r_incidence_21_71_2
- incidence1549m_41_1 incidence1549m_41_2  incidence1549m_70_1 incidence1549m_70_2 
+incidence1549_21_41_1 incidence1549_21_41_2  r_incidence_21_41_2
+incidence1549m_41_1 incidence1549m_41_2  incidence1549m_70_1 incidence1549m_70_2 
 incidence1549w_41_1 incidence1549w_41_2  incidence1549w_70_1 incidence1549w_70_2
 incidence1524w_70_1 incidence1524w_70_2 incidence1524w_21_71_1 incidence1524w_21_71_2  r_incidence1524w_21_71_2 ;  
 run; 

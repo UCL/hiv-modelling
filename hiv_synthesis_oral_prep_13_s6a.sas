@@ -564,7 +564,7 @@ newp_seed = 7;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.0005 0.001 0.0015 , 0.33 0.34 0.33);
+* base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 							
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
@@ -2278,7 +2278,7 @@ who may be dead and hence have caldate{t} missing;
 		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
 		eff_rate_choose_stop_prep = 0.05 ; 
 		eff_prob_prep_restart_choice = 0.7 ;
-		adhav_prep = adhav*1.00;
+		adhav_prep = adhav*1.00;      
 		if _u38 < 0.333 then do;  			r=rand('uniform'); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
 		if 0.333 <= _u38 < 0.666 then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
 		if 0.666 <= _u38         then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
@@ -2286,24 +2286,29 @@ who may be dead and hence have caldate{t} missing;
 													 
 	end;
 											  
-	if option = 2 then do;
-										   
-	
-		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
-		prep_strategy = 4;
-		prob_prep_pop_wide_tld = 0.50; 
-		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		eff_rate_choose_stop_prep = 0.05 ;  
-		eff_prob_prep_restart_choice = 0.7 ;
-		adhav_prep = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=rand('uniform'); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
-		if 0.666 <= _u38         then do;  	r=rand('uniform'); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
-		add_prepuptake_sw = 0.95;														
-														   
-	end;
-									  								  								  
+							  								  								  
 end;
+
+
+/*
+		prep_strategy = 13;   
+		eff_rate_test_startprep = 0.5; eff_rate_test_restartprep = 0.5; 
+		eff_rate_choose_stop_prep = 0.2  ; 
+		eff_prob_prep_restart_choice = 0.2 ;
+		adhav_pr = adhav*1.00;
+		if prep_willing_pop = 0 and r < 0.50  then prep_willing_pop = 1; 
+		r=rand('Uniform'); if prep_willing_sw = 0 and r < 0.95 then prep_willing_sw = 1;
+*/
+
+*
+s1		eff_rate_test_startprep = 0.5  eff_rate_test_restartprep = 0.5 
+s2 		if prep_willing_pop = 0 and r < 0.50 then prep_willing_pop = 1
+s3 		eff_rate_choose_stop_prep  = 0.2   eff_prob_prep_restart_choice = 0.2  
+s4		adhav_pr = adhav*0.49
+s5		s1 + s2 + s3
+;
+
+
 
 
 * ==========================================================================================================================================;
@@ -5179,7 +5184,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.25 * prep_efficacy)); * s6a;
 			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_efficacy));
 
@@ -5352,7 +5357,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * 0.50 * prep_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * 0.25 * prep_efficacy)); * s6a;
 			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * prep_efficacy));
 			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * 0.5 * prep_efficacy));
 
