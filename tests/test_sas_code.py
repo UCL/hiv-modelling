@@ -1,8 +1,7 @@
 """Static tests for the code in hiv_synthesis.py"""
+import math
 import re
 import sys
-
-import pytest
 
 
 def get_length(argument):
@@ -26,7 +25,7 @@ def validate_expression(values, probabilities):
     # Ensure that values in probability lists are non-negative and sum to 1
     assert (all(p >= 0 for p in probability_values)), \
         f"Some probabilities are not positive"
-    assert pytest.approx(sum(probability_values)) == 1.0, \
+    assert math.isclose(sum(probability_values), 1.0), \
         f"Probabilities should sum to 1"
 
 
