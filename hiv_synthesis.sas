@@ -4311,10 +4311,11 @@ cost_test=0;
 (or without been diagnosed with) hiv;
 
 if prep_all=1 then do;		* lapr - relies on prep types being mutually exclusive ;
+	if prep_all_elig=0 then stop_prep_all_elig=1;
 	select;
-		when (prep_oral=1)	last_prep_used=1;
-		when (prep_inj=1)	last_prep_used=2;
-		when (prep_vr=1)	last_prep_used=3;
+		when (prep_oral=1)	do;	last_prep_used=1; if prep_all_elig=0 then stop_prep_oral_elig=1;	end;
+		when (prep_inj=1)	do;	last_prep_used=2; if prep_all_elig=0 then stop_prep_inj_elig=1;		end;
+		when (prep_vr=1)	do;	last_prep_used=3; if prep_all_elig=0 then stop_prep_vr_elig=1;		end;
 	end;
 end;
 
@@ -15692,8 +15693,9 @@ proc print; var caldate&j age highest_prep_pref tested registd hard_reach prep_a
 	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
 	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
 	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice
+	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig
 	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c;
-where serial_no<60;
+where serial_no<50;
 run; 
 proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
