@@ -6,7 +6,7 @@
 
 data y; 
 
-  set a.oral_prep_13    ;  
+  set a.oral_prep_13_7pdisc    ;  
 
 
   options nomprint;
@@ -74,5 +74,6 @@ proc sort; by run; run;
   set   wide_outputs  ;  
   by run;
 
-proc contents; run;
+proc print  data = a.wide_oral_prep_13_7pdisc; run;
+
 

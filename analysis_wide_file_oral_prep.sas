@@ -86,7 +86,7 @@ be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) 
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
 (dcost_prep_21_71_2  * 1   *  60 / 60 ) +
-(dcost_prep_visit_21_71_2 * 1  )     + 
+(dcost_prep_visit_21_71_2 * 1   )     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2   +    
 dvl_cost_21_71_2    +      
@@ -1193,7 +1193,7 @@ proc print;
 var prevalence_vg1000_21_g   predicted; 
 run; 
 
-
+ods html close;
 
 
 

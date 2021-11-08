@@ -186,7 +186,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 %let discount=discount_3py;
 
 
-discount_adj = 1(1.03/1.07**(cald-2022.5));
+discount_adj = (1.03/1.07)**(cald-2022.5);
 
 
 * ================================================================================= ;
@@ -968,11 +968,6 @@ keep run option cald dcost ddaly_all
 
 
 
-
-
-
-
-
 proc sort data=y;by run option;run;
 
 data a.oral_prep_13_7pdisc      ;
@@ -980,7 +975,6 @@ set y;
 
 
 proc contents data=a.oral_prep_13_7pdisc; 
-proc freq data=a.oral_prep_13; tables run; where cald = 2020;
 run;
 
 
