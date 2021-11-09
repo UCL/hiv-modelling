@@ -6581,6 +6581,11 @@ res_test=.;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer=prointer * eff_sw_higher_int;
+
+		***lbm Oct19;
+		prob_noint=(1-prointer)/eff_sw_higher_int;
+		new_prointer=1-prob_noint;
+		
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -7316,7 +7321,7 @@ if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 e=rand('uniform');
 if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
-if sw=1 then adh = adh * eff_sw_lower_adh;
+if sw=1 and sw_prog=1 then adh = adh * eff_sw_lower_adh;
 
 
 
