@@ -12847,37 +12847,24 @@ hiv_w1549_anc=0;hiv_w1524_anc=0;hiv_w1519_anc=0;hiv_w2024_anc=0;hiv_w2529_anc=0;
 hiv_w4549_anc=0;hiv_w50pl_anc=0;
 
 w1549_anc=0;	   w1524_anc=0;
+hiv_pregn_w1549_=0; hiv_pregn_w1524_=0;
+hiv_pregn_w1519_=0; hiv_pregn_w2024_=0; hiv_pregn_w2529_=0; hiv_pregn_w3034_=0; hiv_pregn_w3539_=0; hiv_pregn_w4044_=0;
+hiv_pregn_w4549_=0; hiv_pregn_w50pl_=0;
 if gender=2 and pregnant=1 then do;
 
-	if 15 le age lt 50 then do; pregnant_w1549=1; if anc=1 then do; w1549_anc=1;tested_w1549_anc=tested; hiv_w1549_anc=hiv;end;end;
-	if 15 le age lt 25 then do; pregnant_w1524=1; if anc=1 then do; w1524_anc=1;tested_w1524_anc=tested; hiv_w1524_anc=hiv;end;end;
-	if 15 le age lt 20 then do; pregnant_w1519=1; if anc=1 then do; 			 tested_w1519_anc=tested; hiv_w1519_anc=hiv;end;end;
-	if 20 le age lt 25 then do; pregnant_w2024=1; if anc=1 then do; 			 tested_w2024_anc=tested; hiv_w2024_anc=hiv;end;end;
-	if 25 le age lt 30 then do; pregnant_w2529=1; if anc=1 then do; 			 tested_w2529_anc=tested; hiv_w2529_anc=hiv;end;end;
-	if 30 le age lt 35 then do; pregnant_w3034=1; if anc=1 then do; 			 tested_w3034_anc=tested; hiv_w3034_anc=hiv;end;end;
-	if 35 le age lt 40 then do; pregnant_w3539=1; if anc=1 then do; 			 tested_w3539_anc=tested; hiv_w3539_anc=hiv;end;end;
-	if 40 le age lt 45 then do; pregnant_w4044=1; if anc=1 then do; 			 tested_w4044_anc=tested; hiv_w4044_anc=hiv;end;end;
-	if 45 le age lt 50 then do; pregnant_w4549=1; if anc=1 then do; 			 tested_w4549_anc=tested; hiv_w4549_anc=hiv;end;end;
-	if 50 le age lt 65 then do; pregnant_w50pl=1; if anc=1 then do; 			 tested_w5064_anc=tested; hiv_w5064_anc=hiv;end;end;
+	if 15 le age lt 50 then do; pregnant_w1549=1; hiv_pregn_w1549_=1; if anc=1 then do; w1549_anc=1;tested_w1549_anc=tested; hiv_w1549_anc=hiv;end;end;
+	if 15 le age lt 25 then do; pregnant_w1524=1; hiv_pregn_w1524_=1; if anc=1 then do; w1524_anc=1;tested_w1524_anc=tested; hiv_w1524_anc=hiv;end;end;
+	if 15 le age lt 20 then do; pregnant_w1519=1; hiv_pregn_w1519_=1; if anc=1 then do; 			 tested_w1519_anc=tested; hiv_w1519_anc=hiv;end;end;
+	if 20 le age lt 25 then do; pregnant_w2024=1; hiv_pregn_w2024_=1; if anc=1 then do; 			 tested_w2024_anc=tested; hiv_w2024_anc=hiv;end;end;
+	if 25 le age lt 30 then do; pregnant_w2529=1; hiv_pregn_w2529_=1; if anc=1 then do; 			 tested_w2529_anc=tested; hiv_w2529_anc=hiv;end;end;
+	if 30 le age lt 35 then do; pregnant_w3034=1; hiv_pregn_w3034_=1; if anc=1 then do; 			 tested_w3034_anc=tested; hiv_w3034_anc=hiv;end;end;
+	if 35 le age lt 40 then do; pregnant_w3539=1; hiv_pregn_w3539_=1; if anc=1 then do; 			 tested_w3539_anc=tested; hiv_w3539_anc=hiv;end;end;
+	if 40 le age lt 45 then do; pregnant_w4044=1; hiv_pregn_w4044_=1; if anc=1 then do; 			 tested_w4044_anc=tested; hiv_w4044_anc=hiv;end;end;
+	if 45 le age lt 50 then do; pregnant_w4549=1; hiv_pregn_w4549_=1; if anc=1 then do; 			 tested_w4549_anc=tested; hiv_w4549_anc=hiv;end;end;
+	if 50 le age lt 65 then do; pregnant_w50pl=1; hiv_pregn_w50pl_=1; if anc=1 then do; 			 tested_w5064_anc=tested; hiv_w5064_anc=hiv;end;end;
 end;
 
-hiv_pregnant=0; 
-hiv_pregn_w1549_=0; hiv_pregn_w1524_=0;
-hiv_pregn_w1519_=0; hiv_pregn_w2024_=0; hiv_pregn_w2529_=0; hiv_pregn_w3034_=0; hiv_pregn_w3539_=0; 
-hiv_pregn_w4044_=0; hiv_pregn_w4549_=0; hiv_pregn_w50pl_=0;
-if pregnant=1 and hiv=1 then do;
-	hiv_pregnant=1;
-	if 15 le age lt 50 then hiv_pregn_w1549_=1;
-	if 15 le age lt 25 then hiv_pregn_w1524_=1; 
-	if 15 le age lt 20 then hiv_pregn_w1519_=1;
-	if 20 le age lt 25 then hiv_pregn_w2024_=1;
-	if 25 le age lt 30 then hiv_pregn_w2529_=1;
-	if 30 le age lt 35 then hiv_pregn_w3034_=1;
-	if 35 le age lt 40 then hiv_pregn_w3539_=1;
-	if 40 le age lt 45 then hiv_pregn_w4044_=1;
-	if 45 le age lt 50 then hiv_pregn_w4549_=1;
-	if 50 le age lt 65 then hiv_pregn_w50pl_=1;
-end;
+hiv_pregnant=0; if pregnant=1 and hiv=1 then hiv_pregnant=1;
 hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
 
 pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or . lt time0 le caldate&j) then pmtct=1;
@@ -13800,6 +13787,7 @@ if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
     if e_rttams ge 1 then _ai_naive_no_pmtct_e_rttams_=1;
 end;
 
+first_artinit =.;if yrart=caldate&j > . then first_artinit =1;
 
 *   all art (re-)initiators  ;
 _all_ai_=.;_all_ai_c_r_=.; _all_ai_c_nnm_=.; _all_ai_c_pim_=.;_all_ai_c_inm_=.;_all_ai_c_rt184m_=.;_all_ai_c_rt65m_=.;_all_ai_c_rttams_=.;
@@ -14761,6 +14749,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_ai_naive_no_pmtct_e_nnm_ + _ai_naive_no_pmtct_e_nnm_ ; s_ai_naive_no_pmtct_e_pim_ + _ai_naive_no_pmtct_e_pim_ ;
 	s_ai_naive_no_pmtct_e_inm_ + _ai_naive_no_pmtct_e_inm_ ; s_ai_naive_no_pmtct_e_rt184m_ + _ai_naive_no_pmtct_e_rt184m_ ;
     s_ai_naive_no_pmtct_e_rt65m_ + _ai_naive_no_pmtct_e_rt65m_ ; s_ai_naive_no_pmtct_e_rttams_ + _ai_naive_no_pmtct_e_rttams_ ;   
+	s_first_artinit + first_artinit;
 	s_all_ai_ + _all_ai_ ; s_all_ai_c_r_ + _all_ai_c_r_ ; s_all_ai_c_nnm_ + _all_ai_c_nnm_ ; s_all_ai_c_pim_ + _all_ai_c_pim_ ;
     s_all_ai_c_inm_ + _all_ai_c_inm_ ; s_all_ai_c_rt184m_ + _all_ai_c_rt184m_ ; s_all_ai_c_rt65m_ + _all_ai_c_rt65m_ ;  
 	s_all_ai_c_rttams_ + _all_ai_c_rttams_ ; s_all_ai_e_r_ + _all_ai_e_r_ ; s_all_ai_e_nnm_ + _all_ai_e_nnm_ ; s_all_ai_e_pim_ + _all_ai_e_pim_ ;
@@ -16121,7 +16110,7 @@ s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
 /*ART*/
-s_all_ai_ 		s_naive    s_onart  s_int_clinic_not_aw
+ s_naive    s_onart  s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
@@ -16994,7 +16983,7 @@ s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
 /*ART*/
-s_all_ai_		s_naive    s_onart  s_int_clinic_not_aw
+ s_naive    s_onart  s_int_clinic_not_aw
 s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
@@ -17312,8 +17301,8 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 s_ai_naive_no_pmtct_c_inm_  s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_r_      s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  
 s_ai_naive_no_pmtct_c_rttams_ s_ai_naive_no_pmtct_e_inm_   s_ai_naive_no_pmtct_e_nnm_   s_ai_naive_no_pmtct_e_pim_  
 s_ai_naive_no_pmtct_e_r_    s_ai_naive_no_pmtct_e_rt184m_   s_ai_naive_no_pmtct_e_rt65m_   s_ai_naive_no_pmtct_e_rttams_ 
-
-        		s_all_ai_c_inm_     s_all_ai_c_nnm_    s_all_ai_c_pim_    s_all_ai_c_r_  
+s_first_artinit
+s_all_ai_        		s_all_ai_c_inm_     s_all_ai_c_nnm_    s_all_ai_c_pim_    s_all_ai_c_r_  
 s_all_ai_c_rt184m_     	s_all_ai_c_rt65m_       s_all_ai_c_rttams_   s_all_ai_e_inm_    s_all_ai_e_nnm_ 
 s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     s_all_ai_e_rt65m_    s_all_ai_e_rttams_  
 s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2yr_on   s_art_attrit_3yr   
