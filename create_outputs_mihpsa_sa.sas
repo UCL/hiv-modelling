@@ -126,13 +126,13 @@ s_alive = s_alive_m + s_alive_w ;
 * n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
 * n_tested  ;					n_tested   = n_tested_w + n_tested_m ;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
-
+* n_alive;						n_alive = s_alive * &sf ;
 
 keep run option cald 
 
 prevalence1549m prevalence1549w prevalence1549 prevalence_hiv_preg p_onart_w p_onart_m p_onart  n_onart_w n_onart_m n_onart p_mcirc_1549m p_diag_w 
 p_diag_m p_diag p_onart_vl1000_ incidence1549w incidence1549m incidence1549  n_new_inf1549m n_new_inf1549w n_new_inf1549 n_death_hiv_m n_death_hiv_w 
-n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested
+n_death_hiv n_death_2059_w n_death_2059_m n_tested_m n_tested_w test_prop_positive n_death_2059 n_tested  n_alive
 
 ;
 
@@ -472,7 +472,7 @@ e_28 e_29 e_30 e_31 e_32 e_33 e_34 e_35 e_36 e_37 e_38 e_39 e_40
 
 %mend var;
 
-%var(v = test_prop_positive );
+%var(v = n_alive );
 
 /*
 
@@ -504,7 +504,7 @@ y2829 y2930 y3031 y3132 y3233 y3334 y3435 y3536 y3637 y3738 y3839 y3940 y4041 ;
 run;
 ods html close;
 
-/*
+
 
 ods html;
 title '';
@@ -516,7 +516,7 @@ y28 y29 y30 y31 y32 y33 y34 y35 y36 y37 y38 y39 y40;
 run;
 ods html close;
 
-*/
+
 
 
 
