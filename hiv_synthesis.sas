@@ -4348,8 +4348,8 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	if prep_all_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
 	 
 			if prep_all_willing=1 then do; 
-			*********** lapr and dpv-vr - ADD CONDITION TO START ON DATE_INTRO - we will need to add switching between prep methods; ******************* ;
-				if 		testfor_prep_oral = 1  	then do;	
+			*********** lapr and dpv-vr - we will need to add switching between prep methods; ******************* ;
+				if testfor_prep_oral = 1  		then do;	
 					prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};
 					prep_oral=1; 	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};	
 				end; 
@@ -4365,23 +4365,41 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
-						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 										*lapr - oral prep available from start of prep rollout;
+						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 										*Oral PrEP available from start of PrEP rollout;
 							prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro and r < prob_prep_inj_b then do; 								*lapr - inj prep available;
+							if caldate{t} ge date_prep_inj_intro and r < prob_prep_inj_b then do; 								*Inj PrEP available;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};	dt_prep_inj_e=caldate{t};
 							end; 
-							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do; 	*lapr - inj prep preferred but not available - start oral prep instead if willing;
+							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 							end;
-						when (highest_prep_pref = 3) 	 if r < prob_prep_vr_b and caldate{t} > date_prep_vr_intro then do; 	* UPDATE NEEDED HERE ****************************;
-							prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
-							prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 	dt_prep_vr_e=caldate{t};
-						end; 
+						when (highest_prep_pref = 3) 	 
+							if caldate{t} ge date_prep_vr_intro and r < prob_prep_vr_b then do; 								*VR PrEP available;
+								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
+								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 	dt_prep_vr_e=caldate{t};
+							end; 
+							else if caldate{t} ge date_prep_inj_intro and caldate{t} < date_prep_vr_intro then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP;
+								*(1) Prefer oral PrEP to inj and willing;
+								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 and r < prob_prep_oral_b then do;
+									prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
+									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
+								end; 
+								*(2) Prefer inj PrEP to oral and willing;
+								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 and r < prob_prep_inj_b then do;
+									prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
+									prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};	dt_prep_inj_e=caldate{t};
+								end; 
+								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+							end;
+							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
+								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
+							end;
 					end; 
 				end;
 				
