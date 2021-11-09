@@ -6,14 +6,13 @@
 data wide;  
 
 * set 	a.wide_oral_prep_13       ;  
-  set 	a.wide_oral_prep_13_s6    ;  
+  set 	a.wide_oral_prep_13_s6a   ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
   if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  ; 
 
 
-if zero_3tc_activity_m184m = 0 and  zero_tdf_activity_k65r = 0;
 
 * printing run numbers for included runs for use in graph program;
 /*
