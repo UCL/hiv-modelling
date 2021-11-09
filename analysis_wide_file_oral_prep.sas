@@ -5,8 +5,8 @@
 
 data wide;  
 
-* set 	a.wide_oral_prep_13       ;  
-  set 	a.wide_oral_prep_13_s6a   ;  
+  set 	a.wide_oral_prep_13       ;  
+* set 	a.wide_oral_prep_13_s6a   ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
@@ -465,6 +465,10 @@ prop_sw_hiv_70_2 prop_sw_onprep_70_2 p_newp_sw_70_2  n_tested_70_2 aids_death_ra
 prevalence_vg1000_70_2 p_inf_newp_70_2 p_w_newp_ge1_age1549_70_2 p_m_newp_ge1_age1549_70_2 ;
 run;
 ods html close;
+
+proc means n mean uclm lclm  p5  p95 data=wide;  
+var p_newp_ge1_17  p_newp_ge1_21  p_newp_ge1_21_22_1  p_newp_ge1_21_26_1  p_newp_ge1_21_41_1  p_newp_ge1_21_71_1  p_newp_ge1_41_1  p_newp_ge1_70_1 ;
+run;
 
 proc means p50 p5 p95 p99; var prevalence1524m_21 prevalence1524w_21 prevalence2024m_21 prevalence2024w_21 
 prevalence1549m_21 prevalence1549w_21 p_inf_ep_21 p_newp_sw_21 prop_w_1549_sw_21 incidence1549m_21 incidence1549w_21
