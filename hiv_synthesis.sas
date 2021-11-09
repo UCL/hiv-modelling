@@ -4365,12 +4365,12 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
-						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 										*Oral PrEP available from start of PrEP rollout;
+						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 										*Oral PrEP preferred and is available from start of PrEP rollout;
 							prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro and r < prob_prep_inj_b then do; 								*Inj PrEP available;
+							if caldate{t} ge date_prep_inj_intro and r < prob_prep_inj_b then do; 								*Inj PrEP preferred and is available;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};	dt_prep_inj_e=caldate{t};
 							end; 
@@ -4379,11 +4379,11 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 							end;
 						when (highest_prep_pref = 3) 	 
-							if caldate{t} ge date_prep_vr_intro and r < prob_prep_vr_b then do; 								*VR PrEP available;
+							if caldate{t} ge date_prep_vr_intro and r < prob_prep_vr_b then do; 								*VR PrEP preferred and is available;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 	dt_prep_vr_e=caldate{t};
 							end; 
-							else if caldate{t} ge date_prep_inj_intro and caldate{t} < date_prep_vr_intro then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP;
+							else if caldate{t} ge date_prep_inj_intro and caldate{t} < date_prep_vr_intro then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
 								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 and r < prob_prep_oral_b then do;
 									prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
