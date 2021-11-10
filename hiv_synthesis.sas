@@ -37,12 +37,16 @@ The list of probabilities must sum to 1.
 The lengths of the two lists (values and probabilities) must be equal.
 */
 %macro sample(name, v, p);
-	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
+	%let cnt=%sysfunc(countw(&p,,s));
+	%let cnt_v=%sysfunc(countw(&v,,s));
+	%if &cnt ^= &cnt_v %then %do; * stop if p and v have different lengths;
+		%put ERROR: mismatched values and probabilities for &name;
+		%abort cancel;
+	%end;
 	randvar = rand('uniform');
 	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
 	if randvar < &cum_prob then
 		&name = %scan(&v,1,,s);
-	%let cnt=%sysfunc(countw(&p,,s));
 	%do i=2 %to &cnt;
 		%let cum_prob = %sysevalf(&cum_prob + %scan(&p,&i,,s));
 		%let value=%scan(&v,&i,,S);
@@ -1480,7 +1484,7 @@ e_rt103_tm1 = . ;  e_rt181_tm1 = . ;  e_rt190_tm1 = . ;  e_pr32_tm1 = . ;  e_pr3
 e_pr50l_tm1 = . ;  e_pr54_tm1 = . ;  e_pr76_tm1 = . ;  e_pr82_tm1 = . ;  e_pr84_tm1 = . ;  e_pr88_tm1 = . ;  e_pr90_tm1 = . ;  c_rt184_tm1 = . ; 
 c_rt65_tm1 = . ;  c_rt151_tm1 = . ;  c_rt103_tm1 = . ;  c_rt181_tm1 = . ;  c_rt190_tm1 = . ;  c_pr32_tm1 = . ;  c_pr33_tm1 = . ;  c_pr46_tm1 = . ; 
 c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76_tm1 = . ;  c_pr82_tm1 = . ;  c_pr84_tm1 = . ;  c_pr88_tm1 = . ; 
-c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184m = . ;  r_nau_start_taz_dar = . ; 
+c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
 newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
@@ -9732,7 +9736,7 @@ if naive=1 then do; artline=.; linefail=.;end;
 * 3tc;
 if e_rt65m=1 or e_rt151m=1 then r_3tc=0.25;
 if e_rt184m=1                 then r_3tc=0.75;  
-if zero_3tc_activity_m184m=1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00;
+if zero_3tc_activity_m184 =1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00;
 
 
 * zdv;
