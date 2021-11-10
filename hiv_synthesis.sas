@@ -37,12 +37,16 @@ The list of probabilities must sum to 1.
 The lengths of the two lists (values and probabilities) must be equal.
 */
 %macro sample(name, v, p);
-	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
+	%let cnt=%sysfunc(countw(&p,,s));
+	%let cnt_v=%sysfunc(countw(&v,,s));
+	%if &cnt ^= &cnt_v %then %do; * stop if p and v have different lengths;
+		%put ERROR: mismatched values and probabilities for &name;
+		%abort cancel;
+	%end;
 	randvar = rand('uniform');
 	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
 	if randvar < &cum_prob then
 		&name = %scan(&v,1,,s);
-	%let cnt=%sysfunc(countw(&p,,s));
 	%do i=2 %to &cnt;
 		%let cum_prob = %sysevalf(&cum_prob + %scan(&p,&i,,s));
 		%let value=%scan(&v,&i,,S);
