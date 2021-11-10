@@ -4413,11 +4413,12 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	if (prep_oral=1 or prep_inj=1 or prep_vr=1) and (hiv=1 and unisensprep > sens_vct) then do; 
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;end;
 	end;
-	* continuing PrEP;		* lapr and dpv-vr - also switching between prep options;
+	* continuing PrEP;		* lapr and dpv-vr - also add switching between prep options **************************;
 	tmp_prep=0;
 	if prep_all_ever=1 and dt_prep_all_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
+	tmp_prep=1;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_oral then do;
 				if r < (1-eff_rate_choose_stop_prep_oral) then do; 	
 					prep_all=1;		continuous_prep_all_use = continuous_prep_all_use + 0.25;		dt_prep_all_e=caldate{t};		
@@ -4430,6 +4431,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 			end;
 		end;
 		else if prep_inj_tm1 = 1 then do; * dependent_on_time_step_length;
+	tmp_prep=2;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_inj then do;
 				if r < (1-eff_rate_choose_stop_prep_inj) then do; 
 					prep_all=1;		continuous_prep_all_use = continuous_prep_all_use + 0.25;		dt_prep_all_e=caldate{t};		
@@ -4442,6 +4444,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 			end;
 		end;
 		else if prep_vr_tm1 = 1 then do; * dependent_on_time_step_length;
+	tmp_prep=3;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_vr then do;
 				if r < (1-eff_rate_choose_stop_prep_vr) then do; 
 					prep_all=1;		continuous_prep_all_use = continuous_prep_all_use + 0.25;		dt_prep_all_e=caldate{t};		
@@ -4459,13 +4462,14 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 			given by eff_prob_prep_all_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
 			stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_all_restart;
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
-						tmp_prep=5;
+						tmp_prep=4;
 
 			if tested=1 then do; * dependent_on_time_step_length;
 				if stop_prep_all_choice=1 then do;
-						tmp_prep=6;
+						tmp_prep=5;
 					r=rand('uniform'); 
 					if r < eff_prob_prep_all_restart_choice then do;
+						tmp_prep=6;
 						select;			* lapr - check last_prep_used ;
 							when (last_prep_used=1)	do; 
 								prep_all=1;		continuous_prep_all_use=0.25;	dt_prep_all_e=caldate{t};	dt_prep_all_rs=caldate{t};	stop_prep_all_choice=0; 
@@ -15725,9 +15729,10 @@ where serial_no<50;
 run; 
 proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
-proc means; var stop_prep_all_choice;
+proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever stop_prep_all_choice;
 where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;
-proc univariate; var tmp_prep ; where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;
+proc univariate; var dt_prep_all_rs ; where caldate&j=2021.75; run;
+proc freq; tables tmp_prep  ; where caldate&j=2021.75; run;
 
 /*proc univariate; var highest_prep_pref ; */
 /*proc univariate; var prep_oral_willing prep_inj_willing prep_vr_willing ; */
