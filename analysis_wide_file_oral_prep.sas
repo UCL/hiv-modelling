@@ -5,13 +5,15 @@
 
 data wide;  
 
-* set 	a.wide_oral_prep_13       ;  
-  set 	a.wide_oral_prep_13_s6a   ;  
+  set 	a.wide_oral_prep_13b      ;  
+* set 	a.wide_oral_prep_13_s6a   ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
   if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  ; 
 
+* to get n=3000;
+if run le  994941765 ;
 
 
 * printing run numbers for included runs for use in graph program;
