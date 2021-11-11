@@ -15729,7 +15729,7 @@ proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig
 	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice
 	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig
 	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c tmp_prep dt_last_test;
-where serial_no<50;
+where serial_no<300 and age ge 15;
 run; 
 proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
