@@ -652,8 +652,6 @@ newp_seed = 7;
 
 
 
-
-
 * PREP;
 
 * PREP assumed introduced in fsw/agyw 2018 - with level of coverage and retention;
@@ -690,6 +688,7 @@ if prep_willing=1;
 * prepuptake_pop;           %sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
                             *Probability of PrEP uptake if eligible for general population;
 * higher_future_prep_cov;   %sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
+
 
 
 
@@ -2806,7 +2805,6 @@ if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995)
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
 if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if 2021 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
-
 
 
 
@@ -9325,7 +9323,6 @@ if e_rt65m=1 or e_rt151m=1 then r_3tc=0.25;
 
 if e_rt184m=1                 then r_3tc=0.75;  
 if zero_3tc_activity_m184 =1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00;
-
 
 
 * zdv;
@@ -16224,6 +16221,8 @@ s_cd4_per1_art_int  s_cd4_per1_art_int_lt100    s_cd4_per1_art_int_100200 s_cd4_
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
+s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
+
 
 s_vl1000_art_age1564 s_onart_age1564
 
@@ -17792,6 +17791,9 @@ s_start_zld_if_reg_op_116   s_onart_start_zld_if_reg_op_116   s_e_rt65m_st_zld_i
 
 s_per1_art_int s_per2_art_int   s_dead_per1_art_int s_dead_per2_art_int  s_cd4_before_int   s_cd4_before_int_lt100      s_cd4_before_int_100200
 s_cd4_per1_art_int  s_cd4_per1_art_int_lt100    s_cd4_per1_art_int_100200 s_cd4_per2_art_int    s_cd4_per2_art_int_lt100    s_cd4_per2_art_int_100200
+
+s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
+
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
