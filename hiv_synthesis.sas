@@ -621,6 +621,8 @@ newp_seed = 7;
 * rate_test_onprep_all;			rate_test_onprep_all=1.00; 		* Rate of being tested for HIV whilst on oral PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
 								* dependent_on_time_step_length ;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
+* prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
+
 * prep_all_uptake_pop;			%sample(prep_all_uptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 								*Probability of any PrEP uptake if eligible for general population;
 								* lapr and dpv-vr - this determines prep_all_willing and so we will change this to reflect the various categories of prep willing;
@@ -1787,8 +1789,9 @@ if adh_pattern_prep_oral=4 then adhav_prep_oral = adhav*0.70;
 * Will need to update distributions with data / expert opinion ;
 * Individuals' values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 * May want to update coding to allow these to change with age / through time ;
+* Code distribution parameters above as these are also used in 'update' sections below;
 
-* pref_prep_oral;				pref_prep_oral=rand('beta',5,2); 					* median 0.73 ;
+* pref_prep_oral;				pref_prep_oral=rand('beta',5,2); 					* median 0.73 ;	
 * pref_prep_inj;				pref_prep_inj=rand('beta',2,2); 					* median 0.5 ;
 * pref_prep_vr;					if gender=2 then pref_prep_vr=rand('beta',2,5); 	* median 0.26 (women only);		
 								else pref_prep_vr=0;
@@ -1805,9 +1808,9 @@ else highest_prep_pref=3;																		* 3=preference for vaginal ring;
 * lapr - will need to differentiate for CAB-LA vs DPV-VR vs oral prep - use 'prep_all_willing' as it is to indicate willingness for any prep, then pref_prep_xx for each type to choose between them (if available);
 * lapr - hard code the 0.2 threshold for 'willingness' above? ;
 aa=rand('uniform'); 
-prep_oral_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_oral>0.2 	then prep_oral_willing =1;
-prep_inj_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_inj>0.2 	then prep_inj_willing =1;
-prep_vr_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_vr>0.2 	then prep_vr_willing =1;
+prep_oral_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_oral>prep_willingness_threshold 	then prep_oral_willing =1;
+prep_inj_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_inj>prep_willingness_threshold 	then prep_inj_willing =1;
+prep_vr_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_vr>prep_willingness_threshold 	then prep_vr_willing =1;
 prep_all_willing = 0; 	if (prep_oral_willing=1 or prep_inj_willing=1 or prep_vr_willing=1) then prep_all_willing = 1;
 
 
@@ -2086,15 +2089,16 @@ if sw_program_visit=0 then do; e=rand('uniform');
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= rand('uniform'); if s < effect_sw_prog_prep_all and prep_all_willing = 0 then do;
 			prep_all_willing = 1; * lapr and dpv-vr ;
-			if 		highest_prep_pref = 1 then prep_oral_willing = 1;	* select which prep type individual will be willing to use based on preference;
-			else if highest_prep_pref = 2 then prep_inj_willing = 1;
-			else if highest_prep_pref = 3 then prep_vr_willing = 1;
+			* select which prep type individual will be willing to use based on preference;
+			* note that distributions below should match those at start; 
+			if 		highest_prep_pref = 1 then do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',5,2);	end;	
+			else if highest_prep_pref = 2 then do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,2);	end;
+			else if highest_prep_pref = 3 then do; prep_vr_willing = 1;		pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,5);	end;
 			end;
 		if prep_all_willing=1 then eff_rate_test_startprep_all=1;
 		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
 		eff_prob_prep_all_restart_choice=0.7;
 		* lapr and dpv-vr - consider if any needs to change ;
-
 		end;
 	end;
 end; 
@@ -2228,9 +2232,11 @@ if	higher_future_prep_oral_cov=1 then do;
 							incr_prep_all_uptake_pop_yr_i = 1; 
 							r= rand('uniform'); if r < 0.8 and prep_all_willing = 0 then do;
 								prep_all_willing = 1;	* lapr and dpv-vr - consider all prep types;
-								if 		highest_prep_pref = 1 then prep_oral_willing = 1;
-								else if highest_prep_pref = 2 then prep_inj_willing = 1;
-								else if highest_prep_pref = 3 then prep_vr_willing = 1;
+								* select which prep type individual will be willing to use based on preference;
+								* note that distributions below should match those at start; 
+								if 		highest_prep_pref = 1 then do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',5,2);	end;	
+								else if highest_prep_pref = 2 then do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,2);	end;
+								else if highest_prep_pref = 3 and gender=2 then do; prep_vr_willing = 1;		pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,5);	end;
 								end;
 						end;	
 
