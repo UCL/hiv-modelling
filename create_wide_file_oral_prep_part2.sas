@@ -6,7 +6,7 @@
 
 data y; 
 
-  set a.oral_prep_13    ;  
+  set a.oral_prep_13b    ;  
 
 
   options nomprint;
@@ -96,6 +96,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dnev_cost );   %var(v=dlpr_cost );   %var(v=ddar_cost );   %var(v=dtaz_cost );    %var(v=defa_cost );   %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
 %var(v=r_efa_hiv); %var(v=p_onart_cd4_l200);
+/* 
 %var(v=p_dol_2vg1000_dolr1_adh0); %var(v=p_dol_2vg1000_dolr1_adh1); %var(v=p_dol_2vg1000_dolr0_adh0); %var(v=p_dol_2vg1000_dolr0_adh1);
 %var(v=p_onart_cd4_l500);   %var(v=p_startedline2);  %var(v=prop_art_or_prep);  %var(v=n_sw_1564);   %var(v=prop_sw_onprep);   %var(v=p_onart);
 %var(v=p_o_zdv_tox);   %var(v=p_o_3tc_tox);   %var(v=p_o_ten_tox);   %var(v=p_o_taz_tox);   %var(v=p_o_lpr_tox);   %var(v=p_o_efa_tox);   
@@ -107,7 +108,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz); 
 %var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_vlg1000_184m); %var(v=p_vlg1000_65m);
-%var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
+%var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  
+*/
+%var(v=p_k65m); %var(v=p_m184m);
 %var(v=rate_dead_hivpos_anycause);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
 %var(v=p_iime);   %var(v=p_pime);   %var(v=p_nnme);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=ddaly_non_aids_pre_death);    %var(v=ddaly_ac_ntd_mtct);    %var(v=ddaly_ac_ntd_mtct_odabe);     %var(v=ddaly_ntd_mtct_napd);   
@@ -344,7 +347,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.wide_oral_prep_13   ;
+  data a.wide_oral_prep_13b   ;
 
   merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1   ; * this if you have parameter values changing after
   baseline that you need to track the values of;

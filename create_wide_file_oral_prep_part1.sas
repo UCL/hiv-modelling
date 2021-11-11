@@ -10,17 +10,38 @@ data d  ; set b.out: ;
 
 * libname a '/home/rmjlaph/';
 
-data d1 ; set b.out1: ; 
-data d2 ; set b.out2: ; 
-data d3 ; set b.out3: ; 
-data d4 ; set b.out4: ; 
-data d5 ; set b.out5: ; 
-data d6 ; set b.out6: ; 
-data d7 ; set b.out7: ; 
-data d8 ; set b.out8: ; 
-data d9 ; set b.out9: ; 
+data d10; set b.out10: ;
+data d11 ; set b.out11: ; data d12; set b.out12: ; data d13; set b.out13: ; data d14; set b.out14: ; data d15; set b.out15: ;
+data d16 ; set b.out16: ; data d17; set b.out17: ; data d18; set b.out18: ; data d19; set b.out19: ; data d20; set b.out20: ;
+data d21 ; set b.out21: ; data d22; set b.out22: ; data d23; set b.out23: ; data d24; set b.out24: ; data d25; set b.out25: ;
+data d26 ; set b.out26: ; data d27; set b.out27: ; data d28; set b.out28: ; data d29; set b.out29: ; data d30; set b.out30: ;
+data d31 ; set b.out31: ; data d32; set b.out32: ; data d33; set b.out33: ; data d34; set b.out34: ; data d35; set b.out35: ;
+data d36 ; set b.out36: ; data d37; set b.out37: ; data d38; set b.out38: ; data d39; set b.out39: ; data d40; set b.out40: ;
+data d41 ; set b.out41: ; data d42; set b.out42: ; data d43; set b.out43: ; data d44; set b.out44: ; data d45; set b.out45: ;
+data d46 ; set b.out46: ; data d47; set b.out47: ; data d48; set b.out48: ; data d49; set b.out49: ; data d50; set b.out50: ;
+data d51 ; set b.out51: ; data d52; set b.out52: ; data d53; set b.out53: ; data d54; set b.out54: ; data d55; set b.out55: ;
+data d56 ; set b.out56: ; data d57; set b.out57: ; data d58; set b.out58: ; data d59; set b.out59: ; data d60; set b.out60: ;
+data d61 ; set b.out61: ; data d62; set b.out62: ; data d63; set b.out63: ; data d64; set b.out64: ; data d65; set b.out65: ;
+data d66 ; set b.out66: ; data d67; set b.out67: ; data d68; set b.out68: ; data d69; set b.out69: ; data d70; set b.out70: ;
+data d71 ; set b.out71: ; data d72; set b.out72: ; data d73; set b.out73: ; data d74; set b.out74: ; data d75; set b.out75: ;
+data d76 ; set b.out76: ; data d77; set b.out77: ; data d78; set b.out78: ; data d79; set b.out79: ; data d80; set b.out80: ;
+data d81 ; set b.out81: ; data d82; set b.out82: ; data d83; set b.out83: ; data d84; set b.out84: ; data d85; set b.out85: ;
+data d86 ; set b.out86: ; data d87; set b.out87: ; data d88; set b.out88: ; data d89; set b.out89: ; data d90; set b.out90: ;
+data d91 ; set b.out91: ; data d92; set b.out92: ; data d93; set b.out93: ; data d94; set b.out94: ; data d95; set b.out95: ;
+data d96 ; set b.out96: ; data d97; set b.out97: ; data d98; set b.out98: ; data d99; set b.out99: ; 
 
-data d; set d1 d2 d3 d4 d5 d6 d7 d8 d9;
+
+data d; set d10
+d11 d12 d13 d14 d15 d16 d17 d18 d19 d20
+d21 d22 d23 d24 d25 d26 d27 d28 d29 d30
+d31 d32 d33 d34 d35 d36 d37 d38 d39 d40
+d41 d42 d43 d44 d45 d46 d47 d48 d49 d50
+d51 d52 d53 d54 d55 d56 d57 d58 d59 d60 
+d61 d62 d63 d64 d65 d66 d67 d68 d69 d70 
+d71 d72 d73 d74 d75 d76 d77 d78 d79 d80
+d81 d82 d83 d84 d85 d86 d87 d88 d89 d90
+d91 d92 d93 d94 d95 d96 d97 d98 d99
+;
 
 * remove this below once this is defined;
 * s_dtest_cost_prep = .;
@@ -1107,12 +1128,12 @@ dcost_80 ddaly_80
 
 proc sort data=y;by run option;run;
 
-data a.oral_prep_13      ;
+data a.oral_prep_13b     ;
 set y;
 
 
-proc contents data=a.oral_prep_13; 
-proc freq data=a.oral_prep_13; tables run; where cald = 2020;
+proc contents data=a.oral_prep_13b;
+proc freq data=a.oral_prep_13b; tables run; where cald = 2020;
 run;
 
 
