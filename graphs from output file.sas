@@ -2,7 +2,7 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
+libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";run;
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
@@ -1901,6 +1901,16 @@ rename p5_p_mcirc_1549m_0 = p05_p_mcirc_1549m_0;
 rename p5_p_diag_m_0 = p05_p_diag_m_0;
 rename p5_p_diag_w_0 = p05_p_diag_w_0;
 rename p5_p_onart_vl1000__0 = p05_p_onart_vl1000__0;
+
+rename p5_n_alive_0 = p05_n_alive_0;
+rename p5_n_alive1549__0 = p05_n_alive1549__0;
+rename p50_p_onart_diag_m_0 = p50_p_artdiagm_0;
+rename p5_p_onart_diag_m_0  = p05_p_artdiagm_0;
+rename p95_p_onart_diag_m_0 = p95_p_artdiagm_0;
+rename p50_p_onart_diag_w_0 = p50_p_artdiagw_0;
+rename p5_p_onart_diag_w_0  = p05_p_artdiagw_0;
+rename p95_p_onart_diag_w_0 = p95_p_artdiagw_0;
+
 keep cald
 p50_prevalence1549m_0 p5_prevalence1549m_0 	p95_prevalence1549m_0
 p50_prevalence1549w_0 p5_prevalence1549w_0 	p95_prevalence1549w_0
@@ -1918,28 +1928,36 @@ p50_p_diag_m_0 	p5_p_diag_m_0 	p95_p_diag_m_0
 p50_p_diag_w_0 	p5_p_diag_w_0 	p95_p_diag_w_0  
 
 p50_p_onart_vl1000__0 	p5_p_onart_vl1000__0 	p95_p_onart_vl1000__0  
+
+p50_n_alive_0			p5_n_alive_0			p95_n_alive_0
+p50_n_alive1549__0		p5_n_alive1549__0		p95_n_alive1549__0
+p50_p_onart_diag_m_0 	p5_p_onart_diag_m_0		p95_p_onart_diag_m_0 
+p50_p_onart_diag_w_0 	p5_p_onart_diag_w_0 	p95_p_onart_diag_w_0
 ;
 run;
 proc transpose data=e out=mihpsa_zim_stock_20211108;run;
 data mihpsa_zim_stock_20211108;set mihpsa_zim_stock_20211108;
 sub = substr(_NAME_,1,3);
-var = substr(_NAME_,5,9);
+var = substr(_NAME_,5,10);
 if sub="p50" then ord=1;
 if sub="p05" then ord=2;
 if sub="p95" then ord=3;
-if var="prev1549m" then var_n=1;
-if var="prev1549w" then var_n=2;
-if var="prev1549_" then var_n=3;
-if var="prev_preg" then var_n=4;
-if var="p_onart_m" then var_n=5;
-if var="p_onart_w" then var_n=6;
-if var="n_onart_m" then var_n=7;
-if var="n_onart_w" then var_n=8;
-if var="p_mcirc_1" then var_n=9;
-if var="p_diag_m_" then var_n=10;
-if var="p_diag_w_" then var_n=11;
-if var="p_onart_v" then var_n=12;
-
+if var="prev1549m_" then var_n=1;
+if var="prev1549w_" then var_n=2;
+if var="prev1549__" then var_n=3;
+if var="prev_preg_" then var_n=4;
+if var="p_onart_m_" then var_n=5;
+if var="p_onart_w_" then var_n=6;
+if var="n_onart_m_" then var_n=7;
+if var="n_onart_w_" then var_n=8;
+if var="p_mcirc_15" then var_n=9;
+if var="p_diag_m_0" then var_n=10;
+if var="p_diag_w_0" then var_n=11;
+if var="p_onart_vl" then var_n=12;
+if var="n_alive_0"  then var_n=13;
+if var="n_alive154" then var_n=14;
+if var="p_artdiagm" then var_n=15;
+if var="p_artdiagw" then var_n=16;
 run;
 proc sort; by var_n ord;run;
 proc print;run;
@@ -1967,6 +1985,7 @@ rename p5_n_death_2059_w_0 = p05_n_death_2059_w_0;
 rename p5_n_tested_m_0 = p05_n_tested_m_0;
 rename p5_n_tested_0 = p05_n_tested_0;
 rename p5_test_prop_positive_0 = p05_test_prop_positive_0;
+rename p5_n_new_vmmc1549m_0 = p05_n_new_vmmc1549m_0;
 keep cald
 p50_incidence1549m_0 p5_incidence1549m_0 p95_incidence1549m_0
 p50_incidence1549w_0 p5_incidence1549w_0 p95_incidence1549w_0
@@ -1983,7 +2002,8 @@ p50_n_death_2059_w_0   p5_n_death_2059_w_0 	 p95_n_death_2059_w_0
 p50_n_tested_m_0 			p5_n_tested_m_0 		p95_n_tested_m_0
 p50_n_tested_0 			p5_n_tested_0 		p95_n_tested_0
 
-p50_test_prop_positive_0	p5_test_prop_positive_0 	p95_test_prop_positive_0;
+p50_test_prop_positive_0	p5_test_prop_positive_0 	p95_test_prop_positive_0
+p50_n_new_vmmc1549m_0		p5_n_new_vmmc1549m_0		p95_n_new_vmmc1549m_0;
 run;
 proc transpose data=f out=mihpsa_zim_flow_20211108;run;
 data mihpsa_zim_flow_20211108;set mihpsa_zim_flow_20211108;
@@ -2007,6 +2027,7 @@ if var="n_death_2059_w_0" then var_n=10;
 if var="n_tested_m_0" then var_n=11;
 if var="n_tested_0" then var_n=12;
 if var="test_prop_positi" then var_n=13;
+if var="n_new_vmmc1549m_" then var_n=14;
 run;
 proc sort; by var_n ord;run;
 proc print;run;
