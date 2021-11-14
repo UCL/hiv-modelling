@@ -5,6 +5,7 @@
 
 data wide;  
 
+* 13b is the final results for the revision;
   set 	a.wide_oral_prep_13b      ;  
 * set 	a.wide_oral_prep_13_s6a   ;  
 
@@ -83,12 +84,12 @@ dcost_non_aids_pre_death_21_71_1 ;
 * cost of prep deliver from $115 to $75 is implemented as a cut in prep drug cost from $60 to $20 to give the $40 saving - the $40 lower cost would
 be beyond drug cost: (dcost_prep_21_71_2 / 3) or (dcost_prep_21_71_2  * 100/60) ; 
 
-* $10 instead of $4 for tests - use 3 month cost of 21 / 15 ;  * 60 / 60 ;
+* $10 instead of $4 for tests - use 3 month cost of 21 / 15  - for $2 use 13 / 15 ;  * 60 / 60 ;
 
 * checked that this = original dcost that is overwritten - we re-create here so can adjust components;
  dcost_21_71_2           =      
 dart_cost_y_21_71_2 +       
-(dcost_prep_21_71_2  * 1   *  60 / 60 ) +
+(dcost_prep_21_71_2  * 1   *  60  / 60 ) +
 (dcost_prep_visit_21_71_2 * 1   )     + 
 dadc_cost_21_71_2   +      
 dcd4_cost_21_71_2   +    
@@ -414,7 +415,7 @@ run;
 ods html close;
 
 ods html;
-proc means n median mean p5 p95    data=wide; 
+proc means n mean median p5 p95    data=wide; 
 var	p_mcirc_1549m_21 prevalence1549m_21 prevalence1549w_21 prevalence1524m_21 prevalence1524w_21  incidence1549w_21 incidence1549m_21	p_diag_m_21   
 p_diag_w_21	p_ai_no_arv_c_nnm_21   p_ai_no_arv_c_rt184m_21  p_ai_no_arv_c_rt65m_21  prop_w_1549_sw_21  prop_1564_hivneg_onprep_21  prop_w_1524_onprep_21 
 p_onart_diag_w_21 	p_onart_diag_m_21   p_vl1000_21	p_onart_vl1000_w_21 p_onart_vl1000_m_21 p_onart_cd4_l500_21  p_mcirc_1549m_21  p_startedline2_21  
@@ -437,7 +438,7 @@ ods html close;
 
 
 ods html;
-proc means n mean p5 p25 p75 p95 data=wide; 
+proc means n mean p5 p95 data=wide; 
 var	p_mcirc_1549m_41_2 prevalence1549m_41_2 prevalence1549w_41_2 prevalence1524m_41_2 prevalence1524w_41_2  incidence1549w_41_2 incidence1549m_41_2	p_diag_m_41_2   
 p_diag_w_41_2	p_ai_no_arv_c_nnm_41_2   p_ai_no_arv_c_rt184m_41_2  p_ai_no_arv_c_rt65m_41_2  prop_w_1549_sw_41_2  prop_1564_hivneg_onprep_41_2  prop_w_1524_onprep_41_2 
 p_onart_diag_w_41_2 	p_onart_diag_m_41_2   p_vl1000_41_2	p_onart_vl1000_w_41_2 p_onart_vl1000_m_41_2 p_onart_cd4_l500_41_2  p_mcirc_1549m_41_2  p_startedline2_41_2  
@@ -448,7 +449,7 @@ ods html close;
 
 
 ods html;
-proc means n mean  p5  p95 median data=wide; 
+proc means n mean  p5  p95 data=wide; 
 var	p_mcirc_1549m_70_1 prevalence1549m_70_1 prevalence1549w_70_1 prevalence1524m_70_1 prevalence1524w_70_1  incidence1549w_70_1 incidence1549m_70_1	p_diag_m_70_1   
 p_diag_w_70_1	p_ai_no_arv_c_nnm_70_1   p_ai_no_arv_c_rt184m_70_1  p_ai_no_arv_c_rt65m_70_1  prop_w_1549_sw_70_1  prop_1564_hivneg_onprep_70_1  prop_w_1524_onprep_70_1 
 p_onart_diag_w_70_1 	p_onart_diag_m_70_1   p_vl1000_70_1	p_onart_vl1000_w_70_1 p_onart_vl1000_m_70_1 p_onart_cd4_l500_70_1  p_mcirc_1549m_70_1  p_startedline2_70_1  
@@ -459,7 +460,7 @@ ods html close;
 
 
 ods html;
-proc means n mean  p5  p95 median data=wide;  
+proc means n mean  p5  p95  data=wide;  
 var	p_mcirc_1549m_70_2 prevalence1549m_70_2 prevalence1549w_70_2 prevalence1524m_70_2 prevalence1524w_70_2  incidence1549w_70_2 incidence1549m_70_2	p_diag_m_70_2   
 p_diag_w_70_2	p_ai_no_arv_c_nnm_70_2   p_ai_no_arv_c_rt184m_70_2  p_ai_no_arv_c_rt65m_70_2  prop_w_1549_sw_70_2  prop_1564_hivneg_onprep_70_2  prop_w_1524_onprep_70_2 
 p_onart_diag_w_70_2 	p_onart_diag_m_70_2   p_vl1000_70_2	p_onart_vl1000_w_70_2 p_onart_vl1000_m_70_2 p_onart_cd4_l500_70_2  p_mcirc_1549m_70_2  p_startedline2_70_2  
@@ -537,13 +538,13 @@ ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var    p_m184m_all_21_26_1 p_m184m_all_21_26_2 d_p_m184m_all_21_26_2  ;
- by sens_test_prep ;
+  by sens_test_prep ;
 run; 
 ods html close;
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var   p_k65m_all_21_26_1 p_k65m_all_21_26_2  d_p_k65m_all_21_26_2  ;
- by  sens_test_prep  ;
+  by  sens_test_prep  ;
 run; 
 ods html close;
 
@@ -780,21 +781,18 @@ dcost_prep_21_26_1 dcost_prep_21_26_2
 dcost_prep_visit_21_26_1 dcost_prep_visit_21_26_2 
 dcost_prep_drug_vis_21_26_2 dcost_prep_drug_vis_21_26_2  d_dcost_prep_drug_vis_21_26_2
 dcost_clin_care_21_26_1 dcost_clin_care_21_26_2 d_dcost_clin_care_21_26_2
-p_onart_21_26_1 p_onart_21_26_2 
 p_vl1000_21_26_1 p_vl1000_21_26_2 
 prevalence_vg1000_21_26_1 prevalence_vg1000_21_26_2 
 prev_vg1000_newp_m_21_26_1 prev_vg1000_newp_m_21_26_2 
 prev_vg1000_newp_w_21_26_1 prev_vg1000_newp_w_21_26_2 
-prop_art_or_prep_21_26_1  prop_art_or_prep_21_26_2
 prop_1564_hivneg_onprep_21_26_1  prop_1564_hivneg_onprep_21_26_2
 prop_w_1524_onprep_21_26_1 prop_w_1524_onprep_21_26_2
 prop_elig_on_prep_21_26_1 prop_elig_on_prep_21_26_2
 p_prep_ever_21_26_1 p_prep_ever_21_26_2
 p_hiv1_prep_21_26_1 p_hiv1_prep_21_26_2
-p_k65m_21_26_1 p_k65m_21_26_2
-p_m184m_21_26_1 p_m184m_21_26_2
 dtotcost_prep_21_26_1 dtotcost_prep_21_26_2  d_dtotcost_prep_21_26_2 
 ;
+* p_onart_21_26_1 p_onart_21_26_2 p_k65m_21_26_1 p_k65m_21_26_2 p_m184m_21_26_1 p_m184m_21_26_2 prop_art_or_prep_21_26_1  prop_art_or_prep_21_26_2  ;
 run; 
 
 
@@ -807,7 +805,6 @@ var    d_ddaly_all_21_71_2  d_ndb_500_21_71_2  d_dcost_21_71_2  incidence1549_21
 dcost_21_71_1   dcost_21_71_2
 n_tested_21_71_1 n_tested_21_71_2
 n_prep_21_71_1 n_prep_21_71_2
-prop_art_or_prep_21_71_1 prop_art_or_prep_21_71_2
 dvis_cost_21_71_1 dvis_cost_21_71_2 
 dtest_cost_21_71_1 dtest_cost_21_71_2
 dart_cost_y_21_71_1 dart_cost_y_21_71_2 
@@ -817,12 +814,10 @@ d_dcost_clin_care_21_71_2
 dcost_prep_21_71_1 dcost_prep_21_71_2 
 dcost_prep_visit_21_71_1 dcost_prep_visit_21_71_2 
 dcost_prep_drug_vis_21_71_2 dcost_prep_drug_vis_21_71_2  d_dcost_prep_drug_vis_21_71_2
-p_onart_21_71_1 p_onart_21_71_2 
 p_vl1000_21_71_1 p_vl1000_21_71_2 
 prevalence_vg1000_21_71_1 prevalence_vg1000_21_71_2 
 prev_vg1000_newp_m_21_71_1 prev_vg1000_newp_m_21_71_2 
 prev_vg1000_newp_w_21_71_1 prev_vg1000_newp_w_21_71_2 
-prop_art_or_prep_21_26_1  prop_art_or_prep_21_26_2
 prop_1564_hivneg_onprep_21_71_1  prop_1564_hivneg_onprep_21_71_2
 p_prep_ever_21_71_1 p_prep_ever_21_71_2
 p_hiv1_prep_21_71_1 p_hiv1_prep_21_71_2
@@ -867,12 +862,11 @@ ods html close;
 
 
 ods html;
-proc means n mean lclm uclm p5 p95 data=wide;  
+proc means n mean  p5 p95 data=wide;  
 var    d_ddaly_all_21_41_2  d_ndb_500_21_41_2  d_dcost_21_41_2  incidence1549_21_41_1 incidence1549_21_41_2 
 dcost_21_41_1   dcost_21_41_2
 n_tested_21_41_1 n_tested_21_41_2
 n_prep_21_41_1 n_prep_21_41_2
-prop_art_or_prep_21_41_1 prop_art_or_prep_21_41_2
 dvis_cost_21_41_1 dvis_cost_21_41_2 
 dtest_cost_21_41_1 dtest_cost_21_41_2
 dart_cost_y_21_41_1 dart_cost_y_21_41_2 
@@ -882,12 +876,10 @@ d_dcost_clin_care_21_41_2
 dcost_prep_21_41_1 dcost_prep_21_41_2 
 dcost_prep_visit_21_41_1 dcost_prep_visit_21_41_2 
 dcost_prep_drug_vis_21_41_2 dcost_prep_drug_vis_21_41_2  d_dcost_prep_drug_vis_21_41_2
-p_onart_21_41_1 p_onart_21_41_2 
 p_vl1000_21_41_1 p_vl1000_21_41_2 
 prevalence_vg1000_21_41_1 prevalence_vg1000_21_41_2 
 prev_vg1000_newp_m_21_41_1 prev_vg1000_newp_m_21_41_2 
 prev_vg1000_newp_w_21_41_1 prev_vg1000_newp_w_21_41_2 
-prop_art_or_prep_21_26_1  prop_art_or_prep_21_26_2
 prop_1564_hivneg_onprep_21_41_1  prop_1564_hivneg_onprep_21_41_2
 p_prep_ever_21_41_1 p_prep_ever_21_41_2
 p_hiv1_prep_21_41_1 p_hiv1_prep_21_41_2
@@ -1098,9 +1090,9 @@ proc freq; tables icer_2 ; run;
 * for table / results;
   ods html;
 proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial;  * ce_500_x  cost_saving ce_500_20yr_x  ;
-* where 0.667 <= p_mcirc_1549m_21 < 1.000 ;
+* where 0.667 <= p_mcirc_1549m_21 < 1.667 ;
 * where 0.05 <= prevalence_vg1000_21 < 1.05 ; 
-* where 3  <= av_newp_ge1_non_sw_21 < 13 ;
+* where 3  <= av_newp_ge1_non_sw_21 < 10 ;
 * where 0.035 <= prop_1564_hivneg_onprep_21_26_2 < 1.035;
 * where  1.5 <= incidence1549_21 < 3.5 ;
 * where 0.20 <= prevalence1549_21 < 1.20 ; 
@@ -1128,6 +1120,7 @@ proc freq data=wide;   tables ce_500_x  / nocum norow binomial; * exact binomial
 * where sens_test_prep  = 1.00 ;
 run; 
   ods html close;
+
 
 
 proc freq data=wide; tables p_prep_adhg80_21_26_2 ; run;
