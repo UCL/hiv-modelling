@@ -10,8 +10,8 @@ data g;    set b.out: ;
 proc sort data=g; 
 by run cald option;run;
 quit;
-proc freq;table cald;run;
-*857 simulation 199681 observations, from 1984 to 2041.75;
+proc freq data=g;table cald;run;
+*500 simulation 66500 observations, from 1984 to 2041.75;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
@@ -1020,7 +1020,7 @@ proc contents data=y;run;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_zim; set y;  
+data a.l_base_zim; set y; 
 
 *
 
@@ -1621,7 +1621,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
-*n=69 out of 857;
+*n=33 out of 499;
 
 
 
