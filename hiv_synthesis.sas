@@ -2090,11 +2090,13 @@ if sw_program_visit=0 then do; e=rand('uniform');
 		s= rand('uniform'); if s < effect_sw_prog_prep_all and prep_all_willing = 0 then do;
 			prep_all_willing = 1; * lapr and dpv-vr ;
 			* select which prep type individual will be willing to use based on preference;
-			* note that distributions below should match those at start; 
-			if 		highest_prep_pref = 1 then do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',5,2);	end;	
-			else if highest_prep_pref = 2 then do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,2);	end;
-			else if highest_prep_pref = 3 then do; prep_vr_willing = 1;		pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,5);	end;
+			* note that new value of pref_prep_xx is selected from uniform distribution between prep_willingness_threshold and 1; 
+			select;
+				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	
+				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;
+				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	* This will apply only to women;								
 			end;
+		end;
 		if prep_all_willing=1 then eff_rate_test_startprep_all=1;
 		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
 		eff_prob_prep_all_restart_choice=0.7;
@@ -2233,11 +2235,13 @@ if	higher_future_prep_oral_cov=1 then do;
 							r= rand('uniform'); if r < 0.8 and prep_all_willing = 0 then do;
 								prep_all_willing = 1;	* lapr and dpv-vr - consider all prep types;
 								* select which prep type individual will be willing to use based on preference;
-								* note that distributions below should match those at start; 
-								if 		highest_prep_pref = 1 then do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',5,2);	end;	
-								else if highest_prep_pref = 2 then do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,2);	end;
-								else if highest_prep_pref = 3 and gender=2 then do; prep_vr_willing = 1;		pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('beta',2,5);	end;
+								* note that new value of pref_prep_xx is selected from uniform distribution between prep_willingness_threshold and 1; 
+								select;
+									when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	
+									when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;
+									when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	* This will apply only to women;								
 								end;
+							end;
 						end;	
 
 * prep_all_strategy;
@@ -4658,10 +4662,9 @@ if caldate{t} = date_start_tld_prep and r < prop_bmi_ge23 then do;
 end;
 
 
-*Adherence to PrEP - modified Jan2017 f_prep;
+*Adherence to oral PrEP - modified Jan2017 f_prep;
 	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
-	be fixed while on injections / ring, and efficacy will drop / resistance risk increase in the periods after stopping 
-	(two for lapr, less for dpv-vr?);
+	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
 if prep_oral = 1 then do;
 	adh=adhav_prep_oral + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
 	if adhav_prep_oral=0 then adh=0;
@@ -4676,6 +4679,10 @@ end;
 * this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
+
+*'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
+******************** Define adh_prep_inj here;
+adh_prep_inj=1;	********TEMP;
 
 prep_oral_past_year=.; 	* lapr an dpv-vr - this will use our any_prep variable I suppose, we may want separate variables for each prep type?;
 if prep_oral   =1 then do; 
@@ -5548,9 +5555,19 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_oral_efficacy));
-
 		end;
-
+		if prep_inj   =1 then do; 	* lapr and dpv-vr;
+			******************* Define adh_prep_inj - same as current_adh_dl;
+			******************* How is inj efficacy affected by inpm_p and insm_p?;
+			if inpm_p ne 1 and insm_p ne 1 then risk_nip = risk_nip * (1-(adh_prep_inj * prep_inj_efficacy));
+			if inpm_p ne 1 and insm_p = 1 then risk_nip = risk_nip * (1-(adh_prep_inj * prep_inj_efficacy));
+			if inpm_p = 1 and insm_p = 1 then risk_nip = risk_nip * (1-(adh_prep_inj * prep_inj_efficacy));	
+		end;
+		if prep_vr   =1 then do; 	* lapr and dpv-vr;
+			* No effect of adherence for VR PrEP;
+			******************* How is DPV efficacy affected by mutations in partners virus?;
+			risk_nip = risk_nip * (1-prep_vr_efficacy);
+		end;
 
 		a=rand('uniform'); if a < risk_nip then do;
 		    if hiv=1 then do;
