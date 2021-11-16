@@ -6,9 +6,9 @@
 data wide;  
 
 * 13b is the final results for the revision;
-  set 	a.wide_oral_prep_13b      ;  
+* set 	a.wide_oral_prep_13b      ;  
 
-* set 	a.wide_oral_prep_13_s7    ;  
+  set 	a.wide_oral_prep_13_eff0  ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
@@ -553,6 +553,14 @@ ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var d_incidence_onprep_21_26_2   incidence_onprep_21_26_2   incidence_onprep_21_26_1 ;
 run; 
 ods html close;
+
+
+ods html;
+proc means n mean  p5 p95 lclm uclm data=wide;  var d_incidence_onprep_21_26_2   incidence_onprep_21_26_2   incidence_onprep_21_26_1 ;
+  where 0.00 <= prevalence_vg1000_21 < 0.02;
+run; 
+ods html close;
+
 
 ods html;
 proc means n mean  p5 p95 lclm uclm data=wide;  var d_p_m_newp_ge1_age1549_21_26_2   p_m_newp_ge1_age1549_21_26_2  p_m_newp_ge1_age1549_21_26_1 ;  
