@@ -6,9 +6,9 @@
 data wide;  
 
 * 13b is the final results for the revision;
-* set 	a.wide_oral_prep_13b      ;  
+  set 	a.wide_oral_prep_13b      ;  
 
-  set 	a.wide_oral_prep_13_s7    ;  
+* set 	a.wide_oral_prep_13_s7    ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
@@ -1223,7 +1223,6 @@ run;
 
 proc logistic  data=wide  ;
 model ce_500_x = 
-prevalence_vg1000_21
 p_mcirc_1549m_21
 av_newp_ge1_non_sw_21
 p_newp_ge1_age1549_21
@@ -1232,8 +1231,16 @@ p_newp_sw_21
 av_newp_ge1_21
 r_p_newp_ge1_age1549_21
 p_newp_sw_21
-p_vl1000_21 
+prev_vg1000_newp_m_21
+prev_vg1000_newp_w_21
 / selection = stepwise
+;
+run;
+
+
+proc logistic  data=wide  ;
+model ce_500_x = 
+prev_vg1000_newp_m_21
 ;
 run;
 
