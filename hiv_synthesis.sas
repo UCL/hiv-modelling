@@ -4680,18 +4680,35 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
 
+
 *'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
 ******************** Define adh_prep_inj here;
 adh_prep_inj=1;	********TEMP;
+if prep_inj=1 then do;
+	adh_prep_inj = .; 
+/*	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; */
+	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
 
-prep_oral_past_year=.; 	* lapr an dpv-vr - this will use our any_prep variable I suppose, we may want separate variables for each prep type?;
+
+	if o_cla ne 1 and tss_cla ge 1/12 and 
+	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
+	then do; current_adh_dl = .; current_adh_dl_tm1 = .;
+		if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+		if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+		if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
+		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+	end;
+end;
+
+
+prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
 if prep_oral   =1 then do; 
 	tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
 	* ts1m ; * change this line to: 
 	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
 	;
 
-	prep_oral_effect_non_res_v = adh* prep_oral_efficacy ;	* lapr and dpv-vr - this will depend on time since last lapr=1 or time since last dpv=1;
+	prep_oral_effect_non_res_v = adh* prep_oral_efficacy ;
 	if t ge 4 and prep_oral_tm1 =1 and continuous_prep_oral_use >= 1 then prep_oral_past_year=1;
 	* dependent_on_time_step_length ;  
 end;
@@ -6008,6 +6025,7 @@ if 35 <= age_infection < 45 then age_infection_g=3;
 if 45 <= age_infection < 55 then age_infection_g=4;
 if 55 <= age_infection < 65 then age_infection_g=5;
 
+* lapr = added '_cab' variables to this section; * JAS Nov2021;
 * current use of drugs;
 o_zdv = 0;
 o_3tc = 0;
@@ -6018,7 +6036,7 @@ o_efa = 0;
 o_lpr = 0;
 o_taz = 0;
 o_dol = 0;
-
+o_cab = 0;
 
 * previous use of drugs;
 p_zdv = 0;
@@ -6030,6 +6048,7 @@ p_efa = 0;
 p_lpr = 0;
 p_taz = 0;
 p_dol = 0;
+p_cab = 0;
 
 * time since last stopping specific drugs;
 tss_zdv = .;
@@ -6041,7 +6060,7 @@ tss_efa = .;
 tss_lpr = .;
 tss_taz = .;
 tss_dol = .;
-
+tss_cab = .;
 
 * for those off ART - drug used in most recent regimen ;
 mr_zdv = 0;
@@ -6053,9 +6072,9 @@ mr_lpr = 0;
 mr_taz = 0;
 mr_dol = 0;
 mr_nev = 0;
+mr_cab = 0;
 
 * previous virological failure of drugs;
-
 f_zdv = 0;
 f_3tc = 0;
 f_ten = 0;
@@ -6065,6 +6084,7 @@ f_efa = 0;
 f_lpr = 0;
 f_taz = 0;
 f_dol = 0;
+f_cab = 0;
 
 
 toffart=.;
@@ -6165,6 +6185,7 @@ r_efa = 0;
 r_lpr = 0;
 r_taz = 0;
 r_dol = 0;
+r_cab = 0;
 
 
 * 3tc;
@@ -6274,17 +6295,28 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if e_pr32m+e_pr47m+e_pr50vm+e_pr54m+e_pr76m+e_pr84m >= 4 then r_dar=0.75;
 
 
+*INSTIs;
+
 * dol;
 	*July2013:[v5_v6] Integrase inhibitors mutations are now included as two separate primary and secondary mutations;
 	if (e_inpm=1 and e_insm=1) then r_dol=1.0;
 	if (e_inpm=1 and e_insm=0) then r_dol=0.75;
 	if (e_inpm=0 and e_insm=1) then r_dol=0.25;
 
+* cab;
+	*lapr JAS Nov2021 - we may want to develop this section to include specific mutations;
+	if (e_inpm=1 and e_insm=1) then r_cab=1.0;
+	if (e_inpm=1 and e_insm=0) then r_cab=0.75;
+	if (e_inpm=0 and e_insm=1) then r_cab=0.25;
+
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
-	* lapr and dpv-vr - we will need a line here below for lapr and dpv-vr;
 if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
+
+	* lapr and dpv-vr - do we need this line here for cab?; *JAS Nov2021;
+if prep_inj   =1 then nactive=1-r_cab; 
+
 
 *Infected_diagnosed and infected_naive
 (the program below only determines whether a person is infected from a person diagnosed or 
@@ -6340,6 +6372,7 @@ t_efa = 0;
 t_lpr = 0;
 t_taz = 0;
 t_dol = 0;
+t_cab = 0;
 
 line1=0; line2=0;  line3=0;
 onart   =0;
@@ -6373,9 +6406,18 @@ if t ge 2 then do;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
-				o_3tc=0; o_ten=0; tcur=.; nactive=.;		* lapr and dpv-vr - will need to add code here to indicate that cabotegravir monotherapy stopped?;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.;
 			end;
-		end;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
+				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
+				o_cab=0; tcur=.; nactive=.;
+			end;
+			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
+				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
+				prep_vr=0; 		prep_vr_ever=.; 	dt_prep_vr_s=.; 	dt_prep_vr_e=.; 
+			end;
+end;
 	end;
 	if hivtest_type=1 then do;
 		u=rand('uniform');
@@ -6384,8 +6426,17 @@ if t ge 2 then do;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
-				o_3tc=0; o_ten=0; tcur=.; nactive=.;		* lapr and dpv-vr - will need to add code here to indicate that cabotegravir monotherapy stopped?;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.;		
 			end;  
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
+				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
+				o_cab=0; tcur=.; nactive=.;
+			end;
+			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
+				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
+				prep_vr=0; 		prep_vr_ever=.; 	dt_prep_vr_s=.; 	dt_prep_vr_e=.; 
+			end;
 		end;
 	end;
 end;
@@ -6396,9 +6447,12 @@ end;
 
 if prep_oral=1 then do; 
 	o_3tc=1; o_ten=1; tcur=0; cd4_tcur0 = cd4; 
-end;	* lapr and dpv-vr - add code for o_cab = 1 but not dpv (topical);
+end;	
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
+if prep_inj=1 then do; 		* lapr and dpv-vr - added code for o_cab = 1 but not dpv (topical); *JAS Nov2021;
+	o_cab=1; tcur=0; cd4_tcur0 = cd4; 
+end;
 
 * AP 21-7-19;  * note that onart=1 but registd = 0 ;
 if prep_oral=1 and pop_wide_tld_prep=1 then do; 
@@ -6467,20 +6521,22 @@ visit_tm1=visit;
    
 	if onart   =1 then tcur   =tcur_tm1 +0.25;   
 * ts1m:  	if onart   =1 then tcur   =tcur_tm1  + (1/12) ;
-	if prep_oral   =1 then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - I think we would need equivalent code for lapr and dpv-vr; 
-* ts1m:  	if prep_oral   =1 then tcur   =tcur_tm1  + (1/12) ;
+	if (prep_oral=1 or prep_inj=1) then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - using prep_oral or prep_inj here but not prep_vr; *JAS Nov2021; 
+* ts1m:  	if (prep_oral=1 or prep_inj=1) then tcur   =tcur_tm1  + (1/12) ;
 
-	if prep_oral   =0 and caldate{t} ge date_prep_oral_intro and onart    ne 1 then tcur   =.;
+	if (prep_oral=0 and prep_inj=0) and caldate{t} ge date_prep_oral_intro and onart ne 1 then tcur=.;   	* lapr and dpv-vr - using prep_oral and prep_inj here but not prep_vr; *JAS Nov2021;
 	
-	o_zdv_tm1=o_zdv; p_zdv_tm1=p_zdv; f_zdv_tm1=f_zdv; t_zdv_tm1=t_zdv; r_zdv_tm1=r_zdv;
-	r_3tc_tm1=r_3tc; o_3tc_tm1=o_3tc; p_3tc_tm1=p_3tc; f_3tc_tm1=f_3tc; t_3tc_tm1=t_3tc;
-	r_ten_tm1=r_ten; o_ten_tm1=o_ten; p_ten_tm1=p_ten; f_ten_tm1=f_ten; t_ten_tm1=t_ten;
-	o_nev_tm2=o_nev_tm1; o_nev_tm1=o_nev;  p_nev_tm1=p_nev; f_nev_tm1=f_nev; t_nev_tm1=t_nev; r_nev_tm1=r_nev;
-	o_efa_tm2=o_efa_tm1; o_efa_tm1=o_efa;  p_efa_tm1=p_efa; f_efa_tm1=f_efa; t_efa_tm1=t_efa; r_efa_tm1=r_efa; t_efa_tm1=t_efa;
-	o_dar_tm1=o_dar; p_dar_tm1=p_dar; f_dar_tm1=f_dar; r_dar_tm1=r_dar;
-	o_lpr_tm1=o_lpr; p_lpr_tm1=p_lpr; f_lpr_tm1=f_lpr; r_lpr_tm1=r_lpr; t_lpr_tm1=t_lpr;
-	o_taz_tm1=o_taz; p_taz_tm1=p_taz; f_taz_tm1=f_taz; r_taz_tm1=r_taz; t_taz_tm1=t_taz;
-    o_dol_tm3=o_dol_tm2; o_dol_tm2=o_dol_tm1; o_dol_tm1=o_dol;  p_dol_tm1=p_dol;f_dol_tm1=f_dol; t_dol_tm1=t_dol;r_dol_tm1=r_dol;
+	p_zdv_tm1=p_zdv;	f_zdv_tm1=f_zdv;	t_zdv_tm1=t_zdv;	r_zdv_tm1=r_zdv;	o_zdv_tm1=o_zdv;	
+	p_3tc_tm1=p_3tc;	f_3tc_tm1=f_3tc;	t_3tc_tm1=t_3tc;	r_3tc_tm1=r_3tc;	o_3tc_tm1=o_3tc;	
+	p_ten_tm1=p_ten; 	f_ten_tm1=f_ten; 	t_ten_tm1=t_ten;	r_ten_tm1=r_ten; 	o_ten_tm1=o_ten; 	
+	p_nev_tm1=p_nev; 	f_nev_tm1=f_nev; 	t_nev_tm1=t_nev; 	r_nev_tm1=r_nev;	o_nev_tm2=o_nev_tm1;	o_nev_tm1=o_nev;	
+	p_efa_tm1=p_efa; 	f_efa_tm1=f_efa; 	t_efa_tm1=t_efa; 	r_efa_tm1=r_efa; 	o_efa_tm2=o_efa_tm1; 	o_efa_tm1=o_efa;
+	p_dar_tm1=p_dar; 	f_dar_tm1=f_dar; 						r_dar_tm1=r_dar;	o_dar_tm1=o_dar; 							* lapr - missing t_dar_tm1 or not needed? ;
+	p_lpr_tm1=p_lpr; 	f_lpr_tm1=f_lpr; 	t_lpr_tm1=t_lpr;	r_lpr_tm1=r_lpr; 	o_lpr_tm1=o_lpr; 	
+	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
+    p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
+    p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
+	current_adh_dl_tm1 = current_adh_dl;
 
 	vfail1_tm1 = vfail1;
 
@@ -6493,7 +6549,7 @@ visit_tm1=visit;
 	end;
 
 * dependent_on_time_step_length ;
-	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
+	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
 	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+0.25;
 	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+0.25;
 	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+0.25;
@@ -6502,10 +6558,11 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
+	mr_cab_tm1=mr_cla; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
 
-	c_lip_tm1=c_lip ;   c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
+	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
-	c_head_tm1=c_head ;   c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
+	c_head_tm1=c_head ; c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
 	c_neph_tm1=c_neph ;   
 
 	c_lip = 0;
@@ -6537,7 +6594,7 @@ visit_tm1=visit;
 	e_rt184m_tm2=e_rt184m_tm1;	e_rt184m_tm1=e_rt184m;
 	e_rt65m_tm2=e_rt65m_tm1;	e_rt65m_tm1=e_rt65m;
 	e_rt151m_tm2=e_rt151m_tm1;	e_rt151m_tm1=e_rt151m;
-	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m;
+	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; * lapr - missing 101, 138, 188?;
 	e_rt181m_tm2=e_rt181m_tm1;	e_rt181m_tm1=e_rt181m;
 	e_rt190m_tm2=e_rt190m_tm1;	e_rt190m_tm1=e_rt190m;
 	e_pr32m_tm2=e_pr32m_tm1;	e_pr32m_tm1=e_pr32m;
