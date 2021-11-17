@@ -1560,7 +1560,7 @@ ods html close;
 
 data q1; set a.w_base_mlw4;
 
-if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.08 <= prevalence1549_98 < 0.21;
+if n_onart_15 < 700000 and r_prev_4044w_4549w_17 > 0.9  and 0.08 <= prevalence1549_17 < 0.12 and 0.08 <= prevalence1549_98 < 0.19;
 
 run_keep = run;
 
