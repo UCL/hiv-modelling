@@ -10,6 +10,11 @@ data b;
 * set a.l_base_mlw4;
   set a.l_base_keep_mlw4;
 
+* proc freq; 
+* tables  run; 
+* where cald = 2021; 
+* run;
+
 
 p_onart_vl1000_all = .;
 
