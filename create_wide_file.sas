@@ -1,5 +1,6 @@
 * options user="/folders/myfolders/";
 
+
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\";
 
 libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\south_africa\base_sa_out\";
@@ -15,7 +16,9 @@ libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 *	title "Compressed SAS Input Data"
 *run;
 
+
 data g; set  a.base_sa_47 ;
+
 
 
 proc sort data=g; 
@@ -782,9 +785,9 @@ end;
 			rate_dead_hivneg_cause4 = (s_dead_hivneg_cause4 * 4 * 100) / (s_alive - s_hivge15) ;
 			n_dead_hivneg_cause5 = s_dead_hivneg_cause5  * 4* &sf; 
 			rate_dead_hivneg_cause5 = (s_dead_hivneg_cause5 * 4 * 100) / (s_alive - s_hivge15) ;
-			rate_dead_allage = (s_dead_allage * 4 * 100) / s_alive ;
-			rate_dead_hivneg_anycause = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
-			rate_dead_hivpos_anycause = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
+			rate_dead = (s_dead * 4 * 100) / s_alive ;
+			rate_dead_hivneg = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
+			rate_dead_hivpos = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
 
 			rate_dead_cvd_3039m = (s_dead_cvd_3039m * 4 * 100) / (s_ageg3034m + s_ageg3539m) ;
 			rate_dead_cvd_4049m = (s_dead_cvd_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
@@ -988,7 +991,7 @@ n_alive  n_hiv  p_ep  av_newp
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base; set y;  
+data a.l_base_09_11_2021; set y;  
 
 *
 
@@ -998,7 +1001,7 @@ data a.l_base; set y;
 ;
 
 
-data y; set a.l_base; 
+data y; set a.l_base_09_11_2021; 
 
   options nomprint;
   option nospool;
@@ -1336,7 +1339,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base; 
+  data a.w_base_09_11_2021; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1399,7 +1402,7 @@ proc contents;run;
 
 ods html;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
@@ -1427,7 +1430,7 @@ n_hiv_95
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1455,7 +1458,7 @@ n_death_2059_w_05 n_death_hivrel_05 n_hiv_05
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1486,7 +1489,7 @@ run;
 
 
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1527,7 +1530,7 @@ n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21 n_hiv
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1553,7 +1556,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base n p50 p5 p95 mean;
+proc means data=a.w_base_09_11_2021 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
