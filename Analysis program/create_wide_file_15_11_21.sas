@@ -3,9 +3,8 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data d1;  
 set a.fsw_15_11_21;
-run;
+proc sort;by run;run;
 
-proc contents;run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
@@ -15,19 +14,18 @@ set d1 ;
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
 sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
+keep run sf_2021 s_alive;
 proc sort; by run;run;
-proc freq;table s_alive;run;
+
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2021;
 
 
 data y; 
-merge a sf;
+merge d1 sf;
 by run ;
 
-proc freq;table s_alive;run;
 
 * preparatory code ;
 
@@ -558,11 +556,11 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 * p_dol_2vg1000_dolr1_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr1_adh1 = s_o_dol_2nd_vlg1000_dolr1_adh1 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr0_adh0;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr0_adh0 = s_o_dol_2nd_vlg1000_dolr0_adh0 / s_o_dol_2nd_vlg1000 ;
 * p_dol_2vg1000_dolr0_adh1;		if s_o_dol_2nd_vlg1000 > 0 then p_dol_2vg1000_dolr0_adh1 = s_o_dol_2nd_vlg1000_dolr0_adh1 / s_o_dol_2nd_vlg1000 ;
-
+								if s_hiv1564 gt 0 then do;
 * p_iime_;						p_iime_ = s_iime_ / s_hiv1564 ;
 * p_pime_;						p_pime_ = s_pime_ / s_hiv1564 ;
 * p_nnme_;						p_nnme_ = s_nnme_ / s_hiv1564 ;
-
+								end;
 * p_death_hivrel_age_le64;		if s_death_hivrel_allage gt 0 then p_death_hivrel_age_le64 = s_death_hivrel / s_death_hivrel_allage ;
 
 * aids_death_rate;				if s_hiv1564 gt 0 then aids_death_rate = (4 * 100 * s_death_hivrel) / s_hiv1564 ;
