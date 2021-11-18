@@ -15198,7 +15198,7 @@ end;
 or 15-79 or all ages.   I think we should consider changing the above from 15-64 to 15+ or 15-79;
 if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 
-	s_live_daly + live_daly ; s_live_ddaly + live_ddaly ; s_dyll + dyll;
+	s_live_daly + live_daly ; s_live_ddaly + live_ddaly ; s_dyll_80 + dyll_80;
 
 	s_cost + cost ; s_art_cost + art_cost ;  
     s_adc_cost + adc_cost ; s_cd4_cost + cd4_cost ; s_vl_cost + vl_cost ; s_vis_cost + vis_cost ; 
