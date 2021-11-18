@@ -8,7 +8,7 @@
 
 * population aged >= 15 in 1990: 22 million ;
 
-* fold_change_ac_death_rate;* fold_change_ac_death_rate_w = 0.2; * fold_change_ac_death_rate_m = 0.6;  * todo: investigate how this can be;
+* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.8; fold_change_ac_death_rate_m = 0.8; 
 
 newp_seed = 10 ;
 
@@ -30,27 +30,25 @@ newp_seed = 10 ;
 * TRANSMISSION;
 
 * fold_tr;					fold_tr = 1;
-* fold_tr_newp;				%sample(fold_tr_newp, 0.3 0.4 0.5, 0.2 0.6 0.2);
 
 
 * HIV TESTING;
 
-* an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0070  0.01	0.0200 	0.0400 	0.1000, 
-								0.0		0.0 	0.0 	0.50	0.50  	0.0		0.00	0.00);
+* an_lin_incr_test;   		an_lin_incr_test = 0.0085;
+
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
+							* fold_change_in_risk_base_rate = 1 ;
 
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; 	
+* fold_decr_hivdeath;		* fold_decr_hivdeath = 0.25 ; 	
 
-* fx;						%sample_uniform(fx, 0.70 0.50 );
+* fx;						* fx = 1 ; 
 
-* gx;						gx = 1;
+* gx;						* gx = 1;
 
 * tb_base_prob_diag_l;		* %sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	* %sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
@@ -65,12 +63,9 @@ newp_seed = 10 ;
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
-* prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.00	0.00	0.6 	0.4		0.0 	0.0);
-* rate_return;  			%sample(rate_return, 
-								0.01	0.10  0.2   0.3		0.50 , 
-								0.00 	0.2   0.5   0.3 	0.00 );
+* prob_loss_at_diag;  		prob_loss_at_diag = 0.2; 
+
+* rate_return;  			rate_return = 0.2; 
 
 * prob_return_adc; 			prob_return_adc = 0.95 ;
 
@@ -78,14 +73,13 @@ newp_seed = 10 ;
 
 * pr_art_init; 				pr_art_init = 0.95; 
 
-* rate_int_choice;  		%sample(rate_int_choice,  0.02  0.03, 0.1 0.9 ); 					
-* prob_vl_meas_done; 		%sample(prob_vl_meas_done, 
-								0.0		0.1		0.7		1,
-								0.00	0.00	0.50	0.50);
+* rate_int_choice;  		rate_int_choice = 0.015 ; 					
+* prob_vl_meas_done; 		prob_vl_meas_done = 0.9;  
+
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 1.0; rate_ch_art_init_str_9 = 0.05; rate_ch_art_init_str_10 = 0.1 ; rate_ch_art_init_str_3 = 0.1;	
 
-* adh_pattern; 				adh_pattern = 4;
+* adh_pattern; 				adh_pattern = 3;
 
 * ind_effect_art3_death_rate; ind_effect_art3_death_rate =0.3 ;
 
