@@ -42,11 +42,11 @@ newp_seed = 10 ;
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							* fold_change_in_risk_base_rate = 1 ;
+							  fold_change_in_risk_base_rate = 0.8 ;
 
-* fold_decr_hivdeath;		* fold_decr_hivdeath = 0.25 ; 	
+* fold_decr_hivdeath;		  fold_decr_hivdeath = 0.15 ; 	
 
-* fx;						* fx = 1 ; 
+* fx;						  fx = 0.8 ;
 
 * gx;						* gx = 1;
 
