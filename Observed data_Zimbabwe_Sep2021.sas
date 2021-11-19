@@ -1094,6 +1094,19 @@ o_HIVincid_1549_Zimphia= 0.48;	o_HIVincid_1549_ll_Zimphia= 0.29;	o_HIVincid_1549
 o_HIVincid_1564m_Zimphia=0.31;	o_HIVincid_1564m_ll_Zimphia=0.09;	o_HIVincid_1564m_ul_Zimphia=0.52;
 o_HIVincid_1564w_Zimphia=0.59;	o_HIVincid_1564w_ll_Zimphia=0.32;	o_HIVincid_1564w_ul_Zimphia=0.85;
 o_HIVincid_1564_Zimphia= 0.45;	o_HIVincid_1564_ll_Zimphia= 0.28;	o_HIVincid_1564_ul_Zimphia= 0.62;
+
+o_HIVincid_1524m_Zimphia=0.14;	o_HIVincid_1524m_ll_Zimphia=0.00;	o_HIVincid_1524m_ul_Zimphia=0.37;
+o_HIVincid_1524w_Zimphia=0.46;	o_HIVincid_1524w_ll_Zimphia=0.09;	o_HIVincid_1524w_ul_Zimphia=0.82;
+o_HIVincid_1524_Zimphia= 0.30;	o_HIVincid_1524_ll_Zimphia= 0.08;	o_HIVincid_1524_ul_Zimphia= 0.52;
+
+o_HIVincid_2534m_Zimphia=0.48;	o_HIVincid_2534m_ll_Zimphia=0.00;	o_HIVincid_2534m_ul_Zimphia=1.05;
+o_HIVincid_2534w_Zimphia=0.95;	o_HIVincid_2534w_ll_Zimphia=0.30;	o_HIVincid_2534w_ul_Zimphia=1.61;
+o_HIVincid_2534_Zimphia= 0.72;	o_HIVincid_2534_ll_Zimphia= 0.28;	o_HIVincid_2534_ul_Zimphia= 1.16;
+
+o_HIVincid_3549m_Zimphia=0.38;	o_HIVincid_3549m_ll_Zimphia=0.00;	o_HIVincid_3549m_ul_Zimphia=0.91;
+o_HIVincid_3549w_Zimphia=0.27;	o_HIVincid_3549w_ll_Zimphia=0.00;	o_HIVincid_3549w_ul_Zimphia=0.68;
+o_HIVincid_3549_Zimphia= 0.32;	o_HIVincid_3549_ll_Zimphia= 0.00;	o_HIVincid_3549_ul_Zimphia= 0.66;
+
 end;
 
 
