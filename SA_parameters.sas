@@ -4,11 +4,11 @@
 
 
 * POPULATION GROWTH AND DEMOGRAPHY;
-* inc_cat; 					inc_cat = 2;
+* inc_cat; 					inc_cat = 3;
 
 * population aged >= 15 in 1990: 22 million ;
 
-* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.8; fold_change_ac_death_rate_m = 0.8; 
+* fold_change_ac_death_rate;fold_change_ac_death_rate_w = 0.65; fold_change_ac_death_rate_m = 0.65; 
 
 newp_seed = 10 ;
 
@@ -42,11 +42,11 @@ newp_seed = 10 ;
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							  fold_change_in_risk_base_rate = 0.7 ;
+							  fold_change_in_risk_base_rate = 0.85;
 
 * fold_decr_hivdeath;		  fold_decr_hivdeath = 0.15 ; 	
 
-* fx;						  fx = 0.8 ;
+* fx;						  fx = 0.85;
 
 * gx;						* gx = 1;
 
