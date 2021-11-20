@@ -13080,26 +13080,27 @@ end;
 
 dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; age_would_be_now =.;
 
-/
+
 if 15 <= age < 80 then do;  
 live_ddaly = (1 - util)*0.25*discount; 
-live_daly = (1 - util)*0.25; end;
+live_daly = (1 - util)*0.25; 
+end;
 /* 
 ts1m: replace two lines above with:
 live_ddaly = (1 - util)*(1/12)*discount; 
 live_daly = (1 - util)*(1/12); end;
 */
 if age ge 80 then do; live_daly=0;  live_ddaly=0;  end;
-	if death >= 1993 then do;
-		age_would_be_now = (agedeath + (caldate_never_dot - death));
-		dead_daly=0; dead_ddaly=0;
+if death >= 1993 then do;
+	age_would_be_now = (agedeath + (caldate_never_dot - death));
+	dead_daly=0; dead_ddaly=0;
 		if . < death < caldate_never_dot and 15 <= age_would_be_now < 80 then do;	
-		dead_ddaly = 0.25*discount; dead_daly = 0.25;    
+			dead_ddaly = 0.25*discount; dead_daly = 0.25;    
 /* 
 ts1m: replace line above with:
 dead_ddaly = (1/12)*discount; dead_daly = (1/12);  
 */
-	end;
+		end;
 end;
 
 /*
