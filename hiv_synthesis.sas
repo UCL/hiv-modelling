@@ -6331,10 +6331,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
 if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
-if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
+if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3+dol_higher_potency-r_ten-r_3tc-r_dol; * lapr;
 
 	* lapr and dpv-vr - do we need this line here for cab?; *JAS Nov2021;
-if prep_inj   =1 then nactive=1-r_cab; 
+if prep_inj   =1 then nactive=1-r_cab; * lapr = + cab_higher_potency (dol_higher_potency);
 
 
 *Infected_diagnosed and infected_naive
@@ -6603,7 +6603,7 @@ visit_tm1=visit;
  * ts1m:
 		toffart=toffart_tm1+ (1/12);   
 
-		if prep_oral    ne 1 then do;	* lapr and dpv-vr  - any changes needed ?;
+		if registd = 1 then do;		* lapr JAS Nov2021 - changed 'if' statement to depend on registd rather than excluding PrEP;
 			if interrupt_supply_tm1 =1 then interrupt_supply   =1;
 			if interrupt_choice_tm1 =1 then interrupt_choice   =1;
 		end;
@@ -6613,7 +6613,7 @@ visit_tm1=visit;
 	e_rt184m_tm2=e_rt184m_tm1;	e_rt184m_tm1=e_rt184m;
 	e_rt65m_tm2=e_rt65m_tm1;	e_rt65m_tm1=e_rt65m;
 	e_rt151m_tm2=e_rt151m_tm1;	e_rt151m_tm1=e_rt151m;
-	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; * lapr - missing 101, 138, 188 from LAI code - do those refer to rilpivirine? same for section below;
+	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; 		* lapr - missing 101, 138, 188 from LAI code - relevant for rilpivirine (and possibly dapivirine?) Consider adding later;
 	e_rt181m_tm2=e_rt181m_tm1;	e_rt181m_tm1=e_rt181m;
 	e_rt190m_tm2=e_rt190m_tm1;	e_rt190m_tm1=e_rt190m;
 	e_pr32m_tm2=e_pr32m_tm1;	e_pr32m_tm1=e_pr32m;
