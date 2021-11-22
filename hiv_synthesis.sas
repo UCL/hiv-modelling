@@ -372,6 +372,7 @@ newp_seed = 7;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
 * pir_higher_potency;		pir_higher_potency=1; 
+* efa_higher_potency;		efa_higher_potency=0.5; 			* updated coding to match that for pir and dol potency JAS Nov2021;
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
@@ -403,7 +404,9 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
+* dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
+																* so 1.5 potency - as for efa - may 2019 in response to advance results;
+																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
@@ -5822,7 +5825,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
 if prep   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
-if prep   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
+if prep   =1 and pop_wide_tld_prep = 1 then nactive=3+dol_higher_potency-r_ten-r_3tc-(1+dol_higher_potency)*r_dol; 
 
 *Infected_diagnosed and infected_naive
 (the program below only determines whether a person is infected from a person diagnosed or 
@@ -5913,6 +5916,7 @@ if t ge 2 then do;
 		u=rand('uniform');
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
+			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;		*added this line to match hivtest_type=4 above JAS Nov2021;
 			if prep   =1 and pop_wide_tld_prep ne 1 then do;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;  
@@ -6002,8 +6006,8 @@ visit_tm1=visit;
 	r_3tc_tm1=r_3tc; o_3tc_tm1=o_3tc; p_3tc_tm1=p_3tc; f_3tc_tm1=f_3tc; t_3tc_tm1=t_3tc;
 	r_ten_tm1=r_ten; o_ten_tm1=o_ten; p_ten_tm1=p_ten; f_ten_tm1=f_ten; t_ten_tm1=t_ten;
 	o_nev_tm2=o_nev_tm1; o_nev_tm1=o_nev;  p_nev_tm1=p_nev; f_nev_tm1=f_nev; t_nev_tm1=t_nev; r_nev_tm1=r_nev;
-	o_efa_tm2=o_efa_tm1; o_efa_tm1=o_efa;  p_efa_tm1=p_efa; f_efa_tm1=f_efa; t_efa_tm1=t_efa; r_efa_tm1=r_efa; t_efa_tm1=t_efa;
-	o_dar_tm1=o_dar; p_dar_tm1=p_dar; f_dar_tm1=f_dar; r_dar_tm1=r_dar;
+	o_efa_tm2=o_efa_tm1; o_efa_tm1=o_efa;  p_efa_tm1=p_efa; f_efa_tm1=f_efa; t_efa_tm1=t_efa; r_efa_tm1=r_efa;
+	o_dar_tm1=o_dar; p_dar_tm1=p_dar; f_dar_tm1=f_dar; r_dar_tm1=r_dar; t_dar_tm1=t_dar; 
 	o_lpr_tm1=o_lpr; p_lpr_tm1=p_lpr; f_lpr_tm1=f_lpr; r_lpr_tm1=r_lpr; t_lpr_tm1=t_lpr;
 	o_taz_tm1=o_taz; p_taz_tm1=p_taz; f_taz_tm1=f_taz; r_taz_tm1=r_taz; t_taz_tm1=t_taz;
     o_dol_tm3=o_dol_tm2; o_dol_tm2=o_dol_tm1; o_dol_tm1=o_dol;  p_dol_tm1=p_dol;f_dol_tm1=f_dol; t_dol_tm1=t_dol;r_dol_tm1=r_dol;
@@ -9374,18 +9378,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
 
 	* what if PI/r worth more than 1.0 drugs ?;
-	if o_lpr=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_lpr);
-	if o_dar=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_dar);
-	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
-
+	if o_lpr=1 then nactive=nactive + pir_higher_potency*(1-r_lpr);
+	if o_dar=1 then nactive=nactive + pir_higher_potency*(1-r_dar);
+	if o_taz=1 then nactive=nactive + pir_higher_potency*(1-r_taz);
 
 	* dol_higher_potency;
-	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
-	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
-	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
+	if o_dol=1 then nactive=nactive + dol_higher_potency*(1-r_dol);
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
-	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
+	if o_efa=1 then nactive=nactive + efa_higher_potency*(1-r_efa); 
 
 	nactive = round(nactive,0.25);
 
