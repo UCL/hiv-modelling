@@ -403,8 +403,9 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
-
+* dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
+																* so 1.5 potency - as for efa - may 2019 in response to advance results;
+																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
 							* dependent_on_time_step_length ;
@@ -683,6 +684,8 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		***this may be sampled at a later date;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
+* cab_higher_potency;			cab_higher_potency=dol_higher_potency;
+																* Assume cab potency is the same as dol (defined above);
 
 * 'adherence pattern' ;			* lapr - we will need a separate variable that indicates lapr drug level - which I suggest we assume optimal for the 3 month period a person is on
 								it but then falls in periods where lapr=0 and lapr_tm1=1 or lapr_tm2=1 - in which periods there will be increased risk of cab drug resistance; 
@@ -6322,11 +6325,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
-if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
-if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3+dol_higher_potency-r_ten-r_3tc-r_dol; * lapr;
+if prep_oral = 1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
+if prep_oral = 1 and pop_wide_tld_prep = 1 then nactive=3+dol_higher_potency-r_ten-r_3tc-(1+dol_higher_potency)*r_dol;
 
-	* lapr and dpv-vr - do we need this line here for cab?; *JAS Nov2021;
-if prep_inj   =1 then nactive=1-r_cab; * lapr = + cab_higher_potency (dol_higher_potency);
+if prep_inj = 1 then nactive=(1+cab_higher_potency)*(1-r_cab); 	* lapr JAS Nov2021;
 
 
 *Infected_diagnosed and infected_naive
@@ -6419,7 +6421,7 @@ if t ge 2 then do;
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
 				o_3tc=0; o_ten=0; tcur=.; nactive=.;
 			end;
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir prep has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
 				o_cab=0; tcur=.; nactive=.;
@@ -6433,13 +6435,14 @@ if t ge 2 then do;
 	if hivtest_type=1 then do;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=caldate{t};	* lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=caldate{t}; visit=1; 
+			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
 				o_3tc=0; o_ten=0; tcur=.; nactive=.;		
 			end;  
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir prep has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
 				o_cab=0; tcur=.; nactive=.;
@@ -6532,7 +6535,7 @@ visit_tm1=visit;
    
 	if onart   =1 then tcur   =tcur_tm1 +0.25;   
 * ts1m:  	if onart   =1 then tcur   =tcur_tm1  + (1/12) ;
-	if (prep_oral=1 or prep_inj=1) then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - using prep_oral or prep_inj here but not prep_vr; *JAS Nov2021; 
+	if (prep_oral=1 or prep_inj=1) then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - include prep_oral or prep_inj here but not prep_vr (topical); *JAS Nov2021; 
 * ts1m:  	if (prep_oral=1 or prep_inj=1) then tcur   =tcur_tm1  + (1/12) ;
 
 	if (prep_oral=0 and prep_inj=0) and caldate{t} ge date_prep_oral_intro and onart ne 1 then tcur=.;   	* lapr and dpv-vr - using prep_oral and prep_inj here but not prep_vr; *JAS Nov2021;
@@ -6542,7 +6545,7 @@ visit_tm1=visit;
 	p_ten_tm1=p_ten; 	f_ten_tm1=f_ten; 	t_ten_tm1=t_ten;	r_ten_tm1=r_ten; 	o_ten_tm1=o_ten; 	
 	p_nev_tm1=p_nev; 	f_nev_tm1=f_nev; 	t_nev_tm1=t_nev; 	r_nev_tm1=r_nev;	o_nev_tm2=o_nev_tm1;	o_nev_tm1=o_nev;	
 	p_efa_tm1=p_efa; 	f_efa_tm1=f_efa; 	t_efa_tm1=t_efa; 	r_efa_tm1=r_efa; 	o_efa_tm2=o_efa_tm1; 	o_efa_tm1=o_efa;
-	p_dar_tm1=p_dar; 	f_dar_tm1=f_dar; 						r_dar_tm1=r_dar;	o_dar_tm1=o_dar; 							* lapr - missing t_dar_tm1 or not needed? ;
+	p_dar_tm1=p_dar; 	f_dar_tm1=f_dar; 	t_dar_tm1=t_dar;	r_dar_tm1=r_dar;	o_dar_tm1=o_dar; 
 	p_lpr_tm1=p_lpr; 	f_lpr_tm1=f_lpr; 	t_lpr_tm1=t_lpr;	r_lpr_tm1=r_lpr; 	o_lpr_tm1=o_lpr; 	
 	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
     p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
@@ -9941,7 +9944,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));	* lapr - add cab & consider tail code from LAI;
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol))
+					  +(o_cab*r_cab);		* lapr - added o_cab JAS Nov2021;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -9951,14 +9955,19 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_dar=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_dar);
 	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
 
-
 	* dol_higher_potency;
-	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
-	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
-	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
+	if o_dol=1 then nactive=nactive + dol_higher_potency*(1-r_dol);
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
+
+	* cab_higher_potency;	* lapr JAS Nov2021;
+	if o_cab=1 then nactive=nactive + cab_higher_potency*(1-r_cab);
+
+	* effect of cab during tail;
+	if onart ne 1 and current_adh_dl > . then do;
+		nactive = cab_higher_potency * (1-r_cab);
+	end;
 
 	nactive = round(nactive,0.25);
 
