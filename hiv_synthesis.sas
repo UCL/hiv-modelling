@@ -9961,10 +9961,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
 
-	* cab_higher_potency;	* lapr JAS Nov2021;
+	* cab_higher_potency;					* lapr JAS Nov2021;
 	if o_cab=1 then nactive=nactive + cab_higher_potency*(1-r_cab);
 
-	* effect of cab during tail;
+	* waning effect of cab during tail;		* lapr JAS Nov2021;
 	if onart ne 1 and current_adh_dl > . then do;
 		nactive = cab_higher_potency * (1-r_cab);
 	end;
@@ -9976,12 +9976,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	nactive=nactive-is_red_activity;
 	if nactive < 0 then nactive=0;
 
-	if nod   =0 then nactive=.;
+	if (nod=0 and current_adh_dl = .) then nactive=.;		* lapr - added current_adh_dl JAS Nov2021;
 
 	* date of first having resistance (intermediate or resistant) to at least one drug;
 	if res_drug=. then do;
-		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
-		r_ten >= 0.5 or r_lpr ge 0.5  or r_taz ge 0.5 or   r_dol >= 0.5 then res_drug=caldate{t};
+		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or  r_efa >= 0.5 or  r_nev >= 0.5 or  
+		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5  
+		then res_drug=caldate{t};							* lapr - added r_cab JAS Nov2021;
 	end;
 
 
