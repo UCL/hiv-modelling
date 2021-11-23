@@ -56,6 +56,12 @@ def get_sum_variables(filename):
     all_sum_vars = [m[1].strip() for m in all_sums]
     unique_sum_vars = set(all_sum_vars)
     print(f"Found {len(all_sums)} sum expressions ({len(unique_sum_vars)} unique names).")
+    if len(all_sums) != len(unique_sum_vars):
+        print("Sum expressions defined multiple times:")
+        counter = Counter(all_sum_vars)
+        for name, count in counter.items():
+            if count > 1:
+                print(f"{name} (x{count})")
     non_matching_vars = [
         m[1].strip()
         for m in all_sums
