@@ -22,14 +22,10 @@
 * HIV TESTING;
 
 * date_start_testing;       date_start_testing = 2005  ;
-* test_targeting;   		*%sample(test_targeting, 1.1 1.3  1.5, 0.4 0.4 0.2); *Vale - 20211026, not specific to Zim before;
-							 %sample(test_targeting, 1   1.25 1.5, 0.6 0.3 0.1); *Vale - 20211123;
-* an_lin_incr_test;         *%sample(an_lin_incr_test,
+* test_targeting;   		%sample(test_targeting, 1.1 1.3 1.5, 0.4 0.4 0.2); *Vale - 20211026, not specific to Zim before;
+* an_lin_incr_test;         %sample(an_lin_incr_test,
                                         0.0100 0.015  0.0200  ,
                                         0.50   0.50    0.00    );
-							%sample(an_lin_incr_test,
-                                        0.0100 0.015  0.0200  ,
-                                        0.70   0.30    0.00    );
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
  
@@ -38,14 +34,14 @@
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 *Vale - 20211026: all the changes in the section "NATURAL PROGRESSION...." are taken from SA;
 * fold_change_in_risk_base_rate;
-							*%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
-							%sample_uniform(fold_change_in_risk_base_rate, 0.85 1.0); *Vale - 20211123;
-							* it is 0.85 rather than 1 in south africa parameter sets, and 1 in Malawi as there is no evidence
-							that this lower rate holds in malawi ;
-* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; * this value was used in south africa in order to have model reflect observed death rates;  		
+							%sample_uniform(fold_change_in_risk_base_rate, 0.7 0.8 0.9);
 
-* fx;						fx = 0.8 ; *Vale - 20211123, as in SA, 0.85 in Malawi;
-							* this value was used in south africa in order to have model reflect observed death rates; 
+* fold_decr_hivdeath;		fold_decr_hivdeath = 0.15 ; 	
+
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2  ;  * note values linked to adjustments to fold_decr_hivdeath ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 2 ;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 2  ;
+* incr_death_rate_tb;		incr_death_rate_tb = 2  ;
 
 
 
@@ -58,12 +54,8 @@ rate_ch_art_init_str_9 = 0.1 ;
                                 0.05    0.55    0.20    0.10    0.10  );
 
 * SEX WORKERS;				
-* base_rate_sw; 			*%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.2 0.6);*Vale - 20211026, not specific to Zim before;
-																					  *Vale - 20211123, removed;	
-* base_rate_stop_sexwork;	*%sample_uniform(base_rate_stop_sexwork, 0.015 0.030 0.045);*Vale - 20211026, not specific to Zim before;
-																					  *Vale - 20211123, removed;	
-
-
+* base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.2 0.6);*Vale - 20211026, not specific to Zim before;
+* base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.015 0.030 0.045);*Vale - 20211026, not specific to Zim before;
 
 * CIRCUMCISION;
 

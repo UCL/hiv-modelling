@@ -142,7 +142,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1991 + 0.25;
+startyr = 1989 + 0.25;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -962,7 +962,7 @@ cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
 
 * SECTION 2
 
-Create the 100000 people who will be alive and aged 15+ at some point between 1984 and 2071 (50 year time horizon from 2021)
+Create the 100000 people who will be alive and aged 15+ at some point between 1989 and 2071 (50 year time horizon from 2021)
 
 Define fixed or initial values for each person individually
 
@@ -981,7 +981,7 @@ end;
 drop i;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* VALUES OF FIXED, PERSON-SPECIFIC PARAMETERS AND VALUES AT CALDATE 1984;
+* VALUES OF FIXED, PERSON-SPECIFIC PARAMETERS AND VALUES AT CALDATE 1989;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 data r1; set r1;
@@ -1048,7 +1048,7 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 
-* Running for 82 years - 1984 - 2064;  * AP 20-7-19 ;
+* Running for 82 years - 1989 - 2071;  * AP 20-7-19 ;
 * Using a moderate rate of population growth;
 
 ***LBM Jul19;
@@ -1315,11 +1315,11 @@ if sw=1 then do;
 	ever_sw=1;
 
 	u=rand('uniform');
-	date_start_sw = caldate1+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
-	age_deb_sw= age - (caldate1-date_start_sw);
+	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
+	age_deb_sw= age - (1989-date_start_sw);
 end;
 
-***LBM 27Apr2020 - crude estimate of episodes of sw in caldate1 added here. Refine by basing on duration of sw;
+***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
 	a=rand('uniform');if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
 
@@ -1414,7 +1414,7 @@ hbv=0;
 if e < 0.03 then hbv=1;
 
 
-* define sbp in caldate1 ;  * update_24_4_21;
+* define sbp in 1989 ;  * update_24_4_21;
 
 select;	* JAS May2021 ;
 	when ( age < 15) 		do; sbp=.;
@@ -1439,7 +1439,7 @@ select;	* JAS May2021 ;
 							end;
 end;
 
-* for simplicity assume nobody on anti-hypertensives at baseline in caldate1;
+* for simplicity assume nobody on anti-hypertensives at baseline in 1989;
 diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 
 * define person-specific effect of 1, 2 and 3 anti-hypertensives;
@@ -1692,7 +1692,7 @@ dead_tm1=0;
 
 
 
-***LBM21 Assume a proportion of men were circumcised at birth prior to caldate1; 
+***LBM21 Assume a proportion of men were circumcised at birth prior to 1989; 
 mcirc =0;birth_circ=0;
 
 if  gender=1 and age gt 0.25 then do;
@@ -11586,7 +11586,7 @@ w_4554_epnewp=0;if  gender=2 and 45 <= age < 55 and ep=1 and newp ge 1 then w_45
 w_5564_epnewp=0;if  gender=2 and 55 <= age < 65 and ep=1 and newp ge 1 then w_5564_epnewp=1;
 
 
-***For each man, whether they have had 1, 2 or 5 newp in their lifetime (but note this is newp since caldate1 only)
+***For each man, whether they have had 1, 2 or 5 newp in their lifetime (but note this is newp since 1989 only)
    To try to understand % of men who had FSW partnership;
 m_1524_ge1newpever=0;m_2534_ge1newpever=0;m_3544_ge1newpever=0;m_4554_ge1newpever=0;m_5564_ge1newpever=0;
 m_1524_ge2newpever=0;m_2534_ge2newpever=0;m_3544_ge2newpever=0;m_4554_ge2newpever=0;m_5564_ge2newpever=0;
