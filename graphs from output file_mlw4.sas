@@ -7,13 +7,8 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-* set a.l_base_mlw4;
-  set a.l_base_keep_mlw4;
-
-* proc freq; 
-* tables  run; 
-* where cald = 2021; 
-* run;
+* set a.l_base_mlw5;
+  set a.l_base_keep_mlw5;
 
 
 p_onart_vl1000_all = .;
