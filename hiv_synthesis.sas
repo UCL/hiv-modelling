@@ -14374,10 +14374,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_i_m_d_newp + i_m_d_newp ; s_i_w_d_newp + i_w_d_newp ; s_i_w_np + i_w_np ; s_i_m_np + i_m_np ; s_i_ep + i_ep ;
 
-	s_i_m_1524_newp + i_m_1524_newp ; s_i_m_2534_newp + i_m_2534_newp ; s_i_m_3544_newp + i_m_3544_newp ; s_i_m_4554_newp + i_m_4554_newp ;
+	s_i_m_1524_newp + i_m_1524_newp ; s_i_m_2534_newp + i_m_2534_newp ; s_i_m_3544_newp + i_m_3544_newp ;
 	s_i_m_4554_newp + i_m_4554_newp ; s_i_m_5564_newp + i_m_5564_newp ;
 
-	s_i_w_1524_newp + i_w_1524_newp ; s_i_w_2534_newp + i_w_2534_newp ; s_i_w_3544_newp + i_w_3544_newp ; s_i_w_4554_newp + i_w_4554_newp ;
+	s_i_w_1524_newp + i_w_1524_newp ; s_i_w_2534_newp + i_w_2534_newp ; s_i_w_3544_newp + i_w_3544_newp ;
 	s_i_w_4554_newp + i_w_4554_newp ; s_i_w_5564_newp + i_w_5564_newp ;
 
 	s_i_r_vlg1_np + i_r_vlg1_np ; s_i_r_vlg2_np + i_r_vlg2_np ; s_i_r_vlg3_np + i_r_vlg3_np ; s_i_r_vlg4_np + i_r_vlg4_np ; 
@@ -14712,7 +14712,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
 	s_year_1_infection + year_1_infection ; s_year_2_infection + year_2_infection ; s_year_3_infection + year_3_infection ; 
-	s_year_5_infection + year_5_infection ; s_year_5_infection + year_5_infection ;  
+	s_year_4_infection + year_4_infection ; s_year_5_infection + year_5_infection ;  
 	s_year_1_infection_diag + year_1_infection_diag ; s_year_2_infection_diag + year_2_infection_diag ; s_year_3_infection_diag + year_3_infection_diag ;
 	s_year_4_infection_diag + year_4_infection_diag ; s_year_5_infection_diag + year_5_infection_diag ;
  
@@ -14735,7 +14735,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_onart_gt6m_pires_vlg1000 + onart_gt6m_pires_vlg1000 ; s_onart_gt6m_res_vlg1000 + onart_gt6m_res_vlg1000 ; s_online1_vg1000 + online1_vg1000 ;
     s_online1_vg1000_lf1 + online1_vg1000_lf1 ; s_online1_vg1000_cd4l200 + online1_vg1000_cd4l200 ; s_offart_vl1000 + offart_vl1000 ;
 	s_vl1000_line2_12m + vl1000_line2_12m ; s_vl1000_line2_12m_onart + vl1000_line2_12m_onart ; s_vl1000_line2 + vl1000_line2 ; s_offart + offart ;
-    s_line1_ + line1_ ; s_line2_ + line2_ ; s_line1_lf0 + line1_lf0 ; s_line1_lf1 + line1_lf1 ; s_line1_lf1 + line1_lf1 ; s_line2_lf1 + line2_lf1 ;
+    s_line1_ + line1_ ; s_line2_ + line2_ ; s_line1_lf0 + line1_lf0 ; s_line1_lf1 + line1_lf1 ; s_line2_lf1 + line2_lf1 ;
     s_line2_lf2 + line2_lf2 ; s_linefail_ge1 + linefail_ge1 ; s_line1_fail_this_period + line1_fail_this_period ; s_lf1_past_yr + lf1_past_yr ;
     s_lf1_past_yr_line2 + lf1_past_yr_line2 ; s_onart_cl200 + onart_cl200 ; s_onart_cd4_g500 + onart_cd4_g500 ; s_onart_res + onart_res ;
     s_adh_low + adh_low ; s_adh_med + adh_med ; s_adh_hi + adh_hi ; s_adhav_low_onart + adhav_low_onart ; s_adhav_hi_onart + adhav_hi_onart ;
@@ -14879,7 +14879,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
 	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; 
-	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ; s_dead_tb + dead_tb ; 
+	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ;
 	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80 + dead_cvd_ge80m ;
@@ -15042,7 +15042,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g1_adc +cd4_g1_adc ; s_cd4_g2_adc +cd4_g2_adc ; s_cd4_g3_adc +cd4_g3_adc ; s_cd4_g4_adc +cd4_g4_adc ; s_cd4_g5_adc +cd4_g5_adc ; 
 	s_cd4_g6_adc +cd4_g6_adc ;  s_vl_g1_adc +vl_g1_adc ; s_vl_g2_adc +vl_g2_adc ; s_vl_g3_adc +vl_g3_adc ; s_vl_g4_adc +vl_g4_adc ; 
 	s_vl_g5_adc +vl_g5_adc ; s_age_g1_adc +age_g1_adc ; s_age_g2_adc +age_g2_adc ; s_age_g3_adc +age_g3_adc ; s_age_g4_adc +age_g4_adc ; 
-	s_age_g5_adc +age_g5_adc ;	s_onart_adc + onart_adc ;  s_pcp_p_adc +  pcp_p_adc ;    	s_cd4_g1_crypm +cd4_g1_crypm ; s_cd4_g2_crypm +cd4_g2_crypm ; 
+	s_age_g5_adc +age_g5_adc ;	s_pcp_p_adc +  pcp_p_adc ;    	s_cd4_g1_crypm +cd4_g1_crypm ; s_cd4_g2_crypm +cd4_g2_crypm ; 
 	s_cd4_g3_crypm +cd4_g3_crypm ; s_cd4_g4_crypm +cd4_g4_crypm ; s_cd4_g5_crypm +cd4_g5_crypm ; s_cd4_g6_crypm +cd4_g6_crypm ; 
 	s_vl_g1_crypm +vl_g1_crypm ; s_vl_g2_crypm +vl_g2_crypm ; s_vl_g3_crypm +vl_g3_crypm ; s_vl_g4_crypm +vl_g4_crypm ; s_vl_g5_crypm +vl_g5_crypm ; 
 	s_age_g1_crypm +age_g1_crypm ; s_age_g2_crypm +age_g2_crypm ; s_age_g3_crypm +age_g3_crypm ; s_age_g4_crypm +age_g4_crypm ; 
@@ -15052,7 +15052,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g6_sbi +cd4_g6_sbi ;  s_vl_g1_sbi +vl_g1_sbi ; s_vl_g2_sbi +vl_g2_sbi ; s_vl_g3_sbi +vl_g3_sbi ; s_vl_g4_sbi +vl_g4_sbi ; 
 	s_vl_g5_sbi +vl_g5_sbi ; s_age_g1_sbi +age_g1_sbi ; s_age_g2_sbi +age_g2_sbi ; s_age_g3_sbi +age_g3_sbi ; s_age_g4_sbi +age_g4_sbi ; 
 	s_age_g5_sbi +age_g5_sbi ;   
-	s_onart_sbi + onart_sbi ;  s_pcp_p_sbi +  pcp_p_sbi ; s_sbi_proph_sbi +  sbi_proph_sbi ;  s_sbi  +  sbi ;        
+	s_onart_sbi + onart_sbi ;  s_pcp_p_sbi +  pcp_p_sbi ; s_sbi_proph_sbi +  sbi_proph_sbi ;        
 	s_cd4_g1_dead +cd4_g1_dead ; s_cd4_g2_dead +cd4_g2_dead ; s_cd4_g3_dead +cd4_g3_dead ; s_cd4_g4_dead +cd4_g4_dead ; s_cd4_g5_dead +cd4_g5_dead ; s_cd4_g6_dead +cd4_g6_dead ;  
 	s_vl_g1_dead +vl_g1_dead ; s_vl_g2_dead +vl_g2_dead ; s_vl_g3_dead +vl_g3_dead ; s_vl_g4_dead +vl_g4_dead ; s_vl_g5_dead +vl_g5_dead ; 
 	s_age_g1_dead +age_g1_dead ; s_age_g2_dead +age_g2_dead ; s_age_g3_dead +age_g3_dead ; s_age_g4_dead +age_g4_dead ; s_age_g5_dead +age_g5_dead ;
@@ -18226,13 +18226,8 @@ s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_a
 s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-<<<<<<< HEAD
 s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
 s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
-=======
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcpp_adc
->>>>>>> 93635bf (Remove variables kept twice)
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
 s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
