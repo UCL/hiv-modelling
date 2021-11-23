@@ -256,7 +256,7 @@ newp_seed = 7;
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
 * fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
 * fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1/0.8 1/0.6 1/0.4); 
-* super_infection; 			%sample_uniform(super_infection, 0 1);
+* super_infection_pop; 		%sample_uniform(super_infection_pop, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 1 2, 0.8 0.2);
@@ -372,6 +372,7 @@ newp_seed = 7;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
 * pir_higher_potency;		pir_higher_potency=1; 
+* efa_higher_potency;		efa_higher_potency=0.5; 			* updated coding to match that for pir and dol potency JAS Nov2021;
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
@@ -403,7 +404,9 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
+* dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
+																* so 1.5 potency - as for efa - may 2019 in response to advance results;
+																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
@@ -4952,7 +4955,7 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
 
-if hiv=1 then s_infection=0;
+if hiv=1 then super_infection_i=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
@@ -5111,7 +5114,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		a=rand('uniform'); if a < risk_nip then do;
 		    if hiv=1 then do;
-    		if onart    ne 1 then s_infection=1;  * may14 - added need to be off art to get super-infected;
+    		if onart    ne 1 then super_infection_i=1;  * may14 - added need to be off art to get super-infected;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
@@ -5298,7 +5301,7 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
 		    b=rand('uniform');
-    		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
+    		super_infection_i=0; if onart    ne 1 and b < risk_eip then super_infection_i=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
 	end;
@@ -5822,7 +5825,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
 if prep   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
-if prep   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
+if prep   =1 and pop_wide_tld_prep = 1 then nactive=3+dol_higher_potency-r_ten-r_3tc-(1+dol_higher_potency)*r_dol; 
 
 *Infected_diagnosed and infected_naive
 (the program below only determines whether a person is infected from a person diagnosed or 
@@ -5913,6 +5916,7 @@ if t ge 2 then do;
 		u=rand('uniform');
 		if primary   =1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
+			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;		*added this line to match hivtest_type=4 above JAS Nov2021;
 			if prep   =1 and pop_wide_tld_prep ne 1 then do;
 				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
 			end;  
@@ -5997,17 +6001,17 @@ visit_tm1=visit;
 * ts1m:  	if prep   =1 then tcur   =tcur_tm1  + (1/12) ;
 
 	if prep   =0 and caldate{t} ge date_prep_intro and onart    ne 1 then tcur   =.;
-	
-	o_zdv_tm1=o_zdv; p_zdv_tm1=p_zdv; f_zdv_tm1=f_zdv; t_zdv_tm1=t_zdv; r_zdv_tm1=r_zdv;
-	r_3tc_tm1=r_3tc; o_3tc_tm1=o_3tc; p_3tc_tm1=p_3tc; f_3tc_tm1=f_3tc; t_3tc_tm1=t_3tc;
-	r_ten_tm1=r_ten; o_ten_tm1=o_ten; p_ten_tm1=p_ten; f_ten_tm1=f_ten; t_ten_tm1=t_ten;
-	o_nev_tm2=o_nev_tm1; o_nev_tm1=o_nev;  p_nev_tm1=p_nev; f_nev_tm1=f_nev; t_nev_tm1=t_nev; r_nev_tm1=r_nev;
-	o_efa_tm2=o_efa_tm1; o_efa_tm1=o_efa;  p_efa_tm1=p_efa; f_efa_tm1=f_efa; t_efa_tm1=t_efa; r_efa_tm1=r_efa; t_efa_tm1=t_efa;
-	o_dar_tm1=o_dar; p_dar_tm1=p_dar; f_dar_tm1=f_dar; r_dar_tm1=r_dar;
-	o_lpr_tm1=o_lpr; p_lpr_tm1=p_lpr; f_lpr_tm1=f_lpr; r_lpr_tm1=r_lpr; t_lpr_tm1=t_lpr;
-	o_taz_tm1=o_taz; p_taz_tm1=p_taz; f_taz_tm1=f_taz; r_taz_tm1=r_taz; t_taz_tm1=t_taz;
-    o_dol_tm3=o_dol_tm2; o_dol_tm2=o_dol_tm1; o_dol_tm1=o_dol;  p_dol_tm1=p_dol;f_dol_tm1=f_dol; t_dol_tm1=t_dol;r_dol_tm1=r_dol;
 
+	p_zdv_tm1=p_zdv;	f_zdv_tm1=f_zdv;	t_zdv_tm1=t_zdv;	r_zdv_tm1=r_zdv;	o_zdv_tm1=o_zdv;	
+	p_3tc_tm1=p_3tc;	f_3tc_tm1=f_3tc;	t_3tc_tm1=t_3tc;	r_3tc_tm1=r_3tc;	o_3tc_tm1=o_3tc;	
+	p_ten_tm1=p_ten; 	f_ten_tm1=f_ten; 	t_ten_tm1=t_ten;	r_ten_tm1=r_ten; 	o_ten_tm1=o_ten; 	
+	p_nev_tm1=p_nev; 	f_nev_tm1=f_nev; 	t_nev_tm1=t_nev; 	r_nev_tm1=r_nev;	o_nev_tm2=o_nev_tm1;	o_nev_tm1=o_nev;	
+	p_efa_tm1=p_efa; 	f_efa_tm1=f_efa; 	t_efa_tm1=t_efa; 	r_efa_tm1=r_efa; 	o_efa_tm2=o_efa_tm1; 	o_efa_tm1=o_efa;	* deleted extra t_efa_tm1 definition JAS Nov2021;
+	p_dar_tm1=p_dar; 	f_dar_tm1=f_dar; 	t_dar_tm1=t_dar;	r_dar_tm1=r_dar;	o_dar_tm1=o_dar; 							* added missing t_dar_tm1 for consistency JAS Nov2021;
+	p_lpr_tm1=p_lpr; 	f_lpr_tm1=f_lpr; 	t_lpr_tm1=t_lpr;	r_lpr_tm1=r_lpr; 	o_lpr_tm1=o_lpr; 	
+	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
+    p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
+	
 	vfail1_tm1 = vfail1;
 
 
@@ -6111,18 +6115,17 @@ visit_tm1=visit;
 	this was due to the fact that super infection seemed to play a big role in our model,
 	while this has never been mentioned as a big problem by clinicians;
 	sx=rand('uniform');
-	if super_infection=1 then do;
-		if s_infection=1 and sx<0.2 then do;
-			c_rt103m=max(k103m,c_rt103m);c_rt181m=max(y181m,c_rt181m);c_rt190m=max(g190m,c_rt190m);
-			c_inpm=max(inpm,c_inpm); c_insm=max(insm,c_insm);
-			c_rttams= max(c_rttams,tam); c_rt184m= max(m184m,c_rt184m);
-			c_rt151m= max(q151m,c_rt151m); c_rt65m= max(k65m ,c_rt65m); 
-			c_pr32m=max(p32m,c_pr32m);c_pr33m=max(p33m,c_pr33m);
-			c_pr46m=max(p46m,c_pr46m);c_pr47m=max(p47m,c_pr47m);
-			c_pr50vm=max(p50vm,c_pr50vm);c_pr50lm=max(p50lm,c_pr50lm);c_pr54m=max(p54m,c_pr54m);
-			c_pr76m=max(p76m,c_pr76m);c_pr82m=max(p82m,c_pr82m);c_pr84m=max(p84m,c_pr84m);
-			c_pr88m=max(p88m,c_pr88m);c_pr90m=max(p90m,c_pr90m);
-			c_inpm=max(inpm,c_inpm);		 c_insm=max(insm,c_insm);
+	if super_infection_pop=1 then do;
+		if super_infection_i=1 and sx<0.2 then do;
+			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m);
+			c_rttams= max(c_rttams,tam); 	c_rt184m= max(m184m,c_rt184m);
+			c_rt151m= max(q151m,c_rt151m); 	c_rt65m= max(k65m ,c_rt65m); 
+			c_pr32m=max(p32m,c_pr32m);		c_pr33m=max(p33m,c_pr33m);
+			c_pr46m=max(p46m,c_pr46m);		c_pr47m=max(p47m,c_pr47m);
+			c_pr50vm=max(p50vm,c_pr50vm);	c_pr50lm=max(p50lm,c_pr50lm);	c_pr54m=max(p54m,c_pr54m);
+			c_pr76m=max(p76m,c_pr76m);		c_pr82m=max(p82m,c_pr82m);		c_pr84m=max(p84m,c_pr84m);
+			c_pr88m=max(p88m,c_pr88m);		c_pr90m=max(p90m,c_pr90m);
+			c_inpm=max(inpm,c_inpm);		c_insm=max(insm,c_insm);
 
 			if tam=1 or k103m=1 or y181m=1 or g190m=1 or m184m=1 or q151m=1 or k65m=1 or p32m=1 or p33m=1 or p46m=1 or 
 			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or inpm=1 or insm=1 then  
@@ -9374,18 +9377,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
 
 	* what if PI/r worth more than 1.0 drugs ?;
-	if o_lpr=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_lpr);
-	if o_dar=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_dar);
-	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
-
+	if o_lpr=1 then nactive=nactive + pir_higher_potency*(1-r_lpr);
+	if o_dar=1 then nactive=nactive + pir_higher_potency*(1-r_dar);
+	if o_taz=1 then nactive=nactive + pir_higher_potency*(1-r_taz);
 
 	* dol_higher_potency;
-	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
-	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
-	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
+	if o_dol=1 then nactive=nactive + dol_higher_potency*(1-r_dol);
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
-	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
+	if o_efa=1 then nactive=nactive + efa_higher_potency*(1-r_efa); 
 
 	nactive = round(nactive,0.25);
 
@@ -16381,7 +16381,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
@@ -17280,7 +17280,7 @@ s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     s_all_ai_e_rt65
 s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2yr_on   s_art_attrit_3yr   
 s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_5yr   
 s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   
-s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_infection  s_m_newp 
+s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_m_newp 
 s_naive_m       		s_naive_w      s_npgt1conc_l4p_1519m    s_npgt1conc_l4p_1519w   s_npgt1conc_l4p_1524m 
 s_npgt1conc_l4p_1524w    s_npgt1conc_l4p_2449m    s_npgt1conc_l4p_2449w    s_npgt1conc_l4p_5064m    s_npgt1conc_l4p_5064w 
 s_prop_ageg1_m_vlg1    s_prop_ageg1_m_vlg2    s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4  s_prop_ageg1_m_vlg5 
@@ -18327,7 +18327,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
