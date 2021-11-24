@@ -6,9 +6,9 @@
 data wide;  
 
 * 13b is the final results for the revision;
-* set 	a.wide_oral_prep_13b      ;  
+  set 	a.wide_oral_prep_13b      ;  
 
-  set 	a.wide_oral_prep_13_eff0  ;  
+* set 	a.wide_oral_prep_13_eff0  ;  
 
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 ; 
 
