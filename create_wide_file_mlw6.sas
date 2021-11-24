@@ -4,6 +4,9 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 
 libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\malawi\mlw6_out\";
 
+data g ; set b.out: ;
+
+/*
 
 data d10; set b.out10: ;
 data d11 ; set b.out11: ; data d12; set b.out12: ; data d13; set b.out13: ; data d14; set b.out14: ; data d15; set b.out15: ;
@@ -37,7 +40,7 @@ d71 d72 d73 d74 d75 d76 d77 d78 d79 d80
 d81 d82 d83 d84 d85 d86 d87 d88 d89 d90
 d91 d92 d93 d94 d95 d96 d97 d98 d99
 ;
-
+*/
 
 proc sort data=g; 
 by run cald option;run;
