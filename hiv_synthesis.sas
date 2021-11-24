@@ -866,6 +866,7 @@ cost_efa_a=(0.025/4)*1.2; * global fund jul18 ;  * mf ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.185/4)*1.2;   * global fund aug18 ; * mf ;
 cost_dol_a=(0.020/4)*1.2;   * jul 19 - south africa tender ;
+cost_cab_a=(0.020/4)*1.2;   * placeholder ;
 cost_dar_a=(0.200/4)*1.2;	
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
@@ -1038,6 +1039,7 @@ cost_efa_a  =  cost_efa_a   / 3;
 cost_lpr_a   = cost_lpr_a   / 3;
 cost_taz_a  =  cost_taz_a  / 3;
 cost_dol_a  =  cost_dol_a / 3;
+cost_cab_a  =  cost_cab_a / 3;
 cost_dar_a  =  cost_dar_a  / 3;
 tb_cost_a =  tb_cost_a / 3;
 cot_cost_a =  cot_cost_a  / 3;
@@ -5417,11 +5419,11 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 if hiv=1 then super_infection_i=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
-k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
-p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  inpm=.; insm=.;
-k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
-p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  inpm_p=.;  insm_p=.;
-* lapr and dpv-vr - do we need to define new mutations? ;
+k103m=.;  	y181m=.;  	g190m=.;  	k65m=.;  	m184m=.;  	q151m=.; 	tam=.;  	p32m=.; 	p33m=.; 	p46m=.; 	p47m=.; 
+p50lm=.; 	p50vm=.;	p54m=.;   	p76m=.;   	p82m=.;   	p84m=.;  	p88m=.;   	p90m=.;  	inpm=.; 	insm=.;
+k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.; 	m184m_p=.;  q151m_p=.;  tam_p=.;  	p32m_p=.;  	p33m_p=.;  	p46m_p=.;  	p47m_p=.; 
+p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  	p82m_p=.;   p84m_p=.;   p88m_p=.; 	p90m_p=.;  	inpm_p=.;  	insm_p=.;
+* lapr - summarise INSTI mutations as inpm (q148 and r263) and insm (currently unspecified); * dpv - topical drug so assume no selective pressure for new mutations to arise, but efficacy may be reduced by NNRTI mutations;
 
 *prob infection in 3mths from the infected partner;
 
@@ -9966,7 +9968,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* cab_higher_potency;					* lapr JAS Nov2021;
 	if o_cab=1 then nactive=nactive + cab_higher_potency*(1-r_cab);
 
-	* waning effect of cab during tail;		* lapr JAS Nov2021;
+	* waning effect of cab during tail;		* lapr JAS Nov2021 - consider what needs changing/expanding here;
 	if onart ne 1 and current_adh_dl > . then do;
 		nactive = cab_higher_potency * (1-r_cab);
 	end;
@@ -10280,6 +10282,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 					if o_dar=1 then f_dar=1;
 					if o_taz=1 then f_taz=1;
 					if o_dol=1 then f_dol=1;
+					if o_cab=1 then f_cab=1;	* lapr JAS Nov2021;
 				end;
 			end;
 
@@ -10294,7 +10297,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 					vl_cost_inc = 1;
 	* take account of time delay with dbs or plasma compared with poc;
 					if 	((vm_format in (3,4) and vm gt log10(1000)) 	or	(. < vm_format <= 2 and value_last_vm gt log10(vl_threshold))	) then do;
-						if date_v_alert=. then date_v_alert=caldate{t};
+						if date_v_alert=. then date_v_alert=caldate{t};		* lapr - query adding condition from LAI code "and (o_zdv=1 or o_3tc=1 or o_ten=1 or o_nev=1 or o_efa=1 or o_lpr=1 or o_taz=1 or o_dar=1 or o_dol=1)";
 						linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 						if o_zdv=1 then f_zdv=1;
 						if o_3tc=1 then f_3tc=1;
@@ -10305,6 +10308,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 						if o_dar=1 then f_dar=1;
 						if o_taz=1 then f_taz=1;
 						if o_dol=1 then f_dol=1;
+						if o_cab=1 then f_cab=1;	* lapr JAS Nov2021;
 					end;
 				end;
 			end;
@@ -10421,6 +10425,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 					if o_dar=1 then f_dar=1;
 					if o_taz=1 then f_taz=1;
 					if o_dol=1 then f_dol=1;
+					if o_cab=1 then f_cab=1;	* lapr JAS Nov2021;
 				end;
 			end;
 
@@ -10447,6 +10452,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 						if o_dar=1 then f_dar=1;
 						if o_taz=1 then f_taz=1;
 						if o_dol=1 then f_dol=1;
+						if o_cab=1 then f_cab=1;	* lapr JAS Nov2021;
 					end;
 				end;
 			end;
@@ -10778,6 +10784,7 @@ end;
 
  * dol ;
 	cost_dol=0; if o_dol=1 then cost_dol=cost_dol_a;
+	cost_cab=0; if o_cab=1 then cost_cab=cost_cab_a;
 
 * cost of switching to second line (not cost of the drugs); 
 
@@ -10787,7 +10794,7 @@ if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
 	art_cost=0;
 
     art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
-    (o_lpr*cost_lpr) + (o_dar*cost_dar)+ (o_taz*cost_taz)+ (o_efa*cost_efa)+ (o_dol*cost_dol);
+    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol) + (o_cab*cost_cab);
 
 	* ART initiation cost;
 	if yrart=caldate{t} then art_cost = art_cost + art_init_cost;
@@ -11089,21 +11096,21 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	tested=.;
 	naive=.;artline=.;linefail=.;
 	o_zdv=.;o_3tc=.;o_dar=.;o_ten=.;
+	o_efa=.;o_lpr=.;o_taz=.;o_dol=.;o_cab=.;
 	e_totmut   =.; non_tb_who3_ev=.;
-	o_efa=.;o_lpr=.;o_taz=.;o_dol=.;
 	cmin   =.;
 	p_zdv=.;p_3tc=.;p_dar=.;p_ten=.;
-	p_efa=.;p_lpr=.;p_taz=.;p_dol=.;
+	p_efa=.;p_lpr=.;p_taz=.;p_dol=.;p_cab=.;
 	f_zdv=.;f_3tc=.;f_dar=.;f_ten=.;
-	f_efa=.;f_lpr=.;f_dol=.;
+	f_efa=.;f_lpr=.;f_dol=.;f_cab=.;
 	c_rt184m=.;c_rttams=.;c_rt65m=.;c_rt103m=.;c_rt181m=.;c_rt190m=.;c_rt151m=.;c_pr32m=.;c_pr47m=.;
 	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_inpm=.;c_insm=.;
 	e_rt184m=.;e_rttams=.;e_rt65m=.;e_rt103m=.;e_rt181m=.;e_rt190m=.;e_rt151m=.;e_pr32m=.;e_pr47m=.;
 	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_inpm=.;e_insm=.;
 	r_zdv=.;r_3tc=.;r_dar=.;r_ten=.;
-	r_efa=.;r_lpr=.;r_dol=.;
-	t_zdv=.;t_3tc=.;t_dar=.;t_taz=.;
-	t_efa=.;t_lpr=.;t_dol=.;t_ten=.;
+	r_efa=.;r_lpr=.;r_taz=.;r_dol=.;r_cab=.;
+	t_zdv=.;t_3tc=.;t_dar=.;t_ten=.;
+	t_efa=.;t_lpr=.;t_taz=.;t_dol=.;t_cab=.;
 	c_lip=.;c_pen=.;c_ras=.;c_cns=.;c_hep=.;x4v=.;
 	c_nau=.;c_otx=.;c_tox=.;c_head=.;c_dia=.;c_ane=.;c_lac=.;
 	c_neph = .;
