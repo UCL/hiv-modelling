@@ -120,7 +120,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  13   ;
+%let nfit =  23   ;
 %let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1147,6 +1147,23 @@ series  x=cald y=p50_p_onart_diag_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_diag_w_1 	upper=p95_p_onart_diag_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_vl1000_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_vl1000__0 = "Option 0 (median) ";
+
+series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+
+run;quit;
+
+
+
 
 
 
