@@ -372,6 +372,7 @@ newp_seed = 7;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
 * pir_higher_potency;		pir_higher_potency=1; 
+* efa_higher_potency;		efa_higher_potency=0.5; 			* updated coding to match that for pir and dol potency JAS Nov2021;
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
@@ -6436,7 +6437,8 @@ if t ge 2 then do;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=caldate{t}; visit=1; 
-			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4;
+			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4;	*added this line to match hivtest_type=4 above JAS Nov2021;
+			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
@@ -6551,7 +6553,7 @@ visit_tm1=visit;
     p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
     p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
 	current_adh_dl_tm1 = current_adh_dl;
-
+	
 	vfail1_tm1 = vfail1;
 
 
@@ -9951,15 +9953,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
 
 	* what if PI/r worth more than 1.0 drugs ?;
-	if o_lpr=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_lpr);
-	if o_dar=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_dar);
-	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
+	if o_lpr=1 then nactive=nactive + pir_higher_potency*(1-r_lpr);
+	if o_dar=1 then nactive=nactive + pir_higher_potency*(1-r_dar);
+	if o_taz=1 then nactive=nactive + pir_higher_potency*(1-r_taz);
 
 	* dol_higher_potency;
 	if o_dol=1 then nactive=nactive + dol_higher_potency*(1-r_dol);
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
-	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
+	if o_efa=1 then nactive=nactive + efa_higher_potency*(1-r_efa); 
 
 	* cab_higher_potency;					* lapr JAS Nov2021;
 	if o_cab=1 then nactive=nactive + cab_higher_potency*(1-r_cab);
