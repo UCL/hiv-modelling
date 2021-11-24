@@ -6788,9 +6788,13 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
-	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
-	if (infected_prep=1 or (hiv=1 and prep_oral = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
-		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
+	* lapr and dpv-vr - JAS Nov2021;
+	if (infected_prep_all=1 or (hiv=1 and prep_all = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
+		select;
+			when (infected_prep_oral=1)	do; prep_oral = 0; 	o_3tc=0; o_ten=0; 	tss_ten=0; tss_3tc=0;	end;
+			when (infected_prep_inj=1)	do; prep_inj = 0;	o_cab=0;			tss_cab=0;				end;
+			when (infected_prep_vr=1)		prep_vr = 0;
+		end;
 	end;
 
 
@@ -6846,9 +6850,9 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * viral load changes from t-1 to t, if ART-naive at time t-1;
 
-	if t ge 2 and prep_oral    ne 1 then do;  * lapr - any_prep ? ;
+	if t ge 2 and prep_all ne 1 then do;  	* lapr - JAS Nov2021 ;
 	* dependent_on_time_step_length ;
-		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
+		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart gt 0.25) then do;
 			vc_tm1 =(gx*0.02275 + (0.05 * rand('normal')))+ ((age_tm1-35)*0.00075);
 
 * ts1m - add this line:
@@ -6862,9 +6866,9 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 
 * CD4 changes from t-1 to t, if ART-naive at time t-1;
-	if t ge 3 and prep_oral    ne 1 then do; * lapr - anyprep ?;
+	if t ge 3 and prep_all ne 1 then do;  	* lapr - JAS Nov2021 ;
 	* dependent_on_time_step_length ;
-		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart    gt 0
+		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart gt 0
 		and (resumec_tm1 =1 or resumec_tm2 =1)) then do;
 * resumec indicates that cd4 has fallen to cmin since interruption (before toffart=1) and so usual cd4 changes start;
 
@@ -11095,22 +11099,22 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
 	naive=.;artline=.;linefail=.;
-	o_zdv=.;o_3tc=.;o_dar=.;o_ten=.;
-	o_efa=.;o_lpr=.;o_taz=.;o_dol=.;o_cab=.;
 	e_totmut   =.; non_tb_who3_ev=.;
 	cmin   =.;
-	p_zdv=.;p_3tc=.;p_dar=.;p_ten=.;
-	p_efa=.;p_lpr=.;p_taz=.;p_dol=.;p_cab=.;
-	f_zdv=.;f_3tc=.;f_dar=.;f_ten=.;
-	f_efa=.;f_lpr=.;f_dol=.;f_cab=.;
-	c_rt184m=.;c_rttams=.;c_rt65m=.;c_rt103m=.;c_rt181m=.;c_rt190m=.;c_rt151m=.;c_pr32m=.;c_pr47m=.;
-	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_inpm=.;c_insm=.;
-	e_rt184m=.;e_rttams=.;e_rt65m=.;e_rt103m=.;e_rt181m=.;e_rt190m=.;e_rt151m=.;e_pr32m=.;e_pr47m=.;
-	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_inpm=.;e_insm=.;
-	r_zdv=.;r_3tc=.;r_dar=.;r_ten=.;
-	r_efa=.;r_lpr=.;r_taz=.;r_dol=.;r_cab=.;
-	t_zdv=.;t_3tc=.;t_dar=.;t_ten=.;
-	t_efa=.;t_lpr=.;t_taz=.;t_dol=.;t_cab=.;
+	o_zdv=.;	o_3tc=.;	o_dar=.;	o_ten=.;
+	o_efa=.;	o_lpr=.;	o_taz=.;	o_dol=.;	o_cab=.;
+	p_zdv=.;	p_3tc=.;	p_dar=.;	p_ten=.;
+	p_efa=.;	p_lpr=.;	p_taz=.;	p_dol=.;	p_cab=.;
+	f_zdv=.;	f_3tc=.;	f_dar=.;	f_ten=.;
+	f_efa=.;	f_lpr=.;	f_taz=.;	f_dol=.;	f_cab=.;
+	r_zdv=.;	r_3tc=.;	r_dar=.;	r_ten=.;
+	r_efa=.;	r_lpr=.;	r_taz=.;	r_dol=.;	r_cab=.;
+	t_zdv=.;	t_3tc=.;	t_dar=.;	t_ten=.;
+	t_efa=.;	t_lpr=.;	t_taz=.;	t_dol=.;	t_cab=.;
+	c_rt184m=.;	c_rttams=.;	c_rt65m=.;	c_rt103m=.;	c_rt181m=.;	c_rt190m=.;	c_rt151m=.;	c_pr32m=.;	c_pr47m=.;
+	c_pr33m=.;	c_pr46m=.;	c_pr54m=.;	c_pr76m=.;	c_pr50vm=.;	c_pr50lm=.;	c_pr82m=.;	c_pr84m=.;	c_pr88m=.;	c_pr90m=.;	c_inpm=.;	c_insm=.;
+	e_rt184m=.;	e_rttams=.;	e_rt65m=.;	e_rt103m=.;	e_rt181m=.;	e_rt190m=.;	e_rt151m=.;	e_pr32m=.;	e_pr47m=.;
+	e_pr33m=.;	e_pr46m=.;	e_pr54m=.;	e_pr76m=.;	e_pr50vm=.;	e_pr50lm=.;	e_pr82m=.;	e_pr84m=.;	e_pr88m=.;	e_pr90m=.;	e_inpm=.;	e_insm=.;
 	c_lip=.;c_pen=.;c_ras=.;c_cns=.;c_hep=.;x4v=.;
 	c_nau=.;c_otx=.;c_tox=.;c_head=.;c_dia=.;c_ane=.;c_lac=.;
 	c_neph = .;
