@@ -7134,9 +7134,9 @@ res_test=.;
 	end;
 
 
-	* interruption of prep before diagnosis; * lapr - to add code for cab - add o_cab - accounting for tail ;
+	* interruption of prep before diagnosis;
 	* dependent_on_time_step_length ; 
-	if t ge 2 and prep_oral_tm1 =1 and prep_oral   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
+	if t ge 2 and prep_all_tm1 =1 and prep_all   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;	* TLD prep;
 		interrupt   =1;
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
 
@@ -7155,7 +7155,6 @@ res_test=.;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
-	* lapr - see changes in LAI code - this section deleted?;
 	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_all_tm1 =1 and prep_all=0))
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
@@ -7252,7 +7251,8 @@ end;
 		o_efa=mr_efa_tm1;
 		o_lpr=mr_lpr_tm1;
 		o_taz=mr_taz_tm1;
-		o_dol=mr_dol_tm1;	* lapr - add rla and cab;
+		o_dol=mr_dol_tm1;	
+		o_cab=mr_cab_tm1;	* lapr - added cab JAS Nov2021;
 
 		* if return    =1 then do; * jan18 - think this should apply when restarting even if return ne 1;
 
@@ -7278,7 +7278,7 @@ end;
 
 if yrart=caldate{t} and onart    ne 1 and  art_intro_date <= yrart then do;
 tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0; art_initiation=1;
-o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;
+o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;		* lapr - do we need to reset o_cab here? Do indivs on inj prep have o_cab =1 even when uninfected? - check;
 
     if caldate{t} < 2010.5 then do; o_zdv=1; o_3tc=1; o_efa=1; end;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
@@ -7297,7 +7297,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_oral_tm1 =0 and prep_oral=1 then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep? ;
+	if prep_all_tm1 =0 and prep_all=1 then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - JAS Nov2021 ;
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
