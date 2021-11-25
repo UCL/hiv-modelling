@@ -7278,7 +7278,7 @@ end;
 
 if yrart=caldate{t} and onart    ne 1 and  art_intro_date <= yrart then do;
 tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0; art_initiation=1;
-o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;		* lapr - do we need to reset o_cab here? Do indivs on inj prep have o_cab =1 even when uninfected? - check;
+o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;
 
     if caldate{t} < 2010.5 then do; o_zdv=1; o_3tc=1; o_efa=1; end;
     if 2010.5 <= caldate{t} and reg_option < 100 then do; o_ten=1; o_3tc=1; o_efa=1; end; 
@@ -7292,7 +7292,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
  
     if base_res_test=1 then do;  res_test=1;
     if  (c_rt103m=0 and c_rt181m=0 and c_rt190m=0) then do;  o_ten=1; o_3tc=1; o_efa=1; end;
-    if  (c_rt103m=1 or c_rt181m=1 or c_rt190m=1) then do;    o_ten=1; o_3tc=1; o_dol=1;o_efa=0; end;
+    if  (c_rt103m=1 or c_rt181m=1 or c_rt190m=1) then do;    o_ten=1; o_3tc=1; o_dol=1; o_efa=0; end;
     end;
 
 end;
@@ -10306,7 +10306,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 					vl_cost_inc = 1;
 	* take account of time delay with dbs or plasma compared with poc;
 					if 	((vm_format in (3,4) and vm gt log10(1000)) 	or	(. < vm_format <= 2 and value_last_vm gt log10(vl_threshold))	) then do;
-						if date_v_alert=. then date_v_alert=caldate{t};		* lapr - query adding condition from LAI code "and (o_zdv=1 or o_3tc=1 or o_ten=1 or o_nev=1 or o_efa=1 or o_lpr=1 or o_taz=1 or o_dar=1 or o_dol=1)";
+						if date_v_alert=. then date_v_alert=caldate{t};
 						linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; 
 						if o_zdv=1 then f_zdv=1;
 						if o_3tc=1 then f_3tc=1;
