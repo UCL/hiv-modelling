@@ -4684,14 +4684,12 @@ between 0 and 1 rather than binary 0 or 1;
 adh_prep_inj=1;	********TEMP;
 if prep_inj=1 then do;
 	adh_prep_inj = .; 
-/*	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; */
-	if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then adh_prep_inj = adh; * ****************** CHECK ALL THESE VARIABLES *****************;
-
+	if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then adh_prep_inj = adh; * ****************** CHECK ALL THESE VARIABLES - code copied from current_adh_dl definition in LAI*****************;
 
 	if o_cab ne 1 and tss_cab ge 0.25 and 
 	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-	then do; adh_prep_inj = .; adh_prep_inj = .;				* ****************** UPDATE THIS SECTION FOR DT=0.25 *****************;
-		if tss_cab = 1/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;
+	then do; adh_prep_inj = .; adh_prep_inj = .;
+		if tss_cab = 1/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;				* ****************** UPDATE THIS SECTION FOR DT=0.25 *****************;
 		if tss_cab = 2/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;
 		if tss_cab = 3/12 then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.9 ; end;
 		if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.65 ; end;
