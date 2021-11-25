@@ -13049,8 +13049,11 @@ prep_oral_w_1524 = 0 ; 	if prep_oral=1 and gender =2 and 15 <= age < 25 then pre
 prep_inj_w_1524 = 0 ; 	if prep_inj =1 and gender =2 and 15 <= age < 25 then prep_inj_w_1524 = 1 ;
 prep_vr_w_1524 = 0 ; 	if prep_vr  =1 and gender =2 and 15 <= age < 25 then prep_vr_w_1524 = 1 ;
 
-* number of sex workers on oral prep;
-prep_sw = 0 ; if prep_oral   =1 and sw=1 then prep_sw = 1 ;
+* number of sex workers on prep;
+prep_all_sw = 0 ; 	if prep_all  =1 and sw=1 then prep_all_sw = 1 ;
+prep_oral_sw = 0 ; 	if prep_oral =1 and sw=1 then prep_oral_sw = 1 ;
+prep_inj_sw = 0 ; 	if prep_inj  =1 and sw=1 then prep_inj_sw = 1 ;
+prep_vr_sw = 0 ; 	if prep_vr   =1 and sw=1 then prep_vr_sw = 1 ;
 
 *At start of oral PrEP;
 prepstart=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
@@ -13252,7 +13255,7 @@ prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;
-if prep_oral=1 then do;
+if prep_all=1 then do;
 	if (15<=age<49) then onprep_1549=1;
 	if gender=1 then onprep_m=1;
 	if gender=2 then onprep_w=1;
@@ -13955,7 +13958,7 @@ npge10=0; if np ge 10 then npge10=1;
 *** Prep code;
 prep_newp=.;
 prep_newpg0 = 0;prep_newpg1 = 0;prep_newpg2 = 0;prep_newpg3 = 0;prep_newpg4 = 0;
-if prep_oral=1 then do;
+if prep_all=1 then do;
 prep_newp = newp; 
 if newp  =0 then prep_newpg0 = 1;
 if newp  =1 then prep_newpg1 = 1;
@@ -13969,8 +13972,8 @@ if gender=2 and 15 <= age < 25 and newp ge 1 then do;
 prep_all_ever_w_1524=0;
 if prep_all_ever=1 then prep_all_ever_w_1524=1;
 newp_this_per_age1524w=1;
-if prep_oral=1 then newp_this_per_age1524w_onprep=1;
-if prep_oral ne 1 then newp_this_per_age1524w_onprep=0;
+if prep_all=1 then newp_this_per_age1524w_onprep=1;
+if prep_all ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
 
@@ -13980,9 +13983,9 @@ newp_this_per_hivneg_m = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
-	if prep_oral=1 then newp_this_per_prep=1;
-	if sw=1 and prep_oral=1 then newp_this_per_prep_sw=1;
-	if prep_oral=1 or onart=1 then newp_this_per_art_or_prep=1;
+	if prep_all=1 then newp_this_per_prep=1;
+	if sw=1 and prep_all=1 then newp_this_per_prep_sw=1;
+	if prep_all=1 or onart=1 then newp_this_per_art_or_prep=1;
 	if prep_all_elig = 1 then newp_this_per_elig_prep_all=1; 
 	if sw=1 and prep_all_elig = 1 then newp_this_per_elig_prep_all_sw=1; 
 	if hiv ne 1 then newp_this_per_hivneg=1;
@@ -13996,7 +13999,7 @@ if newp_this_per=1 then do;
 end;
 
 newp_this_per_hivneg_m_prep = 0; newp_this_per_hivneg_w_prep = 0; newp_tp_hivneg_age1524w_prep = 0; newp_this_per_hivneg_sw_prep = 0 ;
-if prep_oral=1 then do;
+if prep_all=1 then do;
 if newp_this_per_hivneg_m = 1 then newp_this_per_hivneg_m_prep = 1;
 if newp_this_per_hivneg_w = 1 then newp_this_per_hivneg_w_prep = 1;
 if newp_this_per_hivneg_age1524w = 1 then newp_tp_hivneg_age1524w_prep = 1;
@@ -15175,7 +15178,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*prep*/
 
 	s_prep_all + prep_all; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; 
-	s_prep_sw + prep_sw ; 
+	s_prep_all_sw + prep_all_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_all_w_1524 + prep_all_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
 	s_elig_prep_all_epdiag + elig_prep_all_epdiag ; s_infected_prep + infected_prep ;
 	s_prep_all_ever + prep_all_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_i_r_prep + i_r_prep ; s_primary_r_prep + primary_r_prep ;
@@ -16614,7 +16617,8 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 
 /*prep*/
 s_prep_all s_prep_oral s_prep_inj s_prep_vr 
-s_prep_sw  s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
+s_prep_all_sw s_prep_oral_sw s_prep_inj_sw s_prep_vr_sw  
+s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
@@ -17487,7 +17491,8 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 
 /*prep*/
 s_prep_all s_prep_oral s_prep_inj s_prep_vr   
-s_prep_sw  s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
+s_prep_all_sw s_prep_oral_sw s_prep_inj_sw s_prep_vr_sw  
+s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
@@ -18566,7 +18571,8 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 
 /*prep*/
 s_prep_all s_prep_oral s_prep_inj s_prep_vr  
-s_prep_sw s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
+s_prep_all_sw s_prep_oral_sw s_prep_inj_sw s_prep_vr_sw  
+s_prep_all_w_1524 s_prep_oral_w_1524 s_prep_inj_w_1524 s_prep_vr_w_1524 s_elig_prep_all_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep   s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
