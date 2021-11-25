@@ -4692,7 +4692,7 @@ if prep_inj=1 then do;
 		if tss_cab = 1/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;				* ****************** UPDATE THIS SECTION FOR DT=0.25 *****************;
 		if tss_cab = 2/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;
 		if tss_cab = 3/12 then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.9 ; end;
-		if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.65 ; end;
+		if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.65 ; end;	* NOTE tss_cab hasn't been defined yet ;
 	end;
 end;
 
@@ -6576,6 +6576,9 @@ visit_tm1=visit;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
 	mr_cab_tm1=mr_cla; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
 
+	if p_cab = 1 and tss_cab = cab_time_to_lower_threshold > . then cab_time_since_below_low_thresh = 0;
+	if p_cab = 1 and tss_cab > cab_time_to_lower_threshold > . then cab_time_since_below_low_thresh =  cab_time_since_below_low_thresh + 0.25;
+
 	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
 	c_head_tm1=c_head ; c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
@@ -7145,14 +7148,15 @@ res_test=.;
 		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
 		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
+		if o_cab_tm1=1 then do;  mr_cab=1;tss_cab=0; end;	* lapr - added cab JAS Nov2021;
 		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
-		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	* lapr - add rla and cab;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	o_cab=0;		* lapr - added cab JAS Nov2021;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
 	* lapr - see changes in LAI code - this section deleted?;
-	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_oral_tm1 =1 and prep_oral=0))
+	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_all_tm1 =1 and prep_all=0))
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
 
@@ -7164,13 +7168,14 @@ res_test=.;
 		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
 		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
+		if o_cab_tm1=1 then do;  mr_cab=1;tss_cab=0; end;	* lapr - added cab JAS Nov2021;
 		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
-		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	o_cab=0;		* lapr - added cab JAS Nov2021;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
-	if prep_oral_tm1 =1 and prep_oral=0 then toffart   =0;
+	if prep_all_tm1 =1 and prep_all=0 then toffart   =0;
 
 	if t ge 2 and interrupt_tm1=1 then tcur=.;
 
