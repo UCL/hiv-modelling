@@ -7895,25 +7895,27 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
-/*	* lapr - add o_cab, o_rla here? ie adh = 1. see LAI code for section on cla / rla - copied below
 
-if o_cla = 1 and o_rla = 1 then adh{t} = 1;
+* DRUG LEVEL DURING CAB TAIL; 		* lapr - from LAI code for section on cla / rla tail - JAS Nov2021 ;
+* ************************ DISCUSS TAIL ASSUMPTION RE DRUG LEVEL IN TAIL**********************;
+* See also section for adh_prep_inj - uses same code;
+
+if o_cab = 1 then adh = 1;
 
 current_adh_dl = .; 
-if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
+if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then current_adh_dl = adh; 
 
-
-if o_cla ne 1 and tss_cla ge 1/12 and 
+if o_cab ne 1 and tss_cab ge 0.25 and 
 (o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
 then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-	if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-	if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+	if tss_cab = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+	if tss_cab = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+	if tss_cab = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
+	if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
 end;
 
 
-*/ 
+
 
 
 
