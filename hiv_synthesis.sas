@@ -13078,7 +13078,7 @@ _ly=.; _dly=.; _qaly=.; _dqaly=.;
 dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; age_would_be_now =.;
 
 
-if 15 <= age < 80 then do;  
+if 15 <= age < 80 and (death = .) then do;  
 _ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
 
 live_ddaly = (1 - util)*0.25*discount; 
@@ -14103,8 +14103,8 @@ pregnant_not_diagnosed_pos=0; if pregnant=1 and registd  ne 1 then pregnant_not_
 
 dead_daly_ntd=0;dead_ddaly_ntd=0;
 if prev_pregnant_ntd=1 then do;
-	dead_daly_ntd=1;
-	dead_ddaly_ntd = dead_daly_ntd*0.25*discount;
+	dead_daly_ntd=0.25;
+	dead_ddaly_ntd = dead_daly_ntd*discount;
 end;
 
 * ts1m: replace above with : 
@@ -14113,16 +14113,17 @@ end;
 * AP 19-7-19;
 dead_daly_oth_dol_adv_birth_e=0; dead_ddaly_oth_dol_adv_birth_e=0;
 if prev_oth_dol_adv_birth_e=1 then do;
-	dead_daly_oth_dol_adv_birth_e=1;
-	dead_ddaly_oth_dol_adv_birth_e = dead_daly_oth_dol_adv_birth_e*0.25*discount;
+	dead_daly_oth_dol_adv_birth_e=0.25;
+	dead_ddaly_oth_dol_adv_birth_e = dead_daly_oth_dol_adv_birth_e*discount;
 end;
 * ts1m: replace above with : 
 * if prev_oth_dol_adv_birth_e=1 then dead_ddaly_oth_dol_adv_birth_e = (1/12)*discount;
 
+*live dalys for the mother due to having given birth to a child with hiv;
 daly_mtct=0; ddaly_mtct=0;
 if ever_birth_with_inf_child=1 then do;
-	daly_mtct=0.1;
-	ddaly_mtct = daly_mtct*0.25*discount;
+	daly_mtct=0.025;
+	ddaly_mtct = daly_mtct*discount;
 end;
 
 * ts1m: replace above with : 
@@ -14132,8 +14133,8 @@ end;
 * AP 19-7-19;
 ddaly_non_aids_pre_death=0;
 if death = caldate&j and rdcause=2 then do;
-	daly_non_aids_pre_death=1;
-	ddaly_non_aids_pre_death = daly_non_aids_pre_death * 0.25 * discount;
+	daly_non_aids_pre_death=0.25;
+	ddaly_non_aids_pre_death = daly_non_aids_pre_death * discount;
 end;
 * ts1m: replace above with : 
 * if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * (1/12) * discount;
