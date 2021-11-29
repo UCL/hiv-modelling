@@ -2,7 +2,7 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_4_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_5_out\";
 
 data g;    set b.out: ;
 
@@ -11,7 +11,7 @@ proc sort data=g;
 by run cald option;run;
 quit;
 proc freq data=g;table cald;run;
-*500 simulation 66500 observations, from 1984 to 2041.75;
+*500 simulation 116500 observations, from 1984 to 2041.75;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
