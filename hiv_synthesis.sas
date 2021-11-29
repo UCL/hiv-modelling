@@ -10846,7 +10846,7 @@ if sv=1 then do;	vis_cost=vis_cost-redn_in_vis_cost_vlm_supp; full_vis_cost_sv =
 
 * pre-death morbidity costs if people dying with dcause =2;
 
-non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_pre_death_cost = 1.000;
+cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_aids_pre_death = 1.000;
 
 
 
@@ -13682,40 +13682,42 @@ if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_d
 
 
 
-_ly=.; _dly=.; _qaly=.; _dqaly=.;_cost_=.; _dcost_=.;_dcost_onart_=.;
-if 15 <= age < 65 then do;
-_ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
+
 /* 
 * ts1m:  replace line above with :
 _ly = 1/12 ; _dly = discount*(1/12);  _qaly = (1/12)*util ; _dqaly = (1/12)*discount*util ; 
 */
-_cost_ = cost ; 
-_dcost_ = cost*discount ; 
-end;
+
+_ly=.; _dly=.; _qaly=.; _dqaly=.;
 
 dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; age_would_be_now =.;
-if 15 <= age < 65 then do;  
+
+
+if 15 <= age < 80 and (death = .) then do;  
+_ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
+
 live_ddaly = (1 - util)*0.25*discount; 
-live_daly = (1 - util)*0.25; end;
+live_daly = (1 - util)*0.25; 
+end;
 /* 
 ts1m: replace two lines above with:
 live_ddaly = (1 - util)*(1/12)*discount; 
 live_daly = (1 - util)*(1/12); end;
 */
-if age ge 65 then do; live_daly=0;  live_ddaly=0;  end;
-	if death >= 1993 then do;
-		age_would_be_now = (agedeath + (caldate_never_dot - death));
-		dead_daly=0; dead_ddaly=0;
-		if . < death < caldate_never_dot and 15 <= age_would_be_now < 65 then do;	
-		dead_ddaly = 0.25*discount; dead_daly = 0.25;    
+if age ge 80 then do; live_daly=0;  live_ddaly=0;  end;
+if death >= 1993 then do;
+	age_would_be_now = (agedeath + (caldate_never_dot - death));
+	dead_daly=0; dead_ddaly=0;
+		if . < death < caldate_never_dot and 15 <= age_would_be_now < 80 then do;	
+			dead_ddaly = 0.25*discount; dead_daly = 0.25;    
 /* 
 ts1m: replace line above with:
 dead_ddaly = (1/12)*discount; dead_daly = (1/12);  
 */
-	end;
+		end;
 end;
 
-
+/*
 dead_daly_80=.; dead_ddaly_80=.;live_daly_80=.;  live_ddaly_80=.; age_would_be_now =.;
 if 15 <= age < 80 then do;  
 live_ddaly_80 = (1 - util)*0.25*discount; 
@@ -13728,20 +13730,23 @@ if age ge 80 then do; live_daly_80=0;  live_ddaly_80=0;  end;
 		dead_ddaly_80 = 0.25*discount; dead_daly_80 = 0.25;    
 	end;
 end;
+*/
+
 
 *Discounted years lost at age 80 using Optima approach (all YLL counted at time of death);
-dyll_80=0;
+dyll_Optima80=0;
 if caldate&j =death and death ne . then do;
 	total_yll=80-agedeath;
 	
 	i=0;
 	do until (i >= total_yll+0.25);
-		dyll_80 = dyll_80 + (0.25 *  (1/1.03)**i);
+		dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**i);
 	i=i+0.25;
 	end;
 end;
 
 
+_dcost = cost* discount;
 _dart_cost = art_cost*discount ;
 _donart_cost = cost_onart*discount ;
 _dadc_cost = adc_cost*discount ; 
@@ -13764,8 +13769,8 @@ _dcost_test_f_sympt = cost_test_f_sympt*discount ;
 _dcost_test_f_sw = cost_test_f_sw *discount ;
 _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
-_cost_hypert_vis  = cost_hypert_vis*discount ; 
-_cost_hypert_drug = cost_hypert_drug*discount ; 
+_dcost_hypert_vis  = cost_hypert_vis*discount ; 
+_dcost_hypert_drug = cost_hypert_drug*discount ; 
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -13781,11 +13786,21 @@ _dcost_prep_visit = cost_prep_visit*discount;
 _dcost_art_init = cost_art_init*discount;
 _dcost_drug_level_test = drug_level_test_cost*discount;
 
-_dcost_non_aids_pre_death = non_aids_pre_death_cost*discount;
+_dcost_non_aids_pre_death = cost_non_aids_pre_death*discount;
 
 _dart_1_cost = art_1_cost * discount;    
 _dart_2_cost = art_2_cost * discount; 
 _dart_3_cost = art_3_cost * discount; 
+
+_dcost_zdv = cost_zdv * discount;
+_dcost_ten = cost_ten * discount;
+_dcost_3tc = cost_3tc * discount;
+_dcost_nev = cost_nev * discount;
+_dcost_lpr = cost_lpr * discount;
+_dcost_dar = cost_dar * discount;
+_dcost_taz = cost_taz * discount;
+_dcost_efa = cost_efa * discount;
+_dcost_dol = cost_dol * discount;
 
 _dcost_vl_not_done = cost_vl_not_done * discount; 
 
@@ -14701,26 +14716,41 @@ pregnant_not_diagnosed_pos=0; if pregnant=1 and registd  ne 1 then pregnant_not_
 
 * daly outputs ;
 
-dead_ddaly_ntd=0;
-if prev_pregnant_ntd=1 then dead_ddaly_ntd = 0.25*discount;
+dead_daly_ntd=0;dead_ddaly_ntd=0;
+if prev_pregnant_ntd=1 then do;
+	dead_daly_ntd=0.25;
+	dead_ddaly_ntd = dead_daly_ntd*discount;
+end;
+
 * ts1m: replace above with : 
 * if prev_pregnant_ntd=1 then dead_ddaly_ntd = (1/12)*discount;
 
 * AP 19-7-19;
-dead_ddaly_oth_dol_adv_birth_e=0;
-if prev_oth_dol_adv_birth_e=1 then dead_ddaly_oth_dol_adv_birth_e = 0.25*discount;
+dead_daly_oth_dol_adv_birth_e=0; dead_ddaly_oth_dol_adv_birth_e=0;
+if prev_oth_dol_adv_birth_e=1 then do;
+	dead_daly_oth_dol_adv_birth_e=0.25;
+	dead_ddaly_oth_dol_adv_birth_e = dead_daly_oth_dol_adv_birth_e*discount;
+end;
 * ts1m: replace above with : 
 * if prev_oth_dol_adv_birth_e=1 then dead_ddaly_oth_dol_adv_birth_e = (1/12)*discount;
 
-ddaly_mtct=0;
-if ever_birth_with_inf_child=1 then ddaly_mtct = 0.1*0.25*discount;
+*live dalys for the mother due to having given birth to a child with hiv;
+daly_mtct=0; ddaly_mtct=0;
+if ever_birth_with_inf_child=1 then do;
+	daly_mtct=0.025;
+	ddaly_mtct = daly_mtct*discount;
+end;
+
 * ts1m: replace above with : 
 * if ever_birth_with_inf_child=1 then ddaly_mtct = 0.1*(1/12)*discount;
 
 
 * AP 19-7-19;
 ddaly_non_aids_pre_death=0;
-if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * 0.25 * discount;
+if death = caldate&j and rdcause=2 then do;
+	daly_non_aids_pre_death=0.25;
+	ddaly_non_aids_pre_death = daly_non_aids_pre_death * discount;
+end;
 * ts1m: replace above with : 
 * if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * (1/12) * discount;
 
@@ -15438,36 +15468,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on2drug_antihyp_1549 + on2drug_antihyp_1549 ; s_on2drug_antihyp_5059 + on2drug_antihyp_5059 ; s_on2drug_antihyp_6069 + on2drug_antihyp_6069 ;     
 	s_on2drug_antihyp_7079 + on2drug_antihyp_7079 ; s_on2drug_antihyp_ge80 + on2drug_antihyp_ge80 ; 
 	s_on3drug_antihyp_1549 + on3drug_antihyp_1549 ; s_on3drug_antihyp_5059 + on3drug_antihyp_5059 ; s_on3drug_antihyp_6069 + on3drug_antihyp_6069 ;     
-	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ; 
+	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ;
 
-
-	/*costs and dalys*/
-
-	s_cost + cost ; s_onart_cost + onart_cost ; s_art_cost + art_cost ; s_adc_cost + adc_cost ; s_cd4_cost + cd4_cost ; s_vl_cost + vl_cost ; s_vis_cost + vis_cost ; 
-	s_full_vis_cost + full_vis_cost ; s_non_tb_who3_cost + non_tb_who3_cost ; s_cot_cost + cot_cost ; s_tb_cost + tb_cost ; s_cost_test + cost_test ;
-	s_res_cost + res_cost ; s_cost_circ + cost_circ ; s_cost_condom_dn + cost_condom_dn ; s_cost_sw_program + cost_sw_program ;  
-	s_t_adh_int_cost + t_adh_int_cost ; s_cost_test_m + cost_test_m ; 
-	s_cost_test_f + cost_test_f ; s_cost_prep_oral + cost_prep_oral ; s_cost_prep_visit + cost_prep_visit ; s_cost_prep_ac_adh + cost_prep_ac_adh ; 
-	s_cost_test_m_sympt + cost_test_m_sympt ; s_cost_test_f_sympt + cost_test_f_sympt ;                         
-    s_cost_test_m_circ + cost_test_m_circ ; s_cost_test_f_anc + cost_test_f_anc ; s_cost_test_f_sw + cost_test_f_sw ;                      
-  	s_cost_test_f_non_anc + cost_test_f_non_anc ; s_pi_cost + pi_cost ;	s_cost_switch_line + cost_switch_line ; s_cost_child_hiv + cost_child_hiv ;   			
-  	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_cost_art_init + cost_art_init ; s_art_1_cost + art_1_cost ; s_art_2_cost + art_2_cost ;	     		     			 
-	s_art_3_cost + art_3_cost ; s_cost_vl_not_done + cost_vl_not_done ; s_cost_zdv + cost_zdv ; s_cost_ten + cost_ten ; s_cost_3tc + cost_3tc ;  	    
- 	s_cost_nev + cost_nev ; s_cost_lpr + cost_lpr ; s_cost_dar + cost_dar ; s_cost_taz + cost_taz ; s_cost_efa + cost_efa ; s_cost_dol + cost_dol ;  
-    s_ly + _ly ; s_dly + _dly ; s_qaly + _qaly ; s_dqaly + _dqaly ; s_cost_ + _cost_ ; s_live_daly + live_daly ; s_live_ddaly + live_ddaly ;	  	  	 
-	s_dcost_ + _dcost_ ; s_donart_cost + _donart_cost ; s_dart_cost + _dart_cost ; s_dadc_cost + _dadc_cost ; s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	  	    	   	     	 	 	  	  	  	      
-	s_dfull_vis_cost + _dfull_vis_cost ; s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;
-    s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ;  s_dcost_sw_program + dcost_sw_program ;
-	s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; 
-	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep + _dcost_prep ; s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
-	s_dcost_test_m_sympt + _dcost_test_m_sympt ; 
-	s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ; s_dcost_test_f_anc + _dcost_test_f_anc ;
-  	s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ;       	     	    	       
-    s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_art_init + _dcost_art_init ;               
-   	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;		  		
-  	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test + _dcost_drug_level_test ; s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;     	   		   		
-     		
 	/*visits and linkage*/
 
 	s_visit + visit ; s_lost + lost ; s_linked_to_care + linked_to_care ; s_linked_to_care_this_period + linked_to_care_this_period ;
@@ -15790,17 +15792,14 @@ the age cut-off for dalys (dead_dealys) - this section should not contain any va
 if 15 <= age or death ne . then do;
 
 	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; 
-	s_dead_daly_80 + dead_daly_80 ; s_dead_ddaly_80 + dead_ddaly_80 ; 
-	s_dead_ddaly_oth_dol_adv_birth_e + dead_ddaly_oth_dol_adv_birth_e ; 
-	s_dead_ddaly_ntd + dead_ddaly_ntd ;
+ 
 
 	s_art_attrit_1yr + art_attrit_1yr ; s_art_attrit_1yr_on + art_attrit_1yr_on ; s_art_attrit_2yr + art_attrit_2yr ;
 	s_art_attrit_2yr_on + art_attrit_2yr_on ; s_art_attrit_3yr + art_attrit_3yr ; s_art_attrit_3yr_on + art_attrit_3yr_on ; 
     s_art_attrit_4yr + art_attrit_4yr ; s_art_attrit_4yr_on + art_attrit_4yr_on ; s_art_attrit_5yr + art_attrit_5yr ; 
 	s_art_attrit_5yr_on + art_attrit_5yr_on ; s_art_attrit_6yr + art_attrit_6yr ; s_art_attrit_6yr_on + art_attrit_6yr_on ;
     s_art_attrit_7yr + art_attrit_7yr ; s_art_attrit_7yr_on + art_attrit_7yr_on ; s_art_attrit_8yr + art_attrit_8yr ;
-	s_art_attrit_8yr_on + art_attrit_8yr_on ; s_cost_child_hiv + cost_child_hiv ; 
-	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_ddaly_mtct + ddaly_mtct ; s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
+	s_art_attrit_8yr_on + art_attrit_8yr_on ;  s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
 
 end;
@@ -15811,41 +15810,61 @@ if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
 end;
 
-* note - I have stopped adding an "_80" for all of these variables - so we need to take care for each s_ variable whether it applies to 15-64 
-or 15-79 or all ages.   I think we should consider changing the above from 15-64 to 15+ or 15-79;
+
+
+
+
+* Note - all costs and DALYs now calculated to default age 80 (23Nov21);
+
 if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
+	*undiscounted;
+	s_live_daly + live_daly; 
+	s_dead_daly_oth_dol_adv_birth_e + dead_daly_oth_dol_adv_birth_e ;
+	s_dead_daly_ntd + dead_daly_ntd;
+	s_daly_mtct + daly_mtct ;
+	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 
-	s_live_daly_80 + live_daly_80 ; s_live_ddaly_80 + live_ddaly_80 ; s_dyll_80 + dyll_80;
+	*discounted;
+	s_live_ddaly + live_ddaly ; 
+	s_dead_ddaly_oth_dol_adv_birth_e + dead_ddaly_oth_dol_adv_birth_e ;
+	s_dead_ddaly_ntd + dead_ddaly_ntd;
+	s_ddaly_mtct + ddaly_mtct ;
+	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
+	
+	s_dyll_Optima80 + dyll_Optima80;
 
-	s_cost_80 + cost ; s_art_cost_80 + art_cost ;  
-    s_adc_cost_80 + adc_cost ; s_cd4_cost_80 + cd4_cost ; s_vl_cost_80 + vl_cost ; s_vis_cost_80 + vis_cost ; 
-	s_full_vis_cost_80 + full_vis_cost ; s_non_tb_who3_cost_80 + non_tb_who3_cost ; s_cot_cost_80 + cot_cost ; s_tb_cost_80 + tb_cost ; s_cost_test_80 + cost_test ;
-	s_res_cost_80 + res_cost ; s_cost_circ_80 + cost_circ ; s_cost_condom_dn_80 + cost_condom_dn ; s_cost_sw_program_80 + cost_sw_program ;  
-	s_t_adh_int_cost_80 + t_adh_int_cost ; s_cost_test_m_80 + cost_test_m ; 
-	s_cost_test_f_80 + cost_test_f ; s_cost_prep_oral_80 + cost_prep_oral ; s_cost_prep_visit_80 + cost_prep_visit ; s_cost_prep_ac_adh_80 + cost_prep_ac_adh ; 
-	s_cost_test_m_sympt_80 + cost_test_m_sympt ; s_cost_test_f_sympt_80 + cost_test_f_sympt ;                         
-    s_cost_test_m_circ_80 + cost_test_m_circ ; s_cost_test_f_anc_80 + cost_test_f_anc ; s_cost_test_f_sw_80 + cost_test_f_sw ;                      
-  	s_cost_test_f_non_anc_80 + cost_test_f_non_anc ; s_pi_cost_80 + pi_cost ;	s_cost_switch_line_80 + cost_switch_line ; s_cost_child_hiv_80 + cost_child_hiv ;   			
-  	s_cost_child_hiv_mo_art_80 + cost_child_hiv_mo_art ; s_cost_art_init_80 + cost_art_init ; s_art_1_cost_80 + art_1_cost ; s_art_2_cost_80 + art_2_cost ;	     		     			 
-	s_art_3_cost_80 + art_3_cost ; s_cost_vl_not_done_80 + cost_vl_not_done ; s_cost_zdv_80 + cost_zdv ; s_cost_ten_80 + cost_ten ; s_cost_3tc_80 + cost_3tc ;  	    
- 	s_cost_nev_80 + cost_nev ; s_cost_lpr_80 + cost_lpr ; s_cost_dar_80 + cost_dar ; s_cost_taz_80 + cost_taz ; s_cost_efa_80 + cost_efa ; s_cost_dol_80 + cost_dol ;  
-    s_cost__80 + _cost_ ;   	  	 
-	s_dcost__80 + _dcost_ ; s_dart_cost_80 + _dart_cost ; s_dadc_cost_80 + _dadc_cost ; s_dcd4_cost_80 + _dcd4_cost ; s_dvl_cost_80 + _dvl_cost ; s_dvis_cost_80 + _dvis_cost ;  	  	    	   	     	 	 	  	  	  	      
-	s_dfull_vis_cost_80 + _dfull_vis_cost ; s_dnon_tb_who3_cost_80 + _dnon_tb_who3_cost ; s_dcot_cost_80 + _dcot_cost ; s_dtb_cost_80 + _dtb_cost ; s_dtest_cost_80 + _dtest_cost ;
-    s_dres_cost_80 + _dres_cost ; s_dcost_circ_80 + _dcost_circ ; s_dcost_condom_dn_80 + dcost_condom_dn ;  s_dcost_sw_program_80 + dcost_sw_program ;
-	s_d_t_adh_int_cost_80 + _d_t_adh_int_cost ; s_dtest_cost_m_80 + _dtest_cost_m ; 
-	s_dtest_cost_f_80 + _dtest_cost_f ; s_dcost_prep_80 + _dcost_prep ; s_dcost_prep_visit_80 + _dcost_prep_visit ; s_dcost_prep_ac_adh_80 + _dcost_prep_ac_adh ;          
-	s_dcost_test_m_sympt_80 + _dcost_test_m_sympt ; 
-	s_dcost_test_f_sympt_80 + _dcost_test_f_sympt ; s_dcost_test_m_circ_80 + _dcost_test_m_circ ; s_dcost_test_f_anc_80 + _dcost_test_f_anc ;
-  	s_dcost_test_f_sw_80 + _dcost_test_f_sw ; s_dcost_test_f_non_anc_80 + _dcost_test_f_non_anc ; s_dpi_cost_80 + _dpi_cost ; s_dcost_switch_line_80 + _dcost_switch_line ;       	     	    	       
-    s_dcost_child_hiv_80 + _dcost_child_hiv ; s_dcost_child_hiv_mo_art_80 + _dcost_child_hiv_mo_art ; s_dcost_art_init_80 + _dcost_art_init ;               
-   	s_dart_1_cost_80 + _dart_1_cost ; s_dart_2_cost_80 + _dart_2_cost ; s_dart_3_cost_80 + _dart_3_cost ; s_dcost_vl_not_done_80 + _dcost_vl_not_done ;		  		
-  	s_dcost_non_aids_pre_death_80 + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death_80 + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test_80 + _dcost_drug_level_test ;    	 
-	s_cost_hypert_vis_80 + _cost_hypert_vis; s_cost_hypert_drug_80 + _cost_hypert_drug;  
+	*undiscounted;
+	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
+	s_full_vis_cost + full_vis_cost; s_adc_cost + adc_cost; s_non_tb_who3_cost + non_tb_who3_cost; s_cot_cost + cot_cost;  
+	s_tb_cost + tb_cost;  s_cost_test + cost_test; s_res_cost + res_cost;  s_cost_circ + cost_circ;  s_cost_condom_dn + cost_condom_dn; 
+	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; 
+	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_prep_ac_adh + cost_prep_ac_adh; 
+	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
+	s_cost_test_f_anc + cost_test_f_anc; s_cost_test_f_sw + cost_test_f_sw;  s_cost_test_f_non_anc + cost_test_f_non_anc;
+	s_pi_cost + pi_cost;  s_cost_switch_line + cost_switch_line;  s_cost_art_init + cost_art_init;
+	s_art_1_cost + art_1_cost; s_art_2_cost + art_2_cost;  s_art_3_cost + art_3_cost; s_cost_vl_not_done + cost_vl_not_done; 
+	s_cost_zdv + cost_zdv; s_cost_ten + cost_ten; s_cost_3tc + cost_3tc; s_cost_nev + cost_nev; s_cost_lpr + cost_lpr; 
+	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  
+	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
+	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
+	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
+	*discounted; 
+	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
+	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
+	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
+	s_dcost_sw_program + dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; 
+	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep + _dcost_prep ; s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
+	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
+	s_dcost_test_f_anc + _dcost_test_f_anc ;  s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; 
+	s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ; s_dcost_art_init + _dcost_art_init ;               
+   	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;	
+	s_dcost_zdv + _dcost_zdv; s_dcost_ten + _dcost_ten; s_dcost_3tc + _dcost_3tc; s_dcost_nev + _dcost_nev; s_dcost_lpr + _dcost_lpr; 
+	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; 
+	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
+ 	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
+	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
 	 	
-	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ;  
-
+	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ; 
 end;
 
 
@@ -16842,42 +16861,31 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
-/*costs and dalys (default to age 65; _80 */
-s_cost       s_onart_cost    s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep_oral  s_cost_prep_visit			   s_cost_prep_ac_adh  	
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f		s_dcost_prep        s_dcost_prep_visit
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_dcost_  	   s_donart_cost	   s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn   s_dcost_sw_program  s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 
 
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_oral_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly    
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -17719,43 +17727,31 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-/*costs and dalys*/
-s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program     s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep_oral  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f		s_dcost_prep        s_dcost_prep_visit
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 
 
-s_dcost_  	   s_donart_cost		s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ   s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 		
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
-
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_oral_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly   
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -18804,42 +18800,31 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
-/*costs and dalys*/
-s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ   s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost      s_cost_test_m    s_cost_test_f
-s_cost_prep_oral  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-  	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f		s_dcost_prep        s_dcost_prep_visit
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_dcost_  	   s_donart_cost 		s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-	   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd  s_ddaly_mtct    s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 
 
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_oral_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly   
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
