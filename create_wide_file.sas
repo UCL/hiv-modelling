@@ -10,8 +10,10 @@ data g;    set b.out: ;
 proc sort data=g; 
 by run cald option;run;
 quit;
+
 proc freq data=g;table cald;run;
 *500 simulation 116500 observations, from 1984 to 2041.75;
+
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2021 ;
@@ -259,8 +261,8 @@ s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85pl
 s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569_	+ s_onart_m7074_ + s_onart_m7579_ + s_onart_m8084_ + s_onart_m85pl_	;
 s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
 
-s_dead_m_all = s_dead1564m_all + s_dead6569m_all + s_dead7074m_all + s_dead7579m_all + s_dead8084m_all + s_dead8589m_all + s_dead85plm_all;
-s_dead_w_all = s_dead1564w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w_all + s_dead8084w_all + s_dead8589w_all + s_dead85plm_all;
+s_dead_m_all = s_dead1564m_all + s_dead6569m_all + s_dead7074m_all + s_dead7579m_all + s_dead8084m_all + s_dead85plm_all;
+s_dead_w_all = s_dead1564w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w_all + s_dead8084w_all + s_dead85plw_all;
 
 * p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
 * p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
@@ -765,6 +767,7 @@ end;
 				 				if s_alive_m > 0 then death_rate_hiv_all_m = (4 * 100 * s_death_hiv_m) / s_alive_m;
 								if s_alive_w > 0 then death_rate_hiv_all_w = (4 * 100 * s_death_hiv_w) / s_alive_w;
 
+
 * n deaths and death rate by cause and hiv status - age 15+ ;
 
 			n_dead_hivpos_cause1 = s_dead_hivpos_cause1 * 4 * &sf; 
@@ -801,9 +804,9 @@ end;
 			rate_dead_hivneg_cause4 = (s_dead_hivneg_cause4 * 4 * 100) / (s_alive - s_hivge15) ;
 			n_dead_hivneg_cause5 = s_dead_hivneg_cause5  * 4* &sf; 
 			rate_dead_hivneg_cause5 = (s_dead_hivneg_cause5 * 4 * 100) / (s_alive - s_hivge15) ;
-*rate dead_allage;	rate_dead_allage = (s_dead_allage * 4 * 100) / s_alive ;
-*rate dead_allage_m;rate_dead_allage_m = (s_dead_m_all * 4 * 100) / s_alive ; 
-*rate dead_allage_w;rate_dead_allage_w = (s_dead_w_all * 4 * 100) / s_alive ; 
+*rate dead_allage;	rate_dead_allage = ((s_dead_m_all + s_dead_w_all) * 4 * 100) / s_alive ;
+*rate dead_allage_m;rate_dead_allage_m = (s_dead_m_all * 4 * 100) / s_alive_m ; 
+*rate dead_allage_w;rate_dead_allage_w = (s_dead_w_all * 4 * 100) / s_alive_w ; 
 
 			rate_dead_hivneg_anycause = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
 			rate_dead_hivpos_anycause = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
@@ -831,7 +834,7 @@ end;
 * n_death_hivrel_w;				n_death_hivrel_w = s_death_hivrel_w  * 4* &sf;
 
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
-* n_death;						n_death = s_dead_allage  * 4 * &sf;
+* n_death;						n_death = (s_dead_m_all + s_dead_w_all)  * 4 * &sf;
 * n_covid;						n_covid = s_covid  * 4 * &sf;
 * n_death_hivneg_anycause;		n_death_hivneg_anycause = s_dead_hivneg_anycause  * 4 * &sf;
 * n_death_hivpos_anycause;		n_death_hivpos_anycause = s_dead_hivpos_anycause  * 4 * &sf;
@@ -1028,8 +1031,8 @@ n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv  prevalence2549w pre
 
 ;
 
+proc freq data=y;table rate_dead_allage_m rate_dead_allage_w rate_dead_allage;run;
 
-proc contents data=y;run;
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
