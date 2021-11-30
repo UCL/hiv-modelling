@@ -1593,8 +1593,8 @@ run;
 ods html close;
 
 
-
-
+*20211129: arrivata qua;
+proc contents data=a.w_base_zim;run;
 data q1; set a.w_base_zim;
 *Source for:
 - number on ART in 2015: Tsitsi Apollo, received 23rd Feb 2017 Zim_Adults on ART by gender
@@ -1602,7 +1602,7 @@ data q1; set a.w_base_zim;
 *On 2nd Nov 2021:
 - it was decided to multiply n_onart by 1.1=900.027;
 *Consider restricting by relative prevalence & incidence;
-if n_onart_15 < 818207*1.2 and 0.13 <= prevalence1549_15 < 0.15;
+if n_onart_15 < 818207*1.2 and 0.13 <= prevalence1549_15 < 0.15 and prevalence1549w_00 <0.3;
 
 run_keep = run;
 
@@ -1637,7 +1637,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
-*n=33 out of 499;
+*n=45 out of 500;
 
 
 
