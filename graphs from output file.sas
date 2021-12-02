@@ -141,7 +141,7 @@ ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  33   ;
+%let nfit =  42   ;
 *%let year_end = 2022.00 ;
 %let year_end = 2042.00 ;
 run;
@@ -178,7 +178,7 @@ prevalence3034w 	prevalence3034m 	prevalence3539w 	prevalence3539m prevalence404
 prevalence4549w 	prevalence4549m 	prevalence5054w 	prevalence5054m prevalence5054w 	prevalence5054m
 prevalence5559w 	prevalence5559m 	prevalence6064w 	prevalence6064m prevalence65plw 	prevalence65plm
 prevalence1524w 	prevalence1524m 	prevalence2549w 	prevalence2549m 
-n_alive 	n_alive1549_	n_alive_m 	n_alive_w 	n_diagnosed n_hiv
+n_alive 	n_alive1549_	n_alive_m 	n_alive_w 	n_diagnosed n_hiv n_hiv_m n_hiv_w
 p_1524_newp_ge1_ p_1524m_newp_ge1_ p_1524w_newp_ge1_
 n_new_inf1549_	n_new_inf1549m	n_new_inf1549w
 n_new_inf1524m	n_new_inf1524w n_new_inf2549m	n_new_inf2549w
@@ -299,8 +299,8 @@ g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 
-g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147
-/* g148 g149 g150 g151 g152 g153 g154 g155 g156
+g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148
+/* g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
@@ -322,7 +322,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 ods listing close;
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_33sim_20211116.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_42sim_20211202.rtf";
 ods html ;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -1512,7 +1512,19 @@ series  x=cald y=p50_n_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_hiv in men and women";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990   to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
+label p50_n_hiv_m_0 = "Option 0 (median) - Men";
+label p50_n_hiv_w_0 = "Option 0 (median) - Women";
+series  x=cald y=p50_n_hiv_m_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_hiv_m_0 	upper=p95_n_hiv_m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_hiv_w_0/	lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_n_hiv_w_0 	upper=p95_n_hiv_w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
 
+run;quit;
 
 
 ods html;

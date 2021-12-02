@@ -852,6 +852,8 @@ end;
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 
 * n_hiv ;						n_hiv = s_hivge15 * &sf ;
+* n_hiv_m ;						n_hiv_m = s_hivge15m * &sf ;
+* n_hiv_w ;						n_hiv_w = s_hivge15w * &sf ;
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
@@ -1026,12 +1028,12 @@ p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000
 n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive
 
-n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv  prevalence2549w prevalence2549m
+n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv n_hiv_m n_hiv_w prevalence2549w prevalence2549m
 
 
 ;
 
-proc freq data=y;table rate_dead_allage_m rate_dead_allage_w rate_dead_allage;run;
+proc freq data=y;table /*rate_dead_allage_m rate_dead_allage_w rate_dead_allage*/ n_hiv_m n_hiv_w;run;
 
 proc sort data=y;by run option;run;
 
@@ -1229,7 +1231,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_w); %var(v=p_onart_m); %var(v=n_onart_w); %var(v=n_onart_m);  %var(v=p_diag_w); %var(v=p_diag_m); 
 %var(v=p_onart_vl1000);  %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_alive1549_); %var(v=n_alive_m); %var(v=n_alive_w);
-%var(v=n_diagnosed);   %var (v=n_hiv); %var(v=n_tested)
+%var(v=n_diagnosed);   %var (v=n_hiv); %var (v=n_hiv_m); %var (v=n_hiv_w); %var(v=n_tested)
 %var(v=prevalence2549w);  %var(v=prevalence2549m);
 
 
@@ -1323,7 +1325,7 @@ rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w 
 n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl n_art_start_y 	/*n_all_ai_y*/ 	n_onart
 p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv
+n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv n_hiv_m n_hiv_w
 ;
 
 proc sort; by run; run;
@@ -1605,8 +1607,8 @@ data q1; set a.w_base_zim;
 *On 2nd Nov 2021:
 - it was decided to multiply n_onart by 1.1=900.027;
 *Consider restricting by relative prevalence & incidence;
-if n_onart_15 < 818207*1.2 and 0.13 <= prevalence1549_15 < 0.15 and prevalence1549w_00 <0.3;
-
+if n_onart_15 < 818207*1.2 and 0.13 <= prevalence1549_15 < 0.15 and prevalence1549_00 <0.27;
+*if selecting based on women prevalence I was keeping simulations where prevalence was higher in men than in women;
 run_keep = run;
 
 /*
