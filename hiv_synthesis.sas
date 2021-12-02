@@ -541,7 +541,10 @@ newp_seed = 7;
 * zdv_potency_p75;			%sample_uniform(zdv_potency_p75, 0 1);
 * double_rate_gas_tox_taz; 	%sample_uniform(double_rate_gas_tox_taz, 1 2);
 * tox_weightg_dol;			%sample_uniform(tox_weightg_dol, 0 1);
-* higher_rate_res_dol;		%sample(higher_rate_res_dol, 0 1, 0.8 0.2);
+* pr_res_dol;				pr_res_dol=0.03; 									* lapr - hard-cded as in LAI code JAS Nov2021;
+* higher_rate_res_dol;		%sample(higher_rate_res_dol, 0 1, 0.9 0.1);			* lapr - from LAI code JAS Nov2021;
+							if higher_rate_res_dol=1 then pr_res_dol=0.1;
+							
 * incr_mort_risk_dol_weightg; 
 							%sample(incr_mort_risk_dol_weightg, 
 								1		1.1		2		2.1		2.2		3		4,
@@ -558,6 +561,7 @@ newp_seed = 7;
 * ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.6;
 * ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
 * ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
+
 
 * SEX WORKERS;
 
@@ -697,7 +701,14 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
 																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer 'at-risk' 2) choose to stop while still at risk
-								
+* rel_rate_res_cab_dol;  		%sample(rel_rate_res_cab_dol, 1.5 2, 0.1 0.9);		
+																* lapr - from LAI code JAS Dec2021;
+* cab_time_to_lower_threshold_g;		
+								%sample_uniform(cab_time_to_lower_threshold_g, 1 2 3);
+																* lapr - from LAI code JAS Dec2021;
+																* assume all remain at equivalent of adh > 0.8 for 2 months after last dose [CORRECT WITH THREE MONTH TIME STEP?] ;
+																* lower threshold is conceived of as when reach equivalent of adh < 0.5, so for an insti probably not likely to generate resistance at that point;								
+
 
 
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
@@ -1751,6 +1762,17 @@ if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
 if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
+
+
+
+* INDIVIDUAL LEVEL VARIABILITY IN TIME TO DECAY ON CABOTEGRAVIR LEVELS ;	* lapr - added from LAI code - JAS Dec2021;
+
+select;
+	when (cab_time_to_lower_threshold_g = 1)	do; %sample(cab_time_to_lower_threshold, 0.25 5 1, 0.7 0.2 0.1);	end;
+	when (cab_time_to_lower_threshold_g = 2)	do; %sample_uniform(cab_time_to_lower_threshold, 0.25 5 1);			end;
+	when (cab_time_to_lower_threshold_g = 3)	do; %sample(cab_time_to_lower_threshold, 0.25 5 1, 0.1 0.2 0.7);	end;
+end;
+
 
 
 
@@ -8938,8 +8960,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
-	* lapr - cab, add specific mutations (see LAI-ART code);
-
 	d=rand('uniform');
 
 	if t ge 2 and d lt newmut_tm1 then do;
@@ -8985,8 +9005,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=rand('uniform'); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 
-		* lapr - add - o_rla here (from LAI) even though we are not considering RPV for this analysis? ;
-
 
 * pr mutations ;
 
@@ -9015,13 +9033,18 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=rand('uniform'); if cx < 0.03 then c_pr88m=1;
 		end;
 
-		* lapr - add code from LAI (cla)? pr_res_dol used x2 for CAB - any more specific data? ;
 * dol;
 		if o_dol_tm1=1 then do; 
-		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
 		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
 			ax=rand('uniform'); if ax < pr_res_dol then c_inpm=1;  
 			bx=rand('uniform'); if bx < pr_res_dol then c_insm=1;
+		end;
+
+		* lapr - added code from LAI, pr_res_dol used is 1.5-2 (10%:90%) x for CAB - any more specific data? JAS Nov2021 ;
+* cab;
+		if o_cab_tm1=1 or (p_cab = 1 and current_adh_dl_tm1 > .) then do; 
+			cx=rand('uniform'); if cx < (pr_res_dol * rel_rate_res_cab_dol) then c_inpm=1;  
+			cx=rand('uniform'); if cx < (pr_res_dol * rel_rate_res_cab_dol) then c_insm=1;
 		end;
 
 	end;
@@ -9141,8 +9164,9 @@ and starting another, non-x-resistant, regimen;
 
 	* integrase inhibitor; 
 
-		a=rand('uniform');if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	* lapr change to inprim?;
-		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
+		* lapr - added CAB code from LAI - JAS Nov2021;
+		a=rand('uniform');if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and (p_cab=0 or (p_cab=1 and . < current_adh_dl < lower_cab_threshold)) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	
+		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and (p_cab=0 or (p_cab and . < current_adh_dl < lower_cab_threshold)) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
 
 end;
 
@@ -9199,9 +9223,9 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 	if e_pr82m=1 and (o_lpr=1 or o_dar=1 or o_taz=1) then c_pr82m=1;
 	if e_pr84m=1 and (o_lpr=1  or o_dar=1 or o_taz=1) then c_pr84m=1;
 	if e_pr88m=1 and (o_taz=1) then c_pr88m=1;
-	if e_pr90m=1 and (o_lpr=1  or o_dar=1) then c_pr90m=1;
-	if e_inpm=1  and (o_dol=1 ) then c_inpm=1;
-	if e_insm=1  and (o_dol=1 ) then c_insm=1;
+	if e_pr90m=1 and (o_lpr=1 or o_dar=1) then c_pr90m=1;
+	if e_inpm=1  and (o_dol=1 or o_cab=1) then c_inpm=1;	* lapr - added o_cab - JAS Nov2021;
+	if e_insm=1  and (o_dol=1 or o_cab=1) then c_insm=1;	* lapr - added o_cab - JAS Nov2021;
 
 
 * art_monitoring_strategy
@@ -9267,6 +9291,7 @@ and 0.5 <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;
 		if o_taz=1 then f_taz=1;						
 		if o_dar=1 then f_dar=1;
 		if o_dol=1 then f_dol=1;
+		if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end;
 end;
 
@@ -9295,6 +9320,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end;
 			conf_measured_c=.;   
 		end;
@@ -9314,6 +9340,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end;
 			conf_measured_c=.;
 		end;
@@ -9357,6 +9384,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end;
 		conf_measured_c=.;
 		end;
@@ -9388,6 +9416,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end;
 			conf_measured_c=.;
 		end;
@@ -9458,6 +9487,7 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 				if o_taz=1 then f_taz=1;
 				if o_dar=1 then f_dar=1;
 				if o_dol=1 then f_dol=1;
+				if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end;
 		end;
 end;
@@ -9501,6 +9531,7 @@ and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_fro
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9550,6 +9581,7 @@ and restart    ne 1 and restart_tm1  ne 1 and (caldate{t} - date_transition_from
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9592,6 +9624,7 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - d
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9623,6 +9656,7 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - d
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 		end;
 	end;
 		
@@ -9666,6 +9700,7 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9712,6 +9747,7 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9759,6 +9795,7 @@ then do;
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 	end; 
 end;
 
@@ -9825,6 +9862,7 @@ if res_test_6m_if_vlg1000=1 and t ge 2 then do;  * last_vm_gt_1000 only defined 
 			if o_taz=1 then f_taz=1;
 			if o_dar=1 then f_dar=1;
 			if o_dol=1 then f_dol=1;
+			if o_cab=1 then f_cab=1;	* lapr - added o_cab - JAS Nov2021;	
 			end; goto ff13;
 
 ff13: end;
@@ -9947,18 +9985,24 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
       if e_pr32m+e_pr47m+e_pr50vm+e_pr54m+e_pr76m+e_pr84m >= 4 then r_dar=0.75;
 
 
+* INSTIs;
+
 * dol;
       if (e_inpm=1 and e_insm=1) then r_dol=1.0;
       if (e_inpm=1 and e_insm=0) then r_dol=0.75;
       if (e_inpm=0 and e_insm=1) then r_dol=0.25;
 
+* cab;
+      if (e_inpm=1 and e_insm=1) then r_cab=1.0;			* lapr - added from LAI code JAS Dec2021;
+      if (e_inpm=1 and e_insm=0) then r_cab=0.75;
+      if (e_inpm=0 and e_insm=1) then r_cab=0.25;
 
 
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
 	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol))
-					  +(o_cab*r_cab);		* lapr - added o_cab JAS Nov2021;
+					  +(o_cab*r_cab);						* lapr - added o_cab JAS Nov2021;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -10004,7 +10048,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	res_1stline_startline2=.;
 	if caldate{t}=date_line2 > . then do;
 	res_1stline_startline2=0; if r_zdv >= 0.5 or r_3tc  >= 0.5 or  r_efa >= 0.5 or r_nev >= 0.5 or 
-	r_ten >= 0.5 then res_1stline_startline2=1;
+	r_ten >= 0.5 then res_1stline_startline2=1;				* lapr - do we need to add r_cab?;
 	end;
 
 
