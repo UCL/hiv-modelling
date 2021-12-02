@@ -555,9 +555,7 @@ newp_seed = 7;
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
-* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.6;
-* ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
-* ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
+* ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
 
@@ -2228,6 +2226,10 @@ all art stopped (no_art_disrup_covid)
 ;
 
 if caldate{t} ge 2019.5 then reg_option = 120;
+
+if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
+
+
 
 
 
@@ -9641,10 +9643,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if t ge 2 and dead=0 then do; 
 		who3_rate=base_rate*fold_incr_who3;
 		* assume higher risk than of who4, but with same predictors;
-		if nod    ge 3 then who3_rate = 0.6*who3_rate;
-		if nod    = 2 then who3_rate = 0.85*who3_rate;
-		if nod    = 1 then who3_rate = 0.9*who3_rate;
-		if nod    = 0 then who3_rate = 1*who3_rate;
+		if onart = 1 then who3_rate = ind_effect_art_hiv_disease_death*who3_rate;
 
 		non_tb_who3_rate = who3_rate * 4/5; * because assume 20% of who3 is tb;
 		tb_rate = who3_rate * 1/5; * because assume 20% of who3 is tb;
@@ -9761,9 +9760,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then rate=base_rate;
 	
 		if pcp_p   =1 then rate=rate*0.8;
-		if nod    ge 3 then rate = 0.6 *rate;
-		if nod    = 2 then rate = 0.85*rate;
-		if nod    =1 then rate = 0.9*rate;
+		if onart=1 then rate = ind_effect_art_hiv_disease_death *rate;
 
 		oth_adc_rate = rate * (1 - prop_adc_crypm - prop_adc_sbi) ; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
@@ -9929,10 +9926,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		end;
 
 		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
-		if nod    ge 3 then hiv_death_rate = ind_effect_art3_death_rate * hiv_death_rate;  
-		if nod    = 2 then  hiv_death_rate = ind_effect_art2_death_rate* hiv_death_rate;  
-		if nod    = 1 then  hiv_death_rate = ind_effect_art1_death_rate * hiv_death_rate;  
-		if nod    = 0 then  hiv_death_rate = 1.0 * hiv_death_rate;
+		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
@@ -16394,7 +16388,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -18319,7 +18313,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104 ind_effect_art_hiv_disease_death 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
