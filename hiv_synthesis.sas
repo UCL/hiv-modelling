@@ -7935,10 +7935,16 @@ if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_thre
 if o_cab ne 1 and tss_cab ge 0.25 and 
 (o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
 then do; current_adh_dl = .; current_adh_dl_tm1 = .;
+	* ts1m;
+	/*
 	if tss_cab = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
 	if tss_cab = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
 	if tss_cab = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
 	if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+	*/
+	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;										* lapr - using 2-month value from above - JAS Dec2021;
+	if 0.25 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - NB this will overwrite line above?;
+
 end;
 
 
