@@ -2050,6 +2050,11 @@ p50_n_alive_w_0			p5_n_alive_w_0			p95_n_alive_w_0
 
 p50_p_onart_diag_m_0 	p5_p_onart_diag_m_0		p95_p_onart_diag_m_0 
 p50_p_onart_diag_w_0 	p5_p_onart_diag_w_0 	p95_p_onart_diag_w_0
+
+p50_n_hiv_m_0			p5_n_hiv_m_0			p95_n_hiv_m_0
+p50_n_hiv_w_0			p5_n_hiv_w_0			p95_n_hiv_w_0
+
+
 ;
 run;
 proc transpose data=e out=mihpsa_zim_stock_20211108;run;
@@ -2077,11 +2082,13 @@ if var="n_alive_m_" then var_n=15;
 if var="n_alive_w_" then var_n=16;
 if var="p_artdiagm" then var_n=17;
 if var="p_artdiagw" then var_n=18;
-if var="prev1524m_" then var_n=19;
-if var="prev1524w_" then var_n=20;
-if var="prev2549m_" then var_n=21;
-if var="prev2549w_" then var_n=22;
-if var="prop_sw_hi" then var_n=23;
+if var="n_hiv_m_0"  then var_n=19;
+if var="n_hiv_w_0"  then var_n=20;
+if var="prev1524m_" then var_n=21;
+if var="prev1524w_" then var_n=22;
+if var="prev2549m_" then var_n=23;
+if var="prev2549w_" then var_n=24;
+if var="prop_sw_hi" then var_n=25;
 
 run;
 proc sort; by var_n ord;run;
@@ -2161,14 +2168,13 @@ if var="n_new_inf1549w_0" then var_n=5;
 if var="n_new_inf1549__0" then var_n=6;
 if var="n_death_hivrel_m" then var_n=7;
 if var="n_death_hivrel_w" then var_n=8;
-
 if var="n_death_2059_m_0" then var_n=9;
 if var="n_death_2059_w_0" then var_n=10;
-
 if var="n_tested_m_0" then var_n=11;
 if var="n_tested_0" then var_n=12;
 if var="test_prop_positi" then var_n=13;
 if var="n_new_vmmc1549m_" then var_n=14;
+
 if var="incidence1524m_0" then var_n=15;
 if var="incidence1524w_0" then var_n=16;
 if var="incidence2549m_0" then var_n=17;
