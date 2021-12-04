@@ -2254,13 +2254,99 @@ who may be dead and hence have caldate{t} missing;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
 
-	if option = 0 then do;  
+	art_init_reinit_2nd_per = 1; * to be defined ;
 
+	change pcpp going back ; * to be defined ;
+
+	if option = 1 then do;  
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;  * to be defined ;
 	end; 
 
-	if option = 1 then do;
-
+	if option = 2 then do;
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;                      
+		tbxp_who34 = 1; * to be defined ;
 	end;
+
+	if option = 3 then do;
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;                      
+		tblam_who34 = 1; * to be defined ;
+	end;
+
+	if option = 4 then do;
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;                      
+		tbproph_art_init_reinit = 1; * to be defined ;
+	end;
+
+	if option = 5 then do;
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;                      
+		pjpp_art_init_reinit = 1; * to be defined ;
+	end;
+
+	if option = 6 then do;
+		cm_1stvis_return_vlmg1000 = 0;
+		rapid_art_who34 = 1;          
+		tbproph_art_init_reinit = 1;  
+		tbxp_who34 = 1; 
+		pjpp_art_init_reinit = 1; 
+	end;
+
+	if option = 7 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+	end;
+
+	if option = 8 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		tbxp_who34 = 1; 
+		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+	end;
+
+	if option = 9 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		tblam_who34_cd4200 = 1; * to be defined ;
+		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+	end;
+
+	if option = 10 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+		tbproph_art_init_reinit = 1;  
+	end;
+
+	if option = 11 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		cmproph_cd4200 = 1;  * to be defined ;                 
+	end;
+
+	if option = 12 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		crag_cd4200 = 1;  * to be defined ;                 
+	end;
+
+	if option = 13 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		tbxp_who34 = 1; 
+		tbproph_art_init_reinit = 1;
+		pjpp_art_init_reinit_cd4350 = 1;   
+		cmproph_cd4200 = 1;  
+	end;
+
+	if option = 14 then do;
+		cm_1stvis_return_vlmg1000 = 1;
+		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+		tbproph_art_init_reinit = 1;  
+	end;
+
+
+
+
+
+
 end;
 
 * ==========================================================================================================================================;
@@ -17522,30 +17608,6 @@ end;
 
 
 data a; set r1; 
-
-
-data r1; set a;
-
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 
 
 data r1; set a;
