@@ -11023,10 +11023,10 @@ if caldate&j ge yrart > . and date_first_lost_art=. and lost=1 then date_first_l
 if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and date_return_lost_art=. then date_return_lost_art=caldate&j;
 
 * ahd_re_enter_care;
-ahd_re_enter_care_100=0; if 0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then ahd_re_enter_care_100=1;
-ahd_re_enter_care_200=0; if 0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then ahd_re_enter_care_200=1;
+ahd_re_enter_care_100=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_100=1;
+ahd_re_enter_care_200=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_200=1;
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
