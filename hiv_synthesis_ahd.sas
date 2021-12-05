@@ -2281,7 +2281,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 4 then do;
 		cm_1stvis_return_vlmg1000 = 0;
 		rapid_art_who34 = 1;                      
-		tbproph_art_init_reinit = 1; * to be defined ;
+		tb_proph_art_init_reinit = 1; * to be defined ;
 	end;
 
 	if option = 5 then do;
@@ -2293,7 +2293,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 6 then do;
 		cm_1stvis_return_vlmg1000 = 0;
 		rapid_art_who34 = 1;          
-		tbproph_art_init_reinit = 1;  
+		tb_proph_art_init_reinit = 1;  
 		tbxp_who34 = 1; 
 		pjpp_art_init_reinit = 1; 
 	end;
@@ -2306,8 +2306,8 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 8 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		tbxp_who34 = 1;  * to be defined ;
-		tbxp_cd4200 = 1;  * to be defined ;
+		tbxp_who34 = 1;  
+		tbxp_cd4200 = 1;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1; 
 	end;
@@ -2329,14 +2329,14 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 11 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		cmproph_cd4200 = 1;  * to be defined ;  
+		cm_proph_cd4200 = 1;  * to be defined ;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1;  
 	end;
 
 	if option = 12 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		crag_cd4200 = 1;  * to be defined ; 
+		crag_cd4200 = 1;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1;  
 	end;
@@ -2345,16 +2345,16 @@ who may be dead and hence have caldate{t} missing;
 		cm_1stvis_return_vlmg1000 = 1;
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1;                     
-		tbproph_art_init_reinit = 1;  
+		tb_proph_art_init_reinit = 1;  
 	end;
 
 	if option = 14 then do;
 		cm_1stvis_return_vlmg1000 = 1;
 		tbxp_cd4200 = 1;  
 		tbxp_who34 = 1; 
-		tbproph_art_init_reinit = 1;
+		tb_proph_art_init_reinit = 1;
 		pjpp_art_init_reinit_cd4350 = 1;   
-		cmproph_cd4200 = 1;  
+		cm_proph_cd4200 = 1;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1; 
 	end;
@@ -6504,9 +6504,9 @@ res_test=.;
 				* this code below for ahd - note can reverse the initiation of art determined above;
 				if caldate{t} ge year_interv then do;
 					if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) 
-					and (rapid_art_cd4200 ne 1 or cm > 200) then time0=.;
+					and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200) then time0=.;
 					if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) then time0=caldate{t};
-					if rapid_art_cd4200 = 1 and cm <= 200 then time0=.;
+					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then time0=caldate{t};
 					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
 				end;
 		end;
@@ -6767,6 +6767,17 @@ end;
 		if return    =1 and restart=1 then do; 
 			if date_first_art_exp_initiation=. then date_first_art_exp_initiation=caldate{t};  
 			date_last_return_restart=caldate{t}; * oct16;
+		end;
+
+		* this code below for ahd - note can reverse the re-initiation of art determined above;
+		if caldate{t} ge year_interv then do;
+			if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) 
+			and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200 ) then do; restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.;    end; 
+			if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) or (rapid_art_cd4200 = 1 and 0 < cm <= 200 or  0 < cm_tm1 <= 200) then do;
+				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0;
+			end;
+			if art_init_reinit_2nd_per = 1 and restart ne 1 then restart_next_period = 1;  
+			if visit=1 and onart ne 1 and restart_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
 		end;
 
 	end;
@@ -9300,10 +9311,16 @@ crag_measured_this_per = 0; tblam_measured_this_per = 0; tbxp_measured_this_per 
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
 	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
 	if (crag_cd4200=1 and 0 <= cm < 200) or (crag_cd4100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
-	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100) or (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
-	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) or (tblam_who34 = 1 and (who3_=1 or who4_=1)) then tblam_measured_this_per = 1;
+	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100)  then tbxp_measured_this_per = 1;
+	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
 if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; re_enter_care=1; cd4_re_enter_care=cd4; end;
+* measure crag tb lam tb xp when (re)entering care if who stage 3 or 4;
+if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)  then do; 
+	if (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
+	if (tblam_who34 = 1 and (who3_=1 or who4_=1)) then tblam_measured_this_per = 1;
+	if crag_who34=1 then crag_measured_this_per = 1;
+end;
 
 
 * measure viral load on second line (in fact, after failing first line) ; 
