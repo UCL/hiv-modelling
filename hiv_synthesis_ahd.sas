@@ -2254,13 +2254,13 @@ who may be dead and hence have caldate{t} missing;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
 
-	art_init_reinit_2nd_per = 1; * to be defined ;
+	art_init_reinit_2nd_per = 1;  
 
 	change pcpp going back ; * to be defined ;
 
 	if option = 1 then do;  
 		cm_1stvis_return_vlmg1000 = 0;
-		rapid_art_who34 = 1;  * to be defined ;
+		rapid_art_who34 = 1;  
 	end; 
 
 	if option = 2 then do;
@@ -2297,55 +2297,64 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 7 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;                      
 	end;
 
 	if option = 8 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		tbxp_who34 = 1; 
-		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+		tbxp_who34 = 1;  * to be defined ;
+		tbxp_cd4200 = 1;  * to be defined ;
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1; 
 	end;
 
 	if option = 9 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		tblam_who34_cd4200 = 1; * to be defined ;
-		rapid_art_who34_cd4200 = 1; * to be defined ;                     
+		tblam_cd4200 = 1; * to be defined ;
+		tblam_who34 = 1;  * to be defined ;
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;                      
 	end;
 
 	if option = 10 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		rapid_art_who34_cd4200 = 1; * to be defined ;                     
-		tbproph_art_init_reinit = 1;  
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;                     
+		tbproph_art_init_reinit = 1;   
 	end;
 
 	if option = 11 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		cmproph_cd4200 = 1;  * to be defined ;                 
+		cmproph_cd4200 = 1;  * to be defined ;  
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;  
 	end;
 
 	if option = 12 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		crag_cd4200 = 1;  * to be defined ;                 
+		crag_cd4200 = 1;  * to be defined ; 
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;  
 	end;
 
 	if option = 13 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		tbxp_who34 = 1; 
-		tbproph_art_init_reinit = 1;
-		pjpp_art_init_reinit_cd4350 = 1;   
-		cmproph_cd4200 = 1;  
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1;                     
+		tbproph_art_init_reinit = 1;  
 	end;
 
 	if option = 14 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		rapid_art_who34_cd4200 = 1; * to be defined ;                     
-		tbproph_art_init_reinit = 1;  
+		tbxp_cd4200 = 1;  
+		tbxp_who34 = 1; 
+		tbproph_art_init_reinit = 1;
+		pjpp_art_init_reinit_cd4350 = 1;   
+		cmproph_cd4200 = 1;  
+		rapid_art_cd4200 = 1;   
+		rapid_art_who34 = 1; 
 	end;
-
-
-
-
-
 
 end;
 
@@ -6484,15 +6493,23 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;	
 
-		if art_initiation_strategy=3 then do;
-			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
+		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
 				if pregnant =1 then u=u/10; * jul18 ;
-
-				if u < eff_pr_art_init then time0=caldate{t};
-
-				if dt_first_elig=. then dt_first_elig=caldate{t};end;
+				if u < eff_pr_art_init then time0=caldate{t}; * note this can be reverse below; 
+				if dt_first_elig=. then dt_first_elig=caldate{t};
+				* this code below for ahd - note can reverse the initiation of art determined above;
+				if caldate{t} ge year_interv then do;
+					if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) 
+					and (rapid_art_cd4200 ne 1 or cm > 200) then time0=.;
+					if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) then time0=caldate{t};
+					if rapid_art_cd4200 = 1 and cm <= 200 then time0=.;
+					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
+				end;
 		end;
+
+		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and start_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
+
 
 		if hiv_monitoring_strategy=2 and art_initiation_strategy=4 then do;
 			if t ge 4 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} and
