@@ -2259,7 +2259,7 @@ who may be dead and hence have caldate{t} missing;
 
 	art_init_reinit_2nd_per = 1;  
 
-	change pcpp going back ; * to be defined ;
+	pcpp = 0; 
 
 	if option = 1 then do;  
 		cm_1stvis_return_vlmg1000 = 0;
@@ -2281,7 +2281,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 4 then do;
 		cm_1stvis_return_vlmg1000 = 0;
 		rapid_art_who34 = 1;                      
-		tb_proph_art_init_reinit = 1; * to be defined ;
+		tb_proph_art_init_reinit = 1; 
 	end;
 
 	if option = 5 then do;
@@ -2329,7 +2329,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 11 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		cm_proph_cd4200 = 1;  * to be defined ;  
+		crypm_proph_cd4200 = 1; 
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1;  
 	end;
@@ -2354,7 +2354,7 @@ who may be dead and hence have caldate{t} missing;
 		tbxp_who34 = 1; 
 		tb_proph_art_init_reinit = 1;
 		pjpp_art_init_reinit_cd4350 = 1;   
-		cm_proph_cd4200 = 1;  
+		crypm_proph_cd4200 = 1;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1; 
 	end;
@@ -9686,6 +9686,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
 
+	* for ahd;
+	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
+	and tb_proph_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then do; 
+		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
+	end;
+
+
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
 	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
@@ -9697,6 +9704,12 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	crypm_proph = 0;	
 	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 
+		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
+	end;
+
+	* for ahd;
+	if ((max(date_most_recent_crypm_proph, date_most_recent_crypm)=.) or caldate{t} - max(date_most_recent_crypm_proph, date_most_recent_crypm) > 1) 
+	and crypm_proph_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then do; 
 		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
 	end;
 
