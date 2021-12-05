@@ -1,6 +1,6 @@
 
 
-* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\';
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
 libname a "&outputdir/";
@@ -10,7 +10,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -15397,6 +15397,22 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
+proc print; var caldate&j option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  pcp_p_art_init_reinit 
+tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 cd4 
+cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb onart return restart time0 start_next_period pcp_p tb_proph crypm_proph 
+crypm_diag_e    tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per  cm_this_per 
+;
+run;
+
+proc freq; tables caldate&j ; run;
+
+
+
+
+
+
+
+
 /*
 
 ods html;
@@ -17666,10 +17682,10 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 
 
-data a; set r1; 
+data a.ahd; set r1; 
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
