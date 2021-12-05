@@ -9557,7 +9557,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	tb_proph = 0;	
 	u=rand('uniform');
-	if caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1 and u < rate_tb_proph_init then do; 
+	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
+	and u < rate_tb_proph_init then do; 
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
 
