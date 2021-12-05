@@ -304,6 +304,7 @@ newp_seed = 7;
 * effect_crypm_proph;		effect_crypm_proph = 0.5; 				* as above for crypm;
 * effect_sbi_proph;			effect_sbi_proph = 0.5;
 * tblam_eff_prob_diag_l;	tblam_eff_prob_diag_l = 0.5; 			* effect of tb lam test on tb being diagnosed late;
+* tbxp_eff_prob_diag_l;		tbxp_eff_prob_diag_l = 0.5; 			* effect of tb xpert test on tb being diagnosed late;
 * crag_eff_prob_diag_l;		crag_eff_prob_diag_l = 0.5; 			* effect of crag test on crypm being diagnosed late;  
 
 * tb_base_prob_diag_l;		%sample_uniform(tb_base_prob_diag_l, 0.25 0.50 0.75); 			* base probability that tb is diagnosed late ;
@@ -390,10 +391,12 @@ newp_seed = 7;
 * sd_patient_cd4_rise_art;	sd_patient_cd4_rise_art= 0.2; 		* inter-patient variation in rate of CD4 rise - when CD4 is rising;
 * prob_cd4_meas_done;		prob_cd4_meas_done=0.85; 			* consider whether effectively * dependent_on_time_step_length ;
 * cm_1stvis_return_vlmg1000; cm_1stvis_return_vlmg1000=1;		* whether cd4 is measured each time a person comes back into care to see if have advanced hiv disease;
-* crag_cd4_l100;			crag_cd4_l100=0;					* whether cryp antigen testing done if measured cd4 count < 100;
-* crag_cd4_l200;			crag_cd4_l200=0;					* whether cryp antigen testing done if measured cd4 count < 200;
-* tblam_cd4_l100; 			tblam_cd4_l100=0;					* whether tblam test done if measured cd4 count < 100;
-* tblam_cd4_l200; 			tblam_cd4_l200=0;					* whether tblam test done if measured cd4 count < 200;
+* crag_cd4100;				crag_cd4100=0;					* whether cryp antigen testing done if measured cd4 count < 100;
+* crag_cd4200;				crag_cd4200=0;					* whether cryp antigen testing done if measured cd4 count < 200;
+* tblam_cd4100; 			tblam_cd4100=0;					* whether tblam test done if measured cd4 count < 100;
+* tblam_cd4200; 			tblam_cd4200=0;					* whether tblam test done if measured cd4 count < 200;
+* tbxp_cd4100; 				tbxp_cd4100=0;					* whether tb xpert test done if measured cd4 count < 100;
+* tbxp_cd4200; 				tbxp_cd4200=0;					* whether tb xpert test done if measured cd4 count < 200;
 * prob_who3_diagnosed;		prob_who3_diagnosed=0.50; 
 * prob_who4_diagnosed;		prob_who4_diagnosed=0.80;
 * res_test_6m_if_vlg1000;	res_test_6m_if_vlg1000=0;
@@ -2266,13 +2269,13 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do;
 		cm_1stvis_return_vlmg1000 = 0;
 		rapid_art_who34 = 1;                      
-		tbxp_who34 = 1; * to be defined ;
+		tbxp_who34 = 1; 
 	end;
 
 	if option = 3 then do;
 		cm_1stvis_return_vlmg1000 = 0;
 		rapid_art_who34 = 1;                      
-		tblam_who34 = 1; * to be defined ;
+		tblam_who34 = 1; 
 	end;
 
 	if option = 4 then do;
@@ -2311,8 +2314,8 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 9 then do;
 		cm_1stvis_return_vlmg1000 = 1;
-		tblam_cd4200 = 1; * to be defined ;
-		tblam_who34 = 1;  * to be defined ;
+		tblam_cd4200 = 1; 
+		tblam_who34 = 1;  
 		rapid_art_cd4200 = 1;   
 		rapid_art_who34 = 1;                      
 	end;
@@ -9293,11 +9296,12 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 
 * (re)enter care;
 * measure cd4 crag tb lam when (re)entering care;
-crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_re_enter_care=.; re_enter_care=0;
+crag_measured_this_per = 0; tblam_measured_this_per = 0; tbxp_measured_this_per = 0; cm_this_per =0; cd4_re_enter_care=.; re_enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
 	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
-	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
-	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
+	if (crag_cd4200=1 and 0 <= cm < 200) or (crag_cd4100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
+	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100) or (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
+	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) or (tblam_who34 = 1 and (who3_=1 or who4_=1)) then tblam_measured_this_per = 1;
 end;
 if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; re_enter_care=1; cd4_re_enter_care=cd4; end;
 
@@ -9660,9 +9664,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	tb_proph = 0;	
 	u=rand('uniform');
-	if caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1 and u < rate_tb_proph_init then do; 
+	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
+	and u < rate_tb_proph_init then do; 
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
+
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
 	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
@@ -9772,6 +9778,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			tb_prob_diag_l = tb_base_prob_diag_l; 
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
+			if tbxp_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tbxp_eff_prob_diag_l ;
 			tb_prob_diag_e = 1 - tb_prob_diag_l ;
 			ii=rand('uniform'); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
 		end;
@@ -13637,7 +13644,7 @@ cd4_g1_tb = 0; cd4_g2_tb = 0; cd4_g3_tb = 0; cd4_g4_tb = 0; cd4_g5_tb = 0; cd4_g
 vl_g1_tb = 0; vl_g2_tb = 0; vl_g3_tb = 0; vl_g4_tb = 0; vl_g5_tb = 0; 
 age_g1_tb = 0; age_g2_tb = 0; age_g3_tb = 0; age_g4_tb = 0; age_g5_tb = 0; 
 onart_tb=0; pcpp_tb=0;
-tblam_measured_this_per_tb = 0; tb_proph_tb = 0;
+tblam_measured_this_per_tb = 0;tbxp_measured_this_per_tb = 0; tb_proph_tb = 0;
 if tb=1 then do;
 	if cd4_g1=1 then cd4_g1_tb = 1; if cd4_g2=1 then cd4_g2_tb = 1; if cd4_g3=1 then cd4_g3_tb = 1; 
 	if cd4_g4=1 then cd4_g4_tb = 1; if cd4_g5=1 then cd4_g5_tb = 1; if cd4_g6=1 then cd4_g6_tb = 1; 
@@ -13648,6 +13655,7 @@ if tb=1 then do;
 	if onart=1 then onart_tb=1;
 	if pcpp=1 then pcpp_tb=1;
 	if tblam_measured_this_per=1 then tblam_measured_this_per_tb = 1;
+	if tbxp_measured_this_per=1 then tbxp_measured_this_per_tb = 1;
 	if tb_proph = 1 then tb_proph_tb = 1;
 end;
 
@@ -15130,7 +15138,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc + adc ; s_non_tb_who3_ev + non_tb_who3_ev ; s_who4_ + who4_ ; s_tb + tb ; s_adc_diagnosed + adc_diagnosed ; s_onart_adc + onart_adc ;
 	s_adc_naive + adc_naive ; s_adc_line1_lf0 + adc_line1_lf0 ; s_adc_line1_lf1 + adc_line1_lf1 ; s_adc_line2_lf1 + adc_line2_lf1 ;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
-	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per;
+	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per; s_tbxp_measured_this_per + tbxp_measured_this_per;
 	s_cm_this_per + cm_this_per ;  s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
 	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
@@ -15140,6 +15148,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl_g1_tb +vl_g1_tb ; s_vl_g2_tb +vl_g2_tb ; s_vl_g3_tb +vl_g3_tb ; s_vl_g4_tb +vl_g4_tb ; s_vl_g5_tb +vl_g5_tb ; 
 	s_age_g1_tb +age_g1_tb ; s_age_g2_tb +age_g2_tb ; s_age_g3_tb +age_g3_tb ; s_age_g4_tb +age_g4_tb ; s_age_g5_tb +age_g5_tb ; 
 	s_onart_tb + onart_tb; s_pcpp_tb + pcpp_tb; s_tb_80 + tb;  s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
+	s_tbxp_measured_this_per_tb + tbxp_measured_this_per_tb ;
 	s_onart_80 + onart;   s_pcpp_80 + pcpp;   s_tb_proph_tb + tb_proph_tb ;
 	s_cd4_g1_who3 +cd4_g1_who3 ; s_cd4_g2_who3 +cd4_g2_who3 ; s_cd4_g3_who3 +cd4_g3_who3 ; s_cd4_g4_who3 +cd4_g4_who3 ; s_cd4_g5_who3 +cd4_g5_who3 ; 
 	s_cd4_g6_who3 +cd4_g6_who3 ;  s_vl_g1_who3 +vl_g1_who3 ; s_vl_g2_who3 +vl_g2_who3 ; s_vl_g3_who3 +vl_g3_who3 ; s_vl_g4_who3 +vl_g4_who3 ; 
@@ -16402,11 +16411,11 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tb_proph_tb  s_onart_80 s_pcpp_80 s_onart_80 s_pcpp_80  s_tb_80  s_tblam_measured_this_per_tb    
+s_onart_tb   s_pcpp_tb   s_tb_proph_tb  s_onart_80 s_pcpp_80 s_onart_80 s_pcpp_80  s_tb_80  s_tblam_measured_this_per_tb  s_tbxp_measured_this_per_tb    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -16508,10 +16517,10 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init prep_efficacy
 
-effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l tbxp_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
-crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+crag_cd4200 crag_cd4100  tblam_cd4200  tblam_cd4100  tbxp_cd4200  tbxp_cd4100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
@@ -17259,11 +17268,11 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80    
+s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tbxp_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -18470,11 +18479,11 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80  
+s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb s_tbxp_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -18576,10 +18585,10 @@ sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init  prep_efficacy
 
-effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  tbxp_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
-crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+crag_cd4200 crag_cd4100  tblam_cd4200  tblam_cd4100  tbxp_cd4200  tbxp_cd4100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
