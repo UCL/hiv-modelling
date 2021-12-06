@@ -9,7 +9,7 @@
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\log2";
+  proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\log2";
 	
 %let population = 10000 ;     * ************* ;
 %let year_interv = 2022.5;
@@ -2259,6 +2259,8 @@ who may be dead and hence have caldate{t} missing;
 
 
 	art_init_reinit_2nd_per = 1;  
+	prob_cd4_meas_done = 0;
+
 
 	if option = 1 then do;  
 		cm_1stvis_return_vlmg1000 = 0;
@@ -6077,6 +6079,8 @@ restart_tm1=restart; restart=0;
 who3_tm1 = who3_;  * ever diagnosed with pre-who4_ symptoms y/n;
 who4_tm1 = who4_; * ever diagnosed with who4_ y/n;
 tb_tm2=tb_tm1; tb_tm1=tb;
+sbi_tm1=sbi;
+crypm_tm1=crypm;
 vc_tm1=vc; vc=.;
 cc_tm1=cc; cc=.;
 vmax_tm1=vmax; 
@@ -15405,10 +15409,10 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 proc print; var caldate&j option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  pcp_p_art_init_reinit 
 tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 cd4 
-cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb naive onart return restart time0 start_next_period pcp_p tb_proph crypm_proph 
+cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb naive onart return re_enter_care restart time0 start_next_period pcp_p tb_proph crypm_proph 
 crypm_diag_e    tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per  cm_this_per 
 ;
-where age >= 15 and hiv=1 and registd = 1 and serial_no < 300 and (death = . or dead = 1);
+where age >= 15 and hiv=1 and registd = 1 and serial_no < 400 and (death = . or dead = 1);
 run;
 
 
@@ -17717,7 +17721,7 @@ data r1; set a.ahd;
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 
-
+*/
 
 data r1; set a.ahd;
 
