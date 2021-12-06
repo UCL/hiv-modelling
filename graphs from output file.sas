@@ -5,9 +5,9 @@
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";run;
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
-
+/*
 proc contents data=a.l_base_keep_zim;run;
-
+proc freq data=a.l_base_keep_zim;table n_hiv_m n_hiv_w;run;*/
 *Keep output to be able to create the following outputs:
 -	prevalence among pregnant women
 - annual number of new male circumcisions;
@@ -2020,6 +2020,9 @@ rename p50_p_onart_diag_w_0 = p50_p_artdiagw_0;
 rename p5_p_onart_diag_w_0  = p05_p_artdiagw_0;
 rename p95_p_onart_diag_w_0 = p95_p_artdiagw_0;
 
+rename p5_n_hiv_m_0 = p05_n_hiv_m_0;
+rename p5_n_hiv_w_0 = p05_n_hiv_w_0;
+
 keep cald
 p50_prevalence1549m_0 p5_prevalence1549m_0 	p95_prevalence1549m_0
 p50_prevalence1549w_0 p5_prevalence1549w_0 	p95_prevalence1549w_0
@@ -2094,6 +2097,7 @@ run;
 proc sort; by var_n ord;run;
 proc print;run;
 
+proc contents data=d;run;
 *FLOW;
 data f;set d;
 *note that 1991 would refer to the period 1990.5-1991.5;
@@ -2104,13 +2108,15 @@ where cald in
 2020 2021 2022 2023 2024 2025 2026 2027 2028 2029 
 2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 
 2040 2041);
+
+
 rename p5_incidence1549m_0 = p05_incidence1549m_0;
 rename p5_incidence1549w_0 = p05_incidence1549w_0;
 rename p5_incidence1549__0 = p05_incidence1549__0;
-rename p5_incidence1524m_0 = p05_incidence1524m_0;
-rename p5_incidence1524w_0 = p05_incidence1524w_0;
-rename p5_incidence2549m_0 = p05_incidence2549m_0;
-rename p5_incidence2549w_0 = p05_incidence2549w_0;
+rename p5_incidence1524m__0 = p05_incidence1524m__0;
+rename p5_incidence1524w__0 = p05_incidence1524w__0;
+rename p5_incidence2549m__0 = p05_incidence2549m__0;
+rename p5_incidence2549w__0 = p05_incidence2549w__0;
 rename p5_n_new_inf1549m_0 = p05_n_new_inf1549m_0;
 rename p5_n_new_inf1549w_0 = p05_n_new_inf1549w_0;
 rename p5_n_new_inf1549__0 = p05_n_new_inf1549__0;
@@ -2129,10 +2135,10 @@ rename p5_n_new_vmmc1549m_0 = p05_n_new_vmmc1549m_0;
 keep cald
 p50_incidence1549m_0 p5_incidence1549m_0 p95_incidence1549m_0
 p50_incidence1549w_0 p5_incidence1549w_0 p95_incidence1549w_0
-p50_incidence1524m_0 p5_incidence1524m_0 p95_incidence1524m_0
-p50_incidence1524w_0 p5_incidence1524w_0 p95_incidence1524w_0
-p50_incidence2549m_0 p5_incidence2549m_0 p95_incidence2549m_0
-p50_incidence2549w_0 p5_incidence2549w_0 p95_incidence2549w_0
+p50_incidence1524m__0 p5_incidence1524m__0 p95_incidence1524m__0
+p50_incidence1524w__0 p5_incidence1524w__0 p95_incidence1524w__0
+p50_incidence2549m__0 p5_incidence2549m__0 p95_incidence2549m__0
+p50_incidence2549w__0 p5_incidence2549w__0 p95_incidence2549w__0
 p50_incidence1549__0 p5_incidence1549__0 p95_incidence1549__0
 p50_n_new_inf1549m_0 p5_n_new_inf1549m_0 p95_n_new_inf1549m_0
 p50_n_new_inf1549w_0 p5_n_new_inf1549w_0 p95_n_new_inf1549w_0
@@ -2175,10 +2181,10 @@ if var="n_tested_0" then var_n=12;
 if var="test_prop_positi" then var_n=13;
 if var="n_new_vmmc1549m_" then var_n=14;
 
-if var="incidence1524m_0" then var_n=15;
-if var="incidence1524w_0" then var_n=16;
-if var="incidence2549m_0" then var_n=17;
-if var="incidence2549w_0" then var_n=18;
+if var="incidence1524m__" then var_n=15;
+if var="incidence1524w__" then var_n=16;
+if var="incidence2549m__" then var_n=17;
+if var="incidence2549w__" then var_n=18;
 if var="n_new_inf1524m_0" then var_n=19;
 if var="n_new_inf1524w_0" then var_n=20;
 if var="n_new_inf2549m_0" then var_n=21;
