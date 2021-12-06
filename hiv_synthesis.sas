@@ -5980,6 +5980,8 @@ restart_tm1=restart; restart=0;
 who3_tm1 = who3_;  * ever diagnosed with pre-who4_ symptoms y/n;
 who4_tm1 = who4_; * ever diagnosed with who4_ y/n;
 tb_tm2=tb_tm1; tb_tm1=tb;
+sbi_tm1=sbi;
+crypm_tm1=crypm;
 vc_tm1=vc; vc=.;
 cc_tm1=cc; cc=.;
 vmax_tm1=vmax; 
@@ -11025,9 +11027,9 @@ if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and
 
 * ahd_re_enter_care;
 ahd_re_enter_care_100=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_100=1;
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_100=1;
 ahd_re_enter_care_200=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_200=1;
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_200=1;
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
