@@ -1,16 +1,17 @@
 
 
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\';
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\';     * ************* ;
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-libname a "&outputdir/";
+* libname a "&outputdir/";                    * ************* ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
-  proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
+  proc printto  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\log2";
 	
-%let population = 10000 ; 
+%let population = 10000 ;     * ************* ;
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -6494,7 +6495,10 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;	
 
-		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
+
+		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
+
+		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
 				if pregnant =1 then u=u/10; * jul18 ;
 				if u < eff_pr_art_init then time0=caldate{t}; * note this can be reverse below; 
@@ -6508,8 +6512,6 @@ res_test=.;
 					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
 				end;
 		end;
-
-		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and start_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
 
 
 		if hiv_monitoring_strategy=2 and art_initiation_strategy=4 then do;
@@ -6769,13 +6771,17 @@ end;
 
 		* this code below for ahd - note can reverse the re-initiation of art determined above;
 		if caldate{t} ge year_interv then do;
-			if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) 
-			and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200 ) then do; restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.;    end; 
+			if visit=1 and onart ne 1 and restart_next_period = 1 then do; 
+				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .;
+			end;
+			if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200 ) then do; 
+				restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.;    
+			end; 
 			if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) or (rapid_art_cd4200 = 1 and 0 < cm <= 200 or  0 < cm_tm1 <= 200) then do;
 				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0;
 			end;
 			if art_init_reinit_2nd_per = 1 and restart ne 1 then restart_next_period = 1;  
-			if visit=1 and onart ne 1 and restart_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
+
 		end;
 
 	end;
@@ -11167,9 +11173,9 @@ if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and
 
 * ahd_re_enter_care;
 ahd_re_enter_care_100=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_100=1;
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_100=1;
 ahd_re_enter_care_200=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or cm_tm1=1 or cm=1) then ahd_re_enter_care_200=1;
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_200=1;
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
@@ -15399,12 +15405,12 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 proc print; var caldate&j option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  pcp_p_art_init_reinit 
 tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 cd4 
-cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb onart return restart time0 start_next_period pcp_p tb_proph crypm_proph 
+cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb naive onart return restart time0 start_next_period pcp_p tb_proph crypm_proph 
 crypm_diag_e    tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per  cm_this_per 
 ;
+where age >= 15 and hiv=1 and registd = 1 and serial_no < 300 and (death = . or dead = 1);
 run;
 
-proc freq; tables caldate&j ; run;
 
 
 
@@ -17544,6 +17550,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -17681,8 +17688,35 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 
-
 data a.ahd; set r1; 
+
+*/
+
+/*
+
+data r1; set a.ahd;
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+
 
 
 data r1; set a.ahd;
@@ -17707,7 +17741,6 @@ data r1; set a.ahd;
 %update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-
 
 data r1; set a;
 
