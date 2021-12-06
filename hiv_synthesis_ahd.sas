@@ -2258,7 +2258,8 @@ who may be dead and hence have caldate{t} missing;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
 
-	art_init_reinit_2nd_per = 1;  
+	art_init_reinit_2nd_per = 1; * default after year_interv is that a person will start or re-start art in the following 3 month period
+								  rather than the current period, unless rapid art initiation ; 
 	prob_cd4_meas_done = 0;
 
 
@@ -6509,9 +6510,8 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};
 				* this code below for ahd - note can reverse the initiation of art determined above;
 				if caldate{t} ge year_interv then do;
-					if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) 
-					and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200) then time0=.;
-					if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) then time0=caldate{t};
+					time0=.;
+					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then time0=caldate{t};
 					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then time0=caldate{t};
 					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
 				end;
@@ -6587,7 +6587,7 @@ res_test=.;
 
 
 	if t ge 4 and caldate{t}=time0 then do;  
-		yrart=caldate{t};cd4art=cd4_tm1;vlart=vl_tm1;art_initiation=1;
+		yrart=caldate{t};cd4art=cd4_tm1;vlart=vl_tm1;art_initiation=1; start_next_period=.;
 		if 0 <= time_since_last_cm <= 0.5 then measured_cd4art=value_last_cm ;
 	end;
 
@@ -6775,20 +6775,19 @@ end;
 
 		* this code below for ahd - note can reverse the re-initiation of art determined above;
 		if caldate{t} ge year_interv then do;
+			restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.; 
 			if visit=1 and onart ne 1 and restart_next_period = 1 then do; 
-				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .;
+				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .; date_last_return_restart=caldate{t};
 			end;
-			if art_init_reinit_2nd_per = 1 and (rapid_art_who34 ne 1 or (who3_ ne 1 and who4_ ne 1)) and (rapid_art_cd4200 ne 1 or cm > 200 or cm_tm1 > 200 ) then do; 
-				restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.;    
-			end; 
-			if rapid_art_who34 = 1 and (who3_ ne 1 or who4_ ne 1) or (rapid_art_cd4200 = 1 and 0 < cm <= 200 or  0 < cm_tm1 <= 200) then do;
-				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0;
+			if (rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1)) or (rapid_art_cd4200 = 1 and (0 < cm <= 200 or  0 < cm_tm1 <= 200)) then do;
+				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; date_last_return_restart=caldate{t};
 			end;
 			if art_init_reinit_2nd_per = 1 and restart ne 1 then restart_next_period = 1;  
 
 		end;
 
 	end;
+
 
 
 	if t ge 3 and interrupt_supply   =1 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0
@@ -9315,14 +9314,14 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 
 * (re)enter care;
 * measure cd4 crag tb lam when (re)entering care;
-crag_measured_this_per = 0; tblam_measured_this_per = 0; tbxp_measured_this_per = 0; cm_this_per =0; cd4_re_enter_care=.; re_enter_care=0;
+crag_measured_this_per = 0; tblam_measured_this_per = 0; tbxp_measured_this_per = 0; cm_this_per =0; cd4_enter_care=.; enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
 	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
 	if (crag_cd4200=1 and 0 <= cm < 200) or (crag_cd4100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100)  then tbxp_measured_this_per = 1;
 	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
-if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; re_enter_care=1; cd4_re_enter_care=cd4; end;
+if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; enter_care=1; cd4_enter_care=cd4; end;
 * measure crag tb lam tb xp when (re)entering care if who stage 3 or 4;
 if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)  then do; 
 	if (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
@@ -11175,11 +11174,11 @@ if infection > . then dead_yn=0; survdead = min(death,caldate&j)-infection; if s
 if caldate&j ge yrart > . and date_first_lost_art=. and lost=1 then date_first_lost_art=caldate&j;
 if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and date_return_lost_art=. then date_return_lost_art=caldate&j;
 
-* ahd_re_enter_care;
-ahd_re_enter_care_100=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_100=1;
-ahd_re_enter_care_200=0; if re_enter_care=1 and (0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
-oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_re_enter_care_200=1;
+* ahd_enter_care;
+ahd_enter_care_100=0; if enter_care=1 and (0 <= cd4_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_enter_care_100=1;
+ahd_enter_care_200=0; if enter_care=1 and (0 <= cd4_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_enter_care_200=1;
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
@@ -15226,7 +15225,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tb_tcur3m_cd4t0l200 + tb_tcur3m_cd4t0l200 ; s_crypm_tcur3m_cd4t0l200 + crypm_tcur3m_cd4t0l200 ; s_sbi_tcur3m_cd4t0l200 + sbi_tcur3m_cd4t0l200 ; 
 	s_tcur6m_cd4t0l200 + tcur6m_cd4t0l200 ; s_who3_tcur6m_cd4t0l200 + who3_tcur6m_cd4t0l200 ; s_adc_tcur6m_cd4t0l200 + adc_tcur6m_cd4t0l200 ; 
 	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
-	s_ahd_re_enter_care_100 + ahd_re_enter_care_100; s_ahd_re_enter_care_200 + ahd_re_enter_care_200; s_re_enter_care + re_enter_care ;
+	s_ahd_enter_care_100 + ahd_enter_care_100; s_ahd_enter_care_200 + ahd_enter_care_200; s_enter_care + enter_care ;
 
 
 
@@ -15408,10 +15407,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 * procs;
 
 proc print; var caldate&j option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  pcp_p_art_init_reinit 
-tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 cd4 
-cm adc who3_ who4_ non_tb_who3_ev crypm sbi tb naive onart return re_enter_care restart time0 start_next_period pcp_p tb_proph crypm_proph 
-crypm_diag_e    tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per  cm_this_per 
-;
+tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 enter_care cd4 cm vm adc who3_ who4_ non_tb_who3_ev crypm 
+sbi tb visit naive onart_tm1 onart date_1st_hiv_care_visit return  restart time0 start_next_period date_last_return_restart restart_next_period pcp_p 
+tb_proph crypm_proph crypm_diag_e tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per cm_this_per ;
 where age >= 15 and hiv=1 and registd = 1 and serial_no < 400 and (death = . or dead = 1);
 run;
 
@@ -16492,7 +16490,7 @@ s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
@@ -17349,7 +17347,7 @@ s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
@@ -17725,26 +17723,26 @@ data r1; set a.ahd;
 
 data r1; set a.ahd;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=7);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=7);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=7);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=7);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=7);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=7);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=7);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=7);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=7);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=7);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=7);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=7);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=7);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=7);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=7);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=7);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=7);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=7);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=7);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=7);
 
 data r1; set a;
 
@@ -18587,7 +18585,7 @@ s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80
 
