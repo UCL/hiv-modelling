@@ -6,7 +6,7 @@ libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv syn
 
 proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
-/*proc contents data=a.l_base_keep_zim;run;*/
+proc contents data=a.l_base_keep_zim;run;
 
 *Keep output to be able to create the following outputs:
 -	prevalence among pregnant women

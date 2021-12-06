@@ -10,8 +10,8 @@ data g;    set b.out: ;
 proc sort data=g; 
 by run cald option;run;
 quit;
-
-proc freq data=g;table cald;run;
+/*
+proc freq data=g;table cald;run;*/
 *500 simulation 116500 observations, from 1984 to 2041.75;
 
 
@@ -1032,14 +1032,14 @@ n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv n_hiv_m n_hiv_w prev
 
 
 ;
-
-proc freq data=y;table /*rate_dead_allage_m rate_dead_allage_w rate_dead_allage*/ n_hiv_m n_hiv_w;run;
-
+/*
+proc freq data=y;table rate_dead_allage_m rate_dead_allage_w rate_dead_allage n_hiv_m n_hiv_w;run;
+*/
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_zim; set y; 
-
+/*proc contents data=a.l_base_zim;run;*/
 *
 
 28332103
