@@ -1,6 +1,6 @@
 
 
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\base\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\";
 
 ***************************************************;
 *Macro to set up data that will be outputted in Word;
@@ -60,7 +60,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 ***Read in SAS file;
 data indata2;
-  set a.w_base;  
+  set a.w_base_03_12_21;  
 
 subgp = 1;*this refers to the columns we want - one column per each year of interest, starting with 1995;
 %setup(yr=95); ***Using above macro to add on '_95' suffix to each output;
@@ -325,9 +325,9 @@ options nodate nonumber orientation=landscape;
 
 *Output destination - saving as an rtf file and have specified Journal style (there are others to choose from);
 ods listing close;
-ods rtf file = "C:\Loveleen\Synthesis model\loveleen_test10.rtf" style=journal; *Can add BODYTITLE option to get this in body of RTF document;
+ods rtf file = "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\table1_03_12_21.rtf" style=journal; *Can add BODYTITLE option to get this in body of RTF document;
  
-title1 "Table 1: Key summary statistics 3rd July 2021";
+title1 "Table 1: Key summary statistics 3rd December 2021";
 
 *This code appears on the rtf as Page x of y. Can be placed as footnote or title and justified as left, centre or right (in this example, j=r);
 *footnote1 j=r "{Page \field {\*\fldinst PAGE \\*MERGEFORMAT}} { of \field{\*\fldinst NUMPAGES \\*MERGEFORMAT}}";
