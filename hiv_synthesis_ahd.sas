@@ -15414,7 +15414,7 @@ pcp_p_art_init_reinit tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 
 cd4 cm_tm1 cm vm adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart pregnant date_1st_hiv_care_visit 
 return  restart time0 start_next_period date_last_return_restart restart_next_period pcp_p tb_proph crypm_proph crypm_diag_e tb_diag_e   sbi_diag_e 
 crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per cm_this_per ;
-where age >= 15 and hiv=1 and registd = 1 and serial_no < 400 and (death = . or dead = 1);
+where age >= 15 and hiv=1 and registd = 1 and 400 <= serial_no < 800 and (death = . or dead = 1);
 run;
 
 
