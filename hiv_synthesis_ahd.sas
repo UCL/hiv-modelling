@@ -2261,7 +2261,8 @@ who may be dead and hence have caldate{t} missing;
 	art_init_reinit_2nd_per = 1; * default after year_interv is that a person will start or re-start art in the following 3 month period
 								  rather than the current period, unless rapid art initiation ; 
 	prob_cd4_meas_done = 0;
-
+	eff_pr_art_init = 0 ;
+	prob_supply_interrupted=0.003; 
 
 	if option = 1 then do;  
 		cm_1stvis_return_vlmg1000 = 0;
@@ -6500,19 +6501,20 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;	
 
-
-		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then time0=caldate{t} ; * added for ahd project ;
+		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then time0=caldate{t};  * added for ahd project ;
 
 		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and art_intro_date <= caldate{t} then do;
-				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
-				if pregnant =1 then u=u/10; * jul18 ;
-				if u < eff_pr_art_init then time0=caldate{t}; * note this can be reverse below; 
-				if dt_first_elig=. then dt_first_elig=caldate{t};
+				if caldate{t} lt year_interv then do;
+					if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
+					if pregnant =1 then u=u/10; * jul18 ;
+					if u < eff_pr_art_init then time0=caldate{t}; * note this can be reverse below; 
+					if dt_first_elig=. then dt_first_elig=caldate{t};
+				end;
 				* this code below for ahd - note can reverse the initiation of art determined above;
 				if caldate{t} ge year_interv then do;
-					time0=.;
-					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then time0=caldate{t};
-					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then time0=caldate{t};
+					time0=.; 
+					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then do; time0=caldate{t};  end;
+					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then do; time0=caldate{t};  end;
 					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
 				end;
 		end;
@@ -6773,18 +6775,19 @@ end;
 			date_last_return_restart=caldate{t}; * oct16;
 		end;
 
-		* this code below for ahd - note can reverse the re-initiation of art determined above;
-		if caldate{t} ge year_interv then do;
-			restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.; 
-			if visit=1 and onart ne 1 and restart_next_period = 1 then do; 
-				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .; date_last_return_restart=caldate{t};
-			end;
-			if (rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1)) or (rapid_art_cd4200 = 1 and (0 < cm <= 200 or  0 < cm_tm1 <= 200)) then do;
-				restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; date_last_return_restart=caldate{t};
-			end;
-			if art_init_reinit_2nd_per = 1 and restart ne 1 then restart_next_period = 1;  
+	end;
 
+
+	* this code below for ahd - note can reverse the re-initiation of art determined above;
+	if caldate{t} ge year_interv and visit=1 and onart_tm1 =0 and tcur_tm1=. and interrupt ne 1 and naive = 0 then do;
+		restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.; 
+		if visit=1 and onart ne 1 and restart_next_period = 1 then do; 
+			restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .; date_last_return_restart=caldate{t};
 		end;
+		if (rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1)) or (rapid_art_cd4200 = 1 and (0 < cm <= 200 or  0 < cm_tm1 <= 200)) then do;
+			restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; date_last_return_restart=caldate{t};
+		end;
+		if art_init_reinit_2nd_per = 1 and restart ne 1 then restart_next_period = 1;  
 
 	end;
 
@@ -15406,18 +15409,13 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print; var caldate&j option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  pcp_p_art_init_reinit 
-tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 enter_care cd4 cm vm adc who3_ who4_ non_tb_who3_ev crypm 
-sbi tb visit naive onart_tm1 onart date_1st_hiv_care_visit return  restart time0 start_next_period date_last_return_restart restart_next_period pcp_p 
-tb_proph crypm_proph crypm_diag_e tb_diag_e   sbi_diag_e crag_measured_this_per  tblam_measured_this_per tbxp_measured_this_per cm_this_per ;
+proc print; var caldate&j gender option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  
+pcp_p_art_init_reinit tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 art_initiation_strategy enter_care  
+cd4 cm_tm1 cm vm adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart pregnant date_1st_hiv_care_visit 
+return  restart time0 start_next_period date_last_return_restart restart_next_period pcp_p tb_proph crypm_proph crypm_diag_e tb_diag_e   sbi_diag_e 
+crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per cm_this_per ;
 where age >= 15 and hiv=1 and registd = 1 and serial_no < 400 and (death = . or dead = 1);
 run;
-
-
-
-
-
-
 
 
 
