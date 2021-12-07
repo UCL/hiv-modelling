@@ -17742,7 +17742,7 @@ data r1; set a.ahd;
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=7);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=7);
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
@@ -18561,7 +18561,7 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph s_crypm  
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
