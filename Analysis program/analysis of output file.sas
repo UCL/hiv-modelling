@@ -2,7 +2,21 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.wide_fsw_22_02_21_8am ;
+set a.fsw_wide_15_11_21 ;
+run;
+
+proc contents;run;
+
+data b;
+set a;
+
+proc means n sum p50 p5 p95;var p_diag_sw_21_29_1 p_diag_sw_21_29_2 p_diag_sw_21_29_3 ;run;
+
+
+
+
+
+
 
 
 
