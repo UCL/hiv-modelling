@@ -9403,16 +9403,6 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	end;
 
 
-	* resistance to first line drugs at start of line2;
-
-	res_1stline_startline2=.;
-	if caldate{t}=date_line2 > . then do;
-	res_1stline_startline2=0; if r_zdv >= 0.5 or r_3tc  >= 0.5 or  r_efa >= 0.5 or r_nev >= 0.5 or 
-	r_ten >= 0.5 then res_1stline_startline2=1;
-	end;
-
-
-
 	* nactive at start line2;
 
 	if caldate{t}=date_line2 > . then nactive_line2=nactive;
