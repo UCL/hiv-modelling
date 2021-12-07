@@ -9,6 +9,7 @@ run;
 
 data a; set d1  ;
 
+if run ne 754756883 then delete;
 **option_new=1 = continuation for 5 years;
 **option_new=2 = no further vmmc;
 if option=4 then option_new=1;
@@ -1228,7 +1229,7 @@ p_onart_vl1000_m_65_1 p_onart_vl1000_m_66_1 p_onart_vl1000_m_67_1 p_onart_vl1000
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
 %var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
 %var(v=death_rate_hiv_all);%var(v=death_rate_hiv_all_m);%var(v=death_rate_hiv_all_w);
-%var(v=p_iime_);   %var(v=p_pime_);   %var(v=p_nnme_);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
+/*%var(v=p_iime_);   %var(v=p_pime_);   %var(v=p_nnme_); */    %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=n_birth_with_inf_child);
 %var(v=n_tested); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
@@ -1283,7 +1284,7 @@ p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vl
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000   
 p_tams_ontle_vlg1000  p_tams_ontld_vlg1000  p_k65m p_m184m
 death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
-p_iime_   p_pime_   p_nnme_     n_pregnant_ntd   n_preg_odabe
+/*p_iime_   p_pime_   p_nnme_ */    n_pregnant_ntd   n_preg_odabe
 n_birth_with_inf_child
 n_tested test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
