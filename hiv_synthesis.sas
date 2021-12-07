@@ -5942,7 +5942,7 @@ if hiv=1 then do;
 		if p84m = 1 then do; u=rand('uniform'); if u < 0.5 then p84m=0; end;
 		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
 		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
-
+* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
 		if inpm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
 		if insm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
 
@@ -7950,7 +7950,7 @@ then do; current_adh_dl = .; current_adh_dl_tm1 = .;
 	if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
 	*/
 	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;										* lapr - using 2-month value from above - JAS Dec2021;
-	if 0.25 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - NB this will overwrite line above?;
+	if 0.25 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - NB this will overwrite line above?;
 
 end;
 
