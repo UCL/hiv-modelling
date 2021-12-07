@@ -371,8 +371,6 @@ newp_seed = 7;
 * art_intro_date;			art_intro_date = 2004;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
-* pir_higher_potency;		pir_higher_potency=1; 
-* efa_higher_potency;		efa_higher_potency=0.5; 			* updated coding to match that for pir and dol potency JAS Nov2021;
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
@@ -405,8 +403,10 @@ newp_seed = 7;
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
 * dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
-																* so 1.5 potency - as for efa - may 2019 in response to advance results;
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
+																* updated to equal dol potency JAS Nov2021;
+* pir_higher_potency;		pir_higher_potency=1; 
 
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
@@ -8514,7 +8514,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 
 * LOSS OF MUTATIONS AFTER STOPPING (or return to mutations at infection - expect for m184v)
 and starting another, non-x-resistant, regimen;
-
+* Note that much of this section uses a 1/12 time cut-off when it should be 0.25 - perhaps copied from LAI code but will not affect function;
 
 * this all relates to those who have started art - not about persistence of transmitted mutations (see below);
 	if caldate{t} > yrart > . then do;
@@ -9409,16 +9409,6 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
 		r_ten >= 0.5 or r_lpr ge 0.5  or r_taz ge 0.5 or   r_dol >= 0.5 then res_drug=caldate{t};
 	end;
-
-
-	* resistance to first line drugs at start of line2;
-
-	res_1stline_startline2=.;
-	if caldate{t}=date_line2 > . then do;
-	res_1stline_startline2=0; if r_zdv >= 0.5 or r_3tc  >= 0.5 or  r_efa >= 0.5 or r_nev >= 0.5 or 
-	r_ten >= 0.5 then res_1stline_startline2=1;
-	end;
-
 
 
 	* nactive at start line2;
@@ -10504,20 +10494,20 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
 	naive=.;artline=.;linefail=.;
-	o_zdv=.;o_3tc=.;o_dar=.;o_ten=.;
 	e_totmut   =.; non_tb_who3_ev=.;
+	o_zdv=.;o_3tc=.;o_dar=.;o_ten=.;
 	o_efa=.;o_lpr=.;o_taz=.;o_dol=.;
 	cmin   =.;
 	p_zdv=.;p_3tc=.;p_dar=.;p_ten=.;
 	p_efa=.;p_lpr=.;p_taz=.;p_dol=.;
 	f_zdv=.;f_3tc=.;f_dar=.;f_ten=.;
-	f_efa=.;f_lpr=.;f_dol=.;
+	f_efa=.;f_lpr=.;f_taz=.;f_dol=.;
 	c_rt184m=.;c_rttams=.;c_rt65m=.;c_rt103m=.;c_rt181m=.;c_rt190m=.;c_rt151m=.;c_pr32m=.;c_pr47m=.;
 	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_inpm=.;c_insm=.;
 	e_rt184m=.;e_rttams=.;e_rt65m=.;e_rt103m=.;e_rt181m=.;e_rt190m=.;e_rt151m=.;e_pr32m=.;e_pr47m=.;
 	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_inpm=.;e_insm=.;
 	r_zdv=.;r_3tc=.;r_dar=.;r_ten=.;
-	r_efa=.;r_lpr=.;r_dol=.;
+	r_efa=.;r_lpr=.;r_taz=.;r_dol=.;
 	t_zdv=.;t_3tc=.;t_dar=.;t_taz=.;
 	t_efa=.;t_lpr=.;t_dol=.;t_ten=.;
 	c_lip=.;c_pen=.;c_ras=.;c_cns=.;c_hep=.;x4v=.;
