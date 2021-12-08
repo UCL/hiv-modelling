@@ -858,6 +858,41 @@ o_prev_5054w_zimphia=0.21;
 o_prev_5559w_zimphia=0.17;
 end;
 
+*source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020 then do;
+o_prev_1549_zimphia=0.118; o_prev_1549_ll_zimphia=0.111; o_prev_1549_ul_zimphia=0.125;
+o_prev_1549m_zimphia=0.086;o_prev_1549m_ll_zimphia=0.078;o_prev_1549m_ul_zimphia=0.093;
+o_prev_1549w_zimphia=0.148;o_prev_1549w_ll_zimphia=0.139;o_prev_1549w_ul_zimphia=0.157;
+
+o_prev_15pl_zimphia=0.129; o_prev_15pl_ll_zimphia=0.123; o_prev_15pl_ul_zimphia=0.135;
+o_prev_15plm_zimphia=0.102;o_prev_15plm_ll_zimphia=0.095;o_prev_15plm_ul_zimphia=0.11;
+o_prev_15plw_zimphia=0.153;o_prev_15plw_ll_zimphia=0.144;o_prev_15plw_ul_zimphia=0.161;
+
+o_prev_1519m_zimphia=0.021;
+o_prev_2024m_zimphia=0.028;
+o_prev_2529m_zimphia=0.040;
+o_prev_3034m_zimphia=0.093;
+o_prev_3539m_zimphia=0.156;
+o_prev_4044m_zimphia=0.208;
+o_prev_4549m_zimphia=0.260;
+o_prev_5054m_zimphia=0.309;
+o_prev_5559m_zimphia=0.256;
+o_prev_6064m_zimphia=0.187;
+o_prev_65plm_zimphia=0.075;
+
+o_prev_1519w_zimphia=0.038;
+o_prev_2024w_zimphia=0.064;
+o_prev_2529w_zimphia=0.106;
+o_prev_3034w_zimphia=0.184;
+o_prev_3539w_zimphia=0.233;
+o_prev_4044w_zimphia=0.318;
+o_prev_4549w_zimphia=0.333;
+o_prev_5054w_zimphia=0.302;
+o_prev_5559w_zimphia=0.245;
+o_prev_6064w_zimphia=0.202;
+o_prev_65plw_zimphia=0.066;
+end;
+
 ***LBM Update Jan 2017;
 *Prevalence in women;
 *Source:	HIV decline in Zimbabwe due to reductions in risky sex? Gregson, 2010;
@@ -887,7 +922,7 @@ o_prev4549m_Z_ess=o_prev4549m_Z_DHS; o_prev4549w_Z_ess=o_prev4549w_Z_DHS;
 
 o_prev5054m_Z_ess=o_prev5054m_Z_DHS;
 end;
-if cald=2016.25 then do;
+if cald in (2016.25 2020) then do;
 o_prev1549_Z_ess=o_prev_1549_zimphia;   o_prev_1549_ll_ess=o_prev_1549_ll_zimphia; o_prev_1549_ul_ess=o_prev_1549_ul_zimphia;
 o_prev1549m_Z_ess=o_prev_1549m_zimphia; o_prev_1549m_ll_ess=o_prev_1549m_ll_zimphia; o_prev_1549m_ul_ess=o_prev_1549m_ul_zimphia;
 o_prev1549w_Z_ess=o_prev_1549w_zimphia; o_prev_1549w_ll_ess=o_prev_1549w_ll_zimphia; o_prev_1549w_ul_ess=o_prev_1549w_ul_zimphia;
@@ -1108,7 +1143,17 @@ o_HIVincid_3549w_Zimphia=0.27;	o_HIVincid_3549w_ll_Zimphia=0.00;	o_HIVincid_3549
 o_HIVincid_3549_Zimphia= 0.32;	o_HIVincid_3549_ll_Zimphia= 0.00;	o_HIVincid_3549_ul_Zimphia= 0.66;
 
 end;
+*source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020 then do;
+o_HIVincid_1549m_Zimphia=0.23;	o_HIVincid_1549m_ll_Zimphia=0.01;	o_HIVincid_1549m_ul_Zimphia=0.44;
+o_HIVincid_1549w_Zimphia=0.67;	o_HIVincid_1549w_ll_Zimphia=0.34;	o_HIVincid_1549w_ul_Zimphia=0.99;
+o_HIVincid_1549_Zimphia= 0.45;	o_HIVincid_1549_ll_Zimphia= 0.24;	o_HIVincid_1549_ul_Zimphia= 0.65;
 
+o_HIVincid_15plm_Zimphia=0.20;	o_HIVincid_15plm_ll_Zimphia=0.02;	o_HIVincid_15plm_ul_Zimphia=0.37;
+o_HIVincid_15plw_Zimphia=0.54;	o_HIVincid_15plw_ll_Zimphia=0.28;	o_HIVincid_15plw_ul_Zimphia=0.81;
+o_HIVincid_15pl_Zimphia= 0.38;	o_HIVincid_15pl_ll_Zimphia= 0.20;	o_HIVincid_15pl_ul_Zimphia= 0.55;
+
+end;
 
 *** Sex workers;
 *Source: J Acquir Immune Defic Syndr. 2015 Dec 15. [Epub ahead of print]
@@ -1674,6 +1719,12 @@ if cald=2016.25 then do;
 	o_p_diag_1564m_zimphia=0.697;	
 	o_p_diag_1564w_zimphia=0.771;
 end;
+* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020 then do;
+	o_p_diag_15pl_zimphia=0.868;
+	o_p_diag_15plm_zimphia=0.843;	
+	o_p_diag_15plw_zimphia=0.883;
+end;
 
 
 *Source: RDS last quarter 2013 (reported in Document “Sisters numbers v4” & in cascade manuscript);
@@ -2183,7 +2234,12 @@ if cald=2016.25  then do;
 	o_p_onart_1564m_diag_zimphia=0.860;
 	o_p_onart_1564f_diag_zimphia=0.873;
 end;	
-
+* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020  then do;
+	o_p_onart_15pl_diag_zimphia=0.97;
+	o_p_onart_15plm_diag_zimphia=0.959;
+	o_p_onart_15plf_diag_zimphia=0.976;
+end;
 
 
 ***Proportion on ART out of those positive in different age groups and gender;
@@ -2313,15 +2369,34 @@ if cald=2005 then o_medcd4_artinit=91;
 * Source - Zimphia 2015-2016;
 if cald=2016.25 then do;
 	o_p_vlsupp_1564_Zimphia=0.865;
-	o_p_vlsupp_1564w_Zimphia=0.879;
 	o_p_vlsupp_1564m_Zimphia=0.841;
+	o_p_vlsupp_1564w_Zimphia=0.879;
 end;
+* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020 then do;
+	o_p_vlsupp_15pl_Zimphia=0.903;
+	o_p_vlsupp_15plm_Zimphia=0.89;
+	o_p_vlsupp_15plw_Zimphia=0.910;
+end;
+
+
+
 ***Proportion of PLHIV and virologically suppressed;
 * Source - Zimphia 2015-2016. Slide shown at CROI 2017 by Jessica Justman with updated Zimphia numbers;
 if cald=2016.25 then do;
 	o_p_vlsupp_plhiv_1564_Zimphia=0.591;
 	o_p_vlsupp_plhiv_1564m_Zimphia=0.525;
 	o_p_vlsupp_plhiv_1564w_Zimphia=0.635;
+end;
+* Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
+if cald=2020 then do;
+	o_p_vlsupp_plhiv_1549_Zimphia=0.738; o_p_vlsupp_plhiv_1549_ll_Zimphia=0.714; o_p_vlsupp_plhiv_1549_ul_Zimphia=0.762;
+	o_p_vlsupp_plhiv_1549m_Zimphia=0.681;o_p_vlsupp_plhiv_1549m_ll_Zimphia=0.636;o_p_vlsupp_plhiv_1549m_ul_Zimphia=0.727;
+	o_p_vlsupp_plhiv_1549w_Zimphia=0.768;o_p_vlsupp_plhiv_1549w_ll_Zimphia=0.742;o_p_vlsupp_plhiv_1549w_ul_Zimphia=0.793;
+
+	o_p_vlsupp_plhiv_15pl_Zimphia=0.773; o_p_vlsupp_plhiv_15pl_ll_Zimphia=0.753; o_p_vlsupp_plhiv_15pl_ul_Zimphia=0.792;
+	o_p_vlsupp_plhiv_15plm_Zimphia=0.73; o_p_vlsupp_plhiv_15plm_ll_Zimphia=0.695;o_p_vlsupp_plhiv_15plm_ul_Zimphia=0.764;
+	o_p_vlsupp_plhiv_15plw_Zimphia=0.798;o_p_vlsupp_plhiv_15plw_ll_Zimphia=0.777;o_p_vlsupp_plhiv_15plw_ul_Zimphia=0.819;
 end;
 
 
