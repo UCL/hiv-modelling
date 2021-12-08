@@ -6752,6 +6752,7 @@ if int_clinic_not_aw=1 and (lost = 1 or death ne .) then int_clinic_not_aw=0;
 if interrupt=1 then do; 
 	no_interruptions=no_interruptions+1; 
 	if date_1st_int=. then date_1st_int=caldate{t}; 
+	restart_next_period =.; start_next_period = .;
 end;
 
 
