@@ -4705,23 +4705,14 @@ between 0 and 1 rather than binary 0 or 1;
 * assume for now that oral prep is tenofovir/ftc;
 
 
-*'Adherence' to injectable PrEP - related to drug levels - same definition as current_adh_dl; * lapr JAS Nov2021;
-******************** Define adh_prep_inj here;
-adh_prep_inj=1;	********TEMP;
-if prep_inj=1 then do;
-	adh_prep_inj = .; 
-	if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then adh_prep_inj = adh; 
-
-	if o_cab ne 1 and tss_cab ge 0.25 and 
-	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-	then do; adh_prep_inj = .; adh_prep_inj = .;
-		if tss_cab = 1/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;				* ****************** UPDATE THIS SECTION FOR DT=0.25 *****************;
-		if tss_cab = 2/12 then do ; adh_prep_inj = 0.9; adh_prep_inj_tm1 = 0.9 ; end;
-		if tss_cab = 3/12 then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.9 ; end;
-		if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; adh_prep_inj = 0.65; adh_prep_inj_tm1 = 0.65 ; end;	* NOTE tss_cab hasn't been defined yet ;
-	end;
+*'Adherence' to injectable PrEP - related to drug levels - check this is consistent with current_adh_dl (see code below); * lapr JAS Nov2021;
+if prep_inj=1 then adh_prep_inj=1;
+if prep_inj=0 and prep_inj_ever=1 then do;
+	if 		(caldate{t}-dt_prep_inj_s) = 0		then adh_prep_inj = 1;
+	else if (caldate{t}-dt_prep_inj_s) = 0.25	then adh_prep_inj = 0.9; 
+	else if 0.25 < (caldate{t}-dt_prep_inj_s) <= cab_time_to_lower_threshold 	then adh_prep_inj = 0.65;
 end;
-
+	
 
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
 if prep_oral   =1 then do; 
@@ -7938,26 +7929,26 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * DRUG LEVEL DURING CAB TAIL; 		* lapr - from LAI code for section on cla / rla tail - JAS Nov2021 ;
-* May need to rethink distribution of drug levels / duration of tail ('cab_time_to_lower_threshold');
-* See also section for adh_prep_inj - uses same code;
+* May need to rethink drug levels in tail (0.9, 0.65) which also affect inj PrEP efficacy (see section for 'adh_prep_inj') and distribution of duration of tail ('cab_time_to_lower_threshold');
 
 if o_cab = 1 then adh = 1;
 
-current_adh_dl = .; 
+current_adh_dl = .; 	
 if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then current_adh_dl = adh; 
 
+* dependent_on_time_step_length ;
 if o_cab ne 1 and tss_cab ge 0.25 and 
 (o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-then do; current_adh_dl = .; current_adh_dl_tm1 = .;
+then do; current_adh_dl = .; current_adh_dl_tm1 = .;		* lapr - note that current_adh_dl_tm1 is set to 'current_adh_dl' above but not used - remove? JAS Dec2021;
 	* ts1m;
 	/*
 	if tss_cab = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
 	if tss_cab = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
 	if tss_cab = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-	if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+	if 3/12 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
 	*/
-	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;										* lapr - using 2-month values from 1-month version of code (LAI) - JAS Dec2021;
-	if 0.25 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - reconsider distribution of cab_time_to_lower_threshold - JAS Dec2021;
+	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;												* lapr - using 2-month values from ts1m version of code (LAI) - JAS Dec2021;									
+	if 0.25 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl_tm1 = current_adh_dl ; current_adh_dl = 0.65; end;	* lapr - reconsider distribution of cab_time_to_lower_threshold - JAS Dec2021;
 
 end;
 
@@ -15935,19 +15926,24 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
+
+/*proc print; var caldate&j age hiv prep_inj o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;*/
+/*where serial_no<45;*/
+/*run; */
+
 proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig
 	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
 	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
 	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice
 	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig
-	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test current_adh_dl;
+	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test adh current_adh_dl;
 where serial_no<40;
 run; 
 proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
-proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever stop_prep_all_choice;
-where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;
-proc univariate; var dt_prep_all_rs ; where caldate&j=2021.75; run;
+/*proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever stop_prep_all_choice;*/
+/*where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;*/
+/*proc univariate; var dt_prep_all_rs ; where caldate&j=2021.75; run;*/
 
 /*proc univariate; var highest_prep_pref ; */
 /*proc univariate; var prep_oral_willing prep_inj_willing prep_vr_willing ; */
