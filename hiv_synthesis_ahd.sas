@@ -6501,7 +6501,8 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;	
 
-		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then time0=caldate{t};  * added for ahd project ;
+		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then 
+		do;  time0=caldate{t}; end;  * added for ahd project ;
 
 		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and art_intro_date <= caldate{t} then do;
 				if caldate{t} lt year_interv then do;
@@ -6513,8 +6514,8 @@ res_test=.;
 				* this code below for ahd - note can reverse the initiation of art determined above;
 				if caldate{t} ge year_interv then do;
 					time0=.; 
-					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then do; time0=caldate{t};  end;
-					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then do; time0=caldate{t};  end;
+					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then do;  time0=caldate{t}; end; 
+					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then do;  time0=caldate{t}; end; 
 					if art_init_reinit_2nd_per = 1 and time0 =. then start_next_period = 1;  
 				end;
 		end;
@@ -6550,7 +6551,7 @@ res_test=.;
 		if art_initiation_strategy in (3, 9, 10) then do;  * pregnancy leads to re-engagement once option b+ implemented;
 			if (pregnant=1 or . < caldate{t} - dt_lastbirth <= 1) and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if dt_first_elig=. then dt_first_elig=caldate{t};
-				time0=caldate{t};  art_init_bplus_=1;
+				time0=caldate{t}; art_init_bplus_=1;
 			end;
 		end;
 
@@ -9325,7 +9326,8 @@ if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return
 	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100)  then tbxp_measured_this_per = 1;
 	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
-if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; enter_care=1; cd4_enter_care=cd4; end;
+if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; enter_care=1; date_last_enter_care=caldate{t};
+cd4_enter_care=cd4; end;
 * measure crag tb lam tb xp when (re)entering care if who stage 3 or 4;
 if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)  then do; 
 	if (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
@@ -9698,16 +9700,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	tb_proph = 0;	
 	u=rand('uniform');
 	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
-	and u < rate_tb_proph_init then do; 
-		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
-	end;
+	and u < rate_tb_proph_init then start_tb_proph_if_no_active_tb=1; 
 
 	* for ahd;
 	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
-	and tb_proph_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then do; 
-		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
-	end;
-
+	and tb_proph_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then start_tb_proph_if_no_active_tb=1; 
 
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
@@ -9819,6 +9816,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		- reason for the poor adh condition	is that the people who are on simplified visits but non adherent or interrupted are close to being lost;
 
 		tb_diag_e = .; tb_prob_diag_l = .;
+		if tb ne 1 and start_tb_proph_if_no_active_tb=1 then do; tb_proph = 1; date_most_recent_tb_proph = caldate{t}; end; 
+		start_tb_proph_if_no_active_tb=.;
 		if tb=1 then do;
 			date_most_recent_tb = caldate{t};
 			tb_prob_diag_l = tb_base_prob_diag_l; 
@@ -15410,12 +15409,16 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print; var caldate&j gender option cm_1stvis_return_vlmg1000 rapid_art_who34 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  
-pcp_p_art_init_reinit tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 art_initiation_strategy enter_care  
-cd4 cm_tm1 cm vm adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart pregnant date_1st_hiv_care_visit 
-return  restart time0 start_next_period date_last_return_restart restart_next_period pcp_p tb_proph crypm_proph crypm_diag_e tb_diag_e   sbi_diag_e 
-crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per cm_this_per ;
-where age >= 15 and hiv=1 and registd = 1 and 400 <= serial_no < 800 and (death = . or dead = 1);
+proc print; var caldate&j gender option rate_int_choice cm_1stvis_return_vlmg1000 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  
+pcp_p_art_init_reinit tbxp_cd4200 
+effect_visit_prob_diag_l crypm_base_prob_diag_l sbi_base_prob_diag_l tb_base_prob_diag_l oth_adc_base_prob_diag_l
+rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 date_last_enter_care enter_care  
+cd4 cm_tm1 cm vm adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart 
+pregnant dt_lastbirth date_1st_hiv_care_visit return  restart time0 start_next_period date_last_return_restart restart_next_period
+pcp_p tb_proph crypm_proph tb_prob_diag_e sbi_prob_diag_e crypm_prob_diag_e oth_adc_prob_diag_e
+crypm_diag_e tb_diag_e sbi_diag_e crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per  ;
+where age >= 15 and hiv=1 and registd = 1 and 1 <= serial_no <= 10000 and (death = . or dead = 1) and 0 <= caldate&j - date_last_enter_care <= 0
+;
 run;
 
 
@@ -17722,26 +17725,29 @@ data r1; set a.ahd;
 
 data r1; set a.ahd;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=7);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=7);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=7);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=7);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=7);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=7);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=7);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=7);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=7);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=7);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=7);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=7);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=7);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=7);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=7);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=7);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=7);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=7);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=7);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=7);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=4);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=4);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=4);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=4);
+
+
+/*
 
 data r1; set a.ahd;
 
