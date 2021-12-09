@@ -4705,12 +4705,12 @@ between 0 and 1 rather than binary 0 or 1;
 * assume for now that oral prep is tenofovir/ftc;
 
 
-*'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
+*'Adherence' to injectable PrEP - related to drug levels - same definition as current_adh_dl; * lapr JAS Nov2021;
 ******************** Define adh_prep_inj here;
 adh_prep_inj=1;	********TEMP;
 if prep_inj=1 then do;
 	adh_prep_inj = .; 
-	if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then adh_prep_inj = adh; * ****************** CHECK ALL THESE VARIABLES - code copied from current_adh_dl definition in LAI*****************;
+	if (onart=1 or toffart=0 or (p_cab = 1 and . < tss_cab <= cab_time_to_lower_threshold)) then adh_prep_inj = adh; 
 
 	if o_cab ne 1 and tss_cab ge 0.25 and 
 	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
@@ -5922,7 +5922,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep_oral    ne 1 then do;	* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
+		if prep_oral    ne 1 then do;		* lapr - changed to prep_oral - JAS Dec2021;;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
@@ -5945,9 +5945,11 @@ if hiv=1 then do;
 		if p84m = 1 then do; u=rand('uniform'); if u < 0.5 then p84m=0; end;
 		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
 		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
-* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
-		if inpm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
-		if insm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
+
+		if prep_inj    ne 1 then do;		* lapr - added if clause for prep_inj - JAS Dec2021;;
+			if inpm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
+			if insm = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
+		end;
 
 end;
 
@@ -7936,7 +7938,7 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * DRUG LEVEL DURING CAB TAIL; 		* lapr - from LAI code for section on cla / rla tail - JAS Nov2021 ;
-* ************************ DISCUSS TAIL ASSUMPTION RE DRUG LEVEL IN TAIL**********************;
+* May need to rethink distribution of drug levels / duration of tail ('cab_time_to_lower_threshold');
 * See also section for adh_prep_inj - uses same code;
 
 if o_cab = 1 then adh = 1;
@@ -7954,8 +7956,8 @@ then do; current_adh_dl = .; current_adh_dl_tm1 = .;
 	if tss_cab = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
 	if 3/12 <= tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
 	*/
-	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;										* lapr - using 2-month value from above - JAS Dec2021;
-	if 0.25 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - NB this will overwrite line above?;
+	if tss_cab = 0.25 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;										* lapr - using 2-month values from 1-month version of code (LAI) - JAS Dec2021;
+	if 0.25 < tss_cab <= cab_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;		* lapr - reconsider distribution of cab_time_to_lower_threshold - JAS Dec2021;
 
 end;
 
@@ -9057,14 +9059,14 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 		end;
 
 * dol;
-		if o_dol_tm1=1 then do; 
-		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
+		if o_dol_tm1=1 then do; 			* lapr - hard coded value of pr_res_dol at start (could also do this for core?) - JAS Dec2021;
+		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 	
 			ax=rand('uniform'); if ax < pr_res_dol then c_inpm=1;  
 			bx=rand('uniform'); if bx < pr_res_dol then c_insm=1;
 		end;
 
-		* lapr - added code from LAI, pr_res_dol used is 1.5-2 (10%:90%) x for CAB - any more specific data? JAS Nov2021 ;
-* cab;
+		
+* cab;										* lapr - added code from LAI, pr_res_dol used is 1.5-2 (10%:90%) x higher for CAB - check outputs over multiple runs - JAS Nov2021 ;
 		if o_cab_tm1=1 or (p_cab = 1 and current_adh_dl_tm1 > .) then do; 
 			cx=rand('uniform'); if cx < (pr_res_dol * rel_rate_res_cab_dol) then c_inpm=1;  
 			cx=rand('uniform'); if cx < (pr_res_dol * rel_rate_res_cab_dol) then c_insm=1;
@@ -9189,7 +9191,7 @@ and starting another, non-x-resistant, regimen;
 
 		* lapr - added CAB code from LAI - JAS Nov2021;
 		a=rand('uniform');if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and (p_cab=0 or (p_cab=1 and . < current_adh_dl < lower_cab_threshold)) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	
-		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and (p_cab=0 or (p_cab and . < current_adh_dl < lower_cab_threshold)) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
+		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and (p_cab=0 or (p_cab=1 and . < current_adh_dl < lower_cab_threshold)) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
 
 end;
 
@@ -15938,8 +15940,8 @@ proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig
 	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
 	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice
 	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig
-	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test;
-where serial_no<50;
+	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test current_adh_dl;
+where serial_no<40;
 run; 
 proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
