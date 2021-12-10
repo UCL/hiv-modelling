@@ -11,7 +11,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\log2";
 	
-%let population = 100000 ;     0
+%let population = 100000 ;     
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -16527,6 +16527,10 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
+s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
+s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
@@ -17386,6 +17390,10 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
+s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
+s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
@@ -17587,7 +17595,6 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -17727,9 +17734,6 @@ end;
 
 data a.ahd; set r1; 
 
-*/
-
-/*
 
 data r1; set a.ahd;
 
@@ -17754,33 +17758,31 @@ data r1; set a.ahd;
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 
-*/
+
 
 data r1; set a.ahd;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=12);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=12);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=12);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=12);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=12);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=12);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=12);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=12);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=12);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=12);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=12);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=12);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=12);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=12);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=12);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=12);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=12);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=12);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=12);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=12);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
 
-
-/*
 
 data r1; set a.ahd;
 
@@ -17806,7 +17808,7 @@ data r1; set a.ahd;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
@@ -17830,7 +17832,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=4);
@@ -17854,7 +17856,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=4);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=5);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=5);
@@ -17878,7 +17880,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=5);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=6);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=6);
@@ -17902,7 +17904,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=6);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=7);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=7);
@@ -17926,7 +17928,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=7);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=8);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=8);
@@ -17950,7 +17952,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=8);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=9);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=9);
@@ -17974,7 +17976,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=9);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=10);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=10);
@@ -17998,7 +18000,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=10);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=11);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=11);
@@ -18022,7 +18024,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=11);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=12);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=12);
@@ -18046,7 +18048,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=12);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=13);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=13);
@@ -18070,7 +18072,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=13);
 
 
-data r1; set a;
+data r1; set a.ahd;
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=14);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=14);
@@ -18626,6 +18628,10 @@ s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_
 s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80
+
+s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
+s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
