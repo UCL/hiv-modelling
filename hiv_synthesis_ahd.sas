@@ -2263,6 +2263,7 @@ who may be dead and hence have caldate{t} missing;
 	prob_cd4_meas_done = 0;
 	eff_pr_art_init = 0 ;
 	prob_supply_interrupted=0.003; 
+	ahd_project_pcp_use=1;
 
 	if option = 1 then do;  
 		cm_1stvis_return_vlmg1000 = 0;
@@ -9688,9 +9689,10 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if  cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
 
 	* for ahd;
+	if ahd_project_pcp_use = 1 then pcp_p=0 ; ahd_project_pcp_use = 0 ;
 	if pcp_p_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then pcp_p = 1; 
 	if pcp_p_art_init_reinit_cd4350 = 1 and cm <= 350 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then pcp_p = 1; 
-	
+	if visit ne 1 then pcp_p=0;
 
 
 	* TB preventive prophylaxis ;  
@@ -9699,12 +9701,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	tb_proph = 0;	
 	u=rand('uniform');
-	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
-	and u < rate_tb_proph_init then start_tb_proph_if_no_active_tb=1; 
+	if (date_most_recent_tb_proph =. or caldate{t} - date_most_recent_tb_proph > 1  ) 
+	and u < rate_tb_proph_init then start_tb_proph_if_no_active_tb=1; * we only have tb_proph = 1 for one period but can last 6 months;
 
 	* for ahd;
-	if ((max(date_most_recent_tb_proph, date_most_recent_tb)=.) or caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1) 
+	if (date_most_recent_tb_proph =. or caldate{t} - date_most_recent_tb_proph > 1  ) 
 	and tb_proph_art_init_reinit = 1 and (date_1st_hiv_care_visit=caldate{t} or return=1)  then start_tb_proph_if_no_active_tb=1; 
+	* we only have tb_proph = 1 for one period but can last 6 months;
 
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
@@ -9719,6 +9722,8 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 
 		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
 	end;
+
+	if (crypm_proph_cd4200=1 and 0 <= cm < 200) then crypm_proph_art_init_reinit = 1;
 
 	* for ahd;
 	if ((max(date_most_recent_crypm_proph, date_most_recent_crypm)=.) or caldate{t} - max(date_most_recent_crypm_proph, date_most_recent_crypm) > 1) 
@@ -15413,9 +15418,10 @@ proc print; var caldate&j gender option rate_int_choice cm_1stvis_return_vlmg100
 pcp_p_art_init_reinit tbxp_cd4200 
 effect_visit_prob_diag_l crypm_base_prob_diag_l sbi_base_prob_diag_l tb_base_prob_diag_l oth_adc_base_prob_diag_l
 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 crypm_proph_cd4200 crag_cd4200 date_last_enter_care enter_care  
-cd4 cm_tm1 cm vm adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart 
+cd4 cm_tm1 cm vm base_rate rate tb_rate who3_rate oth_adc_rate crypm_rate sbi_rate hiv_death_rate 
+adc who3_ who4_ non_tb_who3_ev crypm sbi tb visit naive_tm1 naive interrupt_choice onart_tm1 onart 
 pregnant dt_lastbirth date_1st_hiv_care_visit return  restart time0 start_next_period date_last_return_restart restart_next_period
-pcp_p tb_proph crypm_proph tb_prob_diag_e sbi_prob_diag_e crypm_prob_diag_e oth_adc_prob_diag_e
+pcp_p tb_proph crypm_proph date_most_recent_tb_proph date_most_recent_tb tb_prob_diag_e sbi_prob_diag_e crypm_prob_diag_e oth_adc_prob_diag_e
 crypm_diag_e tb_diag_e sbi_diag_e crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per  ;
 where age >= 15 and hiv=1 and registd = 1 and 1 <= serial_no <= 10000 and (death = . or dead = 1) and 0 <= caldate&j - date_last_enter_care <= 0
 ;
@@ -17725,26 +17731,26 @@ data r1; set a.ahd;
 
 data r1; set a.ahd;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=4);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=4);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=4);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=4);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=4);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=4);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=4);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=4);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=12);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=12);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=12);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=12);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=12);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=12);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=12);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=12);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=12);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=12);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=12);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=12);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=12);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=12);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=12);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=12);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=12);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=12);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=12);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=12);
 
 
 /*
