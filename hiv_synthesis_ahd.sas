@@ -1,17 +1,17 @@
 
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\';     * ************* ;
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\';     
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";                    * ************* ;
+  libname a "&outputdir/";                   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\ahd\log2";
 	
-%let population = 10000 ;     * ************* ;
+%let population = 100000 ;     0
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -9916,7 +9916,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	adc=0; crypm=0; sbi=0; oth_adc=0;
 	adc_diagnosed=.; adc_naive=.; adc_line1_lf0=.; adc_line1_lf1=.; adc_line2_lf1=.; adc_line2_lf2=.; adc_artexpoff=.;
 	if  dead=0 then do;
-		rate=base_rate;
+		rate=base_rate ;  
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then rate=base_rate;
 	
 		if pcp_p   =1 then rate=rate*0.8;
@@ -15235,6 +15235,14 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
 	s_ahd_enter_care_100 + ahd_enter_care_100; s_ahd_enter_care_200 + ahd_enter_care_200; s_enter_care + enter_care ;
 
+	s_who3_ + who3_;  s_who4_ + who4_; s_base_rate + base_rate;  s_rate + rate; s_tb_rate + tb_rate;  s_who3_rate + who3_rate; 
+	s_oth_adc_rate + oth_adc_rate;  s_crypm_rate + crypm_rate; s_sbi_rate + sbi_rate; s_hiv_death_rate + hiv_death_rate; 
+	s_start_next_period + start_next_period; s_restart_next_period + restart_next_period ; 
+	s_tb_prob_diag_e+tb_prob_diag_e; s_sbi_prob_diag_e + sbi_prob_diag_e;  s_crypm_prob_diag_e + crypm_prob_diag_e; 
+	s_oth_adc_prob_diag_e + oth_adc_prob_diag_e;  s_crypm_diag_e + crypm_diag_e; tb_diag_e  + tb_diag_e; sbi_diag_e  + sbi_diag_e; 
+	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per ; 
+	s_tbxp_measured_this_per + tbxp_measured_this_per ;
+
 
 
 	/*Pregnancy and children*/
@@ -15412,6 +15420,25 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 
+
+*
+
+check which need to save outputs for:
+
+
+
+ 
+  
+
+
+ 
+
+;
+ 
+
+
+/*
+
 * procs;
 
 proc print; var caldate&j gender option rate_int_choice cm_1stvis_return_vlmg1000 tbxp_who34 tblam_who34  tb_proph_art_init_reinit  
@@ -15424,12 +15451,10 @@ pregnant dt_lastbirth date_1st_hiv_care_visit return  restart time0 start_next_p
 pcp_p tb_proph crypm_proph date_most_recent_tb_proph date_most_recent_tb tb_prob_diag_e sbi_prob_diag_e crypm_prob_diag_e oth_adc_prob_diag_e
 crypm_diag_e tb_diag_e sbi_diag_e crag_measured_this_per tblam_measured_this_per tbxp_measured_this_per  ;
 where age >= 15 and hiv=1 and registd = 1 and 1 <= serial_no <= 10000 and (death = . or dead = 1) and 0 <= caldate&j - date_last_enter_care <= 0
+and crypm=1
 ;
 run;
 
-
-
-/*
 
 ods html;
 proc print; var caldate&j
@@ -16581,6 +16606,8 @@ nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_pro
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init prep_efficacy
+tbxp_who34 tblam_who34  tb_proph_art_init_reinit pcp_p_art_init_reinit tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 
+crypm_proph_cd4200 crag_cd4200 effect_visit_prob_diag_l crypm_base_prob_diag_l sbi_base_prob_diag_l tb_base_prob_diag_l oth_adc_base_prob_diag_l
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l tbxp_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -18679,6 +18706,8 @@ effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init  prep_efficacy
+tbxp_who34 tblam_who34  tb_proph_art_init_reinit pcp_p_art_init_reinit tbxp_cd4200 rapid_art_cd4200 rapid_art_who34 tblam_cd4200 
+crypm_proph_cd4200 crag_cd4200 effect_visit_prob_diag_l crypm_base_prob_diag_l sbi_base_prob_diag_l tb_base_prob_diag_l oth_adc_base_prob_diag_l
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  tbxp_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
