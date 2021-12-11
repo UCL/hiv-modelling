@@ -6502,18 +6502,18 @@ res_test=.;
 				if dt_first_elig=. then dt_first_elig=caldate{t};end;
 		end;	
 
-		if caldate{t} ge year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then 
+		if caldate{t} ge &year_interv and art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and start_next_period = 1 then 
 		do;  time0=caldate{t}; end;  * added for ahd project ;
 
 		if art_initiation_strategy=3 and visit=1 and naive_tm1=1 and time0 = . and art_intro_date <= caldate{t} then do;
-				if caldate{t} lt year_interv then do;
+				if caldate{t} lt &year_interv then do;
 					if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
 					if pregnant =1 then u=u/10; * jul18 ;
 					if u < eff_pr_art_init then time0=caldate{t}; * note this can be reverse below; 
 					if dt_first_elig=. then dt_first_elig=caldate{t};
 				end;
 				* this code below for ahd - note can reverse the initiation of art determined above;
-				if caldate{t} ge year_interv then do;
+				if caldate{t} ge &year_interv then do;
 					time0=.; 
 					if rapid_art_who34 = 1 and (who3_ = 1 or who4_ = 1) then do;  time0=caldate{t}; end; 
 					if rapid_art_cd4200 = 1 and (0 <= cm <= 200 or 0 <= cm_tm1 <= 200) then do;  time0=caldate{t}; end; 
@@ -6782,7 +6782,7 @@ end;
 
 
 	* this code below for ahd - note can reverse the re-initiation of art determined above;
-	if caldate{t} ge year_interv and visit=1 and onart_tm1 =0 and tcur_tm1=. and interrupt ne 1 and naive = 0 then do;
+	if caldate{t} ge &year_interv and visit=1 and onart_tm1 =0 and tcur_tm1=. and interrupt ne 1 and naive = 0 then do;
 		restart=0; onart=0;tcur=.; cd4_tcur0 = .; interrupt_choice=.; 
 		if visit=1 and onart ne 1 and restart_next_period = 1 then do; 
 			restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; restart_next_period = .; date_last_return_restart=caldate{t};
