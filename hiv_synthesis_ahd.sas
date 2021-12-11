@@ -9327,8 +9327,10 @@ if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return
 	if (tbxp_cd4200=1 and 0 <= cm < 200) or (tbxp_cd4100=1 and 0 <= cm < 100)  then tbxp_measured_this_per = 1;
 	if (tblam_cd4200=1 and 0 <= cm < 200) or (tblam_cd4100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
-if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; enter_care=1; date_last_enter_care=caldate{t};
-cd4_enter_care=cd4; end;
+if cm ne . then cm_this_per =1; 
+if date_1st_hiv_care_visit=caldate{t} or return=1 then do; 
+	enter_care=1; date_last_enter_care=caldate{t}; cd4_enter_care=cd4; cd4_last_enter_care = cd4; 
+end;
 * measure crag tb lam tb xp when (re)entering care if who stage 3 or 4;
 if date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)  then do; 
 	if (tbxp_who34 = 1 and (who3_=1 or who4_=1)) then tbxp_measured_this_per = 1;
@@ -10052,6 +10054,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 	who4_time = who4_date-date1pos;
+
+	who34_=0; if who3_=1 or who4_=1 then who34_=1;
+
 
 * latest measured vl;
 if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
@@ -13709,6 +13714,7 @@ if tb=1 then do;
 	if tb_proph = 1 then tb_proph_tb = 1;
 end;
 
+
 * who3;
 cd4_g1_who3 = 0; cd4_g2_who3 = 0; cd4_g3_who3 = 0; cd4_g4_who3 = 0; cd4_g5_who3 = 0; cd4_g6_who3 = 0; 
 vl_g1_who3 = 0; vl_g2_who3 = 0; vl_g3_who3 = 0; vl_g4_who3 = 0; vl_g5_who3 = 0; 
@@ -13855,6 +13861,84 @@ if dcause=4 and 50 <= age < 59 and gender=2 then dead_cvd_5059w=1;
 if dcause=4 and 60 <= age < 69 and gender=2 then dead_cvd_6069w=1;
 if dcause=4 and 70 <= age < 79 and gender=2 then dead_cvd_7079w=1;
 if dcause=4 and 80 <= age      and gender=2 then dead_cvd_ge80w=1;
+end;
+
+
+ec0_cd4l200=.; ec0_tb=.; ec0_non_tb_who3=.; ec0_crypm=.; ec0_sbi=.; ec0_oth_adc=.; ec0_tb_proph=.; ec0_crypm_proph=.; ec0_pcp_proph=.; 
+ec0_crypm_diag_e =.;  ec0_tb_diag_e =.;  ec0_sbi_diag_e=.; ec0_oth_adc_diag_e=.; ec0a_cd4l200=.; ec0a_tb=.; ec0a_non_tb_who3=.; ec0a_crypm=.; 
+ec0a_sbi=.; ec0a_oth_adc=.; ec0a_tb_proph=.; ec0a_crypm_proph=.; ec0a_pcp_proph=.; ec0a_crypm_diag_e =.;  ec0a_tb_diag_e =.;  ec0a_sbi_diag_e=.; 
+ec0a_oth_adc_diag_e=.; 
+if enter_care = 1 then do;
+	if . < cd4 < 200 then ec0_cd4l200=1;  if tb=1 then ec0_tb=1;  if non_tb_who3_ev=1 then ec0_non_tb_who3=1;  if crypm=1 then ec0_crypm=1;
+	if sbi=1 then ec0_sbi=1; if oth_adc=1 then ec0_oth_adc=1; ec0_dead = dead; ec0_tb_proph = tb_proph; ec0_crypm_proph = crypm_proph; 
+	ec0_pcp_proph = pcp_p;  
+	if crypm=1 and crypm_diag_e = 1 then ec0_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec0_tb_diag_e=1;
+	if sbi=1 and sbi_diag_e = 1 then ec0_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec0_oth_adc_diag_e=1; 
+	if  (. < cd4_last_enter_care < 200 or who3_=1 or who4_=1) then do;
+		if . < cd4 < 200 then ec0a_cd4l200=1;  if tb=1 then ec0a_tb=1;  if non_tb_who3_ev=1 then ec0a_non_tb_who3=1;  if crypm=1 then ec0a_crypm=1;
+		if sbi=1 then ec0a_sbi=1; if oth_adc=1 then ec0a_oth_adc=1; ec0a_dead = dead; ec0a_tb_proph = tb_proph; ec0a_crypm_proph = crypm_proph; 
+		ec0a_pcp_proph = pcp_p;  
+		if crypm=1 and crypm_diag_e = 1 then ec0a_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec0a_tb_diag_e=1;
+		if sbi=1 and sbi_diag_e = 1 then ec0a_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec0a_oth_adc_diag_e=1; 
+	end;
+end;
+
+
+ec1_cd4l200=.; ec1_tb=.; ec1_non_tb_who3=.; ec1_crypm=.; ec1_sbi=.; ec1_oth_adc=.; ec1_tb_proph=.; ec1_crypm_proph=.; ec1_pcp_proph=.; 
+ec1_crypm_diag_e =.;  ec1_tb_diag_e =.;  ec1_sbi_diag_e=.; ec1_oth_adc_diag_e=.; ec1a_cd4l200=.; ec1a_tb=.; ec1a_non_tb_who3=.; ec1a_crypm=.; 
+ec1a_sbi=.; ec1a_oth_adc=.; ec1a_tb_proph=.; ec1a_crypm_proph=.; ec1a_pcp_proph=.; ec1a_crypm_diag_e =.;  ec1a_tb_diag_e =.;  ec1a_sbi_diag_e=.; 
+ec1a_oth_adc_diag_e=.; 
+if caldate&j - date_last_enter_care = 0.25 then do;
+	if . < cd4 < 200 then ec1_cd4l200=1;  if tb=1 then ec1_tb=1;  if non_tb_who3_ev=1 then ec1_non_tb_who3=1;  if crypm=1 then ec1_crypm=1;
+	if sbi=1 then ec1_sbi=1; if oth_adc=1 then ec1_oth_adc=1; ec1_dead = dead; ec1_tb_proph = tb_proph; ec1_crypm_proph = crypm_proph; 
+	ec1_pcp_proph = pcp_p;  
+	if crypm=1 and crypm_diag_e = 1 then ec1_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec1_tb_diag_e=1;
+	if sbi=1 and sbi_diag_e = 1 then ec1_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec1_oth_adc_diag_e=1; 
+	if  (. < cd4_last_enter_care < 200 or who3_=1 or who4_=1) then do;
+		if . < cd4 < 200 then ec1a_cd4l200=1;  if tb=1 then ec1a_tb=1;  if non_tb_who3_ev=1 then ec1a_non_tb_who3=1;  if crypm=1 then ec1a_crypm=1;
+		if sbi=1 then ec1a_sbi=1; if oth_adc=1 then ec1a_oth_adc=1; ec1a_dead = dead; ec1a_tb_proph = tb_proph; ec1a_crypm_proph = crypm_proph; 
+		ec1a_pcp_proph = pcp_p;  
+		if crypm=1 and crypm_diag_e = 1 then ec1a_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec1a_tb_diag_e=1;
+		if sbi=1 and sbi_diag_e = 1 then ec1a_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec1a_oth_adc_diag_e=1; 
+	end;
+end;
+
+ec2_cd4l200=.; ec2_tb=.; ec2_non_tb_who3=.; ec2_crypm=.; ec2_sbi=.; ec2_oth_adc=.; ec2_tb_proph=.; ec2_crypm_proph=.; ec2_pcp_proph=.; 
+ec2_crypm_diag_e =.;  ec2_tb_diag_e =.;  ec2_sbi_diag_e=.; ec2_oth_adc_diag_e=.; ec2a_cd4l200=.; ec2a_tb=.; ec2a_non_tb_who3=.; ec2a_crypm=.; 
+ec2a_sbi=.; ec2a_oth_adc=.; ec2a_tb_proph=.; ec2a_crypm_proph=.; ec2a_pcp_proph=.; ec2a_crypm_diag_e =.;  ec2a_tb_diag_e =.;  ec2a_sbi_diag_e=.; 
+ec2a_oth_adc_diag_e=.; 
+if caldate&j - date_last_enter_care = 0.5 then do;
+	if . < cd4 < 200 then ec2_cd4l200=1;  if tb=1 then ec2_tb=1;  if non_tb_who3_ev=1 then ec2_non_tb_who3=1;  if crypm=1 then ec2_crypm=1;
+	if sbi=1 then ec2_sbi=1; if oth_adc=1 then ec2_oth_adc=1; ec2_dead = dead; ec2_tb_proph = tb_proph; ec2_crypm_proph = crypm_proph; 
+	ec2_pcp_proph = pcp_p;  
+	if crypm=1 and crypm_diag_e = 1 then ec2_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec2_tb_diag_e=1;
+	if sbi=1 and sbi_diag_e = 1 then ec2_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec2_oth_adc_diag_e=1; 
+	if  (. < cd4_last_enter_care < 200 or who3_=1 or who4_=1) then do;
+		if . < cd4 < 200 then ec2a_cd4l200=1;  if tb=1 then ec2a_tb=1;  if non_tb_who3_ev=1 then ec2a_non_tb_who3=1;  if crypm=1 then ec2a_crypm=1;
+		if sbi=1 then ec2a_sbi=1; if oth_adc=1 then ec2a_oth_adc=1; ec2a_dead = dead; ec2a_tb_proph = tb_proph; ec2a_crypm_proph = crypm_proph; 
+		ec2a_pcp_proph = pcp_p;  
+		if crypm=1 and crypm_diag_e = 1 then ec2a_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec2a_tb_diag_e=1;
+		if sbi=1 and sbi_diag_e = 1 then ec2a_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec2a_oth_adc_diag_e=1; 
+	end;
+end;
+
+ec3_cd4l200=.; ec3_tb=.; ec3_non_tb_who3=.; ec3_crypm=.; ec3_sbi=.; ec3_oth_adc=.; ec3_tb_proph=.; ec3_crypm_proph=.; ec3_pcp_proph=.; 
+ec3_crypm_diag_e =.;  ec3_tb_diag_e =.;  ec3_sbi_diag_e=.; ec3_oth_adc_diag_e=.; ec3a_cd4l200=.; ec3a_tb=.; ec3a_non_tb_who3=.; ec3a_crypm=.; 
+ec3a_sbi=.; ec3a_oth_adc=.; ec3a_tb_proph=.; ec3a_crypm_proph=.; ec3a_pcp_proph=.; ec3a_crypm_diag_e =.;  ec3a_tb_diag_e =.;  ec3a_sbi_diag_e=.; 
+ec3a_oth_adc_diag_e=.; 
+if caldate&j - date_last_enter_care = 0.75 then do;
+	if . < cd4 < 200 then ec3_cd4l200=1;  if tb=1 then ec3_tb=1;  if non_tb_who3_ev=1 then ec3_non_tb_who3=1;  if crypm=1 then ec3_crypm=1;
+	if sbi=1 then ec3_sbi=1; if oth_adc=1 then ec3_oth_adc=1; ec3_dead = dead; ec3_tb_proph = tb_proph; ec3_crypm_proph = crypm_proph; 
+	ec3_pcp_proph = pcp_p;  
+	if crypm=1 and crypm_diag_e = 1 then ec3_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec3_tb_diag_e=1;
+	if sbi=1 and sbi_diag_e = 1 then ec3_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec3_oth_adc_diag_e=1; 
+	if  (. < cd4_last_enter_care < 200 or who3_=1 or who4_=1) then do;
+		if . < cd4 < 200 then ec3a_cd4l200=1;  if tb=1 then ec3a_tb=1;  if non_tb_who3_ev=1 then ec3a_non_tb_who3=1;  if crypm=1 then ec3a_crypm=1;
+		if sbi=1 then ec3a_sbi=1; if oth_adc=1 then ec3a_oth_adc=1; ec3a_dead = dead; ec3a_tb_proph = tb_proph; ec3a_crypm_proph = crypm_proph; 
+		ec3a_pcp_proph = pcp_p;  
+		if crypm=1 and crypm_diag_e = 1 then ec3a_crypm_diag_e=1;if tb=1 and tb_diag_e = 1 then ec3a_tb_diag_e=1;
+		if sbi=1 and sbi_diag_e = 1 then ec3a_sbi_diag_e=1; if oth_adc=1 and oth_adc_diag_e = 1 then ec3a_oth_adc_diag_e=1; 
+	end;
 end;
 
 
@@ -15190,7 +15274,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per; s_tbxp_measured_this_per + tbxp_measured_this_per;
 	s_cm_this_per + cm_this_per ;  s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
-	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
+	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ; s_oth_adc_diag_e+oth_adc_diag_e;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
  	s_vl_g1 + vl_g1 ;  s_vl_g2 + vl_g2 ;  s_vl_g3 + vl_g3 ;  s_vl_g4 + vl_g4 ;  s_vl_g5 + vl_g5 ;  
 	s_age_g1 + age_g1 ; s_age_g2 + age_g2 ; s_age_g3 + age_g3 ; s_age_g4 + age_g4 ; s_age_g5 + age_g5 ; 
@@ -15235,14 +15319,45 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
 	s_ahd_enter_care_100 + ahd_enter_care_100; s_ahd_enter_care_200 + ahd_enter_care_200; s_enter_care + enter_care ;
 
-	s_who3_ + who3_;  s_who4_ + who4_; s_base_rate + base_rate;  s_rate + rate; s_tb_rate + tb_rate;  s_who3_rate + who3_rate; 
+	s_who3_ + who3_;  s_who4_ + who4_; s_who34_ + who34_ ;s_base_rate + base_rate;  s_rate + rate; s_tb_rate + tb_rate;  s_who3_rate + who3_rate; 
 	s_oth_adc_rate + oth_adc_rate;  s_crypm_rate + crypm_rate; s_sbi_rate + sbi_rate; s_hiv_death_rate + hiv_death_rate; 
 	s_start_next_period + start_next_period; s_restart_next_period + restart_next_period ; 
 	s_tb_prob_diag_e+tb_prob_diag_e; s_sbi_prob_diag_e + sbi_prob_diag_e;  s_crypm_prob_diag_e + crypm_prob_diag_e; 
-	s_oth_adc_prob_diag_e + oth_adc_prob_diag_e;  s_crypm_diag_e + crypm_diag_e; tb_diag_e  + tb_diag_e; sbi_diag_e  + sbi_diag_e; 
+	s_oth_adc_prob_diag_e + oth_adc_prob_diag_e;  
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per ; 
 	s_tbxp_measured_this_per + tbxp_measured_this_per ;
 
+	s_ec0_cd4l200 + ec0_cd4l200 ;  s_ec0_tb + ec0_tb ;  s_ec0_non_tb_who3 + ec0_non_tb_who3;  s_ec0_crypm + ec0_crypm ; s_ec0_sbi + ec0_sbi ;
+	s_ec0_oth_adc + ec0_oth_adc ; s_ec0_tb_proph + ec0_tb_proph ; s_ec0_crypm_proph + ec0_crypm_proph ; s_ec0_pcp_proph + ec0_pcp_proph ;  
+	s_ec0_crypm_diag_e + ec0_crypm_diag_e ;  s_ec0_tb_diag_e + ec0_tb_diag_e ;  s_ec0_sbi_diag_e + ec0_sbi_diag_e; 
+	s_ec0_oth_adc_diag_e + ec0_oth_adc_diag_e ;  s_ec0a_cd4l200 + ec0a_cd4l200 ;  s_ec0a_tb + ec0a_tb ;  s_ec0a_non_tb_who3 + ec0a_non_tb_who3;
+	s_ec0a_crypm + ec0a_crypm; 	s_ec0a_sbi + ec0a_sbi ;  s_ec0a_oth_adc + ec0a_oth_adc ;  s_ec0a_tb_proph  + ec0a_tb_proph ; 
+	s_ec0a_crypm_proph  + ec0a_crypm_proph ; s_ec0a_pcp_proph + ec0a_pcp_proph ; s_ec0a_crypm_diag_e + ec0a_crypm_diag_e ;
+	s_ec0a_tb_diag_e + ec0a_tb_diag_e ; s_ec0a_sbi_diag_e + ec0a_sbi_diag_e ; s_ec0a_oth_adc_diag_e + ec0a_oth_adc_diag_e ; 
+
+	s_ec1_cd4l200 + ec1_cd4l200 ;  s_ec1_tb + ec1_tb ;  s_ec1_non_tb_who3 + ec1_non_tb_who3;  s_ec1_crypm + ec1_crypm ; s_ec1_sbi + ec1_sbi ;
+	s_ec1_oth_adc + ec1_oth_adc ; s_ec1_tb_proph + ec1_tb_proph ; s_ec1_crypm_proph + ec1_crypm_proph ; s_ec1_pcp_proph + ec1_pcp_proph ;  
+	s_ec1_crypm_diag_e + ec1_crypm_diag_e ;  s_ec1_tb_diag_e + ec1_tb_diag_e ;  s_ec1_sbi_diag_e + ec1_sbi_diag_e; 
+	s_ec1_oth_adc_diag_e + ec1_oth_adc_diag_e ;  s_ec1a_cd4l200 + ec1a_cd4l200 ;  s_ec1a_tb + ec1a_tb ;  s_ec1a_non_tb_who3 + ec1a_non_tb_who3;
+	s_ec1a_crypm + ec1a_crypm; 	s_ec1a_sbi + ec1a_sbi ;  s_ec1a_oth_adc + ec1a_oth_adc ;  s_ec1a_tb_proph  + ec1a_tb_proph ; 
+	s_ec1a_crypm_proph  + ec1a_crypm_proph ; s_ec1a_pcp_proph + ec1a_pcp_proph ; s_ec1a_crypm_diag_e + ec1a_crypm_diag_e ;
+	s_ec1a_tb_diag_e + ec1a_tb_diag_e ; s_ec1a_sbi_diag_e + ec1a_sbi_diag_e ; s_ec1a_oth_adc_diag_e + ec1a_oth_adc_diag_e ; 
+
+	s_ec2_cd4l200 + ec2_cd4l200 ;  s_ec2_tb + ec2_tb ;  s_ec2_non_tb_who3 + ec2_non_tb_who3;  s_ec2_crypm + ec2_crypm ; s_ec2_sbi + ec2_sbi ;
+	s_ec2_oth_adc + ec2_oth_adc ; s_ec2_tb_proph + ec2_tb_proph ; s_ec2_crypm_proph + ec2_crypm_proph ; s_ec2_pcp_proph + ec2_pcp_proph ;  
+	s_ec2_crypm_diag_e + ec2_crypm_diag_e ;  s_ec2_tb_diag_e + ec2_tb_diag_e ;  s_ec2_sbi_diag_e + ec2_sbi_diag_e; 
+	s_ec2_oth_adc_diag_e + ec2_oth_adc_diag_e ;  s_ec2a_cd4l200 + ec2a_cd4l200 ;  s_ec2a_tb + ec2a_tb ;  s_ec2a_non_tb_who3 + ec2a_non_tb_who3;
+	s_ec2a_crypm + ec2a_crypm; 	s_ec2a_sbi + ec2a_sbi ;  s_ec2a_oth_adc + ec2a_oth_adc ;  s_ec2a_tb_proph  + ec2a_tb_proph ; 
+	s_ec2a_crypm_proph  + ec2a_crypm_proph ; s_ec2a_pcp_proph + ec2a_pcp_proph ; s_ec2a_crypm_diag_e + ec2a_crypm_diag_e ;
+	s_ec2a_tb_diag_e + ec2a_tb_diag_e ; s_ec2a_sbi_diag_e + ec2a_sbi_diag_e ; s_ec2a_oth_adc_diag_e + ec2a_oth_adc_diag_e ; 
+
+	s_ec3_cd4l200 + ec3_cd4l200 ;  s_ec3_tb + ec3_tb ;  s_ec3_non_tb_who3 + ec3_non_tb_who3;  s_ec3_crypm + ec3_crypm ; s_ec3_sbi + ec3_sbi ;
+	s_ec3_oth_adc + ec3_oth_adc ; s_ec3_tb_proph + ec3_tb_proph ; s_ec3_crypm_proph + ec3_crypm_proph ; s_ec3_pcp_proph + ec3_pcp_proph ;  
+	s_ec3_crypm_diag_e + ec3_crypm_diag_e ;  s_ec3_tb_diag_e + ec3_tb_diag_e ;  s_ec3_sbi_diag_e + ec3_sbi_diag_e; 
+	s_ec3_oth_adc_diag_e + ec3_oth_adc_diag_e ;  s_ec3a_cd4l200 + ec3a_cd4l200 ;  s_ec3a_tb + ec3a_tb ;  s_ec3a_non_tb_who3 + ec3a_non_tb_who3;
+	s_ec3a_crypm + ec3a_crypm; 	s_ec3a_sbi + ec3a_sbi ;  s_ec3a_oth_adc + ec3a_oth_adc ;  s_ec3a_tb_proph  + ec3a_tb_proph ; 
+	s_ec3a_crypm_proph  + ec3a_crypm_proph ; s_ec3a_pcp_proph + ec3a_pcp_proph ; s_ec3a_crypm_diag_e + ec3a_crypm_diag_e ;
+	s_ec3a_tb_diag_e + ec3a_tb_diag_e ; s_ec3a_sbi_diag_e + ec3a_sbi_diag_e ; s_ec3a_oth_adc_diag_e + ec3a_oth_adc_diag_e ; 
 
 
 	/*Pregnancy and children*/
@@ -16502,7 +16617,7 @@ s_adc_line2_lf2  s_adc_artexpoff
 /* outputs for advanced hiv disease */ 
 
 s_crag_measured_this_per  s_tblam_measured_this_per s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
-s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
+s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
 s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_onart_80 s_pcp_p_80 s_onart_80 s_pcp_p_80  s_tb_80  s_tblam_measured_this_per_tb  s_tbxp_measured_this_per_tb    
@@ -16527,9 +16642,25 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
-s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_who3_   s_who4_ s_who34_ s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
 s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
 s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+
+s_ec0_cd4l200  s_ec0_tb   s_ec0_non_tb_who3   s_ec0_crypm  s_ec0_sbi s_ec0_oth_adc s_ec0_tb_proph  s_ec0_crypm_proph  s_ec0_pcp_proph s_ec0_crypm_diag_e 
+s_ec0_tb_diag_e   s_ec0_sbi_diag_e s_ec0_oth_adc_diag_e   s_ec0a_cd4l200  s_ec0a_tb  s_ec0a_non_tb_who3 s_ec0a_crypm s_ec0a_sbi s_ec0a_oth_adc  
+s_ec0a_tb_proph  s_ec0a_crypm_proph  s_ec0a_pcp_proph  s_ec0a_crypm_diag_e s_ec0a_tb_diag_e  s_ec0a_sbi_diag_e  s_ec0a_oth_adc_diag_e 
+
+s_ec1_cd4l200  s_ec1_tb   s_ec1_non_tb_who3   s_ec1_crypm  s_ec1_sbi s_ec1_oth_adc s_ec1_tb_proph  s_ec1_crypm_proph  s_ec1_pcp_proph s_ec1_crypm_diag_e 
+s_ec1_tb_diag_e   s_ec1_sbi_diag_e s_ec1_oth_adc_diag_e   s_ec1a_cd4l200  s_ec1a_tb  s_ec1a_non_tb_who3 s_ec1a_crypm s_ec1a_sbi s_ec1a_oth_adc  
+s_ec1a_tb_proph  s_ec1a_crypm_proph  s_ec1a_pcp_proph  s_ec1a_crypm_diag_e s_ec1a_tb_diag_e  s_ec1a_sbi_diag_e  s_ec1a_oth_adc_diag_e 
+
+s_ec2_cd4l200  s_ec2_tb   s_ec2_non_tb_who3   s_ec2_crypm  s_ec2_sbi s_ec2_oth_adc s_ec2_tb_proph  s_ec2_crypm_proph  s_ec2_pcp_proph s_ec2_crypm_diag_e 
+s_ec2_tb_diag_e   s_ec2_sbi_diag_e s_ec2_oth_adc_diag_e   s_ec2a_cd4l200  s_ec2a_tb  s_ec2a_non_tb_who3 s_ec2a_crypm s_ec2a_sbi s_ec2a_oth_adc  
+s_ec2a_tb_proph  s_ec2a_crypm_proph  s_ec2a_pcp_proph  s_ec2a_crypm_diag_e s_ec2a_tb_diag_e  s_ec2a_sbi_diag_e  s_ec2a_oth_adc_diag_e 
+
+s_ec3_cd4l200  s_ec3_tb   s_ec3_non_tb_who3   s_ec3_crypm  s_ec3_sbi s_ec3_oth_adc s_ec3_tb_proph  s_ec3_crypm_proph  s_ec3_pcp_proph s_ec3_crypm_diag_e 
+s_ec3_tb_diag_e   s_ec3_sbi_diag_e s_ec3_oth_adc_diag_e   s_ec3a_cd4l200  s_ec3a_tb  s_ec3a_non_tb_who3 s_ec3a_crypm s_ec3a_sbi s_ec3a_oth_adc  
+s_ec3a_tb_proph  s_ec3a_crypm_proph  s_ec3a_pcp_proph  s_ec3a_crypm_diag_e s_ec3a_tb_diag_e  s_ec3a_sbi_diag_e  s_ec3a_oth_adc_diag_e 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -17365,7 +17496,7 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
-s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
+s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
 s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tbxp_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80    
@@ -17390,9 +17521,25 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
-s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_who3_  s_who34_ s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
 s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
 s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+
+s_ec0_cd4l200  s_ec0_tb   s_ec0_non_tb_who3   s_ec0_crypm  s_ec0_sbi s_ec0_oth_adc s_ec0_tb_proph  s_ec0_crypm_proph  s_ec0_pcp_proph s_ec0_crypm_diag_e 
+s_ec0_tb_diag_e   s_ec0_sbi_diag_e s_ec0_oth_adc_diag_e   s_ec0a_cd4l200  s_ec0a_tb  s_ec0a_non_tb_who3 s_ec0a_crypm s_ec0a_sbi s_ec0a_oth_adc  
+s_ec0a_tb_proph  s_ec0a_crypm_proph  s_ec0a_pcp_proph  s_ec0a_crypm_diag_e s_ec0a_tb_diag_e  s_ec0a_sbi_diag_e  s_ec0a_oth_adc_diag_e 
+
+s_ec1_cd4l200  s_ec1_tb   s_ec1_non_tb_who3   s_ec1_crypm  s_ec1_sbi s_ec1_oth_adc s_ec1_tb_proph  s_ec1_crypm_proph  s_ec1_pcp_proph s_ec1_crypm_diag_e 
+s_ec1_tb_diag_e   s_ec1_sbi_diag_e s_ec1_oth_adc_diag_e   s_ec1a_cd4l200  s_ec1a_tb  s_ec1a_non_tb_who3 s_ec1a_crypm s_ec1a_sbi s_ec1a_oth_adc  
+s_ec1a_tb_proph  s_ec1a_crypm_proph  s_ec1a_pcp_proph  s_ec1a_crypm_diag_e s_ec1a_tb_diag_e  s_ec1a_sbi_diag_e  s_ec1a_oth_adc_diag_e 
+
+s_ec2_cd4l200  s_ec2_tb   s_ec2_non_tb_who3   s_ec2_crypm  s_ec2_sbi s_ec2_oth_adc s_ec2_tb_proph  s_ec2_crypm_proph  s_ec2_pcp_proph s_ec2_crypm_diag_e 
+s_ec2_tb_diag_e   s_ec2_sbi_diag_e s_ec2_oth_adc_diag_e   s_ec2a_cd4l200  s_ec2a_tb  s_ec2a_non_tb_who3 s_ec2a_crypm s_ec2a_sbi s_ec2a_oth_adc  
+s_ec2a_tb_proph  s_ec2a_crypm_proph  s_ec2a_pcp_proph  s_ec2a_crypm_diag_e s_ec2a_tb_diag_e  s_ec2a_sbi_diag_e  s_ec2a_oth_adc_diag_e 
+
+s_ec3_cd4l200  s_ec3_tb   s_ec3_non_tb_who3   s_ec3_crypm  s_ec3_sbi s_ec3_oth_adc s_ec3_tb_proph  s_ec3_crypm_proph  s_ec3_pcp_proph s_ec3_crypm_diag_e 
+s_ec3_tb_diag_e   s_ec3_sbi_diag_e s_ec3_oth_adc_diag_e   s_ec3a_cd4l200  s_ec3a_tb  s_ec3a_non_tb_who3 s_ec3a_crypm s_ec3a_sbi s_ec3a_oth_adc  
+s_ec3a_tb_proph  s_ec3a_crypm_proph  s_ec3a_pcp_proph  s_ec3a_crypm_diag_e s_ec3a_tb_diag_e  s_ec3a_sbi_diag_e  s_ec3a_oth_adc_diag_e 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
@@ -18604,7 +18751,7 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 s_crag_measured_this_per  s_tblam_measured_this_per  s_tbxp_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph s_crypm  
-s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
+s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
 s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb s_tbxp_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
@@ -18629,9 +18776,25 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80
 
-s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_who3_   s_who4_ s_who34_ s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
 s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
 s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+
+s_ec0_cd4l200  s_ec0_tb   s_ec0_non_tb_who3   s_ec0_crypm  s_ec0_sbi s_ec0_oth_adc s_ec0_tb_proph  s_ec0_crypm_proph  s_ec0_pcp_proph s_ec0_crypm_diag_e 
+s_ec0_tb_diag_e   s_ec0_sbi_diag_e s_ec0_oth_adc_diag_e   s_ec0a_cd4l200  s_ec0a_tb  s_ec0a_non_tb_who3 s_ec0a_crypm s_ec0a_sbi s_ec0a_oth_adc  
+s_ec0a_tb_proph  s_ec0a_crypm_proph  s_ec0a_pcp_proph  s_ec0a_crypm_diag_e s_ec0a_tb_diag_e  s_ec0a_sbi_diag_e  s_ec0a_oth_adc_diag_e 
+
+s_ec1_cd4l200  s_ec1_tb   s_ec1_non_tb_who3   s_ec1_crypm  s_ec1_sbi s_ec1_oth_adc s_ec1_tb_proph  s_ec1_crypm_proph  s_ec1_pcp_proph s_ec1_crypm_diag_e 
+s_ec1_tb_diag_e   s_ec1_sbi_diag_e s_ec1_oth_adc_diag_e   s_ec1a_cd4l200  s_ec1a_tb  s_ec1a_non_tb_who3 s_ec1a_crypm s_ec1a_sbi s_ec1a_oth_adc  
+s_ec1a_tb_proph  s_ec1a_crypm_proph  s_ec1a_pcp_proph  s_ec1a_crypm_diag_e s_ec1a_tb_diag_e  s_ec1a_sbi_diag_e  s_ec1a_oth_adc_diag_e 
+
+s_ec2_cd4l200  s_ec2_tb   s_ec2_non_tb_who3   s_ec2_crypm  s_ec2_sbi s_ec2_oth_adc s_ec2_tb_proph  s_ec2_crypm_proph  s_ec2_pcp_proph s_ec2_crypm_diag_e 
+s_ec2_tb_diag_e   s_ec2_sbi_diag_e s_ec2_oth_adc_diag_e   s_ec2a_cd4l200  s_ec2a_tb  s_ec2a_non_tb_who3 s_ec2a_crypm s_ec2a_sbi s_ec2a_oth_adc  
+s_ec2a_tb_proph  s_ec2a_crypm_proph  s_ec2a_pcp_proph  s_ec2a_crypm_diag_e s_ec2a_tb_diag_e  s_ec2a_sbi_diag_e  s_ec2a_oth_adc_diag_e 
+
+s_ec3_cd4l200  s_ec3_tb   s_ec3_non_tb_who3   s_ec3_crypm  s_ec3_sbi s_ec3_oth_adc s_ec3_tb_proph  s_ec3_crypm_proph  s_ec3_pcp_proph s_ec3_crypm_diag_e 
+s_ec3_tb_diag_e   s_ec3_sbi_diag_e s_ec3_oth_adc_diag_e   s_ec3a_cd4l200  s_ec3a_tb  s_ec3a_non_tb_who3 s_ec3a_crypm s_ec3a_sbi s_ec3a_oth_adc  
+s_ec3a_tb_proph  s_ec3a_crypm_proph  s_ec3a_pcp_proph  s_ec3a_crypm_diag_e s_ec3a_tb_diag_e  s_ec3a_sbi_diag_e  s_ec3a_oth_adc_diag_e 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
