@@ -837,22 +837,34 @@ n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * &sf * 4;
 
-
-
+p_who34_ = s_who34_ / s_hivge15 ;
+p_who3_ = s_who3_ / s_hivge15 ;
+p_who4_ = s_who3_ / s_hivge15 ;
 
 
 * **********************;
 
 
-
-
-
 * create ahd output variables and place in keep statement and outputs macro below:
-
-s_who3_   s_who4_  s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
+s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
 s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
 s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
 
+s_ec0_cd4l200  s_ec0_tb   s_ec0_non_tb_who3   s_ec0_crypm  s_ec0_sbi s_ec0_oth_adc s_ec0_tb_proph  s_ec0_crypm_proph  s_ec0_pcp_proph s_ec0_crypm_diag_e 
+s_ec0_tb_diag_e   s_ec0_sbi_diag_e s_ec0_oth_adc_diag_e   s_ec0a_cd4l200  s_ec0a_tb  s_ec0a_non_tb_who3 s_ec0a_crypm s_ec0a_sbi s_ec0a_oth_adc  
+s_ec0a_tb_proph  s_ec0a_crypm_proph  s_ec0a_pcp_proph  s_ec0a_crypm_diag_e s_ec0a_tb_diag_e  s_ec0a_sbi_diag_e  s_ec0a_oth_adc_diag_e 
+
+s_ec1_cd4l200  s_ec1_tb   s_ec1_non_tb_who3   s_ec1_crypm  s_ec1_sbi s_ec1_oth_adc s_ec1_tb_proph  s_ec1_crypm_proph  s_ec1_pcp_proph s_ec1_crypm_diag_e 
+s_ec1_tb_diag_e   s_ec1_sbi_diag_e s_ec1_oth_adc_diag_e   s_ec1a_cd4l200  s_ec1a_tb  s_ec1a_non_tb_who3 s_ec1a_crypm s_ec1a_sbi s_ec1a_oth_adc  
+s_ec1a_tb_proph  s_ec1a_crypm_proph  s_ec1a_pcp_proph  s_ec1a_crypm_diag_e s_ec1a_tb_diag_e  s_ec1a_sbi_diag_e  s_ec1a_oth_adc_diag_e 
+
+s_ec2_cd4l200  s_ec2_tb   s_ec2_non_tb_who3   s_ec2_crypm  s_ec2_sbi s_ec2_oth_adc s_ec2_tb_proph  s_ec2_crypm_proph  s_ec2_pcp_proph s_ec2_crypm_diag_e 
+s_ec2_tb_diag_e   s_ec2_sbi_diag_e s_ec2_oth_adc_diag_e   s_ec2a_cd4l200  s_ec2a_tb  s_ec2a_non_tb_who3 s_ec2a_crypm s_ec2a_sbi s_ec2a_oth_adc  
+s_ec2a_tb_proph  s_ec2a_crypm_proph  s_ec2a_pcp_proph  s_ec2a_crypm_diag_e s_ec2a_tb_diag_e  s_ec2a_sbi_diag_e  s_ec2a_oth_adc_diag_e 
+
+s_ec3_cd4l200  s_ec3_tb   s_ec3_non_tb_who3   s_ec3_crypm  s_ec3_sbi s_ec3_oth_adc s_ec3_tb_proph  s_ec3_crypm_proph  s_ec3_pcp_proph s_ec3_crypm_diag_e 
+s_ec3_tb_diag_e   s_ec3_sbi_diag_e s_ec3_oth_adc_diag_e   s_ec3a_cd4l200  s_ec3a_tb  s_ec3a_non_tb_who3 s_ec3a_crypm s_ec3a_sbi s_ec3a_oth_adc  
+s_ec3a_tb_proph  s_ec3a_crypm_proph  s_ec3a_pcp_proph  s_ec3a_crypm_diag_e s_ec3a_tb_diag_e  s_ec3a_sbi_diag_e  s_ec3a_oth_adc_diag_e 
 ;
 
 
