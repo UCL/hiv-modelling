@@ -714,20 +714,25 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 
 
+/*
+
+* JAS ;
 
 * TEMPORARY PARAMETER VALUES FOR TESTING LAPR CODE - DELETE THIS SECTION WHEN NO LONGER NEEDED;
-* date_prep_oral_intro;			date_prep_oral_intro=1990.25; 	* Introduction of oral PrEP ;
-* date_prep_inj_intro;			date_prep_inj_intro=1992.25; 	* Introduction of injectable PrEP ;
-* date_prep_vr_intro;			date_prep_vr_intro=1994.25; 	* Introduction of vaginal ring PrEP ;
-* prep_all_uptake_pop;			prep_all_uptake_pop=0.8;	*%sample(prep_all_uptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
+* date_prep_oral_intro;		*	date_prep_oral_intro=1990.25; 	* Introduction of oral PrEP ;
+* date_prep_inj_intro;		*	date_prep_inj_intro=1992.25; 	* Introduction of injectable PrEP ;
+* date_prep_vr_intro;		*	date_prep_vr_intro=1994.25; 	* Introduction of vaginal ring PrEP ;
+* prep_all_uptake_pop;		*	prep_all_uptake_pop=0.8;	*%sample(prep_all_uptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
 
-* rate_test_startprep_all; 		rate_test_startprep_all=0.9;	*%sample_uniform(rate_test_startprep_all, 0.25 0.5 0.75);
+* rate_test_startprep_all; 	* rate_test_startprep_all=0.9;	*%sample_uniform(rate_test_startprep_all, 0.25 0.5 0.75);
 								* Additional rate of being tested for HIV before startin
-* date_start_testing;			date_start_testing = 1985; 		* so prep can start early (for testing code);
+* date_start_testing;		*	date_start_testing = 1985; 		* so prep can start early (for testing code);
 
-* p_hard_reach_w;  			p_hard_reach_w=0;
-* hard_reach_higher_in_men; hard_reach_higher_in_men = 0;
-* p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
+* p_hard_reach_w;  			* p_hard_reach_w=0;
+* hard_reach_higher_in_men; * hard_reach_higher_in_men = 0;
+* p_hard_reach_m;			* p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
+
+*/
 
 
 * COVID-19 ;
@@ -18133,7 +18138,9 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-/*
+data a; set r1;
+
+data r1; set a;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
