@@ -841,31 +841,42 @@ p_who34_ = s_who34_ / s_hivge15 ;
 p_who3_ = s_who3_ / s_hivge15 ;
 p_who4_ = s_who3_ / s_hivge15 ;
 
+av_base_rate = s_base_rate / s_hivge15 ;
+av_aids_rate = s_rate / s_hivge15 ;
+av_tb_rate = s_tb_rate / s_hivge15 ;
+* av_non_tb_who3_rate = s_non_tb_who3_rate / s_hivge15 ;
+av_sbi_rate = s_sbi_rate / s_hivge15 ;
+av_crypm_rate = s_crypm_rate / s_hivge15 ;
+av_oth_adc_rate = s_oth_adc_rate / s_hivge15 ;
 
-* **********************;
+n_start_next_period = s_start_next_period * &sf;
+n_restart_next_period = s_restart_next_period * &sf;
 
+p_ec0_crag_measured = s_crag_measured_this_per / s_enter_care ;
+p_ec0_tblam_measured = s_tblam_measured_this_per / s_enter_care ;
+p_ec0_tbxp_measured = s_tbxp_measured_this_per / s_enter_care ;
 
-* create ahd output variables and place in keep statement and outputs macro below:
-s_base_rate  s_rate  s_tb_rate   s_who3_rate s_oth_adc_rate  s_crypm_rate s_sbi_rate  s_hiv_death_rate s_start_next_period  
-s_restart_next_period s_tb_prob_diag_e s_sbi_prob_diag_e  s_crypm_prob_diag_e  s_oth_adc_prob_diag_e  s_crypm_diag_e  tb_diag_e  sbi_diag_e 
-s_crag_measured_this_per s_tblam_measured_this_per s_tbxp_measured_this_per 
+death_rate_ec0a = s_ec0a_dead / s_ec0a ;    
+death_rate_ec1a = s_ec1a_dead / s_ec1a ;    
+death_rate_ec2a = s_ec2a_dead / s_ec2a ;    
+death_rate_ec3a = s_ec3a_dead / s_ec3a ;    
 
-s_ec0_cd4l200  s_ec0_tb   s_ec0_non_tb_who3   s_ec0_crypm  s_ec0_sbi s_ec0_oth_adc s_ec0_tb_proph  s_ec0_crypm_proph  s_ec0_pcp_proph s_ec0_crypm_diag_e 
-s_ec0_tb_diag_e   s_ec0_sbi_diag_e s_ec0_oth_adc_diag_e   s_ec0a_cd4l200  s_ec0a_tb  s_ec0a_non_tb_who3 s_ec0a_crypm s_ec0a_sbi s_ec0a_oth_adc  
-s_ec0a_tb_proph  s_ec0a_crypm_proph  s_ec0a_pcp_proph  s_ec0a_crypm_diag_e s_ec0a_tb_diag_e  s_ec0a_sbi_diag_e  s_ec0a_oth_adc_diag_e 
-
-s_ec1_cd4l200  s_ec1_tb   s_ec1_non_tb_who3   s_ec1_crypm  s_ec1_sbi s_ec1_oth_adc s_ec1_tb_proph  s_ec1_crypm_proph  s_ec1_pcp_proph s_ec1_crypm_diag_e 
-s_ec1_tb_diag_e   s_ec1_sbi_diag_e s_ec1_oth_adc_diag_e   s_ec1a_cd4l200  s_ec1a_tb  s_ec1a_non_tb_who3 s_ec1a_crypm s_ec1a_sbi s_ec1a_oth_adc  
-s_ec1a_tb_proph  s_ec1a_crypm_proph  s_ec1a_pcp_proph  s_ec1a_crypm_diag_e s_ec1a_tb_diag_e  s_ec1a_sbi_diag_e  s_ec1a_oth_adc_diag_e 
-
-s_ec2_cd4l200  s_ec2_tb   s_ec2_non_tb_who3   s_ec2_crypm  s_ec2_sbi s_ec2_oth_adc s_ec2_tb_proph  s_ec2_crypm_proph  s_ec2_pcp_proph s_ec2_crypm_diag_e 
-s_ec2_tb_diag_e   s_ec2_sbi_diag_e s_ec2_oth_adc_diag_e   s_ec2a_cd4l200  s_ec2a_tb  s_ec2a_non_tb_who3 s_ec2a_crypm s_ec2a_sbi s_ec2a_oth_adc  
-s_ec2a_tb_proph  s_ec2a_crypm_proph  s_ec2a_pcp_proph  s_ec2a_crypm_diag_e s_ec2a_tb_diag_e  s_ec2a_sbi_diag_e  s_ec2a_oth_adc_diag_e 
-
-s_ec3_cd4l200  s_ec3_tb   s_ec3_non_tb_who3   s_ec3_crypm  s_ec3_sbi s_ec3_oth_adc s_ec3_tb_proph  s_ec3_crypm_proph  s_ec3_pcp_proph s_ec3_crypm_diag_e 
-s_ec3_tb_diag_e   s_ec3_sbi_diag_e s_ec3_oth_adc_diag_e   s_ec3a_cd4l200  s_ec3a_tb  s_ec3a_non_tb_who3 s_ec3a_crypm s_ec3a_sbi s_ec3a_oth_adc  
-s_ec3a_tb_proph  s_ec3a_crypm_proph  s_ec3a_pcp_proph  s_ec3a_crypm_diag_e s_ec3a_tb_diag_e  s_ec3a_sbi_diag_e  s_ec3a_oth_adc_diag_e 
-;
+p_ec0a_cd4l200 = s_ec0a_cd4l200 / s_ec0a;
+p_ec0a_tb = s_ec0a_tb / s_ec0a;
+p_ec0a_non_tb_who3 = s_ec0a_non_tb_who3 / s_ec0a;
+p_ec0a_crypm = s_ec0a_crypm / s_ec0a;
+p_ec0a_sbi = s_ec0a_sbi / s_ec0a;
+p_ec0a_oth_adc = s_ec0a_oth_adc / s_ec0a;
+p_ec0a_tb_proph = s_ec0a_tb_proph / s_ec0a;
+p_ec0a_pcp_proph = s_ec0a_pcp_proph / s_ec0a;
+p_ec0a_cryp_proph = s_ec0a_crypm_proph / s_ec0a;
+p_ec0a_crypm_diag_e = s_ec0a_crypm_diag_e / s_ec0a_crypm ;
+p_ec0a_tb_diag_e = s_ec0a_tb_diag_e / s_ec0a_tb ;
+p_ec0a_sbi_diag_e = s_ec0a_sbi_diag_e / s_ec0a_sbi ;
+p_ec0a_oth_adc_diag_e = s_ec0a_oth_adc_diag_e / s_ec0a_oth_adc ;
+p_ec1a_cd4l200 = s_ec1a_cd4l200 / s_ec1a;   
+p_ec2a_cd4l200 = s_ec2a_cd4l200 / s_ec2a;   
+p_ec3a_cd4l200 = s_ec3a_cd4l200 / s_ec3a;   
 
 
 keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 n_hiv n_alive
@@ -933,6 +944,11 @@ p_on3drug_antihyp_5059  p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3dru
 p_on3drug_antihyp_7079  p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
 
 p_ahd_re_enter_care_100 p_ahd_re_enter_care_200
+
+p_who34_ p_who3_ p_who4_ av_base_rate av_aids_rate av_tb_rate av_non_tb_who3_rateav_sbi_rate av_crypm_rate av_oth_adc_rate n_start_next_period 
+n_restart_next_period p_ec0_crag_measured p_ec0_tblam_measured p_ec0_tbxp_measured death_rate_ec0a death_rate_ec1a death_rate_ec2a death_rate_ec3a 
+p_ec0a_cd4l200 p_ec0a_tb p_ec0a_non_tb_who3 p_ec0a_crypm p_ec0a_sbi p_ec0a_oth_adc p_ec0a_tb_proph p_ec0a_pcp_proph p_ec0a_cryp_proph 
+p_ec0a_crypm_diag_e p_ec0a_tb_diag_e p_ec0a_sbi_diag_e p_ec0a_oth_adc_diag_e p_ec1a_cd4l200 p_ec2a_cd4l200 p_ec3a_cd4l200 
 
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
@@ -1186,6 +1202,14 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
 
+%var(v=p_who34_); %var(v=p_who3_); %var(v=p_who4_); %var(v=av_base_rate); %var(v=av_aids_rate); %var(v=av_tb_rate); %var(v=av_non_tb_who3_rate);  
+%var(v=av_sbi_rate); %var(v=av_crypm_rate); %var(v=av_oth_adc_rate); %var(v=n_start_next_period); 
+%var(v=n_restart_next_period); %var(v=p_ec0_crag_measured); %var(v=p_ec0_tblam_measured); %var(v=p_ec0_tbxp_measured); %var(v=death_rate_ec0a); 
+%var(v=death_rate_ec1a); %var(v=death_rate_ec2a); %var(v=death_rate_ec3a); %var(v=p_ec0a_cd4l200); %var(v=p_ec0a_tb); %var(v=p_ec0a_non_tb_who3); 
+%var(v=p_ec0a_crypm); %var(v=p_ec0a_sbi); %var(v=p_ec0a_oth_adc); %var(v=p_ec0a_tb_proph); %var(v=p_ec0a_pcp_proph); %var(v=p_ec0a_cryp_proph); 
+%var(v=p_ec0a_crypm_diag_e); %var(v=p_ec0a_tb_diag_e); %var(v=p_ec0a_sbi_diag_e); %var(v=p_ec0a_oth_adc_diag_e); %var(v=p_ec1a_cd4l200); 
+%var(v=p_ec2a_cd4l200); %var(v=p_ec3a_cd4l200); 
+
 data   wide_outputs; merge 
 s_alive  p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
 p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
@@ -1272,7 +1296,10 @@ n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive
-
+p_who34_ p_who3_ p_who4_ av_base_rate av_aids_rate av_tb_rate av_non_tb_who3_rateav_sbi_rate av_crypm_rate av_oth_adc_rate n_start_next_period 
+n_restart_next_period p_ec0_crag_measured p_ec0_tblam_measured p_ec0_tbxp_measured death_rate_ec0a death_rate_ec1a death_rate_ec2a death_rate_ec3a 
+p_ec0a_cd4l200 p_ec0a_tb p_ec0a_non_tb_who3 p_ec0a_crypm p_ec0a_sbi p_ec0a_oth_adc p_ec0a_tb_proph p_ec0a_pcp_proph p_ec0a_cryp_proph 
+p_ec0a_crypm_diag_e p_ec0a_tb_diag_e p_ec0a_sbi_diag_e p_ec0a_oth_adc_diag_e p_ec1a_cd4l200 p_ec2a_cd4l200 p_ec3a_cd4l200 
 
 ;
 
