@@ -524,7 +524,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_ii;  	%sample_uniform(poorer_cd4rise_fail_ii, 0 1);
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
-							* dependent_on_time_step_length ;	
+							* dependent_on_time_step_length ;
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005, 0.1, 0.2);	
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
@@ -6211,8 +6212,10 @@ e_pr90m = c_pr90m   ;
 e_rt103m = c_rt103m;
 e_rt181m = c_rt181m;
 e_rt190m = c_rt190m;
-e_inpm = c_inpm   ;
-e_insm = c_insm   ;
+e_in118m = c_in118m   ;
+e_in140m = c_in140m   ;
+e_in148m = c_in148m   ;
+e_in263m = c_in263m   ;
 
 
 
@@ -6340,23 +6343,15 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 *INSTIs;
 
 * dol;
-	*July2013:[v5_v6] Integrase inhibitors mutations are now included as two separate primary and secondary mutations;
-	if (e_inpm=1 and e_insm=1) then r_dol=1.0;
-	if (e_inpm=1 and e_insm=0) then r_dol=0.75;
-	if (e_inpm=0 and e_insm=1) then r_dol=0.25;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_dol=0.75;
 
 * cab;
-	*lapr JAS Nov2021 - we may want to develop this section to include specific mutations;
-	if (e_inpm=1 and e_insm=1) then r_cab=1.0;
-	if (e_inpm=1 and e_insm=0) then r_cab=0.75;
-	if (e_inpm=0 and e_insm=1) then r_cab=0.25;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
 if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
-
-	* lapr and dpv-vr - do we need this line here for cab?; *JAS Nov2021;
 if prep_inj   =1 then nactive=1-r_cab; 
 
 
@@ -6650,8 +6645,10 @@ visit_tm1=visit;
 	e_pr84m_tm2=e_pr84m_tm1;	e_pr84m_tm1=e_pr84m;
 	e_pr88m_tm2=e_pr88m_tm1;	e_pr88m_tm1=e_pr88m;
 	e_pr90m_tm2=e_pr90m_tm1; 	e_pr90m_tm1=e_pr90m ;
-	e_inpm_tm2=e_inpm_tm1;		e_inpm_tm1=e_inpm;
-	e_insm_tm2=e_insm_tm1;		e_insm_tm1=e_insm;
+	e_in118m_tm2=e_in118m_tm1;	e_in118m_tm1=e_in118m;
+	e_in140m_tm2=e_in140m_tm1;	e_in140m_tm1=e_in140m;
+	e_in148m_tm2=e_in148m_tm1;	e_in148m_tm1=e_in148m;
+	e_in263m_tm2=e_in263m_tm1;	e_in263m_tm1=e_in263m;
 
 	c_rttams_tm2=c_rttams_tm1; 	c_rttams_tm1=c_rttams; 
 	c_rt184m_tm2=c_rt184m_tm1;	c_rt184m_tm1=c_rt184m;
@@ -6674,7 +6671,10 @@ visit_tm1=visit;
 	c_pr90m_tm2=c_pr90m_tm1; 	c_pr90m_tm1=c_pr90m; 
 	c_inpm_tm2=c_inpm_tm1;		c_inpm_tm1=c_inpm;
 	c_insm_tm2=c_insm_tm1;		c_insm_tm1=c_insm;
-
+	c_in118m_tm2=c_in118m_tm1;	c_in118m_tm1=c_in118m;
+	c_in140m_tm2=c_in140m_tm1;	c_in140m_tm1=c_in140m;
+	c_in148m_tm2=c_in148m_tm1;	c_in148m_tm1=c_in148m;
+	c_in263m_tm2=c_in263m_tm1;	c_in263m_tm1=c_in263m;
 
 
 
@@ -6693,10 +6693,10 @@ visit_tm1=visit;
 			c_pr50vm=max(p50vm,c_pr50vm);	c_pr50lm=max(p50lm,c_pr50lm);	c_pr54m=max(p54m,c_pr54m);
 			c_pr76m=max(p76m,c_pr76m);		c_pr82m=max(p82m,c_pr82m);		c_pr84m=max(p84m,c_pr84m);
 			c_pr88m=max(p88m,c_pr88m);		c_pr90m=max(p90m,c_pr90m);
-			c_inpm=max(inpm,c_inpm);		c_insm=max(insm,c_insm);
+			c_in118m=max(in118m,c_in118m);	c_in140m=max(in140m,c_in140m);	c_in148m=max(in148m,c_in148m);	c_in263m=max(in263m,c_in263m);	
 
 			if tam=1 or k103m=1 or y181m=1 or g190m=1 or m184m=1 or q151m=1 or k65m=1 or p32m=1 or p33m=1 or p46m=1 or 
-			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or inpm=1 or insm=1 then  
+			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1 or in263m=1 then  
 			super_i_r=1;
 			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;   * lapr - missing 101, 138, 188 from LAI code;
 		end;
@@ -8938,7 +8938,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			or c_rt151m_tm1=1  or c_pr32m_tm1=1  or c_pr33m_tm1=1 or c_pr46m_tm1=1  or c_pr47m_tm1=1
 			or c_pr50vm_tm1=1  or c_pr50lm_tm1=1 or c_pr54m_tm1=1
 			or c_pr76m_tm1=1  or c_pr82m_tm1=1  or c_pr84m_tm1=1   or c_pr88m_tm1=1  or c_pr90m_tm1=1  
-			or c_inpm_tm1=1   or c_insm_tm1=1 then child_with_resistant_hiv=1;
+			or c_in118m_tm1=1   or c_in140m_tm1=1  or c_in148m_tm1=1  or c_in263m_tm1=1 then child_with_resistant_hiv=1;
 			birth_with_inf_child_lt1yrfi=0; if . < caldate{t} - infection <= 1 then birth_with_inf_child_lt1yrfi = 1; 		
 		end;
 	end;
@@ -9027,13 +9027,26 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=rand('uniform'); if cx < 0.03 then c_pr88m=1;
 		end;
 
-		* lapr - add code from LAI (cla)? pr_res_dol used x2 for CAB - any more specific data? ;
+* here here - this below to be worked on ****************************** ;
+
+here here
+
 * dol;
 		if o_dol_tm1=1 then do; 
-		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
 		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
-			ax=rand('uniform'); if ax < pr_res_dol then c_inpm=1;  
-			bx=rand('uniform'); if bx < pr_res_dol then c_insm=1;
+			ax=rand('uniform'); if ax < pr_res_dol then c_in118m=1;  
+			bx=rand('uniform'); if bx < pr_res_dol then c_in140m=1;
+			cx=rand('uniform'); if cx < pr_res_dol then c_in148m=1;
+			dx=rand('uniform'); if dx < pr_res_dol then c_in263m=1;
+		end;
+
+* cab;
+		if o_cab_tm1=1 then do; 
+		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
+			ax=rand('uniform'); if ax < pr_res_dol then c_in118m=1;  
+			bx=rand('uniform'); if bx < pr_res_dol then c_in140m=1;
+			cx=rand('uniform'); if cx < pr_res_dol then c_in148m=1;
+			dx=rand('uniform'); if dx < pr_res_dol then c_in263m=1;
 		end;
 
 	end;
@@ -17043,7 +17056,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice 			prep_all_uptake_pop  add_prep_all_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
+greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
@@ -19054,7 +19067,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice prep_all_uptake_pop add_prep_all_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
+greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
