@@ -1,16 +1,16 @@
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';    * ******************************* ;
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';    * ******************************* ;
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-libname a "&outputdir/";   
+* libname a "&outputdir/";    * ********************************** ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ;    
+%let population = 10000 ;    
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -403,8 +403,7 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
-
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.8 0.2);  
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
 							* dependent_on_time_step_length ;
@@ -695,6 +694,8 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
 																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer 'at-risk' 2) choose to stop while still at risk
 * prep_inj_effect_inm_partner;	prep_inj_effect_inm_partner = 0.5;				
+
+* cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
 
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
@@ -1821,6 +1822,19 @@ prep_oral_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_oral>prep_will
 prep_inj_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_inj>prep_willingness_threshold 	then prep_inj_willing =1;
 prep_vr_willing = 0; 	if aa < prep_all_uptake_pop and pref_prep_vr>prep_willingness_threshold 	then prep_vr_willing =1;
 prep_all_willing = 0; 	if (prep_oral_willing=1 or prep_inj_willing=1 or prep_vr_willing=1) then prep_all_willing = 1;
+
+
+if cab_time_to_lower_threshold_g = 1 then do;
+	aa=rand('uniform'); 
+	if aa < 0.33 then cab_time_to_lower_threshold = 0.5; if 0.33 <= aa < 0.67 then cab_time_to_lower_threshold = 1; 
+	if aa >= 0.67 then cab_time_to_lower_threshold = 1.5;
+end;
+if cab_time_to_lower_threshold_g = 2 then do;
+	aa=rand('uniform'); 
+	if aa < 0.33 then cab_time_to_lower_threshold = 1; if 0.33 <= aa < 0.67 then cab_time_to_lower_threshold = 2; 
+	if aa >= 0.67 then cab_time_to_lower_threshold = 3;
+end;
+
 
 
 hiv=0;
@@ -4693,13 +4707,16 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
 
+/*
+
+not sure about this including this here - comment out for now
 
 *'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
 ******************** Define adh_prep_inj here;
 adh_prep_inj=1;	********TEMP;
 if prep_inj=1 then do;
-	adh_prep_inj = .; 
-/*	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; */
+  adh_prep_inj = .; 
+* 	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
 	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
 
 
@@ -4712,6 +4729,8 @@ if prep_inj=1 then do;
 		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
 	end;
 end;
+
+*/
 
 
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
@@ -6488,7 +6507,7 @@ end;
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 if prep_inj=1 then do; 		* lapr and dpv-vr - added code for o_cab = 1 but not dpv (topical); *JAS Nov2021;
-	o_cab=1; tcur=0; cd4_tcur0 = cd4; 
+	o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; 
 end;
 
 * AP 21-7-19;  * note that onart=1 but registd = 0 ;
@@ -7913,99 +7932,94 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
-/*	* lapr - add o_cab, o_rla here? ie adh = 1. see LAI code for section on cla / rla - copied below
-
-if o_cla = 1 and o_rla = 1 then adh{t} = 1;
-
-current_adh_dl = .; 
-if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
 
 
-if o_cla ne 1 and tss_cla ge 1/12 and 
-(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-	if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-	if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-	if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+adh_dl=adh;
+
+
+
+if (o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1) then do;
+	if o_cab = 1 or tss_cab = 0.25 then do; adh_dl = 1; adh_dl_tm1=1; end;
+	if tss_cab = 0.5 then do; adh_dl = 0.65; adh_dl_tm1=1; end;  
+	if 0.75 <= tss_cab <= cab_time_to_lower_threshold then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
 end;
 
 
-*/ 
+
 
 
 * EFFECT OF NACTIVE >= 3 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
-* risk of new mutation(s) depends on latest viral load and effective adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and effective adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive ge 3 - first 3 months ;
 	if t ge 2 and nactive_tm1 ge 3 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			 if adh >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 if adh_dl >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;   * _i20_ ;
-			 if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			 if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			 if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			 if adh >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);    newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );   newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 1/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 2/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if        adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if        adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 <  0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 <  0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
 	
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;   * oct 2014;
+			if adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;   * oct 2014;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1=  0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8014,77 +8028,77 @@ end;
 
 * EFFECT OF NACTIVE = 2.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.75 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;   
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
   		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);   newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;   
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
 */
-* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4.5 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.18*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.18*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8092,230 +8106,230 @@ end;
 
 
 * EFFECT OF NACTIVE = 2.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 		if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);   newmut_tm1= 0.03*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+		if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);  newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
 */
-* nactive = 2.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 2.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 * nactive = 2.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 	end;
 
 
 * EFFECT OF NACTIVE = 2.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );   newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);  newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );  newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive = 2.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 2.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=1.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-2  ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.4+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl= 1.4+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23); newmut_tm1= 0.08*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.6 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl= 1.6 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 	end;
 
 
 * EFFECT OF NACTIVE = 2 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
+		 	if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
+		 	if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30);  newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );   newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive = 2 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 2 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7 ); newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*rand('normal'));
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
     		cc_tm1=cd4_art_adj+(-16 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8323,77 +8337,77 @@ end;
 
 
 * EFFECT OF NACTIVE = 1.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.75 first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.75  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.75 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 1.75 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=2.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4); * may17; newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end; *may17;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-		 	if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.75 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-7.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8402,76 +8416,76 @@ end;
 
 
 * EFFECT OF NACTIVE = 1.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 1.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*rand('normal'));
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-17); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8480,76 +8494,76 @@ end;
 
 
 * EFFECT OF NACTIVE = 1.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 1.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-5  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7.5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+		 	if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8558,77 +8572,77 @@ end;
 
 
 * EFFECT OF NACTIVE = 1 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 
 */
-* nactive = 1 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 1 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 1 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-18 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8636,76 +8650,76 @@ end;
 
 
 * EFFECT OF NACTIVE = 0.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.8  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 0.75- 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 0.75- 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.75- GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*rand('normal'));
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-10.5); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8713,76 +8727,76 @@ end;
 
 
 * EFFECT OF NACTIVE = 0.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.5  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.5 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 */
-* nactive = 0.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 0.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8790,76 +8804,76 @@ end;
 
 
 * EFFECT OF NACTIVE = 0.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.25  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.25 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 0.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
-* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
+* nactive = 0.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
+* this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adh_dlerence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14.5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.25*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.25*((vl+vl_tm1)/2);  end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 *  nactive = 0.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 	end;
@@ -8868,11 +8882,11 @@ end;
 * EFFECT OF NACTIVE = 0 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
 	if t ge 2 and nactive_tm1=0 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-15); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-17 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-18 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then 
 			newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 	end;
@@ -10003,13 +10017,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 	* dol_higher_potency (assumed to apply the same to dol and cab);
-	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
-	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
-	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
-
-	if o_cab=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_cab);
-	if o_cab=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_cab));
-	if o_cab=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_cab));
+	if o_dol=1 then nactive=nactive+ (dol_higher_potency-r_dol);
+	cab_higher_potency = dol_higher_potency ;
+	if o_cab=1 then nactive=nactive+ (cab_higher_potency-r_cab);
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
@@ -15878,6 +15888,19 @@ cvd_death=.;
 if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
+
+
+
+proc freq; tables caldate&j; run;
+
+/*
+
+proc print; var caldate&j prep_inj hiv o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
+where age ge 15 and prep_inj_ever = 1 and (death=. or dead=1);
+run;
+
+*/
+
 /*
 
 * procs;
@@ -17078,7 +17101,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice 			prep_all_uptake_pop  add_prep_all_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
@@ -18223,10 +18246,10 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a; set r1;
+data a.lapr; set r1;
 
 
-data r1; set a;
+data r1; set a.lapr;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
@@ -19093,7 +19116,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice prep_all_uptake_pop add_prep_all_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
