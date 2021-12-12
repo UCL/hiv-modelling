@@ -526,6 +526,7 @@ newp_seed = 7;
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
 * pr_res_dol;				%sample_uniform(pr_res_dol, 0.005, 0.1, 0.2);	
+* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2)
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
@@ -540,7 +541,6 @@ newp_seed = 7;
 * zdv_potency_p75;			%sample_uniform(zdv_potency_p75, 0 1);
 * double_rate_gas_tox_taz; 	%sample_uniform(double_rate_gas_tox_taz, 1 2);
 * tox_weightg_dol;			%sample_uniform(tox_weightg_dol, 0 1);
-* higher_rate_res_dol;		%sample(higher_rate_res_dol, 0 1, 0.8 0.2);
 * incr_mort_risk_dol_weightg; 
 							%sample(incr_mort_risk_dol_weightg, 
 								1		1.1		2		2.1		2.2		3		4,
@@ -6669,8 +6669,6 @@ visit_tm1=visit;
 	c_pr84m_tm2=c_pr84m_tm1;	c_pr84m_tm1=c_pr84m;
 	c_pr88m_tm2=c_pr88m_tm1;	c_pr88m_tm1=c_pr88m;
 	c_pr90m_tm2=c_pr90m_tm1; 	c_pr90m_tm1=c_pr90m; 
-	c_inpm_tm2=c_inpm_tm1;		c_inpm_tm1=c_inpm;
-	c_insm_tm2=c_insm_tm1;		c_insm_tm1=c_insm;
 	c_in118m_tm2=c_in118m_tm1;	c_in118m_tm1=c_in118m;
 	c_in140m_tm2=c_in140m_tm1;	c_in140m_tm1=c_in140m;
 	c_in148m_tm2=c_in148m_tm1;	c_in148m_tm1=c_in148m;
@@ -9033,7 +9031,6 @@ here here
 
 * dol;
 		if o_dol_tm1=1 then do; 
-		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
 			ax=rand('uniform'); if ax < pr_res_dol then c_in118m=1;  
 			bx=rand('uniform'); if bx < pr_res_dol then c_in140m=1;
 			cx=rand('uniform'); if cx < pr_res_dol then c_in148m=1;
@@ -9042,11 +9039,10 @@ here here
 
 * cab;
 		if o_cab_tm1=1 then do; 
-		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
-			ax=rand('uniform'); if ax < pr_res_dol then c_in118m=1;  
-			bx=rand('uniform'); if bx < pr_res_dol then c_in140m=1;
-			cx=rand('uniform'); if cx < pr_res_dol then c_in148m=1;
-			dx=rand('uniform'); if dx < pr_res_dol then c_in263m=1;
+			ax=rand('uniform'); if ax < pr_res_dol/rr_res_cab_dol then c_in118m=1;  
+			bx=rand('uniform'); if bx < pr_res_dol/rr_res_cab_dol then c_in140m=1;
+			cx=rand('uniform'); if cx < pr_res_dol/rr_res_cab_dol then c_in148m=1;
+			dx=rand('uniform'); if dx < pr_res_dol/rr_res_cab_dol then c_in263m=1;
 		end;
 
 	end;
@@ -9055,7 +9051,7 @@ here here
 
 c_totmut=c_rt184m+c_rttams+c_rt65m+c_rt151m+c_rt103m+c_rt181m+c_rt190m
 	+c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
-	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_inpm+c_insm;
+	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_in118m+c_in140m+c_in148m+c_in263m;
 
 c_totmut_pi=.;
 c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
@@ -9080,8 +9076,8 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	acq_rt184m=0; if e_rt184m ne 1 and c_rt184m=1 then do; acq_rt184m=1;dt_acq_rt184m=caldate{t}; end;
 	acq_rtm=0;    if e_totmut    lt 1 and (c_rt184m=1 or c_rttams ge 1 or c_rt65m=1 or c_rt151m=1 or c_rt103m=1 or c_rt181m=1 or c_rt190m=1
 	 			or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 
-				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_inpm=1 or c_insm=1)  then do; 
-				acq_rtm=1; dt_acq_rtm=caldate{t}; end;
+				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m or c_in262m)  
+				then do; acq_rtm=1; dt_acq_rtm=caldate{t}; end;
 	if c_rt184m=1 then e_rt184m=1;
 	if t ge 2 and c_rttams >= 1 then e_rttams=max(c_rttams,e_rttams_tm1);
 	if c_rt65m=1 then e_rt65m=1 ;
@@ -9101,11 +9097,13 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	if c_pr84m=1 then e_pr84m=1 ;
 	if c_pr88m=1 then e_pr88m=1 ;
 	if c_pr90m=1 then e_pr90m=1 ;
-	if c_inpm=1 then e_inpm=1 ;
-	if c_insm=1 then e_insm=1 ;
+	if c_in118m=1 then e_in118m=1 ;
+	if c_in140m=1 then e_in140m=1 ;
+	if c_in148m=1 then e_in148m=1 ;
+	if c_in263m=1 then e_in263m=1 ;
 	e_totmut   =e_rt184m+e_rttams+e_rt65m+e_rt151m+e_rt103m+e_rt181m+e_rt190m
 	+e_pr32m+e_pr33m+e_pr46m+e_pr47m+e_pr50vm+e_pr50lm+e_pr54m+e_pr76m
-	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_inpm+e_insm;
+	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_in118m+e_in140m+e_in148m+e_in263m;
 
 
     e_nnmut=.;
@@ -9116,7 +9114,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
     +e_pr82m+e_pr84m+e_pr88m+e_pr90m;
 
     e_inmut=.;
-    e_inmut=e_inpm+e_insm;	* lapr - change to inprim;
+    e_inmut=e_in118m+e_in140m+e_in148m+e_in263m;
 
 
 * LOSS OF MUTATIONS AFTER STOPPING (or return to mutations at infection - expect for m184v)
@@ -9166,8 +9164,10 @@ and starting another, non-x-resistant, regimen;
 
 	* integrase inhibitor; 
 
-		a=rand('uniform');if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;	* lapr change to inprim?;
-		a=rand('uniform');if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
+		a=rand('uniform');if c_in118m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in118m=c_in118m_inf;	
+		a=rand('uniform');if c_in140m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in140m=c_in140m_inf;	
+		a=rand('uniform');if c_in148m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in148m=c_in148m_inf;	
+		a=rand('uniform');if c_in263m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in263m=c_in263m_inf;	
 
 end;
 
@@ -9193,8 +9193,11 @@ x=rand('uniform'); if c_pr82m_inf = 1 and naive=1 and c_pr82m=1 and x < rate_los
 x=rand('uniform'); if c_pr84m_inf = 1 and naive=1 and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
 x=rand('uniform'); if c_pr88m_inf = 1 and naive=1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
 x=rand('uniform'); if c_pr90m_inf = 1 and naive=1 and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
-x=rand('uniform'); if c_inpm_inf = 1  and naive=1 and c_inpm=1 and x < rate_loss_persistence then c_inpm=0;
-x=rand('uniform'); if c_insm_inf = 1  and naive=1 and c_insm=1 and x < rate_loss_persistence then c_insm=0;
+x=rand('uniform'); if c_in118m_inf = 1  and naive=1 and c_in118m=1 and x < rate_loss_persistence then c_in118m=0;
+x=rand('uniform'); if c_in140m_inf = 1  and naive=1 and c_in140m=1 and x < rate_loss_persistence then c_in140m=0;
+x=rand('uniform'); if c_in148m_inf = 1  and naive=1 and c_in148m=1 and x < rate_loss_persistence then c_in148m=0;
+x=rand('uniform'); if c_in263m_inf = 1  and naive=1 and c_in263m=1 and x < rate_loss_persistence then c_in263m=0;
+
 
 
 * LOSS OF MUTATIONS ACQUIRED IN PMTCT FROM MAJORITY and minoririty VIRUS ;
@@ -9225,8 +9228,11 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 	if e_pr84m=1 and (o_lpr=1  or o_dar=1 or o_taz=1) then c_pr84m=1;
 	if e_pr88m=1 and (o_taz=1) then c_pr88m=1;
 	if e_pr90m=1 and (o_lpr=1  or o_dar=1) then c_pr90m=1;
-	if e_inpm=1  and (o_dol=1 ) then c_inpm=1;
-	if e_insm=1  and (o_dol=1 ) then c_insm=1;
+	if e_in118m=1  and (o_dol=1 or o_cab=1 ) then c_in118m=1;
+	if e_in140m=1  and (o_dol=1 or o_cab=1 ) then c_in140m=1;
+	if e_in148m=1  and (o_dol=1 or o_cab=1 ) then c_in148m=1;
+	if e_in263m=1  and (o_dol=1 or o_cab=1 ) then c_in263m=1;
+	
 
 
 
@@ -9974,16 +9980,18 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * dol;
-      if (e_inpm=1 and e_insm=1) then r_dol=1.0;
-      if (e_inpm=1 and e_insm=0) then r_dol=0.75;
-      if (e_inpm=0 and e_insm=1) then r_dol=0.25;
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_dol=0.75;
+
+
+* cab;
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
 
 
 
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));	* lapr - add cab & consider tail code from LAI;
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol)+(o_cab*r_cab));	* lapr - add cab & consider tail code from LAI;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -9994,10 +10002,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
 
 
-	* dol_higher_potency;
+	* dol_higher_potency (assumed to apply the same to dol and cab);
 	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
 	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
 	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
+
+	if o_cab=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_cab);
+	if o_cab=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_cab));
+	if o_cab=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_cab));
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
@@ -11127,9 +11139,9 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	f_zdv=.;f_3tc=.;f_dar=.;f_ten=.;
 	f_efa=.;f_lpr=.;f_dol=.;
 	c_rt184m=.;c_rttams=.;c_rt65m=.;c_rt103m=.;c_rt181m=.;c_rt190m=.;c_rt151m=.;c_pr32m=.;c_pr47m=.;
-	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_inpm=.;c_insm=.;
+	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_in118m=.;c_in140m=.; c_in148m=.; c_in263m=.;
 	e_rt184m=.;e_rttams=.;e_rt65m=.;e_rt103m=.;e_rt181m=.;e_rt190m=.;e_rt151m=.;e_pr32m=.;e_pr47m=.;
-	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_inpm=.;e_insm=.;
+	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_in118m=.;e_in140m=.; e_in148m=.; e_in263m=.;
 	r_zdv=.;r_3tc=.;r_dar=.;r_ten=.;
 	r_efa=.;r_lpr=.;r_dol=.;
 	t_zdv=.;t_3tc=.;t_dar=.;t_taz=.;
@@ -12546,21 +12558,21 @@ end;
 	if sti=1 then vl = vl - 0.5;
 
 
-	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; inpm_tm1=inpm_; insm_tm1=insm_; 
+	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; in118m_tm1=i118pm_; in140m_tm1=in140m_;  in148m_tm1=in148m_;  in263m_tm1=in263m_; 
 
 
 	* presence of any mutation;
 	rm_=0; if hiv1564=1 and (c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rt151m=1 or c_rttams >= 1 
 	or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1  or c_pr76m=1 
-	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_inpm=1 or c_insm=1) then rm_=1;
+	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1) then rm_=1;
 	
 	* presence of any mutation;
 	rme_=0; if hiv1564=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1 or e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1 
 	or e_pr32m=1 or e_pr33m=1 or e_pr46m=1 or e_pr47m=1 or e_pr50vm=1 or e_pr50lm=1 or e_pr54m=1  or e_pr76m=1 
-	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_inpm=1 or e_insm=1) then rme_=1;
+	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then rme_=1;
 
 	* presence of any ii mutation;
-	iime_=0; if hiv1564=1 and (e_inpm=1 or e_insm=1) then iime_=1;
+	iime_=0; if hiv1564=1 and (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then iime_=1;
 	
 	* presence of any nn mutation;
 	nnme_=0; if hiv1564=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_=1;
@@ -12665,9 +12677,7 @@ end;
 		p47m_=1 or p50vm_=1 or p50lm_=1 or 
 		p54m_=1 or p76m_=1 or p82m_=1 or p84m_=1  or p88m_=1 or
 		p90m_=1 then pim_=1;
-		inpm_=0;  if c_inpm=1  then inpm_=1;
-		insm_=0;  if c_insm=1  then insm_=1;
-		inm_=0;   if inpm_=1 or insm_=1 then inm_=1;
+		inm_=0;  if c_in118m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1  then inm_=1;
 	end;
 
 	i_tam=0; i_nnm=0; i_im=0; i_184m=0; i_pim=0; i_65m=0;
@@ -12677,13 +12687,13 @@ end;
 		i_184m=c_rt184m;
 		i_65m=c_rt65m;
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then i_nnm=1;
-		if c_inpm=1 or c_insm=1 then i_im=1;  
+		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1 then i_im=1;  
 		i_rm=rm_; 
 	end;
 
 	if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 or c_rt151m=1
 	or c_pr32m=1  or c_pr33m=1 	or c_pr46m=1  or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1 
-	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_inpm=1   or c_insm=1
+	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1
 	then i_rm=1; if primary ne 1 then i_rm=.;
 
 	if primary=1 then do; r_=0;
@@ -12724,7 +12734,7 @@ end;
 		pim_art=max(0,pim_); 
 		if c_rttams ge 1 then tam_art = 1;  
 		m184_art=c_rt184m; 
-		if c_inpm=1 or c_insm=1 then im_art = 1;
+		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1 then im_art = 1;
 		r_art=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
 		or r_dar >= 0.5 or r_lpr >= 0.5 or r_taz >= 0.5 or r_dol >= 0.5 then r_art=1; 
@@ -13106,17 +13116,22 @@ if primary_prep=1 and started_prep_in_primary_e ne 1 then do;
 	if k65m_p = 1 then prepinfect_k65m_p=1;
 	if tam_p >= 1 then prepinfect_tam_p=1;
 	if (m184m_p+k65m_p+tam_p) >= 1 then prepinfect_prep_r_p=1;
-	if pop_wide_tld_prep=1 and (inpm_p+insm_p) ge 1 then prepinfect_prep_r_p=1;
-	if inpm_p >= 1 then prepinfect_inpm_p=1;
-	if insm_p >= 1 then prepinfect_insm_p=1;
+	if pop_wide_tld_prep=1 and (in118m_p+in140m_p+in148m_p+in263m_p) ge 1 then prepinfect_prep_r_p=1;
+	if in118m_p >= 1 then prepinfect_in118m_p=1;
+	if in140m_p >= 1 then prepinfect_in140m_p=1;
+	if in148m_p >= 1 then prepinfect_in148m_p=1;
+	if in1263_p >= 1 then prepinfect_in263m_p=1;
+
 	*Whether these resistant virus were passed onto the individual;
 	if rm_inf = 1 then prepinfect_rtm=1; * may17;
 	if (c_rt184m_inf+c_rt65m_inf+c_rttams_inf) >= 1 then prepinfect_prep_r=1;
-	if pop_wide_tld_prep=1 and (c_inpm_inf+c_insm_inf) ge 1 then prepinfect_prep_r=1;
+	if pop_wide_tld_prep=1 and (c_in118m_inf+c_in140m_inf+c_in148m_inf+c_in263m_inf ) ge 1 then prepinfect_prep_r=1;
 	if c_rt65m_inf >= 1 then prepinfect_k65m=1;
 	if c_rt184m_inf = 1 then prepinfect_m184m=1;
-	if c_inpm_inf = 1 then prepinfect_inpm=1;
-	if c_insm_inf = 1 then prepinfect_insm=1;
+	if c_in118m_inf = 1 then prepinfect_in118m=1;
+	if c_in140m_inf = 1 then prepinfect_in140m=1;
+	if c_in148m_inf = 1 then prepinfect_in148m=1;
+	if c_in263m_inf = 1 then prepinfect_in263m=1;
 	if c_rttams_inf >= 1 then prepinfect_tam=1;
 	if prepinfect_prep_r ne 1 then do; infected_prep_no_r=1; ev_infected_prep_no_r=1; end;
 	if prepinfect_prep_r = 1 then infected_prep_r=1;
@@ -13128,17 +13143,19 @@ if infected_prep_no_r=1 then infected_prep_no_r_e = 1;
 
 * AP 21-7-19;
 cur_res_prep_drug=0; if (e_rttams + e_rt184m + e_rt65m) ge 1  then cur_res_prep_drug=1;
-cur_res_prep_drug_tld=0; if (e_rttams + e_rt184m + e_rt65m + e_inpm + e_insm) ge 1  then cur_res_prep_drug_tld=1;
+cur_res_prep_drug_tld=0; if (e_rttams + e_rt184m + e_rt65m + e_in118m + e_in140m + e_in148m + e_in263m) ge 1  then cur_res_prep_drug_tld=1;
 cur_res_3tc=0; if r_3tc > 0  then cur_res_3tc=1;
 cur_res_ten=0; if r_ten > 0  then cur_res_ten=1;
 cur_res_efa=0; if r_efa > 0  then cur_res_efa=1;
 cur_res_dol=0; if r_dol > 0  then cur_res_dol=1;
+cur_res_cab=0; if r_cab > 0  then cur_res_cab=1;
 
 * number of people infectious with resistance mutations;
 cur_res_3tc_vlg1000=0; if c_rt184m=1 and vg1000 = 1 then cur_res_3tc_vlg1000=1;
 cur_res_ten_vlg1000=0; if c_rt65m=1 and vg1000 = 1 then cur_res_ten_vlg1000=1;
 cur_res_efa_vlg1000=0; if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then cur_res_efa_vlg1000=1; * may17 h;
-cur_res_dol_vlg1000=0; if c_insm=1 or c_inpm=1 then cur_res_dol_vlg1000=1;
+cur_res_dol_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or c_in263m=1 then cur_res_dol_vlg1000=1;
+cur_res_cab_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or c_in263m=1 then cur_res_cab_vlg1000=1;
 
 
 *If on PrEP and HIV-positive;
@@ -14379,7 +14396,7 @@ if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
     if rm_tm1=1 then _ai_naive_no_pmtct_c_r_=1;
     if nnm_tm1=1 then _ai_naive_no_pmtct_c_nnm_=1;
     if pim_tm1=1 then _ai_naive_no_pmtct_c_pim_=1;
-    if inpm_tm1=1 or insm_=1 then _ai_naive_no_pmtct_c_inm_=1;
+    if in118m_tm1=1 or in140m_tm1=1 or in148m_tm1=1 or in263m_tm1=1 then _ai_naive_no_pmtct_c_inm_=1;
     if c_rt184m_tm2=1 then _ai_naive_no_pmtct_c_rt184m_=1;
     if c_rt65m_tm2=1 then _ai_naive_no_pmtct_c_rt65m_=1;
     if c_rttams_tm2 ge 1 then _ai_naive_no_pmtct_c_rttams_=1;
@@ -14402,7 +14419,7 @@ if (return   =1 and restart=1) or yrart=caldate&j > . then do;
     if rm_tm1=1 then _all_ai_c_r_=1;
     if nnm_tm1=1 then _all_ai_c_nnm_=1;
     if pim_tm1=1 then _all_ai_c_pim_=1;
-    if inpm_tm1=1 or insm_=1 then _all_ai_c_inm_=1;
+    if in118m_tm1=1 or in140m_=1 or in148m_tm1=1 or in263m_tm1=1 then _all_ai_c_inm_=1;
     if c_rt184m_tm2=1 then _all_ai_c_rt184m_=1;
     if c_rt65m_tm2=1 then _all_ai_c_rt65m_=1;
     if c_rttams_tm2 ge 1 then _all_ai_c_rttams_=1;
@@ -15168,7 +15185,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
 	s_nnm_ + nnm_ ; s_q151m_ + q151m_ ; s_k65m_ + k65m_ ; s_p32m_ + p32m_ ; s_p33m_ + p33m_ ; s_p46m_ + p46m_ ; s_p47m_ + p47m_ ; s_p50vm_ + p50vm_ ;
 	s_p50lm_ + p50lm_ ; s_p54m_ + p54m_ ; s_p76m_ + p76m_ ; s_p82m_ + p82m_ ; s_p84m_ + p84m_ ; s_p88m_ + p88m_ ; s_p90m_ + p90m_ ; s_pim_ + pim_;
-    s_inpm_ + inpm_ ; s_insm_ + insm_ ; s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
+    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in263m_ + in263m_ ;
+	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
  	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
@@ -16239,7 +16257,8 @@ end;
 s_prop_tam1 = .;s_prop_tam2 = .;s_prop_tam3 = .;s_prop_k103m =.;s_prop_y181m =.;s_prop_g190m =.;
 s_prop_m184m =.;s_prop_q151m =.;s_prop_k65m =.;
 s_prop_p32m =.;s_prop_p33m =.; s_prop_p46m =.;s_prop_p47m =.; ;s_prop_p50vm =.;
-s_prop_p50lm =.; s_prop_p54m =.;s_prop_p76m =.; s_prop_p82m =.;s_prop_p84m =.;s_prop_p88m =.; s_prop_p90m =.;s_prop_pim =.;s_prop_inpm =.;s_prop_insm =.;
+s_prop_p50lm =.; s_prop_p54m =.;s_prop_p76m =.; s_prop_p82m =.;s_prop_p84m =.;s_prop_p88m =.; s_prop_p90m =.;s_prop_pim =.;
+s_prop_in118m =.; s_prop_in140m =.; s_prop_in148m =.; s_prop_in263m =.;
 
 
 s_prop_vlg1_rm=0; if s_i_v1_np >0 then do; s_prop_vlg1_rm = max(0,s_i_r_vlg1_np) / s_i_v1_np ; end;
@@ -16307,8 +16326,11 @@ s_prop_p84m 		 = max(0,s_p84m_   / s_rm_);
 s_prop_p88m 		 = max(0,s_p88m_   / s_rm_);
 s_prop_p90m 		 = max(0,s_p90m_   / s_rm_);
 s_prop_pim 			 = max(0,s_pim_    / s_rm_);
-s_prop_inpm 		 = max(0,s_inpm_   / s_rm_);
-s_prop_insm 		 = max(0,s_insm_   / s_rm_);
+s_prop_in118m 		 = max(0,s_in118m_   / s_rm_);
+s_prop_in140m 		 = max(0,s_in140m_   / s_rm_);
+s_prop_in148m 		 = max(0,s_in148m_   / s_rm_);
+s_prop_in263m 		 = max(0,s_in263m_   / s_rm_);
+
 
 end;
 
@@ -16630,8 +16652,8 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_  s_in148m_ s_in263m_ s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
@@ -17056,7 +17078,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice 			prep_all_uptake_pop  add_prep_all_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
 sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
@@ -17135,7 +17157,9 @@ s_prop_vlg1_rm1_naive  s_prop_vlg2_rm1_naive  s_prop_vlg3_rm1_naive  s_prop_vlg4
 s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190m   
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
-s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_inpm  s_prop_insm   
+s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m   
+s_prop_in148m  s_prop_in263m   
+
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
@@ -17327,8 +17351,10 @@ t_prop_p82m = s_prop_p82m ;
 t_prop_p84m = s_prop_p84m ;  
 t_prop_p88m = s_prop_p88m ;  
 t_prop_p90m = s_prop_p90m ;  
-t_prop_inpm = s_prop_inpm ;  
-t_prop_insm = s_prop_insm ; 
+t_prop_in118m = s_prop_in118m ;  
+t_prop_in140m = s_prop_in140m ; 
+t_prop_in148m = s_prop_in148m ; 
+t_prop_in263m = s_prop_in263m ; 
 t_prop_vlg1_rm0_diag = s_prop_vlg1_rm0_diag ;  
 t_prop_vlg1_rm0_naive = s_prop_vlg1_rm0_naive ; 
 t_prop_vlg1_rm1_diag = s_prop_vlg1_rm1_diag ;  
@@ -17509,8 +17535,8 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_ s_in148m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
@@ -17965,7 +17991,7 @@ s_prop_ageg3_w_vlg6    s_prop_ageg4_m_vlg1   s_prop_ageg4_m_vlg2  s_prop_ageg4_m
 s_prop_ageg4_m_vlg6    s_prop_ageg4_w_vlg1    s_prop_ageg4_w_vlg2   s_prop_ageg4_w_vlg3    s_prop_ageg4_w_vlg4  s_prop_ageg4_w_vlg5  
 s_prop_ageg4_w_vlg6     s_prop_ageg5_m_vlg1   s_prop_ageg5_m_vlg2    s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4 
 s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6    s_prop_ageg5_w_vlg1   s_prop_ageg5_w_vlg2   s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4
-s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_inpm   s_prop_insm   s_prop_k103m   s_prop_k65m 
+s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_in118m   s_prop_in140m  s_prop_in148m s_prop_in263m s_prop_k103m   s_prop_k65m 
 s_prop_m184m    s_prop_m_vlg1    s_prop_m_vlg2   s_prop_m_vlg3    s_prop_m_vlg4    s_prop_m_vlg5   
 s_prop_m_vlg6     s_prop_newp_i_m_1524   s_prop_newp_i_m_2534   s_prop_newp_i_m_3544   s_prop_newp_i_m_4554 s_prop_newp_i_m_5564 
 s_prop_newp_i_w_1524   s_prop_newp_i_w_2534    s_prop_newp_i_w_3544   s_prop_newp_i_w_4554   s_prop_newp_i_w_5564 
@@ -18645,7 +18671,7 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
+s_in118m_  s_in140m_ s_in148m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
 s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
@@ -19067,7 +19093,7 @@ adh_pattern_prep_oral  rate_test_startprep_all  rate_test_restartprep_all  rate_
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_all_restart_choice prep_all_uptake_pop add_prep_all_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
 sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
@@ -19146,7 +19172,8 @@ s_prop_vlg1_rm1_naive  s_prop_vlg2_rm1_naive  s_prop_vlg3_rm1_naive  s_prop_vlg4
 s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190m   
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
-s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_inpm  s_prop_insm   
+s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m s_prop_in148m 
+s_prop_in263m 
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
