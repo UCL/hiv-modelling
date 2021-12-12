@@ -195,7 +195,7 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section
+* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section;
 * rr_sw_age_1519;			rr_sw_age_1519 = 1.00;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
@@ -524,8 +524,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005, 0.1, 0.2);	
-* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2)
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005  0.1  0.2);	
+* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2);
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
@@ -4244,6 +4244,9 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 	end;
 
+
+/*  here here
+
 	
 	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ;
@@ -4345,6 +4348,12 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 end;
+
+
+here here
+*/ 
+
+
 
 cost_test=0; 
 
@@ -9039,9 +9048,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			cx=rand('uniform'); if cx < 0.03 then c_pr88m=1;
 		end;
 
-* here here - this below to be worked on ****************************** ;
-
-here here
 
 * dol;
 		if o_dol_tm1=1 then do; 
@@ -15889,9 +15895,8 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 
+proc freq; tables caldate&j ; run;
 
-
-proc freq; tables caldate&j; run;
 
 /*
 
@@ -18110,7 +18115,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -18228,6 +18233,13 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
+
+data a.lapr; set r1;
+
+*/
+
+data r1; set a.lapr;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
@@ -18242,14 +18254,12 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
-
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr; set r1;
 
 
-data r1; set a.lapr;
+
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
