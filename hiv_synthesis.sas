@@ -676,7 +676,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=.; 			* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=.;			* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep; * lapr;
 * pr_prep_inj_b;				pr_prep_inj_b=0.75; 			* lapr JAS Jul2021; *Probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -701,7 +701,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
 
-* date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
+* date_prep_vr_intro;			date_prep_vr_intro=.; 			* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
 * dur_prep_vr_scaleup;			dur_prep_vr_scaleup=5;			* Assume 5 years to scale up DPV ring; * lapr;
 * pr_prep_vr_b;					pr_prep_vr_b=0.75; 				* dpv-vr JAS Jul2021; *Probability of starting DPV-VR PrEP in people (who are eligible and willing to take DPV-VR prep) tested for HIV according to the base rate of testing;
@@ -1441,6 +1441,7 @@ if sw = 1 then do;
 			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
+			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
@@ -1543,6 +1544,7 @@ select;	* JAS May2021 ;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
 												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
 							end;
+	otherwise xxx=1;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -2030,14 +2032,14 @@ else 	prob_prep_oral_b = pr_prep_oral_b;
 	* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
-if 		caldate{t} < date_prep_inj_intro then prob_prep_inj_b = 0;
-else if date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
+if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then prob_prep_inj_b = 0;
+else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
 		then prob_prep_inj_b = 0.05 +  (  (pr_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
 else 	prob_prep_inj_b = pr_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
-if 		caldate{t} < date_prep_vr_intro then prob_prep_vr_b = 0;
-else if date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
+if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then prob_prep_vr_b = 0;
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
 		then prob_prep_vr_b = 0.05 +  (  (pr_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
 else 	prob_prep_vr_b = pr_prep_vr_b;
 
@@ -2118,6 +2120,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	
 				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;
 				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	* This will apply only to women;								
+				otherwise xxx=1;
 			end;
 		end;
 		if prep_all_willing=1 then eff_rate_test_startprep_all=1;
@@ -2263,6 +2266,7 @@ if	higher_future_prep_oral_cov=1 then do;
 									when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	
 									when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;
 									when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + (1-prep_willingness_threshold)*rand('uniform');	end;	* This will apply only to women;								
+									otherwise xxx=1;
 								end;
 							end;
 						end;	
@@ -2442,7 +2446,6 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 option = &s;
 
-
 if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
@@ -2454,11 +2457,11 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
 
-	date_prep_inj_intro= &year_interv;
-
 	end; 
 
 	if option = 1 then do;
+
+	date_prep_inj_intro= 2022.75;
 
 	end;
 end;
@@ -3663,6 +3666,7 @@ if t ge 2 then do;
 		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
+		otherwise xxx=1;
 	end;
 
 	* transition to a new level with these probabilities and select newp;
@@ -4245,9 +4249,6 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 
-/*  here here
-
-	
 	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ;
 
@@ -4264,7 +4265,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				select;
 
 					* Only oral PrEP available;
-					when (caldate(t) ge date_prep_oral_intro and caldate(t) < date_prep_inj_intro) do;	
+					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
 							tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
 							testfor_prep_oral=1;
@@ -4272,7 +4273,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Oral and injectable PrEP available;
-					when (caldate(t) ge date_prep_inj_intro and caldate(t) < date_prep_vr_intro) do;	
+					when (caldate(t) ge date_prep_inj_intro > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
@@ -4281,7 +4282,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
 								tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_inj=1;
+								testfor_prep_inj=1; ever_testfor_prep_inj=1;
 							end;
 							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
 								*(1) prefer oral prep to inj and willing;
@@ -4292,7 +4293,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 								*(2) prefer inj prep to oral and willing;
 								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 then do;
 									tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_inj=1;
+									testfor_prep_inj=1;  ever_testfor_prep_inj=1;
 								end; 
 								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
@@ -4301,15 +4302,17 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* All PrEP types available;
-					when (caldate{t} ge date_prep_vr_intro) do;											
+					when (caldate{t} ge date_prep_vr_intro > .) do;											
 						tested=1;	ever_tested=1;	testfor_prep_all=1;	dt_last_test=caldate{t};	np_lasttest=0;
 						select;
 							when (highest_prep_pref = 1)	testfor_prep_oral=1; 
-							when (highest_prep_pref = 2) 	testfor_prep_inj=1; 
+							when (highest_prep_pref = 2) do;	testfor_prep_inj=1;  ever_testfor_prep_inj=1;  end;
 							when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
 						end;
 					end;
-	
+
+					otherwise xxx=1;
+
 				end;
 			end; 
 		end;
@@ -4347,12 +4350,9 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	end;
 
+
+
 end;
-
-
-here here
-*/ 
-
 
 
 cost_test=0; 
@@ -4370,6 +4370,7 @@ if prep_all_tm1=1 then do;		* lapr - relies on prep types being mutually exclusi
 		when (prep_oral_tm1=1)	do;	last_prep_used=1; if prep_all_elig=0 then stop_prep_oral_elig=1;	end;
 		when (prep_inj_tm1=1)	do;	last_prep_used=2; if prep_all_elig=0 then stop_prep_inj_elig=1;		end;
 		when (prep_vr_tm1=1)	do;	last_prep_used=3; if prep_all_elig=0 then stop_prep_vr_elig=1;		end;
+		otherwise xxx=1;
 	end;
 end;
 
@@ -4424,7 +4425,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro and r < prob_prep_inj_b then do; 								*Inj PrEP preferred and is available;
+							if caldate{t} ge date_prep_inj_intro > . and r < prob_prep_inj_b then do; 								*Inj PrEP preferred and is available;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};	dt_prep_inj_e=caldate{t};
 							end; 
@@ -4433,11 +4434,11 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 							end;
 						when (highest_prep_pref = 3) 	 
-							if caldate{t} ge date_prep_vr_intro and r < prob_prep_vr_b then do; 								*VR PrEP preferred and is available;
+							if caldate{t} ge date_prep_vr_intro > . and r < prob_prep_vr_b then do; 								*VR PrEP preferred and is available;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 	dt_prep_vr_e=caldate{t};
 							end; 
-							else if caldate{t} ge date_prep_inj_intro and caldate{t} < date_prep_vr_intro then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
+							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
 								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 and r < prob_prep_oral_b then do;
 									prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
@@ -4450,10 +4451,11 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
-							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
+							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
 								prep_all=1;		prep_all_ever=1;	continuous_prep_all_use=0.25;	dt_prep_all_s=caldate{t};	dt_prep_all_e=caldate{t};	
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	dt_prep_oral_e=caldate{t};
 							end;
+						otherwise xxx=1;
 					end; 
 				end;
 				
@@ -4532,7 +4534,8 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							when (last_prep_used=3)	do; 
 								prep_all=1;		continuous_prep_all_use=0.25;	dt_prep_all_e=caldate{t};	dt_prep_all_rs=caldate{t};	stop_prep_all_choice=0; 
 								prep_vr=1; 		continuous_prep_vr_use=0.25;	dt_prep_vr_e=caldate{t};	dt_prep_vr_rs=caldate{t}; 	stop_prep_vr_choice=0; 		
-							end; 					
+							end; 	
+							otherwise xxx=1;	
 						end;
 
 					end;
@@ -4555,6 +4558,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								prep_all=1;		continuous_prep_all_use=0.25; 	dt_prep_all_e=caldate{t};	dt_prep_all_c=caldate{t};  
 								prep_vr=1;		continuous_prep_vr_use=0.25; 	dt_prep_vr_e=caldate{t};	dt_prep_vr_c=caldate{t}; 
 							end;
+							otherwise xxx=1;	
 						end;
 
 					end;
@@ -4569,6 +4573,9 @@ if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_all
 if prep_inj=0 then continuous_prep_inj_use=0;	
 if prep_vr=0 then continuous_prep_vr_use=0;	
 if prep_all=0 then continuous_prep_all_use=0;
+
+if prep_inj=1 then date_last_stop_prep_inj = .;
+if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t};
 
 if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
 
@@ -4627,7 +4634,7 @@ if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_p
 
 
 * prep_falseneg var - Mar2017 f_prep;
-* use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the program;
+* use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the same period below;
 if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
 
 
@@ -4675,6 +4682,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 					if r < prob_prep_all_visit_counsel then do; visit_prep_all=3; visit_prep_vr=3; end; *drug pick-up and counselling;
 				end;
 			end;
+			otherwise xxx=1;
 		end;
 	end;
 end;
@@ -6840,6 +6848,11 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
 	if (infected_prep=1 or (hiv=1 and prep_oral = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
+	end;
+
+
+	if (infected_prep=1 or (hiv=1 and prep_inj = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
+		prep_inj = 0; o_cab=0; tss_cab   =0; 
 	end;
 
 
@@ -15895,20 +15908,21 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 
-proc freq; tables caldate&j ; run;
-
-
-/*
-
-proc print; var caldate&j prep_inj hiv o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
-where age ge 15 and prep_inj_ever = 1 and (death=. or dead=1);
-run;
-
-*/
-
-/*
 
 * procs;
+
+proc freq; tables caldate&j; 
+
+proc print; var caldate&j date_prep_inj_intro testfor_prep_inj prep_inj date_last_stop_prep_inj
+hiv infection tested registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
+where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1);
+run;
+
+
+
+/*
+
+
 proc print; var caldate&j newp ep age prep_all_uptake_pop date_prep_inj_intro prob_prep_inj_b highest_prep_pref tested hiv registd 
 prep_all_elig prep_oral_willing prep_inj_willing 	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
 	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
@@ -18233,13 +18247,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);
-
-data a.lapr; set r1;
-
-*/
-
-data r1; set a.lapr;
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
@@ -18258,8 +18265,14 @@ data r1; set a.lapr;
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
 
+data a.lapr; set r1;
+
+*/
+
+data r1; set a.lapr;
 
 
+/*
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
@@ -18304,6 +18317,9 @@ data r1; set a.lapr;
 
 
 data r1; set a;
+
+*/
+
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
