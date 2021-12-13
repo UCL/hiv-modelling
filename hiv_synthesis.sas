@@ -2020,7 +2020,7 @@ prep_oral_effect_non_res_v = .;  * we only want this defined for people currentl
 
 prep_all_tm2=	prep_all_tm1; 	prep_all_tm1=	prep_all;
 prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
-prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;
+prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;  
 prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 	* lapr and dpv-vr;
 
@@ -2621,7 +2621,7 @@ tested_anc=.;
 
 * Jan2017 - modified testing criteria so that prep_oral_tm1 =0 as people previously on oral prep would only test for prep purposes;
 * lapr - also excluded inj and vr ; * JAS Sep2021 ;
-if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 =0 and prep_inj_tm1 =0 and prep_vr_tm1 =0 then do; 
+if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_inj_tm1 ne 1 and prep_vr_tm1 ne 1 then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
@@ -6806,16 +6806,24 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	if sw=1 then e_eff_prob_loss_at_diag = eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag ;
 
-	*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
+
 	if hiv=1 and tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
-		unisens=rand('uniform');		
-		if t ge 3 and unisens lt sens_vct then do; 
+		unisens=rand('uniform');	
+		eff_sens_vct=sens_vct; 
+		if o_cab=1 then do;
+			if tcur=0 then eff_sens_vct=0; 
+			if tcur=0.25 then eff_sens_vct=0;
+			if tcur=0.5 then eff_sens_vct=0.5;
+			if tcur gt 0.5 then eff_sens_vct=0.5;
+		end;
+		* note we would like to add similar code for oral prep;
+		if t ge 3 and unisens lt eff_sens_vct then do; 
 			registd=1; date1pos=caldate{t}; 
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
 			*costing of HIV-positive;
 			if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) and unitest<rate_test then cost_test=cost_test_a;
-			if cost_test=0 then do;
+			if cost_test=0 then do; 	*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
 				if com_test ne 1 then cost_test= cost_test_b;
 				if com_test =  1 then cost_test= cost_test_d;
 			end;
@@ -15913,8 +15921,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 proc freq; tables caldate&j; 
 
-proc print; var caldate&j date_prep_inj_intro testfor_prep_inj prep_inj date_last_stop_prep_inj
-hiv infection tested registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
+proc print; var caldate&j date_prep_inj_intro testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj
+hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
+started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
 where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1);
 run;
 
@@ -16756,7 +16765,7 @@ s_prep_all_elig
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
-s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
 /*testing and diagnosis*/
@@ -18782,7 +18791,7 @@ s_prep_all_elig
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
-s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
 /*testing and diagnosis*/
