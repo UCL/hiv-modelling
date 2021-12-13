@@ -4394,6 +4394,7 @@ end;
 
 *Jul2016 f_prep;
 if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_all_elig=1 then do;
+tmp_prep_44=1;
 
 	unisensprep=rand('uniform');
 	*starting Prep;
@@ -4468,9 +4469,10 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	* continuing PrEP;		* lapr and dpv-vr - also add switching between prep options **************************;
 	tmp_prep=0;
 	if prep_all_ever=1 and dt_prep_all_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
+		tmp_prep_55=1;
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
-	tmp_prep=1;
+		tmp_prep=1;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_oral then do;
 				if r < (1-eff_rate_choose_stop_prep_oral) then do; 	
 					prep_all=1;		continuous_prep_all_use = continuous_prep_all_use + 0.25;		dt_prep_all_e=caldate{t};		
@@ -4483,13 +4485,16 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 			end;
 		end;
 		else if prep_inj_tm1 = 1 then do; * dependent_on_time_step_length;
-	tmp_prep=2;
+		tmp_prep=2; tmp_prep_77=1;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_inj then do;
+				tmp_prep_88=1;
 				if r < (1-eff_rate_choose_stop_prep_inj) then do; 
+				tmp_prep_99=1;
 					prep_all=1;		continuous_prep_all_use = continuous_prep_all_use + 0.25;		dt_prep_all_e=caldate{t};		
 					prep_inj=1; 	continuous_prep_inj_use = continuous_prep_inj_use + 0.25; 		dt_prep_inj_e=caldate{t}; 
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
+					tmp_prep_66=1;
 					stop_prep_all_choice=1; 	continuous_prep_all_use=0;
 					stop_prep_inj_choice=1;		continuous_prep_inj_use=0; 
 				end; 
@@ -15921,7 +15926,8 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 proc freq; tables caldate&j; 
 
-proc print; var caldate&j date_prep_inj_intro testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj
+proc print; var caldate&j  date_prep_inj_intro prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
+eff_rate_choose_stop_prep_inj stop_prep_inj_choice  continuous_prep_inj_use 
 hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
 started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
 where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1);
@@ -17648,7 +17654,7 @@ s_prep_all_elig
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
-s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
 /*testing and diagnosis*/
