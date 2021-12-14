@@ -6601,7 +6601,7 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
-	mr_cab_tm1=mr_cla; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
+	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
 
 	if p_cab = 1 and tss_cab = cab_time_to_lower_threshold > . then cab_time_since_below_low_thresh = 0;
 	if p_cab = 1 and tss_cab > cab_time_to_lower_threshold > . then cab_time_since_below_low_thresh =  cab_time_since_below_low_thresh + 0.25;
@@ -7783,6 +7783,7 @@ wont switch anyway;
 		mr_efa=o_efa;
 		mr_lpr=o_lpr;
 		mr_taz=o_taz;
+
 	end;
 
 
@@ -15927,11 +15928,11 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print; var caldate&j age hiv prep_inj_efficacy_inpm_p prep_oral prep_inj prep_inj_ever dt_prep_inj_e dt_prep_inj_s cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
+proc print; var caldate&j age hiv prep_inj_efficacy prep_inj_efficacy_inpm_p prep_oral prep_inj prep_inj_ever dt_prep_inj_s dt_prep_inj_e cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
 where (prep_inj_ever>0 or onart>0);
 run; 
 
-proc univariate; var prep_ever o_cab ; where caldate&j=2021.75; run;
+proc univariate; var prep_inj_ever o_cab ; where caldate&j=2021.75; run;
 
 /*proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig*/
 /*	testfor_prep_oral testfor_prep_inj testfor_prep_vr */
