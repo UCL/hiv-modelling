@@ -696,7 +696,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 								* dpv-vr - similar to lapr but with 1-month time period;
 
 * prep_inj_efficacy;			%sample_uniform(prep_inj_efficacy, 0.90 0.95); 		* CAB-LA PrEP efficacy - matched to oral PrEP; * HIVMC joint exercise have given a range 84-98% - discrete vs continuous? ;
-* prep_inj_efficacy_inpm_p;		prep_inj_efficacy_inpm_p=prep_inj_efficacy*0.25*rand('integer',3);	* CAB-LA PrEP efficacy when partner has virus with inpm - factor change in efficacy is sampled uniformly from (0.25, 0.5, 0.75);
+* prep_inj_efficacy_inpm_p;		prep_inj_efficacy_inpm_p=prep_inj_efficacy*0.25*ceil(rand('uniform')*3);	* CAB-LA PrEP efficacy when partner has virus with inpm - factor change in efficacy is sampled uniformly from (0.25, 0.5, 0.75);
 * rate_choose_stop_prep_inj; 	%sample_uniform(rate_choose_stop_prep_inj, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -1768,9 +1768,9 @@ end;
 * INDIVIDUAL LEVEL VARIABILITY IN TIME TO DECAY ON CABOTEGRAVIR LEVELS ;	* lapr - added from LAI code - JAS Dec2021;
 
 select;
-	when (cab_time_to_lower_threshold_g = 1)	do; %sample(cab_time_to_lower_threshold, 0.25 5 1, 0.7 0.2 0.1);	end;
-	when (cab_time_to_lower_threshold_g = 2)	do; %sample_uniform(cab_time_to_lower_threshold, 0.25 5 1);			end;
-	when (cab_time_to_lower_threshold_g = 3)	do; %sample(cab_time_to_lower_threshold, 0.25 5 1, 0.1 0.2 0.7);	end;
+	when (cab_time_to_lower_threshold_g = 1)	do; %sample(cab_time_to_lower_threshold, 0.25 0.5 1, 0.7 0.2 0.1);	end;
+	when (cab_time_to_lower_threshold_g = 2)	do; %sample_uniform(cab_time_to_lower_threshold, 0.25 0.5 1);			end;
+	when (cab_time_to_lower_threshold_g = 3)	do; %sample(cab_time_to_lower_threshold, 0.25 0.5 1, 0.1 0.2 0.7);	end;
 end;
 
 
@@ -4708,9 +4708,9 @@ between 0 and 1 rather than binary 0 or 1;
 *'Adherence' to injectable PrEP - related to drug levels - check this is consistent with current_adh_dl (see code below); * lapr JAS Nov2021;
 if prep_inj=1 then adh_prep_inj=1;
 if prep_inj=0 and prep_inj_ever=1 then do;
-	if 		(caldate{t}-dt_prep_inj_s) = 0		then adh_prep_inj = 1;
-	else if (caldate{t}-dt_prep_inj_s) = 0.25	then adh_prep_inj = 0.9; 
-	else if 0.25 < (caldate{t}-dt_prep_inj_s) <= cab_time_to_lower_threshold 	then adh_prep_inj = 0.65;
+	if 		(caldate{t}-dt_prep_inj_e) = 0		then adh_prep_inj = 1;		* lapr - this may overwrite line above but shouldn't matter - JAS Dec2021;
+	else if (caldate{t}-dt_prep_inj_e) = 0.25	then adh_prep_inj = 0.9; 
+	else if 0.25 < (caldate{t}-dt_prep_inj_e) <= cab_time_to_lower_threshold 	then adh_prep_inj = 0.65;
 end;
 	
 
@@ -15927,20 +15927,22 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-/*proc print; var caldate&j age hiv prep_inj o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;*/
-/*where serial_no<45;*/
-/*run; */
-
-proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig
-	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
-	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever 
-	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice
-	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig
-	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test adh current_adh_dl;
-where serial_no<40;
+proc print; var caldate&j age hiv prep_inj_efficacy_inpm_p prep_oral prep_inj prep_inj_ever dt_prep_inj_e dt_prep_inj_s cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
+where (prep_inj_ever>0 or onart>0);
 run; 
-proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;
-where age ge 15 and death = . and caldate&j=1995; run;
+
+proc univariate; var prep_ever o_cab ; where caldate&j=2021.75; run;
+
+/*proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig*/
+/*	testfor_prep_oral testfor_prep_inj testfor_prep_vr */
+/*	prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever */
+/*	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_all_choice*/
+/*	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_all_elig*/
+/*	dt_prep_all_s dt_prep_all_e dt_prep_all_rs dt_prep_all_c dt_last_test adh current_adh_dl;*/
+/*where serial_no<40;*/
+/*run; */
+/*proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever;*/
+/*where age ge 15 and death = . and caldate&j=1995; run;*/
 /*proc means; var prep_oral prep_inj prep_vr prep_all prep_oral_ever prep_inj_ever prep_vr_ever prep_all_ever stop_prep_all_choice;*/
 /*where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;*/
 /*proc univariate; var dt_prep_all_rs ; where caldate&j=2021.75; run;*/
