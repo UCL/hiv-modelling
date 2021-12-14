@@ -4754,6 +4754,7 @@ if prep_inj=0 and prep_inj_ever=1 then do;
 end;
 
 */
+adh_prep_inj=1;	* lapr - TEMP;
 
 
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
@@ -15926,13 +15927,13 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-/*
+
 proc print; var caldate&j age hiv prep_inj_efficacy prep_inj_efficacy_inpm_p prep_oral prep_inj prep_inj_ever dt_prep_inj_s dt_prep_inj_e cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
 where (prep_inj_ever>0 or onart>0);
 run; 
 
 proc univariate; var prep_inj_ever o_cab ; where caldate&j=2021.75; run;
-*/
+
 
 /*proc print; var caldate&j age highest_prep_pref tested registd prep_all_elig*/
 /*	testfor_prep_oral testfor_prep_inj testfor_prep_vr */
@@ -15948,6 +15949,8 @@ proc univariate; var prep_inj_ever o_cab ; where caldate&j=2021.75; run;
 /*where age ge 15 and death = . and caldate&j=2021.75 and dt_prep_all_s ne .; run;*/
 /*proc univariate; var dt_prep_all_rs ; where caldate&j=2021.75; run;*/
 
+/*
+* Andrew's checks;
 proc freq; tables caldate&j; 
 
 proc print; var caldate&j  date_prep_inj_intro prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
@@ -15956,7 +15959,7 @@ hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_te
 started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
 where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1);
 run;
-
+*/
 
 
 /*
