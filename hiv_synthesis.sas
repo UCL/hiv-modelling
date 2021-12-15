@@ -689,12 +689,11 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 								* dpv-vr - similar to lapr but with 1-month time period;
 
 * prep_inj_efficacy;			%sample_uniform(prep_inj_efficacy, 0.90 0.95); 		* CAB-LA PrEP efficacy - matched to oral PrEP; * HIVMC joint exercise have given a range 84-98% - discrete vs continuous? ;
-* prep_inj_efficacy_inpm_p;		prep_inj_efficacy_inpm_p=prep_inj_efficacy*0.25*ceil(rand('uniform')*3);	* CAB-LA PrEP efficacy when partner has virus with inpm - factor change in efficacy is sampled uniformly from (0.25, 0.5, 0.75);
 * rate_choose_stop_prep_inj; 	%sample_uniform(rate_choose_stop_prep_inj, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
 																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer 'at-risk' 2) choose to stop while still at risk
-* prep_inj_effect_inm_partner;	prep_inj_effect_inm_partner = 0.5;				
+* prep_inj_effect_inm_partner;	prep_inj_effect_inm_partner = 0.5;	
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
@@ -15928,7 +15927,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 * procs;
 
 
-proc print; var caldate&j age hiv prep_inj_efficacy prep_inj_efficacy_inpm_p prep_oral prep_inj prep_inj_ever dt_prep_inj_s dt_prep_inj_e cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
+proc print; var caldate&j age hiv prep_inj_efficacy prep_oral prep_inj prep_inj_ever dt_prep_inj_s dt_prep_inj_e cab_time_to_lower_threshold adh_prep_inj onart o_cab p_cab r_cab adh adh_tm1 current_adh_dl current_adh_dl_tm1;
 where (prep_inj_ever>0 or onart>0);
 run; 
 
