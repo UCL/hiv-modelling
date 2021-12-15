@@ -2454,6 +2454,7 @@ who may be dead and hence have caldate{t} missing;
   runs for which the option should take place;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
+	prep_all_strategy=5;
 
 	if option = 0 then do;  
 
@@ -4187,6 +4188,14 @@ if t ge 2 and (registd ne 1) and hard_reach=0 then do;
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
 	end;
+
+    if prep_all_strategy=5 then do;         * previously prep_all_strategy 13 *Apr2021 ;
+     	r = rand('Uniform');
+    	if ( (newp ge 1 or newp_tm1 = 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+        and 15 <= age < 50 and registd ne 1 then prep_all_elig=1; 
+    end;
+
+
 
 	if prep_all_elig=1 then date_most_recent_prep_all_elig=caldate{t};
 
@@ -15926,11 +15935,12 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 proc freq; tables caldate&j; 
 
-proc print; var caldate&j  date_prep_inj_intro prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
-eff_rate_choose_stop_prep_inj stop_prep_inj_choice  continuous_prep_inj_use 
+proc print; var caldate&j  date_prep_inj_intro  prep_all_strategy prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
+eff_rate_choose_stop_prep_inj
+stop_prep_inj_choice  continuous_prep_inj_use 
 hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
 started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
-where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1);
+where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1) and hiv=1;
 run;
 
 
