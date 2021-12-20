@@ -17984,25 +17984,25 @@ s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_pr
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80    
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  	s_onart_adc  s_pcpp_adc
+s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
-s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcpp_crypm   
+s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
-s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi     s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
+s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi     s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
@@ -18730,8 +18730,9 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
-s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
+s_newp_this_per_elig_prep_all 	s_newp_this_per_elig_prep_all_sw 
 s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
+
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -18815,9 +18816,12 @@ s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_n
 s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld
 
 /*prep*/
-s_prep_all s_prep_oral s_prep_inj s_prep_vr  
-s_prep_sw s_prep_w_1524 s_elig_prep_epdiag  s_infected_prep  s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep   s_elig_prep  	 s_hr_noprep  s_primary_hr_noprep 
+s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr 
+s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
+s_elig_prep_all_epdiag  
+s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
+s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
+s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -18828,20 +18832,24 @@ s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_pre
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_all_sw   s_elig_prep_all_onprep
 
-s_elig_prep_w_1549 s_prep_w_1549 
+s_elig_prep_all_w_1549 	s_prep_all_w_1549 
 
-s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
+s_elig_prep_all_w_1524 	s_elig_prep_all_w_2534 	s_elig_prep_all_w_3544 
+s_prep_all_w_1524      	s_prep_all_w_2534      	s_prep_all_w_3544 
+s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
-s_inf_prep_all_source_prep_r	s_prepinfect_prep_r     		s_prepinfect_prep_r_p   s_infected_prep_no_r    	s_infected_prep_r  
-s_started_prep_in_primary	   	s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  	s_onprep_9_i_prep_no_r 
-s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 		s_prepinfect_rm_p      	s_prepinfect_m184m_p    	s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   			s_prepinfect_k65m	   	s_prepinfect_m184m  	   	s_prepinfect_tam  
-s_prep_all_willing  		   	s_stop_prep_oral_choice			s_stop_prep_all_choice	s_started_prep_hiv_test_sens  
-s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	s_started_prep_in_primary_e
-s_cur_res_ten				   	s_cur_res_3tc  		   			s_i_65m					s_cur_res_efa 			
-s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000			s_cur_res_efa_vlg1000	s_ever_hiv1_prep_oral 
+s_inf_prep_all_source_prep_r	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
+s_started_prep_all_in_primary	s_started_prep_oral_in_primary		s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
+s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
+s_prep_all_willing  		   	s_stop_prep_oral_choice				s_stop_prep_all_choice				s_started_prep_hiv_test_sens  
+s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
+s_started_prep_all_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_inj_in_primary_e		s_started_prep_vr_in_primary_e
+s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m								s_cur_res_efa 			
+s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
 s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep		s_cur_res_3tc_ever_hiv1_prep   
 s_prep_oral_effect_non_res_v 
 s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
@@ -18856,7 +18864,7 @@ s_prob_prep_all_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
 s_pop_wide_tld_prep   
 s_prep_all_elig_past_year s_prep_all_elig_past_3year  s_prep_all_elig_past_5year s_newp_prep s_prop_elig_years_onprep_ayear_i	s_continuous_prep_oral_ge1yr									
-s_prep_all_elig
+			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
@@ -18886,7 +18894,7 @@ s_diag
 s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_diag_m3539_  s_diag_m4044_  s_diag_m4549_ 
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
-s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
+s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
 s_nn_tdr_diag
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc 
@@ -18927,7 +18935,7 @@ s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
 s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
-s_onart_sw
+
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
@@ -19025,42 +19033,32 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
-/*costs and dalys*/
-s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ   s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost      s_cost_test_m    s_cost_test_f
-s_cost_prep_oral  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-  	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f		s_dcost_prep        s_dcost_prep_visit
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_dcost_  	   s_donart_cost 		s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-	   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd  s_ddaly_mtct    s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+																		   
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 		 
 
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_oral_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly   
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -19087,9 +19085,10 @@ s_dead_hivneg_anycause  s_dead_hivpos_anycause
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
-s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80 s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
+s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -19127,25 +19126,25 @@ s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_pr
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80  
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  	s_onart_adc  s_pcpp_adc
+s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
-s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcpp_crypm   
+s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
-s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
+s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead     s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80
 
