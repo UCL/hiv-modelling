@@ -558,9 +558,7 @@ newp_seed = 7;
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
-* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.6;
-* ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
-* ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
+* ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
 
@@ -10612,9 +10610,8 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		end;
 
 		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
-		if nod    ge 3 then hiv_death_rate = ind_effect_art3_death_rate * hiv_death_rate;  
-		if nod    = 2 then  hiv_death_rate = ind_effect_art2_death_rate* hiv_death_rate;  
-		if nod    = 1 then  hiv_death_rate = ind_effect_art1_death_rate * hiv_death_rate;  
+		if onart=1 then hiv_death_rate = ind_effect_art3_death_rate * hiv_death_rate;  
+
 		if nod    = 0 then  hiv_death_rate = 1.0 * hiv_death_rate;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
