@@ -2452,6 +2452,20 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
+
+
+
+
+
+prep_inj_efficacy = 0.2;
+sens_vct = 0.2 ;
+prep_all_uptake_pop = 1;
+eff_rate_choose_stop_prep_inj = 0;
+
+
+
+
+
 if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
@@ -6148,15 +6162,15 @@ p_cab = 0;
 
 * time since last stopping specific drugs;
 tss_zdv = .;
-tss_3tc = .;
-tss_ten = .;
+if prep_oral ne 1 then tss_3tc = .;
+if prep_oral ne 1 then tss_ten = .;
 tss_nev = .;
 tss_dar = .;
 tss_efa = .;
 tss_lpr = .;
 tss_taz = .;
 tss_dol = .;
-tss_cab = .;
+if prep_inj ne 1 then tss_cab = .; 
 
 * for those off ART - drug used in most recent regimen ;
 mr_zdv = 0;
@@ -6630,7 +6644,7 @@ visit_tm1=visit;
 	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
     p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
     p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
-	current_adh_dl_tm1 = current_adh_dl;
+	adh_dl_tm1 = adh_dl;
 
 	vfail1_tm1 = vfail1;
 
@@ -6876,14 +6890,16 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
 	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
-	if (infected_prep=1 or (hiv=1 and prep_oral = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
+	if (infected_prep_oral=1 or (hiv=1 and prep_oral = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
 	end;
 
 
-	if (infected_prep=1 or (hiv=1 and prep_inj = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
+	if (infected_prep_inj=1 or (hiv=1 and prep_inj = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep_inj = 0; o_cab=0; tss_cab   =0; 
 	end;
+
+	if o_cab_tm1 = 1 and o_cab = 0 then tss_cab = 0;
 
 
 * Loss to follow-up while off ART;
@@ -7991,7 +8007,7 @@ adh_dl=adh;
 
 
 if (o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1) then do;
-	if o_cab = 1 or tss_cab = 0.25 then do; adh_dl = 1; adh_dl_tm1=1; end;
+	if o_cab = 1 or 0 <= tss_cab = 0.25 then do; adh_dl = 1; adh_dl_tm1=1; end;
 	if tss_cab = 0.5 then do; adh_dl = 0.65; adh_dl_tm1=1; end;  
 	if 0.75 <= tss_cab <= cab_time_to_lower_threshold then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
 end;
@@ -10047,8 +10063,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * cab;
-      if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
-
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;   
+	
+	cab_res_o_cab = 0; cab_res_tail = 0;
+	if r_cab=0.75 and r_cab_tm1 <= 0 then do;  if o_cab=1 then cab_res_o_cab = 1; if tss_cab ge 0 then cab_res_tail = 1; end; 
+	* intent is that these are 1 only for period of resistance first emerging;
 
 
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
@@ -13085,12 +13104,12 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 *Prep;
 hr_noprep=0;       if (epi  =1 or newp ge 2) and prep_oral   ne 1 then hr_noprep=1;	* lapr - define which prep? ;
 
-primary_prep=0;     if primary=1 and infected_prep=1 then primary_prep=1;
+primary_prep=0;     if primary=1 and infected_prep_all=1 then primary_prep=1;
 primary_hr_noprep=0;if primary=1 and hr_noprep=1     then primary_hr_noprep=1;
 hiv1_prep_oral=0;	if hiv=1 and prep_oral =1 then hiv1_prep_oral=1;
 hiv1_prep_all=0; 	if hiv=1 and prep_all  =1 then hiv1_prep_all=1;
 
-if infected_prep=1 then do;
+if infected_prep_all=1 then do;
 	primary_r_prep=r_;*new infections with TDR;
 	ever_i_nor_prep=0;
 	if primary_r_prep=1 then i_r_prep=1;
@@ -15381,8 +15400,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_testfor_prep_oral + testfor_prep_oral ; s_testfor_prep_inj + testfor_prep_inj ;  
 	s_prep_oral_ever + prep_oral_ever ; s_prep_inj_ever + prep_inj_ever ; s_last_prep_used + last_prep_used ; s_stop_prep_inj_choice + stop_prep_inj_choice; 
 	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_inj_elig + stop_prep_inj_elig ;s_stop_prep_all_elig + stop_prep_all_elig;
-	s_prep_oral_willing + prep_oral_willing ;s_prep_inj_willing + prep_inj_willing ;
- 
+	s_prep_oral_willing + prep_oral_willing ;s_prep_inj_willing + prep_inj_willing ;  s_cab_res_o_cab + cab_res_o_cab ; s_cab_res_tail + cab_res_tail ;
+
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -15991,16 +16011,16 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc freq; tables caldate&j; 
+proc freq; tables caldate&j ; 
 
-proc print; var caldate&j  date_prep_inj_intro  prep_all_strategy prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
-eff_rate_choose_stop_prep_inj
-stop_prep_inj_choice  continuous_prep_inj_use 
+proc print; var caldate&j  date_prep_inj_intro prep_inj_efficacy
+prep_all_strategy prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj date_last_stop_prep_inj 
+eff_rate_choose_stop_prep_inj infected_prep_inj
+stop_prep_inj_choice  continuous_prep_inj_use dol_higher_potency 
 hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
-started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab ;
+started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab cab_res_o_cab cab_res_tail ;
 where age ge 15 and (ever_testfor_prep_inj = 1 or prep_inj_ever = 1) and (death=. or dead=1) and hiv=1;
 run;
-
 
 
 /*
@@ -16848,6 +16868,8 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
+
+s_cab_res_o_cab s_cab_res_tail
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -17730,6 +17752,8 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
+s_cab_res_o_cab s_cab_res_tail
+
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_tested1549_		s_tested1549m       s_tested1549w
@@ -18347,6 +18371,7 @@ data a.lapr; set r1;
 
 */
 
+
 data r1; set a.lapr;
 
 
@@ -18870,6 +18895,8 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
+
+s_cab_res_o_cab s_cab_res_tail
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
