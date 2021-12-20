@@ -872,6 +872,7 @@ cost_efa_a=(0.025/4)*1.2; * global fund jul18 ;  * mf ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.185/4)*1.2;   * global fund aug18 ; * mf ;
 cost_dol_a=(0.020/4)*1.2;   * jul 19 - south africa tender ;
+cost_cab_a=(0.020/4)*1.2;   * placeholder ;
 cost_dar_a=(0.200/4)*1.2;	
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
@@ -1044,6 +1045,7 @@ cost_efa_a  =  cost_efa_a   / 3;
 cost_lpr_a   = cost_lpr_a   / 3;
 cost_taz_a  =  cost_taz_a  / 3;
 cost_dol_a  =  cost_dol_a / 3;
+cost_cab_a  =  cost_cab_a / 3;
 cost_dar_a  =  cost_dar_a  / 3;
 tb_cost_a =  tb_cost_a / 3;
 cot_cost_a =  cot_cost_a  / 3;
@@ -2436,6 +2438,7 @@ all art stopped (no_art_disrup_covid)
 
 if caldate{t} ge 2019.5 then reg_option = 120;
 
+if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 
 * ==========================================================================================================================================;
@@ -6591,6 +6594,8 @@ restart_tm1=restart; restart=0;
 who3_tm1 = who3_;  * ever diagnosed with pre-who4_ symptoms y/n;
 who4_tm1 = who4_; * ever diagnosed with who4_ y/n;
 tb_tm2=tb_tm1; tb_tm1=tb;
+sbi_tm1=sbi;
+crypm_tm1=crypm;
 vc_tm1=vc; vc=.;
 cc_tm1=cc; cc=.;
 vmax_tm1=vmax; 

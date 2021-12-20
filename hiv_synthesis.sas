@@ -3,7 +3,7 @@
   libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';    * ******************************* ;
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";    * ********************************** ;
+* libname a "&outputdir/";    * ************************** ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -371,7 +371,6 @@ newp_seed = 7;
 * art_intro_date;			art_intro_date = 2004;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
-* pir_higher_potency;		pir_higher_potency=1; 
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
@@ -403,7 +402,13 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.8 0.2);  
+* dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
+																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
+																* updated to equal dol potency JAS Nov2021;
+* pir_higher_potency;		pir_higher_potency=1; 
+
+
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
 							* dependent_on_time_step_length ;
@@ -553,9 +558,7 @@ newp_seed = 7;
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
-* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.6;
-* ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
-* ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
+* ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
 
@@ -869,6 +872,7 @@ cost_efa_a=(0.025/4)*1.2; * global fund jul18 ;  * mf ;
 cost_lpr_a=(0.152/4)*1.2;                     
 cost_taz_a=(0.185/4)*1.2;   * global fund aug18 ; * mf ;
 cost_dol_a=(0.020/4)*1.2;   * jul 19 - south africa tender ;
+cost_cab_a=(0.020/4)*1.2;   * placeholder ;
 cost_dar_a=(0.200/4)*1.2;	
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
@@ -1041,6 +1045,7 @@ cost_efa_a  =  cost_efa_a   / 3;
 cost_lpr_a   = cost_lpr_a   / 3;
 cost_taz_a  =  cost_taz_a  / 3;
 cost_dol_a  =  cost_dol_a / 3;
+cost_cab_a  =  cost_cab_a / 3;
 cost_dar_a  =  cost_dar_a  / 3;
 tb_cost_a =  tb_cost_a / 3;
 cot_cost_a =  cot_cost_a  / 3;
@@ -2433,6 +2438,7 @@ all art stopped (no_art_disrup_covid)
 
 if caldate{t} ge 2019.5 then reg_option = 120;
 
+if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 
 * ==========================================================================================================================================;
@@ -6588,6 +6594,8 @@ restart_tm1=restart; restart=0;
 who3_tm1 = who3_;  * ever diagnosed with pre-who4_ symptoms y/n;
 who4_tm1 = who4_; * ever diagnosed with who4_ y/n;
 tb_tm2=tb_tm1; tb_tm1=tb;
+sbi_tm1=sbi;
+crypm_tm1=crypm;
 vc_tm1=vc; vc=.;
 cc_tm1=cc; cc=.;
 vmax_tm1=vmax; 
@@ -6644,7 +6652,7 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
-	mr_cab_tm1=mr_cla; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
+	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
 
 	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
@@ -10319,10 +10327,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if t ge 2 and dead=0 then do; 
 		who3_rate=base_rate*fold_incr_who3;
 		* assume higher risk than of who4, but with same predictors;
-		if nod    ge 3 then who3_rate = 0.6*who3_rate;
-		if nod    = 2 then who3_rate = 0.85*who3_rate;
-		if nod    = 1 then who3_rate = 0.9*who3_rate;
-		if nod    = 0 then who3_rate = 1*who3_rate;
+		if onart = 1 then who3_rate = ind_effect_art_hiv_disease_death*who3_rate;
 
 		non_tb_who3_rate = who3_rate * 4/5; * because assume 20% of who3 is tb;
 		tb_rate = who3_rate * 1/5; * because assume 20% of who3 is tb;
@@ -10439,9 +10444,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then rate=base_rate;
 	
 		if pcp_p   =1 then rate=rate*0.8;
-		if nod    ge 3 then rate = 0.6 *rate;
-		if nod    = 2 then rate = 0.85*rate;
-		if nod    =1 then rate = 0.9*rate;
+		if onart=1 then rate = ind_effect_art_hiv_disease_death *rate;
 
 		oth_adc_rate = rate * (1 - prop_adc_crypm - prop_adc_sbi) ; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
@@ -10607,9 +10610,8 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		end;
 
 		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
-		if nod    ge 3 then hiv_death_rate = ind_effect_art3_death_rate * hiv_death_rate;  
-		if nod    = 2 then  hiv_death_rate = ind_effect_art2_death_rate* hiv_death_rate;  
-		if nod    = 1 then  hiv_death_rate = ind_effect_art1_death_rate * hiv_death_rate;  
+		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
+
 		if nod    = 0 then  hiv_death_rate = 1.0 * hiv_death_rate;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
@@ -17136,7 +17138,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -19158,7 +19160,7 @@ exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  pr
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
 res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
