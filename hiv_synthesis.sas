@@ -62,7 +62,7 @@ Usage:
 %sample_uniform(<variable name>, <list of possible values>)
 
 A variant of %sample where all the values have equal weights/probabilities,
-which therefore don't need to be specified.
+which therefore dont need to be specified.
 
 The values can be specified in two ways:
 (a) as a space-separated list, as for %sample: %sample_uniform(my_var, 1 2 3 4 5);
