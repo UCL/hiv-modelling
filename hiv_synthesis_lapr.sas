@@ -3,7 +3,7 @@
   libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';    * ******************************* ;
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";    * ********************************** ;
+* libname a "&outputdir/";    * ************************** ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
