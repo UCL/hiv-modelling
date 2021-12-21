@@ -8027,9 +8027,7 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 if registd = 1 then adh_dl=adh;
 
-
-
-if registd ne 1 and (o_cab = 1 or 0 <= tss_cab = 0.25) then do;
+if registd ne 1 and (o_cab = 1 or 0 <= tss_cab <= cab_time_to_lower_threshold) then do;
 	adh_dl = 1; adh_dl_tm1=1; 
 	if tss_cab = 0.5 then do; adh_dl = 0.65; adh_dl_tm1=1; end;  
 	if 0.75 <= tss_cab <= cab_time_to_lower_threshold then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
@@ -16046,7 +16044,7 @@ date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj infected
 stop_prep_inj_choice  continuous_prep_inj_use  dt_prep_all_s
 hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
 started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl vl r_cab cab_res_o_cab cab_res_tail cab_res_1st_per 
-;
+nod onart ;
 where age ge 15 and (infected_prep_inj = 1 or infected_prep_inj_tail=1) and registd=0 and (death=. or dead=1) and hiv=1;
 run;
 
