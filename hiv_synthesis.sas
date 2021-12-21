@@ -402,7 +402,9 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	%sample_uniform(dol_higher_potency, 0.5 1.0);  			
+
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
+
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
 																* updated to equal dol potency JAS Nov2021;
@@ -701,7 +703,9 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
+
 * pr_inm_inj_prep_first_per ;	pr_inm_inj_prep_first_per = 0.05;  ******************** placeholder ;
+
 
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
@@ -2464,6 +2468,7 @@ sens_vct = 0.9 ;
 prep_all_uptake_pop = 0.9;
 eff_rate_choose_stop_prep_inj = 0.05;
 pref_prep_inj = 1;
+pr_inm_inj_prep_first_per = 0.3;
 
 
 
@@ -4407,9 +4412,9 @@ if prep_all_tm1=1 then do;		* lapr - relies on prep types being mutually exclusi
 	end;
 end;
 
+
 prep_all=0; prep_oral=0; prep_inj=0; prep_vr=0;
 pop_wide_tld_prep=0; prep_falseneg=0; 
-
 
 if prep_oral_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_oral_covid_disrup ne 1 then do; 
 		ever_prep_oral_covid_disrup=1;
@@ -4512,7 +4517,12 @@ tmp_prep_44=1;
 ********* continuing PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
 
 	tmp_prep=0;
-	if prep_all_ever=1 and dt_prep_all_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
+	eff_sens_vct = sens_vct;
+	if prep_inj_tm1 = 1 and hiv=1 and . < caldate{t} - infection  < 0.25 then eff_sens_vct=0; 
+	if prep_inj_tm1 = 1 and hiv=1 and 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=0; 
+	if prep_inj_tm1 = 1 and hiv=1 and 0.5 <= caldate{t} - infection  then eff_sens_vct=0.5; 
+
+	if prep_all_ever=1 and dt_prep_all_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
 		tmp_prep_55=1;
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
@@ -4684,7 +4694,8 @@ if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_p
 
 * prep_falseneg var - Mar2017 f_prep;
 * use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the same period below;
-if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
+
+if hiv=1 and tested=1 and prep_all=1 then prep_falseneg=1;
 
 
 *PrEP clinic visits - modified Jan2017 f_prep;
@@ -4692,7 +4703,8 @@ if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
 	is right for women - for men I think they may need 2 monthly injections rather than 3; * dpv-vr is monthly but I 
 	understand it is self-administered (?) so 3-montly clinic visits or less may be fine;
 if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_all_elig=1 and pop_wide_tld ne 1 then do;
-	if prep_any=0 then do;
+
+	if prep_all=0 then do;
 		if prep_all_ever ne 1 then do; visit_prep_all=.; visit_prep_oral=.; visit_prep_inj=.; visit_prep_vr=.; end;
 		else if prep_all_ever=1 then do;
 			if prep_all_tm1=1 then visit_prep_all=0;		
@@ -4701,7 +4713,9 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 			if prep_vr_tm1=1 then visit_prep_vr=0;		
 		end;
 	end;
-	if prep_any=1 then do;
+
+	if prep_all=1 then do;
+
 		r=rand('uniform');
 		select;
 			when (prep_oral=1) do;
@@ -4773,31 +4787,13 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
 
-/*
-
-not sure about this including this here - comment out for now
-
-*'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
-******************** Define adh_prep_inj here;
-adh_prep_inj=1;	********TEMP;
-if prep_inj=1 then do;
-  adh_prep_inj = .; 
-* 	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
-	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
-
-
-	if o_cla ne 1 and tss_cla ge 1/12 and 
-	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-	then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-		if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
-	end;
-end;
-
-*/
-
+prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
+if prep_oral   =1 then do; 
+	if prep_oral_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;
+	if caldate{t} ge prep_oral_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
+	* ts1m ; * change this line to: 
+	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
+	;
 
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_all and other individual types if needed;
 if prep_oral   =1 then do; 
@@ -5674,11 +5670,13 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_oral_efficacy));
+
 		end;
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_inj_efficacy);
 			if in118m_p + in140m_p + in148m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
 		end;
+
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_vr_efficacy);
 			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_inj_efficacy));
@@ -5850,7 +5848,6 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 				* resistance virus in partner - in263;
 				g=rand('uniform');
 				if g < t_prop_in263m  then in263m_p=1;
-
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
 				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
@@ -6232,10 +6229,12 @@ c_rt103m= max(0,k103m);
 c_rt181m= max(0,y181m);
 c_rt190m= max(0,g190m);
 
+
 c_in118m=max(0,in118m); aa3=rand('uniform'); if prep_inj=1 and c_in118m = 0 and aa3 < pr_inm_inj_prep_first_per/4 then c_in118m = 1;
 c_in140m=max(0,in140m); aa4=rand('uniform'); if prep_inj=1 and c_in140m = 0 and aa4 < pr_inm_inj_prep_first_per/4 then c_in140m = 1;
 c_in148m=max(0,in148m); aa5=rand('uniform'); if prep_inj=1 and c_in148m = 0 and aa5 < pr_inm_inj_prep_first_per/4 then c_in148m = 1;
 c_in263m=max(0,in263m); aa6=rand('uniform'); if prep_inj=1 and c_in263m = 0 and aa6 < pr_inm_inj_prep_first_per/4 then c_in263m = 1;
+
 
 c_rttams_inf=c_rttams;
 c_rt151m_inf=c_rt151m;
@@ -6429,6 +6428,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 * cab;
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
+
+	if r_cab=0.75 then cab_res_1st_per=1;
+
 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
@@ -6862,18 +6864,9 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	if sw=1 then e_eff_prob_loss_at_diag = eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag ;
 
-
 	if hiv=1 and tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
-		unisens=rand('uniform');	
-		eff_sens_vct=sens_vct; 
-		if o_cab=1 then do;
-			if tcur=0 then eff_sens_vct=0; 
-			if tcur=0.25 then eff_sens_vct=0;
-			if tcur=0.5 then eff_sens_vct=0.5;
-			if tcur gt 0.5 then eff_sens_vct=0.5;
-		end;
-		* note we would like to add similar code for oral prep;
-		if t ge 3 and unisens lt eff_sens_vct then do; 
+
+		if t ge 3 then do; 
 			registd=1; date1pos=caldate{t}; 
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
@@ -8020,19 +8013,13 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
-
 if registd = 1 then adh_dl=adh;
-
-
 
 if registd ne 1 and (o_cab = 1 or 0 <= tss_cab = 0.25) then do;
 	adh_dl = 1; adh_dl_tm1=1; 
 	if tss_cab = 0.5 then do; adh_dl = 0.65; adh_dl_tm1=1; end;  
 	if 0.75 <= tss_cab <= cab_time_to_lower_threshold then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
 end;
-
-
-
 
 
 * EFFECT OF NACTIVE >= 3 ART - on viral load / CD4 / resistance changes between t-1 and t;
@@ -15426,6 +15413,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_inj_elig + stop_prep_inj_elig ;s_stop_prep_all_elig + stop_prep_all_elig;
 	s_prep_oral_willing + prep_oral_willing ;s_prep_inj_willing + prep_inj_willing ;  s_cab_res_o_cab + cab_res_o_cab ; s_cab_res_tail + cab_res_tail ;
 
+	s_cab_res_1st_per + cab_res_1st_per;
+
 
 	/*testing and diagnosis*/
 
@@ -16035,14 +16024,16 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc freq; tables caldate&j ; 
 
-proc print; var caldate&j  date_prep_inj_intro 
-prep_all_strategy prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_start_date date_last_stop_prep_inj 
-eff_rate_choose_stop_prep_inj infected_prep_inj  onprep_3 onprep_6 onprep_9 onprep_18
-stop_prep_inj_choice  continuous_prep_inj_use dol_higher_potency 
+* proc freq; * tables caldate&j ; 
+
+proc print; var caldate&j prep_all_strategy prep_all_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_start_date 
+date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj  onprep_3 onprep_6 onprep_9 onprep_18 tmp_prep_55 tmp_prep_77 tmp_prep_88
+stop_prep_inj_choice  continuous_prep_inj_use dol_higher_potency  unisensprep dt_prep_all_s
 hiv infection tested prep_falseneg sens_vct eff_sens_vct hivtest_type dt_last_test annual_testing_prep_inj
-started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab cab_res_o_cab cab_res_tail ;
+started_prep_hiv_test_sens_e registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl r_cab cab_res_o_cab cab_res_tail cab_res_1st_per 
+;
+
 where age ge 15 and  infected_prep_inj = 1 and (death=. or dead=1) and hiv=1;
 run;
 
@@ -16895,7 +16886,9 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
-s_cab_res_o_cab s_cab_res_tail
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per 
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -17260,6 +17253,8 @@ prep_all_strategy prob_prep_all_restart prob_prep_all_visit_counsel rate_test_on
 rate_test_startprep_all rate_test_restartprep_all prob_prep_all_restart_choice add_prep_all_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy adh_pattern_prep_oral rate_choose_stop_prep_oral higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner
+
+pr_184m_oral_prep_first_per pr_65m_oral_prep_first_per pr_inm_oral_prep_first_per
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -17779,7 +17774,8 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
-s_cab_res_o_cab s_cab_res_tail
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18923,7 +18919,9 @@ s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
 s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
 
-s_cab_res_o_cab s_cab_res_tail
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per
+
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19285,6 +19283,8 @@ prep_all_strategy prob_prep_all_restart prob_prep_all_visit_counsel rate_test_on
 rate_test_startprep_all rate_test_restartprep_all prob_prep_all_restart_choice add_prep_all_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy adh_pattern_prep_oral rate_choose_stop_prep_oral higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner
+
+pr_184m_oral_prep_first_per pr_65m_oral_prep_first_per pr_inm_oral_prep_first_per
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
