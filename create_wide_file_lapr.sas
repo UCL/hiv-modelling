@@ -386,8 +386,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * ratio_inj_prep_on_tail;		if s_prep_inj > 0 then ratio_inj_prep_on_tail = s_currently_in_prep_inj_tail / s_prep_inj ;
 
-* prop_ever_prep_inj_res_cab;	prop_ever_prep_inj_res_cab = s_cur_res_cab / s_prep_inj_ever ;
-* prop_ever_prep_inj_res_cab_hiv;	prop_ever_prep_inj_res_cab_hiv = s_cur_res_cab / s_prep_inj_ever ;
+* prop_ever_prep_inj_res_cab;	prop_ever_prep_inj_res_cab = s_emerge_inm_res_cab / s_prep_inj_ever ;
+* prop_ever_prep_inj_res_cab_hiv;	prop_ever_prep_inj_res_cab_hiv = s_emerge_inm_res_cab / s_prep_inj_ever_hiv ; 
 
 * prop_cab_res_o_cab;			prop_cab_res_o_cab = s_cab_res_o_cab / s_cur_res_cab ;
 * prop_cab_res_tail;			prop_cab_res_tail = s_cab_res_tail / s_cur_res_cab ;
@@ -1013,7 +1013,7 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_lapr; set y;  
 
-proc print; var cald run; 
+proc print ; var cald run ; 
 
 run;
 

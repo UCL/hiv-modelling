@@ -9,8 +9,6 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 data b;
 set a.l_lapr;
 
-proc print; var run cald option ; run;
-
 
 p_onart_vl1000_all = .;
 
@@ -52,10 +50,6 @@ p_ev_prepi_res_cab_hiv = prop_ever_prep_inj_res_cab_hiv ;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-
-proc print; var run cald option count_csim ; run;
-
-
 %let nfit = 10    ;
 %let year_end = 2032.75 ;
 run;
@@ -68,7 +62,7 @@ if option =1 then delete;
 
 %let var =  
 
-p_w_giv_birth_this_per	/* p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
+p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m	 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
 prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
@@ -84,7 +78,7 @@ n_onart
 prop_prep_inj    ratio_inj_prep_on_tail          prop_ever_prep_inj_res_cab       p_ev_prepi_res_cab_hiv
 prop_cab_res_o_cab    prop_cab_res_tail     prop_cab_res_1st_per     prop_prep_inj_at_inf_diag     prop_o_cab_diag_at_3m    prop_o_cab_diag_at_6m
 prop_o_cab_diag_at_9m   of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m     p_prep_inj_hiv
-*/
+
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -129,7 +123,7 @@ if option =0 then delete;
 
 %let var =  
 
-p_w_giv_birth_this_per	/* p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
+p_w_giv_birth_this_per p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
 prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
@@ -147,7 +141,6 @@ prop_prep_inj    ratio_inj_prep_on_tail          prop_ever_prep_inj_res_cab     
 prop_cab_res_o_cab    prop_cab_res_tail     prop_cab_res_1st_per     prop_prep_inj_at_inf_diag     prop_o_cab_diag_at_3m    prop_o_cab_diag_at_6m
 prop_o_cab_diag_at_9m   of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m     p_prep_inj_hiv
 
-*/
 ;
 run;
 
@@ -190,7 +183,7 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1  /* g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
+g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52 
 g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73    g74 g75  g76  g77  g78 
@@ -202,11 +195,11 @@ g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 */
 
-h1  /*  h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
+h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
  h74 h75  h76  h77  h78 
-h79  h80  h81  h82  h83  h84  h85  h86  */
+h79  h80  h81  h82  h83  h84  h85  h86 
 
 ;
 by cald;
@@ -217,24 +210,6 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
-
-
-
-ods html ;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of women giving birth this period";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
-label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
-label p50_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
-
-series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_w_giv_birth_this_per_0 	upper=p95_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
-
-series  x=cald y=p50_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_w_giv_birth_this_per_1 	upper=p95_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
-
-run;
 
 
 
@@ -890,7 +865,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_prep_inj";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_prep_inj_0 = "Option 0 (median) ";
 label p50_prop_prep_inj_1 = "Option 1  (median) ";
@@ -908,7 +883,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "ratio_inj_prep_on_tail";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 5     by 1    ) valueattrs=(size=10);
 
 label p50_ratio_inj_prep_on_tail_0 = "Option 0 (median) ";
 label p50_ratio_inj_prep_on_tail_1 = "Option 1  (median) ";
@@ -925,7 +900,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_ever_prep_inj_res_cab";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_ever_prep_inj_res_cab_0 = "Option 0 (median) ";
 label p50_prop_ever_prep_inj_res_cab_1 = "Option 1  (median) ";
@@ -943,7 +918,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_ev_prepi_res_cab_hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_p_ev_prepi_res_cab_hiv_0 = "Option 0 (median) ";
 label p50_p_ev_prepi_res_cab_hiv_1 = "Option 1  (median) ";
@@ -961,7 +936,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_cab_res_o_cab";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_cab_res_o_cab_0 = "Option 0 (median) ";
 label p50_prop_cab_res_o_cab_1 = "Option 1  (median) ";
@@ -979,7 +954,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_cab_res_tail ";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_cab_res_tail _0 = "Option 0 (median) ";
 label p50_prop_cab_res_tail _1 = "Option 1  (median) ";
@@ -997,7 +972,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_cab_res_1st_per";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_cab_res_1st_per_0 = "Option 0 (median) ";
 label p50_prop_cab_res_1st_per_1 = "Option 1  (median) ";
@@ -1015,7 +990,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_prep_inj_at_inf_diag";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_prep_inj_at_inf_diag_0 = "Option 0 (median) ";
 label p50_prop_prep_inj_at_inf_diag_1 = "Option 1  (median) ";
@@ -1033,7 +1008,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_o_cab_diag_at_3m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_o_cab_diag_at_3m_0 = "Option 0 (median) ";
 label p50_prop_o_cab_diag_at_3m_1 = "Option 1  (median) ";
@@ -1051,7 +1026,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_o_cab_diag_at_6m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_prop_o_cab_diag_at_6m_0 = "Option 0 (median) ";
 label p50_prop_o_cab_diag_at_6m_1 = "Option 1  (median) ";
@@ -1069,15 +1044,15 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prop_o_cab_diag_at_9m ";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
-label p50_prop_o_cab_diag_at_9m _0 = "Option 0 (median) ";
-label p50_prop_o_cab_diag_at_9m _1 = "Option 1  (median) ";
+label p50_prop_o_cab_diag_at_9m_0 = "Option 0 (median) ";
+label p50_prop_o_cab_diag_at_9m_1 = "Option 1  (median) ";
 
-series  x=cald y=p50_prop_o_cab_diag_at_9m _0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_o_cab_diag_at_9m _0 	upper=p95_prop_o_cab_diag_at_9m _0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_prop_o_cab_diag_at_9m _1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_prop_o_cab_diag_at_9m _1 	upper=p95_prop_o_cab_diag_at_9m _1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_o_cab_diag_at_9m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_o_cab_diag_at_9m_0 	upper=p95_prop_o_cab_diag_at_9m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_prop_o_cab_diag_at_9m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prop_o_cab_diag_at_9m_1 	upper=p95_prop_o_cab_diag_at_9m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -1087,7 +1062,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of_all_o_cab_prop_dur_3m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
 label p50_of_all_o_cab_prop_dur_3m_0 = "Option 0 (median) ";
 label p50_of_all_o_cab_prop_dur_3m_1 = "Option 1  (median) ";
@@ -1105,7 +1080,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of_all_o_cab_prop_dur_6m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
 
 label p50_of_all_o_cab_prop_dur_6m_0 = "Option 0 (median) ";
 label p50_of_all_o_cab_prop_dur_6m_1 = "Option 1  (median) ";
@@ -1123,7 +1098,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_prep_inj_hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1  ) valueattrs=(size=10);
 
 label p50_p_prep_inj_hiv_0 = "Option 0 (median) ";
 label p50_p_prep_inj_hiv_1 = "Option 1  (median) ";
@@ -1134,6 +1109,26 @@ series  x=cald y=p50_p_prep_inj_hiv_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_prep_inj_hiv_1 	upper=p95_p_prep_inj_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
 run;quit;
+
+
+
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of women giving birth this period";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
+label p50_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_w_giv_birth_this_per_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_w_giv_birth_this_per_0 	upper=p95_p_w_giv_birth_this_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_w_giv_birth_this_per_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_w_giv_birth_this_per_1 	upper=p95_p_w_giv_birth_this_per_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
 
 
 
