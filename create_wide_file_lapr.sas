@@ -407,7 +407,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * of_all_o_cab_prop_dur_6m ;    if s_hiv_cab > 0 then 
 								of_all_o_cab_prop_dur_6m = s_hiv_cab_6m / s_hiv_cab ;
 
-* p_prep_inj_hiv;				if s_prep_inj > 0 then s_hiv_cab / s_prep_inj ; 
+* p_prep_inj_hiv;				if s_prep_inj > 0 then p_prep_inj_hiv = s_hiv_cab / s_prep_inj ; 
 								  
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
@@ -1012,6 +1012,8 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_lapr; set y;  
+
+proc print; var cald run; 
 
 run;
 
