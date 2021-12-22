@@ -17292,7 +17292,7 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_all_strategy prob_prep_all_restart prob_prep_all_visit_counsel rate_test_onprep_all prep_willingness_threshold prep_all_uptake_pop
 rate_test_startprep_all rate_test_restartprep_all prob_prep_all_restart_choice add_prep_all_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy adh_pattern_prep_oral rate_choose_stop_prep_oral higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
-rate_choose_stop_prep_inj prep_inj_effect_inm_partner
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner 
 
 pr_184m_oral_prep_1st_per pr_65m_oral_prep_1st_per pr_inm_oral_prep_1st_per
 
@@ -17304,6 +17304,8 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   e
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
 prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
+
+discount
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -19324,6 +19326,8 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
 prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
+
+discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 

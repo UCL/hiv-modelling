@@ -1,18 +1,13 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\xxxxxx\";
+libname a "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\c2021ds_sa\base_sa_out\";
+libname b "C:\Users\Toshiba\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr_out\";
 
-  data a.base_sa_31;   set b.out:;
+  data a.input_lapr;   set b.out:;
 
 
-/** show the contents of the input SAS file */
-* proc contents data=a.hiv_synthesis_base;
-*	title "Compressed SAS Input Data"
-*run;
-
-data g; set  a.base_sa_31 ;
+data g; set  a.input_lapr ;
 
 
 proc sort data=g; 
@@ -24,14 +19,14 @@ data sf;
 
 set g ;
 
-if cald=2021.5;
+if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
+sf_2022 = 10000000 / s_alive;
+keep run sf_2022;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2021;
+%let sf=sf_2022;
 
 data y; 
 merge g sf;
@@ -41,9 +36,6 @@ by run ;
 * preparatory code ;
 
 * ================================================================================= ;
-
-*zero_3tc_activity_m184   = s_zero_3tc_activity_m184 / s_n ;
-*zero_tdf_activity_k65r  =  s_zero_tdf_activity_k65r / s_n ;
 
 if s_pregnant_oth_dol_adv_birth_e = . then s_pregnant_oth_dol_adv_birth_e = 0;
 
@@ -57,9 +49,6 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 
 *r_bir_w_infected_child_ = rate_birth_with_infected_child_;
 
-
-*reg_option = s_reg_option / s_n;
-
 * ================================================================================= ;
 
 
@@ -68,14 +57,13 @@ s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_ne
 * ================================================================================= ;
 
 * discount rate is 3%; 
-* note discounting is from 2021 - no adjustment needed;
+* note discounting is from 2022 - no adjustment needed;
 * ts1m - this code needs to change for ts1m;
 
-%let year_start_disc=2021;
-discount_3py = 1/(1.03**(cald-&year_start_disc));
-discount_10py = 1/(1.10**(cald-&year_start_disc));
-*The following can be changed if we want instead 10% discount rate;
-%let discount=discount_3py;
+* %let year_start_disc=2023.5;
+* discount_10py = 1/(1.10**(cald-&year_start_disc));
+* The following can be changed if we want instead 10% discount rate;
+* %let discount=discount_3py;
 
 
 * ================================================================================= ;
@@ -124,13 +112,6 @@ ddaly_all = ddaly_ntd_mtct_odab_napd;
 
 * ================================================================================= ;
 
-/*
-proc print; var cald  run option ddaly_ntd_mtct_odab_napd  ddaly  dead_ddaly_ntd  ddaly_mtct  dead_ddaly_odabe   
-ddaly_non_aids_pre_death;
-where cald = 2021;
-run;
-*/
-
 
 
 * costs ;
@@ -141,15 +122,15 @@ run;
 
 * ts1m - 12 instead of 4; 
 
-dzdv_cost = s_cost_zdv * &discount * &sf * 4 / 1000;
-dten_cost = s_cost_ten * &discount * &sf * 4 / 1000;
-d3tc_cost = s_cost_3tc * &discount * &sf * 4 / 1000; 
-dnev_cost = s_cost_nev * &discount * &sf * 4 / 1000;
-dlpr_cost = s_cost_lpr * &discount * &sf * 4 / 1000;
-ddar_cost = s_cost_dar * &discount * &sf * 4 / 1000;
-dtaz_cost = s_cost_taz * &discount * &sf * 4 / 1000;
-defa_cost = s_cost_efa * &discount * &sf * 4 / 1000;
-ddol_cost = s_cost_dol * &discount * &sf * 4 / 1000;
+dzdv_cost = s_dcost_zdv * &sf * 4 / 1000;
+dten_cost = s_dcost_ten * &sf * 4 / 1000;
+d3tc_cost = s_dcost_3tc * &sf * 4 / 1000; 
+dnev_cost = s_dcost_nev * &sf * 4 / 1000;
+dlpr_cost = s_dcost_lpr * &sf * 4 / 1000;
+ddar_cost = s_dcost_dar * &sf * 4 / 1000;
+dtaz_cost = s_dcost_taz * &sf * 4 / 1000;
+defa_cost = s_dcost_efa * &sf * 4 / 1000;
+ddol_cost = s_dcost_dol * &sf * 4 / 1000;
 
 
 if s_dart_cost=. then s_dart_cost=0;
@@ -181,8 +162,8 @@ dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000;
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
 
 * note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
-  dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -191,37 +172,27 @@ dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
- 
+dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
 
 dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 
 * sens analysis;
 
-* dtaz_cost = dtaz_cost * (100 / 180);
-* dtaz_cost = dtaz_cost * (50 / 180);
-* dzdv_cost = dzdv_cost * (25 / 45);
+* ;
 
 
-dart_cost_x = dart_1_cost + dart_2_cost + dart_3_cost; 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
-
-* dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
-		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
-
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
 		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
 
-s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
-
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
 
-if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
+cost_clin_care = dcost_clin_care / discount;
 
-if &discount gt 0 then cost = dcost / &discount;
+cost = dcost / discount;
 
 * ================================================================================= ;
 
@@ -895,7 +866,7 @@ n_death_hiv_m n_death_hiv_w n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
-sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -995,19 +966,19 @@ proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where
 proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2014.5 <= cald < 2015.5; 
 proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
+proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2022.5; 
 proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
 proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
-/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
- proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;
- proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2021.5 <= cald < 2026.50;
+/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2022.25;*/   
+/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2022.50; */
+ proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2022.5 <= cald < 2022.50;
+ proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2022.5 <= cald < 2026.50;
 /* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
 /* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
 
- proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2021.5 <= cald < 2071.00; * deliberate to choose 2071
+ proc means noprint data=y; var &v; output out=y_21_71 mean= &v._21_71; by run option ; where 2022.5 <= cald < 2071.00; * deliberate to choose 2071
  - can change to 2071.5 once changes to program made;
   
 /* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
@@ -1243,7 +1214,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2021); /*%par(p=dataset)*/;
+%par(p=sf_2022); /*%par(p=dataset)*/;
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1275,7 +1246,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2021 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
