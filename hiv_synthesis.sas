@@ -6545,18 +6545,18 @@ if t ge 2 then do;
 	if hivtest_type=4 then do;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=caldate{t}; visit=1; 
+			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
 			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4; 
 			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
-				o_3tc=0; o_ten=0; tcur=.; nactive=.;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
 			end;
 			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
-				o_cab=0; tcur=.; nactive=.;
+				o_cab=0; tcur=.; nactive=.; diagprim_prep_inj=1;
 			end;
 			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
@@ -6567,16 +6567,16 @@ end;
 	if hivtest_type=1 then do;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=caldate{t};	* lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=1;	* lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_oral=0; 	prep_oral_ever=.; 	dt_prep_oral_s=.; 	dt_prep_oral_e=.; 
-				o_3tc=0; o_ten=0; tcur=.; nactive=.;		
+				o_3tc=0; o_ten=0; tcur=.; nactive=.;diagprim_prep_oral=1;	
 			end;  
 			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
 				prep_inj=0; 	prep_inj_ever=.; 	dt_prep_inj_s=.; 	dt_prep_inj_e=.; 
-				o_cab=0; tcur=.; nactive=.;
+				o_cab=0; tcur=.; nactive=.; diagprim_prep_inj=1;
 			end;
 			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
 				prep_all=0;		prep_all_ever=.; 	dt_prep_all_s=.; 	dt_prep_all_e=.; 
@@ -6591,12 +6591,12 @@ end;
 * note these lines only apply in period of infection;
 
 if prep_oral=1 then do; 
-	o_3tc=1; o_ten=1; tcur=0; cd4_tcur0 = cd4; 
+	o_3tc=1; o_ten=1; tcur=0; cd4_tcur0 = cd4; prep_oral_at_infection = 1;
 end;	
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
 if prep_inj=1 then do; 		* lapr and dpv-vr - added code for o_cab = 1 but not dpv (topical); *JAS Nov2021;
-	o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; 
+	o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; prep_inj_at_infection = 1;
 end;
 
 * AP 21-7-19;  * note that onart=1 but registd = 0 ;
@@ -6606,6 +6606,7 @@ if prep_oral=1 and pop_wide_tld_prep=1 then do;
 	o_3tc=1; o_ten=1; o_dol=1;  art_initiation=1;  
 	o_zdv=0; o_nev=0; o_lpr=0; o_taz=0; o_efa=0; 
 end;
+
 
 
 * measured viral load;
@@ -13336,6 +13337,16 @@ if (infected_prep_inj=1 or infected_prep_oral=1) and pop_wide_tld ne 1 then do;
 	if time_from_infection=1.5  then onprep_18=prep_all;
 end;
 
+if hiv=1 and o_cab=1 then time_hiv_cab + 0.25;
+
+hiv_cab_3m=0; hiv_cab_3m_diag=0;hiv_cab_6m=0; hiv_cab_6m_diag=0;hiv_cab_9m=0; hiv_cab_9m_diag=0; hiv_cab_ge12m=0;
+
+if time_hiv_cab = 0.25 then do; hiv_cab_3m = 1; if registd=1 then hiv_cab_3m_diag=1; end;
+if time_hiv_cab = 0.5 then do; hiv_cab_6m = 1; if registd=1 then hiv_cab_6m_diag=1;  end;
+if time_hiv_cab = 0.75 then do; hiv_cab_9m = 1; if registd=1 then hiv_cab_9m_diag=1;  end;
+if time_hiv_cab ge 1 then hiv_cab_ge12m = 1; 
+
+
 * resistance profile for people infected whilst on PrEP (whether this was acquired or transmitted);
 if infected_prep_all=1 then do;			* lapr - any PrEP;
 
@@ -15182,6 +15193,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_i_v1_np + i_v1_np ; s_i_v2_np + i_v2_np ; s_i_v3_np + i_v3_np ; s_i_v4_np + i_v4_np ; s_i_v5_np + i_v5_np ; s_i_v6_np + i_v6_np ; 
 
+	s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim + diagprim ;
+
 	/*Number ep and newp*/
 
 	s_np + np ; s_newp + newp ; s_newp_ge1 + newp_ge1 ; s_newp_ge5 + newp_ge5 ; s_newp_ge10 + newp_ge10 ; s_newp_ge50 +  newp_ge50 ;
@@ -15376,7 +15389,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 		/*prep*/
 
-	s_prep_all + prep_all; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; 
+	s_prep_all + prep_all; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; s_prep_oral_at_infection + prep_oral_at_infection;
+	s_prep_inj_at_infection + prep_inj_at_infection;
 	s_prep_all_sw + prep_all_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_all_w_1524 + prep_all_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
 	s_elig_prep_all_epdiag + elig_prep_all_epdiag ; 
@@ -15445,6 +15459,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_inj_elig + stop_prep_inj_elig ;s_stop_prep_all_elig + stop_prep_all_elig;
 	s_prep_oral_willing + prep_oral_willing ;s_prep_inj_willing + prep_inj_willing ;  s_cab_res_o_cab + cab_res_o_cab ; s_cab_res_tail + cab_res_tail ;
 	s_cab_res_1st_per + cab_res_1st_per; s_currently_in_prep_inj_tail + currently_in_prep_inj_tail; s_prep_inj_ever_hiv + prep_inj_ever_hiv ;
+
+	s_hiv_cab_3m + hiv_cab_3m ; s_hiv_cab_6m + hiv_cab_6m ; s_hiv_cab_9m + hiv_cab_9m ;  s_hiv_cab_ge12m + hiv_cab_ge12m
+	s_hiv_cab_3m_diag + hiv_cab_3m_diag ; s_hiv_cab_6m_diag + hiv_cab_6m_diag ; s_hiv_cab_6m_diag + hiv_cab_6m_diag ; 
+
 
 	/*testing and diagnosis*/
 
@@ -16770,6 +16788,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -16939,9 +16959,11 @@ s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
-s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection 
 
 s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_prep_inj_ever_hiv
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_3m_diag s_hiv_cab_6m_diag s_hiv_cab_9m_diag s_hiv_cab_ge12m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -17658,6 +17680,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj  s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -17827,9 +17851,11 @@ s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
-s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection
 
 s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_prep_inj_ever_hiv
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_3m_diag s_hiv_cab_6m_diag s_hiv_cab_9m_diag s_hiv_cab_ge12m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18791,6 +18817,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj  s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -18964,9 +18992,11 @@ s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
 s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
-s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_all_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection
 
 s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_prep_inj_ever_hiv
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_3m_diag s_hiv_cab_6m_diag s_hiv_cab_9m_diag s_hiv_cab_ge12m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest

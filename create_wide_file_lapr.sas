@@ -389,8 +389,26 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prop_ever_prep_inj_res_cab;	prop_ever_prep_inj_res_cab = s_cur_res_cab / s_prep_inj_ever ;
 * prop_ever_prep_inj_res_cab_hiv;	prop_ever_prep_inj_res_cab_hiv = s_cur_res_cab / s_prep_inj_ever ;
 
+* prop_cab_res_o_cab;			prop_cab_res_o_cab = s_cab_res_o_cab / s_cur_res_cab ;
+* prop_cab_res_tail;			prop_cab_res_tail = s_cab_res_tail / s_cur_res_cab ;
+* prop_cab_res_1st_per;			prop_cab_res_1st_per = s_cab_res_1st_per / s_cur_res_cab ;
 
+* prop_prep_inj_at_inf_diag;	if s_prep_inj_at_infection > 0 then prop_prep_inj_at_inf_diag =  s_diagprim_prep_inj /  (s_prep_inj_at_infection + s_diagprim_prep_inj);
 
+* prop_o_cab_diag_at_3m;		if s_hiv_cab_ge3m > 0 then prop_o_cab_diag_at_3m = s_hiv_cab_3m_diag / s_hiv_cab_3m ;
+* prop_o_cab_diag_at_6m;		if s_hiv_cab_ge6m > 0 then prop_o_cab_diag_at_6m = s_hiv_cab_6m_diag / s_hiv_cab_6m ;
+* prop_o_cab_diag_at_9m;		if s_hiv_cab_ge9m > 0 then prop_o_cab_diag_at_9m = s_hiv_cab_9m_diag / s_hiv_cab_9m ;
+
+s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
+
+* of_all_o_cab_prop_dur_3m ;    if s_hiv_cab > 0 then 
+								of_all_o_cab_prop_dur_3m = s_hiv_cab_3m / s_hiv_cab ;
+
+* of_all_o_cab_prop_dur_6m ;    if s_hiv_cab > 0 then 
+								of_all_o_cab_prop_dur_6m = s_hiv_cab_6m / s_hiv_cab ;
+
+* p_prep_inj_hiv;				if s_prep_inj > 0 then s_hiv_cab / s_prep_inj ; 
+								  
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -979,6 +997,11 @@ test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_eff
  s_cost_prep s_cost_prep_visit
 
 dcost_80 ddaly_80
+
+prop_prep_inj  ratio_inj_prep_on_tail prop_ever_prep_inj_res_cab prop_ever_prep_inj_res_cab_hiv
+prop_cab_res_o_cab prop_cab_res_tail prop_cab_res_1st_per  prop_prep_inj_at_inf_diag prop_o_cab_diag_at_3m prop_o_cab_diag_at_6m
+prop_o_cab_diag_at_9m  of_all_o_cab_prop_dur_3m  of_all_o_cab_prop_dur_6m  p_prep_inj_hiv
+
 ;
 
 
@@ -988,11 +1011,25 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base; set y;  
+data a.l_lapr; set y;  
+
+run;
 
 
 
-data y; set a.l_base; 
+
+
+
+
+* ============================   lapr program worked on to here ======================================== ;
+
+
+
+
+
+
+
+data y; set a.l_lapr; 
 
   options nomprint;
   option nospool;
