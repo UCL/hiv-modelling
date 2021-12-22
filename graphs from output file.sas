@@ -568,8 +568,7 @@ scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
 scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
 scatter  x=cald y=o_p_ever_fsw_1ts_1849w_nbcs /	markerattrs = (color=green);
 run;quit;
-
-
+/*proc print data=d;var p50_prop_w_1549_sw_0 p5_prop_w_1549_sw_0 p95_prop_w_1549_sw_0;where cald=2020;run;*/
 
 
 proc sgplot data=d; 
@@ -593,6 +592,7 @@ scatter x=cald y=o_prev_fsw_rdsvf / markerattrs = (color=red) ;
 scatter x=cald y=o_prev_fsw_tested_swvp / markerattrs = (color=green) ;
 scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_prev_fsw_ul_rds markerattrs = (color=orange) ERRORBARATTRS = (color = orange) ;
 run;quit;
+proc print data=d;var p50_prop_sw_hiv_0 p5_prop_sw_hiv_0 p95_prop_sw_hiv_0;where cald=2020;run;
 
 
 ods html;

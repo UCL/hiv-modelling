@@ -57,7 +57,7 @@
 1.  Population...................................Line 76
 2.  Fertility....................................Line 338
 3.  Mortality....................................Line 434
-4.  Prevalence...................................Line 564
+4.  Prevalence...................................Line 612
 5.  Incidence....................................Line 835
 6.  Number living with HIV ......................Line 964
 7.  Sexual behaviour.............................Line 1024
@@ -821,14 +821,16 @@ if cald=2015 then o_prev1549_CIA=0.147;
 
 ***LBM Update Jan2017;
 *Zimphia 2015-2016;
-
 if cald=2016.25 then do;
 o_prev_1549_zimphia=0.134;*0.140;o_prev_1549_ll_zimphia=0.133;o_prev_1549_ul_zimphia=0.147;*Modified based on Isac;
 o_prev_1549m_zimphia=0.107;*0.112;o_prev_1549m_ll_zimphia=0.104;o_prev_1549m_ul_zimphia=0.121;
 o_prev_1549w_zimphia=0.159;*0.166;o_prev_1549w_ll_zimphia=0.158;o_prev_1549w_ul_zimphia=0.174;
 o_prev_1564m_zimphia=0.124;o_prev_1564m_ll_zimphia=0.115;o_prev_1564m_ul_zimphia=0.132;
 o_prev_1564w_zimphia=0.167;o_prev_1564f_ll_zimphia=0.160;o_prev_1564f_ul_zimphia=0.174;
+*Source: file:///C:/Users/ValentinaCambiano/Downloads/Progress_Toward_the_90_90_90_HIV_Targets_in.7.pdf;
+o_prev_1564_zimphia=0.141;
 end;
+
 
 ***LBM Update Jan2017;
 *Age-gender-specific rates
@@ -984,7 +986,7 @@ if cald=2017.5 then o_prev_fsw_garpr=0.56;
 if cald=2018.5 then o_prev_fsw_garpr=0.41;
 if cald=2019.5 then o_prev_fsw_garpr=0.422;
 
-*Source: RDS in last quarter 2013;
+*Source: RDS in last quarter 2013 (The mean HIV prevalence was 57.5% (https://pubmed.ncbi.nlm.nih.gov/27930599/);
 if cald=2013.75 then do;
 	o_prev_1824fsw_rds=0.36; o_prev_1824fsw_ll_rds=0.26; o_prev_1824fsw_ul_rds=0.46;
 	o_prev_2529fsw_rds=0.55; o_prev_2529fsw_ll_rds=0.48; o_prev_2529fsw_ul_rds=0.62;
@@ -1718,6 +1720,12 @@ if cald=2016.25 then do;
 	o_p_diag_1564_zimphia=0.742;
 	o_p_diag_1564m_zimphia=0.697;	
 	o_p_diag_1564w_zimphia=0.771;
+	*Source: file:///C:/Users/ValentinaCambiano/Downloads/Progress_Toward_the_90_90_90_HIV_Targets_in.7.pdf
+	"we aware of their HIV status or had detectable antiretroviral levels";
+	o_p_diag_1564_zimphia=0.768; o_p_diag_1564_ll_zimphia=0.749;o_p_diag_1564_ul_zimphia=0.787;
+	o_p_diag_1564m_zimphia=0.721;o_p_diag_1564m_ll_zimphia=0.689;o_p_diag_1564m_ul_zimphia=0.753;
+	o_p_diag_1564w_zimphia=0.801;o_p_diag_1564w_ll_zimphia=0.781;o_p_diag_1564w_ul_zimphia=0.820;
+
 end;
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020 then do;
@@ -2233,6 +2241,10 @@ if cald=2016.25  then do;
 	o_p_onart_1564_diag_zimphia=0.868;
 	o_p_onart_1564m_diag_zimphia=0.860;
 	o_p_onart_1564f_diag_zimphia=0.873;
+	*Source: file:///C:/Users/ValentinaCambiano/Downloads/Progress_Toward_the_90_90_90_HIV_Targets_in.7.pdf;
+	o_p_onart_1564_diag_zimphia=0.884; o_p_onart_1564_diag_ll_zimphia=0.871;o_p_onart_1564_diag_ul_zimphia=0.897;
+	o_p_onart_1564m_diag_zimphia=0.88;o_p_onart_1564m_diag_ll_zimphia=0.855;o_p_onart_1564m_diag_ul_zimphia=0.905;
+	o_p_onart_1564f_diag_zimphia=0.886;o_p_onart_1564f_diag_ll_zimphia=0.870;o_p_onart_1564f_diag_ul_zimphia=0.903;
 end;	
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020  then do;
@@ -2371,6 +2383,11 @@ if cald=2016.25 then do;
 	o_p_vlsupp_1564_Zimphia=0.865;
 	o_p_vlsupp_1564m_Zimphia=0.841;
 	o_p_vlsupp_1564w_Zimphia=0.879;
+	*Source:file:///C:/Users/ValentinaCambiano/Downloads/Progress_Toward_the_90_90_90_HIV_Targets_in.7.pdf, accessed 22/12/2021;
+	o_p_vlsupp_1564_Zimphia=0.853; o_p_vlsupp_1564_ll_Zimphia=0.834;wo_p_vlsupp_1564_Zimphia=0.871;
+	o_p_vlsupp_1564m_Zimphia=0.825;o_p_vlsupp_1564m_ll_Zimphia=0.791;o_p_vlsupp_1564m_Zimphia=0.858;
+	o_p_vlsupp_1564w_Zimphia=0.87; o_p_vlsupp_1564w_ll_Zimphia=0.851;o_p_vlsupp_1564w_Zimphia=0.888;
+
 end;
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020 then do;
@@ -2384,19 +2401,19 @@ end;
 ***Proportion of PLHIV and virologically suppressed;
 * Source - Zimphia 2015-2016. Slide shown at CROI 2017 by Jessica Justman with updated Zimphia numbers;
 if cald=2016.25 then do;
-	o_p_vlsupp_plhiv_1564_Zimphia=0.591;
-	o_p_vlsupp_plhiv_1564m_Zimphia=0.525;
-	o_p_vlsupp_plhiv_1564w_Zimphia=0.635;
+	o_p_vlsupp_hiv_1564_phia=0.591;
+	o_p_vlsupp_hiv_1564m_phia=0.525;
+	o_p_vlsupp_hiv_1564w_phia=0.635;
 end;
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020 then do;
-	o_p_vlsupp_plhiv_1549_Zimphia=0.738; o_p_vlsupp_plhiv_1549_ll_Zimphia=0.714; o_p_vlsupp_plhiv_1549_ul_Zimphia=0.762;
-	o_p_vlsupp_plhiv_1549m_Zimphia=0.681;o_p_vlsupp_plhiv_1549m_ll_Zimphia=0.636;o_p_vlsupp_plhiv_1549m_ul_Zimphia=0.727;
-	o_p_vlsupp_plhiv_1549w_Zimphia=0.768;o_p_vlsupp_plhiv_1549w_ll_Zimphia=0.742;o_p_vlsupp_plhiv_1549w_ul_Zimphia=0.793;
+	o_p_vlsupp_hiv_1549_phia=0.738; o_p_vlsupp_hiv_1549_ll_phia=0.714; o_p_vlsupp_hiv_1549_ul_phia=0.762;
+	o_p_vlsupp_hiv_1549m_phia=0.681;o_p_vlsupp_hiv_1549m_ll_phia=0.636;o_p_vlsupp_hiv_1549m_ul_phia=0.727;
+	o_p_vlsupp_hiv_1549w_phia=0.768;o_p_vlsupp_hiv_1549w_ll_phia=0.742;o_p_vlsupp_hiv_1549w_ul_phia=0.793;
 
-	o_p_vlsupp_plhiv_15pl_Zimphia=0.773; o_p_vlsupp_plhiv_15pl_ll_Zimphia=0.753; o_p_vlsupp_plhiv_15pl_ul_Zimphia=0.792;
-	o_p_vlsupp_plhiv_15plm_Zimphia=0.73; o_p_vlsupp_plhiv_15plm_ll_Zimphia=0.695;o_p_vlsupp_plhiv_15plm_ul_Zimphia=0.764;
-	o_p_vlsupp_plhiv_15plw_Zimphia=0.798;o_p_vlsupp_plhiv_15plw_ll_Zimphia=0.777;o_p_vlsupp_plhiv_15plw_ul_Zimphia=0.819;
+	o_p_vlsupp_hiv_15pl_phia=0.773; o_p_vlsupp_hiv_15pl_ll_phia=0.753; o_p_vlsupp_hiv_15pl_ul_phia=0.792;
+	o_p_vlsupp_hiv_15plm_phia=0.73; o_p_vlsupp_hiv_15plm_ll_phia=0.695;o_p_vlsupp_hiv_15plm_ul_phia=0.764;
+	o_p_vlsupp_hiv_15plw_phia=0.798;o_p_vlsupp_hiv_15plw_ll_phia=0.777;o_p_vlsupp_hiv_15plw_ul_phia=0.819;
 end;
 
 
