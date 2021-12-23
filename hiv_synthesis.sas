@@ -663,8 +663,10 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
 
-* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
+* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 0.95 0.05); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
+
+
 
 * pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.5; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
@@ -2075,6 +2077,8 @@ if caldate{t} ge date_prep_vr_intro then do;
 prep_vr_willing = 0; if  pref_prep_vr > prep_willingness_threshold 	then prep_vr_willing =1;
 end;
 
+prep_all_willing = 0;
+if prep_oral_willing = 1 or prep_inj_willing = 1 or prep_vr_willing = 1 then prep_all_willing = 1;
 
 /*
 * willingness to take prep if offered;
@@ -2506,7 +2510,6 @@ who may be dead and hence have caldate{t} missing;
   runs for which the option should take place;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
-	prep_all_strategy=5;
 
 	if option = 0 then do;  
 
@@ -4217,7 +4220,7 @@ prep_all_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * lapr and dpv-vr - changed name from 'prep_strategy' to 'prep_all_strategy' - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
-if t ge 2 and (registd ne 1) then do;  * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
+if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	if prep_all_strategy=1 then do;
 		r = rand('Uniform');
@@ -4313,7 +4316,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 
 	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
-	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ;
+	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ; 
 
 		*Testing before ever starting PrEP;
 
@@ -16115,16 +16118,36 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 * procs;
 
 
-proc freq; tables caldate&j sw * prep_all  prep_inj prep_oral  testfor_prep_oral ; where elig_prep_all = 1;
+proc freq; tables caldate&j ; 
+proc freq; tables caldate&j sw * prep_all  prep_inj prep_oral ; where elig_prep_all = 1;
+
+
+
+* to do
+
+switching between prep types
+check can only be on one of oral and inj
+
+
+;
+
+
+
+
+
+
 
 
 
 proc print;
 
-var caldate&j prep_all_strategy elig_prep_all  hard_reach  prob_prep_inj_b  prob_prep_oral_b testfor_prep_oral testfor_prep_inj tested 
-highest_prep_pref prep_oral_willing prep_inj_willing pref_prep_oral pref_prep_inj prep_oral prep_inj sw
+var 
+caldate&j prep_all_strategy elig_prep_all rate_test_startprep_all hard_reach rate_test_startprep_all prob_prep_inj_b  
+prob_prep_oral_b testfor_prep_oral  prep_oral_ever prep_inj_ever prep_all_ever 
+an_lin_incr_test testfor_prep_inj tested  
+highest_prep_pref prep_oral_willing prep_inj_willing pref_prep_oral pref_prep_inj prep_oral prep_inj sw higher_future_prep_oral_cov
 ;
-where age ge 15 and elig_prep_all=1 and registd=0 and caldate&j ge 2017 and (death=. or dead=1) and serial_no < 5000 ;
+where age ge 15 and elig_prep_all=1 and (death=. or dead=1) and serial_no < 1000 ;
 run;
 
 
