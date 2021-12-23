@@ -3294,7 +3294,6 @@ if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3
 end;
 
 
-
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
 cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=rand('Uniform');
 if            a < cu1/cu4 then do; newp=0; end; 
@@ -3490,6 +3489,7 @@ if sex_beh_trans_matrix_w=15 then do;
 	if       newp_tm1=0   then do; *newp=0; s1=0.99; *newp=1-3; s2=0.01; end;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.75; *newp=1-3; s2=0.25; end;
 end;
+
 
 s2=s2*rred;
 cu1=s1;cu2=cu1+s2; a=rand('Uniform');
@@ -4039,7 +4039,6 @@ e=rand('uniform');
 * yes, it is this way around below;
 if gender=1 and ep_incidence_factor_w gt 0 then e=e/ep_incidence_factor_w; 
 if gender=2 and ep_incidence_factor_m gt 0 then e=e/ep_incidence_factor_m;
-
 
 epmono=.;
 s=rand('uniform');
@@ -5550,8 +5549,6 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
-
-
 if hiv=1 then super_infection_i=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
@@ -5699,7 +5696,6 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			end;  
 		end;
 
-
 		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  * higher transmission risk in women;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
@@ -5758,7 +5754,6 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 	d=d+1;
 	end;
 end;
-
 
 
 * prob of infection from existing infected partner ;
@@ -6028,8 +6023,6 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 end;
 
 if infection = caldate{t} then age_infection = age;
-
-
 
 * transmitted resistance;
 xx77:   
@@ -10939,19 +10932,6 @@ end;
 * END OF THE CODE FOR HIV INFECTED;
 
 
-
-
-
-* here here;
-if gender=1 then do;
-
-
-
-
-
-
-
-
 * ------------------------------------------------------------------------------------------------------------------------------------------;
 
 * End of SECTION 3_HIV ;
@@ -12524,7 +12504,6 @@ if hiv =1 then do;
 	if 15 <= age < 25 then do; vg1000_w_1524=0; if vg1000 = 1 then vg1000_w_1524=1 ;  end ;
 	end;
 
-
 * two variables indicate vl < 500: vlg1 indexes infectivity and viral load is increased by 0.5 log when
 sti present, vl500 takes the vl as it is;
 
@@ -13487,7 +13466,7 @@ if prep_all=1 then do;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
 end;
 
-
+					
 if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep_oral=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_184=0; if c_rt184m = 1 then prep_3m_after_inf_no_r_184=1;
@@ -13893,10 +13872,7 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_1
 *Discounting from year_i + 1 (ie when j = ((year_i - 1989) x 4)) + 1); * 3%;  * dependent_on_time_step_length ;  
 discount = 1;
 if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
-
-
-
-						  
+	  
 																					  
 /* 
 * ts1m:  replace line above with :
