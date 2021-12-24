@@ -2,12 +2,15 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr1_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr2_out\";
 
-  data a.input_lapr;   set b.out:;
+%let laprv = lapr2 ;
 
 
-data g; set  a.input_lapr ;
+  data a.input_&laprv;   set b.out:;
+
+
+data g; set  a.input_&laprv ;
 
 
 proc sort data=g; 
@@ -389,9 +392,11 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prop_ever_prep_inj_res_cab;	prop_ever_prep_inj_res_cab = s_emerge_inm_res_cab / s_prep_inj_ever ;
 * prop_ever_prep_inj_res_cab_hiv;	prop_ever_prep_inj_res_cab_hiv = s_emerge_inm_res_cab / s_prep_inj_ever_hiv ; 
 
-* prop_cab_res_o_cab;			prop_cab_res_o_cab = s_cab_res_o_cab / s_cur_res_cab ;
-* prop_cab_res_tail;			prop_cab_res_tail = s_cab_res_tail / s_cur_res_cab ;
-* prop_cab_res_1st_per;			prop_cab_res_1st_per = s_cab_res_1st_per / s_cur_res_cab ;
+* prop_cab_res_o_cab;			prop_cab_res_o_cab = s_cab_res_o_cab / (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per)  ;
+* prop_cab_res_tail;			prop_cab_res_tail = s_cab_res_tail / (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per)  ;
+* prop_cab_res_1st_per;			prop_cab_res_1st_per = s_cab_res_1st_per / (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per)  ;
+
+* prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per) / s_cur_res_cab ;
 
 * prop_prep_inj_at_inf_diag;	if s_prep_inj_at_infection > 0 then prop_prep_inj_at_inf_diag =  s_diagprim_prep_inj /  (s_prep_inj_at_infection + s_diagprim_prep_inj);
 
@@ -409,6 +414,18 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_prep_inj_hiv;				if s_prep_inj > 0 then p_prep_inj_hiv = s_hiv_cab / s_prep_inj ; 
 								  
+* n_emerge_inm_res_cab ;		n_emerge_inm_res_cab = s_emerge_inm_res_cab * &sf;
+
+* n_switch_prep_from_oral ; 	n_switch_prep_from_oral = s_switch_prep_from_oral  * &sf;
+* n_switch_prep_from_inj ;		n_switch_prep_from_inj = s_switch_prep_from_inj * &sf ;
+* n_switch_prep_to_oral ; 		n_switch_prep_to_oral = s_switch_prep_to_oral * &sf ;
+* n_switch_prep_to_inj ;		n_switch_prep_to_inj = s_switch_prep_to_inj * &sf ;
+
+* n_prepstart;					n_prepstart = s_prepstart * &sf; 
+* n_prep_all_start;				n_prep_all_start = s_prep_all_start * &sf; 
+* n_prep_oral_start;			n_prep_oral_start = s_prep_oral_start * &sf; 
+* n_prep_inj_start;				n_prep_inj_start = s_prep_inj_start * &sf; 
+* n_prep_vr_start;				n_prep_vr_start = s_prep_vr_start * &sf; 
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -1000,7 +1017,12 @@ dcost_80 ddaly_80
 
 prop_prep_inj  ratio_inj_prep_on_tail prop_ever_prep_inj_res_cab prop_ever_prep_inj_res_cab_hiv
 prop_cab_res_o_cab prop_cab_res_tail prop_cab_res_1st_per  prop_prep_inj_at_inf_diag prop_o_cab_diag_at_3m prop_o_cab_diag_at_6m
-prop_o_cab_diag_at_9m  of_all_o_cab_prop_dur_3m  of_all_o_cab_prop_dur_6m  p_prep_inj_hiv
+prop_o_cab_diag_at_9m  of_all_o_cab_prop_dur_3m  of_all_o_cab_prop_dur_6m  p_prep_inj_hiv  prop_cab_dol_res_attr_cab
+
+n_emerge_inm_res_cab  n_switch_prep_from_oral  n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  n_prepstart
+n_prep_all_start n_prep_oral_start n_prep_inj_start n_prep_vr_start 
+
+prop_elig_on_prep p_elig_prep p_hiv1_prep prop_onprep_newpge1 p_prep_elig_past_year p_prep_newp prop_sw_onprep
 
 ;
 
@@ -1011,9 +1033,7 @@ prop_o_cab_diag_at_9m  of_all_o_cab_prop_dur_3m  of_all_o_cab_prop_dur_6m  p_pre
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_lapr; set y;  
-
-proc print ; var cald run ; 
+data a.l_&laprv; set y;  
 
 run;
 
