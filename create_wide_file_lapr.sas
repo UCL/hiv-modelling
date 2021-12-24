@@ -2,9 +2,9 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr2_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr3_out\";
 
-%let laprv = lapr2 ;
+%let laprv = lapr3 ;
 
 
   data a.input_&laprv;   set b.out:;
@@ -421,7 +421,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * n_switch_prep_to_oral ; 		n_switch_prep_to_oral = s_switch_prep_to_oral * &sf ;
 * n_switch_prep_to_inj ;		n_switch_prep_to_inj = s_switch_prep_to_inj * &sf ;
 
-* n_prepstart;					n_prepstart = s_prepstart * &sf; 
 * n_prep_all_start;				n_prep_all_start = s_prep_all_start * &sf; 
 * n_prep_oral_start;			n_prep_oral_start = s_prep_oral_start * &sf; 
 * n_prep_inj_start;				n_prep_inj_start = s_prep_inj_start * &sf; 
@@ -1019,7 +1018,7 @@ prop_prep_inj  ratio_inj_prep_on_tail prop_ever_prep_inj_res_cab prop_ever_prep_
 prop_cab_res_o_cab prop_cab_res_tail prop_cab_res_1st_per  prop_prep_inj_at_inf_diag prop_o_cab_diag_at_3m prop_o_cab_diag_at_6m
 prop_o_cab_diag_at_9m  of_all_o_cab_prop_dur_3m  of_all_o_cab_prop_dur_6m  p_prep_inj_hiv  prop_cab_dol_res_attr_cab
 
-n_emerge_inm_res_cab  n_switch_prep_from_oral  n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  n_prepstart
+n_emerge_inm_res_cab  n_switch_prep_from_oral  n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
 n_prep_all_start n_prep_oral_start n_prep_inj_start n_prep_vr_start 
 
 prop_elig_on_prep p_elig_prep p_hiv1_prep prop_onprep_newpge1 p_prep_elig_past_year p_prep_newp prop_sw_onprep
