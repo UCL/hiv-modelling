@@ -10,7 +10,7 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-*  proc printto log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log"; * run;
+/*  proc printto log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";  run; */
 
 	
 %let population = 100000 ; 
@@ -659,7 +659,7 @@ if prep_willing=1;
 
 * values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
 
-* probability of 1 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
+* probability of 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 prob_sbp_increase = 0.10; 
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
 prob_test_sbp_undiagnosed = 0.01;
@@ -1459,7 +1459,7 @@ select;	* JAS May2021 ;
 												0.08	0.12 	0.15 	0.25 	0.15 	0.10 	0.08 	0.04 	0.03); 
 							end;
 	when (75 <= age) 		do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.05	0.10 	0.15 	0..25 	0.15 	0.10 	0.08 	0.07 	0.05); 
+												0.05	0.10 	0.15 	0.25 	0.15 	0.10 	0.08 	0.07 	0.05); 
 							end;
 end;
 
@@ -2665,7 +2665,7 @@ end;
 * SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
 
 * initially at age 15 nobody has hypertension;
-if age <= 15.25  then do; sbp=115 + 10*normal(0); sbp = round(sbp,1) diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
+if age <= 15.25  then do; sbp=115 + 10*normal(0); sbp = round(sbp,1); diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
 a_sbp=uniform(0); 
@@ -18568,7 +18568,6 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 run;
 
-/* proc printto; run; */
 
 
 
