@@ -2,17 +2,18 @@
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
 * libname a 'C:\Loveleen\Synthesis model\';
-%let outputdir = C:\Users\sf124046\Box\sapphire_modelling\synthesis\;
-libname a "&outputdir/";
+
+libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 %let tmpfilename = out;
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-  proc printo log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
+*  proc printto log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log"; * run;
+
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1439,23 +1440,26 @@ if e < 0.03 then hbv=1;
 select;	* JAS May2021 ;
 	when ( age < 15) 		do; sbp=.;
 							end;	
-	when (15 <= age < 25) 		do; %sample(sbp,	115		125 	135, 
-												0.40 	0.40 	0.20); 
+	when (15 <= age < 25) 	do; %sample(sbp,	105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.35	0.30 	0.20 	0.10	0.04	0.01	0.00	0.00	0.00); 
 							end;
-	when (25 <= age < 35) 	do; %sample(sbp, 	115 	125 	135, 
-												0.20 	0.50 	0.30); 
+	when (25 <= age < 35) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.30	0.30 	0.20 	0.10	0.07	0.02	0.01	0.00	0.00); 
 							end;
-	when (35 <= age < 45) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185,
-												0.20 	0.25 	0.15 	0.15 	0.15 	0.05 	0.04 	0.01);
+	when (35 <= age < 45) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.20	0.30 	0.20 	0.15 	0.10 	0.04 	0.01 	0.00 	0.00);
 							end;
-	when (45 <= age < 55) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.20 	0.15 	0.15 	0.15 	0.15 	0.10 	0.08 	0.02);
+	when (45 <= age < 55) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.15	0.25 	0.20 	0.15 	0.10 	0.08 	0.04 	0.02 	0.01);
 							end;
-	when (55 <= age < 65) 	do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.15 	0.15 	0.15 	0.15 	0.15 	0.10 	0.10 	0.05); 
+	when (55 <= age < 65) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.12	0.14 	0.16 	0.25 	0.12 	0.08 	0.07 	0.04 	0.02); 
 							end;
-	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
-												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
+	when (65 <= age < 75) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.08	0.12 	0.15 	0.25 	0.15 	0.10 	0.08 	0.04 	0.03); 
+							end;
+	when (75 <= age) 		do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.05	0.10 	0.15 	0..25 	0.15 	0.10 	0.08 	0.07 	0.05); 
 							end;
 end;
 
@@ -1467,6 +1471,8 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_2, 10 20 30, 0.7 0.2 0.1); 
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
+* define person-specific risk of sbp increase per period;
+%sample(sbp_risk, 0.5 1 1.5 2, 0.3 0.4 0.2 0.1);
 
 u=uniform(0);low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
@@ -2656,18 +2662,19 @@ end;
 
 
 
-* SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21;
+* SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
 
 * initially at age 15 nobody has hypertension;
-if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
+if age <= 15.25  then do; sbp=115 + 10*normal(0); sbp = round(sbp,1) diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
 a_sbp=uniform(0); 
 	select;
-		when (140 <= sbp < 160) a_sbp = a_sbp / 1.5; 
-		when (160 <= sbp < 180) a_sbp = a_sbp / (1.5**2)  ;
-		when (180 <= abp) 	  a_sbp = a_sbp / (1.5**3) ;  
-		otherwise a_sbp = a_sbp;
+		when (sbp < 140) a_sbp = a_sbp / (sbp_risk); 
+		when (140 <= sbp < 160) a_sbp = a_sbp / (1.5 * sbp_risk); 
+		when (160 <= sbp < 180) a_sbp = a_sbp / ((1.5**2) * sbp_risk)  ;
+		when (180 <= abp) 	  a_sbp = a_sbp / ((1.5**3) * sbp_risk) ;  
+		otherwise a_sbp = a_sbp / sbp_risk ;
 	end;
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
@@ -18561,7 +18568,7 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 
 run;
 
-
+/* proc printto; run; */
 
 
 
