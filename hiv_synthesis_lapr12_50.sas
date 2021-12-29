@@ -1,14 +1,5 @@
 
 
-*
-
-Consider prep for next 20 years only but still go to 50 years when assessing intervention ?
-
-;
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
@@ -8017,7 +8008,6 @@ wont switch anyway;
 		mr_efa=o_efa;
 		mr_lpr=o_lpr;
 		mr_taz=o_taz;
-		mr_dol=o_dol;
 	end;
 
 
@@ -18720,8 +18710,6 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
 
-/*
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
@@ -18847,7 +18835,6 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-*/
 
 data r1; set a ;
 
@@ -18933,8 +18920,6 @@ data r1; set a ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
-
-/*
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
@@ -19061,7 +19046,7 @@ data r1; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
 
-*/
+
 
 
 

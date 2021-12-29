@@ -1,14 +1,5 @@
 
 
-*
-
-Consider prep for next 20 years only but still go to 50 years when assessing intervention ?
-
-;
-
-
-
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
 * libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
@@ -8017,7 +8008,6 @@ wont switch anyway;
 		mr_efa=o_efa;
 		mr_lpr=o_lpr;
 		mr_taz=o_taz;
-		mr_dol=o_dol;
 	end;
 
 
