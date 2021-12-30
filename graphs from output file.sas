@@ -282,6 +282,7 @@ if cald=2020 then n_tested_obs_sa = 16316808 / 5.85;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
+
 ods html ;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion age 15-39 with hypertension";

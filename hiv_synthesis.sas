@@ -10,7 +10,7 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-/*  proc printto log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";  run; */
+ proc printto ; * log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 
 	
 %let population = 100000 ; 
@@ -1472,7 +1472,7 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 * define person-specific risk of sbp increase per period;
-%sample(sbp_risk, 0.5 1 1.5 2, 0.3 0.4 0.2 0.1);
+%sample(sbp_risk, 0.5 1 2 3, 0.2 0.4 0.2 0.2);
 
 u=uniform(0);low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
@@ -2664,16 +2664,16 @@ end;
 
 * SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
 
-* initially at age 15 nobody has hypertension;
-if age <= 15.25  then do; sbp=115 + 10*normal(0); sbp = round(sbp,1); diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
+* generates distribution of BP values around 115 at age 15 with left-skew beta distributionwith SD 12 (SD based on SEARCH data);
+if age <= 15.25  then do; sbp=95 + 80*rand('beta', 2, 6); sbp = round(sbp,1); diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
-* underlying increases in blood pressure in people not on anti-hypertensives;
+* underlying increases in blood pressure in people not on anti-hypertensives; *updated 29dec2021 to make sbp slope increase less steep as bp rises;
 a_sbp=uniform(0); 
 	select;
 		when (sbp < 140) a_sbp = a_sbp / (sbp_risk); 
-		when (140 <= sbp < 160) a_sbp = a_sbp / (1.5 * sbp_risk); 
-		when (160 <= sbp < 180) a_sbp = a_sbp / ((1.5**2) * sbp_risk)  ;
-		when (180 <= abp) 	  a_sbp = a_sbp / ((1.5**3) * sbp_risk) ;  
+		when (140 <= sbp < 160) a_sbp = a_sbp / (1.2 * sbp_risk); 
+		when (160 <= sbp < 180) a_sbp = a_sbp / ((1.2**2) * sbp_risk)  ;
+		when (180 <= abp) 	  a_sbp = a_sbp / ((1.2**3) * sbp_risk) ;  
 		otherwise a_sbp = a_sbp / sbp_risk ;
 	end;
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
