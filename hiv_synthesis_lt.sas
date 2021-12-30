@@ -8,17 +8,17 @@ Consider prep for next 20 years only but still go to 50 years when assessing int
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
-* libname a 'C:\Loveleen\Synthesis model\';  
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
+* libname a 'C:\Loveleen\Synthesis model\';  * ******************** ;
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";  
+* libname a "&outputdir/";  * ******************** ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000;    
+%let population = 10000 ;    
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -725,6 +725,44 @@ if sens_tests_prep_inj =2 then do;
 sens_testtype3_from_inf_0=0; sens_testtype3_from_inf_p25=0; sens_testtype3_from_inf_gep5=0.25;
 sens_testtype1_from_inf_0=0.1; sens_testtype1_from_inf_p25=0.2; sens_testtype1_from_inf_gep5=0.5;
 end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* ************************************** ;
+
+ych_risk_beh_newp = 1;
+fold_tr = 5;
+hivtest_type_1_prep_inj=1;
+hivtest_type_1_init_prep_inj=1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
@@ -16235,7 +16273,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
-/*
 
 * procs;
 
@@ -16261,6 +16298,11 @@ sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_ge
 where hiv = 1 and (prep_inj=1 or prep_inj_tm1=1 or currently_in_prep_inj_tail=1) and (death=. or caldate&j=death) ;
 
 run;
+
+
+
+
+/*
 
 
 
@@ -18549,7 +18591,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -18684,7 +18726,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a ; set r1;
+data a.lapr1 ; set r1;
+
+*/
+
+/*
 
 data r1; set a;
 
@@ -18771,6 +18817,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
 
+*/
 
 /*
 
@@ -18901,7 +18948,7 @@ data r1; set a;
 
 */
 
-data r1; set a ;
+data r1; set a.lapr1 ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);

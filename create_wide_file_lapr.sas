@@ -24,37 +24,16 @@ set g ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
-&sf = 10000000 / s_alive;
+sf_2022 = 10000000 / s_alive;
 keep run &sf;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=&sf;
+%let sf=sf_2022;
 
 data y; 
 merge g sf;
 by run ;
-
-
-
-
-
-
-
-
-
-if run < 38885269;
-
-
-
-
-
-
-
-
-
-
-
 
 
 * preparatory code ;
@@ -344,15 +323,9 @@ s_hiv = s_hivge15 ;
 								prop_sw_newp0 = s_sw_newp_cat1 / (s_sw_newp_cat1+s_sw_newp_cat2+s_sw_newp_cat3+s_sw_newp_cat4+s_sw_newp_cat5);  
 * t_sw_newp;					if s_sw_1564 gt 0 then t_sw_newp = s_sw_newp/s_sw_1564;
 
-
-
-
-
-
-
-
-
 * prep;
+
+s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * proportion of those on prep who have ge 1 newp in the period ;
 * p_prep_newp ;					if s_prep_all > 0 then p_prep_newp = (s_newp_this_per_hivneg_m_prep + s_newp_this_per_hivneg_w_prep) / s_prep_all ; 
@@ -420,10 +393,26 @@ s_hiv = s_hivge15 ;
 * prop_cab_res_tail;			prop_cab_res_tail = s_cab_res_tail / (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per)  ;
 * prop_cab_res_1st_per;			prop_cab_res_1st_per = s_cab_res_1st_per / (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per)  ;
 
-* p_emerge_inm_res_cab_1st_per ;  p_emerge_inm_res_cab_1st_per = s_cab_res_1st_per / s_prep_inj_at_infection ;
-* p_emerge_inm_res_o_cab ;		p_emerge_inm_res_cab = (s_emerge_inm_res_cab - s_emerge_inm_res_cab_tail - s_cab_res_1st_per) 
-								/ (s_hiv_cab - s_prep_inj_at_infection); 
+* p_emerge_inm_res_cab_1st_per; p_emerge_inm_res_cab_1st_per = s_cab_res_1st_per / s_prep_inj_at_infection ;
+* p_emerge_inm_res_cab ;		p_emerge_inm_res_cab = (s_emerge_inm_res_cab - s_emerge_inm_res_cab_tail) /  s_hiv_cab; * s_emerge_inm_res_cab includes the tail - see hiv_synthesis ;
 * p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_inj_tail_hiv ; 
+
+
+
+
+
+proc print; var run cald   p_emerge_inm_res_cab_1st_per   s_cab_res_1st_per   s_prep_inj_at_infection  
+p_emerge_inm_res_cab s_emerge_inm_res_cab  s_emerge_inm_res_cab_tail  
+s_hiv_cab   p_emerge_inm_res_cab_tail  s_cur_in_prep_inj_tail_hiv ; 
+where option=1;
+run;
+
+
+
+
+
+
+
 
 * prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per) / s_cur_res_cab ;
 
@@ -433,9 +422,6 @@ s_hiv = s_hivge15 ;
 * n_o_cab_at_6m;				n_o_cab_at_6m = s_hiv_cab_6m * &sf;  
 * n_o_cab_at_9m;				n_o_cab_at_9m = s_hiv_cab_9m * &sf;  
 * n_o_cab_at_ge12m;				n_o_cab_at_ge12m = s_hiv_cab_ge12m * &sf;  
-
-
-s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * of_all_o_cab_prop_dur_3m ;    if s_hiv_cab > 0 then of_all_o_cab_prop_dur_3m = s_hiv_cab_3m / s_hiv_cab ;
 * of_all_o_cab_prop_dur_6m ;    if s_hiv_cab > 0 then of_all_o_cab_prop_dur_6m = s_hiv_cab_6m / s_hiv_cab ;
@@ -1072,7 +1058,7 @@ p_prep_all_ever
 
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m  dol_higher_potency  p_emerge_inm_res_ever_prep_inj
 
-ddaly p_emerge_inm_res_cab_1st_per p_emerge_inm_res_o_cab p_emerge_inm_res_cab_tail
+ddaly p_emerge_inm_res_cab_1st_per p_emerge_inm_res_cab p_emerge_inm_res_cab_tail
 ;
 
 
@@ -1241,7 +1227,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_newp); %var(v=prop_sw_onprep);  %var(v=p_emerge_inm_res_ever_prep_inj);
 %var(v=n_o_cab_at_3m);    %var(v=n_o_cab_at_6m);    %var(v=n_o_cab_at_9m);   %var(v=n_o_cab_at_ge12m); 
 
-%var(v=ddaly); %var(v=p_emerge_inm_res_cab_1st_per);  %var(v=p_emerge_inm_res_o_cab);    %var(v=p_emerge_inm_res_cab_tail);
+%var(v=ddaly); %var(v=p_emerge_inm_res_cab_1st_per);  %var(v=p_emerge_inm_res_cab);    %var(v=p_emerge_inm_res_cab_tail);
 %var(v=of_all_o_cab_prop_dur_9m); %var(v=of_all_o_cab_prop_dur_ge12m);
 
 data   wide_outputs; merge 
@@ -1340,7 +1326,7 @@ n_prep_all prop_elig_on_prep p_elig_prep  p_hiv1_prep  prop_onprep_newpge1 p_pre
 p_prep_newp prop_sw_onprep n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m
 p_emerge_inm_res_ever_prep_inj
  
-ddaly  p_emerge_inm_res_cab_1st_per  p_emerge_inm_res_o_cab    p_emerge_inm_res_cab_tail
+ddaly  p_emerge_inm_res_cab_1st_per  p_emerge_inm_res_cab    p_emerge_inm_res_cab_tail
 
 of_all_o_cab_prop_dur_9m 
 
@@ -1641,7 +1627,10 @@ ddaly_x_1 ddaly_x_2
 ddaly_42_1 ddaly_42_2 
 n_cd4_lt200_42_1 n_cd4_lt200_42_2
 incidence1549_x_1 incidence1549_x_2
-p_emerge_inm_res_cab_1st_per_x_2  p_emerge_inm_res_o_cab_x_2  p_emerge_inm_res_cab_tail_x_2
+p_emerge_inm_res_cab_1st_per_x_2  p_emerge_inm_res_cab_x_2  p_emerge_inm_res_cab_tail_x_2
 ; 
+run;
+
+
 
  
