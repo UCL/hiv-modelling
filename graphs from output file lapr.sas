@@ -4,15 +4,16 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-  proc printto   ; *     log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+  proc printto     log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr1617;
+set a.l_lapr1619;
+
 
 p_prep_adhg80_ = p_prep_adhg80 ;
 p_onart_vl1000_all = .;
 
-of_all_o_cab_pr_dur_ge12 = of_all_o_cab_prop_dur_ge12m;
+of_all_o_cab_pr_dur_ge12m = of_all_o_cab_prop_dur_ge12m;
 
 * NB: note lines below, because variable names cannot end with a number;
 log_gender_r_newp  = log(gender_r_newp);
@@ -52,7 +53,7 @@ logm55r = log(m55r+0.0001);
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 858   ;
+%let nfit = 3890  ;
 %let year_end = 2042.75 ;
 run;
 proc sort;by cald option ;run;
@@ -778,6 +779,36 @@ run;quit;
 
 
 proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion on lpr";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_lpr_0 = "no cab-la introduction (median) ";
+label p50_p_lpr_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_p_lpr_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_lpr_0 	upper=p95_p_lpr_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_lpr_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_lpr_1 	upper=p95_p_lpr_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion on efa";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_efa_0 = "no cab-la introduction (median) ";
+label p50_p_efa_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_p_efa_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_efa_0 	upper=p95_p_efa_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_efa_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_efa_1 	upper=p95_p_efa_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on DOL";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
@@ -1341,7 +1372,7 @@ run;quit;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of integrase inhibitor resistance arising due to lab-la, proportion 
- which is in people currently on cab-la (not in primary HIV infection)";
+ which is in people currently on cab-la";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
@@ -1360,7 +1391,7 @@ run;quit;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of integrase inhibitor resistance arising due to lab-la, proportion 
- which is in people currently in a cab-la tail (and not in primary HIV infection)";
+ which is in people currently in a cab-la tail";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
@@ -1373,26 +1404,6 @@ series  x=cald y=p50_prop_cab_res_tail_1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_prop_cab_res_tail_1 	upper=p95_prop_cab_res_tail_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of integrase inhibitor resistance arising due to lab-la, proportion 
- which is in people in primary HIV infection";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
-
-label p50_prop_cab_res_1st_per_0 = "no cab-la introduction (median) ";
-label p50_prop_cab_res_1st_per_1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_prop_cab_res_1st_per_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prop_cab_res_1st_per_0 	upper=p95_prop_cab_res_1st_per_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_prop_cab_res_1st_per_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_prop_cab_res_1st_per_1 	upper=p95_prop_cab_res_1st_per_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
 
 
 ods html;
@@ -1487,7 +1498,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of all people on cab-la, proption who have been infected with HIV in the past 3 months";
+Title    height=1.5 justify=center "Of all people with HIV on cab-la, proportion who have been infected with HIV in the past 3 months";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
@@ -1505,7 +1516,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of all people on cab-la, proportion who have been infected with HIV 6-9 months ago";
+Title    height=1.5 justify=center "Of all people with HIV on cab-la, proportion who have been infected with HIV 6-9 months ago";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
 
@@ -1522,7 +1533,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of all people on cab-la, proportion who have been infected with HIV over 9 months ago";
+Title    height=1.5 justify=center "Of all people with HIV on cab-la, proportion who have been infected with HIV over 9 months ago";
 xaxis label			= 'Year'		labelattrs=(size=12m)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12m)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
 
@@ -1593,8 +1604,8 @@ run;quit;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV related deaths per year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000    by 1000  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
 
 label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
 label p50_n_death_hiv_1 = "cab-la introduction (median) ";

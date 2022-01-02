@@ -8,17 +8,17 @@ Consider prep for next 20 years only but still go to 50 years when assessing int
 
 
 
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  * ************************************** ;
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";    * ************************************************** ;
+  libname a "&outputdir/"; 
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ;     * ************************************************** ;
+%let population = 100000;    
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -6328,8 +6328,6 @@ em_inm_res_o_cab_off_3m=0; emerge_inm_res_cab_tail=0;
 
 if prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0 then prep_inj_inf_or_off_3m=1;
 
-if caldate{t}-date_last_stop_prep_inj = 0 then prep_primary = 1;
-
 c_in118m=max(0,in118m); aa3=rand('uniform'); if e_in118m ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
 and aa3 < pr_inm_inj_prep_1st_per then do; c_in118m = 1;e_in118m = 1;em_inm_res_o_cab_off_3m=1; end;
 c_in140m=max(0,in140m); aa4=rand('uniform'); if e_in140m ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
@@ -6657,7 +6655,7 @@ if t ge 2 then do;
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
 					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1; prep_primary = 0;
+					prep_primary_prevented=1; 
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; 
@@ -6665,7 +6663,7 @@ if t ge 2 then do;
 				end;
 				if caldate{t} = dt_prep_inj_rs then do;  
 					dt_prep_inj_rs=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1; prep_primary = 0;
+					prep_primary_prevented=1;
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; 
@@ -6697,7 +6695,7 @@ if t ge 2 then do;
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
 					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_primary = 0;
+					prep_primary_prevented=1;
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0;
@@ -6705,7 +6703,7 @@ if t ge 2 then do;
 				end;
 				if caldate{t} = dt_prep_inj_rs then do;  
 					dt_prep_inj_rs=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_primary = 0;
+					prep_primary_prevented=1;
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; 
@@ -6849,7 +6847,7 @@ visit_tm1=visit;
 	if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
 	if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
 
-	cab_res_1st_per=0;  prep_inj_inf_or_off_3m=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; prep_primary = 0;
+	cab_res_1st_per=0;  prep_inj_inf_or_off_3m=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0;
 
 * dependent_on_time_step_length ;
 	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
@@ -15647,9 +15645,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_hiv1_prep_all + hiv1_prep_all; s_cur_in_prep_inj_tail_hiv + cur_in_prep_inj_tail_hiv ;
 	s_cur_in_prep_inj_tail_no_r + cur_in_prep_inj_tail_no_r ;  s_prep_inj_inf_or_off_3m + prep_inj_inf_or_off_3m ;
-	s_prep_primary_prevented + prep_primary_prevented; s_prep_primary + prep_primary; 
 
- 
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -16262,16 +16259,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
-
-proc freq; tables cald incidence1549w ; run;
-
-
-proc print; var cald onart reg_option o_dol o_lpr o_taz o_3tc o_ten o_zdv o_efa o_nev nod nactive 
-p_dol p_lpr p_taz p_3tc p_ten p_zdv p_efa p_nev ;
-
-where hiv=1 and registd=1 and (death = . or death = caldate&j);
-run;
- 
 
 /*
 
@@ -17211,7 +17198,7 @@ s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_
 s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m
 
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_cur_in_prep_inj_tail_hiv
-s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m  s_prep_primary_prevented  s_prep_primary
+s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18109,7 +18096,7 @@ s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_
 s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_cur_in_prep_inj_tail_hiv
-s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m  s_prep_primary_prevented  s_prep_primary
+s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19433,7 +19420,7 @@ s_cab_res_o_cab s_cab_res_tail s_cab_res_1st_per s_currently_in_prep_inj_tail s_
 s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all  s_cur_in_prep_inj_tail_hiv
-s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m  s_prep_primary_prevented  s_prep_primary
+s_cur_in_prep_inj_tail_no_r  s_prep_inj_inf_or_off_3m
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
