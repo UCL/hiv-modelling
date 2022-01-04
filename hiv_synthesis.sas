@@ -2,23 +2,33 @@
 
 *
 
-Consider prep for next 20 years only but still go to 50 years when assessing intervention ?
+understand why lower resistance risk in tail
+
+look further into small difference in aids deaths
+
+modify to have a more gradual increase in prep inj
+
+increase the overall level of PrEP use over time.
+
+consider prep for next 20 years only but still go to 50 years when assessing intervention ?
+
+consider having a reduced chance of tranmission from a person in primary if they are on cab-la
 
 ;
 
 
 
-* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
+  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  * ************************ ;
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";    
+* libname a "&outputdir/";    * *************************** ;
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000;    
+%let population = 30000 ;  * ************************** ;
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -537,7 +547,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
 							* dependent_on_time_step_length ;
-* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005  0.1  0.2);	
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005 0.010 0.015);       
 * rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2);
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
@@ -16342,7 +16352,35 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
+
+
 * procs;
+
+prep_inj_efficacy = 0.1;
+fold_tr = 10;
+
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; 
+var 
+caldate&j prep_all_strategy dt_prep_inj_s prep_inj currently_in_prep_inj_tail o_cab 
+
+adh_dl nactive newmut_tm1  pr_res_dol  rr_res_cab_dol
+
+r_cab 
+
+emerge_inm_res_cab_tail cur_in_prep_inj_tail_no_r
+
+elig_prep_all prep_inj_ever 
+
+;
+
+where age ge 15 and dt_prep_inj_s ne .           and death = . ;
+
+run;
+
+
 
 /*
 
@@ -18673,7 +18711,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -18808,38 +18846,47 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a ; set r1;
+data a.lapr ; set r1;
+
+*/
+
+data r1; set a.lapr;
+
+* ************************************ ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
 
 
-data r1; set a;
+* ************************************ ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+/*
+
 %update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
@@ -18898,8 +18945,9 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 
-/*
+*/
 
+/*
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
@@ -19026,6 +19074,8 @@ data r1; set a;
 
 */
 
+/*
+
 data r1; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
@@ -19112,6 +19162,8 @@ data r1; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+*/
 
 /*
 
