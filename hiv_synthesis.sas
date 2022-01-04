@@ -13670,6 +13670,8 @@ end;
 dead_hivpos_cause1=0;dead_hivpos_tb=0; dead_hivpos_crypm=0; dead_hivpos_sbi=0; dead_hivpos_oth_adc=0; dead_hivpos_cause2=0;dead_hivpos_cause3=0;
 dead_hivpos_cause4=0; dead_hivpos_cvd=0; dead_cvd=0; dead_hivneg_cause4=0;dead_hivneg_cause3=0;dead_hivneg_cause2=0; 
 dead_hivneg_cvd=0; dead_cvd=0; dead_hivneg_cause5=0; dead_hivneg_tb=0; dead_tb=0; dead_hivpos_anycause=0;dead_hivneg_anycause=0;
+dead_hivneg_1524m=0;dead_hivneg_2534m=0;dead_hivneg_3544m=0;dead_hivneg_4554m=0;dead_hivneg_5564m=0;dead_hivneg_65plm=0;
+dead_hivneg_1524w=0;dead_hivneg_2534w=0;dead_hivneg_3544w=0;dead_hivneg_4554w=0;dead_hivneg_5564w=0;dead_hivneg_65plw=0;
 dead_cvd_3039m=0;dead_cvd_4049m=0;dead_cvd_5059m=0;dead_cvd_6069m=0;dead_cvd_7079m=0;dead_cvd_ge80m=0;
 dead_cvd_3039w=0;dead_cvd_4049w=0;dead_cvd_5059w=0;dead_cvd_6069w=0;dead_cvd_7079w=0;dead_cvd_ge80w=0;
 * death by cause and hiv status ;
@@ -13688,6 +13690,20 @@ if hiv ne 1 and dcause=3 then dead_hivneg_cause3=1;
 if hiv ne 1 and dcause=4 then do; dead_hivneg_cause4=1; dead_hivneg_cvd=1; dead_cvd=1; end;
 if hiv ne 1 and dcause=5 then do; dead_hivneg_cause5=1; dead_hivneg_tb=1; dead_tb=1; end;
 if hiv ne 1 then dead_hivneg_anycause=1;
+if hiv ne 1 and 15 <= age < 24 and gender=1 then dead_hivneg_1524m=1;
+if hiv ne 1 and 25 <= age < 34 and gender=1 then dead_hivneg_2534m=1;
+if hiv ne 1 and 35 <= age < 44 and gender=1 then dead_hivneg_3544m=1;
+if hiv ne 1 and 45 <= age < 54 and gender=1 then dead_hivneg_4554m=1;
+if hiv ne 1 and 55 <= age < 64 and gender=1 then dead_hivneg_5564m=1;
+if hiv ne 1 and 65 <= age      and gender=1 then dead_hivneg_65plm=1;
+if hiv ne 1 and 15 <= age < 24 and gender=2 then dead_hivneg_1524w=1;
+if hiv ne 1 and 25 <= age < 34 and gender=2 then dead_hivneg_2534w=1;
+if hiv ne 1 and 35 <= age < 44 and gender=2 then dead_hivneg_3544w=1;
+if hiv ne 1 and 45 <= age < 54 and gender=2 then dead_hivneg_4554w=1;
+if hiv ne 1 and 55 <= age < 64 and gender=2 then dead_hivneg_5564w=1;
+if hiv ne 1 and 65 <= age      and gender=2 then dead_hivneg_65plw=1;
+
+
 if dcause=4 and 30 <= age < 39 and gender=1 then dead_cvd_3039m=1;
 if dcause=4 and 40 <= age < 49 and gender=1 then dead_cvd_4049m=1;
 if dcause=4 and 50 <= age < 59 and gender=1 then dead_cvd_5059m=1;
@@ -14902,7 +14918,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
 	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; 
 	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ; s_dead_tb + dead_tb ; 
-	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
+	s_dead_hivneg_anycause + dead_hivneg_anycause;
+	s_dead_hivneg_1524m + dead_hivneg_1524m; s_dead_hivneg_2534m + dead_hivneg_2534m; s_dead_hivneg_3544m + dead_hivneg_3544m;
+	s_dead_hivneg_4554m	+ dead_hivneg_4554m; s_dead_hivneg_5564m + dead_hivneg_5564m; s_dead_hivneg_65plm + dead_hivneg_65plm;
+	s_dead_hivneg_1524w	+ dead_hivneg_1524w; s_dead_hivneg_2534w + dead_hivneg_2534w; s_dead_hivneg_3544w + dead_hivneg_3544w;
+	s_dead_hivneg_4554w	+ dead_hivneg_4554w; s_dead_hivneg_5564w + dead_hivneg_5564w; s_dead_hivneg_65plw + dead_hivneg_65plw;
+	s_dead_hivpos_anycause + dead_hivpos_anycause;  
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80 + dead_cvd_ge80m ;
 	s_dead_cvd_3039w + dead_cvd_3039w ; s_dead_cvd_4049w + dead_cvd_4049w ; s_dead_cvd_5059w + dead_cvd_5059w ;s_dead_cvd_6069w + dead_cvd_6069w ;
@@ -16273,7 +16294,10 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead    
- s_dead_hivneg_anycause  s_dead_hivpos_anycause 
+ s_dead_hivneg_anycause 
+s_dead_hivneg_1524m  s_dead_hivneg_2534m  s_dead_hivneg_3544m s_dead_hivneg_4554m	 s_dead_hivneg_5564m  s_dead_hivneg_65plm 
+s_dead_hivneg_1524w	 s_dead_hivneg_2534w  s_dead_hivneg_3544w s_dead_hivneg_4554w	 s_dead_hivneg_5564w  s_dead_hivneg_65plw 
+s_dead_hivpos_anycause 
 
 /* deaths by cause - age 15+ */
 
@@ -17147,7 +17171,10 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
  s_ev_art_g1k_not2l_adead  s_dead_allage   s_death_dcause3_allage  s_death_hivrel_allage
-s_dead_hivneg_anycause  s_dead_hivpos_anycause
+s_dead_hivneg_anycause 
+s_dead_hivneg_1524m  s_dead_hivneg_2534m  s_dead_hivneg_3544m s_dead_hivneg_4554m	 s_dead_hivneg_5564m  s_dead_hivneg_65plm 
+s_dead_hivneg_1524w	 s_dead_hivneg_2534w  s_dead_hivneg_3544w s_dead_hivneg_4554w	 s_dead_hivneg_5564w  s_dead_hivneg_65plw 
+s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
@@ -18227,7 +18254,10 @@ s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
 s_ev_art_g1k_not2l_adead  
-s_dead_hivneg_anycause  s_dead_hivpos_anycause
+s_dead_hivneg_anycause 
+s_dead_hivneg_1524m  s_dead_hivneg_2534m  s_dead_hivneg_3544m s_dead_hivneg_4554m	 s_dead_hivneg_5564m  s_dead_hivneg_65plm 
+s_dead_hivneg_1524w	 s_dead_hivneg_2534w  s_dead_hivneg_3544w s_dead_hivneg_4554w	 s_dead_hivneg_5564w  s_dead_hivneg_65plw 
+s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 

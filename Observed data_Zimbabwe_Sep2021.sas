@@ -55,7 +55,7 @@
 ************************************     CONTENT   ************************************
 *******************************************************************************************
 1.  Population...................................Line 76
-2.  Fertility....................................Line 338
+2.  Fertility....................................Line 343
 3.  Mortality....................................Line 434
 4.  Prevalence...................................Line 612
 5.  Incidence....................................Line 835
@@ -304,6 +304,11 @@ if cald=2011.5 then do;
 	o_p_fsw_ts6m_1849w_nbcs   =0.107;
 	o_p_fsw_1ts12m_1849w_nbcs =0.089;
 end;
+
+*Source: email from Debra tenBrink on 22/12/2021 reporting as source 2016 Respondent Driven Sampling Survey;
+if cald=2016.5 then o_p_fsw_1549w_rdss=0.012;
+*In Goals 1.2% of women 15-49 are FSW based on 45,000 FSW from UNAIDS Key Population Atlas and a 15-49 female population of 3,634,000 from World Population Prospects 2019;
+
 
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
@@ -977,14 +982,16 @@ if cald=2012.5 then o_prev_fsw_tested_swvp=0.56;
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021)
 page 24
 howvere not clear whether they took these estimates from; 
+*Source: based on email from John Stover up to 2017 the source of these estimtaes is
+COWAN F. ET AL. STRENGTHENING THE SCALE-UP AND UPTAKE OF EFFECTIVE INTERVENTIONS FOR SEX WORKERS FOR POPULATION IMPACT;
 if cald=2011.5 then o_prev_fsw_garpr=0.50;
 if cald=2012.5 then o_prev_fsw_garpr=0.44;
 if cald=2014.5 then o_prev_fsw_garpr=0.46;
 if cald=2015.5 then o_prev_fsw_garpr=0.57;
 if cald=2016.5 then o_prev_fsw_garpr=0.59;
-if cald=2017.5 then o_prev_fsw_garpr=0.56;
+if cald=2017.5 then o_prev_fsw_garpr=0.56;*used by Optima, Source: email from Debra tenBrink on 22/12/2021 reporting as source 2017 Respondent Driven Sampling Survey;
 if cald=2018.5 then o_prev_fsw_garpr=0.41;
-if cald=2019.5 then o_prev_fsw_garpr=0.422;
+if cald=2019.5 then o_prev_fsw_garpr=0.422;*used by Optima, Source: email from Debra tenBrink on 22/12/2021 reporting as source 2019 Special Study;
 
 *Source: RDS in last quarter 2013 (The mean HIV prevalence was 57.5% (https://pubmed.ncbi.nlm.nih.gov/27930599/);
 if cald=2013.75 then do;
@@ -995,6 +1002,9 @@ if cald=2013.75 then do;
 	o_prev_fsw_rds    = 0.575;o_prev_fsw_ll_rds =0.408 ;*0.428; o_prev_fsw_ul_rds =0.812;*0.792;
 	*The confidence  interval for o_prev_fsw_rds is 0.428-0.792, this has been expanded to take into account of bias;
 end;
+
+
+
 
 
 
