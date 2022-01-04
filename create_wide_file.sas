@@ -5,7 +5,7 @@ libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv syn
 libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_5_out\";
 
 data g;    set b.out: ;
-
+proc contents;run;
 
 proc sort data=g; 
 by run cald option;run;

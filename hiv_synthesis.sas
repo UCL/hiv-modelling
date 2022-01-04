@@ -342,16 +342,17 @@ newp_seed = 7;
 * newp_lasttest;			newp_lasttest=0; 
 
 * rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.03 0.05 0.10);	* jul18;
-* test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
+* test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 , 
-								0.1		0.2 	0.40	0.2 	0.05 	0.05 );
+								0.0001	0.001 	0.002 	0.003 	0.0100, 
+					 			0.1		0.2 	 	0.4		0.2 		0.1 	);
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-
-
+* an_lin_decr_test_future;		%sample(an_lin_decr_test_future, 
+								0.0001	0.001 	0.002 	0.003 	0.0100, 
+					 			0.1		0.2 	0.4		0.2 	0.1);
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
@@ -494,7 +495,7 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080); 
+* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0030 0.0040);
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -588,9 +589,9 @@ newp_seed = 7;
 * test_link_circ;			test_link_circ=1; 
 * test_link_circ_prob;		test_link_circ_prob = 0.05;
 
-* circ_inc_rate; 			%sample(circ_inc_rate, 
-								0.0001	0.001	0.003	0.01	0.1, 
-								0.1		0.3 	0.4		0.1		0.1);
+* circ_inc_rate;		%sample(circ_inc_rate, 	0.0001	0.001	0.002, 
+					   							0.25	0.5 	0.25);
+
 
 * circ_inc_15_19;			%sample_uniform(circ_inc_15_19, 1.5 2.0 3.0);
 * circ_red_20_30;			%sample_uniform(circ_red_20_30, 0.3 0.4 0.5);
@@ -2069,7 +2070,7 @@ end;
 *(impact of changes are coded below the options code);
 
 *increase in testing;
-incr_test_year_i = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
+incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
 
 *decrease in the proportion of people hard to reach;
 decr_hard_reach_year_i = 0;
@@ -2427,6 +2428,10 @@ end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+if caldate{t} >= &year_interv and incr_test_year_i = 3 then do; 
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_decr_test_future;
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_decr_test_future;;
+end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 *Vale - 20211026;
@@ -16400,7 +16405,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test an_lin_decr_test_future date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
@@ -18351,7 +18356,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test an_lin_decr_test_future date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
