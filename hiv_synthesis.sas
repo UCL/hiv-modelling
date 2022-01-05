@@ -345,14 +345,13 @@ newp_seed = 7;
 * test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.001 	0.002 	0.003 	0.0100, 
-					 			0.1		0.2 	 	0.4		0.2 		0.1 	);
+								0.0001 0.001 0.002 0.003 0.004, 
+								0.1    0.2   0.4   0.2   0.1);
+
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-* an_lin_decr_test_future;		%sample(an_lin_decr_test_future, 
-								0.0001	0.001 	0.002 	0.003 	0.0100, 
-					 			0.1		0.2 	0.4		0.2 	0.1);
+* fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
@@ -1399,7 +1398,7 @@ prop_mono_m_2534 = . ;  prop_mono_m_3544 = . ;  prop_mono_m_4554 = . ;  prop_mon
 prop_mono_w_3544 = . ;  prop_mono_w_4554 = . ;  prop_mono_w_5564 = . ;  incidence1524w_epnewp = . ;  incidence2534w_epnewp = . ; 
 incidence3544w_epnewp = . ;  incidence4554w_epnewp = . ;  incidence5564w_epnewp = . ;  incidence1524m_epnewp = . ;  incidence2534m_epnewp = . ; 
 incidence3544m_epnewp = . ;  incidence4554m_epnewp = . ;  incidence5564m_epnewp = . ;  r_hiv_epi_both = . ;  d_diag_w = . ;  p_diag_w = . ; 
-d_diag_m = . ;  p_diag_m = . ;  d_onart = . ;  p_diag_onart = . ;  d_vls = . ;  p_onart_vls = . ;  no_test_if_np0 = . ;  tld_last_egfr = . ; 
+d_diag_m = . ;  p_diag_m = . ;  d_onart = . ;  p_diag_onart = . ;  d_vls = . ;  p_onart_vls = . ;  tld_last_egfr = . ; 
 prevalence2534w = . ;  prevalence3544w = . ;  prevalence4554w = . ;  prevalence5564w = . ;  prevalence1524m = . ;  prevalence2534m = . ; 
 prevalence3544m = . ;  prevalence4554m = . ;  prevalence5564m = . ;   prevalence1524w = . ; 
 
@@ -2420,17 +2419,21 @@ tested_anc=.;
 if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
+		rate_1sttest_2010 = initial_rate_1sttest + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+		rate_reptest_2010 = 0.0000 + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+
 end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_decr_test_future;
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_decr_test_future;;
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
+		if rate_1sttest gt rate_1sttest_2010 gt . then rate_1sttest = rate_1sttest_2010;
+		if rate_reptest gt rate_reptest_2010 gt . then rate_reptest = rate_reptest_2010;
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -4003,7 +4006,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		unitest=rand('uniform');
 
 		* think not * dependent_on_time_step_length ;
- 		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  if no_test_if_np0 = 1 and . < np_lasttest <= 0 then unitest = 1;
+ 		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  
 		if newp_lasttest ge 1 then unitest=unitest/eff_test_targeting;  * targeting of testing - aug15;
 
 		if      ever_tested ne 1  then do; 
@@ -10040,6 +10043,14 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
+	*Life expectancy in people without HIV has increased and so the underlying risk of dying for non-HIV should decrease;
+	if 1997 le caldate{t} lt 2021 then ac_death_rate = ac_death_rate - (caldate{t}-1997)*0.005*ac_death_rate;
+	* a  15-20 man will have an ac_death rate of 0.0018 in 2021 vs 0.002  in 1997;
+	* a  40-45 man will have an ac_death rate of 0.0085 in 2021 vs 0.0097 in 1997;
+	* an 85+   man will have an ac_death rate of 0.32   in 2021 vs 0.36   in 1997;
+	* a  15-20 woman will have an ac_death rate of 0.0013 in 2021 vs 0.0015 in 1997;
+	* a  40-45 woman will have an ac_death rate of 0.0047 in 2021 vs 0.0053 in 1997;
+	* an 85+   woman will have an ac_death rate of 0.1189 in 2021 vs 0.135 in 1997;
 	if onart ne 1 then ac_death_rate = rr_non_aids_death_hiv_off_art * ac_death_rate;
 	if onart =1 then ac_death_rate = rr_non_aids_death_hiv_on_art * ac_death_rate;
 
@@ -10085,6 +10096,9 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 * risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+	*Life expectancy in people without HIV has increased, partly because of CVD death rates declining ;
+	if 1997 le caldate{t} lt 2021 then cvd_death_risk = cvd_death_risk - (caldate{t}-1997)*0.005*cvd_death_risk;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -10429,6 +10443,17 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
+	*Life expectancy in people without HIV has increased;
+	if 1997 le caldate{t} lt 2021 then ac_death_rate = ac_death_rate - (caldate{t}-1997)*0.005*ac_death_rate;
+	* a  15-20 man will have an ac_death rate of 0.0016 in 2021 vs 0.0019 in 1997;
+	* a  40-45 man will have an ac_death rate of 0.0090 in 2021 vs 0.0079 in 1997;
+	* an 85+   man will have an ac_death rate of 0.2946   in 2021 vs 0.3348   in 1997;
+	* a  15-20 woman will have an ac_death rate of 0.0012 in 2021 vs 0.0014 in 1997;
+	* a  40-45 woman will have an ac_death rate of 0.0044 in 2021 vs 0.0050 in 1997;
+	* an 85+   woman will have an ac_death rate of 0.1105 in 2021 vs 0.1255 in 1997;
+
+
+
 	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=rand('uniform');
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
@@ -10464,6 +10489,10 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+	*Life expectancy in people without HIV has increased, partly because of CVD death rates declining
+	and s the underlying risk of cvd in people with HIV should decline as well;
+	if 1997 le caldate{t} lt 2021 then cvd_death_risk = cvd_death_risk - (caldate{t}-1997)*0.005*cvd_death_risk;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -16429,7 +16458,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test an_lin_decr_test_future date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test fold_rate_decr_test_future date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
@@ -18386,7 +18415,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test an_lin_decr_test_future date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test fold_rate_decr_test_future date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
