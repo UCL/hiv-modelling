@@ -342,16 +342,15 @@ newp_seed = 7;
 * newp_lasttest;			newp_lasttest=0; 
 
 * rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.03 0.05 0.10);	* jul18;
-* test_targeting;   		%sample(test_targeting, 1 1.1 1.3, 0.7 0.2 0.1);
+* test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001 0.001 0.002 0.003 0.004, 
-								0.1    0.2   0.4   0.2   0.1);
-
+								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 , 
+								0.1		0.2 	0.40	0.2 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
-* fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
+* fold_rate_decr_test_future;fold_rate_decr_test_future=0;
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
@@ -494,7 +493,7 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0030 0.0040);
+* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -588,9 +587,9 @@ newp_seed = 7;
 * test_link_circ;			test_link_circ=1; 
 * test_link_circ_prob;		test_link_circ_prob = 0.05;
 
-* circ_inc_rate;		%sample(circ_inc_rate, 	0.0001	0.001	0.002, 
-					   							0.25	0.5 	0.25);
-
+* circ_inc_rate; 			%sample(circ_inc_rate, 
+								0.0001	0.001	0.003	0.01	0.1, 
+								0.1		0.3 	0.4		0.1		0.1);
 
 * circ_inc_15_19;			%sample_uniform(circ_inc_15_19, 1.5 2.0 3.0);
 * circ_red_20_30;			%sample_uniform(circ_red_20_30, 0.3 0.4 0.5);
@@ -2419,6 +2418,7 @@ tested_anc=.;
 if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
 		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
