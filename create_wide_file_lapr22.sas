@@ -7,14 +7,14 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr21_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr22_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 data g; set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-%let laprv = lapr21;
+%let laprv = lapr22;
 
 proc sort data=g; 
 by run cald option;run;
@@ -411,17 +411,8 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * of people with hiv on cab who do not have resistance, proportion developing resistance in given period; 
 * p_emerge_inm_res_cab ;		p_emerge_inm_res_cab = s_em_inm_res_o_cab_off_3m /  s_o_cab_or_o_cab_tm1_no_r;
 * as above but not including people in primary infection ;
-* p_emerge_inm_res_cab_notpr ; 	p_emerge_inm_res_cab_notpr = (s_em_inm_res_o_cab_off_3m - s_cab_res_prep_inj_primary) /  
+* p_emerge_inm_res_cab_notpr ; 	p_emerge_inm_res_cab_notpr = s_em_inm_res_o_cab_off_3m_npr /  
 															 (s_o_cab_or_o_cab_tm1_no_r - s_prep_inj_inf_or_off_3m);
-
-
-
-why s_em_inm_res_o_cab_off_3m can be less than s_cab_res_prep_inj_primary ?
-why risk of resistance in tail seems low ?  is it in fact just as low as o_cab - with the risk only being very high in primary infection  ?
-
-
-
-
 
 * of people with hiv in cab tail period who do not have resistance, proportion developing resistance in given period; 
 * p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_inj_tail_no_r; 
@@ -1126,6 +1117,13 @@ data    a.l_&laprv; set y;
 
 proc freq; tables run;
 
+run;
+
+
+
+proc means data=y; var 
+p_emerge_inm_res_cab_notpr   ;
+;
 run;
 
 
