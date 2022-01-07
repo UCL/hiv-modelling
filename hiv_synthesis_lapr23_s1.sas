@@ -5822,8 +5822,14 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_oral_efficacy));
 		end;
-		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_nip = risk_nip * (1-prep_inj_efficacy);
+
+
+	* s1 ; 
+		eff_prep_inj_efficacy  = prep_inj_efficacy ; if dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t} then eff_prep_inj_efficacy = 0;
+
+
+* s1;		if prep_inj   =1 then do; 	* lapr and dpv-vr;
+			risk_nip = risk_nip * (1-eff_prep_inj_efficacy);
 			if in118m_p + in140m_p + in148m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
 		end;
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
@@ -6025,10 +6031,14 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		end;
 
+	* s1 ; 
+		eff_prep_inj_efficacy  = prep_inj_efficacy ; if dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t} then eff_prep_inj_efficacy = 0;
+
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_eip = risk_eip * (1-prep_inj_efficacy);
+	* s1;	risk_eip = risk_eip * (1-eff_prep_inj_efficacy);
 			if in118m_p + in140m_p + in148m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
 		end;
+
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_eip = risk_eip * (1-prep_vr_efficacy);
 			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_eip = risk_eip * (1- (0.5 * prep_vr_efficacy));

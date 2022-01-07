@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto     log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr21;
+set a.l_lapr22;
 
 p_prep_adhg80_ = p_prep_adhg80 ;
 p_onart_vl1000_all = .;

@@ -414,6 +414,10 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_emerge_inm_res_cab_notpr ; 	p_emerge_inm_res_cab_notpr = s_em_inm_res_o_cab_off_3m_npr /  
 															 (s_o_cab_or_o_cab_tm1_no_r - s_prep_inj_inf_or_off_3m);
 
+* ************************ this above still needs attention;
+
+
+
 * of people with hiv in cab tail period who do not have resistance, proportion developing resistance in given period; 
 * p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_inj_tail_no_r; 
 
@@ -1538,42 +1542,7 @@ class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice pr
 prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
 model d_p_iime_42_2 =
-fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
-;
-* where hiv_test_strat2 =0 and hiv_test_strat3 = 0;
-run;
-
-
-* sens_testtype3_from_inf_gep5 
-sens_testtype1_from_inf_gep5 ;
-
-
-
-proc glm data=  a.w_&laprv; 
-class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
-model d_p_iime_42_2 =
-p_iime_22 prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22 
-fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
-;
-* where hiv_test_strat2 =0 and hiv_test_strat3 = 0;
-run;
-
-* hivtest_type_1_init_prep_inj ;
-
-
-
-proc glm data=  a.w_&laprv; 
-class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
-model d_p_iime_42_2 =
-p_iime_22 incidence1549w_22 p_vl1000_22 prop_1564_onprep_22 
+/* p_iime_22 incidence1549w_22 p_vl1000_22 prop_1564_onprep_22 */
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
@@ -1582,6 +1551,17 @@ run;
 
 proc univariate data= a.w_&laprv; var d_p_iime_42_2; run;
 
+
+proc glm data=  a.w_&laprv; 
+class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
+model p_iime_42_2 =
+fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
+;
+run;
 
 
 
