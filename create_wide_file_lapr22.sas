@@ -425,35 +425,6 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_prep_primary_prevented ; 	p_prep_primary_prevented = s_prep_primary_prevented /(s_prep_reinit_primary + s_prep_init_primary + s_prep_primary_prevented);
 
 
-/*
-
-proc print data=y; 
-var
-p_emerge_inm_res_cab_notpr s_em_inm_res_o_cab_off_3m s_cab_res_prep_inj_primary  
-															 s_o_cab_or_o_cab_tm1_no_r  s_prep_inj_inf_or_off_3m
-;
-where option =1 ;
-proc means n mean p50 min max data=y;
-var
-p_emerge_inm_res_cab_notpr  p_emerge_inm_res_cab_prim
-;
-where option=1 ;
-run;
-
-
-p_prep_primary_prevented  s_prep_primary_prevented s_prep_reinit_primary  s_prep_init_primary  s_prep_primary_prevented
-pr_ever_prep_inj_res_cab  s_em_inm_res_o_cab_off_3m  s_emerge_inm_res_cab_tail  s_prep_inj_ever
-pr_ev_prep_inj_res_cab_hiv  s_em_inm_res_o_cab_off_3m  s_emerge_inm_res_cab_tail   s_prep_inj_ever_hiv 
-prop_cab_res_o_cab  s_em_inm_res_o_cab_off_3m  s_em_inm_res_o_cab_off_3m  s_emerge_inm_res_cab_tail
-p_prep_init_primary_res  s_prep_init_primary_res  s_prep_init_primary
-p_prep_reinit_primary_res  s_prep_reinit_primary_res  s_prep_init_primary_res  	s_prep_reinit_primary  s_prep_init_primary
-p_emerge_inm_res_cab  s_em_inm_res_o_cab_off_3m   s_o_cab_or_o_cab_tm1_no_r
-p_emerge_inm_res_cab_tail  s_emerge_inm_res_cab_tail  s_cur_in_prep_inj_tail_no_r
-p_emerge_inm_res_cab_prim  s_cab_res_prep_inj_primary  s_prep_inj_inf_or_off_3m
-n_prep_primary_prevented
-
-*/
-
 * prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per) / s_cur_res_cab ;
 
 * prop_prep_inj_at_inf_diag;	if s_prep_inj_at_infection + s_diagprim_prep_inj > 0 then prop_prep_inj_at_inf_diag =  s_diagprim_prep_inj /  (s_prep_inj_at_infection + s_diagprim_prep_inj);
@@ -1103,6 +1074,7 @@ ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail  pr_inm_inj_prep_1st_per
 p_emerge_inm_res_cab p_emerge_inm_res_cab_tail
 
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented
+p_emerge_inm_res_cab_notpr
 ;
 
 
@@ -1121,7 +1093,7 @@ run;
 
 
 
-proc means data=y; var 
+proc means data=a.l_&laprv; var 
 p_emerge_inm_res_cab_notpr   ;
 ;
 run;

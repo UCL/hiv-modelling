@@ -6327,9 +6327,8 @@ if prep_oral = 1 then o_3tc = 1;
 if prep_oral = 1 then o_ten = 1;
 if prep_inj = 1 then o_cab = 1; 
 
-o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  
+o_cab_or_o_cab_tm1=0;  
 if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
-if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
 
 if prep_inj=0 and prep_inj_tm1=1 then tss_cab=0; 
 
@@ -6411,6 +6410,15 @@ c_rt103m= max(0,k103m);
 c_rt181m= max(0,y181m);
 c_rt190m= max(0,g190m);
 
+c_in118m=max(0,in118m);
+c_in140m=max(0,in140m);
+c_in148m=max(0,in148m);
+c_in263m=max(0,in263m);
+
+if o_cab_or_o_cab_tm1=1 and c_in118m ne 1 and c_in140m ne 1 and c_in148m ne 1 and c_in263m ne 1 then o_cab_or_o_cab_tm1_no_r=1;  
+
+if o_cab_or_o_cab_tm1_no_r=1 then o_cab_or_o_cab_tm1_no_r_prim=1;
+
 * note that risk of resistance needs to be dealt with directly in this first period of infection - after this period it is dealt with through
 o_cab, nactive, adh_dl etc ;
 
@@ -6421,27 +6429,35 @@ if prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0 then prep_inj_inf_or_off
 if caldate{t} = dt_prep_inj_s  then prep_init_primary = 1;
 if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then prep_reinit_primary = 1;
 
-c_in118m=max(0,in118m); aa3=rand('uniform'); if e_in118m ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
-and aa3 < pr_inm_inj_prep_1st_per then do; c_in118m = 1;e_in118m = 1;em_inm_res_o_cab_off_3m=1; end;
-c_in140m=max(0,in140m); aa4=rand('uniform'); if e_in140m ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
-and aa4 < pr_inm_inj_prep_1st_per then do; c_in140m = 1;e_in140m = 1;em_inm_res_o_cab_off_3m=1;  end;
-c_in148m=max(0,in148m); aa5=rand('uniform'); if e_in148m ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
-and aa5 < pr_inm_inj_prep_1st_per then do; c_in148m = 1;e_in148m = 1;em_inm_res_o_cab_off_3m=1; end;
-c_in263m=max(0,in263m); aa6=rand('uniform'); if e_in263m  ne 1 and (prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0) 
-and aa6 < pr_inm_inj_prep_1st_per then do; c_in263m = 1;e_in263m = 1;em_inm_res_o_cab_off_3m=1;  end;
+if prep_inj=1 or caldate{t}-date_last_stop_prep_inj = 0 then do;
+
+ aa3=rand('uniform'); if e_in118m ne 1 and aa3 < pr_inm_inj_prep_1st_per then do; c_in118m = 1;e_in118m = 1; end;
+ aa4=rand('uniform'); if e_in140m ne 1 and aa4 < pr_inm_inj_prep_1st_per then do; c_in140m = 1;e_in140m = 1;  end;
+ aa5=rand('uniform'); if e_in148m ne 1 and aa5 < pr_inm_inj_prep_1st_per then do; c_in148m = 1;e_in148m = 1; end;
+ aa6=rand('uniform'); if e_in263m  ne 1 and aa6 < pr_inm_inj_prep_1st_per then do; c_in263m = 1;e_in263m = 1;  end;
+
+ if (in118m ne 1 and c_in118m = 1) or (in140m ne 1 and c_in140m = 1) or (in148m ne 1 and c_in148m = 1) or (in263m ne 1 and c_in263m = 1) 
+ then em_inm_res_o_cab_off_3m=1; 
+
+end;
 
 if prep_init_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_init_primary_res=1;
 if prep_reinit_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_reinit_primary_res=1;
 
 if prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
-c_in118m=max(0,in118m); aa3=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in118m  ne 1  
-and aa3 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in118m = 1;e_in118m = 1;emerge_inm_res_cab_tail=1; end;
-c_in140m=max(0,in140m); aa4=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in140m  ne 1  
-and aa4 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in140m = 1;e_in140m = 1;emerge_inm_res_cab_tail=1; end;
-c_in148m=max(0,in148m); aa5=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in148m  ne 1 
-and aa5 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in148m = 1;e_in148m = 1;emerge_inm_res_cab_tail=1; end;
-c_in263m=max(0,in263m); aa6=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in263m  ne 1  
-and aa6 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in263m = 1;e_in263m = 1;emerge_inm_res_cab_tail=1; end;
+
+ aa3=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in118m  ne 1  
+ and aa3 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in118m = 1;e_in118m = 1; end;
+ aa4=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in140m  ne 1  
+ and aa4 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in140m = 1;e_in140m = 1; end;
+ aa5=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in148m  ne 1 
+ and aa5 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in148m = 1;e_in148m = 1; end;
+ aa6=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in263m  ne 1  
+ and aa6 < pr_inm_inj_prep_1st_per*rel_pr_inm_inj_prep_tail_1st_per then do; c_in263m = 1;e_in263m = 1; end;
+
+ if (in118m ne 1 and c_in118m  = 1) or (in140m ne 1 and c_in140m = 1) or (in148m ne 1 and c_in148m = 1) or (in263m ne 1 and c_in263m = 1) 
+ then emerge_inm_res_cab_tail=1;
+
 end;
 
 c_rttams_inf=c_rttams;
@@ -6751,14 +6767,14 @@ if t ge 2 then do;
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
 					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1; prep_init_primary = 0;continuous_prep_inj_use=0;	
+					prep_primary_prevented=1; prep_init_primary = 0;continuous_prep_inj_use=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; prep_init_primary_res=0;
 					end;
 				end;
 				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
-					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
+					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
 					prep_primary_prevented=1; prep_reinit_primary = 0;continuous_prep_inj_use=0;	
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
@@ -6791,7 +6807,7 @@ if t ge 2 then do;
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
 					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_init_primary = 0;continuous_prep_inj_use=0;	
+					prep_primary_prevented=1;prep_init_primary = 0;continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0;prep_init_primary_res=0;
@@ -6799,7 +6815,7 @@ if t ge 2 then do;
 				end;
 				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
 					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_reinit_primary = 0; continuous_prep_inj_use=0;	
+					prep_primary_prevented=1;prep_reinit_primary = 0; continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
 					if em_inm_res_o_cab_off_3m=1 then do; 
 						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
 						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; prep_reinit_primary_res=0;
@@ -6939,7 +6955,7 @@ visit_tm1=visit;
 
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
 
-	o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  
+	o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  o_cab_or_o_cab_tm1_no_r_prim=0;
 	if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
 	if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
 
@@ -15835,7 +15851,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 
 	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ;
-	s_o_cab_or_o_cab_tm1 + o_cab_or_o_cab_tm1 ; s_o_cab_or_o_cab_tm1_no_r + o_cab_or_o_cab_tm1_no_r ;
+	s_o_cab_or_o_cab_tm1 + o_cab_or_o_cab_tm1 ; s_o_cab_or_o_cab_tm1_no_r + o_cab_or_o_cab_tm1_no_r ; s_o_cab_or_o_cab_tm1_no_r_prim + o_cab_or_o_cab_tm1_no_r_prim;
 	s_onefa_linefail1 + onefa_linefail1 ; s_ev_art_g1k_l1k + ev_art_g1k_l1k ; s_ev_art_g1k_not2l + ev_art_g1k_not2l ; 
 	s_ev_art_g1k_not2l_l1k + ev_art_g1k_not2l_l1k ; s_ev_art_g1k + ev_art_g1k ; s_ev_art_g1k_not2l_adc + ev_art_g1k_not2l_adc ;
    	s_art_12m + art_12m ; s_vl1000_art_12m + vl1000_art_12m ; s_art_24m + art_24m ; s_vl1000_art_24m + vl1000_art_24m ; s_art_12m_onart + art_12m_onart ;   
@@ -17433,7 +17449,7 @@ s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -18332,7 +18348,7 @@ s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart    s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -19653,7 +19669,7 @@ s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
