@@ -7,16 +7,19 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr21;
+* set a.l_lapr22;
+* set a.l_lapr23_nocabr;
+  set a.l_lapr23_lhardr;
 
 * if hivtest_type_1_init_prep_inj =  1 ; * and hivtest_type_1_prep_inj =  1 ;
 
+  
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1930  ;
-%let year_end = 2042.75 ;
+%let nfit = 2000  ;
+%let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
 
@@ -25,7 +28,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = p_emerge_inm_res_cab_tail ;
+%let var = n_death_hiv ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -34,6 +37,7 @@ if option =1 then delete;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
+%let mean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -48,8 +52,9 @@ p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -67,7 +72,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = p_emerge_inm_res_cab_tail ;
+%let var = n_death_hiv ;
 run;
 
 
@@ -78,6 +83,7 @@ run;
 %let p5_var = p5_&var_1;
 %let p95_var = p95_&var_1;
 %let p50_var = median_&var_1;
+%let mean_var = mean_&var_1;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -92,8 +98,9 @@ p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
+mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -111,30 +118,28 @@ data d; * this is number of variables in %let var = above ;
 merge g1   h1 ;
 by cald;
 
-proc contents data=d; run; 
-
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
+ods html ;
 
-
-
-
-ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p_emerge_inm_res_cab_tail";
+Title    height=1.5 justify=center "n_death_hiv";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5     by 0.1  ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100000 by 10000 ) valueattrs=(size=10);
 
-label p50_p_emerge_inm_res_cab_tail_0 = "no cab-la introduction (median) ";
-label p50_p_emerge_inm_res_cab_tail_1 = "cab-la introduction (median) ";
+label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
+label p50_n_death_hiv_1 = "cab-la introduction (median) ";
 
-series  x=cald y=p50_p_emerge_inm_res_cab_tail_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_emerge_inm_res_cab_tail_0 	upper=p95_p_emerge_inm_res_cab_tail_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_p_emerge_inm_res_cab_tail_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_emerge_inm_res_cab_tail_1 	upper=p95_p_emerge_inm_res_cab_tail_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+* series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
+  series  x=cald y=mean_n_death_hiv_0/	lineattrs = (color=back  thickness = 2);
+band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+* series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
+  series  x=cald y=mean_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
 
 
+ods html close; 
 
 

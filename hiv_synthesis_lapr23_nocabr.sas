@@ -2,9 +2,11 @@
 
 *
 
-modify to have a more gradual increase in prep inj ?
+look further into small difference in aids deaths
 
-increase the overall level of PrEP use over time ?
+modify to have a more gradual increase in prep inj
+
+increase the overall level of PrEP use over time.
 
 consider prep for next 20 years only but still go to 50 years when assessing intervention ?
 
@@ -12,16 +14,10 @@ consider having a reduced chance of tranmission from a person in primary if they
 
 in order to mimic effects of viral load testing before prep (re)initiation we "reverse" the starting of prep if later within the time infection occurs
 - drawback with this is that we apply the effect of prep in that first period and only reverse the small number of infections that occur
-(see sens analyses s1 and s2 as ways to investigate this)
+- in sensitivity analysis we could therefore reduce prep efficacy in the first period of prep use (e.g. to 0.5 or 0) in order to consider the effect 
+of this limitation (which is due to the 3 month time step)
 
-;
-
-
-* s1 - efficacy of inj prep 0 in first period (this sens analysis is a way to assess impact of type 1 testing at prep (re)start) 
-* s2 - new resistance cannot arise at (re)initiation if hivtest_type_1_init_prep_inj=1 (this sens analysis is a way to assess 
-       impact of type 1 testing at prep (re)start) 
-* nocabr - cab does not lead to mutations - to investigate how much of the effects we see in main analysis are influenced by cab resistance
-* lhardr - hard_reach set to 0 for everyone just before baseline - to see the policy comparison in this context
+check proportion of art initiators with nnrti resistance
 
 ;
 
@@ -30,7 +26,7 @@ in order to mimic effects of viral load testing before prep (re)initiation we "r
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";       
+  libname a "&outputdir/";    
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -373,7 +369,7 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.01 0.03 0.05 0.10);	
+* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.03 0.05 0.10);	* jul18;
 * test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
@@ -728,7 +724,23 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
 * pr_inm_inj_prep_1st_per ;		%sample_uniform(pr_inm_inj_prep_1st_per,     0.05 0.1 0.2 0.3 0.5 0.8 1) ; * removed 0.8 after comparing resistance emergence with 083 data;
-* rel_pr_inm_inj_prep_tail_1st_per; %sample_uniform(rel_pr_inm_inj_prep_tail_1st_per, 0.5 1 2); * removed 2 after comparing resistance emergence with 083 data;
+
+
+
+
+
+
+* nocabr;
+pr_inm_inj_prep_1st_per=0;
+rr_res_cab_dol=0;
+
+
+
+
+
+
+
+* rel_pr_inm_inj_prep_tail_1st_per; %sample_uniform(rel_pr_inm_inj_prep_tail_1st_per, 0.5 1  ); * removed 2 after comparing resistance emergence with 083 data;
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;
 
@@ -745,8 +757,6 @@ end;
 if sens_tests_prep_inj =2 then do;
 sens_testtype1_from_inf_0=0.2; sens_testtype1_from_inf_p25=0.3; sens_testtype1_from_inf_gep5=0.5;
 end;
-
-* sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
 
 * DAPIVIRINE VAGINAL RING ; * dpv-vr;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
@@ -952,7 +962,7 @@ cost_test_b=0.025; *HCW-testing general pop, HIV positive;
 cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 - email from anna osborne chai 8nov2016 - this is for facility based testing, which most testing is;
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
-cost_test_g=0.022; *vl test to diagnose;
+cost_test_f=0.022; *vl test to diagnose;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -2577,8 +2587,6 @@ end;
 *  ========================================================================================================================================= ;
 
 * for hptn - replace whole of this options section with this ;
-
-option = &s;
 
 if caldate_never_dot ge 2015 then prep_all_strategy = 7; * so prep for women only until cab-la;
 
@@ -4656,7 +4664,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t}
 or dt_prep_inj_c=caldate{t})
-then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
+then do; cost_test = cost_test_f; cost_test_type1=cost_test_f; end;
 
 
 ********* continuing PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
@@ -4672,7 +4680,7 @@ then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 		if hivtest_type_1_prep_inj = 1 then do;
 			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
-		cost_test = cost_test_g; cost_test_type1=cost_test_g; 
+		cost_test = cost_test_f; cost_test_type1=cost_test_f; 
 		end;
 	end;
 
@@ -6208,7 +6216,7 @@ end;
 
 
 com_test=.;
-if tested=1 and hiv ne 1 and cost_test ne cost_test_g then do;
+if tested=1 and hiv ne 1 and cost_test ne cost_test_f then do;
 	cost_test= cost_test_c;
 	u=rand('uniform'); if u lt 0.1365 and prep_oral ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
 	if com_test=1 then cost_test= cost_test_e;
@@ -6454,7 +6462,6 @@ end;
 if prep_init_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_init_primary_res=1;
 if prep_reinit_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_reinit_primary_res=1;
 
-
 if prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
 
  aa3=rand('uniform'); if currently_in_prep_inj_tail = 1 and e_in118m  ne 1  
@@ -6662,7 +6669,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_dol=0.75;
 
 * cab;
-	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.75;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in263m=1) then r_cab=0.00;  
 	if r_cab=0.75 then cab_res_1st_per=1;
 	if prep_inj_inf_or_off_3m =1 and cab_res_1st_per=1 then cab_res_prep_inj_primary=1;
 
@@ -6761,7 +6768,7 @@ if t ge 2 then do;
 
 	if hivtest_type=4 then do;
 		sens_primary=0.65;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
+		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_testtype1_from_inf_0 ; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
@@ -6837,45 +6844,7 @@ if t ge 2 then do;
 				prep_all=0;		prep_vr =0; 	dt_prep_vr_e=.; 	dt_prep_vr_s=.;
 				if caldate{t} = dt_prep_vr_s then do;  prep_all_ever=.; prep_vr_ever=.; end; 
 			end;
-		cost_test = cost_test_g; cost_test_type1=cost_test_g;
-		end;
-	end;
-	if hivtest_type=3 then do;
-		u=rand('uniform');
-		sens_primary=sens_primary_testtype3;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_testtype3_from_inf_0 ;
-		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
-			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_all=0;	prep_oral=0; dt_prep_oral_e=.; 
-				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; end;
-				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
-			end;
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
-				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_all=0;		prep_inj=0; 	dt_prep_inj_e=.; o_cab=0; tcur=.; nactive=.; 
-				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
-				if caldate{t} = dt_prep_inj_s then do;  
-					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_init_primary = 0;continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
-						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0;prep_init_primary_res=0;
-					end;
-				end;
-				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
-					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_1st_per=0;
-					prep_primary_prevented=1;prep_reinit_primary = 0; continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m = 0; c_in140m = 0; c_in148m = 0; c_in263m = 0;
-						e_in118m = 0; e_in140m = 0; e_in148m = 0; e_in263m = 0; r_cab=0; em_inm_res_o_cab_off_3m=0; prep_reinit_primary_res=0;
-					end;
-				end;
-			end;
-			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_all=0;		prep_vr =0; 	dt_prep_vr_e=.; 	dt_prep_vr_s=.;
-				if caldate{t} = dt_prep_vr_s then do;  prep_all_ever=.; prep_vr_ever=.; end; 
-			end;
+		cost_test = cost_test_f; cost_test_type1=cost_test_f;
 		end;
 	end;
 end;
@@ -7206,11 +7175,9 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_testtype1_from_inf_0;  
 			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
-		cost_test = cost_test_g; cost_test_type1=cost_test_g;
+		cost_test = cost_test_f; cost_test_type1=cost_test_f;
 		end;
 	end;
-
-	if currently_in_prep_inj_tail =1 then eff_sens_vct = sens_vct_testtype3_cab_tail; 
 
 		if t ge 3 and bb1 < eff_sens_vct then do; 
 			registd=1; date1pos=caldate{t}; 
@@ -15858,8 +15825,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
- 	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
-	s_hard_reach + hard_reach;
+ 	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ; s_sens_primary_testtype3 + sens_primary_testtype3;
+
 
 	/*VL and CD4*/
 
@@ -16434,20 +16401,9 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
-/*
+
 
 * procs;
-
-hivtest_type_1_prep_inj=1;
-cost_test_g=0.022;
-
-proc freq; tables cald hiv;
-
-proc print; var cald prep_inj tested cost_test cost_test_g hiv ; 
-where tested=1 and death = . and prep_all_elig=1;
-run;
-
-*/
 
 /*
 
@@ -17476,7 +17432,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564 s_sens_primary_testtype3
 
 
 /*VL and CD4*/
@@ -17811,7 +17767,6 @@ pr_184m_oral_prep_1st_per pr_65m_oral_prep_1st_per pr_inm_inj_prep_1st_per  rel_
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_testtype3_from_inf_0 sens_testtype3_from_inf_p25 sens_testtype3_from_inf_gep5
 sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_gep5  sens_tests_prep_inj
-sens_vct_testtype3_cab_tail sens_primary_testtype3
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -18376,7 +18331,7 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_sens_primary_testtype3
 
 
 /*VL and CD4*/
@@ -18956,9 +18911,7 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr ; set r1;
-
-
+data a ; set r1;
 
 data r1; set a ;
 
@@ -19171,9 +19124,9 @@ data r1; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
+  
 
-
-data r1; set a.lapr ;
+data r1; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
@@ -19700,7 +19653,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_sens_primary_testtype3
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -20032,7 +19985,6 @@ pr_184m_oral_prep_1st_per pr_65m_oral_prep_1st_per    pr_inm_inj_prep_1st_per   
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_testtype3_from_inf_0 sens_testtype3_from_inf_p25 sens_testtype3_from_inf_gep5
 sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_gep5  sens_tests_prep_inj
-sens_vct_testtype3_cab_tail sens_primary_testtype3
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e

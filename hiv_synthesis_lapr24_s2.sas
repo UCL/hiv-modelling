@@ -30,7 +30,7 @@ in order to mimic effects of viral load testing before prep (re)initiation we "r
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";       
+  libname a "&outputdir/";    
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -952,7 +952,7 @@ cost_test_b=0.025; *HCW-testing general pop, HIV positive;
 cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 - email from anna osborne chai 8nov2016 - this is for facility based testing, which most testing is;
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
-cost_test_g=0.022; *vl test to diagnose;
+cost_test_f=0.022; *vl test to diagnose;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -2577,8 +2577,6 @@ end;
 *  ========================================================================================================================================= ;
 
 * for hptn - replace whole of this options section with this ;
-
-option = &s;
 
 if caldate_never_dot ge 2015 then prep_all_strategy = 7; * so prep for women only until cab-la;
 
@@ -4656,7 +4654,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t}
 or dt_prep_inj_c=caldate{t})
-then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
+then do; cost_test = cost_test_f; cost_test_type1=cost_test_f; end;
 
 
 ********* continuing PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
@@ -4672,7 +4670,7 @@ then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 		if hivtest_type_1_prep_inj = 1 then do;
 			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
-		cost_test = cost_test_g; cost_test_type1=cost_test_g; 
+		cost_test = cost_test_f; cost_test_type1=cost_test_f; 
 		end;
 	end;
 
@@ -6208,7 +6206,7 @@ end;
 
 
 com_test=.;
-if tested=1 and hiv ne 1 and cost_test ne cost_test_g then do;
+if tested=1 and hiv ne 1 and cost_test ne cost_test_f then do;
 	cost_test= cost_test_c;
 	u=rand('uniform'); if u lt 0.1365 and prep_oral ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
 	if com_test=1 then cost_test= cost_test_e;
@@ -6454,6 +6452,14 @@ end;
 if prep_init_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_init_primary_res=1;
 if prep_reinit_primary=1 and em_inm_res_o_cab_off_3m=1 then prep_reinit_primary_res=1;
 
+* s2 - new resistance cannot arise at (re)initiation if hivtest_type_1_init_prep_inj=1 ;  
+if prep_reinit_primary_res=1 and hivtest_type_1_init_prep_inj=1 then do;
+	em_inm_res_o_cab_off_3m=0; 
+	c_in118m=max(0,in118m);
+	c_in140m=max(0,in140m);
+	c_in148m=max(0,in148m);
+	c_in263m=max(0,in263m);
+end;
 
 if prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
 
@@ -6837,7 +6843,7 @@ if t ge 2 then do;
 				prep_all=0;		prep_vr =0; 	dt_prep_vr_e=.; 	dt_prep_vr_s=.;
 				if caldate{t} = dt_prep_vr_s then do;  prep_all_ever=.; prep_vr_ever=.; end; 
 			end;
-		cost_test = cost_test_g; cost_test_type1=cost_test_g;
+		cost_test = cost_test_f; cost_test_type1=cost_test_f;
 		end;
 	end;
 	if hivtest_type=3 then do;
@@ -7206,7 +7212,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_testtype1_from_inf_0;  
 			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
-		cost_test = cost_test_g; cost_test_type1=cost_test_g;
+		cost_test = cost_test_f; cost_test_type1=cost_test_f;
 		end;
 	end;
 
@@ -16434,20 +16440,9 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
-/*
+
 
 * procs;
-
-hivtest_type_1_prep_inj=1;
-cost_test_g=0.022;
-
-proc freq; tables cald hiv;
-
-proc print; var cald prep_inj tested cost_test cost_test_g hiv ; 
-where tested=1 and death = . and prep_all_elig=1;
-run;
-
-*/
 
 /*
 
@@ -18956,9 +18951,7 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr ; set r1;
-
-
+data a ; set r1;
 
 data r1; set a ;
 
@@ -19171,9 +19164,9 @@ data r1; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
+  
 
-
-data r1; set a.lapr ;
+data r1; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);

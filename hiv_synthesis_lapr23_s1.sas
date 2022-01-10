@@ -2,8 +2,6 @@
 
 *
 
-understand why lower resistance risk in tail
-
 look further into small difference in aids deaths
 
 modify to have a more gradual increase in prep inj
@@ -18,6 +16,8 @@ in order to mimic effects of viral load testing before prep (re)initiation we "r
 - drawback with this is that we apply the effect of prep in that first period and only reverse the small number of infections that occur
 - in sensitivity analysis we could therefore reduce prep efficacy in the first period of prep use (e.g. to 0.5 or 0) in order to consider the effect 
 of this limitation (which is due to the 3 month time step)
+
+check proportion of art initiators with nnrti resistance
 
 ;
 
@@ -360,6 +360,8 @@ newp_seed = 7;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
 * incr_test_year_i;			incr_test_year_i = 0;
 * sw_test_6mthly;			sw_test_6mthly=0;
+
+* sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3, 0 0.25 0.5 0.75);
 
 * rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;			* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
 							* dependent_on_time_step_length ;
@@ -890,7 +892,7 @@ end;
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests - assume window period of 3 months; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_primary_ts1m = 0.67  ; sens_vct=0.98; spec_vct=1;     end; 
-else if hivtest_type=3 then do; sens_primary=0; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
+else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
 else if hivtest_type=4 then do; sens_primary=0.65; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
 
 
@@ -5822,8 +5824,6 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_oral_efficacy));
 		end;
-
-
 	* s1 ; 
 		eff_prep_inj_efficacy  = prep_inj_efficacy ; if dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t} then eff_prep_inj_efficacy = 0;
 
@@ -5832,6 +5832,7 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			risk_nip = risk_nip * (1-eff_prep_inj_efficacy);
 			if in118m_p + in140m_p + in148m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
 		end;
+
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_vr_efficacy);
 			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_vr_efficacy));
@@ -15817,7 +15818,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
- 	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ; 
+ 	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ; s_sens_primary_testtype3 + sens_primary_testtype3;
 
 
 	/*VL and CD4*/
@@ -17424,7 +17425,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564 
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564 s_sens_primary_testtype3
 
 
 /*VL and CD4*/
@@ -18323,7 +18324,7 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_sens_primary_testtype3
 
 
 /*VL and CD4*/
@@ -19645,7 +19646,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_sens_primary_testtype3
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6

@@ -4,12 +4,13 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-  proc printto     log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+  proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr22;
+set a.l_hptn3;
 
-p_prep_adhg80_ = p_prep_adhg80 ;
+
+prep_adhg80_ = p_prep_adhg80 ;
 p_onart_vl1000_all = .;
 
 of_all_o_cab_pr_dur_ge12m = of_all_o_cab_prop_dur_ge12m;
@@ -49,11 +50,12 @@ logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
 
+
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1930  ;
-%let year_end = 2042.75 ;
+%let nfit = 1000  ;
+%let year_end = 2041.75 ;
 run;
 proc sort;by cald option ;run;
 
@@ -76,7 +78,7 @@ p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r lo
 n_onart n_prep_all n_death_hiv   
 prop_elig_on_prep   p_elig_prep   p_hiv1_prep   prop_onprep_newpge1_   p_prep_elig_past_year   p_prep_newp   prop_sw_onprep p_iime
 prop_prep_inj    ratio_inj_prep_on_tail          pr_ever_prep_inj_res_cab       pr_ev_prep_inj_res_cab_hiv
-prop_cab_res_o_cab    prop_cab_res_tail     prop_cab_res_1st_per     prop_prep_inj_at_inf_diag     
+prop_cab_res_o_cab    prop_cab_res_tail        prop_prep_inj_at_inf_diag     
 of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m   of_all_o_cab_prop_dur_9m of_all_o_cab_pr_dur_ge12m
 p_prep_inj_hiv  p_prep_adhg80_  n_cur_res_cab  n_cur_res_dol
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m
@@ -141,7 +143,7 @@ p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r lo
 n_onart n_prep_all n_death_hiv   
 prop_elig_on_prep   p_elig_prep   p_hiv1_prep   prop_onprep_newpge1_   p_prep_elig_past_year   p_prep_newp   prop_sw_onprep p_iime
 prop_prep_inj    ratio_inj_prep_on_tail          pr_ever_prep_inj_res_cab       pr_ev_prep_inj_res_cab_hiv
-prop_cab_res_o_cab    prop_cab_res_tail     prop_cab_res_1st_per     prop_prep_inj_at_inf_diag     
+prop_cab_res_o_cab    prop_cab_res_tail        prop_prep_inj_at_inf_diag     
 of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m   of_all_o_cab_prop_dur_9m of_all_o_cab_pr_dur_ge12m
 p_prep_inj_hiv  p_prep_adhg80_  n_cur_res_cab  n_cur_res_dol
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m
@@ -161,6 +163,7 @@ run;
 %let p5_var = p5_&var_1;
 %let p95_var = p95_&var_1;
 %let p50_var = median_&var_1;
+
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -207,7 +210,7 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
- h74 h75  h76  h77  h78 h79  h80  h81  h82  h83  h84  h85  h86 h87 h88  h89  h90  h91  h92 h93  h94  h95  h96  h97  h98  h99  h100 h101 h102 h103
+ h74 h75  h76  h77  h78 h79  h80  h81  h82  h83  h84  h85  h86 h87 h88  h89  h90 h91   h92 h93  h94  h95  h96  h97  h98  h99  h100 h101 h102 h103
 h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116
 ;
 by cald;
@@ -217,6 +220,35 @@ proc contents data=d; run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of people on PrEP, proportion on cab-la";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
+
+label p50_prop_prep_inj_0 = "no cab-la introduction (median) ";
+label p50_prop_prep_inj_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_prop_prep_inj_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_prep_inj_0 	upper=p95_prop_prep_inj_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_prop_prep_inj_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prop_prep_inj_1 	upper=p95_prop_prep_inj_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
