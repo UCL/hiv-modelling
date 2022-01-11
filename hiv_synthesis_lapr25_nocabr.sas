@@ -726,6 +726,21 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
 * pr_inm_inj_prep_1st_per ;		%sample_uniform(pr_inm_inj_prep_1st_per,     0.05 0.1 0.2 0.3 0.5 0.8 1) ; * removed 0.8 after comparing resistance emergence with 083 data;
+
+
+
+
+
+
+* nocabr;
+pr_inm_inj_prep_1st_per=0;
+rr_res_cab_dol=0;
+
+
+
+
+
+
 * rel_pr_inm_inj_prep_tail_1st_per; %sample_uniform(rel_pr_inm_inj_prep_tail_1st_per, 0.5 1 2); * removed 2 after comparing resistance emergence with 083 data;
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;

@@ -7,18 +7,19 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-* set a.l_lapr22;
-* set a.l_lapr23_nocabr;
-  set a.l_lapr23_lhardr;
+  set a.l_lapr24_s2;  * lapr24_s2 = lapr25 ;
+
 
 * if hivtest_type_1_init_prep_inj =  1 ; * and hivtest_type_1_prep_inj =  1 ;
 
-  
+n_k65m = p_k65m * n_hiv;
+p_vl1000_ = p_vl1000;
+
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2000  ;
+%let nfit = 2196  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -122,24 +123,47 @@ by cald;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
+
+/*
+
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_death_hiv";
+Title    height=1.5 justify=center "Number of people living with HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 100000 by 10000 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
-label p50_n_death_hiv_1 = "cab-la introduction (median) ";
+label p50_p_iime_0 = "no cab-la introduction (median) ";
+label p50_p_iime_1 = "cab-la introduction (median) ";
 
-* series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
-  series  x=cald y=mean_n_death_hiv_0/	lineattrs = (color=back  thickness = 2);
-band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-* series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
-  series  x=cald y=mean_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+* series  x=cald y=p50_p_iime_0/	lineattrs = (color=black thickness = 2);
+  series  x=cald y=mean_p_iime_0/	lineattrs = (color=black  thickness = 2);
+band    x=cald lower=p5_p_iime_0 	upper=p95_p_iime_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+* series  x=cald y=p50_p_iime_1/	lineattrs = (color=str thickness = 2);
+  series  x=cald y=mean_p_iime_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_iime_1 	upper=p95_p_iime_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
 
 
 ods html close; 
 
+*/
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number of HIV related deaths per year";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+
+label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
+label p50_n_death_hiv_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
 
