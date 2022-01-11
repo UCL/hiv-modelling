@@ -4,23 +4,19 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-  proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+  proc printto     log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-  set a.l_lapr24_s2;  * lapr24_s2 = lapr25 ;
+set a.l_lapr1619;
 
-
-* if hivtest_type_1_init_prep_inj =  1 ; * and hivtest_type_1_prep_inj =  1 ;
-
-n_k65m = p_k65m * n_hiv;
-p_vl1000_ = p_vl1000;
+* if hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2196  ;
-%let year_end = 2070.00 ;
+%let nfit = 3890  ;
+%let year_end = 2042.75 ;
 run;
 proc sort;by cald option ;run;
 
@@ -29,7 +25,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = n_death_hiv ;
+%let var =  death_rate_onart ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -38,7 +34,6 @@ if option =1 then delete;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
-%let mean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -53,9 +48,8 @@ p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
-mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 mean_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -73,7 +67,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = n_death_hiv ;
+%let var =  death_rate_onart ;
 run;
 
 
@@ -84,7 +78,6 @@ run;
 %let p5_var = p5_&var_1;
 %let p95_var = p95_&var_1;
 %let p50_var = median_&var_1;
-%let mean_var = mean_&var_1;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -99,9 +92,8 @@ p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
-mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1 mean_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -119,51 +111,25 @@ data d; * this is number of variables in %let var = above ;
 merge g1   h1 ;
 by cald;
 
+proc contents data=d; run; 
+
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods html ;
-
-
-/*
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of people living with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
-
-label p50_p_iime_0 = "no cab-la introduction (median) ";
-label p50_p_iime_1 = "cab-la introduction (median) ";
-
-* series  x=cald y=p50_p_iime_0/	lineattrs = (color=black thickness = 2);
-  series  x=cald y=mean_p_iime_0/	lineattrs = (color=black  thickness = 2);
-band    x=cald lower=p5_p_iime_0 	upper=p95_p_iime_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-* series  x=cald y=p50_p_iime_1/	lineattrs = (color=str thickness = 2);
-  series  x=cald y=mean_p_iime_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_iime_1 	upper=p95_p_iime_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
-
-ods html close; 
-
-*/
-
-
 
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of HIV related deaths per year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+Title    height=1.5 justify=center "Death rate in people on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 5    by 0.5 ) valueattrs=(size=10);
+label p50_p_newp_ge1__0 = "no cab-la introduction (median) ";
+label p50_p_newp_ge1__1 = "cab-la introduction (median) ";
 
-label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
-label p50_n_death_hiv_1 = "cab-la introduction (median) ";
+series  x=cald y=p50_death_rate_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_death_rate_onart_0 	upper=p95_death_rate_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
-series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+series  x=cald y=p50_death_rate_onart_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_death_rate_onart_1 	upper=p95_death_rate_onart_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
 
