@@ -29,7 +29,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = n_death_hiv ;
+%let var = p_vl1000_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -73,7 +73,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = n_death_hiv ;
+%let var = p_vl1000_ ;
 run;
 
 
@@ -151,19 +151,17 @@ ods html close;
 
 
 
-ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of HIV related deaths per year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.5 to 1 by 0.1) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
-label p50_n_death_hiv_1 = "cab-la introduction (median) ";
+label mean_p_vl1000__0 = "no cab-la introduction (mean) ";
+label mean_p_vl1000__1 = "cab-la introduction (mean) ";
 
-series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+series  x=cald y=mean_p_vl1000__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=mean_p_vl1000__1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
-
