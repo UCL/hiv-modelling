@@ -7,8 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-  set a.l_lapr24_s2;  * lapr24_s2 = lapr25 ;
-
+  set a.l_lapr24_nocabr;  
 
 * if hivtest_type_1_init_prep_inj =  1 ; * and hivtest_type_1_prep_inj =  1 ;
 

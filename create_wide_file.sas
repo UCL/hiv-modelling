@@ -7,14 +7,14 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr25_nocabr_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr24_nocabr_out\";
 
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv = lapr25_nocabr    ;
+%let laprv = lapr24_nocabr    ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
@@ -1088,7 +1088,7 @@ p_emerge_inm_res_cab p_emerge_inm_res_cab_tail
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented
 p_emerge_inm_res_cab_notpr   p_u_vfail1_this_period
 
-pref_prep_inj_beta_s1
+pref_prep_inj_beta_s1   
 ;
 
 
@@ -1260,7 +1260,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_em_inm_res_o_cab_off_3m);  %var(v=s_o_cab_or_o_cab_tm1_no_r);   %var(v=s_emerge_inm_res_cab_tail);   %var(v=s_cur_in_prep_inj_tail_no_r);
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
 %var(v=p_prep_init_primary_res); %var(v=p_prep_reinit_primary_res);   %var(v=p_emerge_inm_res_cab_prim);  %var(v=n_prep_primary_prevented);   
-%var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period);
+%var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); %var(v=d_cost_prep); %var(v=d_cost_clin_care);
 
 
 
@@ -1288,7 +1288,7 @@ ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m 
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-d_cost_prep d_cost_clin_care
+dcost_prep dcost_clin_care
 ;
 
 
@@ -1560,7 +1560,7 @@ cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_s
 ;
 run;
 
-proc univariate data= a.w_&laprv; var d_p_iime_42_2; run;
+proc univariate data= a.w_lapr24_s2; * data= a.w_&laprv ; var d_p_iime_42_2; run;
 
 proc freq data= a.w_&laprv; tables
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
@@ -1716,6 +1716,9 @@ d_dcost_prep_50y_2  dcost_prep_50y_2  dcost_prep_50y_1
 d_dcost_clin_care_50y_2  dcost_clin_care_50y_2  dcost_clin_care_50y_1 
 ;
 run;
+
+
+proc means; var n_cur_res_cab_32_1 n_cur_res_cab_32_2 ; run;
 
 
 
