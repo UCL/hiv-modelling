@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr24_s2;  * lapr24_s2 = lapr25 ;
+set a.l_lapr25_nocabr;                        
 
 
 
@@ -55,7 +55,7 @@ logm55r = log(m55r+0.0001);
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2196  ;
+%let nfit = 2096  ;
 %let year_end = 2041.75 ;
 run;
 proc sort;by cald option ;run;
