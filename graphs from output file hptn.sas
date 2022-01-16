@@ -15,6 +15,9 @@ set a.l_hptn5;
 
   if run = 29427958   ;
 
+proc print; var cald option prep_all_strategy pref_prep_inj_beta_s1 pref_prep_inj_beta_s1_p2022 p_elig_prep ; run;   
+
+
 
 
 prep_adhg80_ = p_prep_adhg80 ;
