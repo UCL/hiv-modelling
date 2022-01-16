@@ -872,6 +872,8 @@ end;
 
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
+* n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m  * 4* &sf;
+* n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w  * 4* &sf;
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
 * n_death;						n_death = s_dead  * 4 * &sf;
 * n_covid;						n_covid = s_covid  * 4 * &sf;
@@ -952,7 +954,7 @@ death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_h
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_infection p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hiv 
+prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hiv n_death_hiv_m n_death_hiv_w  
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  

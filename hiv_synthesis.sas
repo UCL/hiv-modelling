@@ -2608,11 +2608,11 @@ end;
 if option = 1 and 0 <= caldate{t}-&year_interv < 5 and prep_inj_ever ne 1 and prep_inj_willing = 1 then do;
 
 	e = rand('uniform'); 
-	if 0 <= caldate{t}-&year_interv < 1 and e < 0.9 then prep_inj_willing = 0 ;
-	if 1 <= caldate{t}-&year_interv < 2 and e < 0.7 then prep_inj_willing = 0 ;
-	if 2 <= caldate{t}-&year_interv < 3 and e < 0.5 then prep_inj_willing = 0 ;
-	if 3 <= caldate{t}-&year_interv < 4 and e < 0.3 then prep_inj_willing = 0 ;
-	if 4 <= caldate{t}-&year_interv < 5 and e < 0.15 then prep_inj_willing = 0 ;
+	if 0 <= caldate{t}-&year_interv < 1 and e < 0.95 then prep_inj_willing = 0 ;
+	if 1 <= caldate{t}-&year_interv < 2 and e < 0.9 then prep_inj_willing = 0 ;
+	if 2 <= caldate{t}-&year_interv < 3 and e < 0.85 then prep_inj_willing = 0 ;
+	if 3 <= caldate{t}-&year_interv < 4 and e < 0.6 then prep_inj_willing = 0 ;
+	if 4 <= caldate{t}-&year_interv < 5 and e < 0.3 then prep_inj_willing = 0 ;
 
 end;
 
@@ -13496,6 +13496,11 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 
 *Prep;
 
+prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
+prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
+prep_oral_m=0; if gender=1 and prep_oral=1 then prep_oral_m=1;
+prep_inj_m=0; if gender=1 and prep_inj=1 then prep_inj_m=1;
+
 if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_all_ever=1;
 
 hr_noprep=0;       if (epi  =1 or newp ge 2) and prep_oral   ne 1 then hr_noprep=1;	* lapr - define which prep? ;
@@ -13522,11 +13527,12 @@ elig_prep_all_epdiag=0;	*if registd ne 1 and hard_reach=0 and epdiag=1 then elig
 elig_prep_all=0;       	*if registd ne 1 and hard_reach=0 and (epi  =1 or newp ge 2) then elig_prep_all=1; 
 						if prep_all_elig=1 then elig_prep_all=1;
 
-elig_prep_all_w_1524 = 0; elig_prep_all_w_2534 = 0; elig_prep_all_w_3544 = 0; elig_prep_all_w_1549 = 0; 
+elig_prep_all_w_1524 = 0; elig_prep_all_w_2534 = 0; elig_prep_all_w_3544 = 0; elig_prep_all_w_1549 = 0;  elig_prep_all_w_1564 = 0; 
 if gender = 2 and 15 <= age < 25 then do; if prep_all_elig=1 then elig_prep_all_w_1524 = 1;  end;
 if gender = 2 and 25 <= age < 35 then do; if prep_all_elig=1 then elig_prep_all_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do; if prep_all_elig=1 then elig_prep_all_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 50 then do; if prep_all_elig=1 then elig_prep_all_w_1549 = 1;  end;
+if gender = 2 and 15 <= age < 65 then do; if prep_all_elig=1 then elig_prep_all_w_1564 = 1;  end;
 if sw=1 then do; elig_prep_all_sw = 0; if prep_all_elig = 1 then elig_prep_all_sw = 1;   end;
 
 prep_all_w_1524 = 0; prep_all_w_2534 = 0; prep_all_w_3544 = 0; prep_all_w_1549 = 0;
@@ -13534,6 +13540,10 @@ if gender = 2 and 15 <= age < 25 then do;  if prep_all=1 then prep_all_w_1524 = 
 if gender = 2 and 25 <= age < 35 then do;  if prep_all=1 then prep_all_w_2534 = 1;  end;
 if gender = 2 and 35 <= age < 45 then do;  if prep_all=1 then prep_all_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_all=1 then prep_all_w_1549 = 1;  end;
+
+
+elig_prep_all_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_all_elig=1 then elig_prep_all_m_1564 = 1;  end;
+
 
 elig_prep_all_onprep=0;
 if elig_prep_all = 1 then do;
@@ -15762,10 +15772,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 		/*prep*/
 
 	s_prep_all + prep_all; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; s_prep_oral_at_infection + prep_oral_at_infection;
-	s_prep_inj_at_infection + prep_inj_at_infection;
-	s_prep_all_sw + prep_all_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
+	s_prep_inj_at_infection + prep_inj_at_infection;  s_prep_oral_w + prep_oral_w; s_prep_inj_w + prep_inj_w; s_prep_oral_m + prep_oral_m;
+	s_prep_inj_m + prep_inj_m; 	s_prep_all_sw + prep_all_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_all_w_1524 + prep_all_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
-	s_elig_prep_all_epdiag + elig_prep_all_epdiag ; 
+	s_elig_prep_all_epdiag + elig_prep_all_epdiag ; s_elig_prep_all_m_1564 + elig_prep_all_m_1564 ;s_elig_prep_all_w_1564 + elig_prep_all_w_1564 ;
 	s_infected_prep_all + infected_prep_all ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_all_ever + prep_all_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_i_r_prep + i_r_prep ; s_primary_r_prep + primary_r_prep ;
 	s_ever_i_nor_prep + ever_i_nor_prep ; s_rm_prep + rm_prep ;  s_elig_prep_all_onprep + elig_prep_all_onprep ;
@@ -17404,9 +17414,9 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
 
 /*prep*/
-s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr 
+s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
-s_elig_prep_all_epdiag  
+s_elig_prep_all_epdiag  s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
@@ -18307,9 +18317,9 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
 
 /*prep*/
-s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr 
+s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
-s_elig_prep_all_epdiag  
+s_elig_prep_all_epdiag   s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
@@ -19633,9 +19643,9 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
 
 /*prep*/
-s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr 
+s_prep_all 		s_prep_oral 	s_prep_inj 		s_prep_vr   s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
-s_elig_prep_all_epdiag  
+s_elig_prep_all_epdiag   s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
 s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 

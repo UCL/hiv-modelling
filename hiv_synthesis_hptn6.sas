@@ -25,17 +25,17 @@ in order to mimic effects of viral load testing before prep (re)initiation we "r
 
 
 
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
-* libname a 'C:\Loveleen\Synthesis model\';  
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';  
+  libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";       
+  libname a "&outputdir/";       
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000  ;  
+%let population = 100000 ;  
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -847,6 +847,7 @@ base_cvd_death_risk = 0.00002;
 non_hiv_tb_risk = 0.0005;  
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
+
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
@@ -2618,11 +2619,11 @@ end;
 if option = 1 and 0 <= caldate{t}-&year_interv < 5 and prep_inj_ever ne 1 and prep_inj_willing = 1 then do;
 
 	e = rand('uniform'); 
-	if 0 <= caldate{t}-&year_interv < 1 and e < 0.9 then prep_inj_willing = 0 ;
-	if 1 <= caldate{t}-&year_interv < 2 and e < 0.7 then prep_inj_willing = 0 ;
-	if 2 <= caldate{t}-&year_interv < 3 and e < 0.5 then prep_inj_willing = 0 ;
-	if 3 <= caldate{t}-&year_interv < 4 and e < 0.3 then prep_inj_willing = 0 ;
-	if 4 <= caldate{t}-&year_interv < 5 and e < 0.15 then prep_inj_willing = 0 ;
+	if 0 <= caldate{t}-&year_interv < 1 and e < 0.95 then prep_inj_willing = 0 ;
+	if 1 <= caldate{t}-&year_interv < 2 and e < 0.9 then prep_inj_willing = 0 ;
+	if 2 <= caldate{t}-&year_interv < 3 and e < 0.85 then prep_inj_willing = 0 ;
+	if 3 <= caldate{t}-&year_interv < 4 and e < 0.6 then prep_inj_willing = 0 ;
+	if 4 <= caldate{t}-&year_interv < 5 and e < 0.3 then prep_inj_willing = 0 ;
 
 end;
 
@@ -16470,16 +16471,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
-
-
-* procs;
-
-proc freq; tables cald option prep_all_strategy prep_all_strategy_p2022 pref_prep_inj_beta_s1 pref_prep_inj_beta_s1_p2022 ; run;
-
-
-
-
-
 /*
 
 hivtest_type_1_prep_inj=1;
@@ -19005,11 +18996,11 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr ; set r1;
+data a ; set r1;
 
 * hptn;
 
-data r1; set a.lapr;
+data r1; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
