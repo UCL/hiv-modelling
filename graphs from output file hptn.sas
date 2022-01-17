@@ -7,16 +7,13 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_hptn5;
+set a.l_hptn ;
 
 * proc freq; 
 * tables run; 
 * run; 
 
-  if run = 29427958   ;
-
-proc print; var cald option prep_all_strategy pref_prep_inj_beta_s1 pref_prep_inj_beta_s1_p2022 p_elig_prep ; run;   
-
+* if run = 29427958   ;
 
 
 
