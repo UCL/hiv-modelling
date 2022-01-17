@@ -19175,6 +19175,7 @@ data r1; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
 
+/*
 
 data r1; set a;
 
@@ -19882,7 +19883,7 @@ data r1; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
 
-
+*/
 
 * ts1m:  need more update statements ;
 
