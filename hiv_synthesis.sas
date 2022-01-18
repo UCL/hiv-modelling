@@ -1,8 +1,5 @@
 
 
-* lapr25 is lapr24_s2 ;
-
-
 *
 
 modify to have a more gradual increase in prep inj ?

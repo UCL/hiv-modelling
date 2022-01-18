@@ -13,7 +13,7 @@ set a.l_hptn ;
 * tables run; 
 * run; 
 
-* if run = 29427958   ;
+  if run = 311213832     ;  * 213322110 ;
 
 
 
@@ -71,7 +71,7 @@ where cald=2022.75 and option=1;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 10      ;
+%let nfit = 20      ;
 %let year_end = 2042.75 ;
 run;
 proc sort;by cald option ;run;
@@ -83,7 +83,7 @@ if option =1 then delete;
 
 %let var =  
 
-prevalence1549m   prevalence1549w  p_prep_elig_past_year    prop_1564_onprep  p_elig_prep    prop_elig_on_prep    incidence1549_  ;
+prevalence1549_   p_prep_elig_past_year    prop_1564_onprep  p_elig_prep    prop_elig_on_prep    incidence1549_  ;
 
 /*
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
@@ -113,6 +113,7 @@ n_birth_with_inf_child
 %let p75_var = p75_&var_0;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
+%let p50_var = p50_&var_0;
 %let mean_var = mean_&var_0;
 
 %let count = 0;
@@ -127,9 +128,10 @@ p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._0 = PCTL(50,of &varb.1-&varb.&nfit);
 mean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 mean_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option_ p5_&varb._0 p95_&varb._0 mean_&varb._0 p25_&varb._0  p50_&varb._0 p75_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -149,7 +151,7 @@ if option =0 then delete;
 
 %let var =  
 
-prevalence1549m prevalence1549w  incidence1549_  p_prep_elig_past_year   prop_1564_onprep  p_elig_prep    prop_elig_on_prep  ;
+prevalence1549_   p_prep_elig_past_year    prop_1564_onprep  p_elig_prep    prop_elig_on_prep    incidence1549_  ;
 
 run;
 
@@ -160,6 +162,7 @@ run;
 %let p75_var = p75_&var_1;
 %let p5_var = p5_&var_1;
 %let p95_var = p95_&var_1;
+%let p50_var = p50_&var_1;
 %let mean_var = mean_&var_1;
 
 
@@ -175,9 +178,10 @@ p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._1 = PCTL(50,of &varb.1-&varb.&nfit);
 mean_&varb._1 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 mean_&varb._1 p25_&varb._1 p75_&varb._1;
+keep cald option_ p5_&varb._1 p95_&varb._1 mean_&varb._1 p25_&varb._1  p50_&varb._1 p75_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -193,42 +197,15 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4   g5   g6   g7    
+g1   g2   g3   g4   g5   g6         
 
-h1   h2   h3   h4   h5   h6   h7   
+h1   h2   h3   h4   h5   h6        
 ;
 by cald;
 
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-* ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
-
-
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
-
-label mean_prevalence1549m_0 = "Men no cab-la introduction (mean) ";
-label mean_prevalence1549m_1 = "Men cab-la introduction (mean) ";
-label mean_prevalence1549w_0 = "Women no cab-la introduction (mean) ";
-label mean_prevalence1549w_1 = "Women cab-la introduction (mean) ";
-
-series  x=cald y=mean_prevalence1549m_0/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-series  x=cald y=mean_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
-band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "90% range";
-
-series  x=cald y=mean_prevalence1549w_0/	lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-series  x=cald y=mean_prevalence1549w_1/	lineattrs = (color=lightblue thickness = 2);
-band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightblue) legendlabel= "90% range";
-
-run;quit;
-
 
 
 
@@ -249,6 +226,24 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 run;
 quit;
+
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Prevalence (age 15-49)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
+
+label p50_prevalence1549__0 = "All no cab-la introduction (median) ";
+label p50_prevalence1549__1 = "All cab-la introduction (median) ";
+
+series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
 
 
 
@@ -330,4 +325,4 @@ band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / tr
 run;quit;
 
 
-
+ods html close;
