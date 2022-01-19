@@ -368,6 +368,10 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep_all -s_hiv1_prep_all), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
 
+* prop_prep_oral_w ;			prop_prep_oral_w = s_prep_oral_w / (s_alive_w - s_hivge15w);
+* prop_prep_oral_m ;			prop_prep_oral_m = s_prep_oral_m / (s_alive_m - s_hivge15m); 
+* prop_prep_oral ;				prop_prep_oral = s_prep_oral / (s_alive - s_hivge15); 
+
 * p_elig_prep;   				p_elig_prep = s_elig_prep_all / (s_alive1564 - s_hiv1564);
 
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
@@ -913,6 +917,7 @@ n_infection  = s_primary     * &sf * 4;
 
 n_alive_m = s_alive_m * &sf;  
 n_alive_w = s_alive_w * &sf;  
+n_alive = n_alive_m + n_alive_w;  
 n_hiv_m = s_hivge15m * &sf;
 n_hiv_w = s_hivge15w * &sf;
 n_diag_w = s_diag_w * &sf;
@@ -1172,7 +1177,7 @@ n_death_hiv_age_1524 n_death_hiv_age_2534 n_death_hiv_age_3544 n_death_hiv_age_4
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_w inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 
-sim_year
+sim_year   prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral   n_alive
 ;
 
 
@@ -1301,6 +1306,40 @@ oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 c
 
 proc sort; by run; run;
 
+
+
+%macro blvar(b=);
+
+proc means  noprint data=y; var &b; output out=b_21 mean= &b._21; by run ; where 2021.0 <= cald < 2022.0; 
+
+data &b ; merge b_21 
+;
+drop _NAME_ _TYPE_ _FREQ_;
+
+%mend blvar; 
+%blvar(b=n_alive_m);%blvar(b=n_alive_w);%blvar(b=n_alive);
+%blvar(b=prevalence1549m);%blvar(b=prevalence1549w);%blvar(b=prevalence1549);
+%blvar(b=incidence1549m);%blvar(b=incidence1549w);%blvar(b=incidence1549);
+%blvar(b=p_onart_m);%blvar(b=p_onart_w);%blvar(b=p_onart);
+%blvar(b=p_vl1000_m);%blvar(b=p_vl1000_w);%blvar(b=p_vl1000);
+%blvar(b=prop_prep_oral_w); %blvar(b=prop_prep_oral_m);   %blvar(b=prop_prep_oral);
+
+
+data   wide_bl; merge 
+n_alive_m n_alive_w n_alive
+prevalence1549m   prevalence1549w   prevalence1549   
+incidence1549m   incidence1549w   incidence1549   
+p_onart_m      p_onart_w      p_onart   
+p_vl1000_m      p_vl1000_w      p_vl1000   
+prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral
+;
+run;
+
+proc contents; run;
+
+proc sort; by run; run;
+
+
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
 
@@ -1402,16 +1441,46 @@ proc sort; by run;run;
 
 
   data   a.w_hptn ;
-  merge   wide_outputs  wide_par ;  
+  merge   wide_outputs wide_bl  wide_par ;  
   by run;
 
 
+
+
+
+
+data bl; set wide_bl;
+
+n_alive_w_21 = round(n_alive_w_21,1000);  n_alive_m_21 = round(n_alive_m_21,1000);  n_alive_21 = round(n_alive_21,1000);  
+prevalence1549m_21 = round(prevalence1549m_21, 0.001); prevalence1549w_21 = round(prevalence1549w_21, 0.001); 
+prevalence1549_21 = round(prevalence1549_21, 0.001); 
+incidence1549m_21 = round(incidence1549m_21, 0.001); incidence1549w_21 = round(incidence1549w_21, 0.001); 
+incidence1549_21 = round(incidence1549_21, 0.001); 
+p_onart_m_21 = round(p_onart_m_21, 0.01); p_onart_w_21 = round(p_onart_w_21, 0.01); 
+p_onart_21 = round(p_onart_21, 0.01); 
+p_vl1000_m_21 = round(p_vl1000_m_21, 0.01); p_vl1000_w_21 = round(p_vl1000_w_21, 0.01); 
+p_vl1000_21 = round(p_vl1000_21, 0.01); 
+prop_prep_oral_w_21 = round(prop_prep_oral_w_21, 0.0001); prop_prep_oral_m_21 = round(prop_prep_oral_m_21, 0.0001); 
+prop_prep_oral_21 = round(prop_prep_oral_21, 0.0001); 
+
+proc print; run; 
+
 * table 1;
 
-* proc means data=  a.w_hptn n p50 p5 p95;  
-* var prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22  ;
-* run;
+proc freq data=bl ;  
+tables 
+n_alive_w_21 n_alive_m_21  n_alive_21
+prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
+incidence1549m_21   incidence1549w_21   incidence1549_21   
+p_onart_m_21      p_onart_w_21      p_onart_21   
+p_vl1000_m_21      p_vl1000_w_21      p_vl1000_21   
+prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
+run;
 
+proc export 
+data=bl      dbms=csv  
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_bl" replace; 
+run;
 
 
 
