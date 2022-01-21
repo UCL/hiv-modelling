@@ -434,7 +434,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * p_prep_primary_prevented ; 	p_prep_primary_prevented = s_prep_primary_prevented /(s_prep_reinit_primary + s_prep_init_primary + s_prep_primary_prevented);
 
 
-* prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_1st_per) / s_cur_res_cab ;
+* prop_cab_dol_res_attr_cab ;	prop_cab_dol_res_attr_cab = (s_cab_res_o_cab + s_cab_res_tail + s_cab_res_primary) / s_cur_res_cab ;
 
 * prop_prep_inj_at_inf_diag;	if s_prep_inj_at_infection + s_diagprim_prep_inj > 0 then prop_prep_inj_at_inf_diag =  s_diagprim_prep_inj /  (s_prep_inj_at_infection + s_diagprim_prep_inj);
 
@@ -1074,7 +1074,7 @@ adh_pattern_prep_oral prep_all_strategy prep_all_uptake_pop effect_sw_prog_prep_
 prep_willingness_threshold  pr_prep_oral_b  pr_prep_inj_b  rel_prep_oral_adh_younger  prep_oral_efficacy  higher_future_prep_oral_cov
 prep_inj_efficacy  rate_choose_stop_prep_inj  
 
-prep_inj_effect_inm_partner  rel_pr_inm_inj_prep_tail_1st_per
+prep_inj_effect_inm_partner  rel_pr_inm_inj_prep_tail_primary
 rr_res_cab_dol   hivtest_type_1_init_prep_inj    
 hivtest_type_1_prep_inj 
 sens_testtype3_from_inf_0    sens_testtype3_from_inf_p25   sens_testtype3_from_inf_gep5 
@@ -1083,7 +1083,7 @@ p_prep_all_ever  cab_time_to_lower_threshold_g  sens_tests_prep_inj
  
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m  dol_higher_potency  p_em_inm_res_ever_prep_inj
 
-ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail  pr_inm_inj_prep_1st_per
+ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail  pr_inm_inj_prep_primary
 
  s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  res_trans_factor_ii
 
@@ -1346,10 +1346,10 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
 %par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_inj_b);  %par(p=prep_inj_efficacy);
 %par(p=rate_choose_stop_prep_inj);   %par(p=prep_inj_effect_inm_partner);  %par(p=res_trans_factor_ii);
-%par(p=rel_pr_inm_inj_prep_tail_1st_per);      %par(p=rr_res_cab_dol);  %par(p=hivtest_type_1_init_prep_inj);   %par(p=hivtest_type_1_prep_inj);
+%par(p=rel_pr_inm_inj_prep_tail_primary);      %par(p=rr_res_cab_dol);  %par(p=hivtest_type_1_init_prep_inj);   %par(p=hivtest_type_1_prep_inj);
 %par(p=sens_testtype3_from_inf_0);   %par(p=sens_testtype3_from_inf_p25);  %par(p=sens_testtype3_from_inf_gep5);
 %par(p=sens_testtype1_from_inf_0);   %par(p=sens_testtype1_from_inf_p25);  %par(p=sens_testtype1_from_inf_gep5); %par(p=prep_all_uptake_pop);
-%par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_1st_per);
+%par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_primary);
 %par(p=pref_prep_inj_beta_s1);
 
 data wide_par; merge 
@@ -1385,12 +1385,12 @@ prep_all_uptake_pop   prob_prep_all_restart_choice
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
-rel_pr_inm_inj_prep_tail_1st_per      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
+rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
 sens_testtype3_from_inf_0   sens_testtype3_from_inf_p25  sens_testtype3_from_inf_gep5
 sens_testtype1_from_inf_0   sens_testtype1_from_inf_p25  sens_testtype1_from_inf_gep5
 
 effect_sw_prog_prep_all prob_prep_all_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
-sens_tests_prep_inj  pr_inm_inj_prep_1st_per
+sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1
 ;
 
@@ -1543,7 +1543,7 @@ n_switch_prep_to_inj_32_1  n_prep_all_start_32_1 n_prep_oral_start_32_1  n_prep_
 n_prep_all_32_1 prop_elig_on_prep_32_1 p_elig_prep_32_1  p_hiv1_prep_32_1  prop_onprep_newpge1_32_1 p_prep_elig_past_year_32_1 
 p_prep_newp_32_1 prop_sw_onprep_32_1  p_iime_32_1
 prop_prep_inj_32_2   ratio_inj_prep_on_tail_32_2    pr_ever_prep_inj_res_cab_32_2    pr_ev_prep_inj_res_cab_hiv_32_2
-prop_cab_res_o_cab_32_2    prop_cab_res_tail_32_2    prop_cab_res_1st_per_32_2    prop_prep_inj_at_inf_diag_32_2   
+prop_cab_res_o_cab_32_2    prop_cab_res_tail_32_2    prop_cab_res_primary_32_2    prop_prep_inj_at_inf_diag_32_2   
 of_all_o_cab_prop_dur_3m_32_2
 of_all_o_cab_prop_dur_6m_32_2   p_prep_inj_hiv_32_2  prop_cab_dol_res_attr_cab_32_2   n_cur_res_cab_32_2  n_cur_res_dol_32_2  
 n_emerge_inm_res_cab_32_2  n_switch_prep_from_oral_32_2 n_switch_prep_from_inj_32_2  n_switch_prep_to_oral_32_2  
@@ -1561,12 +1561,12 @@ run;
 
 proc glm  data= a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3;
 model d_p_iime_50y_2 =
 /* p_iime_22 incidence1549w_22 p_vl1000_22 prop_1564_onprep_22 */
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
 ;
 run;
@@ -1575,7 +1575,7 @@ proc univariate data= a.w_&laprv; * data= a.w_&laprv ; var d_p_iime_42_2; run;
 
 proc freq data= a.w_&laprv; tables
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 d_p_iime_42_2
 ;
 run;
@@ -1584,11 +1584,11 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
 model p_iime_42_2 =
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
 ;
 run;
@@ -1598,12 +1598,12 @@ run;
 
 proc glm; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
 model p_ai_no_arv_e_inm_42_2 =
 p_iime_22 prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22 
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
 ;
 * where hiv_test_strat2 =0 and hiv_test_strat3 = 0;
@@ -1620,11 +1620,11 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
 model p_emerge_inm_res_cab_50y_2 = 
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii / solution;
 run;
 
@@ -1636,13 +1636,13 @@ proc univariate data=  a.w_&laprv; var p_emerge_inm_res_cab_50y_2; where dataset
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
 model p_emerge_inm_res_cab_tail_50y_2 = 
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii / solution;
-where  rel_pr_inm_inj_prep_tail_1st_per <= 1 and pr_inm_inj_prep_1st_per <= 0.5 ; ; 
+where  rel_pr_inm_inj_prep_tail_primary <= 1 and pr_inm_inj_prep_primary <= 0.5 ; ; 
 run;
 
 
@@ -1650,12 +1650,12 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 ;
 model d_n_death_hiv_50y_2 =
 n_death_hiv_22
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 
 / solution;
 
@@ -1668,11 +1668,11 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 ;
 model d_n_prep_all_50y_2 =
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 
 / solution;
 run;
@@ -1681,11 +1681,11 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 ;
 model d_incidence1549_32_2 =
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 
 / solution;
 run;
@@ -1694,11 +1694,11 @@ run;
 
 proc glm data=  a.w_&laprv; 
 class fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 ;
 model d_p_vl1000_art_12m_42_2 =
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
-prep_inj_effect_inm_partner  pr_inm_inj_prep_1st_per  rel_pr_inm_inj_prep_tail_1st_per  rr_res_cab_dol   prep_all_uptake_pop 
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol   prep_all_uptake_pop 
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 
 / solution;
 run;
