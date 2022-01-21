@@ -294,8 +294,8 @@ label p50_p_hypert_1539__1 = "Option 1 (median) ";
 series  x=cald y=p50_p_hypert_1539__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_hypert_1539__0 	upper=p95_p_hypert_1539__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
 
-series  x=cald y=p50_p_hypert_5059__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_p_hypert_5059__1 	upper=p95_p_hypert_1539__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+series  x=cald y=p50_p_hypert_1539__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_hypert_1539__1 	upper=p95_p_hypert_1539__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
 
 run;
 
@@ -360,6 +360,166 @@ band    x=cald lower=p5_p_hypert_7079__0 	upper=p95_p_hypert_7079__0  / transpar
 
 series  x=cald y=p50_p_hypert_7079__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_hypert_7079__1 	upper=p95_p_hypert_7079__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 15-39 diagnosed with hypertension";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diagnosed_hypert_1539__0 = "Option 0 (median) ";
+label p50_p_diagnosed_hypert_1539__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_diagnosed_hypert_1539__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_1539__0 	upper=p95_p_diagnosed_hypert_1539__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_diagnosed_hypert_1539__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_1539__1 	upper=p95_p_diagnosed_hypert_1539__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 40-49 diagnosed with hypertension";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diagnosed_hypert_4049__0 = "Option 0 (median) ";
+label p50_p_diagnosed_hypert_4049__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_diagnosed_hypert_4049__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_4049__0 	upper=p95_p_diagnosed_hypert_4049__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_diagnosed_hypert_4049__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_4049__1 	upper=p95_p_diagnosed_hypert_4049__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 50-59 diagnosed with hypertension";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diagnosed_hypert_5059__0 = "Option 0 (median) ";
+label p50_p_diagnosed_hypert_5059__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_diagnosed_hypert_5059__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_5059__0 	upper=p95_p_diagnosed_hypert_5059__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_diagnosed_hypert_5059__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_5059__1 	upper=p95_p_diagnosed_hypert_5059__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 60-69 diagnosed with hypertension";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diagnosed_hypert_6069__0 = "Option 0 (median) ";
+label p50_p_diagnosed_hypert_6069__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_diagnosed_hypert_6069__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_6069__0 	upper=p95_p_diagnosed_hypert_6069__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_diagnosed_hypert_6069__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_6069__1 	upper=p95_p_diagnosed_hypert_6069__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 70-79 diagnosed with hypertension";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_diagnosed_hypert_7079__0 = "Option 0 (median) ";
+label p50_p_diagnosed_hypert_7079__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_diagnosed_hypert_7079__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_7079__0 	upper=p95_p_diagnosed_hypert_7079__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_diagnosed_hypert_7079__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diagnosed_hypert_7079__1 	upper=p95_p_diagnosed_hypert_7079__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 15-39 on hypertension treatment";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_on_anti_hypert_1539__0 = "Option 0 (median) ";
+label p50_p_on_anti_hypert_1539__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_on_anti_hypert_1539__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_1539__0 	upper=p95_p_on_anti_hypert_1539__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_on_anti_hypert_1539__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_1539__1 	upper=p95_p_on_anti_hypert_1539__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 40-49 on hypertension treatment";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_on_anti_hypert_4049__0 = "Option 0 (median) ";
+label p50_p_on_anti_hypert_4049__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_on_anti_hypert_4049__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_4049__0 	upper=p95_p_on_anti_hypert_4049__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_on_anti_hypert_4049__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_4049__1 	upper=p95_p_on_anti_hypert_4049__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 50-59 on hypertension treatment";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_on_anti_hypert_5059__0 = "Option 0 (median) ";
+label p50_p_on_anti_hypert_5059__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_on_anti_hypert_5059__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_5059__0 	upper=p95_p_on_anti_hypert_5059__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_on_anti_hypert_5059__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_5059__1 	upper=p95_p_on_anti_hypert_5059__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 60-69 on hypertension treatment";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_on_anti_hypert_6069__0 = "Option 0 (median) ";
+label p50_p_on_anti_hypert_6069__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_on_anti_hypert_6069__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_6069__0 	upper=p95_p_on_anti_hypert_6069__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_on_anti_hypert_6069__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_6069__1 	upper=p95_p_on_anti_hypert_6069__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
+
+run;
+
+ods html ;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion age 70-79 on hypertension treatment";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1989 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+label p50_p_on_anti_hypert_7079__0 = "Option 0 (median) ";
+label p50_p_on_anti_hypert_7079__1 = "Option 1 (median) ";
+
+series  x=cald y=p50_p_on_anti_hypert_7079__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_7079__0 	upper=p95_p_on_anti_hypert_7079__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Option 0 90% range";
+
+series  x=cald y=p50_p_on_anti_hypert_7079__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_on_anti_hypert_7079__1 	upper=p95_p_on_anti_hypert_7079__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Option 1 90% range";
 
 run;
 

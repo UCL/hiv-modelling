@@ -10,7 +10,7 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
- proc printto ; * log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
+ proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 
 	
 %let population = 100000 ; 
@@ -162,8 +162,8 @@ newp_seed = 7;
 
 * POPULATION GROWTH AND DEMOGRAPHY;
 
-* inc_cat; 					*%sample_uniform(inc_cat, 1:4);
-							inc_cat = 4;
+* inc_cat; 					%sample_uniform(inc_cat, 1:4);
+							
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
 * p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
@@ -660,16 +660,16 @@ if prep_willing=1;
 * values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
 
 * probability of 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
-prob_sbp_increase = 0.10; 
-* probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01;
+prob_sbp_increase = 0.125; * %sample_uniform(prob_sbp_increase, 0.1 0.125 0.15); 
+* probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period; * 1% per year;
+prob_test_sbp_undiagnosed = 0.0025;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 7; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
-hypertension, per period;
-prob_test_sbp_diagnosed = 0.1; 
+hypertension, per period; * 10% per year;
+prob_test_sbp_diagnosed = 0.025; 
 * probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
-prob_imm_anti_hypertensive = 0.7; 
+prob_imm_anti_hypertensive = 0.5; 
 * for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
 starting anti-hypertensive;
 prob_start_anti_hyptertensive = 0.01; 
@@ -679,7 +679,7 @@ prob_visit_hypertension = 0.6;
 interval_visit_hypertension=1;
 * for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no longer under care for hypertension 
 (visit_hypertenion = 0);
-prob_stop_anti_hypertensive = 0.03; 
+prob_stop_anti_hypertensive = 0.05; 
 * for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
 prob_intensify_1_2 = 0.1; 
 * for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
@@ -1437,29 +1437,29 @@ if e < 0.03 then hbv=1;
 
 * define sbp in 1989 ;  * update_24_4_21;
 
-select;	* JAS May2021 ;
+select;	* JAS May2021 ; * updated 1/4/2022 based on values from NCD-RisC Int J Epi 2018;
 	when ( age < 15) 		do; sbp=.;
 							end;	
-	when (15 <= age < 25) 	do; %sample(sbp,	105		115 	125 	135 	145 	155 	165 	175 	185,
-												0.35	0.30 	0.20 	0.10	0.04	0.01	0.00	0.00	0.00); 
+	when (15 <= age < 20) 	do; %sample(sbp,	95		105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.27	0.19	0.20 	0.16 	0.10	0.05	0.02	0.01	0.00	0.00); 
 							end;
-	when (25 <= age < 35) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.30	0.30 	0.20 	0.10	0.07	0.02	0.01	0.00	0.00); 
+	when (20 <= age < 30) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.13	0.16	0.19 	0.24 	0.15	0.08	0.04	0.01	0.00	0.00); 
 							end;
-	when (35 <= age < 45) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185,
-												0.20	0.30 	0.20 	0.15 	0.10 	0.04 	0.01 	0.00 	0.00);
+	when (30 <= age < 40) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185,
+												0.12	0.15	0.19 	0.21 	0.15 	0.10 	0.05 	0.02 	0.01 	0.00);
 							end;
-	when (45 <= age < 55) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.15	0.25 	0.20 	0.15 	0.10 	0.08 	0.04 	0.02 	0.01);
+	when (40 <= age < 50) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.09	0.11	0.16 	0.20 	0.18 	0.13 	0.08 	0.04 	0.01 	0.00);
 							end;
-	when (55 <= age < 65) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.12	0.14 	0.16 	0.25 	0.12 	0.08 	0.07 	0.04 	0.02); 
+	when (50 <= age < 60) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.04	0.06	0.12 	0.18 	0.20 	0.17 	0.12 	0.07 	0.03 	0.01); 
 							end;
-	when (65 <= age < 75) 	do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.08	0.12 	0.15 	0.25 	0.15 	0.10 	0.08 	0.04 	0.03); 
+	when (60 <= age < 70) 	do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.02	0.04	0.08 	0.14 	0.18 	0.20 	0.16 	0.10 	0.05 	0.03); 
 							end;
-	when (75 <= age) 		do; %sample(sbp, 	105		115 	125 	135 	145 	155 	165 	175 	185, 
-												0.05	0.10 	0.15 	0.25 	0.15 	0.10 	0.08 	0.07 	0.05); 
+	when (70 <= age) 		do; %sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+												0.01	0.03	0.06 	0.11 	0.17 	0.20 	0.18 	0.13 	0.07 	0.04); 
 							end;
 end;
 
@@ -1472,7 +1472,9 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 * define person-specific risk of sbp increase per period;
-%sample(sbp_risk, 0.5 1 2 3, 0.2 0.4 0.2 0.2);
+%sample_uniform(sbp_risk, 0.5 1 1.5);
+* define person-specific risk of sbp increase per period during middle age (45-64);
+%sample_uniform(sbp_risk_age, 1 1.25 1.5);
 
 u=uniform(0);low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
@@ -2665,17 +2667,25 @@ end;
 * SBP AND HYPERTENSION DIAGNOSIS AND TREATMENT  ;  * update_24_4_21 * again 04_11_21 to include intrinsic risk of increased HBP;
 
 * generates distribution of BP values around 115 at age 15 with left-skew beta distributionwith SD 12 (SD based on SEARCH data);
-if age <= 15.25  then do; sbp=95 + 80*rand('beta', 2, 6); sbp = round(sbp,1); diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
+if age <= 15.25  then do; 
+	%sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
+					0.27	0.20	0.19 	0.16 	0.10	0.05	0.02	0.01	0.00	0.00); 
+	diagnosed_hypertension = 0; on_anti_hypertensive = 0; 
+end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives; *updated 29dec2021 to make sbp slope increase less steep as bp rises;
 a_sbp=uniform(0); 
-	select;
-		when (sbp < 140) a_sbp = a_sbp / (sbp_risk); 
-		when (140 <= sbp < 160) a_sbp = a_sbp / (1.2 * sbp_risk); 
-		when (160 <= sbp < 180) a_sbp = a_sbp / ((1.2**2) * sbp_risk)  ;
-		when (180 <= abp) 	  a_sbp = a_sbp / ((1.2**3) * sbp_risk) ;  
-		otherwise a_sbp = a_sbp / sbp_risk ;
-	end;
+	* select;
+	*	when (sbp < 140) a_sbp = a_sbp / (sbp_risk); 
+	*	when (140 <= sbp < 160) a_sbp = a_sbp / (1.2 * sbp_risk); 
+	*	when (160 <= sbp < 180) a_sbp = a_sbp / ((1.2**2) * sbp_risk)  ;
+	*	when (180 <= abp) 	  a_sbp = a_sbp / ((1.2**3) * sbp_risk) ;  
+	*	otherwise a_sbp = a_sbp / sbp_risk ;
+	* end;
+select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
+	when (45 <= age < 65) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
+	otherwise a_sbp = a_sbp / sbp_risk ;
+end; 
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
