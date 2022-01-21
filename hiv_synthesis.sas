@@ -13248,7 +13248,7 @@ if visit=1 and naive=1 then pre_art_care=1;
 
 * status at hiv-related  death for people with hiv;
 status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
-if hiv=1 and caldate&j=death and dead1564_ = 1 and rdcause=1 then do;
+if hiv=1 and caldate&j=death and rdcause=1 then do;
 death_hiv=1;if gender=1 then death_hiv_m=1;if gender=2 then death_hiv_w=1;
 status_death_hr_g=99;
 if t ge 2 and registd_tm1 ne 1 then status_death_hr_g=1;
