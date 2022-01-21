@@ -2,7 +2,7 @@
 
 * options user="/folders/myfolders/";
 
- proc printto  ; *    log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+ proc printto      log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
@@ -14,7 +14,7 @@ data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv = lapr24_s2_ex   ;
+%let laprv = lapr24_s2   ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
@@ -1108,10 +1108,9 @@ proc sort data=y;by run option;run;
 
 data    a.l_&laprv; set y;  
 
-proc freq data = a.l_&laprv; tables run ; where cald = 2020;
+proc freq; tables run; where cald = 2020;
 
 run;
-
 
 
 
@@ -1495,7 +1494,7 @@ run;
 
 * table 1;
 ods html;
-proc means data=  a.w_&laprv n p50 p5 p95;  *  a.w_&laprv ;
+proc means data=  a.w_lapr24_s2 n p50 p5 p95;  *  a.w_&laprv ;
 var prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22  p_iime_22  n_start_restart_22 
 n_death_hiv_22;
 run;
