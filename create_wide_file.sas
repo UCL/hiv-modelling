@@ -14,7 +14,7 @@ data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv = lapr24_s2   ;
+%let laprv =  laprv24_s2 ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
@@ -1188,7 +1188,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=dres_cost); *  %var(v=dtest_cost); *   %var(v=d_t_adh_int_cost); *   %var(v=dswitchline_cost); *  %var(v=dtaz_cost); *   %var(v=dcost_drug_level_test);
 * %var(v=dclin_cost );  
 * %var(v=dcost_circ ); *  %var(v=dcost_condom_dn);
-* %var(v=dcost_prep_visit );     %var(v=dcost_prep );   * %var(v=dcost_drug_level_test ); 
+ %var(v=dcost_prep_visit );     %var(v=dcost_prep );   * %var(v=dcost_drug_level_test ); 
   %var(v=dcost_clin_care );  * %var(v=dcost_non_aids_pre_death );  * %var(v=dcost_child_hiv );  * %var(v=dzdv_cost );   * %var(v=dten_cost );   * %var(v=d3tc_cost );   
 * %var(v=dnev_cost );   * %var(v=dlpr_cost );   * %var(v=ddar_cost );   * %var(v=dtaz_cost );    * %var(v=defa_cost );   * %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
@@ -1273,7 +1273,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dcost_prep_visit
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw 
@@ -1494,7 +1494,7 @@ run;
 
 * table 1;
 ods html;
-proc means data=  a.w_lapr24_s2 n p50 p5 p95;  *  a.w_&laprv ;
+proc means data=  a.w_&laprv n p50 p5 p95;  *  a.w_&laprv ;
 var prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22  p_iime_22  n_start_restart_22 
 n_death_hiv_22;
 run;
@@ -1571,7 +1571,7 @@ cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_s
 ;
 run;
 
-proc univariate data= a.w_lapr24_s2; * data= a.w_&laprv ; var d_p_iime_42_2; run;
+proc univariate data= a.w_&laprv; * data= a.w_&laprv ; var d_p_iime_42_2; run;
 
 proc freq data= a.w_&laprv; tables
 fold_change_mut_risk  prep_all_uptake_pop  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
@@ -1717,16 +1717,19 @@ run;
 
 
 
-proc means; var d_n_infection_50y_2  n_infection_50y_1  n_infection_50y_2 
+proc means data = a.w_&laprv; var d_n_infection_50y_2  n_infection_50y_1  n_infection_50y_2 
 d_ddaly_ac_ntd_mtct_50y_2  ddaly_ac_ntd_mtct_50y_1  ddaly_ac_ntd_mtct_50y_2
 d_ddaly_50y_2  ddaly_50y_1  ddaly_50y_2  d_dcost_50y_2  dcost_50y_2  dcost_50y_1
 netdaly500_1 netdaly500_2 netdaly_averted 
 d_dcost_10y_2 dcost_10y_2 dcost_10y_1
 d_n_infection_10y_2 n_infection_10y_1 n_infection_10y_2 
 d_dcost_prep_50y_2  dcost_prep_50y_2  dcost_prep_50y_1
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2
 d_dcost_clin_care_50y_2  dcost_clin_care_50y_2  dcost_clin_care_50y_1 
 ;
 run;
+
+proc contents data = a.w_&laprv; run;
 
 
 proc means; var n_cur_res_cab_32_1 n_cur_res_cab_32_2 ; run;
