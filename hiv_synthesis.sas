@@ -14784,6 +14784,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_started_art_as_tld_prep_vl1000 + started_art_as_tld_prep_vl1000 ;    s_onart_as_tld_prep + onart_as_tld_prep; 
 	s_onart_as_tld_prep_vl1000 + onart_as_tld_prep_vl1000 ;    s_started_art_as_tld_prep + started_art_as_tld_prep ; 
+	s_art_initiation + art_initiation;  s_restart + restart;
 
 	s_onart_m1549_ + onart_m1549_ ; s_onart_m1564_ + onart_m1564_ ; s_onart_m1519_ + onart_m1519_ ; s_onart_m2024_ + onart_m2024_ ; 
   	s_onart_m2529_ + onart_m2529_ ; s_onart_m3034_ + onart_m3034_ ; s_onart_m3539_ + onart_m3539_ ; s_onart_m4044_ + onart_m4044_ ;
