@@ -2,19 +2,19 @@
 
 * options user="/folders/myfolders/";
 
- proc printto      log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+ proc printto  ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr24_s2_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr26_out\";
 
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv =  laprv24_s2 ;
+%let laprv =  laprv26 ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
@@ -175,6 +175,8 @@ dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
 dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
+dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
+dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 			   
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
 
@@ -210,6 +212,14 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
+
+
+* checks;
+
+proc print; var run cald option dcost_prep_inj  dcost_prep_oral   dcost_prep  dcost_prep_visit
+
+
+
 
 
 * ================================================================================= ;
@@ -1094,7 +1104,7 @@ p_emerge_inm_res_cab_notpr   p_u_vfail1_this_period
 
 pref_prep_inj_beta_s1   
 
-n_art_initiation  n_restart   n_start_restart
+n_art_initiation  n_restart   n_start_restart   dcost_prep_oral  dcost_prep_inj
 
 ;
 
@@ -1183,14 +1193,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); * %var(v= p_onart_vl1000_1524); * %var(v=p_onart_vl1000_sw);
 * %var(v=prev_vg1000_newp_m); * %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;
 * %var(v=p_tle);  * %var(v=p_tld);  * %var(v=p_zld);  * %var(v=p_zla);  * %var(v=p_otherreg);  * %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
-* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost); *  %var(v= dart_cost_y);
-* %var(v=dadc_cost); *   %var(v=dcd4_cost); *   %var(v=dvl_cost); *   %var(v=dvis_cost);  *   %var(v=dcot_cost);  *  %var(v=dtb_cost);   
-* %var(v=dres_cost); *  %var(v=dtest_cost); *   %var(v=d_t_adh_int_cost); *   %var(v=dswitchline_cost); *  %var(v=dtaz_cost); *   %var(v=dcost_drug_level_test);
-* %var(v=dclin_cost );  
-* %var(v=dcost_circ ); *  %var(v=dcost_condom_dn);
+* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);
+  %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
+  %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);     %var(v=dcost_drug_level_test);
+  %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); 
+  %var(v=dcost_circ );    %var(v=dcost_condom_dn);
+   %var(v=dcost_prep_oral);   %var(v=dcost_prep_inj);
  %var(v=dcost_prep_visit );     %var(v=dcost_prep );   * %var(v=dcost_drug_level_test ); 
-  %var(v=dcost_clin_care );  * %var(v=dcost_non_aids_pre_death );  * %var(v=dcost_child_hiv );  * %var(v=dzdv_cost );   * %var(v=dten_cost );   * %var(v=d3tc_cost );   
-* %var(v=dnev_cost );   * %var(v=dlpr_cost );   * %var(v=ddar_cost );   * %var(v=dtaz_cost );    * %var(v=defa_cost );   * %var(v=ddol_cost );
+  %var(v=dcost_clin_care );    %var(v=dcost_non_aids_pre_death );    %var(v=dcost_child_hiv );    %var(v=dzdv_cost );     %var(v=dten_cost );     %var(v=d3tc_cost );   
+  %var(v=dnev_cost );     %var(v=dlpr_cost );     %var(v=ddar_cost );     %var(v=dtaz_cost );      %var(v=defa_cost );     %var(v=ddol_cost );
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
 * %var(v=r_efa_hiv); * %var(v=p_onart_cd4_l200);
 * %var(v=p_dol_2vg1000_dolr1_adh0); * %var(v=p_dol_2vg1000_dolr1_adh1); * %var(v=p_dol_2vg1000_dolr0_adh0); * %var(v=p_dol_2vg1000_dolr0_adh1);
@@ -1273,7 +1284,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data   wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dcost_prep_visit
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
+dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
+dcost_prep_visit   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw 
@@ -1295,7 +1309,7 @@ ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m 
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep dcost_clin_care n_art_initiation  n_restart   n_start_restart
+dcost_prep dcost_clin_care n_art_initiation  n_restart   n_start_restart  dcost_prep_oral  dcost_prep_inj
 ;
 
 
@@ -1726,6 +1740,27 @@ d_n_infection_10y_2 n_infection_10y_1 n_infection_10y_2
 d_dcost_prep_50y_2  dcost_prep_50y_2  dcost_prep_50y_1
 dcost_prep_visit_50y_1  dcost_prep_visit_50y_2
 d_dcost_clin_care_50y_2  dcost_clin_care_50y_2  dcost_clin_care_50y_1 
+
+dart_cost_y_50y_1  dart_cost_y_50y_2  
+dadc_cost_50y_1 dadc_cost_50y_2
+dcd4_cost_50y_1   dcd4_cost_50y_2   
+dvl_cost_50y_1   dvl_cost_50y_2   
+dvis_cost_50y_1   dvis_cost_50y_2   
+dnon_tb_who3_cost_50y_1   dnon_tb_who3_cost_50y_2   
+dcot_cost_50y_1   dcot_cost_50y_2   
+dtb_cost_50y_1 dtb_cost_50y_2 
+dres_cost_50y_1   dres_cost_50y_2   
+dtest_cost_50y_1   dtest_cost_50y_2   
+d_t_adh_int_cost_50y_1 d_t_adh_int_cost_50y_2
+dswitchline_cost_50y_1  dswitchline_cost_50y_2  
+dcost_circ_50y_1  dcost_circ_50y_2  
+dcost_condom_dn_50y_1  dcost_condom_dn_50y_2  
+dcost_prep_visit_50y_1  dcost_prep_visit_50y_2  
+dcost_prep_50y_1 		dcost_prep_50y_2 		
+dcost_child_hiv_50y_1  dcost_child_hiv_50y_2  
+dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2
+dcost_prep_oral_50y_1   dcost_prep_oral_50y_2   
+dcost_prep_inj_50y_1 dcost_prep_inj_50y_2
 ;
 run;
 
