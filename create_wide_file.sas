@@ -46,7 +46,6 @@ data y;
 merge g_&laprv sf;
 by run ;
 
-
 * preparatory code ;
 
 * ================================================================================= ;
@@ -148,7 +147,6 @@ ddol_cost = s_dcost_dol * &sf * 4 / 1000;
 
 
 if s_dart_cost=. then s_dart_cost=0;
-if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
 if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
 if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
@@ -173,7 +171,6 @@ dtest_cost = s_dtest_cost * &sf * 4 / 1000;
 dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
 dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
@@ -203,7 +200,7 @@ dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
+		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
 		dcost_child_hiv + dcost_non_aids_pre_death ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
@@ -1418,6 +1415,16 @@ proc sort; by run;run;
   merge   wide_outputs  wide_par ;  
   by run;
 
+* checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
+dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
+					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
+					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_prep_visit_50y_1 +
+					dcost_prep_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 ;
+
+dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
+					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
+					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_prep_visit_50y_2 +
+					dcost_prep_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 ;
 
 if hivtest_type_1_prep_inj = . then hivtest_type_1_prep_inj=0;
 
@@ -1459,6 +1466,10 @@ netdaly500_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0005);
 netdaly500_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0005);
 netdaly_averted = netdaly500_1 - netdaly500_2;
 
+ce_500=0; if netdaly_averted > 0 then ce_500=1; 
+ce_500_x = 1-ce_500;
+
+
 d_dcost_10y_2 = dcost_10y_2 - dcost_10y_1;
 d_n_infection_10y_2 = n_infection_10y_1 - n_infection_10y_2 ;
 
@@ -1478,7 +1489,6 @@ p_diag_22 = p_diag_22/100;
 pred_need_cd4m_per_plhiv_22 =   0.425 + (p_diag_22 * (-0.183)) + (p_onart_diag_22 * (-0.132)) + (p_onart_vl1000_22 * (-0.074)) ; 
 
 res_art_re_start_per_plhiv_22 = p_need_cd4m_per_plhiv_22 - pred_need_cd4m_per_plhiv_22; 
-
 
 
 /*
@@ -1756,7 +1766,9 @@ run;
 
 
 
-proc means data = a.w_&laprv; var d_n_infection_50y_2  n_infection_50y_1  n_infection_50y_2 
+proc means data = a.w_&laprv; 
+var 
+d_n_infection_50y_2  n_infection_50y_1  n_infection_50y_2 
 d_ddaly_ac_ntd_mtct_50y_2  ddaly_ac_ntd_mtct_50y_1  ddaly_ac_ntd_mtct_50y_2
 d_ddaly_50y_2  ddaly_50y_1  ddaly_50y_2  d_dcost_50y_2  dcost_50y_2  dcost_50y_1
 netdaly500_1 netdaly500_2 netdaly_averted 
@@ -1792,7 +1804,21 @@ run;
 proc contents data = a.w_&laprv; run;
 
 
-proc means; var n_cur_res_cab_32_1 n_cur_res_cab_32_2 ; run;
+proc freq data = a.w_&laprv; tables prep_all_strategy * ce_500;  run; 
+
+proc glm data = a.w_&laprv; 
+class prep_all_strategy;
+model netdaly_averted = prep_all_strategy  / solution; 
+run;
+
+
+proc logistic data = a.w_&laprv; 
+class prep_all_strategy;
+model ce_500_x = prep_all_strategy prep_inj_efficacy pr_inm_inj_prep_primary incidence1549_22 ; 
+run;
+
+
+proc means; var n_cur_res_cab_32_1 n_cur_res_cab_32_2  ; run;
 
 
 
