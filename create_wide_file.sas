@@ -216,11 +216,8 @@ cost = dcost / discount;
 
 * checks;
 
-proc print; var run cald option dcost_prep_inj  dcost_prep_oral   dcost_prep  dcost_prep_visit
-
-
-
-
+* proc print; 
+* var run cald option dcost_prep_inj  dcost_prep_oral   dcost_prep  dcost_prep_visit;
 
 * ================================================================================= ;
 
@@ -899,10 +896,12 @@ end;
 * n_hiv;						n_hiv = s_hivge15 * &sf;
 * n_alive;						n_alive = s_alive * &sf;
 
-* n_art_initiation;				n_art_initiation = s_art_initiation * &sf;
-* n_restart;					n_restart = s_restart * &sf;
-* n_start_restart;				n_start_restart= n_art_initiation + n_restart;
+* n_art_initiation;				n_art_initiation = s_art_initiation * 4 * &sf;
+* n_restart;					n_restart = s_restart * 4 * &sf;
+* n_line1_fail_this_period;		n_line1_fail_this_period = s_line1_fail_this_period * 4 * &sf;
 
+* n_need_cd4m;					n_need_cd4m = n_art_initiation + n_restart + n_line1_fail_this_period;
+ 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * number of women with hiv giving birth per year;
@@ -1104,7 +1103,7 @@ p_emerge_inm_res_cab_notpr   p_u_vfail1_this_period
 
 pref_prep_inj_beta_s1   
 
-n_art_initiation  n_restart   n_start_restart   dcost_prep_oral  dcost_prep_inj
+n_art_initiation  n_restart   n_start_restart   dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 
 ;
 
@@ -1221,7 +1220,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_iime); * %var(v=p_pime); * %var(v=p_nnme);   *  %var(v=n_pregnant_ntd); *  %var(v=n_preg_odabe);
   %var(v=n_birth_with_inf_child);  %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   * %var(v= n_hiv1_prep);
-* %var(v= n_prep_all); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv); 
+* %var(v= n_prep_all); * %var(v=n_covid); * %var(v=n_death_covid);  * %var(v=n_death);   %var(v=n_death_hiv);   %var(v= n_hiv);
 %var(v=p_prep_all_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   * %var(v=incidence1524m) ;
 * %var(v=incidence2534w);   * %var(v=incidence2534m) ; * %var(v=incidence3544w);   * %var(v=incidence3544m) ;* %var(v=incidence4554w);   * %var(v=incidence4554m) ;
 * %var(v=incidence5564w);   * %var(v=incidence5564m) ;  %var(v=incidence_sw);  * %var (v=n_mcirc1549_3m) ;* %var (v=n_vmmc1549_3m); 
@@ -1279,7 +1278,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_emerge_inm_res_cab); %var(v=p_emerge_inm_res_cab_tail);
 %var(v=p_prep_init_primary_res); %var(v=p_prep_reinit_primary_res);   %var(v=p_emerge_inm_res_cab_prim);  %var(v=n_prep_primary_prevented);   
 %var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); %var(v=d_cost_prep); %var(v=d_cost_clin_care);
-%var(v=n_art_initiation);  %var(v=n_restart);   %var(v=n_start_restart);
+%var(v=n_art_initiation);  %var(v=n_restart);   %var(v=n_start_restart);    %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
 
 
 
@@ -1287,7 +1286,7 @@ data   wide_outputs; merge
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
-dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    
+dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
 prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw 
@@ -1309,7 +1308,7 @@ ddaly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_dur_9m 
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep dcost_clin_care n_art_initiation  n_restart   n_start_restart  dcost_prep_oral  dcost_prep_inj
+dcost_prep dcost_clin_care n_art_initiation  n_restart   n_start_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 ;
 
 
@@ -1471,6 +1470,15 @@ d_p_vl1000_art_12m_42_2 = p_vl1000_art_12m_42_1 - p_vl1000_art_12m_42_2;
 
 p_emerge_inm_res_cab_50y_2 = s_em_inm_res_o_cab_off_3m_50y_2 /  s_o_cab_or_o_cab_tm1_no_r_50y_2 ;
 * p_emerge_inm_res_cab_tail_50y_2 = s_emerge_inm_res_cab_tail_50y_2 / s_cur_in_prep_inj_tail_no_r_50y_2 ; 
+
+p_need_cd4m_per_plhiv_22 = n_need_cd4m_22 / n_hiv_22 ;
+
+p_diag_22 = p_diag_22/100;
+
+pred_need_cd4m_per_plhiv_22 =   0.425 + (p_diag_22 * (-0.183)) + (p_onart_diag_22 * (-0.132)) + (p_onart_vl1000_22 * (-0.074)) ; 
+
+res_art_re_start_per_plhiv_22 = p_need_cd4m_per_plhiv_22 - pred_need_cd4m_per_plhiv_22; 
+
 
 
 /*
@@ -1728,6 +1736,23 @@ where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1; run;
 
 proc univariate data=   a.w_&laprv; var p_emerge_inm_res_cab_50y_2  p_emerge_inm_res_cab_tail_50y_2; * data=  a.w_&laprv ;
 run;
+
+
+
+proc means; var n_need_cd4m_22 n_art_initiation_22 n_restart_22 n_line1_fail_this_period_22  ; run;
+
+proc glm data=  a.w_&laprv; 
+model p_need_cd4m_per_plhiv_22 = p_onart_diag_22  p_diag_22  p_onart_vl1000_22  ; run; 
+
+ods html;
+proc glm data=  a.w_&laprv; 
+model p_need_cd4m_per_plhiv_22 = pred_need_cd4m_per_plhiv_22  ; run; 
+ods html close;
+
+proc univariate; 
+var res_need_cd4m_per_plhiv_22 pred_need_cd4m_per_plhiv_22  p_need_cd4m_per_plhiv_22; 
+run;
+
 
 
 
