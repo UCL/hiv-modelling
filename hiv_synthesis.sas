@@ -13248,7 +13248,7 @@ if visit=1 and naive=1 then pre_art_care=1;
 
 * status at hiv-related  death for people with hiv;
 status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
-if hiv=1 and caldate&j=death and dead1564_ = 1 and rdcause=1 then do;
+if hiv=1 and caldate&j=death and rdcause=1 then do;
 death_hiv=1;if gender=1 then death_hiv_m=1;if gender=2 then death_hiv_w=1;
 status_death_hr_g=99;
 if t ge 2 and registd_tm1 ne 1 then status_death_hr_g=1;
@@ -14784,6 +14784,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_started_art_as_tld_prep_vl1000 + started_art_as_tld_prep_vl1000 ;    s_onart_as_tld_prep + onart_as_tld_prep; 
 	s_onart_as_tld_prep_vl1000 + onart_as_tld_prep_vl1000 ;    s_started_art_as_tld_prep + started_art_as_tld_prep ; 
+	s_art_initiation + art_initiation;  s_restart + restart;
 
 	s_onart_m1549_ + onart_m1549_ ; s_onart_m1564_ + onart_m1564_ ; s_onart_m1519_ + onart_m1519_ ; s_onart_m2024_ + onart_m2024_ ; 
   	s_onart_m2529_ + onart_m2529_ ; s_onart_m3034_ + onart_m3034_ ; s_onart_m3539_ + onart_m3539_ ; s_onart_m4044_ + onart_m4044_ ;
