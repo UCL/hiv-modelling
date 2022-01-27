@@ -2059,9 +2059,9 @@ if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{
 * pref_prep_vr;					pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	* median 0.26 (women only);		
 end;
 
-if . < caldate{t} < date_prep_oral_into or date_prep_oral_intro=. then pref_prep_oral = 0;
-if . < caldate{t} < date_prep_inj_into or date_prep_inj_intro=. then pref_prep_inj = 0;
-if . < caldate{t} < date_prep_vr_into or date_prep_vr_intro=. then pref_prep_vr = 0;
+if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
+if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
+if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;

@@ -723,13 +723,14 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * sens_tests_prep_inj;			%sample_uniform(sens_tests_prep_inj, 1 2);
 
-sens_testtype3_from_inf_0=0; sens_testtype3_from_inf_p25=0; sens_testtype3_from_inf_gep5=0.25;
+sens_ttype3_prep_inj_primary=0; sens_ttype3_prep_inj_inf3m=0; sens_ttype3_prep_inj_infge6m=0.25;
 if sens_tests_prep_inj =1 then do;
-sens_testtype1_from_inf_0=0.5; sens_testtype1_from_inf_p25=0.75; sens_testtype1_from_inf_gep5=0.9;
+sens_ttype1_prep_inj_primary=0.5; sens_ttype1_prep_inj_inf3m=0.75; sens_ttype1_prep_inj_infge6m=0.9;
 end;
 if sens_tests_prep_inj =2 then do;
-sens_testtype1_from_inf_0=0.2; sens_testtype1_from_inf_p25=0.3; sens_testtype1_from_inf_gep5=0.5;
+sens_ttype1_prep_inj_primary=0.2; sens_ttype1_prep_inj_inf3m=0.3; sens_ttype1_prep_inj_infge6m=0.5;
 end;
+
 
 * sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
 
@@ -4598,12 +4599,12 @@ then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 
 	if prep_inj_tm1 = 1 and hiv=1 then do;
 		if hivtest_type_1_prep_inj ne 1 then do;
-			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype3_from_inf_p25; 
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype3_from_inf_gep5;  
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype3_prep_inj_inf3m;
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m; 
 		end;
 		if hivtest_type_1_prep_inj = 1 then do;
-			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
 		cost_test = cost_test_g; cost_test_type1=cost_test_g; 
 		end;
 	end;
@@ -6744,7 +6745,7 @@ if t ge 2 then do;
 	or (prep_inj=1 and hivtest_type_1_prep_inj=1) then do;
 		u=rand('uniform');
 		sens_primary=0.86;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_testtype1_from_inf_0 ;
+		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
@@ -6783,7 +6784,7 @@ if t ge 2 then do;
 	if hivtest_type=3 then do;
 		u=rand('uniform');
 		sens_primary=sens_primary_testtype3;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_testtype3_from_inf_0 ;
+		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype3_prep_inj_primary ;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
@@ -7138,14 +7139,14 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
 	if prep_inj     = 1 and hiv=1 then do;
 		if hivtest_type_1_prep_inj ne 1 then do;
-			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_testtype3_from_inf_0; 
-			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype3_from_inf_p25; 
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype3_from_inf_gep5;  
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype3_prep_inj_primary; 
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype3_prep_inj_infge3m; 
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m;  
 		end;
 		if hivtest_type_1_prep_inj = 1 then do;
-			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_testtype1_from_inf_0;  
-			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_testtype1_from_inf_p25;  
-			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_testtype1_from_inf_gep5; 
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_inj_primary;  
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype1_prep_inj_infge3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
 		cost_test = cost_test_g; cost_test_type1=cost_test_g;
 		end;
 	end;
@@ -16501,8 +16502,9 @@ r_cab  cab_res_primary
 diagprim  hiv_cab_3m  hiv_cab_6m  hiv_cab_9m  hiv_cab_ge12m  hivtest_type_1_init_prep_inj  hivtest_type_1_prep_inj  eff_sens_vct 
 eff_sens_primary  tested  registd
 
-sens_testtype3_from_inf_0 sens_testtype3_from_inf_p25 sens_testtype3_from_inf_gep5
-sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_gep5
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
+sens_vct_testtype3_cab_tail sens_primary_testtype3
 
 ; 
 
@@ -17793,8 +17795,8 @@ rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
-sens_testtype3_from_inf_0 sens_testtype3_from_inf_p25 sens_testtype3_from_inf_gep5
-sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_gep5  sens_tests_prep_inj
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
@@ -20021,8 +20023,8 @@ rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
-sens_testtype3_from_inf_0 sens_testtype3_from_inf_p25 sens_testtype3_from_inf_gep5
-sens_testtype1_from_inf_0 sens_testtype1_from_inf_p25 sens_testtype1_from_inf_gep5  sens_tests_prep_inj
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
