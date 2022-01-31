@@ -1342,7 +1342,6 @@ if sw = 1 then do;
 			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
-			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
@@ -1442,7 +1441,6 @@ select;	* JAS May2021 ;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
 												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
 							end;
-	otherwise xxx=1;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -3462,8 +3460,7 @@ if t ge 2 then do;
 		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
-		otherwise xxx=1;
-end;
+	end;
 
 	* transition to a new level with these probabilities and select newp;
 	e = rand('uniform');
