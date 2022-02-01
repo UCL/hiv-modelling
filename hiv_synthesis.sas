@@ -2416,24 +2416,21 @@ tested_anc=.;
 
 * Jan2017 - modified testing criteria so that prep_tm1 =0 as people previously on prep would only test for prep purposes;
 if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do; 
-
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
+		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
-		rate_1sttest_2010 = initial_rate_1sttest + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_reptest_2010 = 0.0000 + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
 end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
-		if rate_1sttest gt rate_1sttest_2010 gt . then rate_1sttest = rate_1sttest_2010;
-		if rate_reptest gt rate_reptest_2010 gt . then rate_reptest = rate_reptest_2010;
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
+		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
+		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;																									   
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;

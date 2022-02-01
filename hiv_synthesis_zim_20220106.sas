@@ -1,18 +1,16 @@
 
 
 * libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
- libname a 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 1 - Synthesis\Check';
-%let tmpfilename = out20220105_;
-
+* libname a 'C:\Loveleen\Synthesis model\';
 %let outputdir = %scan(&sysparm,1," ");
-*libname a "&outputdir/";
+libname a "&outputdir/";
 %let tmpfilename = %scan(&sysparm,2," ");
-%let tmpfilename
+
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -349,7 +347,6 @@ newp_seed = 7;
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 , 
 								0.1		0.2 	0.40	0.2 	0.05 	0.05 );
-
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
@@ -497,7 +494,6 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080); 
-
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -699,7 +695,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-%include "C:\Users\ValentinaCambiano\OneDrive - University College London\Documents\GitHub\hiv-modelling/Zim_parameters.sas";
+%include "/home/rmjlvca/Zim_parameters.sas";
 
 
 * ===================== ;
@@ -2420,23 +2416,25 @@ tested_anc=.;
 
 * Jan2017 - modified testing criteria so that prep_tm1 =0 as people previously on prep would only test for prep purposes;
 if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do; 
+
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+
 		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
+		rate_1sttest_2010 = initial_rate_1sttest + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+		rate_reptest_2010 = 0.0000 + (min(2010,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+
 end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
-		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
-		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - (caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future;
+		if rate_1sttest gt rate_1sttest_2010 gt . then rate_1sttest = rate_1sttest_2010;
+		if rate_reptest gt rate_reptest_2010 gt . then rate_reptest = rate_reptest_2010;
 end;
-
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 *Vale - 20211026;
@@ -15310,11 +15308,8 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 
 * procs;
-proc freq; 
-table caldate&j rate_1sttest_2011 rate_reptest_2011 rate_1sttest rate_reptest tested an_lin_incr_test fold_rate_decr_test_future;
-where caldate&j in (1981 2019 2020 2021 2022 2023);run;
-/*
 
+/*
 
 ods html;
 proc print; var caldate&j
@@ -17652,7 +17647,7 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);/*
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
@@ -17809,7 +17804,7 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);*/
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
 
 */
 

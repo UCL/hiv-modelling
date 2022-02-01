@@ -2,7 +2,7 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_5_out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_6_out\";
 
 data g;    set b.out: ;
 proc contents;run;
@@ -811,6 +811,19 @@ end;
 			rate_dead_hivneg_anycause = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
 			rate_dead_hivpos_anycause = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
 
+			rate_dead_hivneg_1524m = (s_dead_hivneg_1524m * 4 * 100) / (s_ageg1519m + s_ageg2024m - s_hiv1524m) ; 
+			rate_dead_hivneg_2534m = (s_dead_hivneg_2534m * 4 * 100) / (s_ageg2529m + s_ageg3034m - s_hiv2529m - s_hiv3034m) ; 
+			rate_dead_hivneg_3544m = (s_dead_hivneg_3544m * 4 * 100) / (s_ageg3539m + s_ageg4044m - s_hiv3539m - s_hiv4044m) ;
+			rate_dead_hivneg_4554m = (s_dead_hivneg_4554m * 4 * 100) / (s_ageg4549m + s_ageg5054m - s_hiv4549m - s_hiv5054m) ;	 
+			rate_dead_hivneg_5564m = (s_dead_hivneg_5564m * 4 * 100) / (s_ageg5559m + s_ageg6064m - s_hiv5559m - s_hiv6064m) ; 
+			rate_dead_hivneg_65plm = (s_dead_hivneg_65plm * 4 * 100) / (s_ageg65plm - s_hiv65plm) ;
+			rate_dead_hivneg_1524w = (s_dead_hivneg_1524w * 4 * 100) / (s_ageg1519w + s_ageg2024w - s_hiv1524w) ; 
+			rate_dead_hivneg_2534w = (s_dead_hivneg_2534w * 4 * 100) / (s_ageg2529w + s_ageg3034w - s_hiv2529w - s_hiv3034w) ; 
+			rate_dead_hivneg_3544w = (s_dead_hivneg_3544w * 4 * 100) / (s_ageg3539w + s_ageg4044w - s_hiv3539w - s_hiv4044w) ;
+			rate_dead_hivneg_4554w = (s_dead_hivneg_4554w * 4 * 100) / (s_ageg4549w + s_ageg5054w - s_hiv4549w - s_hiv5054w) ;	 
+			rate_dead_hivneg_5564w = (s_dead_hivneg_5564w * 4 * 100) / (s_ageg5559w + s_ageg6064w - s_hiv5559w - s_hiv6064w) ; 
+			rate_dead_hivneg_65plw = (s_dead_hivneg_65plw * 4 * 100) / (s_ageg65plw - s_hiv65plw) ;
+
 			rate_dead_cvd_3039m = (s_dead_cvd_3039m * 4 * 100) / (s_ageg3034m + s_ageg3539m) ;
 			rate_dead_cvd_4049m = (s_dead_cvd_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
 			rate_dead_cvd_5059m = (s_dead_cvd_5059m * 4 * 100) / (s_ageg5054m + s_ageg5559m) ;
@@ -1030,7 +1043,8 @@ test_prop_positive
 
 n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv n_hiv_m n_hiv_w prevalence2549w prevalence2549m
 
-
+rate_dead_hivneg_1524m  rate_dead_hivneg_2534m  rate_dead_hivneg_3544m  rate_dead_hivneg_4554m  rate_dead_hivneg_5564m  rate_dead_hivneg_65plm 
+rate_dead_hivneg_1524w  rate_dead_hivneg_2534w  rate_dead_hivneg_3544w  rate_dead_hivneg_4554w  rate_dead_hivneg_5564w  rate_dead_hivneg_65plw 
 ;
 /*
 proc freq data=y;table rate_dead_allage_m rate_dead_allage_w rate_dead_allage n_hiv_m n_hiv_w;run;
@@ -1233,6 +1247,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_tested_w); %var(v=test_prop_positive);  %var(v=n_alive); %var(v=n_alive1549_); %var(v=n_alive_m); %var(v=n_alive_w);
 %var(v=n_diagnosed);   %var (v=n_hiv); %var (v=n_hiv_m); %var (v=n_hiv_w); %var(v=n_tested)
 %var(v=prevalence2549w);  %var(v=prevalence2549m);
+%var(v=rate_dead_hivneg_1524m);  %var(v=rate_dead_hivneg_2534m);  %var(v=rate_dead_hivneg_3544m);  
+%var(v=rate_dead_hivneg_4554m);  %var(v=rate_dead_hivneg_5564m);  %var(v=rate_dead_hivneg_65plm);
+%var(v=rate_dead_hivneg_1524w);  %var(v=rate_dead_hivneg_2534w);  %var(v=rate_dead_hivneg_3544w);
+%var(v=rate_dead_hivneg_4554w);  %var(v=rate_dead_hivneg_5564w);  %var(v=rate_dead_hivneg_65plw); 
+
 
 
 
@@ -1326,6 +1345,9 @@ n_death_hiv_m n_death_hiv_w
 p_onart_m_age50pl p_onart_w_age50pl n_art_start_y 	/*n_all_ai_y*/ 	n_onart
 p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_death_hiv_m 
 n_death_hiv_w n_tested_m n_tested_w test_prop_positive n_alive n_alive1549_ n_alive_m n_alive_w n_diagnosed  n_hiv n_hiv_m n_hiv_w
+rate_dead_hivneg_1524m  rate_dead_hivneg_2534m  rate_dead_hivneg_3544m  rate_dead_hivneg_4554m  rate_dead_hivneg_5564m  rate_dead_hivneg_65plm 
+rate_dead_hivneg_1524w  rate_dead_hivneg_2534w  rate_dead_hivneg_3544w  rate_dead_hivneg_4554w  rate_dead_hivneg_5564w  rate_dead_hivneg_65plw 
+
 ;
 
 proc sort; by run; run;
@@ -1369,6 +1391,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
+%par(p=fold_rate_decr_test_future);
 run;
 
 data wide_par; merge 
@@ -1396,7 +1419,7 @@ effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_p
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
-;
+fold_rate_decr_test_future;
 
 proc contents; run;
 
