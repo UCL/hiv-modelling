@@ -10,7 +10,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100 ; 
+%let population = 100000 ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -1312,7 +1312,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if rand('uniform') < prob_sw_init then sw = 1;
 end;
-sw=1;
+
 age_deb_sw=.;
 
 if sw=1 then do;
@@ -15260,7 +15260,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print;var cald sw sw_program eff_sw_program sw_program_visit option;where gender=2 and age ge 15;run;
 
 
 /*
