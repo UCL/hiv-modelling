@@ -23,8 +23,6 @@ merge a sf;
 by run ;
 run;
 
-proc freq data=a;table s_sw_program_visit;where option=1 and cald=2023;run;
-
 data a2;
 set a1;
 
