@@ -11,7 +11,7 @@ libname a "&outputdir/";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000 ; 
-%let year_interv = 2021.5;
+%let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -10948,11 +10948,13 @@ end;
 
 ***For rates;
 age_deb_sw1519_=0;age_deb_sw2024_=0;age_deb_sw2529_=0;age_deb_sw3039_=0;age_deb_swov40_=0;
+if sw=1 then do;
 if 15 le age_deb_sw lt 20 then age_deb_sw1519_=1;
 if 20 le age_deb_sw lt 25 then age_deb_sw2024_=1;
 if 25 le age_deb_sw lt 30 then age_deb_sw2529_=1;
 if 30 le age_deb_sw lt 40 then age_deb_sw3039_=1;
 if       age_deb_sw ge 40 then age_deb_swov40_=1;
+end;
 
 actdur_sw_0to3=0;actdur_sw_3to5=0;actdur_sw_6to9=0;actdur_sw_10to19=0;actdur_sw_ov20=0;
 if 0 lt act_dur_sw lt 3 then actdur_sw_0to3=1;
