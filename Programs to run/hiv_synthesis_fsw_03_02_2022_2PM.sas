@@ -10,7 +10,7 @@ libname a "&outputdir/";
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100 ; 
+%let population = 100000 ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -579,7 +579,8 @@ newp_seed = 7;
 * effect_sw_prog_newp;  	%sample_uniform(effect_sw_prog_newp, 0.1 0.2 0.3);
 * effect_sw_prog_6mtest;	%sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
 * effect_sw_prog_int;		%sample_uniform(effect_sw_prog_int, 0.4 0.6 0.8);
-* effect_sw_prog_adh;		%sample_uniform(effect_sw_prog_adh, 1.2 1.6 2);
+* effect_sw_prog_adh;		if sw_art_disadv=1 then %sample_uniform(effect_sw_prog_adh, 1 1.2);
+* effect_sw_prog_adh;		if sw_art_disadv=2 then %sample_uniform(effect_sw_prog_adh, 1.2 1.6 2);
 * effect_sw_prog_lossdiag;	%sample_uniform(effect_sw_prog_lossdiag, 0.4 0.6 0.8);
 * effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
 * effect_sw_prog_pers_sti;	%sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
@@ -1312,7 +1313,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if rand('uniform') < prob_sw_init then sw = 1;
 end;
-sw=1;
+
 age_deb_sw=.;
 
 if sw=1 then do;
@@ -1342,6 +1343,7 @@ if sw = 1 then do;
 			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
+			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
 		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
@@ -1441,6 +1443,7 @@ select;	* JAS May2021 ;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
 												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
 							end;
+	otherwise xxx=1;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -3460,7 +3463,8 @@ if t ge 2 then do;
 		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
-	end;
+		otherwise xxx=1;
+end;
 
 	* transition to a new level with these probabilities and select newp;
 	e = rand('uniform');
@@ -7300,7 +7304,7 @@ if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 e=rand('uniform');
 if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 */
-if sw=1 and adh <0.8 then adh = min (1, adh * eff_sw_lower_adh);
+if sw=1 and adh <0.8 then adh = min (1, adh * eff_prob_sw_lower_adh);
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -10956,11 +10960,13 @@ end;
 
 ***For rates;
 age_deb_sw1519_=0;age_deb_sw2024_=0;age_deb_sw2529_=0;age_deb_sw3039_=0;age_deb_swov40_=0;
+if sw=1 then do;
 if 15 le age_deb_sw lt 20 then age_deb_sw1519_=1;
 if 20 le age_deb_sw lt 25 then age_deb_sw2024_=1;
 if 25 le age_deb_sw lt 30 then age_deb_sw2529_=1;
 if 30 le age_deb_sw lt 40 then age_deb_sw3039_=1;
 if       age_deb_sw ge 40 then age_deb_swov40_=1;
+end;
 
 actdur_sw_0to3=0;actdur_sw_3to5=0;actdur_sw_6to9=0;actdur_sw_10to19=0;actdur_sw_ov20=0;
 if 0 lt act_dur_sw lt 3 then actdur_sw_0to3=1;
@@ -15257,8 +15263,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 * procs;
 
-proc print;var caldate&j date_start_sw sw age age_deb_sw age_deb_sw1519_ age_deb_sw2024_ age_deb_sw2529_ age_deb_sw3039_ age_deb_swov40_;
-where gender=2 and age ge 15;run;
 
 
 /*
