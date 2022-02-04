@@ -1977,8 +1977,9 @@ scatter x=cald y=o_r_death_15plw_cens / markerattrs = (symbol=square color=orang
 run;quit;
 
 ods rtf close; run;
-
-data a.d;set d;run;
+/*
+data a.d;set d;run;*/
+data d;set a.d;run;
 *20220201: partire da qua;
 data e;set d;
 where cald in 
@@ -2073,8 +2074,8 @@ p50_n_hiv_w_0			p5_n_hiv_w_0			p95_n_hiv_w_0
 
 ;
 run;
-proc transpose data=e out=mihpsa_zim_stock_20211108;run;
-data mihpsa_zim_stock_20211108;set mihpsa_zim_stock_20211108;
+proc transpose data=e out=mihpsa_zim_stock_20220131;run;
+data mihpsa_zim_stock_20220131;set mihpsa_zim_stock_20220131;
 sub = substr(_NAME_,1,3);
 var = substr(_NAME_,5,10);
 if sub="p50" then ord=1;
@@ -2172,8 +2173,8 @@ p50_n_tested_0 			p5_n_tested_0 		p95_n_tested_0
 p50_test_prop_positive_0	p5_test_prop_positive_0 	p95_test_prop_positive_0
 p50_n_new_vmmc1549m_0		p5_n_new_vmmc1549m_0		p95_n_new_vmmc1549m_0;
 run;
-proc transpose data=f out=mihpsa_zim_flow_20211108;run;
-data mihpsa_zim_flow_20211108;set mihpsa_zim_flow_20211108;
+proc transpose data=f out=mihpsa_zim_flow_20220131;run;
+data mihpsa_zim_flow_20220131;set mihpsa_zim_flow_20220131;
 sub = substr(_NAME_,1,3);
 var = substr(_NAME_,5,16);
 if sub="p50" then ord=1;
@@ -2207,10 +2208,61 @@ proc sort; by var_n ord;run;
 proc print;run;
 
 
+*DEATH RATE IN PEOPLE WITHOUT HIV;
+data g;set d;
+*note that 1991 would refer to the period 1990.5-1991.5;
+where cald in 
+(1990 2000 2010 2020 2030 2040 );
+rename p5_rate_dead_hivneg_1524m_0 = p05_rate_dead_hivneg_1524m_0;
+rename p5_rate_dead_hivneg_2534m_0 = p05_rate_dead_hivneg_2534m_0;
+rename p5_rate_dead_hivneg_3544m_0 = p05_rate_dead_hivneg_3544m_0;
+rename p5_rate_dead_hivneg_4554m_0 = p05_rate_dead_hivneg_4554m_0;
+rename p5_rate_dead_hivneg_5564m_0 = p05_rate_dead_hivneg_5564m_0;
+rename p5_rate_dead_hivneg_65plm_0 = p05_rate_dead_hivneg_65plm_0;
+rename p5_rate_dead_hivneg_1524w_0 = p05_rate_dead_hivneg_1524w_0;
+rename p5_rate_dead_hivneg_2534w_0 = p05_rate_dead_hivneg_2534w_0;
+rename p5_rate_dead_hivneg_3544w_0 = p05_rate_dead_hivneg_3544w_0;
+rename p5_rate_dead_hivneg_4554w_0 = p05_rate_dead_hivneg_4554w_0;
+rename p5_rate_dead_hivneg_5564w_0 = p05_rate_dead_hivneg_5564w_0;
+rename p5_rate_dead_hivneg_65plw_0 = p05_rate_dead_hivneg_65plw_0;
 
+keep cald
 
-
-
-
+p50_rate_dead_hivneg_1524m_0  p5_rate_dead_hivneg_1524m_0  p95_rate_dead_hivneg_1524m_0  
+p50_rate_dead_hivneg_2534m_0  p5_rate_dead_hivneg_2534m_0  p95_rate_dead_hivneg_2534m_0  
+p50_rate_dead_hivneg_3544m_0  p5_rate_dead_hivneg_3544m_0  p95_rate_dead_hivneg_3544m_0  
+p50_rate_dead_hivneg_4554m_0  p5_rate_dead_hivneg_4554m_0  p95_rate_dead_hivneg_4554m_0  
+p50_rate_dead_hivneg_5564m_0  p5_rate_dead_hivneg_5564m_0  p95_rate_dead_hivneg_5564m_0  
+p50_rate_dead_hivneg_65plm_0  p5_rate_dead_hivneg_65plm_0  p95_rate_dead_hivneg_65plm_0 
+p50_rate_dead_hivneg_1524w_0  p5_rate_dead_hivneg_1524w_0  p95_rate_dead_hivneg_1524w_0  
+p50_rate_dead_hivneg_2534w_0  p5_rate_dead_hivneg_2534w_0  p95_rate_dead_hivneg_2534w_0  
+p50_rate_dead_hivneg_3544w_0  p5_rate_dead_hivneg_3544w_0  p95_rate_dead_hivneg_3544w_0  
+p50_rate_dead_hivneg_4554w_0  p5_rate_dead_hivneg_4554w_0  p95_rate_dead_hivneg_4554w_0  
+p50_rate_dead_hivneg_5564w_0  p5_rate_dead_hivneg_5564w_0  p95_rate_dead_hivneg_5564w_0  
+p50_rate_dead_hivneg_65plw_0  p5_rate_dead_hivneg_65plw_0  p95_rate_dead_hivneg_65plw_0 ;
 
 run;
+
+proc transpose data=g out=mihpsa_zim_deathrhivneg_20220131;run;
+data mihpsa_zim_deathrhivneg_20220131;set mihpsa_zim_deathrhivneg_20220131;
+sub = substr(_NAME_,1,3);
+varagegend = substr(_NAME_,22,5);
+if sub="p50" then ord=1;
+if sub="p05" then ord=2;
+if sub="p95" then ord=3;
+if varagegend="1524m" then varagegend_n=1;
+if varagegend="2534m" then varagegend_n=2;
+if varagegend="3544m" then varagegend_n=3;
+if varagegend="4554m" then varagegend_n=4;
+if varagegend="5564m" then varagegend_n=5;
+if varagegend="65plm" then varagegend_n=6;
+if varagegend="1524w" then varagegend_n=7;
+if varagegend="2534w" then varagegend_n=8;
+if varagegend="3544w" then varagegend_n=9;
+if varagegend="4554w" then varagegend_n=10;
+if varagegend="5564w" then varagegend_n=11;
+if varagegend="65plw" then varagegend_n=12;
+run;
+
+proc sort; by varagegend_n ord;run;
+proc print;run;
