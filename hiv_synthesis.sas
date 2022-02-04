@@ -4242,64 +4242,64 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 	if prep_all_strategy=1 then do;
 		r = rand('Uniform');
 		if gender=2 and (sw=1 or 15<=age<25) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=2 then do;
 		r = rand('Uniform');
 		if gender=2 and sw=1 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=3 then do;
 		r = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=4 then do;	* used in oral prep ms ;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
 	end;
 
     if prep_all_strategy=5 then do; * used in cab-la resistance ms ;        
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1 then prep_all_elig=1; 
+        and 15 <= age < 50 then prep_all_elig=1; 
     end;
 
 	if prep_all_strategy=6 then do;	* as 4 but women only;	
     	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_all_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_all_elig=1; 
 	end;
 
     if prep_all_strategy=7 then do; * as 5 but women only ;        
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1) then prep_all_elig=1; 
+        and 15 <= age < 50) then prep_all_elig=1; 
     end;
 
     if prep_all_strategy=8 then do; * as 5 but expanded to more ep ;        
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1 then prep_all_elig=1; 
+        and 15 <= age < 50 then prep_all_elig=1; 
     end;
 
     if prep_all_strategy=9 then do; * as 7 but expanded to more ep ;        
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1) then prep_all_elig=1; 
+        and 15 <= age < 50) then prep_all_elig=1; 
     end;
 
 	if prep_all_strategy=10 then do;	* as 4 but expanded to more ep ; 	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.1 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
 	end;
 
 	if prep_all_elig=1 then date_most_recent_prep_all_elig=caldate{t};
