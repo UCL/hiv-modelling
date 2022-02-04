@@ -434,14 +434,24 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 															 (s_o_cab_or_o_cab_tm1_no_r - s_o_cab_or_o_cab_tm1_no_r_prim);
 
 
-* proc means ; 
+/*
 
-* var
-pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
+proc means data = a.l_&laprv ; 
+var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
 p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr ; 
+run;												 
 
-* run;
+proc means data = a.l_&laprv ; 
+var    p_emerge_inm_res_cab_notpr ; 
+by run;
+output out=mean;
+run;
+data r; set mean; 
+if _STAT_ = 'MEAN';
+proc freq; tables p_emerge_inm_res_cab_notpr;
+run;
 
+*/
 
 
 * of people with hiv in cab tail period who do not have resistance, proportion developing resistance in given period; 
