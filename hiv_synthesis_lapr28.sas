@@ -6143,11 +6143,6 @@ if hiv=1 then do;
 * xx33; 
 end;
 
-* infected with virus with integrase inhibitor mutations;
-infected_in118m=0; if in118m = 1 then infected_in118m=1;
-infected_in140m=0; if in140m = 1 then infected_in140m=1;
-infected_in148m=0; if in148m = 1 then infected_in148m=1;
-infected_in263m=0; if in263m = 1 then infected_in263m=1;
 
 com_test=.;
 if tested=1 and hiv ne 1 and cost_test ne cost_test_g then do;
@@ -14889,7 +14884,7 @@ if ever_sd_nvp=1 or ever_dual_nvp=1 then ever_nvp_pmtct=1;
 *   all art naive initiators excluding prev pmtct - ai_naive_no_pmtct;
 _ai_naive_no_pmtct_=0;_ai_naive_no_pmtct_c_r_=.; _ai_naive_no_pmtct_c_nnm_=0; _ai_naive_no_pmtct_c_pim_=.;
 _ai_naive_no_pmtct_c_inm_=.;_ai_naive_no_pmtct_c_rt184m_=.;_ai_naive_no_pmtct_c_rt65m_=.;_ai_naive_no_pmtct_c_rttams_=.;
-_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; _ai_naive_no_pmtct_e_inm_=.;
+_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; 
 
 
 if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
@@ -15970,9 +15965,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onart_w85pl_ + onart_w85pl_ ;
 
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
-
-	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ; 
-	s_infected_in263m + infected_in263m ; 
 
 	/* blood pressure */
 
@@ -17580,7 +17572,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
+s_vl1000_art_age1564  s_onart_age1564 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18484,7 +18476,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
+s_vl1000_art_age1564  s_onart_age1564 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19810,7 +19802,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
+s_vl1000_art_age1564  s_onart_age1564 
 
 /* note s_ variables below are for up to age 80 */
 

@@ -7,20 +7,20 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr27_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr28_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv =  lapr27 ;
+%let laprv =  lapr28 ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
 
 
-if run <= 993151575; * for n=1000;
+* if run <= 993151575; * for n=1000;
 
 
 
@@ -434,31 +434,35 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 															 (s_o_cab_or_o_cab_tm1_no_r - s_o_cab_or_o_cab_tm1_no_r_prim);
 
 
-/*
-
-proc means data = a.l_&laprv ; 
-var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
-p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr ; 
-run;												 
-
-proc means data = a.l_&laprv ; 
-var    p_emerge_inm_res_cab_notpr ; 
-by run;
-output out=mean;
-run;
-data r; set mean; 
-if _STAT_ = 'MEAN';
-proc freq; tables p_emerge_inm_res_cab_notpr;
-run;
-
-*/
-
-
 * of people with hiv in cab tail period who do not have resistance, proportion developing resistance in given period; 
 * p_emerge_inm_res_cab_tail ;	p_emerge_inm_res_cab_tail = s_emerge_inm_res_cab_tail / s_cur_in_prep_inj_tail_no_r; 
 
 * of people on cab at time of infection, proportion developing resistance in primary infection period;
 * p_emerge_inm_res_cab_prim;	p_emerge_inm_res_cab_prim = s_cab_res_prep_inj_primary / s_prep_inj_inf_or_off_3m;
+
+
+
+/*
+
+proc means data = a.l_&laprv ; 
+var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
+p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail ; 
+run;												 
+
+proc means data = a.l_&laprv ; 
+var   p_emerge_inm_res_cab_tail ; 
+by run;
+where cald ge 2022.75;
+output out=mean;
+run;
+data r; set mean; 
+if _STAT_ = 'MEAN';
+proc univariate; var p_emerge_inm_res_cab_tail ;
+run;
+
+*/					
+
+
 
 * n_prep_primary_prevented;		n_prep_primary_prevented = s_prep_primary_prevented * &sf;
 
@@ -686,6 +690,7 @@ end;
 
 * p_k65m_all;					p_k65m_all = s_k65m_ / (s_alive_w + s_alive_m) ;
 * p_m184m_all;					p_m184m_all = s_m184m_ / (s_alive_w + s_alive_m) ;
+* n_k65m;						n_k65m = s_k65m_ * &sf;
 
 * p_vlg1000_184m;				if s_vg1000 > 0 then p_vlg1000_184m = s_vlg1000_184m / s_vg1000 ;
 * p_vlg1000_65m;				if s_vg1000 > 0 then p_vlg1000_65m = s_vlg1000_65m / s_vg1000 ;
@@ -944,7 +949,7 @@ n_new_inf1549w = s_primary1549w * &sf * 4;
 n_new_inf1549 = s_primary1549 * &sf * 4;
 n_infection  = s_primary     * &sf * 4;
 
-keep run option &sf cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 n_hiv n_alive
+keep run option &sf cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 n_hiv n_alive  n_k65m  
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
@@ -1533,6 +1538,7 @@ netdaly_averted = netdaly500_1 - netdaly500_2;
 ce_500=0; if netdaly_averted > 0 then ce_500=1; 
 ce_500_x = 1-ce_500;
 
+d_p_ai_no_arv_e_inm_50y_2 = p_ai_no_arv_e_inm_50y_2 - p_ai_no_arv_e_inm_50y_1;
 
 d_dcost_10y_2 = dcost_10y_2 - dcost_10y_1;
 d_n_infection_10y_2 = n_infection_10y_1 - n_infection_10y_2 ;
@@ -1663,16 +1669,16 @@ run;
 proc glm  data= a.w_&laprv; 
 class fold_change_mut_risk   prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol  
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3;
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 prep_all_strategy;
 model d_p_iime_50y_2 =
 /* p_iime_22 incidence1549w_22 p_vl1000_22 prop_1564_onprep_22 */
 fold_change_mut_risk  prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol  
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 prep_all_strategy / solution
 ;
 run;
 
-proc univariate data= a.w_&laprv; * data= a.w_&laprv ; var d_p_iime_42_2; run;
+proc univariate data= a.w_&laprv; * data= a.w_&laprv ; var d_p_iime_50y_2; run;
 
 proc freq data= a.w_&laprv; tables
 fold_change_mut_risk   prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
@@ -1697,15 +1703,17 @@ run;
 
 
 
+proc univariate; var d_p_ai_no_arv_e_inm_50y_2 p_ai_no_arv_e_inm_50y_1 p_ai_no_arv_e_inm_50y_2; run;
+
 proc glm; 
 class fold_change_mut_risk     prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii ;
-model p_ai_no_arv_e_inm_42_2 =
+model d_p_ai_no_arv_e_inm_50y_2 =
 p_iime_22 prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22 
 fold_change_mut_risk     prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 / solution
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 prep_all_strategy/ solution
 ;
 * where hiv_test_strat2 =0 and hiv_test_strat3 = 0;
 run;
@@ -1743,27 +1751,29 @@ model p_emerge_inm_res_cab_tail_50y_2 =
 fold_change_mut_risk     prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii / solution;
-where  rel_pr_inm_inj_prep_tail_primary <= 1 and pr_inm_inj_prep_primary <= 0.5 ; ; 
+where  rel_pr_inm_inj_prep_tail_primary <= 1 and pr_inm_inj_prep_primary <= 0.5 ;   
 run;
 
 
 
 
 proc glm data=  a.w_&laprv; 
-class fold_change_mut_risk     prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+class fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 ;
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 prep_all_strategy;
 model d_n_death_hiv_50y_2 =
-n_death_hiv_22
-fold_change_mut_risk     prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+n_death_hiv_22 fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
-cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hiv_test_strat2 hiv_test_strat3 
+cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hivtest_type_1_init_prep_inj  prep_all_strategy
 / solution;
-
+where pr_inm_inj_prep_primary = 0.5;
 run;
 
-proc means data=a.w_&laprv; var d_n_death_hiv_42_2 n_death_hiv_42_1 n_death_hiv_42_2; 
-where hivtest_type_1_init_prep_inj ne 1;
+proc means data=a.w_&laprv; var d_n_death_hiv_50y_2 n_death_hiv_50y_1 n_death_hiv_50y_2 ; 
+* where hivtest_type_1_init_prep_inj =  1;
+run;
+proc freq data=a.w_&laprv; tables d_n_death_hiv_50y_2  ; 
+* where hivtest_type_1_init_prep_inj ne 1;
 run;
 
 
