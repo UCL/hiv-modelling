@@ -25,7 +25,7 @@ in order to mimic effects of viral load testing before prep (re)initiation we "r
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-  libname a "&outputdir/";      
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
@@ -4242,64 +4242,64 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 	if prep_all_strategy=1 then do;
 		r = rand('Uniform');
 		if gender=2 and (sw=1 or 15<=age<25) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=2 then do;
 		r = rand('Uniform');
 		if gender=2 and sw=1 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=3 then do;
 		r = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_all_elig=1; 
 	end;
 
 	if prep_all_strategy=4 then do;	* used in oral prep ms ;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
 	end;
 
     if prep_all_strategy=5 then do; * used in cab-la resistance ms ;        
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1 then prep_all_elig=1; 
+        and 15 <= age < 50 then prep_all_elig=1; 
     end;
 
 	if prep_all_strategy=6 then do;	* as 4 but women only;	
     	r = rand('Uniform');
       	if gender=2 and 
 		((newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_all_elig=1; 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_all_elig=1; 
 	end;
 
     if prep_all_strategy=7 then do; * as 5 but women only ;        
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1) then prep_all_elig=1; 
+        and 15 <= age < 50) then prep_all_elig=1; 
     end;
 
     if prep_all_strategy=8 then do; * as 5 but expanded to more ep ;        
      	r = rand('Uniform');
     	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1 then prep_all_elig=1; 
+        and 15 <= age < 50 then prep_all_elig=1; 
     end;
 
     if prep_all_strategy=9 then do; * as 7 but expanded to more ep ;        
      	r = rand('Uniform');
     	if gender=2 and 
 		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
-        and 15 <= age < 50 and registd ne 1) then prep_all_elig=1; 
+        and 15 <= age < 50) then prep_all_elig=1; 
     end;
 
 	if prep_all_strategy=10 then do;	* as 4 but expanded to more ep ; 	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.1 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1 or (r < 0.5 and epi=1))) ) then prep_all_elig=1; 
 	end;
 
 	if prep_all_elig=1 then date_most_recent_prep_all_elig=caldate{t};
@@ -6143,6 +6143,11 @@ if hiv=1 then do;
 * xx33; 
 end;
 
+* infected with virus with integrase inhibitor mutations;
+infected_in118m=0; if in118m = 1 then infected_in118m=1;
+infected_in140m=0; if in140m = 1 then infected_in140m=1;
+infected_in148m=0; if in148m = 1 then infected_in148m=1;
+infected_in263m=0; if in263m = 1 then infected_in263m=1;
 
 com_test=.;
 if tested=1 and hiv ne 1 and cost_test ne cost_test_g then do;
@@ -13074,6 +13079,10 @@ end;
 		p84m_=0; if c_pr84m=1  then p84m_=1;
 		p88m_=0; if c_pr88m=1  then p88m_=1;
 		p90m_=0; if c_pr90m=1  then p90m_=1;
+		in118m_=0; if c_in118m=1 then in118m_=1;
+		in140m_=0; if c_in140m=1 then in140m_=1;
+		in148m_=0; if c_in148m=1 then in148m_=1;
+		in263m_=0; if c_in263m=1 then in263m_=1;
 		pim_=0; 
 		if p32m_=1 or p33m_=1 or p46m_=1 or
 		p47m_=1 or p50vm_=1 or p50lm_=1 or 
@@ -14880,7 +14889,7 @@ if ever_sd_nvp=1 or ever_dual_nvp=1 then ever_nvp_pmtct=1;
 *   all art naive initiators excluding prev pmtct - ai_naive_no_pmtct;
 _ai_naive_no_pmtct_=0;_ai_naive_no_pmtct_c_r_=.; _ai_naive_no_pmtct_c_nnm_=0; _ai_naive_no_pmtct_c_pim_=.;
 _ai_naive_no_pmtct_c_inm_=.;_ai_naive_no_pmtct_c_rt184m_=.;_ai_naive_no_pmtct_c_rt65m_=.;_ai_naive_no_pmtct_c_rttams_=.;
-_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; 
+_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; _ai_naive_no_pmtct_e_inm_=.;
 
 
 if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
@@ -15962,6 +15971,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
 
+	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ; 
+	s_infected_in263m + infected_in263m ; 
+
 	/* blood pressure */
 
 	s_diagnosed_hypertension_1549 + diagnosed_hypertension_1549 ;  s_on_anti_hypertensive_1549 + on_anti_hypertensive_1549 ;  
@@ -16424,8 +16436,18 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
-
 * procs;
+
+/*
+
+proc print; var  caldate&j infection in118m in118m_p in140m in140m_p in148m in148m_p in263m in263m_p t_prop_in263m res_trans_factor_ii r_dol r_cab ;
+
+where hiv=1 and death=. and primary=1 ;
+run;
+
+*/
+
+/* option registd yrart _ai_naive_no_pmtct_ onart r_cab r_dol o_cab o_dol _ai_naive_no_pmtct_e_inm_ */
 
 /*
 
@@ -17558,7 +17580,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
-s_vl1000_art_age1564  s_onart_age1564 
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18462,7 +18484,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564 
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19788,7 +19810,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564 
+s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 
 /* note s_ variables below are for up to age 80 */
 

@@ -7,20 +7,20 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr28_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr28a_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv =  lapr28 ;
+%let laprv =  lapr28a ;
 
 data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
 
 
-* if run <= 993151575; * for n=1000;
+  if run <= 997687956; * for n=1000;
 
 
 
