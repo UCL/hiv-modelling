@@ -624,6 +624,15 @@ end;
 * p_ai_no_arv_c_rttams;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_rttams = s_ai_naive_no_pmtct_c_rttams_ / s_ai_naive_no_pmtct_;
 * p_ai_no_arv_e_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_e_inm = s_ai_naive_no_pmtct_e_inm_ / s_ai_naive_no_pmtct_;
 
+/*
+
+proc sort; by option;
+proc means; var p_ai_no_arv_e_inm ; by option;
+where cald ge 2043 and res_trans_factor_ii=1;
+run;
+
+*/
+
 * p_artexp_diag;  				if s_diag > 0 then p_artexp_diag = s_artexp / s_diag;
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;

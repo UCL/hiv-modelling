@@ -4589,9 +4589,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;end;
 	end;
 
-if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t}
-or dt_prep_inj_c=caldate{t})
-then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
+
 
 
 ********* continuing PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
@@ -4719,6 +4717,10 @@ then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 		end; 
 	end;
 end;
+
+if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t}
+or dt_prep_inj_c=caldate{t})
+then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 
 if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_all variable indicates if a person is on any prep;
 if prep_inj=0 then continuous_prep_inj_use=0;	
@@ -6718,16 +6720,16 @@ if t ge 2 then do;
 			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4; 
 			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_all=0;	prep_oral=0; dt_prep_oral_e=.; 
-				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; end;
+				prep_all=0;	prep_oral=0;
+				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.;  dt_prep_oral_e=.; end;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
 			end;
 			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
 				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_all=0;		prep_inj=0; 	dt_prep_inj_e=.; o_cab=0; tcur=.; nactive=.; 
+				prep_all=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
-					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
+					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; dt_prep_inj_e=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
 					prep_primary_prevented=1; prep_init_primary = 0;continuous_prep_inj_use=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
 					prep_inj_inf_or_off_3m=0; prep_init_primary_res=0;
 					if em_inm_res_o_cab_off_3m=1 then do; 
@@ -6759,16 +6761,16 @@ if t ge 2 then do;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_all=0;	prep_oral=0; dt_prep_oral_e=.; 
-				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; end;
+				prep_all=0;	prep_oral=0; 
+				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.;dt_prep_oral_e=.;  end;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
 			end;
 			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
 				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_all=0;		prep_inj=0; 	dt_prep_inj_e=.; o_cab=0; tcur=.; nactive=.; 
+				prep_all=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
-					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
+					prep_all_ever=.; 	dt_prep_inj_s=.;dt_prep_inj_e=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
 					prep_primary_prevented=1;prep_init_primary = 0;continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
 					prep_inj_inf_or_off_3m=0;prep_init_primary_res=0;
 					if em_inm_res_o_cab_off_3m=1 then do; 
@@ -6799,16 +6801,16 @@ if t ge 2 then do;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
 			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_all=0;	prep_oral=0; dt_prep_oral_e=.; 
-				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; end;
+				prep_all=0;	prep_oral=0; 
+				if caldate{t} = dt_prep_oral_s then do; prep_all_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; dt_prep_oral_e=.; end;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
 			end;
 			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
 				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_all=0;		prep_inj=0; 	dt_prep_inj_e=.; o_cab=0; tcur=.; nactive=.; 
+				prep_all=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
 				if prep_inj_tm1 =1 then diagprim_prep_inj=1; 
 				if caldate{t} = dt_prep_inj_s then do;  
-					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
+					prep_all_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; dt_prep_inj_e=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
 					prep_primary_prevented=1;prep_init_primary = 0;continuous_prep_inj_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
 					prep_inj_inf_or_off_3m=0; prep_init_primary_res=0;
 					if em_inm_res_o_cab_off_3m=1 then do; 
