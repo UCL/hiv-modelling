@@ -1466,41 +1466,20 @@ proc sort; by run;run;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
-/*
+  
  dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
 					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
 					+ (dcost_prep_visit_oral_50y_1) + (dcost_prep_oral_50y_1) 
-+ (2 * dcost_prep_visit_inj_50y_1) 
-+ (2 * dcost_prep_inj_50y_1)
 ;			
 
  dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
 					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) 
-+ (2 * dcost_prep_visit_inj_50y_2) 
-+ (2 * dcost_prep_inj_50y_2)
-;			
-*/
-
-
-* this below to be replaced with above code from next set of runs on;
-
- dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
-					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + dtest_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
-					dcost_circ_50y_1 + dcost_condom_dn_50y_1 + dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1
-					+ dcost_prep_oral_50y_1 + dcost_prep_visit_50y_1 
-+ (1 * dcost_prep_inj_50y_1)
-;			
-
- dcost_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
-					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
-					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
-					+ dcost_prep_oral_50y_2 + dcost_prep_visit_50y_2 
++ (1 * dcost_prep_visit_inj_50y_2) 
 + (1 * dcost_prep_inj_50y_2)
-;	
-
+;			
 
 
 

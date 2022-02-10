@@ -4693,8 +4693,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					end;
 				end;
 
-				else if stop_prep_all_choice ne 1  then do;	* remember that this is all in a loop with prep_all_elig=1;
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+				else if stop_prep_all_choice ne 1 and stop_prep_all_elig=1 then do;	* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
 						tmp_prep=7;
 					r=rand('uniform'); 
 						select;			* lapr - check last_prep_used ;
@@ -4733,8 +4732,6 @@ if prep_vr=0 then continuous_prep_vr_use=0;
 if prep_all=0 then continuous_prep_all_use=0;
 
 if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
 
 if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
@@ -5775,7 +5772,6 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_oral_efficacy));
-* todo: ok for people with pop wide tld prep = 1 and have either m184 or k65 ? ;
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_oral_efficacy));
 		end;
@@ -8323,7 +8319,8 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
-adh_dl=adh;
+
+if registd = 1 then adh_dl=adh;
 
 cab_higher_potency = dol_higher_potency ;
 if registd ne 1 and (o_cab = 1 or o_cab_tm1 =1 or currently_in_prep_inj_tail = 1) then do;

@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 data b;
   set a.l_lapr28a;  
 
-* if hivtest_type_1_init_prep_inj ne 1 ; * and hivtest_type_1_prep_inj =  1 ;
+* if hivtest_type_1_init_prep_inj = 1 ; *  and hivtest_type_1_prep_inj =  1 ;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -30,7 +30,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = prevalence1549_ ;
+%let var = n_k65m ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -74,7 +74,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = prevalence1549_ ;
+%let var = n_k65m ;
 run;
 
 
@@ -168,20 +168,22 @@ run;quit;
 */
 
 
-
+ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
+Title    height=1.5 justify=center "Total number of people with integrase inhibitor resistant HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 200000 by 10000) valueattrs=(size=10);
 
-label p50_prevalence1549__0 = "All no cab-la introduction (median) ";
-label p50_prevalence1549__1 = "All cab-la introduction (median) ";
+label p50_n_k65m_0 = "no cab-la introduction (median) ";
+label p50_n_k65m_1 = "cab-la introduction (median) ";
 
-series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+series  x=cald y=p50_n_k65m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_k65m_0 	upper=p95_n_k65m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_n_k65m_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_n_k65m_1 	upper=p95_n_k65m_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
+
+
 
 
