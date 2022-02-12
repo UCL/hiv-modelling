@@ -20,6 +20,7 @@ data g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
 
+
 * if run <= 997687956; * for n=1000;
 
 
@@ -52,6 +53,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 data y; 
 merge g_&laprv sf;
 by run ;
+
 
 * preparatory code ;
 
@@ -421,6 +423,10 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * of people with resistance emerging on cab-la or tail, proportion in tail;
 * prop_cab_res_tail;			prop_cab_res_tail = s_emerge_inm_res_cab_tail / (s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail)  ;
 
+* of people with resistance emerging on cab-la or tail, proportion in whom it emerges in primary infection; 
+* prop_cab_res_primary	;		prop_cab_res_primary = (s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr) / 
+								(s_em_inm_res_o_cab_off_3m + s_emerge_inm_res_cab_tail) ;
+
 * of people who initiate prep_inj in same period as primary infection, proportion developing insti resistance in the period; 
 * p_prep_init_primary_res;		p_prep_init_primary_res = s_prep_init_primary_res / s_prep_init_primary;
 * as above but including also all reinitiations of prep;
@@ -444,9 +450,10 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 /*
 
-proc means data = a.l_&laprv ; 
+proc means data = y ; 
 var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
-p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail ; 
+p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail prop_cab_res_primary
+; 
 run;												 
 
 proc means data = a.l_&laprv ; 
