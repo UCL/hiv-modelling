@@ -56,7 +56,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 %let nfit = 2000  ;
-%let year_end = 2070    ;
+%let year_end = 582     ;
 run;
 proc sort;by cald option ;run;
 
@@ -461,7 +461,7 @@ band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transp
 series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
-run;quit;
+run;quit; 
 
 
 
