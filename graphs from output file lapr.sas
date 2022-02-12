@@ -56,7 +56,7 @@ proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 %let nfit = 2000  ;
-%let year_end = 582     ;
+%let year_end = 2070    ;
 run;
 proc sort;by cald option ;run;
 
@@ -1339,7 +1339,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of people on oral PrEP, proporetion with > 80% adherence";
+Title    height=1.5 justify=center "Of people on oral PrEP, proportion with > 80% adherence";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 
