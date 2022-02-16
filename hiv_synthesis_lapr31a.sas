@@ -1,5 +1,9 @@
 
 
+* lapr 31a only differs from 31 in defining an output, not in the underlying model ; 
+
+
+
 *
 
 consider prep for next 20 years only but still go to 50 years when assessing intervention ?
@@ -703,7 +707,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
-* pr_inm_inj_prep_primary ;		%sample_uniform(pr_inm_inj_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation - any mutation gives r_cab = 0.75;
+* pr_inm_inj_prep_primary ;		%sample_uniform(pr_inm_inj_prep_primary,     0.01 0.02 0.05 0.1 0.2 0.3 0.5) ; * this is probability of each mutation - any mutation gives r_cab = 0.75;
 * rel_pr_inm_inj_prep_tail_primary; %sample_uniform(rel_pr_inm_inj_prep_tail_primary, 0.5 1 2); 
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;
@@ -711,7 +715,6 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
 * hivtest_type_1_prep_inj;		if hivtest_type_1_init_prep_inj=1 then do; %sample(hivtest_type_1_prep_inj, 0 1, 0.5 0.5);end;
-								if hivtest_type_1_prep_inj=1 then do; pr_inm_inj_prep_primary = pr_inm_inj_prep_primary /2;   end;
 
 * sens_tests_prep_inj;			%sample_uniform(sens_tests_prep_inj, 1 2);
 
