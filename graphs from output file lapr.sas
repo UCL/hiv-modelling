@@ -490,7 +490,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "number of children born with HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number per year'		labelattrs=(size=12)  values = (0 to 40000 by 10000) valueattrs=(size=10);
+yaxis grid label	= 'Number per year'		labelattrs=(size=12)  values = (0 to 30000 by 10000) valueattrs=(size=10);
 
 label p50_n_birth_with_inf_child_0 = "no cab-la introduction (median) ";
 label p50_n_birth_with_inf_child_1 = "cab-la introduction (median) ";
@@ -1269,6 +1269,25 @@ band    x=cald lower=p5_p_iime_1 	upper=p95_p_iime_1  / transparency=0.9 fillatt
 
 run;quit;
 
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of ART initiators, proportion with integrase inhibitor resistance";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3     by 0.05 ) valueattrs=(size=10);
+
+label p50_p_ai_no_arv_e_inm_0 = "no cab-la introduction (median) ";
+label p50_p_ai_no_arv_e_inm_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_p_ai_no_arv_e_inm_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_ai_no_arv_e_inm_0 	upper=p95_p_ai_no_arv_e_inm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_ai_no_arv_e_inm_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Total number of people with integrase inhibitor resistant HIV";
@@ -1288,7 +1307,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Total number of people with integrase inhibitor resistant HIV";
+Title    height=1.5 justify=center "Total number of people with tenofovir resistant HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 200000 by 10000) valueattrs=(size=10);
 
