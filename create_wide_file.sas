@@ -1135,7 +1135,6 @@ hivtest_type_1_prep_inj
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 
-
 p_prep_all_ever  cab_time_to_lower_threshold_g  sens_tests_prep_inj
  
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m  dol_higher_potency  p_em_inm_res_ever_prep_inj
@@ -1469,8 +1468,6 @@ proc sort; by run;run;
 
 
 
-
-
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
  dcost_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
@@ -1483,8 +1480,8 @@ proc sort; by run;run;
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
 					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) 
-+ (1 * dcost_prep_visit_inj_50y_2) 
-+ (1 * dcost_prep_inj_50y_2)
++ (2 * dcost_prep_visit_inj_50y_2) 
++ (2 * dcost_prep_inj_50y_2)
 ;			
 
 
@@ -1560,6 +1557,14 @@ res_art_re_start_per_plhiv_22 = p_need_cd4m_per_plhiv_22 - pred_need_cd4m_per_pl
 prep_newpge1_this_per = 0; if prep_all_strategy in (4, 6, 8, 10) then prep_newpge1_this_per = 1; 
 prep_women_only = 0;  if prep_all_strategy in (6, 7, 10, 11) then prep_women_only = 1; 
 prep_less_risk_inf_ep=0; if prep_all_strategy in (8, 9, 10, 11) then prep_less_risk_inf_ep = 1;
+
+if incidence1549_22 < 0.5 then incidence1549_22_g=1;
+if 0.5 <= incidence1549_22 < 1.0 then incidence1549_22_g=2;
+if 1.0 <= incidence1549_22       then incidence1549_22_g=3;
+
+if incidence1549_22_g=2 then incidence1549_22_g2=1; else incidence1549_22_g2=0;
+if incidence1549_22_g=3 then incidence1549_22_g3=1; else incidence1549_22_g3=0;
+
 
 /*
 
@@ -1890,21 +1895,42 @@ run;
 proc contents data = a.w_&laprv; run;
 
 
-proc freq data = a.w_&laprv; tables prep_all_strategy * ce_500;  run; 
 
-proc glm data = a.w_&laprv; 
-class prep_all_strategy;
-model netdaly_averted = prep_all_strategy  / solution; 
+
+* putting together two versions of wide file with one having 2x the prep cost;
+
+data q1; set  w_lapr32_prepcost1; p_cost=1;
+data q2; set  w_lapr32_prepcost2; p_cost=2;
+
+data w_lapr32_mult_prep_cost ; set q1 q2;
+
+
+proc logistic ; 
+class prep_inj_efficacy rate_choose_stop_prep_inj;
+model ce_500_x =   prep_newpge1_this_per prep_women_only prep_less_risk_inf_ep rate_choose_stop_prep_inj incidence1549_22_g2 incidence1549_22_g3 p_cost; 
+where  hivtest_type_1_init_prep_inj ne  1 ; * this line because prep inj less effective with more sensitive testing;
+run;
+
+proc logistic ; 
+model ce_500_x =  prep_women_only incidence1549_22_g2 incidence1549_22_g3 p_cost; 
+where  hivtest_type_1_init_prep_inj ne  1 ; * this line because prep inj less effective with more sensitive testing;
+run;
+
+proc logistic ; 
+model ce_500_x = incidence1549_22_g2 incidence1549_22_g3 p_cost; 
+where hivtest_type_1_init_prep_inj ne  1 and prep_newpge1_this_per=1 and prep_women_only ne 1 and 
+prep_less_risk_inf_ep ne 1 ; 
+run;
+
+proc freq; tables  ce_500  p_cost * incidence1549_22_g * ce_500 ; 
+where hivtest_type_1_init_prep_inj ne  1 and prep_newpge1_this_per=1 and prep_women_only ne 1 and prep_less_risk_inf_ep ne 1;
 run;
 
 
-proc logistic data = a.w_&laprv; 
-class prep_all_strategy prep_inj_efficacy;
-model ce_500_x = prep_all_strategy prep_inj_efficacy pr_inm_inj_prep_primary incidence1549_22 hivtest_type_1_init_prep_inj; 
+proc freq; tables ce_500; where hivtest_type_1_init_prep_inj ne  1 and prep_newpge1_this_per=1 and prep_women_only ne 1 and 
+prep_less_risk_inf_ep ne 1 ; 
 run;
 
-
-proc means; var n_cur_res_cab_32_1 n_cur_res_cab_32_2  ; run;
 
 
 
