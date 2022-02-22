@@ -196,7 +196,7 @@ newp_seed = 7;
 * SEXUAL BEHAVIOUR;
 
 * condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section
-* rr_sw_age_1519;			rr_sw_age_1519 = 1.00;
+* rr_sw_age_1519;			rr_sw_age_1519 = 0.80;*lbm feb22 - changed from 1;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
@@ -349,7 +349,7 @@ newp_seed = 7;
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
-								0.2		0.2 	0.40	0.1 	0.05 	0.05 );
+								0.2		0.25 	0.35	0.10 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
@@ -475,7 +475,7 @@ newp_seed = 7;
 
 * rate_return;  			%sample(rate_return, 
 								0.01	0.05 	0.10 	0.30 	0.60, 
-								0.10 	0.10	0.50	0.15 	0.15);
+								0.15 	0.15	0.40	0.15 	0.15);
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -500,7 +500,7 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080 0.01); 
+* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080 0.01 0.05); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -570,8 +570,8 @@ newp_seed = 7;
 							* rate of sex workers moving to one category lower;
 
 * sw_art_disadv;			%sample_uniform(sw_art_disadv, 1 2);
-					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; prob_sw_lower_adh = 1;		sw_higher_prob_loss_at_diag = 1; 	end;
-								if sw_art_disadv=2 	then do; sw_higher_int = 2; prob_sw_lower_adh = 0.5;	sw_higher_prob_loss_at_diag = 1.5; 	end;
+					 		if sw_art_disadv=1 	then do; sw_higher_int = 1; prob_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1; sw_lower_testing=1;end;
+							if sw_art_disadv=2 	then do; sw_higher_int = 2; prob_sw_lower_adh = 0.5;sw_higher_prob_loss_at_diag = 1.5;eff_sw_lower_testing=1.5;end;
 
 * sw_program;				%sample(sw_program, 0 1, 0.8 0.2);
 								if sw_program = 1 	then do; rate_engage_sw_program =0.10;	rate_disengage_sw_program = 0.025;  end;
@@ -583,7 +583,7 @@ newp_seed = 7;
 * effect_sw_prog_lossdiag;	%sample_uniform(effect_sw_prog_lossdiag, 0.4 0.6 0.8);
 * effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
 * effect_sw_prog_pers_sti;	%sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
-
+* effect_sw_prog_testing;	%sample_uniform(effect_sw_prog_testing, 0.50 0.75);
 
 
 * CIRCUMCISION;
@@ -711,8 +711,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * determining newp base categories for new sw;
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.8; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.60; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.02; p_sw_init_newp_g2=0.83; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.15; p_sw_init_newp_g2=0.65; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
@@ -1525,6 +1525,7 @@ eff_sw_higher_int = sw_higher_int;
 eff_prob_sw_lower_adh = prob_sw_lower_adh;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
+eff_sw_lower_testing=sw_lower_testing;
 sw_program_visit=0;
 
 * na defines a "non-adherent person" - not sure if this is reasonable structure for non adherence;
@@ -2242,6 +2243,8 @@ if sw_program_visit=0 then do; e=rand('uniform');
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 
+		eff_sw_lower_testing = sw_lower_testing * effect_sw_prog_testing;
+
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh * effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
@@ -2260,6 +2263,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		date_last_sw_prog_vis=caldate{t};
 		sw_test_6mthly=0;
 		eff_rate_persist_sti = rate_persist_sti;
+		eff_sw_lower_testing = sw_lower_testing;
 		eff_sw_higher_int = sw_higher_int;
 		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
@@ -3413,6 +3417,7 @@ if t ge 2 then do;
 			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
 			date_last_sw_prog_vis=caldate{t};
 			sw_test_6mthly=0;
+			eff_sw_lower_testing = sw_lower_testing;
 			eff_sw_higher_int = sw_higher_int;
 			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
@@ -4007,6 +4012,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		* think not * dependent_on_time_step_length ;
  		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  if no_test_if_np0 = 1 and . < np_lasttest <= 0 then unitest = 1;
 		if newp_lasttest ge 1 then unitest=unitest/eff_test_targeting;  * targeting of testing - aug15;
+			
+		if sw=1 then unitest = unitest * eff_sw_lower_testing;
 
 		if      ever_tested ne 1  then do; 
 			if unitest < rate_1sttest then do;
@@ -16409,7 +16416,7 @@ prob_prep_restart_choice 			prepuptake_pop  add_prepuptake_sw  cd4_monitoring   
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol oth_dol_adv_birth_e_risk double_rate_gas_tox_taz  zdv_potency_p75
-sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  sw_higher_int  sw_lower_testing prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
@@ -18199,7 +18206,7 @@ prob_prep_restart_choice 			prepuptake_pop add_prepuptake_sw  cd4_monitoring   b
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program    sw_higher_int  sw_lower_testing prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
 sw_art_disadv
