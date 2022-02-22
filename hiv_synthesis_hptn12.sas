@@ -814,7 +814,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-* %include "/home/rmjlaph/SA_parameters.sas";
+  %include "/home/rmjlaph/SA_parameters.sas";
 
 
 * ===================== ;
