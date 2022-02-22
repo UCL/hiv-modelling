@@ -457,14 +457,14 @@ p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_em
 run;												 
 
 proc means data = a.l_&laprv ; 
-var p_emerge_inm_res_cab_tail ; 
+var prop_cab_res_o_cab ; 
 by run;
 where cald ge 2022.75;
 output out=mean;
 run;
 data r; set mean; 
 if _STAT_ = 'MEAN';
-proc univariate; var p_emerge_inm_res_cab_tail ;
+proc univariate; var prop_cab_res_o_cab ;
 run;
 
 */					
@@ -630,6 +630,7 @@ end;
 * p_ai_no_arv_c_rt65m;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_rt65m = s_ai_naive_no_pmtct_c_rt65m_ / s_ai_naive_no_pmtct_;
 * p_ai_no_arv_c_rttams;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_rttams = s_ai_naive_no_pmtct_c_rttams_ / s_ai_naive_no_pmtct_;
 * p_ai_no_arv_e_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_e_inm = s_ai_naive_no_pmtct_e_inm_ / s_ai_naive_no_pmtct_;
+
 
 /*
 
@@ -1485,6 +1486,15 @@ proc sort; by run;run;
 ;			
 
 
+dcost_hiv_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
+					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
+					dcost_child_hiv_50y_1 + dcost_non_aids_pre_death_50y_1 ; 
+dcost_hiv_50y_2 = dart_cost_y_50y_2 + dadc_cost_50y_2 + dcd4_cost_50y_2 + dvl_cost_50y_2 + dvis_cost_50y_2 + dnon_tb_who3_cost_50y_2 + 
+					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
+					dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2 ; 
+
+dcost_prep_total_50y_1 = (dcost_prep_visit_oral_50y_1) + (dcost_prep_oral_50y_1) ;
+dcost_prep_total_50y_2 = (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2)+ (dcost_prep_visit_inj_50y_2) + (dcost_prep_inj_50y_2);			
 
 if hivtest_type_1_prep_inj = . then hivtest_type_1_prep_inj=0;
 
@@ -1770,13 +1780,16 @@ model d_n_death_hiv_50y_2 =
 n_death_hiv_22 fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g hiv_test_strat2 hiv_test_strat3 res_trans_factor_ii  prep_newpge1_this_per prep_women_only prep_less_risk_inf_ep
-/ solution;
+prob_vl_meas_done / solution;
+* where prob_loss_at_diag <= 0.1 and pr_art_init >= 0.7;
 run;
 
 
 
 proc means data=a.w_&laprv; var d_n_death_hiv_50y_2 n_death_hiv_50y_1 n_death_hiv_50y_2 ; 
 * where hivtest_type_1_init_prep_inj =  1;
+* where prob_vl_meas_done ge 0.7;
+* where pr_inm_inj_prep_primary = 0.1;
 run;
 proc freq data=a.w_&laprv; tables d_n_death_hiv_50y_2  ; 
 * where hivtest_type_1_init_prep_inj ne 1;
@@ -1887,14 +1900,26 @@ dcost_child_hiv_50y_1  dcost_child_hiv_50y_2
 dcost_non_aids_pre_death_50y_1 dcost_non_aids_pre_death_50y_2
 dcost_prep_oral_50y_1   dcost_prep_oral_50y_2   
 dcost_prep_inj_50y_1 dcost_prep_inj_50y_2
+
+dcost_50y_1  dcost_hiv_50y_1  dcost_prep_total_50y_1  dtest_cost_50y_1 dcost_circ_50y_1
+dcost_50y_2  dcost_hiv_50y_2  dcost_prep_total_50y_2  dtest_cost_50y_2 dcost_circ_50y_2
+
+
 ;
-* where  hivtest_type_1_init_prep_inj =  1 ;
+  where  hivtest_type_1_init_prep_inj ne 1 ;
 * where  hivtest_type_1_prep_inj =  1 ;
 run;
 
 proc contents data = a.w_&laprv; run;
 
 
+proc means data = a.w_&laprv; 
+var 
+dcost_50y_1  dcost_hiv_50y_1  dcost_prep_total_50y_1  dtest_cost_50y_1 dcost_circ_50y_1
+dcost_50y_2  dcost_hiv_50y_2  dcost_prep_total_50y_2  dtest_cost_50y_2 dcost_circ_50y_2
+;
+  where  hivtest_type_1_init_prep_inj ne 1 ;
+run;
 
 
 * putting together two versions of wide file with one having 2x the prep cost;

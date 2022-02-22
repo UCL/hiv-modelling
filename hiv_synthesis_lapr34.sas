@@ -8,9 +8,6 @@ consider having a reduced chance of tranmission from a person in primary if they
 
 nocabr - cab does not lead to mutations - to investigate how much of the effects we see in main analysis are influenced by cab resistance
 
-34  - changes to reg_oiption 107  dist of pr art init and prob loss t diag
-(35  - saving of output on number with transmitted insti resistance)  
-
 ;
 
 
@@ -6172,7 +6169,6 @@ infected_in118m=0; if in118m = 1 then infected_in118m=1;
 infected_in140m=0; if in140m = 1 then infected_in140m=1;
 infected_in148m=0; if in148m = 1 then infected_in148m=1;
 infected_in263m=0; if in263m = 1 then infected_in263m=1;
-infected_inm=0; if infected_in118m=1 or infected_in140m=1 or infected_in148m=1 or infected_in263m=1 then infected_inm=1;
 end;
 
 com_test=.;
@@ -16030,7 +16026,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
 
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ; 
-	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;
+	s_infected_in263m + infected_in263m ; 
 
 	/* blood pressure */
 
@@ -17660,7 +17656,6 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
-s_infected_inm 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18565,7 +18560,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19890,7 +19885,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm
+s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 
 /* note s_ variables below are for up to age 80 */
 
