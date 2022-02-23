@@ -166,7 +166,7 @@ newp_seed = 7;
 * inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
-* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
@@ -344,7 +344,7 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.01 0.03 0.05 0.10);	* jul18; 
+* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	* jul18; 
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
@@ -711,8 +711,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * determining newp base categories for new sw;
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.02; p_sw_init_newp_g2=0.83; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.10; p_sw_init_newp_g2=0.70; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.02; p_sw_init_newp_g2=0.88; p_sw_init_newp_g3= 0.05; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.10; p_sw_init_newp_g2=0.73; p_sw_init_newp_g3= 0.07; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
@@ -7281,9 +7281,9 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 e=rand('uniform');
 
 * note no effect when using e < 0.0;
-if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.5 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
@@ -7291,14 +7291,14 @@ if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('unifor
 if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
 * _n6_ ;
-if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
-if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.2 then adh=0.90;
-if gender=2 and 30 <= age < 35 and adh < 0.8 and e < 0.4 then adh=0.90;
-if gender=2 and 35 <= age < 40 and adh < 0.8 and e < 0.7 then adh=0.90;
-if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.7 then adh=0.90;
-if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.7 then adh=0.90;
-if gender=2 and 50 <= age      and adh < 0.8 and e < 0.8 then adh=0.90;
+if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.4 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.05 then adh=0.90;
+if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.1 then adh=0.90;
+if gender=2 and 30 <= age < 35 and adh < 0.8 and e < 0.3 then adh=0.90;
+if gender=2 and 35 <= age < 40 and adh < 0.8 and e < 0.6 then adh=0.90;
+if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.6 then adh=0.90;
+if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.6 then adh=0.90;
+if gender=2 and 50 <= age      and adh < 0.8 and e < 0.7 then adh=0.90;
 
 /*
 e=rand('uniform');
