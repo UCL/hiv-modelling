@@ -3,11 +3,12 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW";
 
 data a;
-set a.fsw_03_02_22;   
+set a.fsw_23_02_22;   
 run;
 
 proc sort;
 by run cald option;run;
+
 
 data sf;
 set a;
@@ -26,7 +27,36 @@ run;
 data a2;
 set a1;
 
+* p_diag;						if s_hiv1564  > 0 and option=0 then p_diag = s_diag / s_hiv1564 ; 
+
+proc sort;by cald;
+proc means p50;var p_diag;by cald;run; 
+
+
+
+data a2;
+set a1;
+
+s_diag_all = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+s_diag_all_m = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
+s_diag_all_w = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+
+
+
 if option=0 then do;
+
+***general population;
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_all / s_hiv1564 ; 
+* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / s_hiv1564m ;  
+* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w / s_hiv1564w ;
+
+* p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
+* p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
+* p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
+
+* p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
+* p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
+
 * n_sw_1564;					n_sw_1564_0_ = s_sw_1564 * sf_2022;
 * n_sw_1549;					n_sw_1549_0_ = s_sw_1549 * sf_2022;
 
@@ -235,13 +265,17 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=200;  
+%let nfit=400;  
 run;
 
 data c;
 set b;
 
 %let var =  
+
+p_diag	 p_diag_m	 p_diag_w   p_onart_diag   p_onart_diag_w   p_onart_diag_m   p_onart_vl1000_w   p_onart_vl1000_m
+
+
 n_sw_1564_0_  	 	 n_sw_1549_0_ 	   	  prop_w_1564_sw_0_		prop_w_1549_sw_0_ 	 prop_w_ever_sw_0_  
 p_fsw1519_0_	  	 p_fsw2024_0_		  p_fsw2529_0_			p_fsw3039_0_	
 p_sw_age1519_0_	  	 p_sw_age2024_0_	  p_sw_age2529_0_ 		p_sw_age3039_0_
@@ -335,13 +369,13 @@ a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  
 a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
 a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
-a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130/*
-a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
+a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
+a131 a132 a133 a134 a135 a136 a137 a138 /*a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
 a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
 a183 a184 a185 a186 a187 a188 a189 a190 a191 a192 a193 a194 a195 a196 a197 a198 a199 a200 a201 a202 a203 a204 a205 a206 a207 a208
 a209 a210 a211 a212 a213 a214 a215 a216 a217 a218 a219 a220 a221 a222 a223 a224 a225 a226 a227 a228 a229 a230 a231 a232 a233 a234
 a235 a236 a237 a238 a239 a240 a241 a242 a243 a244 a245 a246 a247 a248 a249 a250 a251 a252*/;
-by cald;
+;by cald;
 run;
 
 data e;
@@ -350,7 +384,56 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\14Feb2022.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\23Feb2022.doc' startpage=never; 
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of HIV+ people, proportion diagnosed";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Percentage'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label p50_p_diag	                  = "All";
+label p50_p_diag_m	                  = "Men";
+label p50_p_diag_w	                  = "Women";
+
+series  x=cald y=p50_p_diag  /          lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_diag    	 upper=p95_p_diag / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_m  /          lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_diag_m     upper=p95_p_diag_m / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_diag_w  /          lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_diag_w     upper=p95_p_diag_w / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of people diagnosed, proportion on ART";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label p50_p_onart_diag                  = "All";
+label p50_p_onart_diag_m	            = "Men";
+label p50_p_onart_diag_w	            = "Women";
+
+series  x=cald y=p50_p_onart_diag  /          lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_onart_diag     upper=p95_p_onart_diag / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_onart_diag_m  /          lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_onart_diag_m     upper=p95_p_onart_diag_m / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_onart_diag_w  /          lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_diag_w     upper=p95_p_onart_diag_w / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label p50_p_onart_vl1000_m	            = "Men";
+label p50_p_onart_vl1000_w	            = "Women";
+
+series  x=cald y=p50_p_onart_vl1000_m  /          lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_m     upper=p95_p_onart_vl1000_m / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_onart_vl1000_w  /          lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_onart_vl1000_w     upper=p95_p_onart_vl1000_w / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+run;quit;
 
 
 proc sgplot data=e; 
@@ -948,10 +1031,6 @@ band    x=cald lower=p5_n_tested_sw_nodis_0_	 upper=p95_n_tested_sw_nodis_0_ / t
 series  x=cald y=p50_n_tested_sw_nodis_1_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_tested_sw_nodis_1_	 upper=p95_n_tested_sw_nodis_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 run;quit;
-
-
-proc freq;table p50_n_tested_sw_nodis_0_;run;
-
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "Number of HIV tests amongst sex workers with disadvantages stratified by existence of a program";
