@@ -707,6 +707,18 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
 
 * pr_inm_inj_prep_primary ;		%sample_uniform(pr_inm_inj_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation - any mutation gives r_cab = 0.75;
+
+
+
+
+* nocabre;
+pr_inm_inj_prep_primary=0;
+rr_res_cab_dol=0;
+
+
+
+
+
 * rel_pr_inm_inj_prep_tail_primary; %sample_uniform(rel_pr_inm_inj_prep_tail_primary, 0.5 1 2); 
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;
@@ -2001,9 +2013,9 @@ art_initiation=0;  * started art this period - intentional that this appears in 
 * note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
 value at a certain calendar time;
 
-if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
+if t ge 2 and caldate{t-1} < 2071.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
+if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
 
@@ -2878,7 +2890,7 @@ end;
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
-if t ge 2 and caldate{t} < 2072.5 and death =.  then do;
+if t ge 2 and caldate{t} < 2071.5 and death =.  then do;
 
 cost=0;cost_test=0;
 
@@ -6172,7 +6184,7 @@ infected_in118m=0; if in118m = 1 then infected_in118m=1;
 infected_in140m=0; if in140m = 1 then infected_in140m=1;
 infected_in148m=0; if in148m = 1 then infected_in148m=1;
 infected_in263m=0; if in263m = 1 then infected_in263m=1;
-infected_inm=0; if infected_in118m=1 or infected_in140m=1 or infected_in148m=1 or infected_in263m=1 then do; infected_inm=1; infected_inm_this_per=1; end;
+infected_inm=0; if infected_in118m=1 or infected_in140m=1 or infected_in148m=1 or infected_in263m=1 then infected_inm=1;
 end;
 
 com_test=.;
@@ -6654,6 +6666,10 @@ cur_in_prep_inj_tail_prim=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_
 if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
 if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
 cab_higher_potency = dol_higher_potency ;
+
+* nocabre ;
+cab_higher_potency = -1;
+
 if prep_inj =1 or currently_in_prep_inj_tail=1 then nactive = (1 + cab_higher_potency) * (1 - r_cab);
 
 
@@ -6835,8 +6851,7 @@ if t ge 2 then do;
 		cost_test = cost_test_g; cost_test_type1=cost_test_g;
 		end;
 	end;
-	if hivtest_type=3 and (prep_inj ne 1 or prep_inj_tm1 = 1 or hivtest_type_1_init_prep_inj ne 1) and (prep_inj ne 1 or  hivtest_type_1_prep_inj ne 1)
-	then do;
+	if hivtest_type=3 then do;
 		u=rand('uniform');
 		sens_primary=sens_primary_testtype3;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype3_prep_inj_primary ;
@@ -6934,7 +6949,7 @@ if hiv=1 then do;
 
 
 
-if t ge 2 and . < infection < caldate{t} < 2072.5 and dead_tm1 ne 1  then do;
+if t ge 2 and . < infection < caldate{t} < 2071.5 and dead_tm1 ne 1  then do;
 
 sympt_diag=0;
 
@@ -7000,7 +7015,7 @@ visit_tm1=visit;
 
 
 	if prep_oral=1 and (prep_oral_start_date = caldate{t} or dt_prep_oral_rs = caldate{t} or dt_prep_oral_c = caldate{t}) then do; 
-		o_3tc=1; o_ten=1; p_3tc=1; p_ten=1;  tcur=0; cd4_tcur0 = cd4; 
+		o_3tc=1; o_ten=1; tcur=0; cd4_tcur0 = cd4; 
 	end;	
 
 	if prep_inj=1  and (prep_inj_start_date = caldate{t} or dt_prep_inj_rs = caldate{t} or dt_prep_inj_c = caldate{t}) then do; 
@@ -7020,7 +7035,7 @@ visit_tm1=visit;
 
 	cab_res_primary=0;  prep_o_cab_off_3m_prim=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; 
 	prep_inj_init_prim = 0; prep_inj_reinit_prim=0; prep_inj_init_prim_res=0;prep_inj_reinit_prim_res=0; prep_primary_prevented=0;
-	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
+	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;
 
 * dependent_on_time_step_length ;
 	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
@@ -7164,8 +7179,8 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; end; 
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; if prep_oral=0 then toffart=0; end;
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; if prep_oral=0 then toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; if prep_inj=0 then toffart=0; end;		
 * lapr and dpv-vr - reset toffart only when not switching to another systemic PrEP type; * JAS Nov2021;
@@ -8373,6 +8388,10 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 adh_dl=adh;
 
 cab_higher_potency = dol_higher_potency ;
+
+* nocabre ;
+cab_higher_potency = -1;
+
 if registd ne 1 and (o_cab = 1 or o_cab_tm1 =1 or currently_in_prep_inj_tail = 1) then do;
 	adh_dl = 1; adh_dl_tm1=1; 
 	if tss_cab = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
@@ -10466,6 +10485,10 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	* dol_higher_potency (assumed to apply the same to dol and cab);
 	if o_dol=1 then nactive=nactive+ (dol_higher_potency-r_dol);
 	cab_higher_potency = dol_higher_potency ;
+
+	* nocabre ;
+	cab_higher_potency = -1;
+
 	if prep_inj =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
 	
 
@@ -16031,7 +16054,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
 
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ; 
-	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
+	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;
 
 	/* blood pressure */
 
@@ -17661,7 +17684,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
 
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
-s_infected_inm  s_infected_inm_this_per
+s_infected_inm 
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18566,7 +18589,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm s_infected_inm_this_per
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19891,7 +19914,7 @@ s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per
 
 s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
 
-s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
+s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm
 
 /* note s_ variables below are for up to age 80 */
 

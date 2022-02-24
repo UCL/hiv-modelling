@@ -1785,6 +1785,25 @@ band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0
 run;quit;
 
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Number people who avoided starting or re-starting PrEP due to testing +ve at the proposed (re-)start time";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+
+label p50_n_prep_primary_prevented_0 = "no cab-la introduction (median) ";
+label p50_n_prep_primary_prevented_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_n_prep_primary_prevented_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_primary_prevented_0 	upper=p95_n_prep_primary_prevented_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_n_prep_primary_prevented_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_n_prep_primary_prevented_1 	upper=p95_n_prep_primary_prevented_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
 
 ods html ;
 proc sgplot data=d; 
