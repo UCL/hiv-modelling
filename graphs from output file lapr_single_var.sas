@@ -21,7 +21,7 @@ prevalence1549_ = prevalence1549;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2060 ;
+%let nfit = 4000 ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
