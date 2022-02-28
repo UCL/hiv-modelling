@@ -1,16 +1,21 @@
 
 
+* lapr38
+
+people diagnosed with hiv while on cab la - start tld
+
+change range of sens for type 3 tests
+
+;
+
+
+* lapr37 - new approach to dealing with people starting cab-la while infected
+
+
+;
+
 
 *
-
-for paper:
-
-further thought on whether sufficient number of people starting calb la despite having hiv, and whether their risk of resistance is sufficiently large
-
-think about why having rna testing also decreases proportion of people on prep with hiv a little
-
-think about testt1_prep_inj_eff_on_res_prim - this reduced resistance risk should correspond to immediate ART start (the mechanism by which
-resistance risk is reduced)
 
 consider prep for next 20 years only but still go to 50 years when assessing intervention ?
 
@@ -20,17 +25,17 @@ consider having a reduced chance of tranmission from a person in primary if they
 
 
 
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";    
+  libname a "&outputdir/";    
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000   ; 
+%let population = 100000  ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -16531,26 +16536,28 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-hivtest_type_1_init_prep_inj = 0;
-hivtest_type_1_prep_inj = 0; 
-sens_primary_testtype3 = 0;
+/*
+
+if start_restart_prep_inj_hiv = 1 then xxx=1;
+if start_restart_prep_inj_hiv = 0 and xxx=1 then xxx=0;
+
+if prep_inj=1 and hiv=1 and xxx ne 0 then yyy = 1;
+if prep_inj=1 and hiv=1 and yyy=1 then yyy=0;
+
+hivtest_type_1_init_prep_inj = 0 ; hivtest_type_1_prep_inj =  0;
 
 proc freq; tables cald hiv ; where death=.; run;
 
 proc print; var cald option prep_all_elig prep_inj o_cab r_cab hiv infection dt_prep_inj_s dt_prep_inj_rs dt_prep_inj_c tested sens_vct eff_sens_vct
-infected_on_prep_inj start_restart_prep_oral_hiv start_restart_prep_inj_hiv hiv1_prep_inj start_rest_prep_inj_hiv_cabr 
-em_inm_res_o_cab_off_3m started_prep_hiv_test_sens
-registd hivtest_type_1_init_prep_inj 
+infected_on_prep_inj start_restart_prep_oral_hiv start_restart_prep_inj_hiv hiv1_prep_inj start_rest_prep_inj_hiv_cabr registd hivtest_type_1_init_prep_inj 
 hivtest_type_1_prep_inj ;
-where prep_inj =1 and hiv=1 and death=. and (dt_prep_inj_s >= infection > . or dt_prep_inj_rs >= infection > .);
+where prep_inj=1 and hiv=1 and xxx ne 0 and yyy ne 0 and death = .; 
 run;
 
-proc freq; 
-tables start_rest_prep_inj_hiv_cabr;  where start_restart_prep_inj_hiv = 1 or started_prep_hiv_test_sens=1;
+proc freq; tables start_restart_prep_inj_hiv; where prep_inj=1 and hiv=1 and xxx ne 0 and yyy ne 0 and death = .
 run;
 
-proc freq; tables dt_prep_inj_s dt_prep_inj_rs; where dt_prep_inj_s = caldate&j or dt_prep_inj_rs = caldate&j; run;
-
+*/
 
 /*
 
@@ -18986,7 +18993,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
+
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -19121,7 +19128,8 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr        ; set r1;
+data a        ; set r1;
+
 
 
 data r1; set a     ;
@@ -19335,9 +19343,9 @@ data r1; set a     ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-*/
 
-data r1; set a.lapr      ;
+
+data r1; set a     ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);

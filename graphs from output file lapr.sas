@@ -848,7 +848,7 @@ band    x=cald lower=p5_p_dol_1 	upper=p95_p_dol_1  / transparency=0.9 fillattrs
 run;quit;
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion on atazanavir";
+Title    height=1.5 justify=center "Of people on ART, proportion on atazanavir";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -900,7 +900,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
+Title    height=1.5 justify=center "Proportion of HIV positive people with VL < 1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -1047,7 +1047,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people on PrEP, proportion who have HIV";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.03 by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.01 by 0.0025 ) valueattrs=(size=10);
 
 label p50_p_hiv1_prep_0 = "no cab-la introduction (median) ";
 label p50_p_hiv1_prep_1 = "cab-la introduction (median) ";

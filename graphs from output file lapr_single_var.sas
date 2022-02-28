@@ -7,9 +7,9 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-  set a.l_lapr35        ;  
+  set a.l_lapr40        ;  
 
-  if hivtest_type_1_init_prep_inj ne 1 ; *  and hivtest_type_1_prep_inj =  1 ;
+  if hivtest_type_1_init_prep_inj =  1  and hivtest_type_1_prep_inj =  1 ;
 
 
 n_k65m = p_k65m * n_hiv;
@@ -21,7 +21,7 @@ prevalence1549_ = prevalence1549;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 4000 ;
+%let nfit = 1500 ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -31,7 +31,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = n_prep_primary_prevented ;
+%let var = p_hiv1_prep ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -75,7 +75,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = n_prep_primary_prevented ;
+%let var = p_hiv1_prep ;
 run;
 
 
@@ -169,22 +169,19 @@ run;quit;
 
 
 
-
-
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number people who avoided starting or re-starting PrEP due to testing +ve at the proposed (re-)start time";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000   by 100 ) valueattrs=(size=10);
+Title    height=1.5 justify=center "Of people on PrEP, proportion who have HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.01 by 0.0025 ) valueattrs=(size=10);
 
-label mean_n_prep_primary_prevented_0 = "no cab-la introduction (median) ";
-label mean_n_prep_primary_prevented_1 = "cab-la introduction (median) ";
+label p50_p_hiv1_prep_0 = "no cab-la introduction (median) ";
+label p50_p_hiv1_prep_1 = "cab-la introduction (median) ";
 
-series  x=cald y=mean_n_prep_primary_prevented_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_primary_prevented_0 	upper=p95_n_prep_primary_prevented_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=mean_n_prep_primary_prevented_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_prep_primary_prevented_1 	upper=p95_n_prep_primary_prevented_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+series  x=cald y=p50_p_hiv1_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_hiv1_prep_0 	upper=p95_p_hiv1_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_hiv1_prep_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_hiv1_prep_1 	upper=p95_p_hiv1_prep_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
-
 

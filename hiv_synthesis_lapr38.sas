@@ -1,16 +1,21 @@
 
 
+* lapr38
+
+people diagnosed with hiv while on cab la - start tld
+
+change range of sens for type 3 tests
+
+;
+
+
+* lapr37 - new approach to dealing with people starting cab-la while infected
+
+
+;
+
 
 *
-
-for paper:
-
-further thought on whether sufficient number of people starting calb la despite having hiv, and whether their risk of resistance is sufficiently large
-
-think about why having rna testing also decreases proportion of people on prep with hiv a little
-
-think about testt1_prep_inj_eff_on_res_prim - this reduced resistance risk should correspond to immediate ART start (the mechanism by which
-resistance risk is reduced)
 
 consider prep for next 20 years only but still go to 50 years when assessing intervention ?
 
@@ -20,17 +25,17 @@ consider having a reduced chance of tranmission from a person in primary if they
 
 
 
-  libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
-* libname a "&outputdir/";    
+  libname a "&outputdir/";    
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000   ; 
+%let population = 100000  ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -674,7 +679,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.7; 	* factor determining how much lower adh to oral prep is in people age < 25 compared to > 25; 
 																* lapr and dpv-vr - may need to define different values? -  JAS dont think this is relevent for inj & vr forms? ;
 
-* prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
+* prep_oral_efficacy;			%sample_uniform(prep_oral_efficacy, 0.90 0.95); 		* Oral PrEP effectiveness with 100% adherence ;
 * adh_pattern_prep_oral;  		%sample(adh_pattern_prep_oral, 1 2 3 4, 0.3 0.3 0.3 0.1);
 
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
@@ -702,7 +707,7 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* prep_inj_efficacy;			%sample_uniform(prep_inj_efficacy, 0.90 0.95); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -9514,25 +9519,22 @@ em_inm_res_o_cab_off_3m_npr=0; em_inm_res_cab_tail_npr=0;
 			dx=rand('uniform'); if dx < pr_res_dol then c_in263m=1;
 		end;
 
-	end;
-
-
-* cab; * this section taken outside the  if t ge 2 and d lt newmut_tm1 then do loop;
+* cab;
 		
-if o_cab_tm1=1 or o_cab=1 or currently_in_prep_inj_tail = 1 then do; * if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m introduded lapr37;
-	ax=rand('uniform'); if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m; if ax < pr_res_dol*rr_res_cab_dol then c_in118m=1;  
-	bx=rand('uniform'); if caldate{t}-infection=0.25 then bx=bx/incr_res_risk_cab_inf_3m; if bx < pr_res_dol*rr_res_cab_dol then c_in140m=1;
-	cx=rand('uniform'); if caldate{t}-infection=0.25 then cx=cx/incr_res_risk_cab_inf_3m; if cx < pr_res_dol*rr_res_cab_dol then c_in148m=1;
-	dx=rand('uniform'); if caldate{t}-infection=0.25 then dx=dx/incr_res_risk_cab_inf_3m; if dx < pr_res_dol*rr_res_cab_dol then c_in263m=1;
-	if (c_in118m_tm1 + c_in140m_tm1 + c_in148m_tm1 + c_in263m_tm1 = 0) and 
-	(c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1) then do; 
-	if o_cab_tm1=1 then do; em_inm_res_o_cab_off_3m=1; em_inm_res_o_cab_off_3m_npr=1; end; 
-	if currently_in_prep_inj_tail = 1 then do; emerge_inm_res_cab_tail=1;em_inm_res_cab_tail_npr=1; end;
-	end;		
-end;
+		if o_cab_tm1=1 or currently_in_prep_inj_tail = 1 then do; * if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m introduded lapr37;
+			ax=rand('uniform'); if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m; if ax < pr_res_dol*rr_res_cab_dol then c_in118m=1;  
+			bx=rand('uniform'); if caldate{t}-infection=0.25 then bx=bx/incr_res_risk_cab_inf_3m; if bx < pr_res_dol*rr_res_cab_dol then c_in140m=1;
+			cx=rand('uniform'); if caldate{t}-infection=0.25 then cx=cx/incr_res_risk_cab_inf_3m; if cx < pr_res_dol*rr_res_cab_dol then c_in148m=1;
+			dx=rand('uniform'); if caldate{t}-infection=0.25 then dx=dx/incr_res_risk_cab_inf_3m; if dx < pr_res_dol*rr_res_cab_dol then c_in263m=1;
+			if (c_in118m_tm1 + c_in140m_tm1 + c_in148m_tm1 + c_in263m_tm1 = 0) and 
+			(c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1) then do; 
+				if o_cab_tm1=1 then do; em_inm_res_o_cab_off_3m=1; em_inm_res_o_cab_off_3m_npr=1; end; 
+				if currently_in_prep_inj_tail = 1 then do; emerge_inm_res_cab_tail=1;em_inm_res_cab_tail_npr=1; end;
+			end;
+			
+		end;
 
-
-
+	end;
 
 start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 and em_inm_res_o_cab_off_3m = 1 then start_rest_prep_inj_hiv_cabr = 1;
 
@@ -16531,26 +16533,28 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-hivtest_type_1_init_prep_inj = 0;
-hivtest_type_1_prep_inj = 0; 
-sens_primary_testtype3 = 0;
+/*
+
+if start_restart_prep_inj_hiv = 1 then xxx=1;
+if start_restart_prep_inj_hiv = 0 and xxx=1 then xxx=0;
+
+if prep_inj=1 and hiv=1 and xxx ne 0 then yyy = 1;
+if prep_inj=1 and hiv=1 and yyy=1 then yyy=0;
+
+hivtest_type_1_init_prep_inj = 0 ; hivtest_type_1_prep_inj =  0;
 
 proc freq; tables cald hiv ; where death=.; run;
 
 proc print; var cald option prep_all_elig prep_inj o_cab r_cab hiv infection dt_prep_inj_s dt_prep_inj_rs dt_prep_inj_c tested sens_vct eff_sens_vct
-infected_on_prep_inj start_restart_prep_oral_hiv start_restart_prep_inj_hiv hiv1_prep_inj start_rest_prep_inj_hiv_cabr 
-em_inm_res_o_cab_off_3m started_prep_hiv_test_sens
-registd hivtest_type_1_init_prep_inj 
+infected_on_prep_inj start_restart_prep_oral_hiv start_restart_prep_inj_hiv hiv1_prep_inj start_rest_prep_inj_hiv_cabr registd hivtest_type_1_init_prep_inj 
 hivtest_type_1_prep_inj ;
-where prep_inj =1 and hiv=1 and death=. and (dt_prep_inj_s >= infection > . or dt_prep_inj_rs >= infection > .);
+where prep_inj=1 and hiv=1 and xxx ne 0 and yyy ne 0 and death = .; 
 run;
 
-proc freq; 
-tables start_rest_prep_inj_hiv_cabr;  where start_restart_prep_inj_hiv = 1 or started_prep_hiv_test_sens=1;
+proc freq; tables start_restart_prep_inj_hiv; where prep_inj=1 and hiv=1 and xxx ne 0 and yyy ne 0 and death = .
 run;
 
-proc freq; tables dt_prep_inj_s dt_prep_inj_rs; where dt_prep_inj_s = caldate&j or dt_prep_inj_rs = caldate&j; run;
-
+*/
 
 /*
 
@@ -18986,7 +18990,7 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
+
 
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=0);
 %update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=0);
@@ -19121,7 +19125,8 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a.lapr        ; set r1;
+data a        ; set r1;
+
 
 
 data r1; set a     ;
@@ -19335,9 +19340,9 @@ data r1; set a     ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-*/
 
-data r1; set a.lapr      ;
+
+data r1; set a     ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
