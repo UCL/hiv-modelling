@@ -16,6 +16,8 @@ consider prep for next 20 years only but still go to 50 years when assessing int
 
 consider having a reduced chance of tranmission from a person in primary if they are on cab-la
 
+1 month time steps ?
+
 ;
 
 

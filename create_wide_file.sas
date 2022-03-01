@@ -2028,7 +2028,7 @@ proc print; where prep_newpge1_this_per=1 and prep_women_only ne 1 and prep_less
 
 
 
-proc freq; tables ce_500 ; where hivtest_type_1_init_prep_inj ne  1 ; run;
+proc freq  data = w_lapr40; tables ce_500 ; where hivtest_type_1_prep_inj = 1 ; run;
 
 
 proc logistic data = a.w_lapr40_mult_prep_cost ; 
