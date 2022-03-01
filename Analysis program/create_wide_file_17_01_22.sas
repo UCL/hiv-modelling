@@ -1,9 +1,9 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW";
+libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_23_02_22;   
+set a.fsw_24_02_22;   
 run;
 
 proc sort;
@@ -24,31 +24,20 @@ merge a sf;
 by run ;
 run;
 
-data a2;
-set a1;
-
-* p_diag;						if s_hiv1564  > 0 and option=0 then p_diag = s_diag / s_hiv1564 ; 
-
-proc sort;by cald;
-proc means p50;var p_diag;by cald;run; 
-
-
 
 data a2;
 set a1;
 
-s_diag_all = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-s_diag_all_m = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
-s_diag_all_w = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
-
-
+s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
+s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
+s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 
 if option=0 then do;
 
 ***general population;
-* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_all / s_hiv1564 ; 
-* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m / s_hiv1564m ;  
-* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w / s_hiv1564w ;
+* p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
+* p_diag_m;						if s_hiv1564m  > 0 then p_diag_m = s_diag_m1564_ / s_hiv1564m ;  
+* p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
 
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
@@ -57,6 +46,8 @@ if option=0 then do;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 
+
+***FSW;
 * n_sw_1564;					n_sw_1564_0_ = s_sw_1564 * sf_2022;
 * n_sw_1549;					n_sw_1549_0_ = s_sw_1549 * sf_2022;
 
@@ -67,7 +58,7 @@ if option=0 then do;
 * prop_w_1519_sw;				if s_ageg2529w gt 0 then  p_fsw2529_0_ = s_sw_2529 / s_ageg2529w;
 * prop_w_1519_sw;				if s_ageg3034w gt 0 then  p_fsw3039_0_ = s_sw_3039 / (s_ageg3034w + s_ageg3539w);
 
-* prop_w_ever_sw;				prop_w_ever_sw_0_ = s_ever_sw / s_alive1564_w ;
+* prop_w_ever_sw;				prop_w_ever_sw_0_ = s_ever_sw / s_alive1564_w ; 
 
 **Of FSW, proportion in each age category;
 								if s_sw_1564 gt 0 then do; 
@@ -77,7 +68,6 @@ if option=0 then do;
 * p_sw_age3039_0_;					p_sw_age3039_0_=s_sw_3039/s_sw_1564;
 								end;
 
-***CHECK CALCULATION - This has now been updated in the core file;
 * p_age_deb_sw1519_;			p_age_deb_sw1519_0_ = s_age_deb_sw1519_ /s_sw_1564;
 * p_age_deb_sw2024_;			p_age_deb_sw2024_0_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_0_ = s_age_deb_sw2529_ /s_sw_1564;
@@ -88,6 +78,7 @@ if option=0 then do;
 
 * duration of sw;				tot_dur_sw_0_= s_tot_dur_sw/ s_sw_1564;
 								act_dur_sw_0_= s_act_dur_sw/ s_sw_1564;
+
 								if s_sw_1564 ne 0 then do;
 								p_actdur_0to3_0_   =s_actdur_sw_0to3/s_sw_1564;
 								p_actdur_3to5_0_   =s_actdur_sw_3to5/s_sw_1564;
@@ -108,7 +99,7 @@ if option=0 then do;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_0_ = s_sw_newp/s_sw_1564;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_0_ = s_sw_newp / s_w_newp ;
 
-* prop_sw_hiv;					prop_sw_hiv_0_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_0_ = s_hiv_sw1549_ / s_sw_1549 ;
 
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis_0_ = s_sw_program_visit / s_sw_1564 ;
 
@@ -126,7 +117,8 @@ if option=0 then do;
 * incidence1549w;				incidence1549w_0_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_0_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-
+*sti;							*p_sti_0_ = s_sti/s_sw_1564;
+				
 ***no disadv;
 if sw_art_disadv=1 then do;
 * n_sw_1549;					n_sw_1549_nodis_0_ = s_sw_1549 * sf_2022;
@@ -136,7 +128,7 @@ if sw_art_disadv=1 then do;
 * p_fsw_newp0;					if s_sw_1564 gt 0 then p_fsw_newp0_nodis_0_ = s_sw_newp_cat1 /s_sw_1564;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_nodis_0_ = s_sw_newp/s_sw_1564;
 
-* prop_sw_hiv;					prop_sw_hiv_nodis_0_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_nodis_0_ = s_hiv_sw1549_ / s_sw_1549;
 * p_sw_prog_vis;				p_sw_prog_vis_nodis_0_ = s_sw_program_visit / s_sw_1564 ;
 * n_tested_sw;					n_tested_sw_nodis_0_ = s_tested_sw * sf_2022 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_0_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
@@ -147,6 +139,7 @@ if sw_art_disadv=1 then do;
 
 * prevalence_sw;				prevalence_sw_nodis_0_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_0_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+* sti;							*p_sti_nodis_0_ = s_sti/s_sw_1564;
 end;
 
 ***some disadv;
@@ -158,7 +151,7 @@ if sw_art_disadv=2 then do;
 * p_fsw_newp0;					if s_sw_1564 gt 0 then p_fsw_newp0_dis_0_ = s_sw_newp_cat1 /s_sw_1564;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_dis_0_ = s_sw_newp/s_sw_1564;
 
-* prop_sw_hiv;					prop_sw_hiv_dis_0_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_dis_0_ = s_hiv_sw1549_ / s_sw_1549;
 * p_sw_prog_vis;				p_sw_prog_vis_dis_0_ = s_sw_program_visit / s_sw_1564 ;
 * n_tested_sw;					n_tested_sw_dis_0_ = s_tested_sw * sf_2022 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_dis_0_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
@@ -169,6 +162,8 @@ if sw_art_disadv=2 then do;
 
 * prevalence_sw;				prevalence_sw_dis_0_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_dis_0_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+* sti;							*p_sti_dis_0_ = s_sti/s_sw_1564;
+
 end;
 
 end;
@@ -191,7 +186,7 @@ if option=1 then do;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_1_ = s_sw_newp/s_sw_1564;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw_1_ = s_sw_newp / s_w_newp ;
 
-* prop_sw_hiv;					prop_sw_hiv_1_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_1_ = s_hiv_sw1549_ / s_sw_1549;
 
 * p_sw_prog_vis;				p_sw_prog_vis_1_ = s_sw_program_visit / s_sw_1564 ;
 
@@ -208,6 +203,7 @@ if option=1 then do;
 * incidence1549;				incidence1549_1_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w_1_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_1_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+* sti;							*p_sti_1_ = s_sti/s_sw_1564;
 
 ***no disadv;
 if sw_art_disadv=1 then do;
@@ -218,7 +214,7 @@ if sw_art_disadv=1 then do;
 * p_fsw_newp0;					if s_sw_1564 gt 0 then p_fsw_newp0_nodis_1_ = s_sw_newp_cat1 /s_sw_1564;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_nodis_1_ = s_sw_newp/s_sw_1564;
 
-* prop_sw_hiv;					prop_sw_hiv_nodis_1_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_nodis_1_ = s_hiv_sw1549_ / s_sw_1549;
 * p_sw_prog_vis;				p_sw_prog_vis_nodis_1_ = s_sw_program_visit / s_sw_1564 ;
 * n_tested_sw;					n_tested_sw_nodis_1_ = s_tested_sw * sf_2022 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_nodis_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
@@ -229,6 +225,8 @@ if sw_art_disadv=1 then do;
 
 * prevalence_sw;				prevalence_sw_nodis_1_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+* sti;							*p_sti_nodis_1_ = s_sti/s_sw_1564;
+
 end;
 
 ***some disadv;
@@ -240,7 +238,7 @@ if sw_art_disadv=2 then do;
 * p_fsw_newp0;					if s_sw_1564 gt 0 then p_fsw_newp0_dis_1_ = s_sw_newp_cat1 /s_sw_1564;
 * av_sw_newp;					if s_sw_1564 gt 0 then av_sw_newp_dis_1_ = s_sw_newp/s_sw_1564;
 
-* prop_sw_hiv;					prop_sw_hiv_dis_1_ = s_hiv_sw / s_sw_1564 ;
+* prop_sw_hiv;					prop_sw_hiv_dis_1_ = s_hiv_sw1549_ / s_sw_1549;
 * p_sw_prog_vis;				p_sw_prog_vis_dis_1_ = s_sw_program_visit / s_sw_1564 ;
 * n_tested_sw;					n_tested_sw_dis_1_ = s_tested_sw * sf_2022 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep_dis_1_ = max(s_prep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
@@ -251,13 +249,14 @@ if sw_art_disadv=2 then do;
 
 * prevalence_sw;				prevalence_sw_dis_1_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_dis_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
+* sti;							*p_sti_dis_1_ = s_sti/s_sw_1564;
+
 end;
 
 end;
 
 run;
 
-proc freq;table cald;where option=1;run;
 
 data b;
 set a2;
@@ -265,7 +264,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=400;  
+%let nfit=600;  
 run;
 
 data c;
@@ -327,6 +326,7 @@ prevalence_sw_dis_1_   	 incidence_sw_dis_1_
 incidence1549_0_  incidence1549w_0_  incidence1549m_0_
 incidence1549_1_  incidence1549w_1_  incidence1549m_1_  
 
+p_sti_0_  p_sti_nodis_0_  p_sti_dis_0_  p_sti_1_  p_sti_nodis_1_  p_sti_dis_1_
 ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -384,7 +384,7 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\23Feb2022.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\24Feb2022_pm.doc' startpage=never; 
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Of HIV+ people, proportion diagnosed";
@@ -435,20 +435,33 @@ series  x=cald y=p50_p_onart_vl1000_w  /          lineattrs = (color=red thickne
 band    x=cald lower=p5_p_onart_vl1000_w     upper=p95_p_onart_vl1000_w / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;quit;
 
+**Note that for some observed data there is no median, only a range. The lower limit is used as the point estimate but
+then formatted so you can't see it and only the range shows on the plots. Legends added in manually afterwards;
 
-proc sgplot data=e; 
+proc sgplot data=e ; 
 Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
 label p50_n_sw_1549_0_	                  = "model age 15-49 (median)";
+label o_pop_fsw_1549w_Fearnon			  = "Zimbabwe";
+label o_pop_fsw_ll_1549w_SA		 		  = "South Africa";
+label o_pop_fsw_1549w_Cam		 		  = "Cameroon";
+label o_pop_fsw_1549w_Ken		 		  = "Kenya";
 
-label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
+
 series  x=cald y=p50_n_sw_1549_0_  /          lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_n_sw_1549_0_      upper=p95_n_sw_1549_0_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
-scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
+scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle 	color=black size = 12)
 										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+scatter x=cald y=o_pop_fsw_ll_1549w_SA / markerattrs = (symbol=circle       color=green size = 1) 
+										 yerrorlower=o_pop_fsw_ll_1549w_SA yerrorupper=o_pop_fsw_ul_1549w_SA errorbarattrs= (color=green thickness = 2);
+scatter x=cald y=o_pop_fsw_1549w_Cam / markerattrs = (symbol=circle       	color=red size = 12) 
+										 yerrorlower=o_pop_fsw_ll_1549w_Cam yerrorupper=o_pop_fsw_ul_1549w_Cam errorbarattrs= (color=red thickness = 2);
+scatter x=cald y=o_pop_fsw_1549w_Ken / markerattrs = (symbol=circle       	color=purple size = 12) 
+										 yerrorlower=o_pop_fsw_ll_1549w_Ken yerrorupper=o_pop_fsw_ul_1549w_Ken errorbarattrs= (color=purple thickness = 2);
+
 run;quit;
  
 
@@ -459,15 +472,24 @@ xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2030 by 2) 		va
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
 label p50_prop_w_1549_sw_0_   = "model - median ";
 
-label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
-label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
+*label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
+label o_p_fsw_1549w_Fearnon		 = "Zimbabwe";
+label o_p_fsw_ll_1549w_SA		 = "South Africa";
+label o_p_fsw_1549w_Cam			 = "Cameroon";
+label o_p_fsw_1549w_Ken			 = "Kenya (urban)";
 
 series  x=cald y=p50_prop_w_1549_sw_0_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_prop_w_1549_sw_0_ 	 upper=p95_prop_w_1549_sw_0_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 
-scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
-scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
-										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
+*scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle  color=black size = 12) 
+										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+scatter x=cald y=o_p_fsw_ll_1549w_SA / markerattrs = (symbol=circle       color=green size = 1) 
+										 yerrorlower=o_p_fsw_ll_1549w_SA yerrorupper=o_p_fsw_ul_1549w_SA errorbarattrs= (color=green thickness = 2);
+scatter x=cald y=o_p_fsw_1549w_Cam / markerattrs = (symbol=circle         color=red size = 12) 
+										 yerrorlower=o_p_fsw_ll_1549w_Cam yerrorupper=o_p_fsw_ul_1549w_Cam errorbarattrs= (color=red thickness = 2);
+scatter x=cald y=o_p_fsw_1549w_Ken / markerattrs = (symbol=circle         color=purple size = 12) 
+										 yerrorlower=o_p_fsw_ll_1549w_Ken yerrorupper=o_p_fsw_ul_1549w_Ken errorbarattrs= (color=purple thickness = 2);
 run;quit;
 
 
@@ -491,12 +513,12 @@ band    x=cald lower=p5_p_fsw2529_0_	 upper=p95_p_fsw2529_0_ / transparency=0.9 
 series  x=cald y=p50_p_fsw3039_0_ / 	 lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_p_fsw3039_0_	 upper=p95_p_fsw3039_0_ / transparency=0.9 fillattrs = (color=green) legendlabel= "30-39 90% range";
 
+
 run;quit;
 
 
 
 proc sgplot data=e; 
-footnote1 height=0.9  "Observed data are RDS weighted means from HIV Care Cascade among FSW, Cowan 2017 ";
 title    height=1.5 justify=center "Amongst FSW, proportion in each age category";
 xaxis label =		 'Year'  labelattrs=(size=12) values = (2010 to 2030 by 2) 		  valueattrs=(size=10); 
 yaxis grid label = 	 'Proportion'	 labelattrs=(size=12) values = (0 to 0.6 by 0.1)			  valueattrs=(size=10);
@@ -505,10 +527,15 @@ label p50_p_sw_age2024_0_   	= "20-24 Model";
 label p50_p_sw_age2529_0_   	= "25-29 Model";
 label p50_p_sw_age3039_0_   	= "30-39 Model";
 
-label o_p_1824_fsw_rds = "18-24 RDS 2017";
-label o_p_2529_fsw_rds = "25-29 RDS 2017";
-label o_p_3039_fsw_rds = "30-39 RDS 2017";
-label o_p_ab40_fsw_rds = ">40 RDS 2017";
+label o_p_1824_fsw_rds = "18-24 Sapphire";
+label o_p_2529_fsw_rds = "25-29 Sapphire";
+label o_p_3039_fsw_rds = "30-39 Sapphire";
+label o_p_ab40_fsw_rds = ">40 Sapphire";
+
+label o_p_1824_fsw_AMT = "18-24 Amethist";
+label o_p_2529_fsw_AMT = "25-29 Amethist";
+label o_p_3039_fsw_AMT = "30-39 Amethist";
+label o_p_ab40_fsw_AMT = ">40 Amethist";
 
 series  x=cald y=p50_p_sw_age1519_0_     / 		lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_sw_age1519_0_    		upper=p95_p_sw_age1519_0_  / transparency=0.9 fillattrs = (color=black)  legendlabel= "15-19 90% range";
@@ -522,6 +549,11 @@ band    x=cald lower=p5_p_sw_age3039_0_    		upper=p95_p_sw_age3039_0_  / transp
 scatter x=cald y=o_p_1824_fsw_rds / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_p_2529_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
 scatter x=cald y=o_p_3039_fsw_rds / markerattrs = (symbol=circle       color=green size = 12);
+
+scatter x=cald y=o_p_1824_fsw_AMT / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_2529_fsw_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle       color=green size = 12);
+
 run;quit;
 
 
@@ -599,7 +631,7 @@ run;quit;
 proc sgplot data=e; 
 footnote1 height=0.9  "DREAMS 'no condomless sex in last month, Sapphire consistent condom use in last month";
 
-title    height=1.5 justify=center "Number of condomless partners per 3 months amongst FSW";
+title    height=1.5 justify=center "Proportion of FSW with give number of condomless partners per 3 months";
 xaxis label =		 'Year'  labelattrs=(size=12) values = (2010 to 2030 by 2) 		  valueattrs=(size=10); 
 yaxis grid label = 	 'Proportion'	 labelattrs=(size=12) values = (0 to 1 by 0.2)			  valueattrs=(size=10);
 label p50_p_fsw_newp0_0_  	= "0 partners Model";
@@ -667,20 +699,24 @@ band    x=cald lower=p5_p_actdur_10to19_0_ 	upper=p95_p_actdur_10to19_0_ / trans
 run;quit;
 
 proc sgplot data=e; 
-footnote1 height=0.9  "Observed data from Targeted combination prevention to support FSW - 'time in sex work'";
+footnote1 height=0.9  "";
 title    height=1.5 justify=center "Proportion of FSW with total duration of sex work in given categories";
 
 xaxis label =		 'Year'  labelattrs=(size=12) values = (2010 to 2030 by 2) 		  valueattrs=(size=10); 
 yaxis grid label = 	 'Proportion'	 labelattrs=(size=12) 	values = (0 to 0.5 by 0.1)  valueattrs=(size=10);
-label p50_p_totdur_0to3_0_ = "0 to 3y Model";
-label p50_p_totdur_3to5_0_ = "3 to 5y Model";
-label p50_p_totdur_6to9_0_ = "6 to 9y Model";
-label p50_p_totdur_10to19_0_ = "10 to 19y Model";
+label p50_p_totdur_0to3_0_ = "0-3y Model";
+label p50_p_totdur_3to5_0_ = "3-5y Model";
+label p50_p_totdur_6to9_0_ = "6-9y Model";
+label p50_p_totdur_10to19_0_ = "10-19y Model";
 
-label o_p_dur_0to3y_rds = "0 to 3y RDS";
-label o_p_dur_3to5y_rds = "3 to 5y RDS";
-label o_p_dur_6to9y_rds = "6 to 9y RDS";
-label o_p_dur_10to19y_rds = "10 to 19y RDS";
+label o_p_dur_0to3y_rds = "0-3y Sapphire";
+label o_p_dur_3to5y_rds = "3-5y Sapphire";
+label o_p_dur_6to9y_rds = "6-9y Sapphire";
+label o_p_dur_10to19y_rds = "10-19y Sapphire";
+label o_p_dur_0to3y_AMT = "0-3y Amethist";
+label o_p_dur_3to5y_AMT = "3-5y Amethist";
+label o_p_dur_6to9y_AMT = "6-9y Amethist";
+label o_p_dur_10to19y_AMT = "10-19y Amethist";
 
 series  x=cald y=p50_p_totdur_0to3_0_  / 		lineattrs = (color=black thickness = 2 );
 band    x=cald lower=p5_p_totdur_0to3_0_ 		upper=p95_p_totdur_0to3_0_/ 	transparency=0.9 fillattrs = (color=black) legendlabel= "Model Range";
@@ -695,7 +731,38 @@ scatter x=cald y=o_p_dur_0to3y_rds / markerattrs = (symbol=circle       color=bl
 scatter x=cald y=o_p_dur_3to5y_rds / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_p_dur_6to9y_rds / markerattrs = (symbol=circle       color=red size = 12);
 scatter x=cald y=o_p_dur_10to19y_rds / markerattrs = (symbol=circle       color=green size = 12);
+
+scatter x=cald y=o_p_dur_0to3y_AMT / markerattrs = (symbol=circle       color=black size = 12);
+scatter x=cald y=o_p_dur_3to5y_AMT / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_dur_6to9y_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_dur_10to19y_AMT / markerattrs = (symbol=circle       color=green size = 12);
 run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "HIV prevalence amongst FSW";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2030 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 1 by 0.2) 		valueattrs=(size=10);
+label prevalence_sw_0_ = "Model";
+
+label o_prev_fsw_rds 		 = "Sapphire";
+label o_prev_fsw_tested_swvp = "Sisters with a Voice";
+label o_prev_fsw_rdshm		 = "H and M Cowan 2013";
+label o_prev_fsw_rdsvf		 = "VF Cowan 2013";
+label o_prev_fsw_dw 		 = "MoH 2015";
+
+series  x=cald y=p50_prevalence_sw_0_  / 	 lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_prevalence_sw_0_	 upper=p95_prevalence_sw_0_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+
+scatter x=cald y=o_prev_fsw_rds      /		markerattrs = (symbol=circlefilled color=red size = 12)
+											yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_prev_fsw_ul_rds errorbarattrs= (color=red thickness = 2);
+scatter x=cald y=o_prev_fsw_tested_swvp /	markerattrs = (symbol=circle color=purple size = 12);
+scatter x=cald y=o_prev_fsw_rdshm /			markerattrs = (symbol=circle color=orange size = 12);
+scatter x=cald y=o_prev_fsw_rdsvf / 		markerattrs = (symbol=circle color=green size = 12);
+scatter x=cald y=o_prev_fsw_dw /			markerattrs = (symbol=circle color=grey size = 12)
+											yerrorlower=o_prev_fsw_ll_dw yerrorupper=o_prev_fsw_ul_dw errorbarattrs= (color=grey thickness = 2);
+run;quit;
+
 
 
 proc sgplot data=e; 
@@ -715,22 +782,38 @@ run;quit;
 
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of HIV+ FSW diagnosed (age 15-49)";
-footnote1 height=0.9  "";
+title    height=1.5 justify=center "Of HIV+ FSW, proportion diagnosed (age 15-49)";
+footnote1 height=0.9  "Non-Zimbabwe numbers are UNAIDS estimates";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2030 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
 label p50_p_diag_sw_0_  = "% diagnosed with no SW program ";
 label p50_p_diag_sw_1_  = "% diagnosed with SW program ";
 
+label obs_p_diag_fsw_rds = "Sapphire";
+label obs_p_diag_fsw_AMT = "Amethist";
+label obs_p_diag_fsw_SA = "South Africa";
+label obs_p_diag_fsw_Les = "Lesotho";
+label obs_p_diag_fsw_Zam = "Zambia";
+label obs_p_diag_fsw_Rwa = "Rwanda";
+label obs_p_diag_fsw_Uga = "Uganda";
+
 series  x=cald y=p50_p_diag_sw_0_  / 	 lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_diag_sw_0_ 	 upper=p95_p_diag_sw_0_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-
 series  x=cald y=p50_p_diag_sw_1_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_diag_sw_1_ 	 upper=p95_p_diag_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+scatter x=cald y=obs_p_diag_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=obs_p_diag_fsw_AMT / markerattrs = (symbol=circle       color=black size = 12);
+scatter x=cald y=obs_p_diag_fsw_SA / markerattrs = (symbol=circle        color=purple size = 12);
+scatter x=cald y=obs_p_diag_fsw_Les / markerattrs = (symbol=circle       color=pink size = 12);
+scatter x=cald y=obs_p_diag_fsw_Zam / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=obs_p_diag_fsw_Rwa / markerattrs = (symbol=circle       color=brown size = 12);
+scatter x=cald y=obs_p_diag_fsw_Uga / markerattrs = (symbol=circle       color=yellow size = 12);
+
 run;quit;
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of HIV+ FSW without disadvantages diagnosed (age 15-49)";
+title    height=1.5 justify=center "Of HIV+ FSW without disadvantages, proportion diagnosed (age 15-49)";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2030 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
@@ -742,10 +825,11 @@ band    x=cald lower=p5_p_diag_sw_nodis_0_  	 upper=p95_p_diag_sw_nodis_0_  / tr
 
 series  x=cald y=p50_p_diag_sw_nodis_1_   / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_diag_sw_nodis_1_  	 upper=p95_p_diag_sw_nodis_1_  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
 run;quit;
 
 proc sgplot data=e; 
-title    height=1.5 justify=center "Proportion of HIV+ FSW with disadvantages diagnosed (age 15-49)";
+title    height=1.5 justify=center "Of HIV+ FSW with disadvantages, proportion diagnosed (age 15-49)";
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2030 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
@@ -768,11 +852,27 @@ yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10)
 label p50_p_onart_diag_sw_0_  = "% on ART with no SW program ";
 label p50_p_onart_diag_sw_1_  = "% on ART with SW program ";
 
+label o_p_onart_fswdiag_rds = "Sapphire";
+label o_p_onart_fswdiag_AMT = "Amethist";
+label o_p_onart_fswdiag_SA = "South Africa";
+label o_p_onart_fswdiag_Les = "Lesotho";
+label o_p_onart_fswdiag_Zam = "Zambia";
+label o_p_onart_fswdiag_Rwa = "Rwanda";
+label o_p_onart_fswdiag_Uga = "Uganda";
+
+
 series  x=cald y=p50_p_onart_diag_sw_0_  / 	 lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_diag_sw_0_ 	 upper=p95_p_onart_diag_sw_0_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
 
 series  x=cald y=p50_p_onart_diag_sw_1_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_onart_diag_sw_1_ 	 upper=p95_p_onart_diag_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+scatter x=cald y=o_p_onart_fswdiag_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_onart_fswdiag_AMT / markerattrs = (symbol=circle       color=black size = 12);
+scatter x=cald y=o_p_onart_fswdiag_SA / markerattrs =  (symbol=circle       color=purple size = 12);
+scatter x=cald y=o_p_onart_fswdiag_Zam / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_onart_fswdiag_Rwa / markerattrs = (symbol=circle       color=brown size = 12);
+scatter x=cald y=o_p_onart_fswdiag_Uga / markerattrs = (symbol=circle       color=yellow size = 12);
 
 run;quit;
 
@@ -816,11 +916,17 @@ yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10)
 label p50_p_onart_vl1000_sw_0_  = "% with VL<1000 with no SW program ";
 label p50_p_onart_vl1000_sw_1_  = "% with VL<1000 with SW program ";
 
+label o_p_vlsupp_FSWonart_rds = "Sapphire";
+label o_p_vlsupp_FSWonart_ = "Amethist";
+
+
 series  x=cald y=p50_p_onart_vl1000_sw_0_  / 	 lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_sw_0_ 	 upper=p95_p_onart_vl1000_sw_0_ / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-
 series  x=cald y=p50_p_onart_vl1000_sw_1_  / 	 lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_sw_1_ 	 upper=p95_p_onart_vl1000_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+scatter x=cald y=o_p_vlsupp_FSWonart_rds / markerattrs = (symbol=circle       color=red size = 12);
+
 run;quit;
 
 proc sgplot data=e; 
@@ -1056,12 +1162,25 @@ yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values
 
 label p50_incidence_sw_0_  = "No sex worker program ";
 label p50_incidence_sw_1_ = "Sex worker program";
+label o_HIVIncid_fsw = "Hargreaves, Zim";
+label o_HIVIncid1824_fsw = "Ali, 18-24 Zim";
+label o_HIVIncid2539_fsw = "Ali, 25-39 Zim";
+label o_HIVinc_fsw_dreams = "DREAMS sites";
+label o_HIVinc_fsw_nondreams = "Non-DREAMS sites";
+
 
 series  x=cald y=p50_incidence_sw_0_ /  lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence_sw_0_  upper=p95_incidence_sw_0_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 series  x=cald y=p50_incidence_sw_1_ /  lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence_sw_1_  upper=p95_incidence_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "No program - model 90% range";
+
+scatter x=cald y=o_HIVIncid_fsw / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_HIVIncid1824_fsw / markerattrs = (symbol=circle   color=green size = 12);
+scatter x=cald y=o_HIVIncid2539_fsw  / markerattrs = (symbol=circle  color=blue size = 12);
+scatter x=cald y=o_HIVinc_fsw_dreams  / markerattrs = (symbol=circle  color=blue size = 12);
+scatter x=cald y=o_HIVinc_fsw_nondreams  / markerattrs = (symbol=circle  color=blue size = 12);
 run;quit;
+
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "HIV incidence amongst sex workers without disadvantages";
@@ -1101,11 +1220,28 @@ yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values
 
 label p50_incidence1549_0_  = "No sex worker program ";
 label p50_incidence1549_1_ = "Sex worker program";
+label o_HIVincid_all_Zim = "Zimbabwe";
+label o_HIVincid_all_Cam = "Zimbabwe";
+label o_HIVincid_all_CdI = "Zimbabwe";
+label o_HIVincid_all_Esw = "Zimbabwe";
+label o_HIVincid_all_Eth = "Zimbabwe";
+label o_HIVincid_all_Ken = "Zimbabwe";
+label o_HIVincid_all_Rwa = "Zimbabwe";
+
 
 series  x=cald y=p50_incidence1549_0_ /  lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549_0_  upper=p95_incidence1549_0_/ transparency=0.9 fillattrs = (color=red) legendlabel= "Program - model 90% range";
 series  x=cald y=p50_incidence1549_1_ /  lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence1549_1_  upper=p95_incidence1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "No program - model 90% range";
+
+scatter x=cald y=o_HIVincid_all_Zim / markerattrs = (symbol=circle  color=blue size = 12);
+scatter x=cald y=o_HIVincid_all_Cam / markerattrs = (symbol=circle  color=green size = 12);
+scatter x=cald y=o_HIVincid_all_CdI / markerattrs = (symbol=circle  color=red size = 12);
+scatter x=cald y=o_HIVincid_all_Esw / markerattrs = (symbol=circle  color=purple size = 12);
+scatter x=cald y=o_HIVincid_all_Eth / markerattrs = (symbol=circle  color=orange size = 12);
+scatter x=cald y=o_HIVincid_all_Ken / markerattrs = (symbol=circle  color=brown size = 12);
+scatter x=cald y=o_HIVincid_all_Rwa / markerattrs = (symbol=circle  color=black size = 12);
+
 run;quit;
 
 
