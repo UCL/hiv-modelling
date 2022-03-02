@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_24_02_22;   
+set a.fsw_24_02_22_ch3;   
 run;
 
 proc sort;
@@ -117,7 +117,7 @@ if option=0 then do;
 * incidence1549w;				incidence1549w_0_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_0_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
-*sti;							*p_sti_0_ = s_sti/s_sw_1564;
+*sti;							p_sti_0_ = s_sti/s_sw_1564;
 				
 ***no disadv;
 if sw_art_disadv=1 then do;
@@ -139,7 +139,7 @@ if sw_art_disadv=1 then do;
 
 * prevalence_sw;				prevalence_sw_nodis_0_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_0_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-* sti;							*p_sti_nodis_0_ = s_sti/s_sw_1564;
+* sti;							p_sti_nodis_0_ = s_sti/s_sw_1564;
 end;
 
 ***some disadv;
@@ -162,7 +162,7 @@ if sw_art_disadv=2 then do;
 
 * prevalence_sw;				prevalence_sw_dis_0_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_dis_0_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-* sti;							*p_sti_dis_0_ = s_sti/s_sw_1564;
+* sti;							p_sti_dis_0_ = s_sti/s_sw_1564;
 
 end;
 
@@ -203,7 +203,7 @@ if option=1 then do;
 * incidence1549;				incidence1549_1_ = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w_1_ = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m_1_ = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
-* sti;							*p_sti_1_ = s_sti/s_sw_1564;
+* sti;							p_sti_1_ = s_sti/s_sw_1564;
 
 ***no disadv;
 if sw_art_disadv=1 then do;
@@ -225,7 +225,7 @@ if sw_art_disadv=1 then do;
 
 * prevalence_sw;				prevalence_sw_nodis_1_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_nodis_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-* sti;							*p_sti_nodis_1_ = s_sti/s_sw_1564;
+* sti;							p_sti_nodis_1_ = s_sti/s_sw_1564;
 
 end;
 
@@ -249,7 +249,7 @@ if sw_art_disadv=2 then do;
 
 * prevalence_sw;				prevalence_sw_dis_1_ = s_hiv_sw / s_sw_1564; 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw_dis_1_=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
-* sti;							*p_sti_dis_1_ = s_sti/s_sw_1564;
+* sti;							p_sti_dis_1_ = s_sti/s_sw_1564;
 
 end;
 
@@ -264,7 +264,7 @@ set a2;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***gives each simulation an id;
 proc means max data=b;var count_csim;run; ***number of simulations - this is manually inputted in nfit below;
-%let nfit=600;  
+%let nfit=200;  
 run;
 
 data c;
@@ -370,7 +370,7 @@ a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41  a42  
 a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
 a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
 a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
-a131 a132 a133 a134 a135 a136 a137 a138 /*a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
+a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 /*a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
 a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
 a183 a184 a185 a186 a187 a188 a189 a190 a191 a192 a193 a194 a195 a196 a197 a198 a199 a200 a201 a202 a203 a204 a205 a206 a207 a208
 a209 a210 a211 a212 a213 a214 a215 a216 a217 a218 a219 a220 a221 a222 a223 a224 a225 a226 a227 a228 a229 a230 a231 a232 a233 a234
@@ -384,7 +384,30 @@ set d;
 run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\24Feb2022_pm.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\24Feb22_ch3_noMatrix1.doc' startpage=never; 
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Percentage of FSW with persistant STIs";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Percentage'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+label p50_p_sti_0_	                  = "All";
+label p50_p_sti_1_	                  = "All";
+
+
+series  x=cald y=p50_p_sti_0_  /          lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_sti_0_    	 upper=p95_p_sti_0_ / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_p_sti_1_  /          lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sti_1_    	 upper=p95_p_sti_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+
+run;quit;
+
+
+
+
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Of HIV+ people, proportion diagnosed";
@@ -1221,12 +1244,12 @@ yaxis grid label = 'Incidence per 100py'          labelattrs=(size=12)    values
 label p50_incidence1549_0_  = "No sex worker program ";
 label p50_incidence1549_1_ = "Sex worker program";
 label o_HIVincid_all_Zim = "Zimbabwe";
-label o_HIVincid_all_Cam = "Zimbabwe";
-label o_HIVincid_all_CdI = "Zimbabwe";
-label o_HIVincid_all_Esw = "Zimbabwe";
-label o_HIVincid_all_Eth = "Zimbabwe";
-label o_HIVincid_all_Ken = "Zimbabwe";
-label o_HIVincid_all_Rwa = "Zimbabwe";
+label o_HIVincid_all_Cam = "Cameroon";
+label o_HIVincid_all_CdI = "Côte d'Ivoire";
+label o_HIVincid_all_Esw = "Eswatini";
+label o_HIVincid_all_Eth = "Ethiopia";
+label o_HIVincid_all_Ken = "Kenya";
+label o_HIVincid_all_Rwa = "Rwanda";
 
 
 series  x=cald y=p50_incidence1549_0_ /  lineattrs = (color=red thickness = 2);
