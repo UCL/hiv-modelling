@@ -18,6 +18,12 @@ consider having a reduced chance of tranmission from a person in primary if they
 
 1 month time steps ?
 
+replicates for each option to reduce stochasticity (e.g. lower limit of relative incidence reduction = 0)
+
+are we too positive about number of active drugs and effectiveness of regimen including tld when insti resistance present ?
+
+effect on vl < 1000 at 12 weeks seems lower than might be expected (but not if dol_higher_potency = 1.5 rather than 1)
+
 ;
 
 
