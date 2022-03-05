@@ -13,7 +13,7 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
  proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -678,25 +678,38 @@ prob_symp_hypertension = 0.2;
 prob_test_sbp_undiagnosed = 0.005 * prob_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 7; 
-* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for 
-hypertension, per period;
+* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 prob_test_sbp_diagnosed = 0.025 * prob_htn_diagnosis; 
-* probability of initiating anti-hypertensive at initial clinic visit at which hypertension is diagnosed ;
-prob_imm_anti_hypertensive = 0.6; 
-* for a person with diagnosed hypertension but not in care (and therefore not on anti-hyptertensives, probability of returning to care and 
-starting anti-hypertensive;
-prob_start_anti_hyptertensive = 0.02; 
-* probability of having a clinic visitfor hypertension if on antihypertensives and due a visit (currently programmed as annual);
-prob_visit_hypertension = 0.6;
+
+* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+%sample_uniform(prob_imm_htn_tx_s2, 0.5 0.6 0.7);
+* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+%sample_uniform(prob_start_htn_tx_s1, 0.5 0.6 0.7);
+* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+%sample_uniform(prob_start_htn_tx_s2, 0.5 0.6 0.7);
+* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+prob_restart_htn_tx_s1 = 1; 
+* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+prob_restart_htn_tx_s2 = 1;
+
+* prob testing in commmunity;
+prob_test_sbp_comm = 0;
+* prob link from community testing to clinic;
+prob_htn_link = 0;
+
+* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
+%sample_uniform(prob_visit_hypertension, 0.5 0.6 0.7);
+* probability of having a clinic visit for hypertension if newly diagnosed last period and given lifestyle counseling only;
+%sample_uniform(prob_visit_htn_lifestyle, 0.1, 0.2, 0.3);
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
-interval_visit_hypertension=1;
-* for person on anti-hypertensive probability of stopping anti-hypertensive (and therefore no longer under care for hypertension 
-(visit_hypertenion = 0);
-prob_stop_anti_hypertensive = 0.05; 
+interval_visit_hypertension=0.5;
+
 * for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
 prob_intensify_1_2 = 0.1; 
 * for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
-prob_intensify_2_3 = 0.1; 
+prob_intensify_2_3 = 0.05; 
 * effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
 * effect of gender on risk of cvd death;
@@ -1842,6 +1855,7 @@ tested_tm1=tested; tested=0;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
+htn_lifestyle_counsel_tm1 = htn_lifestyle_counsel;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -2669,15 +2683,16 @@ if age <= 15.25  then do;
 	diagnosed_hypertension = 0; on_anti_hypertensive = 0; 
 end;
 
+if age <=15.25 and gender = 2 then do;
+	sbp = sbp - 2;
+end;
+if age <=15.25 and gender = 1 then do;
+	sbp = sbp + 2;
+end;
+
 * underlying increases in blood pressure in people not on anti-hypertensives; *updated 29dec2021 to make sbp slope increase less steep as bp rises;
-a_sbp=uniform(0); 
-	* select;
-	*	when (sbp < 140) a_sbp = a_sbp / (sbp_risk); 
-	*	when (140 <= sbp < 160) a_sbp = a_sbp / (1.2 * sbp_risk); 
-	*	when (160 <= sbp < 180) a_sbp = a_sbp / ((1.2**2) * sbp_risk)  ;
-	*	when (180 <= abp) 	  a_sbp = a_sbp / ((1.2**3) * sbp_risk) ;  
-	*	otherwise a_sbp = a_sbp / sbp_risk ;
-	* end;
+a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
+
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
 	when (40 <= age < 65) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
 	otherwise a_sbp = a_sbp / sbp_risk ;
@@ -2692,62 +2707,76 @@ if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
 if symp_hypertension_tm1 = 1 then symp_hypertension=1;
 if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0; 
 
+* Community testing: if tested in the commmunity, must link to clinic to have tested_bp = 1;
+	*allows repeat bp measurement in clinic which may/may not be >=140 based on measurement error;
+if caldate{t} = first_comm_test and first_comm_test ne . then last_comm_test = first_comm_test - comm_test_interval; *set first_comm_test date in options;
+test_sbp_comm = 0; link = 0; sbp_comm_m = .; a_comm_test = rand('uniform'); a_htn_link = rand('uniform');
+if (caldate{t} - last_comm_test) >= comm_test_interval then do;
+	last_comm_test = caldate{t};
+	if a_comm_test < prob_test_sbp_comm then test_sbp_comm = 1;
+end;
+if test_sbp_comm =1 then do;
+	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
+end;
+if sbp_comm_m >=140 then do;
+	diagnosed_htn_comm = 1;
+	if a_htn_link < prob_htn_link then tested_bp = 1;
+end;
+
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
-tested_bp = 0; sbp_m=.; 
 if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
 	e=rand('uniform'); 
 	if symp_hypertension = 1 then e = e / 2;
 	if gender = 2 then e = e / prob_test_sbp_women;
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
-	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
+	if (diagnosed_hypertension = 1 or diagnosed_htn_comm = 1) and e < prob_test_sbp_diagnosed then tested_bp = 1; *in SEARCH: community dx still have higher rate of delayed linkage;
 end;
 
 * clinic visit for hypertension;
 visit_hypertension=0;
-if visit_hypertension_tm1 = 0 then do;
-if tested_bp_tm1 = 1 and sbp_m_tm1 > 140 then visit_hypertension=1; 
+if on_anti_hypertensive = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 then do; * prob of coming back after lifestyle recommendations for new stage 1 HTN dx;
+	e=rand('uniform'); if e < prob_visit_htn_lifestyle then visit_hypertension = 1;
+end;
+if most_recent_sbp_m < 140 and on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
+	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
+end;
+if most_recent_sbp_m >= 140 and on_anti_hypertensive ge 1 then do;
+	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
 end;
 
-* visits for hypertension while on anti-hypertensive; 
-if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
-e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
-end;
-if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
-
+* measurement of bp at clinic;
+if visit_hypertension=1 then tested_bp=1;
+if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
+if tested_bp and sbp_m >= 140 then visit_hypertension = 1; *captures those who tested this period and had first-time HTN dx;
 if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 
-
-* measurement of bp at clinic visit for hypertension;
-if visit_hypertension=1 then tested_bp=1;
-
-* effect of stopping anti-hypertensive on sbp ;
-if on_anti_hypertensive ge 1 then do;
-	z_sbp=rand('uniform');
-	if z_sbp < prob_stop_anti_hypertensive then do; 
-		previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ;
-		date_last_stop_anti_hyp = caldate{t}; 
-	end;
+* effect of stopping anti-hypertensive on sbp; *modified 2/25/22 to stop anti-hypertensive when beyond visit interval and no visit (removed prob_stop_anti_hypertensive);
+if on_anti_hypertensive >= 1 and ((caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension | most_recent_sbp_m >=140) and visit_hypertension = 0 then do;
+	previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ; date_last_stop_anti_hyp = caldate{t};
 end;
 
-* initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
-start_anti_hyp_this_per = 0 ; 
-ah=rand('uniform'); i_sbp = rand('uniform');d_sbp=rand('uniform');  t_sbp = rand('uniform');  
-if (visit_hypertension=1 and (sbp_m_tm1 > 140) and diagnosed_hypertension ne 1) then do; 
-	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
+* initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs; 
+start_anti_hyp_this_per = 0 ; ah=rand('uniform'); i_sbp = rand('uniform'); htn_lifestyle_counsel = 0;
+if (visit_hypertension=1 and sbp_m >= 140 and diagnosed_hypertension ne 1) then do; *new diagnosis;
+	diagnosed_hypertension = 1; htn_lifestyle_counsel = 1;
+	if sbp_m  < 160 and i_sbp < prob_imm_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
+	if sbp_m >= 160 and i_sbp < prob_imm_htn_tx_s2 then start_anti_hyp_this_per =1 ; 
 end;
-
-if (diagnosed_hypertension = 1 and on_anti_hypertensive = 0 and visit_hypertension_tm1 =0 
-and i_sbp < prob_start_anti_hyptertensive) then do; start_anti_hyp_this_per =1 ; visit_hypertension=1; end; * assume start with 1 drug ;
+if (visit_hypertension =1 and sbp_m >= 140 and diagnosed_hypertension = 1 and ever_on_anti_hyp =0) then do; * known diagnosis but never started treatment;
+	if sbp_m  < 160 and i_sbp < prob_start_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
+	if sbp_m >= 160 and i_sbp < prob_start_htn_tx_s2 then start_anti_hyp_this_per =1 ; 
+end; 
 if start_anti_hyp_this_per = 1 then do;
-	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; 
+	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; * assume start with 1 drug ;
 	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
 end;
 
 * restarting anti-hypertensives;
-restart_anti_hyp_this_per = 0;
-if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m_tm1 > 140 and diagnosed_hypertension = 1 
-and ever_on_anti_hyp = 1 and on_anti_hypertensive=0) then do; restart_anti_hyp_this_per =1 ; sbp_last_start_anti_hyp = sbp; end;
-
+restart_anti_hyp_this_per = 0; 
+if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m >= 140 and diagnosed_hypertension = 1 and ever_on_anti_hyp = 1 and on_anti_hypertensive=0) then do; 
+	if sbp_m  < 160 and i_sbp < prob_restart_htn_tx_s1 then restart_anti_hyp_this_per =1 ; 
+	if sbp_m >= 160 and i_sbp < prob_restart_htn_tx_s2 then restart_anti_hyp_this_per =1 ;
+end;
 if restart_anti_hyp_this_per = 1 then do;
 	sbp_restart_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_anti_hypertensive = previous_anti_hyp; 
 	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
@@ -2757,29 +2786,24 @@ end;
 
 * intensification of anti-hypertensives;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
-if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
+if visit_hypertension=1 and sbp_m >= 140 and 1 <= on_anti_hypertensive <= 2 then do; 
 	e=rand('uniform'); 
 	select; 
-		when (160 <= sbp_m_tm1 < 180) e = e /2; 
-		when (180 <= sbp_m_tm1 < 200) e = e / 4; 
-		when (200 <= sbp_m_tm1)       e = e / 10; 
+		when (160 <= sbp_m < 180) e = e /2; 
+		when (180 <= sbp_m) e = e / 4; 
 		otherwise e = e;
 	end;
 	if on_anti_hypertensive=2 and e < prob_intensify_2_3 then do; intensify_anti_hyp_this_per_2_3=1 ; on_anti_hypertensive=3; end; 
 	if on_anti_hypertensive=1 and e < prob_intensify_1_2 then do; intensify_anti_hyp_this_per_1_2=1 ; on_anti_hypertensive=2; end; 
 end;
 
-
 * effect of intensification of anti-hypertensive on sbp;
 if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
 if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
-
-* sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
-
+* hypertension control;
 hypertension = 0; if sbp >= 140 or on_anti_hypertensive ge 1 then hypertension = 1;
-hypertens180 = 0; if sbp >= 180 or (on_anti_hypertensive ge 1 and max_sbp > 180) then hypertens180 = 1;
+hypertens180 = 0; if sbp >= 180 or (on_anti_hypertensive ge 1 and max_sbp >= 180) then hypertens180 = 1;
 
 hypert_control = .; 
 if hypertension = 1 then hypert_control = 0;
