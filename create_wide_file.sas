@@ -1532,6 +1532,13 @@ proc sort; by run;run;
 * data a.w_lapr40_prepcost2 ; 
 * set w_lapr40;
 
+* data a.w_lapr40_prepcostp5 ; 
+* set w_lapr40;
+
+  data a.w_lapr40_prepcost20 ; 
+  set w_lapr40;
+
+
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -1546,7 +1553,7 @@ proc sort; by run;run;
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
 					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) 
 + (1 * dcost_prep_visit_inj_50y_2) 
-+ (1 * dcost_prep_inj_50y_2)
++ (20 * dcost_prep_inj_50y_2)
 ;			
 
 
@@ -1841,7 +1848,7 @@ run;
 
 
 proc means data=a.w_&laprv; var d_n_death_hiv_50y_2 n_death_hiv_50y_1 n_death_hiv_50y_2 ; 
-* where hivtest_type_1_init_prep_inj =  1;
+  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ;
 * where prob_vl_meas_done ge 0.7;
 * where pr_inm_inj_prep_primary = 0.1;
 run;
@@ -1979,8 +1986,11 @@ run;
 
 data q1; set  a.w_lapr40_prepcost1; p_cost=1;
 data q2; set  a.w_lapr40_prepcost2; p_cost=2;
+data q3; set  a.w_lapr40_prepcostp5; p_cost=0.5;
+data q4; set  a.w_lapr40_prepcost20; p_cost=20;
 
 data a.w_lapr40_mult_prep_cost ; set q1 q2;
+data a.w_lapr40_mult_prep_cost_ ; set q1 q2 q3;
 
 
 proc logistic data = a.w_lapr40_mult_prep_cost; 
@@ -2017,8 +2027,8 @@ proc freq data = a.w_lapr40_mult_prep_cost; tables ce_500; where hivtest_type_1_
 
 
 
-proc logistic  data = a.w_lapr40_mult_prep_cost; 
-class incidence1549_22_g;
+proc logistic  data = a.w_lapr40_mult_prep_cost_; 
+class incidence1549_22_g p_cost;
 model ce_500_x = incidence1549_22_g  prep_newpge1_this_per prep_women_only prep_less_risk_inf_ep  p_cost; 
 output out=pred p=phat lower=lcl upper=ucl
           predprob=(individual crossvalidate);
@@ -2037,8 +2047,8 @@ proc print; where prep_newpge1_this_per=1 and prep_women_only ne 1 and prep_less
 proc freq  data = w_lapr40; tables ce_500 ; where hivtest_type_1_prep_inj = 1 ; run;
 
 
-proc logistic data = a.w_lapr40_mult_prep_cost ; 
-class incidence1549_22_g;
+proc logistic data = a.w_lapr40_mult_prep_cost_ ; 
+class incidence1549_22_g p_cost;
 model ce_500_x = incidence1549_22_g  p_cost; 
 output out=pred p=phat lower=lcl upper=ucl
           predprob=(individual crossvalidate);

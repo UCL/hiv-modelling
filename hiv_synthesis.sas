@@ -24,6 +24,8 @@ are we too positive about number of active drugs and effectiveness of regimen in
 
 effect on vl < 1000 at 12 weeks seems lower than might be expected (but not if dol_higher_potency = 1.5 rather than 1)
 
+get outputs to calculate median time to be switched from VL failure or from detection of VL failure 
+
 ;
 
 
