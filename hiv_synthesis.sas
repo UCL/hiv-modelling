@@ -13,7 +13,7 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
  proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 
 	
-%let population = 10000 ; 
+%let population = 1000 ; 
 %let year_interv = 2021.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -16619,12 +16619,12 @@ s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 /* *HYPERTENSION* */
 
 s_hypertension_1524 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
-s_diagnosed_hypertension_1524 s_diagnosed_hypertension_2534 _21 s_diagnosed_hypertension_3544 _21
-s_diagnosed_hypertension_4554 _21 s_diagnosed_hypertension_5564 _21 s_diagnosed_hypertension_ge65 _21
-s_on_anti_hypertensive_1524 _21 s_on_anti_hypertensive_2534 _21 s_on_anti_hypertensive_3544 _21
-s_on_anti_hypertensive_4554 _21 s_on_anti_hypertensive_5564 _21 s_on_anti_hypertensive_ge65 _21
-s_hypert_control_1524 _21 s_hypert_control_2534 _21 s_hypert_control_3544 _21
-s_hypert_control_4554 _21 s_hypert_control_5564 _21 s_hypert_control_ge65 _21
+s_diagnosed_hypertension_1524 s_diagnosed_hypertension_2534 s_diagnosed_hypertension_3544
+s_diagnosed_hypertension_4554 s_diagnosed_hypertension_5564 s_diagnosed_hypertension_ge65
+s_on_anti_hypertensive_1524 s_on_anti_hypertensive_2534 s_on_anti_hypertensive_3544
+s_on_anti_hypertensive_4554 s_on_anti_hypertensive_5564 s_on_anti_hypertensive_ge65
+s_hypert_control_1524 s_hypert_control_2534 s_hypert_control_3544
+s_hypert_control_4554 s_hypert_control_5564 s_hypert_control_ge65
 
 s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
 s_diagnosed_hypertension_1539 s_on_anti_hypertensive_1539 s_hypertension_1539 s_hypertens180_1539
@@ -16691,8 +16691,10 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
-prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
+
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link prob_visit_hypertension prob_visit_htn_lifestyle
+prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
 
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -18037,7 +18039,7 @@ data r1; set a;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 data x; set cum_l1;
 
@@ -18052,7 +18054,7 @@ libname b 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-
+*/
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
@@ -18651,8 +18653,10 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
-prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
-prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
+
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed 
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link prob_visit_hypertension prob_visit_htn_lifestyle
+prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
