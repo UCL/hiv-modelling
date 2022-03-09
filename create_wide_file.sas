@@ -1552,8 +1552,8 @@ proc sort; by run;run;
 					dcot_cost_50y_2 + dtb_cost_50y_2 + dres_cost_50y_2 + dtest_cost_50y_2 + d_t_adh_int_cost_50y_2 + dswitchline_cost_50y_2 + 
 					dcost_circ_50y_2 + dcost_condom_dn_50y_2 + dcost_child_hiv_50y_2 + dcost_non_aids_pre_death_50y_2
 					+ (dcost_prep_visit_oral_50y_2) + (dcost_prep_oral_50y_2) 
-+ (1 * dcost_prep_visit_inj_50y_2) 
-+ (20 * dcost_prep_inj_50y_2)
++ (1  * dcost_prep_visit_inj_50y_2) 
++ (1  * dcost_prep_inj_50y_2)
 ;			
 
 
