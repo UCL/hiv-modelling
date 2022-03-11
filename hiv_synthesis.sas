@@ -198,7 +198,7 @@ newp_seed = 7;
 * inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
-* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
 * hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
@@ -228,7 +228,7 @@ newp_seed = 7;
 * SEXUAL BEHAVIOUR;
 
 * condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section;
-* rr_sw_age_1519;			rr_sw_age_1519 = 1.00;
+* rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
@@ -286,7 +286,7 @@ newp_seed = 7;
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
-* fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
+* fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3  );
 * fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1/0.8 1/0.6 1/0.4); 
 * super_infection_pop; 		%sample_uniform(super_infection_pop, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
@@ -378,12 +378,12 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.01 0.03 0.05 0.10);	
-* test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
+* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 , 
-								0.1		0.2 	0.40	0.2 	0.05 	0.05 );
+								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
+								0.2		0.25	0.35	0.1 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
@@ -508,8 +508,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rate_return;  			%sample(rate_return, 
-								0.01	0.10 	0.30 	0.60, 
-								0.10 	0.60	0.15 	0.15);
+								0.01	0.05  0.10 	0.30   0.60, 
+								0.15 	0.15  0.40	0.15   0.15);
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -534,7 +534,8 @@ newp_seed = 7;
 * poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0020 0.0040 0.0080); 
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
+														0.30 0.30 0.30 0.05 0.05); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -599,24 +600,24 @@ newp_seed = 7;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
 * sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:5);
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.67 0.33);
+* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.9 0.1);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;			%sample_uniform(sw_art_disadv, 1 2);
-					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; prob_sw_lower_adh = 0;		sw_higher_prob_loss_at_diag = 1; 	end;
-								if sw_art_disadv=2 	then do; sw_higher_int = 2; prob_sw_lower_adh = 0.1;	sw_higher_prob_loss_at_diag = 1.5; 	end;
+* sw_art_disadv;           %sample_uniform(sw_art_disadv, 1 2);
+                              if sw_art_disadv=1  then do; sw_higher_int = 1; prob_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
+                              if sw_art_disadv=2  then do; sw_higher_int = 3; prob_sw_lower_adh = 0.8;sw_higher_prob_loss_at_diag = 2;end;
 
-* sw_program;				%sample(sw_program, 0 1, 0.8 0.2);
-								if sw_program = 1 	then do; rate_engage_sw_program =0.10;	rate_disengage_sw_program = 0.025;  end;
+* sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
+					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
-* effect_sw_prog_newp;  	%sample_uniform(effect_sw_prog_newp, 0.1 0.2 0.3);
-* effect_sw_prog_6mtest;	%sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
-* effect_sw_prog_int;		%sample_uniform(effect_sw_prog_int, 0.4 0.6 0.8);
-* effect_sw_prog_adh;		%sample_uniform(effect_sw_prog_adh, 1 1.5 10);
-* effect_sw_prog_lossdiag;	%sample_uniform(effect_sw_prog_lossdiag, 0.4 0.6 0.8);
-* effect_sw_prog_prep_all;	%sample_uniform(effect_sw_prog_prep_all, 0.8 0.95);
-* effect_sw_prog_pers_sti;	%sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.3 0.5 0.8);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 1.2 1.6 2);
+* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.3 0.5 0.8);
+* effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
 
 
 
@@ -832,21 +833,21 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * determining newp base categories for new sw;
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.8; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.60; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.02; p_sw_init_newp_g2=0.91; p_sw_init_newp_g3= 0.03; p_sw_init_newp_g4=0.02; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.82; p_sw_init_newp_g3= 0.07; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.03; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
 if sw_trans_matrix=1 then do;
 sw_newp_lev_1_1 = 0.80 ; sw_newp_lev_1_2 = 0.17 ; sw_newp_lev_1_3 = 0.015  ; sw_newp_lev_1_4 = 0.010 ; sw_newp_lev_1_5 = 0.005 ; 
-sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
+sw_newp_lev_2_1 = 0.05 ; sw_newp_lev_2_2 = 0.90 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
 sw_newp_lev_3_1 = 0.05 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.80  ; sw_newp_lev_3_4 = 0.045 ; sw_newp_lev_3_5 = 0.005 ; 
 sw_newp_lev_4_1 = 0.025 ; sw_newp_lev_4_2 = 0.025 ; sw_newp_lev_4_3 = 0.10  ; sw_newp_lev_4_4 = 0.80 ; sw_newp_lev_4_5 = 0.05 ; 
 sw_newp_lev_5_1 = 0.025 ; sw_newp_lev_5_2 = 0.025 ; sw_newp_lev_5_3 = 0.05  ; sw_newp_lev_5_4 = 0.10 ; sw_newp_lev_5_5 = 0.80 ; 
 end;
 if sw_trans_matrix=2 then do;
 sw_newp_lev_1_1 = 0.90 ; sw_newp_lev_1_2 = 0.10 ; sw_newp_lev_1_3 = 0.000  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
-sw_newp_lev_2_1 = 0.10 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.100  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
+sw_newp_lev_2_1 = 0.05 ; sw_newp_lev_2_2 = 0.85 ; sw_newp_lev_2_3 = 0.100  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
 sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.80  ; sw_newp_lev_3_4 = 0.100 ; sw_newp_lev_3_5 = 0.000 ; 
 sw_newp_lev_4_1 = 0.000 ; sw_newp_lev_4_2 = 0.000 ; sw_newp_lev_4_3 = 0.100 ; sw_newp_lev_4_4 = 0.80 ; sw_newp_lev_4_5 = 0.100; 
 sw_newp_lev_5_1 = 0.000 ; sw_newp_lev_5_2 = 0.000 ; sw_newp_lev_5_3 = 0.000  ; sw_newp_lev_5_4 = 0.10 ; sw_newp_lev_5_5 = 0.90 ; 
@@ -872,7 +873,6 @@ sw_newp_lev_3_1 = 0;  sw_newp_lev_3_2 = 0; sw_newp_lev_3_3 = 1; sw_newp_lev_3_4 
 sw_newp_lev_4_1 = 0;  sw_newp_lev_4_2 = 0; sw_newp_lev_4_3 = 0; sw_newp_lev_4_4 = 1; sw_newp_lev_4_5 = 0; 
 sw_newp_lev_5_1 = 0;  sw_newp_lev_5_2 = 0; sw_newp_lev_5_3 = 0; sw_newp_lev_5_4 = 0; sw_newp_lev_5_5 = 1; 
 end; 
-
 
 
 * test type;
@@ -1462,15 +1462,12 @@ if sw = 1 then do;
 	if e < 0.1 then newp=0;
 	else if 0.1 <= e < 0.5 then do; q=rand('uniform');
 		if         q < 0.7  then newp=1;
-		if 0.7  <= q < 0.8  then newp=2;
-		if 0.8  <= q < 0.9  then newp=3;
-		if 0.9  <= q < 0.95 then newp=4;
-		if 0.95 <= q < 0.98 then newp=5;
-		if 0.98 <= q        then newp=6;
+		if 0.7  <= q < 0.85 then newp=2;
+		if 0.85 <= q        then newp=3;
 	end;
 	else do;
 		select;
-			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
+			when (0.5 <= e < 0.95) 	do; newp_lower = 4; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
 			otherwise xxx=1;
@@ -2156,88 +2153,7 @@ q=rand('uniform');
 if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
 * dependent_on_time_step_length ; 
 
-* SW programs starts in 2015;
-if caldate{t} = 2015 then eff_sw_program=sw_program;
 
-* Attendance at SW program (if it exists) and effects of program;
-
-if eff_sw_program=1 and sw=1 then do;
-
-if sw_program_visit=0 then do; e=rand('uniform');
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
-		sw_program_visit=1 ; 
-		date_1st_sw_prog_vis=caldate{t};	* this refers to first date of either first visit or first visit after restarting sw;
-
-		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
-		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
-
-		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		s= rand('uniform'); if s < effect_sw_prog_prep_all and prep_all_willing = 0 then do;
-			prep_all_willing = 1; * lapr and dpv-vr ;
-			* select which prep type individual will be willing to use based on preference;
-			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
-			select;
-				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
-				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + pref_prep_inj ; end;
-				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
-				otherwise xxx=1;
-			end;
-		end;
-		if prep_all_willing=1 then eff_rate_test_startprep_all=1;
-		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
-		eff_rate_choose_stop_prep_inj=0.05;
-		eff_prob_prep_all_restart_choice=0.7;
-		* lapr and dpv-vr - consider if any needs to change ;
-		end;
-	end;
-end; 
-
-else if sw_program_visit=1 then do; e=rand('uniform');
-	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
-		sw_program_visit=0 ; 
-		date_last_sw_prog_vis=caldate{t};
-		sw_test_6mthly=0;
-		eff_rate_persist_sti = rate_persist_sti;
-		eff_sw_higher_int = sw_higher_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		eff_rate_test_startprep_all=rate_test_startprep_all;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		* lapr - add lines for inj and vr? - see comment above;
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;		* lapr - add lines for inj and vr? - see comment above;
-		eff_prob_prep_all_restart_choice=prob_prep_all_restart_choice;
-		* lapr and dpv-vr - consider if any needs to change ;
-end; 
-
-end;
-
-* if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
-if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
-	sw_program_effects_changed_covid=0;
-	eff_sw_program = eff_sw_program_wo_covid; 
-	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
-	eff_rate_persist_sti = eff_rate_persist_sti_wo_covid;
-	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
-	eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
-	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
-end;
-* if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
-  we can revert to them after the disruption period;
-if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_changed_covid ne 1 then do;
-	sw_program_effects_changed_covid=1;
-	eff_sw_program_wo_covid = eff_sw_program ; 
-	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
-	eff_rate_persist_sti_wo_covid=eff_rate_persist_sti;
-	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
-	eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
-	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
-	eff_sw_program = 0;
-	sw_test_6mthly = 0; 
-	eff_sw_higher_int = sw_higher_int ; 
-	eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
-	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
-end;
 
 
 q=rand('uniform');
@@ -2569,6 +2485,89 @@ end;
 */
 
 *  ======================================================================================================================================== ;
+
+
+* SW programs starts in 2015;
+if caldate{t} = 2015 then eff_sw_program=sw_program;
+
+* Attendance at SW program (if it exists) and effects of program;
+
+if eff_sw_program=1 and sw=1 then do;
+
+if sw_program_visit=0 then do; e=rand('uniform');
+	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+		sw_program_visit=1 ; 
+		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+
+		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
+		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
+		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
+		eff_prob_sw_lower_adh = prob_sw_lower_adh * effect_sw_prog_adh ;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
+		s= rand('uniform'); if s < effect_sw_prog_prep_all and prep_all_willing = 0 then do;
+			prep_all_willing = 1; * lapr and dpv-vr ;
+			* select which prep type individual will be willing to use based on preference;
+			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
+			select;
+				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
+				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + pref_prep_inj ; end;
+				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
+				otherwise xxx=1;
+			end;
+		end;
+		if prep_all_willing=1 then eff_rate_test_startprep_all=1;
+		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
+		eff_rate_choose_stop_prep_inj=0.05;
+		eff_prob_prep_all_restart_choice=0.7;
+		* lapr and dpv-vr - consider if any needs to change ;
+		end;
+	end;
+end; 
+
+else if sw_program_visit=1 then do; e=rand('uniform');
+	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
+		sw_program_visit=0 ; 
+		date_last_sw_prog_vis=caldate{t};
+		sw_test_6mthly=0;
+		eff_rate_persist_sti = rate_persist_sti;
+		eff_sw_higher_int = sw_higher_int;
+		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_rate_test_startprep_all=rate_test_startprep_all;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		* lapr - add lines for inj and vr? - see comment above;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;		* lapr - add lines for inj and vr? - see comment above;
+		eff_prob_prep_all_restart_choice=prob_prep_all_restart_choice;
+		* lapr and dpv-vr - consider if any needs to change ;
+end; 
+
+end;
+
+* if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
+if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
+	sw_program_effects_changed_covid=0;
+	eff_sw_program = eff_sw_program_wo_covid; 
+	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
+	eff_rate_persist_sti = eff_rate_persist_sti_wo_covid;
+	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
+	eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
+	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
+end;
+* if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
+  we can revert to them after the disruption period;
+if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_changed_covid ne 1 then do;
+	sw_program_effects_changed_covid=1;
+	eff_sw_program_wo_covid = eff_sw_program ; 
+	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
+	eff_rate_persist_sti_wo_covid=eff_rate_persist_sti;
+	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
+	eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
+	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
+	eff_sw_program = 0;
+	sw_test_6mthly = 0; 
+	eff_sw_higher_int = sw_higher_int ; 
+	eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
+	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
+end;
 
 
 ***Impact of potential changes in policy after year_i;
@@ -3688,7 +3687,7 @@ end;
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
 	e=rand('uniform');
-	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 6;
+	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 20; 
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 50;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) <= e then newp_tm1 = 150;
@@ -3765,21 +3764,20 @@ if t ge 2 then do;
 	* probabilities of transitioning to each level, depending on the current one;
 	select;
 		when (newp_tm1 = 0) 		do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
-		when (1 <= newp_tm1 <= 6) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
-		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
+		when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
+		when (4 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
 		otherwise xxx=1;
-	end;
+end;
 
 	* transition to a new level with these probabilities and select newp;
 	e = rand('uniform');
 	if e < newp_lev1_prob then newp=0;
 	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=rand('uniform');
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
+		if q < 0.7 then newp=1; if 0.7 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
 	end;
-	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 7 + (q*14); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 4 + (q*16); newp = round(newp,1); end;
 	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=rand('uniform'); newp = 21 + (q*29); newp = round(newp,1); end;
 	else do; q=rand('uniform'); newp = 51 + (q*100); newp = round(newp,1);  end;
 end;
@@ -7237,7 +7235,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag ;
 
-	if sw=1 then e_eff_prob_loss_at_diag = eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag ;
+	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
 	if hiv=1 and tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
 
@@ -7617,7 +7615,7 @@ res_test=.;
 	   if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
-		if sw=1 then prointer=prointer * eff_sw_higher_int;
+		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -8355,9 +8353,7 @@ if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
-e=rand('uniform');
-if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
-
+if sw=1  and adh >0.8 then adh = min (1, adh * eff_prob_sw_lower_adh);
 
 * high risk of resistance with nnrtis even if v low adherence;
 * dependent_on_time_step_length ;
