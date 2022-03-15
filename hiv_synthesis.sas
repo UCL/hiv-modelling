@@ -5,6 +5,10 @@
 
 for paper:
 
+add code for on_risk_informed_prep which becomes 1 when start and 0 when have stopped prep and not restarted or when registd=1 or death
+
+possibly need to define whether not_hard_reach_prep_oral_willing etc to show they would take prep if eligible 
+
 further thought on whether sufficient number of people starting calb la despite having hiv, and whether their risk of resistance is sufficiently large
 
 think about why having rna testing also decreases proportion of people on prep with hiv a little
@@ -13536,17 +13540,6 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 
 
 **** PrEP ************************************************************************************************************************;
-
-* prep_oral_status 
-
-1 - currently taking oral_prep
-2 - previously taken oral_prep - has not stopped prep due to choice - currently has no indication for prep (prep_elig_all=0)
-3 - previously taken oral_prep but stopped prep due to choice and not restarted - currently has indication for prep (prep_elig_all=1)
-4 - previously taken oral_prep but stopped prep due to choice and not restarted - currently has no indication for prep (prep_elig_all=0)
-5 - never taken prep - currently has indication for prep (prep_elig_all=1) - but hard_reach=1 or prep_oral_willing ne 1
-6 - never taken prep - currently does not have indication for prep (prep_elig_all=0) 
-
-;
 
 prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
 prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
