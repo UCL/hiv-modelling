@@ -13204,7 +13204,7 @@ end;
 
 	if primary=1 then do; r_=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
-		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 then r_=1;
+		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 then r_=1;
 	end;
 
 
@@ -13534,7 +13534,19 @@ if line2_incl_int_clinic_not_aw = 1 and pim_=1 then pim_line2=1;
 onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart_cd4_g500=1;
 
 
-*Prep;
+
+**** PrEP ************************************************************************************************************************;
+
+* prep_oral_status 
+
+1 - currently taking oral_prep
+2 - previously taken oral_prep - has not stopped prep due to choice - currently has no indication for prep (prep_elig_all=0)
+3 - previously taken oral_prep but stopped prep due to choice and not restarted - currently has indication for prep (prep_elig_all=1)
+4 - previously taken oral_prep but stopped prep due to choice and not restarted - currently has no indication for prep (prep_elig_all=0)
+5 - never taken prep - currently has indication for prep (prep_elig_all=1) - but hard_reach=1 or prep_oral_willing ne 1
+6 - never taken prep - currently does not have indication for prep (prep_elig_all=0) 
+
+;
 
 prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
 prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
@@ -13552,8 +13564,6 @@ end;
 
 *Subjects ever infected while on PrEP without TDR who acquire resistance;
 if ever_i_nor_prep=1 then rm_prep=rm_;
-
-*Outcomes relating to PrEP;
 
 *Number of people eligible for PrEP;
 *Number of people eligible for any PrEP;
