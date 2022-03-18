@@ -1211,10 +1211,6 @@ data y; set    a.l_hptn13;
 
 * &v ;
 
-* for sa: if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
-proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2005.0 <= cald < 2006.0; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2017.0 <= cald < 2018.0; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2021.0 <= cald < 2022.0; 
 
 /*
 
@@ -1291,9 +1287,11 @@ proc sort data=y_40; by run; proc transpose data=y_40 out=t_40 prefix=&v._40_; v
 proc sort data=y_41; by run; proc transpose data=y_41 out=t_41 prefix=&v._41_; var &v._41; by run; 																														
 proc sort data=y_42; by run; proc transpose data=y_42 out=t_42 prefix=&v._42_; var &v._42; by run; 	
 
-data &v ; merge y_05 y_17 y_21 
+data &v ; merge 
 t_22 t_23 t_24 t_25 t_26 t_27 t_28 t_29 t_30 t_31 t_32 t_33 t_34 t_35 t_36 t_37 t_38 t_39 t_40 t_41 t_42;
 drop _NAME_ _TYPE_ _FREQ_;
+
+
 
 %mend var; 
 %var(v=sim_year);%var(v=prep_all_strategy);
@@ -1318,9 +1316,12 @@ proc sort; by run; run;
 
 %macro blvar(b=);
 
+* for sa: if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
+proc means  noprint data=y; var &b; output out=b_05 mean= &b._05; by run ; where 2005.0 <= cald < 2006.0; 
+proc means  noprint data=y; var &b; output out=b_17 mean= &b._17; by run ; where 2017.0 <= cald < 2018.0; 
 proc means  noprint data=y; var &b; output out=b_21 mean= &b._21; by run ; where 2021.0 <= cald < 2022.0; 
 
-data &b ; merge b_21 
+data &b ; merge b_21 b_05 b_17
 ;
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1455,12 +1456,9 @@ proc sort; by run;run;
   merge   wide_outputs wide_bl  wide_par ;  
   by run;
 
-
 * for sa;
 n_onart_21 = art_w_21 + art_m_21;
 if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
-
-
 
 data bl; set a.w_hptn13;
 
@@ -1485,8 +1483,8 @@ prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
 
 * table 1;
 
-proc freq data=a.w_hptn13 ;  
-tables 
+proc univariate data=a.w_hptn13 ;  
+var
 n_alive_w_21 n_alive_m_21  n_alive_21
 prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
 incidence1549m_21   incidence1549w_21   incidence1549_21   
