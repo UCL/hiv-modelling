@@ -1478,14 +1478,13 @@ prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
 
 * table 1;
 
-proc freq data=a.w_hptn13 ;  
-tables 
-n_alive_w_21 n_alive_m_21  n_alive_21
+proc univariate data=a.w_hptn13 ;  
+var 
 prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
 incidence1549m_21   incidence1549w_21   incidence1549_21   
 p_onart_m_21      p_onart_w_21      p_onart_21   
 p_vl1000_m_21      p_vl1000_w_21      p_vl1000_21   
-prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
+;
 run;
 
 proc export 

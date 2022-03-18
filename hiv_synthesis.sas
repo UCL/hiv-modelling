@@ -5,6 +5,8 @@
 
 for paper:
 
+run with noe (no effect of cab)
+
 add code for on_risk_informed_prep which becomes 1 when start and 0 when have stopped prep and not restarted or when registd=1 or death
 
 possibly need to define whether not_hard_reach_prep_oral_willing etc to show they would take prep if eligible 
@@ -31,6 +33,19 @@ effect on vl < 1000 at 12 weeks seems lower than might be expected (but not if d
 get outputs to calculate median time to be switched from VL failure or from detection of VL failure 
 
 consider having oral prep adherence dependent on oral prep preference value
+
+The question of cost-effectiveness of using RNA testing compared with 3rd generation testing only (given cab-la is being used) will depend on how 
+great are the health benefits of RNA testing.  Certainly in our model we not surprisingly find benefits in terms of there being less INSTI resistance.  
+However, on average over our runs/ setting scenarios we don’t currently see substantial benefits in terms of numbers of AIDS deaths over the long term.  
+This needs more exploring, but it seems to be due to the fact that a person who acquires HIV on cab-la and does not develop INSTI drug resistance 
+would be predicted to have quite substantial viral suppression and some CD4 count recovery.  Even if INSTI resistance occurs, a person with high 
+cabotegravir levels is likely to experience less effective HIV replication than if they had no ARV drug present, due to reduced replicative capacity 
+of virus with INSTI resistance and some residual drug activity.  The other important fact here is how rapidly we can assume that a person who is 
+diagnosed with HIV while having high cab levels will be put on treatment, and what treatment they will be given. Currently we consider a range of 
+values for the rate with which ART is started after diagnosis, reflecting what seems to happen in practice.  If we were to assume that all people 
+who get HIV while having high cab levels initiate ART immediately at diagnosis, and that a boosted-PI is used in first line, then I think there 
+would be predicted to be appreciable health benefits of RNA testing vs 3rd generation antibody testing, in terms of AIDS deaths over the long term.  
+If that’s the case, then in that situation we can then assess whether the RNA testing is cost effective as well as being effective.          
 
 ;
 
