@@ -5,6 +5,12 @@
 
 for paper:
 
+run with noe (no effect of cab)
+
+add code for on_risk_informed_prep which becomes 1 when start and 0 when have stopped prep and not restarted or when registd=1 or death
+
+possibly need to define whether not_hard_reach_prep_oral_willing etc to show they would take prep if eligible 
+
 further thought on whether sufficient number of people starting calb la despite having hiv, and whether their risk of resistance is sufficiently large
 
 think about why having rna testing also decreases proportion of people on prep with hiv a little
@@ -27,6 +33,19 @@ effect on vl < 1000 at 12 weeks seems lower than might be expected (but not if d
 get outputs to calculate median time to be switched from VL failure or from detection of VL failure 
 
 consider having oral prep adherence dependent on oral prep preference value
+
+The question of cost-effectiveness of using RNA testing compared with 3rd generation testing only (given cab-la is being used) will depend on how 
+great are the health benefits of RNA testing.  Certainly in our model we not surprisingly find benefits in terms of there being less INSTI resistance.  
+However, on average over our runs/ setting scenarios we don’t currently see substantial benefits in terms of numbers of AIDS deaths over the long term.  
+This needs more exploring, but it seems to be due to the fact that a person who acquires HIV on cab-la and does not develop INSTI drug resistance 
+would be predicted to have quite substantial viral suppression and some CD4 count recovery.  Even if INSTI resistance occurs, a person with high 
+cabotegravir levels is likely to experience less effective HIV replication than if they had no ARV drug present, due to reduced replicative capacity 
+of virus with INSTI resistance and some residual drug activity.  The other important fact here is how rapidly we can assume that a person who is 
+diagnosed with HIV while having high cab levels will be put on treatment, and what treatment they will be given. Currently we consider a range of 
+values for the rate with which ART is started after diagnosis, reflecting what seems to happen in practice.  If we were to assume that all people 
+who get HIV while having high cab levels initiate ART immediately at diagnosis, and that a boosted-PI is used in first line, then I think there 
+would be predicted to be appreciable health benefits of RNA testing vs 3rd generation antibody testing, in terms of AIDS deaths over the long term.  
+If that’s the case, then in that situation we can then assess whether the RNA testing is cost effective as well as being effective.          
 
 ;
 
@@ -4773,6 +4792,7 @@ if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
 if prep_vr = 1 then prep_vr_ever=1;
 
+on_risk_informed_prep_all = 0; if prep_all_elig = 1 and prep_all_willing=1 and hard_reach ne 1 and registd ne 1 then on_risk_informed_prep_all = 1;
 
 if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
 
@@ -11654,7 +11674,7 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
 	prep_all=.;prep_oral=.;prep_inj=.;prep_vr=.;
-	hr_noprep=.;elig_prep_all_epdiag=.;elig_prep_all=.;	primary_prep=.;primary_hr_noprep=.; 
+	elig_prep_all_epdiag=.;elig_prep_all=.;	primary_prep=.; 
 	hiv1_prep_oral=.;hiv1_prep_all=.;
 	infected_prep_all=.; infected_prep_oral=.; infected_prep_inj=.; infected_prep_vr=.;
 	primary_r_prep=.;ever_i_nor_prep=.;i_r_prep=.;rm_prep=.;
@@ -13204,7 +13224,7 @@ end;
 
 	if primary=1 then do; r_=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
-		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 then r_=1;
+		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 then r_=1;
 	end;
 
 
@@ -13534,7 +13554,8 @@ if line2_incl_int_clinic_not_aw = 1 and pim_=1 then pim_line2=1;
 onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart_cd4_g500=1;
 
 
-*Prep;
+
+**** PrEP ************************************************************************************************************************;
 
 prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
 prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
@@ -13542,10 +13563,6 @@ prep_oral_m=0; if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_inj_m=0; if gender=1 and prep_inj=1 then prep_inj_m=1;
 
 prep_all_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_all_ever=1;
-
-hr_noprep=0;       if (epi  =1 or newp ge 2) and prep_oral   ne 1 then hr_noprep=1;	* lapr - define which prep? ;
-
-primary_hr_noprep=0;if primary=1 and hr_noprep=1     then primary_hr_noprep=1;
 
 if infected_prep_all=1 then do;
 	primary_r_prep=r_;*new infections with TDR;
@@ -13557,14 +13574,10 @@ end;
 *Subjects ever infected while on PrEP without TDR who acquire resistance;
 if ever_i_nor_prep=1 then rm_prep=rm_;
 
-*Outcomes relating to PrEP;
-
 *Number of people eligible for PrEP;
 *Number of people eligible for any PrEP;
 elig_prep_all_epdiag=0;	*if registd ne 1 and hard_reach=0 and epdiag=1 then elig_prep_all_epdiag=1;
 						if prep_all_elig=1 and epdiag=1 then elig_prep_all_epdiag=1;
-elig_prep_all=0;       	*if registd ne 1 and hard_reach=0 and (epi  =1 or newp ge 2) then elig_prep_all=1; 
-						if prep_all_elig=1 then elig_prep_all=1;
 
 elig_prep_all_w_1524 = 0; elig_prep_all_w_2534 = 0; elig_prep_all_w_3544 = 0; elig_prep_all_w_1549 = 0;  elig_prep_all_w_1564 = 0; 
 if gender = 2 and 15 <= age < 25 then do; if prep_all_elig=1 then elig_prep_all_w_1524 = 1;  end;
@@ -13585,13 +13598,10 @@ elig_prep_all_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_all_
 
 
 elig_prep_all_onprep=0;
-if elig_prep_all = 1 then do;
+if prep_all_elig = 1 then do;
 if prep_all=1 then elig_prep_all_onprep=1;
 end;
 
-* high risk but not on any prep;
-hr_noprep=0;      		if (epi  =1 or newp ge 2) and registd ne 1 and prep_all   ne 1 then hr_noprep=1;
-primary_hr_noprep=0;	if primary=1 and hr_noprep=1 then primary_hr_noprep=1;
 
 * number on prep women age 15-24;
 prep_all_w_1524 = 0 ; 	if prep_all =1 and gender =2 and 15 <= age < 25 then prep_all_w_1524 = 1 ;
@@ -15834,7 +15844,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_prep_all + infected_prep_all ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_all_ever + prep_all_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_i_r_prep + i_r_prep ; s_primary_r_prep + primary_r_prep ;
 	s_ever_i_nor_prep + ever_i_nor_prep ; s_rm_prep + rm_prep ;  s_elig_prep_all_onprep + elig_prep_all_onprep ;  s_primary_prep_inj  + primary_prep_inj ;
-	s_elig_prep_all + elig_prep_all ; s_hr_noprep + hr_noprep ; s_primary_hr_noprep + primary_hr_noprep ; s_primary_prep_oral + primary_prep_oral;
+	s_prep_all_elig + prep_all_elig ;  s_primary_prep_oral + primary_prep_oral;
 	s_rt65m_3_prep + rt65m_3_prep ; s_rt184m_3_prep + rt184m_3_prep ; s_rtm_3_prep + rtm_3_prep ; s_rt65m_6_prep + rt65m_6_prep ; 
 	s_rt184m_6_prep + rt184m_6_prep ; s_rtm_6_prep + rtm_6_prep ; s_rt65m_9_prep + rt65m_9_prep ; s_rt184m_9_prep + rt184m_9_prep ;               
     s_rtm_9_prep + rtm_9_prep ; s_rt65m_12_prep + rt65m_12_prep ; s_rt184m_12_prep + rt184m_12_prep ; s_rtm_12_prep + rtm_12_prep ;        
@@ -15914,6 +15924,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_start_restart_prep_oral_hiv + start_restart_prep_oral_hiv; s_start_restart_prep_inj_hiv + start_restart_prep_inj_hiv;
 	s_start_rest_prep_inj_hiv_cabr + start_rest_prep_inj_hiv_cabr;   s_infected_on_prep_inj + infected_on_prep_inj;
+
+	s_on_risk_informed_prep_all + on_risk_informed_prep_all;
 
 	/*testing and diagnosis*/
 
@@ -17548,7 +17560,7 @@ s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw
 s_elig_prep_all_epdiag  s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
+s_rm_prep  s_prep_all_elig  	 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -17607,7 +17619,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18455,7 +18467,7 @@ s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw
 s_elig_prep_all_epdiag   s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
+s_rm_prep  s_prep_all_elig  	  
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -18514,7 +18526,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19782,7 +19794,7 @@ s_prep_all_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw
 s_elig_prep_all_epdiag   s_elig_prep_all_m_1564 s_elig_prep_all_w_1564
 s_infected_prep_all	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_all_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj  s_hiv1_prep_oral  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep  s_elig_prep_all  	 s_hr_noprep  s_primary_hr_noprep 
+s_rm_prep  s_prep_all_elig  	 
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
@@ -19841,7 +19853,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all  s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res s_cur_in_prep_inj_tail_prim  s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
