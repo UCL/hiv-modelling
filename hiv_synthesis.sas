@@ -4792,6 +4792,7 @@ if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
 if prep_vr = 1 then prep_vr_ever=1;
 
+on_risk_informed_prep_all = 0; if prep_all_elig = 1 and prep_all_willing=1 and hard_reach ne 1 and registd ne 1 then on_risk_informed_prep_all = 1;
 
 if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
 
@@ -15924,6 +15925,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_start_restart_prep_oral_hiv + start_restart_prep_oral_hiv; s_start_restart_prep_inj_hiv + start_restart_prep_inj_hiv;
 	s_start_rest_prep_inj_hiv_cabr + start_rest_prep_inj_hiv_cabr;   s_infected_on_prep_inj + infected_on_prep_inj;
 
+	s_on_risk_informed_prep_all + on_risk_informed_prep_all;
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -17616,7 +17619,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -18523,7 +18526,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19850,7 +19853,7 @@ s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
 s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_all  s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res s_cur_in_prep_inj_tail_prim  s_o_cab_or_o_cab_tm1_no_r_npr
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_all
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
