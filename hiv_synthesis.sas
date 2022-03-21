@@ -7084,7 +7084,7 @@ visit_tm1=visit;
 	cab_res_primary=0;  prep_o_cab_off_3m_prim=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; 
 	prep_inj_init_prim = 0; prep_inj_reinit_prim=0; prep_inj_init_prim_res=0;prep_inj_reinit_prim_res=0; prep_primary_prevented=0;
 	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
-	cab_res_emerge_primary=0;
+	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
 
 	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c 
 	then start_restart_prep_oral_hiv = 1;
@@ -9569,7 +9569,7 @@ if o_cab_tm1=1 or o_cab=1 or currently_in_prep_inj_tail = 1 then do; * if caldat
 	dx=rand('uniform'); if caldate{t}-infection=0.25 then dx=dx/incr_res_risk_cab_inf_3m; if dx < pr_res_dol*rr_res_cab_dol then c_in263m=1;
 	if (c_in118m_tm1 + c_in140m_tm1 + c_in148m_tm1 + c_in263m_tm1 = 0) and 
 	(c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in263m=1) then do; 
-	start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 then start_rest_prep_inj_hiv_cabr = 1;
+	if start_restart_prep_inj_hiv = 1 then start_rest_prep_inj_hiv_cabr = 1;
 	if o_cab_tm1=1 or o_cab=1 then do; em_inm_res_o_cab_off_3m=1;em_inm_res_o_cab=1; em_inm_res_o_cab_off_3m_npr=1; end; 
 	if o_cab=1 then em_inm_res_o_cab=1; ; 
 	if currently_in_prep_inj_tail = 1 then do; emerge_inm_res_cab_tail=1;em_inm_res_cab_tail_npr=1; end;
@@ -11686,7 +11686,7 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
 	prep_all=.;prep_oral=.;prep_inj=.;prep_vr=.;
-	elig_prep_all_epdiag=.;elig_prep_all=.;	primary_prep=.; 
+	elig_prep_all_epdiag=.;prep_all_elig=.;	primary_prep=.; 
 	hiv1_prep_oral=.;hiv1_prep_all=.;
 	infected_prep_all=.; infected_prep_oral=.; infected_prep_inj=.; infected_prep_vr=.;
 	primary_r_prep=.;ever_i_nor_prep=.;i_r_prep=.;rm_prep=.;
@@ -16609,7 +16609,7 @@ run;
 
 proc print; 
 var 
-caldate&j infection prep_all_strategy elig_prep_all prep_oral_ever prep_inj_ever prep_all_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
+caldate&j infection prep_all_strategy prep_all_elig prep_oral_ever prep_inj_ever prep_all_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
 prep_oral prep_o_cab_off_3m_prim reg_option onart o_dol o_taz 
 date_last_stop_prep_inj stop_prep_all_choice
 diagprim_prep_inj  prep_primary_prevented  diagprim_prep_oral  o_cab   r_cab r_3tc r_ten  primary     start_prep_inj_unl_prim_hiv_det
@@ -16742,16 +16742,16 @@ run;
 
 
 proc freq; tables caldate&j ; 
-proc freq; tables caldate&j sw * prep_all  prep_inj prep_oral ; where elig_prep_all = 1;
+proc freq; tables caldate&j sw * prep_all  prep_inj prep_oral ; where prep_all_elig = 1;
 
 var 
-caldate&j prep_all_strategy elig_prep_all rate_test_startprep_all hard_reach rate_test_startprep_all prob_prep_inj_b  
+caldate&j prep_all_strategy prep_all_elig rate_test_startprep_all hard_reach rate_test_startprep_all prob_prep_inj_b  
 prob_prep_oral_b testfor_prep_oral  prep_oral_ever prep_inj_ever prep_all_ever 
 an_lin_incr_test testfor_prep_inj tested  switch_prep_from_oral  switch_prep_from_inj switch_prep_to_oral  switch_prep_to_inj 
 highest_prep_pref prep_oral_willing prep_inj_willing pref_prep_oral pref_prep_inj prep_oral prep_inj sw higher_future_prep_oral_cov
 stop_prep_inj_choice stop_prep_oral_choice
 ;
-where age ge 15 and elig_prep_all=1 and (death=. or dead=1) and serial_no <  3000 ;
+where age ge 15 and prep_all_elig=1 and (death=. or dead=1) and serial_no <  3000 ;
 run;
 
 run;

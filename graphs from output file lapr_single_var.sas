@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-  set a.l_lapr40        ;  
+  set a.l_lapr41        ;  
 
 * if hivtest_type_1_init_prep_inj =  1  and hivtest_type_1_prep_inj =  1 ;
 * if dol_higher_potency = 0.5;
@@ -21,7 +21,7 @@ prevalence1549_ = prevalence1549;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 6000 ;
+%let nfit = 600  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -31,7 +31,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var = n_prep_all ;
+%let var = prop_elig_on_prep ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -75,7 +75,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var = n_prep_all ;
+%let var = prop_elig_on_prep ;
 run;
 
 
@@ -169,18 +169,18 @@ run;quit;
 
 
 
-
+ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of people on PrEP";
+Title    height=1.5 justify=center "Of people with an indication for PrEP, proportion who are on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1) valueattrs=(size=10);
 
-label p50_n_prep_all_0 = "no cab-la introduction (median) ";
-label p50_n_prep_all_1 = "cab-la introduction (median) ";
+label p50_prop_elig_on_prep_0 = "no cab-la introduction (median) ";
+label p50_prop_elig_on_prep_1 = "cab-la introduction (median) ";
 
-series  x=cald y=p50_n_prep_all_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_prep_all_0 	upper=p95_n_prep_all_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_n_prep_all_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_prep_all_1 	upper=p95_n_prep_all_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+series  x=cald y=p50_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_prop_elig_on_prep_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
