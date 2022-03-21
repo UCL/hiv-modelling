@@ -411,10 +411,8 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_onprep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
 * n_prep_all;					n_prep_all = s_prep_all * &sf;
-
-* n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep_all * &sf;
-
-* p_hiv1_prep;					if s_prep_all gt 0 then p_hiv1_prep = s_hiv1_prep_all / s_prep_all ;
+* n_prep_oral;					n_prep_oral = s_prep_oral * &sf;
+* n_prep_inj;					n_prep_inj = s_prep_inj * &sf;
 
 * n_prep_ever;					n_prep_ever = s_prep_all_ever * &sf;
 * p_prep_all_ever;				p_prep_all_ever = s_prep_all_ever / s_alive;
@@ -479,9 +477,22 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * proportion of primary infections in which inm is present or arises due to cab ;
 * p_cab_res_primary	;			p_cab_res_primary = s_cab_res_primary / s_primary;
 
+***** ^^^^^ ******;
+* n_start_restart_prep_inj; 		n_start_restart_prep_inj = s_start_restart_prep_inj * &sf ;
+* n_start_restart_prep_inj_prim; 	n_start_restart_prep_inj_prim = s_start_restart_prep_inj_prim * &sf ;
 * n_start_restart_prep_inj_hiv; 	n_start_restart_prep_inj_hiv = s_start_restart_prep_inj_hiv * &sf ;
+
 * n_start_rest_prep_inj_hiv_cabr; 	n_start_rest_prep_inj_hiv_cabr = s_start_rest_prep_inj_hiv_cabr * &sf ;
+* n_start_rest_prep_inj_prim_cabr; 	n_start_rest_prep_inj_prim_cabr = s_start_rest_prep_inj_prim_cabr * &sf ;
+* n_em_inm_res_o_cab;				n_s_em_inm_res_o_cab = s_em_inm_res_o_cab * &sf;
+
+* n_hiv1_prep;						n_hiv1_prep = s_hiv1_prep_all * &sf;
+* p_hiv1_prep;						if s_prep_all gt 0 then p_hiv1_prep = s_hiv1_prep_all / s_prep_all ;
+* p_hiv1_prep_inj;					if s_prep_inj gt 0 then p_hiv1_prep_inj = s_hiv1_prep_inj / s_prep_inj ;
+* p_hiv1_prep_oral;					if s_prep_inj gt 0 then p_hiv1_prep_oral = s_hiv1_prep_oral / s_prep_oral ;
+
 * n_infected_on_prep_inj; 			n_infected_on_prep_inj = s_infected_on_prep_inj * &sf ;
+* n_em_inm_res_o_cab;				n_s_em_inm_res_o_cab = s_em_inm_res_o_cab * &sf;
 
 * p_cabr_start_rest_prep_inj;		p_cabr_start_rest_prep_inj = s_start_rest_prep_inj_hiv_cabr / s_em_inm_res_o_cab_off_3m ;
 
