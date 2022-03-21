@@ -1456,6 +1456,18 @@ proc sort; by run;run;
   merge   wide_outputs wide_bl  wide_par ;  
   by run;
 
+proc univariate data=a.w_hptn14 ;  
+var
+n_alive_w_21 n_alive_m_21  n_alive_21
+prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
+incidence1549m_21   incidence1549w_21   incidence1549_21   
+p_onart_m_21      p_onart_w_21      p_onart_21   
+p_vl1000_m_21      p_vl1000_w_21      p_vl1000_21   
+prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
+run;
+
+
+
 * for sa;
 n_onart_21 = art_w_21 + art_m_21;
 if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
