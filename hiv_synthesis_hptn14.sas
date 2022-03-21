@@ -160,7 +160,7 @@ run = rand('uniform')*1000000000;  run=round(run,1);
 dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
 
-* hptn;
+* hptn sa;
 caldate1=1984;
 caldate_never_dot=1984;
 
@@ -176,7 +176,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-* hptn;
+* hptn sa;
 startyr = 1984 + 0.25;
 * ts1m;
 /*
@@ -752,7 +752,7 @@ end;
 * sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
 
 * =============================================================================================;
-* hptn;
+* hptn sa;
 
 pref_prep_oral_beta_s1 = 1.1 ;
 %sample_uniform(prep_all_strategy_p2022, 4 5 6 7 8 9 10 11 ); 
@@ -831,7 +831,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-* hptn;
+* hptn sa;
   %include "/home/rmjlaph/SA_parameters_hptn.sas";
 
 
@@ -1461,8 +1461,9 @@ if sw=1 then do;
 	ever_sw=1;
 
 	u=rand('uniform');
-	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
-	age_deb_sw= age - (1989-date_start_sw);
+	* hptn sa ;
+	date_start_sw = 1980+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
+	age_deb_sw= age - (1984-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
@@ -6227,8 +6228,10 @@ if tested=1   and hiv ne 1 and cost_test=0 then cost_test= cost_test_c;
 
 * INTRODUCE HIV INTO POPULATION ;
 
+* hptn sa;
+
 d=rand('uniform');
-if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+if caldate{t}=1993   and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -18114,6 +18117,10 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
+* hptn sa;
+if cald = 2017.5 and (prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;
+abort abend;
+end;
 
 
 

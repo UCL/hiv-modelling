@@ -38,13 +38,13 @@ proc freq data=a.w_lapr40; tables run; where  hivtest_type_1_init_prep_inj =  1 
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr40a_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr41_out\";
 
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  lapr40  ;
+%let laprv =  lapr41  ;
 
 data a.g_&laprv;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9  ;
 
@@ -1546,8 +1546,8 @@ proc sort; by run;run;
 * data a.w_lapr40_prepcostp5 ; 
 * set w_lapr40;
 
-  data a.w_lapr40_prepcost20 ; 
-  set w_lapr40;
+* data a.w_lapr40_prepcost20 ; 
+* set w_lapr40;
 
 
 
