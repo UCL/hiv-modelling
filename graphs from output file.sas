@@ -1242,6 +1242,95 @@ series  x=cald y=p50_logw55r_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_logw55r_0 	upper=p95_logw55r_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 run;quit;
 
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of adults who had an indication for PrEP in the past year";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
+
+label mean_p_prep_elig_past_year_0 = "no cab-la introduction (mean) ";
+label mean_p_prep_elig_past_year_1 = "cab-la introduction (mean) ";
+
+series  x=cald y=mean_p_prep_elig_past_year_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_prep_elig_past_year_0 	upper=p95_p_prep_elig_past_year_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=mean_p_prep_elig_past_year_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_prep_elig_past_year_1 	upper=p95_p_prep_elig_past_year_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of people aged 15-64 on PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.07   by 0.01 ) valueattrs=(size=10);
+
+label mean_prop_1564_onprep_0 = "no cab-la introduction (mean) ";
+label mean_prop_1564_onprep_1 = "cab-la introduction (mean) ";
+
+series  x=cald y=mean_prop_1564_onprep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_0 	upper=p95_prop_1564_onprep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=mean_prop_1564_onprep_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prop_1564_onprep_1 	upper=p95_prop_1564_onprep_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of all adults who currently have an indication for PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+
+label mean_p_elig_prep_0 = "no cab-la introduction (mean) ";
+label mean_p_elig_prep_1 = "cab-la introduction (mean) ";
+
+series  x=cald y=mean_p_elig_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_elig_prep_0 	upper=p95_p_elig_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=mean_p_elig_prep_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_elig_prep_1 	upper=p95_p_elig_prep_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of people with an indication for PrEP, proportion who are on PrEP";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2015 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1) valueattrs=(size=10);
+
+label mean_prop_elig_on_prep_0 = "no cab-la introduction (mean) ";
+label mean_prop_elig_on_prep_1 = "cab-la introduction (mean) ";
+
+series  x=cald y=mean_prop_elig_on_prep_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_0 	upper=p95_prop_elig_on_prep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=mean_prop_elig_on_prep_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+
+
+
+
+
+
 title;
 
 ods html close;

@@ -13,17 +13,6 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 %let laprv =  lapr44  ;
 
-
-
-
-
-* lapr44 only correct for reg_option_107_after_cab = 0 ;
-
-
-
-
-
-
 data a.g_lapr44;  
 set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
@@ -1536,7 +1525,7 @@ merge a.wide_outputs a.wide_par;
 * data a.w_lapr44_prepcost20 ; 
 * set a.w_lapr44;
 
-  if prep_all_strategy=4;
+if prep_all_strategy=4;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1572,6 +1561,7 @@ pr_inm_inj_prep_primary_x = pr_inm_inj_prep_primary;
 if hivtest_type_1_prep_inj=1 then pr_inm_inj_prep_primary_x = pr_inm_inj_prep_primary / testt1_prep_inj_eff_on_res_prim; 
 * this is done to find out the originally allocated value  ;
 
+
 d_n_cur_res_dol_50y_2 = n_cur_res_dol_50y_2 - n_cur_res_dol_50y_1;  
 d_n_prep_all_50y_2 = n_prep_all_50y_2 - n_prep_all_50y_1 ;
 d_prop_elig_on_prep_50y_2 =  prop_elig_on_prep_50y_2 -  prop_elig_on_prep_50y_1 ;  
@@ -1579,38 +1569,25 @@ d_p_hiv1_prep_50y_2 =  p_hiv1_prep_50y_2 -  p_hiv1_prep_50y_1;
 d_p_iime_50y_2 = p_iime_50y_2 -  p_iime_50y_1;
 d_n_death_hiv_50y_2 = n_death_hiv_50y_1 - n_death_hiv_50y_2 ;
 
-d_prop_elig_on_prep_20y_2 =  prop_elig_on_prep_20y_2 -  prop_elig_on_prep_20y_1 ;  
-d_prop_1564_onprep_20y_2 = prop_1564_onprep_20y_2 - prop_1564_onprep_20y_1;
-d_prop_prep_inj_20y_2 = prop_prep_inj_20y_2 - prop_prep_inj_20y_1;
-
-d_n_cur_res_dol_20y_2 = n_cur_res_dol_20y_2 - n_cur_res_dol_20y_1;  
-d_n_prep_all_20y_2 = n_prep_all_20y_2 - n_prep_all_20y_1 ;
-d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1;  
-
-d_n_birth_with_inf_child_20y_2 = n_birth_with_inf_child_20y_1 - n_birth_with_inf_child_20y_2;
+d_n_cur_res_dol_32_2 = n_cur_res_dol_32_2 - n_cur_res_dol_32_1;  
+d_n_prep_all_32_2 = n_prep_all_32_2 - n_prep_all_32_1 ;
+d_prop_elig_on_prep_32_2 =  prop_elig_on_prep_32_2 -  prop_elig_on_prep_32_1 ;  
+d_p_hiv1_prep_32_2 =  p_hiv1_prep_32_2 -  p_hiv1_prep_32_1;  
 
 d_n_cur_res_dol_42_2 = n_cur_res_dol_42_2 - n_cur_res_dol_42_1;  
 d_n_prep_all_42_2 = n_prep_all_42_2 - n_prep_all_42_1 ;
 d_prop_elig_on_prep_42_2 =  prop_elig_on_prep_42_2 -  prop_elig_on_prep_42_1 ;  
 d_p_hiv1_prep_42_2 =  p_hiv1_prep_42_2 -  p_hiv1_prep_42_1;  
-d_p_prep_all_ever_42_2 =  p_prep_all_ever_42_2 -  p_prep_all_ever_42_1;
 
+d_p_iime_32_2 = p_iime_32_2 -  p_iime_32_1;
+d_incidence1549_32_2 = incidence1549_32_2 - incidence1549_32_1 ;
 d_p_iime_42_2 = p_iime_42_2 -  p_iime_42_1;
 r_p_iime_42_2 = p_iime_42_2 / p_iime_42_1;
 d_incidence1549_42_2 = incidence1549_42_2 - incidence1549_42_1 ;
 d_p_iime_50y_2 = p_iime_50y_2 -  p_iime_50y_1;
 d_incidence1549_50y_2 = incidence1549_50y_2 - incidence1549_50y_1 ;
 d_n_death_hiv_42_2 = n_death_hiv_42_1 - n_death_hiv_42_2 ;
-d_p_ai_no_arv_e_inm_42_2 = p_ai_no_arv_e_inm_42_2 - p_ai_no_arv_e_inm_42_1;
-d_p_vl1000_art_12m_42_2 = p_vl1000_art_12m_42_1 - p_vl1000_art_12m_42_2;
-d_p_taz_42_2 = p_taz_42_2 - p_taz_42_1;
 
-r_prevalence1549_42_2 = prevalence1549_42_2 / prevalence1549_42_1 ;
-r_n_hiv_42_2 =  n_hiv_42_2 / n_hiv_42_1 ;
-d_n_infected_inm_42_2 = n_infected_inm_42_2 - n_infected_inm_42_1 ;
-d_n_cur_res_cab_42_2 = n_cur_res_cab_42_2 - n_cur_res_cab_42_1;
-
-r_incidence1549_20y_2 = incidence1549_20y_2 / incidence1549_20y_1 ;
 r_incidence1549_50y_2 = incidence1549_50y_2 / incidence1549_50y_1 ;
 
 d_p_hiv1_prep_50y_2 = p_hiv1_prep_50y_1 - p_hiv1_prep_50y_2 ;
@@ -1676,52 +1653,49 @@ if incidence1549_22_g=3 then incidence1549_22_g3=1; else incidence1549_22_g3=0;
 
 d_p_hiv1_prep_50y_2 = p_hiv1_prep_50y_1 - p_hiv1_prep_50y_2;
 
+
+
+
+
+/*
+
+proc means data=  a.w_lapr44 n p50 p5 p95 mean;
+var p_w_giv_birth_this_per_22	p_mcirc_22	prevalence1549m_22 prevalence1549w_22  prevalence_hiv_preg_22
+incidence1549w_22  incidence1549m_22   incidence_sw_22  	p_diag_22 	p_diag_m_22   p_diag_w_22	p_ai_no_arv_c_nnm_22   
+prop_w_1549_sw_22  mtct_prop_22  prop_1564_onprep_22
+p_onart_diag_22 p_onart_vl1000_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22   p_onart_cd4_l500_22  p_onart_m_age50pl_22 p_onart_w_age50pl_22  
+p_onart_cd4_l200_22  p_startedline2_22 prop_sw_newp0_22  prop_sw_hiv_22 p_newp_sw_22 
+m15r_22 m25r_22 m35r_22 m45r_22 m55r_22 w15r_22 w25r_22 w35r_22 w45r_22 w55r_22 p_newp_ge1_22 p_newp_ge5_22 p_iime_22 prevalence_vg1000_22
+s_alive_22
+rate_dead_hivpos_cause1_22   rate_dead_hivpos_tb_22  rate_dead_hivpos_cause4_22 rate_dead_hivpos_crypm_22 
+rate_dead_hivpos_sbi_22  rate_dead_hivpos_oth_adc_22  rate_dead_hivpos_cause2_22  rate_dead_hivpos_cause3_22  rate_dead_hivpos_cvd_22 
+rate_dead_cvd_22 rate_dead_tb_22  rate_dead_hivneg_cvd_22  rate_dead_hivneg_tb_22  rate_dead_hivneg_cause2_22 rate_dead_hivneg_cause3_22 
+rate_dead_hivneg_cause4_22 rate_dead_hivneg_cause5_22  rate_dead_allage_22  rate_dead_hivneg_anycause_22 rate_dead_hivpos_anycause_22
+n_cd4_lt50_22 n_cd4_lt200_22
+p_ahd_re_enter_care_100_22 p_ahd_re_enter_care_200_22
+incidence1524w_22   incidence1524m_22 incidence2534w_22   incidence2534m_22 incidence3544w_22   incidence3544m_22 
+incidence4554w_22   incidence4554m_22 incidence5564w_22   incidence5564m_22
+prevalence1519w_22 	prevalence1519m_22 prevalence2024w_22 	prevalence2024m_22 prevalence2529w_22 	prevalence2529m_22
+prevalence3034w_22 	prevalence3034m_22 prevalence3539w_22 	prevalence3539m_22 prevalence4044w_22 	prevalence4044m_22 
+prevalence4549w_22 	prevalence4549m_22 prevalence5054w_22 	prevalence5054m_22 prevalence5054w_22 	prevalence5054m_22
+prevalence5559w_22 	prevalence5559m_22 prevalence6064w_22 	prevalence6064m_22 prevalence65plw_22 	prevalence65plm_22
+r_prev_1519w_4549w_22 r_prev_2024w_4549w_22 r_prev_2529w_4549w_22 r_prev_3034w_4549w_22 r_prev_3539w_4549w_22 	
+r_prev_4044w_4549w_22 r_prev_5054w_4549w_22 r_prev_5559w_4549w_22 r_prev_6064w_4549w_22 r_prev_65plw_4549w_22 r_prev_1519m_4549w_22 r_prev_2024m_4549w_22 
+r_prev_2529m_4549w_22 r_prev_3034m_4549w_22 r_prev_3539m_4549w_22 r_prev_4044m_4549w_22 r_prev_4549m_4549w_22 r_prev_5054m_4549w_22 r_prev_5559m_4549w_22 
+r_prev_6064m_4549w_22 r_prev_65plm_4549w_22 p_age1549_hivneg_22 p_age1549_hiv_22
+n_onart_22 n_death_hivpos_anycause_22  n_death_2059_m_22 n_death_2059_w_22
+;
+run;
+
+*/
+
+
 * table 1;
-
+ods html;
 proc means data=  a.w_lapr44 n p50 p5 p95;  *  a.w_lapr44 ;
-var prevalence1549m_22 prevalence1549w_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
+var prevalence1549_22 incidence1549w_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22  prop_1564_onprep_22  p_iime_22  n_death_hiv_22;
 run;
-
-* table 2;
-
-proc means data=  a.w_lapr44 n p50 p5 p95;
-var 
-prop_elig_on_prep_20y_1  prop_elig_on_prep_20y_2 d_prop_elig_on_prep_20y_2 
-prop_1564_onprep_20y_1  prop_1564_onprep_20y_2 d_prop_1564_onprep_20y_2 
-prop_prep_inj_20y_1  prop_prep_inj_20y_2 d_prop_prep_inj_20y_2 
-p_prep_all_ever_42_1  p_prep_all_ever_42_2 d_p_prep_all_ever_42_2 
-incidence1549_20y_1 incidence1549_20y_2 r_incidence1549_20y_2 
-n_birth_with_inf_child_20y_1 n_birth_with_inf_child_20y_2 d_n_birth_with_inf_child_20y_2  
-prevalence1549_42_1 prevalence1549_42_2 r_prevalence1549_42_2
-n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2
-p_iime_42_1 p_iime_42_2 d_p_iime_42_2
-p_ai_no_arv_e_inm_42_1 p_ai_no_arv_e_inm_42_2 d_p_ai_no_arv_e_inm_42_2 
-n_infected_inm_42_1  n_infected_inm_42_2  d_n_infected_inm_42_2  
-n_cur_res_cab_42_1 n_cur_res_cab_42_2 d_n_cur_res_cab_42_2 
-p_vl1000_art_12m_42_1 p_vl1000_art_12m_42_2 d_p_vl1000_art_12m_42_2 
-p_vl1000_art_12m_50y_1 p_vl1000_art_12m_50y_2 d_p_vl1000_art_12m_50y_2 
-p_taz_42_2 p_taz_42_1 d_p_taz_42_2  
-; 
-run;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ods html close;
 
 ods html;
 proc means data=  a.w_lapr44 n p50 p5 p95;  *  a.w_lapr44 ;
@@ -2053,7 +2027,8 @@ data q2; set  a.w_lapr44_prepcost2; p_cost=2;
 data q3; set  a.w_lapr44_prepcostp5; p_cost=0.5;
 data q4; set  a.w_lapr44_prepcost20; p_cost=20;
 
-data a.w_lapr44_mult_prep_cost  ; set q1 q2 q3;
+* data a.w_lapr44_mult_prep_cost ; * set q1 q2;
+data a.w_lapr44_mult_prep_cost_ ; set q1 q2 q3;
 
 
 proc logistic data = a.w_lapr44_mult_prep_cost; 
@@ -2123,45 +2098,6 @@ keep incidence1549_22_g p_cost phat ;
 proc sort; by p_cost incidence1549_22_g  ;
 proc print; 
  run;
-
-
-
-
-
-
-
-/*
-
-proc means data=  a.w_lapr44 n p50 p5 p95 mean;
-var p_w_giv_birth_this_per_22	p_mcirc_22	prevalence1549m_22 prevalence1549w_22  prevalence_hiv_preg_22
-incidence1549w_22  incidence1549m_22   incidence_sw_22  	p_diag_22 	p_diag_m_22   p_diag_w_22	p_ai_no_arv_c_nnm_22   
-prop_w_1549_sw_22  mtct_prop_22  prop_1564_onprep_22
-p_onart_diag_22 p_onart_vl1000_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22   p_onart_cd4_l500_22  p_onart_m_age50pl_22 p_onart_w_age50pl_22  
-p_onart_cd4_l200_22  p_startedline2_22 prop_sw_newp0_22  prop_sw_hiv_22 p_newp_sw_22 
-m15r_22 m25r_22 m35r_22 m45r_22 m55r_22 w15r_22 w25r_22 w35r_22 w45r_22 w55r_22 p_newp_ge1_22 p_newp_ge5_22 p_iime_22 prevalence_vg1000_22
-s_alive_22
-rate_dead_hivpos_cause1_22   rate_dead_hivpos_tb_22  rate_dead_hivpos_cause4_22 rate_dead_hivpos_crypm_22 
-rate_dead_hivpos_sbi_22  rate_dead_hivpos_oth_adc_22  rate_dead_hivpos_cause2_22  rate_dead_hivpos_cause3_22  rate_dead_hivpos_cvd_22 
-rate_dead_cvd_22 rate_dead_tb_22  rate_dead_hivneg_cvd_22  rate_dead_hivneg_tb_22  rate_dead_hivneg_cause2_22 rate_dead_hivneg_cause3_22 
-rate_dead_hivneg_cause4_22 rate_dead_hivneg_cause5_22  rate_dead_allage_22  rate_dead_hivneg_anycause_22 rate_dead_hivpos_anycause_22
-n_cd4_lt50_22 n_cd4_lt200_22
-p_ahd_re_enter_care_100_22 p_ahd_re_enter_care_200_22
-incidence1524w_22   incidence1524m_22 incidence2534w_22   incidence2534m_22 incidence3544w_22   incidence3544m_22 
-incidence4554w_22   incidence4554m_22 incidence5564w_22   incidence5564m_22
-prevalence1519w_22 	prevalence1519m_22 prevalence2024w_22 	prevalence2024m_22 prevalence2529w_22 	prevalence2529m_22
-prevalence3034w_22 	prevalence3034m_22 prevalence3539w_22 	prevalence3539m_22 prevalence4044w_22 	prevalence4044m_22 
-prevalence4549w_22 	prevalence4549m_22 prevalence5054w_22 	prevalence5054m_22 prevalence5054w_22 	prevalence5054m_22
-prevalence5559w_22 	prevalence5559m_22 prevalence6064w_22 	prevalence6064m_22 prevalence65plw_22 	prevalence65plm_22
-r_prev_1519w_4549w_22 r_prev_2024w_4549w_22 r_prev_2529w_4549w_22 r_prev_3034w_4549w_22 r_prev_3539w_4549w_22 	
-r_prev_4044w_4549w_22 r_prev_5054w_4549w_22 r_prev_5559w_4549w_22 r_prev_6064w_4549w_22 r_prev_65plw_4549w_22 r_prev_1519m_4549w_22 r_prev_2024m_4549w_22 
-r_prev_2529m_4549w_22 r_prev_3034m_4549w_22 r_prev_3539m_4549w_22 r_prev_4044m_4549w_22 r_prev_4549m_4549w_22 r_prev_5054m_4549w_22 r_prev_5559m_4549w_22 
-r_prev_6064m_4549w_22 r_prev_65plm_4549w_22 p_age1549_hivneg_22 p_age1549_hiv_22
-n_onart_22 n_death_hivpos_anycause_22  n_death_2059_m_22 n_death_2059_w_22
-;
-run;
-
-*/
-
 
 
 

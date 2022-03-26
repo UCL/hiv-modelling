@@ -7,11 +7,16 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr27;                        
+set a.l_lapr43;                        
 
 
 
-prep_adhg80_ = p_prep_adhg80 ;
+
+* re-add in g97 and h97 ;
+
+
+
+p_prep_adhg80_ = p_prep_adhg80 ;
 p_onart_vl1000_all = .;
 
 of_all_o_cab_pr_dur_ge12m = of_all_o_cab_prop_dur_ge12m;
@@ -55,7 +60,7 @@ logm55r = log(m55r+0.0001);
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2000  ;
+%let nfit = 3880  ;
 %let year_end = 2070    ;
 run;
 proc sort;by cald option ;run;
@@ -76,17 +81,15 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w  p_vl1000_art_12m
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_prep_all n_death_hiv   
+n_onart n_prep_all n_death_hiv   p_prep_adhg80_
 prop_elig_on_prep   p_elig_prep   p_hiv1_prep   prop_onprep_newpge1_   p_prep_elig_past_year   p_prep_newp   prop_sw_onprep p_iime
 prop_prep_inj    ratio_inj_prep_on_tail          pr_ever_prep_inj_res_cab       pr_ev_prep_inj_res_cab_hiv
 prop_cab_res_o_cab    prop_cab_res_tail        prop_prep_inj_at_inf_diag     
 of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m   of_all_o_cab_prop_dur_9m of_all_o_cab_pr_dur_ge12m
-p_prep_inj_hiv  p_prep_adhg80_  n_cur_res_cab  n_cur_res_dol
+p_prep_inj_hiv  n_cur_res_cab  n_cur_res_dol
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m
 n_emerge_inm_res_cab  n_switch_prep_from_oral  n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
-n_prep_all_start n_prep_oral_start n_prep_inj_start prop_cab_dol_res_attr_cab  
-p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail 
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented
+n_prep_all_start n_prep_oral_start n_prep_inj_start 
 n_birth_with_inf_child  p_prep_all_ever
 ;
 
@@ -141,17 +144,15 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w  p_vl1000_art_12m
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_prep_all n_death_hiv   
+n_onart n_prep_all n_death_hiv   p_prep_adhg80_
 prop_elig_on_prep   p_elig_prep   p_hiv1_prep   prop_onprep_newpge1_   p_prep_elig_past_year   p_prep_newp   prop_sw_onprep p_iime
 prop_prep_inj    ratio_inj_prep_on_tail          pr_ever_prep_inj_res_cab       pr_ev_prep_inj_res_cab_hiv
 prop_cab_res_o_cab    prop_cab_res_tail        prop_prep_inj_at_inf_diag     
 of_all_o_cab_prop_dur_3m     of_all_o_cab_prop_dur_6m   of_all_o_cab_prop_dur_9m of_all_o_cab_pr_dur_ge12m
-p_prep_inj_hiv  p_prep_adhg80_  n_cur_res_cab  n_cur_res_dol
+p_prep_inj_hiv  n_cur_res_cab  n_cur_res_dol
 n_o_cab_at_3m   n_o_cab_at_6m   n_o_cab_at_9m   n_o_cab_at_ge12m
 n_emerge_inm_res_cab  n_switch_prep_from_oral  n_switch_prep_from_inj  n_switch_prep_to_oral  n_switch_prep_to_inj  
-n_prep_all_start n_prep_oral_start n_prep_inj_start prop_cab_dol_res_attr_cab  
-p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail
-p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented
+n_prep_all_start n_prep_oral_start n_prep_inj_start 
 n_birth_with_inf_child   p_prep_all_ever
 ;
 run;
@@ -200,8 +201,8 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52 
 g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73    g74 g75  g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87 g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103  g104 
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116  g117 /* g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
+g79  g80  g81  g82  g83  g84  g85  g86  g87 g88  g89  g90  g91  g92  g93  g94  g95  g96       g98  g99  g100 g101 g102 g103  g104 
+g105 g106 g107 g108 g109 g110 g111 g112 g113 /* g114 g115 g116  g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
@@ -211,8 +212,8 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
- h74 h75  h76  h77  h78 h79  h80  h81  h82  h83  h84  h85  h86 h87 h88  h89  h90 h91   h92 h93  h94  h95  h96  h97  h98  h99  h100 h101 h102 h103
-h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 h114 h115 h116 h117
+ h74 h75  h76  h77  h78 h79  h80  h81  h82  h83  h84  h85  h86 h87 h88  h89  h90 h91   h92 h93  h94  h95  h96       h98  h99  h100 h101 h102 h103
+h104 h105 h106 h107 h108 h109 h110 h111 h112 h113 
 ;
 by cald;
 

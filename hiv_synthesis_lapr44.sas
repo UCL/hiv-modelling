@@ -662,7 +662,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_all_strategy;			%sample_uniform(prep_all_strategy, 4 5 6 7 8 9 10 11); 			* Moved from within code Oct21 JAS ;
+* prep_all_strategy;			%sample(prep_all_strategy, 4 5 6 7 8 9 10 11, 0.93 0.01 0.01 0.01 0.01 0.01 0.01 0.01 );* Moved from within code Oct21 JAS ;						
 
 * prob_prep_all_restart;		*removed ;
 * prob_prep_all_visit_counsel;	prob_prep_all_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -2414,7 +2414,7 @@ if caldate{t} ge 2019.5 then reg_option = 120;
 
 if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
-* if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
+if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
 
 * ==========================================================================================================================================;
@@ -2455,6 +2455,9 @@ end;
 
 * ==========================================================================================================================================;
 
+
+
+*  ========================================================================================================================================= ;
 
 
 *  ========================================================================================================================================= ;
