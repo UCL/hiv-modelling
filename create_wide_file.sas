@@ -14,19 +14,11 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 %let laprv =  lapr44  ;
 
 
-
-
-
-* lapr44 only correct for reg_option_107_after_cab = 0 ;
-
-
-
-
-
-
 data a.g_lapr44;  
 set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
+* lapr44 only correct for reg_option_107_after_cab = 0 ;
+if reg_option_107_after_cab = 0;
 
 proc sort data=a.g_lapr44; 
 by run cald option;
@@ -1518,25 +1510,30 @@ proc sort; by run;run;
 
 
 
-  data a.w_lapr44; 
 
-merge a.wide_outputs a.wide_par;
+  data w_lapr44; 
+  merge a.wide_outputs a.wide_par;
+
+* data w_lapr44; 
+* set a.w_lapr44;
+
 
 * creating separate data sets by prep cost, for use below;
 
-* data a.w_lapr44_prepcost1 ; 
-* set a.w_lapr44;
+* data w_lapr44_prepcost1 ; 
+* set w_lapr44;
 
-* data a.w_lapr44_prepcost2 ; 
-* set a.w_lapr44;
+* data w_lapr44_prepcost2 ; 
+* set w_lapr44;
 
-* data a.w_lapr44_prepcostp5 ; 
-* set a.w_lapr44;
+* data w_lapr44_prepcostp5 ; 
+* set w_lapr44;
 
-* data a.w_lapr44_prepcost20 ; 
-* set a.w_lapr44;
+* data w_lapr44_prepcost20 ; 
+* set w_lapr44;
 
   if prep_all_strategy=4;
+  if reg_option_107_after_cab = 0;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1582,10 +1579,10 @@ d_n_death_hiv_50y_2 = n_death_hiv_50y_1 - n_death_hiv_50y_2 ;
 d_prop_elig_on_prep_20y_2 =  prop_elig_on_prep_20y_2 -  prop_elig_on_prep_20y_1 ;  
 d_prop_1564_onprep_20y_2 = prop_1564_onprep_20y_2 - prop_1564_onprep_20y_1;
 d_prop_prep_inj_20y_2 = prop_prep_inj_20y_2 - prop_prep_inj_20y_1;
-
 d_n_cur_res_dol_20y_2 = n_cur_res_dol_20y_2 - n_cur_res_dol_20y_1;  
 d_n_prep_all_20y_2 = n_prep_all_20y_2 - n_prep_all_20y_1 ;
 d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1;  
+d_n_death_hiv_20y_2 = n_death_hiv_20y_1 - n_death_hiv_20y_2 ;
 
 d_n_birth_with_inf_child_20y_2 = n_birth_with_inf_child_20y_1 - n_birth_with_inf_child_20y_2;
 
@@ -1678,13 +1675,13 @@ d_p_hiv1_prep_50y_2 = p_hiv1_prep_50y_1 - p_hiv1_prep_50y_2;
 
 * table 1;
 
-proc means data=  a.w_lapr44 n p50 p5 p95;  *  a.w_lapr44 ;
+proc means data=  w_lapr44 n p50 p5 p95;  *  w_lapr44 ;
 var prevalence1549m_22 prevalence1549w_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
 run;
 
 * table 2;
 
-proc means data=  a.w_lapr44 n p50 p5 p95;
+proc means data=  w_lapr44 n mean p5 p95;
 var 
 prop_elig_on_prep_20y_1  prop_elig_on_prep_20y_2 d_prop_elig_on_prep_20y_2 
 prop_1564_onprep_20y_1  prop_1564_onprep_20y_2 d_prop_1564_onprep_20y_2 
@@ -1700,9 +1697,59 @@ n_infected_inm_42_1  n_infected_inm_42_2  d_n_infected_inm_42_2
 n_cur_res_cab_42_1 n_cur_res_cab_42_2 d_n_cur_res_cab_42_2 
 p_vl1000_art_12m_42_1 p_vl1000_art_12m_42_2 d_p_vl1000_art_12m_42_2 
 p_vl1000_art_12m_50y_1 p_vl1000_art_12m_50y_2 d_p_vl1000_art_12m_50y_2 
-p_taz_42_2 p_taz_42_1 d_p_taz_42_2  
+p_taz_42_1 p_taz_42_2 d_p_taz_42_2  
+n_death_hiv_20y_1 n_death_hiv_20y_2 d_n_death_hiv_20y_2 
+n_death_hiv_50y_1 n_death_hiv_50y_2 d_n_death_hiv_50y_2 
+ddaly_50y_1   ddaly_50y_2  d_ddaly_50y_2
+dcost_50y_1   dcost_50y_2  d_dcost_50y_2
+netdaly500_1 netdaly500_2 netdaly_averted
 ; 
 run;
+
+proc freq  data = w_lapr44; tables ce_500 ;  run;
+
+* table 3;
+
+proc glm data=  w_lapr44;  
+class fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
+cab_time_to_lower_threshold_g hiv_test_strat_e res_trans_factor_ii 
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab;                  ;
+model d_p_ai_no_arv_e_inm_50y_2 =
+p_ai_no_arv_e_inm_22 fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
+cab_time_to_lower_threshold_g hiv_test_strat_e res_trans_factor_ii  
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab / solution;
+run;
+
+
+proc glm data=    w_lapr44; 
+class   fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
+cab_time_to_lower_threshold_g hiv_test_strat_e res_trans_factor_ii  prep_newpge1_this_per prep_women_only prep_less_risk_inf_ep
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab;                ;
+model d_n_death_hiv_50y_2 =
+n_death_hiv_22 fold_change_mut_risk prob_prep_all_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
+prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
+cab_time_to_lower_threshold_g hiv_test_strat_e res_trans_factor_ii  prep_newpge1_this_per prep_women_only prep_less_risk_inf_ep
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab / solution;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2123,8 +2170,6 @@ keep incidence1549_22_g p_cost phat ;
 proc sort; by p_cost incidence1549_22_g  ;
 proc print; 
  run;
-
-
 
 
 
