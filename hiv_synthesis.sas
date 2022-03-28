@@ -7118,7 +7118,7 @@ visit_tm1=visit;
 	c_dia =0;
 	c_neph = 0;
 	
-	if toffart_tm1 ge 0 and onart_tm1 =0 then do;
+	if toffart_tm1 ge 0 and onart_tm1 ne 1 then do;
 		toffart=toffart_tm1+0.25;   
 
  * ts1m:
@@ -7230,7 +7230,7 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and onart ne 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
 if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; toffart=0;  tss_cab=0; end;		
@@ -7712,6 +7712,7 @@ res_test=.;
 	end;
 
 	if prep_oral_tm1 =1 and prep_oral=0 then toffart   =0;
+	if prep_inj_tm1 =1 and prep_inj=0 then toffart   =0;
 
 	if t ge 2 and interrupt_tm1=1 then tcur=.;
 
@@ -7833,7 +7834,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_oral_tm1 =0 and prep_oral=1 then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep? ;
+	if (prep_oral_tm1 =0 and prep_oral=1) or (prep_inj_tm1 =0 and prep_inj=1) then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep? ;
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -8018,7 +8019,7 @@ if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 o
 * SWITCHING OF DRUGS DUE TO TOXICITY;   * for reg18 decided to remove all switching due to toxicity and programmatically unlikely to often happen
 - can out back in for sensitivity analysis;
 
-if prep_oral=0 and switch_for_tox = 1 then do;	* lapr - change to prep_all? ;
+if onart = 1 and switch_for_tox = 1 then do;	
 
 * tox risk and persistence 
 
@@ -8101,14 +8102,14 @@ start_line2_this_period=.;
 
 
 	if art_intro_date <= caldate{t} < 2010.5 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if t_lpr=0 then o_lpr=1;
 			if t_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
  	if caldate{t} >= 2010.5 and caldate{t} < 2014 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
 			o_3tc=1;
 			if f_lpr=0 and t_lpr=0 then o_lpr=1;
 			if o_lpr=0 and f_nev=0 and t_nev=0 then o_nev=1;  if o_lpr=0 and f_nev=0 and t_nev=1 and t_efa=0 then o_efa=1;
@@ -8117,7 +8118,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2014 and caldate{t} < 2015 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -8134,7 +8135,7 @@ start_line2_this_period=.;
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1) and (caldate{t} < 2018.75 or reg_option in (101 102 107 108 109 112 113 115 ) ) 
 	then do; * dec17; * note 100 is for msfm;
 	* note if returing to former definition of policy 103 then need to add 103 in here;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -8145,14 +8146,14 @@ start_line2_this_period=.;
 	end;
 
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
 			o_zdv=1; goto vv66; 
 	end;
 
  	if caldate{t} >= 2015 and (f_taz=1 or f_lpr=1) and reg_option in (107 ) then do;  
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			* if t_lpr=1 and t_taz=1 and t_nev=0 then o_nev=1; 
@@ -8161,7 +8162,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if o_taz=0 and (t_nev=0 and f_nev=0) then o_nev=1;
@@ -8171,20 +8172,20 @@ start_line2_this_period=.;
 	end;
 
 	if reg_option in (999) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			o_zdv=1; goto vv66; 
 	end;
 	
 	if reg_option in (105) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_ten=0 then o_ten=1; if t_ten=1 then o_zdv=1; goto vv66; 
 	end;
 	if reg_option in (106) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla to list? not needed if not available? ;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_zdv=0 then o_zdv=1; if t_zdv=1 then o_ten=1; goto vv66; 
@@ -8200,7 +8201,9 @@ vv66:
 			if o_dar_tm1=1  and o_dar=0 then do;  tss_dar=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	* lapr - add o_cab, o_rla ;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
+			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
+
 	end;
 end;
 
@@ -8220,13 +8223,14 @@ if choose_line3=1  then do;
 			if o_taz_tm1=1  and o_taz=0 then do;  tss_taz=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	* lapr - add o_cab, o_rla ;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
+			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
 	end;
 
 if pi_after_dtg_fail=1  then do;  
 			pi_after_dtg_fail=.;
 			if artline=2 then artline=3; line3=1;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla; 
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -8239,7 +8243,7 @@ end;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;	* lapr - add o_cab, o_rla; 
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -8262,7 +8266,8 @@ then do;
 		if o_lpr=1 then f_lpr=1;
 		if o_taz=1 then f_taz=1;
 		if o_dar=1 then f_dar=1;
-		if o_dol=1 then f_dol=1;	* lapr - add o_cab, o_rla; 
+		if o_dol=1 then f_dol=1;	
+		if o_cab=1 then f_cab=1;	
 end;
 end;
 end; 
@@ -8293,6 +8298,7 @@ wont switch anyway;
 		mr_lpr=o_lpr;
 		mr_taz=o_taz;
 		mr_dol=o_dol;
+		mr_cab=o_cab;
 	end;
 
 
@@ -8306,9 +8312,10 @@ wont switch anyway;
 	if o_lpr=1 then p_lpr=1;
 	if o_taz=1 then p_taz=1;
 	if o_dol=1 then p_dol=1;
+	if o_cab=1 then p_cab=1;
 
 
-* date first start specific drugs;	* lapr - add cab (& taz from LAI?);
+* date first start specific drugs;	
 if o_dol=1 and p_dol_tm1 ne 1 then date_start_dol = caldate{t};
 if o_efa=1 and p_efa_tm1 ne 1 then date_start_efa = caldate{t};
 if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
@@ -8317,8 +8324,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	
 * adherence between t-1 and t  (adh); 
 
-	if t ge 2 and onart_tm1=1 and (prep_all ne 1 or adh = .) then do;  * for person on prep whether pop wide tld or regular prep the adh should be
-	already defined, based on adhav_prep_oral - if prep = 1 it means person does not know they have hiv ; * lapr - define which prep?;
+	if t ge 2 and onart_tm1=1 and prep_all ne 1 and adh = . then do; 
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
