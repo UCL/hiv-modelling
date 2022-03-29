@@ -14,13 +14,13 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 %let laprv =  lapr45  ;
 
 
-data a.g_lapr45;  
+data a.k_lapr45;  
 set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 * lapr44 only correct for reg_option_107_after_cab = 0 ;
 * if reg_option_107_after_cab = 0;
 
-proc sort data=a.g_lapr45; 
+proc sort data=a.k_lapr45; 
 by run cald option;
 run;
 
@@ -28,7 +28,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.g_lapr45 ;
+set a.k_lapr45 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -43,7 +43,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.g_lapr45 sf;
+merge a.k_lapr45 sf;
 by run ;
 
 
@@ -1511,12 +1511,13 @@ proc sort; by run;run;
 
 
 
-  data  w_lapr44_x; set a.w_lapr44;
-  if reg_option_107_after_cab = 0;
+* data  a.w_lapr45; 
+* merge a.wide_outputs    a.wide_par   ;
 
-  data w_lapr; set w_lapr44_x w_lapr45;
+  data w_lapr; 
+  set a.w_lapr44 a.w_lapr45;
 
-* merge a.wide_outputs_45 a.wide_par_45;
+
 
 * used in oral_prep work:
   if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 
@@ -1524,7 +1525,7 @@ proc sort; by run;run;
 ;
 
 * if this line below stays in we need to also remove these runs from long file;
-if incidence1549_22 > 0.10; 
+* if incidence1549_22 > 0.10; 
 
 * creating separate data sets by prep cost, for use below;
 
@@ -1590,6 +1591,7 @@ d_n_cur_res_dol_20y_2 = n_cur_res_dol_20y_2 - n_cur_res_dol_20y_1;
 d_n_prep_all_20y_2 = n_prep_all_20y_2 - n_prep_all_20y_1 ;
 d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1;  
 d_n_death_hiv_20y_2 = n_death_hiv_20y_1 - n_death_hiv_20y_2 ;
+d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1; 
 
 d_n_birth_with_inf_child_20y_2 = n_birth_with_inf_child_20y_1 - n_birth_with_inf_child_20y_2;
 
@@ -1700,7 +1702,6 @@ n_birth_with_inf_child_20y_1 n_birth_with_inf_child_20y_2 d_n_birth_with_inf_chi
 prevalence1549_42_1 prevalence1549_42_2 r_prevalence1549_42_2
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2
 p_iime_42_1 p_iime_42_2 d_p_iime_42_2
-p_ai_no_arv_e_inm_42_1 p_ai_no_arv_e_inm_42_2 d_p_ai_no_arv_e_inm_42_2 
 n_infected_inm_42_1  n_infected_inm_42_2  d_n_infected_inm_42_2  
 n_cur_res_cab_42_1 n_cur_res_cab_42_2 d_n_cur_res_cab_42_2 
 p_vl1000_art_12m_42_1 p_vl1000_art_12m_42_2 d_p_vl1000_art_12m_42_2 
@@ -1708,13 +1709,24 @@ p_vl1000_art_12m_50y_1 p_vl1000_art_12m_50y_2 d_p_vl1000_art_12m_50y_2
 p_taz_42_1 p_taz_42_2 d_p_taz_42_2  
 n_death_hiv_20y_1 n_death_hiv_20y_2 d_n_death_hiv_20y_2 
 n_death_hiv_50y_1 n_death_hiv_50y_2 d_n_death_hiv_50y_2 
-ddaly_50y_1   ddaly_50y_2  d_ddaly_50y_2
-dcost_50y_1   dcost_50y_2  d_dcost_50y_2
-netdaly500_1 netdaly500_2 netdaly_averted
 ; 
 run;
 
-proc freq  data = w_lapr; tables ce_500 ;  run;
+proc means data=  w_lapr n mean p5 p95;
+var 
+p_hiv1_prep_20y_1 p_hiv1_prep_20y_2  d_p_hiv1_prep_20y_2 
+p_ai_no_arv_e_inm_42_1 p_ai_no_arv_e_inm_42_2 d_p_ai_no_arv_e_inm_42_2 
+ddaly_50y_1    d_ddaly_50y_2
+dcost_50y_1   dcost_50y_2  d_dcost_50y_2
+netdaly500_1 netdaly500_2 netdaly_averted
+;
+where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ; run;
+run;
+
+
+proc freq  data = w_lapr; tables ce_500 ;
+where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; run;
+  run;
 
 * table 3;
 

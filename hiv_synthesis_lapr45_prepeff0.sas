@@ -731,6 +731,22 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+
+
+
+
+
+
+* prepeff0;
+prep_oral_efficacy = 0;
+prep_inj_efficacy = 0;
+prep_all_strategy=4;
+
+
+
+
+
+
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -1693,13 +1709,15 @@ if adh_pattern=1 then do;
 
 *adherence pattern 1;
 *formerly #100 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.02 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.02; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.02; end;
 if 0.62 <= e        then do; adhav = 0.95; adhvar=0.02; end;
+
+if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
 end;
 
@@ -1708,13 +1726,15 @@ if adh_pattern=2 then do;
 
 *adherence pattern 2;
 *formerly #1 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.62 <= e        then do; adhav = 0.95; adhvar=0.05; end;
+
+if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
 end;
 
@@ -1723,7 +1743,7 @@ if adh_pattern=3 then do;
 
 *adherence pattern 3;  
 *formerly #105 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.12 <= e < 0.20 then do; adhav = 0.9  ; adhvar=0.06; end;
@@ -1731,6 +1751,7 @@ if 0.20 <= e < 0.42 then do; adhav = 0.95 ; adhvar=0.05; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95 ; adhvar=0.05; end;
 if 0.62 <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
 
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1739,13 +1760,15 @@ if adh_pattern=4 then do;
 
 *adherence pattern 4;
 *formerly #2 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.15 <= e < 0.42 then do; adhav = 0.90 ; adhvar=0.06; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.90 ; adhvar=0.05; end;
 if 0.62 <= e < 0.8  then do; adhav = 0.90 ; adhvar=0.05; end;
 if 0.8  <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1754,13 +1777,15 @@ if adh_pattern=5 then do;
 
 * adherence pattern 5 ;
 *formerly #3 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; end;
 if 0.30 <= e < 0.42 then do; adhav = 0.9 ;  adhvar=0.06; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.62 <= e < 0.80 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.80 <= e        then do; adhav = 0.95; adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1769,11 +1794,13 @@ if adh_pattern=6 then do;
 
 * adherence pattern 6 ;
 *formerly #4 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.40 <= e < 0.80 then do; adhav = 0.9 ;  adhvar=0.06; end;
 if 0.80 <= e        then do; adhav = 0.95;  adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1782,11 +1809,13 @@ if adh_pattern=7 then do;
 
 * adherence pattern 7 ;
 *formerly #5 *Apr2021;
-e=rand('uniform');
+e=rand('uniform');f=rand('uniform');
 if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
 if 0.60 <= e < 0.70 then do; adhav = 0.70;  adhvar=0.06; end;
 if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
+
+if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -4905,14 +4934,14 @@ end;
 	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
 	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
 if prep_oral = 1 then do;
-	adh=adhav_prep_oral + adhvar*normal(0);  
+	adh=adhav_prep_oral + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
+	if adhav_prep_oral=0 then adh=0;
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age < 25 then do;		* JAS Apr2021 ;
 		f=rand('uniform');
-		if f < 0.5 then adh = adh * rel_prep_oral_adh_younger ;
+		if f<0.5 then adh = adh * rel_prep_oral_adh_younger ;
 	end;
-	if adh gt 1 then adh=1; if adh < 0 then adh=0;
 end;
 
 * this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
@@ -14426,9 +14455,6 @@ tested_f_sw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 a
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_sw=1;
 tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1;
 
-* tested_at_return is when a previously diagnosed person returns to care - these can be added when summing positive tests;
-tested_at_return=0; if return = 1 then tested_at_return=1;
-
 ***Changed from max(c_rt103m, c_rt181m, c_rt190m) to max(c_rt103m_inf, c_rt181m_inf, c_rt190m_inf).
    Previously, pregnant women who attend ANC could be diagnosed and develop NVP resistance within the same time period and hence
    would have been included below. Mutations now are at infection to counter this;
@@ -15969,7 +15995,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
-	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;
+	s_hard_reach + hard_reach;
 
 	/*VL and CD4*/
 
@@ -17661,7 +17687,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach
 
 
 /*VL and CD4*/
@@ -18569,7 +18595,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach
 
 
 /*VL and CD4*/
@@ -21599,7 +21625,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
