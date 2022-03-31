@@ -7821,7 +7821,8 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if (prep_oral_tm1 =0 and prep_oral=1) or (prep_inj_tm1 =0 and prep_inj=1) then do; tcur=0; cd4_tcur0 = cd4; end; * lapr - specify which prep? ;
+	if prep_oral_tm1 =0 and prep_oral=1 then do; tss_ten=.; tss_3tc=.; tcur=0; cd4_tcur0 = cd4; end; 
+	if prep_inj_tm1 =0 and prep_inj=1 then do; tss_cab=.; tcur=0; cd4_tcur0 = cd4; end; 
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -8433,10 +8434,12 @@ adh_dl=adh;
 cab_higher_potency = dol_higher_potency ;
 if registd ne 1 and (o_cab = 1 or o_cab_tm1 =1 or currently_in_prep_inj_tail = 1) then do;
 	adh_dl = 1; adh_dl_tm1=1; 
-	if tss_cab = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
-	if 0.50 <= tss_cab <= cab_time_to_lower_threshold then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
-	if prep_inj =1 or 0 <= tss_cab <= cab_time_to_lower_threshold or currently_in_prep_inj_tail = 1
-	then nactive_tm1 = (1 + cab_higher_potency) * (1 - r_cab_tm1); 
+	if currently_in_prep_inj_tail = 1 then do;
+		if tss_cab = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
+		if 0.50 <= tss_cab then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
+	end;
+	if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then 
+		nactive_tm1 = (1 + cab_higher_potency) * (1 - r_cab_tm1); 
 end;
 
 
@@ -9410,7 +9413,8 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
-*		if started_prep_hiv_test_sens and prep_oral=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; * dependent_on_time_step_length ;	* lapr define which prep? ;
+		* if started_prep_hiv_test_sens and prep_oral=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; 
+		* dependent_on_time_step_length ;	* lapr define which prep? ; 
 																					* removed becuase not necessarily assuming a 1 month test ;		
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
@@ -9455,8 +9459,6 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
-
-	* lapr - cab, add specific mutations (see LAI-ART code);
 
 	d=rand('uniform');
 
