@@ -6,29 +6,30 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr45_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr45_nocabr_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  lapr45  ;
+%let laprv =  lapr45_nocabr  ;
 
 
-data a.k_lapr45;  
+data a.k_lapr45_nocabr;  
 set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 * lapr44 only correct for reg_option_107_after_cab = 0 ;
 * if reg_option_107_after_cab = 0;
 
-proc sort data=a.k_lapr45; 
+proc sort data=a.k_lapr45_nocabr; 
 by run cald option;
 run;
+
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_lapr45 ;
+set a.k_lapr45_nocabr ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -1201,7 +1202,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_lapr45; set y;  
+data    a.l_lapr45_nocabr; set y;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1209,7 +1210,7 @@ run;
 
 
 
-data y; set    a.l_lapr45; 
+data y; set    a.l_lapr45_nocabr; 
 
 
   options nomprint;
@@ -1260,7 +1261,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=prevalence1519w); * %var(v=prevalence1519m); * %var(v=prevalence2024w); * %var(v=prevalence2024m); * %var(v=prevalence2529w);  	  
 * %var(v=prevalence2529m); * %var(v=prevalence3034w);*  %var(v=prevalence3034m);* %var(v=prevalence3539w); * %var(v=prevalence3539m);  	  
 * %var(v=prevalence4044w); *  %var(v=prevalence4044m); *  %var(v=prevalence4549w); *  %var(v=prevalence4549m);  
-%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);
+%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=n_infection);  %var(v=incidence_onprep);
 %var(v=prevalence1524w); *  %var(v=prevalence1524m); %var(v=prevalence_sw);
 * %var(v=prevalence5054w); * %var(v=prevalence5054m); * %var(v=prevalence5559w); * %var(v=prevalence5559m); * %var(v=prevalence6064w); * %var(v=prevalence6064m); 
 * %var(v=prevalence65plw); * %var(v=prevalence65plm); * %var(v=r_prev_sex_1549); * %var(v=prevalence_hiv_preg);
@@ -1380,7 +1381,7 @@ dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost       dtb_cost    n_hiv
 n_tested_m p_tested_past_year_1549m   p_tested_past_year_1549w  p_mcirc  prop_w_1549_sw prop_w_1564_sw prop_w_ever_sw prop_sw_hiv 
 prop_sw_program_visit prop_w_1524_onprep prop_1564_onprep prop_sw_onprep prevalence1549m prevalence1549w prevalence1549 
-prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw 
+prevalence_vg1000 incidence1549  incidence1564  prevalence1524w prevalence_sw incidence1549w  incidence1549m  incidence_sw incidence_onprep
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary mtct_prop p_diag p_diag_m p_diag_w p_diag_sw
 p_ai_no_arv_c_nnm p_ai_no_arv_c_pim p_ai_no_arv_c_rt184m p_ai_no_arv_c_rt65m p_ai_no_arv_c_rttams  p_k65m  p_m184m
 p_ai_no_arv_e_inm p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_efa p_taz
@@ -1507,16 +1508,15 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-
-
-
-
-* data  a.w_lapr45; 
-* merge a.wide_outputs    a.wide_par   ;
+  data  a.w_lapr45_nocabr; 
+  merge a.wide_outputs  a.wide_par   ;
 
   data w_lapr; 
-  set a.w_lapr44 a.w_lapr45;
+  set a.w_lapr45_nocabr;
 
+
+* data w_lapr; 
+* set a.w_lapr44 a.w_lapr45;
 
 
 * used in oral_prep work:
@@ -1525,7 +1525,7 @@ proc sort; by run;run;
 ;
 
 * if this line below stays in we need to also remove these runs from long file;
-* if incidence1549_22 > 0.10; 
+  if incidence1549_22 > 0.10; 
 
 * creating separate data sets by prep cost, for use below;
 
@@ -1592,6 +1592,7 @@ d_n_prep_all_20y_2 = n_prep_all_20y_2 - n_prep_all_20y_1 ;
 d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1;  
 d_n_death_hiv_20y_2 = n_death_hiv_20y_1 - n_death_hiv_20y_2 ;
 d_p_hiv1_prep_20y_2 =  p_hiv1_prep_20y_2 -  p_hiv1_prep_20y_1; 
+d_incidence_onprep_20y_2 = incidence_onprep_20y_2 - incidence_onprep_20y_1 ; 
 
 d_n_birth_with_inf_child_20y_2 = n_birth_with_inf_child_20y_1 - n_birth_with_inf_child_20y_2;
 
@@ -1698,6 +1699,7 @@ prop_1564_onprep_20y_1  prop_1564_onprep_20y_2 d_prop_1564_onprep_20y_2
 prop_prep_inj_20y_1  prop_prep_inj_20y_2 d_prop_prep_inj_20y_2 
 p_prep_all_ever_42_1  p_prep_all_ever_42_2 d_p_prep_all_ever_42_2 
 incidence1549_20y_1 incidence1549_20y_2 r_incidence1549_20y_2 
+incidence_onprep_20y_1 incidence_onprep_20y_2 d_incidence_onprep_20y_2 
 n_birth_with_inf_child_20y_1 n_birth_with_inf_child_20y_2 d_n_birth_with_inf_child_20y_2  
 prevalence1549_42_1 prevalence1549_42_2 r_prevalence1549_42_2
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2
