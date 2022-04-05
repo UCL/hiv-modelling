@@ -202,7 +202,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0.9 to 1 by 0.01) valueattrs=(size=10);
 
 label p50_p_onart_vl1000__0 = "no cab-la introduction (median) ";
 label p50_p_onart_vl1000__1 = "cab-la introduction (median) ";
