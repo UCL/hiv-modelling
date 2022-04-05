@@ -1,6 +1,52 @@
 
 
 
+*
+
+for paper:
+
+run with noe (no effect of cab)
+
+possibly need to define whether not_hard_reach_prep_oral_willing etc to show they would take prep if eligible 
+
+further thought on whether sufficient number of people starting cab-la despite having hiv, and whether their risk of resistance is sufficiently large
+
+think about why having rna testing also decreases proportion of people on oral prep with hiv a little
+
+think about testt1_prep_inj_eff_on_res_prim - this reduced resistance risk should correspond to immediate ART start (the mechanism by which
+resistance risk is reduced) 
+
+consider prep for next 20 years only but still go to 50 years when assessing intervention ?
+
+consider having a reduced chance of tranmission from a person in primary if they are on cab-la
+
+replicates for each option to reduce stochasticity (e.g. lower limit of relative incidence reduction = 0)
+
+are we too positive about number of active drugs and effectiveness of regimen including tld when insti resistance present ?
+
+effect on vl < 1000 at 12 months seems lower than might be expected (but not if dol_higher_potency = 1.5 rather than 2)
+
+get outputs to calculate median time to be switched from VL failure or from detection of VL failure 
+
+consider having oral prep adherence dependent on oral prep preference value
+
+The question of cost-effectiveness of using RNA testing compared with 3rd generation testing only (given cab-la is being used) will depend on how 
+great are the health benefits of RNA testing.  Certainly in our model we not surprisingly find benefits in terms of there being less INSTI resistance.  
+However, on average over our runs/ setting scenarios we don’t currently see substantial benefits in terms of numbers of AIDS deaths over the long term.  
+This needs more exploring, but it seems to be due to the fact that a person who acquires HIV on cab-la and does not develop INSTI drug resistance 
+would be predicted to have quite substantial viral suppression and some CD4 count recovery.  Even if INSTI resistance occurs, a person with high 
+cabotegravir levels is likely to experience less effective HIV replication than if they had no ARV drug present, due to reduced replicative capacity 
+of virus with INSTI resistance and some residual drug activity.  The other important fact here is how rapidly we can assume that a person who is 
+diagnosed with HIV while having high cab levels will be put on treatment, and what treatment they will be given. Currently we consider a range of 
+values for the rate with which ART is started after diagnosis, reflecting what seems to happen in practice.  If we were to assume that all people 
+who get HIV while having high cab levels initiate ART immediately at diagnosis, and that a boosted-PI is used in first line, then I think there 
+would be predicted to be appreciable health benefits of RNA testing vs 3rd generation antibody testing, in terms of AIDS deaths over the long term.  
+If that’s the case, then in that situation we can then assess whether the RNA testing is cost effective as well as being effective.          
+
+;
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
@@ -685,6 +731,21 @@ and prep_all_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+
+
+
+
+
+
+* prepeff0;
+prep_oral_efficacy = 0;
+prep_inj_efficacy = 0;
+prep_all_strategy=4;
+
+
+
+
+
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -8392,7 +8453,7 @@ newmut_tm1 = .;
 
 * changes *** ;
 cab_higher_potency = dol_higher_potency ;
-if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then do;
+if (registd ne 1 and (o_cab = 1 or o_cab_tm1 =1)) or currently_in_prep_inj_tail = 1 then do;
 	adh_dl = 1; adh_dl_tm1=1; 
 	if currently_in_prep_inj_tail = 1 then do;
 		tcur_tm1=0;
@@ -9605,42 +9666,42 @@ and starting another, non-x-resistant, regimen;
 	if caldate{t} > yrart > . then do;
 
 	* nucs;
-		a=rand('uniform');if c_rt184m=1 and (tss_3tc    ge 0.25 or p_3tc=0)
+		a=rand('uniform');if c_rt184m=1 and (tss_3tc    ge 1/12 or p_3tc=0)
 		and a < .8 then c_rt184m=0;
 
-		a=rand('uniform');if c_rt151m=1 and (tss_zdv    ge 0.25 or p_zdv=0) and (tss_3tc    ge 0.25 or p_3tc=0) 
+		a=rand('uniform');if c_rt151m=1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_3tc    ge 1/12 or p_3tc=0) 
 		and a < .6 then c_rt151m=c_rt151m_inf;
 	
-		a=rand('uniform');if c_rt65m=1 and (tss_ten    ge 0.25 or p_ten=0) and (tss_3tc    ge 0.25 or p_3tc=0)
+		a=rand('uniform');if c_rt65m=1 and (tss_ten    ge 1/12 or p_ten=0) and (tss_3tc    ge 1/12 or p_3tc=0)
 		and a < .6 then c_rt65m=c_rt65m_inf;
 
-		a=rand('uniform');if c_rttams ge 1 and (tss_zdv    ge 0.25 or p_zdv=0) and (tss_ten    ge 0.25 or p_ten=0)
+		a=rand('uniform');if c_rttams ge 1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_ten    ge 1/12 or p_ten=0)
 		and a < .4 then c_rttams=c_rttams_inf;
 
 	* nns; 
-		a=rand('uniform');if c_rt103m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
+		a=rand('uniform');if c_rt103m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt103m=c_rt103m_inf;
 
-		a=rand('uniform');if c_rt181m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
+		a=rand('uniform');if c_rt181m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt181m=c_rt181m_inf;
 
-		a=rand('uniform');if c_rt190m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
+		a=rand('uniform');if c_rt190m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt190m=c_rt190m_inf;
 
 	* pis;
 
-		a=rand('uniform');if c_pr32m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
-		a=rand('uniform');if c_pr33m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
-		a=rand('uniform');if c_pr46m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
-		a=rand('uniform');if c_pr47m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
-		a=rand('uniform');if c_pr50vm ge 1 and (tss_dar ge 0.25 or p_dar=0)  and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
-		a=rand('uniform');if c_pr54m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
-		a=rand('uniform');if c_pr76m ge 1 and (tss_dar ge 0.25 or p_dar=0) and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
-		a=rand('uniform');if c_pr82m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
-		a=rand('uniform');if c_pr84m ge 1 and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
-		a=rand('uniform');if c_pr50lm ge 1 and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
-		a=rand('uniform');if c_pr88m ge 1 and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
-		a=rand('uniform');if c_pr90m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
+		a=rand('uniform');if c_pr32m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
+		a=rand('uniform');if c_pr33m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
+		a=rand('uniform');if c_pr46m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
+		a=rand('uniform');if c_pr47m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
+		a=rand('uniform');if c_pr50vm ge 1 and (tss_dar ge 1/12 or p_dar=0)  and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
+		a=rand('uniform');if c_pr54m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
+		a=rand('uniform');if c_pr76m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
+		a=rand('uniform');if c_pr82m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
+		a=rand('uniform');if c_pr84m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
+		a=rand('uniform');if c_pr50lm ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
+		a=rand('uniform');if c_pr88m ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
+		a=rand('uniform');if c_pr90m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
 
 	* integrase inhibitor; 
 
@@ -9654,32 +9715,29 @@ end;
 
 * LOSS OF TRANSMITTED RESISTANCE MUTATIONS FROM MAJORITY VIRUS ("LOSS OF PERSISTENCE");
 
-x=rand('uniform'); if t ge 2 and c_rttams_inf ge 1 and (o_zdv ne 1 and o_ten ne 1) and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
-x=rand('uniform'); if c_rt184m_inf = 1 and (o_3tc ne 1) and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
-x=rand('uniform'); if c_rt65m_inf = 1 and (o_ten ne 1) and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
-x=rand('uniform'); if c_rt151m_inf = 1 and (o_zdv ne 1) and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
-
-x=rand('uniform'); if c_rt103m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
-x=rand('uniform'); if c_rt181m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
-x=rand('uniform'); if c_rt190m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
-
-x=rand('uniform'); if c_pr32m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
-x=rand('uniform'); if c_pr33m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
-x=rand('uniform'); if c_pr46m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
-x=rand('uniform'); if c_pr47m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
-x=rand('uniform'); if c_pr50lm_inf = 1 and (o_taz ne 1) and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
-x=rand('uniform'); if c_pr50vm_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
-x=rand('uniform'); if c_pr54m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
-x=rand('uniform'); if c_pr76m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
-x=rand('uniform'); if c_pr82m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
-x=rand('uniform'); if c_pr84m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
-x=rand('uniform'); if c_pr88m_inf = 1 and o_taz ne 1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
-x=rand('uniform'); if c_pr90m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
-
-x=rand('uniform'); if c_in118m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in118m=1 and x < rate_loss_persistence then c_in118m=0; 
-x=rand('uniform'); if c_in140m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in140m=1 and x < rate_loss_persistence then c_in140m=0; 
-x=rand('uniform'); if c_in148m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in148m=1 and x < rate_loss_persistence then c_in148m=0; 
-x=rand('uniform'); if c_in263m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in263m=1 and x < rate_loss_persistence then c_in263m=0; 
+x=rand('uniform'); if t ge 2 and c_rttams_inf ge 1 and naive=1 and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
+x=rand('uniform'); if c_rt184m_inf = 1 and naive=1 and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
+x=rand('uniform'); if c_rt65m_inf = 1 and naive=1 and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
+x=rand('uniform'); if c_rt151m_inf = 1 and naive=1 and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
+x=rand('uniform'); if c_rt103m_inf = 1 and naive=1 and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
+x=rand('uniform'); if c_rt181m_inf = 1 and naive=1 and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
+x=rand('uniform'); if c_rt190m_inf = 1 and naive=1 and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
+x=rand('uniform'); if c_pr32m_inf = 1 and naive=1 and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
+x=rand('uniform'); if c_pr33m_inf = 1 and naive=1 and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
+x=rand('uniform'); if c_pr46m_inf = 1 and naive=1 and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
+x=rand('uniform'); if c_pr47m_inf = 1 and naive=1 and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
+x=rand('uniform'); if c_pr50lm_inf = 1 and naive=1 and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
+x=rand('uniform'); if c_pr50vm_inf = 1 and naive=1 and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
+x=rand('uniform'); if c_pr54m_inf = 1 and naive=1 and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
+x=rand('uniform'); if c_pr76m_inf = 1 and naive=1 and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
+x=rand('uniform'); if c_pr82m_inf = 1 and naive=1 and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
+x=rand('uniform'); if c_pr84m_inf = 1 and naive=1 and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
+x=rand('uniform'); if c_pr88m_inf = 1 and naive=1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
+x=rand('uniform'); if c_pr90m_inf = 1 and naive=1 and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
+x=rand('uniform'); if c_in118m_inf = 1  and naive=1 and c_in118m=1 and x < rate_loss_persistence then c_in118m=0; 
+x=rand('uniform'); if c_in140m_inf = 1  and naive=1 and c_in140m=1 and x < rate_loss_persistence then c_in140m=0; 
+x=rand('uniform'); if c_in148m_inf = 1  and naive=1 and c_in148m=1 and x < rate_loss_persistence then c_in148m=0; 
+x=rand('uniform'); if c_in263m_inf = 1  and naive=1 and c_in263m=1 and x < rate_loss_persistence then c_in263m=0; 
 
 
 
@@ -9695,7 +9753,7 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 	if e_rt184m=1 and o_3tc=1 then c_rt184m=1;
 	if e_rt65m=1 and o_ten=1 then c_rt65m=1;
 	if e_rt151m=1 and o_zdv=1  then c_rt151m=1;
-	if e_rttams >= 1 and (o_zdv=1 or o_ten=1) then c_rttams=e_rttams;
+	if e_rttams >= 1 and o_zdv=1  then c_rttams=e_rttams;
 	if e_rt103m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt103m=1; end;
 	if e_rt181m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt181m=1; end;
 	if e_rt190m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt190m=1; end;

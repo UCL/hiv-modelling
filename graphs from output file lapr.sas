@@ -7,9 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_lapr44 a.l_lapr45 ;            
-
-
+set a.l_lapr46            ;            
 
 
 * re-add in g97 and h97 ;
