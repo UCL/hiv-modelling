@@ -6,23 +6,23 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr46_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\lapr46_prepeff0_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  lapr46  ;
+%let laprv =  lapr46_prepeff0  ;
 
 
-data a.k_lapr46;  
+data a.k_lapr46_prepeff0;  
 set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 * lapr44 only correct for reg_option_107_after_cab = 0 ;
 * if reg_option_107_after_cab = 0;
 
-data k_lapr46; set a.k_lapr46;
+data k_lapr46_prepeff0; set a.k_lapr46_prepeff0;
 
-proc sort data=k_lapr46; 
+proc sort data=k_lapr46_prepeff0; 
 by run cald option;
 run;
 
@@ -30,7 +30,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_lapr46 ;
+set k_lapr46_prepeff0 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -45,7 +45,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge k_lapr46 sf;
+merge k_lapr46_prepeff0 sf;
 by run ;
 
 
@@ -1083,7 +1083,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_lapr46; set y;  
+data    a.l_lapr46_prepeff0; set y;  
 
 
 proc freq; tables run; where cald = 2020;
@@ -1431,26 +1431,21 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_lapr46; 
-  merge a.wide_outputs         a.wide_par          ;
-  by run;
+* data  a.w_lapr46         ; 
+* merge a.wide_outputs         a.wide_par          ;
+* by run;
 
 
   data w_lapr; 
   set a.w_lapr46         ;
 
-
 * data w_lapr; 
 * set a.w_lapr44 a.w_lapr45;
 
-
-* used in oral_prep work:
-  if incidence1549m_17 < 1.75 and incidence1549w_17 < 2.25 
-  if incidence1549m_17 > 0.10  and incidence1549w_17 > 0.10  
-;
-
 * if this line below stays in we need to also remove these runs from long file;
-  if incidence1549_22 > 0.10; 
+  if 0.10 <  incidence1549_22 and prevalence1549_22 < 0.30 ;
+
+  if run le 997818251; * to give 2000 - will remove this for lapr47 and beyond;
 
 * creating separate data sets by prep cost, for use below;
 
@@ -1467,7 +1462,6 @@ proc sort; by run;run;
 * set w_lapr45;
 
   if prep_all_strategy=4;
-
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   
@@ -1640,7 +1634,7 @@ d_p_hiv1_prep_50y_2 = p_hiv1_prep_50y_1 - p_hiv1_prep_50y_2;
 
 * table 1;
 
-proc means data=   w_lapr n p50 p5 p95;  *  w_lapr ;
+proc means data=   w_lapr n p50 p5 p95 min max;  *  w_lapr ;
 var prevalence1549m_22 prevalence1549w_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
 run;
 
@@ -1665,8 +1659,8 @@ run;
 proc means data=  w_lapr n mean p5 p95;
 var 
 p_hiv1_prep_20y_1 p_hiv1_prep_20y_2  d_p_hiv1_prep_20y_2 
-p_iime_42_1 p_iime_42_2 d_p_iime_42_2
 p_ai_no_arv_e_inm_42_1 p_ai_no_arv_e_inm_42_2 d_p_ai_no_arv_e_inm_42_2
+p_iime_42_1 p_iime_42_2 d_p_iime_42_2
 n_infected_inm_42_1  n_infected_inm_42_2  d_n_infected_inm_42_2  
 n_cur_res_cab_42_1 n_cur_res_cab_42_2 d_n_cur_res_cab_42_2 
 p_vl1000_art_12m_42_1 p_vl1000_art_12m_42_2 d_p_vl1000_art_12m_42_2 
