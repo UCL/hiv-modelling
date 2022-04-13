@@ -2388,7 +2388,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
-	date_prep_inj_intro= 2022.75;
+	if hard_reach=1 then hard_reach=0;
 
 	end;
 
