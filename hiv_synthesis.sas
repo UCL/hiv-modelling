@@ -1,6 +1,5 @@
 
 
-
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
@@ -21169,6 +21168,54 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 run;
 
 
+
+*
+
+s_ variables relating to cab-la and insti resistance 
+
+
+HIV already present at first cab-la initiation
+
+prep_inj_init_prim				Initiated cab-la for the first time when already in primary infection
+prep_inj_init_prim_res			Initiated cab-la for the first time when already in primary infection and insti resistance emerged in this period
+
+HIV at time of reinitiation or initiation of cab-la (remember reinitiation means previously stopped risk informed prep)
+
+prep_inj_reinit_prim			Cab-la was initiated or reinitiated in this period when already in primary infection
+prep_inj_reinit_prim_res		Cab-la was initiated or reinitiated in this period when already in primary infection and insti resistance emerged in this period
+start_restart_prep_inj_hiv		Cab-la was initiated or reinitiated in this period when already hiv infected 
+start_rest_prep_inj_hiv_cabr	Cab-la was initiated or reinitiated in this period when already hiv infected and insti resistance emerged in this period
+start_restart_prep_inj_prim		Cab-la was initiated or reinitiated in this period when already in primary infection
+(same as prep_inj_reinit_prim ?)
+start_rest_prep_inj_prim_cabr	Cab-la was initiated or reinitiated in this period when already in primary infection and insti resistance emerged in this period
+(prep_inj_reinit_prim_res ?)
+
+HIV infection while on cab-la (or past 3 months)
+
+o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+infected_on_prep_inj 			Has hiv and is on cab-la or was on cab-la in last period
+prep_o_cab_off_3m_prim  		Is in primary infection - is on cab-la or stopped this period
+
+HIV infection during cab-la tail
+
+emerge_inm_res_cab_tail			Has hiv and is currently in cab-la tail and insti resistance emerged in this period
+emerge_inm_res_cab_tail_pr		In primary infection and currently in cab-la tail and insti resistance emerged in this period
+cur_in_prep_inj_tail_hiv		Has hiv and is currently in cab-la tail
+cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail – did not have insti resistance as of the last period
+cur_in_prep_inj_tail_prim 		In primary infection and is currently in cab-la tail
+
+Non-specific 
+
+em_inm_res_o_cab_off_3m			Has hiv and is on cab-la was on cab-la last period and insti resistance emerged in this period due to cab-la 
+em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
+cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
+cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus)
+
+
+;
 
 
 
