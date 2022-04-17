@@ -2,14 +2,14 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\decr_hr\";
 
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 ods html close;
 
 data b;
-set a.l_lapr46            ;        ;  
+set a.l_decr_hr           ;        ;  
 
 
 * if hivtest_type_1_init_prep_inj =  1  and hivtest_type_1_prep_inj =  1 ;
@@ -20,12 +20,13 @@ p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
+prevalence_vg1000_=prevalence_vg1000;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 3510  ;
+%let nfit = 2982  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -35,7 +36,7 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var =  p_onart_vl1000_ ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var =  incidence1549_ ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -79,7 +80,7 @@ data option_1;
 set b;
 if option =0 then delete;
 
-%let var =  p_onart_vl1000_ ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var =  incidence1549_ ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -145,9 +146,29 @@ band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transpar
 series  x=cald y=p50_incidence1549__1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
-
 run;
 quit;
+
+
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of all adults with HIV viral load > 1000 copies/ml";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.01) valueattrs=(size=10);
+
+label p50_prevalence_vg1000__0 = "no cab-la introduction (median) ";
+label p50_prevalence_vg1000__1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
@@ -214,3 +235,4 @@ band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transp
 
 run;quit;
 
+*/
