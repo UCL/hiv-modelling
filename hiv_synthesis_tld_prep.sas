@@ -6,11 +6,15 @@
 
 
 
-* 4 options: no prep, oral prep, inj or oral prep, inj or oral prep + tld_prep;
+* 4 options: no prep, oral prep, inj (vary the willingness parameter) or oral prep, inj or oral prep + tld_prep;
 
-* for tld_prep: increase prep_oral_willing, increase prep_oral_willing by extra amount if hiv+ and not diagnosed, increase onart also in people who
-are diagnosed (may take tld even with visit ne 1)
-
+* for tld_prep: (i) 	increase prep_oral_willing 
+				(ii) 	additional chance of starting tld_prep if not tested but newp_ever >= 1
+				(iii)	increase onart also in people who are diagnosed - decrease loss and increase return - 
+						suggest that with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
+						who is not under care and hence wont have vl tests or possibility of pr_switch_line (I think safer to do this than try to 
+						change the visit variable)
+ 
 * use of tld_prep in people with hiv undiagnosed still seems to depend on prep_oral_willing - feels like a person who thinks they may have hiv but
 doesnt want to test they may be more likely to be willing to take tld;
 
@@ -721,6 +725,20 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * rel_pr_inm_inj_prep_tail_primary; %sample_uniform(rel_pr_inm_inj_prep_tail_primary, 0.5 1 2); 
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
+
+
+
+
+
+* here here
+
+consider sampling this below when running tld_prep	
+
+;
+
+
+
+
 
 * pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;
 
@@ -2049,6 +2067,23 @@ else 	prob_prep_vr_b = pr_prep_vr_b;
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
+
+
+
+
+
+* here here;
+
+* consider adding code :
+
+if pop_wide_tld_prep=1 then pref_prep_oral_beta_s1 = uniform 2 5
+
+;
+
+
+
+
+
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 * pref_prep_inj;				pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;
@@ -4754,6 +4789,76 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	end;
 end;
 
+
+
+if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
+
+* tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
+* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
+if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
+
+	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
+			r=rand('uniform'); if prep_oral_willing=1 and r < prob_prep_pop_wide_tld then do ;		* lapr JAS Oct2021 - I have made this dependent on prep_oral_willing=1 (rather than prep_any_willing=1) ;
+
+
+
+
+
+
+* here here;
+
+* consider making people starting prep in people with ever_newp = 1 and ever_tested ne 1 not dependent on prep_oral_willing;
+
+
+
+
+
+
+
+* ts1m ; * replace line above with this:
+*			r=rand('uniform'); * if prep_oral_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
+
+			pop_wide_tld_prep=1;  			
+			prep_any=1;		prep_oral_start_date=caldate{t};	
+			prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
+			end;
+	end;
+
+	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
+			r=rand('uniform');	
+			if r < (1-eff_rate_choose_stop_prep_oral) then do; 
+				pop_wide_tld_prep=1; 				
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
+				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+			end;
+			if r >= (1-eff_rate_choose_stop_prep_oral) then do; 
+				pop_wide_tld_prep=0;	
+				stop_prep_any_choice=1;  
+				stop_prep_oral_choice=1; 
+			end; 
+
+			if stop_prep_oral_choice=1 then do;
+				r=rand('uniform'); 
+				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0;  continuous_prep_any_use=0.25;
+					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; continuous_prep_oral_use=0.25; 
+				end;
+			end; 
+			else if stop_prep_oral_choice ne 1 then do;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_c=caldate{t};  continuous_prep_any_use = continuous_prep_any_use + 0.25;
+					prep_oral=1; 	 	dt_prep_oral_c=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
+			end;
+	end;
+end;
+
+if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
+
+
+
+
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
 then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 
@@ -4779,57 +4884,6 @@ then start_restart_prep_inj = 1;
 
 
 on_risk_informed_prep_any = 0; if prep_any_elig = 1 and prep_any_willing=1 and hard_reach ne 1 and registd ne 1 then on_risk_informed_prep_any = 1;
-
-if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
-
-
-* tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
-* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
-if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
-
-	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
-			r=rand('uniform'); if prep_oral_willing=1 and r < prob_prep_pop_wide_tld then do ;		* lapr JAS Oct2021 - I have made this dependent on prep_oral_willing=1 (rather than prep_any_willing=1) ;
-
-* ts1m ; * replace line above with this:
-*			r=rand('uniform'); * if prep_oral_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
-
-			pop_wide_tld_prep=1;  			
-			prep_any=1;			
-			prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	
-			end;
-	end;
-
-	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
-			r=rand('uniform');	
-			if r < (1-eff_rate_choose_stop_prep_oral) then do; 
-				pop_wide_tld_prep=1; 				
-				prep_any=1;		
-				prep_oral=1; 	
-			end;
-			if r >= (1-eff_rate_choose_stop_prep_oral) then do; 
-				pop_wide_tld_prep=0;	
-				stop_prep_any_choice=1;  
-				stop_prep_oral_choice=1; 
-			end; 
-
-			if stop_prep_oral_choice=1 then do;
-				r=rand('uniform'); 
-				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
-					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0; 
-					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; 
-				end;
-			end; 
-			else if stop_prep_oral_choice ne 1 then do;
-					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_c=caldate{t};
-					prep_oral=1; 	 	dt_prep_oral_c=caldate{t};
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
-			end;
-	end;
-end;
-
-if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
 
 
@@ -7039,7 +7093,7 @@ visit_tm1=visit;
 	if prep_oral = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
 	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;art_initiation=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
-	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
+	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_cab=0; 
 	end;
 
 
@@ -7334,6 +7388,17 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
 
+
+* here here 
+
+increase rate of return if pop_wide_tld_prep = 1 
+
+create a variable onartvisit0 which is 1 for people who are onart with visit=1 but to indicate not under care for monitoring
+
+;
+
+
+
 	s=rand('uniform');
 	if adhav >= 0.8 then do;  
 		if t ge 2 and lost_tm1 =1 and registd_tm1=1 and
@@ -7625,11 +7690,26 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-
-	   if pregnant=1 then prointer = prointer/100; * jul18;
+		if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
+
+
+
+
+
+
+	* here here;
+
+	* consider a line:
+		if pop_wide_tld_prep = 1 then prointer = prointer * pop_wide_tld_effect_art_int;
+
+
+
+
+
+
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -7724,6 +7804,7 @@ end;
 	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
 	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
+
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
 
 		if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .    and date_v_alert > date_last_interrupt > .  then e_rate_restart=e_rate_restart*10;
@@ -7793,6 +7874,36 @@ end;
 		if line2=1 then artline=2;
 		if line3=1 then artline=3;
 	end;
+
+
+
+
+
+
+
+
+* here here ;
+
+* for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
+
+*  prob_onartvis_0_to_1 prob_onartvis_1_to_0 ;
+
+/*
+a = rand('uniform'); 
+if pop_wide_tld_prep=1 and onart=1 and a < prob_onartvis_0_to_1 then onartvisit0=1;
+if pop_wide_tld_prep=1 and onart=1 and onartvisit0=1 and b < prob_onartvis_1_to_0 then onartvisit0=0;
+if onart ne 1 then onartvisit0=0;
+*/
+
+
+
+
+
+
+
+
+
+
 
 
 * INITIATION OF FIRST LINE THERAPY ;
@@ -7994,10 +8105,6 @@ end;
 * monitoring strategy 1500 is only for people on dol who have not failed previously;
 
 if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
-
-
-
-
 
 
 
@@ -8261,6 +8368,22 @@ end;
 
 if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that do not do the extra confirmatory vls, which is not needed since
 wont switch anyway;
+
+
+
+
+
+
+
+* here here;
+
+* if onart ne 1 then onartvisit0=0;
+
+
+
+
+
+
 
 
 * current number of drugs on;
@@ -9834,6 +9957,19 @@ end;
 * art_monitoring_strategy = 8. CD4 monitoring (6 mthly) alone;
 
 
+
+
+
+
+* here here;
+
+* add condition below : onartvisit0 ne 1;
+
+
+
+
+
+
 if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 
 		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=rand('uniform');  * jan15;
@@ -10021,6 +10157,17 @@ end;
 
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
+
+
+
+
+
+* here here;
+
+* add condition below : onartvisit0 ne 1;
+
+
+
 
 
 if art_monitoring_strategy=150  and visit=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
