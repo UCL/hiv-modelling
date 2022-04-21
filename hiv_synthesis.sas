@@ -1,5 +1,16 @@
 
 
+* 4 options: no prep, oral prep, inj (vary the willingness parameter) or oral prep, inj or oral prep + tld_prep;
+
+* for tld_prep: (i) 	increase prep_oral_willing 
+				(ii) 	additional chance of starting tld_prep if not tested but newp_ever >= 1
+				(iii)	increase onart also in people who are diagnosed - decrease loss and increase return - 
+						with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
+						who is not under care and hence wont have vl tests or possibility of pr_switch_line (safer to do this than try to 
+						change the visit variable)
+ 
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
 %let outputdir = %scan(&sysparm,1," ");
@@ -361,7 +372,7 @@ newp_seed = 7;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
-
+* rr_testing_female;		rr_testing_female=1.5;
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -697,7 +708,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 
-* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = 5 ;
+* new for tld prep ;
+
+* pref_prep_inj_beta_s1;		%sample_uniform(pref_prep_inj_beta_s1, 3 4 5) ;
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
@@ -740,6 +753,20 @@ end;
 								* dependent_on_time_step_length ;
 								* lapr and dpv-vr - does this need to be relative to oral or inj prep?;
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ;
+
+
+* new for tld prep;
+
+* TLD PREP;
+
+* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1 1.25 1.5 2 5);
+
+* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_return_pop_wide_tld, 1 1/1.25 1/1.5 1/2 1/5);
+
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.1 0.2 0.3 0.5);
+
+* prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
+* prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
 
 
 * COVID-19 ;
@@ -2025,6 +2052,7 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
 
+
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 * pref_prep_inj;				pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;
 end;
@@ -2375,71 +2403,36 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-* can add in potential changes in policy after year_interv here -  set specific 'year_i' variables to '1' and specify proportion of
-  runs for which the option should take place;
-
-
-* for cab-la resistance project ;
-
-	if option = 0 then do;  
-
-	end; 
-
-	if option = 1 then do;
-
-	date_prep_inj_intro= 2022.75;
-
+	if option = 0 then do;  * stop prep availability;
+		prep_oral_willing=0;
+		prep_any_strategy = 0;
+		eff_rate_test_startprep = 0 ;
+		eff_rate_test_restartprep = 0 ;
+		eff_rate_choose_stop_prep = 1 ;
+		eff_prob_prep_restart_choice = 0 ;	
+	end;
+ 
+	if option = 1 then do; * continue oral prep;
 	end;
 
-
-end;
-
-
-* ==========================================================================================================================================;
-
-
-
-*  ========================================================================================================================================= ;
-
-/*
-
-* for hptn - replace whole of this options section with this ;
-
-option = &s;
-
-if caldate_never_dot = 2015 then prep_any_strategy = 7; * so prep for women only until cab-la;
-
-if caldate_never_dot = &year_interv then do;
-
-* note values of prep_any_strategy_p2022 and pref_prep_inj_beta_s1_p2022 are set at outset - search * hptn;
-prep_any_strategy = prep_any_strategy_p2022; 
-
-	if option = 0 then do;  
-
-	end; 
-
-	if option = 1 then do;
-
+	if option = 2  then do; * continue oral prep and add inj prep;
 		date_prep_inj_intro= 2022.75;
-
-		pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1_p2022;
-
 	end;
 
+	if option = 3 then do; * tld_prep and add inj prep;
+		date_prep_inj_intro= 2022.75;
+		if _u23 < 0.25 then x = 2; 
+		if 0.25 <= _u23 < 0.50 then x = 3;  
+		if 0.50 <= _u23 < 0.75 then x = 4;  
+		if 0.75 <= _u23        then x = 5;  
+		pref_prep_oral=rand('beta',x,5);
+		pop_wide_tld = 1; 
+		prob_prep_pop_wide_tld = 0.50; 
+	end;
+
+
 end;
 
-if option = 1 and 0 <= caldate{t}-&year_interv < 5 and prep_inj_ever ne 1 and prep_inj_willing = 1 then do;
-
-	e = rand('uniform'); 
-	if 0 <= caldate{t}-&year_interv < 1 and e < 0.95 then prep_inj_willing = 0 ;
-	if 1 <= caldate{t}-&year_interv < 2 and e < 0.9 then prep_inj_willing = 0 ;
-	if 2 <= caldate{t}-&year_interv < 3 and e < 0.85 then prep_inj_willing = 0 ;
-	if 3 <= caldate{t}-&year_interv < 4 and e < 0.6 then prep_inj_willing = 0 ;
-	if 4 <= caldate{t}-&year_interv < 5 and e < 0.3 then prep_inj_willing = 0 ;
-
-end;
-
-*/
 
 *  ======================================================================================================================================== ;
 
@@ -2686,7 +2679,7 @@ if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_i
 
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
-		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
+		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 end;
 
 
@@ -4712,6 +4705,63 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	end;
 end;
 
+
+
+if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
+
+* tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
+* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
+if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
+
+	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
+
+			* new for tld prep;
+			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
+			r=rand('uniform'); a = rand('uniform');
+			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
+			then do ;		
+* ts1m ; 
+				pop_wide_tld_prep=1;  			
+				prep_any=1;		prep_oral_start_date=caldate{t};	
+				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
+			end;
+	end;
+
+	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
+			r=rand('uniform');	
+			if r < (1-eff_rate_choose_stop_prep_oral) then do; 
+				pop_wide_tld_prep=1; 				
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
+				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+			end;
+			if r >= (1-eff_rate_choose_stop_prep_oral) then do; 
+				pop_wide_tld_prep=0;	
+				stop_prep_any_choice=1;  
+				stop_prep_oral_choice=1; 
+			end; 
+
+			if stop_prep_oral_choice=1 then do;
+				r=rand('uniform'); 
+				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0;  continuous_prep_any_use=0.25;
+					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; continuous_prep_oral_use=0.25; 
+				end;
+			end; 
+			else if stop_prep_oral_choice ne 1 then do;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_c=caldate{t};  continuous_prep_any_use = continuous_prep_any_use + 0.25;
+					prep_oral=1; 	 	dt_prep_oral_c=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
+			end;
+	end;
+end;
+
+if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
+
+
+
+
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
 then do; cost_test = cost_test_g; cost_test_type1=cost_test_g; end;
 
@@ -4730,64 +4780,12 @@ if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
 if prep_vr = 1 then prep_vr_ever=1;
 
-start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  or caldate{t} = dt_prep_oral_c
-then start_restart_prep_oral = 1;
-start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c 
-then start_restart_prep_inj = 1;
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral = 1;
+start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj = 1;
 
 
 on_risk_informed_prep_any = 0; if prep_any_elig = 1 and prep_any_willing=1 and hard_reach ne 1 and registd ne 1 then on_risk_informed_prep_any = 1;
-
-if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
-
-
-* tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
-* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
-if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
-
-	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
-			r=rand('uniform'); if prep_oral_willing=1 and r < prob_prep_pop_wide_tld then do ;		* lapr JAS Oct2021 - I have made this dependent on prep_oral_willing=1 (rather than prep_any_willing=1) ;
-
-* ts1m ; * replace line above with this:
-*			r=rand('uniform'); * if prep_oral_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
-
-			pop_wide_tld_prep=1;  			
-			prep_any=1;			
-			prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	
-			end;
-	end;
-
-	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
-			r=rand('uniform');	
-			if r < (1-eff_rate_choose_stop_prep_oral) then do; 
-				pop_wide_tld_prep=1; 				
-				prep_any=1;		
-				prep_oral=1; 	
-			end;
-			if r >= (1-eff_rate_choose_stop_prep_oral) then do; 
-				pop_wide_tld_prep=0;	
-				stop_prep_any_choice=1;  
-				stop_prep_oral_choice=1; 
-			end; 
-
-			if stop_prep_oral_choice=1 then do;
-				r=rand('uniform'); 
-				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
-					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0; 
-					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; 
-				end;
-			end; 
-			else if stop_prep_oral_choice ne 1 then do;
-					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_c=caldate{t};
-					prep_oral=1; 	 	dt_prep_oral_c=caldate{t};
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
-			end;
-	end;
-end;
-
-if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
 
 
@@ -6214,7 +6212,7 @@ if caldate{t}=infection > . then do;
 * who3_ - pre-who4 symptoms;
 * who4_ -  ever diagnosed with who4_ y/n;
 * c_tox - current toxicity;
-* newmut - risk of resistance arising (and dominating);
+* newmut_tm1 - risk of resistance arising (and dominating) (only defined as tm1);
 * x4v - X4 virus present or not;
 * lost - patient visited clinic / under follow-up;
 * tss_ = time since last stopping specific drugs;
@@ -6777,7 +6775,7 @@ if t ge 2 then do;
 		end;
 	end;
 	if hivtest_type=1 
-	or (prep_inj=1 and (dt_prep_oral_rs = caldate{t} or dt_prep_oral_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
+	or (prep_inj=1 and (dt_prep_inj_rs = caldate{t} or dt_prep_inj_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
 	or (prep_inj=1 and hivtest_type_1_prep_inj=1) then do;
 		u=rand('uniform');
 		sens_primary=0.86;
@@ -6880,12 +6878,10 @@ if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t};
 
 if prep_inj_tm1=1 and prep_inj=1 then infected_on_prep_inj=1;
 
-start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  or caldate{t} = dt_prep_oral_c
-then start_restart_prep_oral_hiv = 1;
-start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c 
-then start_restart_prep_inj_hiv = 1;
-start_restart_prep_inj_prim = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c 
-then start_restart_prep_inj_prim = 1;
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral_hiv = 1;
+start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_hiv = 1;
+start_restart_prep_inj_prim = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_prim = 1;
 
 start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_hiv_cabr = 1;
 start_rest_prep_inj_prim_cabr = 0; if start_restart_prep_inj_prim = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_prim_cabr = 1;
@@ -6905,7 +6901,7 @@ end;
 if prep_oral=1 and pop_wide_tld_prep=1 then do; 
 	onart=1; time0=caldate{t}; yrart=time0;  started_art_as_tld_prep=1;
 	linefail=0; artline=1; tcur=0; cd4_tcur0=cd4; line1=1; vfail1=0; naive=0; 
-	o_3tc=1; o_ten=1; o_dol=1;  art_initiation=1;  
+	o_3tc=1; o_ten=1; o_dol=1;  art_initiation=1; 
 	o_zdv=0; o_nev=0; o_lpr=0; o_taz=0; o_efa=0; 
 end;
 
@@ -6997,7 +6993,7 @@ visit_tm1=visit;
 	if prep_oral = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
 	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;art_initiation=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
-	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
+	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_cab=0; 
 	end;
 
 
@@ -7024,10 +7020,9 @@ visit_tm1=visit;
 	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
 	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
 
-	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c 
-	then start_restart_prep_oral_hiv = 1;
-	start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs  or caldate{t} = dt_prep_inj_c 
-	then start_restart_prep_inj_hiv = 1;
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs then start_restart_prep_oral_hiv = 1;
+	start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs  then start_restart_prep_inj_hiv = 1;
 
 
 * dependent_on_time_step_length ;
@@ -7291,6 +7286,9 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 	e_rate_return = eff_rate_return; 
 	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
+
+* new for tld prep ;
+	if pop_wide_tld_prep = 1 then e_rate_return = eff_rate_return * rr_return_pop_wide_tld;
 
 	s=rand('uniform');
 	if adhav >= 0.8 then do;  
@@ -7583,11 +7581,12 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-
-	   if pregnant=1 then prointer = prointer/100; * jul18;
+		if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
+	* new for tld prep;
+		if pop_wide_tld_prep = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -7682,6 +7681,7 @@ end;
 	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
 	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
+
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
 
 		if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .    and date_v_alert > date_last_interrupt > .  then e_rate_restart=e_rate_restart*10;
@@ -7751,6 +7751,20 @@ end;
 		if line2=1 then artline=2;
 		if line3=1 then artline=3;
 	end;
+
+
+
+* new for tld prep ;
+
+* IF TLD_PREP, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
+* for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
+
+a = rand('uniform'); b = rand('uniform'); 
+if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and onartvisit0 ne 1 and a < prob_onartvis_0_to_1 then onartvisit0=1;
+if pop_wide_tld=1 and onart=1 and onartvisit0=1 and b < prob_onartvis_1_to_0 then onartvisit0=0;
+if onart ne 1 then onartvisit0=0;
+
+
 
 
 * INITIATION OF FIRST LINE THERAPY ;
@@ -7952,10 +7966,6 @@ end;
 * monitoring strategy 1500 is only for people on dol who have not failed previously;
 
 if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 or linefail ge 1) then art_monitoring_strategy=150; 
-
-
-
-
 
 
 
@@ -8221,6 +8231,10 @@ if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that
 wont switch anyway;
 
 
+* new for tld prep;
+if onart ne 1 then onartvisit0=0;
+
+
 * current number of drugs on;
 	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol+o_cab; 
 
@@ -8267,7 +8281,8 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	
 * adherence between t-1 and t  (adh); 
 
-	if t ge 2 and onart_tm1=1 and prep_any ne 1 and adh = . then do; 
+	if t ge 2 and onart_tm1=1 and prep_any ne 1 and adh = . then do; * note: adh is set to . at start of each period - this line is only for people
+	onart becuase adh already defined for those on prep;
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
@@ -8386,10 +8401,8 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 adh_dl=adh;
 
-* changes *** ;
-newmut_tm1 = .;
+newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
-* changes *** ;
 cab_higher_potency = dol_higher_potency ;
 if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then do;
 	adh_dl = 1; adh_dl_tm1=1; 
@@ -9792,7 +9805,11 @@ end;
 * art_monitoring_strategy = 8. CD4 monitoring (6 mthly) alone;
 
 
-if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
+
+* new for tld prep;
+* added condition below : onartvisit0 ne 1;
+
+if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 
 		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=rand('uniform');  * jan15;
 		cd4_cost_inc = 1; if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;  end;
@@ -9980,8 +9997,11 @@ end;
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
+* new for tld prep;
 
-if art_monitoring_strategy=150  and visit=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+* added condition below : onartvisit0 ne 1;
+
+if art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
@@ -15809,7 +15829,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_em_inm_res_o_cab_off_3m + em_inm_res_o_cab_off_3m; s_emerge_inm_res_cab_tail + emerge_inm_res_cab_tail ;  
 	s_em_inm_res_o_cab_off_3m_npr + em_inm_res_o_cab_off_3m_npr; 	s_em_inm_res_cab_tail_npr + em_inm_res_cab_tail_npr; 
 	s_em_inm_res_o_cab_off_3m_pr + em_inm_res_o_cab_off_3m_pr;  s_emerge_inm_res_cab_tail_pr + emerge_inm_res_cab_tail_pr;
-	s_em_inm_res_o_cab + em_inm_res_o_cab;
+	s_em_inm_res_o_cab + em_inm_res_o_cab; 
 
 		/*prep*/
 
@@ -16064,6 +16084,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ; 
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
+
+	s_onartvisit0 + onartvisit0;
 
 	/* blood pressure */
 
@@ -16528,6 +16550,23 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
+
+/*
+
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; var 
+caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
+registd tested onart visit onartvisit0 naive prep_inj prob_onartvis_0_to_1 prob_onartvis_1_to_0
+;
+where caldate&j > 2022 and infection > 2022.5 and death = .; 
+run;
+
+proc freq; tables onartvisit0; where onart=1 and death=.; run;
+
+*/
+
 
 /*
 
@@ -17528,6 +17567,7 @@ s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_on
 s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
 s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab
 
+
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
@@ -17715,6 +17755,8 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m
 s_infected_inm  s_infected_inm_this_per
+
+s_onartvisit0
 
 /* note s_ variables below are for up to age 80 */
 
@@ -17961,13 +18003,14 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_willingness_threshold 
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
-rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -18623,6 +18666,8 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
+s_onartvisit0
+
 /* note s_ variables below are for up to age 80 */
 
 s_diag80  s_diagnosed_dead 
@@ -19119,7 +19164,1708 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-data a       ; set r1;
+data a ;  set r1 ;
+
+
+data r1 ; set a ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+
+
+
+
+data r1; set a     ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+/*
+
+data r1; set a       ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+
+
+
+
+data r1; set a     ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
 
 
 data r1; set a       ;
@@ -19549,853 +21295,428 @@ data r1; set a      ;
 
 data r1; set a     ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
-
-
-data r1; set a      ;
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
-
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
-
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
-
-
-
-
-data r1; set a     ;
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
-
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
-
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
-
-%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
 
 
 data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
-%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
 
-
+*/
 
 
 * ts1m:  need more update statements ;
@@ -20800,6 +22121,8 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
+s_onartvisit0
+
 /* note s_ variables below are for up to age 80 */
 
 s_diag80  s_diagnosed_dead 
@@ -21043,13 +22366,14 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_willingness_threshold 
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
-rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -21212,8 +22536,7 @@ em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and
 em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
 cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
-cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus)
-
+cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus) (could be the same as em_inm_res_o_cab_off_3m_pr)
 
 ;
 
