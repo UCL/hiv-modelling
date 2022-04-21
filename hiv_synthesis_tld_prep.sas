@@ -6212,7 +6212,7 @@ if caldate{t}=infection > . then do;
 * who3_ - pre-who4 symptoms;
 * who4_ -  ever diagnosed with who4_ y/n;
 * c_tox - current toxicity;
-* newmut - risk of resistance arising (and dominating);
+* newmut_tm1 - risk of resistance arising (and dominating) (only defined as tm1);
 * x4v - X4 virus present or not;
 * lost - patient visited clinic / under follow-up;
 * tss_ = time since last stopping specific drugs;
@@ -6775,7 +6775,7 @@ if t ge 2 then do;
 		end;
 	end;
 	if hivtest_type=1 
-	or (prep_inj=1 and (dt_prep_oral_rs = caldate{t} or dt_prep_oral_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
+	or (prep_inj=1 and (dt_prep_inj_rs = caldate{t} or dt_prep_inj_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
 	or (prep_inj=1 and hivtest_type_1_prep_inj=1) then do;
 		u=rand('uniform');
 		sens_primary=0.86;
@@ -8281,7 +8281,8 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	
 * adherence between t-1 and t  (adh); 
 
-	if t ge 2 and onart_tm1=1 and prep_any ne 1 and adh = . then do; 
+	if t ge 2 and onart_tm1=1 and prep_any ne 1 and adh = . then do; * note: adh is set to . at start of each period - this line is only for people
+	onart becuase adh already defined for those on prep;
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
@@ -8400,10 +8401,8 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 adh_dl=adh;
 
-* changes *** ;
-newmut_tm1 = .;
+newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
 
-* changes *** ;
 cab_higher_potency = dol_higher_potency ;
 if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then do;
 	adh_dl = 1; adh_dl_tm1=1; 
@@ -22537,8 +22536,7 @@ em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and
 em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
 cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
-cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus)
-
+cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus) (could be the same as em_inm_res_o_cab_off_3m_pr)
 
 ;
 
