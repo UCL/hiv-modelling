@@ -4,7 +4,18 @@ libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv syn
 
 libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_7__out\";
 
-data g;    set b.out: ;
+data g1;    set b.out1: ;run;
+data g2;    set b.out2: ;run;
+data g3;    set b.out3: ;run;
+data g4;    set b.out4: ;run;
+data g5;    set b.out5: ;run;
+data g6;    set b.out6: ;run;
+data g7;    set b.out7: ;run;
+data g8;    set b.out8: ;run;
+data g9;    set b.out9: ;run;
+
+data g;set g1 g2 g3 g4 g5 g6 g7 g8 g9;run;
+
 proc contents;run;
 
 proc sort data=g; 
@@ -1052,7 +1063,7 @@ proc freq data=y;table rate_dead_allage_m rate_dead_allage_w rate_dead_allage n_
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_zim; set y; 
+data a.l_base_zim; set y; run;
 /*proc contents data=a.l_base_zim;run;*/
 *
 
@@ -1061,10 +1072,6 @@ data a.l_base_zim; set y;
 
 ;
 
-
-*arrivata qua: re-run from here and check that it is ok;
-
-data y; set a.l_base_zim; 
 
 /*
 if cald = 2017;
@@ -1666,6 +1673,7 @@ keep run run_keep;
 
 run;
 *n=33 out of 500;
+*n=153 out of 1996;
 
 
 

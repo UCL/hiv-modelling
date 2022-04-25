@@ -141,7 +141,8 @@ ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  33   ;
+*08032022: arrivata qua;
+%let nfit =  153   ;
 *%let year_end = 2022.00 ;
 %let year_end = 2042.00 ;
 run;
@@ -326,7 +327,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 ods listing close;
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_33sim_20220131.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_153sim_20220308.rtf";
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -1785,7 +1786,7 @@ run;
 /************************************************************************************************************/
 /*										SELECTION MIHPSA													*/
 /************************************************************************************************************/
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\graphsMIHPSA_20220131.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\graphsMIHPSA_20220308.rtf";
 
 * 1a - HIV PREVALENCE 15-49 BY GENDER;
 proc sgplot data=d; 
@@ -1977,8 +1978,8 @@ scatter x=cald y=o_r_death_15plw_cens / markerattrs = (symbol=square color=orang
 run;quit;
 
 ods rtf close; run;
-/*
-data a.d;set d;run;*/
+
+data a.d;set d;run;
 data d;set a.d;run;
 *20220201: partire da qua;
 data e;set d;
@@ -2074,8 +2075,8 @@ p50_n_hiv_w_0			p5_n_hiv_w_0			p95_n_hiv_w_0
 
 ;
 run;
-proc transpose data=e out=mihpsa_zim_stock_20220131;run;
-data mihpsa_zim_stock_20220131;set mihpsa_zim_stock_20220131;
+proc transpose data=e out=mihpsa_zim_stock_20220308;run;
+data mihpsa_zim_stock_20220308;set mihpsa_zim_stock_20220308;
 sub = substr(_NAME_,1,3);
 var = substr(_NAME_,5,10);
 if sub="p50" then ord=1;
@@ -2173,8 +2174,8 @@ p50_n_tested_0 			p5_n_tested_0 		p95_n_tested_0
 p50_test_prop_positive_0	p5_test_prop_positive_0 	p95_test_prop_positive_0
 p50_n_new_vmmc1549m_0		p5_n_new_vmmc1549m_0		p95_n_new_vmmc1549m_0;
 run;
-proc transpose data=f out=mihpsa_zim_flow_20220131;run;
-data mihpsa_zim_flow_20220131;set mihpsa_zim_flow_20220131;
+proc transpose data=f out=mihpsa_zim_flow_20220308;run;
+data mihpsa_zim_flow_20220308;set mihpsa_zim_flow_20220308;
 sub = substr(_NAME_,1,3);
 var = substr(_NAME_,5,16);
 if sub="p50" then ord=1;
