@@ -1493,7 +1493,7 @@ proc sort; by run;run;
 * data w_lapr45_prepcost20 ; 
 * set w_lapr45;
 
-  if prep_all_strategy ne=4;
+  if prep_all_strategy   = 4;
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
   

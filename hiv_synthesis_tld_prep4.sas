@@ -8,11 +8,7 @@
 						with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
 						who is not under care and hence wont have vl tests or possibility of pr_switch_line (safer to do this than try to 
 						change the visit variable)
-
-* create variable to indicate whether on clinic based prep with testing or rld prep without testing or clinic visits ;
-
-
-
+ 
 
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
@@ -676,8 +672,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
 
-* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
-								* note we have switched this off - apr 2022;
+* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 0.95 0.05); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
 * pref_prep_oral_beta_s1;		pref_prep_oral_beta_s1 = 2 ;
 
@@ -713,7 +708,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 
-* new for pop_wide_tld ;
+* new for tld prep ;
 
 * pref_prep_inj_beta_s1;		%sample_uniform(pref_prep_inj_beta_s1, 3 4 5) ;
 
@@ -760,15 +755,15 @@ end;
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ;
 
 
-* new for pop_wide_tld ;
+* new for tld prep;
 
-* POP WIDE TLD ;
+* TLD PREP;
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.05 0.1 );
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.1 0.2 0.3);
 
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
@@ -2296,7 +2291,6 @@ condom_incr_year_i = 0; *coded within core (not below options code);
 
 *population wide tld;
 pop_wide_tld = 0;
-pop_wide_tld_year_i = 0;
 
 *covid disruption variables;
 vmmc_disrup_covid = 0 ; 
@@ -2426,16 +2420,15 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_inj_intro= 2022.75;
 	end;
 
-	if option = 3 then do; * pop_wide_tld ;
+	if option = 3 then do; * tld_prep and add inj prep;
 		date_prep_inj_intro= 2022.75;
 		if _u23 < 0.25 then x = 2; 
 		if 0.25 <= _u23 < 0.50 then x = 3;  
 		if 0.50 <= _u23 < 0.75 then x = 4;  
 		if 0.75 <= _u23        then x = 5;  
 		pref_prep_oral=rand('beta',x,5);
-		pref_prep_oral_beta_s1=x;
 		pop_wide_tld = 1; 
-		%sample_uniform(prob_prep_pop_wide_tld, 0.1 0.3 0.5);
+		prob_prep_pop_wide_tld = 0.50; 
 	end;
 
 
@@ -4723,7 +4716,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 
 
 	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
 
-			* new for pop_wide_tld;
+			* new for tld prep;
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
 			r=rand('uniform'); a = rand('uniform');
 			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
@@ -7293,10 +7286,10 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 * Returning to clinic after loss to follow-up ;
 
 	e_rate_return = eff_rate_return; 
-	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
+	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
 
-* new for pop_wide_tld;
-	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
+* new for tld prep ;
+	if pop_wide_tld      = 1 then e_rate_return = eff_rate_return * rr_return_pop_wide_tld;
 
 	s=rand('uniform');
 	if adhav >= 0.8 then do;  
@@ -7593,7 +7586,7 @@ res_test=.;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
-	* new for pop_wide_tld;
+	* new for tld prep;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
@@ -7762,9 +7755,9 @@ end;
 
 
 
-* new for pop_wide_tld;
+* new for tld prep ;
 
-* IF POP_WIDE_TLD, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
+* IF TLD_PREP, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
 * for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
 
 a = rand('uniform'); b = rand('uniform'); 
@@ -8239,7 +8232,7 @@ if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that
 wont switch anyway;
 
 
-* new for pop_wide_tld;
+* new for tld prep;
 if onart ne 1 then onartvisit0=0;
 
 
@@ -9814,7 +9807,7 @@ end;
 
 
 
-* new for pop_wide_tld;
+* new for tld prep;
 * added condition below : onartvisit0 ne 1;
 
 if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
@@ -10005,7 +9998,7 @@ end;
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
-* new for pop_wide_tld;
+* new for tld prep;
 
 * added condition below : onartvisit0 ne 1;
 
@@ -18019,7 +18012,6 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
-pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -20025,6 +20017,7 @@ data r1; set a      ;
 
 
 
+/*
 
 data r1; set a       ;
 
@@ -21724,6 +21717,7 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
 
+*/
 
 
 * ts1m:  need more update statements ;
@@ -22381,7 +22375,6 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
-pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
