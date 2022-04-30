@@ -702,7 +702,7 @@ prob_htn_link = 0;
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
 %sample_uniform(prob_visit_hypertension, 0.5 0.6 0.7);
 * probability of having a clinic visit for hypertension if newly diagnosed last period and given lifestyle counseling only;
-%sample_uniform(prob_visit_htn_lifestyle, 0.1, 0.2, 0.3);
+%sample_uniform(prob_visit_htn_lifestyle, 0.1 0.2 0.3);
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 interval_visit_hypertension=0.5;
 
@@ -18039,7 +18039,7 @@ data r1; set a;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-/*
+
 
 data x; set cum_l1;
 
@@ -18054,7 +18054,7 @@ libname b 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-*/
+
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
