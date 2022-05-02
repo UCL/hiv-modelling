@@ -639,7 +639,7 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1 0.25 0.5 0.75 0.9);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.01 0.05 0.1 0.5);
 								* Additional rate of being tested for HIV before starting any form of PrEP;	 
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -662,7 +662,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.5 0.75); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.03  0.1  0.3  0.9); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -693,7 +693,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_inj_intro;			date_prep_inj_intro=.;			* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=2;			* Assume 2 years to scale up injectable prep; * lapr;
-* pr_prep_inj_b;				%sample_uniform(pr_prep_inj_b,  0.3  0.5 0.75); 			* lapr JAS Jul2021; *Probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+* pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
+
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
@@ -13866,6 +13868,28 @@ if prep_any=1 then do;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
 end;
 
+
+* whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
+all_prep_criteria = 0; 
+if prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then all_prep_criteria = 1;
+
+all_prep_criteria_hivneg = 0;
+if all_prep_criteria = 1 and hiv ne 1 then all_prep_criteria_hivneg = 1;
+
+prep_any_elig_hivneg = 0;
+if prep_any_elig=1 and hiv ne 1 then prep_elig_hivneg = 1;
+
+prep_elig_hivneg_onprep = 0;
+if prep_elig_hivneg = 1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_hivneg_onprep = 1;
+
+* has prep indication and is on prep ;
+prep_elig_onprep = 0;
+if prep_any_elig=1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_onprep = 1;
+
+* of people with indication for prep (ie prep_any_elig=1), proportion on prep_inj;
+prep_elig_onprep_inj=0;
+if prep_elig_onprep = 1 and prep_inj=1 then prep_elig_onprep_inj=1;
+
 					
 if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep_oral=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
@@ -15933,6 +15957,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_on_risk_informed_prep_any + on_risk_informed_prep_any;
 
+	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg; s_prep_any_elig_hivneg + prep_any_elig_hivneg ;
+	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ;  s_prep_elig_onprep + prep_elig_onprep ;s_prep_elig_onprep_inj + prep_elig_onprep_inj;
+
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -17643,6 +17671,10 @@ s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_any_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj 
+
+
+
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_tested1549_		s_tested1549m       s_tested1549w
@@ -18554,6 +18586,8 @@ s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented 
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_any_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -22008,6 +22042,8 @@ s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented 
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res s_cur_in_prep_inj_tail_prim  
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_any_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest

@@ -20,13 +20,13 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 
-%let single_var = p_newp_prep_hivneg                   ;
+%let single_var = p_onart                  ;
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 672     ;
+%let nfit = 4032    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -251,7 +251,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2   by 0
 
 run;quit;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -276,7 +275,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -416,7 +414,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
   band    x=cald lower=p5_p_onart_3 	upper=p95_p_onart_3  / transparency=0.9 fillattrs = (color=vigb) legendlabel= "90% range";
 
 run;quit;
-
 
 
 
