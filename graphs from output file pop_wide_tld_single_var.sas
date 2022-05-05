@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_pop_wide_tld3;
+set a.l_pop_wide_tld5;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -19,19 +19,29 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 
-%let single_var = prop_hivneg_onprep           ;
+%let single_var = n_death_hiv           ;
 
-proc univariate; var prop_hivneg_onprep   ; run;
+proc univariate; var &single_var  ;  run;
 
-proc glm; model prop_hivneg_onprep = 
+
+/*
+
+proc genmod; 
+class run;
+model prop_hivneg_onprep = 
+prevalence1549
 prob_tld_prep_if_untested an_lin_incr_test date_test_rate_plateau
-p_hard_reach_w hard_reach_higher_in_men  pref_prep_oral_beta_s1 rate_choose_stop_prep_oral prob_prep_any_restart_choice / solution ;
-where 2023 <= cald < 2026 and option=3; run;
+p_hard_reach_w hard_reach_higher_in_men  pref_prep_oral_beta_s1 rate_choose_stop_prep_oral prob_prep_any_restart_choice  ;
+where 2023 <= cald and option=3; 
+repeated subject=run;
+run;
+
+*/
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 456     ;
+%let nfit = 648     ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -232,8 +242,8 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-
 /*
+
 
 ods html;
 proc sgplot data=d; 
@@ -284,6 +294,7 @@ run;quit;
 * p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj ;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of HIV negative people who have an indication for PrEP and are taking PrEP, proportion on cab-la";
@@ -309,7 +320,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p_elig_hivneg_onprep";
+Title    height=1.5 justify=center "Of HIV negative people who have an indication for PrEP, proportion on PREP/PEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1  ) valueattrs=(size=10);
 
@@ -352,7 +363,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_p_newp_prep_hivneg_3 	upper=p95_p_newp_prep_hivneg_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
-
 
 
 
@@ -497,7 +507,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 0.3 by  
 run;quit;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Total number of people with integrase inhibitor resistant HIV";
@@ -543,7 +552,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
   band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
-
 
 
 
@@ -599,7 +607,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence of VL > 1000 in whole adult population (HIV+ and HIV-)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     by  0.01  ) valueattrs=(size=10);
+yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      by  0.01  ) valueattrs=(size=10);
 
   label p50_prevalence_vg1000__0 = "No PrEP (median) ";
   label p50_prevalence_vg1000__1 = "Oral PrEP only (median) ";
@@ -617,7 +625,9 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     
 
 run;
 
-  
+
+*/
+
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
@@ -640,6 +650,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 50000    
 
 run;
 
+
+/*
   
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
@@ -839,7 +851,6 @@ run;quit;
 
 ods html close;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -865,8 +876,6 @@ run;quit;
 
 ods html close;
 
-
-/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_hivneg_anycause";

@@ -5,23 +5,24 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld3_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld5_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  pop_wide_tld3  ;
+%let laprv =  pop_wide_tld5  ;
 
-data a.k_pop_wide_tld3;  
+data a.k_pop_wide_tld5;  
 set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 * lapr44 only correct for reg_option_107_after_cab = 0 ;
 * if reg_option_107_after_cab = 0;
 
-data k_pop_wide_tld3; set a.k_pop_wide_tld3;
+data k_pop_wide_tld5; set a.k_pop_wide_tld5;
 
 
-proc sort data=k_pop_wide_tld3; 
+
+proc sort data=k_pop_wide_tld5; 
 by run cald option;
 run;
 
@@ -29,7 +30,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_pop_wide_tld3 ;
+set k_pop_wide_tld5 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -48,7 +49,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge k_pop_wide_tld3 sf;
+merge k_pop_wide_tld5 sf;
 by run ;
 
 
@@ -510,7 +511,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 /*
 
-proc means data = a.l_pop_wide_tld3  ; 
+proc means data = a.l_pop_wide_tld5  ; 
 var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
 p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail p_cab_res_primary
 ; 
@@ -518,7 +519,7 @@ run;
 
 
 
-proc means noprint data = a.l_pop_wide_tld3 ;  
+proc means noprint data = a.l_pop_wide_tld5 ;  
 var p_emerge_inm_res_cab_notpr ; 
 by run;
 * where cald ge 2022.75 and option = 1 and hivtest_type_1_init_prep_inj ne 1 ; 
@@ -531,7 +532,7 @@ proc univariate; var p_emerge_inm_res_cab_notpr ;
 run;
 
 
-proc glm data = a.l_pop_wide_tld3 ;
+proc glm data = a.l_pop_wide_tld5 ;
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner pr_inm_inj_prep_primary rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj sens_primary_testtype3;
@@ -1118,7 +1119,7 @@ pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m
 
 p_emerge_inm_res_cab_notpr
 
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
 pref_prep_oral_beta_s1
 
@@ -1129,8 +1130,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld3; set y;  
-
+data    a.l_pop_wide_tld5; set y;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1297,7 +1297,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_primary_prevented); %var(v=p_u_vfail1_this_period); 
 %var(v=n_art_initiation);  %var(v=n_restart);     %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
 %var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_inj);
-%var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); 
+%var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); %var(v=pref_prep_oral_beta_s1);
 
 
 data   a.wide_outputs; merge 
@@ -1328,8 +1328,10 @@ p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_ona
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
+pref_prep_oral_beta_s1
 ;
 
+proc contents; run;
 
 proc sort; by run; run;
 
@@ -1380,8 +1382,11 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
 prob_prep_pop_wide_tld
+p_emerge_inm_res_cab_notpr
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
+
+
 ;
 
 %macro par(p=);
@@ -1433,9 +1438,9 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
  %par(p=sens_ttype3_prep_inj_primary);  %par(p=sens_ttype3_prep_inj_inf3m);  %par(p=sens_ttype3_prep_inj_infge6m);
 %par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_primary);
 %par(p=pref_prep_inj_beta_s1); %par(p=testt1_prep_inj_eff_on_res_prim);  %par(p=incr_res_risk_cab_inf_3m);
-
-%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_1_to_0);
- %par(p=prob_onartvis_1_to_0); %par(p=pref_prep_oral_beta_s1);  %par(p=prob_prep_pop_wide_tld);
+%par(p=p_emerge_inm_res_cab_notpr);
+%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
+ %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);
 
 data a.wide_par; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1478,24 +1483,26 @@ effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_tim
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
-pref_prep_oral_beta_s1 prob_prep_pop_wide_tld
+ prob_prep_pop_wide_tld
+
+p_emerge_inm_res_cab_notpr
 ;
 
 run;
 proc sort; by run;run;
 
 
-
 * To get one row per run;
 
-  data  a.w_pop_wide_tld3     ; 
-  merge a.wide_outputs         a.wide_par          ;
+  data  a.w_pop_wide_tld5     ; 
+  merge a.wide_outputs         a.wide_par     ;
   by run;
+
+proc contents; run;
 
 
   data w_tld_prep ;
-  set a.w_pop_wide_tld3           ;
-
+  set a.w_pop_wide_tld5           ;
 
 * if incidence1549_22 > 0.20;
 
@@ -1592,13 +1599,14 @@ run;
 
 
 proc freq data=  w_tld_prep; tables  lowest_netdaly d_n_death_hiv_50y_3_2 ;
+where pref_prep_oral_beta_s1_20y_4=2;
 run;
 
 
 proc logistic data=  w_tld_prep; 
 model pop_wide_tld_ce_x =  prevalence_vg1000_22
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0 pref_prep_inj_beta_s1
-pref_prep_oral_beta_s1
+pref_prep_oral_beta_s1_20y_4
 ;
 run;
 
@@ -1615,6 +1623,44 @@ model d_n_death_hiv_50y_4_3  =
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0 pref_prep_inj_beta_s1
 ;
 run;
+
+proc glm  data=  w_tld_prep; 
+model prop_hivneg_onprep_50y_3  =  
+
+
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
+fold_tr fold_tr_newp switch_for_tox  
+circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+
+ prob_prep_any_restart_choice 
+adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+prep_any_strategy    rate_test_onprep_any  prep_willingness_threshold  
+prob_prep_any_restart_choice  
+pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy      
+
+ prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
+sens_tests_prep_inj  pr_inm_inj_prep_primary
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 
+;
+run;
+
+
 
 
 
