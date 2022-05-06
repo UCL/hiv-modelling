@@ -23,7 +23,7 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
   if rate_test_startprep_any ge 0.1 ;
 
 
-%let single_var = n_death_hiv             ;
+%let single_var = incidence1549_          ;
 
 proc univariate; var &single_var  ;  run;
 
@@ -45,7 +45,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 627     ;
+%let nfit = 1200    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -250,7 +250,7 @@ ods html ;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of HIV negative adults taking PrEP/PEP";
+Title    height=1.5 justify=center "Proportion of HIV negative adults taking ARVs";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0.05) valueattrs=(size=10);
 
@@ -271,6 +271,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 run;quit;
 
 
+  
 
 ods html;
 proc sgplot data=d; 
@@ -295,6 +296,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 run;quit;
 
 * p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj ;
+
 
 
 ods html;
@@ -462,7 +464,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 run;quit;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people on ART";
@@ -486,6 +487,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 run;quit;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of all people with HIV, proportion with integrase inhibitor resistance";
@@ -507,7 +509,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 0.3 by  
   band    x=cald lower=p5_p_iime_3 	upper=p95_p_iime_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
-
 
 
 ods html;
@@ -555,6 +556,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
+*/
 
 
 ods html;
@@ -579,7 +581,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -626,12 +628,12 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
-*/
-
+  
+ 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 50000    by  5000  ) valueattrs=(size=10);
+yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  5000  ) valueattrs=(size=10);
 
   label p50_n_death_hiv_0 = "No PrEP (median) ";
   label p50_n_death_hiv_1 = "Oral PrEP only (median) ";
@@ -649,7 +651,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 50000    
 
 run;
 
-/*
+
  
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
@@ -803,7 +805,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of adult population taking ARVs for prevention or treatment";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.3  by 0.1 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0.05) valueattrs=(size=10);
 
   label p50_prop_art_or_prep_0 = "No PrEP (median) ";
   label p50_prop_art_or_prep_1 = "Oral PrEP only (median) ";

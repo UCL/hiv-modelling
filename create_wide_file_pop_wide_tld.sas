@@ -1,4 +1,18 @@
 
+
+
+
+
+* to add: breakdown of hiv status and prep elig of people on tld;
+
+
+
+
+
+
+
+
+
 * options user="/folders/myfolders/";
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
@@ -15,10 +29,25 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 data a.k_pop_wide_tld6;  
 set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-* lapr44 only correct for reg_option_107_after_cab = 0 ;
-* if reg_option_107_after_cab = 0;
+/*
 
-data k_pop_wide_tld6; set a.k_pop_wide_tld6;
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld7out\";
+
+data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
+data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
+
+data a.k_pop_wide_tld7;  
+set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+*/
+
+
+data k_pop_wide_tld6; set a.k_pop_wide_tld6; 
+
+*********** to add: a.k_pop_wide_tld7 and change all tld6 below to tld67 ;
+
+
+
 
 
 
@@ -36,7 +65,8 @@ if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
 sf_2022 = 10000000 / s_alive;
 incidence1549_2022 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
-keep run sf_2022 incidence1549_2022;
+prevalence1549_2022 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
+keep run sf_2022 incidence1549_2022 prevalence1549_2022;
 
 
 proc sort; by run;
@@ -53,7 +83,7 @@ merge k_pop_wide_tld6 sf;
 by run ;
 
 
-if incidence1549_2022 > 0.2 and prevalence1549_22 < 0.3;
+if incidence1549_2022 > 0.2 and prevalence1549_2022 < 0.3;
 
 
 
@@ -1506,6 +1536,8 @@ proc contents; run;
 
 if rate_test_startprep_any ge 0.1;
 
+if prevalence1549_22 < 0.3;
+
 if prep_any_strategy = 4;
 
 
@@ -1603,7 +1635,7 @@ r_incidence1549_50y_3_2 = incidence1549_50y_3 / incidence1549_50y_2 ;
 * table 1;
 
 proc means data=   w_pop_wide_tld n p50 p5 p95 min max;  *  w_pop_wide_tld ;
-var prevalence1549m_22 prevalence1549w_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
+var prevalence1549_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
 run;
 
 
@@ -1618,12 +1650,10 @@ dcost_50y_1 dcost_50y_2 dcost_50y_3 dcost_50y_4
 incidence1549_20y_1 incidence1549_20y_2 incidence1549_20y_3 incidence1549_20y_4 r_incidence1549_50y_3_2
 prevalence1549_42_1 prevalence1549_42_2 prevalence1549_42_3 prevalence1549_42_4 
 ;
-where rate_test_startprep_any ge 0.1 ;
 run;
 
 
 proc freq data=  w_pop_wide_tld; tables  lowest_netdaly d_n_death_hiv_50y_3_2 ce_cab_la_oral_prep;
-where rate_test_startprep_any ge 0.1;
 run;
 
 
