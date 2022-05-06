@@ -8,7 +8,11 @@
 						with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
 						who is not under care and hence wont have vl tests or possibility of pr_switch_line (safer to do this than try to 
 						change the visit variable)
- 
+
+* create variable to indicate whether on clinic based prep with testing or rld prep without testing or clinic visits ;
+
+
+
 
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
@@ -635,8 +639,8 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1 0.25 0.5 0.75 0.9);
-								* Additional rate of being tested for HIV before starting any form of PrEP;	 
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1  0.5 );
+								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
 * prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
@@ -658,7 +662,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.5 0.75); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.7); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -672,12 +676,13 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
 
-* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 0.95 0.05); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
+* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
+								* note we have switched this off - apr 2022;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
 * pref_prep_oral_beta_s1;		pref_prep_oral_beta_s1 = 2 ;
 
 
-* pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.5; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
+* pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
 																* not applicable for lapr or dpv-vr; * not marked with '_oral' as tld prep is separate intervention ;
 
@@ -688,7 +693,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_inj_intro;			date_prep_inj_intro=.;			* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=2;			* Assume 2 years to scale up injectable prep; * lapr;
-* pr_prep_inj_b;				%sample_uniform(pr_prep_inj_b,  0.3  0.5 0.75); 			* lapr JAS Jul2021; *Probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+* pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
+
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
@@ -708,7 +715,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
 
-* new for tld prep ;
+* new for pop_wide_tld ;
 
 * pref_prep_inj_beta_s1;		%sample_uniform(pref_prep_inj_beta_s1, 3 4 5) ;
 
@@ -755,19 +762,20 @@ end;
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ;
 
 
-* new for tld prep;
+* new for pop_wide_tld ;
 
-* TLD PREP;
+* POP WIDE TLD ;
 
-* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1 1.25 1.5 2 5);
+* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
 
-* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_return_pop_wide_tld, 1 1/1.25 1/1.5 1/2 1/5);
+* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.1 0.2 0.3 0.5);
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.05 0.1 );
 
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
 
+ 
 
 * COVID-19 ;
 
@@ -2290,6 +2298,7 @@ condom_incr_year_i = 0; *coded within core (not below options code);
 
 *population wide tld;
 pop_wide_tld = 0;
+pop_wide_tld_year_i = 0;
 
 *covid disruption variables;
 vmmc_disrup_covid = 0 ; 
@@ -2419,15 +2428,10 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_inj_intro= 2022.75;
 	end;
 
-	if option = 3 then do; * tld_prep and add inj prep;
+	if option = 3 then do; * pop_wide_tld ;
 		date_prep_inj_intro= 2022.75;
-		if _u23 < 0.25 then x = 2; 
-		if 0.25 <= _u23 < 0.50 then x = 3;  
-		if 0.50 <= _u23 < 0.75 then x = 4;  
-		if 0.75 <= _u23        then x = 5;  
-		pref_prep_oral=rand('beta',x,5);
 		pop_wide_tld = 1; 
-		prob_prep_pop_wide_tld = 0.50; 
+		%sample_uniform(prob_prep_pop_wide_tld, 0.05  0.1  0.3 );
 	end;
 
 
@@ -4715,7 +4719,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 
 
 	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
 
-			* new for tld prep;
+			* new for pop_wide_tld;
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
 			r=rand('uniform'); a = rand('uniform');
 			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
@@ -6823,7 +6827,7 @@ if t ge 2 then do;
 		cost_test = cost_test_g; cost_test_type1=cost_test_g;
 		end;
 	end;
-	if hivtest_type=3 and (prep_inj ne 1 or prep_inj_tm1 = 1 or hivtest_type_1_init_prep_inj ne 1) and (prep_inj ne 1 or  hivtest_type_1_prep_inj ne 1)
+	if hivtest_type=3 and (prep_inj ne 1 or hivtest_type_1_init_prep_inj ne 1) 
 	then do;
 		u=rand('uniform');
 		sens_primary=sens_primary_testtype3;
@@ -7285,10 +7289,10 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 * Returning to clinic after loss to follow-up ;
 
 	e_rate_return = eff_rate_return; 
-	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
+	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-* new for tld prep ;
-	if pop_wide_tld_prep = 1 then e_rate_return = eff_rate_return * rr_return_pop_wide_tld;
+* new for pop_wide_tld;
+	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
 
 	s=rand('uniform');
 	if adhav >= 0.8 then do;  
@@ -7585,8 +7589,8 @@ res_test=.;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
-	* new for tld prep;
-		if pop_wide_tld_prep = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
+	* new for pop_wide_tld;
+		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -7754,9 +7758,9 @@ end;
 
 
 
-* new for tld prep ;
+* new for pop_wide_tld;
 
-* IF TLD_PREP, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
+* IF POP_WIDE_TLD, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
 * for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
 
 a = rand('uniform'); b = rand('uniform'); 
@@ -8231,7 +8235,7 @@ if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that
 wont switch anyway;
 
 
-* new for tld prep;
+* new for pop_wide_tld;
 if onart ne 1 then onartvisit0=0;
 
 
@@ -9806,7 +9810,7 @@ end;
 
 
 
-* new for tld prep;
+* new for pop_wide_tld;
 * added condition below : onartvisit0 ne 1;
 
 if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
@@ -9997,7 +10001,7 @@ end;
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
-* new for tld prep;
+* new for pop_wide_tld;
 
 * added condition below : onartvisit0 ne 1;
 
@@ -13858,6 +13862,28 @@ if prep_any=1 then do;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
 end;
 
+
+* whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
+all_prep_criteria = 0; 
+if prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then all_prep_criteria = 1;
+
+all_prep_criteria_hivneg = 0;
+if all_prep_criteria = 1 and hiv ne 1 then all_prep_criteria_hivneg = 1;
+
+prep_elig_hivneg = 0;
+if prep_any_elig=1 and hiv ne 1 then prep_elig_hivneg = 1;
+
+prep_elig_hivneg_onprep = 0;
+if prep_elig_hivneg = 1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_hivneg_onprep = 1;
+
+* has prep indication and is on prep ;
+prep_elig_onprep = 0;
+if prep_any_elig=1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_onprep = 1;
+
+* of people with indication for prep (ie prep_any_elig=1), proportion on prep_inj;
+prep_elig_onprep_inj=0;
+if prep_elig_onprep = 1 and prep_inj=1 then prep_elig_onprep_inj=1;
+
 					
 if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep_oral=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
@@ -15925,6 +15951,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_on_risk_informed_prep_any + on_risk_informed_prep_any;
 
+	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg; s_prep_elig_hivneg + prep_elig_hivneg ;
+	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ;  s_prep_elig_onprep + prep_elig_onprep ;s_prep_elig_onprep_inj + prep_elig_onprep_inj;
+
+
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -17635,6 +17665,10 @@ s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj 
+
+
+
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
 s_tested1549_		s_tested1549m       s_tested1549w
@@ -18010,7 +18044,9 @@ hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld pop_wide_tld
+
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -18545,6 +18581,8 @@ s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented 
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -20016,8 +20054,6 @@ data r1; set a      ;
 
 
 
-/*
-
 data r1; set a       ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
@@ -21716,7 +21752,6 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
 
-*/
 
 
 * ts1m:  need more update statements ;
@@ -22001,6 +22036,8 @@ s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented 
 s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res s_cur_in_prep_inj_tail_prim  
 s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_any
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -22366,14 +22403,16 @@ rate_tb_proph_init rate_sbi_proph_init
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_willingness_threshold 
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
-rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
+pop_wide_tld
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
