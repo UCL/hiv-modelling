@@ -775,7 +775,10 @@ end;
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
 
- 
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.2 0.5  1);
+
+* pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.8 0.2); 
+
 
 * COVID-19 ;
 
@@ -4342,7 +4345,12 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	end;
 
 
-	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+	a=rand('uniform');
+
+	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 
+	and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1))  and (pop_wide_tld_prep ne 1 or 
+	(pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  then do;
+
 	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ; 
 
 		*Testing before ever starting PrEP;
@@ -4713,15 +4721,17 @@ end;
 
 if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
 
+
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
 * lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
-if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
+if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 and ever_tested ne 1) ) then do;  
 
 	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
 
 			* new for pop_wide_tld;
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
-			r=rand('uniform'); a = rand('uniform');
+			r=rand('uniform'); a = rand('uniform'); 
+			if pop_wide_tld_selective_hiv = 1 and hiv ne 1 then a = a * 2; 
 			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
 			then do ;		
 * ts1m ; 
@@ -13626,26 +13636,14 @@ started_prep_vr_in_primary =0; 		if hiv=1 and dt_prep_vr_s=caldate&j 	and primar
 
 
 
+started_prep_any_hiv =0; 	if hiv=1 and (caldate&j = dt_prep_oral_s or caldate&j = dt_prep_oral_rs or dt_prep_inj_s= caldate&j  or 
+caldate&j = dt_prep_inj_rs) then started_prep_any_hiv =1; 	
 
+started_prep_inj_hiv =0; 	if hiv=1 and (dt_prep_inj_s= caldate&j  or caldate&j = dt_prep_inj_rs) then started_prep_inj_hiv =1; 	
 
-
-
-
-
-
-
-* 
-* want a variable to indicate: started or restarted prep despite having hiv ;
-
-
-
-
-
-
-
-
-
-
+pop_wide_tld_hiv=0; if  pop_wide_tld_prep = 1 and hiv=1 then pop_wide_tld_hiv=1; 
+pop_wide_tld_prep_elig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig=1 then pop_wide_tld_prep_elig=1;
+pop_wide_tld_neg_prep_inelig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig ne 1 then pop_wide_tld_neg_prep_inelig=1;
 
 primary_prep_oral = 0; if infected_prep_oral=1 and primary=1 then primary_prep_oral = 1;
 primary_prep_inj = 0; if infected_prep_inj =1 and primary=1 then primary_prep_inj  = 1;
@@ -15953,8 +15951,11 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg; s_prep_elig_hivneg + prep_elig_hivneg ;
 	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ;  s_prep_elig_onprep + prep_elig_onprep ;s_prep_elig_onprep_inj + prep_elig_onprep_inj;
+	s_started_prep_inj_hiv + started_prep_inj_hiv; s_started_prep_any_hiv + started_prep_any_hiv; 
 
+	s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
 
+	
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -17666,6 +17667,7 @@ s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj 
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 
 
@@ -18045,7 +18047,7 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
-pref_prep_oral_beta_s1 prob_prep_pop_wide_tld pop_wide_tld
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv
 
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
@@ -18583,6 +18585,7 @@ s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim s_start_rest_prep_inj_prim_cabr
 
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -22038,6 +22041,7 @@ s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -22404,7 +22408,7 @@ prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_willing
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
-pop_wide_tld
+pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
