@@ -1,57 +1,26 @@
 
-
-
-
-
-* to add: breakdown of hiv status and prep elig of people on tld;
-
-
-
-
-
-
-
-
-
 * options user="/folders/myfolders/";
 
  proc printto ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld6_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld8_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-%let laprv =  pop_wide_tld6  ;
+%let laprv =  pop_wide_tld8  ;
 
-data a.k_pop_wide_tld6;  
+data a.k_pop_wide_tld8;  
 set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-/*
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld7out\";
-
-data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
-data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
-
-data a.k_pop_wide_tld7;  
-set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
-
-*/
-
-
-data k_pop_wide_tld6; set a.k_pop_wide_tld6; 
-
-*********** to add: a.k_pop_wide_tld7 and change all tld6 below to tld67 ;
+data k_pop_wide_tld8; set a.k_pop_wide_tld8; 
 
 
 
-
-
-
-proc sort data=k_pop_wide_tld6; 
+proc sort data=k_pop_wide_tld8; 
 by run cald option;
 run;
 
@@ -59,7 +28,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_pop_wide_tld6 ;
+set k_pop_wide_tld8 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -79,7 +48,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge k_pop_wide_tld6 sf;
+merge k_pop_wide_tld8 sf;
 by run ;
 
 
@@ -538,10 +507,13 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_cabr_start_rest_prep_inj;		p_cabr_start_rest_prep_inj = s_start_rest_prep_inj_hiv_cabr / s_em_inm_res_o_cab_off_3m ;
 
+* n_started_prep_inj_hiv;			n_started_prep_inj_hiv = s_started_prep_inj_hiv * 4 * &sf ;
+* n_started_prep_any_hiv;			n_started_prep_any_hiv = s_started_prep_any_hiv * 4 * &sf ;
+ 
 
 /*
 
-proc means data = a.l_pop_wide_tld6  ; 
+proc means data = a.l_pop_wide_tld8  ; 
 var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
 p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail p_cab_res_primary
 ; 
@@ -549,7 +521,7 @@ run;
 
 
 
-proc means noprint data = a.l_pop_wide_tld6 ;  
+proc means noprint data = a.l_pop_wide_tld8 ;  
 var p_emerge_inm_res_cab_notpr ; 
 by run;
 * where cald ge 2022.75 and option = 1 and hivtest_type_1_init_prep_inj ne 1 ; 
@@ -562,7 +534,7 @@ proc univariate; var p_emerge_inm_res_cab_notpr ;
 run;
 
 
-proc glm data = a.l_pop_wide_tld6 ;
+proc glm data = a.l_pop_wide_tld8 ;
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner pr_inm_inj_prep_primary rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj sens_primary_testtype3;
@@ -575,7 +547,6 @@ cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hivtest_ty
 run;
 
 */			
-
 
 
 * n_prep_primary_prevented;		n_prep_primary_prevented = s_prep_primary_prevented * &sf;
@@ -609,6 +580,13 @@ run;
 
 * n_cur_res_cab;				n_cur_res_cab = s_cur_res_cab * &sf ;
 * n_cur_res_dol;				n_cur_res_dol = s_iime_ * &sf ;
+
+* p_pop_wide_tld_hiv ;			p_pop_wide_tld_hiv = s_pop_wide_tld_hiv / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_hiv ;			n_pop_wide_tld_hiv = n_pop_wide_tld_hiv * &sf ;
+* p_pop_wide_tld_prep_elig ;	p_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_prep_elig ;	n_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig * &sf ;
+* p_pop_wide_tld_neg_prep_inelig;	p_pop_wide_tld_neg_prep_inelig = s_pop_wide_tld_neg_prep_inelig / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_neg_prep_inelig;	n_pop_wide_tld_neg_prep_inelig = s_pop_wide_tld_neg_prep_inelig * &sf ;
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -1106,6 +1084,8 @@ prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_de
 death_rate_hiv death_rate_hiv_all  n_onart n_pop_wide_tld_prep  n_art_or_prep n_prep_inj n_death_hivneg_anycause
 
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj  prop_hivneg_onprep
+n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_wide_tld_neg_prep_inelig
+n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_wide_tld_neg_prep_inelig
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1160,11 +1140,12 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld6; set y;  
+data    a.l_pop_wide_tld8; set y;  
 
 proc freq; tables run; where cald = 2020;
 
 run;
+
 
 
   options nomprint;
@@ -1328,6 +1309,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_art_initiation);  %var(v=n_restart);     %var(v=n_line1_fail_this_period);    %var(v=n_need_cd4m);
 %var(v=p_elig_all_prep_criteria);  %var(v=p_elig_all_prep_cri_hivneg);  %var(v=p_elig_hivneg_onprep);  %var(v=p_prep_elig_onprep_inj);
 %var(v=prop_1564_hivneg_onprep); %var(v=prop_hivneg_onprep); %var(v=pref_prep_oral_beta_s1);
+%var(v=n_started_prep_inj_hiv); %var(v=n_started_prep_any_hiv);   %var(v=p_pop_wide_tld_hiv);   %var(v=p_pop_wide_tld_prep_elig);   
+%var(v=p_pop_wide_tld_neg_prep_inelig); %var(v=n_pop_wide_tld_hiv);   %var(v=n_pop_wide_tld_prep_elig);   %var(v=n_pop_wide_tld_neg_prep_inelig); 
 
 
 data   a.wide_outputs; merge 
@@ -1358,7 +1341,8 @@ p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_ona
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
 dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj prop_1564_hivneg_onprep prop_hivneg_onprep
-pref_prep_oral_beta_s1
+pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_wide_tld_neg_prep_inelig
+n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_wide_tld_neg_prep_inelig
 ;
 
 proc contents; run;
@@ -1524,7 +1508,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_pop_wide_tld6     ; 
+  data  a.w_pop_wide_tld8     ; 
   merge a.wide_outputs         a.wide_par     ;
   by run;
 
@@ -1532,7 +1516,7 @@ proc contents; run;
 
 
   data w_pop_wide_tld ;
-  set a.w_pop_wide_tld6           ;
+  set a.w_pop_wide_tld8           ;
 
 if rate_test_startprep_any ge 0.1;
 

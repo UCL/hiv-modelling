@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_pop_wide_tld8 ;
+set a.l_hptn17;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -20,9 +20,8 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
-  if rate_test_startprep_any ge 0.1 ;
 
-%let single_var = p_popwidetld_prep_inelig        ;
+%let single_var = prop_1564_hivneg_onprep       ;
 
 proc univariate; var &single_var  ;  run;
 
@@ -45,7 +44,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 384     ;
+%let nfit = 298     ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -269,8 +268,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_hivneg_onprep_3 	upper=p95_prop_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
-
   
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -278,10 +277,9 @@ Title    height=1.5 justify=center "Proportion of HIV negative adults (age 1564)
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0.05) valueattrs=(size=10);
 
-  label p50_prop_1564_hivneg_onprep_0 = "No PrEP (median) ";
-  label p50_prop_1564_hivneg_onprep_1 = "Oral PrEP only (median) ";
-  label p50_prop_1564_hivneg_onprep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_prop_1564_hivneg_onprep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_prop_1564_hivneg_onprep_0 = "Continuation of oral PrEP at current level (median) ";
+  label p50_prop_1564_hivneg_onprep_1 = "Scaled-up Oral PrEP (median) ";
+  label p50_prop_1564_hivneg_onprep_2 = "Scaled-up cab-la PrEP, replacing oral PrEP (median) ";
 
   series  x=cald y=p50_prop_1564_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_0 	upper=p95_prop_1564_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
@@ -289,8 +287,30 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_1564_hivneg_onprep_1 	upper=p95_prop_1564_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prop_1564_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_2 	upper=p95_prop_1564_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prop_1564_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prop_1564_hivneg_onprep_3 	upper=p95_prop_1564_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+
+run;quit;
+
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prep_inj_willing";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000000  by 1000000) valueattrs=(size=10);
+
+  label p50_n_prep_inj_willing_0 = "No PrEP (median) ";
+  label p50_n_prep_inj_willing_1 = "Oral PrEP only (median) ";
+  label p50_n_prep_inj_willing_2 = "Oral and cab-la PrEP (median) ";
+  label p50_n_prep_inj_willing_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_n_prep_inj_willing_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_n_prep_inj_willing_0 	upper=p95_n_prep_inj_willing_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_inj_willing_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_n_prep_inj_willing_1 	upper=p95_n_prep_inj_willing_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_inj_willing_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_n_prep_inj_willing_2 	upper=p95_n_prep_inj_willing_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_inj_willing_3/	lineattrs = (color=orange thickness = 3);
+  band    x=cald lower=p5_n_prep_inj_willing_3 	upper=p95_n_prep_inj_willing_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
@@ -584,8 +604,8 @@ run;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "HIV prevalence in people aged 1549";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     by  0.01  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.30     by  0.01  ) valueattrs=(size=10);
 
   label p50_prevalence1549__0 = "No PrEP (median) ";
   label p50_prevalence1549__1 = "Oral PrEP only (median) ";
@@ -602,6 +622,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     
   band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
+
 
 
 ods html;
@@ -1015,7 +1036,6 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
 run;
 
 
-*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people taking TLD who are HIV negative or HIV+ and undiagnosed, proportion HIV- and not having an indication for PrEP";
@@ -1038,7 +1058,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = (0 to 1        by  0
 
 run;
 
-
+*/
 
 
 ods html close;
