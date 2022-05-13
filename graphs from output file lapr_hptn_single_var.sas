@@ -273,7 +273,7 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of HIV negative adults (age 1564) taking PrEP/PEP";
+Title    height=1.5 justify=center "Proportion of HIV negative adults (age 1564) taking PrEP/PEP (for mem+women PrEP availability)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0.05) valueattrs=(size=10);
 
@@ -289,6 +289,28 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_1564_hivneg_onprep_2 	upper=p95_prop_1564_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
 
 run;quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of HIV negative women (age 1564w) taking PrEP/PEP (for women-only PrEP availability)"; 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0.05) valueattrs=(size=10);
+
+  label p50_prop_1564w_hivneg_onprep_0 = "Continuation of oral PrEP at current level (median) ";
+  label p50_prop_1564w_hivneg_onprep_1 = "Scaled-up Oral PrEP (median) ";
+  label p50_prop_1564w_hivneg_onprep_2 = "Scaled-up cab-la PrEP, replacing oral PrEP (median) ";
+
+  series  x=cald y=p50_prop_1564w_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_prop_1564w_hivneg_onprep_0 	upper=p95_prop_1564w_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564w_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_prop_1564w_hivneg_onprep_1 	upper=p95_prop_1564w_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564w_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_prop_1564w_hivneg_onprep_2 	upper=p95_prop_1564w_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+
+run;quit;
+
+
 
 /*
 

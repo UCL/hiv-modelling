@@ -358,7 +358,14 @@ s_hiv = s_hivge15 ;
 
 * p_prep_elig_onprep_inj;		p_prep_elig_onprep_inj = s_prep_elig_onprep_inj / s_prep_elig_hivneg_onprep ;
 
-* prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
+* prop_1564_hivneg_onprep;		if prep_any_strategy in (4 5 8 9 12) then do;
+								prop_1564_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
+								end;
+
+* prop_1564w_hivneg_onprep;		if prep_any_strategy in (6 7 10 11 13) then do;
+								prop_1564w_hivneg_onprep =   max((s_prep_any_w -s_hiv1_prep_any_w), 0) / (s_alive1564_w  - s_hiv1564w) ;
+								end;
+
 * prop_hivneg_onprep;			prop_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / (s_alive - s_hiv) ;
 
 * p_elig_prep;   				p_elig_prep = s_prep_any_elig / (s_alive1564 - s_hiv1564);
@@ -582,7 +589,7 @@ run;
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
-* incidence_onprep ; 			if s_prep_all > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep_all ;
+* incidence_onprep ; 			if s_prep_any > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep_any ;
 
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
@@ -1006,8 +1013,8 @@ n_infection_w = (s_primary1549w + s_primary5054w + s_primary5559w + s_primary606
 n_infection_m = (s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m) * 4 * &sf; 
 n_infection_prep_oral = max(0, s_primary_prep_oral * 4 * &sf);
 n_infection_prep_inj = max(0, s_primary_prep_inj * 4 * &sf);
-n_elig_prep_all_m_1564 = s_elig_prep_all_m_1564 * &sf;
-n_elig_prep_all_w_1564 = s_elig_prep_all_w_1564 * &sf;
+n_elig_prep_any_m_1564 = s_elig_prep_any_m_1564 * &sf;
+n_elig_prep_any_w_1564 = s_elig_prep_any_w_1564 * &sf;
 n_onprep_oral_m = s_onprep_oral_m * &sf;
 n_onprep_oral_w = s_onprep_oral_w * &sf;
 n_onprep_inj_m = s_onprep_inj_m * &sf;
@@ -1038,8 +1045,8 @@ inf_oral = n_infection_prep_oral;
 inf_la = n_infection_prep_inj;
 deaths_w = n_death_hiv_w;
 deaths_m = n_death_hiv_m;
-elig_prep_w = n_elig_prep_all_w_1564;
-elig_prep_m = n_elig_prep_all_m_1564;
+elig_prep_w = n_elig_prep_any_w_1564;
+elig_prep_m = n_elig_prep_any_m_1564;
 oral_prep_w = n_onprep_oral_w;
 oral_prep_m = n_onprep_oral_m;
 la_prep_w = n_onprep_inj_w;
@@ -1061,7 +1068,7 @@ run option cald
 
 prop_1564_hivneg_onprep n_prep_inj_willing n_prep_oral_willing p_prep_elig_onprep_inj
 
-sim_year prep_all_strategy
+sim_year prep_any_strategy
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 
@@ -1093,10 +1100,10 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
-effect_sw_prog_prep_all  prob_prep_all_restart_choice  
-adh_pattern_prep_oral   rate_test_startprep_all    rate_choose_stop_prep_oral
-prob_prep_all_visit_counsel  rate_test_onprep_all  prep_willingness_threshold  
-prob_prep_all_restart_choice  
+effect_sw_prog_prep_any  prob_prep_any_restart_choice  
+adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
@@ -1105,7 +1112,7 @@ rel_pr_inm_inj_prep_tail_1st_per      rr_res_cab_dol  hivtest_type_1_init_prep_i
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
 
-effect_sw_prog_prep_all prob_prep_all_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
+effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1
 ;
@@ -1220,7 +1227,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 %mend var; 
-%var(v=sim_year);%var(v=prep_all_strategy);
+%var(v=sim_year);%var(v=prep_any_strategy);
 %var(v=pop_size_w); %var(v=pop_size_m); %var(v=hiv_w); %var(v=hiv_m); %var(v=diag_w); %var(v=diag_m); %var(v=art_w); %var(v=art_m); %var(v=vs_w); 
 %var(v=vs_m); %var(v=inf_w); %var(v=inf_m); %var(v=inf_oral); %var(v=inf_la); %var(v=deaths_w); %var(v=deaths_m); %var(v=elig_prep_w);  
 %var(v=elig_prep_m); %var(v=oral_prep_w); %var(v=oral_prep_m); %var(v=la_prep_w);  %var(v=la_prep_m); %var(v=cd4_500pl); %var(v=cd4_350_500); 
@@ -1229,7 +1236,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 data   wide_outputs; merge 
 
-sim_year prep_all_strategy
+sim_year prep_any_strategy
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 ;
@@ -1296,7 +1303,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=fold_change_mut_risk ); %par(p=adh_effect_of_meas_alert ); %par(p=pr_switch_line ); %par(p=prob_vl_meas_done );
 %par(p=red_adh_tb_adc ); %par(p=red_adh_tox_pop ); %par(p=add_eff_adh_nnrti ); %par(p=altered_adh_sec_line_pop );
 %par(p=prob_return_adc ); %par(p=prob_lossdiag_adctb ); %par(p=prob_lossdiag_non_tb_who3e); %par(p=higher_newp_less_engagement );
-%par(p=fold_tr ); %par(p=fold_tr_newp); %par(p=switch_for_tox ); %par(p=adh_pattern_prep_oral ); %par(p=rate_test_startprep_all ); 
+%par(p=fold_tr ); %par(p=fold_tr_newp); %par(p=switch_for_tox ); %par(p=adh_pattern_prep_oral ); %par(p=rate_test_startprep_any ); 
 %par(p=circ_inc_rate ); %par(p=p_hard_reach_w ); %par(p=hard_reach_higher_in_men );
 %par(p=p_hard_reach_m ); %par(p=inc_cat ); %par(p= base_rate_sw );  %par(p= base_rate_stop_sexwork );    %par(p= rred_a_p );
 %par(p= rr_int_tox );     %par(p= nnrti_res_no_effect );  %par(p= double_rate_gas_tox_taz );   
@@ -1312,9 +1319,9 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 
-%par(p=effect_sw_prog_prep_all);  %par(p=prob_prep_all_restart_choice);   
-%par(p=prob_prep_all_visit_counsel);  %par(p=rate_test_onprep_all); %par(p=prep_willingness_threshold);  
-%par(p=prob_prep_all_restart_choice);  
+%par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);   
+%par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
+%par(p=prob_prep_any_restart_choice);  
 %par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
 %par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_inj_b);  %par(p=prep_inj_efficacy);
 %par(p=rate_choose_stop_prep_inj);   %par(p=prep_inj_effect_inm_partner);  %par(p=res_trans_factor_ii);
@@ -1352,10 +1359,10 @@ rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag
 incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
-effect_sw_prog_prep_all  prob_prep_all_restart_choice  
-adh_pattern_prep_oral   rate_test_startprep_all    rate_choose_stop_prep_oral
-prob_prep_all_visit_counsel  rate_test_onprep_all  prep_willingness_threshold  
-prob_prep_all_restart_choice  
+effect_sw_prog_prep_any  prob_prep_any_restart_choice  
+adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
+prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
 rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
@@ -1364,7 +1371,7 @@ rel_pr_inm_inj_prep_tail_1st_per      rr_res_cab_dol  hivtest_type_1_init_prep_i
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
 
-effect_sw_prog_prep_all prob_prep_all_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
+effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1
 ;
@@ -1440,11 +1447,11 @@ run;
 
 
 data   a.w_hptn17_x; merge 
-sim_year prep_all_strategy pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
+sim_year prep_any_strategy pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 ; 
 
-prep_elig_criteria = prep_all_strategy_23_2 ; * does not matter which post 2022.75 date choen;
+prep_elig_criteria = prep_any_strategy_23_2 ; * does not matter which post 2022.75 date choen;
 
 
 data base; set a.w_hptn17_x;
