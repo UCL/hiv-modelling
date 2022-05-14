@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_hptn17;
+set a.l_hptn18;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -20,8 +20,10 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
-
 %let single_var = prop_1564_hivneg_onprep       ;
+
+  if prep_any_strategy in (4 5 8 9 12);
+* if prep_any_strategy in (6 7 10 11 13); * women only;
 
 proc univariate; var &single_var  ;  run;
 
@@ -44,7 +46,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 298     ;
+%let nfit = 3525    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -275,7 +277,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV negative adults (age 1564) taking PrEP/PEP (for mem+women PrEP availability)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0.05) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0.05) valueattrs=(size=10);
 
   label p50_prop_1564_hivneg_onprep_0 = "Continuation of oral PrEP at current level (median) ";
   label p50_prop_1564_hivneg_onprep_1 = "Scaled-up Oral PrEP (median) ";
@@ -290,6 +292,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 
 run;quit;
 
+
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -311,8 +315,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 run;quit;
 
 
-
-/*
 
 ods html;
 proc sgplot data=d; 

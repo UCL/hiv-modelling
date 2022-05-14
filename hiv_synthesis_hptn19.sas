@@ -18224,6 +18224,9 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 if cald = 2017.5 and (prevalence1549 < 0.185 or prevalence1549 > 0.225) then do;
 abort abend;
 end;
+if cald = 2021 and (s_onart < 3333 or s_onart > 6400) then do;
+abort abend;
+end;
 
 
 

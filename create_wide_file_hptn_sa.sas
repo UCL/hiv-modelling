@@ -7,7 +7,7 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn17_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn18_out\";
 
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
@@ -17,12 +17,12 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 * data i; 
 * set b.out: ;
 
-data g_hptn17; * set i;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data g_hptn18; * set i;  set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
 proc freq; tables run; where cald=2020;
 
-proc sort data=g_hptn17; 
+proc sort data=g_hptn18; 
 by run cald option;
 run;
 
@@ -30,7 +30,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set g_hptn17 ;
+set g_hptn18 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -45,7 +45,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge g_hptn17 sf;
+merge g_hptn18 sf;
 by run ;
 
 
@@ -372,6 +372,10 @@ s_hiv = s_hivge15 ;
 
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
+
+* prop_prep_oral_w ;			prop_prep_oral_w = s_prep_oral_w / (s_alive_w - s_hivge15w);
+* prop_prep_oral_m ;			prop_prep_oral_m = s_prep_oral_m / (s_alive_m - s_hivge15m); 
+* prop_prep_oral ;				prop_prep_oral = s_prep_oral / (s_alive - s_hivge15); 
 
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = max(s_onprep_sw, 0) / (s_sw_1564 - s_hiv_sw) ;
 
@@ -1114,7 +1118,7 @@ sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_inf
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1
+pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
 ;
 
 
@@ -1122,7 +1126,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_hptn17; set y;  
+data    a.l_hptn18; set y;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1131,7 +1135,7 @@ run;
 
 
 
-data y; set    a.l_hptn17; 
+data y; set    a.l_hptn18; 
 
 
   options nomprint;
@@ -1331,7 +1335,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=sens_ttype1_prep_inj_primary); %par(p=sens_ttype1_prep_inj_inf3m); %par(p=sens_ttype1_prep_inj_infge6m);
 
 %par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_primary);
-%par(p=pref_prep_inj_beta_s1);
+%par(p=pref_prep_inj_beta_s1);   %par(p=prep_from_2042);    %par(p=prep_scale_up); 
 
 data wide_par; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1373,7 +1377,7 @@ sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_inf
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1
+pref_prep_inj_beta_s1   prep_from_2042  prep_scale_up
 ;
 
 run;
@@ -1383,18 +1387,22 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data   a.w_hptn17 ;
+  data   a.w_hptn18 ;
   merge   wide_outputs wide_bl  wide_par ;  
   by run;
 
-data w_hptn17; set a.w_hptn17 ;
+data w_hptn18; set a.w_hptn18 ; 
 
 * for sa;
 n_onart_21 = art_w_21 + art_m_21;
 if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
 
-proc univariate data=w_hptn17 ;  
-var
+p_oral_prep_10yr = (oral_prep_w_33_2 + oral_prep_m_33_2) / (pop_size_w_33_2 + pop_size_m_33_2) ;
+p_la_prep_10yr = (la_prep_w_33_3 + la_prep_m_33_3) / (pop_size_w_33_3 + pop_size_m_33_3) ;
+
+
+proc univariate data=w_hptn18 ;  
+var &sf
 n_alive_w_21 n_alive_m_21  n_alive_21
 prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
 incidence1549m_21   incidence1549w_21   incidence1549_21   
@@ -1406,7 +1414,7 @@ n_onart_21 art_w_21 art_m_21
 run;
 
 
-data bl; set w_hptn17;
+data bl; set w_hptn18;
 
 n_alive_w_21 = round(n_alive_w_21,1000);  n_alive_m_21 = round(n_alive_m_21,1000);  n_alive_21 = round(n_alive_21,1000);  
 prevalence1549m_21 = round(prevalence1549m_21, 0.001); prevalence1549w_21 = round(prevalence1549w_21, 0.001); 
@@ -1429,7 +1437,7 @@ prop_prep_oral_w_21  prop_prep_oral_m_21 prop_prep_oral_21;
 
 * table 1;
 
-proc univariate data=w_hptn17 ;  
+proc univariate data=w_hptn18 ;  
 var
 n_alive_w_21 n_alive_m_21  n_alive_21
 prevalence1549m_21   prevalence1549w_21   prevalence1549_21   
@@ -1441,22 +1449,22 @@ run;
 
 proc export 
 data=bl      dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_bl_hptn17" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_bl_hptn18" replace; 
 run;
 
 
 
-data   a.w_hptn17_x; merge 
+data   a.w_hptn18_x; merge 
 sim_year prep_any_strategy pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 ; 
 
-prep_elig_criteria = prep_any_strategy_23_2 ; * does not matter which post 2022.75 date choen;
+prep_elig_criteria = prep_any_strategy_23_2 ; * does not matter which post 2022.75 date chosen;
 
 
-data base; set a.w_hptn17_x;
+data base; set a.w_hptn18_x;
 
-file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn17_base";
+file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn18_base";
 
 put run  prep_elig_criteria  sim_year_22_1
 pop_size_w_22_1 pop_size_m_22_1  hiv_w_22_1  hiv_m_22_1 diag_w_22_1 diag_m_22_1 art_w_22_1 art_m_22_1 vs_w_22_1 vs_m_22_1 inf_w_22_1 inf_m_22_1 inf_oral_22_1 
@@ -1567,7 +1575,7 @@ cd4_350_500_42_1 cd4_200_350_42_1 cd4_200_42_1 deaths_1_42_1 deaths_2_42_1 death
 
 data outp_base;
 
-infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn17_base";
+infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn18_base";
 
 input run prep_elig_criteria sim_year pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w 
 elig_prep_m oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5;
@@ -1608,14 +1616,14 @@ deaths_5  = round(deaths_5,1);
 
 proc export 
 data=outp_base dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_base_hptn17" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_base_hptn18" replace; 
 run;
 
 
 
-data la; set a.w_hptn17_x;
+data la; set a.w_hptn18_x;
 
-file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn17_la";
+file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn18_la";
 
 put run prep_elig_criteria  sim_year_22_1
 pop_size_w_22_2 pop_size_m_22_2  hiv_w_22_2  hiv_m_22_2 diag_w_22_2 diag_m_22_2 art_w_22_2 art_m_22_2 vs_w_22_2 vs_m_22_2 inf_w_22_2 inf_m_22_2 inf_oral_22_2 
@@ -1726,7 +1734,7 @@ cd4_350_500_42_2 cd4_200_350_42_2 cd4_200_42_2 deaths_1_42_2 deaths_2_42_2 death
 
 data outp_la;
 
-infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn17_la";
+infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn18_la";
 
 input run prep_elig_criteria sim_year pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w 
 elig_prep_m oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5;
@@ -1769,7 +1777,7 @@ proc print; run;
 
 proc export 
 data=outp_la dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_la_hptn17" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_la_hptn18" replace; 
 run;
 
 
