@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_hptn18;
+set a.l_hptn20;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -20,10 +20,44 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
-%let single_var = prop_1564_hivneg_onprep       ;
+%let single_var = p_la_prep_10yr      ;
 
-  if prep_any_strategy in (4 5 8 9 12);
-* if prep_any_strategy in (6 7 10 11 13); * women only;
+if run in ( 765708192
+                                             785049608
+                                             791594108
+                                             792286141
+                                             792459286
+                                             807602188
+                                             811951743
+                                             816406963
+                                             819971187
+                                             831195321
+                                             843631183
+                                             850747921
+                                             858337253
+                                             867819316
+                                             875608342
+                                             880298471
+                                             881094824
+                                             884299880
+                                             892161739
+                                             895794962
+                                             898563123
+                                             909193112
+                                             914360019
+                                             920322601
+                                             925863186
+                                             936082299
+                                             953293051
+                                             958006989
+                                             968054299
+                                             973266257
+                                             981993936
+                                             995851058
+
+
+);
+
 
 proc univariate; var &single_var  ;  run;
 
@@ -46,7 +80,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 3525    ;
+%let nfit = 90      ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -271,7 +305,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 
 run;quit;
   
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -292,6 +326,26 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0
 
 run;quit;
 
+*/
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p_la_prep_10yr";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0.05) valueattrs=(size=10);
+
+  label p50_p_la_prep_10yr_0 = "Continuation of oral PrEP at current level (median) ";
+  label p50_p_la_prep_10yr_1 = "Scaled-up Oral PrEP (median) ";
+  label p50_p_la_prep_10yr_2 = "Scaled-up cab-la PrEP, replacing oral PrEP (median) ";
+
+  series  x=cald y=p50_p_la_prep_10yr_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_la_prep_10yr_0 	upper=p95_p_la_prep_10yr_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_la_prep_10yr_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_la_prep_10yr_1 	upper=p95_p_la_prep_10yr_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_la_prep_10yr_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_la_prep_10yr_2 	upper=p95_p_la_prep_10yr_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+
+run;quit;
 
 /*
 
