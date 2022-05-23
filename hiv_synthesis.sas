@@ -275,7 +275,7 @@ newp_seed = 7;
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 1 2 3 4, 0.25 0.25 0.25 0.25);
-* super_inf_res;			%sample_uniform(super_inf_res, 0.2 0.8, 0.9 0.1)
+* super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
 								0 		0.005 	0.010 	0.015 	0.020, 
 								0.1 	0.1 	0.1 	0.4 	0.3);
