@@ -277,7 +277,7 @@ newp_seed = 7;
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 1 2 3 4, 0.25 0.25 0.25 0.25);
-* super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1)
+* super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
 								0 		0.005 	0.010 	0.015 	0.020, 
 								0.1 	0.1 	0.1 	0.4 	0.3);
@@ -16629,10 +16629,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+
+proc freq; tables cald hiv ; where death=.; run;
+
+
 /*
 
 
-proc freq; tables cald hiv ; where death=.; run;
+
 
 proc print; var 
 caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
@@ -19322,10 +19326,6 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
 
-
-/*
-
-
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
@@ -23511,7 +23511,7 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
-*/
+
 
 
 
@@ -23548,13 +23548,12 @@ put
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
-
 */
+
 
   libname a '/home/rmjlaph/Scratch/';
 
-data a.out_pop_wide_tld_test_&dataset_id; set cum_l1;
+data a.out_pop_wide_tld_&dataset_id; set cum_l1;
 
 
 keep
