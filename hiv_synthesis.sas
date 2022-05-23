@@ -16627,10 +16627,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+
+proc freq; tables cald hiv ; where death=.; run;
+
+
 /*
 
 
-proc freq; tables cald hiv ; where death=.; run;
+
 
 proc print; var 
 caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
