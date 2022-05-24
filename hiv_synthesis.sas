@@ -275,7 +275,9 @@ newp_seed = 7;
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
 * res_trans_factor_ii;		%sample(res_trans_factor_ii, 1 2 3 4, 0.25 0.25 0.25 0.25);
-* super_inf_res;			%sample_uniform(super_inf_res, 0.2 0.8, 0.9 0.1)
+
+* super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
+
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
 								0 		0.005 	0.010 	0.015 	0.020, 
 								0.1 	0.1 	0.1 	0.4 	0.3);
@@ -589,16 +591,22 @@ newp_seed = 7;
 							* rate of sex workers moving to one category lower;
 
 * sw_art_disadv;           %sample_uniform(sw_art_disadv, 1 2);
-                              if sw_art_disadv=1  then do; sw_higher_int = 1; prob_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
-                              if sw_art_disadv=2  then do; sw_higher_int = 3; prob_sw_lower_adh = 0.8;sw_higher_prob_loss_at_diag = 2;end;
+                              if sw_art_disadv=1  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
+						   	  if sw_art_disadv=2  then do; 
+						   		%sample_uniform(sw_higher_int, 2 3);
+						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
+						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
+							  end;
+
+							 
 * sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
 					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.3 0.5 0.8);
-* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 1.2 1.6 2);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.25 0.5 0.75);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.3 0.5 0.8);
 * effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
@@ -1676,7 +1684,7 @@ keep_going_1999=.;  keep_going_2004=.; keep_going_2016=.;  keep_going_2020=.;
 * eff sex worker program variables;
 eff_sw_program=0;
 eff_sw_higher_int = sw_higher_int;
-eff_prob_sw_lower_adh = prob_sw_lower_adh;
+*eff_prob_sw_lower_adh = prob_sw_lower_adh;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
@@ -2452,6 +2460,8 @@ end;
 *  ======================================================================================================================================== ;
 
 
+
+
 * SW programs starts in 2015;
 if caldate{t} = 2015 then eff_sw_program=sw_program;
 
@@ -2467,7 +2477,6 @@ if sw_program_visit=0 then do; e=rand('uniform');
 		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
 		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
 		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh * effect_sw_prog_adh ;
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
 		s= rand('uniform'); if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
 			prep_any_willing = 1; * lapr and dpv-vr ;
@@ -2496,7 +2505,7 @@ else if sw_program_visit=1 then do; e=rand('uniform');
 		sw_test_6mthly=0;
 		eff_rate_persist_sti = rate_persist_sti;
 		eff_sw_higher_int = sw_higher_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		* lapr - add lines for inj and vr? - see comment above;
@@ -2514,7 +2523,7 @@ if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_dis
 	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
 	eff_rate_persist_sti = eff_rate_persist_sti_wo_covid;
 	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
-	eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
+	*eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
 	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
 end;
 * if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
@@ -2525,12 +2534,12 @@ if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_
 	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
 	eff_rate_persist_sti_wo_covid=eff_rate_persist_sti;
 	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
-	eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
+	*eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
 	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
 	eff_sw_program = 0;
 	sw_test_6mthly = 0; 
 	eff_sw_higher_int = sw_higher_int ; 
-	eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
+	*eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
 	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
 end;
 
@@ -3685,7 +3694,7 @@ if t ge 2 then do;
 			date_last_sw_prog_vis=caldate{t};
 			sw_test_6mthly=0;
 			eff_sw_higher_int = sw_higher_int;
-			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+			*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
 
 		end;
@@ -8398,7 +8407,10 @@ if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
-if sw=1  and adh >0.8 then adh = min (1, adh * eff_prob_sw_lower_adh);
+if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
+
+if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+
 
 * high risk of resistance with nnrtis even if v low adherence;
 * dependent_on_time_step_length ;
@@ -16627,10 +16639,15 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
+
 /*
 
 
 proc freq; tables cald hiv ; where death=.; run;
+
+
+/*
+
 
 proc print; var 
 caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
@@ -18078,7 +18095,7 @@ prob_prep_any_restart_choice 	 add_prep_any_uptake_sw   cd4_monitoring   base_ra
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
-sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
@@ -24152,7 +24169,7 @@ prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
 effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv
