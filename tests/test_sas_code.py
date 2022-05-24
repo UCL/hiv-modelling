@@ -47,7 +47,7 @@ def validate_text(text):
 
 
 if __name__ == "__main__":
-    with open('hiv_synthesis.sas') as model_file:
+    with open('hiv_synthesis.sas', encoding='latin1') as model_file:
         model_text = model_file.read()
     errors = validate_text(model_text)
     if errors:
