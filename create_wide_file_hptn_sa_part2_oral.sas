@@ -16,6 +16,19 @@ if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  a
 p_oral_prep_10yr = (oral_prep_w_33_2 + oral_prep_m_33_2) / (pop_size_w_33_2 + pop_size_m_33_2 - hiv_w_33_2 - hiv_m_33_2) ;
 p_oral_prep_w_10yr = oral_prep_w_33_2 / (pop_size_w_33_2  - hiv_w_33_2 ) ;
 
+/*
+
+p_la_prep_10yr = (la_prep_w_33_3 + la_prep_m_33_3) / (pop_size_w_33_3 + pop_size_m_33_3 - hiv_w_33_3 - hiv_m_33_3) ;
+p_la_prep_w_10yr = la_prep_w_33_3 / (pop_size_w_33_3  - hiv_w_33_3 ) ;
+
+
+ods html;
+proc sort; by p_oral_prep_10yr;
+proc print; var  p_oral_prep_10yr p_la_prep_10yr  ; run;
+ods html close;
+
+*/
+
 prep_elig_criteria = prep_any_strategy; 
 
 if prep_elig_criteria in (4 5 8 9 12) then women_only = 0;
