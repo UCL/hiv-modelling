@@ -39,6 +39,7 @@ Changing parameters, or overriding default values, can be accomplished in 2 ways
    - ```-m``` the name of the model SAS file DEFAULT: hiv_synthesis.sas
    - ```-c``` the clock/time set for the model run DEFAULT: h_rt=08:00:00
    - ```-t``` the beginning of the name of the temporary output files. NOTE: the name will be amended to include the random runID, so that each model run will result in one output file for each run. DEFAULT: out
+- when using command line parameters any combination of parameters can be used. Parameters not explicitely states will fall back to their default values.
 
 The output will be stored in a folder within SCRATCH. The folder name is a combination of the name of the merged SAS file and the start of the temp output file names.
 Example:
