@@ -21,10 +21,10 @@ prep_elig_criteria = prep_any_strategy;
 if prep_elig_criteria in (4 5 8 9 12) then women_only = 0;
 if prep_elig_criteria in (6 7 10 11 13) then women_only = 1;
 
-if  0.04 <= p_la_prep_10yr < 0.06 and women_only = 1 and prep_from_2042 =  2 and prep_scale_up =  10  ;
+if  0.14 <= p_la_prep_10yr < 0.16 and women_only = 0 and prep_from_2042 ge 1 and prep_scale_up ge 5   ;
 
 
-proc print; run;
+proc print; var p_la_prep_10yr; run;
 
 
 proc univariate data=w_hptn20 ;  
@@ -75,7 +75,7 @@ run;
 
 proc export 
 data=bl      dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_bl_prev5_la_w_10yr_2" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_bl_prev15_la_xyr_x" replace; 
 run;
 
 
@@ -83,7 +83,7 @@ run;
 
 data base; set w_hptn20;
 
-file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_base_prev5_la_w_10yr_2";
+file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_base_prev15_la_xyr_x";
 
 put run  prep_elig_criteria  sim_year_22_1
 pop_size_w_22_1 pop_size_m_22_1  hiv_w_22_1  hiv_m_22_1 diag_w_22_1 diag_m_22_1 art_w_22_1 art_m_22_1 vs_w_22_1 vs_m_22_1 inf_w_22_1 inf_m_22_1 inf_oral_22_1 
@@ -194,7 +194,7 @@ cd4_350_500_42_1 cd4_200_350_42_1 cd4_200_42_1 deaths_1_42_1 deaths_2_42_1 death
 
 data outp_base;
 
-infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_base_prev5_la_w_10yr_2";
+infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_base_prev15_la_xyr_x";
 
 input run prep_elig_criteria sim_year pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w 
 elig_prep_m oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5;
@@ -235,14 +235,14 @@ deaths_5  = round(deaths_5,1);
 
 proc export 
 data=outp_base dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_base_prev5_la_w_10yr_2" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_base_prev15_la_xyr_x" replace; 
 run;
 
 
 
 data la; set w_hptn20;
 
-file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_prep_prev5_la_w_10yr_2";
+file "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_prep_prev15_la_xyr_x";
 
 put run prep_elig_criteria  sim_year_22_3
 pop_size_w_22_3 pop_size_m_22_3  hiv_w_22_3  hiv_m_22_3 diag_w_22_3 diag_m_22_3 art_w_22_3 art_m_22_3 vs_w_22_3 vs_m_22_3 inf_w_22_3 inf_m_22_3 inf_oral_22_3 
@@ -353,10 +353,10 @@ cd4_350_500_42_3 cd4_200_350_42_3 cd4_200_42_3 deaths_1_42_3 deaths_2_42_3 death
 
 data outp_la;
 
-infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_prep_prev5_la_w_10yr_2";
+infile "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn20_prep_prev15_la_xyr_x";
 
 input run prep_elig_criteria sim_year pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w 
-elig_prep_m oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_3 deaths_3 deaths_4 deaths_5;
+elig_prep_m oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5;
 
 /*
 pop_size_w = round(pop_size_w,1);
@@ -396,7 +396,7 @@ proc print; run;
 
 proc export 
 data=outp_la dbms=csv  
-outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_prep_prev5_la_w_10yr_2" replace; 
+outfile="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\sc_hptn20_prep_prev15_la_xyr_x" replace; 
 run;
 
 
