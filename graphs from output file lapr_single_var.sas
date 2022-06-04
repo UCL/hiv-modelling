@@ -9,12 +9,14 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 ods html close;
 
 data b;
-set a.l_lapr46   ;  
+set a.l_pop_wide_tld9 ;
 
-  if run le 997818251; * to give 2000 - will remove this for lapr47 and beyond;
+* this below is to re-adjust options so that it works for this program below ;
+if option in (1, 2) or cald < 2022;
+if option=1 then option=0; if option=2 then option=1;
+if cald < 2022 then option=0; 
 
-
-* if hivtest_type_1_init_prep_inj =  1  and hivtest_type_1_prep_inj =  1 ;
+* if hivtest_type_1_init_prep_inj ne 1  and hivtest_type_1_prep_inj ne 1 ;
 * if dol_higher_potency = 0.5;
 
 n_k65m = p_k65m * n_hiv;
@@ -27,7 +29,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 15576 ;
+%let nfit = 4116  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -35,9 +37,9 @@ proc sort;by cald option ;run;
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option =1 then delete;
+if option ne 0 then delete;
 
-%let var =  p_taz ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var =  p_ai_no_arv_e_inm ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -79,9 +81,9 @@ run;
 
 data option_1;
 set b;
-if option =0 then delete;
+if option ne 1 then delete;
 
-%let var = p_taz ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = p_ai_no_arv_e_inm ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -152,7 +154,6 @@ run;
 quit;
 
 
-
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -168,6 +169,7 @@ band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transp
 
 run;quit; 
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -185,6 +187,7 @@ band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / tr
 
 run;quit;
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -199,6 +202,23 @@ series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Of people on ART 12 months from start of ART, proportion with VL < 1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
+
+label p50_p_vl1000_art_12m_onart_0 = "no cab-la introduction (median) ";
+label p50_p_vl1000_art_12m_onart_1 = "cab-la introduction (median) ";
+
+series  x=cald y=p50_p_vl1000_art_12m_onart_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_vl1000_art_12m_onart_0 	upper=p95_p_vl1000_art_12m_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_vl1000_art_12m_onart_1/	lineattrs = (color=str thickness = 2);
+band    x=cald lower=p5_p_vl1000_art_12m_onart_1 	upper=p95_p_vl1000_art_12m_onart_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
 
@@ -220,7 +240,6 @@ band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0
 
 run;quit;
 
-*/
 
 
 ods html;
@@ -240,3 +259,4 @@ band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs
 run;quit;
 ods html close;
 
+*/
