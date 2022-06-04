@@ -1676,7 +1676,7 @@ run;
 
 * table 3;
 
-proc means data=   w_pop_wide_tld n mean p5 p95;
+proc means data=   w_pop_wide_tld n mean  p5 p95 ;
 var 
 p_hiv1_prep_20y_1 p_hiv1_prep_20y_2 p_hiv1_prep_20y_3 p_hiv1_prep_20y_4  d_p_hiv1_prep_20y_3_2
 p_ai_no_arv_e_inm_42_1 p_ai_no_arv_e_inm_42_2 p_ai_no_arv_e_inm_42_3 p_ai_no_arv_e_inm_42_4 d_p_ai_no_arv_e_inm_42_3_2
@@ -1685,10 +1685,11 @@ n_infected_inm_42_1  n_infected_inm_42_2  n_infected_inm_42_3  n_infected_inm_42
 n_cur_res_cab_42_1 n_cur_res_cab_42_2 n_cur_res_cab_42_3 n_cur_res_cab_42_4 d_n_cur_res_cab_42_3_2 
 p_vl1000_art_12m_onart_42_1 p_vl1000_art_12m_onart_42_2 p_vl1000_art_12m_onart_42_3 p_vl1000_art_12m_onart_42_4 d_p_vl1000_art_12m_onart_42_3_2 
 p_onart_vl1000_42_1  p_onart_vl1000_42_2 p_onart_vl1000_42_3  p_onart_vl1000_42_4 d_p_onart_vl1000_42_3_2 
+prevalence_vg1000_42_1 prevalence_vg1000_42_2 prevalence_vg1000_42_3 prevalence_vg1000_42_4
 p_vl1000_42_1  p_vl1000_42_2 p_vl1000_42_3  p_vl1000_42_4 
 p_taz_42_1 p_taz_42_2 p_taz_42_3 p_taz_42_4 d_p_taz_42_3_2  
 ;
-where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj ne 1 ; run;
+* where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj ne 1 ; run;
 run;
 
 
