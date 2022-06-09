@@ -16,6 +16,9 @@ if option in (1, 2) or cald < 2022;
 if option=1 then option=0; if option=2 then option=1;
 if cald < 2022 then option=0; 
 
+if run <=  959821763 and prep_any_strategy=4; 
+
+
 * if hivtest_type_1_init_prep_inj ne 1  and hivtest_type_1_prep_inj ne 1 ;
 * if dol_higher_potency = 0.5;
 
