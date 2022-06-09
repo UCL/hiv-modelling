@@ -21,20 +21,16 @@ data i9; set b.out_pop_wide_tld_9:;
 data a.k_pop_wide_tld9;  
 set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-
-data k_pop_wide_tld9; set a.k_pop_wide_tld9; 
-
-
-
-proc sort data=k_pop_wide_tld9; 
+proc sort data=a.k_pop_wide_tld9; 
 by run cald option;
 run;
+
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_pop_wide_tld9 ;
+set a.k_pop_wide_tld9 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -51,15 +47,16 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 
-
-
 data y; 
-merge k_pop_wide_tld9 sf;
+merge a.k_pop_wide_tld9 sf;
 by run ;
 
 
-if incidence1549_2022 > 0.2 and prevalence1549_2022 < 0.3;
+if incidence1549_2022 > 0.1 and prevalence1549_2022 < 0.3;
 
+if prep_any_strategy = 4;
+
+if run <=  959821763; * for n=1000  pop_wide_tld9 ;
 
 
 * preparatory code ;
@@ -1520,12 +1517,11 @@ proc sort; by run;run;
   merge a.wide_outputs         a.wide_par     ;
   by run;
 
-proc contents; run;
-
 
   data w_pop_wide_tld ;
   set a.w_pop_wide_tld9           ;
 
+if run <=  959821763; * for n=1000 pop_wide_tld9 ;
 
 if incidence1549_22 > 0.1 and prevalence1549_22 < 0.3;
 
