@@ -2170,14 +2170,15 @@ if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch
 
 
 
-art_Initiation_strategy=99;
-* natural history;
-
-
-
 q=rand('uniform');
 if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then art_initiation_strategy=3;  
 * dependent_on_time_step_length ;
+
+
+
+art_Initiation_strategy=99;
+* natural history;
+
 
 
 if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early so can assess 2 year influence of v alert before baseline;
@@ -6785,7 +6786,8 @@ if t ge 2 then do;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
+* natural history; 
+			registd=0; date1pos=caldate{t}; diagprim=1 ; visit=1; 
 			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4; 
 			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
@@ -6838,7 +6840,8 @@ if t ge 2 then do;
 		sens_primary=0.86;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+* natural history; 
+			registd=0; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -6889,7 +6892,8 @@ if t ge 2 then do;
 		sens_primary=sens_primary_testtype3;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype3_prep_inj_primary ;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+* natural history; 
+			registd=0; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -7290,7 +7294,8 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 	if currently_in_prep_inj_tail =1 then eff_sens_vct = sens_vct_testtype3_cab_tail; 
 
 		if t ge 3 and bb1 < eff_sens_vct then do; 
-			registd=1; date1pos=caldate{t}; 
+* natural history; 
+			registd=0; date1pos=caldate{t}; 
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
 			*costing of HIV-positive;
@@ -15604,6 +15609,20 @@ if 80 <= age      then do;
 	if hypertens180 = 1 then hypertens180_ge80 = 1;
 end;
 
+age1524_infected_5yr=0; age1524_who4_5yr=0; age1524_infected_10yr=0; age1524_who4_10yr=0;
+age1524_infected_15yr=0; age1524_who4_15yr=0; age1524_infected_20yr=0; age1524_who4_20yr=0;
+
+age2534_infected_5yr=0; age2534_who4_5yr=0; age2534_infected_10yr=0; age2534_who4_10yr=0;
+age2534_infected_15yr=0; age2534_who4_15yr=0; age2534_infected_20yr=0; age2534_who4_20yr=0;
+
+age3544_infected_5yr=0; age3544_who4_5yr=0; age3544_infected_10yr=0; age3544_who4_10yr=0;
+age3544_infected_15yr=0; age3544_who4_15yr=0; age3544_infected_20yr=0; age3544_who4_20yr=0;
+
+age4554_infected_5yr=0; age4554_who4_5yr=0; age4554_infected_10yr=0; age4554_who4_10yr=0;
+age4554_infected_15yr=0; age4554_who4_15yr=0; age4554_infected_20yr=0; age4554_who4_20yr=0;
+
+age5564_infected_5yr=0; age5564_who4_5yr=0; age5564_infected_10yr=0; age5564_who4_10yr=0;
+age5564_infected_15yr=0; age5564_who4_15yr=0; age5564_infected_20yr=0; age5564_who4_20yr=0;
 
 if 15 <= age_infection < 25 then do;
 age1524_infected_5yr=0; age1524_who4_5yr=0; if caldate&j - infection = 5 then do; age1524_infected_5yr=1;  if first_who4=1 then age1524_who4_5yr=1;  end;

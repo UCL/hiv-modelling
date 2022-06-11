@@ -1,15 +1,17 @@
 
 
-* 4 options: no prep, oral prep, inj (vary the willingness parameter) or oral prep, inj or oral prep + tld_prep;
+*
+Vale: I think a potential negtiave consequence is the fact that this people would start and stop ART
+Andrew: Are you thinking of the people that don’t know they have hiv ?  In that case I agree that they would likely have a 
+different pattern of use – on the one hand they might be more likely to interrupt because they are not diagnosed and 
+under care but on the other hand they have self-started due to their own health concerns, which could lead to better 
+persistence  
+;
 
-* for tld_prep: (i) 	increase prep_oral_willing 
-				(ii) 	additional chance of starting tld_prep if not tested but newp_ever >= 1
-				(iii)	increase onart also in people who are diagnosed - decrease loss and increase return - 
-						with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
-						who is not under care and hence wont have vl tests or possibility of pr_switch_line (safer to do this than try to 
-						change the visit variable)
 
-* create variable to indicate whether on clinic based prep with testing or rld prep without testing or clinic visits ;
+
+
+
 
 
 
