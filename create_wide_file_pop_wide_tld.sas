@@ -5,23 +5,18 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld9_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld10_out\";
 
-/*
+
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
-*/
 
-data i1; set b.out_pop_wide_tld_1:;data i2; set b.out_pop_wide_tld_2:; data i3; set b.out_pop_wide_tld_3:; data i4; set b.out_pop_wide_tld_4:; 
-data i5; set b.out_pop_wide_tld_5:; data i6; set b.out_pop_wide_tld_6:; data i7; set b.out_pop_wide_tld_7:; data i8; set b.out_pop_wide_tld_8:; 
-data i9; set b.out_pop_wide_tld_9:;  
 
-%let laprv =  pop_wide_tld9  ;
+%let laprv =  pop_wide_tld10  ;
 
-data a.k_pop_wide_tld9;  
-set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data a.k_pop_wide_tld10;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-proc sort data=a.k_pop_wide_tld9; 
+proc sort data=a.k_pop_wide_tld10; 
 by run cald option;
 run;
 
@@ -30,7 +25,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_pop_wide_tld9 ;
+set a.k_pop_wide_tld10 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -48,7 +43,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.k_pop_wide_tld9 sf;
+merge a.k_pop_wide_tld10 sf;
 by run ;
 
 
@@ -56,7 +51,7 @@ if incidence1549_2022 > 0.1 and prevalence1549_2022 < 0.3;
 
 if prep_any_strategy = 4;
 
-if run <=  959821763; * for n=1000  pop_wide_tld9 ;
+* if run <=  959821763; * for n=1000  pop_wide_tld10 ;
 
 
 * preparatory code ;
@@ -518,7 +513,7 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 /*
 
-proc means data = a.l_pop_wide_tld9  ; 
+proc means data = a.l_pop_wide_tld10  ; 
 var  pr_ever_prep_inj_res_cab pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab prop_cab_res_tail  p_prep_init_primary_res
 p_prep_reinit_primary_res  p_emerge_inm_res_cab  p_emerge_inm_res_cab_notpr p_emerge_inm_res_cab_tail p_cab_res_primary
 ; 
@@ -526,7 +521,7 @@ run;
 
 
 
-proc means noprint data = a.l_pop_wide_tld9 ;  
+proc means noprint data = a.l_pop_wide_tld10 ;  
 var p_emerge_inm_res_cab_notpr ; 
 by run;
 * where cald ge 2022.75 and option = 1 and hivtest_type_1_init_prep_inj ne 1 ; 
@@ -539,7 +534,7 @@ proc univariate; var p_emerge_inm_res_cab_notpr ;
 run;
 
 
-proc glm data = a.l_pop_wide_tld9 ;
+proc glm data = a.l_pop_wide_tld10 ;
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner pr_inm_inj_prep_primary rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol     
 cab_time_to_lower_threshold_g sens_tests_prep_inj res_trans_factor_ii hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj sens_primary_testtype3;
@@ -1145,7 +1140,7 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld9; set y;  
+data    a.l_pop_wide_tld10; set y;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1513,15 +1508,15 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_pop_wide_tld9     ; 
+  data  a.w_pop_wide_tld10     ; 
   merge a.wide_outputs         a.wide_par     ;
   by run;
 
 
   data w_pop_wide_tld ;
-  set a.w_pop_wide_tld9           ;
+  set a.w_pop_wide_tld10           ;
 
-if run <=  959821763; * for n=1000 pop_wide_tld9 ;
+* if run <=  959821763; * for n=1000 pop_wide_tld10 ;
 
 if incidence1549_22 > 0.1 and prevalence1549_22 < 0.3;
 
