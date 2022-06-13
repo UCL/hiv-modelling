@@ -1,15 +1,17 @@
 
 
-* 4 options: no prep, oral prep, inj (vary the willingness parameter) or oral prep, inj or oral prep + tld_prep;
+*
+Vale: I think a potential negtiave consequence is the fact that this people would start and stop ART
+Andrew: Are you thinking of the people that don’t know they have hiv ?  In that case I agree that they would likely have a 
+different pattern of use – on the one hand they might be more likely to interrupt because they are not diagnosed and 
+under care but on the other hand they have self-started due to their own health concerns, which could lead to better 
+persistence  
+;
 
-* for tld_prep: (i) 	increase prep_oral_willing 
-				(ii) 	additional chance of starting tld_prep if not tested but newp_ever >= 1
-				(iii)	increase onart also in people who are diagnosed - decrease loss and increase return - 
-						with people onart=1 we introduce a certain risk of becoming onart_visit0 which indicates
-						who is not under care and hence wont have vl tests or possibility of pr_switch_line (safer to do this than try to 
-						change the visit variable)
 
-* create variable to indicate whether on clinic based prep with testing or rld prep without testing or clinic visits ;
+
+
+
 
 
 
@@ -17490,6 +17492,9 @@ prevalence2529w = s_hiv2529w  / s_ageg2529w ;
 incidence1549w = (4 * 100 * s_primary1549w) / (s_alive1549_w - s_hiv1549w + s_primary1549w);
 incidence1549m = (4 * 100 * s_primary1549m) / (s_alive1549_m - s_hiv1549m + s_primary1549m);
 
+incidence1549  = (4 * 100 * (s_primary1549m + s_primary1549w )) 
+/ ((s_alive1549_m + s_alive1549_w) - (s_hiv1549m + s_hiv1549w) + (s_primary1549m + s_primary1549w ) );
+
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
 
 drop serial_no ;
@@ -18175,7 +18180,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549w incidence1549m cum_ratio_newp_mw
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -24250,7 +24255,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549w  incidence1549m  cum_ratio_newp_mw
+prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
