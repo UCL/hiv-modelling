@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.fsw_wide_15_11_21 ;
+set a.wide_fsw_24_05_22 ;
 run;
 
 proc contents;run;
@@ -10,38 +10,16 @@ proc contents;run;
 data b;
 set a;
 
-proc means n sum p50 p5 p95;var p_diag_sw_21_29_1 p_diag_sw_21_29_2 p_diag_sw_21_29_3 ;run;
-
-
-
-
-
-
-
-
-
 ***table 1;
-proc means n p50 p5 p95;var
-prevalence1549_15 prevalence1549m_15 prevalence1549w_15
-incidence1549_15 incidence1549m_15 incidence1549w_15
-prop_1564_onprep_15 
-p_diag_15 p_diag_m_15 p_diag_w_15
-p_onart_diag_15 p_onart_diag_m_15 p_onart_diag_w_15
-p_vl1000_15 p_vl1000_m_15 p_vl1000_w_15
-p_onart_vl1000_15 p_onart_vl1000_m_15 p_onart_vl1000_w_15
-death_rate_hiv_all_15 death_rate_hiv_all_m_15 death_rate_hiv_all_w_15;
-run;
 
-proc means n p50 p5 p95;var
-n_sw_1564_15
-prop_w_1564_sw_15
-prevalence_sw_15
-incidence_sw_15
-p_diag_sw_15
-p_onart_diag_sw_15
-p_onart_vl1000_sw_15
 
-p_newp_sw_15;
+
+***table 2;
+proc means n p50 p5 p95;var
+n_sw_1549__22		prop_w_1549_sw_22 		prop_w_ever_sw_22		act_dur_sw_22 
+p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22
+incidence_sw_22		prevalence_sw_22
+p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
 run;
 
 **option 1=No SW programme, option 2= Yes SW programme;

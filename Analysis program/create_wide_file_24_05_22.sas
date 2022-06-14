@@ -7,6 +7,8 @@ set a.fsw_24_05_22;
 proc sort;
 by run cald option;run;
 
+proc contents;run;
+
 
 data sf;
 set a;
@@ -197,10 +199,10 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 
-
 ***FSW;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2022;
 * n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2022;
+
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
@@ -293,9 +295,9 @@ effect_sw_prog_lossdiag		effect_sw_prog_prep		effect_sw_prog_pers_sti;
 proc sort data=y;by run option;run;
 
 
-data a.fsw_24_05_22; set y;run;
+data a.fsw_24_05_22_key; set y;run;
 
-data y; set a.fsw_24_05_22;run;
+data y; set a.fsw_24_05_22_key;run;
 
 options nomprint;
   option nospool;

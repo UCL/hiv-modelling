@@ -646,7 +646,7 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.1  0.5 );
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.02 0.05 0.1);***lbm changed for sw program and core;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -669,7 +669,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.7); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+
+***lbm changed for sw and core;
+* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.05 0.1 0.15); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -13508,6 +13510,8 @@ if sw_program_visit=0 and sw=1 then do;
 diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
 end;
 
+sti_sw=0;
+if sw=1 then sti_sw=sti;
 
 vl1000_art_incintcun_sw=.;   if sw=1      then vl1000_art_incintcun_sw    = vl1000_art_iicu;
 
@@ -16391,6 +16395,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;
 
+	s_sti_sw + sti_sw;
+
 	/*ADC and advanced hiv disease etc*/
 
 	s_adc + adc ; s_non_tb_who3_ev + non_tb_who3_ev ; s_who4_ + who4_ ; s_tb + tb ; s_adc_diagnosed + adc_diagnosed ; s_onart_adc + onart_adc ;
@@ -17980,7 +17986,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
@@ -18896,7 +18902,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
@@ -19870,7 +19876,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
