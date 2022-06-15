@@ -11,7 +11,16 @@ data b;
 set a;
 
 ***table 1;
+proc means n p50 p5 p95;var
+prevalence1549_22 	 prevalence1549w_22 	prevalence1549m_22 	incidence1549_22 	incidence1549w_22 	incidence1549m_22
+p_diag_22	 		 p_onart_diag_22   		p_onart_vl1000_22	p_vg1000_22 		p_vl1000_22 		prevalence_vg1000_22
+;run;
 
+/*
+p_diag_m_22	 		p_diag_w_22
+p_onart_diag_m_22   	p_onart_diag_w_22
+p_onart_vl1000_m_22   p_onart_vl1000_w_22
+*/
 
 
 ***table 2;
