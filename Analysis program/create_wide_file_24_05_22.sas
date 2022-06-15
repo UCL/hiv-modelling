@@ -193,11 +193,33 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_diag_w;						if s_hiv1564w  > 0 then p_diag_w = s_diag_w1564_ / s_hiv1564w ;
 
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
+<<<<<<< Updated upstream
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
+=======
+* p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
+* p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
+
+* p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
+* p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
+* p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
+* p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
+* prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
+
+
+* prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
+* prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
+* prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
+
+* incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
+* incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
+* incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+
+
+>>>>>>> Stashed changes
 
 ***FSW;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2022;
@@ -265,30 +287,53 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw =(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
+<<<<<<< Updated upstream
 * incidence1549;				incidence1549 = (s_primary1549 * 4 * 100) / (s_alive1549  - s_hiv1549  + s_primary1549);
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
+=======
+>>>>>>> Stashed changes
 
 *sti;							*p_sti = s_sti_sw/s_sw_1564;
 
 
+<<<<<<< Updated upstream
 keep run option cald sw_art_disadv
 p_diag	 p_diag_m	 p_diag_w   p_onart_diag   p_onart_diag_w   p_onart_diag_m   p_onart_vl1000_w   p_onart_vl1000_m
 n_sw_1564_  	 n_sw_1549_ 	  prop_w_1564_sw		prop_w_1549_sw 	 prop_w_ever_sw  
 p_fsw1519_	  	 p_fsw2024_		  p_fsw2529_			p_fsw3039_	
 p_sw_age1519_	  	 p_sw_age2024_	  		p_sw_age2529_ 			p_sw_age3039_
 p_age_deb_sw1519_  	 p_age_deb_sw2024_  	p_age_deb_sw2529_   	p_age_deb_sw3039_
+=======
+keep run option cald 
+prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
+p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
+p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
+
+n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
+p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
+p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_
+p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_
+>>>>>>> Stashed changes
 sw_episodes 	  	 p_sw_gt1ep
 p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
 av_sw_newp	 		 p_newp_sw
 tot_dur_sw  		 act_dur_sw  	 
 p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
 p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
+<<<<<<< Updated upstream
 p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  incidence_sw
 p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
 
 /*Sampled parameters*/
 sw_art_disad	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
+=======
+p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
+p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
+
+/*Sampled parameters*/
+sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
+>>>>>>> Stashed changes
 effect_sw_prog_lossdiag		effect_sw_prog_prep		effect_sw_prog_pers_sti;
 
 
@@ -318,9 +363,18 @@ proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; v
 data &v ; merge  y_22 t_30;  
 
 %mend var;
+<<<<<<< Updated upstream
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
+=======
+%var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
+%var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
+
+%var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
+%var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
+>>>>>>> Stashed changes
 
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
@@ -341,8 +395,16 @@ data &v ; merge  y_22 t_30;
 run;
 
 data wide_outputs;merge
+<<<<<<< Updated upstream
 p_diag	 		p_diag_m	 		p_diag_w   	    	p_onart_diag   	p_onart_diag_w
 p_onart_diag_m  p_onart_vl1000_w    p_onart_vl1000_m
+=======
+prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
+
+p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
+p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
+p_vg1000 		p_vl1000			prevalence_vg1000
+>>>>>>> Stashed changes
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
 p_fsw1519_	  	p_fsw2024_		    p_fsw2529_			p_fsw3039_	
@@ -377,10 +439,16 @@ run;
 
 
 data wide_par; merge 
+<<<<<<< Updated upstream
 sw_art_disad		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep		effect_sw_prog_pers_sti
 sw_art_disadv		sex_beh_trans_matrix_m;
 proc sort; by run;run;
+=======
+sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
+effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep		effect_sw_prog_pers_sti
+;proc sort; by run;run;
+>>>>>>> Stashed changes
 
 data a.wide_fsw_24_05_22;
 merge   wide_outputs  wide_par ;  
