@@ -1,5 +1,17 @@
 
 
+
+
+* if running again check against latest hiv_synthesis.sas ;
+
+
+
+
+
+
+
+
+
 * 4 options: no prep, oral prep, inj (vary the willingness parameter) or oral prep, inj or oral prep + tld_prep;
 
 * for tld_prep: (i) 	increase prep_oral_willing 

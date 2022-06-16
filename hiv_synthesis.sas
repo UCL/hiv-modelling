@@ -11403,26 +11403,6 @@ end;
  * dol ;
 	cost_dol=0; if o_dol=1 then cost_dol=cost_dol_a;
 
-
-
-* cost of switching to second line (not cost of the drugs); 
-
-cost_switch_line=0;
-if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
-
-	art_cost=0;
-
-    art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
-    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol) ;
-
-
-	* ART initiation cost;
-	if yrart=caldate{t} then art_cost = art_cost + art_init_cost;
-
- 	art_1_cost=0; if artline=1 then art_1_cost=art_cost; 
-	art_2_cost=0; if artline=2 then art_2_cost=art_cost;
-	art_3_cost=0; if artline=3 then art_3_cost=art_cost;
-
  
 * ADC costs;
 	adc_cost=0;
@@ -11517,6 +11497,28 @@ if pop_wide_tld_prep = 1 then do;
 	if visit_prep_oral = 3 then cost_prep_visit = cost_prep_oral_clinic+cost_prep_any_clinic_couns;
 	cost_prep_visit_oral=cost_prep_visit;
 end;
+
+
+
+* total art cost, cost of switching to second line (not cost of the drugs); * these lines moved from above so that cost of tld drugs not counted
+twise if onart=0 and pop_wide_tld_prep=1;   
+
+cost_switch_line=0;
+if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
+
+	art_cost=0;
+
+    art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
+    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol) ;
+
+
+	* ART initiation cost;
+	if yrart=caldate{t} then art_cost = art_cost + art_init_cost;
+
+ 	art_1_cost=0; if artline=1 then art_1_cost=art_cost; 
+	art_2_cost=0; if artline=2 then art_2_cost=art_cost;
+	art_3_cost=0; if artline=3 then art_3_cost=art_cost;
+
 
 cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a; 
 
