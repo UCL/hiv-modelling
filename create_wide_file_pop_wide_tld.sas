@@ -1735,24 +1735,24 @@ proc glm data=  w_pop_wide_tld;
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
 cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii 
-incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab;                  ;
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b;                  ;
 model d_p_ai_no_arv_e_inm_50y_3_2 =
 p_ai_no_arv_e_inm_22 fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
 cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  
-incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab / solution;
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b/ solution;
 run;
 
 proc glm data=    w_pop_wide_tld; 
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
 cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii 
-incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab;                ;
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b;                ;
 model d_n_death_hiv_50y_3_2 =
 n_death_hiv_22 fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy  rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
 cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  
-incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab / solution;
+incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b /  solution;
 run;
 
 
