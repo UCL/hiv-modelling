@@ -534,6 +534,8 @@ proc univariate; var p_cab_res_emerge_primary ; * p_emerge_inm_res_cab_tail_pr ;
 run;
 
 
+proc means data=y; var p_prep_adhg80; where option=1 and cald=2024; run;
+
 */
 
 
