@@ -23,13 +23,31 @@ p_onart_vl1000_m_22   p_onart_vl1000_w_22
 */
 
 
-***table 2;
+***table 2 - characteristics of FSW in 2022;
 proc means n p50 p5 p95;var
 n_sw_1549__22		prop_w_1549_sw_22 		prop_w_ever_sw_22		act_dur_sw_22 
-p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22
+p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22  p_fsw_newp0__22
 incidence_sw_22		prevalence_sw_22
 p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
 run;
+
+
+***table 3 - characteristics by disadvantage in 2030;
+
+proc means n p50 p5 p95;var
+p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
+incidence_sw_30_1	prevalence_sw_30_1
+incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
+;where sw_art_disadv=1;
+run;
+proc means n p50 p5 p95;var
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
+incidence_sw_30_2	prevalence_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
+;where sw_art_disadv=1;
+run;
+
+proc freq;table sw_program;run;
 
 **option 1=No SW programme, option 2= Yes SW programme;
 proc means n p50 p5 p95;var
