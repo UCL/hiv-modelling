@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_pop_wide_tld8 ;
+set a.l_pop_wide_tld11 ;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -20,12 +20,8 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
-  if rate_test_startprep_any ge 0.1 ;
 
-%let single_var = p_popwidetld_prep_inelig        ;
-
-proc univariate; var &single_var  ;  run;
-
+%let single_var = incidence1549_    ;
 
 
 /*
@@ -45,7 +41,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 384     ;
+%let nfit = 1780    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -555,7 +551,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -579,7 +575,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -1014,8 +1010,6 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
 
 run;
 
-
-*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people taking TLD who are HIV negative or HIV+ and undiagnosed, proportion HIV- and not having an indication for PrEP";

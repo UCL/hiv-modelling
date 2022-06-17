@@ -227,7 +227,6 @@ run;quit;
 
 */
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of AIDS deaths per year";

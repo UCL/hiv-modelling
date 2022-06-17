@@ -1534,8 +1534,8 @@ dcost_50y_3 = dart_cost_y_50y_3 + dadc_cost_50y_3 + dcd4_cost_50y_3 + dvl_cost_5
 					dcot_cost_50y_3 + dtb_cost_50y_3 + dres_cost_50y_3 + dtest_cost_50y_3 + d_t_adh_int_cost_50y_3 + dswitchline_cost_50y_3 + 
 					dcost_circ_50y_3 + dcost_condom_dn_50y_3 + dcost_child_hiv_50y_3 + dcost_non_aids_pre_death_50y_3
 					+ (dcost_prep_visit_oral_50y_3) + (dcost_prep_oral_50y_3) 
-+ (2      * dcost_prep_visit_inj_50y_3) 
-+ (2      * dcost_prep_inj_50y_3)
++ (1      * dcost_prep_visit_inj_50y_3) 
++ (1      * dcost_prep_inj_50y_3)
 ;			
 
 dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_50y_4 + dvis_cost_50y_4 + dnon_tb_who3_cost_50y_4 + 
