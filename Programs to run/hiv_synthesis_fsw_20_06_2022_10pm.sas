@@ -586,7 +586,7 @@ newp_seed = 7;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
 * sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:5);
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.95 0.05);
+* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.90 0.10);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
