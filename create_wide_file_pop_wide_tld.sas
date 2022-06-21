@@ -1082,7 +1082,7 @@ n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_wide_tld_neg_prep_inelig  p_
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop an_lin_incr_test
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice
@@ -1354,7 +1354,7 @@ run cald
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop an_lin_incr_test
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice
@@ -1409,7 +1409,8 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
 %par(p=external_exp_factor ); %par(p=rate_exp_set_lower_p_vl1000 ); %par(p=prob_pregnancy_base ); %par(p=fold_change_w );
-%par(p=fold_change_yw ); %par(p=fold_change_sti ); %par(p=tr_rate_undetec_vl); %par(p=super_infection_pop ); %par(p=an_lin_incr_test );
+%par(p=fold_change_yw ); %par(p=fold_change_sti ); %par(p=tr_rate_undetec_vl); %par(p=super_infection_pop ); %par(p= super_inf_res ); 
+%par(p=an_lin_incr_test );
 %par(p=date_test_rate_plateau ); %par(p=rate_testanc_inc ); %par(p=incr_test_rate_sympt ); %par(p=max_freq_testing );
 %par(p=test_targeting ); %par(p=fx );  %par(p=gx );  %par(p=adh_pattern ); %par(p=prob_loss_at_diag ); %par(p=pr_art_init ); 
 %par(p=rate_lost ); %par(p=prob_lost_art ); %par(p=rate_return ); %par(p=rate_restart ); %par(p=rate_int_choice );
@@ -1454,7 +1455,7 @@ data a.wide_par; merge
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop an_lin_incr_test
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
 date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice
@@ -1636,6 +1637,12 @@ pr_inm_inj_prep_primary_x = pr_inm_inj_prep_primary;
 if hivtest_type_1_prep_inj=1 then pr_inm_inj_prep_primary_x = pr_inm_inj_prep_primary / testt1_prep_inj_eff_on_res_prim; 
 * this is done to find out the originally allocated value  ;
 
+super_inf = 0;
+if super_infection_pop = 1 and super_inf_res = 0.2 then super_inf=2;
+if super_infection_pop = 1 and super_inf_res = 0.8 then super_inf=3;
+
+
+
 /*
 dcost_hiv_50y_1 = dart_cost_y_50y_1 + dadc_cost_50y_1 + dcd4_cost_50y_1 + dvl_cost_50y_1 + dvis_cost_50y_1 + dnon_tb_who3_cost_50y_1 + 
 					dcot_cost_50y_1 + dtb_cost_50y_1 + dres_cost_50y_1 + d_t_adh_int_cost_50y_1 + dswitchline_cost_50y_1 + 
@@ -1763,12 +1770,12 @@ run;
 proc glm data=  w_pop_wide_tld;  
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy prep_oral_efficacy rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
-cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern
+cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern super_inf
 incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b;                  ;
 model d_p_ai_no_arv_e_inm_50y_3_2 =
 p_ai_no_arv_e_inm_22 fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy prep_oral_efficacy rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
-cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern
+cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern  super_inf
 incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b/ solution;
 run;
 
@@ -1784,12 +1791,12 @@ proc means data=w_pop_wide_tld;  var d_p_ai_no_arv_e_inm_50y_3_2 ; where hiv_tes
 proc glm data=    w_pop_wide_tld; 
 class fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy prep_oral_efficacy rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
-cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii adh_pattern
+cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii adh_pattern  super_inf
 incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b;                ;
 model d_n_death_hiv_50y_3_2 =
 n_death_hiv_22 fold_change_mut_risk prob_prep_any_restart_choice prep_inj_efficacy prep_oral_efficacy rate_choose_stop_prep_inj  dol_higher_potency
 prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x   rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol pr_art_init    
-cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern
+cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern super_inf
 incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b /  solution;
 run;
 
@@ -1873,7 +1880,7 @@ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mi
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop an_lin_incr_test
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop super_inf_res  an_lin_incr_test
 date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
 test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
 rate_lost prob_lost_art rate_return rate_restart rate_int_choice
