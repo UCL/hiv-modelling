@@ -7,6 +7,7 @@
 
 * mlw4 contains just a small extra constraint on prevalence in 1998 and 1995 compared with mlw3 (search "abort abend");
 
+* lower future prevalence of having been circumcised, focus on 15-25 yr olds
 
 
 
