@@ -1718,7 +1718,7 @@ prevalence_vg1000_42_1 prevalence_vg1000_42_2 prevalence_vg1000_42_3 prevalence_
 p_vl1000_42_1  p_vl1000_42_2 p_vl1000_42_3  p_vl1000_42_4 
 p_taz_42_1 p_taz_42_2 p_taz_42_3 p_taz_42_4 d_p_taz_42_3_2  
 ;
-  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj ge 0 ; run;
+  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ; run;
 run;
 
 
@@ -1738,13 +1738,13 @@ ddaly_50y_2 ddaly_50y_3  d_ddaly_50y_3_2
 dcost_50y_2 dcost_50y_3  d_dcost_50y_3_2
 netdaly500_1 netdaly500_2 netdaly500_3 netdaly_averted_3_2
 ;
-  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; run;
+  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ; run;
 run;
 
 
 
 proc freq  data = w_pop_wide_tld; tables d_n_death_hiv_50y_3_2 ce_cab_la_oral_prep;
-  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; 
+  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ; 
 * where (hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ge 0) and 1.0 <= incidence1549_22 < 9.0;  run;
 run;
 
