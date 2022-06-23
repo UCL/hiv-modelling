@@ -23,7 +23,6 @@ if prep_elig_criteria in (6 7 10 11 13) then women_only = 1;
 
 if  0.17 <= p_la_prep_10yr < 0.23 and women_only = 0 and prep_from_2042 =  2  and prep_scale_up =  5   ;
 
-
 proc print; var p_la_prep_10yr; run;
 
 
