@@ -487,7 +487,7 @@ newp_seed = 7;
 * pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
 							* dependent_on_time_step_length ;
 * fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		* jan18;
-* pr_switch_line;  			%sample(pr_switch_line, 0.1 0.2 0.5 1.0, 0.25 0.25 0.25 0.25);
+* pr_switch_line;  			%sample(pr_switch_line, 0.1 0.2 0.5 0.75, 0.25 0.25 0.25 0.25);
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 

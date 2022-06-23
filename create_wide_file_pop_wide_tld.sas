@@ -1805,6 +1805,7 @@ proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where prep_inj_effi
 proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where pref_prep_inj_beta_s1 = 6 ; run;
 proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where rate_choose_stop_prep_inj = 0.3  ; run;
 proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where pr_inm_inj_prep_primary=0.5; run; 
+proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where adh_pattern =7 ;run; 
 proc means data=w_pop_wide_tld;  var d_n_death_hiv_50y_3_2 ; where hiv_test_strat=3; run; 
 
 

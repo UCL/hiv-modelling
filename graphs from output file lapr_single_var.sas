@@ -9,7 +9,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 ods html close;
 
 data b;
-set a.l_pop_wide_tld11;
+set a.l_pop_wide_tld11_with_lost;
 
 * this below is to re-adjust options so that it works for this program below ;
 if option in (1, 2) or cald < 2022;
@@ -30,7 +30,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2120  ;
+%let nfit = 2994  ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -40,7 +40,7 @@ data option_0;
 set b;
 if option ne 0 then delete;
 
-%let var =  n_death_hiv  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var =  n_death_hiv   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -173,6 +173,7 @@ band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transp
 run;quit; 
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of ART initiators, proportion with integrase inhibitor resistance";
@@ -190,7 +191,6 @@ band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / tr
 run;quit;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
@@ -206,7 +206,6 @@ series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
-
 
 
 ods html;
@@ -243,8 +242,8 @@ band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0
 
 run;quit;
 
-
 /*
+
 
 ods html;
 proc sgplot data=d; 

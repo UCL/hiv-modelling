@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_pop_wide_tld11 ;
+set a.l_pop_wide_tld11_with_lost ;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
