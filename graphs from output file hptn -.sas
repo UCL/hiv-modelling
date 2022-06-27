@@ -9,28 +9,34 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 ods html close;
 
 data b;
-set a.l_pop_wide_tld11_with_lost;
+set a.l_hptn20_all;
 
-* this below is to re-adjust options so that it works for this program below ;
-if option in (1, 2) or cald < 2022;
-if option=1 then option=0; if option=2 then option=1;
-if cald < 2022 then option=0; 
+p_onart_vl1000_ = p_onart_vl1000;
+n_death = deaths_w + deaths_m ; 
+n_death_hiv = n_death_hiv_m + n_death_hiv_w ;
 
-
-* if hivtest_type_1_init_prep_inj ne 1  and hivtest_type_1_prep_inj ne 1 ;
-* if dol_higher_potency = 0.5;
-
-n_k65m = p_k65m * n_hiv;
-p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
-p_onart_vl1000_ = p_onart_vl1000;
+
+keep run cald option n_death_hiv  n_death incidence1549_ prevalence1549_ p_onart_vl1000_ ; 
+
+data b; set b; 
+
+proc print data=b; where cald=2025; run;
+
+
+* this below is to re-adjust options so that it works for this program below ;
+if option in (0, 1) or cald < 2022;
+* if option=1 then option=0; * if option=2 then option=1;
+* if cald < 2022 then option=0; 
+
+
 
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2000  ;
+%let nfit = 12590 ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -40,7 +46,7 @@ data option_0;
 set b;
 if option ne 0 then delete;
 
-%let var = n_death_hiv ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = p_onart_vl1000_  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -84,7 +90,7 @@ data option_1;
 set b;
 if option ne 1 then delete;
 
-%let var = n_death_hiv  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = p_onart_vl1000_   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -142,8 +148,8 @@ Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
 
-label p50_incidence1549__0 = "no cab-la introduction (median) ";
-label p50_incidence1549__1 = "cab-la introduction (median) ";
+label p50_incidence1549__0 = "no oral prep scale-up (median) ";
+label p50_incidence1549__1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -155,14 +161,13 @@ run;
 quit;
 
 
-
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
 
-label p50_prevalence1549__0 = "All no cab-la introduction (median) ";
-label p50_prevalence1549__1 = "All cab-la introduction (median) ";
+label p50_prevalence1549__0 = "All no oral prep scale-up (median) ";
+label p50_prevalence1549__1 = "All oral prep scale-up (median) ";
 
 series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -179,8 +184,8 @@ Title    height=1.5 justify=center "Of ART initiators, proportion with integrase
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1       by 0.1  ) valueattrs=(size=10);
 
-label p50_p_ai_no_arv_e_inm_0 = "no cab-la introduction (median) ";
-label p50_p_ai_no_arv_e_inm_1 = "cab-la introduction (median) ";
+label p50_p_ai_no_arv_e_inm_0 = "no oral prep scale-up (median) ";
+label p50_p_ai_no_arv_e_inm_1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_p_ai_no_arv_e_inm_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_ai_no_arv_e_inm_0 	upper=p95_p_ai_no_arv_e_inm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -189,7 +194,7 @@ band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / tr
 
 run;quit;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -197,8 +202,8 @@ Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
 
-label p50_p_onart_vl1000__0 = "no cab-la introduction (median) ";
-label p50_p_onart_vl1000__1 = "cab-la introduction (median) ";
+label p50_p_onart_vl1000__0 = "no oral prep scale-up (median) ";
+label p50_p_onart_vl1000__1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -207,7 +212,7 @@ band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transp
 
 run;quit;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -215,8 +220,8 @@ Title    height=1.5 justify=center "Of people on ART 12 months from start of ART
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
 
-label p50_p_vl1000_art_12m_onart_0 = "no cab-la introduction (median) ";
-label p50_p_vl1000_art_12m_onart_1 = "cab-la introduction (median) ";
+label p50_p_vl1000_art_12m_onart_0 = "no oral prep scale-up (median) ";
+label p50_p_vl1000_art_12m_onart_1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_p_vl1000_art_12m_onart_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vl1000_art_12m_onart_0 	upper=p95_p_vl1000_art_12m_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -225,16 +230,16 @@ band    x=cald lower=p5_p_vl1000_art_12m_onart_1 	upper=p95_p_vl1000_art_12m_ona
 
 run;quit;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of AIDS deaths per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 300000   by 100000 ) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
-label p50_n_death_hiv_1 = "cab-la introduction (median) ";
+label p50_n_death_hiv_0 = "no oral prep scale-up (median) ";
+label p50_n_death_hiv_1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
@@ -244,7 +249,6 @@ band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -252,8 +256,8 @@ Title    height=1.5 justify=center "Of people on ART, proportion on atazanavir";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
 
-label p50_p_taz_0 = "no cab-la introduction (median) ";
-label p50_p_taz_1 = "cab-la introduction (median) ";
+label p50_p_taz_0 = "no oral prep scale-up (median) ";
+label p50_p_taz_1 = "oral prep scale-up (median) ";
 
 series  x=cald y=p50_p_taz_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_taz_0 	upper=p95_p_taz_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";

@@ -7,14 +7,25 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto  ; *  log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_hptn ;
+set a.l_hptn20 ;
+
+deaths = deaths_m + deaths_w;
+
+oral_prep = oral_prep_w + oral_prep_m ;
+
+la_prep = la_prep_w + la_prep_m ;
+
+proc sort; by option;
+proc means; var oral_prep la_prep deaths_m deaths_w incidence1549 prevalence1549  ;
+by option;
+where 2023 <= cald <= 2042;
+run;
+
+
 
 * proc freq; 
 * tables run; 
 * run; 
-
-  if run = 311213832     ;  * 213322110 ;
-
 
 
 prep_adhg80_ = p_prep_adhg80 ;

@@ -32,7 +32,90 @@ data a.g_hptn20; set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 */
 
-data g_hptn20; set a.g_hptn18 a.g_hptn19 a.g_hptn20;
+data g_hptn20; set  a.g_hptn18 a.g_hptn19 a.g_hptn20 ;
+
+/*
+
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
+
+s_hiv65plm = s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hiv65plw = s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+
+s_ageg65plm = s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm ;
+s_ageg65plw = s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw ;
+
+s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569_	+ s_onart_m7074_ + s_onart_m7579_ + s_onart_m8084_ + s_onart_m85pl_	;
+s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
+
+s_hiv = s_hivge15 ;
+
+
+* p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
+* p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
+
+* s_alive;						s_alive = s_alive_m + s_alive_w ;
+
+			n_dead_hivpos_cause1 = s_dead_hivpos_cause1 * 4 * &sf; 
+			rate_dead_hivpos_cause1 = (s_dead_hivpos_cause1 * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_tb = s_dead_hivpos_tb  * 4* &sf; 
+			rate_dead_hivpos_tb = (s_dead_hivpos_tb * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_cause4 = s_dead_hivpos_cause4  * 4* &sf; 
+			rate_dead_hivpos_cause4 = (s_dead_hivpos_cause4 * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_crypm = s_dead_hivpos_crypm  * 4* &sf; 
+			rate_dead_hivpos_crypm = (s_dead_hivpos_crypm * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_sbi = s_dead_hivpos_sbi  * 4* &sf; 
+			rate_dead_hivpos_sbi = (s_dead_hivpos_sbi * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_oth_adc = s_dead_hivpos_oth_adc  * 4* &sf; 
+			rate_dead_hivpos_oth_adc = (s_dead_hivpos_oth_adc * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_cause2 = s_dead_hivpos_cause2  * 4* &sf; 
+			rate_dead_hivpos_cause2 = (s_dead_hivpos_cause2 * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_cause3 = s_dead_hivpos_cause3  * 4* &sf; 
+			rate_dead_hivpos_cause3 = (s_dead_hivpos_cause3 * 4 * 100) / s_hivge15 ;
+			n_dead_hivpos_cvd = s_dead_hivpos_cvd  * 4* &sf; 
+			rate_dead_hivpos_cvd = (s_dead_hivpos_cvd * 4 * 100) / s_hivge15 ;
+			n_dead_cvd = s_dead_cvd  * 4* &sf; 
+			rate_dead_cvd = (s_dead_cvd * 4 * 100) / s_alive ;
+			n_dead_tb = s_dead_tb  * 4* &sf; 
+			rate_dead_tb = (s_dead_tb * 4 * 100) / s_alive ;
+			n_dead_hivneg_cvd = s_dead_hivneg_cvd  * 4* &sf; 
+			rate_dead_hivneg_cvd = (s_dead_hivneg_cvd * 4 * 100) / (s_alive - s_hivge15) ;
+			n_dead_hivneg_tb = s_dead_hivneg_tb  * 4* &sf; 
+			rate_dead_hivneg_tb = (s_dead_hivneg_tb * 4 * 100) / (s_alive - s_hivge15) ;
+			n_dead_hivneg_cause2 = s_dead_hivneg_cause2  * 4* &sf; 
+			rate_dead_hivneg_cause2 = (s_dead_hivneg_cause2 * 4 * 100) / (s_alive - s_hivge15) ;
+			n_dead_hivneg_cause3 = s_dead_hivneg_cause3  * 4* &sf; 
+			rate_dead_hivneg_cause3 = (s_dead_hivneg_cause3 * 4 * 100) / (s_alive - s_hivge15) ;
+			n_dead_hivneg_cause4 = s_dead_hivneg_cause4  * 4* &sf; 
+			rate_dead_hivneg_cause4 = (s_dead_hivneg_cause4 * 4 * 100) / (s_alive - s_hivge15) ;
+			n_dead_hivneg_cause5 = s_dead_hivneg_cause5  * 4* &sf; 
+			rate_dead_hivneg_cause5 = (s_dead_hivneg_cause5 * 4 * 100) / (s_alive - s_hivge15) ;
+			rate_dead_allage = (s_dead_allage * 4 * 100) / s_alive ;
+			rate_dead_hivneg_anycause = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
+			rate_dead_hivpos_anycause = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
+
+* n_death;						n_death = s_dead  * 4 * &sf;
+* n_covid;						n_covid = s_covid  * 4 * &sf;
+* n_death_hivneg_anycause;		n_death_hivneg_anycause = s_dead_hivneg_anycause  * 4 * &sf;
+* n_death_hivpos_anycause;		n_death_hivpos_anycause = s_dead_hivpos_anycause  * 4 * &sf;
+
+proc sort ; by option;
+
+ods html;
+proc means data=a.k_pop_wide_tld11_with_lost ; var s_alive s_hiv s_primary s_dead_hivneg_anycause s_dead_hivpos_anycause s_dead  
+s_dead_hivpos_cause1 rate_dead_hivpos_anycause  rate_dead_hivneg_anycause rate_dead_hivneg_cause2 
+rate_dead_hivneg_cause3 rate_dead_hivneg_cause4
+rate_dead_hivneg_cause5 rate_dead_hivneg_cvd rate_dead_hivneg_tb ; by option;
+where 2022.75 <= cald < 2072 ;
+run;
+ods html close;
+
+proc glm; class option; model s_alive = option / solution ; where option ne 4 and cald= 2068; run; 
+
+*/
+
+
 
 keep 
 
@@ -95,6 +178,7 @@ pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
 prep_any_strategy
 
 ;
+
 
 
 proc freq; tables run; where cald=2020;
@@ -1214,6 +1298,7 @@ pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
  prep_any_strategy
 
 ;
+
 
 
 proc sort data=y;by run option;run;

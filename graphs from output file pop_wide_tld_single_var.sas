@@ -21,7 +21,7 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
 
-%let single_var = incidence1549_    ;
+%let single_var = n_death_hiv    ;
 
 
 /*
@@ -41,7 +41,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 4240    ;
+%let nfit = 4000    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -551,7 +551,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -575,7 +574,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -622,7 +621,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
-  
+*/
  
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
@@ -646,7 +645,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 run;
 
 
- 
+/*
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
