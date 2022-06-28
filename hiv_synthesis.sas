@@ -664,7 +664,6 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr and dpv-vr - may need to define different values? -  JAS dont think this is relevent for inj & vr forms? ;
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
-* adh_pattern_prep_oral;  		adh_pattern_prep_oral = 1; *changed after discussions jun 22 - thinking prep adherence too low;
 
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
 								* dependent_on_time_step_length ;
@@ -1815,11 +1814,9 @@ red_adh_multi_pill = red_adh_multi_pill_pop * exp(rand('normal')*0.3); red_adh_m
 
 * INDIVIDUAL-LEVEL PREP PARAMETERS
 
-* adherence pattern for oral prep;
-* lapr - consider if we need similar variables to represent drug levels for CAB-LA injections and DPV ring ;
-if adh_pattern_prep_oral=1 then adhav_prep_oral = adhav*1.00; 
-if adh_pattern_prep_oral=2 then adhav_prep_oral = adhav*0.90;
-if adh_pattern_prep_oral=3 then adhav_prep_oral = adhav*0.80;
+* adherence pattern for oral prep; * simplified to be equal to adhav june 22;
+adhav_prep_oral = adhav; 
+
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
 * Will need to update distributions with data / expert opinion ;
@@ -17023,7 +17020,7 @@ run;
 
 proc print; var serial_no caldate&j 
 prep prep_any_strategy prep_any_elig  prep_any_ever  dt_prep_oral_s   continuous_prep_any_use
-adh_pattern_prep_oral rate_test_startprep_any  rate_choose_stop_prep_oral prob_prep_any_restart_choice 
+rate_test_startprep_any  rate_choose_stop_prep_oral prob_prep_any_restart_choice 
 eff_rate_test_startprep_any eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice 
 annual_testing_prep_oral hivtest_type prep_oral_efficacy factor_prep_adh_older rate_test_onprep_any pr_prep_oral_b prob_prep_any_restart prob_prep_any_visit_counsel
 tot_yrs_prep_oral prob_prep_any_restart_choice  pop_wide_tld_prob_egfr;
@@ -18103,7 +18100,7 @@ res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_lo
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep_oral  rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice 	 add_prep_any_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
@@ -24177,7 +24174,7 @@ res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep_oral  rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
