@@ -585,8 +585,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
-* sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:5);
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.90 0.10);
+* sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:4);
+* sw_init_newp;    			%sample_uniform(sw_init_newp, 1 2 3);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
@@ -897,13 +897,7 @@ sw_newp_lev_3_1 = 0.01 ; sw_newp_lev_3_2 = 0.01 ; sw_newp_lev_3_3 = 0.96 ; sw_ne
 sw_newp_lev_4_1 = 0.01 ; sw_newp_lev_4_2 = 0.01 ; sw_newp_lev_4_3 = 0.01 ; sw_newp_lev_4_4 = 0.96 ; sw_newp_lev_4_5 = 0.01; 
 sw_newp_lev_5_1 = 0.01 ; sw_newp_lev_5_2 = 0.01 ; sw_newp_lev_5_3 = 0.01 ; sw_newp_lev_5_4 = 0.01 ; sw_newp_lev_5_5 = 0.96 ; 
 end; 
-if sw_trans_matrix=5 then do; 
-sw_newp_lev_1_1 = 1;  sw_newp_lev_1_2 = 0; sw_newp_lev_1_3 = 0; sw_newp_lev_1_4 = 0; sw_newp_lev_1_5 = 0; 
-sw_newp_lev_2_1 = 0;  sw_newp_lev_2_2 = 1; sw_newp_lev_2_3 = 0; sw_newp_lev_2_4 = 0; sw_newp_lev_2_5 = 0; 
-sw_newp_lev_3_1 = 0;  sw_newp_lev_3_2 = 0; sw_newp_lev_3_3 = 1; sw_newp_lev_3_4 = 0; sw_newp_lev_3_5 = 0; 
-sw_newp_lev_4_1 = 0;  sw_newp_lev_4_2 = 0; sw_newp_lev_4_3 = 0; sw_newp_lev_4_4 = 1; sw_newp_lev_4_5 = 0; 
-sw_newp_lev_5_1 = 0;  sw_newp_lev_5_2 = 0; sw_newp_lev_5_3 = 0; sw_newp_lev_5_4 = 0; sw_newp_lev_5_5 = 1; 
-end; 
+
 
 
 * test type;
