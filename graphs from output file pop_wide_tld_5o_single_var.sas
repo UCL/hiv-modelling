@@ -21,7 +21,7 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
 
-%let single_var = prop_hivneg_onprep    ;
+%let single_var = n_cur_res_cab    ;
 
 
 /*
@@ -41,7 +41,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 4000    ;
+%let nfit = 5245    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -88,6 +88,7 @@ run;
 
 %option_0;
 run;
+
 
 
 
@@ -185,6 +186,7 @@ run;
 
 
 
+
 data option_3;
 set b;
 if option =3;
@@ -233,7 +235,6 @@ run;
 
 
 
-
 data option_4;
 set b;
 if option =4;
@@ -256,9 +257,9 @@ run;
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_4 out=l&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_4 out=m&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data l&count;set l&count;***creates one dataset per variable;
+data m&count;set m&count;***creates one dataset per variable;
 p25_&varb._4  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._4 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._4  = PCTL(5,of &varb.1-&varb.&nfit);
@@ -270,7 +271,7 @@ keep cald option_ p5_&varb._4 p95_&varb._4 p50_&varb._4 p25_&varb._4 p75_&varb._
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  ll&count;quit;run;
+      delete  mm&count;quit;run;
 %end;
 %mend;
 
@@ -283,18 +284,15 @@ run;
 
 
 
-
-
-
 data d; * this is number of variables in %let var = above ;
-merge g1  h1  k1  l1;
+merge g1  h1  k1  l1  m1; 
 by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -316,13 +314,11 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_hivneg_onprep_2 	upper=p95_prop_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_prop_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_prop_hivneg_onprep_3 	upper=p95_prop_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_prop_hivneg_onprep_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_prop_hivneg_onprep_4 	upper=p95_prop_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_prop_hivneg_onprep_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_prop_hivneg_onprep_4 	upper=p95_prop_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -344,8 +340,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_1564_hivneg_onprep_2 	upper=p95_prop_1564_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_prop_1564_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_3 	upper=p95_prop_1564_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_prop_1564_hivneg_onprep_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_prop_1564_hivneg_onprep_4 	upper=p95_prop_1564_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_prop_1564_hivneg_onprep_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_prop_1564_hivneg_onprep_4 	upper=p95_prop_1564_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -373,8 +369,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_p_prep_elig_onprep_inj_2 	upper=p95_p_prep_elig_onprep_inj_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_prep_elig_onprep_inj_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_prep_elig_onprep_inj_3 	upper=p95_p_prep_elig_onprep_inj_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_prep_elig_onprep_inj_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_prep_elig_onprep_inj_4 	upper=p95_p_prep_elig_onprep_inj_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_prep_elig_onprep_inj_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_prep_elig_onprep_inj_4 	upper=p95_p_prep_elig_onprep_inj_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -400,11 +396,10 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_p_elig_hivneg_onprep_2 	upper=p95_p_elig_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_elig_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_3 	upper=p95_p_elig_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_4 	upper=p95_p_elig_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_hivneg_onprep_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_elig_hivneg_onprep_4 	upper=p95_p_elig_hivneg_onprep_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
-
 
 
 ods html;
@@ -427,8 +422,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_p_newp_prep_hivneg_2 	upper=p95_p_newp_prep_hivneg_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_newp_prep_hivneg_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_newp_prep_hivneg_3 	upper=p95_p_newp_prep_hivneg_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_newp_prep_hivneg_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_newp_prep_hivneg_4 	upper=p95_p_newp_prep_hivneg_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_newp_prep_hivneg_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_newp_prep_hivneg_4 	upper=p95_p_newp_prep_hivneg_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -454,8 +449,8 @@ yaxis grid label	= '$m per year' 	labelattrs=(size=12)  values = (0 to 250   by 
   band    x=cald lower=p5_dcost_2 	upper=p95_dcost_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_dcost_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_dcost_3 	upper=p95_dcost_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_dcost_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_dcost_4 	upper=p95_dcost_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_dcost_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_dcost_4 	upper=p95_dcost_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -481,8 +476,8 @@ yaxis grid label	= '$m per year' 	labelattrs=(size=12)  values = (0 to 500   by 
   band    x=cald lower=p5_cost_2 	upper=p95_cost_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_cost_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_cost_3 	upper=p95_cost_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_cost_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_cost_4 	upper=p95_cost_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_cost_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_cost_4 	upper=p95_cost_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -508,8 +503,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = (50 to 100   by 
   band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_diag_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_diag_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_diag_4 	upper=p95_p_diag_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_diag_4 	upper=p95_p_diag_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -533,8 +528,8 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
   band    x=cald lower=p5_p_onart_diag_2 	upper=p95_p_onart_diag_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_diag_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_onart_diag_3 	upper=p95_p_onart_diag_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_p_onart_diag_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_onart_diag_4 	upper=p95_p_onart_diag_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_p_onart_diag_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_onart_diag_4 	upper=p95_p_onart_diag_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -559,8 +554,8 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
   band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_onart_3 	upper=p95_p_onart_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_onart_4 	upper=p95_p_onart_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_onart_4 	upper=p95_p_onart_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -586,10 +581,11 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 0.3 by  
   band    x=cald lower=p5_p_iime_2 	upper=p95_p_iime_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_iime_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_iime_3 	upper=p95_p_iime_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_iime_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_p_iime_4 	upper=p95_p_iime_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_iime_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_p_iime_4 	upper=p95_p_iime_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
+
 
 
 ods html;
@@ -612,10 +608,11 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 300000 b
   band    x=cald lower=p5_n_cur_res_cab_2 	upper=p95_n_cur_res_cab_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_cur_res_cab_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_cur_res_cab_3 	upper=p95_n_cur_res_cab_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_n_cur_res_cab_4/	lineattrs = (color=pink thickness = 3);
-  band    x=cald lower=p5_n_cur_res_cab_4 	upper=p95_n_cur_res_cab_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_n_cur_res_cab_4/	lineattrs = (color=bib thickness = 3);
+  band    x=cald lower=p5_n_cur_res_cab_4 	upper=p95_n_cur_res_cab_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
+
 
 
 ods html;
@@ -638,10 +635,11 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
   band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_vl1000__4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_p_vl1000__4 	upper=p95_p_vl1000__4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_vl1000__4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_p_vl1000__4 	upper=p95_p_vl1000__4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
+
 
 
 ods html;
@@ -664,8 +662,8 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_incidence1549__3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=pink e thickness = 3);
-  band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -691,8 +689,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     
   band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_prevalence1549__3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence1549__4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_prevalence1549__4 	upper=p95_prevalence1549__4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_prevalence1549__4 	upper=p95_prevalence1549__4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -718,8 +716,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
   band    x=cald lower=p5_prevalence_vg1000__2 	upper=p95_prevalence_vg1000__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_prevalence_vg1000__3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_prevalence_vg1000__3 	upper=p95_prevalence_vg1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_prevalence_vg1000__4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_prevalence_vg1000__4 	upper=p95_prevalence_vg1000__4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_prevalence_vg1000__4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_prevalence_vg1000__4 	upper=p95_prevalence_vg1000__4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -743,10 +741,11 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
   band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_death_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_death_hiv_3 	upper=p95_n_death_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_death_hiv_4 	upper=p95_n_death_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_death_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_death_hiv_4 	upper=p95_n_death_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
+
 
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
@@ -772,8 +771,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 200000   
   band    x=cald lower=p5_n_cd4_lt200__2 	upper=p95_n_cd4_lt200__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_cd4_lt200__3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_cd4_lt200__3 	upper=p95_n_cd4_lt200__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_n_cd4_lt200__4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_cd4_lt200__4 	upper=p95_n_cd4_lt200__4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_n_cd4_lt200__4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_cd4_lt200__4 	upper=p95_n_cd4_lt200__4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -798,8 +797,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 5    by  
   band    x=cald lower=p5_aids_death_rate_2 	upper=p95_aids_death_rate_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_aids_death_rate_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_aids_death_rate_3 	upper=p95_aids_death_rate_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_aids_death_rate_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_aids_death_rate_4 	upper=p95_aids_death_rate_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_aids_death_rate_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_aids_death_rate_4 	upper=p95_aids_death_rate_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -825,8 +824,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 5    by  
   band    x=cald lower=p5_death_rate_hiv_2 	upper=p95_death_rate_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_3 	upper=p95_death_rate_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_death_rate_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_death_rate_hiv_4 	upper=p95_death_rate_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_death_rate_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_death_rate_hiv_4 	upper=p95_death_rate_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -852,8 +851,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.5  by  
   band    x=cald lower=p5_death_rate_hiv_all_2 	upper=p95_death_rate_hiv_all_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_all_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_all_3 	upper=p95_death_rate_hiv_all_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_death_rate_hiv_all_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_death_rate_hiv_all_4 	upper=p95_death_rate_hiv_all_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_death_rate_hiv_all_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_death_rate_hiv_all_4 	upper=p95_death_rate_hiv_all_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -880,8 +879,8 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
   band    x=cald lower=p5_n_pop_wide_tld_prep_2 	upper=p95_n_pop_wide_tld_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_prep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_prep_3 	upper=p95_n_pop_wide_tld_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_n_pop_wide_tld_prep_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_pop_wide_tld_prep_4 	upper=p95_n_pop_wide_tld_prep_4  / transparency=0.9 fillattrs = (color=pink ) legendlabel= "90% range";
+ series  x=cald y=p50_n_pop_wide_tld_prep_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_pop_wide_tld_prep_4 	upper=p95_n_pop_wide_tld_prep_4  / transparency=0.9 fillattrs = (color=bib ) legendlabel= "90% range";
 
 run;quit;
 
@@ -908,8 +907,8 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
   band    x=cald lower=p5_n_onart_2 	upper=p95_n_onart_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_onart_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_onart_3 	upper=p95_n_onart_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_onart_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_onart_4 	upper=p95_n_onart_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_onart_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_onart_4 	upper=p95_n_onart_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -935,8 +934,8 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0
   band    x=cald lower=p5_prop_art_or_prep_2 	upper=p95_prop_art_or_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_prop_art_or_prep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_prop_art_or_prep_3 	upper=p95_prop_art_or_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_prop_art_or_prep_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_prop_art_or_prep_4 	upper=p95_prop_art_or_prep_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_prop_art_or_prep_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_prop_art_or_prep_4 	upper=p95_prop_art_or_prep_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -964,8 +963,8 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 3000000  by 10
   band    x=cald lower=p5_n_art_or_prep_2 	upper=p95_n_art_or_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_art_or_prep_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_art_or_prep_3 	upper=p95_n_art_or_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_art_or_prep_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_art_or_prep_4 	upper=p95_n_art_or_prep_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_art_or_prep_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_art_or_prep_4 	upper=p95_n_art_or_prep_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -993,8 +992,8 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000   by 1
   band    x=cald lower=p5_n_prep_inj_2 	upper=p95_n_prep_inj_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_prep_inj_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_prep_inj_3 	upper=p95_n_prep_inj_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_prep_inj_4 	upper=p95_n_prep_inj_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_inj_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_prep_inj_4 	upper=p95_n_prep_inj_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;quit;
 
@@ -1021,8 +1020,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 320000   
   band    x=cald lower=p5_n_death_hivneg_anycause_2 	upper=p95_n_death_hivneg_anycause_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_death_hivneg_anycause_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_death_hivneg_anycause_3 	upper=p95_n_death_hivneg_anycause_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hivneg_anycause_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_death_hivneg_anycause_4 	upper=p95_n_death_hivneg_anycause_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_death_hivneg_anycause_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_death_hivneg_anycause_4 	upper=p95_n_death_hivneg_anycause_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1049,8 +1048,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1000    by  1
   band    x=cald lower=p5_n_started_prep_inj_hiv_2 	upper=p95_n_started_prep_inj_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_inj_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_started_prep_inj_hiv_3 	upper=p95_n_started_prep_inj_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=mean_n_started_prep_inj_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_started_prep_inj_hiv_4 	upper=p95_n_started_prep_inj_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=mean_n_started_prep_inj_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_started_prep_inj_hiv_4 	upper=p95_n_started_prep_inj_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1075,8 +1074,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 10000   by  1
   band    x=cald lower=p5_n_started_prep_any_hiv_2 	upper=p95_n_started_prep_any_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_any_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_started_prep_any_hiv_3 	upper=p95_n_started_prep_any_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=mean_n_started_prep_any_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_started_prep_any_hiv_4 	upper=p95_n_started_prep_any_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=mean_n_started_prep_any_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_started_prep_any_hiv_4 	upper=p95_n_started_prep_any_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1100,8 +1099,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 500000   by  
   band    x=cald lower=p5_n_pop_wide_tld_hiv_2 	upper=p95_n_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_hiv_3 	upper=p95_n_pop_wide_tld_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_n_pop_wide_tld_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_n_pop_wide_tld_hiv_4 	upper=p95_n_pop_wide_tld_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_pop_wide_tld_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_n_pop_wide_tld_hiv_4 	upper=p95_n_pop_wide_tld_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1126,8 +1125,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
   band    x=cald lower=p5_p_pop_wide_tld_hiv_2 	upper=p95_p_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_pop_wide_tld_hiv_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_hiv_3 	upper=p95_p_pop_wide_tld_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-  series  x=cald y=p50_p_pop_wide_tld_hiv_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_p_pop_wide_tld_hiv_4 	upper=p95_p_pop_wide_tld_hiv_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_hiv_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_4 	upper=p95_p_pop_wide_tld_hiv_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1152,8 +1151,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_2 	upper=p95_p_pop_wide_tld_prep_elig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_pop_wide_tld_prep_elig_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_3 	upper=p95_p_pop_wide_tld_prep_elig_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_p_pop_wide_tld_prep_elig_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_4 	upper=p95_p_pop_wide_tld_prep_elig_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_p_pop_wide_tld_prep_elig_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_4 	upper=p95_p_pop_wide_tld_prep_elig_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
@@ -1177,13 +1176,13 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = (0 to 1        by  0
   band    x=cald lower=p5_p_popwidetld_prep_inelig_2 	upper=p95_p_popwidetld_prep_inelig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   series  x=cald y=p50_p_popwidetld_prep_inelig_3/	lineattrs = (color=orange thickness = 3);
   band    x=cald lower=p5_p_popwidetld_prep_inelig_3 	upper=p95_p_popwidetld_prep_inelig_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
- series  x=cald y=p50_p_popwidetld_prep_inelig_4/	lineattrs = (color=pink   thickness = 3);
-  band    x=cald lower=p5_p_popwidetld_prep_inelig_4 	upper=p95_p_popwidetld_prep_inelig_4  / transparency=0.9 fillattrs = (color=pink  ) legendlabel= "90% range";
+ series  x=cald y=p50_p_popwidetld_prep_inelig_4/	lineattrs = (color=bib   thickness = 3);
+  band    x=cald lower=p5_p_popwidetld_prep_inelig_4 	upper=p95_p_popwidetld_prep_inelig_4  / transparency=0.9 fillattrs = (color=bib  ) legendlabel= "90% range";
 
 run;
 
 
-
+*/
 
 ods html close;
 

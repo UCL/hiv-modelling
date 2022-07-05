@@ -1547,6 +1547,7 @@ dcost_50y_4 = dart_cost_y_50y_4 + dadc_cost_50y_4 + dcd4_cost_50y_4 + dvl_cost_5
 					+ (dcost_prep_visit_oral_50y_4) + (dcost_prep_oral_50y_4) 
 + (1      * dcost_prep_visit_inj_50y_4) 
 + (1      * dcost_prep_inj_50y_4)
+;
 
 dcost_50y_5 = dart_cost_y_50y_5 + dadc_cost_50y_5 + dcd4_cost_50y_5 + dvl_cost_50y_5 + dvis_cost_50y_5 + dnon_tb_who3_cost_50y_5 + 
 					dcot_cost_50y_5 + dtb_cost_50y_5 + dres_cost_50y_5 + dtest_cost_50y_5 + d_t_adh_int_cost_50y_5 + dswitchline_cost_50y_5 + 
@@ -1624,6 +1625,13 @@ d_n_death_hiv_50y_3_2 = n_death_hiv_50y_3 - n_death_hiv_50y_2 ;
 d_ddaly_50y_3_2 = ddaly_50y_3 - ddaly_50y_2 ;
 d_dcost_50y_3_2 =  dcost_50y_3 - dcost_50y_2 ; 
 netdaly_averted_3_2 = netdaly500_3 - netdaly500_2 ; 
+d_n_death_hiv_50y_5_2 = n_death_hiv_50y_5 - n_death_hiv_50y_2 ;
+d_ddaly_50y_5_2 = ddaly_50y_5 - ddaly_50y_2 ;
+d_dcost_50y_5_2 =  dcost_50y_5 - dcost_50y_2 ; 
+d_n_death_hiv_50y_4_3 = n_death_hiv_50y_4 - n_death_hiv_50y_3 ;
+d_ddaly_50y_4_3 = ddaly_50y_4 - ddaly_50y_3 ;
+d_dcost_50y_4_3 =  dcost_50y_4 - dcost_50y_3 ; 
+
 
 r_incidence1549_50y_3_2 = incidence1549_50y_3 / incidence1549_50y_2 ;
 
@@ -1715,10 +1723,10 @@ run;
 * table 4;
 proc means data=  w_pop_wide_tld n mean p5 p95;
   var 
-n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 n_death_hiv_50y_4 n_death_hiv_50y_5 d_n_death_hiv_50y_3_2
-ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4  ddaly_50y_5    d_ddaly_50y_3_2
-dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4 dcost_50y_5  d_dcost_50y_3_2
-netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 netdaly_averted_3_2
+n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 n_death_hiv_50y_4 n_death_hiv_50y_5 d_n_death_hiv_50y_5_2
+ddaly_50y_1 ddaly_50y_2 ddaly_50y_3 ddaly_50y_4  ddaly_50y_5    d_ddaly_50y_5_2 d_ddaly_50y_4_3
+dcost_50y_1   dcost_50y_2 dcost_50y_3   dcost_50y_4 dcost_50y_5  d_dcost_50y_5_2 d_dcost_50y_4_3
+netdaly500_1 netdaly500_2 netdaly500_3 netdaly500_4 netdaly500_5 
 ;
   where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; run;
 run;
