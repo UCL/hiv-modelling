@@ -2,8 +2,9 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.wide_fsw_16_06_22 ;
+set a.wide_fsw_05_07_22 ;
 run;
+proc means n p50 p5 p95;var incidence_sw_22 p_fsw_newp0__22 ;where sw_trans_matrix=1;run;
 
 proc contents;run;
 
@@ -56,3 +57,23 @@ p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
 ;where sw_art_disadv=2;
 run;
+
+
+
+
+
+
+proc means n p50 p5 p95;var incidence_sw_22 p_fsw_newp0__22 ;where sw_trans_matrix=1;run;
+
+proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=2;run;
+proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=3;run;
+proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=4;run;
+proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=5;run;
+proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=6;run;
+
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=1;run;
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=2;run;
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=3;run;
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=4;run;
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=5;run;
+proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=6;run;
