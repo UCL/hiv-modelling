@@ -2,7 +2,7 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_8__out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_7__out\";
 
 data g1;    set b.out1: ;run;
 data g2;    set b.out2: ;run;
@@ -21,9 +21,9 @@ proc contents;run;
 proc sort data=g; 
 by run cald option;run;
 quit;
-
-proc freq data=g;table cald;run;
-*498 simulation 116034 observations, from 1984 to 2041.75;
+/*
+proc freq data=g;table cald;run;*/
+*500 simulation 116500 observations, from 1984 to 2041.75;
 
 
 
@@ -38,16 +38,16 @@ sf_2021 = (15117400 * 0.581) / s_alive;
 *Source for Zimbabwe population is https://www.worldometers.info/world-population/zimbabwe-population/ accessed 6/9/2021;
 * 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
 keep run sf_2021;
-proc sort; by run;run;
+proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf_2021;run;
-*It does keep a differnt value for the differen simulations, I checked it;
 
 /*proc contents data=g;run;*/
 data y; 
 merge g sf;
 by run ;
+
 
 * preparatory code ;
 
@@ -953,7 +953,7 @@ n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1524m n_new_inf1524w n_new_
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep n_prep_ever n_covid  n_death_covid n_death n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64*/ 
+prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64*/ 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence2549w   incidence2549m incidence_sw 
 test_prop_positive  p_newp_prep  
@@ -1203,7 +1203,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_birth_with_inf_child);
 %var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
-%var(v= n_prep);%var(v= n_prep_ever); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); %var(v=n_death_hivrel_m); %var(v=n_death_hivrel_w); 
+%var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); %var(v=n_death_hivrel_m); %var(v=n_death_hivrel_w); 
 *%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
 %var(v=incidence2534w);   %var(v=incidence2534m) ; %var(v=incidence3544w);   %var(v=incidence3544m) ;%var(v=incidence4554w);   %var(v=incidence4554m) ;
 %var(v=incidence5564w);   %var(v=incidence5564m) ;
@@ -1318,7 +1318,7 @@ p_iime   p_pime   p_nnme     n_pregnant_ntd   n_preg_odabe
 n_birth_with_inf_child
 n_tested n_tested_sw test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
-n_prep n_prep_ever n_covid  n_death_covid  n_death  n_death_hivrel n_death_hivrel_m n_death_hivrel_w 
+n_prep  n_covid  n_death_covid  n_death  n_death_hivrel n_death_hivrel_m n_death_hivrel_w 
 /*p_death_hivrel_age_le64*/  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m  incidence2549w   incidence2549m   incidence_sw
  n_mcirc1549_3m  n_vmmc1549_3m 
@@ -1672,8 +1672,8 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
-*08/07/2022 runs from April 2022 n=47 out of 498;
-
+*n=33 out of 500;
+*n=153 out of 1996;
 
 
 
@@ -1689,7 +1689,6 @@ where cald = 2021.25;
 run;
 ods html close;
 
-*Then I run the file graphs from output file;
 
 /*
 

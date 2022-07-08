@@ -36,8 +36,7 @@
 								0.005 0.01 0.015, 
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
-* fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
-							 %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
+* fold_rate_decr_test_future;%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
@@ -75,7 +74,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 							*%sample(circ_inc_rate,		
 							0.001	0.003	0.01	0.1, 
 				  	   		0.1		0.6		0.2		0.1);*Vale - 20211026;
-							*%sample(circ_inc_rate,        0.001 0.002 0.003, 
+							%sample(circ_inc_rate,        0.001 0.002 0.003, 
                                  				          0.25  0.5   0.25);*Vale - 20211104;
 							%sample(circ_inc_rate, 0.0001 0.001	0.002, 								 
 						   						   0.25	  0.5 	0.25);
@@ -83,12 +82,3 @@ rate_ch_art_init_str_9 = 0.1 ;
 							%sample(prob_birth_circ, 
 							0.05 0.1 0.15,
 							0.25 0.5 0.25); *Vale - 20211026;
-
-* rel_incr_circ_post_2013;	*%sample(rel_incr_circ_post_2013, 
-								0.8		1		3		7, 
-								0.10	0.25	0.25	0.40);
-							*if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
-							%sample(rel_incr_circ_post_2013, 
-								1		3		5, 
-								0.25	0.5		0.25);
-							*if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);

@@ -54,23 +54,24 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 76
+1.  Population...................................Line 77
 2.  Fertility....................................Line 343
-3.  Mortality....................................Line 434
-4.  Prevalence...................................Line 612
-5.  Incidence....................................Line 835
-6.  Number living with HIV ......................Line 964
-7.  Sexual behaviour.............................Line 1024
-8.  Testing......................................Line 1191
-9.  Linkage from testing to ART Uptake...........Line 1681
-10. On ART: In need, started, on ART.............Line 1714
-11. Median CD4 at diagnosis and ART initiation...Line 2030
-12. Virological outcomes on 1st line.............Line 2080
-13. Retention on ART.............................Line 2166
-14. Resistance...................................Line 2334
-15. Male circumcision............................Line 2402
-16. Sexually transmitted infections..............Line 2481
-17. Tubercolosis.................................Line 2491
+3.  Mortality....................................Line 439
+4.  Prevalence...................................Line 615
+5.  Incidence....................................Line 1027
+6.  Number living with HIV ......................Line 1179
+7.  Sexual behaviour.............................Line 1239
+8.  Testing......................................Line 1416
+9.  Linkage from testing to ART Uptake...........Line 1942
+10. On ART: In need, started, on ART.............Line 1975
+11. Median CD4 at diagnosis and ART initiation...Line 2324
+12. Virological outcomes on 1st line.............Line 2383
+13. Retention on ART.............................Line 2493
+14. Resistance...................................Line 2661
+15. Male circumcision............................Line 2729
+16. PrEP.........................................Line 2840
+17. Sexually transmitted infections..............Line 2855
+18. Tubercolosis.................................Line 2865
 
 *******************************************************************************************
 *********************************     1. Population    ************************************
@@ -335,7 +336,6 @@ if cald=2013.75 then do;
 	o_p_3039_fsw_rds= 0.360; o_p_3039_fsw_ll_rds= 0.286; o_p_3039_fsw_ul_rds= 0.417;
 	o_p_ab40_fsw_rds= 0.151; o_p_ab40_fsw_ll_rds= 0.090; o_p_ab40_fsw_ul_rds= 0.198;
 end;
-
 
 
 
@@ -608,8 +608,6 @@ if cald=2016.5 then do;o_r_aidsdeath_Zim_GARPR=0.00155;o_ll_r_aidsdeath_Zim_GARP
 if cald=2017.5 then do;o_r_aidsdeath_Zim_GARPR=0.00152;o_ll_r_aidsdeath_Zim_GARPR=0.00122;o_ul_r_aidsdeath_Zim_GARPR=0.00185;end;
 if cald=2018.5 then do;o_r_aidsdeath_Zim_GARPR=0.00140;o_ll_r_aidsdeath_Zim_GARPR=0.00115;o_ul_r_aidsdeath_Zim_GARPR=0.00165;end;
 if cald=2019.5 then do;o_r_aidsdeath_Zim_GARPR=0.001267;o_ll_r_aidsdeath_Zim_GARPR=0.00105;o_ul_r_aidsdeath_Zim_GARPR=0.00155;end;
-
-
 
 
 
@@ -1025,8 +1023,6 @@ end;
 
 
 
-
-
 *******************************************************************************************
 ************************************     Incidence     ************************************
 *******************************************************************************************
@@ -1413,6 +1409,7 @@ if cald=2006 then do; o_p_cls_last_1524w_zdhs=0.58;o_p_cls_last_1524m_zdhs=0.32;
 if cald=2011 then do; o_p_cls_last_1524w_zdhs=0.61;o_p_cls_last_1524m_zdhs=0.49;end;
 if cald=2016 then do; o_p_cls_last_1524w_zdhs=0.56;o_p_cls_last_1524m_zdhs=0.34;end;
 *Zimphia in 2016 the same as DHS except for o_p_cls_last_1524m_zimphia=0.38;
+
 
 
 *******************************************************************************************
@@ -2840,7 +2837,22 @@ if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 
 
 *******************************************************************************************
-********************     16. Sexually transmitted infections     ********************
+*******************************     16. PreP     **********************************
+*******************************************************************************************
+*Source: https://www.prepwatch.org/country/zimbabwe/, accessed 08/07/2022, updated aRpil 2022;
+*Estimated Cumulative Number of People Initiating PrEP:
+ 	Aggregates numbers reported from:
+		- demonstration projects, 
+		- PEPFAR dashboard 
+		- program/country reports where available. 
+This is presented as a range due to difficulty in tracking precise numbers and possible double reporting, I used the midlle number in the range;
+if cald=2022.25   then o_n_prep_ever=0.143;
+
+
+
+
+*******************************************************************************************
+********************     17. Sexually transmitted infections     ********************
 *******************************************************************************************
 
 *Source: RDS surveys last quarter 2013;
@@ -2850,7 +2862,7 @@ if cald=2013.75 then do; o_p_ever_sti_fsw_rds=0.374; o_p_ever_sti_fsw_ll_rds=0.1
 
 
 *******************************************************************************************
-*******************************     17. Tubercolosis     **********************************
+*******************************     18. Tubercolosis     **********************************
 *******************************************************************************************
 
 *Source: "Program Monitoring for an AIDS-Free Generation in Zimbabwe" by Brilliant Nkomo
