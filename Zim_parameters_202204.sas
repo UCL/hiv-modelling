@@ -88,10 +88,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 								0.8		1		3		7, 
 								0.10	0.25	0.25	0.40);
 							*if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
-							*%sample(rel_incr_circ_post_2013, 
+							%sample(rel_incr_circ_post_2013, 
 								1		3		5, 
 								0.25	0.5		0.25);
-							%sample(rel_incr_circ_post_2013, 
-								4		5		6, 
-								0.25	0.5		0.25);
-						
+							*if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
