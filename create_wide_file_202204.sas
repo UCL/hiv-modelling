@@ -2,7 +2,7 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_9__out\";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_zim_8__out\";
 
 data g1;    set b.out1: ;run;
 data g2;    set b.out2: ;run;
@@ -23,7 +23,7 @@ by run cald option;run;
 quit;
 
 proc freq data=g;table cald;run;
-*500 simulation 116500 observations, from 1984 to 2041.75;
+*498 simulation 116034 observations, from 1984 to 2041.75;
 
 
 
@@ -1065,7 +1065,12 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_zim; set y; run;
 /*proc contents data=a.l_base_zim;run;*/
+*
 
+28332103
+487363680
+
+;
 
 
 /*
@@ -1623,6 +1628,7 @@ run;
 ods html close;
 
 
+*20211129: arrivata qua;
 proc contents data=a.w_base_zim;run;
 data q1; set a.w_base_zim;
 *Source for:
@@ -1666,13 +1672,14 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 keep run run_keep;
 
 run;
-*08/07/2022 runs from April 2022 n=43 out of 500;
+*08/07/2022 runs from April 2022 n=47 out of 498;
 
 
 
 
 
 data a.l_base_keep_zim; merge a.l_base_zim q1 ; by run;
+
 if run_keep ne .;
 run;
 ods html;

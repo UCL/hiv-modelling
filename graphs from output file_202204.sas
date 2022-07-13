@@ -141,91 +141,16 @@ ods listing;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  43   ;
+*08072022 (runs from April 2022);
+%let nfit =  47   ;
 *%let year_end = 2022.00 ;
 %let year_end = 2042.00 ;
 run;
-proc sort data=b;by cald option ;run;
+proc sort;by cald option ;run;
 
 proc freq data=b;table option n_prep_ever;run;
 /*proc freq data=b;table option;run;*/
 ***Two macros, one for each option. Gives medians ranges etc by option;
-data option_0;
-set b;
-if option =1 then delete;
-
-%let var =  
-
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m p_mcirc n_new_vmmc1549m
-prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep n_prep n_prep_ever	prevalence1549m prevalence1549w
-prevalence1549_ prevalence_hiv_preg 
-prev_hiv_preg_1519_	prev_hiv_preg_2024_	prev_hiv_preg_2529_	prev_hiv_preg_3034_
-prev_hiv_preg_3539_	prev_hiv_preg_4044_	prev_hiv_preg_4549_	prev_hiv_preg_50pl_
-prevalence_vg1000_  incidence1549_ incidence1549w incidence1549m incidence1564_ 
-incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ incidence2549w_ incidence2549m_ 
-n_tested n_tested_m test_prop_positive
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
-mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
-p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
-p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_art_start_y 	/*n_all_ai_y */	n_onart n_onart_w n_onart_m 
-n_death_2059_m n_death_2059_w  n_death_hiv_m n_death_hiv_w  rate_dead_allage rate_dead_allage_m rate_dead_allage_w
-n_cd4_lt200_
-prevalence1519w 	prevalence1519m 	prevalence2024w 	prevalence2024m 	prevalence2529w 	prevalence2529m
-prevalence3034w 	prevalence3034m 	prevalence3539w 	prevalence3539m 	prevalence4044w 	prevalence4044m 
-prevalence4549w 	prevalence4549m 	prevalence5054w 	prevalence5054m 	prevalence5559w 	prevalence5559m
-prevalence6064w 	prevalence6064m 	prevalence65plw 	prevalence65plm
-prevalence1524w 	prevalence1524m 	prevalence2549w 	prevalence2549m 
-prevalence6064
-n_alive 	n_alive1549_	n_alive_m 	n_alive_w 	n_diagnosed n_hiv n_hiv_m n_hiv_w
-p_1524_newp_ge1_ p_1524m_newp_ge1_ p_1524w_newp_ge1_
-n_new_inf1549_	n_new_inf1549m	n_new_inf1549w
-n_new_inf1524m	n_new_inf1524w n_new_inf2549m	n_new_inf2549w
-n_death_hivrel n_death_hivrel_m n_death_hivrel_w 
-
-rate_dead_hivneg_1524m 	rate_dead_hivneg_2534m 	rate_dead_hivneg_3544m 	rate_dead_hivneg_4554m  rate_dead_hivneg_5564m  rate_dead_hivneg_65plm  
-rate_dead_hivneg_1524w  rate_dead_hivneg_2534w  rate_dead_hivneg_3544w  rate_dead_hivneg_4554w  rate_dead_hivneg_5564w  rate_dead_hivneg_65plw;
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_0;
-%let p25_var = p25_&var_0;
-%let p75_var = p75_&var_0;
-%let p5_var = p5_&var_0;
-%let p95_var = p95_&var_0;
-%let p2p5_var = p2p5_&var_0;
-%let p97p5_var = p97p5_&var_0;
-%let p50_var = median_&var_0;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data g&count;set g&count;***creates one dataset per variable;
-p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p2p5_&varb._0  = PCTL(2.5,of &varb.1-&varb.&nfit);
-p97p5_&varb._0 = PCTL(97.5,of &varb.1-&varb.&nfit);
-p50_&varb._0 = median(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 p2p5_&varb._0 p97p5_&varb._0;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  gg&count;quit;run;
-%end;
-%mend;
-
-
-%option_0;
-run;
-
 
 
 
@@ -306,9 +231,9 @@ g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71  g72  g73  g74  g75 
 g76  g77  g78  g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    
 g101 g102 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 
-g126 g127 g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149
-g151 g152 g153 g154 g155 g156 g157 g158 g159 g160 g161 /*
-g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
+g126 g127 g128 g129 g130 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 
+g151 g152 g153 g154 g155 g156 g157 g158 g159 g160 g161 g162
+/* g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 */
@@ -329,7 +254,7 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
 
 ods listing close;
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_43sim_20220708.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\allgraphs_47sim_202204.rtf";
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
@@ -1363,17 +1288,12 @@ xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vl1000__0 = "Option 0 (median) ";
 label p50_p_vl1000__1 = "Option 1  (median) ";
-label o_p_vlsupp_hiv_15pl_phia = "ZIMPHIA 15+";
-label o_p_vlsupp_hiv_1564_phia = "ZIMPHIA 15-64";
-label o_p_vlsupp_hiv_1549_phia = "ZIMPHIA 15-49";
+label o_p_vlsupp_plhiv_1564_Zimphia = "ZIMPHIA";
 series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 *series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=red thickness = 2);
 *band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=o_p_vlsupp_hiv_15pl_phia / markerattrs = (symbol=square color=black size = 10);
-scatter x=cald y=o_p_vlsupp_hiv_1564_phia / markerattrs = (symbol=square color=grey size = 10);
-scatter x=cald y=o_p_vlsupp_hiv_1549_phia / markerattrs = (symbol=square color=brown size = 10);
-
+scatter x=cald y=o_p_vlsupp_plhiv_1564_Zimphia / markerattrs = (symbol=square color=black size = 10);
 run;quit;
 
 proc sgplot data=d; 
@@ -1428,8 +1348,8 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Rate of death ";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Rate (per 100 person-years)'		labelattrs=(size=12)  values = (0 to 10 by 1) valueattrs=(size=10);
-label p50_rate_dead_allage_0 = "Option 0 (median) - 15+ both";
-label p50_rate_dead_allage_1 = "Option 1  (median) ";
+label p50_rate_dead_allage__0 = "Option 0 (median) - 15+ both";
+label p50_rate_dead_allage__1 = "Option 1  (median) ";
 label p50_rate_dead_allage_m_0 = "Option 0 (median) - 15+ Men";
 label p50_rate_dead_allage_w_0 = "Option 0 (median) - 15+ Women";
 label o_r_death_cens = "CAL - Census - All ages both ";
@@ -1714,16 +1634,16 @@ keep
 
 p5_prevalence1519w_0 	p5_prevalence1519m_0 p5_prevalence2024w_0 	p5_prevalence2024m_0 p5_prevalence2529w_0 	p5_prevalence2529m_0
 p5_prevalence3034w_0 	p5_prevalence3034m_0 p5_prevalence3539w_0 	p5_prevalence3539m_0 p5_prevalence4044w_0 	p5_prevalence4044m_0 
-p5_prevalence4549w_0 	p5_prevalence4549m_0 p5_prevalence5054w_0 	p5_prevalence5054m_0 
-p5_prevalence5559w_0 	p5_prevalence5559m_0 p5_prevalence6064w_0 	p5_prevalence6064m_0 
+p5_prevalence4549w_0 	p5_prevalence4549m_0 p5_prevalence5054w_0 	p5_prevalence5054m_0 p5_prevalence5054w_0 	p5_prevalence5054m_0
+p5_prevalence5559w_0 	p5_prevalence5559m_0 p5_prevalence6064w_0 	p5_prevalence6064m_0 p5_prevalence6064w_0 
 p50_prevalence1519w_0 	p50_prevalence1519m_0 p50_prevalence2024w_0 	p50_prevalence2024m_0 p50_prevalence2529w_0 	p50_prevalence2529m_0
 p50_prevalence3034w_0 	p50_prevalence3034m_0 p50_prevalence3539w_0 	p50_prevalence3539m_0 p50_prevalence4044w_0 	p50_prevalence4044m_0 
-p50_prevalence4549w_0 	p50_prevalence4549m_0 p50_prevalence5054w_0 	p50_prevalence5054m_0 
-p50_prevalence5559w_0 	p50_prevalence5559m_0 p50_prevalence6064w_0 	p50_prevalence6064m_0 
+p50_prevalence4549w_0 	p50_prevalence4549m_0 p50_prevalence5054w_0 	p50_prevalence5054m_0 p50_prevalence5054w_0 	p50_prevalence5054m_0
+p50_prevalence5559w_0 	p50_prevalence5559m_0 p50_prevalence6064w_0 	p50_prevalence6064m_0 p50_prevalence6064w_0 
 p95_prevalence1519w_0 	p95_prevalence1519m_0 p95_prevalence2024w_0 	p95_prevalence2024m_0 p95_prevalence2529w_0 	p95_prevalence2529m_0
 p95_prevalence3034w_0 	p95_prevalence3034m_0 p95_prevalence3539w_0 	p95_prevalence3539m_0 p95_prevalence4044w_0 	p95_prevalence4044m_0 
-p95_prevalence4549w_0 	p95_prevalence4549m_0 p95_prevalence5054w_0 	p95_prevalence5054m_0
-p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalence6064m_0
+p95_prevalence4549w_0 	p95_prevalence4549m_0 p95_prevalence5054w_0 	p95_prevalence5054m_0 p95_prevalence5054w_0 	p95_prevalence5054m_0
+p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalence6064m_0 p95_prevalence6056w_0 
 
 ;
 
@@ -1836,7 +1756,7 @@ run;
 /************************************************************************************************************/
 /*										SELECTION MIHPSA													*/
 /************************************************************************************************************/
-ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\graphsMIHPSA_20220708.rtf";
+ods rtf file="C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\graphsMIHPSA_202204.rtf";
 
 * 1a - HIV PREVALENCE 15-49 BY GENDER;
 proc sgplot data=d; 
