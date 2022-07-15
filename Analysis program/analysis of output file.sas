@@ -2,12 +2,10 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.wide_fsw_05_07_22 ;
+set a.wide_fsw_12_07_22 ;
 run;
-proc means n p50 p5 p95;var incidence_sw_22 p_fsw_newp0__22 ;where sw_trans_matrix=1;run;
 
-proc contents;run;
-
+proc freq;table sw_trans_matrix;run;
 data b;
 set a;
 
@@ -15,7 +13,8 @@ set a;
 proc means n p50 p5 p95;var
 prevalence1549_22 	 prevalence1549w_22 	prevalence1549m_22 	incidence1549_22 	incidence1549w_22 	incidence1549m_22
 p_diag_22	 		 p_onart_diag_22   		p_onart_vl1000_22	p_vg1000_22 		p_vl1000_22 		prevalence_vg1000_22
-;run;
+incidence_sw_22		p_fsw_newp0__22
+;where sw_trans_matrix=3 and incidence1549_22 >0.1;run;
 
 /*
 p_diag_m_22	 		p_diag_w_22
