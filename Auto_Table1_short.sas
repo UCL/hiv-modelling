@@ -7,6 +7,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 %macro setup(yr=);
 
+
 	prevalence1549 = prevalence1549_&yr;  prevalence1549m = prevalence1549m_&yr; prevalence1549w = prevalence1549w_&yr; 
 	incidence1549 = incidence1549_&yr; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
 	p_diag = p_diag_&yr; p_diag_m = p_diag_m_&yr; p_diag_w = p_diag_w_&yr;
@@ -14,6 +15,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 	p_vl1000 = p_vl1000_&yr;prevalence_vg1000 = prevalence_vg1000_&yr;p_fsw_newp0_ = p_fsw_newp0__&yr;incidence_sw=incidence_sw_&yr;
 
 /*
+
 	s_alive = s_alive_&yr; p_w_giv_birth_this_per = p_w_giv_birth_this_per_&yr;
 	prevalence1549 = prevalence1549_&yr;  prevalence1549m = prevalence1549m_&yr; prevalence1549w = prevalence1549w_&yr; 
 	incidence1549 = incidence1549_&yr; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
@@ -68,22 +70,24 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 ***Read in SAS file;
 data indata2;
-  set a.fsw_15_07_22_key;  
+  set a.wide_fsw_15_07_22;  
+
+if incidence1549_22 <0.1 then delete;
 
 subgp = 1;*this refers to the columns we want - one column per each year of interest, starting with 1995;
-%setup(yr=05); ***Using above macro to add on '_95' suffix to each output;
+%setup(yr=10); ***Using above macro to add on '_95' suffix to each output;
 output;
 
 subgp = 2;
-%setup(yr=10);
-output;
-
-subgp = 3;
 %setup(yr=15);
 output;
 
-subgp = 4;
+subgp = 3;
 %setup(yr=20);
+output;
+
+subgp = 4;
+%setup(yr=22);
 output;
 
 
@@ -178,6 +182,27 @@ run;
 *Call the macros;
 ***************************************************;
 
+%s(var=prevalence1549, grpord=3, label="Prevalence (age 15-49)", fmt=10.2); 
+%s(var=prevalence1549m, grpord=4, label="Prevalence (men aged 15-49)", fmt=10.2);
+%s(var=prevalence1549w, grpord=5, label="Prevalence (women aged 15-49)", fmt=10.2);
+%s(var=incidence1549, grpord=6, label="Incidence (age 15-49)", fmt=10.2);
+%s(var=incidence1549m, grpord=7, label="Incidence (men aged 15-49)", fmt=10.2);
+%s(var=incidence1549w, grpord=8, label="Incidence (women aged 15-49)", fmt=10.2);
+%s(var=incidence_sw, grpord=9, label="Incidence (sex workers)", fmt=10.2);
+%s(var=p_diag, grpord=10, label="Proportion diagnosed ", fmt=10.2);
+%s(var=p_diag_m, grpord=11, label="Proportion diagnosed (men)", fmt=10.2);
+%s(var=p_diag_w, grpord=12, label="Proportion diagnosed (women)", fmt=10.2);
+%s(var=p_onart_diag, grpord=13, label="Of those diagnosed, proportion on ART", fmt=10.2);
+%s(var=p_onart_vl1000, grpord=14, label="Of those on ART, proportion virally suppressed", fmt=10.2);
+%s(var=p_onart_vl1000_m, grpord=15, label="Of those on ART, proportion virally suppressed (men)", fmt=10.2);
+%s(var=p_onart_vl1000_w, grpord=16, label="Of those on ART, proportion virally suppressed (women)", fmt=10.2);
+%s(var=p_vl1000, grpord=17, label="Proportion of HIV+ people with VL<1000 ", fmt=10.2);
+%s(var=incidence_sw, grpord=18, label="Incidence in SW", fmt=10.2);
+%s(var=p_fsw_newp0_, grpord=19, label="Proportion SW 0 newp", fmt=10.2);
+
+
+
+/*
 *Summary stats for numerical vars;	
 %s(var=s_alive, grpord=1, label="Number alive", fmt=10.0); 
 %s(var=p_w_giv_birth_this_per, grpord=2, label="Proportion women giving birth/year", fmt=10.2);
@@ -296,13 +321,14 @@ run;
 %s(var=w25r, grpord=115, label="w15r", fmt=10.2);
 %s(var=w45r, grpord=116, label="w15r", fmt=10.2);
 %s(var=w55r, grpord=117, label="w15r", fmt=10.2);
+*/
 
 ***************************************************;
 *Append and transpose data;
 ***************************************************;
 *Append all the datasets;
 data allstats;
-  set n_1 - n_117; 
+  set n_3 - n_19; ***should match grpord above;
 run;
 
 
@@ -342,9 +368,9 @@ options nodate nonumber orientation=landscape;
 
 *Output destination - saving as an rtf file and have specified Journal style (there are others to choose from);
 ods listing close;
-ods rtf file = "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\table1_03_12_21.rtf" style=journal; *Can add BODYTITLE option to get this in body of RTF document;
+ods rtf file = "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\table1_15_07_21.rtf" style=journal;
  
-title1 "Table 1: Key summary statistics 3rd December 2021";
+title1 "Table 1: Key summary statistics 18 Jul 2022";
 
 *This code appears on the rtf as Page x of y. Can be placed as footnote or title and justified as left, centre or right (in this example, j=r);
 *footnote1 j=r "{Page \field {\*\fldinst PAGE \\*MERGEFORMAT}} { of \field{\*\fldinst NUMPAGES \\*MERGEFORMAT}}";
@@ -359,10 +385,10 @@ proc report data=final split='*';
   define grpord      / order noprint;
   define catlbl      / "Variable" flow style(column) = [width = 25% textalign = left asis=on] style(header) =[textalign = left]; 
   define num1        / "N" flow style(column) = [width = 10% textalign = center] style(header) =[textalign = center]; 
-  define col1        / "1995" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col2        / "2005" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col3        / "2015" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col4        / "2021" flow style(column) = [width = 15% textalign = center fontweight=bold] style(header) =[textalign = center fontweight=bold];
+  define col1        / "2010" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
+  define col2        / "2015" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
+  define col3        / "2020" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
+  define col4        / "2022" flow style(column) = [width = 15% textalign = center fontweight=bold] style(header) =[textalign = center fontweight=bold];
 
 /*  compute before grpord;  *This inserts a blank line before each change in the variable, grpord, to give a gap between sections;
     line " ";
