@@ -6,11 +6,27 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_12_07_22;  
+set a.fsw_15_07_22;  
+proc sort;by run;
+
+data sf;
+set a;
+ 
+if cald=2022;
+s_alive = s_alive_m + s_alive_w ;
+sf_2022 = 10000000 / s_alive;
+keep run sf_2022;
+proc sort; by run;run;
+
+%let sf=sf_2022;
+
+data a1; 
+merge a sf;
+by run ;
 run;
 
 data b;
-set a;
+set a1;
 
 p_onart_vl1000_all = .;
 
@@ -511,66 +527,10 @@ logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
-/*
-
-data z; set b;
-
-ods html;
- 
-proc sgplot data=z; Title    height=1.5 justify=center "loggender_r_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'loggender_r_newp'		labelattrs=(size=12)  values = (-10 to 10 by 1) valueattrs=(size=10);
-series  x=cald y=loggender_r_newp/	lineattrs = (color=black thickness = 2); run;
-
-proc sgplot data=z; Title    height=1.5 justify=center "logw15r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw15r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw25r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw25r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw35r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw35r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw45r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw45r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logw55r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logw55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logw55r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm15r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm15r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm15r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm25r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm25r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm25r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm35r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm35r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm35r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm45r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm45r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm45r/	lineattrs = (color=black thickness = 2); run;
-proc sgplot data=z; Title    height=1.5 justify=center "logm55r";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'logm55r'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
-series  x=cald y=logm55r/	lineattrs = (color=black thickness = 2); run;
-
-ods html close;
-
-*/
-
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 500   ;
+%let nfit = 600   ;
 %let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
@@ -617,7 +577,7 @@ p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -673,7 +633,7 @@ p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._1 = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
+keep cald option p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
 run;
 
       proc datasets nodetails nowarn nolist; 
