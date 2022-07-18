@@ -7,6 +7,13 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 %macro setup(yr=);
 
+	prevalence1549 = prevalence1549_&yr;  prevalence1549m = prevalence1549m_&yr; prevalence1549w = prevalence1549w_&yr; 
+	incidence1549 = incidence1549_&yr; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
+	p_diag = p_diag_&yr; p_diag_m = p_diag_m_&yr; p_diag_w = p_diag_w_&yr;
+	p_onart_diag = p_onart_diag_&yr;	p_onart_vl1000 = p_onart_vl1000_&yr; p_onart_vl1000_w = p_onart_vl1000_w_&yr;	p_onart_vl1000_m = p_onart_vl1000_m_&yr;
+	p_vl1000 = p_vl1000_&yr;prevalence_vg1000 = prevalence_vg1000_&yr;p_fsw_newp0_ = p_fsw_newp0__&yr;incidence_sw=incidence_sw_&yr;
+
+/*
 	s_alive = s_alive_&yr; p_w_giv_birth_this_per = p_w_giv_birth_this_per_&yr;
 	prevalence1549 = prevalence1549_&yr;  prevalence1549m = prevalence1549m_&yr; prevalence1549w = prevalence1549w_&yr; 
 	incidence1549 = incidence1549_&yr; incidence1549w = incidence1549w_&yr; incidence1549m = incidence1549m_&yr; incidence_sw = incidence_sw_&yr;
@@ -55,13 +62,15 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 	m15r = m15r_&yr; m25r = m25r_&yr; m35r = m35r_&yr; m45r = m45r_&yr; m55r = m55r_&yr;
 	w15r = w15r_&yr; w25r = w25r_&yr; w35r = w35r_&yr; w45r = w45r_&yr; w55r = w55r_&yr;
 	p_fsw_newp0_ = p_fsw_newp0__&yr;incidence_sw=incidence_sw_&yr;
-
+*/
 %mend setup;  
 
 
 ***Read in SAS file;
 data indata2;
   set a.fsw_15_07_22_key;  
+run;
+
 
 subgp = 1;*this refers to the columns we want - one column per each year of interest, starting with 1995;
 %setup(yr=05); ***Using above macro to add on '_95' suffix to each output;
@@ -83,6 +92,13 @@ output;
 
   keep
 
+
+  	prevalence1549  prevalence1549m  prevalence1549w 
+	incidence1549   incidence1549w  incidence1549m  incidence_sw 
+	p_diag  p_diag_m  p_diag_w 	p_onart_diag  p_onart_vl1000  p_onart_vl1000_w 	p_onart_vl1000_m  p_vl1000 	prevalence_vg1000
+	p_fsw_newp0_ incidence_sw subgp;
+	
+/*
 	s_alive p_w_giv_birth_this_per
 	prevalence1549  prevalence1549m  prevalence1549w 
 	incidence1549   incidence1549w  incidence1549m  incidence_sw 
@@ -113,7 +129,7 @@ output;
 
 	m15r  m25r  m35r  m45r  m55r w15r  w25r  w35r  w45r  w55r subgp
 	p_fsw_newp0_ incidence_sw;
-
+*/
 run;
 
 
