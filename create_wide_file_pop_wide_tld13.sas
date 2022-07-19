@@ -1540,13 +1540,13 @@ proc sort; by run;run;
   set a.w_pop_wide_tld13 ;
 
 
-if incidence1549_22 >= 0.15 and prevalence1549_22 <= 0.25;
+* if incidence1549_22 >= 0.15 and prevalence1549_22 <= 0.25;
 
 if prep_any_strategy = 4;
 
 d_prop_elig_on_prep_20y_3_2 =  prop_elig_on_prep_20y_3 -  prop_elig_on_prep_20y_2 ;
 d_prop_elig_on_prep_20y_3_2 = round(d_prop_elig_on_prep_20y_3_2, 0.01);
-if d_prop_elig_on_prep_20y_3_2 >= 0.1;
+* if d_prop_elig_on_prep_20y_3_2 >= 0.1;
 
 
 * if run <=  943258673 ;  * for n=1000 pop_wide_tld11 ;
@@ -1849,6 +1849,10 @@ prep_inj_effect_inm_partner  pr_inm_inj_prep_primary_x rel_pr_inm_inj_prep_tail_
 cab_time_to_lower_threshold_g hiv_test_strat   res_trans_factor_ii  adh_pattern  super_inf  alt_vl_nactive
 incr_res_risk_cab_inf_3m prob_vl_meas_done reg_option_107_after_cab pref_prep_inj_beta_s1 pr_prep_inj_b res_level_dol_cab_mut
 pr_switch_line gx/ solution;
+run;
+
+proc glm data=  w_pop_wide_tld;            
+model d_p_vl1000_art_12m_onart_50y_3_2 =  d_p_ai_no_arv_e_inm_50y_3_2/ solution;
 run;
 
 proc means data=w_pop_wide_tld;  var d_p_vl1000_art_12m_onart_50y_3_2 ; where super_inf = 3 ; run;
