@@ -70,7 +70,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 ***Read in SAS file;
 data indata2;
-  set a.wide_fsw_15_07_22;  
+  set a.wide_fsw_16_06_22;  
 
 if incidence1549_22 <0.1 then delete;
 
@@ -368,9 +368,9 @@ options nodate nonumber orientation=landscape;
 
 *Output destination - saving as an rtf file and have specified Journal style (there are others to choose from);
 ods listing close;
-ods rtf file = "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\table1_15_07_21.rtf" style=journal;
+ods rtf file = "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\table1_16_06_22.rtf" style=journal;
  
-title1 "Table 1: Key summary statistics 18 Jul 2022";
+title1 "Table 1: Key summary statistics 16 Jun 2022";
 
 *This code appears on the rtf as Page x of y. Can be placed as footnote or title and justified as left, centre or right (in this example, j=r);
 *footnote1 j=r "{Page \field {\*\fldinst PAGE \\*MERGEFORMAT}} { of \field{\*\fldinst NUMPAGES \\*MERGEFORMAT}}";
