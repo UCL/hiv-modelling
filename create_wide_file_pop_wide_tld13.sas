@@ -1540,13 +1540,13 @@ proc sort; by run;run;
   set a.w_pop_wide_tld13 ;
 
 
-* if incidence1549_22 >= 0.15 and prevalence1549_22 <= 0.25;
+  if incidence1549_22 >= 0.15 and prevalence1549_22 <= 0.25;
 
 if prep_any_strategy = 4;
 
 d_prop_elig_on_prep_20y_3_2 =  prop_elig_on_prep_20y_3 -  prop_elig_on_prep_20y_2 ;
 d_prop_elig_on_prep_20y_3_2 = round(d_prop_elig_on_prep_20y_3_2, 0.01);
-* if d_prop_elig_on_prep_20y_3_2 >= 0.1;
+  if d_prop_elig_on_prep_20y_3_2 >= 0.1;
 
 
 * if run <=  943258673 ;  * for n=1000 pop_wide_tld11 ;
