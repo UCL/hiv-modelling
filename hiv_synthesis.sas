@@ -4825,7 +4825,7 @@ on_risk_informed_prep_oral = 0;
 if prep_oral_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_oral_choice ne 1 then on_risk_informed_prep_oral = 1;
 
 on_risk_informed_prep_inj  = 0; 
-if prep_oral_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_inj_choice ne 1 then on_risk_informed_prep_inj  = 1;
+if prep_oral_inj=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_inj_choice ne 1 then on_risk_informed_prep_inj  = 1;
 
 
 * prep_falseneg var - Mar2017 f_prep;
@@ -7297,9 +7297,10 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 			*costing of HIV-positive;
 			if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) and unitest<rate_test then cost_test=cost_test_a;
  			*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
-			if com_test ne 1 then cost_test= cost_test_b;
-			if com_test =  1 then cost_test= cost_test_d;
-
+			if cost_test <= 0 then do;
+				if com_test ne 1 then cost_test= cost_test_b;
+				if com_test =  1 then cost_test= cost_test_d;
+			end;
 			* some lost straight after diagnosis (unless already on tld);
 			d=rand('uniform');  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
@@ -7312,9 +7313,9 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 			if (adc_tm1 = 1 or tb_tm1 =1) and d < prob_lossdiag_adctb then do; visit=0; lost   =1; end;
 	    	if  non_tb_who3_ev_tm1  = 1        and d < prob_lossdiag_non_tb_who3e then do; visit=0; lost   =1; end;
 	end;
-	if unisens ge sens_vct then do; 
-		if cost_test=0 then cost_test= cost_test_c;
-	end;
+* if unisens ge sens_vct then do; 
+*	if cost_test=0 then cost_test= cost_test_c;
+* end;
 end;
 
 
@@ -14048,6 +14049,8 @@ ever_tested_w1519_=0;ever_tested_w2024_=0;ever_tested_w2529_=0;ever_tested_w3034
 ever_tested_w4549_=0;ever_tested_w5054_=0;ever_tested_w5559_=0;ever_tested_w6064_=0;  
 ever_tested_sw=0; 	
 
+test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
+
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
 diag_w1549_=0;diag_w1564_=0;
@@ -16055,7 +16058,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
-	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;
+	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
 
 	/*VL and CD4*/
 
@@ -17779,7 +17782,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
 
 
 /*VL and CD4*/
@@ -18697,7 +18700,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
 
 
 /*VL and CD4*/
@@ -23858,7 +23861,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
-s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
