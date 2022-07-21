@@ -2146,7 +2146,7 @@ proc freq; tables run; where cald = 2020;
 
 run;
 
-
+data y ; set a.l_pop_wide_tld11_with_lost_y; 
 
 
   options nomprint;
@@ -2169,7 +2169,7 @@ proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option
 /*
 proc means noprint data=e; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.5 <= cald < 2032.50;
 */
-proc means noprint data=e; var &v; output out=y_42 mean= &v._42; by run option ; where 2039.5 <= cald < 2043.50;
+proc means noprint data=e; var &v; output out=y_42 mean= &v._42; by run option ; where 2038.5 <= cald < 2045.50;
 																				   
 proc sort data=y_50y    ; by run; proc transpose data=y_50y     out=t_50y     prefix=&v._50y_  ; var &v._50y    ; by run; 																														
 proc sort data=y_20y    ; by run; proc transpose data=y_20y     out=t_20y     prefix=&v._20y_  ; var &v._20y    ; by run; 																														
@@ -2745,7 +2745,7 @@ d_p_nacti_art_start_lt2_42_3_2  p_nactive_art_start_lt2_42_3  p_nactive_art_star
 d_p_nacti_art_start_lt3_42_3_2  p_nactive_art_start_lt3_42_3  p_nactive_art_start_lt3_42_2 
 
 ;
-  where hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1 ; run;
+  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; run;
 run;
 
 
