@@ -2232,7 +2232,7 @@ if caldate{t} = &year_interv then do;
 * prep_any_strategy;
 						prep_any_strategy = 5;								* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
-end;
+		end;
 
 *Other potential changes after year_i which can be turned on in the Options code;
 *(impact of changes are coded below the options code);
