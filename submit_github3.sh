@@ -42,5 +42,6 @@ echo "using SAS HIV model file: $model";
 echo "job is run on account: $account";
 qsub -N $jobname -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
 qsub -hold_jid $jobname -N concatenate -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/concatenate.sh 
+qsub -hold_jid concatenate -N create_wide -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/submit_cw.sh 
 
 

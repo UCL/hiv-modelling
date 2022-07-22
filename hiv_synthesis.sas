@@ -1,11 +1,13 @@
 
+* run 39 SOC + overdiagnosis;
+* Matt's local machine input;
+*libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
+*%let tmpfilename = out;
 
-* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
-* libname a 'C:\Loveleen\Synthesis model\';
-
-libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
-%let tmpfilename = out;
-
+* Myriad input;
+%let outputdir = %scan(&sysparm,1," ");
+libname a "&outputdir/";
+%let tmpfilename = %scan(&sysparm,2," ");
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
@@ -13,8 +15,8 @@ libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
  proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
 
 	
-%let population = 1000 ; 
-%let year_interv = 2021.5;
+%let population = 100000 ; 
+%let year_interv = 2010;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -679,37 +681,46 @@ prob_test_sbp_undiagnosed = 0.005 * prob_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 7; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
-prob_test_sbp_diagnosed = 0.025 * prob_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.05 * prob_htn_diagnosis; 
+* probability of getting bp tested in a person <40 years of age compared to baseline probability;
+prob_test_sbp_young = 0.5; 
 
 * probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 %sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
 * probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
-%sample_uniform(prob_imm_htn_tx_s2, 0.5 0.6 0.7);
+%sample_uniform(prob_imm_htn_tx_s2, 0.4 0.5 0.6);
 * probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-%sample_uniform(prob_start_htn_tx_s1, 0.5 0.6 0.7);
+%sample_uniform(prob_start_htn_tx_s1, 0.2 0.3 0.4);
 * probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
-%sample_uniform(prob_start_htn_tx_s2, 0.5 0.6 0.7);
+%sample_uniform(prob_start_htn_tx_s2, 0.7 0.8 0.9);
 * probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
 prob_restart_htn_tx_s1 = 1; 
 * probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 prob_restart_htn_tx_s2 = 1;
 
+** Community testing;
+first_comm_test = .;
 * prob testing in commmunity;
-prob_test_sbp_comm = 0;
+%sample_uniform(prob_test_sbp_comm, 0.6 0.65 0.7 0.75);
 * prob link from community testing to clinic;
-prob_htn_link = 0;
+%sample_uniform(prob_htn_link, 0.6 0.7 0.8);
+* comm test interval;
+comm_test_interval = 1;
+* comm test age (e.g. all adults vs targeted to >=40);
+comm_test_age = 40;
+
 
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-%sample_uniform(prob_visit_hypertension, 0.5 0.6 0.7);
+%sample_uniform(prob_visit_hypertension, 0.7 0.8 0.9);
 * probability of having a clinic visit for hypertension if newly diagnosed last period and given lifestyle counseling only;
-%sample_uniform(prob_visit_htn_lifestyle, 0.1 0.2 0.3);
+%sample_uniform(prob_visit_htn_lifestyle, 0.2 0.3 0.4);
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 interval_visit_hypertension=0.5;
 
-* for a person on 1 anti-hypertensive with current measured sbp > 140 probability of intensification to 2 drugs;
-prob_intensify_1_2 = 0.1; 
-* for a person on 2 anti-hypertensives with current measured sbp > 140 probability of intensification to 3 drugs;
-prob_intensify_2_3 = 0.05; 
+* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+%sample_uniform(prob_intensify_1_2, 0.05 0.1 0.15); 
+* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 * effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
 * effect of gender on risk of cvd death;
@@ -2294,6 +2305,10 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do;
 
+	
+	
+
+
 	end;
 end;
 
@@ -2694,7 +2709,7 @@ end;
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-	when (40 <= age < 65) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
+	when (40 <= age < 60) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
 	otherwise a_sbp = a_sbp / sbp_risk ;
 end; 
 
@@ -2713,13 +2728,18 @@ if caldate{t} = first_comm_test and first_comm_test ne . then last_comm_test = f
 test_sbp_comm = 0; link = 0; sbp_comm_m = .; a_comm_test = rand('uniform'); a_htn_link = rand('uniform');
 if (caldate{t} - last_comm_test) >= comm_test_interval then do;
 	last_comm_test = caldate{t};
-	if a_comm_test < prob_test_sbp_comm then test_sbp_comm = 1;
+	if a_comm_test < prob_test_sbp_comm and age >= comm_test_age then test_sbp_comm = 1;
 end;
 if test_sbp_comm =1 then do;
 	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
 end;
 if sbp_comm_m >=140 then do;
 	diagnosed_htn_comm = 1;
+	select; 
+		when (160 <= sbp_m < 180) a_htn_link = a_htn_link /1.5; 
+		when (symp_hty = 1) a_htn_link = a_htn_link / 1.5; 
+		otherwise a_htn_link = a_htn_link;
+	end;
 	if a_htn_link < prob_htn_link then tested_bp = 1;
 end;
 
@@ -2728,6 +2748,7 @@ if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do;
 	e=rand('uniform'); 
 	if symp_hypertension = 1 then e = e / 2;
 	if gender = 2 then e = e / prob_test_sbp_women;
+	if age <40 then e = e / prob_test_sbp_young;
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
 	if (diagnosed_hypertension = 1 or diagnosed_htn_comm = 1) and e < prob_test_sbp_diagnosed then tested_bp = 1; *in SEARCH: community dx still have higher rate of delayed linkage;
 end;
@@ -2735,7 +2756,7 @@ end;
 * clinic visit for hypertension;
 visit_hypertension=0;
 if on_anti_hypertensive = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 then do; * prob of coming back after lifestyle recommendations for new stage 1 HTN dx;
-	e=rand('uniform'); if e < prob_visit_htn_lifestyle then visit_hypertension = 1;
+	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
 end;
 if most_recent_sbp_m < 140 and on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
 	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
@@ -2811,6 +2832,12 @@ if hypertension = 1 and sbp <  140 and on_anti_hypertensive ge 1 then hypert_con
 
 max_sbp = max(sbp, sbp_last_start_anti_hyp);
 if sbp_m ne . then most_recent_sbp_m = sbp_m;
+
+* true hypertension;
+htn_true = 0; if max_sbp >= 140 then htn_true = 1;
+normotensive = 0; if max_sbp <140 then normotensive = 1;
+htn_true_dx = 0; if diagnosed_hypertension = 1 and max_sbp >= 140 then htn_true_dx = 1;
+htn_over_dx = 0; if diagnosed_hypertension = 1 and max_sbp < 140 then htn_over_dx = 1;
 
 
 * SEXUAL BEHAVIOUR;
@@ -14239,6 +14266,10 @@ hypertension_1524 = 0; hypertension_2534 = 0; hypertension_3544 = 0; hypertensio
 diagnosed_hypertension_1524 = 0; diagnosed_hypertension_2534 = 0; diagnosed_hypertension_3544 = 0; diagnosed_hypertension_4554 = 0; diagnosed_hypertension_5564 = 0; diagnosed_hypertension_ge65 = 0; 
 on_anti_hypertensive_1524 = 0; on_anti_hypertensive_2534 = 0; on_anti_hypertensive_3544 = 0; on_anti_hypertensive_4554 = 0; on_anti_hypertensive_5564 = 0; on_anti_hypertensive_ge65 = 0; 
 hypert_control_1524 = 0; hypert_control_2534 = 0; hypert_control_3544 = 0; hypert_control_4554 = 0; hypert_control_5564 = 0; hypert_control_ge65 = 0; 
+htn_true_1524 = 0; htn_true_2534 = 0; htn_true_3544 = 0; htn_true_4554 = 0; htn_true_5564 = 0; htn_true_ge65 = 0;
+normotensive_1524 = 0; normotensive_2534 = 0; normotensive_3544 = 0; normotensive_4554 = 0; normotensive_5564 = 0; normotensive_ge65 = 0;
+htn_true_dx_1524 = 0; htn_true_dx_2534 = 0; htn_true_dx_3544 = 0; htn_true_dx_4554 = 0; htn_true_dx_5564 = 0; htn_true_dx_ge65 = 0;
+htn_over_dx_1524 = 0; htn_over_dx_2534 = 0; htn_over_dx_3544 = 0; htn_over_dx_4554 = 0; htn_over_dx_5564 = 0; htn_over_dx_ge65 = 0;
 
 sbp_1519w = 0; sbp_2024w = 0; sbp_2529w = 0; sbp_3034w = 0; sbp_3539w = 0; sbp_4044w = 0; sbp_4549w = 0; sbp_5054w = 0; sbp_5559w = 0; sbp_6064w = 0; sbp_6569w = 0; sbp_7074w = 0; sbp_7579w = 0; sbp_ge80w = 0;  
 sbp_1519m = 0; sbp_2024m = 0; sbp_2529m = 0; sbp_3034m = 0; sbp_3539m = 0; sbp_4044m = 0; sbp_4549m = 0; sbp_5054m = 0; sbp_5559m = 0; sbp_6064m = 0; sbp_6569m = 0; sbp_7074m = 0; sbp_7579m = 0; sbp_ge80m = 0; 
@@ -14405,6 +14436,11 @@ if 15 <= age < 25 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_1524 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_1524 = 1;
 	if hypert_control = 1 then hypert_control_1524 = 1;
+	if htn_true = 1 then htn_true_1524 = 1;
+	if normotensive = 1 then normotensive_1524 = 1;
+	if htn_true_dx = 1 then htn_true_dx_1524 = 1;
+	if htn_over_dx = 1 then htn_over_dx_1524 = 1;
+
 end;
 
 if 25 <= age < 35 then do;
@@ -14412,6 +14448,10 @@ if 25 <= age < 35 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_2534 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_2534 = 1;
 	if hypert_control = 1 then hypert_control_2534 = 1;
+	if htn_true = 1 then htn_true_2534 = 1;
+	if normotensive = 1 then normotensive_2534 = 1;
+	if htn_true_dx = 1 then htn_true_dx_2534 = 1;
+	if htn_over_dx = 1 then htn_over_dx_2534 = 1;
 end;
 
 if 35 <= age < 45 then do;
@@ -14419,6 +14459,10 @@ if 35 <= age < 45 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_3544 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_3544 = 1;
 	if hypert_control = 1 then hypert_control_3544 = 1;
+	if htn_true = 1 then htn_true_3544 = 1;
+	if normotensive = 1 then normotensive_3544 = 1;
+	if htn_true_dx = 1 then htn_true_dx_3544 = 1;
+	if htn_over_dx = 1 then htn_over_dx_3544 = 1;
 end;
 
 if 45 <= age < 55 then do;
@@ -14426,6 +14470,10 @@ if 45 <= age < 55 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_4554 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_4554 = 1;
 	if hypert_control = 1 then hypert_control_4554 = 1;
+	if htn_true = 1 then htn_true_4554 = 1;
+	if normotensive = 1 then normotensive_4554 = 1;
+	if htn_true_dx = 1 then htn_true_dx_4554 = 1;
+	if htn_over_dx = 1 then htn_over_dx_4554 = 1;
 end;
 
 if 55 <= age < 65 then do;
@@ -14433,6 +14481,10 @@ if 55 <= age < 65 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_5564 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_5564 = 1;
 	if hypert_control = 1 then hypert_control_5564 = 1;
+	if htn_true = 1 then htn_true_5564 = 1;
+	if normotensive = 1 then normotensive_5564 = 1;
+	if htn_true_dx = 1 then htn_true_dx_5564 = 1;
+	if htn_over_dx = 1 then htn_over_dx_5564 = 1;
 end	;
 
 if 65 <= age 	 then do;
@@ -14440,6 +14492,10 @@ if 65 <= age 	 then do;
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_ge65 = 1;
 	if on_anti_hypertensive ge 1 then on_anti_hypertensive_ge65 = 1;
 	if hypert_control = 1 then hypert_control_ge65 = 1;
+	if htn_true = 1 then htn_true_ge65 = 1;
+	if normotensive = 1 then normotensive_ge65 = 1;
+	if htn_true_dx = 1 then htn_true_dx_ge65 = 1;
+	if htn_over_dx = 1 then htn_over_dx_ge65 = 1;
 end;
 
 
@@ -14996,6 +15052,14 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on_anti_hypertensive_4554 + on_anti_hypertensive_4554 ; s_on_anti_hypertensive_5564 + on_anti_hypertensive_5564 ; s_on_anti_hypertensive_ge65 + on_anti_hypertensive_ge65 ;
 	s_hypert_control_1524 + hypert_control_1524 ; s_hypert_control_2534 + hypert_control_2534 ; s_hypert_control_3544 + hypert_control_3544 ;
 	s_hypert_control_4554 + hypert_control_4554 ; s_hypert_control_5564 + hypert_control_5564 ; s_hypert_control_ge65 + hypert_control_ge65 ;
+	s_htn_true_1524 + htn_true_1524 ; s_htn_true_2534 + htn_true_2534 ; s_htn_true_3544 + htn_true_3544 ;
+	s_htn_true_4554 + htn_true_4554 ; s_htn_true_5564 + htn_true_5564 ; s_htn_true_ge65 + htn_true_ge65 ;
+	s_normotensive_1524 + normotensive_1524 ; s_normotensive_2534 + normotensive_2534 ; s_normotensive_3544 + normotensive_3544 ;
+	s_normotensive_4554 + normotensive_4554 ; s_normotensive_5564 + normotensive_5564 ; s_normotensive_ge65 + normotensive_ge65 ;
+	s_htn_true_dx_1524 + htn_true_dx_1524 ; s_htn_true_dx_2534 + htn_true_dx_2534 ; s_htn_true_dx_3544 + htn_true_dx_3544 ;
+	s_htn_true_dx_4554 + htn_true_dx_4554 ; s_htn_true_dx_5564 + htn_true_dx_5564 ; s_htn_true_dx_ge65 + htn_true_dx_ge65 ;
+	s_htn_over_dx_1524 + htn_over_dx_1524 ; s_htn_over_dx_2534 + htn_over_dx_2534 ; s_htn_over_dx_3544 + htn_over_dx_3544 ;
+	s_htn_over_dx_4554 + htn_over_dx_4554 ; s_htn_over_dx_5564 + htn_over_dx_5564 ; s_htn_over_dx_ge65 + htn_over_dx_ge65 ;
 
 	s_diagnosed_hypertension_1549 + diagnosed_hypertension_1549 ;  s_on_anti_hypertensive_1549 + on_anti_hypertensive_1549 ;  
 	s_hypertension_1549 + hypertension_1549 ;	s_hypertens180_1549 + hypertens180_1549 ;	
@@ -16625,6 +16689,10 @@ s_on_anti_hypertensive_1524 s_on_anti_hypertensive_2534 s_on_anti_hypertensive_3
 s_on_anti_hypertensive_4554 s_on_anti_hypertensive_5564 s_on_anti_hypertensive_ge65
 s_hypert_control_1524 s_hypert_control_2534 s_hypert_control_3544
 s_hypert_control_4554 s_hypert_control_5564 s_hypert_control_ge65
+s_htn_true_1524 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_1524 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_1524 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_1524 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
 
 s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
 s_diagnosed_hypertension_1539 s_on_anti_hypertensive_1539 s_hypertension_1539 s_hypertens180_1539
@@ -17504,6 +17572,11 @@ s_on_anti_hypertensive_1524 s_on_anti_hypertensive_2534 s_on_anti_hypertensive_3
 	s_on_anti_hypertensive_4554 s_on_anti_hypertensive_5564 s_on_anti_hypertensive_ge65
 s_hypert_control_1524 s_hypert_control_2534 s_hypert_control_3544
 	s_hypert_control_4554 s_hypert_control_5564 s_hypert_control_ge65
+s_htn_true_1524 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_1524 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_1524 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_1524 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
+
 
 s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
 s_diagnosed_hypertension_1539 s_on_anti_hypertensive_1539 s_hypertension_1539 s_hypertens180_1539
@@ -18588,6 +18661,10 @@ s_on_anti_hypertensive_1524 s_on_anti_hypertensive_2534 s_on_anti_hypertensive_3
 	s_on_anti_hypertensive_4554 s_on_anti_hypertensive_5564 s_on_anti_hypertensive_ge65
 s_hypert_control_1524 s_hypert_control_2534 s_hypert_control_3544
 	s_hypert_control_4554 s_hypert_control_5564 s_hypert_control_ge65
+s_htn_true_1524 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
+s_normotensive_1524 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
+s_htn_true_dx_1524 s_htn_true_dx_2534 s_htn_true_dx_3544 s_htn_true_dx_4554 s_htn_true_dx_5564 s_htn_true_dx_ge65
+s_htn_over_dx_1524 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_htn_over_dx_5564 s_htn_over_dx_ge65
 
 s_diagnosed_hypertension_1549 s_on_anti_hypertensive_1549 s_hypertension_1549 s_hypertens180_1549
 s_diagnosed_hypertension_1539 s_on_anti_hypertensive_1539 s_hypertension_1539 s_hypertens180_1539
