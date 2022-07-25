@@ -7,17 +7,17 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld11_low_prop_elog_prep_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\pop_wide_tld11_with_lost_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-%let laprv =  pop_wide_tld11_low_prop_elog_prep  ;
+%let laprv =  pop_wide_tld11_low_prep  ;
 
-data a.k_pop_wide_tld11_low_prop_elog_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data a.k_pop_wide_tld11_low_prep;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-proc sort data=a.k_pop_wide_tld11_low_prop_elog_prep; 
+proc sort data=a.k_pop_wide_tld11_low_prep; 
 by run cald option;
 run;
 
@@ -26,7 +26,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_pop_wide_tld11_low_prop_elog_prep ;
+set a.k_pop_wide_tld11_low_prep ;
 
 if cald=2021.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -44,14 +44,14 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.k_pop_wide_tld11_low_prop_elog_prep sf;
+merge a.k_pop_wide_tld11_low_prep sf;
 by run ;
 
 * if incidence1549_2022 >= 0.15 and prevalence1549_2022 <= 0.3;
 
 if prep_any_strategy = 4 or option=0;
 
-* for pop_wide_tld11_low_prop_elog_prep to get n=1000;
+* for pop_wide_tld11_low_prep to get n=1000;
 * if run in (
 519697 
 670623 
@@ -2141,13 +2141,13 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld11_low_prop_elog_prep_y; set y;  
+data    a.l_pop_wide_tld11_low_prep_y; set y;  
 
 proc freq; tables run; where cald = 2020;
 
 run;
 
-data y ; set a.l_pop_wide_tld11_low_prop_elog_prep_y; 
+data y ; set a.l_pop_wide_tld11_low_prep_y; 
 
 
   options nomprint;
@@ -2515,13 +2515,13 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_pop_wide_tld11_low_prop_elog_prep     ; 
+  data  a.w_pop_wide_tld11_low_prep     ; 
   merge a.wide_outputs_x       a.wide_par_x   ;
   by run;
 
 
   data w_pop_wide_tld ;
-  set a.w_pop_wide_tld11_low_prop_elog_prep ;
+  set a.w_pop_wide_tld11_low_prep ;
 
 
 if incidence1549_22 >= 0.15 and prevalence1549_22 <= 0.25;
@@ -2537,7 +2537,7 @@ d_prop_elig_on_prep_20y_3_2 = round(d_prop_elig_on_prep_20y_3_2, 0.01);
 
 
 * if run <=  943258673 ;  * for n=1000 pop_wide_tld11 ;
-*  if run <=  958425156 ;  * for n=1000 pop_wide_tld11_low_prop_elog_prep ;
+*  if run <=  958425156 ;  * for n=1000 pop_wide_tld11_low_prep ;
 
 
 
@@ -2768,7 +2768,7 @@ run;
 
 
 proc freq  data = w_pop_wide_tld; tables d_n_death_hiv_50y_3_2 ce_cab_la_oral_prep  death_hiv_not_averted;
-* where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; 
+  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; 
 * where (hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ge 0) and 0.5 <= incidence1549_22 < 1.0;  run;
 run;
 

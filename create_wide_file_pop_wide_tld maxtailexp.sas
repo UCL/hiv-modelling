@@ -2543,7 +2543,7 @@ if prep_any_strategy = 4;
 
 d_prop_elig_on_prep_20y_3_2 =  prop_elig_on_prep_20y_3 -  prop_elig_on_prep_20y_2 ;
 d_prop_elig_on_prep_20y_3_2 = round(d_prop_elig_on_prep_20y_3_2, 0.01);
-if d_prop_elig_on_prep_20y_3_2 >= 0.1;
+* if d_prop_elig_on_prep_20y_3_2 >= 0.1;
 
 * sensitivity analysis;
 * if 0.05 <= d_prop_elig_on_prep_20y_3_2 < 0.1;
@@ -2756,7 +2756,7 @@ d_p_nacti_art_start_lt2_42_3_2  p_nactive_art_start_lt2_42_3  p_nactive_art_star
 d_p_nacti_art_start_lt3_42_3_2  p_nactive_art_start_lt3_42_3  p_nactive_art_start_lt3_42_2 
 
 ;
-  where hivtest_type_1_init_prep_inj = 1 and hivtest_type_1_prep_inj =  1 ; run;
+  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; run;
 run;
 
 
@@ -2781,7 +2781,7 @@ run;
 
 
 proc freq  data = w_pop_wide_tld; tables d_n_death_hiv_50y_3_2 ce_cab_la_oral_prep  death_hiv_not_averted;
-* where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; 
+  where hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1 ; 
 * where (hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ge 0) and 0.5 <= incidence1549_22 < 1.0;  run;
 run;
 
