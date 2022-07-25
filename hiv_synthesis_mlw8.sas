@@ -18252,12 +18252,16 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
+/*
+
 if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
 if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 
 if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+
+*/
 
 
 
@@ -20021,6 +20025,9 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 
+
+/*
+
 data a.mlw_2021_&dataset_id; set r1;
 
 data r1; set a.mlw_2021_&dataset_id;
@@ -20205,7 +20212,7 @@ data r1; set a.mlw_2021_&dataset_id;
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
 
-
+*/
 
 
 * ts1m:  need more update statements ;
