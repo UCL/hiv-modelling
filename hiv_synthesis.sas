@@ -1,64 +1,16 @@
 
 
-
-
-
-
-
-
-
-
-*
-
-make risk informed prep gender neutral - not just the women with ep 
-
-separate our hiv tests done for prep and other hiv tests and their costs
-
-include in primary setting scenarios greater probability of low use and lower adherence (as in sensitivity analyses)
-
-? include lower tr_rate_undetec_vl in some setting scenarios (will lead to lower base incidence so maybe not)
-
-? epvl=0
-
-consider addressing questions in katy godfrey proposal
-
-17 8 21 - added r=uniform(0) to tld_prep part
-
-;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-* libname a 'C:\Users\Toshiba\Documents\My SAS Files\outcome model\misc\';
-* libname a 'C:\Loveleen\Synthesis model\';
+* libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
-libname a "&outputdir/";
+  libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000 ; 
-%let year_interv = 2021.5;
+%let population = 100000  ; 
+%let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -84,12 +36,16 @@ The list of probabilities must sum to 1.
 The lengths of the two lists (values and probabilities) must be equal.
 */
 %macro sample(name, v, p);
-	* TODO: exit ("%abort cancel" ?) if v and p have different lengths;
+	%let cnt=%sysfunc(countw(&p,,s));
+	%let cnt_v=%sysfunc(countw(&v,,s));
+	%if &cnt ^= &cnt_v %then %do; * stop if p and v have different lengths;
+		%put ERROR: mismatched values and probabilities for &name;
+		%abort cancel;
+	%end;
 	randvar = rand('uniform');
 	%let cum_prob=%scan(&p,1,,s); * cumulative probability;
 	if randvar < &cum_prob then
 		&name = %scan(&v,1,,s);
-	%let cnt=%sysfunc(countw(&p,,s));
 	%do i=2 %to &cnt;
 		%let cum_prob = %sysevalf(&cum_prob + %scan(&p,&i,,s));
 		%let value=%scan(&v,&i,,S);
@@ -105,7 +61,7 @@ Usage:
 %sample_uniform(<variable name>, <list of possible values>)
 
 A variant of %sample where all the values have equal weights/probabilities,
-which therefore don't need to be specified.
+which therefore dont need to be specified.
 
 The values can be specified in two ways:
 (a) as a space-separated list, as for %sample: %sample_uniform(my_var, 1 2 3 4 5);
@@ -177,14 +133,14 @@ caldate1=1989;
 caldate_never_dot=1989;
 
 * these used after year_interv - code is here so value the same for all people;
-_u1 = uniform(0); _u2 = uniform(0); _u3 = uniform(0); _u4 = uniform(0); _u5 = uniform(0);  _u6 = uniform(0); _u7 = uniform(0); _u8 = uniform(0);
-_u9 = uniform(0); _u10 = uniform(0); _u11 = uniform(0); _u12 = uniform(0); _u13 = uniform(0); _u14 = uniform(0); _u15 = uniform(0); _u16 = uniform(0);
-_u17 = uniform(0); _u18 = uniform(0); _u19 = uniform(0); _u20 = uniform(0); _u21 = uniform(0); _u22 = uniform(0); _u23 = uniform(0); _u24 = uniform(0);
-_u25 = uniform(0); _u26 = uniform(0); _u27 = uniform(0); _u28 = uniform(0); _u29 = uniform(0); _u30 = uniform(0); _u31 = uniform(0); _u32 = uniform(0);
-_u33 = uniform(0); _u34 = uniform(0); _u35 = uniform(0); _u36 = uniform(0); _u37 = uniform(0); _u38 = uniform(0); _u39 = uniform(0); _u40 = uniform(0);
-_u41 = uniform(0); _u42 = uniform(0); _u43 = uniform(0); _u44 = uniform(0); _u45 = uniform(0); _u46 = uniform(0); _u47 = uniform(0); _u48 = uniform(0);
-_u49 = uniform(0); _u50 = uniform(0); _u51 = uniform(0); _u52 = uniform(0); _u53 = uniform(0); _u54 = uniform(0); _u55 = uniform(0); _u56 = uniform(0);
-_u57 = uniform(0); _u58 = uniform(0); _u59 = uniform(0); _u60 = uniform(0); _u61 = uniform(0); _u62 = uniform(0); _u63 = uniform(0); _u64 = uniform(0);
+_u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
+_u9 = rand('uniform'); _u10 = rand('uniform'); _u11 = rand('uniform'); _u12 = rand('uniform'); _u13 = rand('uniform'); _u14 = rand('uniform'); _u15 = rand('uniform'); _u16 = rand('uniform');
+_u17 = rand('uniform'); _u18 = rand('uniform'); _u19 = rand('uniform'); _u20 = rand('uniform'); _u21 = rand('uniform'); _u22 = rand('uniform'); _u23 = rand('uniform'); _u24 = rand('uniform');
+_u25 = rand('uniform'); _u26 = rand('uniform'); _u27 = rand('uniform'); _u28 = rand('uniform'); _u29 = rand('uniform'); _u30 = rand('uniform'); _u31 = rand('uniform'); _u32 = rand('uniform');
+_u33 = rand('uniform'); _u34 = rand('uniform'); _u35 = rand('uniform'); _u36 = rand('uniform'); _u37 = rand('uniform'); _u38 = rand('uniform'); _u39 = rand('uniform'); _u40 = rand('uniform');
+_u41 = rand('uniform'); _u42 = rand('uniform'); _u43 = rand('uniform'); _u44 = rand('uniform'); _u45 = rand('uniform'); _u46 = rand('uniform'); _u47 = rand('uniform'); _u48 = rand('uniform');
+_u49 = rand('uniform'); _u50 = rand('uniform'); _u51 = rand('uniform'); _u52 = rand('uniform'); _u53 = rand('uniform'); _u54 = rand('uniform'); _u55 = rand('uniform'); _u56 = rand('uniform');
+_u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = rand('uniform'); _u61 = rand('uniform'); _u62 = rand('uniform'); _u63 = rand('uniform'); _u64 = rand('uniform');
 
 
 * start of epidemic;
@@ -209,8 +165,8 @@ newp_seed = 7;
 * inc_cat; 					%sample_uniform(inc_cat, 1:3);
 						
 * hard_reach;				hard_reach=0; 			* this is effectively reluctance to test - with effects on testing for prep and vmmc also - assumed will test if symptomatic or in anc;
-* p_hard_reach_w;  			p_hard_reach_w=0.05+(uniform(0)*0.10); p_hard_reach_w = round(p_hard_reach_w, 0.01);
-* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (uniform(0)*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
+* p_hard_reach_w;  			p_hard_reach_w=0.05+(rand('uniform')*0.15); p_hard_reach_w = round(p_hard_reach_w, 0.01);
+* hard_reach_higher_in_men; hard_reach_higher_in_men = 0.00 + (rand('uniform')*0.10); hard_reach_higher_in_men = round(hard_reach_higher_in_men,0.01);
 * p_hard_reach_m;			p_hard_reach_m = p_hard_reach_w + hard_reach_higher_in_men;
 
 
@@ -226,7 +182,7 @@ newp_seed = 7;
 							rate_want_no_more_children = 0.005;	* rate of women wanting no more children;
 							* dependent_on_time_step_length ;
 
-* prob_pregnancy_base;  	r=uniform(0); prob_pregnancy_base=0.06 + r*0.05;  
+* prob_pregnancy_base;  	r=rand('uniform'); prob_pregnancy_base=0.06 + r*0.05;  
 							if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 							if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
 							prob_pregnancy_base = round(prob_pregnancy_base,0.001);	* dependent_on_time_step_length ;
@@ -238,8 +194,8 @@ newp_seed = 7;
 
 * SEXUAL BEHAVIOUR;
 
-* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section
-* rr_sw_age_1519;			rr_sw_age_1519 = 1.00;
+* condom_incr_year_i;		condom_incr_year_i = 0; 			* mar19; * initialising condom_incr_year_i - this is set again in year_i variables section;
+* rr_sw_age_1519;			rr_sw_age_1519 = 0.80;
 * rr_sw_age_2534;			rr_sw_age_2534 = 0.30;
 * rr_sw_age_3549;			rr_sw_age_3549 = 0.03;
 * rr_sw_life_sex_risk_3;	rr_sw_life_sex_risk_3 = 10;
@@ -247,15 +203,13 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.6 0.7 0.8 0.9, 0.2 0.3 0.3 0.2); * change jun21;  
-							
-
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.40 0.30 0.15 0.05 0.05); * change jun21;  
+					
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
-								0.95 	0.99 	1		1/0.99 	1/0.95, 
-								0.05 	0.05 	0.8 	0.05	0.05);
+								0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 
 * ych_risk_beh_ep;  		%sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
-* eprate;					eprate = 0.1* exp(normal(0)*0.25); eprate = round(eprate,0.01);
+* eprate;					eprate = 0.1* exp(rand('normal')*0.25); eprate = round(eprate,0.01);
 							* rate of new long term partners in youngest age group; 
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
@@ -266,10 +220,10 @@ newp_seed = 7;
 * exp_setting_lower_p_vl1000;	
 * external_exp_factor;			
 * rate_exp_set_lower_p_vl1000;	
-							r=uniform(0); if r < 0.20 then do; 
+							r=rand('uniform'); if r < 0.20 then do; 
 								exp_setting_lower_p_vl1000 = 1; * exposure to hiv in an external setting where p_vl1000 is lower - during short term out migration followed by return; 
-								external_exp_factor = 1 + uniform(0); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
-								rate_exp_set_lower_p_vl1000 = uniform(0) * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
+								external_exp_factor = 1 + rand('uniform'); external_exp_factor = round(external_exp_factor,0.01); * effect of exposure ; 
+								rate_exp_set_lower_p_vl1000 = rand('uniform') * 0.01 ; rate_exp_set_lower_p_vl1000 = round(rate_exp_set_lower_p_vl1000,0.0001); 
 							end;
 							else do;
 								exp_setting_lower_p_vl1000 = 0; 
@@ -299,12 +253,15 @@ newp_seed = 7;
 * fold_tr;					%sample_uniform(fold_tr, 1/1.5 1 1.5);
 * fold_change_w; 			%sample(fold_change_w, 1 1.5 2, 0.05 0.25 0.7);
 * fold_change_yw; 			%sample_uniform(tmp, 1 3 5); fold_change_yw=tmp*fold_change_w;
-* fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3 5);
-* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.5);
-* super_infection; 			%sample_uniform(super_infection, 0 1);
+* fold_change_sti; 			%sample_uniform(fold_change_sti, 2 3  );
+* fold_tr_newp;				%sample_uniform(fold_tr_newp, 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1/0.8 1/0.6 1/0.4); 
+* super_infection_pop; 		%sample_uniform(super_infection_pop, 0 1);
 * res_trans_factor_nn;		%sample_uniform(res_trans_factor_nn, 0.5 0.7 0.8 0.9 1.0);
 							* factor determining extent to which some NN transmitted resistance immediately reverts and is effectively lost (ie this is for nnrti only); * may18;
-* res_trans_factor_ii;		%sample(res_trans_factor_ii, 1 2, 0.8 0.2);
+* res_trans_factor_ii;		%sample(res_trans_factor_ii, 0.2 0.4 0.6 0.8, 0.25 0.25 0.25 0.25);
+
+* super_inf_res;			%sample(super_inf_res, 0.2 0.8, 0.9 0.1);
+
 * rate_loss_persistence;	%sample(rate_loss_persistence, 
 								0 		0.005 	0.010 	0.015 	0.020, 
 								0.1 	0.1 	0.1 	0.4 	0.3);
@@ -328,15 +285,15 @@ newp_seed = 7;
 * rate_persist_sti;			rate_persist_sti = 1 / 5 ;
 							* dependent_on_time_step_length ;
 
-* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 5 ;
-* incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
-* incr_death_rate_sbi;		incr_death_rate_sbi = 5 ;
-* incr_death_rate_tb;		incr_death_rate_tb = 5 ;
+* incr_death_rate_oth_adc;	%sample_uniform(incr_death_rate_oth_adc, 1.5 2 3); 
+* incr_death_rate_crypm;	%sample_uniform(incr_death_rate_crypm, 3  5 10);
+* incr_death_rate_sbi;		%sample_uniform(incr_death_rate_sbi, 1.5 2 3); 
+* incr_death_rate_tb;		%sample_uniform(incr_death_rate_tb, 1.5 2 3);
 * fold_change_ac_death_rate;fold_change_ac_death_rate_w = 1; fold_change_ac_death_rate_m = 1; 
 * rr_non_aids_death_hiv_off_art;
-							rr_non_aids_death_hiv_off_art = 2;
+							%sample_uniform(rr_non_aids_death_hiv_off_art, 1.5 2 3);
 * rr_non_aids_death_hiv_on_art;
-							rr_non_aids_death_hiv_on_art = 1.3;
+							%sample_uniform(rr_non_aids_death_hiv_on_art, 1.1 1.3 1.5);
 
 * prop_adc_crypm;			prop_adc_crypm = 0.15;
 * prop_adc_sbi;				prop_adc_sbi = 0.15;
@@ -383,18 +340,20 @@ newp_seed = 7;
 * incr_test_year_i;			incr_test_year_i = 0;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
+* sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
+
 * rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;			* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
 							* dependent_on_time_step_length ;
 
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.03 0.05 0.10);	* jul18;
-* test_targeting;   		%sample(test_targeting, 1.25 1.5, 0.8 0.2);
+* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
-								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0400 	0.1000, 
-								0.1		0.2 	0.2 	0.2 	0.15 	0.1 	0.05);
+								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
+								0.2		0.25	0.35	0.1 	0.05 	0.05 );
 * date_test_rate_plateau;   %sample(date_test_rate_plateau, 
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
@@ -404,24 +363,23 @@ newp_seed = 7;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
 							* dependent_on_time_step_length ;
 
-
+* rr_testing_female;		rr_testing_female=1.5;
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
 * art_monitoring_strategy;	art_monitoring_strategy = 8; 
 * base_res_test;			base_res_test=0;
 * flr;						flr=0;  
+* reg_option_104;			%sample(reg_option_104, 0 1 , 0.50 0.50);
 * third_line;				third_line=1; 						* this means third line with dar unavailable but it is possible to have 1st line efa, 2nd line dol, 3rd line taz or lpr;
 * art_intro_date;			art_intro_date = 2004;
 * v_min_art;				v_min_art=1.0;  
 * sd_v_art;					sd_v_art=0.5; 
-* pir_higher_potency;		pir_higher_potency=1; 
 * sd_cd4;					sd_cd4 = 1.2;						* sd of cd4 (on sqrt scale);
 * sd_measured_cd4;			sd_measured_cd4 = 1.7; 				* error added to measured cd4 (on sqrt scale); 
 * prob_supply_interrupted;	prob_supply_interrupted=0.003; 		* drug supply; * dependent_on_time_step_length ;
 * prob_supply_resumed;		prob_supply_resumed=0.8; 			* per 3 mths - base 0.8; * dependent_on_time_step_length ;
 * rate_loss_acq_nnm_offart;	rate_loss_acq_nnm_offart = 0.05;  	* informed by consideration of data on proportion of people ART experienced re-initiators with nnrti resistance in padr program;  * dependent_on_time_step_length ;
-
 
 * prob_nnresmaj_sd_nvp; 	prob_nnresmaj_sd_nvp=0.35;
 * prob_nnresmaj_dual_nvp; 	prob_nnresmaj_dual_nvp=0.045; 		* In SA guidelines in 2010: AZT from 14 weeks, sdNVP + AZT 3hrly during labour, TDF + FTC single dose (stat) after delivery,
@@ -447,7 +405,12 @@ newp_seed = 7;
 
 * AP 19-7-19 ;
 * ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
-* dol_higher_potency;   	dol_higher_potency = 0.5;  			* so 1.5 potency - as for efa - may 2019 in response to advance results;
+* dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
+																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
+* efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
+																* updated to equal dol potency JAS Nov2021;
+* pir_higher_potency;		pir_higher_potency=1; 
+
 
 * rate_ch_art_init_str;	
 							rate_ch_art_init_str_4 = 0.4;rate_ch_art_init_str_9 = 0.4;rate_ch_art_init_str_10 = 0.4;rate_ch_art_init_str_3 = 0.4;	
@@ -502,8 +465,8 @@ newp_seed = 7;
 							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.20 	0.35 	0.50	0.80, 
-								0.2 	0.2 	0.2 	0.2		0.1		0.1);
+								0.02 	0.05 	0.15 	0.35 	0.50, 
+								0.2 	0.3 	0.3 	0.1		0.1	);
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
@@ -514,38 +477,35 @@ newp_seed = 7;
 * prob_lost_art; 			%sample_uniform(prob_lost_art, 0.5 0.6 0.7 0.8 0.9);
 							* dependent_on_time_step_length ;
 
-* AP 19-7-19 ;
 * rate_return;  			%sample(rate_return, 
-								0.01	0.10 	0.50 	0.80, 
-								0.10 	0.40	0.25 	0.25);
-
+								0.01	0.05  0.10 	0.30   0.60, 
+								0.15 	0.15  0.40	0.15   0.15);
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
 							* dependent_on_time_step_length ;
-* pr_art_init; 				%sample_uniform(pr_art_init, 0.4 0.5 0.6 0.7);
+* pr_art_init; 				%sample_uniform(pr_art_init, 0.5 0.7 0.9 0.95 1); 
 							* dependent_on_time_step_length ;
 * fold_change_mut_risk; 	%sample(fold_change_mut_risk, 0.5 1 2, 0.1 0.8 0.1);		* jan18;
-* pr_switch_line;  			%sample(pr_switch_line, 0.2 0.5, 0.75 0.25);
+* pr_switch_line;  			%sample(pr_switch_line, 0.1 0.2 0.5 0.75, 0.25 0.25 0.25 0.25);
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
 								0.05	0.55	0.10	0.10	0.10	0.05	0.05);
-* red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(normal(0)*0.5),.01);			
+* red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
-* red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(normal(0)*0.5),.01);	
+* red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
 							* reduced adherence in those with toxicity;
-* add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(normal(0)*0.30),.01);	
+* add_eff_adh_nnrti; 		add_eff_adh_nnrti=round(0.10* exp(rand('normal')*0.30),.01);	
 							* additional "effective" adh of nnrti due to longer half life;
-* altered_adh_sec_line_pop; altered_adh_sec_line_pop = round(0.05 +(normal(0)*0.05),.01); 
+* altered_adh_sec_line_pop; altered_adh_sec_line_pop = round(0.05 +(rand('normal')*0.05),.01); 
 							* better adherence on second line (pi);
 * adh_effect_of_meas_alert; %sample(adh_effect_of_meas_alert, 0.35 0.70 0.90, 0.15 0.7 0.15); 
-* poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * normal(0)),1);	
+* poorer_cd4rise_fail_nn;	poorer_cd4rise_fail_nn = round(-6 + (3 * rand('normal')),1);	
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
-* AP 19-7-19 ;
-* rate_int_choice;  		%sample_uniform(rate_int_choice, 0.0005 0.0020 0.0040 0.0080); 
-
+* rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
+														0.30 0.30 0.30 0.05 0.05); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -571,9 +531,11 @@ newp_seed = 7;
 * poorer_cd4rise_fail_ii;  	%sample_uniform(poorer_cd4rise_fail_ii, 0 1);
 							* dependent_on_time_step_length ;	
 * rate_res_ten;  			%sample_uniform(rate_res_ten, 0.1 0.2 0.3);
-							* dependent_on_time_step_length ;	
-* cd4_monitoring;			r=uniform(0); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
-* red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(normal(0)*0.5),.01);
+							* dependent_on_time_step_length ;
+* pr_res_dol;				%sample_uniform(pr_res_dol, 0.005 0.010 0.015);       
+* rr_res_cab_dol ; 			%sample_uniform(rr_res_cab_dol, 1 1.5 2  );
+* cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
+* red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
 * rr_int_tox ;				%sample_uniform(rr_int_tox, 2 10 30);
 * greater_tox_zdv;			%sample_uniform(greater_tox_zdv, 0 1 2);
@@ -586,7 +548,6 @@ newp_seed = 7;
 * zdv_potency_p75;			%sample_uniform(zdv_potency_p75, 0 1);
 * double_rate_gas_tox_taz; 	%sample_uniform(double_rate_gas_tox_taz, 1 2);
 * tox_weightg_dol;			%sample_uniform(tox_weightg_dol, 0 1);
-* higher_rate_res_dol;		%sample(higher_rate_res_dol, 0 1, 0.8 0.2);
 * incr_mort_risk_dol_weightg; 
 							%sample(incr_mort_risk_dol_weightg, 
 								1		1.1		2		2.1		2.2		3		4,
@@ -596,40 +557,43 @@ newp_seed = 7;
 								0.20	0.40	0.20	0.20);
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
-
+* res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.75 1.00, 0.8 0.2 )
 * lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
-* ind_effect_art3_death_rate; 	ind_effect_art3_death_rate = 0.6;
-* ind_effect_art2_death_rate; 	ind_effect_art2_death_rate = 0.85;
-* ind_effect_art1_death_rate; 	ind_effect_art1_death_rate = 0.9;
+* ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
 
 * SEX WORKERS;
 
-* base_rate_sw; 			%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
-							
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.2 0.6 0.2);
 							* dependent_on_time_step_length ;
 * base_rate_stop_sexwork;	%sample_uniform(base_rate_stop_sexwork, 0.010 0.015 0.030);
 							* dependent_on_time_step_length ;
 * sw_trans_matrix;   		%sample_uniform(sw_trans_matrix, 1:5);
-* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.67 0.33);
+* sw_init_newp;    			%sample(sw_init_newp, 1 2, 0.9 0.1);
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;			%sample_uniform(sw_art_disadv, 1 2);
-					 			if sw_art_disadv=1 	then do; sw_higher_int = 1; prob_sw_lower_adh = 0;		sw_higher_prob_loss_at_diag = 1; 	end;
-								if sw_art_disadv=2 	then do; sw_higher_int = 2; prob_sw_lower_adh = 0.1;	sw_higher_prob_loss_at_diag = 1.5; 	end;
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.25 0.75);
+                              if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
-* sw_program;				%sample(sw_program, 0 1, 0.8 0.2);
-								if sw_program = 1 	then do; rate_engage_sw_program =0.10;	rate_disengage_sw_program = 0.025;  end;
+						   	  if sw_art_disadv=1  then do; 
+						   		%sample_uniform(sw_higher_int, 2 3);
+						   		%sample_uniform(rel_sw_lower_adh, 0.8 0.9);
+						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
+							  end;
 
-* effect_sw_prog_newp;  	%sample_uniform(effect_sw_prog_newp, 0.1 0.2 0.3);
-* effect_sw_prog_6mtest;	%sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
-* effect_sw_prog_int;		%sample_uniform(effect_sw_prog_int, 0.4 0.6 0.8);
-* effect_sw_prog_adh;		%sample_uniform(effect_sw_prog_adh, 1 1.5 10);
-* effect_sw_prog_lossdiag;	%sample_uniform(effect_sw_prog_lossdiag, 0.4 0.6 0.8);
-* effect_sw_prog_prep;      %sample_uniform(effect_sw_prog_prep, 0.8 0.95);
-* effect_sw_prog_pers_sti;	%sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
+							 
+* sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
+					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
+
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
+* effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.3 0.5 0.8);
+* effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.25 0.5 0.75);
+* effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.3 0.5 0.8);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.8 0.95);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
 
 
 
@@ -641,7 +605,8 @@ newp_seed = 7;
 
 * circ_inc_rate; 			%sample(circ_inc_rate, 
 								0.0001	0.001	0.003	0.01	0.1, 
-								0.1		0.1		0.6		0.1		0.1);
+								0.1		0.3 	0.4		0.1		0.1);
+
 * circ_inc_15_19;			%sample_uniform(circ_inc_15_19, 1.5 2.0 3.0);
 * circ_red_20_30;			%sample_uniform(circ_red_20_30, 0.3 0.4 0.5);
 * circ_red_30_50;			%sample_uniform(circ_red_30_50, 0.15 0.25 0.35);
@@ -650,50 +615,174 @@ newp_seed = 7;
 								0.10	0.25	0.25	0.40);
 								if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
 * prob_birth_circ; 			%sample(prob_birth_circ, 
-								0.05	0.1		0.39	0.9, 
-								0.33	0.32	0.25	0.10);
-
-									
+								0.05	0.1		0.40	0.9, 
+								0.30	0.40	0.20	0.10);
 
 
-* PREP;
+* ALL PREP ;
 
-* PREP assumed introduced in fsw/agyw 2018 - with level of coverage and retention; 
-* note there are three parameters that affect use of prep besides the prep_strategy - prob_prep_b is prob of starting if prep_elig=1 and tested=1
-and prep_willing = 1 - a person cannot be prep_elig=1 if hard_reach=1 - a person prep_elig=1 will only actually have a chance of starting prep
-if prep_willing=1;
+* These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
+ 
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
 
-* annual_testing_prep;		annual_testing_prep=0.25; 	* frequency of HIV testing for people on PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months);
-* prep_efficacy;			prep_efficacy=0.95; 		* PrEP effectiveness with 100% adherence ;
-* rel_prep_adh_younger;		rel_prep_adh_younger=0.7; 	* factor determining how much lower adh to prep is in people age < 25 compared to > 25; 
-* rate_test_onprep;			rate_test_onprep=1.00; 		* Rate of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on prep (this will need to be considered again) ;
-							* dependent_on_time_step_length ;
-* pr_prep_b;				pr_prep_b=0.75; 			* 11dec17; *Probability of starting PrEP in people (who are eligible and willing to tak prep) tested for HIV according to the base rate of testing;
-* prob_prep_restart;		prob_prep_restart=1.00; 	* set to 1 given we have rate_test_restartprep; *Probability of restarting PrEP after discontinuation due to not eligible; * may17;
-							* dependent_on_time_step_length ;
-* prob_prep_visit_counsel;	prob_prep_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
-* add_prepuptake_sw;		add_prepuptake_sw=0; 		***this may be sampled at a later date;
-* pop_wide_tld_prob_egfr;	pop_wide_tld_prob_egfr=0.5; * probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
-							* dependent_on_time_step_length ;
+* prob_prep_any_restart;		*removed ;
+* prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
+* rate_test_onprep_any;			rate_test_onprep_any=1.00; 		* Rate of being tested for HIV whilst on oral PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
+								* dependent_on_time_step_length ;
+																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
+* prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* adh_pattern_prep;  		%sample(adh_pattern_prep, 1 2 3 4, 0.3 0.3 0.3 0.1);
-* rate_test_startprep; 		%sample_uniform(rate_test_startprep, 0.25 0.5 0.75);
-							* Additional rate of being tested for HIV before PrEP;	 
-							* dependent_on_time_step_length ;
-* rate_test_restartprep;  	%sample_uniform(rate_test_restartprep, 0.5 0.8);
-							* dependent_on_time_step_length ;
-* rate_choose_stop_prep; 	%sample_uniform(rate_choose_stop_prep, 0.05 0.15 0.30);
-							* dependent_on_time_step_length ;
-* prob_prep_restart_choice; %sample_uniform(prob_prep_restart_choice, 0.05 0.10 0.20);
-							* dependent_on_time_step_length ;
-* prepuptake_pop;			%sample(prepuptake_pop, 0.1 0.2 0.5, 0.2 0.6 0.2);
-							*Probability of PrEP uptake if eligible for general population;
-* higher_future_prep_cov;	%sample(higher_future_prep_cov, 0 1, 0.8 0.2); if lower_future_art_cov=1 then higher_future_prep_cov=0;
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
+								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
+								* dependent_on_time_step_length ;
+* rate_test_restartprep_any;   * removed;
+* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);
+								* dependent_on_time_step_length ;
+								* lapr and dpv-vr - this might be the same for lapr and dpv-vr - we will have to consider people switching between prep modalities;
+* add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
+																* lapr should this be defined for all prep (like pop prep uptake) or for each modality individually? ;
 
 
+* ORAL PREP ;
+
+* Oral PrEP assumed introduced in fsw/agyw 2018 - with level of coverage and retention; 
+* note there are multiple parameters that affect use of oral prep besides the prep_any_strategy: prob_prep_oral_b is prob of starting if prep_any_elig=1 and tested=1
+and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral > pref_prep_vr
+* a person cannot be prep_any_elig=1 if hard_reach=1; 
+* a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
+* lapr and dpv-vr - assume following all apply unless stated ; * lapr - add specific testing routines?
 
 
-* COVID-19
+* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
+* dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
+* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.7); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
+																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
+* annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
+																* lapr JAS - should this be the same for all prep? may want more frequently for CAB-LA;
+* rel_prep_oral_adh_younger;	rel_prep_oral_adh_younger=0.8; 	* factor determining how much lower adh to oral prep is in people age < 25 compared to > 25; 
+																* lapr and dpv-vr - may need to define different values? -  JAS dont think this is relevent for inj & vr forms? ;
+																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
+* prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
+
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
+								* dependent_on_time_step_length ;
+
+* higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
+								* note we have switched this off - apr 2022;
+								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
+* pref_prep_oral_beta_s1;		pref_prep_oral_beta_s1 = 2 ;
+
+
+* pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
+								* dependent_on_time_step_length ;
+																* not applicable for lapr or dpv-vr; * not marked with '_oral' as tld prep is separate intervention ;
+
+* pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
+* pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; ******************* placeholder ;
+
+* oral_prep_eff_3tc_ten_res;	%sample_uniform(oral_prep_eff_3tc_ten_res, 0.25 0.5);
+
+* INJECTABLE CABOTEGRAVIR ; * lapr;
+
+* date_prep_inj_intro;			date_prep_inj_intro=.;			* Introduction of injectable PrEP ;
+* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=2;			* Assume 2 years to scale up injectable prep; * lapr;
+* pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
+
+* annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
+																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
+/** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
+																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
+
+* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
+								* dependent_on_time_step_length ;
+																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
+																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer 'at-risk' 2) choose to stop while still at risk
+* prep_inj_effect_inm_partner;	%sample_uniform(prep_inj_effect_inm_partner, 0.0 0.25 0.5 );				
+
+* cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
+
+* pr_inm_inj_prep_primary ;		%sample_uniform(pr_inm_inj_prep_primary, 0.1 0.2 0.3 0.5) ; * this is probability of each mutation - any mutation gives r_cab = 0.75;
+* rel_pr_inm_inj_prep_tail_primary; %sample_uniform(rel_pr_inm_inj_prep_tail_primary, 0.25 0.5 0.75 1 1.33); 
+
+* incr_res_risk_cab_inf_3m;		%sample_uniform(incr_res_risk_cab_inf_3m, 1 3 5 10 20 50);
+
+* new for pop_wide_tld ;
+
+* pref_prep_inj_beta_s1;		%sample_uniform(pref_prep_inj_beta_s1, 2 3 4 5 6) ;
+
+* hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
+								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
+* hivtest_type_1_prep_inj;		if hivtest_type_1_init_prep_inj=1 then do; %sample(hivtest_type_1_prep_inj, 0 1, 0.5 0.5);end;
+								%sample_uniform(testt1_prep_inj_eff_on_res_prim, 0.25 0.5 0.75); 
+								if hivtest_type_1_prep_inj=1 then do; 
+									pr_inm_inj_prep_primary = pr_inm_inj_prep_primary * testt1_prep_inj_eff_on_res_prim;   
+								end;
+
+* sens_tests_prep_inj;			%sample_uniform(sens_tests_prep_inj, 1 2 3 4); 
+
+* note that these below also apply to pop_wide_tld;
+%sample_uniform(sens_ttype3_prep_inj_primary, 0 0.1); %sample_uniform(sens_ttype3_prep_inj_inf3m, 0 0.2); 
+%sample_uniform(sens_ttype3_prep_inj_infge6m, 0.1 0.25 0.5); 
+
+if sens_tests_prep_inj =1 then do;
+sens_ttype1_prep_inj_primary=0.7; sens_ttype1_prep_inj_inf3m=0.85; sens_ttype1_prep_inj_infge6m=0.95;
+end;
+if sens_tests_prep_inj =2 then do;
+sens_ttype1_prep_inj_primary=0.5; sens_ttype1_prep_inj_inf3m=0.7; sens_ttype1_prep_inj_infge6m=0.80;
+end;
+if sens_tests_prep_inj =3 then do;
+sens_ttype1_prep_inj_primary=0.3; sens_ttype1_prep_inj_inf3m=0.5; sens_ttype1_prep_inj_infge6m=0.70;
+end;
+if sens_tests_prep_inj =4 then do;
+sens_ttype1_prep_inj_primary=0.2; sens_ttype1_prep_inj_inf3m=0.3; sens_ttype1_prep_inj_infge6m=0.5;
+end;
+
+* sens_vct_testtype3_cab_tail;	%sample_uniform(sens_vct_testtype3_cab_tail, 0.50 0.8 0.98);
+
+* reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2);
+
+
+* DAPIVIRINE VAGINAL RING ; * dpv-vr;
+* vr code needs more work before using ;
+* lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
+
+* date_prep_vr_intro;			date_prep_vr_intro=2100; 			* Introduction of DPV-VR PrEP ;
+* prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
+* dur_prep_vr_scaleup;			dur_prep_vr_scaleup=5;			* Assume 5 years to scale up DPV ring; * lapr;
+* pr_prep_vr_b;					pr_prep_vr_b=0.75; 				* dpv-vr JAS Jul2021; *Probability of starting DPV-VR PrEP in people (who are eligible and willing to take DPV-VR prep) tested for HIV according to the base rate of testing;
+* annual_testing_prep_vr;		annual_testing_prep_vr=0.25;	* frequency of HIV testing for people on DPV-VR PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
+																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
+/** add_prep_vr_uptake_sw;		add_prep_vr_uptake_sw=0; 		***this may be sampled at a later date;
+																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
+
+* rate_choose_stop_prep_vr; 	%sample_uniform(rate_choose_stop_prep_vr, 0.05 0.15 0.30);
+								* dependent_on_time_step_length ;
+								* lapr and dpv-vr - does this need to be relative to oral or inj prep?;
+* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ;
+
+
+* new for pop_wide_tld ;
+
+* POP WIDE TLD ;
+
+* rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
+
+* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
+
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.05 0.1 );
+
+* prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
+* prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
+
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 );
+
+* pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.8 0.2); 
+
+
+* COVID-19 ;
 
 * cov_death_risk_mult;		%sample(cov_death_risk_mult, 1 2 3, 0.8 0.1 0.1);
 
@@ -755,21 +844,21 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 
 * determining newp base categories for new sw;
-if sw_init_newp=1 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.8; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.02; end;
-if sw_init_newp=2 then do; p_sw_init_newp_g1=0.2; p_sw_init_newp_g2=0.60; p_sw_init_newp_g3= 0.10; p_sw_init_newp_g4=0.07; p_sw_init_newp_g5=0.03; end;
+if sw_init_newp=1 then do; p_sw_init_newp_g1=0.02; p_sw_init_newp_g2=0.91; p_sw_init_newp_g3= 0.03; p_sw_init_newp_g4=0.02; p_sw_init_newp_g5=0.02; end;
+if sw_init_newp=2 then do; p_sw_init_newp_g1=0.05; p_sw_init_newp_g2=0.82; p_sw_init_newp_g3= 0.07; p_sw_init_newp_g4=0.03; p_sw_init_newp_g5=0.03; end;
 
 * transition probabilities between sex worker newp levels;
 * sw newp levels are   1 	newp = 0   2   newp 1-6   3   newp 7-20   4   newp 21-50   5   newp 51-150  ;
 if sw_trans_matrix=1 then do;
 sw_newp_lev_1_1 = 0.80 ; sw_newp_lev_1_2 = 0.17 ; sw_newp_lev_1_3 = 0.015  ; sw_newp_lev_1_4 = 0.010 ; sw_newp_lev_1_5 = 0.005 ; 
-sw_newp_lev_2_1 = 0.15 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
+sw_newp_lev_2_1 = 0.05 ; sw_newp_lev_2_2 = 0.90 ; sw_newp_lev_2_3 = 0.030  ; sw_newp_lev_2_4 = 0.015 ; sw_newp_lev_2_5 = 0.005 ; 
 sw_newp_lev_3_1 = 0.05 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.80  ; sw_newp_lev_3_4 = 0.045 ; sw_newp_lev_3_5 = 0.005 ; 
 sw_newp_lev_4_1 = 0.025 ; sw_newp_lev_4_2 = 0.025 ; sw_newp_lev_4_3 = 0.10  ; sw_newp_lev_4_4 = 0.80 ; sw_newp_lev_4_5 = 0.05 ; 
 sw_newp_lev_5_1 = 0.025 ; sw_newp_lev_5_2 = 0.025 ; sw_newp_lev_5_3 = 0.05  ; sw_newp_lev_5_4 = 0.10 ; sw_newp_lev_5_5 = 0.80 ; 
 end;
 if sw_trans_matrix=2 then do;
 sw_newp_lev_1_1 = 0.90 ; sw_newp_lev_1_2 = 0.10 ; sw_newp_lev_1_3 = 0.000  ; sw_newp_lev_1_4 = 0.000 ; sw_newp_lev_1_5 = 0.000 ; 
-sw_newp_lev_2_1 = 0.10 ; sw_newp_lev_2_2 = 0.80 ; sw_newp_lev_2_3 = 0.100  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
+sw_newp_lev_2_1 = 0.05 ; sw_newp_lev_2_2 = 0.85 ; sw_newp_lev_2_3 = 0.100  ; sw_newp_lev_2_4 = 0.000 ; sw_newp_lev_2_5 = 0.000 ; 
 sw_newp_lev_3_1 = 0.00 ; sw_newp_lev_3_2 = 0.10 ; sw_newp_lev_3_3 = 0.80  ; sw_newp_lev_3_4 = 0.100 ; sw_newp_lev_3_5 = 0.000 ; 
 sw_newp_lev_4_1 = 0.000 ; sw_newp_lev_4_2 = 0.000 ; sw_newp_lev_4_3 = 0.100 ; sw_newp_lev_4_4 = 0.80 ; sw_newp_lev_4_5 = 0.100; 
 sw_newp_lev_5_1 = 0.000 ; sw_newp_lev_5_2 = 0.000 ; sw_newp_lev_5_3 = 0.000  ; sw_newp_lev_5_4 = 0.10 ; sw_newp_lev_5_5 = 0.90 ; 
@@ -797,15 +886,14 @@ sw_newp_lev_5_1 = 0;  sw_newp_lev_5_2 = 0; sw_newp_lev_5_3 = 0; sw_newp_lev_5_4 
 end; 
 
 
-
 * test type;
 
 *1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
-*3= 3rd gen (Ab) tests / community-based POC tests / rapid tests - assume window period of 3 months; 
+*3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_primary_ts1m = 0.67  ; sens_vct=0.98; spec_vct=1;     end; 
-else if hivtest_type=3 then do; sens_primary=0; sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
+else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
+else if hivtest_type=4 then do; sens_primary=0.65; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
 
 
 * COSTS;
@@ -816,26 +904,32 @@ else if hivtest_type=4 then do; sens_primary=0.65; sens_primary_ts1m = 0 ; sens_
 *cost of the following drugs updated in July 2014 based on MSF report, without including cost of supply chain;
 
 * all * dependent_on_time_step_length ;
-cost_zdv_a=(0.060/4)*1.2; * global fund aug18 ;  * mf ;
-cost_3tc_a=(0.017/4)*1.2; * jul 19 - south africa tender ;
+cost_zdv_a=(0.068/4)*1.2; * chai 2022  ;
+cost_3tc_a=(0.015/4)*1.2; * jul 19 - south africa tender ;
 cost_ten_a=(0.028/4)*1.2; * jul 19 - south africa tender ;
 cost_taf = (0.018/4)*1.2;
 cost_nev_a=(0.027/4)*1.2; * chai 2017 market report - global fund price;   
-cost_efa_a=(0.025/4)*1.2; * global fund jul18 ;  * mf ;
+cost_efa_a=(0.019/4)*1.2; * chai 2022 - $62 for tle   ;
 cost_lpr_a=(0.152/4)*1.2;                     
-cost_taz_a=(0.185/4)*1.2;   * global fund aug18 ; * mf ;
-cost_dol_a=(0.020/4)*1.2;   * jul 19 - south africa tender ;
-cost_dar_a=(0.200/4)*1.2;	
+cost_taz_a=(0.133/4)*1.2;   * chai 2022 zl-taz 216 ;
+cost_dol_a=(0.011/4)*1.2;   * chai 2022 - $54 for tld;
+cost_dar_a=(0.210/4)*1.2;	
 tb_cost_a=(.050); * todo: this cost to be re-considered;
 cot_cost_a=(.005/4);
 vis_cost_a=(.020); 
 redn_in_vis_cost_vlm_supp = 0.010 ;
 cost_child_hiv_a = 0.030; 
 cost_child_hiv_mo_art_a = 0.030; 
-prep_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-prep_drug_cost_tld = (0.065 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-cost_prep_clinic = 0.010; *Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
-cost_prep_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
+prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+prep_inj_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+prep_vr_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+	* lapr and dpv-vr - will need to update for cab and dpv;
+prep_tld_drug_cost = (0.054 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
+cost_prep_oral_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
+cost_prep_inj_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - 1.5 times oral prep due to 6 visits per year;
+cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
+	* lapr and dpv-vr - use same value for now, will need update lapr and dpv-vr costs;
+cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
  
 * not * dependent_on_time_step_length ;
 * todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
@@ -852,6 +946,7 @@ cost_test_b=0.025; *HCW-testing general pop, HIV positive;
 cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 - email from anna osborne chai 8nov2016 - this is for facility based testing, which most testing is;
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
+cost_test_g=0.022; *vl test to diagnose;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -967,9 +1062,8 @@ prob_supply_resumed = 1 - (1 - prob_supply_resumed  )**(1/3) ;
 poorer_cd4rise_fail_nn     = 1 - (1 - poorer_cd4rise_fail_nn  )**(1/3) ;
 rate_int_choice   = 1 - (1 - rate_int_choice  )**(1/3) ;
 rate_loss_acq_nnm_offart  = 1 - (1 - rate_loss_acq_nnm_offart   )**(1/3) ;
-rate_test_onprep     = 1 - (1 - rate_test_onprep   )**(1/3) ;
-prob_prep_restart   = 1 - (1 - prob_prep_restart  )**(1/3) ;
-prob_prep_restart_choice   = 1 - (1 - prob_prep_restart_choice  )**(1/3) ;
+rate_test_onprep_any     = 1 - (1 - rate_test_onprep_any   )**(1/3) ;
+prob_prep_any_restart_choice   = 1 - (1 - prob_prep_any_restart_choice  )**(1/3) ;
 pop_wide_tld_prob_egfr = 1 - (1 - pop_wide_tld_prob_egfr  )**(1/3) ;
 base_rate_sw   = 1 - (1 - base_rate_sw   )**(1/3) ;
 base_rate_stop_sexwork   = 1 - (1 - base_rate_stop_sexwork   )**(1/3) ;
@@ -977,9 +1071,8 @@ rate_testanc_inc  = 1 - (1 - rate_testanc_inc  )**(1/3) ;
 incr_test_rate_sympt   = 1 - (1 - incr_test_rate_sympt   )**(1/3) ;
 prob_lost_art   = 1 - (1 - prob_lost_art   )**(1/3) ;
 rate_res_ten     = 1 - (1 - rate_res_ten  )**(1/3) ;
-rate_test_startprep   = 1 - (1 - rate_test_startprep  )**(1/3) ;
-rate_test_restartprep   = 1 - (1 - rate_test_restartprep  )**(1/3) ;
-rate_choose_stop_prep  = 1 - (1 - rate_choose_stop_prep  )**(1/3) ;
+rate_test_startprep_any   = 1 - (1 - rate_test_startprep_any  )**(1/3) ;
+rate_choose_stop_prep_oral  = 1 - (1 - rate_choose_stop_prep_oral  )**(1/3) ;
 poorer_cd4rise_fail_nn = poorer_cd4rise_fail_nn / 3;
 poorer_cd4rise_fail_ii = poorer_cd4rise_fail_ii / 3;
 cost_zdv_a  = cost_zdv_a  / 3;
@@ -995,9 +1088,14 @@ cost_dar_a  =  cost_dar_a  / 3;
 tb_cost_a =  tb_cost_a / 3;
 cot_cost_a =  cot_cost_a  / 3;
 vis_cost_a   = vis_cost_a    / 3;
-prep_drug_cost  =  prep_drug_cost  / 3;
-cost_prep_clinic  = cost_prep_clinic   / 3;
-cost_prep_clinic_couns =  cost_prep_clinic_couns  / 3;
+prep_oral_drug_cost  =  prep_oral_drug_cost  / 3;
+prep_inj_drug_cost  =  prep_inj_drug_cost  / 3;
+prep_vr_drug_cost  =  prep_vr_drug_cost  / 3;
+* prep_tld_drug_cost  ? ;
+cost_prep_oral_clinic  = cost_prep_oral_clinic   / 3;
+cost_prep_inj_clinic  = cost_prep_inj_clinic   / 3;
+cost_prep_vr_clinic  = cost_prep_vr_clinic   / 3;
+cost_prep_any_clinic_couns =  cost_prep_any_clinic_couns  / 3;
 
 */
 
@@ -1153,42 +1251,42 @@ end;
 cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7=cum6+inc7;cum8=cum7+inc8;
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
-e=uniform(0);
-if 0.0 <= e < inc1    then age=-68+uniform(0)*13;   
-if inc1 <= e < cum2   then age=-55+uniform(0)*10;  
-if cum2 <= e < cum3   then age=-45+uniform(0)*10;  
-if cum3 <= e < cum4   then age=-35+uniform(0)*10;  
-if cum4 <= e < cum5   then age=-25+uniform(0)*10;  
-if cum5 <= e < cum6   then age=-15+uniform(0)*10;  
-if cum6 <= e < cum7   then age=-5+uniform(0)*10;  
-if cum7 <= e < cum8   then age=  5+uniform(0)*10;  
-if cum8 <= e < cum9   then age= 15+uniform(0)*10;  
-if cum9 <= e < cum10  then age= 25+uniform(0)*10;  
-if cum10 <= e < cum11  then age= 35+uniform(0)*10;  
-if cum11 <= e < cum12  then age= 45+uniform(0)*10;  
-if cum12 <= e          then age= 55+uniform(0)*10;  
+e=rand('uniform');
+if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
+if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
+if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
+if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
+if cum4 <= e < cum5   then age=-25+rand('uniform')*10;  
+if cum5 <= e < cum6   then age=-15+rand('uniform')*10;  
+if cum6 <= e < cum7   then age=-5+rand('uniform')*10;  
+if cum7 <= e < cum8   then age=  5+rand('uniform')*10;  
+if cum8 <= e < cum9   then age= 15+rand('uniform')*10;  
+if cum9 <= e < cum10  then age= 25+rand('uniform')*10;  
+if cum10 <= e < cum11  then age= 35+rand('uniform')*10;  
+if cum11 <= e < cum12  then age= 45+rand('uniform')*10;  
+if cum12 <= e          then age= 55+rand('uniform')*10;  
 
 
 age =round(age ,.25);
 
-year_start=-68;
+year_start=-69;
 
 if age  >= year_start;
 
 hiv =0;
 
 if gender=2 and age >=15 then do;
-	if 15 <= age  < 25 then do;u=uniform(0);
+	if 15 <= age  < 25 then do;u=rand('uniform');
 		if       .   lt u lt 0.72 then cum_children=0;else if 0.72 le u lt 0.93 then cum_children=1;
 		else if 0.93 le u lt 0.99 then cum_children=2;else if 0.99 le u le 1     then cum_children=3;
 	end;
-	else if 25 <= age  < 35 then do;u=uniform(0);
+	else if 25 <= age  < 35 then do;u=rand('uniform');
 		if       .   lt u lt 0.25 then cum_children=0;else if 0.25 le u lt 0.55 then cum_children=1;
 		else if 0.55 le u lt 0.81 then cum_children=2;else if 0.81 le u lt 0.93 then cum_children=3;
 		else if 0.93 le u lt 0.98 then cum_children=4;else if 0.98 le u lt 0.99 then cum_children=5;
 		else if 0.99 le u lt 1    then cum_children=6;
 	end;
-	else if 35 <= age  < 45 then do;u=uniform(0);
+	else if 35 <= age  < 45 then do;u=rand('uniform');
 		if       .   lt u lt 0.11 then cum_children=0;else if 0.11 le u lt 0.24 then cum_children=1;
 		else if 0.24 le u lt 0.50 then cum_children=2;else if 0.50 le u lt 0.71 then cum_children=3;
 		else if 0.71 le u lt 0.85 then cum_children=4;else if 0.85 le u lt 0.92 then cum_children=5;
@@ -1196,7 +1294,7 @@ if gender=2 and age >=15 then do;
 		else if 0.98 le u lt 0.99 then cum_children=8;else if 0.99 le u lt 1    then cum_children=10;
 
 	end;
-	else if 45 <= age       then do;u=uniform(0);
+	else if 45 <= age       then do;u=rand('uniform');
 		if       .   lt u lt 0.11 then cum_children=0;else if 0.11 le u lt 0.21 then cum_children=1;
 		else if 0.21 le u lt 0.42 then cum_children=2;else if 0.42 le u lt 0.62 then cum_children=3;
 		else if 0.62 le u lt 0.76 then cum_children=4;else if 0.76 le u lt 0.86 then cum_children=5;
@@ -1213,7 +1311,7 @@ end;
 
 
 
-r=uniform(0);
+r=rand('uniform');
 if gender=2 then life_sex_risk=2; 
 rred_p=1;
 if r < p_rred_p then do; life_sex_risk = 1;  rred_p=0.00001; end;
@@ -1294,11 +1392,11 @@ rred= newp_factor * rred_a*rred_p*rred_initial;
 
 
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
-cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=uniform(0);
+cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=rand('uniform');
 if            a < cu1/cu4 then do; newp=0; end; 
-if cu1/cu4 <= a < cu2/cu4  then do; e=uniform(0); if e < 0.70 then newp=1; if 0.70 <= e < 0.90 then newp=2; 
+if cu1/cu4 <= a < cu2/cu4  then do; e=rand('uniform'); if e < 0.70 then newp=1; if 0.70 <= e < 0.90 then newp=2; 
 											if e ge 0.90 then newp=3; end;
-if cu2/cu4 <= a < cu3/cu4 then do; e=uniform(0); if e < 0.22 then newp=4; if 0.22 <= e < 0.42 then newp=5; if 0.42 <= e < 0.60 then newp=6; 
+if cu2/cu4 <= a < cu3/cu4 then do; e=rand('uniform'); if e < 0.22 then newp=4; if 0.22 <= e < 0.42 then newp=5; if 0.42 <= e < 0.60 then newp=6; 
 					if 0.60 <= e < 0.76 then newp=7; if 0.76 <= e < 0.90 then newp=8; if 0.90 <= e then newp=9; end;
 if cu3/cu4 <= a < cu4/cu4 then do; if e < 0.22 then newp=10; if 0.22 <= e < 0.42 then newp=15; if 0.42 <= e < 0.60 then newp=20; 
 					if 0.60 <= e < 0.76 then newp=25; if 0.76 <= e < 0.90 then newp=30; if 0.90 <= e then newp=35; end;
@@ -1326,10 +1424,10 @@ rred= newp_factor * rred_a*rred_p*rred_initial;
 
 * newp=0; s1=0.97;* newp = 1-3; s2=0.03;
 s2=s2*rred;
-cu1=s1;cu2=cu1+s2; a=uniform(0);
+cu1=s1;cu2=cu1+s2; a=rand('uniform');
 if            a < cu1/cu2 then newp=0; 
 if cu1/cu2 <= a < cu2/cu2 then do; 
-	e=uniform(0); if e < 0.85 then newp = 1; if 0.85 <= e < 0.95 then newp = 2; if e ge 0.95 then newp = 3; 
+	e=rand('uniform'); if e < 0.85 then newp = 1; if 0.85 <= e < 0.95 then newp = 2; if e ge 0.95 then newp = 3; 
 	if 15 <= age < 25 then do;
 	if e < 0.30 then newp=1; 		if 0.30 <= e < 0.50 then newp=2; 	if 0.50 <= e < 0.65 then newp=3; 
 	if 0.65 <= e < 0.77 then newp=4; 	if 0.77 <= e < 0.86 then newp=5; 	if 0.86 <= e < 0.92 then newp=6; 
@@ -1354,7 +1452,7 @@ if gender = 2 and life_sex_risk >= 2 then do;
 
 	if life_sex_risk = 3 then prob_sw_init = prob_sw_init * 3;
 
-	if uniform(0) < prob_sw_init then sw = 1;
+	if rand('uniform') < prob_sw_init then sw = 1;
 end;
 
 age_deb_sw=.;
@@ -1362,33 +1460,31 @@ age_deb_sw=.;
 if sw=1 then do;
 	ever_sw=1;
 
-	u=uniform(0);
-	date_start_sw = 1984+(uniform(0)*5);date_start_sw=round(date_start_sw, 0.25);
+	u=rand('uniform');
+	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
 	age_deb_sw= age - (1989-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
 if sw = 1 then do;
-	a=uniform(0);if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
+	a=rand('uniform');if a<0.95 then episodes_sw=1;if 0.95 <= a <0.98 then episodes_sw=2;if a>=0.98 then episodes_sw=3;
 
-	e=uniform(0);
+	e=rand('uniform');
 	if e < 0.1 then newp=0;
-	else if 0.1 <= e < 0.5 then do; q=uniform(0);
+	else if 0.1 <= e < 0.5 then do; q=rand('uniform');
 		if         q < 0.7  then newp=1;
-		if 0.7  <= q < 0.8  then newp=2;
-		if 0.8  <= q < 0.9  then newp=3;
-		if 0.9  <= q < 0.95 then newp=4;
-		if 0.95 <= q < 0.98 then newp=5;
-		if 0.98 <= q        then newp=6;
+		if 0.7  <= q < 0.85 then newp=2;
+		if 0.85 <= q        then newp=3;
 	end;
 	else do;
 		select;
-			when (0.5 <= e < 0.95) 	do; newp_lower = 7; newp_higher = 20; end;
+			when (0.5 <= e < 0.95) 	do; newp_lower = 4; newp_higher = 20; end;
 			when (0.95 <= e < 0.99) do; newp_lower = 21; newp_higher = 50; end;
 			when (0.99 <= e) 		do; newp_lower = 51; newp_higher = 151; end;
+			otherwise xxx=1;
 		end;
 		* choose uniformly between newp_lower and newp_higher;
-		newp = round(newp_lower + uniform(0) * (newp_higher - newp_lower), 1);
+		newp = round(newp_lower + rand('uniform') * (newp_higher - newp_lower), 1);
 	end;
 	if age > 30 then newp = min(30,newp);
 end;
@@ -1400,12 +1496,12 @@ end;
 
 
 if 15 <= age < 65 then do; ep =0; ageg_ep=0; epmono=0; end;
-u=uniform(0);
-if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
-if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=uniform(0); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
-if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=uniform(0); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
+u=rand('uniform');
+if 15 <= age < 25 and u < 0.40 then do; ep=1; ageg_ep=1; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 25 <= age < 35 and u < 0.50 then do; ep=1; ageg_ep=2; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 35 <= age < 45 and u < 0.60 then do; ep=1; ageg_ep=3; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.66 then lep=2;  if .66 <= d then lep=3; end;
+if 45 <= age < 55 and u < 0.60 then do; ep=1; ageg_ep=4; d=rand('uniform'); if d < 0.33 then lep=1; if .33 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
+if 55 <= age < 65 and u < 0.60 then do; ep=1; ageg_ep=5; d=rand('uniform'); if d < 0.33 then lep=1; if 0.33 <= d then lep=2; end;
 
 if newp ge 1 then ever_newp=1;
 if ep=1 then ever_ep=1;
@@ -1425,7 +1521,7 @@ if age < 15 then do; ep=.; epi=.; np=.; newp=.; epmono=.; end;
 epi=.;
 
 sti =0;
-s=uniform(0); if s < newp/20 then sti=1;
+s=rand('uniform'); if s < newp/20 then sti=1;
 
 dead=0;
 dcause = . ; * can be who4_=1 / liver=2 / CVD=3 / drug death=4 / other=5 ( or 1=HIV - 2 = non-HIV in simpler version);
@@ -1435,10 +1531,13 @@ dcause = . ; * can be who4_=1 / liver=2 / CVD=3 / drug death=4 / other=5 ( or 1=
 
 ccsqr = . ;  e_rt184_tm1 = . ;  e_rt65_tm1 = . ;  e_rt151_tm1 = . ; 
 e_rt103_tm1 = . ;  e_rt181_tm1 = . ;  e_rt190_tm1 = . ;  e_pr32_tm1 = . ;  e_pr33_tm1 = . ;  e_pr46_tm1 = . ;  e_pr47_tm1 = . ;  e_pr50v_tm1 = . ; 
-e_pr50l_tm1 = . ;  e_pr54_tm1 = . ;  e_pr76_tm1 = . ;  e_pr82_tm1 = . ;  e_pr84_tm1 = . ;  e_pr88_tm1 = . ;  e_pr90_tm1 = . ;  c_rt184_tm1 = . ; 
+e_pr50l_tm1 = . ;  e_pr54_tm1 = . ;  e_pr76_tm1 = . ;  e_pr82_tm1 = . ;  e_pr84_tm1 = . ;  e_pr88_tm1 = . ;  e_pr90_tm1 = . ;  
+e_in118_tm1=.; e_in140_tm1=.; e_in148_tm1=.; e_in155_tm1=.; e_in263_tm1=.; 
+c_rt184_tm1 = . ; 
 c_rt65_tm1 = . ;  c_rt151_tm1 = . ;  c_rt103_tm1 = . ;  c_rt181_tm1 = . ;  c_rt190_tm1 = . ;  c_pr32_tm1 = . ;  c_pr33_tm1 = . ;  c_pr46_tm1 = . ; 
 c_pr47_tm1 = . ;  c_pr50v_tm1 = . ;  c_pr50l_tm1 = . ;  c_pr54_tm1 = . ;  c_pr76_tm1 = . ;  c_pr82_tm1 = . ;  c_pr84_tm1 = . ;  c_pr88_tm1 = . ; 
-c_pr90_tm1 = . ;  restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184m = . ;  r_nau_start_taz_dar = . ; 
+c_pr90_tm1 = . ;  c_in118_tm1=.; c_in140_tm1=.; c_in148_tm1=.; c_in263_tm1=.;
+restart_res_test = . ;  ever_dual_nvp = . ;  ever_sd_nvp = . ;  zero_3tc_activity_m184  = . ;  r_nau_start_taz_dar = . ; 
 p_nau_stops_taz_dar = . ;  onart_gt6m_vlg500 = . ;  rm_inf = . ;  util_cns_efa_tox = . ;  util_cns_dol_tox = . ;  cost_art_init = . ; 
 newpgr = . ;  c_rt65m_tm2 = . ;  c_rttams_tm2 = . ;  npgt1conc_l4p_2449m = . ;  npgt1conc_l4p_2449w = . ;
 d_s_newp = .; r_s_ep_m15w15 = . ; r_s_ep_m25w25 = . ; r_s_ep_m35w35 = . ; r_s_ep_m45w45 = . ; r_s_ep_m55w55 = . ;  r_ep_mw = . ;  prop_mono_m_1524 = . ; 
@@ -1454,10 +1553,10 @@ prevalence3544m = . ;  prevalence4554m = . ;  prevalence5564m = . ;   prevalence
 
 * co-infection with hep B and C - currently assume no change over calendar time in proportion co-infected
 with B or C and also that no new infections during HIV infection;
-d=uniform(0);
+d=rand('uniform');
 hcv=0;
 if d < 0.02 then hcv=1;
-e=uniform(0);
+e=rand('uniform');
 hbv=0;
 if e < 0.03 then hbv=1;
 
@@ -1485,6 +1584,7 @@ select;	* JAS May2021 ;
 	when (65 <= age) 		do; %sample(sbp, 	115 	125 	135 	145 	155 	165 	175 	185, 
 												0.10 	0.10 	0.10 	0.15 	0.15 	0.15 	0.15 	0.10); 
 							end;
+	otherwise xxx=1;
 end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989;
@@ -1496,13 +1596,15 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 
-u=uniform(0);low_preg_risk=0;
+u=rand('uniform');low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
 *** 'eff' variables are defined for specific parameters which may change as a result of the code. Values of the original
 	parameters are stored and only 'eff_' variables are used throughout the code;
+
+* lapr and dpv-vr - we might need to create new eff_ variables for lapr and dpv-vr parameters ;
 
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
@@ -1534,17 +1636,21 @@ eff_prob_vl_meas_done = prob_vl_meas_done;
 * define effective pr_switch_line;
 eff_pr_switch_line = pr_switch_line;
 
-* define effective rate_test_startprep;
-eff_rate_test_startprep = rate_test_startprep;
 
-* define effective rate_test_restartprep;
-eff_rate_test_restartprep = rate_test_restartprep;
+* define effective rate_test_startprep_any;
+eff_rate_test_startprep_any = rate_test_startprep_any;
 
-* define effective rate_choose_stop_prep;
-eff_rate_choose_stop_prep = rate_choose_stop_prep;
+* define effective rate_choose_stop_prep_oral;
+eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 
-* define effective prob_prep_restart_choice;
-eff_prob_prep_restart_choice = prob_prep_restart_choice;	
+* define effective rate_choose_stop_prep_inj;
+eff_rate_choose_stop_prep_inj = rate_choose_stop_prep_inj;
+
+* define effective rate_choose_stop_prep_vr;
+eff_rate_choose_stop_prep_vr = rate_choose_stop_prep_vr;
+
+* define effective prob_prep_any_restart_choice;
+eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice;	
 
 * define effective prob_lossdiag_non_tb_who3e;
 eff_prob_lossdiag_non_tb_who3e = prob_lossdiag_non_tb_who3e ;
@@ -1564,7 +1670,7 @@ keep_going_1999=.;  keep_going_2004=.; keep_going_2016=.;  keep_going_2020=.;
 * eff sex worker program variables;
 eff_sw_program=0;
 eff_sw_higher_int = sw_higher_int;
-eff_prob_sw_lower_adh = prob_sw_lower_adh;
+*eff_prob_sw_lower_adh = prob_sw_lower_adh;
 eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag;
 eff_rate_persist_sti=rate_persist_sti;
 sw_program_visit=0;
@@ -1580,15 +1686,13 @@ if adh_pattern=1 then do;
 
 *adherence pattern 1;
 *formerly #100 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.01 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.01 <= e < 0.02 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.02 <= e < 0.20 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.02; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.02; end;
 if 0.62 <= e        then do; adhav = 0.95; adhvar=0.02; end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
 end;
 
@@ -1597,15 +1701,13 @@ if adh_pattern=2 then do;
 
 *adherence pattern 2;
 *formerly #1 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.03 then do; adhav = 0.10; adhvar=0.20; end;
 if 0.03 <= e < 0.06 then do; adhav = 0.79; adhvar=0.20; end;
 if 0.06 <= e < 0.20 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.20 <= e < 0.42 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95; adhvar=0.05; end;
 if 0.62 <= e        then do; adhav = 0.95; adhvar=0.05; end;
-
-if adhav  lt 0 then adhav =0; if adhav  gt 1 then adhav =1;
 
 end;
 
@@ -1614,7 +1716,7 @@ if adh_pattern=3 then do;
 
 *adherence pattern 3;  
 *formerly #105 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.12 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.12 <= e < 0.20 then do; adhav = 0.9  ; adhvar=0.06; end;
@@ -1622,7 +1724,6 @@ if 0.20 <= e < 0.42 then do; adhav = 0.95 ; adhvar=0.05; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.95 ; adhvar=0.05; end;
 if 0.62 <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
 
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1631,15 +1732,13 @@ if adh_pattern=4 then do;
 
 *adherence pattern 4;
 *formerly #2 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.05 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.05 <= e < 0.15 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.15 <= e < 0.42 then do; adhav = 0.90 ; adhvar=0.06; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.90 ; adhvar=0.05; end;
 if 0.62 <= e < 0.8  then do; adhav = 0.90 ; adhvar=0.05; end;
 if 0.8  <= e        then do; adhav = 0.95 ; adhvar=0.05; end;
-
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1648,15 +1747,13 @@ if adh_pattern=5 then do;
 
 * adherence pattern 5 ;
 *formerly #3 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.15 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.15 <= e < 0.30 then do; adhav = 0.70 ; adhvar=0.20; end;
 if 0.30 <= e < 0.42 then do; adhav = 0.9 ;  adhvar=0.06; end;
 if 0.42 <= e < 0.62 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.62 <= e < 0.80 then do; adhav = 0.9 ; adhvar=0.06; end;
 if 0.80 <= e        then do; adhav = 0.95; adhvar=0.05; end;
-
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1665,13 +1762,11 @@ if adh_pattern=6 then do;
 
 * adherence pattern 6 ;
 *formerly #4 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.20 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.20 <= e < 0.40 then do; adhav = 0.79 ; adhvar=0.20; end;
 if 0.40 <= e < 0.80 then do; adhav = 0.9 ;  adhvar=0.06; end;
 if 0.80 <= e        then do; adhav = 0.95;  adhvar=0.05; end;
-
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1680,13 +1775,11 @@ if adh_pattern=7 then do;
 
 * adherence pattern 7 ;
 *formerly #5 *Apr2021;
-e=uniform(0);f=uniform(0);
+e=rand('uniform');
 if         e < 0.30 then do; adhav = 0.10 ; adhvar=0.20; end;
 if 0.30 <= e < 0.60 then do; adhav = 0.60 ; adhvar=0.20; end;
 if 0.60 <= e < 0.70 then do; adhav = 0.70;  adhvar=0.06; end;
 if 0.70 <= e        then do; adhav = 0.90; adhvar=0.05; end;
-
-if adhav lt 0 then adhav=0; if adhav gt 1 then adhav=1;
 
 end;
 
@@ -1697,10 +1790,10 @@ end;
 * assume first measure of high vl leads to adh intervention with possible 6m or permanent increase in adherence - no additional effect after the 
 first measure of any type ;
 
-h=uniform(0); 
+h=rand('uniform'); 
 
 * person level effect of viral load high alert on adherence (and probability of restarting if interrupted art);
-a=uniform(0);
+a=rand('uniform');
 v_alert_perm_incr_adh=0;  v_alert_6m_incr_adh=0;
 if h <  adh_effect_of_meas_alert then do;
 	if a < 0.4 then v_alert_perm_incr_adh = 1; 
@@ -1710,29 +1803,62 @@ end;
 
 * ALTERED ADHERENCE SECOND LINE;
 
-altered_adh_sec_line = altered_adh_sec_line_pop * exp(normal(0)*1.0);  altered_adh_sec_line = round(altered_adh_sec_line,0.01);
+altered_adh_sec_line = altered_adh_sec_line_pop * exp(rand('normal')*1.0);  altered_adh_sec_line = round(altered_adh_sec_line,0.01);
 
 * effect of tox on adherence differs by individual;
-red_adh_tox = red_adh_tox_pop * exp(normal(0)*0.3); red_adh_tox=round(red_adh_tox,.01); 
+red_adh_tox = red_adh_tox_pop * exp(rand('normal')*0.3); red_adh_tox=round(red_adh_tox,.01); 
 
 * effect of multi_pill on adherence differs by individual;
-red_adh_multi_pill = red_adh_multi_pill_pop * exp(normal(0)*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
+red_adh_multi_pill = red_adh_multi_pill_pop * exp(rand('normal')*0.3); red_adh_multi_pill=round(red_adh_multi_pill,.01); 
 
 
-if adh_pattern_prep=1 then adhav_prep = adhav*1.00; 
-if adh_pattern_prep=2 then adhav_prep = adhav*0.90;
-if adh_pattern_prep=3 then adhav_prep = adhav*0.70;
-if adh_pattern_prep=4 then adhav_prep = adhav*0.50;
+* INDIVIDUAL-LEVEL PREP PARAMETERS
+
+* adherence pattern for oral prep; * simplified to be equal to adhav june 22;
+adhav_prep_oral = adhav; 
 
 
-* willingness to take prep if offered;
-r1=uniform(0); prep_willing = 0; if r1 < prepuptake_pop then prep_willing =1;
+* PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
+* Will need to update distributions with data / expert opinion ;
+* Individuals' values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
+
+pref_prep_oral = 0;
+pref_prep_inj = 0;
+pref_prep_vr = 0;
+
+* willingness to take prep if offered; 
+prep_oral_willing = 0; 	
+prep_inj_willing = 0; 
+prep_vr_willing = 0; 	
+prep_any_willing = 0; 
+
+
+if cab_time_to_lower_threshold_g = 1 then do; * the tail is conceptualized as the time when levels are above 75% of therapeutic dose;
+	aa=rand('uniform'); 
+	if aa < 0.67 then cab_time_to_lower_threshold = 0.25; if aa >= 0.67 then cab_time_to_lower_threshold = 0.5;
+end;
+if cab_time_to_lower_threshold_g = 2 then do;
+	aa=rand('uniform'); 
+	if aa < 0.5  then cab_time_to_lower_threshold = 0.25; if 0.5  <= aa < 0.90 then cab_time_to_lower_threshold = 0.5; 
+	if aa >= 0.90 then cab_time_to_lower_threshold = 1;
+end;
+
+
 
 hiv=0;
 nip=0;
 pcp_p  = 0;
-prep  = 0;
-tot_yrs_prep = 0;
+
+prep_any = 0;			* lapr and dpv-vr - separated PrEP variables ;
+prep_oral = 0;
+prep_inj = 0;
+prep_vr = 0;
+
+tot_yrs_prep_any = 0;	* lapr and dpv-vr - separated PrEP variables ;
+tot_yrs_prep_oral = 0;
+tot_yrs_prep_inj = 0;
+tot_yrs_prep_vr = 0;
+
 tcur=.;
 dead_tm1=0;
 
@@ -1744,13 +1870,13 @@ dead_tm1=0;
 mcirc =0;birth_circ=0;
 
 if  gender=1 and age gt 0.25 then do;
-h = uniform(0); 
+h = rand('uniform'); 
 if h < prob_birth_circ then do;mcirc =1;birth_circ=1;end;
 if mcirc =1 then date_mcirc=0;
 end;
 
 
-p=uniform(0); q=uniform(0);
+p=rand('uniform'); q=rand('uniform');
 if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then hard_reach=1;
 
 * if disruption due to covid, but in less than 100%, who does it affect ?;
@@ -1758,13 +1884,13 @@ if (gender=1 and p <= p_hard_reach_m) or (gender=2 and q <= p_hard_reach_w) then
 covid_disrup_extent = 1.0 ;
 
 covid_disrup_affected = 0;
-if covid_disrup_extent = 0.2 then do; w=uniform(0); if w < 0.2 then covid_disrup_affected = 1; end;
-if covid_disrup_extent = 0.5 then do; w=uniform(0); if w < 0.5 then covid_disrup_affected = 1; end;
-if covid_disrup_extent = 1   then do; w=uniform(0); if w <= 1.0 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 0.2 then do; w=rand('uniform'); if w < 0.2 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 0.5 then do; w=rand('uniform'); if w < 0.5 then covid_disrup_affected = 1; end;
+if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_disrup_affected = 1; end;
 
 option=.;
 
-dataset_id=trim(left(round(uniform(0)*1000000)));
+dataset_id=trim(left(round(rand('uniform')*1000000)));
 call symput('dataset_id',dataset_id);
 
 
@@ -1874,37 +2000,108 @@ onart_tm1=onart;
 dead_tm1=dead;
 adhmin_tm1=adhmin;
 adh_tm1 = adh; adh = .;
+* changes ***;
+adh_dl_tm1 = adh_dl; adh_dl = .;
 primary_tm1 = primary; primary = .; 
 sw_tm1=sw;
 hiv_tm1 = hiv; 
 age_tm1=age;
 
+art_initiation=0;  * started art this period - intentional that this appears in code for all adults, not just those with hiv;
+
 
 * note that caldate{t} becomes = . when a person dies - need to use caldate_never_dot if want to change value of a population-wide parameter
 value at a certain calendar time;
 
-if t ge 2 and caldate{t-1} < 2071.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
+if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.25; * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-if t ge 2 and caldate{t-1} < 2071.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
+if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
 
 
-* PREP introduction in fsw/agyw 2018; 
+* Oral PREP introduction in fsw/agyw 2018; 
 
-* PrEP effectiveness against non-resistant virus;
-prep_effectiveness_non_res_v = .;  * we only want this defined for people currently on prep so set to . at start of loop;
+* Oral PrEP effectiveness against non-resistant virus;
+prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
+	* lapr - this used in downstream analyses for oral prep so dont need equivalent here;
 
-*May21 - changed from 2017.25 after Coding Call discussion;
-if caldate_never_dot = 2018.25 then do; * need to use caldate_never_dot rather than caldate{t} if we want even dead people to take this
-value, so that we can guarantee last person in the data set will have this value and we can save it in the output file;
-prep_strategy=1; sens=0; date_prep_intro=2018.25; hivtest_type=3;
+prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
+prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
+prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;  
+prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
+	* lapr and dpv-vr;
+
+* Oral prep scale-up over 4 years;
+if caldate{t} < date_prep_oral_intro then prob_prep_oral_b = 0;
+else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) 
+		then prob_prep_oral_b = 0.05 +  (  (pr_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
+else 	prob_prep_oral_b = pr_prep_oral_b;
+	* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
+
+* Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
+if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then prob_prep_inj_b = 0;
+else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
+		then prob_prep_inj_b = 0.05 +  (  (pr_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
+else 	prob_prep_inj_b = pr_prep_inj_b;
+
+* DPV VR prep scale-up; * dpv-vr JAS Sep2021;
+if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then prob_prep_vr_b = 0;
+else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
+		then prob_prep_vr_b = 0.05 +  (  (pr_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
+else 	prob_prep_vr_b = pr_prep_vr_b;
+
+
+
+
+* PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
+* Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
+
+if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
+* pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
 
-prep_tm2=prep_tm1; prep_tm1=prep;
+
+if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
+* pref_prep_inj;				pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;
+end;
+
+if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro) then do;
+* pref_prep_vr;					pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	* median 0.26 (women only);		
+end;
+
+if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
+if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
+if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+* highest_prep_pref;
+* does not show people who are not willing to take any option;
+if 		pref_prep_oral>pref_prep_inj > . and pref_prep_oral>pref_prep_vr > . then highest_prep_pref=1;	* 1=preference for oral PrEP;
+else if pref_prep_inj>pref_prep_oral > . and pref_prep_inj>pref_prep_vr > . then highest_prep_pref=2;	* 2=preference for injectable PrEP;
+else highest_prep_pref=3;																		* 3=preference for vaginal ring;
+* lapr - encode no preference between types? / no type acceptable? ;
+
+
+* willingness to take prep if offered;
+
+if caldate{t} ge date_prep_oral_intro then do;
+prep_oral_willing = 0; if  pref_prep_oral > prep_willingness_threshold 	then prep_oral_willing =1;
+end;
+
+if caldate{t} ge date_prep_inj_intro then do;
+prep_inj_willing = 0; if  pref_prep_inj  > prep_willingness_threshold 	then prep_inj_willing =1;
+end;
+
+if caldate{t} ge date_prep_vr_intro then do;
+prep_vr_willing = 0; if  pref_prep_vr > prep_willingness_threshold 	then prep_vr_willing =1;
+end;
+
+prep_any_willing = 0;
+if prep_oral_willing = 1 or prep_inj_willing = 1 or prep_vr_willing = 1 then prep_any_willing = 1;
+
+
 tcur_tm1=tcur;
 * dependent_on_time_step_length ; * can keep this but will need to use caldate to assess past prep ;
-
 
 * ts1m :;
 /*
@@ -1913,11 +2110,6 @@ newp_tm7 = max(0,newp_tm6); newp_tm6 = max(0,newp_tm5); newp_tm5 = max(0,newp_tm
 newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);  
 */
 
-
-* prep scale-up over 4 years;
-if caldate{t} < date_prep_intro then prob_prep_b = 0;
-else if date_prep_intro <= caldate{t} < (date_prep_intro + 4) then prob_prep_b = 0.05 +  (  (pr_prep_b-0.05) * ( 1 -    (date_prep_intro + 4 - caldate{t}) / 4  )   );
-else prob_prep_b = pr_prep_b;
 
 
 * MONITORING AND ART STRATEGIES;
@@ -1946,90 +2138,22 @@ if 2005.5 <= caldate{t} then do;
 	hiv_monitoring_strategy = 2; 
 end;  * few facilities measuring cd4 early on;
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str_4  then art_initiation_strategy=4;  
 * dependent_on_time_step_length ; 
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 9 and 2011.5 <= caldate{t} < 2014 and q < rate_ch_art_init_str_9  then art_initiation_strategy=9;  
 * dependent_on_time_step_length ; 
 
-q=uniform(0);
+q=rand('uniform');
 if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
 * dependent_on_time_step_length ; 
 
-* SW programs starts in 2015;
-if caldate{t} = 2015 then eff_sw_program=sw_program;
-
-* Attendance at SW program (if it exists) and effects of program;
-
-if eff_sw_program=1 and sw=1 then do;
-
-if sw_program_visit=0 then do; e=uniform(0);
-	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
-		sw_program_visit=1 ; 
-		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
-
-		e=uniform(0); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
-		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
-
-		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh / effect_sw_prog_adh ;
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
-		s= uniform(0); if s < effect_sw_prog_prep and prep_willing = 0 then prep_willing = 1;
-		if prep_willing=1 then eff_rate_test_startprep=1;
-		eff_rate_choose_stop_prep=0.05;
-		eff_prob_prep_restart_choice=0.7;
-
-		end;
-	end;
-end; 
-
-else if sw_program_visit=1 then do; e=uniform(0);
-	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
-		sw_program_visit=0 ; 
-		date_last_sw_prog_vis=caldate{t};
-		sw_test_6mthly=0;
-		eff_rate_persist_sti = rate_persist_sti;
-		eff_sw_higher_int = sw_higher_int;
-		eff_prob_sw_lower_adh = prob_sw_lower_adh; 
-		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-		eff_rate_test_startprep=rate_test_startprep;
-		eff_rate_choose_stop_prep=rate_choose_stop_prep;*due to availability of prep;
-		eff_prob_prep_restart_choice=prob_prep_restart_choice;
-end; 
-
-end;
-
-* if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
-if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
-	sw_program_effects_changed_covid=0;
-	eff_sw_program = eff_sw_program_wo_covid; 
-	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
-	eff_rate_persist_sti = eff_rate_persist_sti_wo_covid;
-	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
-	eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
-	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
-end;
-* if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
-  we can revert to them after the disruption period;
-if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_changed_covid ne 1 then do;
-	sw_program_effects_changed_covid=1;
-	eff_sw_program_wo_covid = eff_sw_program ; 
-	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
-	eff_rate_persist_sti_wo_covid=eff_rate_persist_sti;
-	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
-	eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
-	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
-	eff_sw_program = 0;
-	sw_test_6mthly = 0; 
-	eff_sw_higher_int = sw_higher_int ; 
-	eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
-	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
-end;
 
 
-q=uniform(0);
+
+q=rand('uniform');
 if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then art_initiation_strategy=3;  
 * dependent_on_time_step_length ;
 
@@ -2047,78 +2171,68 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;
 
 
 
-***Changes in ART coverage (~20% lower in 3% of runs) and PrEP coverage after option start date;
+***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
 if caldate{t} = &year_interv then do;
 
 *lower future ART coverage;
-if lower_future_art_cov=1 then do;							
-	eff_rate_int_choice = eff_rate_int_choice * 1.25;
-	eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
-	eff_prob_lossdiag_non_tb_who3e = eff_prob_lossdiag_non_tb_who3e * 1.25;
-	eff_prob_lossdiag_adctb = eff_prob_lossdiag_adctb * 1.25;
-	eff_prob_lost_art = eff_prob_lost_art * 1.25;
-	eff_rate_lost = eff_rate_lost * 1.25;
+	if lower_future_art_cov=1 then do;							
+		eff_rate_int_choice = eff_rate_int_choice * 1.25;
+		eff_prob_loss_at_diag = eff_prob_loss_at_diag * 1.25;
+		eff_prob_lossdiag_non_tb_who3e = eff_prob_lossdiag_non_tb_who3e * 1.25;
+		eff_prob_lossdiag_adctb = eff_prob_lossdiag_adctb * 1.25;
+		eff_prob_lost_art = eff_prob_lost_art * 1.25;
+		eff_rate_lost = eff_rate_lost * 1.25;
 
-	eff_rate_restart = eff_rate_restart * 0.8;
-	eff_rate_return = eff_rate_return   * 0.8;
-	eff_pr_art_init =  eff_pr_art_init  * 0.8;  
-	eff_prob_return_adc = eff_prob_return_adc  * 0.8;
-end;
+		eff_rate_restart = eff_rate_restart * 0.8;
+		eff_rate_return = eff_rate_return   * 0.8;
+		eff_pr_art_init =  eff_pr_art_init  * 0.8;  
+		eff_prob_return_adc = eff_prob_return_adc  * 0.8;
+	end;
 
-*higher future prep coverage;
-if	higher_future_prep_cov=1 then do;
+*higher future oral prep coverage;
+	if	higher_future_prep_oral_cov=1 then do;
+	* lapr and dpv-vr - consider inclusion of scale up of lapr and dpv-vr ;
 
-* incr_adh_pattern_prep_year_i;
-						incr_adh_pattern_prep_year_i = 0;  
+* incr_adh_prep_oral_yr_i;
+						incr_adh_prep_oral_yr_i = 0;  
 						if _u25 < 0.95 then do; 
-							incr_adh_pattern_prep_year_i = 1; 
-							adhav_prep = adhav*1.00; 
+							incr_adh_prep_oral_yr_i = 1; 
+							adhav_prep_oral = adhav*1.00; 
 						end;		
 
-* inc_r_test_startprep_year_i; * dependent_on_time_step_length;
-						inc_r_test_startprep_year_i = 0;  if _u26 <= 0.95 then do; 
-							inc_r_test_startprep_year_i = 1; 
-							eff_rate_test_startprep = 0.9; 
-							eff_rate_test_startprep = round(eff_rate_test_startprep, 0.01);
+* inc_r_test_startprep_any_yr_i; 	* dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+						inc_r_test_startprep_any_yr_i = 0;  if _u26 <= 0.95 then do; 
+							inc_r_test_startprep_any_yr_i = 1; 
+							eff_rate_test_startprep_any = 0.9; 
+							eff_rate_test_startprep_any = round(eff_rate_test_startprep_any, 0.01);
 						end;		
 
-* incr_r_test_restartprep_year_i; * dependent_on_time_step_length;
-						incr_r_test_restartprep_year_i = 0;  
+* incr_r_test_restartprep_any_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+						incr_r_test_restartprep_any_yr_i = 0;  
 						if _u28 <= 0.95 then do; 
-							incr_r_test_restartprep_year_i = 1; 
-							eff_rate_test_restartprep = 0.9; 
-							eff_rate_test_restartprep = round(eff_rate_test_restartprep, 0.01);
+							incr_r_test_restartprep_any_yr_i = 1; 
 						end;		
 
-* decr_r_choose_stop_prep_year_i; * dependent_on_time_step_length;
-						decr_r_choose_stop_prep_year_i = 0;  
+* decr_r_choose_stopprep_oral_yr_i; * dependent_on_time_step_length;
+						decr_r_choose_stopprep_oral_yr_i = 0;  
 						if _u30 < 0.95 then do; 
-							decr_r_choose_stop_prep_year_i = 1; 
-							eff_rate_choose_stop_prep = 0.03 ; 
-							eff_rate_choose_stop_prep = round(eff_rate_choose_stop_prep, 0.01);
+							decr_r_choose_stopprep_oral_yr_i = 1; 
+							eff_rate_choose_stop_prep_oral = 0.03 ; 
+							eff_rate_choose_stop_prep_oral = round(eff_rate_choose_stop_prep_oral, 0.01);
 						end;		
 
-* inc_p_prep_restart_choi_year_i; * dependent_on_time_step_length;
-						inc_p_prep_restart_choi_year_i = 0;  
+* inc_p_prep_any_restart_choi_yr_i; * dependent_on_time_step_length;		* lapr - this section was intended to apply to oral prep only, consider recoding ;
+						inc_p_prep_any_restart_choi_yr_i = 0;  
 						if _u32 < 0.95 then do; 
-							inc_p_prep_restart_choi_year_i = 1; 
-							eff_prob_prep_restart_choice = 0.8 ; 
-							eff_prob_prep_restart_choice = round(eff_prob_prep_restart_choice, 0.01);
+							inc_p_prep_any_restart_choi_yr_i = 1; 
+							eff_prob_prep_any_restart_choice = 0.8 ; 
+							eff_prob_prep_any_restart_choice = round(eff_prob_prep_any_restart_choice, 0.01);
 						end;		
 
-	
+* prep_any_strategy;
+						prep_any_strategy = 5;								* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
-* incr_prepuptake_pop_year_i;
-						incr_prepuptake_pop_year_i = 0;  
-						if _u36 < 0.95 then do; 
-							incr_prepuptake_pop_year_i = 1; 
-							r= uniform(0); if r < 0.8 and prep_willing = 0 then prep_willing = 1;
-						end;	
-
-* prep_strategy;
-						prep_strategy = 1;
-
-end;
+		end;
 
 *Other potential changes after year_i which can be turned on in the Options code;
 *(impact of changes are coded below the options code);
@@ -2185,11 +2299,12 @@ condom_incr_year_i = 0; *coded within core (not below options code);
 
 *population wide tld;
 pop_wide_tld = 0;
+pop_wide_tld_year_i = 0;
 
 *covid disruption variables;
 vmmc_disrup_covid = 0 ; 
 condom_disrup_covid = 0; 
-prep_disrup_covid = 0; 
+prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
 testing_disrup_covid = 0; 
 art_init_disrup_covid = 0; 
 vl_adh_switch_disrup_covid = 0; 
@@ -2263,7 +2378,7 @@ art_monitoring_strategy for tld and zld before moving to pi
 
 vmmc stopped (vmmc_disrup_covid)
 condom availability stopped resulting in increase in newp (condom_disrup_covid)
-prep stopped (prep_disrup_covid)
+oral prep stopped (prep_oral_disrup_covid)
 sex worker program stopped (swprog_disrup_covid)
 all hiv testing stopped (testing_disrup_covid) 
 all art use switched to tld (art_tld_disrup_covid)
@@ -2277,72 +2392,139 @@ all art stopped (no_art_disrup_covid)
 
 if caldate{t} ge 2019.5 then reg_option = 120;
 
+if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
+* if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
+* reg_option 107 is used for people who seroconverted on prep_inj / cab ;
 
 * ==========================================================================================================================================;
 
-* code in this section can differ from unified program to some extent, due to specifying exactly what interventions / changes are running; 
 
-* INTERVENTIONS / CHANGES in 2021;
+* OPTIONS TO IMPLEMENT FROM year_i onwards;
+
+* code in this section can differ from unified program due to specifying exactly what interventions / changes are running; 
+* I suggest that we just leave this shell in the core program as we are not running beyond year_i ;
+
+* INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
 
-
-* AP 20-7_19 ;
-if caldate_never_dot = 2021.5 then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
-	if option = 0 then do;
-
-		* note for prep 2020;
-		if _u46 <= 1.0 then do;  
-		prep_willing=0;
-		prep_strategy = 0;
+	if option = 0 then do;  * stop prep availability;
+		prep_oral_willing=0;
+		prep_any_strategy = 0;
 		eff_rate_test_startprep = 0 ;
 		eff_rate_test_restartprep = 0 ;
 		eff_rate_choose_stop_prep = 1 ;
 		eff_prob_prep_restart_choice = 0 ;	
-																		
-		end;
-																															 
+	end;
+ 
+	if option = 1 then do; * continue oral prep;
 	end;
 
-	if option = 1 then do;
+	if option = 2  then do; * continue oral prep and add inj prep;
+		date_prep_inj_intro= 2022.75;
+	end;
 
-		prep_strategy = 4;   
-		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		eff_rate_choose_stop_prep = 0.05 ; 
-		eff_prob_prep_restart_choice = 0.7 ;
-		adhav_prep = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=uniform(0); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=uniform(0); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
-		if 0.666 <= _u38         then do;  	r=uniform(0); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
-		add_prepuptake_sw = 0.95;	
-													 
+	if option = 3 then do; * pop_wide_tld ;
+		date_prep_inj_intro= 2022.75;
+		pop_wide_tld = 1; 
+		%sample_uniform(prob_prep_pop_wide_tld, 0.05  0.1  0.3 );
 	end;
-											  
-	if option = 2 then do;
-										   
-	
-		pop_wide_tld_2020 = 1; pop_wide_tld = 1; 
-		prep_strategy = 4;
-		prob_prep_pop_wide_tld = 0.50; 
-		eff_rate_test_startprep = 0.9; eff_rate_test_restartprep = 0.9; 
-		eff_rate_choose_stop_prep = 0.05 ;  
-		eff_prob_prep_restart_choice = 0.7 ;
-		adhav_prep = adhav*1.00;
-		if _u38 < 0.333 then do;  			r=uniform(0); if prep_willing = 0 and r < 0.50  then prep_willing = 1; end;
-		if 0.333 <= _u38 < 0.666 then do;  	r=uniform(0); if prep_willing = 0 and r < 0.75 then prep_willing = 1; end;
-		if 0.666 <= _u38         then do;  	r=uniform(0); if prep_willing = 0 and r < 0.95 then prep_willing = 1; end;
-		add_prepuptake_sw = 0.95;														
-														   
-	end;
-									  								  								  
+
+
 end;
 
 
-* ==========================================================================================================================================;
+*  ======================================================================================================================================== ;
+
+
+
+
+* SW programs starts in 2015;
+if caldate{t} = 2015 then eff_sw_program=sw_program;
+
+* Attendance at SW program (if it exists) and effects of program;
+
+if eff_sw_program=1 and sw=1 then do;
+
+if sw_program_visit=0 then do; e=rand('uniform');
+	if e < rate_engage_sw_program then do; * dependent_on_time_step_length ;
+		sw_program_visit=1 ; 
+		date_1st_sw_prog_vis=caldate{t};*this refers to first date of either first visit or first visit after restarting sw;
+
+		e=rand('uniform'); if e < effect_sw_prog_6mtest then sw_test_6mthly=1;
+		eff_rate_persist_sti = eff_rate_persist_sti * effect_sw_prog_pers_sti;
+		eff_sw_higher_int = sw_higher_int * effect_sw_prog_int;
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * effect_sw_prog_lossdiag;
+		s= rand('uniform'); if s < effect_sw_prog_prep_any and prep_any_willing = 0 then do;
+			prep_any_willing = 1; * lapr and dpv-vr ;
+			* select which prep type individual will be willing to use based on preference;
+			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
+			select;
+				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
+				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + pref_prep_inj ; end;
+				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
+				otherwise xxx=1;
+			end;
+		end;
+		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
+		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
+		eff_rate_choose_stop_prep_inj=0.05;
+		eff_prob_prep_any_restart_choice=0.7;
+		* lapr and dpv-vr - consider if any needs to change ;
+		end;
+	end;
+end; 
+
+else if sw_program_visit=1 then do; e=rand('uniform');
+	if (e < rate_disengage_sw_program) then do; * dependent_on_time_step_length ;
+		sw_program_visit=0 ; 
+		date_last_sw_prog_vis=caldate{t};
+		sw_test_6mthly=0;
+		eff_rate_persist_sti = rate_persist_sti;
+		eff_sw_higher_int = sw_higher_int;
+		*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+		eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;	*due to availability of prep;		* lapr - add lines for inj and vr? - see comment above;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;	*due to availability of inj prep;		* lapr - add lines for inj and vr? - see comment above;
+		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+		* lapr and dpv-vr - consider if any needs to change ;
+end; 
+
+end;
+
+* if covid disruption occurred and has ended, revert to pre-covid disruption parameter values for effect of sw program;
+if sw_program_effects_changed_covid=1 and swprog_disrup_covid ne 1 and covid_disrup_affected = 1 then do;
+	sw_program_effects_changed_covid=0;
+	eff_sw_program = eff_sw_program_wo_covid; 
+	sw_test_6mthly = sw_test_6mthly_wo_covid ; 
+	eff_rate_persist_sti = eff_rate_persist_sti_wo_covid;
+	eff_sw_higher_int = eff_sw_higher_int_wo_covid ; 
+	*eff_prob_sw_lower_adh  = eff_prob_sw_lower_adh_wo_covid ; 
+	eff_sw_higher_prob_loss_at_diag = eff_sw_prob_loss_diag_wo_covid ; 
+end;
+* if covid disruption occurrs this affects effect of sw program - we save the parameters for the program effect so that 
+  we can revert to them after the disruption period;
+if swprog_disrup_covid = 1 and covid_disrup_affected = 1 and sw_program_effects_changed_covid ne 1 then do;
+	sw_program_effects_changed_covid=1;
+	eff_sw_program_wo_covid = eff_sw_program ; 
+	sw_test_6mthly_wo_covid = sw_test_6mthly ; 
+	eff_rate_persist_sti_wo_covid=eff_rate_persist_sti;
+	eff_sw_higher_int_wo_covid = eff_sw_higher_int ; 
+	*eff_prob_sw_lower_adh_wo_covid = eff_prob_sw_lower_adh ; 
+	eff_sw_prob_loss_diag_wo_covid = eff_sw_higher_prob_loss_at_diag ; 
+	eff_sw_program = 0;
+	sw_test_6mthly = 0; 
+	eff_sw_higher_int = sw_higher_int ; 
+	*eff_prob_sw_lower_adh = prob_sw_lower_adh ; 
+	eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag; 
+end;
+
 
 ***Impact of potential changes in policy after year_i;
 
@@ -2350,7 +2532,7 @@ end;
 if decr_hard_reach_year_i = 1 then do;
 	if _u6 < 0.5 then e_decr_hard_reach_year_i = 0.50; if _u6 ge 0.5 then e_decr_hard_reach_year_i = 0.75; 
 	if hard_reach=1 then do;
-		e = uniform(0); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
+		e = rand('uniform'); if e < e_decr_hard_reach_year_i then hard_reach = 0; 
 	end; 
 end;
 
@@ -2388,7 +2570,7 @@ end;
 if incr_adh_year_i = 1 then do;
 	if adhav < 0.8 then do; 
 		if _u4 < 0.5 then e_incr_adh_year_i = 0.5; if _u4 ge 0.5 then e_incr_adh_year_i = 0.75; 
-		e = uniform(0); if e < e_incr_adh_year_i then adhav = 0.9; 
+		e = rand('uniform'); if e < e_incr_adh_year_i then adhav = 0.9; 
 	end;
 end;
 
@@ -2438,11 +2620,10 @@ if reg_option_switch_year_i = 1 then do;
 	if 0.60 <= _u49 < 0.9 then  reg_option = 119;
 end;
 
-
 * pop_wide_tld_year_i;	
-if pop_wide_tld_year_i = 1 then do;
-	pop_wide_tld = 1; prep_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
-	higher_future_prep_cov = 0;  * this is instead of current type of prep program;
+if pop_wide_tld_year_i = 1 then do;	* lapr and dpv-vr - this is using tld as prep so no change;
+	pop_wide_tld = 1; prep_any_strategy = 4; prob_prep_pop_wide_tld = 0.10; 
+	higher_future_prep_oral_cov = 0;  * this is instead of current type of prep program;
 end;
 
 
@@ -2487,7 +2668,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
 * testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
-		e=uniform(0); 
+		e=rand('uniform'); 
 		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
 	end;
 end;	
@@ -2496,14 +2677,15 @@ end;
 
 tested_anc=.;
 
-* Jan2017 - modified testing criteria so that prep_tm1 =0 as people previously on prep would only test for prep purposes;
-if t ge 2 and date_start_testing <= caldate{t} and prep_tm1 =0 then do; 
+* Jan2017 - modified testing criteria so that prep_oral_tm1 =0 as people previously on oral prep would only test for prep purposes;
+* lapr - also excluded inj and vr ; * JAS Sep2021 ;
+if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_inj_tm1 ne 1 and prep_vr_tm1 ne 1 then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
-		if gender=2 then do; rate_1sttest = rate_1sttest * 1.5  ; rate_reptest = rate_reptest * 1.5  ;   end;
+		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 end;
 
 
@@ -2618,7 +2800,7 @@ if prob_circ ne . then prob_circ = min(prob_circ,1);
 
 ***Circumcision at birth;
 new_mcirc=0; 
-u=uniform(0);
+u=rand('uniform');
 if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
 		if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_birth_circ = 0;	
 		if u < prob_birth_circ then do;
@@ -2631,7 +2813,7 @@ end;
 
 
 * circumcision intervention ;
-u_circ=uniform(0);
+u_circ=rand('uniform');
 tested_circ=0;
 
 if t ge 2 and caldate{t} >= mc_int > . and gender=1 and registd_tm1  ne 1  and mcirc ne 1  and hard_reach ne 1
@@ -2646,7 +2828,7 @@ and age < 50 then do;
 	end;
 
 	if test_link_circ=1 and t ge 2 and tested_tm1=1 and registd_tm1  ne 1 then do;
-		uc=uniform(0); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
+		uc=rand('uniform'); if uc < test_link_circ_prob  and vmmc_disrup_covid ne 1 then do; mcirc=1;new_mcirc=1; end;
 	end;
 	
 	if mcirc=1 then date_mcirc=caldate{t};
@@ -2670,13 +2852,15 @@ end;
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
-if t ge 2 and caldate{t} < 2071.5 and death =.  then do;
+if t ge 2 and caldate{t} < 2072.5 and death =.  then do;
 
 cost=0;cost_test=0;
 
 adc_tm1=adc; adc=0;
 
-visit_prep=.;
+visit_prep_oral=.;	
+visit_prep_inj=.;	* lapr ;
+visit_prep_vr=.;	* dpv-vr ;
 ageg_ep=.;
 
 end;
@@ -2690,7 +2874,7 @@ age =age  + (1/12);
 
 
 if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
-u=uniform(0); if u < rate_want_no_more_children  then want_no_more_children = 1; * dependent_on_time_step_length ;
+u=rand('uniform'); if u < rate_want_no_more_children  then want_no_more_children = 1; * dependent_on_time_step_length ;
 end;
 
 
@@ -2725,7 +2909,7 @@ end;
 if age <= 15.25  then do; sbp=115; diagnosed_hypertension = 0; on_anti_hypertensive = 0; end;
 
 * underlying increases in blood pressure in people not on anti-hypertensives;
-a_sbp=uniform(0); 
+a_sbp=rand('uniform'); 
 	select;
 		when (140 <= sbp < 160) a_sbp = a_sbp / 1.5; 
 		when (160 <= sbp < 180) a_sbp = a_sbp / (1.5**2)  ;
@@ -2736,7 +2920,7 @@ if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
 
 * symptoms of hypertension ;
 symp_hypertension=0;
-d=uniform(0);
+d=rand('uniform');
 if sbp > 180 and d < prob_symp_hypertension then symp_hypertension=1;
 if symp_hypertension_tm1 = 1 then symp_hypertension=1;
 if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0; 
@@ -2744,7 +2928,7 @@ if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0;
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
 tested_bp = 0; sbp_m=.; 
 if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
-	e=uniform(0); 
+	e=rand('uniform'); 
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
 	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; 
 end;
@@ -2757,7 +2941,7 @@ end;
 
 * visits for hypertension while on anti-hypertensive; 
 if on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
-e=uniform(0); if e < prob_visit_hypertension then visit_hypertension = 1;
+e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
 end;
 if most_recent_sbp_m > 140 and on_anti_hypertensive ge 1 then visit_hypertension = 1;
 
@@ -2769,7 +2953,7 @@ if visit_hypertension=1 then tested_bp=1;
 
 * effect of stopping anti-hypertensive on sbp ;
 if on_anti_hypertensive ge 1 then do;
-	z_sbp=uniform(0);
+	z_sbp=rand('uniform');
 	if z_sbp < prob_stop_anti_hypertensive then do; 
 		previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ;
 		date_last_stop_anti_hyp = caldate{t}; 
@@ -2778,7 +2962,7 @@ end;
 
 * initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs;
 start_anti_hyp_this_per = 0 ; 
-ah=uniform(0); i_sbp = uniform(0);d_sbp=uniform(0);  t_sbp = uniform(0);  
+ah=rand('uniform'); i_sbp = rand('uniform');d_sbp=rand('uniform');  t_sbp = rand('uniform');  
 if (visit_hypertension=1 and (sbp_m_tm1 > 140) and diagnosed_hypertension ne 1) then do; 
 	diagnosed_hypertension = 1; if i_sbp < prob_imm_anti_hypertensive then start_anti_hyp_this_per =1 ; 
 end;
@@ -2805,7 +2989,7 @@ end;
 * intensification of anti-hypertensives;
 intensify_anti_hyp_this_per_1_2 = 0; intensify_anti_hyp_this_per_2_3 = 0; 
 if  visit_hypertension=1 and sbp_m_tm1 > 140 and 1 <= on_anti_hypertensive <= 2 then do; 
-	e=uniform(0); 
+	e=rand('uniform'); 
 	select; 
 		when (160 <= sbp_m_tm1 < 180) e = e /2; 
 		when (180 <= sbp_m_tm1 < 200) e = e / 4; 
@@ -2823,7 +3007,7 @@ if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
 
 * sbp_m = measured value of sbp in this period, . if unmeasured;
-if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*normal(0)); sbp_m = round(sbp_m, 1);
+if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
 
 hypertension = 0; if sbp > 140 or on_anti_hypertensive ge 1 then hypertension = 1;
 hypertens180 = 0; if sbp > 180 or (on_anti_hypertensive ge 1 and max_sbp > 180) then hypertens180 = 1;
@@ -2839,8 +3023,8 @@ rred_rc=1.0;
 * not * dependent_on_time_step_length ;
 if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995);
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
-if 2010 < caldate{t} <= 2015 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
-if 2015 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2015-2010));
+if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
+if 2021 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
 
 
 
@@ -2882,11 +3066,11 @@ epvls_tm1=epvls;
 * risk of having sti;
 sti_tm1=sti; sti=0;
 if t ge 2 and  sti_tm1=0 then  do; * dependent_on_time_step_length ;
-	d=uniform(0);  if d < (newp_tm1 * rate_sti) then sti=1;
+	d=rand('uniform');  if d < (newp_tm1 * rate_sti) then sti=1;
 end;
 
 if t ge 2 and sti_tm1=1 then  do;
-	d=uniform(0);  if d < (newp_tm1 * eff_rate_persist_sti) then sti=1;
+	d=rand('uniform');  if d < (newp_tm1 * eff_rate_persist_sti) then sti=1;
 end;
 
 
@@ -3110,7 +3294,6 @@ if 10 <= newp_tm1    then do; *newp=0; s1=0.00; *newp=1; s2=1.00; *newp >= 2; s3
 end;
 
 
-
 s2=s2*rred; s3=s3*rred; s4=s4*rred; 
 cu1=s1;cu2=cu1+s2;cu3=cu2+s3;cu4=cu3+s4; a=rand('Uniform');
 if            a < cu1/cu4 then do; newp=0; end; 
@@ -3307,6 +3490,7 @@ if sex_beh_trans_matrix_w=15 then do;
 	if 1  <= newp_tm1     then do; *newp=0; s1=0.75; *newp=1-3; s2=0.25; end;
 end;
 
+
 s2=s2*rred;
 cu1=s1;cu2=cu1+s2; a=rand('Uniform');
 if            a < cu1/cu2 then do; newp=0; end; 
@@ -3437,13 +3621,19 @@ if gender = 2 and life_sex_risk >= 2 and sw_tm1  = 0 then do;
 	* effect of previously having been a sex worker on becoming a sex worker;
 	if ever_sw = 1 then prob_becoming_sw = prob_becoming_sw * rr_sw_prev_sw;
 
-	e = uniform(0);
+	e = rand('uniform');
 	if e < prob_becoming_sw then sw = 1;
 
-	***currently SW are no more likely to be willing to take prep than gen pop but this may change;
-	if sw = 1 and ever_sw ne 1 and prep_willing = 0 then do;
-		r = uniform(0);
-		if r < add_prepuptake_sw then prep_willing = 1;
+	***currently SW are no more likely to be willing to take prep than gen pop (because add_prep_any_uptake_sw=0) but we may decide to change;
+	if sw = 1 and ever_sw ne 1 and prep_any_willing = 0 then do;
+		r = rand('uniform');
+		if r < add_prep_any_uptake_sw then do;
+			prep_any_willing = 1;	* lapr and dpv-vr - added all prep types;
+			if 		highest_prep_pref = 1 then prep_oral_willing = 1;
+			else if highest_prep_pref = 2 then prep_inj_willing = 1;
+			else if highest_prep_pref = 3 then prep_vr_willing = 1;
+			end;
+		
 	end;
 end;
 end;
@@ -3452,8 +3642,8 @@ end;
 
 *initial distribution of newp for sw (need to define tm1 here in order to define number of current partners below);
 if t ge 2 and  sw_tm1 ne 1 and sw=1 then do; 
-	e=uniform(0);
-	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 6;
+	e=rand('uniform');
+	if e < p_sw_init_newp_g1 then newp_tm1 = 0; if p_sw_init_newp_g1 <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2) then newp_tm1 = 3;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) then newp_tm1 = 20; 
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3) <= e < (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) then newp_tm1 = 50;
 	if (p_sw_init_newp_g1+p_sw_init_newp_g2+p_sw_init_newp_g3+p_sw_init_newp_g4) <= e then newp_tm1 = 150;
@@ -3480,15 +3670,15 @@ if sw=1 then  ever_sw = 1;
 rate_stop_sexwork = base_rate_stop_sexwork; if age >= 40 then rate_stop_sexwork = rate_stop_sexwork * 3;
 if t ge 2 then do;
 	if sw_tm1=1 then do;
-		d_sw=uniform(0);
+		d_sw=rand('uniform');
 		if d_sw < rate_stop_sexwork/(sqrt(rred_rc)) or age ge 50 then do; 
 			sw=0; sw_program_visit=0; date_stop_sw=caldate{t};  
 			date_last_sw_prog_vis=caldate{t};
 			sw_test_6mthly=0;
 			eff_sw_higher_int = sw_higher_int;
-			eff_prob_sw_lower_adh = prob_sw_lower_adh; 
+			*eff_prob_sw_lower_adh = prob_sw_lower_adh; 
 			eff_sw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag ; 
-			
+
 		end;
 	end;
 end;
@@ -3530,22 +3720,22 @@ if t ge 2 then do;
 	* probabilities of transitioning to each level, depending on the current one;
 	select;
 		when (newp_tm1 = 0) 		do; newp_lev1_prob = sw_newp_lev_1_1; newp_lev2_prob = sw_newp_lev_1_2; newp_lev3_prob = sw_newp_lev_1_3; newp_lev4_prob = sw_newp_lev_1_4; end;
-		when (1 <= newp_tm1 <= 6) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
-		when (7 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
+		when (1 <= newp_tm1 <= 3) 	do; newp_lev1_prob = sw_newp_lev_2_1; newp_lev2_prob = sw_newp_lev_2_2; newp_lev3_prob = sw_newp_lev_2_3; newp_lev4_prob = sw_newp_lev_2_4; end;
+		when (4 <= newp_tm1 <= 20) 	do; newp_lev1_prob = sw_newp_lev_3_1; newp_lev2_prob = sw_newp_lev_3_2; newp_lev3_prob = sw_newp_lev_3_3; newp_lev4_prob = sw_newp_lev_3_4; end;
 		when (21 <= newp_tm1 <= 50) do; newp_lev1_prob = sw_newp_lev_4_1; newp_lev2_prob = sw_newp_lev_4_2; newp_lev3_prob = sw_newp_lev_4_3; newp_lev4_prob = sw_newp_lev_4_4; end;
 		when (50 < newp_tm1) 		do; newp_lev1_prob = sw_newp_lev_5_1; newp_lev2_prob = sw_newp_lev_5_2; newp_lev3_prob = sw_newp_lev_5_3; newp_lev4_prob = sw_newp_lev_5_4; end;
-	end;
+		otherwise xxx=1;
+end;
 
 	* transition to a new level with these probabilities and select newp;
-	e = uniform(0);
+	e = rand('uniform');
 	if e < newp_lev1_prob then newp=0;
-	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=uniform(0);
-		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
-		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
+	else if newp_lev1_prob <= e < newp_lev1_prob + newp_lev2_prob then do; q=rand('uniform');
+		if q < 0.7 then newp=1; if 0.7 <= q < 0.85 then newp=2; if 0.85 <= q then newp=3; 
 	end;
-	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=uniform(0); newp = 7 + (q*14); newp = round(newp,1); end;
-	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=uniform(0); newp = 21 + (q*29); newp = round(newp,1); end;
-	else do; q=uniform(0); newp = 51 + (q*100); newp = round(newp,1);  end;
+	else if newp_lev1_prob + newp_lev2_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob then do; q=rand('uniform'); newp = 4 + (q*16); newp = round(newp,1); end;
+	else if newp_lev1_prob + newp_lev2_prob + newp_lev3_prob <= e < newp_lev1_prob + newp_lev2_prob + newp_lev3_prob + newp_lev4_prob then do; q=rand('uniform'); newp = 21 + (q*29); newp = round(newp,1); end;
+	else do; q=rand('uniform'); newp = 51 + (q*100); newp = round(newp,1);  end;
 end;
 
 if age > 30 then newp = min(30,newp);
@@ -3572,64 +3762,64 @@ end;
 if t ge 2 and newp_tm1 = 0 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_1_1 then newp=0;
-	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=uniform(0); 
+	if sw_newp_lev_1_1 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_1_1+sw_newp_lev_1_2 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3 <= e < sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_1_1+sw_newp_lev_1_2+sw_newp_lev_1_3+sw_newp_lev_1_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3; newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 1 <= newp_tm1 <= 6/3 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_2_1 then newp=0;
-	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=uniform(0); 
+	if sw_newp_lev_2_1 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_2_1+sw_newp_lev_2_2 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3 <= e < sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_2_1+sw_newp_lev_2_2+sw_newp_lev_2_3+sw_newp_lev_2_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and 7/3 <= newp_tm1 <= 40/3 then do;
 	if age > 30 then e=e*0.99; * older women cant be in highest category ;
 	if e < sw_newp_lev_3_1 then newp=0;
-	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=uniform(0); 
+	if sw_newp_lev_3_1 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;   
 	end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_3_1+sw_newp_lev_3_2 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3 <= e < sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_3_1+sw_newp_lev_3_2+sw_newp_lev_3_3+sw_newp_lev_3_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and  41/3 <= newp_tm1 <= 100/3 then do;
 	if age > 30 then e=e*0.98; * older women cant be in highest category ;
 	if e < sw_newp_lev_4_1 then newp=0;
-	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=uniform(0); 
+	if sw_newp_lev_4_1 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;    
 	end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_4_1+sw_newp_lev_4_2 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3 <= e < sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_4_1+sw_newp_lev_4_2+sw_newp_lev_4_3+sw_newp_lev_4_4  <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3; newp = round(newp,1);  end;
 end;
 
 if  t ge 2 and  100/3 <  newp_tm1 then do;
 	if e < sw_newp_lev_5_1 then newp=0;
-	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=uniform(0); 
+	if sw_newp_lev_5_1 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2 then do; q=rand('uniform'); 
 		if q < 0.7 then newp=1; if 0.7 <= q < 0.8 then newp=2; if 0.8 <= q < 0.9 then newp=3; if 0.9 <= q < 0.95 then newp=4;    
 		if 0.95 <= q < 0.98 then newp=5; if 0.98 <= q       then newp=6;  
 	end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=uniform(0); newp = 6 + (q*34); newp = round(newp,1);	 end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=uniform(0); 	newp = 41 + (q*59); newp = round(newp,1);  end;
-	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=uniform(0); 	newp = 101 + (q*50 ); 
+	if sw_newp_lev_5_1+sw_newp_lev_5_2 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 then do; q=rand('uniform'); newp = 6 + (q*34); newp = round(newp,1);	 end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3 <= e < sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 then do; q=rand('uniform'); 	newp = 41 + (q*59); newp = round(newp,1);  end;
+	if sw_newp_lev_5_1+sw_newp_lev_5_2+sw_newp_lev_5_3+sw_newp_lev_5_4 <= e       then do; q=rand('uniform'); 	newp = 101 + (q*50 ); 
 * ts1m; newp=newp/3;
 newp = round(newp,1);  end;
 end;
@@ -3641,24 +3831,24 @@ end;
 
 * Reducing newp for FSW according to population change in risk behaviour;
 if sw=1 and newp ge 1 then do;
-u=uniform(0); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
+u=rand('uniform'); if u < (1-rred)*p_rred_sw_newp then do; newp=newp/3; newp=round(newp,1);end;
 end;
 
 if sw=1 and newp ge 1 and eff_sw_program = 1 and sw_program_visit=1 then do;
-	u=uniform(0); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
+	u=rand('uniform'); if u < effect_sw_prog_newp then newp=newp/3; newp=round(newp,1);
 end;
 
 
 
 * Reducing newp by 50% if condom incr =1;
 if caldate{t} = &year_interv and condom_incr_year_i = 1 then do;
-	u=uniform(0); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
+	u=rand('uniform'); if u < 0.50 then do;newp=newp/2;newp=round(newp,1);end;
 end;
 
 
 
 
-e=uniform(0);
+e=rand('uniform');
 if gender=1 then do;
 	if      15 <= age < 25 then do;
 		if 0 < r_s_ep_m15w15 <0.95 then e=e/(3*r_s_ep_m15w15); end;
@@ -3704,7 +3894,7 @@ if  ep_tm1=1 and lep=1 and e < (1-(0.25*z)) then ep=1;
 if  ep_tm1=1 and lep=2 and e < (1-(0.05*z)) then ep=1; 
 if  ep_tm1=1 and lep=3 and e < (1-(0.02*z)) then ep=1; 
 
-u=uniform(0);
+u=rand('uniform');
 if       r_ep_mw >  1.2 and gender=2 then u=u/4;
 if 1.1 < r_ep_mw <= 1.2 and gender=2 then u=u/2;
 if 0.8 <= r_ep_mw < 0.9 and gender=1 then u=u/2;
@@ -3717,15 +3907,15 @@ if caldate{t} ge 1995 then u=u/ch_risk_beh_ep;
 * less chance of starting longer term unprotected sex partnership after hiv diagnosis
 in subject; * dependent_on_time_step_length ;
 if ep_tm1=0 and 15 <= age < 25 and u < eprate then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 25 <= age < 35 and u < eprate then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 35 <= age < 45 and u < eprate/2 then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.60 then lep=2;  if .60 <= d then lep=3; end;
 if ep_tm1=0 and 45 <= age < 55 and u < eprate/3 then do; 
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if .30 <= d < 0.80 then lep=2;  if .80 <= d then lep=3; end;
 if ep_tm1=0 and 55 <= age < 65 and u < eprate/5 then do;
-	ep=1; d=uniform(0); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
+	ep=1; d=rand('uniform'); if d < 0.30 then lep=1; if 0.30 <= d then lep=2;  end;
 
 if t ge 2 and newp ge 1 then ever_newp=1;
 if t ge 2 and ep =  1 then ever_ep=1;
@@ -3760,7 +3950,6 @@ ep=0; ep= np-newp;
 end;
 
 
-
 * episodes of sex work;
 
 if t ge 2 then do;
@@ -3773,7 +3962,7 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 * OCCURRENCE OF NON-HIV SYMPTOMS THAT LEAD TO TESTING FOR HIV AS PART OF DIAGNOSTIC WORK UP (OR TRIGGERED BY DIAGNOSIS OF TB ETC);
 
 if t ge 2 then do;
-s=uniform(0);   * dependent_on_time_step_length ;
+s=rand('uniform');   * dependent_on_time_step_length ;
 tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
 tested_symptoms_not_hiv =1; tested=1; 
@@ -3785,13 +3974,6 @@ end;
 HIV to investigate symtpoms, this includes people without HIV who develop TB
 I inititially chose 0.001 as this implies around 30,000 tests per year which seems in the right ball-park but 
 we will have to modify the value when we have data to compare with; 
-
-
-
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* Updating variables only relevant for 15-64 year olds ;  
-* part of SECTION 3B - updating variables that exist for all adults, regardless of HIV status ;
-* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
 if t ge 2 and 15 <= age      and death=. then do; * do loop ends at xx33;
@@ -3813,7 +3995,7 @@ if ep >= 1 then epi=0;
 
 if t ge 2 and ep=1 and epi_tm1 =1 then epi=1;
 
-f=uniform(0);if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
+f=rand('uniform');if gender=1 and epi=1 and d_hiv_epi_mw > 50 and f < 0.1 then epi=0;
 
 if t ge 2 and ep_tm1=1 then do;
 	mr_epi=epi_tm1;
@@ -3845,14 +4027,13 @@ if . < d_hiv_epi_mw < -5000 then ep_incidence_factor_w  = ep_incidence_factor_w 
 
 if s_hiv1564 =0 then do; d_hiv_epi_mw=0; d_hiv_epi_wm=0; end;
 
-e=uniform(0);  
+e=rand('uniform');  
 * yes, it is this way around below;
 if gender=1 and ep_incidence_factor_w gt 0 then e=e/ep_incidence_factor_w; 
 if gender=2 and ep_incidence_factor_m gt 0 then e=e/ep_incidence_factor_m;
 
-
 epmono=.;
-s=uniform(0);
+s=rand('uniform');
 if ep=1 then do; epmono=0;
 	if (gender=2 and ((ageg_ep=1 and s < prop_mono_m_1524) or (ageg_ep=2 and s < prop_mono_m_2534) or (ageg_ep=3 and s < prop_mono_m_3544) 
 	or (ageg_ep=4 and s < prop_mono_m_4554) or (ageg_ep=5 and s < prop_mono_m_5564))) or 
@@ -3861,26 +4042,26 @@ if ep=1 then do; epmono=0;
 	if epmono=1 and epi ne 1 then do;
 		if hiv=1 then do;  * rep * dependent_on_time_step_length ;
 
-			if       .  <  vl_tm1 < 2.7 then rep = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));
-			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(0.01*fold_tr)+(0.0025*normal(0))); 
-			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(0.03*fold_tr)+(0.0075*normal(0)));
-			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(0.06*fold_tr)+(0.015*normal(0))); 
-			else if        vl_tm1 >=5.7 then rep = max(0,(0.10*fold_tr)+(0.025*normal(0)));  
-			if primary_tm1 =1 		    then rep = max(0,tr_rate_primary+(0.075*normal(0)));
+			if       .  <  vl_tm1 < 2.7 then rep = max(0,tr_rate_undetec_vl+(0.000025*rand('normal')));
+			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(0.01*fold_tr)+(0.0025*rand('normal'))); 
+			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(0.03*fold_tr)+(0.0075*rand('normal')));
+			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(0.06*fold_tr)+(0.015*rand('normal'))); 
+			else if        vl_tm1 >=5.7 then rep = max(0,(0.10*fold_tr)+(0.025*rand('normal')));  
+			if primary_tm1 =1 		    then rep = max(0,tr_rate_primary+(0.075*rand('normal')));
 
 * ts1m ; * replace lines above with:
 
-*			if       .  <  vl_tm1 < 2.7 then rep = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*normal(0)));
-*			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(( 1 - (1 - 0.01)**(1/3) )*fold_tr)+(0.0025/3*normal(0))); 
-*			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr)+(0.0075/3*normal(0)));
-*			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr)+(0.015/3*normal(0))); 
-*			else if        vl_tm1 >=5.7 then rep = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr)+(0.025/3*normal(0)));  
-*			if primary_tm1 =1 		    then rep = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*normal(0)));
+*			if       .  <  vl_tm1 < 2.7 then rep = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*rand('normal')));
+*			else if 2.7 <= vl_tm1 < 3.7 then rep = max(0,(( 1 - (1 - 0.01)**(1/3) )*fold_tr)+(0.0025/3*rand('normal'))); 
+*			else if 3.7 <= vl_tm1 < 4.7 then rep = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr)+(0.0075/3*rand('normal')));
+*			else if 4.7 <= vl_tm1 < 5.7 then rep = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr)+(0.015/3*rand('normal'))); 
+*			else if        vl_tm1 >=5.7 then rep = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr)+(0.025/3*rand('normal')));  
+*			if primary_tm1 =1 		    then rep = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*rand('normal')));
 
 			if gender=1 and ageg_ep gt 1  then rep = rep * fold_change_w;  * higher transmission risk in women;
 			if gender=1 and ageg_ep =  1  then rep = rep * fold_change_yw;  * higher transmission risk in women;
 			if sti=1                  then rep = rep * fold_change_sti;  * higher transmission risk with sti;
-			a=uniform(0); if a < rep then do; epi=1; froms=1; end;
+			a=rand('uniform'); if a < rep then do; epi=1; froms=1; end;
 		end;
 	end;
 	else if epmono=0 and epi ne 1 then do;	
@@ -3909,18 +4090,20 @@ end;
 
 
 if hiv=1 and epi=1 then do;
-	if gender=2 and     r_hiv_epi_both > 1 then do; g=uniform(0); if g > 1/r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
-	if gender=1 and . < r_hiv_epi_both < 1 then do; g=uniform(0); if g >   r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
+	if gender=2 and     r_hiv_epi_both > 1 then do; g=rand('uniform'); if g > 1/r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
+	if gender=1 and . < r_hiv_epi_both < 1 then do; g=rand('uniform'); if g >   r_hiv_epi_both > . then do; epi=.; ep=0; epmono=.; ageg_ep=.; end; end;
 end;
 
 if epi ne 1 then do; froms=.; fromo=. ; already=.; old=.; end;
+
+if age >= 65 then do; ep=0; epi=0; end;
 
 epdiag=0; epart=0; epvls=0; 
 if epi=1 then do;
 
 	if epdiag_tm1=1 then epdiag=1;
 	if epdiag_tm1 ne 1 then do;
-		epdiag=0; s=uniform(0);
+		epdiag=0; s=rand('uniform');
 
 		if gender=1 then do;
 			if    0 > d_diag_w     	   then j=0;
@@ -3939,9 +4122,9 @@ if epi=1 then do;
 	end;
 
 	if epdiag=1 then do; * remember some infected partners are lost to follow-up;
-		if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
+		if epart_tm1=1 then do; epart=0; f=rand('uniform'); if f < 0.98 then epart=1; end;
 		if epart_tm1 ne 1 and epdiag=1 then do;
-			epart=0; s=uniform(0);
+			epart=0; s=rand('uniform');
 
 					if 0   >   d_onart then j=0;
 					if 0   <=  d_onart < 0.05   then j=p_diag_onart/5;if 0.05   <=  d_onart < 0.1   then j=p_diag_onart/2;if 0.1  <=  d_onart    then j=p_diag_onart;
@@ -3953,13 +4136,13 @@ if epi=1 then do;
 
 	* rates of viral suppression;
 	epvls=0; if epart=1 then do;
-		if epvls_tm1=1 then do; epvls=1; f=uniform(0); if f < 0.03 then epvls=0; end;
+		if epvls_tm1=1 then do; epvls=1; f=rand('uniform'); if f < 0.03 then epvls=0; end;
 		if epvls_tm1 ne 1 and epart=1 then do;
 			if 0   >  d_vls then j=0;
 				if 0.05 > d_vls >=  0    then j=p_onart_vls/5; 
 				if 0.1 > d_vls >=  0.05  then j=p_onart_vls/2;  
 				if d_vls >=  0.1    then j=p_onart_vls;
-			epvls=0; s=uniform(0); if s < j  then epvls=1;
+			epvls=0; s=rand('uniform'); if s < j  then epvls=1;
 		end;
 	end;
 end;
@@ -3968,7 +4151,7 @@ end;
 
 * OCCURRENCE OF PREGNANCY; * also note pregnancy code higher up in section 3A;
 
-u=uniform(0);
+u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
 if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 1.25) or dt_lastbirth=.) then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
@@ -3979,17 +4162,17 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 1.25) or dt_lastbirth=.)
 	if pregnant ne 1 and newp_tm3  gt 1 then do; * dependent_on_time_step_length ;
 	* consider if pregnant will be 1 only for 1 period ;
 		uu=2;do until (uu gt newp_tm3 );
-			ua=uniform(0);
+			ua=rand('uniform');
 			if (. lt ua lt prob_pregnancy_newp) then do;
 				pregnant=1;dt_lastbirth=caldate{t};cum_children=cum_children+1; pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
 			end;
 		uu=uu+1;
 		end;
 	end;
-	if pregnant=1 and o_dol_tm3 =1 then do; u = uniform(0); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
+	if pregnant=1 and o_dol_tm3 =1 then do; u = rand('uniform'); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
 			pregnant_ntd=1;prev_pregnant_ntd=1; date_pregnancy_ntd = caldate{t}; 
 	end;  end;
-	if pregnant=1 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = uniform(0); if u < oth_dol_adv_birth_e_risk then do; 
+	if pregnant=1 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
 			pregnant_oth_dol_adv_birth_e=1; prev_oth_dol_adv_birth_e=1;
 	end;  end;
 
@@ -3997,7 +4180,7 @@ end;
 
 
 *HIV Testing in ANC;
-a=uniform(0);tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
 if pregnant=1 then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then do; * dec15 - remove age effect for malawi to simplify;
 		anc=1;
@@ -4007,7 +4190,7 @@ if pregnant=1 then do;  * dependent_on_time_step_length ;
         if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
 		if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
         *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-         u=uniform(0); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
+         u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
     end;
 end;
 
@@ -4019,45 +4202,112 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do
 end;
 
 
-* PREP ELIGIBILITY (to start and continue on PrEP);
+* PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
-prep_elig=0;  * dec17 - note change to requirement for newp ge 2, and different eligibility for new users than previous users;
+prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and different eligibility for new users than previous users;
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
 
-if t ge 2 and (registd ne 1) and hard_reach=0 then do;
+* lapr and dpv-vr - changed name from 'prep_strategy' to 'prep_any_strategy' - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
-	if prep_strategy=1 then do;
+if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
+
+	if prep_any_strategy=1 then do;
 		r = rand('Uniform');
 		if gender=2 and (sw=1 or 15<=age<25) and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_strategy=2 then do;
+	if prep_any_strategy=2 then do;
 		r = rand('Uniform');
 		if gender=2 and sw=1 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_strategy=3 then do;
+	if prep_any_strategy=3 then do;
 		r = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
-		(newp ge 1 or (epdiag=1 and epart ne 1) or (registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_elig=1; 
+		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_strategy=4 then do;		* previously prep_strategy 13 *Apr2021 ;
+	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	
     	r = rand('Uniform');
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(gender=2 and 15 <= age < 50 and registd ne 1 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
-	if prep_elig=1 then date_most_recent_prep_elig=caldate{t};
+    if prep_any_strategy=5 then do;   
+     	r = rand('Uniform');
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+        and 15 <= age < 50 then prep_any_elig=1; 
+    end;
+
+	if prep_any_strategy=6 then do;	* as 4 but women only;	
+    	r = rand('Uniform');
+      	if gender=2 and 
+		((newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+	end;
+
+    if prep_any_strategy=7 then do; * as 5 but women only ;        
+     	r = rand('Uniform');
+    	if gender=2 and 
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1) ) ) )
+        and 15 <= age < 50) then prep_any_elig=1; 
+    end;
+
+	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;
+    	r = rand('Uniform');
+      	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) ) then prep_any_elig=1; 
+	end;
+
+    if prep_any_strategy=9 then do; * as 5 but change in prop ep;     
+     	r = rand('Uniform');
+    	if ( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+        and 15 <= age < 50 then prep_any_elig=1; 
+    end;
+
+	if prep_any_strategy=10 then do;* as 6 but change in prop ep;
+    	r = rand('Uniform');
+      	if gender=2 and 
+		((newp ge 1 or (epdiag=1 and epart ne 1) or 
+      	(15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1))) )) then prep_any_elig=1; 
+	end;
+
+    if prep_any_strategy=11 then do; * as 7 but change in prop ep;     
+     	r = rand('Uniform');
+    	if gender=2 and 
+		(( (newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1) or ( ep=1 and epart ne 1 and (r < 0.1  or (r < 0.5 and epi=1) ) ) )
+        and 15 <= age < 50) then prep_any_elig=1; 
+    end;
+
+    if prep_any_strategy=12 then do; 
+     	r = rand('Uniform');
+    	if newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 then prep_any_elig=1; 
+    end;
+
+    if prep_any_strategy=13 then do; 
+     	r = rand('Uniform');
+    	if gender=2 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
+    end;
+
+	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;	
+    	r = rand('Uniform');
+      	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+	end;
+
+	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
 end;
+
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
 
 tested_as_sw=.;
+
+testfor_prep_oral=0; testfor_prep_inj=0; testfor_prep_vr=0;
  
 if registd ne 1 and caldate{t} ge (date_start_testing+3.5) and tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
@@ -4070,7 +4320,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if hard_reach=0 then do;
 												
-		unitest=uniform(0);
+		unitest=rand('uniform');
 
 		* think not * dependent_on_time_step_length ;
  		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  if no_test_if_np0 = 1 and . < np_lasttest <= 0 then unitest = 1;
@@ -4108,8 +4358,14 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 	end;
 
-	
-	if t ge 4 and caldate{t} ge date_prep_intro and hard_reach=0 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+
+	a=rand('uniform');
+
+	if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and hard_reach=0 and 
+	((testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (pop_wide_tld_prep ne 1 or (pop_wide_tld_prep=1 and a < prob_test_pop_wide_tld_prep))  
+	then do;
+
+	* lapr - testing to start PrEP is available after any type of PrEP becomes available ; * JAS Sept2021 ; 
 
 		*Testing before ever starting PrEP;
 
@@ -4118,37 +4374,103 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		available with roll-out and interest of PrEP
 		 do not differentiate the probabilty of testing whether they have a short-term or long-term partner;
 
-		if  prep_ever ne 1 and tested ne 1 and prep_elig=1 and prep_willing=1  then do;
-			a=uniform(0); if a < eff_rate_test_startprep then do;	
-				tested=1;ever_tested=1;testfor_prep=1;dt_last_test=caldate{t};np_lasttest=0;
+		if  prep_any_ever ne 1 and tested ne 1 and prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then do;
+			a=rand('uniform'); if a < eff_rate_test_startprep_any then do;	
+				*lapr - assumes order of introduction is oral -> inj -> vr;
+				select;
+
+					* Only oral PrEP available;
+					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
+						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
+							tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+							testfor_prep_oral=1;
+						end;
+					end;
+
+					* Oral and injectable PrEP available;
+					when (caldate(t) ge date_prep_inj_intro > . and (. < caldate(t) < date_prep_vr_intro or date_prep_vr_intro=.)) do;	
+
+						select;
+							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
+								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_oral=1;
+							end;
+							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
+								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+								testfor_prep_inj=1; ever_testfor_prep_inj=1;
+							end;
+							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
+								*(1) prefer oral prep to inj and willing;
+								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_oral=1;
+								end; 
+								*(2) prefer inj prep to oral and willing;
+								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 then do;
+									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+									testfor_prep_inj=1;  ever_testfor_prep_inj=1;
+								end; 
+								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+							end;
+						end;
+
+					end;
+
+					* All PrEP types available;
+					when (caldate{t} ge date_prep_vr_intro > .) do;											
+						tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+						select;
+							when (highest_prep_pref = 1)	testfor_prep_oral=1; 
+							when (highest_prep_pref = 2) do;	testfor_prep_inj=1;  ever_testfor_prep_inj=1;  end;
+							when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
+						end;
+					end;
+
+					otherwise xxx=1;
+
+				end;
 			end; 
 		end;
 
-		*Routine testing while on PREP;
-		else if prep_ever=1 and prep_elig=1 then do;
-			if prep_tm1 =1 then do;  * dependent_on_time_step_length;
-				if annual_testing_prep=1 and caldate{t}-dt_last_test >= 1.0 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
-				end;
-				else if annual_testing_prep=0.5 and caldate{t}-dt_last_test >= 0.5 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
-				end;
-				else if annual_testing_prep=0.25 and caldate{t}-dt_last_test >= 0.25 then do;
-					a=uniform(0); if a < rate_test_onprep then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end;
+		*Routine testing while on PREP;		* lapr and dpv-vr - I dont see this changing - what about VL / NAAT testing for WHO analysis;
+		else if prep_any_ever=1 and prep_any_elig=1 then do;
+
+			* Oral PrEP ;
+			if prep_oral_tm1=1 then do;  * dependent_on_time_step_length;
+				if caldate{t}-dt_last_test >= annual_testing_prep_oral then do;
+					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
 				end;
 			end;
-			*re-initiation of PrEP;
-			else if prep_tm1  ne 1 then do; * dependent_on_time_step_length;
-				a=uniform(0); if a < eff_rate_test_restartprep and stop_prep_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
+
+			* Injectable PrEP ;	* lapr - double check equivalence with code above and update oral prep code if works ;
+			else if prep_inj_tm1 =1 then do;  * dependent_on_time_step_length;
+				if caldate{t}-dt_last_test >= annual_testing_prep_inj then do;
+					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+				end;
+			end; 
+
+			* Vaginal ring PrEP ;
+			else if prep_vr_tm1 =1 then do;  * dependent_on_time_step_length;
+				if caldate{t}-dt_last_test >= annual_testing_prep_vr then do;
+					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+				end;
+			end;
+
+
+			*Re-initiation of PrEP;
+			else if prep_any_tm1 ne 1 then do; * dependent_on_time_step_length;		*lapr - do we need to add testing to restart specific method here?;
+				a=rand('uniform'); if stop_prep_any_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
 			end; * jul17;
 		end;
 
 	end;
 
+
+
 end;
 
-cost_test=0; 
 
+cost_test=0; 
 
 
 * PREP INITIATION AND CONTINUATION;
@@ -4156,157 +4478,410 @@ cost_test=0;
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
 (or without been diagnosed with) hiv;
 
-prep=0; pop_wide_tld_prep=0; prep_falseneg=0; 
-
-
-if prep_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_covid_disrup ne 1 then do; 
-		ever_prep_covid_disrup=1;
-		pre_covid_rate_choose_stop_prep = eff_rate_choose_stop_prep;
-		pre_covid_pr_prep_restart_choice = eff_prob_prep_restart_choice;
-		eff_rate_choose_stop_prep = 1;
-		eff_prob_prep_restart_choice = 0 ;
+if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusive ;
+	if prep_any_elig=0 then stop_prep_any_elig=1;
+	select;
+		when (prep_oral_tm1=1)	do;	last_prep_used=1; if prep_any_elig=0 then stop_prep_oral_elig=1;	end;
+		when (prep_inj_tm1=1)	do;	last_prep_used=2; if prep_any_elig=0 then stop_prep_inj_elig=1;		end;
+		when (prep_vr_tm1=1)	do;	last_prep_used=3; if prep_any_elig=0 then stop_prep_vr_elig=1;		end;
+		otherwise xxx=1;
+	end;
 end;
-if prep_disrup_covid ne 1 and ever_prep_covid_disrup=1 then do; 
-		eff_rate_choose_stop_prep = pre_covid_rate_choose_stop_prep ;
-		eff_prob_prep_restart_choice = pre_covid_pr_prep_restart_choice ;
+
+prep_any=0; prep_oral=0; prep_inj=0; prep_vr=0;
+pop_wide_tld_prep=0; prep_falseneg=0; 
+switch_prep_from_oral=0; switch_prep_to_oral=0; switch_prep_from_inj=0; switch_prep_to_inj=0;
+
+
+if prep_oral_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_oral_covid_disrup ne 1 then do; 
+		ever_prep_oral_covid_disrup=1;
+		pre_cov_r_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;
+		pre_cov_pr_prep_any_restart_choi = eff_prob_prep_any_restart_choice;
+		eff_rate_choose_stop_prep_oral = 1;
+		eff_prob_prep_any_restart_choice = 0 ;
+end;
+if prep_oral_disrup_covid ne 1 and ever_prep_oral_covid_disrup=1 then do; 
+		eff_rate_choose_stop_prep_oral = pre_cov_r_choose_stop_prep_oral ;
+		eff_prob_prep_any_restart_choice = pre_cov_pr_prep_any_restart_choi ;
 end;
 
 
 
 *Jul2016 f_prep;
-if t ge 4 and caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 then do;
+if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 then do;
 
-	unisensprep=uniform(0);
-	*starting Prep;
-	*if prep_ever ne 1 and hiv=0 and tested=1 then do;
+	unisensprep=rand('uniform');
+
+********** starting Prep *********** ;
+
+	* lapr37;
+	eff_sens_vct = sens_vct;  
+	* this lower sensitivity of 3rd generation testing below (sens_primary_testtype3) is extended to the first period after infection to allow
+	us to mimic the full number of people starting prep when they have hiv - realise that test sensitivity is not this low in 3-6 mths from infection ;  
+	if caldate{t}-infection = 0.25 and hivtest_type_1_init_prep_inj ne 1 then eff_sens_vct = sens_primary_testtype3; 
+
+	*if prep_any_ever ne 1 and hiv=0 and tested=1 then do;
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
-	if prep_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)) then do;
+	* eff_sens_vct changed from sens_vct for lapr37;
+	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;
 	 
-			if prep_willing=1 then do; 
-				if 		testfor_prep = 1  then do;prep   =1; prep_ever=1; continuous_prep_use=0.25; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; 
-				else if testfor_prep ne 1 then do;r=uniform(0); if r < prob_prep_b then do; prep   =1; prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};end; end;
+			if prep_any_willing=1 and hard_reach ne 1 then do; 
+			*********** lapr and dpv-vr - we will need to add switching between prep methods; ******************* ;
+				if testfor_prep_oral = 1  		then do;	
+					prep_any=1;		continuous_prep_any_use=0.25;		
+					prep_oral=1; 	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};		
+					prep_oral_start_date=caldate{t};
+				end; 
+				else if	testfor_prep_inj = 1  	then do;	
+					prep_any=1;		continuous_prep_any_use=0.25;	
+					prep_inj=1; 	prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t}; 		
+					prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+				end; 
+				else if	testfor_prep_vr = 1  	then do;	
+					prep_any=1;		continuous_prep_any_use=0.25;	
+					prep_vr=1; 		prep_vr_ever=1; 	continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};		
+				end; 
+
+				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
+					r=rand('uniform'); 
+					select;
+						when (highest_prep_pref = 1)	if r < prob_prep_oral_b then do; 										*Oral PrEP preferred and is available from start of PrEP rollout;
+							prep_any=1;		continuous_prep_any_use=0.25;		
+							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
+							prep_oral_start_date=caldate{t};
+						end; 
+						when (highest_prep_pref = 2) 	
+							if caldate{t} ge date_prep_inj_intro > . and r < prob_prep_inj_b then do; 								*Inj PrEP preferred and is available;
+								prep_any=1;		continuous_prep_any_use=0.25;	
+								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
+								prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+							end; 
+							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+								prep_any=1;		continuous_prep_any_use=0.25;		
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
+								prep_oral_start_date=caldate{t}; 
+							end;
+						when (highest_prep_pref = 3) 	 
+							if caldate{t} ge date_prep_vr_intro > . and r < prob_prep_vr_b then do; 								*VR PrEP preferred and is available;
+								prep_any=1;		continuous_prep_any_use=0.25;	
+								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 
+							end; 
+							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
+								*(1) Prefer oral PrEP to inj and willing;
+								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 and r < prob_prep_oral_b then do;
+									prep_any=1;		continuous_prep_any_use=0.25;	
+									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
+									prep_oral_start_date=caldate{t};
+								end; 
+								*(2) Prefer inj PrEP to oral and willing;
+								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 and r < prob_prep_inj_b then do;
+									prep_any=1;		continuous_prep_any_use=0.25;	
+									prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
+									prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+								end; 
+								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+							end;
+							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
+								prep_any=1;		continuous_prep_any_use=0.25;	
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
+							end;
+						otherwise xxx=1;
+					end; 
+				end;
+				
 			end;
 
-	started_prep_hiv_test_sens=0;if prep   =1 and (hiv=1 and unisensprep > sens_vct) then do; started_prep_hiv_test_sens=1;started_prep_hiv_test_sens_e=1;end;
+	started_prep_hiv_test_sens=0;
+	if (prep_oral=1 or prep_inj=1 or prep_vr=1) and dt_prep_any_s = caldate{t} and hiv=1 then do; 
+		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;end;
 	end;
-	* continuing PrEP;
-	if prep_ever=1 and dt_prep_s ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > sens_vct)))) then do; * may17;
-		if prep_tm1 = 1 then do; * dependent_on_time_step_length;
-			if annual_testing_prep=1 then do;
-				if 0 <= caldate{t}-dt_last_test <= 1.0 then do;
-					r=uniform(0); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
+
+
+
+
+********* continuing or re-starting PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
+
+	eff_sens_vct = sens_vct; * note that eff_sens_vct does not apply 
+	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
+
+	if prep_inj_tm1 = 1 and hiv=1 then do;
+		if hivtest_type_1_init_prep_inj ne 1 then do; * lapr37;
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype3_prep_inj_inf3m;
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m; 
+		end;
+		if hivtest_type_1_init_prep_inj = 1 then do; * lapr37;
+			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
+		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; 
+		end;
+	end;
+
+ 	if prep_any_ever=1 and min(dt_prep_oral_s, dt_prep_inj_s) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+		r=rand('uniform'); 
+		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
+		tmp_prep=1;
+			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_oral then do;
+				if r < (1-eff_rate_choose_stop_prep_oral) then do; 
+					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	 
+					if highest_prep_pref = 1 then do;
+					prep_oral=1;	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;						
+					end;	
+					if highest_prep_pref = 2 then do;
+					prep_inj=1;	continuous_prep_inj_use = 0.25; 
+					if prep_inj_ever ne 1 then do; dt_prep_inj_s=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t}; end;
+					switch_prep_from_oral = 1;	 switch_prep_to_inj=1; 
+					end;	
 				end;
+				else do; 	* variable for people who discontinued despite newp>1;
+					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+					stop_prep_oral_choice=1; 	continuous_prep_oral_use=0;
+				end;  
 			end;
-			else if annual_testing_prep=0.5 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.5 then do;
-					r=uniform(0); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use = continuous_prep_use + (0.25);end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end;*variable for people who discontinued despite newp>1; 
+		end;
+		else if prep_inj_tm1 = 1 then do; * dependent_on_time_step_length;
+			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_inj then do;
+				if r < (1-eff_rate_choose_stop_prep_inj) then do; 
+					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
+					if highest_prep_pref = 2 then do;
+					prep_inj=1;	continuous_prep_inj_use = continuous_prep_inj_use + 0.25; 					
+					end;	
+					if highest_prep_pref = 1 then do;
+					prep_oral=1;	continuous_prep_oral_use =  0.25; 
+					if prep_oral_ever ne 1 then dt_prep_oral_s=caldate{t};
+					switch_prep_from_inj = 1;	 switch_prep_to_oral=1;
+					end; 
 				end;
+				else do; 	* variable for people who discontinued despite newp>1;
+					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+					stop_prep_inj_choice=1;		continuous_prep_inj_use=0; 
+				end; 
 			end;
-			else if annual_testing_prep=0.25 then do;
-				if 0 <= caldate{t}-dt_last_test <= 0.25 then do;
-					r=uniform(0); 
-					if r < (1-eff_rate_choose_stop_prep) then do; prep=1; dt_prep_e=caldate{t};continuous_prep_use = continuous_prep_use + (0.25); end;
-					else if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; continuous_prep_use=0; end; *variable for people who discontinued despite newp>1; 
+		end;
+		else if prep_vr_tm1 = 1 then do; * dependent_on_time_step_length; * note vr code needs attention to bring consistent with inj and oral code;
+			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_vr then do;
+				if r < (1-eff_rate_choose_stop_prep_vr) then do; 
+					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;		
+					prep_vr=1; 		continuous_prep_vr_use = continuous_prep_vr_use + 0.25;		
+				end;
+				else do; 	* variable for people who discontinued despite newp>1;
+					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+					stop_prep_vr_choice=1;		continuous_prep_vr_use=0; 
 				end;
 			end;
 		end;
-		else if prep_tm1 ne 1 then do;
-			*if people discontinued even if they had newp>1 previously (stop_prep_choice=1), then the probability of restart is
-			given by eff_prob_prep_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
-			stop_prep_choice ne 1) then the probability of restart is given by prob_prep_restart;
+
+		else if prep_any_tm1 ne 1 then do;
+			*if people discontinued even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is
+			given by eff_prob_prep_any_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
+			stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
 
 			if tested=1 then do; * dependent_on_time_step_length;
-				if stop_prep_choice=1 then do;
-				r=uniform(0); 
-				if r < eff_prob_prep_restart_choice then do; prep=1; continuous_prep_use=0.25; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_choice=0; end;
-				end; 
-				else if stop_prep_choice ne 1 then do;
-				r=uniform(0); 
-				if r < prob_prep_restart then do; prep=1; dt_prep_e=caldate{t}; continuous_prep_use=0.25; dt_prep_c=caldate{t}; end;  * dt_prep_c is prep continuation in the sense
-				that they are now continuing prep again now they have np >= 1; 
+				if stop_prep_any_choice=1 then do;
+					r=rand('uniform'); 
+					if r < eff_prob_prep_any_restart_choice then do;
+						select;			* lapr - check last_prep_used ;
+							when (last_prep_used=1)	do; 
+								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
+								prep_oral=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_rs=caldate{t};	stop_prep_oral_choice=0;	
+							end; 					
+							when (last_prep_used=2)	do; 
+								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
+								prep_inj=1; 	continuous_prep_inj_use=0.25; 	dt_prep_inj_rs=caldate{t};	stop_prep_inj_choice=0; 	
+								start_prep_inj_unl_prim_hiv_det=caldate{t};
+							end; 					
+							when (last_prep_used=3)	do; 
+								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
+								prep_vr=1; 		continuous_prep_vr_use=0.25;	dt_prep_vr_rs=caldate{t}; 	stop_prep_vr_choice=0; 		
+							end; 	
+							otherwise xxx=1;	
+						end;
+
+					end;
+				end;
+
+				else if stop_prep_any_choice ne 1  then do;	* remember that this is all in a loop with prep_any_elig=1;
+				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+						tmp_prep=7;
+					r=rand('uniform'); 
+						select;			* lapr - check last_prep_used ;
+							when (last_prep_used=1) do; 
+								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};  
+								prep_oral=1;	continuous_prep_oral_use=0.25; 	dt_prep_oral_c=caldate{t}; 
+								dt_prep_oral_rs=caldate{t}; 
+							end;
+							when (last_prep_used=2) do; 
+								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};
+								prep_inj=1;		continuous_prep_inj_use=0.25;		dt_prep_inj_c=caldate{t};  
+								dt_prep_inj_rs=caldate{t}; 
+								start_prep_inj_unl_prim_hiv_det=caldate{t};
+							end;
+							when (last_prep_used=3)	do; 
+								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};
+								prep_vr=1;		continuous_prep_vr_use=0.25; dt_prep_vr_c=caldate{t}; 
+								dt_prep_vr_rs=caldate{t}; 
+							end;
+							otherwise xxx=1;	
+						end;
 				end;
 			end;
+
 		end; 
 	end;
 end;
 
-if prep=0 then continuous_prep_use=0;
 
-if pop_wide_tld=1 and prep=1 then pop_wide_tld_prep=1; 
+if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
 
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
-if pop_wide_tld = 1 and registd ne 1 and ( prep_elig = 1 or ( ever_newp = 1 and ever_tested ne 1 ) ) then do;  
+* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
 
-	if prep_ever ne 1 then do;   * dependent_on_time_step_length; 
-			r=uniform(0); if prep_willing=1 and r < prob_prep_pop_wide_tld then do ;
+tld_notest_notprepelig = 0;
 
-* ts1m ; * replace line above with this:
-*			r=uniform(0); * if prep_willing=1 and r < ( 1 - (1 - prob_prep_pop_wide_tld)**(1/3) ) then do ;
+if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 and ever_tested ne 1) ) then do;  
 
-			prep   =1; pop_wide_tld_prep=1;  prep_ever=1; dt_prep_s=caldate{t}; dt_prep_e=caldate{t};
+	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
+
+			* new for pop_wide_tld;
+			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
+			r=rand('uniform'); a = rand('uniform'); 
+			if pop_wide_tld_selective_hiv = 1 and hiv ne 1 then a = a * 2; 
+			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
+			then do ;		
+* ts1m ; 
+				pop_wide_tld_prep=1;  			
+				prep_any=1;		prep_oral_start_date=caldate{t};	
+				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
 			end;
 	end;
 
-	if prep_ever = 1 and dt_prep_s ne caldate{t} then do;   * dependent_on_time_step_length;
-			if r < (1-eff_rate_choose_stop_prep) then do; prep   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; end;
-			if r >= (1-eff_rate_choose_stop_prep) then do; stop_prep_choice=1; pop_wide_tld_prep=0; end; 
+	x_stop_tld = eff_rate_choose_stop_prep_oral;
+	if (ever_newp = 1 and ever_tested ne 1) and prep_any_elig ne 1 then x_stop_tld = eff_rate_int_choice; 
 
-			if stop_prep_choice=1 then do;
-				r=uniform(0); 
-				if r < eff_prob_prep_restart_choice then do;  * dependent_on_time_step_length;
-					prep   =1;pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_rs=caldate{t}; stop_prep_choice=0; 
+	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
+			r=rand('uniform');	
+			if r < (1-x_stop_tld) then do; 
+				pop_wide_tld_prep=1; 				
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
+				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+			end;
+			if r >= (1-x_stop_tld) then do; 
+				pop_wide_tld_prep=0;	
+				stop_prep_any_choice=1;  
+				stop_prep_oral_choice=1; 
+			end; 
+
+			if stop_prep_oral_choice=1 then do;
+				r=rand('uniform'); 
+				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0;  continuous_prep_any_use=0.25;
+					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; continuous_prep_oral_use=0.25; 
 				end;
 			end; 
-			else if stop_prep_choice ne 1 then do;
-				r=uniform(0); 
-				if r < prob_prep_restart then do;  * dependent_on_time_step_length;
-					prep   =1; pop_wide_tld_prep=1; dt_prep_e=caldate{t}; dt_prep_c=caldate{t};
-				end;  
+			else if stop_prep_oral_choice ne 1 then do;
+					pop_wide_tld_prep=1; 
+					prep_any=1; 		dt_prep_any_c=caldate{t};  continuous_prep_any_use = continuous_prep_any_use + 0.25;
+					prep_oral=1; 	 	dt_prep_oral_c=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
 				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
 	end;
+	
+	if (ever_newp = 1 and ever_tested ne 1) and prep_any_elig ne 1 and pop_wide_tld_prep=1 then tld_notest_notprepelig = 1;
 end;
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
 
 
+if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
+then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
+
+if tested=1 and hivtest_type_1_prep_inj=1 and prep_inj = 1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
+
+if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_any variable indicates if a person is on any prep;
+if prep_inj=0 then continuous_prep_inj_use=0;	
+if prep_vr=0 then continuous_prep_vr_use=0;	
+if prep_any=0 then continuous_prep_any_use=0;
+
+if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
+
+if prep_inj = 1 then prep_inj_ever=1;
+if prep_oral = 1 then prep_oral_ever=1;
+if prep_vr = 1 then prep_vr_ever=1;
+
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral = 1;
+start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj = 1;
+
+
+* these variables are intending to capture people who are currently taking PEP/PrEP in any three month period in which they have risk 
+(ie are prep eligible);
+on_risk_informed_prep_oral = 0; 
+if prep_oral_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_oral_choice ne 1 then on_risk_informed_prep_oral = 1;
+
+on_risk_informed_prep_inj  = 0; 
+if prep_oral_inj=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_inj_choice ne 1 then on_risk_informed_prep_inj  = 1;
+
+
 * prep_falseneg var - Mar2017 f_prep;
-* use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the program;
-if hiv=1 and unisensprep > sens_vct then prep_falseneg=1;
+* use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the same period below;
+if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 
 
 *PrEP clinic visits - modified Jan2017 f_prep;
-if caldate{t} ge date_prep_intro and registd ne 1 and prep_elig=1 and pop_wide_tld ne 1 then do;
-	if prep   =0 then do;
-		if prep_ever ne 1 then visit_prep=.;
-		else if prep_ever=1 and (prep_tm1 =1) then visit_prep=0;
-	end;
-	if prep   =1 then do;
-		r=uniform(0);
-		visit_prep=1; *drug pick-up only;
-		if tested=1 then do;
-			visit_prep=2; *drug pick-up and HIV test;
-			if r < prob_prep_visit_counsel then visit_prep=3; *drug pick-up and counselling;
+	* lapr and dpv-vr - I think for simplicity we will assume lapr operates with 3 monthly visits - I understand this
+	is right for women - for men I think they may need 2 monthly injections rather than 3; * dpv-vr is monthly but I 
+	understand it is self-administered (?) so 3-montly clinic visits or less may be fine;
+if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 and 
+(pop_wide_tld ne 1 or tested=1) then do;
+	if prep_any=0 then do;
+		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_inj=.; visit_prep_vr=.; end;
+		else if prep_any_ever=1 then do;
+			if prep_any_tm1=1 then visit_prep_any=0;		
+			if prep_oral_tm1=1 then visit_prep_oral=0;		
+			if prep_inj_tm1=1 then visit_prep_inj=0;		
+			if prep_vr_tm1=1 then visit_prep_vr=0;		
 		end;
-
+	end;
+	if prep_any=1 then do;
+		r=rand('uniform');
+		select;
+			when (prep_oral=1) do;
+				if tested ne 1 then visit_prep_oral=1; 		*drug pick-up only;
+				if tested=1 then do;
+					visit_prep_oral=2; 	*drug pick-up and HIV test;
+					if r < prob_prep_any_visit_counsel then do; visit_prep_any=3; visit_prep_oral=3; end; *drug pick-up and counselling;
+				end;
+			end;
+			when (prep_inj=1) do;
+				if tested=1 then do;
+					visit_prep_inj=2; 	* incl HIV test;
+					if r < prob_prep_any_visit_counsel then do; visit_prep_inj=3; end; *drug pick-up and counselling;
+				end;
+			end;
+			when (prep_vr=1) do;
+				if tested=1 then do;
+					visit_prep_vr=2; 	
+					if r < prob_prep_any_visit_counsel then do;  visit_prep_vr=3; end; *drug pick-up and counselling;
+				end;
+			end;
+			otherwise xxx=1;
+		end;
 	end;
 end;
 
-if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - dt_prep_s > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
-r=uniform(0); if r < pop_wide_tld_prob_egfr then visit_prep=2; * note this is for egfr only not an hiv test;
+if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - dt_prep_oral_s > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
+r=rand('uniform'); if r < pop_wide_tld_prob_egfr then do; visit_prep_any=2; visit_prep_oral=2; end; * note this is for egfr only not an hiv test;
 end;
 
 * effect of weight gain due to use of dol as prep;
 if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;	
-r = uniform(0);
+r = rand('uniform');
 if caldate{t} = date_start_tld_prep and r < prop_bmi_ge23 then do;  
 		bmi_gt23_start_dol=1; 
 		if incr_mort_risk_dol_weightg = 1 then i_mort_risk_dol_prep_weightg = 1.00 ; 
@@ -4319,39 +4894,73 @@ if caldate{t} = date_start_tld_prep and r < prop_bmi_ge23 then do;
 end;
 
 
-*Adherence to PrEP - modified Jan2017 f_prep;
-if prep = 1 then do;
-	adh=adhav_prep + adhvar*normal(0);  if adh gt 1 then adh=1; if adh < 0 then adh=0;
-	if adhav_prep=0 then adh=0;
+*Adherence to oral PrEP - modified Jan2017 f_prep;
+	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
+	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
+if prep_oral = 1 then do;
+	adh=adhav_prep_oral + adhvar*normal(0);  
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
 	if age < 25 then do;		* JAS Apr2021 ;
-		f=uniform(0);
-		if f<0.5 then adh = adh * rel_prep_adh_younger ;
+		f=rand('uniform');
+		if f < 0.5 then adh = adh * rel_prep_oral_adh_younger ;
 	end;
+	if adh gt 1 then adh=1; if adh < 0 then adh=0;
 end;
 
 * this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
 between 0 and 1 rather than binary 0 or 1; 
-* assume for now that prep is tenofovir/ftc;
+* assume for now that oral prep is tenofovir/ftc;
 
-prep_all_past_year=.;
-if prep   =1 then do; 
-tot_yrs_prep = tot_yrs_prep+0.25; * dependent_on_time_step_length ;  
-* ts1m ; * change this line to: 
-tot_yrs_prep = tot_yrs_prep + (1/12);
-;
+/*
+
+not sure about this including this here - comment out for now
+
+*'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
+******************** Define adh_prep_inj here;
+adh_prep_inj=1;	********TEMP;
+if prep_inj=1 then do;
+  adh_prep_inj = .; 
+* 	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
+	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
 
 
-
-prep_effectiveness_non_res_v = adh* prep_efficacy ;
-if t ge 4 and prep_tm1 =1 and continuous_prep_use >= 1 then prep_all_past_year=1;
-* dependent_on_time_step_length ;  
+	if o_cla ne 1 and tss_cla ge 1/12 and 
+	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
+	then do; current_adh_dl = .; current_adh_dl_tm1 = .;
+		if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+		if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
+		if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
+		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
+	end;
 end;
 
+*/
 
 
-if prep_elig=1 and caldate{t} ge 2021.5 then cum_years_prep_elig_ayear_i = cum_years_prep_elig_ayear_i + 0.25;
+prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_any and other individual types if needed;
+if prep_oral   =1 then do; 
+	if prep_oral_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;
+	if caldate{t} ge prep_oral_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
+	* ts1m ; * change this line to: 
+	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
+	;
+
+	prep_oral_effect_non_res_v = adh* prep_oral_efficacy ;
+	if t ge 4 and prep_oral_tm1 =1 and continuous_prep_oral_use >= 1 then prep_oral_past_year=1;
+	* dependent_on_time_step_length ;  
+end;
+
+if prep_inj=1 then do;
+	if prep_inj_start_date = caldate{t} > . then tot_yrs_prep_inj = 0.25 ;
+	if caldate{t} >= prep_inj_start_date > . then tot_yrs_prep_inj  = tot_yrs_prep_inj+0.25;
+end;
+
+tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
+
+
+currently_in_prep_inj_tail=0;
+if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
 
 
@@ -4374,30 +4983,30 @@ w55m15 =0.00 *s_m_1524_newp; w55m25=0.00*s_m_2534_newp; w55m35=0.00*s_m_3544_new
 */
 
 if gender=1 and sex_age_mixing_matrix_m=1 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.865  then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975  then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e          then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.47 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.30 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.80 <= e < 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 1.00 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.43 <= e < 0.73 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.73 <= e < 0.96 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.96 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <= e        then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.18 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.18 <= e < 0.36 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.36 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4420,35 +5029,35 @@ m55w15 =0.01*tnewp15_w; m55w25=0.02*tnewp25_w; m55w35=0.13*tnewp35_w; m55w45=0.7
 
 
 if gender=2 and sex_age_mixing_matrix_w=1 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.43 <= e < 0.77 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.77 <= e < 0.89 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.89 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.58 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.58 <= e < 0.88 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.88 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4460,10 +5069,7 @@ end;
 end;
 
 
-
-
-
-								   
+ 
 
 /*sex_age_mixing_matrix=2;
 
@@ -4479,32 +5085,32 @@ ptnewp55_w=(0.00*s_m_1524_newp )+(0.00*s_m_2534_newp)+(0.00*s_m_3544_newp)+(0.07
 		   
 
 if gender=1 and sex_age_mixing_matrix_m=2 then do;
-if 15 <= age < 25 then do;e=uniform(0); * dec17;
+if 15 <= age < 25 then do;e=rand('uniform'); * dec17;
 if              e < 0.865 /*(then newp age 15-25)*/ then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.865<= e < 0.975 /*(then newp age 25-35)*/ then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.975<= e         /*(then newp age 35-45)*/ then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 																												  
 																												  
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.47 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.47 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 1.00 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.55 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.38 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.63 <= e < 0.93 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.93 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4527,35 +5133,35 @@ ptnewp55_m=(0.005*s_w_1524_newp)+(0.01*s_w_2534_newp)+(0.13*s_w_3544_newp)+(0.25
 */
 
 if gender=2 and sex_age_mixing_matrix_w=2 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.43 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.43 <= e < 0.845 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.845 <= e < 0.965 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.965 <= e < 0.995 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.995 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.59 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.59 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.94 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <=1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4565,10 +5171,6 @@ end;
 	
 
 end;
-
-								   
-
-
 
 
 /*
@@ -4581,35 +5183,35 @@ w55m15 =0.01 *s_m_1524_newp; w55m25=0.01*s_m_2534_newp; w55m35=0.01*s_m_3544_new
 */
 
 if gender=1 and sex_age_mixing_matrix_m=3 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.90   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.90 <= e < 0.95   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.95 <= e < 0.97   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 else if 0.97 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.44 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.44 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.87 <= e < 0.97 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.97 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.54 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.54 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.94 <= e <= 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.38 <= e < 0.63 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.63 <= e < 0.93 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.93 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.38 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4631,35 +5233,35 @@ m55w15 =0.02 *s_w_1524_newp; m55w25=0.01*s_w_2534_newp; m55w35=0.13*s_w_3544_new
 */
 
 if gender=2 and sex_age_mixing_matrix_w=3 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.25 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.25 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.09 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.09 <= e < 0.59 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.59 <= e < 0.94 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.94 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.99 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.28 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.28 <= e < 0.62 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.62 <= e < 0.87 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.87 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4686,35 +5288,35 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=4 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.93   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.93 <= e < 0.98   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 1.00 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.20 <= e < 0.54 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.54 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e        then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 1.00 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.15 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.15 <= e < 0.35 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.35 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.60 <= e < 0.97 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.97 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.13 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.13 <= e < 0.33 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4740,35 +5342,35 @@ end;
 
 
 if gender=2 and sex_age_mixing_matrix_w=4 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.55 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.98 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.03 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.03 <= e < 0.08 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.08 <= e < 0.65 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.65 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4794,33 +5396,33 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=5 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.99 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 else if 0.99 <= e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.40 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.40 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e < 0.99 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.99 <  e          then do; risk_nippnp = t_prop_newp_i_w_5564; age_newp=5; end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.30 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 else if 0.95 <= e         then do; risk_nippnp = t_prop_newp_i_w_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.30 then do; risk_nippnp = t_prop_newp_i_w_1524;   age_newp=1;end; 
 else if 0.30 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.60 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4844,35 +5446,35 @@ end;
 */
 
 if gender=2 and sex_age_mixing_matrix_w=5 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.05 <= e < 0.50 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.50 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.41 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.41 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.80 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.08 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.08 <= e < 0.55 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.55 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.85 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4895,30 +5497,30 @@ end;
 */
 
 if gender=1 and sex_age_mixing_matrix_m=6 then do;
-if 15 <= age < 25 then do;e=uniform(0); 
+if 15 <= age < 25 then do;e=rand('uniform'); 
 if              e < 0.94   then do; risk_nippnp = t_prop_newp_i_w_1524; age_newp=1;end; 
 else if 0.94 <= e < 0.99   then do; risk_nippnp = t_prop_newp_i_w_2534; age_newp=2;end;
 else if 0.99 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_3544; age_newp=3; end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.90 <= e < 0.98 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3 ;end; 
 else if 0.98 <= e <= 1.00   then do; risk_nippnp = t_prop_newp_i_w_4554; age_newp=4; end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_2534;  age_newp=2; end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.85 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.85 <= e < 0.95 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
 else if 0.95 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_w_4554;   age_newp=4;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.50 then do; risk_nippnp = t_prop_newp_i_w_1524;  age_newp=1; end; 
 else if 0.50 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_w_2534;   age_newp=2;end; 
 else if 0.80 <= e < 0.90 then do; risk_nippnp = t_prop_newp_i_w_3544;   age_newp=3;end; 
@@ -4942,35 +5544,35 @@ end;
 */
 
 if gender=2 and sex_age_mixing_matrix_w=6 then do;
-if      15 <= age < 25 then do;e=uniform(0);
+if      15 <= age < 25 then do;e=rand('uniform');
 if              e < 0.20 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.20 <= e < 0.40 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.40 <= e < 0.60 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.60 <= e < 0.80 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.80 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 25 <= age < 35 then do;e=uniform(0);
+else if 25 <= age < 35 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.25 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.25 <= e < 0.50 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.50 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 35 <= age < 45 then do;e=uniform(0);
+else if 35 <= age < 45 then do;e=rand('uniform');
 if              e < 0.01 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.01 <= e < 0.02 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.02 <= e < 0.34 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.34 <= e < 0.67 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.67 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 45 <= age < 55 then do;e=uniform(0);
+else if 45 <= age < 55 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.05 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
 else if 0.05 <= e < 0.75 then do; risk_nippnp = t_prop_newp_i_m_4554;   age_newp=4;end; 
 else if 0.75 <= e <= 1.00 then do; risk_nippnp = t_prop_newp_i_m_5564;   age_newp=5;end; 
 end;
-else if 55 <= age < 65 then do;e=uniform(0);
+else if 55 <= age < 65 then do;e=rand('uniform');
 if              e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_1524;   age_newp=1;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_2534;   age_newp=2;end; 
 else if 0.00 <= e < 0.00 then do; risk_nippnp = t_prop_newp_i_m_3544;   age_newp=3;end; 
@@ -4982,15 +5584,13 @@ end;
 
 
 
-
-
 *--------------------------------------------------------------------------------------------------------------------;
 
 * NUMBER OF NEW INFECTED PARTNERS ;
 * risk of infected partner per new partner;
 nip=0;
 if risk_nippnp*newp > 0 then do;
-	nip = min(ranpoi(0,risk_nippnp*newp),newp);
+	nip = min(rand('poisson',risk_nippnp*newp),newp);
 end;
 
 
@@ -5042,7 +5642,7 @@ end;
 
 * if exposed elsewhere externaly, partners may be less likely to be suppressed, i.e u1=lower % supressed;
 if exp_setting_lower_p_vl1000 = 1 and 20 <= age < 50 then do;
-	r=uniform(0);  * dependent_on_time_step_length;
+	r=rand('uniform');  * dependent_on_time_step_length;
 	if (gender = 1 and r < rate_exp_set_lower_p_vl1000) or (gender = 2 and r < rate_exp_set_lower_p_vl1000 / 2) then do;
 		u1 = u1 / external_exp_factor;
 	end;
@@ -5054,14 +5654,14 @@ cu_1=u1;cu_2=cu_1+u2;cu_3=cu_2+u3;cu_4=cu_3+u4;cu_5=cu_4+u5; cu_6=cu_5+u6;
 
 *   vlg1 < 2.7    vlg2  2.7-3.7  vlg3  3.7-4.7   vlg4  4.7-5.7    vlg5  > 5.7    vlg6  primary;
 
-
-if hiv=1 then s_infection=0;
+if hiv=1 then super_infection_i=0;
 
 *NNRTI resistance modelled separately as K103N, Y181C and G190A, rather than c_rtnnm   ;
 k103m=.;  y181m=.;  g190m=.;  k65m=.;  m184m=.;  q151m=.; tam=.;  p32m=.; p33m=.; p46m=.; p47m=.;  p50lm=.; p50vm=.; 
-p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  inpm=.; insm=.;
+p54m=.;   p76m=.;   p82m=.;   p84m=.;  p88m=.;   p90m=.;  in118m=.; in140m=.; in148m=.; in155m=.; in263m=.; 
 k103m_p=.;  y181m_p=.;  g190m_p=.;  k65m_p=.;  m184m_p=.;  q151m_p=.;  tam_p=.;  p32m_p=.;  p33m_p=.;  p46m_p=.;  p47m_p=.; 
-p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  inpm_p=.;  insm_p=.;
+p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.; p90m_p=.;  in118m_p=.; in140m_p=.; in148m_p=.; in155m_p=.;  
+in263m_p=.; 
 
 *prob infection in 3mths from the infected partner;
 
@@ -5069,22 +5669,22 @@ p50lm_p=.;  p50vm_p=.;  p54m_p=.;   p76m_p=.;  p82m_p=.;   p84m_p=.;   p88m_p=.;
 if t ge 2 and nip gt 0 then do;
 	d=1;do until (d gt nip);
 		risk_nip=0;  * dependent_on_time_step_length ;  
-		a=uniform(0);
-		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(tr_rate_undetec_vl*fold_tr_newp)+(0.000025*normal(0))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end; *new for prep;
-		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(0.01*fold_tr*fold_tr_newp)+(0.0025*normal(0)));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; *new for prep;
-		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(0.03*fold_tr*fold_tr_newp)+(0.0075*normal(0)));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end; *new for prep;
-		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(0.06*fold_tr*fold_tr_newp)+(0.015*normal(0)));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end; *new for prep;
-		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(0.10*fold_tr*fold_tr_newp)+(0.025*normal(0)));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; *new for prep;
-		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(tr_rate_primary*fold_tr_newp)+(0.075*normal(0)));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end; *new for prep;
+		a=rand('uniform');
+		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(tr_rate_undetec_vl*fold_tr_newp)+(0.000025*rand('normal'))); vl_source=1; t_prop_rm=t_prop_vlg1_rm; end; *new for prep;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(0.01*fold_tr*fold_tr_newp)+(0.0025*rand('normal')));       vl_source=2; t_prop_rm=t_prop_vlg2_rm; end; *new for prep;
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(0.03*fold_tr*fold_tr_newp)+(0.0075*rand('normal')));       vl_source=3; t_prop_rm=t_prop_vlg3_rm; end; *new for prep;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(0.06*fold_tr*fold_tr_newp)+(0.015*rand('normal')));        vl_source=4; t_prop_rm=t_prop_vlg4_rm; end; *new for prep;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(0.10*fold_tr*fold_tr_newp)+(0.025*rand('normal')));        vl_source=5; t_prop_rm=t_prop_vlg5_rm; end; *new for prep;
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(tr_rate_primary*fold_tr_newp)+(0.075*rand('normal')));       vl_source=6; t_prop_rm=t_prop_vlg6_rm; end; *new for prep;
 /*
 * ts1m ; * replace lines above with:
 
-		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_undetec_vl)**(1/3) )*fold_tr_newp)+(0.000025*normal(0))); vl_source=1; s_prop_rm=s_prop_vlg1_rm; end; *new for prep;
-		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(     ( 1 - (1 - 0.01)**(1/3) )     *fold_tr*fold_tr_newp)+(0.0025*normal(0)));       vl_source=2; s_prop_rm=s_prop_vlg2_rm; end; *new for prep;
-		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr*fold_tr_newp)+(0.0075*normal(0)));       vl_source=3; s_prop_rm=s_prop_vlg3_rm; end; *new for prep;
-		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr*fold_tr_newp)+(0.015*normal(0)));        vl_source=4; s_prop_rm=s_prop_vlg4_rm; end; *new for prep;
-		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr*fold_tr_newp)+(0.025*normal(0)));        vl_source=5; s_prop_rm=s_prop_vlg5_rm; end; *new for prep;
-		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_primary)**(1/3) )*fold_tr_newp)+(0.075*normal(0)));       vl_source=6; s_prop_rm=s_prop_vlg6_rm; end; *new for prep;
+		if                   a < cu_1/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_undetec_vl)**(1/3) )*fold_tr_newp)+(0.000025*rand('normal'))); vl_source=1; s_prop_rm=s_prop_vlg1_rm; end; *new for prep;
+		else if cu_1/cu_6 <= a < cu_2/cu_6 then do; risk_nip = max(0,(     ( 1 - (1 - 0.01)**(1/3) )     *fold_tr*fold_tr_newp)+(0.0025*rand('normal')));       vl_source=2; s_prop_rm=s_prop_vlg2_rm; end; *new for prep;
+		else if cu_2/cu_6 <= a < cu_3/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.03)**(1/3) )*fold_tr*fold_tr_newp)+(0.0075*rand('normal')));       vl_source=3; s_prop_rm=s_prop_vlg3_rm; end; *new for prep;
+		else if cu_3/cu_6 <= a < cu_4/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.06)**(1/3) )*fold_tr*fold_tr_newp)+(0.015*rand('normal')));        vl_source=4; s_prop_rm=s_prop_vlg4_rm; end; *new for prep;
+		else if cu_4/cu_6 <= a < cu_5/cu_6 then do; risk_nip = max(0,(( 1 - (1 - 0.10)**(1/3) )*fold_tr*fold_tr_newp)+(0.025*rand('normal')));        vl_source=5; s_prop_rm=s_prop_vlg5_rm; end; *new for prep;
+		else if cu_5/cu_6 <= a < cu_6/cu_6 then do; risk_nip = max(0,(( 1 - (1 - tr_rate_primary)**(1/3) )*fold_tr_newp)+(0.075*rand('normal')));       vl_source=6; s_prop_rm=s_prop_vlg6_rm; end; *new for prep;
 */
 
 * NOTE: if the partner is in VL_source=6 (ie in primary infection) we should really check whether the partner was on prep (despite being infected) at the time
@@ -5092,10 +5692,10 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
 		  m184m_p=0; tam_p=0;   k65m_p=0;  q151m_p=0; k103m_p=0;  y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;  p33m_p=0;  p46m_p=0;  p47m_p=0;  p50lm_p=0;  p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   inpm_p=0;   insm_p=0;
+		  p76m_p=0;  p82m_p=0;  p84m_p=0;  p88m_p=0;  p90m_p=0;   in118m_p=0; in140m_p=0; in148m_p=0; in155m_p=0;  in263m_p=0; 
 		  mut_p=.;
 
-		  e=uniform(0); if e < t_prop_rm  then do;
+		  e=rand('uniform'); if e < t_prop_rm  then do;
 			*in order to have at least one mutation for all subjects who are supposed to have at least one;
 
 		  f=1;do until ((f=10) or (mut_p ge 1));  
@@ -5104,117 +5704,137 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
-                g=uniform(0);
-                if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
+                g=rand('uniform');
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_m184m  then m184m_p=1;
 	
 				* resistance virus in partner - k65m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k65m  then k65m_p=1;
 	
 				* resistance virus in partner - q151m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_q151m  then q151m_p=1;
 
 				* resistance virus in partner - nnrti;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k103m then k103m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_y181m then y181m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_g190m then g190m_p=1;
 
 				* resistance virus in partner - pr 32;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p32m  then p32m_p=1;
 
 				* resistance virus in partner - pr 33;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p33m  then p33m_p=1;
 
 				* resistance virus in partner - pr 46;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p46m  then p46m_p=1;
 
 				* resistance virus in partner - pr 47;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p47m  then p47m_p=1;
 
 				* resistance virus in partner - pr 50l;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50lm  then p50lm_p=1;
 
 				* resistance virus in partner - pr 50v;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50vm  then p50vm_p=1;
 
 				* resistance virus in partner - pr 54;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p54m  then p54m_p=1;
 
 				* resistance virus in partner - pr 76;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p76m  then p76m_p=1;
 
 				* resistance virus in partner - pr 82;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p82m  then p82m_p=1;
 
 				* resistance virus in partner - pr 84;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p84m  then p84m_p=1;
 
 				* resistance virus in partner - pr 88;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p88m  then p88m_p=1;
 
 				* resistance virus in partner - pr 90;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p90m  then p90m_p=1;
 
-				* resistance virus in partner - Integrase inhibitor primary mut;
-				g=uniform(0);
-				if g < t_prop_inpm  then inpm_p=1;
+				* resistance virus in partner - in118;
+				g=rand('uniform');
+				if g < t_prop_in118m  then in118m_p=1;
 
-				* resistance virus in partner - Integrase inhibitor secondary mut;
-				g=uniform(0);
-				if g < t_prop_insm  then insm_p=1;
+				* resistance virus in partner - in140;
+				g=rand('uniform');
+				if g < t_prop_in140m  then in140m_p=1;
+
+				* resistance virus in partner - in148;
+				g=rand('uniform');
+				if g < t_prop_in148m  then in148m_p=1;
+
+				* resistance virus in partner - in155;
+				g=rand('uniform');
+				if g < t_prop_in155m  then in155m_p=1;
+
+				* resistance virus in partner - in263;
+				g=rand('uniform');
+				if g < t_prop_in263m  then in263m_p=1;
+
 
 				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
 				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
-				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + inpm_p  + insm_p;
+				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p;
 
 				f=f+1;
 			end;  
 		end;
 
-
 		if gender=2 and       age >= 20 then risk_nip = risk_nip * fold_change_w;  * higher transmission risk in women;
 		if gender=2 and 15 <= age <  20 then risk_nip = risk_nip * fold_change_yw;  * higher transmission risk in women;
 		if sti=1                        then risk_nip = risk_nip * fold_change_sti;  * higher transmission risk with sti;
 		if gender=1 and mcirc   =1         then risk_nip = risk_nip * 0.4;  * lower transmission risk in men circumcised;
-		if prep   =1 then do; 
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * 0.50 * prep_efficacy));
-			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_nip = risk_nip * (1-(adh * 0.5 * prep_efficacy));
+		if prep_oral   =1 then do; 	* lapr and dpv-vr - this will be different for lapr and dpv-vr ;
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
+			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+		end;
+		if prep_inj   =1 then do; 	* lapr and dpv-vr;
+			risk_nip = risk_nip * (1-prep_inj_efficacy);
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+		end;
+		if prep_vr   =1 then do; 	* lapr and dpv-vr;
+			risk_nip = risk_nip * (1-prep_vr_efficacy);
+			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_vr_efficacy));
 
 		end;
 
-
-		a=uniform(0); if a < risk_nip then do;
+		a=rand('uniform'); if a < risk_nip then do;
 		    if hiv=1 then do;
-    		if onart    ne 1 then s_infection=1;  * may14 - added need to be off art to get super-infected;
+    		if onart    ne 1 then super_infection_i=1;  * may14 - added need to be off art to get super-infected;
 			end;
 			if hiv=0 then do;
 				vl_source_inf = vl_source;
@@ -5223,10 +5843,22 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				if vl_source_inf=1 then infected_vlsupp=1;
 		    	if vl_source_inf=6 then infected_primary=1; 
 				age_source_inf=age_newp;
-				infected_prep=0; if prep   =1 then do; 
-				infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
-				if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
+				infected_prep_any=0; infected_prep_oral=0; infected_prep_inj=0; infected_prep_vr=0;
+				inf_prep_any_source_prep_r=0; 
+				if prep_oral=1 then do; 
+					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
+					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
 				end;
+				if prep_inj=1 then do; 
+					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p) ge 1 then inf_prep_inj_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_vr=1 then do; 
+					infected_prep_vr=1;		inf_prep_vr_source_prep_r=0; if (k103m_p + y181m_p + g190m_p) >= 1 then inf_prep_inj_source_prep_r=1;		
+					infected_prep_any=1;	if inf_prep_vr_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_inj_ever = 1 and currently_in_prep_inj_tail=1 then infected_prep_inj_tail=1;
 			end;
 			goto xx77;
 		end;
@@ -5244,20 +5876,20 @@ change in majority/minority virus over time. * JAS Mar2021
 
 risk_eip=0;  ep_primary=0;
 
-d=uniform(0);
+d=rand('uniform');
 if epi=1 then do;  * dependent_on_time_step_length ;  
-	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*normal(0)));          vl_source=1;	t_prop_rm=t_prop_vlg1_rm; end;
+	if epvls=1    then do; risk_eip = max(0,tr_rate_undetec_vl+(0.000025*rand('normal')));          vl_source=1;	t_prop_rm=t_prop_vlg1_rm; end;
 	if epvls ne 1 then do;
-		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*normal(0))); ep_primary=1; vl_source=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
-		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*normal(0)));               vl_source=4;	t_prop_rm=t_prop_vlg4_rm; end;
+		if epi_tm1 =0 then do; risk_eip = max(0,tr_rate_primary+(0.075*rand('normal'))); ep_primary=1; vl_source=6;	t_prop_rm=t_prop_vlg6_rm; end;* infection in primary;
+		if epi_tm1 =1 then do; risk_eip = max(0,(0.05*fold_tr)+(0.0125*rand('normal')));               vl_source=4;	t_prop_rm=t_prop_vlg4_rm; end;
 	end;* ie average risk for those with detectable vl;
 
 
 * ts1m ; * replace lines above with:
-*	if epvls=1    then do; * risk_eip = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*normal(0))); * vl_source=1;  *	s_prop_rm=s_prop_vlg1_rm; * end;
+*	if epvls=1    then do; * risk_eip = max(0,( 1 - (1 - tr_rate_undetec_vl)**(1/3) )+(0.000025/3*rand('normal'))); * vl_source=1;  *	s_prop_rm=s_prop_vlg1_rm; * end;
 *	if epvls ne 1 then do;
-*		if epi_tm1 =0 then do; * risk_eip = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*normal(0))); * ep_primary=1; * vl_source=6;	* s_prop_rm=s_prop_vlg6_rm; * end;* infection in primary;
-*		if epi_tm1 =1 then do; * risk_eip = max(0,(( 1 - (1 - 0.05)**(1/3) )*fold_tr)+(0.0125/3*normal(0))); * vl_source=4; * s_prop_rm=s_prop_vlg4_rm; * end;
+*		if epi_tm1 =0 then do; * risk_eip = max(0,( 1 - (1 - tr_rate_primary)**(1/3) )+(0.075/3*rand('normal'))); * ep_primary=1; * vl_source=6;	* s_prop_rm=s_prop_vlg6_rm; * end;* infection in primary;
+*		if epi_tm1 =1 then do; * risk_eip = max(0,(( 1 - (1 - 0.05)**(1/3) )*fold_tr)+(0.0125/3*rand('normal'))); * vl_source=4; * s_prop_rm=s_prop_vlg4_rm; * end;
 *	end;* ie average risk for those with detectable vl;
 
 
@@ -5267,100 +5899,113 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 
 		  m184m_p=0;  tam_p=0;  k65m_p=0;  q151m_p=0; k103m_p=0; y181m_p=0;  g190m_p=0;  
 		  p32m_p=0;   p33m_p=0; p46m_p=0;  p47m_p=0;  p50lm_p=0; p50vm_p=0;  p54m_p=0;  
-		  p76m_p=0;   p82m_p=0; p84m_p=0;  p88m_p=0;  p90m_p=0;  inpm_p=0;   insm_p=0;
+		  p76m_p=0;   p82m_p=0; p84m_p=0;  p88m_p=0;  p90m_p=0;  in118m_p=0;   in140m_p=0;  in148m_p=0;  in155m_p=0;  in263m_p=0;
 		  mut_p=.;
 
-		  e=uniform(0); if e < t_prop_rm  then do;
+		  e=rand('uniform'); if e < t_prop_rm  then do;
 			*in order to have at least one mutation for all subjects who are supposed to have at least one;
 
 			f=1;do until ((f=10) or (mut_p ge 1));  
 
                 * resistance virus in partner - tams;
                 t_prop_tam = t_prop_tam1+t_prop_tam2+t_prop_tam3;
-                g=uniform(0);
-                if g < t_prop_tam  then  do; tam_p=max(1,ranpoi(0,1)); if tam_p ge 6 then tam_p=6;end;
+                g=rand('uniform');
+                if g < t_prop_tam  then  do; tam_p=max(1,rand('poisson',1)); if tam_p ge 6 then tam_p=6;end;
 
 				* resistance virus in partner - 184m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_m184m  then m184m_p=1;
 	
 				* resistance virus in partner - k65m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k65m  then k65m_p=1;
 
 				* resistance virus in partner - q151m;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_q151m  then q151m_p=1;
 
 				* resistance virus in partner - nnrti;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_k103m then k103m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_y181m then y181m_p=1;
 
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_g190m then g190m_p=1;
 
 				* resistance virus in partner - pr 32;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p32m  then p32m_p=1;
 
 				* resistance virus in partner - pr 33;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p33m  then p33m_p=1;
 
 				* resistance virus in partner - pr 46;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p46m  then p46m_p=1;
 
 				* resistance virus in partner - pr 47;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p47m  then p47m_p=1;
 
 				* resistance virus in partner - pr 50l;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50lm  then p50lm_p=1;
 
 				* resistance virus in partner - pr 50v;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p50vm  then p50vm_p=1;
 
 				* resistance virus in partner - pr 54;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p54m  then p54m_p=1;
 
 				* resistance virus in partner - pr 76;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p76m  then p76m_p=1;
 
 				* resistance virus in partner - pr 82;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p82m  then p82m_p=1;
 
 				* resistance virus in partner - pr 84;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p84m  then p84m_p=1;
 
 				* resistance virus in partner - pr 88;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p88m  then p88m_p=1;
 
 				* resistance virus in partner - pr 90;
-				g=uniform(0);
+				g=rand('uniform');
 				if g < t_prop_p90m  then p90m_p=1;
 
-				* resistance virus in partner - Integrase inhibitor primary mut;
-				g=uniform(0);
-				if g < t_prop_inpm  then inpm_p=1;
+				* resistance virus in partner - in118;
+				g=rand('uniform');
+				if g < t_prop_in118m  then in118m_p=1;
 
-				* resistance virus in partner - Integrase inhibitor secondary mut;
-				g=uniform(0);
-				if g < t_prop_insm  then insm_p=1;
+				* resistance virus in partner - in140;
+				g=rand('uniform');
+				if g < t_prop_in140m  then in140m_p=1;
 
-				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p
-				+  p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
-				+ p76m_p +  p82m_p + p84m_p + p88m_p + p90m_p +  inpm_p + insm_p;
+				* resistance virus in partner - in148;
+				g=rand('uniform');
+				if g < t_prop_in148m  then in148m_p=1;
+
+				* resistance virus in partner - in155;
+				g=rand('uniform');
+				if g < t_prop_in155m  then in155m_p=1;
+
+				* resistance virus in partner - in263;
+				g=rand('uniform');
+				if g < t_prop_in263m  then in263m_p=1;
+
+
+				mut_p = tam_p + m184m_p + k65m_p + q151m_p + k103m_p + y181m_p + g190m_p 
+				+ p32m_p + p33m_p + p46m_p + p47m_p + p50lm_p + p50vm_p + p54m_p 
+				+ p76m_p + p82m_p + p84m_p + p88m_p + p90m_p  + in118m_p  + in140m_p + in148m_p + in155m_p + in263m_p;
 
 				f=f+1;
 			end;  
@@ -5371,20 +6016,33 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 	if sti=1                  then risk_eip = risk_eip * fold_change_sti;  * higher transmission risk with sti;
 	if gender=1 and mcirc   =1   then risk_eip = risk_eip* 0.4;  * lower transmission risk in men circumcised;
 
-		if prep   =1 then do; 
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * 0.50 * prep_efficacy));
-			if m184m_p=1 and k65m_p=1 and (inpm_p ne 1 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * prep_efficacy));
-			if m184m_p=1 and k65m_p=1 and inpm_p = 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * 0.5 * prep_efficacy));
+		if prep_oral   =1 then do; * lapr and dpv-vr as above for risk_nip ;
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p<3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p  + in155m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
+			if m184m_p=1 and k65m_p=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 
 		end;
 
-	b=uniform(0);
+		if prep_inj   =1 then do; 	* lapr and dpv-vr;
+			risk_eip = risk_eip * (1-prep_inj_efficacy);
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+		end;
+		if prep_vr   =1 then do; 	* lapr and dpv-vr;
+			risk_eip = risk_eip * (1-prep_vr_efficacy);
+			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_eip = risk_eip * (1- (0.5 * prep_vr_efficacy));
+
+		end;
+
+
+
+
+	b=rand('uniform');
 	if b < risk_eip then do;
 
 		if hiv=0 then do;
@@ -5393,15 +6051,25 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			infected_primary=0;	if ep_primary=1 then infected_primary=1;
 			infected_vlsupp=0;  if vl_source=1 then infected_vlsupp=1;
 			age_source_inf=ageg_ep;
-			infected_prep=0; if prep   =1 then do; 
-			infected_prep=1; infected_prep_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then infected_prep_source_prep_r=1; 
-			if pop_wide_tld_prep=1 and inpm_p ge 1 then infected_prep_source_prep_r=1;
+				if prep_oral=1 then do; 
+					infected_prep_oral=1;	inf_prep_oral_source_prep_r=0; if (tam_p + m184m_p + k65m_p) ge 1 then inf_prep_oral_source_prep_r=1; 
+					infected_prep_any=1;	if inf_prep_oral_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+					if pop_wide_tld_prep=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then do; inf_prep_oral_source_prep_r=1; inf_prep_any_source_prep_r=1; end;
+				end;
+				if prep_inj=1 then do; 
+					infected_prep_inj=1;	inf_prep_inj_source_prep_r=0; if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then inf_prep_inj_source_prep_r=1;				
+					infected_prep_any=1;	if inf_prep_inj_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
+				if prep_vr=1 then do; 
+					infected_prep_vr=1;		inf_prep_vr_source_prep_r=0; if (k103m_p + y181m_p + g190m_p) >= 1 then inf_prep_inj_source_prep_r=1;		
+					infected_prep_any=1;	if inf_prep_vr_source_prep_r=1 then inf_prep_any_source_prep_r=1; 
+				end;
 			end;
 		end;
 		if hiv=1 then do;
 	    * prob infection in 3 mths;
-		    b=uniform(0);
-    		s_infection=0; if onart    ne 1 and b < risk_eip then s_infection=1;  * may14 - added need to be off art to get super-infected;
+		    b=rand('uniform');
+    		super_infection_i=0; if onart    ne 1 and b < risk_eip then super_infection_i=1;  * may14 - added need to be off art to get super-infected;
 		end;
 	goto xx77;
 	end;
@@ -5424,14 +6092,14 @@ else if gender=2 then do;
 	if ageg_ep = 5 then prev=prevalence5564m;
 end;
 if ep_tm1=0 and ep=1 and epi    ne 1 then do;
-	s=uniform(0);a=uniform(0);epi   =0;
+	s=rand('uniform');a=rand('uniform');epi   =0;
 	if s <  0.5 then do; if mr_epi   =1 then do; epi   =1; old=1 ;end;end;
 	if a < prev then do; epi   =1; already=1; end;
 	if epi   =1 then do;
 		epdiag=0;
 		if epdiag_tm1=1 then epdiag=1;
 		if epdiag_tm1 ne 1 then do;
-			epdiag=0; s=uniform(0);
+			epdiag=0; s=rand('uniform');
 
 	if gender=1 then do; 
 			if 0    > d_diag_w      	then j=0;
@@ -5448,15 +6116,15 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 
 			if s < j then epdiag=1;
 
-			a=uniform(0);if (date_start_testing+3.5) <= caldate{t} then do;
+			a=rand('uniform');if (date_start_testing+3.5) <= caldate{t} then do;
 				if s <  0.9 then epdiag=mr_epdiag;
 				if s >=0.9 and a < j then epdiag=1;
 			end;
 		end;
 		epart=0; if epdiag=1 then do; * remember some infected partners are lost to follow-up;
-			if epart_tm1=1 then do; epart=0; f=uniform(0); if f < 0.98 then epart=1; end;
+			if epart_tm1=1 then do; epart=0; f=rand('uniform'); if f < 0.98 then epart=1; end;
 			if epart_tm1 ne 1 and epdiag=1 then do;
-				epart=0; s=uniform(0);
+				epart=0; s=rand('uniform');
 				
 					if 0    >  d_onart        then j=0;
 					if 0    <= d_onart < 0.05 then j=p_diag_onart/5;
@@ -5470,20 +6138,19 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 		end;
 		* rates of viral suppression;
 		epvls=0; if epart=1 then do;
-			if epvls_tm1=1 then do; epvls=1; f=uniform(0); if f < 0.03 then epvls=0; end;
+			if epvls_tm1=1 then do; epvls=1; f=rand('uniform'); if f < 0.03 then epvls=0; end;
 			if epvls_tm1 ne 1 and epart=1 then do;
 				if 0    > d_vls          then j=0;
 				if 0.05 > d_vls >=  0    then j=p_onart_vls/5;  
 				if 0.1  > d_vls >=  0.05 then j=p_onart_vls/2;  
 				if        d_vls >=  0.1  then j=p_onart_vls;
-				epvls=0; s=uniform(0); if s < j  then epvls=1;
+				epvls=0; s=rand('uniform'); if s < j  then epvls=1;
 			end;
 		end;
 	end;
 end;
 
 if infection = caldate{t} then age_infection = age;
-
 
 * transmitted resistance;
 xx77:   
@@ -5492,7 +6159,7 @@ if hiv=1 then do;
 		k103m=k103m_p;  y181m=y181m_p;  g190m=g190m_p;  k65m=k65m_p;  m184m=m184m_p;  q151m=q151m_p;  tam=tam_p;
 		p32m=p32m_p;    p33m=p33m_p;    p46m=p46m_p;    p47m=p47m_p;  p50lm=p50lm_p;
 		p50vm=p50vm_p;  p54m=p54m_p;    p76m=p76m_p;    p82m=p82m_p;  p84m=p84m_p;  p88m=p88m_p;  p90m=p90m_p; 
-		inpm=inpm_p;  insm=insm_p;
+		in118m=in118m_p;  in140m=in140m_p;  in148m=in148m_p;  in155m=in155m_p;   in263m=in263m_p;  
 	* res_trans_factor now only considers nnrti - mar16 - to concentrate on key parameter
 	castro, jain and yang papers suggest that rate loss for nnrti mutations is probably lower than we have assumed (rate loss 0.04 per 3 mths) so this should
 	be reduced (in mar16). 
@@ -5500,66 +6167,73 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep    ne 1 then do;
-			if tam ge 1 then do; u=uniform(0); if u < 0.5  then tam = 0 ; end; * may17;
-			if m184m= 1 then do; u=uniform(0); if u < 0.8  then m184m=0; end;
-			if k65m = 1 then do; u=uniform(0); if u < 0.8  then k65m =0; end; 
+		if prep_oral    ne 1 then do;	* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
+			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
+			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
+			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
 		end;
-        if q151m= 1 then do; u=uniform(0); if u < 0.5 then q151m=0; end; 
+        if q151m= 1 then do; u=rand('uniform'); if u < 0.5 then q151m=0; end; 
 
-		if k103m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then k103m=0; end;
-		if y181m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then y181m=0; end;
-		if g190m = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_nn then g190m=0; end;
+		if k103m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then k103m=0; end;
+		if y181m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then y181m=0; end;
+		if g190m = 1 then do; u=rand('uniform'); if u < 0.2*res_trans_factor_nn then g190m=0; end;
 
-		if p32m = 1 then do; u=uniform(0); if u < 0.5 then p32m=0; end;
-		if p33m = 1 then do; u=uniform(0); if u < 0.5 then p33m=0; end;
-		if p46m = 1 then do; u=uniform(0); if u < 0.5 then p46m=0; end;
-		if p47m = 1 then do; u=uniform(0); if u < 0.5 then p47m=0; end;
-		if p50lm = 1 then do; u=uniform(0); if u < 0.5 then p50lm=0; end;
-		if p50vm = 1 then do; u=uniform(0); if u < 0.5 then p50vm=0; end;
-		if p54m = 1 then do; u=uniform(0); if u < 0.5 then p54m=0; end;
-		if p76m = 1 then do; u=uniform(0); if u < 0.5 then p76m=0; end;
-		if p82m = 1 then do; u=uniform(0); if u < 0.5 then p82m=0; end;
-		if p84m = 1 then do; u=uniform(0); if u < 0.5 then p84m=0; end;
-		if p88m = 1 then do; u=uniform(0); if u < 0.5 then p88m=0; end;
-		if p90m = 1 then do; u=uniform(0); if u < 0.5 then p90m=0; end;
+		if p32m = 1 then do; u=rand('uniform'); if u < 0.5 then p32m=0; end;
+		if p33m = 1 then do; u=rand('uniform'); if u < 0.5 then p33m=0; end;
+		if p46m = 1 then do; u=rand('uniform'); if u < 0.5 then p46m=0; end;
+		if p47m = 1 then do; u=rand('uniform'); if u < 0.5 then p47m=0; end;
+		if p50lm = 1 then do; u=rand('uniform'); if u < 0.5 then p50lm=0; end;
+		if p50vm = 1 then do; u=rand('uniform'); if u < 0.5 then p50vm=0; end;
+		if p54m = 1 then do; u=rand('uniform'); if u < 0.5 then p54m=0; end;
+		if p76m = 1 then do; u=rand('uniform'); if u < 0.5 then p76m=0; end;
+		if p82m = 1 then do; u=rand('uniform'); if u < 0.5 then p82m=0; end;
+		if p84m = 1 then do; u=rand('uniform'); if u < 0.5 then p84m=0; end;
+		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
+		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
 
-		if inpm = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_ii then inpm=0; end; * jun18;
-		if insm = 1 then do; u=uniform(0); if u < 0.2*res_trans_factor_ii then insm=0; end; * jun18;
+		if in118m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in118m=0; end; 
+		if in140m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in140m=0; end; 
+		if in148m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in148m=0; end; 
+		if in155m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in155m=0; end; 
+		if in263m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in263m=0; end; 
 
-end;
 
 * xx33; 
 end;
 
+* infected with virus with integrase inhibitor mutations;
+if caldate{t}=infection then do;
+infected_in118m=0; if in118m = 1 then infected_in118m=1;
+infected_in140m=0; if in140m = 1 then infected_in140m=1;
+infected_in148m=0; if in148m = 1 then infected_in148m=1;
+infected_in155m=0; if in155m = 1 then infected_in155m=1;
+infected_in263m=0; if in263m = 1 then infected_in263m=1;
+infected_inm=0; if infected_in118m=1 or infected_in140m=1 or infected_in148m=1 or infected_in155m=1 or infected_in263m=1 then do; infected_inm=1; infected_inm_this_per=1; end;
+end;
+
 com_test=.;
-if tested=1 and hiv ne 1 then do;
+if tested=1 and hiv ne 1 and cost_test <= 0 then do;
 	cost_test= cost_test_c;
-	u=uniform(0); if u lt 0.1365 and prep ne 1 then com_test=1;
+	if prep_inj = 1 then cost_test= cost_test_c * 1.5;
+	u=rand('uniform'); if u lt 0.1365 and prep_oral ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
-	unispec=uniform(0);
+	unispec=rand('uniform');
 	if unispec gt spec_vct                then cost_test=cost_test_b;
 	if unispec gt spec_vct and com_test=1 then cost_test=cost_test_d;
 end;
-
-*separate cost for HIV-negative and HIV-positive people;
-if tested=1   and hiv ne 1 and cost_test=0 then cost_test= cost_test_c;  
 
 
 
 * INTRODUCE HIV INTO POPULATION ;
 
-d=uniform(0);
+d=rand('uniform');
 if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
-		p50vm=0; p54m=0;  p76m=0;  p82m=0;  p84m=0;  p88m=0;  p90m=0;  inpm=0; insm=0;
+		p50vm=0; p54m=0;  p76m=0;  p82m=0;  p84m=0;  p88m=0;  p90m=0;  in118m=0; in140m=0; in148m=0; in155m=0; in263m=0;
 end;
-
-
-
 
 
 
@@ -5568,8 +6242,6 @@ end;
 * SECTION 3_HIV - SETTING AND UPDATING VARIABLES FOR PEOPLE WITH HIV - ONLY RUNS FOR PEOPLE AGED OVER 15;
 
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-
 
 
 
@@ -5589,7 +6261,7 @@ if caldate{t}=infection > . then do;
 * who3_ - pre-who4 symptoms;
 * who4_ -  ever diagnosed with who4_ y/n;
 * c_tox - current toxicity;
-* newmut - risk of resistance arising (and dominating);
+* newmut_tm1 - risk of resistance arising (and dominating) (only defined as tm1);
 * x4v - X4 virus present or not;
 * lost - patient visited clinic / under follow-up;
 * tss_ = time since last stopping specific drugs;
@@ -5616,7 +6288,7 @@ end;
 
 
 * viral load;
-vset = 4.075 + (0.5 * normal(0)) + ((age-35)*0.005) ;
+vset = 4.075 + (0.5 * rand('normal')) + ((age-35)*0.005) ;
 if gender=2 then vset=vset-0.2;
 if vset > 6.5 then vset=6.5;
 
@@ -5624,12 +6296,12 @@ if vset > 6.5 then vset=6.5;
 is more or less infectious than man with the same vl ?;
 vl = vset;
 
-vprimary=7.5 + (0.5 * normal(0));
+vprimary=7.5 + (0.5 * rand('normal'));
 * vprimary exists only for transmission risk - it does not affect progression - vset is used for first v;
 
 
 * CD4  - square root scale ;
-csqr    = (mean_sqrtcd4_inf - (1.5 * vset) + 2*normal(0)) - ((age-35)*0.05);
+csqr    = (mean_sqrtcd4_inf - (1.5 * vset) + 2*rand('normal')) - ((age-35)*0.05);
 if csqr    gt sqrt(1500) then csqr   =sqrt(1500); 
 if csqr    lt 0 then csqr   =0;
 if csqr    < 18 then csqr   =18; 
@@ -5638,9 +6310,9 @@ if cd4  < 324 then cd4 =324; cd4 =csqr**2;
 cd4_infection=cd4 ;
 
 * max CD4 count to which can return on ART;
-cmax=exp(6.6+normal(0)*0.25);
+cmax=exp(6.6+rand('normal')*0.25);
 
-patient_cd4_rise_art=exp(sd_patient_cd4_rise_art*normal(0));  * inter-patient variation in rate of CD4 rise - when CD4 is rising;
+patient_cd4_rise_art=exp(sd_patient_cd4_rise_art*rand('normal'));  * inter-patient variation in rate of CD4 rise - when CD4 is rising;
 
 age_infection=age;
 
@@ -5650,6 +6322,7 @@ if 35 <= age_infection < 45 then age_infection_g=3;
 if 45 <= age_infection < 55 then age_infection_g=4;
 if 55 <= age_infection < 65 then age_infection_g=5;
 
+* lapr = added '_cab' variables to this section; * JAS Nov2021;
 * current use of drugs;
 o_zdv = 0;
 o_3tc = 0;
@@ -5660,6 +6333,17 @@ o_efa = 0;
 o_lpr = 0;
 o_taz = 0;
 o_dol = 0;
+o_cab = 0;
+
+if prep_oral = 1 then o_3tc = 1;
+if prep_oral = 1 then o_ten = 1;
+if prep_inj = 1 then o_cab = 1; 
+
+o_cab_or_o_cab_tm1=0;  
+if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
+
+if prep_inj=0 and prep_inj_tm1=1 then tss_cab=0; 
+if prep_oral=0 and prep_oral_tm1=1 then do; tss_3tc=0; tss_ten=0; end; 
 
 
 * previous use of drugs;
@@ -5672,6 +6356,11 @@ p_efa = 0;
 p_lpr = 0;
 p_taz = 0;
 p_dol = 0;
+p_cab = 0;
+
+if prep_oral = 1 then p_3tc = 1;
+if prep_oral = 1 then p_ten = 1;
+if prep_inj = 1 then p_cab = 1;
 
 * time since last stopping specific drugs;
 tss_zdv = .;
@@ -5689,15 +6378,16 @@ tss_dol = .;
 mr_zdv = 0;
 mr_3tc = 0;
 mr_ten = 0;
+mr_nev = 0;
 mr_dar = 0;
 mr_efa = 0;
 mr_lpr = 0;
 mr_taz = 0;
 mr_dol = 0;
-mr_nev = 0;
+mr_cab = 0;
+
 
 * previous virological failure of drugs;
-
 f_zdv = 0;
 f_3tc = 0;
 f_ten = 0;
@@ -5707,14 +6397,15 @@ f_efa = 0;
 f_lpr = 0;
 f_taz = 0;
 f_dol = 0;
+f_cab = 0;
 
 
 toffart=.;
 
 c_rttams=max(0,tam);
-c_rt184m= max(0,m184m);
+c_rt184m= max(0,m184m); aa1=rand('uniform'); if prep_oral=1 and c_rt184m = 0 and aa1 < pr_184m_oral_prep_primary then c_rt184m = 1;
 c_rt151m = max(0,q151m);
-c_rt65m = max(0,k65m);
+c_rt65m = max(0,k65m); aa2=rand('uniform'); if prep_oral=1 and c_rt65m = 0 and aa2 < pr_65m_oral_prep_primary then c_rt65m = 1;
 c_pr32m=max(0,p32m);
 c_pr33m=max(0,p33m);
 c_pr46m=max(0,p46m);
@@ -5728,12 +6419,72 @@ c_pr84m=max(0,p84m);
 c_pr88m=max(0,p88m);
 c_pr90m=max(0,p90m);
 
-* NNRTI resistance modelled separately c_rtnnm{t} is not used anymore, instead model K103N, Y181C and G190A;
 c_rt103m= max(0,k103m);
 c_rt181m= max(0,y181m);
 c_rt190m= max(0,g190m);
-c_inpm=max(0,inpm);
-c_insm=max(0,insm);
+
+c_in118m=max(0,in118m);
+c_in140m=max(0,in140m);
+c_in148m=max(0,in148m);
+c_in155m=max(0,in155m);
+c_in263m=max(0,in263m);
+
+if o_cab_or_o_cab_tm1=1 and c_in118m ne 1 and c_in140m ne 1 and c_in148m ne 1 and c_in155m ne 1 and c_in263m ne 1 then do;
+	o_cab_or_o_cab_tm1_no_r=1; o_cab_or_o_cab_tm1_no_r_prim=1; * note that o_cab_or_o_cab_tm1_no_r can also be 1 after primary infection;
+end;
+
+* note that risk of resistance needs to be dealt with directly in this first period of infection - after this period it is dealt with through
+o_cab, nactive, adh_dl etc ;
+
+* these variables can also be 1 after primary infection;
+em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab=0; emerge_inm_res_cab_tail=0;
+
+if prep_inj=1 or caldate{t} = date_last_stop_prep_inj then do;
+
+	prep_o_cab_off_3m_prim=1; if reg_option_107_after_cab=1 then reg_option=107;
+
+	aa3=rand('uniform'); if e_in118m ne 1 and aa3 < pr_inm_inj_prep_primary then do; c_in118m = 1;e_in118m = 1; end;
+	aa4=rand('uniform'); if e_in140m ne 1 and aa4 < pr_inm_inj_prep_primary then do; c_in140m = 1;e_in140m = 1; end;
+ 	aa5=rand('uniform'); if e_in148m ne 1 and aa5 < pr_inm_inj_prep_primary then do; c_in148m = 1;e_in148m = 1; end;
+ 	aa6=rand('uniform'); if e_in155m ne 1 and aa6 < pr_inm_inj_prep_primary then do; c_in155m = 1;e_in155m = 1; end;
+	aa6=rand('uniform'); if e_in263m ne 1 and aa6 < pr_inm_inj_prep_primary then do; c_in263m = 1;e_in263m = 1; end;
+
+ 	if (in118m ne 1 and c_in118m = 1) or (in140m ne 1 and c_in140m = 1) or (in148m ne 1 and c_in148m = 1) or (in155m ne 1 and c_in155m = 1) 
+ 	 or (in263m ne 1 and c_in263m = 1) then do; em_inm_res_o_cab_off_3m=1; em_inm_res_o_cab=1; em_inm_res_o_cab_off_3m_pr=1;  end;
+* em_inm_res_o_cab_off_3m - emergence of integrase mutation while on cab-la or stopped past 3m;
+* em_inm_res_o_cab_off_3m_pr - emergence of integrase mutation DURING PRIMARY INFECTION while on cab-la or stopped past 3m;
+end;
+
+if caldate{t} = dt_prep_inj_s  then prep_inj_init_prim = 1;
+if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then prep_inj_reinit_prim = 1;
+
+if prep_inj_init_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_init_prim_res=1;
+if prep_inj_reinit_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_reinit_prim_res=1;
+
+* new resistance cannot arise at (re)initiation if hivtest_type_1_init_prep_inj=1 ;  
+if (prep_inj_reinit_prim_res=1 or prep_inj_init_prim_res=1) and hivtest_type_1_init_prep_inj=1 then do;
+	em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab=0;
+	em_inm_res_o_cab_off_3m_pr=0;
+	prep_inj_reinit_prim_res=0; prep_inj_init_prim_res=0;
+	c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+	c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+	c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+	c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+	c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+end;
+
+if currently_in_prep_inj_tail = 1 and prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
+
+ aa3=rand('uniform'); if e_in118m  ne 1 and aa3 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in118m = 1;e_in118m = 1; end;
+ aa4=rand('uniform'); if e_in140m  ne 1 and aa4 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in140m = 1;e_in140m = 1; end;
+ aa5=rand('uniform'); if e_in148m  ne 1 and aa5 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in148m = 1;e_in148m = 1; end;
+ aa6=rand('uniform'); if e_in155m  ne 1 and aa6 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in155m = 1;e_in155m = 1; end;
+ aa7=rand('uniform'); if e_in263m  ne 1 and aa7 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in263m = 1;e_in263m = 1; end;
+
+ if (in118m ne 1 and c_in118m  = 1) or (in140m ne 1 and c_in140m = 1) or (in148m ne 1 and c_in148m = 1) or (in155m ne 1 and c_in155m = 1) 
+ or (in263m ne 1 and c_in263m = 1)  then do; emerge_inm_res_cab_tail=1; emerge_inm_res_cab_tail_pr=1; end;
+
+end;
 
 
 c_rttams_inf=c_rttams;
@@ -5756,8 +6507,11 @@ c_pr90m_inf=c_pr90m;
 c_rt103m_inf=c_rt103m;
 c_rt181m_inf=c_rt181m;
 c_rt190m_inf=c_rt190m;
-c_inpm_inf=c_inpm;
-c_insm_inf=c_insm;
+c_in118m_inf=c_in118m;
+c_in140m_inf=c_in140m;
+c_in148m_inf=c_in148m;
+c_in155m_inf=c_in155m;
+c_in263m_inf=c_in263m;
 
 
 if c_pr32m=1 or c_pr33m=1 or 
@@ -5767,7 +6521,7 @@ c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or
 c_pr90m=1 then c_prm_inf=1; else c_prm_inf=0;
 
 if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 
-or c_prm_inf=1 or c_inpm=1 or c_insm=1 or c_rt151m then c_rm_inf=1 ; else c_rm_inf=0;
+or c_prm_inf=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1  or c_in263m=1 or c_rt151m then c_rm_inf=1 ; else c_rm_inf=0;
 
 
 e_rttams = c_rttams;
@@ -5791,8 +6545,11 @@ e_pr90m = c_pr90m   ;
 e_rt103m = c_rt103m;
 e_rt181m = c_rt181m;
 e_rt190m = c_rt190m;
-e_inpm = c_inpm   ;
-e_insm = c_insm   ;
+e_in118m = c_in118m   ;
+e_in140m = c_in140m   ;
+e_in148m = c_in148m   ;
+e_in155m = c_in155m   ;
+e_in263m = c_in263m   ;
 
 
 
@@ -5807,6 +6564,7 @@ r_efa = 0;
 r_lpr = 0;
 r_taz = 0;
 r_dol = 0;
+r_cab = 0;
 
 
 * 3tc;
@@ -5916,16 +6674,31 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if e_pr32m+e_pr47m+e_pr50vm+e_pr54m+e_pr76m+e_pr84m >= 4 then r_dar=0.75;
 
 
-* dol;
-	*July2013:[v5_v6] Integrase inhibitors mutations are now included as two separate primary and secondary mutations;
-	if (e_inpm=1 and e_insm=1) then r_dol=1.0;
-	if (e_inpm=1 and e_insm=0) then r_dol=0.75;
-	if (e_inpm=0 and e_insm=1) then r_dol=0.25;
+*INSTIs;
 
+* dol;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_dol = res_level_dol_cab_mut;
+
+* cab;
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
+	if r_cab=res_level_dol_cab_mut then cab_res_primary=1;
+	if r_cab=res_level_dol_cab_mut and in118m ne 1 and in140m ne 1 and in148m ne 1 and in155m ne 1 and in263m ne 1 then cab_res_emerge_primary=1;
+	if prep_o_cab_off_3m_prim =1 and cab_res_primary=1 then cab_res_prep_inj_primary=1;
+
+
+* if in prep_inj tail and infected with hiv;
+cur_in_prep_inj_tail_hiv=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_hiv=1;
+cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_inj_tail_no_r=1;
+* note that variables ending in _no_r means people who were at risk of resistance emergence in the period, including some in whom it did emerge;
+cur_in_prep_inj_tail_prim=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_prim=1; 
 
 * prep;  * these lines below needed for first period with hiv - keep them in;
-if prep   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
-if prep   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 
+if prep_oral   =1 and pop_wide_tld_prep ne 1 then nactive=2-r_ten-r_3tc; 
+if prep_oral   =1 and pop_wide_tld_prep = 1 then nactive=3-r_ten-r_3tc-r_dol; 	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);
+cab_higher_potency = dol_higher_potency ;
+if prep_inj =1 or currently_in_prep_inj_tail=1 then nactive = (1 + cab_higher_potency) * (1 - r_cab);
+nactive = round(nactive,0.25);
+
 
 *Infected_diagnosed and infected_naive
 (the program below only determines whether a person is infected from a person diagnosed or 
@@ -5951,10 +6724,10 @@ if vl_source_inf=6 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg6_rm1_diag;t_pr
 
 if infected_newp=1 then do;	
 	infected_diagnosed=0; infected_naive=1;
-	g=uniform(0);
+	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
 	if infected_diagnosed=1 then do; 
-		s=uniform(0);
+		s=rand('uniform');
 		infected_naive=0; if s < t_prop_naive then infected_naive=1;
 	end;
 end;
@@ -5965,7 +6738,7 @@ if infected_ep=1 then do;
 	if epart_tm1=1 then infected_naive=0;
 	if epdiag_tm1=1 and epart_tm1=0 then do;
 		* have to make this approximation below because dont track naive status of ep;
-		a=uniform(0); infected_naive=0; if a < t_prop_naive then infected_naive=1;
+		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
 	end;
 end;
 
@@ -5981,6 +6754,7 @@ t_efa = 0;
 t_lpr = 0;
 t_taz = 0;
 t_dol = 0;
+t_cab = 0;
 
 line1=0; line2=0;  line3=0;
 onart   =0;
@@ -5993,49 +6767,205 @@ naive=1;
 
 
 *allow for diagnosis in primary infection, i.e. caldate{t}=infection;
-*If HIV test type=3 (window period=3 months) then dont get diagnosed during primary infection ;
-*If HIV test type=4 (window period=1 months) or HIV test type=1 (window period=10 days) then can get diagnosed during 
-primary infection and hence stop prep;  
+* can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
+* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
 * ts1m - replace sens_primary below with sens_primary_ts1m ;
 
+* test type;
+
+*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
+*4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		u=uniform(0);
-		if primary   =1 and tested=1 and u lt sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
-			visit   =1; if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost   =0; cd4diag=cd4   ; if pop_wide_tld_prep ne 1 then onart   =0;
-			if prep   =1 and pop_wide_tld_prep ne 1 then do;
-				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
+		sens_primary=0.65;
+		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
+		u=rand('uniform');
+		if primary=1 and tested=1 and u lt eff_sens_primary then do;
+			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
+			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4; 
+			if pop_wide_tld_prep ne 1 then onart=0;
+			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
+				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
+				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
+				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
+			end;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+				* this below all reversed as cab now known not to have started  as primary infection was detected;
+				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
+				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
+				if caldate{t} = dt_prep_inj_s then do;  
+					prep_any_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
+					cab_res_emerge_primary=0;
+					prep_primary_prevented=1; prep_inj_init_prim = 0;continuous_prep_inj_use=0; continuous_prep_any_use=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
+					prep_o_cab_off_3m_prim=0; prep_inj_init_prim_res=0;
+					if em_inm_res_o_cab_off_3m=1 then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;	
+					end;
+				end;
+				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
+					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0; cab_res_emerge_primary=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
+					prep_primary_prevented=1; prep_inj_reinit_prim = 0;  prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;	
+					if em_inm_res_o_cab_off_3m=1 then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
+					end;
+				end;
+			end;
+			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
+				prep_any=0;		prep_vr =0; 		dt_prep_vr_s=.;
+				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
 			end;
 		end;
 	end;
-	if hivtest_type=1 then do;
-		u=uniform(0);
-		if primary   =1 and tested=1 and u lt sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=caldate{t};
-			if prep   =1 and pop_wide_tld_prep ne 1 then do;
-				prep   =0; prep_ever=.; dt_prep_s=.; dt_prep_e=.; o_3tc=0; o_ten=0; tcur   =.; nactive=.;
-			end;  
+	if hivtest_type=1 
+	or (prep_inj=1 and (dt_prep_inj_rs = caldate{t} or dt_prep_inj_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
+	or (prep_inj=1 and hivtest_type_1_prep_inj=1) then do;
+		u=rand('uniform');
+		sens_primary=0.86;
+		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
+		if primary=1 and tested=1 and u lt eff_sens_primary then do;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
+				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
+				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
+				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
+			end;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+				* this below all reversed as cab now known not to have started  as primary infection was detected;
+				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
+				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
+				if caldate{t} = dt_prep_inj_s then do;  
+					prep_any_ever=.; 	dt_prep_inj_s=.;prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
+					prep_primary_prevented=1;prep_inj_init_prim = 0;continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
+					prep_o_cab_off_3m_prim=0;prep_inj_init_prim_res=0;
+					if em_inm_res_o_cab_off_3m=1 then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
+					end;
+				end;
+				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
+					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
+					prep_primary_prevented=1;prep_inj_reinit_prim = 0; prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
+					if em_inm_res_o_cab_off_3m=1  then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in148m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
+					end;
+				end;
+			end;
+			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
+				prep_any=0;		prep_vr =0; 	dt_prep_vr_s=.;
+				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
+			end;
+		* testing costs 1.5 times when on cab-la due to 6 tests per year;
+		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+		end;
+	end;
+	if hivtest_type=3 and (prep_inj ne 1 or hivtest_type_1_init_prep_inj ne 1) 
+	then do;
+		u=rand('uniform');
+		sens_primary=sens_primary_testtype3; 
+		eff_sens_primary = sens_primary; if (prep_inj_tm1=1 and prep_inj=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_inj_primary ;
+		if primary=1 and tested=1 and u lt eff_sens_primary then do;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
+				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
+				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
+				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
+				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
+			end;
+			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
+				* this below all reversed as cab now known not to have started  as primary infection was detected;
+				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
+				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
+				if caldate{t} = dt_prep_inj_s then do;  
+					prep_any_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
+					prep_primary_prevented=1;prep_inj_init_prim = 0;continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
+					prep_o_cab_off_3m_prim=0; prep_inj_init_prim_res=0;
+					if em_inm_res_o_cab_off_3m=1 then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
+					end;
+				end;
+				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
+					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
+					prep_primary_prevented=1;prep_inj_reinit_prim = 0; prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
+					if em_inm_res_o_cab_off_3m=1 then do; 
+						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
+					end;
+				end;
+			end;
+			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
+				prep_any=0;		prep_vr =0; 	dt_prep_vr_s=.;
+				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
+			end;
 		end;
 	end;
 end;
 
+if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
 
+if prep_inj_tm1=1 and prep_inj=1 then infected_on_prep_inj=1;
+
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral_hiv = 1;
+start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_hiv = 1;
+start_restart_prep_inj_prim = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_prim = 1;
+
+start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_hiv_cabr = 1;
+start_rest_prep_inj_prim_cabr = 0; if start_restart_prep_inj_prim = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_prim_cabr = 1;
 
 * note these lines only apply in period of infection;
 
-if prep   =1 then do; o_3tc=1; o_ten=1; tcur   =0; cd4_tcur0 = cd4; end;
+if prep_oral=1 then do; 
+	o_3tc=1; o_ten=1; p_3tc=1; p_ten=1; tcur=0; cd4_tcur0 = cd4; prep_oral_at_infection = 1;
+end;	
 *I leave this command because I want those infected to be on 3tc and then until they are diagnosed,
 but I copy this command above because I want those on prep who do not get infected to be on 3tc and ten;
-
-* AP 21-7-19;  * note that onart=1 but registd = 0 ;
-if prep = 1 and pop_wide_tld_prep=1 then do; onart   =1; time0=caldate{t}; yrart=time0;  started_art_as_tld_prep=1;
-linefail=0; artline=1; tcur   =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1;  
-o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
+if prep_inj=1 then do; 		* lapr and dpv-vr - added code for o_cab = 1 but not dpv (topical); *JAS Nov2021;
+	o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; prep_inj_at_infection = 1;
 end;
+
+if prep_oral=1 and pop_wide_tld_prep=1 then do; 
+	onart=1; time0=caldate{t}; yrart=time0;  started_art_as_tld_prep=1;
+	linefail=0; artline=1; tcur=0; cd4_tcur0=cd4; line1=1; vfail1=0; naive=0; 
+	o_3tc=1; o_ten=1; o_dol=1;  art_initiation=1; 
+	o_zdv=0; o_nev=0; o_lpr=0; o_taz=0; o_efa=0; 
+end;
+
 
 
 * measured viral load;
@@ -6051,9 +6981,11 @@ x4v=0; c_tox = 0; who3_= 0; who4_= 0;
 end;
 
 
-
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * UPDATING VARIABLES FOR PEOPLE WITH HIV ;
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
+* START OF CODE FOR HIV INFECTED WITH CALDATE{T} >= INFECTION+0.25;  * (or >= INFECTION+ (1/12) if ts1m)
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 
@@ -6061,7 +6993,7 @@ if hiv=1 then do;
 
 
 
-if t ge 2 and . < infection < caldate{t} < 2071.5 and dead_tm1 ne 1  then do;
+if t ge 2 and . < infection < caldate{t} < 2072.5 and dead_tm1 ne 1  then do;
 
 sympt_diag=0;
 
@@ -6077,6 +7009,8 @@ restart_tm1=restart; restart=0;
 who3_tm1 = who3_;  * ever diagnosed with pre-who4_ symptoms y/n;
 who4_tm1 = who4_; * ever diagnosed with who4_ y/n;
 tb_tm2=tb_tm1; tb_tm1=tb;
+sbi_tm1=sbi;
+crypm_tm1=crypm;
 vc_tm1=vc; vc=.;
 cc_tm1=cc; cc=.;
 vmax_tm1=vmax; 
@@ -6096,33 +7030,64 @@ visit_tm1=visit;
    
 	if onart   =1 then tcur   =tcur_tm1 +0.25;   
 * ts1m:  	if onart   =1 then tcur   =tcur_tm1  + (1/12) ;
-	if prep   =1 then tcur =  tcur_tm1 +0.25;   
-* ts1m:  	if prep   =1 then tcur   =tcur_tm1  + (1/12) ;
+	if (prep_oral=1 or prep_inj=1) then tcur =  tcur_tm1 +0.25;   * lapr and dpv-vr - using prep_oral or prep_inj here but not prep_vr; *JAS Nov2021; 
+* ts1m:  	if (prep_oral=1 or prep_inj=1) then tcur   =tcur_tm1  + (1/12) ;
 
-	if prep   =0 and caldate{t} ge date_prep_intro and onart    ne 1 then tcur   =.;
+	if (prep_oral=0 and prep_inj=0) and caldate{t} ge date_prep_oral_intro and onart ne 1 then tcur=.;   	* lapr and dpv-vr - using prep_oral and prep_inj here but not prep_vr; *JAS Nov2021;
 	
-	o_zdv_tm1=o_zdv; p_zdv_tm1=p_zdv; f_zdv_tm1=f_zdv; t_zdv_tm1=t_zdv; r_zdv_tm1=r_zdv;
-	r_3tc_tm1=r_3tc; o_3tc_tm1=o_3tc; p_3tc_tm1=p_3tc; f_3tc_tm1=f_3tc; t_3tc_tm1=t_3tc;
-	r_ten_tm1=r_ten; o_ten_tm1=o_ten; p_ten_tm1=p_ten; f_ten_tm1=f_ten; t_ten_tm1=t_ten;
-	o_nev_tm2=o_nev_tm1; o_nev_tm1=o_nev;  p_nev_tm1=p_nev; f_nev_tm1=f_nev; t_nev_tm1=t_nev; r_nev_tm1=r_nev;
-	o_efa_tm2=o_efa_tm1; o_efa_tm1=o_efa;  p_efa_tm1=p_efa; f_efa_tm1=f_efa; t_efa_tm1=t_efa; r_efa_tm1=r_efa; t_efa_tm1=t_efa;
-	o_dar_tm1=o_dar; p_dar_tm1=p_dar; f_dar_tm1=f_dar; r_dar_tm1=r_dar;
-	o_lpr_tm1=o_lpr; p_lpr_tm1=p_lpr; f_lpr_tm1=f_lpr; r_lpr_tm1=r_lpr; t_lpr_tm1=t_lpr;
-	o_taz_tm1=o_taz; p_taz_tm1=p_taz; f_taz_tm1=f_taz; r_taz_tm1=r_taz; t_taz_tm1=t_taz;
-    o_dol_tm3=o_dol_tm2; o_dol_tm2=o_dol_tm1; o_dol_tm1=o_dol;  p_dol_tm1=p_dol;f_dol_tm1=f_dol; t_dol_tm1=t_dol;r_dol_tm1=r_dol;
+	p_zdv_tm1=p_zdv;	f_zdv_tm1=f_zdv;	t_zdv_tm1=t_zdv;	r_zdv_tm1=r_zdv;	o_zdv_tm1=o_zdv;	
+	p_3tc_tm1=p_3tc;	f_3tc_tm1=f_3tc;	t_3tc_tm1=t_3tc;	r_3tc_tm1=r_3tc;	o_3tc_tm1=o_3tc;	
+	p_ten_tm1=p_ten; 	f_ten_tm1=f_ten; 	t_ten_tm1=t_ten;	r_ten_tm1=r_ten; 	o_ten_tm1=o_ten; 	
+	p_nev_tm1=p_nev; 	f_nev_tm1=f_nev; 	t_nev_tm1=t_nev; 	r_nev_tm1=r_nev;	o_nev_tm2=o_nev_tm1;	o_nev_tm1=o_nev;	
+	p_efa_tm1=p_efa; 	f_efa_tm1=f_efa; 	t_efa_tm1=t_efa; 	r_efa_tm1=r_efa; 	o_efa_tm2=o_efa_tm1; 	o_efa_tm1=o_efa;
+	p_dar_tm1=p_dar; 	f_dar_tm1=f_dar; 	t_dar_tm1=t_dar;	r_dar_tm1=r_dar;	o_dar_tm1=o_dar; 
+	p_lpr_tm1=p_lpr; 	f_lpr_tm1=f_lpr; 	t_lpr_tm1=t_lpr;	r_lpr_tm1=r_lpr; 	o_lpr_tm1=o_lpr; 	
+	p_taz_tm1=p_taz; 	f_taz_tm1=f_taz; 	t_taz_tm1=t_taz;	r_taz_tm1=r_taz; 	o_taz_tm1=o_taz; 	
+    p_dol_tm1=p_dol;	f_dol_tm1=f_dol; 	t_dol_tm1=t_dol;	r_dol_tm1=r_dol;	o_dol_tm3=o_dol_tm2; 	o_dol_tm2=o_dol_tm1; 	o_dol_tm1=o_dol;	
+    p_cab_tm1=p_cab;	f_cab_tm1=f_cab; 	t_cab_tm1=t_cab;	r_cab_tm1=r_cab;	o_cab_tm3=o_cab_tm2; 	o_cab_tm2=o_cab_tm1; 	o_cab_tm1=o_cab;  	* lapr - added cab variables; * JAS Nov2021;
+
 
 	vfail1_tm1 = vfail1;
 
 
 	* this below includes for a person on ten-3tc prep at the time of adoption of pop wide tld prep;
-	if prep = 1 and pop_wide_tld_prep = 1 then do;
-	onart   =1; time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;
+	if prep_oral = 1 and pop_wide_tld_prep = 1 then do;	* lapr and dpv-vr - does not change for lapr & dpv-vr assuming a person on tld_prep would not also be on lapr / dpv-vr;
+	onart   =1; if time0 = . then time0=caldate{t}; yrart=time0; started_art_as_tld_prep=1;art_initiation=1;
 	linefail=0; artline=1; tcur  =0; cd4_tcur0 = cd4; line1=1;vfail1=0; naive=0; o_3tc=1; o_ten=1; o_dol=1; 
-	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0; 
+	o_zdv=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_cab=0; 
 	end;
 
+
+	if prep_oral=1 and (prep_oral_start_date = caldate{t} or dt_prep_oral_rs = caldate{t} or dt_prep_oral_c = caldate{t}) then do; 
+		o_3tc=1; o_ten=1; p_3tc=1; p_ten=1;  tcur=0; cd4_tcur0 = cd4; 
+	end;	
+
+	if prep_inj=1  and (prep_inj_start_date = caldate{t} or dt_prep_inj_rs = caldate{t} or dt_prep_inj_c = caldate{t}) then do; 
+		o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; 
+	end;
+
+	if prep_inj=0 and prep_inj_tm1=1 then tss_cab=0;	
+
+	if (e_in118m=1 or e_in140m=1 or e_in148m=1 or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;
+
+	o_cab_or_o_cab_tm1=0;  o_cab_or_o_cab_tm1_no_r=0;  o_cab_or_o_cab_tm1_no_r_prim=0; 
+	if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
+	if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
+
+	if prep_o_cab_off_3m_prim=1 then do; if reg_option_107_after_cab=1 then reg_option=107; end;*so this is changed in the period after infection in a person infected on cab-la;
+
+	cab_res_primary=0;  prep_o_cab_off_3m_prim=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; 
+	prep_inj_init_prim = 0; prep_inj_reinit_prim=0; prep_inj_init_prim_res=0;prep_inj_reinit_prim_res=0; prep_primary_prevented=0;
+	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
+	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
+
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
+	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs then start_restart_prep_oral_hiv = 1;
+	start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs  then start_restart_prep_inj_hiv = 1;
+
+
 * dependent_on_time_step_length ;
-	mr_zdv_tm1=mr_zdv; 	if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
+	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
 	mr_3tc_tm1=mr_3tc; if tss_3tc ge 0 and o_3tc_tm1=0 then tss_3tc = tss_3tc+0.25;
 	mr_ten_tm1=mr_ten; if tss_ten ge 0 and o_ten_tm1=0 then tss_ten = tss_ten+0.25;
 	mr_nev_tm1=mr_nev; if tss_nev ge 0 and o_nev_tm1=0 then tss_nev = tss_nev+0.25;
@@ -6131,10 +7096,11 @@ visit_tm1=visit;
 	mr_lpr_tm1=mr_lpr; if tss_lpr ge 0 and o_lpr_tm1=0 then tss_lpr = tss_lpr+0.25;
 	mr_taz_tm1=mr_taz; if tss_taz ge 0 and o_taz_tm1=0 then tss_taz = tss_taz+0.25;
 	mr_dol_tm1=mr_dol; if tss_dol ge 0 and o_dol_tm1=0 then tss_dol = tss_dol+0.25;
+	mr_cab_tm1=mr_cab; if tss_cab ge 0 and o_cab_tm1=0 then tss_cab = tss_cab+0.25;		* lapr JAS Nov2021;
 
-	c_lip_tm1=c_lip ;   c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
+	c_lip_tm1=c_lip ;  	c_pen_tm1=c_pen ;   c_ras_tm1=c_ras ;   
 	c_cns_tm1=c_cns ;   c_hep_tm1=c_hep ;   c_nau_tm1=c_nau ;   c_otx_tm1=c_otx ;   
-	c_head_tm1=c_head ;   c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
+	c_head_tm1=c_head ; c_lac_tm1=c_lac ;   c_ane_tm1=c_ane ;   c_dia_tm1=c_dia ;   
 	c_neph_tm1=c_neph ;   
 
 	c_lip = 0;
@@ -6150,13 +7116,13 @@ visit_tm1=visit;
 	c_dia =0;
 	c_neph = 0;
 	
-	if toffart_tm1 ge 0 and onart_tm1 =0 then do;
+	if toffart_tm1 ge 0 and onart_tm1 ne 1 then do;
 		toffart=toffart_tm1+0.25;   
 
  * ts1m:
 		toffart=toffart_tm1+ (1/12);   
 
-		if prep    ne 1 then do;
+		if prep_oral    ne 1 then do;	* lapr and dpv-vr  - any changes needed ?;
 			if interrupt_supply_tm1 =1 then interrupt_supply   =1;
 			if interrupt_choice_tm1 =1 then interrupt_choice   =1;
 		end;
@@ -6166,7 +7132,7 @@ visit_tm1=visit;
 	e_rt184m_tm2=e_rt184m_tm1;	e_rt184m_tm1=e_rt184m;
 	e_rt65m_tm2=e_rt65m_tm1;	e_rt65m_tm1=e_rt65m;
 	e_rt151m_tm2=e_rt151m_tm1;	e_rt151m_tm1=e_rt151m;
-	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m;
+	e_rt103m_tm2=e_rt103m_tm1;	e_rt103m_tm1=e_rt103m; * lapr - missing 101, 138, 188 from LAI code - do those refer to rilpivirine? same for section below;
 	e_rt181m_tm2=e_rt181m_tm1;	e_rt181m_tm1=e_rt181m;
 	e_rt190m_tm2=e_rt190m_tm1;	e_rt190m_tm1=e_rt190m;
 	e_pr32m_tm2=e_pr32m_tm1;	e_pr32m_tm1=e_pr32m;
@@ -6181,8 +7147,11 @@ visit_tm1=visit;
 	e_pr84m_tm2=e_pr84m_tm1;	e_pr84m_tm1=e_pr84m;
 	e_pr88m_tm2=e_pr88m_tm1;	e_pr88m_tm1=e_pr88m;
 	e_pr90m_tm2=e_pr90m_tm1; 	e_pr90m_tm1=e_pr90m ;
-	e_inpm_tm2=e_inpm_tm1;		e_inpm_tm1=e_inpm;
-	e_insm_tm2=e_insm_tm1;		e_insm_tm1=e_insm;
+	e_in118m_tm2=e_in118m_tm1;	e_in118m_tm1=e_in118m;
+	e_in140m_tm2=e_in140m_tm1;	e_in140m_tm1=e_in140m;
+	e_in148m_tm2=e_in148m_tm1;	e_in148m_tm1=e_in148m;
+	e_in155m_tm2=e_in155m_tm1;	e_in155m_tm1=e_in155m;
+	e_in263m_tm2=e_in263m_tm1;	e_in263m_tm1=e_in263m;
 
 	c_rttams_tm2=c_rttams_tm1; 	c_rttams_tm1=c_rttams; 
 	c_rt184m_tm2=c_rt184m_tm1;	c_rt184m_tm1=c_rt184m;
@@ -6203,9 +7172,11 @@ visit_tm1=visit;
 	c_pr84m_tm2=c_pr84m_tm1;	c_pr84m_tm1=c_pr84m;
 	c_pr88m_tm2=c_pr88m_tm1;	c_pr88m_tm1=c_pr88m;
 	c_pr90m_tm2=c_pr90m_tm1; 	c_pr90m_tm1=c_pr90m; 
-	c_inpm_tm2=c_inpm_tm1;		c_inpm_tm1=c_inpm;
-	c_insm_tm2=c_insm_tm1;		c_insm_tm1=c_insm;
-
+	c_in118m_tm2=c_in118m_tm1;	c_in118m_tm1=c_in118m;
+	c_in140m_tm2=c_in140m_tm1;	c_in140m_tm1=c_in140m;
+	c_in148m_tm2=c_in148m_tm1;	c_in148m_tm1=c_in148m;
+	c_in155m_tm2=c_in155m_tm1;	c_in155m_tm1=c_in155m;
+	c_in263m_tm2=c_in263m_tm1;	c_in263m_tm1=c_in263m;
 
 
 
@@ -6213,24 +7184,23 @@ visit_tm1=visit;
 	*If super-infection is swicthed on only 20% can be re-infected,
 	this was due to the fact that super infection seemed to play a big role in our model,
 	while this has never been mentioned as a big problem by clinicians;
-	sx=uniform(0);
-	if super_infection=1 then do;
-		if s_infection=1 and sx<0.2 then do;
-			c_rt103m=max(k103m,c_rt103m);c_rt181m=max(y181m,c_rt181m);c_rt190m=max(g190m,c_rt190m);
-			c_inpm=max(inpm,c_inpm); c_insm=max(insm,c_insm);
-			c_rttams= max(c_rttams,tam); c_rt184m= max(m184m,c_rt184m);
-			c_rt151m= max(q151m,c_rt151m); c_rt65m= max(k65m ,c_rt65m); 
-			c_pr32m=max(p32m,c_pr32m);c_pr33m=max(p33m,c_pr33m);
-			c_pr46m=max(p46m,c_pr46m);c_pr47m=max(p47m,c_pr47m);
-			c_pr50vm=max(p50vm,c_pr50vm);c_pr50lm=max(p50lm,c_pr50lm);c_pr54m=max(p54m,c_pr54m);
-			c_pr76m=max(p76m,c_pr76m);c_pr82m=max(p82m,c_pr82m);c_pr84m=max(p84m,c_pr84m);
-			c_pr88m=max(p88m,c_pr88m);c_pr90m=max(p90m,c_pr90m);
-			c_inpm=max(inpm,c_inpm);		 c_insm=max(insm,c_insm);
+	sx=rand('uniform');
+	if super_infection_pop=1 then do;
+		if super_infection_i=1 and sx < super_inf_res then do;		* lapr - rearranged this section to match order of lists above; * deleted duplicated inpm / insm line; * JAS Nov2021;
+			c_rttams= max(c_rttams,tam); 	c_rt184m= max(m184m,c_rt184m);
+			c_rt65m= max(k65m ,c_rt65m); 	c_rt151m= max(q151m,c_rt151m); 
+			c_rt103m=max(k103m,c_rt103m);	c_rt181m=max(y181m,c_rt181m);	c_rt190m=max(g190m,c_rt190m); * lapr - missing 101, 138, 188 from LAI code;
+			c_pr32m=max(p32m,c_pr32m);		c_pr33m=max(p33m,c_pr33m);
+			c_pr46m=max(p46m,c_pr46m);		c_pr47m=max(p47m,c_pr47m);
+			c_pr50vm=max(p50vm,c_pr50vm);	c_pr50lm=max(p50lm,c_pr50lm);	c_pr54m=max(p54m,c_pr54m);
+			c_pr76m=max(p76m,c_pr76m);		c_pr82m=max(p82m,c_pr82m);		c_pr84m=max(p84m,c_pr84m);
+			c_pr88m=max(p88m,c_pr88m);		c_pr90m=max(p90m,c_pr90m);
+			c_in118m=max(in118m,c_in118m);	c_in140m=max(in140m,c_in140m);	c_in148m=max(in148m,c_in148m);c_in155m=max(in155m,c_in155m);	c_in263m=max(in263m,c_in263m);	
 
 			if tam=1 or k103m=1 or y181m=1 or g190m=1 or m184m=1 or q151m=1 or k65m=1 or p32m=1 or p33m=1 or p46m=1 or 
-			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or inpm=1 or insm=1 then  
-			super_i_r=1; 
-			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1; 
+			p47m=1 or p50lm=1 or p50vm=1 or p54m=1 or p76m=1 or p82m=1 or p84m=1 or p88m=1 or p90m=1 or in118m=1 or in140m=1 or in148m=1  or in155m=1 or in263m=1 then  
+			super_i_r=1;
+			if k103m=1 or y181m=1 or g190m=1 then super_nnm=1;   * lapr - missing 101, 138, 188 from LAI code;
 		end;
 	end;
 
@@ -6242,14 +7212,7 @@ end;
 
 
 
-
-
-
-*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-* START OF CODE FOR HIV INFECTED WITH CALDATE{T} >= INFECTION+0.25;  * (or >= INFECTION+ (1/12) if ts1m)
-*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
-if caldate{t} >= infection+0.25 > . then do;
+if caldate{t} >= infection+0.25 > . then do;  
 * ts1m - replace line above by:
 * if caldate{t} >= infection + (1/12) > . then do;
 
@@ -6267,9 +7230,12 @@ cm_tm3 = cm_tm2; cm_tm2 = cm_tm1; cm_tm1 = cm;  cm =.;
 non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
-if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; toffart=0; end;
-if t ge 2 and prep = 0 and prep_tm1 =1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0; toffart=0; end; 
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and onart ne 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; onart=0; artline=.; end; 
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
+if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; toffart=0;  tss_cab=0; end;		
+* lapr and dpv-vr - reset toffart only when not switching to another systemic PrEP type; * JAS Nov2021;
+ 
 
 * DIAGNOSIS of HIV ;
 
@@ -6287,7 +7253,7 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 		if non_tb_who3_ev_tm1 =1 and adc_tm1=0 and tb_tm1=0 then do; rate_test=test_rate_non_tb_who3; elig_test_non_tb_who3=1; end; *rate_test*incr_diag_rate_non_tb_who3;
 
 		if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) then do;
-			unitest=uniform(0);if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
+			unitest=rand('uniform');if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
 				tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;sympt_diag=1;
 				sympt_diag_ever=1;dt_last_test=caldate{t};np_lasttest=0;
 				newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
@@ -6299,26 +7265,46 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag ;
 
-	if sw=1 then e_eff_prob_loss_at_diag = eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag ;
+	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
-	*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
-	if hiv=1 and tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
-		unisens=uniform(0);		
-		if t ge 3 and unisens lt sens_vct then do; 
+if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is valid for everybody;
+
+	bb1 = rand('uniform');
+	eff_sens_vct=sens_vct;* note that eff_sens_vct does not apply 
+	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
+	if prep_inj = 1 or pop_wide_tld_prep=1 then do;
+		if hivtest_type_1_prep_inj ne 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype3_prep_inj_primary; 
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype3_prep_inj_inf3m; 
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m;  
+		end;
+		if hivtest_type_1_prep_inj = 1 then do;
+			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_inj_primary;  
+			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
+			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
+		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+		end;
+	end;
+
+	* assumed rna based testing will not be done in people who have stopped cab-la;
+	if currently_in_prep_inj_tail =1 then eff_sens_vct = sens_vct_testtype3_cab_tail; 
+
+
+	if t ge 3 and bb1 < eff_sens_vct then do; 
 			registd=1; date1pos=caldate{t}; 
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
 			*costing of HIV-positive;
 			if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) and unitest<rate_test then cost_test=cost_test_a;
-			if cost_test=0 then do;
+ 			*Cost of diagnosing a person is higher 25$, than the cost of a negative result;
+			if cost_test <= 0 then do;
 				if com_test ne 1 then cost_test= cost_test_b;
 				if com_test =  1 then cost_test= cost_test_d;
 			end;
-
 			* some lost straight after diagnosis (unless already on tld);
-			d=uniform(0);  * AP 22-7-19   ;
+			d=rand('uniform');  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
-			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;
+			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;	  * lapr and dpv-vr - not sure this part needs any changes;
 					if d < e_eff_prob_loss_at_diag      then do; visit=0; lost   =1; end;
 					if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then do; 
 					if d < e_eff_prob_loss_at_diag*1.5      then do; visit=0; lost   =1; end; * mar19;
@@ -6326,28 +7312,36 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 			end;
 			if (adc_tm1 = 1 or tb_tm1 =1) and d < prob_lossdiag_adctb then do; visit=0; lost   =1; end;
 	    	if  non_tb_who3_ev_tm1  = 1        and d < prob_lossdiag_non_tb_who3e then do; visit=0; lost   =1; end;
-		end;
-		if unisens ge sens_vct then do; 
-			if cost_test=0 then cost_test= cost_test_c;
-		end;
 	end;
+* if unisens ge sens_vct then do; 
+*	if cost_test=0 then cost_test= cost_test_c;
+* end;
+end;
 
 
 * AP 22-7-19;
 * in pop_wide_tld prep use in person with hiv is set to zero when a person becomes diagnosed with hiv; 
 * note that effect of art is determined by adh when on prep and when diagnosed and so onart, so I think this should be working ok;
-if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep = 0;  end;
+if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_wide_tld_prep = 0; prep_oral = 0; prep_any = 0; end; 	* lapr - add possibility of other prep types here? They should all be set to 0 already ;
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
-	if (infected_prep=1 or (hiv=1 and prep = 1)) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
-		prep = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; 
+	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
+	if (infected_prep_oral=1 or prep_oral = 1) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
+		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; mr_3tc=1; mr_ten=1; toffart=0;
 	end;
+
+
+	if  prep_inj = 1 and registd=1 and registd_tm1=0  then do; 
+		prep_inj = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
+	end;
+
+	if o_cab_tm1 = 1 and o_cab = 0 then do; tss_cab = 0; toffart = 0;mr_cab=1; end;
 
 
 * Loss to follow-up while off ART;
 	if t ge 2 and onart   =0 and lost_tm1 =0 then do;
-		e=uniform(0); 
+		e=rand('uniform'); 
 		if 0.8 <= adhav       and e < eff_rate_lost     then do;lost=1;visit=0;return=0; end;
 		if 0.5 <= adhav < 0.8 and e < eff_rate_lost*1.5 then do;lost=1;visit=0;return=0; end;
 		if        adhav < 0.5 and e < eff_rate_lost*2   then do;lost=1;visit=0;return=0; end;
@@ -6356,9 +7350,12 @@ if registd=1 and registd_tm1=0 and onart   =1 and pop_wide_tld_prep=1 then do; p
 * Returning to clinic after loss to follow-up ;
 
 	e_rate_return = eff_rate_return; 
-	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = eff_rate_return / 1.5;
+	if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then e_rate_return = e_rate_return / 1.5;
 
-	s=uniform(0);
+* new for pop_wide_tld;
+	if pop_wide_tld      = 1 then e_rate_return = e_rate_return * rr_return_pop_wide_tld;
+
+	s=rand('uniform');
 	if adhav >= 0.8 then do;  
 		if t ge 2 and lost_tm1 =1 and registd_tm1=1 and
 		((adc_tm1=1 and s < prob_return_adc) or s < e_rate_return) then do;return=1;lost=0;visit=1;end;
@@ -6385,22 +7382,22 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 
 * shift to x4 virus being present - depends on viral load;
 	if t ge 2 then do;
-		pr_x4_shift=(10**vl_tm1)*0.0000004; s=uniform(0); if s < pr_x4_shift then do; x4v=1; date_x4=caldate{t};end;
+		pr_x4_shift=(10**vl_tm1)*0.0000004; s=rand('uniform'); if s < pr_x4_shift then do; x4v=1; date_x4=caldate{t};end;
 	end;
 
 * ts1m - replace above code with:
 *	if t ge 2 then do;
-*		pr_x4_shift=(10**vl_tm1)*0.0000004; * s=uniform(0); * if s < ( 1 - (1 - pr_x4_shift)**(1/3) ) then do; * x4v=1; * date_x4=caldate{t}; * end;
+*		pr_x4_shift=(10**vl_tm1)*0.0000004; * s=rand('uniform'); * if s < ( 1 - (1 - pr_x4_shift)**(1/3) ) then do; * x4v=1; * date_x4=caldate{t}; * end;
 *	end;
 
 	
 
 * viral load changes from t-1 to t, if ART-naive at time t-1;
 
-	if t ge 2 and prep    ne 1 then do;
+	if t ge 2 and prep_oral ne 1 and prep_inj ne 1 then do;  * lapr - any_prep ? ;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0.25) then do;
-			vc_tm1 =(gx*0.02275 + (0.05 * normal(0)))+ ((age_tm1-35)*0.00075);
+			vc_tm1 =(gx*0.02275 + (0.05 * rand('normal')))+ ((age_tm1-35)*0.00075);
 
 * ts1m - add this line:
 *			vc_tm1  = vc_tm1  / 3;
@@ -6411,23 +7408,22 @@ if visit=1 and date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}
 	end;
 
 
-
 * CD4 changes from t-1 to t, if ART-naive at time t-1;
-	if t ge 3 and prep    ne 1 then do;
+	if t ge 3 and prep_oral ne 1 and prep_inj ne 1 then do; * lapr - anyprep ?;
 	* dependent_on_time_step_length ;
 		if naive=1 or (naive_tm1=1 and tcur=0) or (toffart    gt 0 and 0 <= cd4_tm1-cmin_tm1  < 300) or (toffart    gt 0
 		and (resumec_tm1 =1 or resumec_tm2 =1)) then do;
 * resumec indicates that cd4 has fallen to cmin since interruption (before toffart=1) and so usual cd4 changes start;
 
 * dependent_on_time_step_length ;
-			if vl_tm1 < 3 then ccsqr_tm1 =+0.000*fx+(sd_cd4*normal(0));
-			if 3 <= vl_tm1 < 3.5 then ccsqr_tm1=-0.022*fx+(sd_cd4*normal(0));
-			if 3.5 <= vl_tm1 < 4 then ccsqr_tm1=-0.085*fx+(sd_cd4*normal(0));
-			if 4 <= vl_tm1 < 4.5 then ccsqr_tm1=-0.40*fx+(sd_cd4*normal(0));
-			if 4.5 <= vl_tm1 < 5 then ccsqr_tm1=-0.40*fx+(sd_cd4*normal(0));
-			if 5 <= vl_tm1 < 5.5 then ccsqr_tm1=-0.85*fx+(sd_cd4*normal(0));
-			if 5.5 <= vl_tm1 < 6 then ccsqr_tm1=-1.30*fx+(sd_cd4*normal(0));
-			if 6.0 <= vl_tm1 then ccsqr_tm1=-1.75*fx+(sd_cd4*normal(0));
+			if vl_tm1 < 3 then ccsqr_tm1 =+0.000*fx+(sd_cd4*rand('normal'));
+			if 3 <= vl_tm1 < 3.5 then ccsqr_tm1=-0.022*fx+(sd_cd4*rand('normal'));
+			if 3.5 <= vl_tm1 < 4 then ccsqr_tm1=-0.085*fx+(sd_cd4*rand('normal'));
+			if 4 <= vl_tm1 < 4.5 then ccsqr_tm1=-0.40*fx+(sd_cd4*rand('normal'));
+			if 4.5 <= vl_tm1 < 5 then ccsqr_tm1=-0.40*fx+(sd_cd4*rand('normal'));
+			if 5 <= vl_tm1 < 5.5 then ccsqr_tm1=-0.85*fx+(sd_cd4*rand('normal'));
+			if 5.5 <= vl_tm1 < 6 then ccsqr_tm1=-1.30*fx+(sd_cd4*rand('normal'));
+			if 6.0 <= vl_tm1 then ccsqr_tm1=-1.75*fx+(sd_cd4*rand('normal'));
 			* these values higher than european model because effect of black race;
 
 			if x4v_tm1 =1 then ccsqr_tm1 =ccsqr_tm1 -0.25;
@@ -6446,10 +7442,10 @@ res_test=.;
 
 
 * WHETHER CD4 WAS MEASURED ;
-	w=uniform(0);
+	w=rand('uniform');
 	if t ge 2 and  hiv_monitoring_strategy=2
 	and naive=1 and visit=1 and (date_latest_cm = . or (caldate{t} - date_latest_cm) > 0.25) and w < prob_cd4_meas_done then do;
-		cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc=1;
+		cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc=1;
 		if date_staging=. then do; date_staging = caldate{t}; cd4_staging = cm   ; who4_staging = who4_tm1; end;
 		if ((art_intro_date             le caldate{t} lt 2010 and . lt cm    le 200) or
       	    (                              caldate{t} ge 2010 and . lt cm    le 350)) or 
@@ -6464,7 +7460,7 @@ res_test=.;
 	if t ge 3 and  time0 = . and (((art_init_disrup_covid ne 1 or covid_disrup_affected ne 1) 
 							and (no_art_disrup_covid ne 1 or covid_disrup_affected ne 1))) then do;
 
-		u=uniform(0);
+		u=rand('uniform');
 		
 * hiv monitoring strategy
   1 - strategy for monitoring HIV positive people naive to ART 1: presence of tb or who4
@@ -6555,7 +7551,7 @@ res_test=.;
 		and diffcult to reconcile with these relatively high rates of nnrti resistance from nevirapine for pmtct;
 
 		if gender=2 and caldate{t} gt date_pmtct then do;
-			u=uniform(0); uu=uniform(0); 
+			u=rand('uniform'); uu=rand('uniform'); 
 			if anc=1 and naive=1 and uu < prob_pmtct then do;
 				if time0=. then do;
 					if caldate{t} le 2010.5 then do;
@@ -6575,7 +7571,7 @@ res_test=.;
 
 
 	if t ge 4 and caldate{t}=time0 then do;  
-		yrart=caldate{t};cd4art=cd4_tm1;vlart=vl_tm1;
+		yrart=caldate{t};cd4art=cd4_tm1;vlart=vl_tm1;art_initiation=1;
 		if 0 <= time_since_last_cm <= 0.5 then measured_cd4art=value_last_cm ;
 	end;
 
@@ -6590,27 +7586,27 @@ res_test=.;
 	if t ge 4 and 0 < toffart    <= 0.25 then do;
     	 vl=vmax_tm1;
      * assume rate cd4 fall depends on current viral load;
-     	 if        vl >= 5 then cc_tm1 =-200+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-160+10*normal(0);
-	     if        vl < 4.5 then cc_tm1=-120+10*normal(0);
+     	 if        vl >= 5 then cc_tm1 =-200+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-160+10*rand('normal');
+	     if        vl < 4.5 then cc_tm1=-120+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm1 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm1  then resumec   =1; 
 	end;
 	if t ge 4 and 0.25 < toffart    <= 0.5 and resumec_tm1  ne 1 then do;
 	     * assume rate cd4 fall depends on current viral load;
-    	 if vl >= 5 then cc_tm1=-100+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-90+10*normal(0);
-    	 if vl < 4.5 then cc_tm1=-80+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-100+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-90+10*rand('normal');
+    	 if vl < 4.5 then cc_tm1=-80+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm2 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm2  then resumec   =1;
 	end;
 	if 0.5 < toffart    <= 0.75 and t ge 4 and (resumec_tm1  ne 1 and resumec_tm2  ne 1) then do;
 	     * assume rate cd4 fall depends on current viral load;
-    	 if vl >= 5 then cc_tm1=-80+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-70+10*normal(0);
-	     if vl < 4.5 then cc_tm1=-60+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-80+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-70+10*rand('normal');
+	     if vl < 4.5 then cc_tm1=-60+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm3 ,z); if cd4 lt 0 then cd4=0; if cd4=cmin_tm3  then resumec   =1;
@@ -6618,9 +7614,9 @@ res_test=.;
 	c_200_gt_nad=0;if t ge 3 and toffart    gt 0 and cd4_tm1-cmin_tm1  > 300 then do;
     	 * assume rate cd4 fall depends on current viral load;
 	     c_200_gt_nad=1;
-    	 if vl >= 5 then cc_tm1=-200+10*normal(0);
-	     if 4.5 <= vl < 5 then cc_tm1=-160+10*normal(0);
-	     if vl < 4.5 then cc_tm1=-120+10*normal(0);
+    	 if vl >= 5 then cc_tm1=-200+10*rand('normal');
+	     if 4.5 <= vl < 5 then cc_tm1=-160+10*rand('normal');
+	     if vl < 4.5 then cc_tm1=-120+10*rand('normal');
 * ts1m:  cc_tm1 = cc_tm1 / 3;
 	     z=cd4_tm1+cc_tm1;
 	     cd4=max(cmin_tm2 ,z); if cd4 lt 0 then cd4=0;
@@ -6650,18 +7646,19 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-
-	   if pregnant=1 then prointer = prointer/100; * jul18;
+		if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
-		if sw=1 then prointer=prointer * eff_sw_higher_int;
+		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
+	* new for pop_wide_tld;
+		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
 		if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then prointer = prointer * 1.5; * mar19;  
-		r=uniform(0);if r < prointer then do; 
+		r=rand('uniform');if r < prointer then do; 
 				interrupt_choice   =1; 
-				int_clinic_not_aw=0; f=uniform(0); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
+				int_clinic_not_aw=0; f=rand('uniform'); if f < clinic_not_aw_int_frac then int_clinic_not_aw=1;
 			end;
 		end;
 	end;
@@ -6673,34 +7670,27 @@ res_test=.;
 	and stop_tox ne 1 then do;
 
 		prointer_supply= prob_supply_interrupted  ;
-		s=uniform(0); if s < prointer_supply then interrupt_supply  =1;
+		s=rand('uniform'); if s < prointer_supply then interrupt_supply  =1;
 
 		if no_art_disrup_covid = 1 and covid_disrup_affected = 1 then do; interrupt_supply  =1; was_on_art_covid_disrup=1; end;
 
 	end;
 
 
-	* interruption of prep before diagnosis;
+	* interruption of prep before diagnosis; * lapr - to add code for cab - add o_cab - accounting for tail ;
 	* dependent_on_time_step_length ; 
-	if t ge 2 and prep_tm1 =1 and prep   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
+	if t ge 2 and prep_oral_tm1 =1 and prep_oral   =0 and registd ne 1 and pop_wide_tld =1 and onart   =1 then do;
 		interrupt   =1;
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
 
-		if o_zdv_tm1=1 then do;  mr_zdv=1; tss_zdv=0; end;
 		if o_3tc_tm1=1 then do;  mr_3tc=1;tss_3tc=0; end;
 		if o_ten_tm1=1 then do;  mr_ten=1;tss_ten=0; end;
-		if o_nev_tm1=1 then do;  mr_nev=1;tss_nev=0; end;
-		if o_dar_tm1=1 then do;  mr_dar=1;tss_dar=0; end;
-		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
-		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
-		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
-		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
-		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	
+		o_3tc=0; o_ten=0; o_dol=0; 	
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
-	if t ge 2 and (interrupt_choice   =1 or interrupt_supply   =1 or stop_tox   =1 or (interrupt   =1 and prep_tm1 =1 and prep=0))
+	if t ge 2 and (interrupt_choice =1 or interrupt_supply =1 or stop_tox =1 or interrupt=1 )
 	and restart_tm1 =0 and visit=1 and onart_tm1 =1 then do; 
 		artline=.;onart   =0;toffart   =0;interrupt=1;date_last_interrupt=caldate{t};
 
@@ -6712,19 +7702,21 @@ res_test=.;
 		if o_efa_tm1=1 then do;  mr_efa=1;tss_efa=0; end;
 		if o_lpr_tm1=1 then do;  mr_lpr=1;tss_lpr=0; end;
 		if o_taz_tm1=1 then do;  mr_taz=1;tss_taz=0; end;
-		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;
-		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0;
-		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;
+		if o_dol_tm1=1 then do;  mr_dol=1;tss_dol=0; end;	* lapr - add rla and cab;
+		if o_cab_tm1=1 then do;  mr_cab=1;tss_cab=0; end;
+		o_zdv=0; o_3tc=0; o_efa=0; o_dar=0; o_ten=0; o_cab=0;
+		o_lpr=0; o_taz=0; o_dol=0; o_nev=0;	* lapr - add rla and cab;
 		v_inter=vl_tm1; tcur_inter=tcur;
 	end;
 
-	if prep_tm1 =1 and prep=0 then toffart   =0;
+	if prep_oral_tm1 =1 and prep_oral=0 then toffart   =0;
+	if prep_inj_tm1 =1 and prep_inj=0 then toffart   =0;
 
 	if t ge 2 and interrupt_tm1=1 then tcur=.;
 
 	* people leaving clinic as well as interrupting (if interruption due to choice);
 	if t ge 2 and interrupt=1 and (interrupt_choice   =1) then do;
-		f=uniform(0);
+		f=rand('uniform');
 	
 		if f < eff_prob_lost_art     and        adhav >= 0.8 then do;lost=1; visit=0; return=0;end;
 		if f < eff_prob_lost_art*1.5 and 0.5 <= adhav <  0.8 then do;lost=1; visit=0; return=0;end;
@@ -6743,9 +7735,10 @@ end;
 
 * RE-INITIATION OF THERAPY AFTER INTERRUPTING -  restart = 1 means restart at time t;
 
-	e_rate_restart=eff_rate_restart;
-	restart   =0;d=uniform(0);
+	e_rate_restart=eff_rate_restart;		* lapr - add rla and cla;
+	restart   =0;d=rand('uniform');
 	if t ge 3 and interrupt_choice    = 1 and lost=0 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0 and tcur_tm1=. and interrupt=0 then do;
+
 		if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  and date_v_alert > date_last_interrupt > . then e_rate_restart=e_rate_restart*10;
 
 		if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .    and date_v_alert > date_last_interrupt > .  then e_rate_restart=e_rate_restart*10;
@@ -6795,7 +7788,7 @@ end;
 		o_efa=mr_efa_tm1;
 		o_lpr=mr_lpr_tm1;
 		o_taz=mr_taz_tm1;
-		o_dol=mr_dol_tm1;
+		o_dol=mr_dol_tm1;	* lapr - add rla and cab;
 
 		* if return    =1 then do; * jan18 - think this should apply when restarting even if return ne 1;
 
@@ -6817,10 +7810,24 @@ end;
 	end;
 
 
+
+* new for pop_wide_tld;
+
+* IF POP_WIDE_TLD, IS PERSON WHO IS ONART ACTUALLY ATTENDING CLINIC ? ;
+* for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
+
+a = rand('uniform'); b = rand('uniform'); 
+if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and onartvisit0 ne 1 and a < prob_onartvis_0_to_1 then onartvisit0=1;
+if pop_wide_tld=1 and onart=1 and onartvisit0=1 and b < prob_onartvis_1_to_0 then onartvisit0=0;
+if onart ne 1 then onartvisit0=0;
+
+
+
+
 * INITIATION OF FIRST LINE THERAPY ;
 
 if yrart=caldate{t} and onart    ne 1 and  art_intro_date <= yrart then do;
-tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0;
+tcur=0; cd4_tcur0 = cd4; naive=0;artline=1;onart   =1;linefail=0;line1=1;vfail1=0; art_initiation=1;
 o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;
 
     if caldate{t} < 2010.5 then do; o_zdv=1; o_3tc=1; o_efa=1; end;
@@ -6832,7 +7839,7 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
     if flr=1 then do; o_ten=1; o_3tc=1; o_taz=1; o_zdv=0; o_dol=0; end;
     if flr=2 then do; o_ten=1; o_3tc=1; o_dol=1; o_zdv=0; o_taz=0; o_efa=0; end;
-
+ 
     if base_res_test=1 then do;  res_test=1;
     if  (c_rt103m=0 and c_rt181m=0 and c_rt190m=0) then do;  o_ten=1; o_3tc=1; o_efa=1; end;
     if  (c_rt103m=1 or c_rt181m=1 or c_rt190m=1) then do;    o_ten=1; o_3tc=1; o_dol=1;o_efa=0; end;
@@ -6840,7 +7847,8 @@ if reg_option in (115) and (ever_dual_nvp =1 or ever_sd_nvp = 1) then flr=1; * 1
 
 end;
 
-	if prep_tm1 =0 and prep=1 then do; tcur=0; cd4_tcur0 = cd4; end;
+	if prep_oral_tm1 =0 and prep_oral=1 then do; tss_ten=.; tss_3tc=.; tcur=0; cd4_tcur0 = cd4; end; 
+	if prep_inj_tm1 =0 and prep_inj=1 then do; tss_cab=.; tcur=0; cd4_tcur0 = cd4; end; 
 
 
 * jan17 - so can change value of pr switch line and still record original value of this parameter;
@@ -6851,7 +7859,7 @@ if reg_option in (105 106) and o_dol=1 then e_pr_switch_line=0; * effective pr_s
 if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start_line2=1 then start_line2=.; * mar18;
 
 		if t ge 2  and interrupt=0 and linefail_tm1 =1 and line2=0 and (artline_tm1 =1) and visit=1 and reg_option ne 105 and reg_option ne 106  then do;
-			q=uniform(0); if q < e_pr_switch_line then do; start_line2=1; date_start_line2=caldate{t}; cd4_start_line2 = cm   ; end;
+			q=rand('uniform'); if q < e_pr_switch_line then do; start_line2=1; date_start_line2=caldate{t}; cd4_start_line2 = cm   ; end;
 		end;
 
 
@@ -6869,15 +7877,15 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 	if  third_line=1 then do;
 		if t ge 2  and interrupt=0 and linefail_tm1 =2 and line3=0 and (artline_tm1 =2)
 		and visit=1 then do;   
-			q=uniform(0); if q < e_pr_switch_line then start_line3=1;
+			q=rand('uniform'); if q < e_pr_switch_line then start_line3=1;
 		end;
 	end;
 
 
-	* restart_pi_after_dtg_fail   -  may18;
+	* restart_pi_after_dtg_fail   -  may18;	* lapr - do we need to consider CAB fail as well? ;
 	if reg_option in (103 104 110 111 114 116 117 118 119) and f_dol=1 and o_dol=1 and o_taz ne 1 and o_lpr ne 1 and (p_taz=1 or p_lpr=1) then do;
 		if t ge 2  and interrupt=0 and visit=1 then do;   
-			q=uniform(0); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
+			q=rand('uniform'); if q < e_pr_switch_line then restart_pi_after_dtg_fail=1;
 		end;
 	end;
 
@@ -6891,6 +7899,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 		end;
 
 	if reg_option in (120 121) and linefail_tm1 =2 and (f_dol=1 and f_3tc=1 and (f_zdv=1 or f_ten=1)) and (p_lpr ne 1 and p_taz ne 1) then do; 
+	* lapr - consider f_cab? - see reg_option 501 in lai code ;
 		if t ge 2 and linefail_tm1=2 and onart_tm1 =0 and restart   =1 and visit=1 then do;
 			pi_after_dtg_fail=1; start_line3=1;line3=1;
 		end;
@@ -6908,6 +7917,7 @@ if reg_option in (105 106) and o_dol=1 and linefail_tm1 =1 and line2=0 and start
 
 	if reg_option in (103 104 110 111 114 116 117 118 119 120 121) and linefail_tm1=2 and (f_dol=1) then do;  * mar19 - not sure why above need f_3tc and f_ten =1 to
 	restart pi so have added on 104 here, along with 111); 
+		* lapr - does f_dol imply f_cab and vice versa? ;
 
 		if t ge 2 and linefail_tm1=2 and onart_tm1=0 and restart   =1 and visit=1 then do;
 			if p_taz=1 or p_lpr=1 then restart_pi_after_dtg_fail=1;  if p_taz ne 1 and p_lpr ne 1 then do;pi_after_dtg_fail=1;start_line3=1;line3=1;end;
@@ -7016,19 +8026,15 @@ if caldate{t} ge &year_interv and art_monitoring_strategy=1500 and (o_dol ne 1 o
 
 
 
-
-
-
-
 * SWITCHING OF DRUGS DUE TO TOXICITY;   * for reg18 decided to remove all switching due to toxicity and programmatically unlikely to often happen
 - can out back in for sensitivity analysis;
 
-if prep=0 and switch_for_tox = 1 then do;
+if onart = 1 and switch_for_tox = 1 then do;	
 
 * tox risk and persistence 
 
 * efa;
-	s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_efa_tm1=1 and
+	s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_efa_tm1=1 and
 	((c_cns_tm1=1 and s < r_swi_efa_cns) or (c_ras_tm1=1 and r < r_swi_efa_ras ))
 	then do;
 		sw_toxicity=1;
@@ -7040,7 +8046,7 @@ if prep=0 and switch_for_tox = 1 then do;
 	
 
 * nev;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_nev_tm1=1 and
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_nev_tm1=1 and
 		((c_hep_tm1=1 and s < r_swi_nev_hep) or (c_ras_tm1=1 and r < r_swi_nev_ras ))
 		then do;
 			sw_toxicity=1;
@@ -7050,7 +8056,7 @@ if prep=0 and switch_for_tox = 1 then do;
 	x7: end;
 
 * zdv;
-            s=uniform(0); d=uniform(0); e=uniform(0); if t ge 2  and interrupt=0 and o_zdv_tm1=1 and
+            s=rand('uniform'); d=rand('uniform'); e=rand('uniform'); if t ge 2  and interrupt=0 and o_zdv_tm1=1 and
             ((c_nau_tm1=1 and s lt r_swi_zdv_nau) or (c_head_tm1=1 and d < r_swi_zdv_head) or (c_lip_tm1=1 and e < r_swi_zdv_lip)
             or (c_ane_tm1=1 and e < r_swi_zdv_ane) or c_lac_tm1=r_swi_zdv_lac )   then do;
                   sw_toxicity=1;
@@ -7060,14 +8066,14 @@ if prep=0 and switch_for_tox = 1 then do;
             x3:end;
 
 * ten;
-            s=uniform(0); if t ge 2  and interrupt=0 and o_ten_tm1=1 and (c_neph_tm1=1 and s lt r_swi_ten_neph) then do;
+            s=rand('uniform'); if t ge 2  and interrupt=0 and o_ten_tm1=1 and (c_neph_tm1=1 and s lt r_swi_ten_neph) then do;
                   sw_toxicity=1;
 	              if t_zdv_tm1=0  and o_zdv ne 1 then do; t_ten=1;tss_ten   =0; o_zdv=1;o_ten=0; goto x6; end;
 	              t_ten=1;tss_ten   =0;o_ten=0;
             x6:end;
 
 * lpr;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_lpr_tm1=1 and
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_lpr_tm1=1 and
 		((c_nau_tm1=1 and s < r_swi_lpr_nau ) or (c_dia_tm1=1 and r < r_swi_lpr_dia )) then do; *note nau currently does not occur with lpr;
 			sw_toxicity=1;
 			if caldate{t} ge 2014 and t_taz_tm1=0  and o_taz ne 1 then do; t_lpr=1;tss_lpr   =0; o_taz=1;o_lpr=0; goto x5; end;
@@ -7077,7 +8083,7 @@ if prep=0 and switch_for_tox = 1 then do;
 
 
 * taz;
-		s=uniform(0); r=uniform(0); if t ge 2  and interrupt=0 and o_taz_tm1=1 and 
+		s=rand('uniform'); r=rand('uniform'); if t ge 2  and interrupt=0 and o_taz_tm1=1 and 
 		((c_nau_tm1=1 and s < r_swi_taz_nau ) or (c_dia_tm1=1 and r < r_swi_taz_dia )) then do; *note nau currently does not occur with taz;
 			sw_toxicity=1;
 			if t_lpr_tm1=0  and o_lpr ne 1 then do; t_taz=1;tss_taz   =0; o_lpr=1;o_taz=0; goto x8; end;
@@ -7088,11 +8094,12 @@ if prep=0 and switch_for_tox = 1 then do;
 * dar - assume no new tox after previous pi;
 
 * dol ;
-	s=uniform(0);  if t ge 2  and interrupt=0 and o_dol_tm1=1 and (c_cns_tm1=1 and s < r_swi_dol_cns) then do; 
+	s=rand('uniform');  if t ge 2  and interrupt=0 and o_dol_tm1=1 and (c_cns_tm1=1 and s < r_swi_dol_cns) then do; 
 		sw_toxicity=1;
 		if t_taz_tm1=0  and o_taz ne 1  then do; t_dol=1;tss_dol   =0; o_taz=1;o_dol=0; goto x9; end;
 	x9: end;
  
+* lapr - add rla and cla;
 
 	end;
 
@@ -7105,14 +8112,14 @@ start_line2_this_period=.;
 
 
 	if art_intro_date <= caldate{t} < 2010.5 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if t_lpr=0 then o_lpr=1;
 			if t_zdv=0 then do; o_zdv=1; goto vv66; end;
 	end;
 
  	if caldate{t} >= 2010.5 and caldate{t} < 2014 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
 			o_3tc=1;
 			if f_lpr=0 and t_lpr=0 then o_lpr=1;
 			if o_lpr=0 and f_nev=0 and t_nev=0 then o_nev=1;  if o_lpr=0 and f_nev=0 and t_nev=1 and t_efa=0 then o_efa=1;
@@ -7121,7 +8128,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2014 and caldate{t} < 2015 and (f_efa=1 or f_nev=1) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -7138,7 +8145,7 @@ start_line2_this_period=.;
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1) and (caldate{t} < 2018.75 or reg_option in (101 102 107 108 109 112 113 115 ) ) 
 	then do; * dec17; * note 100 is for msfm;
 	* note if returing to former definition of policy 103 then need to add 103 in here;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;	
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if t_lpr=0 and t_taz=1 then o_lpr=1;
@@ -7149,14 +8156,14 @@ start_line2_this_period=.;
 	end;
 
 	if caldate{t} >= 2015 and (f_efa=1 or f_nev=1)  and reg_option in (103 110 111 114 116 117 119 120 121)  then do; * aug18;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_dol ne 1 then o_dol=1; if f_dol=1 then o_taz=1;
 			o_zdv=1; goto vv66; 
 	end;
 
  	if caldate{t} >= 2015 and (f_taz=1 or f_lpr=1) and reg_option in (107 ) then do;  
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			* if t_lpr=1 and t_taz=1 and t_nev=0 then o_nev=1; 
@@ -7165,7 +8172,7 @@ start_line2_this_period=.;
 	end;
 
  	if caldate{t} >= 2015 and f_dol=1 and reg_option in (102 103 104 113 115 116 117 118 119 120 121) then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_taz=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			if f_taz=0 and t_taz=0 then o_taz=1;
 			if o_taz=0 and (t_nev=0 and f_nev=0) then o_nev=1;
@@ -7175,20 +8182,20 @@ start_line2_this_period=.;
 	end;
 
 	if reg_option in (999) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			o_zdv=1; goto vv66; 
 	end;
 	
 	if reg_option in (105) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_ten=0 then o_ten=1; if t_ten=1 then o_zdv=1; goto vv66; 
 	end;
 	if reg_option in (106) and f_dol=1 then do;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0; o_cab=0;
 			o_3tc=1;
 			o_dol=1;
 			if t_zdv=0 then o_zdv=1; if t_zdv=1 then o_ten=1; goto vv66; 
@@ -7204,7 +8211,9 @@ vv66:
 			if o_dar_tm1=1  and o_dar=0 then do;  tss_dar=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
+			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
+
 	end;
 end;
 
@@ -7224,13 +8233,14 @@ if choose_line3=1  then do;
 			if o_taz_tm1=1  and o_taz=0 then do;  tss_taz=0; end;
 			if o_efa_tm1=1  and o_efa=0 then do;  tss_efa=0; end;
 			if o_lpr_tm1=1  and o_lpr=0 then do;  tss_lpr=0; end;
-			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;
+			if o_dol_tm1=1  and o_dol=0 then do;  tss_dol=0; end;	
+			if o_cab_tm1=1  and o_cab=0 then do;  tss_cab=0; end;	
 	end;
 
 if pi_after_dtg_fail=1  then do;  
 			pi_after_dtg_fail=.;
 			if artline=2 then artline=3; line3=1;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -7239,11 +8249,11 @@ end;
 
 end;
 
-* restart_pi_after_dtg_fail -  ;  * dec17;
+* restart_pi_after_dtg_fail -  ;  * dec17;		* lapr - updated code for LAI? ;
 
 if restart_pi_after_dtg_fail=1  then do;  
 			restart_pi_after_dtg_fail=.;
-			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;
+			o_zdv=0;o_3tc=0;o_ten=0;o_nev=0;o_lpr=0;o_taz=0;o_efa=0;o_dol=0;o_dar=0;o_cab=0;
 			o_3tc=1;
 			if t_taz=0 then o_taz=1;  if t_taz=1 and t_lpr=0 then o_lpr=1;  
 			if t_zdv ne 1 then do; o_zdv=1;  end;
@@ -7266,7 +8276,8 @@ then do;
 		if o_lpr=1 then f_lpr=1;
 		if o_taz=1 then f_taz=1;
 		if o_dar=1 then f_dar=1;
-		if o_dol=1 then f_dol=1;
+		if o_dol=1 then f_dol=1;	
+		if o_cab=1 then f_cab=1;	
 end;
 end;
 end; 
@@ -7277,8 +8288,12 @@ if reg_option in (105 106) then art_monitoring_strategy = 153; * this is so that
 wont switch anyway;
 
 
+* new for pop_wide_tld;
+if onart ne 1 then onartvisit0=0;
+
+
 * current number of drugs on;
-	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol;
+	nod   =o_zdv+o_3tc+o_ten+o_nev+o_dar+o_lpr+o_taz+o_efa+o_dol+o_cab; 
 
 
 * current number of nucs on;
@@ -7287,7 +8302,7 @@ wont switch anyway;
 
 	if t ge 2 and onart=1 and restart   =0 then toffart   =.;
 	
-	if onart=1 then do;
+	if onart=1 then do;	* lapr - add cab;
 		mr_zdv=o_zdv;
 		mr_3tc=o_3tc;
 		mr_ten=o_ten;
@@ -7296,10 +8311,12 @@ wont switch anyway;
 		mr_efa=o_efa;
 		mr_lpr=o_lpr;
 		mr_taz=o_taz;
+		mr_dol=o_dol;
+		mr_cab=o_cab;
 	end;
 
 
-* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);
+* if o_drug=1 then p_drug=1 (once p_drug=1 it is updated automatically and never over-written with 0);	* lapr - add cab;
 	if o_zdv=1 then p_zdv=1;
 	if o_3tc=1 then p_3tc=1;
 	if o_ten=1 then p_ten=1;
@@ -7309,9 +8326,10 @@ wont switch anyway;
 	if o_lpr=1 then p_lpr=1;
 	if o_taz=1 then p_taz=1;
 	if o_dol=1 then p_dol=1;
+	if o_cab=1 then p_cab=1;
 
 
-* date first start specific drugs;
+* date first start specific drugs;	
 if o_dol=1 and p_dol_tm1 ne 1 then date_start_dol = caldate{t};
 if o_efa=1 and p_efa_tm1 ne 1 then date_start_efa = caldate{t};
 if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
@@ -7320,15 +8338,15 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 	
 * adherence between t-1 and t  (adh); 
 
-	if t ge 2 and onart_tm1=1 and (prep ne 1 or adh = .) then do;  * for person on prep whether pop wide tld or regular prep the adh should be
-	already defined, based on adhav_prep - if prep = 1 it means person does not know they have hiv ;
-		adh=adhav + adhvar*normal(0);
+	if t ge 2 and onart_tm1=1 and (prep_any ne 1 or pop_wide_tld_prep=1) and adh = . then do; 
+* note: adh is set to . at start of each period - this line is only for people	onart because adh already defined for those on prep;
+		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
 
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*normal(0));
+	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 
-	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*normal(0));
+	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
@@ -7338,7 +8356,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 
 * current tox can affect adherence;  
-		r=uniform(0); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
+		r=rand('uniform'); if c_tox_tm1=1 and r < 0.5 then adh=adh-red_adh_tox;
 
 * reduced adherence if regimen is not 1 pill once a day - red_adh_multi_pill;
 		if o_zdv = 1 or o_taz = 1 or o_lpr = 1 then adh = adh - red_adh_multi_pill ;
@@ -7348,7 +8366,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		if t ge 3 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5 or adc_tm1=1) then adh=adh- red_adh_tb_adc ;
 
 * occasional severe drop in adherence / absorption (more likely when on PI) (only way I can think to explain v fail with no mutations on PI);
-	f=uniform(0);
+	f=rand('uniform');
 	if o_lpr=1 or o_taz=1 or o_dar=1 then  f=f/10;  
 	if f < 0.010   then adh = adh - 0.6;   * changed from 0.005 to 0.020 - mar16; * changed from 0.020 to 0.010 and f/10 above changed from f/5 
 	jun16 as cannot get levels of viral suppression higher than about 86%, even with adh_pattern_ 100 (best profile); * changed since nih talk 
@@ -7365,20 +8383,20 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 
 * apr 2019  - difference in adherence according to age and gender (at time 0 the adh pattern does not differ by age and gender - this code also moved
 	down so applies after tox, tb/adc, pi effects;
-e=uniform(0);
+e=rand('uniform');
 
 * note no effect when using e < 0.0;
-if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
-if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 15 <= age < 20 and adh > 0.8 and e < 0.3 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 20 <= age < 25 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 25 <= age < 30 and adh > 0.8 and e < 0.1 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 30 <= age < 35 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 35 <= age < 40 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 40 <= age < 45 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 45 <= age < 50 and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=1 and 50 <= age      and adh > 0.8 and e < 0.0 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 
 * _n6_ ;
-if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+if gender=2 and 15 <= age < 20 and adh > 0.8 and e < 0.2 then do; r=rand('uniform'); adh=0.65; if r < 0.33 then adh=0.1; end;
 if gender=2 and 20 <= age < 25 and adh < 0.8 and e < 0.1 then adh=0.90;
 if gender=2 and 25 <= age < 30 and adh < 0.8 and e < 0.3 then adh=0.90;
 if gender=2 and 30 <= age < 35 and adh < 0.8 and e < 0.5 then adh=0.90;
@@ -7387,8 +8405,9 @@ if gender=2 and 40 <= age < 45 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 45 <= age < 50 and adh < 0.8 and e < 0.8 then adh=0.90;
 if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 
-e=uniform(0);
-if gender=2 and sw=1 and adh > 0.8 and e < eff_prob_sw_lower_adh then do; r=uniform(0); adh=0.65; if r < 0.33 then adh=0.1; end;
+if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
+
+if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -7440,81 +8459,96 @@ if adh gt 1 then adh=1;
 if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_onart = adh;
 * ts1m:  if t ge 2 and tcur_tm1=0 and caldate{t} = yrart + (1/12) then adh_in_first_period_onart = adh;
 
+adh_dl=adh;
+
+newmut_tm1 = .; * note that we only have newmut_tm1, newmut is not defined;
+
+cab_higher_potency = dol_higher_potency ;
+if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then do;
+	adh_dl = 1; adh_dl_tm1=1; 
+	if currently_in_prep_inj_tail = 1 then do;
+		tcur_tm1=0;
+		if tss_cab = 0.25 then do; adh_dl = 0.65; adh_dl_tm1=1;  end;  
+		if 0.50 <= tss_cab then do; adh_dl = 0.65; adh_dl_tm1=0.65; end;  
+	end;
+	if prep_inj = 1 or prep_inj_tm1 = 1 or currently_in_prep_inj_tail = 1 then 
+		nactive_tm1 = (1 + cab_higher_potency) * (1 - r_cab_tm1); 
+end;
 
 
 
 * EFFECT OF NACTIVE >= 3 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
-* risk of new mutation(s) depends on latest viral load and effective adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and effective adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive ge 3 - first 3 months ;
 	if t ge 2 and nactive_tm1 ge 3 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			 if adh >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if adh_dl >= 0.8 then do;vl=vmax_tm1 -3.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;   * _i20_ ;
-			 if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			 if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			 if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			 if adh >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*normal(0));   vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do;   vl=vmax_tm1-(3.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);    newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*normal(0));   vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do;   vl=vmax_tm1-(2.0/3)+(sd_v_art*rand('normal'));   vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );   newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 1/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do; vl=vmax_tm1-(3.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(2.0/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
  		if tcur_tm1 = 2/12 then do;
- 			 if adh >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl >= 0.8 then do; vl=vmax_tm1-3.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+180);  newmut_tm1= 0.002*((vl+vl_tm1)/2);  end;   
- 			 if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			 if adh < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			 if adh_dl < 0.5 then do;   vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			 cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if        adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if        adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 <  0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 <  0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.002*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.1*((vl+vl_tm1)/2); end;
 	
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;   * oct 2014;
+			if adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;   * oct 2014;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1=  0.002*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.5+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7523,77 +8557,77 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 * EFFECT OF NACTIVE = 2.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.75 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;   
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 ); newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(2.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
   		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);   newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;   
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.6/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.6/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do;
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-2.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+80);  newmut_tm1= 0.01*((vl+vl_tm1)/2);  end;    
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.6+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30 );  newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2);  end;
  		end;
 */
-* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive ge 3 - 3-6 months; * ( cd4 change and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl= 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4.5 ); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.15*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive ge 3 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=v_min_art+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=v_min_art+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+28); newmut_tm1= 0.01*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.18*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.4+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.18*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7601,230 +8635,230 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 2.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 		if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);   newmut_tm1= 0.03*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;    vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		if adh >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+		if adh_dl >= 0.8 then do;  vl=vmax_tm1-(2.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40);  newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-(1.2/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do;  vl=vmax_tm1-2.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+40); newmut_tm1= 0.03*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-1.2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 );  newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);   end;
  		end;
 */
-* nactive = 2.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 2.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25 ); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 * nactive = 2.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.2+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl= 1.2+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.03*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.2 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl= 1.2 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
 		end;
 	end;
 
 
 * EFFECT OF NACTIVE = 2.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(1.8/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);   end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.1/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);   end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );   newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=1/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-(1.8/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);  newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-(1.1/2)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );  newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
  		end;
  			if tcur_tm1=2/12 then do; 
-  			if adh >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;
+  			if adh_dl >= 0.8 then do;  vl=vmax_tm1-1.8+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+35);   newmut_tm1= 0.05*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;  vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20 );   newmut_tm1=0.25*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;    vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+2 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive = 2.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 2.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=1.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=1.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= 1.4 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= 1.4 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=2.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-2  ); newmut_tm1= 0.2 *((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.25 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.2*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl= 1.4+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl= 1.4+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+23); newmut_tm1= 0.08*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= 1.6 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl= 1.6 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.25*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-15.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.25*((vl+vl_tm1)/2); end;
 		end;
 	end;
 
 
 * EFFECT OF NACTIVE = 2 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 2 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 2  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1; 
+		 	if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.5/3)+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1 - (0.9/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;   vl=vmax_tm1-(0.2/3)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );  newmut_tm1=0.05*((vl+vl_tm1)/2);  if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1; 
+		 	if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5/2+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1; 
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30);  newmut_tm1= 0.1*((vl+vl_tm1)/2);  end;
- 			if 0.5 <= adh < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1 - (0.9/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 );  newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*normal(0));  vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.2/2)+(sd_v_art*rand('normal'));  vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 );   newmut_tm1=0.05*((vl+vl_tm1)/2);   if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
  		end;
  		if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+30); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
- 			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+15 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
- 			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
  		end;
 */
-* nactive = 2 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 2 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 2.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); end;
 
- 			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=2.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+7 ); newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 
 		end;
 * nactive = 2 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*normal(0));
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-2.5+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+21); newmut_tm1= 0.1*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
     		cc_tm1=cd4_art_adj+(-16 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -7832,77 +8866,77 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 1.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.75 first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.75  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - (0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.15/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - (1.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - (0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-(0.15/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl= vmax_tm1 - 1.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+25); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl= vmax_tm1 - 0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-1 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.75 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 1.75 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=2.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=2.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+1.5 ); newmut_tm1= 0.10*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-2.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+4); * may17; newmut_tm1= 0.3 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-1.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end; *may17;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-		 	if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16.5); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.75 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-2.0+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+19); newmut_tm1= 0.15*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-7.5 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-16.5 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7911,76 +8945,76 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 1.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.5 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.5  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.9/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.6/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.9/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.6/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
- 			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+20); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-3 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 1.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3  ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-4.5 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 1.5 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.8 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.8 +(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.10+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.4+(sd_v_art*rand('normal'));
 			cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1= 0.2*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-10); newmut_tm1=0.3*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-17); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -7989,76 +9023,76 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 1.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1.25 - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1.25  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.8/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.5/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.8/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.5/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 			if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.8+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+17); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+8  ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-6 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.3*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 1.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 1.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this inlcudes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.15+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-5  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7  ); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 1.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7.5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.9 + (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.65+ (sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.65+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11.5); newmut_tm1= 0.35*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 
 		end;
 * nactive = 1.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-1.15+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-5); newmut_tm1= 0.3*((vl+vl_tm1)/2); end;
-		 	if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+		 	if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.35*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.35*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8067,77 +9101,77 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 1 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 1  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 1  then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.7/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.7/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+13); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2);  end;
 		end;
 
 */
-* nactive = 1 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 1 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.9+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-9  ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.4 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 1 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*normal(0));
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.9+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-9 ); newmut_tm1= 0.4*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.4*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 			cc_tm1=cd4_art_adj+(-18 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.4*((vl+vl_tm1)/2); end;
 		end;
 	end;
@@ -8145,76 +9179,76 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 0.75 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.8  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.75 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.55/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.25/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.55/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.25/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+10 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.25+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+3 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 0.75- 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 0.75- 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.75+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-10.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl=vmax_tm1 - 0.7+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-11 ); newmut_tm1= 0.45 *((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.55+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-14.5 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.75- GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*normal(0));
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.75+(sd_v_art*rand('normal'));
 		    cc_tm1=cd4_art_adj+(-10.5); newmut_tm1= 0.45*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1=0.45*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1; * ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.45*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8222,76 +9256,76 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 0.5 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.5  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.5 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.4/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.4/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(pt_cd4_rise_art*+0 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 */
-* nactive = 0.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 0.5 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 
-			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.5+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 	
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 *  nactive = 0.5 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-		 	if adh >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+		 	if adh_dl >= 0.8 then do; vl=vmax_tm1-0.6+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.3+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2);if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);  end;
 		end;
 	end;
@@ -8299,76 +9333,76 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 
 
 * EFFECT OF NACTIVE = 0.25 ART - on viral load / CD4 / resistance changes between t-1 and t;
-* risk of new mutation(s) depends on latest viral load and adh level - * highest risk of res when adh between 0.5-0.8;
+* risk of new mutation(s) depends on latest viral load and adh_dl level - * highest risk of res when adh_dl between 0.5-0.8;
 * nactive = 0.25  - first 3 months ;
 	if t ge 2 and nactive_tm1 = 0.25 then do;
 		if 0 <= tcur_tm1 < 0.25 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 /*
 * ts1m - replace above single block with three blocks below: (note that newmut and cc are divided by 3 lower down for ts1m)
  		if 0 <= tcur_tm1 < 1/12 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.3/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.05/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/3)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=1/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-(0.3/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-(0.05/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+(0.1/2)+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 		if tcur_tm1=2/12 then do; 
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
     		cc_tm1=cd4_art_adj+(-2); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-7 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1+0.1+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-13 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2); end;
 		end;
 */
-* nactive = 0.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh - vl depends on most recent and previous);
+* nactive = 0.25 - 3-6 months; * ( cd4 and newmut depend only on most recent adh_dl - vl depends on most recent and previous);
 * this includes people on current regimen for > 6 months but with high vl - eg due to previous poor adherence;
 		if  (0.25 <= tcur_tm1 < 0.5 or (tcur_tm1 >= 0.5  and vl_tm1 ge 4)) and t ge 2 then do;
 	
- 			if adh_tm1 >= 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+ 			if adh_dl_tm1 >= 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.4+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh_tm1 < 0.8 and adh >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.35+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-14.5); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if adh_tm1 < 0.5 and adh >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl >= 0.8 then do; vl= vmax_tm1- 0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-16 ); newmut_tm1= 0.25*((vl+vl_tm1)/2); end;
 
-			if adh_tm1 >= 0.8 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if 0.5 <= adh_tm1 < 0.8 and 0.5 <= adh < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and 0.5 <= adh_dl < 0.8 then do; vl= vmax_tm1- 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
  			cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.5*((vl+vl_tm1)/2);  end;
-			if adh_tm1 < 0.5 and 0.5 <= adh < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and 0.5 <= adh_dl < 0.8 then do; vl=vmax_tm1 - 0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-17.5 ); newmut_tm1= 0.25*((vl+vl_tm1)/2);  end;
 
-			if adh_tm1 >= 0.8 and  adh < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 >= 0.8 and  adh_dl < 0.5 then do; vl=vmax_tm1-0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if 0.5 <= adh_tm1 < 0.8 and adh < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl_tm1 < 0.8 and adh_dl < 0.5 then do; vl=vmax_tm1+0.00+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
-			if adh_tm1 < 0.5 and adh < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl_tm1 < 0.5 and adh_dl < 0.5 then do; vl=vmax_tm1+0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 		    cc_tm1=cd4_art_adj+(-18 ); newmut_tm1= 0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 *  nactive = 0.25 - GE 6 months;
 		if (tcur_tm1 ge 0.5 and vl_tm1 lt 4) then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.3+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-12 ); newmut_tm1= 0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie risk of rebound;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.1+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie risk of rebound;
 		    cc_tm1=cd4_art_adj+(-15 ); newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0)); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal')); vc_tm1=vl-vl_tm1;* ie almost certain rebound;
 		    cc_tm1=cd4_art_adj+(-17 ); newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 		end;
 	end;
@@ -8377,11 +9411,11 @@ if t ge 2 and tcur_tm1=0 and caldate{t} = yrart+0.25 then adh_in_first_period_on
 * EFFECT OF NACTIVE = 0 ART - on viral load / CD4 / resistance changes between t-1 and t;
 
 	if t ge 2 and nactive_tm1=0 then do;
-			if adh >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl >= 0.8 then do; vl=vmax_tm1-0.2+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-15); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if 0.5 <= adh < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if 0.5 <= adh_dl < 0.8 then do;vl=vmax_tm1-0.05+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-17 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.5*((vl+vl_tm1)/2); end;
-			if adh < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*normal(0));vc_tm1=vl-vl_tm1;
+			if adh_dl < 0.5 then do;  vl=vmax_tm1-0.0+(sd_v_art*rand('normal'));vc_tm1=vl-vl_tm1;
 			cc_tm1=cd4_art_adj+(-18 ); *cd4=cd4_tm1+cc_tm1;newmut_tm1=0.05*((vl+vl_tm1)/2); if (o_nev=1 or o_efa=1) then 
 			newmut_tm1=0.5*((vl+vl_tm1)/2);end;
 	end;
@@ -8405,14 +9439,16 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 	if . < cd4  lt 0 then cd4 =0;
 
 * add variability to cd4 for those on art;
-	if t ge 2 and nactive_tm1 ge 0 then do; cd4 =(sqrt(cd4 )+ sd_cd4*normal(0))**2; end;
+	if t ge 2 and nactive_tm1 ge 0 then do; cd4 =(sqrt(cd4 )+ sd_cd4*rand('normal'))**2; end;
 
-	if  t ge 2 and tcur_tm1 ge 0 and cd4  gt cmax then cd4 =cmax+(normal(0)*50);
+	if  t ge 2 and tcur_tm1 ge 0 and cd4  gt cmax then cd4 =cmax+(rand('normal')*50);
 	if . < vl lt 0 then vl=0;
 
 	if t ge 2 then do;
 		newmut_tm1=newmut_tm1*fold_change_mut_risk;
-		if started_prep_hiv_test_sens and prep=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; * dependent_on_time_step_length ;
+		* if started_prep_hiv_test_sens and prep_oral=1 then newmut_tm1=newmut_tm1*0.33; * due to test at 1 month from start of prep - jul17; 
+		* dependent_on_time_step_length ;	* lapr define which prep? ; 
+																					* removed becuase not necessarily assuming a 1 month test ;		
 		if newmut_tm1 gt 1 then newmut_tm1=1;
 	end;
 
@@ -8432,7 +9468,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 
 	if pregnant=1 and hiv=1 and t ge 2 then do; 
 		give_birth_with_hiv=1;
-		u=uniform(0);
+		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
 		if 3 < vl <= 4 then u=u*2;
 		if 4 < vl <= 5 then u=u*1;
@@ -8445,7 +9481,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 			or c_rt151m_tm1=1  or c_pr32m_tm1=1  or c_pr33m_tm1=1 or c_pr46m_tm1=1  or c_pr47m_tm1=1
 			or c_pr50vm_tm1=1  or c_pr50lm_tm1=1 or c_pr54m_tm1=1
 			or c_pr76m_tm1=1  or c_pr82m_tm1=1  or c_pr84m_tm1=1   or c_pr88m_tm1=1  or c_pr90m_tm1=1  
-			or c_inpm_tm1=1   or c_insm_tm1=1 then child_with_resistant_hiv=1;
+			or c_in118m_tm1=1   or c_in140m_tm1=1  or c_in148m_tm1=1  or c_in155m_tm1=1  or c_in263m_tm1=1 then child_with_resistant_hiv=1;
 			birth_with_inf_child_lt1yrfi=0; if . < caldate{t} - infection <= 1 then birth_with_inf_child_lt1yrfi = 1; 		
 		end;
 	end;
@@ -8457,33 +9493,38 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * NEW RESISTANCE MUTATIONS ARISING (and dominating)
 - if resistance appears between t-1 and t it doesnt affect the viral load until t+1;
 
-	d=uniform(0);
+	d=rand('uniform');
 
-	if t ge 2 and d lt newmut_tm1 then do;
+em_inm_res_o_cab_off_3m=0;  emerge_inm_res_cab_tail=0; em_inm_res_o_cab=0;
+em_inm_res_o_cab_off_3m_pr=0;  emerge_inm_res_cab_tail_pr=0; 
+em_inm_res_o_cab_off_3m_npr=0; em_inm_res_cab_tail_npr=0; 
+
+* changes *** ;
+if t ge 2 and d lt newmut_tm1 then do;
 
 * rt184;
-		m=uniform(0);if o_3tc_tm1=1 and c_rt184m_tm1=0 and m < 0.8 then c_rt184m=1;
+		m=rand('uniform');if o_3tc_tm1=1 and c_rt184m_tm1=0 and m < 0.8 then c_rt184m=1;
 
 * tams;
 		if o_zdv_tm1=1 and o_3tc_tm1=0 then do; 
-			m=uniform(0); m= m/fold_change_tams_risk;
+			m=rand('uniform'); m= m/fold_change_tams_risk;
 			if         m lt 0.20 then c_rttams=c_rttams_tm1+1; 
 			if 0.20 <= m <  0.21 then c_rttams = c_rttams_tm1+2; end;
 		if o_zdv_tm1=1 and o_3tc_tm1=1 then do; 
-			m=uniform(0);  m= m/fold_change_tams_risk;
+			m=rand('uniform');  m= m/fold_change_tams_risk;
 			if          m lt 0.12 then c_rttams=c_rttams_tm1+1; 
 			if  0.12 <= m < 0.13 then c_rttams = c_rttams_tm1+2; end;
 		if c_rttams gt 6 then c_rttams=6;
 	
 * rt151;
-		if  o_zdv_tm1=1 and c_rt151m_tm1=0 then do; m=uniform(0);m=m/fold_change_151_risk;
+		if  o_zdv_tm1=1 and c_rt151m_tm1=0 then do; m=rand('uniform');m=m/fold_change_151_risk;
 			if m lt 0.02 then c_rt151m=1;end;
 
 * rt65;
 		if o_ten_tm1=1 and o_zdv_tm1=1 and c_rt65m_tm1=0 then do;
-			m=uniform(0); if m lt 0.02 then c_rt65m=1; end;
+			m=rand('uniform'); if m lt 0.02 then c_rt65m=1; end;
 		if o_ten_tm1=1 and o_zdv_tm1=0  and c_rt65m_tm1=0 then do; 
-			m=uniform(0); if m lt rate_res_ten then c_rt65m=1; end; * mar16; * increase from 0.1 to 0.30 based on teneres paper in lancet id;
+			m=rand('uniform'); if m lt rate_res_ten then c_rt65m=1; end; * mar16; * increase from 0.1 to 0.30 based on teneres paper in lancet id;
 
 
 * NNRTI mutations; 
@@ -8491,60 +9532,80 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * dont use fx here as defined elsewhere;
 
 		if o_nev_tm1=1 then do;
-			ax=uniform(0); if ax < 0.2 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
-			bx=uniform(0); if bx < 0.4 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
-			cx=uniform(0); if cx < 0.2 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
+			ax=rand('uniform'); if ax < 0.2 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
+			bx=rand('uniform'); if bx < 0.4 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
+			cx=rand('uniform'); if cx < 0.2 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
 	
 		if o_efa_tm1=1 then do;
-			ax=uniform(0); if ax < 0.6 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
-			bx=uniform(0); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
-			cx=uniform(0); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
+			ax=rand('uniform'); if ax < 0.6 and c_rt181m=0 and c_rt190m=0 then c_rt103m=1;
+			bx=rand('uniform'); if bx < 0.1 and c_rt103m=0 and c_rt190m=0 then c_rt181m=1;
+			cx=rand('uniform'); if cx < 0.1 and c_rt103m=0 and c_rt181m=0 then c_rt190m=1;
 		end;
+
+		* lapr - add - o_rla here (from LAI) even though we are not considering RPV for this analysis? ;
 
 
 * pr mutations ;
 
 * lpr;
         if o_lpr_tm1=1 then do;
-            ax=uniform(0); if ax < 0.01 then c_pr32m=1;
-            bx=uniform(0); if bx < 0.02 then c_pr46m=1;
-			cx=uniform(0); if cx < 0.01 then c_pr47m=1;
-			dx=uniform(0); if dx < 0.02 then c_pr54m=1;
-			ex=uniform(0); if ex < 0.02 then c_pr76m=1;
-            zx=uniform(0); if zx < 0.02 then c_pr82m=1;
+            ax=rand('uniform'); if ax < 0.01 then c_pr32m=1;
+            bx=rand('uniform'); if bx < 0.02 then c_pr46m=1;
+			cx=rand('uniform'); if cx < 0.01 then c_pr47m=1;
+			dx=rand('uniform'); if dx < 0.02 then c_pr54m=1;
+			ex=rand('uniform'); if ex < 0.02 then c_pr76m=1;
+            zx=rand('uniform'); if zx < 0.02 then c_pr82m=1;
          end;
 
 * dar;
 		if o_dar_tm1=1  then do;
-			ax=uniform(0); if ax < 0.01 then c_pr50vm=1;
-			ax=uniform(0); if ax < 0.01 then c_pr54m=1;
-			ax=uniform(0); if ax < 0.01 then c_pr76m=1;
-			bx=uniform(0); if bx < 0.01 then c_pr84m=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr50vm=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr54m=1;
+			ax=rand('uniform'); if ax < 0.01 then c_pr76m=1;
+			bx=rand('uniform'); if bx < 0.01 then c_pr84m=1;
 		end;
 
 * taz;
 		if o_taz_tm1=1  then do;
-			ax=uniform(0); if ax < 0.03 then c_pr50lm=1;
-			bx=uniform(0); if bx < 0.03 then c_pr84m=1;
-			cx=uniform(0); if cx < 0.03 then c_pr88m=1;
+			ax=rand('uniform'); if ax < 0.03 then c_pr50lm=1;
+			bx=rand('uniform'); if bx < 0.03 then c_pr84m=1;
+			cx=rand('uniform'); if cx < 0.03 then c_pr88m=1;
 		end;
+
 
 * dol;
 		if o_dol_tm1=1 then do; 
-		pr_res_dol=0.03; if higher_rate_res_dol=1 then pr_res_dol=0.1; 
-		if art_tld_eod_disrup_covid = 1 then pr_res_dol = pr_res_dol * 2; 
-			ax=uniform(0); if ax < pr_res_dol then c_inpm=1;  
-			bx=uniform(0); if bx < pr_res_dol then c_insm=1;
+			ax=rand('uniform'); if ax < pr_res_dol then c_in118m=1;  
+			bx=rand('uniform'); if bx < pr_res_dol then c_in140m=1;
+			cx=rand('uniform'); if cx < pr_res_dol then c_in148m=1;
+			cx=rand('uniform'); if cx < pr_res_dol then c_in155m=1;
+			dx=rand('uniform'); if dx < pr_res_dol then c_in263m=1;
 		end;
 
-	end;
+		if o_cab_tm1=1 or o_cab=1 or currently_in_prep_inj_tail = 1 then do; * if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m introduded lapr37;
+			* in the period after primary infection we want to ensure we are not underestimating the risk of cab resistance (see paper on cab-la); 
+			ax=rand('uniform'); if caldate{t}-infection=0.25 then ax=ax/incr_res_risk_cab_inf_3m; if ax < pr_res_dol*rr_res_cab_dol then c_in118m=1;  
+			bx=rand('uniform'); if caldate{t}-infection=0.25 then bx=bx/incr_res_risk_cab_inf_3m; if bx < pr_res_dol*rr_res_cab_dol then c_in140m=1;
+			cx=rand('uniform'); if caldate{t}-infection=0.25 then cx=cx/incr_res_risk_cab_inf_3m; if cx < pr_res_dol*rr_res_cab_dol then c_in148m=1;
+			dx=rand('uniform'); if caldate{t}-infection=0.25 then dx=dx/incr_res_risk_cab_inf_3m; if dx < pr_res_dol*rr_res_cab_dol then c_in155m=1;
+			ex=rand('uniform'); if caldate{t}-infection=0.25 then ex=ex/incr_res_risk_cab_inf_3m; if ex < pr_res_dol*rr_res_cab_dol then c_in263m=1;
+			if sum(c_in118m_tm1,c_in140m_tm1,c_in148m_tm1,c_in155m_tm1,c_in263m_tm1) = 0 and (c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1) then do; 
+				if start_restart_prep_inj_hiv = 1 then start_rest_prep_inj_hiv_cabr = 1;
+				if o_cab_tm1=1 or o_cab=1 then do; em_inm_res_o_cab_off_3m=1; em_inm_res_o_cab_off_3m_npr=1; end; 
+				if o_cab=1 then em_inm_res_o_cab=1; ; 
+				if currently_in_prep_inj_tail = 1 then do; emerge_inm_res_cab_tail=1;em_inm_res_cab_tail_npr=1; end;
+			end;		
+		end;
+
+end;
+
 
 
 
 c_totmut=c_rt184m+c_rttams+c_rt65m+c_rt151m+c_rt103m+c_rt181m+c_rt190m
 	+c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
-	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_inpm+c_insm;
+	+c_pr82m+c_pr84m+c_pr88m+c_pr90m+c_in118m+c_in140m+c_in148m+c_in155m+c_in263m;
 
 c_totmut_pi=.;
 c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
@@ -8557,9 +9618,9 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	containing an NNRTI may result in functional monotherapy because NNRTIs have much longer half-lives ; 
 
 	if interrupt=1 and (o_nev_tm1=1 or o_efa_tm1=1) and (c_rt103m_tm1=0 and c_rt181m_tm1=0 and c_rt190m_tm1=0) then do;
-		ax=uniform(0); if ax lt 0.018 then c_rt103m=1; 
-		bx=uniform(0); if bx lt 0.006 then c_rt181m=1; 
-		cx=uniform(0); if cx lt 0.006 then c_rt190m=1; 
+		ax=rand('uniform'); if ax lt 0.018 then c_rt103m=1; 
+		bx=rand('uniform'); if bx lt 0.006 then c_rt181m=1; 
+		cx=rand('uniform'); if cx lt 0.006 then c_rt190m=1; 
 	end;
 
 
@@ -8569,8 +9630,8 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	acq_rt184m=0; if e_rt184m ne 1 and c_rt184m=1 then do; acq_rt184m=1;dt_acq_rt184m=caldate{t}; end;
 	acq_rtm=0;    if e_totmut    lt 1 and (c_rt184m=1 or c_rttams ge 1 or c_rt65m=1 or c_rt151m=1 or c_rt103m=1 or c_rt181m=1 or c_rt190m=1
 	 			or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 
-				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_inpm=1 or c_insm=1)  then do; 
-				acq_rtm=1; dt_acq_rtm=caldate{t}; end;
+				or c_pr54m=1  or c_pr76m=1 or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m or c_in262m)  
+				then do; acq_rtm=1; dt_acq_rtm=caldate{t}; end;
 	if c_rt184m=1 then e_rt184m=1;
 	if t ge 2 and c_rttams >= 1 then e_rttams=max(c_rttams,e_rttams_tm1);
 	if c_rt65m=1 then e_rt65m=1 ;
@@ -8590,11 +9651,14 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
 	if c_pr84m=1 then e_pr84m=1 ;
 	if c_pr88m=1 then e_pr88m=1 ;
 	if c_pr90m=1 then e_pr90m=1 ;
-	if c_inpm=1 then e_inpm=1 ;
-	if c_insm=1 then e_insm=1 ;
+	if c_in118m=1 then e_in118m=1 ;
+	if c_in140m=1 then e_in140m=1 ;
+	if c_in148m=1 then e_in148m=1 ;
+	if c_in155m=1 then e_in155m=1 ;
+	if c_in263m=1 then e_in263m=1 ;
 	e_totmut   =e_rt184m+e_rttams+e_rt65m+e_rt151m+e_rt103m+e_rt181m+e_rt190m
 	+e_pr32m+e_pr33m+e_pr46m+e_pr47m+e_pr50vm+e_pr50lm+e_pr54m+e_pr76m
-	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_inpm+e_insm;
+	+e_pr82m+e_pr84m+e_pr88m+e_pr90m+e_in118m+e_in140m+e_in148m+e_in155m+e_in263m;
 
 
     e_nnmut=.;
@@ -8605,7 +9669,7 @@ c_totmut_pi=c_pr32m+c_pr33m+c_pr46m+c_pr47m+c_pr50vm+c_pr50lm+c_pr54m+c_pr76m
     +e_pr82m+e_pr84m+e_pr88m+e_pr90m;
 
     e_inmut=.;
-    e_inmut=e_inpm+e_insm;
+    e_inmut=e_in118m+e_in140m+e_in148m+e_in155m+e_in263m;
 
 
 * LOSS OF MUTATIONS AFTER STOPPING (or return to mutations at infection - expect for m184v)
@@ -8616,89 +9680,99 @@ and starting another, non-x-resistant, regimen;
 	if caldate{t} > yrart > . then do;
 
 	* nucs;
-		a=uniform(0);if c_rt184m=1 and (tss_3tc    ge 1/12 or p_3tc=0)
+		a=rand('uniform');if c_rt184m=1 and (tss_3tc    ge 0.25 or p_3tc=0)
 		and a < .8 then c_rt184m=0;
 
-		a=uniform(0);if c_rt151m=1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_3tc    ge 1/12 or p_3tc=0) 
+		a=rand('uniform');if c_rt151m=1 and (tss_zdv    ge 0.25 or p_zdv=0) and (tss_3tc    ge 0.25 or p_3tc=0) 
 		and a < .6 then c_rt151m=c_rt151m_inf;
 	
-		a=uniform(0);if c_rt65m=1 and (tss_ten    ge 1/12 or p_ten=0) and (tss_3tc    ge 1/12 or p_3tc=0)
+		a=rand('uniform');if c_rt65m=1 and (tss_ten    ge 0.25 or p_ten=0) and (tss_3tc    ge 0.25 or p_3tc=0)
 		and a < .6 then c_rt65m=c_rt65m_inf;
 
-		a=uniform(0);if c_rttams ge 1 and (tss_zdv    ge 1/12 or p_zdv=0) and (tss_ten    ge 1/12 or p_ten=0)
+		a=rand('uniform');if c_rttams ge 1 and (tss_zdv    ge 0.25 or p_zdv=0) and (tss_ten    ge 0.25 or p_ten=0)
 		and a < .4 then c_rttams=c_rttams_inf;
 
 	* nns; 
-		a=uniform(0);if c_rt103m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt103m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt103m=c_rt103m_inf;
 
-		a=uniform(0);if c_rt181m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt181m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt181m=c_rt181m_inf;
 
-		a=uniform(0);if c_rt190m=1 and (tss_efa    ge 1/12 or p_efa=0) and (tss_nev    ge 1/12 or p_nev=0) 
+		a=rand('uniform');if c_rt190m=1 and (tss_efa    ge 0.25 or p_efa=0) and (tss_nev    ge 0.25 or p_nev=0) 
 		and a < rate_loss_acq_nnm_offart then c_rt190m=c_rt190m_inf;
 
 	* pis;
 
-		a=uniform(0);if c_pr32m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
-		a=uniform(0);if c_pr33m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
-		a=uniform(0);if c_pr46m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
-		a=uniform(0);if c_pr47m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
-		a=uniform(0);if c_pr50vm ge 1 and (tss_dar ge 1/12 or p_dar=0)  and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
-		a=uniform(0);if c_pr54m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
-		a=uniform(0);if c_pr76m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
-		a=uniform(0);if c_pr82m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
-		a=uniform(0);if c_pr84m ge 1 and (tss_dar ge 1/12 or p_dar=0) and (tss_taz ge 1/12 or p_taz=0) and (tss_lpr ge 1/12 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
-		a=uniform(0);if c_pr50lm ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
-		a=uniform(0);if c_pr88m ge 1 and (tss_taz ge 1/12 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
-		a=uniform(0);if c_pr90m ge 1 and (tss_lpr ge 1/12 or p_lpr=0) and (tss_dar ge 1/12 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
+		a=rand('uniform');if c_pr32m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr32m=c_pr32m_inf;
+		a=rand('uniform');if c_pr33m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr33m=c_pr33m_inf;
+		a=rand('uniform');if c_pr46m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr46m=c_pr46m_inf;
+		a=rand('uniform');if c_pr47m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr47m=c_pr47m_inf;
+		a=rand('uniform');if c_pr50vm ge 1 and (tss_dar ge 0.25 or p_dar=0)  and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr50vm=c_pr50vm_inf;
+		a=rand('uniform');if c_pr54m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr54m=c_pr54m_inf;
+		a=rand('uniform');if c_pr76m ge 1 and (tss_dar ge 0.25 or p_dar=0) and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr76m=c_pr76m_inf;
+		a=rand('uniform');if c_pr82m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr82m=c_pr82m_inf;
+		a=rand('uniform');if c_pr84m ge 1 and (tss_dar ge 0.25 or p_dar=0) and (tss_taz ge 0.25 or p_taz=0) and (tss_lpr ge 0.25 or p_lpr=0) and a < rate_loss_acq_pim_offart then c_pr84m=c_pr84m_inf;
+		a=rand('uniform');if c_pr50lm ge 1 and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr50lm=c_pr50lm_inf;
+		a=rand('uniform');if c_pr88m ge 1 and (tss_taz ge 0.25 or p_taz=0) and a < rate_loss_acq_pim_offart then c_pr88m=c_pr88m_inf;
+		a=rand('uniform');if c_pr90m ge 1 and (tss_lpr ge 0.25 or p_lpr=0) and (tss_dar ge 0.25 or p_dar=0) and a < rate_loss_acq_pim_offart then c_pr90m=c_pr90m_inf;
 
 	* integrase inhibitor; 
 
-		a=uniform(0);if c_inpm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_inpm=c_inpm_inf;
-		a=uniform(0);if c_insm ge 1 and (tss_dol ge 1/12 or p_dol=0) and a < rate_loss_acq_iim_offart then c_insm=c_insm_inf;
+		a=rand('uniform');if c_in118m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in118m=c_in118m_inf;	
+		a=rand('uniform');if c_in140m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in140m=c_in140m_inf;	
+		a=rand('uniform');if c_in148m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in148m=c_in148m_inf;	
+		a=rand('uniform');if c_in155m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in155m=c_in155m_inf;	
+		a=rand('uniform');if c_in263m = 1 and (tss_dol ge 0.25 or p_dol=0)  and (tss_cab ge 0.25 or p_cab=0) and a < rate_loss_acq_iim_offart then c_in263m=c_in263m_inf;	
 
 end;
 
 
 * LOSS OF TRANSMITTED RESISTANCE MUTATIONS FROM MAJORITY VIRUS ("LOSS OF PERSISTENCE");
 
-x=uniform(0); if t ge 2 and c_rttams_inf ge 1 and naive=1 and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
-x=uniform(0); if c_rt184m_inf = 1 and naive=1 and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
-x=uniform(0); if c_rt65m_inf = 1 and naive=1 and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
-x=uniform(0); if c_rt151m_inf = 1 and naive=1 and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
-x=uniform(0); if c_rt103m_inf = 1 and naive=1 and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
-x=uniform(0); if c_rt181m_inf = 1 and naive=1 and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
-x=uniform(0); if c_rt190m_inf = 1 and naive=1 and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
-x=uniform(0); if c_pr32m_inf = 1 and naive=1 and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
-x=uniform(0); if c_pr33m_inf = 1 and naive=1 and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
-x=uniform(0); if c_pr46m_inf = 1 and naive=1 and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
-x=uniform(0); if c_pr47m_inf = 1 and naive=1 and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
-x=uniform(0); if c_pr50lm_inf = 1 and naive=1 and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
-x=uniform(0); if c_pr50vm_inf = 1 and naive=1 and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
-x=uniform(0); if c_pr54m_inf = 1 and naive=1 and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
-x=uniform(0); if c_pr76m_inf = 1 and naive=1 and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
-x=uniform(0); if c_pr82m_inf = 1 and naive=1 and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
-x=uniform(0); if c_pr84m_inf = 1 and naive=1 and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
-x=uniform(0); if c_pr88m_inf = 1 and naive=1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
-x=uniform(0); if c_pr90m_inf = 1 and naive=1 and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
-x=uniform(0); if c_inpm_inf = 1  and naive=1 and c_inpm=1 and x < rate_loss_persistence then c_inpm=0;
-x=uniform(0); if c_insm_inf = 1  and naive=1 and c_insm=1 and x < rate_loss_persistence then c_insm=0;
+x=rand('uniform'); if t ge 2 and c_rttams_inf ge 1 and (o_zdv ne 1 and o_ten ne 1) and c_rttams ge 1 and x < rate_loss_persistence then c_rttams=c_rttams_tm1-1;  
+x=rand('uniform'); if c_rt184m_inf = 1 and (o_3tc ne 1) and c_rt184m=1 and x < 3 * rate_loss_persistence then c_rt184m=0;
+x=rand('uniform'); if c_rt65m_inf = 1 and (o_ten ne 1) and c_rt65m=1 and x < rate_loss_persistence then c_rt65m=0;
+x=rand('uniform'); if c_rt151m_inf = 1 and (o_zdv ne 1) and c_rt151m=1 and x < rate_loss_persistence then c_rt151m=0;
+
+x=rand('uniform'); if c_rt103m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt103m=1 and x < rate_loss_persistence then c_rt103m=0;
+x=rand('uniform'); if c_rt181m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt181m=1 and x < rate_loss_persistence then c_rt181m=0;
+x=rand('uniform'); if c_rt190m_inf = 1 and (o_nev ne 1 and o_efa ne 1) and c_rt190m=1 and x < rate_loss_persistence then c_rt190m=0;
+
+x=rand('uniform'); if c_pr32m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr32m=1 and x < rate_loss_persistence then c_pr32m=0;
+x=rand('uniform'); if c_pr33m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr33m=1 and x < rate_loss_persistence then c_pr33m=0;
+x=rand('uniform'); if c_pr46m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr46m=1 and x < rate_loss_persistence then c_pr46m=0;
+x=rand('uniform'); if c_pr47m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr47m=1 and x < rate_loss_persistence then c_pr47m=0;
+x=rand('uniform'); if c_pr50lm_inf = 1 and (o_taz ne 1) and c_pr50lm=1 and x < rate_loss_persistence then c_pr50lm=0;
+x=rand('uniform'); if c_pr50vm_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr50vm=1 and x < rate_loss_persistence then c_pr50vm=0;
+x=rand('uniform'); if c_pr54m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr54m=1 and x < rate_loss_persistence then c_pr54m=0;
+x=rand('uniform'); if c_pr76m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr76m=1 and x < rate_loss_persistence then c_pr76m=0;
+x=rand('uniform'); if c_pr82m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr82m=1 and x < rate_loss_persistence then c_pr82m=0;
+x=rand('uniform'); if c_pr84m_inf = 1 and (o_lpr ne 1 and o_taz ne 1 and o_dar ne 1) and c_pr84m=1 and x < rate_loss_persistence then c_pr84m=0;
+x=rand('uniform'); if c_pr88m_inf = 1 and o_taz ne 1 and c_pr88m=1 and x < rate_loss_persistence then c_pr88m=0;
+x=rand('uniform'); if c_pr90m_inf = 1 and (o_lpr ne 1 and o_dar ne 1) and c_pr90m=1 and x < rate_loss_persistence then c_pr90m=0;
+
+x=rand('uniform'); if c_in118m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in118m=1 and x < rate_loss_persistence then c_in118m=0; 
+x=rand('uniform'); if c_in140m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in140m=1 and x < rate_loss_persistence then c_in140m=0; 
+x=rand('uniform'); if c_in148m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in148m=1 and x < rate_loss_persistence then c_in148m=0; 
+x=rand('uniform'); if c_in155m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in155m=1 and x < rate_loss_persistence then c_in155m=0; 
+x=rand('uniform'); if c_in263m_inf = 1  and (o_dol ne 1 and o_cab ne 1) and c_in263m=1 and x < rate_loss_persistence then c_in263m=0; 
+
 
 
 * LOSS OF MUTATIONS ACQUIRED IN PMTCT FROM MAJORITY and minoririty VIRUS ;
 
 * dependent_on_time_step_length ;
 
-x=uniform(0);if c_rt103m=1 and                   c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_maj then c_rt103m=0;
-x=uniform(0);if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_min then e_rt103m=0;
+x=rand('uniform');if c_rt103m=1 and                   c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_maj then c_rt103m=0;
+x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1 and p_efa ne 1 and x < rate_loss_nnres_pmtct_min then e_rt103m=0;
 
 
 	* "REGAINING" MUTATIONS AFTER RESTARTING;
 	if e_rt184m=1 and o_3tc=1 then c_rt184m=1;
 	if e_rt65m=1 and o_ten=1 then c_rt65m=1;
 	if e_rt151m=1 and o_zdv=1  then c_rt151m=1;
-	if e_rttams >= 1 and o_zdv=1  then c_rttams=e_rttams;
+	if e_rttams >= 1 and (o_zdv=1 or o_ten=1) then c_rttams=e_rttams;
 	if e_rt103m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt103m=1; end;
 	if e_rt181m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt181m=1; end;
 	if e_rt190m=1 and (o_nev=1 or o_efa=1 ) then do; c_rt190m=1; end;
@@ -8714,8 +9788,13 @@ x=uniform(0);if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1 and 
 	if e_pr84m=1 and (o_lpr=1  or o_dar=1 or o_taz=1) then c_pr84m=1;
 	if e_pr88m=1 and (o_taz=1) then c_pr88m=1;
 	if e_pr90m=1 and (o_lpr=1  or o_dar=1) then c_pr90m=1;
-	if e_inpm=1  and (o_dol=1 ) then c_inpm=1;
-	if e_insm=1  and (o_dol=1 ) then c_insm=1;
+	if e_in118m=1  and (o_dol=1 or o_cab=1 ) then c_in118m=1;
+	if e_in140m=1  and (o_dol=1 or o_cab=1 ) then c_in140m=1;
+	if e_in148m=1  and (o_dol=1 or o_cab=1 ) then c_in148m=1;
+	if e_in155m=1  and (o_dol=1 or o_cab=1 ) then c_in155m=1;
+	if e_in263m=1  and (o_dol=1 or o_cab=1 ) then c_in263m=1;
+	
+
 
 
 * art_monitoring_strategy
@@ -8761,12 +9840,12 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 
 if t ge 2 and visit=1 and art_monitoring_strategy=3 and 0.5 <= caldate{t}-date_last_vlm_g1000 <= 1.0 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and 0.5 <= caldate{t}-date_who3_4_event_switch_eval <= 1.0 then do;
-	s=uniform(0); 
+	s=rand('uniform'); 
 	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
@@ -8792,12 +9871,16 @@ end;
 * art_monitoring_strategy = 8. CD4 monitoring (6 mthly) alone;
 
 
-if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 
-		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=uniform(0);  * jan15;
-		cd4_cost_inc = 1; if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;  end;
+* new for pop_wide_tld;
+* added condition below : onartvisit0 ne 1;
+
+if t ge 2  and visit=1 and onartvisit0 ne 1 and art_monitoring_strategy=8 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
+
+		if caldate{t}-yrart ge 3 and (time_since_last_cm >= 0.25 or time_since_last_cm =.) then do; s=rand('uniform');  * jan15;
+		cd4_cost_inc = 1; if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;  end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;  cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;  cd4_cost_inc = 2;
 			if . < conf_measured_c < 200 then do;
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; 
 				if o_zdv=1 then f_zdv=1;
@@ -8813,10 +9896,10 @@ if t ge 2  and visit=1 and art_monitoring_strategy=8 and (artline=1 or int_clini
 			conf_measured_c=.;   
 		end;
 
-		if 1 <= caldate{t}-yrart < 3 and (time_since_last_cm >= 0.5 or time_since_last_cm =.) then do; s=uniform(0); *jan15;
-		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; end;
+		if 1 <= caldate{t}-yrart < 3 and (time_since_last_cm >= 0.5 or time_since_last_cm =.) then do; s=rand('uniform'); *jan15;
+		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; end;
 		if . < cm     < 100 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
 			if . < conf_measured_c < 100 then do;
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; 
 				if o_zdv=1 then f_zdv=1;
@@ -8845,17 +9928,17 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 		or 
 		(int_clinic_not_aw=1 and caldate{t}-yrart ge 1 and mod(toffart,0.5)=0 )
 		) then do; 
-			s=uniform(0); 
-			if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; 
+			s=rand('uniform'); 
+			if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; 
 		end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
 			if . < conf_measured_c < 200 then do; 
-				s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+				s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 				end;
 			end; 
 			vl_cost_inc = 1; 
@@ -8876,17 +9959,17 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 		end;
 
 		if (tcur in (1,1.5,2,2.5) or (int_clinic_not_aw=1 and 0 < caldate{t}-yrart < 3 and toffart    in (0.5,1,1.5,2,2.5))) then do; 
-			s=uniform(0); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 1; 
+			s=rand('uniform'); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 1; 
 		end;
 		if . < cm     < 100 then do;
-				s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 2;
+				s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 2;
 				if . < conf_measured_c < 100 then do;
-					s=uniform(0);	
+					s=rand('uniform');	
 					if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm    = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm    = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 				end;
 			vl_cost_inc = 1;
@@ -8917,14 +10000,14 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 		if (
 		(mod(tcur,0.5)=0 and tcur ge 3) 
 		or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1 and mod(toffart   ,0.5)=0 ))  and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5)
-		then do; s=uniform(0); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 1;  end;
+		then do; s=rand('uniform'); if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 1;  end;
 		if . < cm     < 200 then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 2;
-			if . < conf_measured_c < 200 then do; s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-			if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 2;
+			if . < conf_measured_c < 200 then do; s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 			end;  
 			end;
 			vl_cost_inc = 1; 
@@ -8934,15 +10017,15 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			conf_measured_c=.;
 		end;
 		if (tcur in (1,1.5,2,2.5) or (int_clinic_not_aw=1 and 0 < caldate{t}-yrart < 3 and toffart    in (0.5,1,1.5,2,2.5)))
-		and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5) then do; s=uniform(0); 
-		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2;cd4_cost_inc = 1; end;
+		and (date_cd4_switch_eval = . or caldate{t}-date_cd4_switch_eval > 0.5) then do; s=rand('uniform'); 
+		if s < prob_cd4_meas_done then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2;cd4_cost_inc = 1; end;
 		if . < cm     < 100  then do;
-			s=uniform(0); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; cd4_cost_inc = 2;
-			if . < conf_measured_c < 100 then do; s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			s=rand('uniform'); if s < prob_cd4_meas_done then conf_measured_c=(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_inc = 2;
+			if . < conf_measured_c < 100 then do; s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		end;  
 		end;
 		vl_cost_inc = 1; 
@@ -8952,12 +10035,12 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			conf_measured_c=.;
 		end;
 
-		if t ge 3 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and 0.5 <= caldate{t}-date_cd4_switch_eval <= 1.0 then do;s=uniform(0);
+		if t ge 3 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 and 0.5 <= caldate{t}-date_cd4_switch_eval <= 1.0 then do;s=rand('uniform');
 			if s < eff_prob_vl_meas_done then do; 
-			if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+			if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 			end;  
 			vl_cost_inc = 1;
 			if vm gt log10(1000) then do;
@@ -8980,16 +10063,19 @@ end;
 * art_monitoring_strategy = 150.  viral load monitoring (6m, 12m, annual) - who ;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
+* new for pop_wide_tld;
 
-if art_monitoring_strategy=150  and visit=1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+* added condition below : onartvisit0 ne 1;
+
+if art_monitoring_strategy=150  and visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
 and restart    ne 1 and restart_tm1  ne 1  and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
@@ -9030,11 +10116,11 @@ if art_monitoring_strategy=1500  and visit=1 and (artline=1 or int_clinic_not_aw
 and restart    ne 1 and restart_tm1  ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (caldate{t}-yrart = 1.0) or (time_since_last_vm >= 0.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.00 and 
 	(caldate{t} - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate{t} ; date_drug_level_test = caldate{t};
 		drug_level_test=1; end;
 		end;  
@@ -9079,11 +10165,11 @@ if art_monitoring_strategy=152  and visit=1 and (artline=1 or int_clinic_not_aw=
 and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (time_since_last_vm >= 1.75) or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and 
 	(caldate&j - date_conf_vl_measure_done >= 2 or date_conf_vl_measure_done=.)) then do; * jan15;
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
@@ -9117,11 +10203,11 @@ end;
 if art_monitoring_strategy=153  and visit=1 and (artline=1 or int_clinic_not_aw=1) 
 and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) or (time_since_last_vm >= 0.75) then do; * jan15;
-		s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
@@ -9148,11 +10234,11 @@ if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy n
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then date_conf_vl_measure_done = caldate&j ;
 		end;  
 		vl_cost_inc = 1;
@@ -9189,11 +10275,11 @@ and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
 		drug_level_test=1;end;  
 		end;
@@ -9230,17 +10316,15 @@ then do;
 end;
 
 
-
-
 if reg_option in (120 121) and linefail=1 and artline=2 and o_dol=1 and f_dol_tm1 ne 1 and p_taz ne 1 and p_lpr ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
 and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
-		s=uniform(0);  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0 then do; date_conf_vl_measure_done = caldate&j ;date_drug_level_test = caldate{t};
 		drug_level_test=1;end;  
 		end;
@@ -9288,13 +10372,13 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 
 * (re)enter care;
 * measure cd4 crag tb lam when (re)entering care;
-crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_re_enter_care=.; re_enter_care=0;
+crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_enter_care=.; enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
-	if cm  =. then cm   =(sqrt(cd4)+(normal(0)*sd_measured_cd4))**2; 
+	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
-if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; re_enter_care=1; cd4_re_enter_care=cd4; end;
+if cm ne . then cm_this_per =1; if date_1st_hiv_care_visit=caldate{t} or return=1 then do; enter_care=1; cd4_enter_care=cd4; end;
 
 
 * measure viral load on second line (in fact, after failing first line) ; 
@@ -9304,11 +10388,11 @@ above at art monitoring strategy 150; * may18;
 
 if sv_secondline=1 and visit=1 and linefail ge 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 then do;  
 	if time_since_last_vm >= 0.75 or time_since_last_vm = . then do; 
-		s=uniform(0);  if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		s=rand('uniform');  if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 		vl_cost_inc=1;
 		end;  
 		end;
@@ -9319,11 +10403,11 @@ end;
 if res_test_6m_if_vlg1000=1 and t ge 2 then do;  * last_vm_gt_1000 only defined while linefail = 0;
 	
 	if visit=1 and 
-	(caldate{t} - yrart = 0.50 and ( onart = 1 or int_clinic_not_aw=1 )) then do;s=uniform(0);	if s < eff_prob_vl_meas_done then do; 
-		if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-		if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-		if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-		if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+	(caldate{t} - yrart = 0.50 and ( onart = 1 or int_clinic_not_aw=1 )) then do;s=rand('uniform');	if s < eff_prob_vl_meas_done then do; 
+		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 	end;  
 	vl_cost_inc = 1; end;
 			if vm gt log10(1000) then do; res_test=1; if date_v_alert=. then date_v_alert=caldate{t};end;
@@ -9358,7 +10442,7 @@ if naive=1 then do; artline=.; linefail=.;end;
 * 3tc;
 if e_rt65m=1 or e_rt151m=1 then r_3tc=0.25;
 if e_rt184m=1                 then r_3tc=0.75;  
-if zero_3tc_activity_m184m=1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00;
+if zero_3tc_activity_m184 =1 and (e_rt65m=1 or e_rt151m=1) then r_3tc=1.00;
 
 
 * zdv;
@@ -9462,16 +10546,23 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 
 * dol;
-      if (e_inpm=1 and e_insm=1) then r_dol=1.0;
-      if (e_inpm=1 and e_insm=0) then r_dol=0.75;
-      if (e_inpm=0 and e_insm=1) then r_dol=0.25;
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1) then r_dol=0.75;
 
 
+* cab;
+      if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;   
+	
+	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-date_last_stop_prep_inj = 0 then cab_res_o_cab = 1; 
+	if currently_in_prep_inj_tail = 1 then cab_res_tail = 1; end; 
+
+* if in prep_inj tail and infected with hiv;
+cur_in_prep_inj_tail_hiv=0; if currently_in_prep_inj_tail = 1 then cur_in_prep_inj_tail_hiv=1;
+cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerge_inm_res_cab_tail=1) then cur_in_prep_inj_tail_no_r=1;
 
 	* DEFINE NACTIVE - number of active drugs in the regimen ;
 
 	nactive=nod   -((o_zdv*r_zdv)+(o_3tc*r_3tc)+(o_ten*r_ten)
-	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol));
+	                  +(o_dar*r_dar)+(o_efa*r_efa)+(o_nev*r_nev)+(o_taz*r_taz)+(o_lpr*r_lpr)+(o_dol*r_dol)+(o_cab*r_cab));	* lapr - add cab & consider tail code from LAI;
 
 	* zdv lower potency ;
 	if o_zdv=1 and zdv_potency_p75=1 then nactive=nactive - 0.25*(1-r_zdv);
@@ -9482,10 +10573,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if o_taz=1 and pir_higher_potency=1 then nactive=nactive+ (1-r_taz);
 
 
-	* dol_higher_potency;
-	if o_dol=1 and dol_higher_potency=1 then nactive=nactive+ (1-r_dol);
-	if o_dol=1 and dol_higher_potency=0.5 then nactive=nactive+ (0.5*(1-r_dol));
-	if o_dol=1 and dol_higher_potency=0.25 then nactive=nactive+ (0.25*(1-r_dol));
+	* dol_higher_potency (assumed to apply the same to dol and cab);
+	if o_dol=1 then nactive=nactive + dol_higher_potency * (1 - r_dol);    
+	cab_higher_potency = dol_higher_potency ;
+	if prep_inj =1 or 0 <= tss_cab <= cab_time_to_lower_threshold then nactive = (1 + cab_higher_potency) * (1 - r_cab); 
+	
 
 	* added may 2019 in response to advance results - now using potency of 1.5 for both efa and dol;
 	if o_efa=1 then nactive=nactive+ (0.5*(1-r_efa)); 
@@ -9497,12 +10589,14 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	nactive=nactive-is_red_activity;
 	if nactive < 0 then nactive=0;
 
-	if nod   =0 then nactive=.;
+	if nod = 0 then nactive=.;
 
 	* date of first having resistance (intermediate or resistant) to at least one drug;
 	if res_drug=. then do;
 		if r_zdv >= 0.5 or  r_3tc  >= 0.5 or  r_dar >= 0.5 or   r_efa >= 0.5 or r_nev >= 0.5 or  
-		r_ten >= 0.5 or r_lpr ge 0.5  or r_taz ge 0.5 or   r_dol >= 0.5 then res_drug=caldate{t};
+		r_ten >= 0.5 or  r_lpr ge 0.5 or  r_taz ge 0.5 or  r_dol >= 0.5  or r_cab >= 0.5  
+		then res_drug=caldate{t};							* lapr - added r_cab JAS Nov2021;
+
 	end;
 
 
@@ -9529,7 +10623,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * below tox risk and persistence ;
 
 	c_nau=0;
-	r=uniform(0); if . < caldate{t}-yrart < 1 then r=r/5.0; * increased risk of nausea in first year;
+	r=rand('uniform'); if . < caldate{t}-yrart < 1 then r=r/5.0; * increased risk of nausea in first year;
 	if t ge 2 and (o_taz=1 or o_dar=1)               then do; 
 	if c_nau_tm1=0 and r < (r_nau_start_taz_dar * double_rate_gas_tox_taz) then c_nau=1; 
 	if c_nau_tm1=1 then c_nau=1; if c_nau_tm1=1 and r < p_nau_stops_taz_dar then c_nau=0;  
@@ -9540,25 +10634,25 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	end;
 
 	c_dia=0;
-	r=uniform(0);if . < caldate{t}-yrart < 1 then r=r/2.5; * increased risk of diarrhoea in first year;
+	r=rand('uniform');if . < caldate{t}-yrart < 1 then r=r/2.5; * increased risk of diarrhoea in first year;
 	if t ge 2 and o_lpr=1 then do; 
 	if c_dia_tm1=0 and r < r_dia_start_lpr then c_dia=1; 
 	if c_dia_tm1=1 then c_dia=1; if c_dia_tm1=1 and r < p_dia_stops_lpr then c_dia=0;  
 	end;
-	r=uniform(0);if . < caldate{t}-yrart < 1 then r=r/2.5;
+	r=rand('uniform');if . < caldate{t}-yrart < 1 then r=r/2.5;
 	if t ge 2 and (o_taz=1  or o_dar=1) then do; 	
 	if c_dia_tm1=0 and r < (r_dia_start_taz_dar * double_rate_gas_tox_taz) then c_dia=1; 
 	if c_dia_tm1=1 then c_dia=1; if c_dia_tm1=1 and r < p_dia_stops_taz_dar then c_dia=0;
 	end;
 
 	c_ras=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 3 and (o_efa=1 and 0 <= caldate{t}-date_start_efa <= 0.5 and r < r_ras_start_efa ) then c_ras=1;
 	if t ge 3 and (o_nev=1 and 0 <= caldate{t}-date_start_nev <= 0.5 and r < r_res_start_nev ) then c_ras=1;
 
 	if tox_weightg_dol=1 then do;
 	* note c_weightg is weight gain as a toxicity potentially affecting treatment interruption;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 3 and (o_dol=1 and 0 < (caldate{t} - date_start_dol) <= 1 and r < r_weightg_start_dol  ) then c_weightg=1;
 	if o_dol ne 1 or (caldate{t} - date_start_dol) > 1 then c_weightg = 0;
 	end;
@@ -9568,8 +10662,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	bmi above 23 for whom a rise could lead to increased risk of death (eg resulting fron diabetes) ;
 
 	if incr_mort_risk_dol_weightg_i = . then incr_mort_risk_dol_weightg_i = 1.00 ;	
-	r = uniform(0);
-	if caldate{t} = date_start_dol and (r < prop_bmi_ge23  or (date_start_tld_prep ne . and bmi_gt23_start_dol =1)) then do;  
+	r = rand('uniform');
+	if caldate{t} = date_start_dol and r < prop_bmi_ge23 and date_start_tld_prep = . then do;  
+	* if caldate{t} = date_start_dol and (r < prop_bmi_ge23  or (date_start_tld_prep ne . and bmi_gt23_start_dol =1)) then do;  * above code changed from this;
 			bmi_gt23_start_dol=1;
 			if incr_mort_risk_dol_weightg = 1 then incr_mort_risk_dol_weightg_i = 1.00 ;  
 			if incr_mort_risk_dol_weightg = 1.1 then incr_mort_risk_dol_weightg_i = 1.03 ;  
@@ -9584,13 +10679,13 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if gender=2 and age < 55 and want_no_more_children ne 1 and bmi_gt23_start_dol = 1 then bmi_gt23_start_dol_wwc=1;
 
 	c_cns=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if t ge 2 and o_efa=1 then do;
 		if c_cns_tm1=0 and r < r_cns_start_efa and tcur < 1 then c_cns=1;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur < 1 and r < p_cns_stops_efa then c_cns=0;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur >= 1 and r < p_cns_stops_efa / 2 then c_cns=0;
 	end;
-	rr=uniform(0);
+	rr=rand('uniform');
 	if t ge 2 and o_dol=1 then do;  * take incidence as half for efa but with same persistence rate; * apr16; * changed since nih talk; 
 		if c_cns_tm1=0 and rr < (r_cns_start_dol * rel_dol_tox) and tcur < 1 then c_cns=1;
 		if c_cns_tm1=1 then c_cns=1; if c_cns_tm1=1  and tcur < 1 and rr < p_cns_stops_dol then c_cns=0;
@@ -9598,32 +10693,32 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	end;
 
 	* no c_lip=0 because stays once have it even if stop drugs;
-	r=uniform(0);
+	r=rand('uniform');
 	if o_zdv=1 and r < r_lip_start_zdv then c_lip=1;
 	
 	c_hep=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if  o_nev=1 and tcur <= 0.5 and r < r_hep_start_nev then c_hep=1;
 	
 	c_otx=0;
-	r=uniform(0);
+	r=rand('uniform');
 	if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of otox in first year;
 	if onart=1 and r < r_otx_start then c_otx=1;
 
 	c_ane=0;
-	r=uniform(0); if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of ane in first year;
+	r=rand('uniform'); if . < caldate{t}-yrart < 1 then r=r/1.5; * increased risk of ane in first year;
 	if t ge 2 and o_zdv=1 and c_ane_tm1 =0 and r < r_ane_start_zdv then c_ane=1;
 	if o_zdv=1 and c_ane_tm1=1 then c_ane=1; if c_ane_tm1=1 and r < p_ane_stops_zdv then c_ane=0;
 
 	c_head=0;
-	d=uniform(0); if . < caldate{t}-yrart < 1 then d=d/1.5; * increased risk of head in first year;
+	d=rand('uniform'); if . < caldate{t}-yrart < 1 then d=d/1.5; * increased risk of head in first year;
 	if t ge 2 and o_zdv=1 and c_head_tm1 =0 and d < r_head_start_zdv then c_head=1;
 	if o_zdv=1 and c_head_tm1=1 then c_head=1; if c_head_tm1=1 and r < p_head_stops_zdv then c_head=0;
 
 	c_lac=0;
-	d=uniform(0); if o_zdv=1 and d < r_lac_start_zdv then c_lac=1;
+	d=rand('uniform'); if o_zdv=1 and d < r_lac_start_zdv then c_lac=1;
 
-	e=uniform(0);
+	e=rand('uniform');
 	c_neph=0;
 	if t ge 2 and o_ten=1 and c_neph_tm1=0 and e < r_neph_start_ten then c_neph=1;
 	if o_ten=1 and c_neph_tm1=1 then c_neph=1; if c_neph_tm1=1 and r < p_neph_stops_ten then c_neph=0;
@@ -9636,7 +10731,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 	* PCP prophylaxis; * amended nov19;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	pcp_p_tm1=pcp_p;
 
@@ -9644,7 +10739,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if visit=1 and . < cm    < 350 and d lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 	end;
 
-	r=uniform(0);
+	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 
 	if caldate{t} ge 2015 and visit=1 and d < 0.8 then pcp_p   =1;
@@ -9655,34 +10750,34 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	* TB preventive prophylaxis ;  
 
 	tb_proph_tm1=tb_proph;
-
 	tb_proph = 0;	
-	u=uniform(0);
-	if caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1 and u < rate_tb_proph_init then do; 
+	u=rand('uniform');
+	if ((date_most_recent_tb_proph = . and date_most_recent_tb = .) or (caldate{t} - max(date_most_recent_tb_proph, date_most_recent_tb) > 1)) 
+	and u < rate_tb_proph_init then do; 
 		tb_proph = 1; date_most_recent_tb_proph = caldate{t};
 	end;
 
 	* crypm preventive prophylaxis (this is when crag presence is unknown - if known to be present then this is pre-emptive treatment - the same 
 	as diagnosing crypm early (i.e. crypm_diag_e=1) ;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	crypm_proph_tm1=crypm_proph;
 
 	crypm_proph = 0;	
-	u=uniform(0);
+	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_crypm_proph, date_last_crypm) > 1 and u < rate_crypm_proph_init then do; 
 		crypm_proph = 1; date_most_recent_crypm_proph = caldate{t};
 	end;
 
 	* SBI preventive prophylaxis ;
 
-	d=uniform(0);
+	d=rand('uniform');
 
 	sbi_proph_tm1=sbi_proph;
 
 	sbi_proph = 0;	
-	u=uniform(0);
+	u=rand('uniform');
 	if caldate{t} - max(date_most_recent_sbi_proph, date_last_sbi) > 1 and u < rate_sbi_proph_init then do; 
 		sbi_proph = 1; date_most_recent_sbi_proph = caldate{t};
 	end;
@@ -9744,10 +10839,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 	if t ge 2 and dead=0 then do; 
 		who3_rate=base_rate*fold_incr_who3;
 		* assume higher risk than of who4, but with same predictors;
-		if nod    ge 3 then who3_rate = 0.6*who3_rate;
-		if nod    = 2 then who3_rate = 0.85*who3_rate;
-		if nod    = 1 then who3_rate = 0.9*who3_rate;
-		if nod    = 0 then who3_rate = 1*who3_rate;
+		if onart = 1 then who3_rate = ind_effect_art_hiv_disease_death*who3_rate;
 
 		non_tb_who3_rate = who3_rate * 4/5; * because assume 20% of who3 is tb;
 		tb_rate = who3_rate * 1/5; * because assume 20% of who3 is tb;
@@ -9759,7 +10851,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if 0 <= (caldate{t} - date_most_recent_tb_proph) < 1 then tb_rate = tb_rate * effect_tb_proph;
 		tb_risk  = 1 - exp (-0.25* (tb_rate));
 
-		xy5=uniform(0); xy6=uniform(0);
+		xy5=rand('uniform'); xy6=rand('uniform');
 		if xy5 le non_tb_who3_risk  then non_tb_who3_ev   =1;
 		if xy6 le tb_risk then tb  =1;
  
@@ -9774,7 +10866,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then tb_prob_diag_l = tb_prob_diag_l * effect_visit_prob_diag_l ;
 			if tblam_measured_this_per = 1 then tb_prob_diag_l = tb_prob_diag_l * tblam_eff_prob_diag_l ;
 			tb_prob_diag_e = 1 - tb_prob_diag_l ;
-			ii=uniform(0); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
+			ii=rand('uniform'); tb_diag_e=0; if ii < tb_prob_diag_e then tb_diag_e=1 ;  
 		end;
 
 
@@ -9783,7 +10875,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			who3_event   =1;
 
 * ------------------------------------------------------------------------------------------------------- ;
-			f=uniform(0);
+			f=rand('uniform');
 
 			if t ge 3 and art_monitoring_strategy = 1 and f < prob_who3_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 
@@ -9803,11 +10895,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 			if t ge 3 and art_monitoring_strategy=2  and f < prob_who3_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 	* take account of time delay with dbs or plasma compared with poc;
@@ -9831,11 +10923,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if t ge 3 and art_monitoring_strategy = 3 and f < prob_who3_diagnosed  then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and . < caldate{t}-date_last_who3 < 1 and linefail_tm1=0 and 
 				((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 			if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 			if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
@@ -9864,9 +10956,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		if t ge 2 and (0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then rate=base_rate;
 	
 		if pcp_p   =1 then rate=rate*0.8;
-		if nod    ge 3 then rate = 0.6 *rate;
-		if nod    = 2 then rate = 0.85*rate;
-		if nod    =1 then rate = 0.9*rate;
+		if onart=1 then rate = ind_effect_art_hiv_disease_death *rate;
 
 		oth_adc_rate = rate * (1 - prop_adc_crypm - prop_adc_sbi) ; * because assume 30% of adc is sbi or crypm;
 		* todo: determine length of effect of crypm_proph;
@@ -9881,9 +10971,9 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 		risk_crypm = 1 - exp (-0.25*crypm_rate);
 		risk_sbi = 1 - exp (-0.25*sbi_rate);
 
-		x2=uniform(0); if x2 le risk_oth_adc then oth_adc=1;
-		x2=uniform(0); if x2 le risk_crypm then crypm=1;
-		x2=uniform(0); if x2 le risk_sbi then sbi=1;
+		x2=rand('uniform'); if x2 le risk_oth_adc then oth_adc=1;
+		x2=rand('uniform'); if x2 le risk_crypm then crypm=1;
+		x2=rand('uniform'); if x2 le risk_sbi then sbi=1;
  
 		* effect of being under care on probability of tb or an adc being diagnosed late - when patient seriously ill 
 		- i.e. low/zero effect of treatment  
@@ -9897,7 +10987,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then crypm_prob_diag_l = crypm_prob_diag_l * effect_visit_prob_diag_l ;
 			if crag_measured_this_per = 1 then crypm_prob_diag_l = crypm_prob_diag_l * crag_eff_prob_diag_l ;
 			crypm_prob_diag_e = 1 - crypm_prob_diag_l ;
-			ii=uniform(0); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
+			ii=rand('uniform'); crypm_diag_e=0; if ii < crypm_prob_diag_e then crypm_diag_e=1 ;  
 		end;
 
 
@@ -9906,7 +10996,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			sbi_prob_diag_l = sbi_base_prob_diag_l ;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then sbi_prob_diag_l = sbi_prob_diag_l * effect_visit_prob_diag_l ;
 			sbi_prob_diag_e = 1 - sbi_prob_diag_l ;
-			ii=uniform(0); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
+			ii=rand('uniform'); sbi_diag_e=0; if ii < sbi_prob_diag_e then sbi_diag_e=1 ;  
 		end;
 
 		oth_adc_prob_diag_l = .;  oth_adc_diag_e = .; 
@@ -9914,7 +11004,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			oth_adc_prob_diag_l = oth_adc_base_prob_diag_l ;
 			if visit=1 and (sv ne 1 or (adh > 0.8 and onart=1)) then oth_adc_prob_diag_l = oth_adc_prob_diag_l * effect_visit_prob_diag_l ;
 			oth_adc_prob_diag_e = 1 - oth_adc_prob_diag_l ;
-			ii=uniform(0); oth_adc_diag_e=0; if ii < oth_adc_prob_diag_e then oth_adc_diag_e=1 ;  
+			ii=rand('uniform'); oth_adc_diag_e=0; if ii < oth_adc_prob_diag_e then oth_adc_diag_e=1 ;  
 		end;
 
 		if oth_adc=1 or crypm=1 or sbi=1 then do;
@@ -9925,7 +11015,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			adc_line2_lf2=0; if artline=2 and linefail=2 then adc_line2_lf2 =1; adc_artexpoff=0; if naive=0 and onart=0 then adc_artexpoff =1;
 
 * ------------------------------------------------------------------------------------------------------- ;
-			f=uniform(0);
+			f=rand('uniform');
 
 			if t ge 3 and art_monitoring_strategy = 1  and f < prob_who4_diagnosed  then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 then do;
@@ -9944,11 +11034,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 
 			if t ge 3 and art_monitoring_strategy=2  and f < prob_who4_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 then do;
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease;  	if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease;  	if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 
@@ -9972,11 +11062,11 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 			if t ge 3 and art_monitoring_strategy = 3  and f < prob_who4_diagnosed then do;
 				if ((artline=1 and tcur ge 1) or (int_clinic_not_aw=1 and caldate{t}-yrart ge 1)) and linefail_tm1=0 
 				and ((caldate{t}-date_who3_4_event_switch_eval > 0.5) or date_who3_4_event_switch_eval=.) then do; 
-					s=uniform(0);s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
-						if vm_format=1 then do; vm = max(0,vl+(normal(0)*0.22)); vm_type=1; end;
-						if vm_format=2 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
-						if vm_format=3 then do; vm = max(0,vl+(normal(0)*0.22));  vm_type=3;  end;
-						if vm_format=4 then do; vm_plasma = max(0,vl+(normal(0)*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (normal(0)*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+					s=rand('uniform');s=s/0.8; * lower probability that vl measure is done if it is triggered by CD4 or clinical disease; 	if s < eff_prob_vl_meas_done then do; 
+						if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
+						if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
+						if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
+						if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
@@ -10032,14 +11122,12 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		end;
 
 		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
-		if nod    ge 3 then hiv_death_rate = ind_effect_art3_death_rate * hiv_death_rate;  
-		if nod    = 2 then  hiv_death_rate = ind_effect_art2_death_rate* hiv_death_rate;  
-		if nod    = 1 then  hiv_death_rate = ind_effect_art1_death_rate * hiv_death_rate;  
-		if nod    = 0 then  hiv_death_rate = 1.0 * hiv_death_rate;
+		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
+
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
-		x3=uniform(0);
+		x3=rand('uniform');
 		if x3 le death_rix then do;
 
 		rdcause=1;
@@ -10064,7 +11152,7 @@ so a proportion (15%) are classified as non-who4_;
 			dead_24m_onart=0;if onart=1 and . lt caldate{t}-yrart le 2   then dead_24m_onart=1;
 			dead_36m_onart=0;if onart=1 and . lt caldate{t}-yrart le 3   then dead_36m_onart=1;
 
-			r=uniform(0);
+			r=rand('uniform');
 			if r < 0.85 then do; dcause=1;if who4_=0 then do; who4_=1; who4_date=caldate{t}; cd4_who4_=cd4;end; end;
 			if r >= 0.85 then dcause=2;
 		end;
@@ -10073,7 +11161,7 @@ so a proportion (15%) are classified as non-who4_;
 			liverdra = base_rate / 6.0; * so liver death assumed closely CD4 related;
 
 * consider if * dependent_on_time_step_length ;
-			liverdri3 = 1 - exp(-0.25*liverdra); x3=uniform(0);
+			liverdri3 = 1 - exp(-0.25*liverdra); x3=rand('uniform');
 		end;
 		if x3 le liverdri3 then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; liver_death=1; dcause=2; rdcause=1; agedeath=age;
@@ -10082,7 +11170,7 @@ so a proportion (15%) are classified as non-who4_;
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+CVD death ~ 10% of deaths in > 50ï¿½s  3% in 15-49ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
@@ -10142,7 +11230,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		ac_deathrix = 1 - exp(-0.25*ac_death_rate);
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
-		x3=uniform(0);
+		x3=rand('uniform');
 
 		if x3 le ac_deathrix then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
@@ -10152,7 +11240,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
-	covid = 0; a = uniform(0);
+	covid = 0; a = rand('uniform');
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
@@ -10168,7 +11256,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
-	xcovid = uniform(0);
+	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
@@ -10178,7 +11266,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 * risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
-	xcvd = uniform(0);
+	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
@@ -10261,7 +11349,6 @@ end;
 * END OF THE CODE FOR HIV INFECTED;
 
 
-
 * ------------------------------------------------------------------------------------------------------------------------------------------;
 
 * End of SECTION 3_HIV ;
@@ -10297,23 +11384,6 @@ end;
  * dol ;
 	cost_dol=0; if o_dol=1 then cost_dol=cost_dol_a;
 
-* cost of switching to second line (not cost of the drugs); 
-
-cost_switch_line=0;
-if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
-
-	art_cost=0;
-
-    art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
-    (o_lpr*cost_lpr) + (o_dar*cost_dar)+ (o_taz*cost_taz)+ (o_efa*cost_efa)+ (o_dol*cost_dol);
-
-	* ART initiation cost;
-	if yrart=caldate{t} then art_cost = art_cost + art_init_cost;
-
- 	art_1_cost=0; if artline=1 then art_1_cost=art_cost; 
-	art_2_cost=0; if artline=2 then art_2_cost=art_cost;
-	art_3_cost=0; if artline=3 then art_3_cost=art_cost;
-
  
 * ADC costs;
 	adc_cost=0;
@@ -10348,7 +11418,8 @@ if sv=1 then do;	vis_cost=vis_cost-redn_in_vis_cost_vlm_supp; full_vis_cost_sv =
 
 * pre-death morbidity costs if people dying with dcause =2;
 
-non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_pre_death_cost = 1.000;
+cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_aids_pre_death = 1.000;
+
 
 
 
@@ -10376,30 +11447,58 @@ non_aids_pre_death_cost = 0;  if death=caldate{t} and rdcause = 2 then non_aids_
 
 	res_cost=0; if res_test=1 then res_cost=res_cost_a;
 
-
 	cost_drug_level_test = 0;
 
 	if caldate{t} = date_drug_level_test then drug_level_test_cost = cost_drug_level_test;
 
 	if t ge 2 and dead_tm1=1 then dead   =.;
 
-* f_prep - Cost of PrEP - tests costed separately - from kzn mar19;
-cost_prep=0; cost_prep_visit=0;cost_prep_ac_adh=0;
-if prep=1 and pop_wide_tld_prep ne 1 then do;
+* f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
+cost_prep_oral=0;cost_prep_inj =0; cost_prep_visit=0;cost_prep_ac_adh=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;
+if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
-	cost_prep = prep_drug_cost ;  cost_prep_ac_adh=cost_prep*adh;
-	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
-	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
-	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
+	cost_prep_oral = prep_oral_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
+	if visit_prep_oral = 1 then cost_prep_visit = cost_prep_oral_clinic / 2; * drug pick-up only - mar18 ; 
+	if visit_prep_oral = 2 then cost_prep_visit = cost_prep_oral_clinic; 
+	if visit_prep_oral = 3 then cost_prep_visit = cost_prep_oral_clinic+cost_prep_any_clinic_couns;
+	cost_prep_visit_oral=cost_prep_visit;
 	*cost depends on whether they are just picking up the drug or also receiving further clinic time (counselling);
+end;
+if prep_inj =1 and pop_wide_tld_prep ne 1 then do;
+	cost_prep_inj  = prep_inj_drug_cost ;   
+	if visit_prep_inj  = 2 then cost_prep_visit = cost_prep_inj_clinic; 
+	if visit_prep_inj  = 3 then cost_prep_visit = cost_prep_inj_clinic+cost_prep_any_clinic_couns;
+	cost_prep_visit_inj =cost_prep_visit;
 end;
 if pop_wide_tld_prep = 1 then do;
 	cost_ten=0;	cost_3tc=0; cost_dol=0;
-	cost_prep = prep_drug_cost_tld ;  cost_prep_ac_adh=cost_prep*adh;
-	if visit_prep = 1 then cost_prep_visit = cost_prep_clinic / 2; * drug pick-up only - mar18 ; 
-	if visit_prep = 2 then cost_prep_visit = cost_prep_clinic; 
-	if visit_prep = 3 then cost_prep_visit = cost_prep_clinic+cost_prep_clinic_couns;
+	cost_prep_oral = prep_tld_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
+	if visit_prep_oral = 1 then cost_prep_visit = cost_prep_oral_clinic / 2; * drug pick-up only - mar18 ; 
+	if visit_prep_oral = 2 then cost_prep_visit = cost_prep_oral_clinic; 
+	if visit_prep_oral = 3 then cost_prep_visit = cost_prep_oral_clinic+cost_prep_any_clinic_couns;
+	cost_prep_visit_oral=cost_prep_visit;
 end;
+
+
+
+* total art cost, cost of switching to second line (not cost of the drugs); * these lines moved from above so that cost of tld drugs not counted
+twise if onart=0 and pop_wide_tld_prep=1;   
+
+cost_switch_line=0;
+if start_line2_this_period=1 then cost_switch_line=cost_switch_line_a;
+
+	art_cost=0;
+
+    art_cost=(o_zdv*cost_zdv) + (o_ten*cost_ten) + (o_3tc*cost_3tc) + (o_nev*cost_nev) +
+    (o_lpr*cost_lpr) + (o_dar*cost_dar) + (o_taz*cost_taz) + (o_efa*cost_efa) + (o_dol*cost_dol) ;
+
+
+	* ART initiation cost;
+	if yrart=caldate{t} then art_cost = art_cost + art_init_cost;
+
+ 	art_1_cost=0; if artline=1 then art_1_cost=art_cost; 
+	art_2_cost=0; if artline=2 then art_2_cost=art_cost;
+	art_3_cost=0; if artline=3 then art_3_cost=art_cost;
 
 
 cost_circ=0; if new_mcirc=1 then cost_circ=circ_cost_a; 
@@ -10412,8 +11511,8 @@ cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hyp
 cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
-+max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep) + max(0,cost_prep_visit)
-+  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) 
++ max(0,cost_prep_visit)+  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
 + max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
@@ -10438,8 +11537,8 @@ cost_test_f_sw=0; if gender=2 and tested_as_sw=1 and tested_anc ne 1 and
 cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=cost_test;
 
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
-res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep=0; cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
- cost_prep_visit=0;end;
+res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
+ cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
 * low cost partially is to take account of possibility of child dying ;
@@ -10465,12 +11564,12 @@ at time zero is the same as that in later years;
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 15-49 males: 0.0065  females  0.0044    50-64: males 0.0191  females 0.0104  65+ males: 0.0617  females: 0.0464 
 
-CVD death ~ 10% of deaths in > 50’s  3% in 15-49’s
+CVD death ~ 10% of deaths in > 50ï¿½s  3% in 15-49ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)   
 
 so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated 
 
-TB death ~ 7% of deaths in > 15’s
+TB death ~ 7% of deaths in > 15ï¿½s
 * kombewa kenya dhs 2011-2015 (includes AIDS deaths)    Cause-specific mortality in the Kombewa health
 
 so reduce all cause mortality by 0.93 since non-hiv tb now separated;
@@ -10521,7 +11620,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
-	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=uniform(0);
+	ac_deathrix = 1 - exp(-0.25*ac_death_rate); x3=rand('uniform');
 * ts1m:  ac_deathrix = 1 - exp(-(1/12)*ac_death_rate); 
 
 	if x3 le ac_deathrix then do;  * update_24_4_21;
@@ -10531,7 +11630,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
 
-	covid = 0; a = uniform(0);
+	covid = 0; a = rand('uniform');
 	if age ge 15 and prev_covid ne 1 and a < 0.2 and 2020.25 <= caldate{t} < 2021.75 then do; covid = 1; prev_covid=1;  end; 
 
 	if covid = 1 and dead ne 1 then do;
@@ -10547,7 +11646,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if cov_death_risk_mult = 3 then cov_deathrix = cov_deathrix * 3;
 	end;
 
-	xcovid = uniform(0);
+	xcovid = rand('uniform');
 	if covid = 1 and xcovid le cov_deathrix then do;
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
@@ -10557,7 +11656,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
 	cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
-	xcvd = uniform(0);
+	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
@@ -10565,14 +11664,14 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * incidence non_hiv_tb ;  * update_24_4_21;
 
 	non_hiv_tb = 0;
-	ynon_hiv_tb = uniform(0);
+	ynon_hiv_tb = rand('uniform');
 	if hiv ne 1 and ynon_hiv_tb le non_hiv_tb_risk then do; 
 		non_hiv_tb = 1; date_last_non_hiv_tb = caldate{t};  date_most_recent_tb = caldate{t};
 	end;
 
 	non_hiv_tb_diag_e = .; 
 	if non_hiv_tb=1 then do;
-		ii=uniform(0); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
+		ii=rand('uniform'); non_hiv_tb_diag_e=0; if ii < non_hiv_tb_prob_diag_e then non_hiv_tb_diag_e=1 ;  
 	end;
 
 
@@ -10585,7 +11684,7 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		if non_hiv_tb_diag_e = 1 then cur_non_hiv_tb_death_risk = cur_non_hiv_tb_death_risk * rel_rate_death_tb_diag_e ;
 	end;
 
-	xnon_hiv_tb = uniform(0);
+	xnon_hiv_tb = rand('uniform');
 	if xnon_hiv_tb le cur_non_hiv_tb_death_risk then do; 
 		dead   =1; death=caldate{t}; dcause=5; agedeath=age; 
 	end;
@@ -10594,7 +11693,6 @@ end;
 
 
 if tested=1 then ever_tested=1;
-
 
 if  caldate{t} > death > . then do; * update_24_4_21;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
@@ -10605,23 +11703,23 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	cd4=.;cc=.;vc=.;vl=.;age=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
-	naive=.;artline=.;linefail=.;
-	o_zdv=.;o_3tc=.;o_dar=.;o_ten=.;
-	e_totmut   =.; non_tb_who3_ev=.;
-	o_efa=.;o_lpr=.;o_taz=.;o_dol=.;
+	naive=.;artline=.;linefail=.;						 
+	e_totmut   =.; non_tb_who3_ev=.;							 
 	cmin   =.;
-	p_zdv=.;p_3tc=.;p_dar=.;p_ten=.;
-	p_efa=.;p_lpr=.;p_taz=.;p_dol=.;
-	f_zdv=.;f_3tc=.;f_dar=.;f_ten=.;
-	f_efa=.;f_lpr=.;f_dol=.;
-	c_rt184m=.;c_rttams=.;c_rt65m=.;c_rt103m=.;c_rt181m=.;c_rt190m=.;c_rt151m=.;c_pr32m=.;c_pr47m=.;
-	c_pr33m=.;c_pr46m=.;c_pr54m=.;c_pr76m=.;c_pr50vm=.;c_pr50lm=.;c_pr82m=.;c_pr84m=.;c_pr88m=.;c_pr90m=.;c_inpm=.;c_insm=.;
-	e_rt184m=.;e_rttams=.;e_rt65m=.;e_rt103m=.;e_rt181m=.;e_rt190m=.;e_rt151m=.;e_pr32m=.;e_pr47m=.;
-	e_pr33m=.;e_pr46m=.;e_pr54m=.;e_pr76m=.;e_pr50vm=.;e_pr50lm=.;e_pr82m=.;e_pr84m=.;e_pr88m=.;e_pr90m=.;e_inpm=.;e_insm=.;
-	r_zdv=.;r_3tc=.;r_dar=.;r_ten=.;
-	r_efa=.;r_lpr=.;r_dol=.;
-	t_zdv=.;t_3tc=.;t_dar=.;t_taz=.;
-	t_efa=.;t_lpr=.;t_dol=.;t_ten=.;
+	o_zdv=.;	o_3tc=.;	o_dar=.;	o_ten=.;
+	o_efa=.;	o_lpr=.;	o_taz=.;	o_dol=.;	o_cab=.;
+	p_zdv=.;	p_3tc=.;	p_dar=.;	p_ten=.;
+	p_efa=.;	p_lpr=.;	p_taz=.;	p_dol=.;	p_cab=.;
+	f_zdv=.;	f_3tc=.;	f_dar=.;	f_ten=.;
+	f_efa=.;	f_lpr=.;	f_taz=.;	f_dol=.;	f_cab=.;
+	r_zdv=.;	r_3tc=.;	r_dar=.;	r_ten=.;
+	r_efa=.;	r_lpr=.;	r_taz=.;	r_dol=.;	r_cab=.;
+	t_zdv=.;	t_3tc=.;	t_dar=.;	t_ten=.;
+	t_efa=.;	t_lpr=.;	t_taz=.;	t_dol=.;	t_cab=.;
+	c_rt184m=.;	c_rttams=.;	c_rt65m=.;	c_rt103m=.;	c_rt181m=.;	c_rt190m=.;	c_rt151m=.;	c_pr32m=.;	c_pr47m=.;
+	c_pr33m=.;	c_pr46m=.;	c_pr54m=.;	c_pr76m=.;	c_pr50vm=.;	c_pr50lm=.;	c_pr82m=.;	c_pr84m=.;	c_pr88m=.;	c_pr90m=.;	c_inpm=.;	c_insm=.;
+	e_rt184m=.;	e_rttams=.;	e_rt65m=.;	e_rt103m=.;	e_rt181m=.;	e_rt190m=.;	e_rt151m=.;	e_pr32m=.;	e_pr47m=.;
+	e_pr33m=.;	e_pr46m=.;	e_pr54m=.;	e_pr76m=.;	e_pr50vm=.;	e_pr50lm=.;	e_pr82m=.;	e_pr84m=.;	e_pr88m=.;	e_pr90m=.;	e_inpm=.;	e_insm=.;
 	c_lip=.;c_pen=.;c_ras=.;c_cns=.;c_hep=.;x4v=.;
 	c_nau=.;c_otx=.;c_tox=.;c_head=.;c_dia=.;c_ane=.;c_lac=.;
 	c_neph = .;
@@ -10631,8 +11729,11 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	ever_ep=.;ever_newp=.;ever_sw=.;years_sw=.;
 	acq_rt65m=.;acq_rt184m=.;acq_rtm=.;
 	time_acq_rt65m=.;time_acq_rt184m=.;time_acq_rtm=.;time_stop_prep=.;
-	prep=.;hr_noprep=.;elig_prep_epdiag=.;elig_prep=.;	primary_prep=.;primary_hr_noprep=.; 
-	hiv1_prep=.;infected_prep=.; primary_r_prep=.;ever_i_nor_prep=.;i_r_prep=.;rm_prep=.;
+	prep_any=.;prep_oral=.;prep_inj=.;prep_vr=.;
+	prep_any_elig=.;	primary_prep=.; 
+	hiv1_prep_oral=.;hiv1_prep_any=.;
+	infected_prep_any=.; infected_prep_oral=.; infected_prep_inj=.; infected_prep_vr=.;
+	ever_prim_nor_prep=.;prim_r_prep=.;
 	rt65m_3_prep=.;rt184m_3_prep=.;rtm_3_prep=.;rt65m_6_prep=.;rt184m_6_prep=.;rtm_6_prep=.;rt65m_9_prep=.;rt184m_9_prep=.;rtm_9_prep=.;
 	rt65m_12_prep=.;rt184m_12_prep=.;rtm_12_prep=.;rt65m_18_prep=.;rt184m_18_prep=.;rtm_18_prep=.;onprep_3=.;onprep_6=.;onprep_9=.;onprep_12=.;onprep_18=.;
 	cum_children=.;pregnant=.;anc=.;on_sd_nvp=.;on_dual_nvp=.;int_clinic_not_aw=.;
@@ -10640,7 +11741,8 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	np_ever=.;newp_ever=.;
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
 	tested_circ=.;tested_anc_prevdiag=.;
-	ever_hiv1_prep=.; visit_prep=.; prepstart=.; ever_stopped_prep_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
+	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
+	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.; 
 end;
 
 
@@ -11058,6 +12160,7 @@ if gender=2 and sw=1 then do;
 end;
 
 
+
 ***For rates;
 age_deb_sw1519_=0;age_deb_sw2024_=0;age_deb_sw2529_=0;age_deb_sw3039_=0;age_deb_swov40_=0;
 if 15 le age_deb_sw lt 20 then age_deb_sw1519_=1;
@@ -11131,11 +12234,12 @@ if infection > . then dead_yn=0; survdead = min(death,caldate&j)-infection; if s
 if caldate&j ge yrart > . and date_first_lost_art=. and lost=1 then date_first_lost_art=caldate&j;
 if t ge 2 and lost_tm1=1 and lost=0 and caldate&j ge date_first_lost_art > . and date_return_lost_art=. then date_return_lost_art=caldate&j;
 
-* ahd_re_enter_care;
-ahd_re_enter_care_100=0; if 0 <= cd4_re_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then ahd_re_enter_care_100=1;
-ahd_re_enter_care_200=0; if 0 <= cd4_re_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or oth_adc=1 or cm_tm1=1
-or cm=1 then ahd_re_enter_care_200=1;
+* ahd_enter_care;
+ahd_enter_care_100=0; if enter_care=1 and (0 <= cd4_enter_care < 100 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_enter_care_100=1;
+ahd_enter_care_200=0; if enter_care=1 and (0 <= cd4_enter_care < 200 or sbi=1 or sbi_tm1=1 or tb=1 or tb_tm1 =1 or oth_adc_tm1=1 or 
+oth_adc=1 or crypm_tm1=1 or crypm=1) then ahd_enter_care_200=1;
+
 
 * note using competing risks approach here;
 surv_dead_lost = min(death,caldate&j)-date_first_lost_art; dead_lost_yn=0; if surv_dead_lost = death-date_first_lost_art > . and date_return_lost_art=. then dead_lost_yn=1;
@@ -11788,7 +12892,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
-dead1564_=.;dead_diag=.;
+dead_=.;dead_diag=.;
 
 if hiv =1 then do;
 
@@ -11826,7 +12930,6 @@ if hiv =1 then do;
 	if 15 <= age < 25 then do; vg1000_w_1524=0; if vg1000 = 1 then vg1000_w_1524=1 ;  end ;
 	end;
 
-
 * two variables indicate vl < 500: vlg1 indexes infectivity and viral load is increased by 0.5 log when
 sti present, vl500 takes the vl as it is;
 
@@ -11843,51 +12946,52 @@ sti present, vl500 takes the vl as it is;
 
 ***Used to calculate the viral load distribution of people during new partnerships (ep+newp);
 
-i_v1_np=0; i_v2_np=0; i_v3_np=0; i_v4_np=0; i_v5_np=0; i_v6_np=0; 
-i_v1_ep=0; i_v2_ep=0; i_v3_ep=0; i_v4_ep=0; i_v5_ep=0; i_v6_ep=0; 
-i_v1_newp=0; i_v2_newp=0; i_v3_newp=0; i_v4_newp=0; i_v5_newp=0; i_v6_newp=0; 
+if 15 <= age < 65 then do;
 
+	i_v1_np=0; i_v2_np=0; i_v3_np=0; i_v4_np=0; i_v5_np=0; i_v6_np=0; 
+	i_v1_ep=0; i_v2_ep=0; i_v3_ep=0; i_v4_ep=0; i_v5_ep=0; i_v6_ep=0; 
+	i_v1_newp=0; i_v2_newp=0; i_v3_newp=0; i_v4_newp=0; i_v5_newp=0; i_v6_newp=0; 
 
-i_vl1000_m_np=np=0; i_v11000_m_ep=0; i_vl1000_m_newp=0;i_vl1000_w_np=np=0; i_v11000_w_ep=0; i_vl1000_w_newp=0;
+	i_vl1000_m_np=np=0; i_v11000_m_ep=0; i_vl1000_m_newp=0;i_vl1000_w_np=np=0; i_v11000_w_ep=0; i_vl1000_w_newp=0;
 
-i_v1_age1_m_np=0; i_v1_age1_m_ep=0; i_v1_age1_m_newp=0;i_v1_age1_w_np=0; i_v1_age1_w_ep=0; i_v1_age1_w_newp=0;
-i_v2_age1_m_np=0; i_v2_age1_m_ep=0; i_v2_age1_m_newp=0;i_v2_age1_w_np=0; i_v2_age1_w_ep=0; i_v2_age1_w_newp=0;
-i_v3_age1_m_np=0; i_v3_age1_m_ep=0; i_v3_age1_m_newp=0;i_v3_age1_w_np=0; i_v3_age1_w_ep=0; i_v3_age1_w_newp=0;
-i_v4_age1_m_np=0; i_v4_age1_m_ep=0; i_v4_age1_m_newp=0;i_v4_age1_w_np=0; i_v4_age1_w_ep=0; i_v4_age1_w_newp=0;
-i_v5_age1_m_np=0; i_v5_age1_m_ep=0; i_v5_age1_m_newp=0;i_v5_age1_w_np=0; i_v5_age1_w_ep=0; i_v5_age1_w_newp=0;
-i_v6_age1_m_np=0; i_v6_age1_m_ep=0; i_v6_age1_m_newp=0;i_v6_age1_w_np=0; i_v6_age1_w_ep=0; i_v6_age1_w_newp=0;
+	i_v1_age1_m_np=0; i_v1_age1_m_ep=0; i_v1_age1_m_newp=0;i_v1_age1_w_np=0; i_v1_age1_w_ep=0; i_v1_age1_w_newp=0;
+	i_v2_age1_m_np=0; i_v2_age1_m_ep=0; i_v2_age1_m_newp=0;i_v2_age1_w_np=0; i_v2_age1_w_ep=0; i_v2_age1_w_newp=0;
+	i_v3_age1_m_np=0; i_v3_age1_m_ep=0; i_v3_age1_m_newp=0;i_v3_age1_w_np=0; i_v3_age1_w_ep=0; i_v3_age1_w_newp=0;
+	i_v4_age1_m_np=0; i_v4_age1_m_ep=0; i_v4_age1_m_newp=0;i_v4_age1_w_np=0; i_v4_age1_w_ep=0; i_v4_age1_w_newp=0;
+	i_v5_age1_m_np=0; i_v5_age1_m_ep=0; i_v5_age1_m_newp=0;i_v5_age1_w_np=0; i_v5_age1_w_ep=0; i_v5_age1_w_newp=0;
+	i_v6_age1_m_np=0; i_v6_age1_m_ep=0; i_v6_age1_m_newp=0;i_v6_age1_w_np=0; i_v6_age1_w_ep=0; i_v6_age1_w_newp=0;
 
-i_v1_age2_m_np=0; i_v1_age2_m_ep=0; i_v1_age2_m_newp=0;i_v1_age2_w_np=0; i_v1_age2_w_ep=0; i_v1_age2_w_newp=0;
-i_v2_age2_m_np=0; i_v2_age2_m_ep=0; i_v2_age2_m_newp=0;i_v2_age2_w_np=0; i_v2_age2_w_ep=0; i_v2_age2_w_newp=0;
-i_v3_age2_m_np=0; i_v3_age2_m_ep=0; i_v3_age2_m_newp=0;i_v3_age2_w_np=0; i_v3_age2_w_ep=0; i_v3_age2_w_newp=0;
-i_v4_age2_m_np=0; i_v4_age2_m_ep=0; i_v4_age2_m_newp=0;i_v4_age2_w_np=0; i_v4_age2_w_ep=0; i_v4_age2_w_newp=0;
-i_v5_age2_m_np=0; i_v5_age2_m_ep=0; i_v5_age2_m_newp=0;i_v5_age2_w_np=0; i_v5_age2_w_ep=0; i_v5_age2_w_newp=0;
-i_v6_age2_m_np=0; i_v6_age2_m_ep=0; i_v6_age2_m_newp=0;i_v6_age2_w_np=0; i_v6_age2_w_ep=0; i_v6_age2_w_newp=0;
+	i_v1_age2_m_np=0; i_v1_age2_m_ep=0; i_v1_age2_m_newp=0;i_v1_age2_w_np=0; i_v1_age2_w_ep=0; i_v1_age2_w_newp=0;
+	i_v2_age2_m_np=0; i_v2_age2_m_ep=0; i_v2_age2_m_newp=0;i_v2_age2_w_np=0; i_v2_age2_w_ep=0; i_v2_age2_w_newp=0;
+	i_v3_age2_m_np=0; i_v3_age2_m_ep=0; i_v3_age2_m_newp=0;i_v3_age2_w_np=0; i_v3_age2_w_ep=0; i_v3_age2_w_newp=0;
+	i_v4_age2_m_np=0; i_v4_age2_m_ep=0; i_v4_age2_m_newp=0;i_v4_age2_w_np=0; i_v4_age2_w_ep=0; i_v4_age2_w_newp=0;
+	i_v5_age2_m_np=0; i_v5_age2_m_ep=0; i_v5_age2_m_newp=0;i_v5_age2_w_np=0; i_v5_age2_w_ep=0; i_v5_age2_w_newp=0;
+	i_v6_age2_m_np=0; i_v6_age2_m_ep=0; i_v6_age2_m_newp=0;i_v6_age2_w_np=0; i_v6_age2_w_ep=0; i_v6_age2_w_newp=0;
 
-i_v1_age3_m_np=0; i_v1_age3_m_ep=0; i_v1_age3_m_newp=0;i_v1_age3_w_np=0; i_v1_age3_w_ep=0; i_v1_age3_w_newp=0;
-i_v2_age3_m_np=0; i_v2_age3_m_ep=0; i_v2_age3_m_newp=0;i_v2_age3_w_np=0; i_v2_age3_w_ep=0; i_v2_age3_w_newp=0;
-i_v3_age3_m_np=0; i_v3_age3_m_ep=0; i_v3_age3_m_newp=0;i_v3_age3_w_np=0; i_v3_age3_w_ep=0; i_v3_age3_w_newp=0;
-i_v4_age3_m_np=0; i_v4_age3_m_ep=0; i_v4_age3_m_newp=0;i_v4_age3_w_np=0; i_v4_age3_w_ep=0; i_v4_age3_w_newp=0;
-i_v5_age3_m_np=0; i_v5_age3_m_ep=0; i_v5_age3_m_newp=0;i_v5_age3_w_np=0; i_v5_age3_w_ep=0; i_v5_age3_w_newp=0;
-i_v6_age3_m_np=0; i_v6_age3_m_ep=0; i_v6_age3_m_newp=0;i_v6_age3_w_np=0; i_v6_age3_w_ep=0; i_v6_age3_w_newp=0;
+	i_v1_age3_m_np=0; i_v1_age3_m_ep=0; i_v1_age3_m_newp=0;i_v1_age3_w_np=0; i_v1_age3_w_ep=0; i_v1_age3_w_newp=0;
+	i_v2_age3_m_np=0; i_v2_age3_m_ep=0; i_v2_age3_m_newp=0;i_v2_age3_w_np=0; i_v2_age3_w_ep=0; i_v2_age3_w_newp=0;
+	i_v3_age3_m_np=0; i_v3_age3_m_ep=0; i_v3_age3_m_newp=0;i_v3_age3_w_np=0; i_v3_age3_w_ep=0; i_v3_age3_w_newp=0;
+	i_v4_age3_m_np=0; i_v4_age3_m_ep=0; i_v4_age3_m_newp=0;i_v4_age3_w_np=0; i_v4_age3_w_ep=0; i_v4_age3_w_newp=0;
+	i_v5_age3_m_np=0; i_v5_age3_m_ep=0; i_v5_age3_m_newp=0;i_v5_age3_w_np=0; i_v5_age3_w_ep=0; i_v5_age3_w_newp=0;
+	i_v6_age3_m_np=0; i_v6_age3_m_ep=0; i_v6_age3_m_newp=0;i_v6_age3_w_np=0; i_v6_age3_w_ep=0; i_v6_age3_w_newp=0;
 
-i_v1_age4_m_np=0; i_v1_age4_m_ep=0; i_v1_age4_m_newp=0;i_v1_age4_w_np=0; i_v1_age4_w_ep=0; i_v1_age4_w_newp=0;
-i_v2_age4_m_np=0; i_v2_age4_m_ep=0; i_v2_age4_m_newp=0;i_v2_age4_w_np=0; i_v2_age4_w_ep=0; i_v2_age4_w_newp=0;
-i_v3_age4_m_np=0; i_v3_age4_m_ep=0; i_v3_age4_m_newp=0;i_v3_age4_w_np=0; i_v3_age4_w_ep=0; i_v3_age4_w_newp=0;
-i_v4_age4_m_np=0; i_v4_age4_m_ep=0; i_v4_age4_m_newp=0;i_v4_age4_w_np=0; i_v4_age4_w_ep=0; i_v4_age4_w_newp=0;
-i_v5_age4_m_np=0; i_v5_age4_m_ep=0; i_v5_age4_m_newp=0;i_v5_age4_w_np=0; i_v5_age4_w_ep=0; i_v5_age4_w_newp=0;
-i_v6_age4_m_np=0; i_v6_age4_m_ep=0; i_v6_age4_m_newp=0;i_v6_age4_w_np=0; i_v6_age4_w_ep=0; i_v6_age4_w_newp=0;
+	i_v1_age4_m_np=0; i_v1_age4_m_ep=0; i_v1_age4_m_newp=0;i_v1_age4_w_np=0; i_v1_age4_w_ep=0; i_v1_age4_w_newp=0;
+	i_v2_age4_m_np=0; i_v2_age4_m_ep=0; i_v2_age4_m_newp=0;i_v2_age4_w_np=0; i_v2_age4_w_ep=0; i_v2_age4_w_newp=0;
+	i_v3_age4_m_np=0; i_v3_age4_m_ep=0; i_v3_age4_m_newp=0;i_v3_age4_w_np=0; i_v3_age4_w_ep=0; i_v3_age4_w_newp=0;
+	i_v4_age4_m_np=0; i_v4_age4_m_ep=0; i_v4_age4_m_newp=0;i_v4_age4_w_np=0; i_v4_age4_w_ep=0; i_v4_age4_w_newp=0;
+	i_v5_age4_m_np=0; i_v5_age4_m_ep=0; i_v5_age4_m_newp=0;i_v5_age4_w_np=0; i_v5_age4_w_ep=0; i_v5_age4_w_newp=0;
+	i_v6_age4_m_np=0; i_v6_age4_m_ep=0; i_v6_age4_m_newp=0;i_v6_age4_w_np=0; i_v6_age4_w_ep=0; i_v6_age4_w_newp=0;
 
-i_v1_age5_m_np=0; i_v1_age5_m_ep=0; i_v1_age5_m_newp=0;i_v1_age5_w_np=0; i_v1_age5_w_ep=0; i_v1_age5_w_newp=0;
-i_v2_age5_m_np=0; i_v2_age5_m_ep=0; i_v2_age5_m_newp=0;i_v2_age5_w_np=0; i_v2_age5_w_ep=0; i_v2_age5_w_newp=0;
-i_v3_age5_m_np=0; i_v3_age5_m_ep=0; i_v3_age5_m_newp=0;i_v3_age5_w_np=0; i_v3_age5_w_ep=0; i_v3_age5_w_newp=0;
-i_v4_age5_m_np=0; i_v4_age5_m_ep=0; i_v4_age5_m_newp=0;i_v4_age5_w_np=0; i_v4_age5_w_ep=0; i_v4_age5_w_newp=0;
-i_v5_age5_m_np=0; i_v5_age5_m_ep=0; i_v5_age5_m_newp=0;i_v5_age5_w_np=0; i_v5_age5_w_ep=0; i_v5_age5_w_newp=0;
-i_v6_age5_m_np=0; i_v6_age5_m_ep=0; i_v6_age5_m_newp=0;i_v6_age5_w_np=0; i_v6_age5_w_ep=0; i_v6_age5_w_newp=0;
+	i_v1_age5_m_np=0; i_v1_age5_m_ep=0; i_v1_age5_m_newp=0;i_v1_age5_w_np=0; i_v1_age5_w_ep=0; i_v1_age5_w_newp=0;
+	i_v2_age5_m_np=0; i_v2_age5_m_ep=0; i_v2_age5_m_newp=0;i_v2_age5_w_np=0; i_v2_age5_w_ep=0; i_v2_age5_w_newp=0;
+	i_v3_age5_m_np=0; i_v3_age5_m_ep=0; i_v3_age5_m_newp=0;i_v3_age5_w_np=0; i_v3_age5_w_ep=0; i_v3_age5_w_newp=0;
+	i_v4_age5_m_np=0; i_v4_age5_m_ep=0; i_v4_age5_m_newp=0;i_v4_age5_w_np=0; i_v4_age5_w_ep=0; i_v4_age5_w_newp=0;
+	i_v5_age5_m_np=0; i_v5_age5_m_ep=0; i_v5_age5_m_newp=0;i_v5_age5_w_np=0; i_v5_age5_w_ep=0; i_v5_age5_w_newp=0;
+	i_v6_age5_m_np=0; i_v6_age5_m_ep=0; i_v6_age5_m_newp=0;i_v6_age5_w_np=0; i_v6_age5_w_ep=0; i_v6_age5_w_newp=0;
 
-i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw_v6_np=0; 
+	i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw_v6_np=0; 
 
-* consider primary infection length  * dependent_on_time_step_length ;
+	* consider primary infection length  * dependent_on_time_step_length ;
 	if  .  <  vl < 2.7 and primary=0  then do; i_v1_np=np; i_v1_ep=ep; i_v1_newp=newp; end;
 	if 2.7 <= vl < 3.7 and primary=0  then do; i_v2_np=np; i_v2_ep=ep; i_v2_newp=newp; end;
 	if 3.7 <= vl < 4.7 and primary=0  then do; i_v3_np=np; i_v3_ep=ep; i_v3_newp=newp; end;
@@ -12016,6 +13120,8 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 	i_m_np=0; if gender=1 then i_m_np=np;
 	i_w_np=0; if gender=2 then i_w_np=np;
 
+end;
+
 * consider primary infection length * dependent_on_time_step_length ;
 	if sw=1 then do;
 		if  .  <  vl < 2.7 and primary=0  then i_fsw_v1_np=np;
@@ -12030,92 +13136,96 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 	if sti=1 then vl = vl - 0.5;
 
 
-	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; inpm_tm1=inpm_; insm_tm1=insm_; 
+	 rm_tm1 = rm_ ;  nnm_tm1=nnm_;  pim_tm1=pim_; in118m_tm1=i118pm_; in140m_tm1=in140m_;  in148m_tm1=in148m_;  in155m_tm1=in155m_;  in263m_tm1=in263m_; 
 
 
 	* presence of any mutation;
-	rm_=0; if hiv1564=1 and (c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rt151m=1 or c_rttams >= 1 
+	rm_=0; if hiv=1 and (c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rt151m=1 or c_rttams >= 1 
 	or c_pr32m=1 or c_pr33m=1 or c_pr46m=1 or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1  or c_pr76m=1 
-	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_inpm=1 or c_insm=1) then rm_=1;
+	or c_pr82m=1 or c_pr84m=1 or c_pr88m=1 or c_pr90m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1  or c_in155m=1 or c_in263m=1) then rm_=1;
 	
 	* presence of any mutation;
-	rme_=0; if hiv1564=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1 or e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1 
+	rme_=0; if hiv=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1 or e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1 
 	or e_pr32m=1 or e_pr33m=1 or e_pr46m=1 or e_pr47m=1 or e_pr50vm=1 or e_pr50lm=1 or e_pr54m=1  or e_pr76m=1 
-	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_inpm=1 or e_insm=1) then rme_=1;
+	or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1 or e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1) then rme_=1;
 
 	* presence of any ii mutation;
-	iime_=0; if hiv1564=1 and (e_inpm=1 or e_insm=1) then iime_=1;
+	iime_=0; if hiv=1 and (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1  or e_in263m=1) then iime_=1;
 	
 	* presence of any nn mutation;
-	nnme_=0; if hiv1564=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_=1;
+	nnme_=0; if hiv=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_=1;
 	
 	* presence of any nn mutation by gender;  * apr 19;
-	nnme_w_=0; if hiv1564=1 and gender=2 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_w_=1;
-	nnme_m_=0; if hiv1564=1 and gender=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_m_=1;
+	nnme_w_=0; if hiv=1 and gender=2 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_w_=1;
+	nnme_m_=0; if hiv=1 and gender=1 and (e_rt103m=1 or e_rt181m=1 or e_rt190m=1) then nnme_m_=1;
 
 	* presence of any pi mutation;
-	pime_=0; if hiv1564=1 and (e_pr32m=1 or e_pr33m=1 or e_pr46m=1 or e_pr47m=1 or e_pr50vm=1 or e_pr50lm=1 or e_pr54m=1  
+	pime_=0; if hiv=1 and (e_pr32m=1 or e_pr33m=1 or e_pr46m=1 or e_pr47m=1 or e_pr50vm=1 or e_pr50lm=1 or e_pr54m=1  
 	or e_pr76m=1 or e_pr82m=1 or e_pr84m=1 or e_pr88m=1 or e_pr90m=1) then pime_=1;
 	
 	* presence of any nrti mutation;
-	nrtime_=0; if hiv1564=1 and (e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1) then nrtime_=1;
+	nrtime_=0; if hiv=1 and (e_rt65m=1  or e_rt184m=1 or e_rt151m=1 or e_rttams >= 1) then nrtime_=1;
 
 	* presence of any resistance mutation according to viral load;
-	i_r_vlg1_np=0; if hiv1564=1 and rm_=1 and vlg1=1 then i_r_vlg1_np=np;
-	i_r_vlg2_np=0; if hiv1564=1 and rm_=1 and vlg2=1 then i_r_vlg2_np=np;
-	i_r_vlg3_np=0; if hiv1564=1 and rm_=1 and vlg3=1 then i_r_vlg3_np=np;
-	i_r_vlg4_np=0; if hiv1564=1 and rm_=1 and vlg4=1 then i_r_vlg4_np=np;
-	i_r_vlg5_np=0; if hiv1564=1 and rm_=1 and vlg5=1 then i_r_vlg5_np=np;
-	i_r_vlg6_np=0; if hiv1564=1 and rm_=1 and primary=1 then i_r_vlg6_np=np;
+	i_r_vlg1_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg1=1 then i_r_vlg1_np=np;
+	i_r_vlg2_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg2=1 then i_r_vlg2_np=np;
+	i_r_vlg3_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg3=1 then i_r_vlg3_np=np;
+	i_r_vlg4_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg4=1 then i_r_vlg4_np=np;
+	i_r_vlg5_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and vlg5=1 then i_r_vlg5_np=np;
+	i_r_vlg6_np=0; if hiv1564=1 and rm_=1 and  15 <= age < 65 and primary=1 then i_r_vlg6_np=np;
 
 	* survival time from start of art to v failure with resistance ;
 	if date_rm_maj_vf=. and rm_=1 and onart_gt6m_vlg1000=1 then date_rm_maj_vf = caldate&j; 
 	surv_rm_maj_vf = min(date_rm_maj_vf,caldate&j,death)-yrart; rm_maj_vf_yn=0; if surv_rm_maj_vf = date_rm_maj_vf-yrart > . then rm_maj_vf_yn=1;
 
 
+if 15 <= age     then do;
+
 	* whether diagnosed, according to viral load and resistance;
-	i_diag_vlg1_rm0_np=0; if hiv1564=1 and registd=1 and vlg1=1 and rm_=0 then i_diag_vlg1_rm0_np=np;
-	i_diag_vlg1_rm1_np=0; if hiv1564=1 and registd=1 and vlg1=1 and rm_=1 then i_diag_vlg1_rm1_np=np;
+	i_diag_vlg1_rm0_np=0; if hiv=1 and registd=1 and vlg1=1 and rm_=0 then i_diag_vlg1_rm0_np=np;
+	i_diag_vlg1_rm1_np=0; if hiv=1 and registd=1 and vlg1=1 and rm_=1 then i_diag_vlg1_rm1_np=np;
 	
-	i_diag_vlg2_rm0_np=0; if hiv1564=1 and registd=1 and vlg2=1 and rm_=0 then i_diag_vlg2_rm0_np=np;
-	i_diag_vlg2_rm1_np=0; if hiv1564=1 and registd=1 and vlg2=1 and rm_=1 then i_diag_vlg2_rm1_np=np;
+	i_diag_vlg2_rm0_np=0; if hiv=1 and registd=1 and vlg2=1 and rm_=0 then i_diag_vlg2_rm0_np=np;
+	i_diag_vlg2_rm1_np=0; if hiv=1 and registd=1 and vlg2=1 and rm_=1 then i_diag_vlg2_rm1_np=np;
 
-	i_diag_vlg3_rm0_np=0; if hiv1564=1 and registd=1 and vlg3=1 and rm_=0 then i_diag_vlg3_rm0_np=np;
-	i_diag_vlg3_rm1_np=0; if hiv1564=1 and registd=1 and vlg3=1 and rm_=1 then i_diag_vlg3_rm1_np=np;
+	i_diag_vlg3_rm0_np=0; if hiv=1 and registd=1 and vlg3=1 and rm_=0 then i_diag_vlg3_rm0_np=np;
+	i_diag_vlg3_rm1_np=0; if hiv=1 and registd=1 and vlg3=1 and rm_=1 then i_diag_vlg3_rm1_np=np;
 	
-	i_diag_vlg4_rm0_np=0; if hiv1564=1 and registd=1 and vlg4=1 and rm_=0 then i_diag_vlg4_rm0_np=np;
-	i_diag_vlg4_rm1_np=0; if hiv1564=1 and registd=1 and vlg4=1 and rm_=1 then i_diag_vlg4_rm1_np=np;
+	i_diag_vlg4_rm0_np=0; if hiv=1 and registd=1 and vlg4=1 and rm_=0 then i_diag_vlg4_rm0_np=np;
+	i_diag_vlg4_rm1_np=0; if hiv=1 and registd=1 and vlg4=1 and rm_=1 then i_diag_vlg4_rm1_np=np;
 
-	i_diag_vlg5_rm0_np=0; if hiv1564=1 and registd=1 and vlg5=1 and rm_=0 then i_diag_vlg5_rm0_np=np;
-	i_diag_vlg5_rm1_np=0; if hiv1564=1 and registd=1 and vlg5=1 and rm_=1 then i_diag_vlg5_rm1_np=np;
+	i_diag_vlg5_rm0_np=0; if hiv=1 and registd=1 and vlg5=1 and rm_=0 then i_diag_vlg5_rm0_np=np;
+	i_diag_vlg5_rm1_np=0; if hiv=1 and registd=1 and vlg5=1 and rm_=1 then i_diag_vlg5_rm1_np=np;
 	
-	i_diag_vlg6_rm0_np=0; if hiv1564=1 and registd=1 and vlg6=1 and rm_=0 then i_diag_vlg6_rm0_np=np;
-	i_diag_vlg6_rm1_np=0; if hiv1564=1 and registd=1 and vlg6=1 and rm_=1 then i_diag_vlg6_rm1_np=np;
+	i_diag_vlg6_rm0_np=0; if hiv=1 and registd=1 and vlg6=1 and rm_=0 then i_diag_vlg6_rm0_np=np;
+	i_diag_vlg6_rm1_np=0; if hiv=1 and registd=1 and vlg6=1 and rm_=1 then i_diag_vlg6_rm1_np=np;
 	
 
 	* whether art naive, according to viral load and resistance;
-	i_naive_vlg1_rm0_np=0; if hiv1564=1 and naive=1 and vlg1=1 and registd=1 and rm_=0 then i_naive_vlg1_rm0_np=np;
-	i_naive_vlg1_rm1_np=0; if hiv1564=1 and naive=1 and vlg1=1 and registd=1 and rm_=1 then i_naive_vlg1_rm1_np=np;
+	i_naive_vlg1_rm0_np=0; if hiv=1 and naive=1 and vlg1=1 and registd=1 and rm_=0 then i_naive_vlg1_rm0_np=np;
+	i_naive_vlg1_rm1_np=0; if hiv=1 and naive=1 and vlg1=1 and registd=1 and rm_=1 then i_naive_vlg1_rm1_np=np;
 	
-	i_naive_vlg2_rm0_np=0; if hiv1564=1 and naive=1 and vlg2=1 and registd=1 and rm_=0 then i_naive_vlg2_rm0_np=np;
-	i_naive_vlg2_rm1_np=0; if hiv1564=1 and naive=1 and vlg2=1 and registd=1 and rm_=1 then i_naive_vlg2_rm1_np=np;
+	i_naive_vlg2_rm0_np=0; if hiv=1 and naive=1 and vlg2=1 and registd=1 and rm_=0 then i_naive_vlg2_rm0_np=np;
+	i_naive_vlg2_rm1_np=0; if hiv=1 and naive=1 and vlg2=1 and registd=1 and rm_=1 then i_naive_vlg2_rm1_np=np;
 
-	i_naive_vlg3_rm0_np=0; if hiv1564=1 and naive=1 and vlg3=1 and registd=1 and rm_=0 then i_naive_vlg3_rm0_np=np;
-	i_naive_vlg3_rm1_np=0; if hiv1564=1 and naive=1 and vlg3=1 and registd=1 and rm_=1 then i_naive_vlg3_rm1_np=np;
+	i_naive_vlg3_rm0_np=0; if hiv=1 and naive=1 and vlg3=1 and registd=1 and rm_=0 then i_naive_vlg3_rm0_np=np;
+	i_naive_vlg3_rm1_np=0; if hiv=1 and naive=1 and vlg3=1 and registd=1 and rm_=1 then i_naive_vlg3_rm1_np=np;
 
-	i_naive_vlg4_rm0_np=0; if hiv1564=1 and naive=1 and vlg4=1 and registd=1 and rm_=0 then i_naive_vlg4_rm0_np=np;
-	i_naive_vlg4_rm1_np=0; if hiv1564=1 and naive=1 and vlg4=1 and registd=1 and rm_=1 then i_naive_vlg4_rm1_np=np;
+	i_naive_vlg4_rm0_np=0; if hiv=1 and naive=1 and vlg4=1 and registd=1 and rm_=0 then i_naive_vlg4_rm0_np=np;
+	i_naive_vlg4_rm1_np=0; if hiv=1 and naive=1 and vlg4=1 and registd=1 and rm_=1 then i_naive_vlg4_rm1_np=np;
 	
-	i_naive_vlg5_rm0_np=0; if hiv1564=1 and naive=1 and vlg5=1 and registd=1 and rm_=0 then i_naive_vlg5_rm0_np=np;
-	i_naive_vlg5_rm1_np=0; if hiv1564=1 and naive=1 and vlg5=1 and registd=1 and rm_=1 then i_naive_vlg5_rm1_np=np;
+	i_naive_vlg5_rm0_np=0; if hiv=1 and naive=1 and vlg5=1 and registd=1 and rm_=0 then i_naive_vlg5_rm0_np=np;
+	i_naive_vlg5_rm1_np=0; if hiv=1 and naive=1 and vlg5=1 and registd=1 and rm_=1 then i_naive_vlg5_rm1_np=np;
 
-	i_naive_vlg6_rm0_np=0; if hiv1564=1 and naive=1 and vlg6=1 and registd=1 and rm_=0 then i_naive_vlg6_rm0_np=np;
-	i_naive_vlg6_rm1_np=0; if hiv1564=1 and naive=1 and vlg6=1 and registd=1 and rm_=1 then i_naive_vlg6_rm1_np=np;
+	i_naive_vlg6_rm0_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=0 then i_naive_vlg6_rm0_np=np;
+	i_naive_vlg6_rm1_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=1 then i_naive_vlg6_rm1_np=np;
+
+end;
 
 
 *** Distribution of resistance mutations amongst those with resistance to inform rm in the infectious pool;
 
-	if rm_=1 then do;
+	if rm_=1 and 15 <= age      then do;
 		tam1_=0; if c_rttams=1 then tam1_=1;
 		tam2_=0; if c_rttams=2 then tam2_=1;
 		tam3_=0; if c_rttams >=3 then tam3_=1;
@@ -12140,14 +13250,17 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 		p84m_=0; if c_pr84m=1  then p84m_=1;
 		p88m_=0; if c_pr88m=1  then p88m_=1;
 		p90m_=0; if c_pr90m=1  then p90m_=1;
+		in118m_=0; if c_in118m=1 then in118m_=1;
+		in140m_=0; if c_in140m=1 then in140m_=1;
+		in148m_=0; if c_in148m=1 then in148m_=1;
+		in155m_=0; if c_in155m=1 then in155m_=1;
+		in263m_=0; if c_in263m=1 then in263m_=1;
 		pim_=0; 
 		if p32m_=1 or p33m_=1 or p46m_=1 or
 		p47m_=1 or p50vm_=1 or p50lm_=1 or 
 		p54m_=1 or p76m_=1 or p82m_=1 or p84m_=1  or p88m_=1 or
 		p90m_=1 then pim_=1;
-		inpm_=0;  if c_inpm=1  then inpm_=1;
-		insm_=0;  if c_insm=1  then insm_=1;
-		inm_=0;   if inpm_=1 or insm_=1 then inm_=1;
+		inm_=0;  if c_in118m=1 or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1  or c_in263m=1  then inm_=1;
 	end;
 
 	i_tam=0; i_nnm=0; i_im=0; i_184m=0; i_pim=0; i_65m=0;
@@ -12157,18 +13270,18 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 		i_184m=c_rt184m;
 		i_65m=c_rt65m;
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then i_nnm=1;
-		if c_inpm=1 or c_insm=1 then i_im=1;  
+		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1 then i_im=1;  
 		i_rm=rm_; 
 	end;
 
 	if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 or c_rt65m=1 or c_rt184m=1 or c_rttams >= 1 or c_rt151m=1
 	or c_pr32m=1  or c_pr33m=1 	or c_pr46m=1  or c_pr47m=1 or c_pr50vm=1 or c_pr50lm=1 or c_pr54m=1 
-	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_inpm=1   or c_insm=1
+	or c_pr76m=1  or c_pr82m=1  or c_pr84m=1  or c_pr88m=1 or c_pr90m=1  or c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1
 	then i_rm=1; if primary ne 1 then i_rm=.;
 
 	if primary=1 then do; r_=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
-		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 then r_=1;
+		or r_dar >= 0.5 or r_lpr >= 0.5  or r_taz >= 0.5 or r_dol >= 0.5 or r_cab >= 0.5 then r_=1;
 	end;
 
 
@@ -12204,7 +13317,7 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 		pim_art=max(0,pim_); 
 		if c_rttams ge 1 then tam_art = 1;  
 		m184_art=c_rt184m; 
-		if c_inpm=1 or c_insm=1 then im_art = 1;
+		if c_in118m=1 or c_in140m=1 or c_in148m=1 or c_in155m=1 or c_in263m=1 then im_art = 1;
 		r_art=0;
 		if r_zdv  >= 0.5 or r_efa  >= 0.5 or r_nev  >= 0.5 or r_ten  >= 0.5 or r_3tc  >= 0.5 
 		or r_dar >= 0.5 or r_lpr >= 0.5 or r_taz >= 0.5 or r_dol >= 0.5 then r_art=1; 
@@ -12218,8 +13331,8 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 	nactive_line2_lt2 =0; if . < nactive_line2 < 2 then nactive_line2_lt2 = 1;
 	nactive_line2_lt1p5 =0; if . < nactive_line2 < 1.5 then nactive_line2_lt1p5 = 1;
 
-	if hiv1564=1 then dead1564_=dead  ; if age <15 or age >= 65 then dead1564_=.;
-	if registd=1 then dead_diag=dead1564_;
+	dead_=dead  ; 
+	if registd=1 then dead_diag=dead;
 
 	cl50=0;cl100=0;cl200=0;cl350=0;
 	if . < cd4 < 50 then cl50=1; if cd4=. then cl50=.;
@@ -12231,6 +13344,12 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 	elig_treat200=0; if hiv1564=1 and (naive=0 or cl200=1 or who4_=1) then elig_treat200=1;
 	elig_treat350=0; if hiv1564=1 and (naive=0 or cl350=1 or who4_=1) then elig_treat350=1;
 	elig_treat500=0; if hiv1564=1 and (naive=0 or cl500=1 or who4_=1) then elig_treat500=1;
+
+
+not_on_art_cd4l200=0; if hiv=1 and onart ne 1 and 0 <= cd4 < 200 then not_on_art_cd4l200=1;
+not_on_art_cd4200350=0; if hiv=1 and onart ne 1 and 200 <= cd4 < 350 then not_on_art_cd4200350=1;
+not_on_art_cd4350500=0; if hiv=1 and onart ne 1 and 350 <= cd4 < 500 then not_on_art_cd4350500=1;
+not_on_art_cd4ge500=0; if hiv=1 and onart ne 1 and 500 <= cd4 then not_on_art_cd4ge500=1;
 
 
 ***Outputs for specific periods;
@@ -12259,21 +13378,30 @@ i_fsw_v1_np=0; i_fsw_v2_np=0; i_fsw_v3_np=0; i_fsw_v4_np=0; i_fsw_v5_np=0; i_fsw
 end; * this closes loop for hiv + only;
 
 *** Status of concordant/discordant partnerships;
-hiv0epi1_w=0; if gender=2 and hiv=0 and epi  =1 then hiv0epi1_w=1; 
-hiv1epi0_w=0; if gender=2 and hiv=1 and epi  =0 then hiv1epi0_w=1; 
-hiv1epi1_w=0; if gender=2 and hiv=1 and epi  =1 then hiv1epi1_w=1; 
-hiv0epi1_m=0; if gender=1 and hiv=0 and epi  =1 then hiv0epi1_m=1; 
-hiv1epi0_m=0; if gender=1 and hiv=1 and epi  =0 then hiv1epi0_m=1; 
-hiv1epi1_m=0; if gender=1 and hiv=1 and epi  =1 then hiv1epi1_m=1; 
+hiv0epi1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_w=1; 
+hiv1epi0_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_w=1; 
+hiv1epi1_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_w=1; 
+hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1; 
+hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
+hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
 
 *** Existing partner infected this period;
 hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1; 
 
+*** Diagnosed and On ART restricted for people age 15-64 (for feeding in to next period);
+
+diag_age1564 = 0; if registd=1 and 15 <= age < 65 then diag_age1564 = 1; 
+diag_w_age1564 = 0; if registd=1 and gender=2 and 15 <= age < 65 then diag_w_age1564 = 1; 
+diag_m_age1564 = 0; if registd=1 and gender=1 and 15 <= age < 65 then diag_m_age1564 = 1; 
+
+onart_age1564 = 0;  if 15 <= age < 65 and onart=1 then onart_age1564 = 1; 
+
+
 *** Virally supressed on ART;
-if prep   ne 1 then do;
+if prep_any   ne 1 then do;	* lapr - define which prep? ;
 	* No time restriction on ART;
-	vl1000_art=.;
-	if onart = 1 then vl1000_art=vl1000;
+	vl1000_art=.;vl1000_art_age1564=.;
+	if onart = 1 then vl1000_art=vl1000;	if onart = 1 and 15 <= age < 65 then vl1000_art_age1564=vl1000;
 	* No time restriction on ART, including interruption clinic unaware;
 	onart_iicu = .; vl1000_art_iicu = .;
 	if (onart = 1 or int_clinic_not_aw) = 1 then onart_iicu=1;
@@ -12295,6 +13423,10 @@ started_art_as_tld_prep_vl1000=.; onart_as_tld_prep=.; onart_as_tld_prep_vl1000=
 if started_art_as_tld_prep = 1 then do; started_art_as_tld_prep_vl1000 = vl1000;  end;
 if started_art_as_tld_prep = 1 and onart=1 and registd ne 1 then onart_as_tld_prep=1; 
 if onart_as_tld_prep=1 then do; onart_as_tld_prep_vl1000 = vl1000;   end; 
+
+tld_notest_notprepelig_pos = 0; if hiv=1 and tld_notest_notprepelig = 1 then tld_notest_notprepelig_pos = 1;
+tld_notest_notprepelig_neg = 0; if hiv=0 and tld_notest_notprepelig = 1 then tld_notest_notprepelig_neg = 1;
+
 
 ***As above, stratified by gender;
 vl1000_art_m =.;onart_iicu_m=.;vl1000_art_iicu_m=.;onart_gt6m_m=.;vl1000_art_gt6m_m=.;onart_gt6m_iicu_m=.;vl1000_art_gt6m_iicu_m=.;
@@ -12389,6 +13521,8 @@ if sw_program_visit=0 and sw=1 then do;
 diag_sw_noprog=diag_sw; onart_sw_noprog=onart_sw; vl1000_art_gt6m_iicu_sw_noprog=vl1000_art_gt6m_iicu_sw;
 end;
 
+sti_sw=0;
+if sw=1 then sti_sw=sti;
 
 vl1000_art_incintcun_sw=.;   if sw=1      then vl1000_art_incintcun_sw    = vl1000_art_iicu;
 
@@ -12467,7 +13601,7 @@ end;
 
 if onart=1 then do;
 	hiv1564_onart=hiv1564;
-	dead1564_onart=dead1564_;
+	dead_onart=dead_;
 end;
 
 *** Diagnosed and on ART by sex and ep;
@@ -12483,109 +13617,132 @@ if line2_incl_int_clinic_not_aw = 1 and pim_=1 then pim_line2=1;
 onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart_cd4_g500=1;
 
 
-*Prep;
-hr_noprep=0;       if (epi  =1 or newp ge 2) and prep   ne 1 then hr_noprep=1;
 
-primary_prep=0;     if primary=1 and infected_prep=1 then primary_prep=1;
-primary_hr_noprep=0;if primary=1 and hr_noprep=1     then primary_hr_noprep=1;
-hiv1_prep=0; 	   if hiv=1 and prep  =1 then hiv1_prep=1;
-if infected_prep=1 then do;
-	primary_r_prep=r_;*new infections with TDR;
-	ever_i_nor_prep=0;
-	if primary_r_prep=1 then i_r_prep=1;
-	if primary_r_prep=0 then ever_i_nor_prep=1;*Subjects ever infected while on PrEP without TDR;
+**** PrEP ************************************************************************************************************************;
+
+prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
+prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
+prep_oral_m=0; if gender=1 and prep_oral=1 then prep_oral_m=1;
+prep_inj_m=0; if gender=1 and prep_inj=1 then prep_inj_m=1;
+
+prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
+
+*Resistance in people infected on prep;
+
+primary_prep=0; prim_r_prep=0;
+if infected_prep_any=1 and primary=1 then do;
+		primary_prep=1; * infected in this period while having been on prep;     
+		ever_prim_tdr_prep=c_rm_inf; * new infections with TDR; 
+		ever_prim_r_prep=r_; 
+		ever_prim_nor_prep=0;
+		if r_ = 1 then prim_r_prep=1;  
+		if r_ ne 1 then ever_prim_nor_prep=1; *Subjects EVER infected while on PrEP without resistance;
 end;
 
-*Subjects ever infected while on PrEP without TDR who acquire resistance;
-if ever_i_nor_prep=1 then rm_prep=rm_;
 
-*Outcomes relating to PrEP;
 
 *Number of people eligible for PrEP;
-elig_prep_epdiag=0;	*if registd ne 1 and hard_reach=0 and epdiag=1 then elig_prep_epdiag=1;
-					if prep_elig=1 and epdiag=1 then elig_prep_epdiag=1;
-elig_prep=0;       	*if registd ne 1 and hard_reach=0 and (epi  =1 or newp ge 2) then elig_prep=1; 
-					if prep_elig=1 then elig_prep=1;
+*Number of people eligible for any PrEP;
 
-elig_prep_w_1524 = 0; elig_prep_w_2534 = 0; elig_prep_w_3544 = 0; elig_prep_w_1549 = 0; 
-if gender = 2 and 15 <= age < 25 then do; if prep_elig=1 then elig_prep_w_1524 = 1;  end;
-if gender = 2 and 25 <= age < 35 then do; if prep_elig=1 then elig_prep_w_2534 = 1;  end;
-if gender = 2 and 35 <= age < 45 then do; if prep_elig=1 then elig_prep_w_3544 = 1;  end;
-if gender = 2 and 15 <= age < 50 then do; if prep_elig=1 then elig_prep_w_1549 = 1;  end;
-if sw=1 then do; elig_prep_sw = 0; if prep_elig = 1 then elig_prep_sw = 1;   end;
+elig_prep_any_w_1524 = 0; elig_prep_any_w_2534 = 0; elig_prep_any_w_3544 = 0; elig_prep_any_w_1549 = 0;  elig_prep_any_w_1564 = 0; 
+if gender = 2 and 15 <= age < 25 then do; if prep_any_elig=1 then elig_prep_any_w_1524 = 1;  end;
+if gender = 2 and 25 <= age < 35 then do; if prep_any_elig=1 then elig_prep_any_w_2534 = 1;  end;
+if gender = 2 and 35 <= age < 45 then do; if prep_any_elig=1 then elig_prep_any_w_3544 = 1;  end;
+if gender = 2 and 15 <= age < 50 then do; if prep_any_elig=1 then elig_prep_any_w_1549 = 1;  end;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_w_1564 = 1;  end;
+if sw=1 then do; elig_prep_any_sw = 0; if prep_any_elig = 1 then elig_prep_any_sw = 1;   end;
 
-prep_w_1524 = 0; prep_w_2534 = 0; prep_w_3544 = 0; prep_w_1549 = 0;
-if gender = 2 and 15 <= age < 25 then do;  if prep=1 then prep_w_1524 = 1;  end;
-if gender = 2 and 25 <= age < 35 then do;  if prep=1 then prep_w_2534 = 1;  end;
-if gender = 2 and 35 <= age < 45 then do;  if prep=1 then prep_w_3544 = 1;  end;
-if gender = 2 and 15 <= age < 49 then do;  if prep=1 then prep_w_1549 = 1;  end;
+prep_any_w_1524 = 0; prep_any_w_2534 = 0; prep_any_w_3544 = 0; prep_any_w_1549 = 0;
+if gender = 2 and 15 <= age < 25 then do;  if prep_any=1 then prep_any_w_1524 = 1;  end;
+if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 1;  end;
+if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
+if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
 
-elig_prep_onprep=0;
-if elig_prep = 1 then do;
-if prep=1 then elig_prep_onprep=1;
-end;
 
-* high risk but not on prep;
-hr_noprep=0;      		if (epi  =1 or newp ge 2) and registd ne 1 and prep   ne 1 then hr_noprep=1;
-primary_hr_noprep=0;	if primary=1 and hr_noprep=1 then primary_hr_noprep=1;
+elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
+
 
 * number on prep women age 15-24;
-prep_w_1524 = 0 ; if prep   =1 and gender =2 and 15 <= age < 25 then prep_w_1524 = 1 ;
+prep_oral_w_1524 = 0 ; 	if prep_oral=1 and gender =2 and 15 <= age < 25 then prep_oral_w_1524 = 1 ;
+prep_inj_w_1524 = 0 ; 	if prep_inj =1 and gender =2 and 15 <= age < 25 then prep_inj_w_1524 = 1 ;
+prep_vr_w_1524 = 0 ; 	if prep_vr  =1 and gender =2 and 15 <= age < 25 then prep_vr_w_1524 = 1 ;
 
 * number of sex workers on prep;
-prep_sw = 0 ; if prep   =1 and sw=1 then prep_sw = 1 ;
+prep_any_sw = 0 ; 	if prep_any  =1 and sw=1 then prep_any_sw = 1 ;
+prep_oral_sw = 0 ; 	if prep_oral =1 and sw=1 then prep_oral_sw = 1 ;
+prep_inj_sw = 0 ; 	if prep_inj  =1 and sw=1 then prep_inj_sw = 1 ;
+prep_vr_sw = 0 ; 	if prep_vr   =1 and sw=1 then prep_vr_sw = 1 ;
 
-*At start of PrEP;
-prepstart=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
-if dt_prep_s=caldate&j then do;
-	prepstart=1;
+*At start of PrEP;	* lapr - any prep - JAS Nov2021;
+prep_any_start=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
+if min(dt_prep_oral_s, dt_prep_inj_s, dt_prep_vr_s)= caldate&j then do;
+	prep_any_start=1;
 	age_prepstart=age;
 	ep_prepstart=ep;
 	newp_prepstart=newp;
 end;
 
-*People accidentally on PrEP due to window period;  
-started_prep_in_primary =0; if hiv=1 and dt_prep_s=caldate&j and primary = 1 then do; started_prep_in_primary =1;
-started_prep_in_primary_e =1; end;
+prep_oral_start=0; if dt_prep_oral_s = caldate&j then prep_oral_start=1;
+prep_inj_start=0; if dt_prep_inj_s = caldate&j then prep_inj_start=1;
+prep_vr_start=0; if dt_prep_vr_s = caldate&j then prep_vr_start=1;
 
-*Resistance related to PreP;
-primary_prep=0; 
-if infected_prep=1 and primary=1 then do;
-	primary_prep=1; * infected in this period while having been on prep;     
-	primary_r_prep=c_rm_inf; * new infections with TDR; * may17;
-	ever_i_nor_prep=0;
-	if primary_r_prep=1 then i_r_prep=1;
-	if primary_r_prep ne 1 then ever_i_nor_prep=1; *Subjects EVER infected while on PrEP without TDR;
-end;
+prep_oral_restart=0; if dt_prep_oral_rs = caldate&j  then prep_oral_restart=1;
+prep_inj_restart=0; if dt_prep_inj_rs = caldate&j  then prep_inj_restart=1;
+prep_vr_restart=0; if dt_prep_vr_rs = caldate&j  then prep_vr_restart=1;
 
-* if infected by a person with prep resistance - infected_prep_source_prep_r;
+*People accidentally started PrEP due to window period;  	
+started_prep_any_in_primary =0; 	if hiv=1 and min(dt_prep_oral_s, dt_prep_inj_s)= caldate&j 	and primary = 1 then do; started_prep_any_in_primary =1; 	started_prep_any_in_primary_e =1; end;
+started_prep_oral_in_primary =0; 	if hiv=1 and dt_prep_oral_s=caldate&j 	and primary = 1 then do; started_prep_oral_in_primary =1; 	started_prep_oral_in_primary_e =1; end;
+started_prep_inj_in_primary =0; 	if hiv=1 and dt_prep_inj_s=caldate&j 	and primary = 1 then do; started_prep_inj_in_primary =1; 	started_prep_inj_in_primary_e =1; end;
+started_prep_vr_in_primary =0; 		if hiv=1 and dt_prep_vr_s=caldate&j 	and primary = 1 then do; started_prep_vr_in_primary =1; 	started_prep_vr_in_primary_e =1; end;
 
-*Subjects ever infected while on PrEP without TDR who acquire resistance;
-if ever_i_nor_prep=1 then rm_prep=rm_;
+
+
+started_prep_any_hiv =0; 	if hiv=1 and (caldate&j = dt_prep_oral_s or caldate&j = dt_prep_oral_rs or dt_prep_inj_s= caldate&j  or 
+caldate&j = dt_prep_inj_rs) then started_prep_any_hiv =1; 	
+
+started_prep_inj_hiv =0; 	if hiv=1 and (dt_prep_inj_s= caldate&j  or caldate&j = dt_prep_inj_rs) then started_prep_inj_hiv =1; 	
+
+pop_wide_tld_hiv=0; if  pop_wide_tld_prep = 1 and hiv=1 then pop_wide_tld_hiv=1; 
+pop_wide_tld_prep_elig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig=1 then pop_wide_tld_prep_elig=1;
+pop_wide_tld_neg_prep_inelig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig ne 1 then pop_wide_tld_neg_prep_inelig=1;
+
+primary_prep_oral = 0; if infected_prep_oral=1 and primary=1 then primary_prep_oral = 1;
+primary_prep_inj = 0; if infected_prep_inj =1 and primary=1 then primary_prep_inj  = 1;
+
+* if infected by a person with prep resistance - inf_prep_any_source_prep_r;
+
 
 *Whether resistance was transmitted or acquired when infected whilst on prep;
 infected_prep_no_r=0; infected_prep_r=0;
 
 * ts1m: note length primary dependent_on_time_step_length ;
 
-if primary_prep=1 and started_prep_in_primary_e ne 1 then do;
+if primary_prep=1 and started_prep_any_in_primary_e ne 1 then do;
 	*Whether the source partner had any mutations at time of infection;
 	if mut_p >= 1 then prepinfect_rm_p=1;	
 	if m184m_p = 1 then prepinfect_m184m_p=1;
 	if k65m_p = 1 then prepinfect_k65m_p=1;
 	if tam_p >= 1 then prepinfect_tam_p=1;
 	if (m184m_p+k65m_p+tam_p) >= 1 then prepinfect_prep_r_p=1;
-	if pop_wide_tld_prep=1 and (inpm_p+insm_p) ge 1 then prepinfect_prep_r_p=1;
-	if inpm_p >= 1 then prepinfect_inpm_p=1;
-	if insm_p >= 1 then prepinfect_insm_p=1;
+	if pop_wide_tld_prep=1 and (in118m_p+in140m_p+in148m_p+in155m_p+in263m_p) ge 1 then prepinfect_prep_r_p=1;
+	if in118m_p >= 1 then prepinfect_in118m_p=1;
+	if in140m_p >= 1 then prepinfect_in140m_p=1;
+	if in148m_p >= 1 then prepinfect_in148m_p=1;
+	if in155m_p >= 1 then prepinfect_in155m_p=1;
+	if in1263_p >= 1 then prepinfect_in263m_p=1;
+
 	*Whether these resistant virus were passed onto the individual;
 	if rm_inf = 1 then prepinfect_rtm=1; * may17;
 	if (c_rt184m_inf+c_rt65m_inf+c_rttams_inf) >= 1 then prepinfect_prep_r=1;
-	if pop_wide_tld_prep=1 and (c_inpm_inf+c_insm_inf) ge 1 then prepinfect_prep_r=1;
+	if pop_wide_tld_prep=1 and (c_in118m_inf+c_in140m_inf+c_in148m_inf+c_in155m_inf+c_in263m_inf ) ge 1 then prepinfect_prep_r=1;
 	if c_rt65m_inf >= 1 then prepinfect_k65m=1;
 	if c_rt184m_inf = 1 then prepinfect_m184m=1;
-	if c_inpm_inf = 1 then prepinfect_inpm=1;
-	if c_insm_inf = 1 then prepinfect_insm=1;
+	if c_in118m_inf = 1 then prepinfect_in118m=1;
+	if c_in140m_inf = 1 then prepinfect_in140m=1;
+	if c_in148m_inf = 1 then prepinfect_in148m=1;
+	if c_in155m_inf = 1 then prepinfect_in155m=1;
+	if c_in263m_inf = 1 then prepinfect_in263m=1;
 	if c_rttams_inf >= 1 then prepinfect_tam=1;
 	if prepinfect_prep_r ne 1 then do; infected_prep_no_r=1; ev_infected_prep_no_r=1; end;
 	if prepinfect_prep_r = 1 then infected_prep_r=1;
@@ -12597,23 +13754,29 @@ if infected_prep_no_r=1 then infected_prep_no_r_e = 1;
 
 * AP 21-7-19;
 cur_res_prep_drug=0; if (e_rttams + e_rt184m + e_rt65m) ge 1  then cur_res_prep_drug=1;
-cur_res_prep_drug_tld=0; if (e_rttams + e_rt184m + e_rt65m + e_inpm + e_insm) ge 1  then cur_res_prep_drug_tld=1;
+cur_res_prep_drug_tld=0; if (e_rttams + e_rt184m + e_rt65m + e_in118m + e_in140m + e_in148m  + e_in155m + e_in263m) ge 1  then cur_res_prep_drug_tld=1;
 cur_res_3tc=0; if r_3tc > 0  then cur_res_3tc=1;
 cur_res_ten=0; if r_ten > 0  then cur_res_ten=1;
 cur_res_efa=0; if r_efa > 0  then cur_res_efa=1;
 cur_res_dol=0; if r_dol > 0  then cur_res_dol=1;
+cur_res_cab=0; if hiv=1 and (e_in118m=1 or e_in140m=1 or e_in148m=1  or e_in155m=1 or e_in263m=1 or r_cab > 0)  then cur_res_cab=1;
 
 * number of people infectious with resistance mutations;
 cur_res_3tc_vlg1000=0; if c_rt184m=1 and vg1000 = 1 then cur_res_3tc_vlg1000=1;
 cur_res_ten_vlg1000=0; if c_rt65m=1 and vg1000 = 1 then cur_res_ten_vlg1000=1;
 cur_res_efa_vlg1000=0; if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then cur_res_efa_vlg1000=1; * may17 h;
-cur_res_dol_vlg1000=0; if c_insm=1 or c_inpm=1 then cur_res_dol_vlg1000=1;
+cur_res_dol_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1 then cur_res_dol_vlg1000=1;
+cur_res_cab_vlg1000=0; if c_in118m=1 or c_in140m=1 or  c_in148m=1 or  c_in155m=1 or c_in263m=1 then cur_res_cab_vlg1000=1;
 
 
 *If on PrEP and HIV-positive;
-hiv1_prep=0; 	   if hiv=1 and prep  =1 then do; hiv1_prep=1;  ever_hiv1_prep=1; end;
+hiv1_prep_any=0; 	   if hiv=1 and prep_any  =1 then do; hiv1_prep_any=1;  ever_hiv1_prep_any=1; 	end;
+hiv1_prep_oral=0; 	   if hiv=1 and prep_oral =1 then do; hiv1_prep_oral=1; ever_hiv1_prep_oral=1; 	end;
+hiv1_prep_inj =0; 	   if hiv=1 and prep_inj  =1 then do; hiv1_prep_inj =1; ever_hiv1_prep_inj =1; 	end;
 
-if ever_hiv1_prep=1 then do; 
+
+
+if ever_hiv1_prep_oral=1 then do; 
 cur_res_efa_ever_hiv1_prep =0 ; if cur_res_efa = 1 then cur_res_efa_ever_hiv1_prep =1;
 cur_res_dol_ever_hiv1_prep =0 ; if cur_res_dol = 1 then cur_res_dol_ever_hiv1_prep =1;
 cur_res_ten_ever_hiv1_prep =0 ; if cur_res_ten = 1 then cur_res_ten_ever_hiv1_prep =1;
@@ -12621,49 +13784,63 @@ cur_res_3tc_ever_hiv1_prep =0 ; if cur_res_3tc = 1 then cur_res_3tc_ever_hiv1_pr
 end;
 
 
-* proportion of hiv tests on prep which are +ve;
+
+* proportion of hiv tests on oral prep which are +ve;
 if t ge 4 then do; * jan18 ;
 * ts1m: note this is 1 period on prep so is 1 month is ts1m ; 
-test_period1_on_prep =.; test_period1_on_prep_pos=.; test_gt_period1_on_prep =.; test_gt_period1_on_prep_pos=.;
-if prep_tm2 ne 1 and prep_tm1=1 and tested=1 then do; test_period1_on_prep =1; test_period1_on_prep_pos=0; if caldate&j = date1pos then test_period1_on_prep_pos=1; end;
-if prep_tm2=1 and prep_tm1=1 and prep=1 then do; test_gt_period1_on_prep =1; test_gt_period1_on_prep_pos=0; if caldate&j = date1pos then test_gt_period1_on_prep_pos=1; end;
+test_per1_on_prep_oral =.; test_per1_on_prep_oral_pos=.; test_gt_per1_on_prep_oral =.; test_gt_per1_on_prep_oral_pos=.;
+if prep_oral_tm2 ne 1 and prep_oral_tm1=1 and tested=1 then do; test_per1_on_prep_oral =1; test_per1_on_prep_oral_pos=0; if caldate&j = date1pos then test_per1_on_prep_oral_pos=1; end;
+if prep_oral_tm2=1 and prep_oral_tm1=1 and prep_oral=1 then do; test_gt_per1_on_prep_oral =1; test_gt_per1_on_prep_oral_pos=0; if caldate&j = date1pos then test_gt_per1_on_prep_oral_pos=1; end;
 end;
 
-*Time from first to last use of prep;
+*Time from first to last use of oral prep;
 years_since_start_prep=0; 
-if prep_ever=1 then years_since_start_prep=dt_prep_e-dt_prep_s;
+if prep_oral_ever=1 then years_since_start_prep=date_last_stop_prep_oral-dt_prep_oral_s;
 
 
 *Number of HIV tests in the previous year for people currently on PrEP;
 n_test_prev_4p_onprep = 0;
 * dependent_on_time_step_length ;
 * ts1m :  when 1 month time step this is 4 months rather than 1 year (4p means 4 periods);
-if caldate&j > 1990 and prep=1 and (. < caldate&j-dt_last_test < 1) then n_test_prev_4p_onprep=sum(tested,tested_tm1,tested_tm2,tested_tm3);
+if caldate&j > 1990 and prep_oral=1 and (. < caldate&j-dt_last_test < 1) then n_test_prev_4p_onprep=sum(tested,tested_tm1,tested_tm2,tested_tm3);
 
-*Discontinutation (through choice) and re-initiation of PrEP;
-ever_stopped_prep_choice=0; preprestart=0; 
-if dt_prep_e=caldate&j and stop_prep_choice=1 then ever_stopped_prep_choice=1;
-if dt_prep_rs=caldate&j then preprestart=1;
-if dt_prep_c=caldate&j then prep_continue_np_ge1=1;
+*Discontinutation (through choice) and re-initiation of oral PrEP;
+preprestart=0; 
+if stop_prep_oral_choice=1 then ever_stopped_prep_oral_choice=1;
+if dt_prep_oral_rs=caldate&j then preprestart=1;
+if dt_prep_oral_c=caldate&j then prep_continue_np_ge1=1;
 
 
-* Time from infection whilst on PrEP and whether they are still on PrEP after 3, 6, 9, 12, 18 months - only applies when pop_wide_tld not in place;
-if  infected_prep=1 and pop_wide_tld ne 1 then do;
+* Time from infection whilst on oral or inj PrEP and whether they are still on PrEP after 3, 6, 9, 12, 18 months - only applies when pop_wide_tld not in place;
+if (infected_prep_inj=1 or infected_prep_oral=1) and pop_wide_tld ne 1 then do;
 	time_from_infection=caldate&j-infection;
 * dependent_on_time_step_length ;
-	time_stop_prep= dt_prep_e+0.25-infection;
-* ts1m:  replace line above with:
-	time_stop_prep= dt_prep_e+(1/12)-infection;
+	time_stop_prep= max(date_last_stop_prep_oral, date_last_stop_prep_inj, date_last_stop_prep_vr) + 0.25 - infection;
+* ts1m;
 
-	if time_from_infection=0.25 then onprep_3=prep;
-	if time_from_infection=0.5  then onprep_6=prep;
-	if time_from_infection=0.75 then onprep_9=prep;
-	if time_from_infection=1.0  then onprep_12=prep;
-	if time_from_infection=1.5  then onprep_18=prep;
+
+	if time_from_infection=0.25 then onprep_3=prep_any;
+	if time_from_infection=0.5  then onprep_6=prep_any;
+	if time_from_infection=0.75 then onprep_9=prep_any;
+	if time_from_infection=1.0  then onprep_12=prep_any;
+	if time_from_infection=1.5  then onprep_18=prep_any;
 end;
 
+if o_cab ne 1 then time_hiv_cab=0;
+if hiv=1 and o_cab=1 and (primary=1 or dt_prep_inj_s = caldate&j) then time_hiv_cab=0.25;
+if hiv=1 and o_cab=1 and (primary ne 1 and dt_prep_inj_s ne caldate&j) then time_hiv_cab=time_hiv_cab+0.25;
+
+
+hiv_cab_3m=0; hiv_cab_6m=0; hiv_cab_9m=0; hiv_cab_ge12m=0;
+
+if time_hiv_cab = 0.25 then hiv_cab_3m = 1; 
+if time_hiv_cab = 0.5 then  hiv_cab_6m = 1; 
+if time_hiv_cab = 0.75 then  hiv_cab_9m = 1; 
+if time_hiv_cab ge 1 then hiv_cab_ge12m = 1; 
+
+
 * resistance profile for people infected whilst on PrEP (whether this was acquired or transmitted);
-if infected_prep=1 then do;
+if infected_prep_any=1 then do;			* lapr - any PrEP;
 
 	if time_from_infection=0.25 then do;
 		rt65m_3_prep =c_rt65m; rt184m_3_prep=c_rt184m; rttams_3_prep=c_rttams; if (rt65m_3_prep + rt184m_3_prep + rttams_3_prep) >= 1 
@@ -12689,7 +13866,7 @@ if infected_prep=1 then do;
 end;
 
 * resistance profile for people infected whilst on PrEP but not with resistant virus;
-if infected_prep=1 and i_r_prep ne 1  then do;
+if infected_prep_any=1 and prim_r_prep ne 1  then do;			* lapr - any PrEP;
 	time_acq_rt65m  = caldate&j -infection; if acq_rt65m=1  then time_acq_rt65m = dt_acq_rt65m -infection;
 	time_acq_rt184m = caldate&j -infection; if acq_rt184m=1 then time_acq_rt184m= dt_acq_rt184m-infection;
 	time_acq_rtm    = caldate&j -infection; if acq_rtm=1     then time_acq_rtm   = dt_acq_rtm   -infection;
@@ -12710,11 +13887,11 @@ if infected_prep=1 and i_r_prep ne 1  then do;
 		acq_rt65m_18_prep =c_rt65m; acq_rt184m_18_prep=c_rt184m; acq_rtm_18_prep=rm_;
 	end;
 
-	if time_from_infection=0.25 then onprep_3_i_prep_no_r=prep;
-	if time_from_infection=0.5  then onprep_6_i_prep_no_r=prep;
-	if time_from_infection=0.75 then onprep_9_i_prep_no_r=prep;
-	if time_from_infection=1.0  then onprep_12_i_prep_no_r=prep;
-	if time_from_infection=1.5  then onprep_18_i_prep_no_r=prep;
+	if time_from_infection=0.25 then onprep_3_i_prep_no_r=prep_oral;
+	if time_from_infection=0.5  then onprep_6_i_prep_no_r=prep_oral;
+	if time_from_infection=0.75 then onprep_9_i_prep_no_r=prep_oral;
+	if time_from_infection=1.0  then onprep_12_i_prep_no_r=prep_oral;
+	if time_from_infection=1.5  then onprep_18_i_prep_no_r=prep_oral;
 
 end;
 
@@ -12723,64 +13900,88 @@ if caldate&j = infection > . then do;
 
 
 * ts1m: note that when ts1m primary infection lasts 1 month ;
-inf_prep_adhg80 =0;	if prep=1 and        adh gt 0.8	then inf_prep_adhg80 =primary;
-inf_prep_adh5080=0;	if prep=1 and 0.5 lt adh le 0.8	then inf_prep_adh5080=primary;
-inf_prep_adhl50 =0;	if prep=1 and  .  lt adh le 0.5	then inf_prep_adhl50 =primary;
+inf_prep_adhg80 =0;	if prep_oral=1 and        adh gt 0.8	then inf_prep_adhg80 =primary;
+inf_prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then inf_prep_adh5080=primary;
+inf_prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then inf_prep_adhl50 =primary;
 end;
 *Adherence to PrEP;
-prep_adhg80 =0;	if prep=1 and        adh gt 0.8	then prep_adhg80 =1;
-prep_adh5080=0;	if prep=1 and 0.5 lt adh le 0.8	then prep_adh5080=1;
-prep_adhl50 =0;	if prep=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
+prep_adhg80 =0;	if prep_oral=1 and        adh gt 0.8	then prep_adhg80 =1;
+prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then prep_adh5080=1;
+prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
-onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;
-if prep=1 then do;
+onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
+if prep_any=1 then do;
 	if (15<=age<49) then onprep_1549=1;
 	if gender=1 then onprep_m=1;
 	if gender=2 then onprep_w=1;
+	if gender=1 and prep_inj=1 then onprep_inj_m=1;
+	if gender=2 and prep_inj=1 then onprep_inj_w=1;
+	if gender=1 and prep_oral=1 then onprep_oral_m=1;
+	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
 	if gender=2 and (15<=age<25) then onprep_1524w=1;
 end;
 
 
-if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep=1 then do;
+* whether fulfil all criteria for prep (although also need to test negative to actually start prep [except under pop_wide_tld]);
+all_prep_criteria = 0; 
+if prep_any_elig=1 and prep_any_willing=1 and hard_reach ne 1 then all_prep_criteria = 1;
+
+all_prep_criteria_hivneg = 0;
+if all_prep_criteria = 1 and hiv ne 1 then all_prep_criteria_hivneg = 1;
+
+prep_elig_hivneg = 0;
+if prep_any_elig=1 and hiv ne 1 then prep_elig_hivneg = 1;
+
+prep_elig_hivneg_onprep = 0;
+if prep_elig_hivneg = 1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_hivneg_onprep = 1;
+
+* has prep indication and is on prep ;
+prep_elig_onprep = 0;
+if prep_any_elig=1 and (prep_any=1 or prep_oral=1 or prep_inj=1) then prep_elig_onprep = 1;
+
+* of people with indication for prep (ie prep_any_elig=1), proportion on prep_inj;
+prep_elig_onprep_inj=0;
+if prep_elig_onprep = 1 and prep_inj=1 then prep_elig_onprep_inj=1;
+
+					
+if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep_oral=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_184=0; if c_rt184m = 1 then prep_3m_after_inf_no_r_184=1;
 end;
-if ev_infected_prep_no_r = 1 and caldate&j-infection = 0.50 and prep=1 then do;
+if ev_infected_prep_no_r = 1 and caldate&j-infection = 0.50 and prep_oral=1 then do;
 prep_6m_after_inf_no_r=1; prep_6m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_6m_after_inf_no_r_65=1;
 prep_6m_after_inf_no_r=1; prep_6m_after_inf_no_r_184=0; if c_rt184m = 1 then prep_6m_after_inf_no_r_184=1;
 end;
-if ev_infected_prep_no_r = 1 and caldate&j-infection = 1.00 and prep=1 then do;
+if ev_infected_prep_no_r = 1 and caldate&j-infection = 1.00 and prep_oral=1 then do;
 prep_12m_after_inf_no_r=1; prep_12m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_12m_after_inf_no_r_65=1;
 prep_12m_after_inf_no_r=1; prep_12m_after_inf_no_r_184=0; if c_rt184m = 1 then prep_12m_after_inf_no_r_184=1;
 end;
 
-
 hiv_prep_reason_1=.;hiv_prep_reason_2=.;hiv_prep_reason_3=.;hiv_prep_reason_4=.;
-if hiv1_prep=1 then do;
-if started_prep_in_primary_e = 1 then hiv_prep_reason_1=1;
+if hiv1_prep_any=1 then do;
+if started_prep_any_in_primary_e = 1 then hiv_prep_reason_1=1;
 if started_prep_hiv_test_sens_e = 1 then hiv_prep_reason_2=1;
-if infected_prep=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
-if infected_prep=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
+if infected_prep_any=1 and infected_prep_r_e=1 then hiv_prep_reason_3=1;
+if infected_prep_any=1 and infected_prep_no_r_e=1 then hiv_prep_reason_4=1;
 end;
 
 
-elig_prep_epdiag=0; if prep_elig=1 and ((epdiag=1 and epart ne 1) or (ep=1 and epart ne 1)) and newp=0 then elig_prep_epdiag=1;
 
 * so can calculate proportion of newp with person on prep;
-newp_prep = 0; if prep=1 then newp_prep=newp;
+newp_prep = 0; if prep_oral=1 then newp_prep=newp;
 
-prep_elig_past_year=0;prep_elig_past_3year=0;prep_elig_past_5year=0;
-if 0 <= caldate&j - date_most_recent_prep_elig < 1 then prep_elig_past_year=1;
-if 0 <= caldate&j - date_most_recent_prep_elig < 3 then prep_elig_past_3year=1;
-if 0 <= caldate&j - date_most_recent_prep_elig < 5 then prep_elig_past_5year=1;
+prep_any_elig_past_year=0;prep_any_elig_past_3year=0;prep_any_elig_past_5year=0;
+if 0 <= caldate&j - date_most_recent_prep_any_elig < 1 then prep_any_elig_past_year=1;
+if 0 <= caldate&j - date_most_recent_prep_any_elig < 3 then prep_any_elig_past_3year=1;
+if 0 <= caldate&j - date_most_recent_prep_any_elig < 5 then prep_any_elig_past_5year=1;
 
 prop_elig_years_onprep_ayear_i=0;
-if cum_years_prep_elig_ayear_i > 0 and registd ne 1 then prop_elig_years_onprep_ayear_i =  cum_years_onprep_ayear_i / cum_years_prep_elig_ayear_i;
+if cum_years_prep_any_elig_ayear_i > 0 and registd ne 1 then prop_elig_years_onprep_ayear_i =  cum_years_onprep_ayear_i / cum_years_prep_any_elig_ayear_i;
 
-continuous_prep_ge1yr=0; if prep=1 and continuous_prep_use >= 1 then continuous_prep_ge1yr=1;
+continuous_prep_oral_ge1yr=0; if prep_oral=1 and continuous_prep_oral_use >= 1 then continuous_prep_oral_ge1yr=1;
 
 
 infected_ep_w=0; if gender=2 and infected_ep=1 then infected_ep_w=infected_ep;
@@ -12789,7 +13990,9 @@ infected_newp_w=0; if gender=2 and infected_newp=1 then infected_newp_w=infected
 infected_newp_m=0; if gender=1 and infected_newp=1 then infected_newp_m=infected_newp;
 
 
-*Testing outcomes;
+
+
+***** Testing outcomes ************************************************************************************************************************** ;
 
 if 15 le age lt 50 then tested1549_=tested;
 if gender=1 and 15 le age lt 50 then tested1549m=tested;
@@ -12845,6 +14048,8 @@ ever_tested_w1549_=0;ever_tested_w1564_=0;
 ever_tested_w1519_=0;ever_tested_w2024_=0;ever_tested_w2529_=0;ever_tested_w3034_=0;ever_tested_w3539_=0;ever_tested_w4044_=0;
 ever_tested_w4549_=0;ever_tested_w5054_=0;ever_tested_w5559_=0;ever_tested_w6064_=0;  
 ever_tested_sw=0; 	
+
+test_not_costed=0; if tested=1 and cost_test <= 0 then test_not_costed=1;
 
 diag_m1549_=0;diag_m1564_=0;
 diag_m1519_=0;diag_m2024_=0;diag_m2529_=0;diag_m3034_=0;diag_m3539_=0;diag_m4044_=0;diag_m4549_=0;diag_m5054_=0;diag_m5559_=0;diag_m6064_=0;  
@@ -12903,11 +14108,11 @@ end;
 
 year_1_infection=0;year_2_infection=0;year_3_infection=0;year_4_infection=0;year_5_infection=0;
 year_1_infection_diag=0;year_2_infection_diag=0;year_3_infection_diag=0;year_4_infection_diag=0;year_5_infection_diag=0;
-if 0 <= caldate&j - infection < 1 and registd ne 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
-if 1 <= caldate&j - infection < 2 and registd ne 1 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
-if 2 <= caldate&j - infection < 3 and registd ne 1 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
-if 3 <= caldate&j - infection < 4 and registd ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
-if 4 <= caldate&j - infection < 5 and registd ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
+if 0 <= caldate&j - infection < 1 and registd_tm1 ne 1 then do; year_1_infection=1; if date1pos=caldate&j then year_1_infection_diag=1;  end;
+if 1 <= caldate&j - infection < 2 and registd_tm1 ne 1 then do; year_2_infection=1; if date1pos=caldate&j then year_2_infection_diag=1;  end;
+if 2 <= caldate&j - infection < 3 and registd_tm1 ne 1 then do; year_3_infection=1; if date1pos=caldate&j then year_3_infection_diag=1;  end;
+if 3 <= caldate&j - infection < 4 and registd_tm1 ne 1 then do; year_4_infection=1; if date1pos=caldate&j then year_4_infection_diag=1;  end;
+if 4 <= caldate&j - infection < 5 and registd_tm1 ne 1 then do; year_5_infection=1; if date1pos=caldate&j then year_5_infection_diag=1;  end;
 
 
 
@@ -12981,9 +14186,9 @@ if gender=2 then do;
 	if 85 <= age      then dead85plw_all=dead;
 end;
 
-if 15 <= age < 65 then dead1564_all=dead;
-if gender=1 and 15 <= age < 65 then dead1564m_all=dead;
-if gender=2 and 15 <= age < 65 then dead1564w_all=dead;
+dead_all=dead;
+if gender=1  then deadm_all=dead;
+if gender=2  then deadw_all=dead;
 
 death_hivrel=0; if caldate&j = death > . and dcause=1 then death_hivrel=dead;
 
@@ -13149,43 +14354,44 @@ if a_zld_if_reg_op_116 = 1 and nactive >= 1.50 then nac_ge1p50_a_zld_if_reg_op_1
 *Discounting from year_i + 1 (ie when j = ((year_i - 1989) x 4)) + 1); * 3%;  * dependent_on_time_step_length ;  
 discount = 1;
 if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
-
-
-
-_ly=.; _dly=.; _qaly=.; _dqaly=.;_cost_=.; _dcost_=.;_dcost_onart_=.;
-if 15 <= age < 65 then do;
-_ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
+	  
+																					  
 /* 
 * ts1m:  replace line above with :
 _ly = 1/12 ; _dly = discount*(1/12);  _qaly = (1/12)*util ; _dqaly = (1/12)*discount*util ; 
 */
-_cost_ = cost ; 
-_dcost_ = cost*discount ; 
-end;
+
+_ly=.; _dly=.; _qaly=.; _dqaly=.;
+	
 
 dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; age_would_be_now =.;
-if 15 <= age < 65 then do;  
+
+
+if 15 <= age < 80 and (death = .) then do;  
+_ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
+
 live_ddaly = (1 - util)*0.25*discount; 
-live_daly = (1 - util)*0.25; end;
+live_daly = (1 - util)*0.25; 
+end;
 /* 
 ts1m: replace two lines above with:
 live_ddaly = (1 - util)*(1/12)*discount; 
 live_daly = (1 - util)*(1/12); end;
 */
-if age ge 65 then do; live_daly=0;  live_ddaly=0;  end;
-	if death >= 1993 then do;
-		age_would_be_now = (agedeath + (caldate_never_dot - death));
-		dead_daly=0; dead_ddaly=0;
-		if . < death < caldate_never_dot and 15 <= age_would_be_now < 65 then do;	
-		dead_ddaly = 0.25*discount; dead_daly = 0.25;    
+if age ge 80 then do; live_daly=0;  live_ddaly=0;  end;
+if death >= 1993 then do;
+	age_would_be_now = (agedeath + (caldate_never_dot - death));
+	dead_daly=0; dead_ddaly=0;
+		if . < death < caldate_never_dot and 15 <= age_would_be_now < 80 then do;	
+			dead_ddaly = 0.25*discount; dead_daly = 0.25;    
 /* 
 ts1m: replace line above with:
 dead_ddaly = (1/12)*discount; dead_daly = (1/12);  
 */
-	end;
+		end;
 end;
 
-
+/*
 dead_daly_80=.; dead_ddaly_80=.;live_daly_80=.;  live_ddaly_80=.; age_would_be_now =.;
 if 15 <= age < 80 then do;  
 live_ddaly_80 = (1 - util)*0.25*discount; 
@@ -13198,20 +14404,23 @@ if age ge 80 then do; live_daly_80=0;  live_ddaly_80=0;  end;
 		dead_ddaly_80 = 0.25*discount; dead_daly_80 = 0.25;    
 	end;
 end;
+*/
+
 
 *Discounted years lost at age 80 using Optima approach (all YLL counted at time of death);
-dyll_80=0;
+dyll_Optima80=0;
 if caldate&j =death and death ne . then do;
 	total_yll=80-agedeath;
 	
 	i=0;
 	do until (i >= total_yll+0.25);
-		dyll_80 = dyll_80 + (0.25 *  (1/1.03)**i);
+		dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**i);
 	i=i+0.25;
 	end;
 end;
 
 
+_dcost = cost* discount;
 _dart_cost = art_cost*discount ;
 _donart_cost = cost_onart*discount ;
 _dadc_cost = adc_cost*discount ; 
@@ -13225,6 +14434,7 @@ _dnon_tb_who3_cost = non_tb_who3_cost*discount ;
 _dcot_cost = cot_cost*discount ;
 _dtb_cost = tb_cost*discount ;
 _dtest_cost = cost_test*discount ;
+_dtest_cost_type1 = cost_test_type1*discount ;
 _dtest_cost_m = cost_test_m*discount ;
 _dtest_cost_f = cost_test_f*discount ;
 _dcost_test_m_sympt = cost_test_m_sympt*discount ; 
@@ -13234,8 +14444,8 @@ _dcost_test_f_sympt = cost_test_f_sympt*discount ;
 _dcost_test_f_sw = cost_test_f_sw *discount ;
 _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
-_cost_hypert_vis  = cost_hypert_vis*discount ; 
-_cost_hypert_drug = cost_hypert_drug*discount ; 
+_dcost_hypert_vis  = cost_hypert_vis*discount ; 
+_dcost_hypert_drug = cost_hypert_drug*discount ; 
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -13245,17 +14455,30 @@ _dcost_sw_program = cost_sw_program*discount;
 _dcost_switch_line = cost_switch_line*discount;
 _dcost_child_hiv = cost_child_hiv*discount;
 _dcost_child_hiv_mo_art = cost_child_hiv_mo_art*discount;
-_dcost_prep = cost_prep*discount;
+_dcost_prep_oral = cost_prep_oral*discount;
+_dcost_prep_inj = cost_prep_inj*discount;
 _dcost_prep_ac_adh = cost_prep_ac_adh*discount;
 _dcost_prep_visit = cost_prep_visit*discount;
+_dcost_prep_visit_oral = cost_prep_visit_oral*discount;
+_dcost_prep_visit_inj = cost_prep_visit_inj*discount;
 _dcost_art_init = cost_art_init*discount;
 _dcost_drug_level_test = drug_level_test_cost*discount;
 
-_dcost_non_aids_pre_death = non_aids_pre_death_cost*discount;
+_dcost_non_aids_pre_death = cost_non_aids_pre_death*discount;
 
 _dart_1_cost = art_1_cost * discount;    
 _dart_2_cost = art_2_cost * discount; 
 _dart_3_cost = art_3_cost * discount; 
+
+_dcost_zdv = cost_zdv * discount;
+_dcost_ten = cost_ten * discount;
+_dcost_3tc = cost_3tc * discount;
+_dcost_nev = cost_nev * discount;
+_dcost_lpr = cost_lpr * discount;
+_dcost_dar = cost_dar * discount;
+_dcost_taz = cost_taz * discount;
+_dcost_efa = cost_efa * discount;
+_dcost_dol = cost_dol * discount;
 
 _dcost_vl_not_done = cost_vl_not_done * discount; 
 
@@ -13284,6 +14507,9 @@ and tested_anc ne 1 then tested_f_sympt=1;
 tested_f_sw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 and
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_sw=1;
 tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1;
+
+* tested_at_return is when a previously diagnosed person returns to care - these can be added when summing positive tests;
+tested_at_return=0; if return = 1 then tested_at_return=1;
 
 ***Changed from max(c_rt103m, c_rt181m, c_rt190m) to max(c_rt103m_inf, c_rt181m_inf, c_rt190m_inf).
    Previously, pregnant women who attend ANC could be diagnosed and develop NVP resistance within the same time period and hence
@@ -13326,9 +14552,16 @@ if visit=1 and naive=1 then pre_art_care=1;
 ;
 
 * status at hiv-related  death for people with hiv;
-status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
-if hiv=1 and caldate&j=death and dead1564_ = 1 and rdcause=1 then do;
+status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;
+sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
+death_hiv_age_1524=0; death_hiv_age_2534=0; death_hiv_age_3544=0; death_hiv_age_4554=0; death_hiv_age_5564=0; 
+if hiv=1 and caldate&j=death and dead_ = 1 and rdcause=1 then do;
 death_hiv=1;if gender=1 then death_hiv_m=1;if gender=2 then death_hiv_w=1;
+if 15 <= age < 25 and death_hiv=1 then death_hiv_age_1524=1;
+if 25 <= age < 35 and death_hiv=1 then death_hiv_age_2534=1;
+if 35 <= age < 45 and death_hiv=1 then death_hiv_age_3544=1;
+if 45 <= age < 55 and death_hiv=1 then death_hiv_age_4554=1;
+if 55 <= age < 65 and death_hiv=1 then death_hiv_age_5564=1;
 status_death_hr_g=99;
 if t ge 2 and registd_tm1 ne 1 then status_death_hr_g=1;
 if t ge 2 and registd_tm1=1 and linked_to_care ne 1 then status_death_hr_g=2;
@@ -13356,7 +14589,7 @@ end;
 
 * status at death - any cause - for people with hiv;
 status_death_g=.;sdg_1=.;sdg_2=.;sdg_3=.;sdg_4=.;sdg_5=.;sdg_6=.;sdg_7=.;sdg_8=.;sdg_9=.;sdg_99=.;
-if hiv=1 and caldate&j=death and dead1564_ = 1 then do;
+if hiv=1 and caldate&j=death and dead_ = 1 then do;
 status_death_g=99;
 if t ge 2 and registd_tm1 ne 1 then status_death_g=1;
 if t ge 2 and registd_tm1=1 and linked_to_care ne 1 then status_death_g=2;
@@ -13432,10 +14665,11 @@ if naive=1 and gender=2 then naive_w=1;
 npge2=0; if np ge 2 then npge2=1;
 npge10=0; if np ge 10 then npge10=1;
 
+
 *** Prep code;
 prep_newp=.;
 prep_newpg0 = 0;prep_newpg1 = 0;prep_newpg2 = 0;prep_newpg3 = 0;prep_newpg4 = 0;
-if prep=1 then do;
+if prep_any=1 then do;
 prep_newp = newp; 
 if newp  =0 then prep_newpg0 = 1;
 if newp  =1 then prep_newpg1 = 1;
@@ -13444,27 +14678,27 @@ if 3 <= newp < 10 then prep_newpg3 = 1;
 if 10 <= newp then prep_newpg4 = 1;
 end;
 
-newp_this_per_age1524w_onprep=.; newp_this_per_age1524w=.;prep_ever_w_1524=.;
+newp_this_per_age1524w_onprep=.; newp_this_per_age1524w=.;prep_any_ever_w_1524=.;
 if gender=2 and 15 <= age < 25 and newp ge 1 then do;
-prep_ever_w_1524=0;
-if prep_ever=1 then prep_ever_w_1524=1;
+prep_any_ever_w_1524=0;
+if prep_any_ever=1 then prep_any_ever_w_1524=1;
 newp_this_per_age1524w=1;
-if prep=1 then newp_this_per_age1524w_onprep=1;
-if prep ne 1 then newp_this_per_age1524w_onprep=0;
+if prep_any=1 then newp_this_per_age1524w_onprep=1;
+if prep_any ne 1 then newp_this_per_age1524w_onprep=0;
 end;
 
 
 newp_this_per_art_or_prep=0;   newp_this_per_art=0;   newp_this_per_prep=0;  newp_this_per_prep_sw=0;  
-newp_this_per_elig_prep=0;  newp_this_per_elig_prep_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
+newp_this_per_elig_prep_any=0;  newp_this_per_elig_prep_any_sw=0;  newp_this_per_hivneg = 0; newp_this_per_hivneg_1549=0; newp_this_per_1549=0;
 newp_this_per_hivneg_m = 0; newp_this_per_hivneg_w = 0; newp_this_per_hivneg_age1524w = 0; newp_this_per_hivneg_sw = 0;
 newp_this_per=0; if newp ge 1 then newp_this_per=1;
 if newp_this_per=1 then do;
 	if onart=1 then newp_this_per_art=1;
-	if prep=1 then newp_this_per_prep=1;
-	if sw=1 and prep=1 then newp_this_per_prep_sw=1;
-	if prep=1 or onart=1 then newp_this_per_art_or_prep=1;
-	if prep_elig = 1 then newp_this_per_elig_prep=1; 
-	if sw=1 and prep_elig = 1 then newp_this_per_elig_prep_sw=1; 
+	if prep_any=1 then newp_this_per_prep=1;
+	if sw=1 and prep_any=1 then newp_this_per_prep_sw=1;
+	if prep_any=1 or onart=1 then newp_this_per_art_or_prep=1;
+	if prep_any_elig = 1 then newp_this_per_elig_prep_any=1; 
+	if sw=1 and prep_any_elig = 1 then newp_this_per_elig_prep_any_sw=1; 
 	if hiv ne 1 then newp_this_per_hivneg=1;
 	if hiv ne 1 and 15 <= age < 50 then newp_this_per_hivneg_1549=1;
 	if 15 <= age < 50 then newp_this_per_1549=1;
@@ -13476,7 +14710,7 @@ if newp_this_per=1 then do;
 end;
 
 newp_this_per_hivneg_m_prep = 0; newp_this_per_hivneg_w_prep = 0; newp_tp_hivneg_age1524w_prep = 0; newp_this_per_hivneg_sw_prep = 0 ;
-if prep=1 then do;
+if prep_any=1 then do;
 if newp_this_per_hivneg_m = 1 then newp_this_per_hivneg_m_prep = 1;
 if newp_this_per_hivneg_w = 1 then newp_this_per_hivneg_w_prep = 1;
 if newp_this_per_hivneg_age1524w = 1 then newp_tp_hivneg_age1524w_prep = 1;
@@ -13484,22 +14718,23 @@ if newp_this_per_hivneg_sw = 1 then newp_this_per_hivneg_sw_prep = 1 ;
 end;
 
 
+
 newp_hivneg=0;
 if hiv ne 1 then newp_hivneg = max(newp,0);
 
 
-prep_ever_w=.;
+prep_any_ever_w=.;
 if gender=2 then do;
-prep_ever_w = 0 ;
-if prep_ever = 1 then prep_ever_w = 1;
+prep_any_ever_w = 0 ;
+if prep_any_ever = 1 then prep_any_ever_w = 1;
 end;
 
 
 *added Feb2017;
-visit_prep_no=0; if visit_prep=0 then visit_prep_no=1; 	*no visit;
-visit_prep_d=0; if visit_prep=1 then visit_prep_d=1;	 	*drug pick up only;
-visit_prep_dt=0; if visit_prep=2 then visit_prep_dt=1; 	*drug pick up and HIV test;
-visit_prep_dtc=0; if visit_prep=3 then visit_prep_dtc=1;	*drug pick up, HIV test and counselling;
+visit_prep_oral_no=0; if visit_prep_oral=0 then visit_prep_oral_no=1; 	*no visit;
+visit_prep_oral_d=0; if visit_prep_oral=1 then visit_prep_oral_d=1;	 	*drug pick up only;
+visit_prep_oral_dt=0; if visit_prep_oral=2 then visit_prep_oral_dt=1; 	*drug pick up and HIV test;
+visit_prep_oral_dtc=0; if visit_prep_oral=3 then visit_prep_oral_dtc=1;	*drug pick up, HIV test and counselling;
 
 *added Mar2017;
 vlg1000_onart=0; vlg1000_184m=0; vlg1000_65m=0; vlg1000_onart_184m=0; vlg1000_onart_65m=0; 
@@ -13537,7 +14772,7 @@ end;
 if time_to_65m = . and e_rt65m=1 then time_to_65m=caldate&j-infection; 
 if time_to_184m = . and e_rt184m=1 then time_to_184m=caldate&j-infection; 
 
-if hiv=1 and prep ne 1 and prep_tm1=1 then hiv_date_stop_prep=caldate&j;
+if hiv=1 and prep_oral ne 1 and prep_oral_tm1=1 then hiv_date_stop_prep=caldate&j;
 
 if 15 <= age and hiv=1 and caldate&j ne . then do;
 
@@ -13609,7 +14844,7 @@ if age_g = 4 then age_g4 = 1; else age_g4 =0; if age_g = 5 then age_g5 = 1; else
 cd4_g1_tb = 0; cd4_g2_tb = 0; cd4_g3_tb = 0; cd4_g4_tb = 0; cd4_g5_tb = 0; cd4_g6_tb = 0; 
 vl_g1_tb = 0; vl_g2_tb = 0; vl_g3_tb = 0; vl_g4_tb = 0; vl_g5_tb = 0; 
 age_g1_tb = 0; age_g2_tb = 0; age_g3_tb = 0; age_g4_tb = 0; age_g5_tb = 0; 
-onart_tb=0; pcpp_tb=0;
+onart_tb=0; pcp_p_tb=0;
 tblam_measured_this_per_tb = 0; tb_proph_tb = 0;
 if tb=1 then do;
 	if cd4_g1=1 then cd4_g1_tb = 1; if cd4_g2=1 then cd4_g2_tb = 1; if cd4_g3=1 then cd4_g3_tb = 1; 
@@ -13619,7 +14854,7 @@ if tb=1 then do;
 	if age_g1=1 then age_g1_tb = 1; if age_g2=1 then age_g2_tb = 1; if age_g3=1 then age_g3_tb = 1; 
 	if age_g4=1 then age_g4_tb = 1; if age_g5=1 then age_g5_tb = 1;
 	if onart=1 then onart_tb=1;
-	if pcpp=1 then pcpp_tb=1;
+	if pcp_p=1 then pcp_p_tb=1;
 	if tblam_measured_this_per=1 then tblam_measured_this_per_tb = 1;
 	if tb_proph = 1 then tb_proph_tb = 1;
 end;
@@ -13628,7 +14863,7 @@ end;
 cd4_g1_who3 = 0; cd4_g2_who3 = 0; cd4_g3_who3 = 0; cd4_g4_who3 = 0; cd4_g5_who3 = 0; cd4_g6_who3 = 0; 
 vl_g1_who3 = 0; vl_g2_who3 = 0; vl_g3_who3 = 0; vl_g4_who3 = 0; vl_g5_who3 = 0; 
 age_g1_who3 = 0; age_g2_who3 = 0; age_g3_who3 = 0; age_g4_who3 = 0; age_g5_who3 = 0; 
-onart_who3=0; pcpp_who3=0;
+onart_who3=0; pcp_p_who3=0;
 if who3=1 then do;
 	if cd4_g1=1 then cd4_g1_who3 = 1; if cd4_g2=1 then cd4_g2_who3 = 1; if cd4_g3=1 then cd4_g3_who3 = 1; 
 	if cd4_g4=1 then cd4_g4_who3 = 1; if cd4_g5=1 then cd4_g5_who3 = 1; if cd4_g6=1 then cd4_g6_who3 = 1; 
@@ -13637,14 +14872,14 @@ if who3=1 then do;
 	if age_g1=1 then age_g1_who3 = 1; if age_g2=1 then age_g2_who3 = 1; if age_g3=1 then age_g3_who3 = 1; 
 	if age_g4=1 then age_g4_who3 = 1; if age_g5=1 then age_g5_who3 = 1;
 	if onart=1 then onart_who3=1;
-	if pcpp=1 then pcpp_who3=1;
+	if pcp_p=1 then pcp_p_who3=1;
 end;
 
 * adc;
 cd4_g1_adc = 0; cd4_g2_adc = 0; cd4_g3_adc = 0; cd4_g4_adc = 0; cd4_g5_adc = 0; cd4_g6_adc = 0; 
 vl_g1_adc = 0; vl_g2_adc = 0; vl_g3_adc = 0; vl_g4_adc = 0; vl_g5_adc = 0; 
 age_g1_adc = 0; age_g2_adc = 0; age_g3_adc = 0; age_g4_adc = 0; age_g5_adc = 0; 
-onart_adc=0; pcpp_adc=0;
+onart_adc=0; pcp_p_adc=0;
 adclam_measured_this_per_adc = 0; adc_proph_adc = 0;
 if adc=1 then do;
 	if cd4_g1=1 then cd4_g1_adc = 1; if cd4_g2=1 then cd4_g2_adc = 1; if cd4_g3=1 then cd4_g3_adc = 1; 
@@ -13654,14 +14889,14 @@ if adc=1 then do;
 	if age_g1=1 then age_g1_adc = 1; if age_g2=1 then age_g2_adc = 1; if age_g3=1 then age_g3_adc = 1; 
 	if age_g4=1 then age_g4_adc = 1; if age_g5=1 then age_g5_adc = 1;
 	if onart=1 then onart_adc=1;
-	if pcpp=1 then pcpp_adc=1;
+	if pcp_p=1 then pcp_p_adc=1;
 end;
 
 * crypm;
 cd4_g1_crypm = 0; cd4_g2_crypm = 0; cd4_g3_crypm = 0; cd4_g4_crypm = 0; cd4_g5_crypm = 0; cd4_g6_crypm = 0; 
 vl_g1_crypm = 0; vl_g2_crypm = 0; vl_g3_crypm = 0; vl_g4_crypm = 0; vl_g5_crypm = 0; 
 age_g1_crypm = 0; age_g2_crypm = 0; age_g3_crypm = 0; age_g4_crypm = 0; age_g5_crypm = 0; 
-onart_crypm=0; pcpp_crypm=0;
+onart_crypm=0; pcp_p_crypm=0;
 crag_measured_this_per_crypm = 0; crypm_proph_crypm = 0;
 if crypm=1 then do;
 	if cd4_g1=1 then cd4_g1_crypm = 1; if cd4_g2=1 then cd4_g2_crypm = 1; if cd4_g3=1 then cd4_g3_crypm = 1; 
@@ -13671,7 +14906,7 @@ if crypm=1 then do;
 	if age_g1=1 then age_g1_crypm = 1; if age_g2=1 then age_g2_crypm = 1; if age_g3=1 then age_g3_crypm = 1; 
 	if age_g4=1 then age_g4_crypm = 1; if age_g5=1 then age_g5_crypm = 1;
 	if onart=1 then onart_crypm=1;
-	if pcpp=1 then pcpp_crypm=1;
+	if pcp_p=1 then pcp_p_crypm=1;
 	if crag_measured_this_per=1 then crag_measured_this_per_crypm = 1;
 	if crypm_proph = 1 then crypm_proph_crypm = 1;
 end;
@@ -13680,7 +14915,7 @@ end;
 cd4_g1_sbi = 0; cd4_g2_sbi = 0; cd4_g3_sbi = 0; cd4_g4_sbi = 0; cd4_g5_sbi = 0; cd4_g6_sbi = 0; 
 vl_g1_sbi = 0; vl_g2_sbi = 0; vl_g3_sbi = 0; vl_g4_sbi = 0; vl_g5_sbi = 0; 
 age_g1_sbi = 0; age_g2_sbi = 0; age_g3_sbi = 0; age_g4_sbi = 0; age_g5_sbi = 0; 
-onart_sbi=0; pcpp_sbi=0;
+onart_sbi=0; pcp_p_sbi=0;
 sbi_proph_sbi = 1;
 if sbi=1 then do;
 	if cd4_g1=1 then cd4_g1_sbi = 1; if cd4_g2=1 then cd4_g2_sbi = 1; if cd4_g3=1 then cd4_g3_sbi = 1; 
@@ -13690,7 +14925,7 @@ if sbi=1 then do;
 	if age_g1=1 then age_g1_sbi = 1; if age_g2=1 then age_g2_sbi = 1; if age_g3=1 then age_g3_sbi = 1; 
 	if age_g4=1 then age_g4_sbi = 1; if age_g5=1 then age_g5_sbi = 1;
 	if onart=1 then onart_sbi=1;
-	if pcpp=1 then pcpp_sbi=1;
+	if pcp_p=1 then pcp_p_sbi=1;
 	if sbi_proph = 1 then sbi_proph_sbi = 1;
 end;
 
@@ -13698,7 +14933,7 @@ end;
 cd4_g1_dead = 0; cd4_g2_dead = 0; cd4_g3_dead = 0; cd4_g4_dead = 0; cd4_g5_dead = 0; cd4_g6_dead = 0; 
 vl_g1_dead = 0; vl_g2_dead = 0; vl_g3_dead = 0; vl_g4_dead = 0; vl_g5_dead = 0; 
 age_g1_dead = 0; age_g2_dead = 0; age_g3_dead = 0; age_g4_dead = 0; age_g5_dead = 0; 
-onart_dead=0; pcpp_dead=0; tb_proph_dead=0; crypm_proph_dead=0; sbi_proph_dead =0; who3_event_dead=0;  adc_dead=0; crypm_dead=0; sbi_dead=0; 
+onart_dead=0; pcp_p_dead=0; tb_proph_dead=0; crypm_proph_dead=0; sbi_proph_dead =0; who3_event_dead=0;  adc_dead=0; crypm_dead=0; sbi_dead=0; 
 
 if dead=1 then do;
 	if cd4_g1=1 then cd4_g1_dead = 1; if cd4_g2=1 then cd4_g2_dead = 1; if cd4_g3=1 then cd4_g3_dead = 1; 
@@ -13708,10 +14943,11 @@ if dead=1 then do;
 	if age_g1=1 then age_g1_dead = 1; if age_g2=1 then age_g2_dead = 1; if age_g3=1 then age_g3_dead = 1; 
 	if age_g4=1 then age_g4_dead = 1; if age_g5=1 then age_g5_dead = 1;
 	if onart=1 then onart_dead=1;
-	if pcpp=1 then pcpp_dead=1;  
+	if pcp_p=1 then pcp_p_dead=1;  
 	if tb_proph = 1 then tb_proph_dead = 1;  if crypm_proph = 1 then crypm_proph_dead = 1;	if sbi_proph = 1 then sbi_proph_dead = 1;
 	if who3_event=1 then who3_event_dead=1;  if adc=1 then adc_dead=1; if tb=1 then tb_dead=1; if crypm=1 then crypm_dead=1; if sbi=1 then sbi_dead=1;      
 end;
+
 
 tcur3m_cd4t0l100=.; who3_tcur3m_cd4t0l100=.; adc_tcur3m_cd4t0l100=.; tb_tcur3m_cd4t0l100=.; crypm_tcur3m_cd4t0l100=.; sbi_tcur3m_cd4t0l100=.; 
 if onart=1 and tcur = 0.25 and . < cd4_tcur0 < 100 then do;
@@ -13820,15 +15056,24 @@ end;
 * number of np had by hiv-ve people (not counting those adherent on prep +/- those circumcised); 
 
 if hiv ne 1 then do;
-	if gender=1 and 15 <= age < 50 and (prep ne 1 or adh < 0.8) then do;  susc_np_1549_m = newp + ep;   end;
-	if gender=1 and 15 <= age < 50 and (prep ne 1 or adh < 0.8) and mcirc   ne 1 then do;  susc_np_inc_circ_1549_m = newp + ep;   end;
-	if gender=2 and 15 <= age < 50 and (prep ne 1 or adh < 0.8) then do;  susc_np_1549_w = newp + ep;   end;
+	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_m = newp + ep;   end;
+	if gender=1 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) and mcirc   ne 1 then do;  susc_np_inc_circ_1549_m = newp + ep;   end;
+	if gender=2 and 15 <= age < 50 and (prep_any ne 1 or adh < 0.8) then do;  susc_np_1549_w = newp + ep;   end;
 end;
 
+if tot_yrs_prep_oral > 1  then tot_yrs_prep_oral_gt_1  = 1;
+if tot_yrs_prep_oral > 5  then tot_yrs_prep_oral_gt_5  = 1;
+if tot_yrs_prep_oral > 10 then tot_yrs_prep_oral_gt_10 = 1;
+if tot_yrs_prep_oral > 20 then tot_yrs_prep_oral_gt_20 = 1;
 
-if tot_yrs_prep > 5  then tot_yrs_prep_gt_5  = 1;
-if tot_yrs_prep > 10 then tot_yrs_prep_gt_10 = 1;
-if tot_yrs_prep > 20 then tot_yrs_prep_gt_20 = 1;
+if tot_yrs_prep_inj > 1  then tot_yrs_prep_inj_gt_1  = 1;
+if tot_yrs_prep_inj > 5  then tot_yrs_prep_inj_gt_5  = 1;
+if tot_yrs_prep_inj > 10 then tot_yrs_prep_inj_gt_10 = 1;
+if tot_yrs_prep_inj > 20 then tot_yrs_prep_inj_gt_20 = 1;
+
+if hiv=1 and prep_inj_ever = 1 then prep_inj_ever_hiv = 1; 
+
+
 
 if ever_sd_nvp=1 or ever_dual_nvp=1 then ever_nvp_pmtct=1;
 
@@ -13837,7 +15082,7 @@ if ever_sd_nvp=1 or ever_dual_nvp=1 then ever_nvp_pmtct=1;
 *   all art naive initiators excluding prev pmtct - ai_naive_no_pmtct;
 _ai_naive_no_pmtct_=0;_ai_naive_no_pmtct_c_r_=.; _ai_naive_no_pmtct_c_nnm_=0; _ai_naive_no_pmtct_c_pim_=.;
 _ai_naive_no_pmtct_c_inm_=.;_ai_naive_no_pmtct_c_rt184m_=.;_ai_naive_no_pmtct_c_rt65m_=.;_ai_naive_no_pmtct_c_rttams_=.;
-_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; 
+_ai_naive_no_pmtct_e_r_=.; _ai_naive_no_pmtct_e_nnm_=.; _ai_naive_no_pmtct_e_inm_=.;
 
 
 if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
@@ -13845,7 +15090,7 @@ if yrart=caldate&j > .  and ever_nvp_pmtct ne 1 then do;
     if rm_tm1=1 then _ai_naive_no_pmtct_c_r_=1;
     if nnm_tm1=1 then _ai_naive_no_pmtct_c_nnm_=1;
     if pim_tm1=1 then _ai_naive_no_pmtct_c_pim_=1;
-    if inpm_tm1=1 or insm_=1 then _ai_naive_no_pmtct_c_inm_=1;
+    if in118m_tm1=1 or in140m_tm1=1 or in148m_tm1=1 or in155m_tm1=1 or in263m_tm1=1 then _ai_naive_no_pmtct_c_inm_=1;
     if c_rt184m_tm2=1 then _ai_naive_no_pmtct_c_rt184m_=1;
     if c_rt65m_tm2=1 then _ai_naive_no_pmtct_c_rt65m_=1;
     if c_rttams_tm2 ge 1 then _ai_naive_no_pmtct_c_rttams_=1;
@@ -13868,7 +15113,7 @@ if (return   =1 and restart=1) or yrart=caldate&j > . then do;
     if rm_tm1=1 then _all_ai_c_r_=1;
     if nnm_tm1=1 then _all_ai_c_nnm_=1;
     if pim_tm1=1 then _all_ai_c_pim_=1;
-    if inpm_tm1=1 or insm_=1 then _all_ai_c_inm_=1;
+    if in118m_tm1=1 or in140m_=1 or in148m_tm1=1  or in155m_tm1=1 or in263m_tm1=1 then _all_ai_c_inm_=1;
     if c_rt184m_tm2=1 then _all_ai_c_rt184m_=1;
     if c_rt65m_tm2=1 then _all_ai_c_rt65m_=1;
     if c_rttams_tm2 ge 1 then _all_ai_c_rttams_=1;
@@ -14171,26 +15416,43 @@ pregnant_not_diagnosed_pos=0; if pregnant=1 and registd  ne 1 then pregnant_not_
 
 * daly outputs ;
 
-dead_ddaly_ntd=0;
-if prev_pregnant_ntd=1 then dead_ddaly_ntd = 0.25*discount;
+dead_daly_ntd=0;dead_ddaly_ntd=0;
+if prev_pregnant_ntd=1 then do;
+	dead_daly_ntd=0.25;
+	dead_ddaly_ntd = dead_daly_ntd*discount;
+end;
+
 * ts1m: replace above with : 
 * if prev_pregnant_ntd=1 then dead_ddaly_ntd = (1/12)*discount;
 
 * AP 19-7-19;
-dead_ddaly_oth_dol_adv_birth_e=0;
-if prev_oth_dol_adv_birth_e=1 then dead_ddaly_oth_dol_adv_birth_e = 0.25*discount;
+dead_daly_oth_dol_adv_birth_e=0; dead_ddaly_oth_dol_adv_birth_e=0;
+if prev_oth_dol_adv_birth_e=1 then do;
+	dead_daly_oth_dol_adv_birth_e=0.25;
+	dead_ddaly_oth_dol_adv_birth_e = dead_daly_oth_dol_adv_birth_e*discount;
+end;
 * ts1m: replace above with : 
 * if prev_oth_dol_adv_birth_e=1 then dead_ddaly_oth_dol_adv_birth_e = (1/12)*discount;
 
-ddaly_mtct=0;
-if ever_birth_with_inf_child=1 then ddaly_mtct = 0.1*0.25*discount;
+*live dalys for the mother due to having given birth to a child with hiv;
+daly_mtct=0; ddaly_mtct=0;
+if ever_birth_with_inf_child=1 then do;
+	daly_mtct=0.025;
+	ddaly_mtct = daly_mtct*discount;
+end;
+
+			 
+																   
 * ts1m: replace above with : 
 * if ever_birth_with_inf_child=1 then ddaly_mtct = 0.1*(1/12)*discount;
 
 
 * AP 19-7-19;
 ddaly_non_aids_pre_death=0;
-if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * 0.25 * discount;
+if death = caldate&j and rdcause=2 then do;
+	daly_non_aids_pre_death=0.25;
+	ddaly_non_aids_pre_death = daly_non_aids_pre_death * discount;
+end;
 * ts1m: replace above with : 
 * if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * (1/12) * discount;
 
@@ -14198,6 +15460,7 @@ dead_rdcause2=0;
 if death = caldate&j and rdcause=2 then dead_rdcause2=1;
 dead_onart_rdcause2=0;
 if death = caldate&j and onart=1 and rdcause=2 then dead_onart_rdcause2=1;
+
 
 
 
@@ -14438,10 +15701,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_i_m_d_newp + i_m_d_newp ; s_i_w_d_newp + i_w_d_newp ; s_i_w_np + i_w_np ; s_i_m_np + i_m_np ; s_i_ep + i_ep ;
 
-	s_i_m_1524_newp + i_m_1524_newp ; s_i_m_2534_newp + i_m_2534_newp ; s_i_m_3544_newp + i_m_3544_newp ; s_i_m_4554_newp + i_m_4554_newp ;
+	s_i_m_1524_newp + i_m_1524_newp ; s_i_m_2534_newp + i_m_2534_newp ; s_i_m_3544_newp + i_m_3544_newp ;
 	s_i_m_4554_newp + i_m_4554_newp ; s_i_m_5564_newp + i_m_5564_newp ;
 
-	s_i_w_1524_newp + i_w_1524_newp ; s_i_w_2534_newp + i_w_2534_newp ; s_i_w_3544_newp + i_w_3544_newp ; s_i_w_4554_newp + i_w_4554_newp ;
+	s_i_w_1524_newp + i_w_1524_newp ; s_i_w_2534_newp + i_w_2534_newp ; s_i_w_3544_newp + i_w_3544_newp ;
 	s_i_w_4554_newp + i_w_4554_newp ; s_i_w_5564_newp + i_w_5564_newp ;
 
 	s_i_r_vlg1_np + i_r_vlg1_np ; s_i_r_vlg2_np + i_r_vlg2_np ; s_i_r_vlg3_np + i_r_vlg3_np ; s_i_r_vlg4_np + i_r_vlg4_np ; 
@@ -14460,6 +15723,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_i_naive_vlg4_rm1_np + i_naive_vlg4_rm1_np ; s_i_naive_vlg5_rm1_np + i_naive_vlg5_rm1_np ; s_i_naive_vlg6_rm1_np + i_naive_vlg6_rm1_np ; 
 
 	s_i_v1_np + i_v1_np ; s_i_v2_np + i_v2_np ; s_i_v3_np + i_v3_np ; s_i_v4_np + i_v4_np ; s_i_v5_np + i_v5_np ; s_i_v6_np + i_v6_np ; 
+
+	s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim + diagprim ;
 
 	/*Number ep and newp*/
 
@@ -14515,8 +15780,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_susc_np_inc_circ_1549_m + susc_np_inc_circ_1549_m ; s_susc_np_1549_m + susc_np_1549_m ; s_susc_np_1549_w + susc_np_1549_w ;
 	s_newp_this_per_art_or_prep + newp_this_per_art_or_prep ; s_newp_this_per_art + newp_this_per_art ; s_newp_this_per_prep + newp_this_per_prep ;
-	s_newp_this_per_prep_sw + newp_this_per_prep_sw ;  s_newp_this_per_elig_prep + newp_this_per_elig_prep ;
-	s_newp_this_per_elig_prep_sw + newp_this_per_elig_prep_sw ;
+	s_newp_this_per_prep_sw + newp_this_per_prep_sw ;  s_newp_this_per_elig_prep_any + newp_this_per_elig_prep_any ;
+	s_newp_this_per_elig_prep_any_sw + newp_this_per_elig_prep_any_sw ;
     s_newp_this_per + newp_this_per ; s_newp_sw + newp_sw ;  s_newp_hivneg + newp_hivneg ; s_newp_this_per_hivneg + newp_this_per_hivneg ;
 	s_newp_this_per_hivneg_1549 + newp_this_per_hivneg_1549;  s_newp_this_per_1549 + newp_this_per_1549 ;
 
@@ -14634,7 +15899,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tam1_ + tam1_ ; s_tam2_ + tam2_ ; s_tam3_ + tam3_ ; s_m184m_ + m184m_ ; s_k103m_ + k103m_ ; s_y181m_ + y181m_ ; s_g190m_ + g190m_ ; 
 	s_nnm_ + nnm_ ; s_q151m_ + q151m_ ; s_k65m_ + k65m_ ; s_p32m_ + p32m_ ; s_p33m_ + p33m_ ; s_p46m_ + p46m_ ; s_p47m_ + p47m_ ; s_p50vm_ + p50vm_ ;
 	s_p50lm_ + p50lm_ ; s_p54m_ + p54m_ ; s_p76m_ + p76m_ ; s_p82m_ + p82m_ ; s_p84m_ + p84m_ ; s_p88m_ + p88m_ ; s_p90m_ + p90m_ ; s_pim_ + pim_;
-    s_inpm_ + inpm_ ; s_insm_ + insm_ ; s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
+    s_in118m_ + in118m_ ; s_in140m_ + in140m_ ; s_in148m_ + in148m_ ; s_in155m_ + in155m_ ; s_in263m_ + in263m_ ;
+	s_rm_ + rm_ ; s_i_nnm + i_nnm ; s_i_rm + i_rm ; s_i_pim + i_pim ; s_i_tam + i_tam ; s_i_im + i_im ;
     s_inm_ + inm_ ; s_i_184m + i_184m ; s_im_art + im_art ; s_pim_art + pim_art ; s_tam_art + tam_art ; s_m184_art + m184_art ; s_r_ + r_ ;
     s_r_3tc + r_3tc ; s_r_nev + r_nev ; s_r_lpr + r_lpr ; s_r_taz + r_taz ; s_r_efa + r_efa ; s_r_ten + r_ten ; s_r_zdv + r_zdv ; s_r_dol + r_dol ;
  	s_rme_ + rme_ ; s_iime_ + iime_ ; s_nnme_ + nnme_ ; s_pime_ + pime_ ; s_nrtime_ + nrtime_ ; s_res_1stline_startline2 + res_1stline_startline2 ;
@@ -14649,21 +15915,31 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_ontle + ontle; s_vlg1000_ontle + vlg1000_ontle; s_vlg1000_184m_ontle + vlg1000_184m_ontle; s_vlg1000_65m_ontle + vlg1000_65m_ontle;   
 	s_vlg1000_nnm_ontle + vlg1000_nnm_ontle; s_ontld + ontld ; s_vlg1000_ontld + vlg1000_ontld; s_vlg1000_65m_ontld + vlg1000_65m_ontld; 
 	s_vlg1000_184m_ontld + vlg1000_184m_ontld;  s_vlg1000_nnm_ontld + vlg1000_nnm_ontld; s_vlg1000_inm_ontld + vlg1000_inm_ontld;
-    s_vlg1000_tams_ontld + vlg1000_tams_ontld; s_vlg1000_tams_ontle + vlg1000_tams_ontle;      
+    s_vlg1000_tams_ontld + vlg1000_tams_ontld; s_vlg1000_tams_ontle + vlg1000_tams_ontle;  s_cur_res_cab + cur_res_cab ; 
+	s_em_inm_res_o_cab_off_3m + em_inm_res_o_cab_off_3m; s_emerge_inm_res_cab_tail + emerge_inm_res_cab_tail ;  
+	s_em_inm_res_o_cab_off_3m_npr + em_inm_res_o_cab_off_3m_npr; 	s_em_inm_res_cab_tail_npr + em_inm_res_cab_tail_npr; 
+	s_em_inm_res_o_cab_off_3m_pr + em_inm_res_o_cab_off_3m_pr;  s_emerge_inm_res_cab_tail_pr + emerge_inm_res_cab_tail_pr;
+	s_em_inm_res_o_cab + em_inm_res_o_cab; s_cab_res_emerge_primary + cab_res_emerge_primary;
 
+		/*prep*/
 
-	/*prep*/
-
-	s_prep + prep;  s_prep_sw + prep_sw ; s_prep_w_1524 + prep_w_1524 ; s_elig_prep_epdiag + elig_prep_epdiag ; s_infected_prep + infected_prep ;
-	s_prep_ever + prep_ever ; s_primary_prep + primary_prep ; s_hiv1_prep + hiv1_prep ; s_i_r_prep + i_r_prep ; s_primary_r_prep + primary_r_prep ;
-	s_ever_i_nor_prep + ever_i_nor_prep ; s_rm_prep + rm_prep ;  s_elig_prep_onprep + elig_prep_onprep ;
-	s_elig_prep + elig_prep ; s_hr_noprep + hr_noprep ; s_primary_hr_noprep + primary_hr_noprep ;
+	s_prep_any + prep_any; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; s_prep_oral_at_infection + prep_oral_at_infection;
+	s_prep_inj_at_infection + prep_inj_at_infection;  s_prep_oral_w + prep_oral_w; s_prep_inj_w + prep_inj_w; s_prep_oral_m + prep_oral_m;
+	s_prep_inj_m + prep_inj_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
+	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
+	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
+	s_infected_prep_any + infected_prep_any ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
+	s_prep_any_ever + prep_any_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 
+	s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_primary_prep_inj  + primary_prep_inj ;
+	s_prep_any_elig + prep_any_elig ;  s_primary_prep_oral + primary_prep_oral; s_prim_r_prep + prim_r_prep; s_ever_prim_tdr_prep + ever_prim_tdr_prep;
 	s_rt65m_3_prep + rt65m_3_prep ; s_rt184m_3_prep + rt184m_3_prep ; s_rtm_3_prep + rtm_3_prep ; s_rt65m_6_prep + rt65m_6_prep ; 
 	s_rt184m_6_prep + rt184m_6_prep ; s_rtm_6_prep + rtm_6_prep ; s_rt65m_9_prep + rt65m_9_prep ; s_rt184m_9_prep + rt184m_9_prep ;               
     s_rtm_9_prep + rtm_9_prep ; s_rt65m_12_prep + rt65m_12_prep ; s_rt184m_12_prep + rt184m_12_prep ; s_rtm_12_prep + rtm_12_prep ;        
     s_rt65m_18_prep + rt65m_18_prep ; s_rt184m_18_prep + rt184m_18_prep ; s_rtm_18_prep + rtm_18_prep ; s_onprep_3 + onprep_3 ; s_onprep_6 + onprep_6 ;       
-    s_onprep_9 + onprep_9 ; s_onprep_12 + onprep_12 ; s_onprep_18 + onprep_18 ; s_prepstart + prepstart ; 
-	s_ever_stopped_prep_choice + ever_stopped_prep_choice ; s_preprestart + preprestart ; s_acq_rt65m_3_prep + acq_rt65m_3_prep ;   
+    s_onprep_9 + onprep_9 ; s_onprep_12 + onprep_12 ; s_onprep_18 + onprep_18 ; s_prep_any_start + prep_any_start ; s_age_prepstart + age_prepstart;
+	s_prep_vr_start + prep_vr_start ; s_prep_oral_start + prep_oral_start ; s_prep_inj_start + prep_inj_start ; 
+	s_prep_inj_restart + prep_inj_restart ; s_prep_oral_restart + prep_oral_restart ; s_prep_vr_restart + prep_vr_restart ; 
+	s_ever_stopped_prep_oral_choice + ever_stopped_prep_oral_choice ; s_preprestart + preprestart ; s_acq_rt65m_3_prep + acq_rt65m_3_prep ;   
     s_acq_rt184m_3_prep + acq_rt184m_3_prep ; s_acq_rtm_3_prep + acq_rtm_3_prep ; s_acq_rt65m_6_prep + acq_rt65m_6_prep ; 
 	s_acq_rt184m_6_prep + acq_rt184m_6_prep ; s_acq_rtm_6_prep + acq_rtm_6_prep ; s_acq_rt65m_9_prep + acq_rt65m_9_prep ; 
 	s_acq_rt184m_9_prep + acq_rt184m_9_prep ; s_acq_rtm_9_prep + acq_rtm_9_prep ; s_acq_rt65m_12_prep + acq_rt65m_12_prep ;
@@ -14672,22 +15948,27 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_inf_prep_adhg80 + inf_prep_adhg80 ; s_inf_prep_adh5080 + inf_prep_adh5080 ;
     s_inf_prep_adhl50 + inf_prep_adhl50 ; s_prep_adhg80 + prep_adhg80 ; s_prep_adh5080 + prep_adh5080 ; s_prep_adhl50 + prep_adhl50 ;
 	s_onprep_1549 + onprep_1549 ; s_onprep_m + onprep_m ; s_onprep_w + onprep_w ; s_onprep_sw + onprep_sw ; s_onprep_1524 + onprep_1524 ;
-	s_onprep_1524w + onprep_1524w ; s_elig_prep_sw + elig_prep_sw ; s_elig_prep_w_1549 + elig_prep_w_1549;  s_prep_w_1549 + prep_w_1549;
-	s_elig_prep_w_1524 + elig_prep_w_1524 ; s_elig_prep_w_2534 + elig_prep_w_2534 ; s_elig_prep_w_3544 + elig_prep_w_3544 ;
-    s_prep_w_2534 + prep_w_2534 ; s_prep_w_3544 + prep_w_3544 ; s_infected_prep_source_prep_r + infected_prep_source_prep_r ;
+	s_onprep_inj_m + onprep_inj_m; s_onprep_inj_w + onprep_inj_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
+	s_onprep_1524w + onprep_1524w ; s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
+    s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
-    s_infected_prep_r + infected_prep_r ; s_started_prep_in_primary + started_prep_in_primary ; s_tot_yrs_prep + tot_yrs_prep ;
+    s_infected_prep_r + infected_prep_r ; 
+	s_started_prep_any_in_primary + started_prep_any_in_primary ; s_started_prep_oral_in_primary + started_prep_oral_in_primary ; 
+	s_started_prep_inj_in_primary + started_prep_inj_in_primary ; s_started_prep_vr_in_primary + started_prep_vr_in_primary ; 
 	s_onprep_3_i_prep_no_r + onprep_3_i_prep_no_r ; s_onprep_6_i_prep_no_r + onprep_6_i_prep_no_r ; s_onprep_9_i_prep_no_r + onprep_9_i_prep_no_r ;
     s_onprep_12_i_prep_no_r + onprep_12_i_prep_no_r ;  s_onprep_18_i_prep_no_r + onprep_18_i_prep_no_r ; s_prepinfect_rm_p + prepinfect_rm_p ;     
 	s_prepinfect_m184m_p + prepinfect_m184m_p ; s_prepinfect_k65m_p + prepinfect_k65m_p ; s_prepinfect_tam_p + prepinfect_tam_p ; 
  	s_prepinfect_rtm + prepinfect_rtm ; s_prepinfect_k65m + prepinfect_k65m ; s_prepinfect_m184m + prepinfect_m184m ; s_prepinfect_tam + prepinfect_tam ;
- 	s_prep_willing + prep_willing ; s_stop_prep_choice + stop_prep_choice ; 
+ 	s_prep_any_willing + prep_any_willing ; s_stop_prep_oral_choice + stop_prep_oral_choice ; s_stop_prep_any_choice + stop_prep_any_choice ; 
 	s_started_prep_hiv_test_sens + started_prep_hiv_test_sens ; s_cur_res_prep_drug + cur_res_prep_drug ; 
-	s_started_prep_hiv_test_sens_e + started_prep_hiv_test_sens_e ; s_started_prep_in_primary_e +  started_prep_in_primary_e ; 
+	s_started_prep_hiv_test_sens_e + started_prep_hiv_test_sens_e ; 
+	s_started_prep_any_in_primary_e +  started_prep_any_in_primary_e ; s_started_prep_oral_in_primary_e +  started_prep_oral_in_primary_e ; 
+	s_started_prep_inj_in_primary_e +  started_prep_inj_in_primary_e ; s_started_prep_vr_in_primary_e +  started_prep_vr_in_primary_e ; 
  	s_cur_res_ten + cur_res_ten ; s_cur_res_3tc + cur_res_3tc ; s_i_65m + i_65m ; s_cur_res_efa + cur_res_efa ;  		   	   		   	     
   	s_cur_res_ten_vlg1000 + cur_res_ten_vlg1000 ; s_cur_res_3tc_vlg1000 + cur_res_3tc_vlg1000 ; s_cur_res_efa_vlg1000 + cur_res_efa_vlg1000 ;		  	           
- 	s_ever_hiv1_prep + ever_hiv1_prep ; s_cur_res_efa_ever_hiv1_prep + cur_res_efa_ever_hiv1_prep ; s_cur_res_ten_ever_hiv1_prep + cur_res_ten_ever_hiv1_prep ;		   				
-	s_cur_res_3tc_ever_hiv1_prep + cur_res_3tc_ever_hiv1_prep ; s_prep_effectiveness_non_res_v + prep_effectiveness_non_res_v ;				   		    				  			
+ 	s_ever_hiv1_prep_oral + ever_hiv1_prep_oral ; s_cur_res_efa_ever_hiv1_prep + cur_res_efa_ever_hiv1_prep ; s_cur_res_ten_ever_hiv1_prep + cur_res_ten_ever_hiv1_prep ;		   				
+	s_cur_res_3tc_ever_hiv1_prep + cur_res_3tc_ever_hiv1_prep ; s_prep_oral_effect_non_res_v + prep_oral_effect_non_res_v ;				   		    				  			
  	s_prep_3m_after_inf_no_r + prep_3m_after_inf_no_r ; s_prep_3m_after_inf_no_r_184 + prep_3m_after_inf_no_r_184 ; 	 
 	s_prep_3m_after_inf_no_r_65 + prep_3m_after_inf_no_r_65 ; s_prep_6m_after_inf_no_r + prep_6m_after_inf_no_r ;  
     s_prep_6m_after_inf_no_r_184 + prep_6m_after_inf_no_r_184 ; s_prep_6m_after_inf_no_r_65 + prep_6m_after_inf_no_r_65 ;   				    
@@ -14696,19 +15977,51 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_hiv_prep_reason_3 + hiv_prep_reason_3 ; s_hiv_prep_reason_4 + hiv_prep_reason_4 ;  s_prep_newp + prep_newp ;
     s_prep_newpg0 + prep_newpg0 ; s_prep_newpg1 + prep_newpg1 ; s_prep_newpg2 + prep_newpg2 ; s_prep_newpg3 + prep_newpg3 ; 
 	s_prep_newpg4  + prep_newpg4  ; s_newp_this_per_age1524w_onprep + newp_this_per_age1524w_onprep ;
-  	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_ever_w_1524 + prep_ever_w_1524 ; s_prep_ever_w + prep_ever_w ;
-    s_test_gt_period1_on_prep + test_gt_period1_on_prep ; s_test_gt_period1_on_prep_pos + test_gt_period1_on_prep_pos ;
-    s_test_period1_on_prep + test_period1_on_prep ; s_test_period1_on_prep_pos + test_period1_on_prep_pos ; 
-	s_prob_prep_restart_choice + prob_prep_restart_choice ; s_prep_all_past_year + prep_all_past_year ;
-    s_tot_yrs_prep_gt_5 + tot_yrs_prep_gt_5 ; s_tot_yrs_prep_gt_10 + tot_yrs_prep_gt_10 ; s_tot_yrs_prep_gt_20 + tot_yrs_prep_gt_20 ;
-	s_pop_wide_tld_prep + pop_wide_tld_prep ;    
-	s_prep_elig_past_year + prep_elig_past_year ; s_prep_elig_past_3year + prep_elig_past_3year ; s_prep_elig_past_5year + prep_elig_past_5year ;
-	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_ge1yr + continuous_prep_ge1yr;
+  	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_any_ever_w_1524 + prep_any_ever_w_1524 ; s_prep_any_ever_w + prep_any_ever_w ;
+    s_test_gt_per1_on_prep_oral + test_gt_per1_on_prep_oral ; s_test_gt_per1_on_prep_oral_pos + test_gt_per1_on_prep_oral_pos ;
+    s_test_per1_on_prep_oral + test_per1_on_prep_oral ; s_test_per1_on_prep_oral_pos + test_per1_on_prep_oral_pos ; 
+	s_prob_prep_any_restart_choice + prob_prep_any_restart_choice ; s_prep_oral_past_year + prep_oral_past_year ;
+    s_tot_yrs_prep_oral_gt_5 + tot_yrs_prep_oral_gt_5 ; s_tot_yrs_prep_oral_gt_10 + tot_yrs_prep_oral_gt_10 ; s_tot_yrs_prep_oral_gt_20 + tot_yrs_prep_oral_gt_20 ;
+    s_tot_yrs_prep_inj_gt_5 + tot_yrs_prep_inj_gt_5 ; s_tot_yrs_prep_inj_gt_10 + tot_yrs_prep_inj_gt_10 ; s_tot_yrs_prep_inj_gt_20 + tot_yrs_prep_inj_gt_20 ;
+	s_pop_wide_tld_prep + pop_wide_tld_prep ;  s_tld_notest_notprepelig_pos + tld_notest_notprepelig_pos;   s_tld_notest_notprepelig_neg + tld_notest_notprepelig_neg; 
+	s_prep_any_elig_past_year + prep_any_elig_past_year ; s_prep_any_elig_past_3year + prep_any_elig_past_3year ; s_prep_any_elig_past_5year + prep_any_elig_past_5year ;
+	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_oral_ge1yr + continuous_prep_oral_ge1yr;
 	s_newp_this_per_hivneg_m  +  newp_this_per_hivneg_m ; s_newp_this_per_hivneg_w +  newp_this_per_hivneg_w ;   
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
 	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
  
+	s_testfor_prep_oral + testfor_prep_oral ; s_testfor_prep_inj + testfor_prep_inj ;  
+	s_prep_oral_ever + prep_oral_ever ; s_prep_inj_ever + prep_inj_ever ; s_last_prep_used + last_prep_used ; s_stop_prep_inj_choice + stop_prep_inj_choice; 
+	s_stop_prep_oral_elig + stop_prep_oral_elig ; s_stop_prep_inj_elig + stop_prep_inj_elig ;s_stop_prep_any_elig + stop_prep_any_elig;
+	s_prep_oral_willing + prep_oral_willing ;s_prep_inj_willing + prep_inj_willing ;  s_cab_res_o_cab + cab_res_o_cab ; s_cab_res_tail + cab_res_tail ;
+	s_cab_res_primary + cab_res_primary; s_currently_in_prep_inj_tail + currently_in_prep_inj_tail; s_prep_inj_ever_hiv + prep_inj_ever_hiv ;
+	s_cab_res_prep_inj_primary + cab_res_prep_inj_primary;
+
+	s_hiv_cab_3m + hiv_cab_3m ; s_hiv_cab_6m + hiv_cab_6m ; s_hiv_cab_9m + hiv_cab_9m ;  s_hiv_cab_ge12m + hiv_cab_ge12m;
+
+	s_switch_prep_from_oral + switch_prep_from_oral; s_switch_prep_from_inj + switch_prep_from_inj; 
+	s_switch_prep_to_oral + switch_prep_to_oral; s_switch_prep_to_inj + switch_prep_to_inj; 
+
+	s_hiv1_prep_any + hiv1_prep_any; s_cur_in_prep_inj_tail_hiv + cur_in_prep_inj_tail_hiv ; s_hiv1_prep_inj + hiv1_prep_inj;
+	s_cur_in_prep_inj_tail_no_r + cur_in_prep_inj_tail_no_r ;  s_prep_o_cab_off_3m_prim + prep_o_cab_off_3m_prim ;
+	s_prep_primary_prevented + prep_primary_prevented; s_prep_inj_init_prim + prep_inj_init_prim; s_prep_inj_init_prim_res + prep_inj_init_prim_res; 
+	s_prep_inj_reinit_prim + prep_inj_reinit_prim; s_prep_inj_reinit_prim_res + prep_inj_reinit_prim_res; 
+	s_cur_in_prep_inj_tail_prim + cur_in_prep_inj_tail_prim ; 
+	s_start_restart_prep_oral_hiv + start_restart_prep_oral_hiv; s_start_restart_prep_inj_hiv + start_restart_prep_inj_hiv;
+	s_start_rest_prep_inj_hiv_cabr + start_rest_prep_inj_hiv_cabr;   s_infected_on_prep_inj + infected_on_prep_inj;
+	s_start_restart_prep_oral + start_restart_prep_oral; s_start_restart_prep_inj + start_restart_prep_inj;
+	s_start_restart_prep_inj_prim + start_restart_prep_inj_prim; s_start_rest_prep_inj_prim_cabr + start_rest_prep_inj_prim_cabr;
+
+	s_on_risk_informed_prep_oral + on_risk_informed_prep_oral; s_on_risk_informed_prep_inj + on_risk_informed_prep_inj;
+
+	s_all_prep_criteria + all_prep_criteria ; s_all_prep_criteria_hivneg + all_prep_criteria_hivneg; s_prep_elig_hivneg + prep_elig_hivneg ;
+	s_prep_elig_hivneg_onprep + prep_elig_hivneg_onprep ;  s_prep_elig_onprep + prep_elig_onprep ;s_prep_elig_onprep_inj + prep_elig_onprep_inj;
+	s_started_prep_inj_hiv + started_prep_inj_hiv; s_started_prep_any_hiv + started_prep_any_hiv; 
+
+	s_pop_wide_tld_hiv + pop_wide_tld_hiv;  s_pop_wide_tld_prep_elig + pop_wide_tld_prep_elig ; s_pop_wide_tld_neg_prep_inelig + pop_wide_tld_neg_prep_inelig;
+
+	
 	/*testing and diagnosis*/
 
 	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
@@ -14744,7 +16057,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
 	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
-             
+ 	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
+	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
+
 	/*VL and CD4*/
 
 	s_vlg1 + vlg1 ; s_vlg2 + vlg2 ; s_vlg3 + vlg3 ; s_vlg4 + vlg4 ; s_vlg5 + vlg5 ; s_vlg6 + vlg6 ; 
@@ -14774,19 +16089,22 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
 	s_year_1_infection + year_1_infection ; s_year_2_infection + year_2_infection ; s_year_3_infection + year_3_infection ; 
-	s_year_5_infection + year_5_infection ; s_year_5_infection + year_5_infection ;  
+	s_year_4_infection + year_4_infection ; s_year_5_infection + year_5_infection ;  
 	s_year_1_infection_diag + year_1_infection_diag ; s_year_2_infection_diag + year_2_infection_diag ; s_year_3_infection_diag + year_3_infection_diag ;
 	s_year_4_infection_diag + year_4_infection_diag ; s_year_5_infection_diag + year_5_infection_diag ;
- 
+	s_not_on_art_cd4l200 + not_on_art_cd4l200; s_not_on_art_cd4200350 + not_on_art_cd4200350; s_not_on_art_cd4ge500 + not_on_art_cd4ge500;
+	s_not_on_art_cd4350500 + not_on_art_cd4350500;
+  
 
 	/*ART*/
 
 	s_naive + naive; s_naive_m + naive_m ; s_naive_w + naive_w ; s_onart + onart ; s_int_clinic_not_aw + int_clinic_not_aw ; s_art_start + art_start ; 
 	s_art_start_m + art_start_m ; s_art_start_w + art_start_w ; s_artexp  + artexp  ; s_artexpoff +  artexpoff ; s_onart_m + onart_m ; s_onart_w + onart_w ; 
     s_onart_sw + onart_sw ; s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
-	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; s_dead1564_onart + dead1564_onart ; 
+	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 
-	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; 
+	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ;
+	s_o_cab_or_o_cab_tm1 + o_cab_or_o_cab_tm1 ; s_o_cab_or_o_cab_tm1_no_r + o_cab_or_o_cab_tm1_no_r ; s_o_cab_or_o_cab_tm1_no_r_prim + o_cab_or_o_cab_tm1_no_r_prim;
 	s_onefa_linefail1 + onefa_linefail1 ; s_ev_art_g1k_l1k + ev_art_g1k_l1k ; s_ev_art_g1k_not2l + ev_art_g1k_not2l ; 
 	s_ev_art_g1k_not2l_l1k + ev_art_g1k_not2l_l1k ; s_ev_art_g1k + ev_art_g1k ; s_ev_art_g1k_not2l_adc + ev_art_g1k_not2l_adc ;
    	s_art_12m + art_12m ; s_vl1000_art_12m + vl1000_art_12m ; s_art_24m + art_24m ; s_vl1000_art_24m + vl1000_art_24m ; s_art_12m_onart + art_12m_onart ;   
@@ -14797,7 +16115,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_onart_gt6m_pires_vlg1000 + onart_gt6m_pires_vlg1000 ; s_onart_gt6m_res_vlg1000 + onart_gt6m_res_vlg1000 ; s_online1_vg1000 + online1_vg1000 ;
     s_online1_vg1000_lf1 + online1_vg1000_lf1 ; s_online1_vg1000_cd4l200 + online1_vg1000_cd4l200 ; s_offart_vl1000 + offart_vl1000 ;
 	s_vl1000_line2_12m + vl1000_line2_12m ; s_vl1000_line2_12m_onart + vl1000_line2_12m_onart ; s_vl1000_line2 + vl1000_line2 ; s_offart + offart ;
-    s_line1_ + line1_ ; s_line2_ + line2_ ; s_line1_lf0 + line1_lf0 ; s_line1_lf1 + line1_lf1 ; s_line1_lf1 + line1_lf1 ; s_line2_lf1 + line2_lf1 ;
+    s_line1_ + line1_ ; s_line2_ + line2_ ; s_line1_lf0 + line1_lf0 ; s_line1_lf1 + line1_lf1 ; s_line2_lf1 + line2_lf1 ;
     s_line2_lf2 + line2_lf2 ; s_linefail_ge1 + linefail_ge1 ; s_line1_fail_this_period + line1_fail_this_period ; s_lf1_past_yr + lf1_past_yr ;
     s_lf1_past_yr_line2 + lf1_past_yr_line2 ; s_onart_cl200 + onart_cl200 ; s_onart_cd4_g500 + onart_cd4_g500 ; s_onart_res + onart_res ;
     s_adh_low + adh_low ; s_adh_med + adh_med ; s_adh_hi + adh_hi ; s_adhav_low_onart + adhav_low_onart ; s_adhav_hi_onart + adhav_hi_onart ;
@@ -14832,7 +16150,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_o_ten_tox + o_ten_tox ; s_o_taz_tox + o_taz_tox ; s_o_lpr_tox + o_lpr_tox ; s_o_efa_tox + o_efa_tox ; s_o_nev_tox + o_nev_tox ; 
    	s_o_dol_tox + o_dol_tox ; s_o_zdv_adh_hi + o_zdv_adh_hi ; s_o_3tc_adh_hi + o_3tc_adh_hi ; s_o_ten_adh_hi + o_ten_adh_hi ;
     s_o_taz_adh_hi + o_taz_adh_hi ; s_o_lpr_adh_hi + o_lpr_adh_hi ; s_o_efa_adh_hi + o_efa_adh_hi ; s_o_nev_adh_hi + o_nev_adh_hi ; s_o_dol_adh_hi + o_dol_adh_hi ; 
- 	s_o_tle_tox + o_tle_tox ; s_o_tld_tox = o_tld_tox ; s_o_zld_tox + o_zld_tox ; s_o_zla_tox + o_zla_tox ; s_o_tle_adh_hi + o_tle_adh_hi ;
+	s_o_tle_tox + o_tle_tox ; s_o_tld_tox + o_tld_tox ; s_o_zld_tox + o_zld_tox ; s_o_zla_tox + o_zla_tox ; s_o_tle_adh_hi + o_tle_adh_hi ;
     s_o_tld_adh_hi + o_tld_adh_hi ; s_o_zld_adh_hi + o_zld_adh_hi ; s_o_zla_adh_hi + o_zla_adh_hi ; s_a_zld_if_reg_op_116 + a_zld_if_reg_op_116 ;   
     s_adh_hi_a_zld_if_reg_op_116 + adh_hi_a_zld_if_reg_op_116 ; s_nac_ge2p75_a_zld_if_reg_op_116 + nac_ge2p75_a_zld_if_reg_op_116 ;   
 	s_nac_ge2p00_a_zld_if_reg_op_116 + nac_ge2p00_a_zld_if_reg_op_116 ; s_nac_ge1p50_a_zld_if_reg_op_116 + nac_ge1p50_a_zld_if_reg_op_116 ;
@@ -14846,6 +16164,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_started_art_as_tld_prep_vl1000 + started_art_as_tld_prep_vl1000 ;    s_onart_as_tld_prep + onart_as_tld_prep; 
 	s_onart_as_tld_prep_vl1000 + onart_as_tld_prep_vl1000 ;    s_started_art_as_tld_prep + started_art_as_tld_prep ; 
+	s_art_initiation + art_initiation;  s_restart + restart;
 
 	s_onart_m1549_ + onart_m1549_ ; s_onart_m1564_ + onart_m1564_ ; s_onart_m1519_ + onart_m1519_ ; s_onart_m2024_ + onart_m2024_ ; 
   	s_onart_m2529_ + onart_m2529_ ; s_onart_m3034_ + onart_m3034_ ; s_onart_m3539_ + onart_m3539_ ; s_onart_m4044_ + onart_m4044_ ;
@@ -14857,6 +16176,13 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
  	s_onart_w4549_ + onart_w4549_ ; s_onart_w5054_ + onart_w5054_ ; s_onart_w5559_ + onart_w5559_ ; s_onart_w6064_ + onart_w6064_ ;  
 	s_onart_w6569_ + onart_w6569_ ; s_onart_w7074_ + onart_w7074_ ; s_onart_w7579_ + onart_w7579_ ; s_onart_w8084_ + onart_w8084_ ;
 	s_onart_w85pl_ + onart_w85pl_ ;
+
+	s_vl1000_art_age1564 + vl1000_art_age1564; s_onart_age1564 + onart_age1564 ;
+
+	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ;  s_infected_in155m + infected_in155m ; 
+	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
+
+	s_onartvisit0 + onartvisit0;
 
 	/* blood pressure */
 
@@ -14897,43 +16223,16 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on3drug_antihyp_1549 + on3drug_antihyp_1549 ; s_on3drug_antihyp_5059 + on3drug_antihyp_5059 ; s_on3drug_antihyp_6069 + on3drug_antihyp_6069 ;     
 	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ; 
 
-
-	/*costs and dalys*/
-
-	s_cost + cost ; s_onart_cost + onart_cost ; s_art_cost + art_cost ; s_adc_cost + adc_cost ; s_cd4_cost + cd4_cost ; s_vl_cost + vl_cost ; s_vis_cost + vis_cost ; 
-	s_full_vis_cost + full_vis_cost ; s_non_tb_who3_cost + non_tb_who3_cost ; s_cot_cost + cot_cost ; s_tb_cost + tb_cost ; s_cost_test + cost_test ;
-	s_res_cost + res_cost ; s_cost_circ + cost_circ ; s_cost_condom_dn + cost_condom_dn ; s_cost_sw_program + cost_sw_program ;  
-	s_t_adh_int_cost + t_adh_int_cost ; s_cost_test_m + cost_test_m ; 
-	s_cost_test_f + cost_test_f ; s_cost_prep + cost_prep ; s_cost_prep_visit + cost_prep_visit ; s_cost_prep_ac_adh + cost_prep_ac_adh ; 
-	s_cost_test_m_sympt + cost_test_m_sympt ; s_cost_test_f_sympt + cost_test_f_sympt ;                         
-    s_cost_test_m_circ + cost_test_m_circ ; s_cost_test_f_anc + cost_test_f_anc ; s_cost_test_f_sw + cost_test_f_sw ;                      
-  	s_cost_test_f_non_anc + cost_test_f_non_anc ; s_pi_cost + pi_cost ;	s_cost_switch_line + cost_switch_line ; s_cost_child_hiv + cost_child_hiv ;   			
-  	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_cost_art_init + cost_art_init ; s_art_1_cost + art_1_cost ; s_art_2_cost + art_2_cost ;	     		     			 
-	s_art_3_cost + art_3_cost ; s_cost_vl_not_done + cost_vl_not_done ; s_cost_zdv + cost_zdv ; s_cost_ten + cost_ten ; s_cost_3tc + cost_3tc ;  	    
- 	s_cost_nev + cost_nev ; s_cost_lpr + cost_lpr ; s_cost_dar + cost_dar ; s_cost_taz + cost_taz ; s_cost_efa + cost_efa ; s_cost_dol + cost_dol ;  
-    s_ly + _ly ; s_dly + _dly ; s_qaly + _qaly ; s_dqaly + _dqaly ; s_cost_ + _cost_ ; s_live_daly + live_daly ; s_live_ddaly + live_ddaly ;	  	  	 
-	s_dcost_ + _dcost_ ; s_donart_cost + _donart_cost ; s_dart_cost + _dart_cost ; s_dadc_cost + _dadc_cost ; s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	  	    	   	     	 	 	  	  	  	      
-	s_dfull_vis_cost + _dfull_vis_cost ; s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;
-    s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ;  s_dcost_sw_program + dcost_sw_program ;
-	s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; 
-	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep + _dcost_prep ; s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
-	s_dcost_test_m_sympt + _dcost_test_m_sympt ; 
-	s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ; s_dcost_test_f_anc + _dcost_test_f_anc ;
-  	s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ;       	     	    	       
-    s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ; s_dcost_art_init + _dcost_art_init ;               
-   	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;		  		
-  	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test + _dcost_drug_level_test ; s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;     	   		   		
      		
 	/*visits and linkage*/
 
 	s_visit + visit ; s_lost + lost ; s_linked_to_care + linked_to_care ; s_linked_to_care_this_period + linked_to_care_this_period ;
-	s_pre_art_care + pre_art_care ; s_visit_prep_no + visit_prep_no ; s_visit_prep_d + visit_prep_d ; s_visit_prep_dt + visit_prep_dt ;
-    s_visit_prep_dtc + visit_prep_dtc ; s_sv + sv ; s_sv_secondline + sv_secondline ;
+	s_pre_art_care + pre_art_care ; s_visit_prep_oral_no + visit_prep_oral_no ; s_visit_prep_oral_d + visit_prep_oral_d ; s_visit_prep_oral_dt + visit_prep_oral_dt ;
+    s_visit_prep_oral_dtc + visit_prep_oral_dtc ; s_sv + sv ; s_sv_secondline + sv_secondline ;
 
 	/*deaths*/
 
-	s_dead + dead; s_dead1564_all + dead1564_all ; s_dead1564m_all + dead1564m_all ; s_dead1564w_all + dead1564w_all ; 
+	s_dead + dead; s_dead_all + dead_all ; s_deadm_all + deadm_all ; s_deadw_all + deadw_all ; 
 	s_dead1519m_all + dead1519m_all ; s_dead2024m_all + dead2024m_all ; s_dead2529m_all + dead2529m_all ; s_dead3034m_all + dead3034m_all ;  
 	s_dead3539m_all + dead3539m_all ; s_dead4044m_all + dead4044m_all ; s_dead4549m_all + dead4549m_all ;
 	s_dead5054m_all + dead5054m_all ;s_dead5559m_all + dead5559m_all ;s_dead6064m_all + dead6064m_all ;
@@ -14945,7 +16244,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
 	s_dead85plm_all + dead85plm_all; 
 
-	s_death_hivrel + death_hivrel ;	s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead1564_ + dead1564_ ;
+	s_death_hivrel + death_hivrel ;	s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; 
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
     s_dead_line1_lf1 + dead_line1_lf1 ; s_dead_line2_lf1 + dead_line2_lf1 ; s_dead_line2_lf2 + dead_line2_lf2 ; s_dead_artexp + dead_artexp ;
@@ -14960,18 +16259,21 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_art_tdur_g6m_dead + art_tdur_g6m_dead ; s_ev_onart_gt6m_vlg1000_adead + ev_onart_gt6m_vlg1000_adead ; 
 	s_ev_onart_gt6m_vl_m_g1000_dead + ev_onart_gt6m_vl_m_g1000_dead ; s_ev_onart_gt6m_vl_m_g1000_adead + ev_onart_gt6m_vl_m_g1000_adead ; 
 	s_ev_art_g1k_not2l_adead + ev_art_g1k_not2l_adead ; s_death_dcause3 + death_dcause3 ;     
+	s_death_hiv_age_1524 + death_hiv_age_1524; s_death_hiv_age_2534 + death_hiv_age_2534; s_death_hiv_age_3544 + death_hiv_age_3544; 
+	s_death_hiv_age_4554 + death_hiv_age_4554; s_death_hiv_age_5564 + death_hiv_age_5564; 
 
 	s_dead_hivpos_cause1 + dead_hivpos_cause1 ; s_dead_hivpos_tb + dead_hivpos_tb ; s_dead_hivpos_crypm + dead_hivpos_crypm ; 
 	s_dead_hivpos_sbi + dead_hivpos_sbi ; s_dead_hivpos_oth_adc + dead_hivpos_oth_adc ; s_dead_hivpos_cause2 + dead_hivpos_cause2 ; 
 	s_dead_hivpos_cause3 + dead_hivpos_cause3 ; 	s_dead_hivpos_cause4 + dead_hivpos_cause4 ; s_dead_hivpos_cvd + dead_hivpos_cvd ; 
 	s_dead_cvd + dead_cvd ; s_dead_hivneg_cause4 + dead_hivneg_cause4 ; s_dead_hivneg_cause3 + dead_hivneg_cause3 ; 
 	s_dead_hivneg_cause2 + dead_hivneg_cause2 ;  s_dead_hivneg_cvd + dead_hivneg_cvd ; 
-	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ; s_dead_tb + dead_tb ; 
+	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ;
 	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
-	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80 + dead_cvd_ge80m ;
+	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80m + dead_cvd_ge80m ;
 	s_dead_cvd_3039w + dead_cvd_3039w ; s_dead_cvd_4049w + dead_cvd_4049w ; s_dead_cvd_5059w + dead_cvd_5059w ;s_dead_cvd_6069w + dead_cvd_6069w ;
-	s_dead_cvd_7079w + dead_cvd_7079w ; s_dead_cvd_ge80 + dead_cvd_ge80w ;
+	s_dead_cvd_7079w + dead_cvd_7079w ; s_dead_cvd_ge80w + dead_cvd_ge80w ;
+
 
 	/* death by time on art */
 
@@ -15106,6 +16408,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_sw1519_tp1 + sw1519_tp1; s_sw2024_tp1 + sw2024_tp1; s_sw2529_tp1 + sw2529_tp1; s_sw3039_tp1 + sw3039_tp1; s_swov40_tp1 + swov40_tp1;
 
+	s_sti_sw + sti_sw;
+
 	/*ADC and advanced hiv disease etc*/
 
 	s_adc + adc ; s_non_tb_who3_ev + non_tb_who3_ev ; s_who4_ + who4_ ; s_tb + tb ; s_adc_diagnosed + adc_diagnosed ; s_onart_adc + onart_adc ;
@@ -15120,30 +16424,30 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g1_tb +cd4_g1_tb ; s_cd4_g2_tb +cd4_g2_tb ; s_cd4_g3_tb +cd4_g3_tb ; s_cd4_g4_tb +cd4_g4_tb ; s_cd4_g5_tb +cd4_g5_tb ; s_cd4_g6_tb +cd4_g6_tb ;  
 	s_vl_g1_tb +vl_g1_tb ; s_vl_g2_tb +vl_g2_tb ; s_vl_g3_tb +vl_g3_tb ; s_vl_g4_tb +vl_g4_tb ; s_vl_g5_tb +vl_g5_tb ; 
 	s_age_g1_tb +age_g1_tb ; s_age_g2_tb +age_g2_tb ; s_age_g3_tb +age_g3_tb ; s_age_g4_tb +age_g4_tb ; s_age_g5_tb +age_g5_tb ; 
-	s_onart_tb + onart_tb; s_pcpp_tb + pcpp_tb; s_tb_80 + tb;  s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
-	s_onart_80 + onart;   s_pcpp_80 + pcpp;   s_tb_proph_tb + tb_proph_tb ;
+	s_onart_tb + onart_tb; s_pcp_p_tb + pcp_p_tb; s_tb_80 + tb;  s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
+	s_onart_80 + onart;   s_pcp_p_80 + pcp_p;   s_tb_proph_tb + tb_proph_tb ;
 	s_cd4_g1_who3 +cd4_g1_who3 ; s_cd4_g2_who3 +cd4_g2_who3 ; s_cd4_g3_who3 +cd4_g3_who3 ; s_cd4_g4_who3 +cd4_g4_who3 ; s_cd4_g5_who3 +cd4_g5_who3 ; 
 	s_cd4_g6_who3 +cd4_g6_who3 ;  s_vl_g1_who3 +vl_g1_who3 ; s_vl_g2_who3 +vl_g2_who3 ; s_vl_g3_who3 +vl_g3_who3 ; s_vl_g4_who3 +vl_g4_who3 ; 
 	s_vl_g5_who3 +vl_g5_who3 ; s_age_g1_who3 +age_g1_who3 ; s_age_g2_who3 +age_g2_who3 ; s_age_g3_who3 +age_g3_who3 ; s_age_g4_who3 +age_g4_who3 ; 
-	s_age_g5_who3 +age_g5_who3 ;  s_onart_who3 + onart_who3 ;  s_pcpp_who3 +  pcpp_who3 ;  s_who3_event_80 + who3_event ;     
+	s_age_g5_who3 +age_g5_who3 ;  s_onart_who3 + onart_who3 ;  s_pcp_p_who3 +  pcp_p_who3 ;  s_who3_event_80 + who3_event ;     
 	s_cd4_g1_adc +cd4_g1_adc ; s_cd4_g2_adc +cd4_g2_adc ; s_cd4_g3_adc +cd4_g3_adc ; s_cd4_g4_adc +cd4_g4_adc ; s_cd4_g5_adc +cd4_g5_adc ; 
 	s_cd4_g6_adc +cd4_g6_adc ;  s_vl_g1_adc +vl_g1_adc ; s_vl_g2_adc +vl_g2_adc ; s_vl_g3_adc +vl_g3_adc ; s_vl_g4_adc +vl_g4_adc ; 
 	s_vl_g5_adc +vl_g5_adc ; s_age_g1_adc +age_g1_adc ; s_age_g2_adc +age_g2_adc ; s_age_g3_adc +age_g3_adc ; s_age_g4_adc +age_g4_adc ; 
-	s_age_g5_adc +age_g5_adc ;	s_onart_adc + onart_adc ;  s_pcpp_adc +  pcpp_adc ;    	s_cd4_g1_crypm +cd4_g1_crypm ; s_cd4_g2_crypm +cd4_g2_crypm ; 
+	s_age_g5_adc +age_g5_adc ;	s_pcp_p_adc +  pcp_p_adc ;    	s_cd4_g1_crypm +cd4_g1_crypm ; s_cd4_g2_crypm +cd4_g2_crypm ; 
 	s_cd4_g3_crypm +cd4_g3_crypm ; s_cd4_g4_crypm +cd4_g4_crypm ; s_cd4_g5_crypm +cd4_g5_crypm ; s_cd4_g6_crypm +cd4_g6_crypm ; 
 	s_vl_g1_crypm +vl_g1_crypm ; s_vl_g2_crypm +vl_g2_crypm ; s_vl_g3_crypm +vl_g3_crypm ; s_vl_g4_crypm +vl_g4_crypm ; s_vl_g5_crypm +vl_g5_crypm ; 
 	s_age_g1_crypm +age_g1_crypm ; s_age_g2_crypm +age_g2_crypm ; s_age_g3_crypm +age_g3_crypm ; s_age_g4_crypm +age_g4_crypm ; 
-	s_age_g5_crypm +age_g5_crypm ; s_onart_crypm + onart_crypm ; s_pcpp_crypm + pcpp_crypm ; 
+	s_age_g5_crypm +age_g5_crypm ; s_onart_crypm + onart_crypm ; s_pcp_p_crypm + pcp_p_crypm ; 
 	s_crag_measured_this_per_crypm + crag_measured_this_per_crypm;  s_crypm_proph_crypm +  crypm_proph_crypm ; 
 	s_cd4_g1_sbi +cd4_g1_sbi ; s_cd4_g2_sbi +cd4_g2_sbi ; s_cd4_g3_sbi +cd4_g3_sbi ; s_cd4_g4_sbi +cd4_g4_sbi ; s_cd4_g5_sbi +cd4_g5_sbi ; 
 	s_cd4_g6_sbi +cd4_g6_sbi ;  s_vl_g1_sbi +vl_g1_sbi ; s_vl_g2_sbi +vl_g2_sbi ; s_vl_g3_sbi +vl_g3_sbi ; s_vl_g4_sbi +vl_g4_sbi ; 
 	s_vl_g5_sbi +vl_g5_sbi ; s_age_g1_sbi +age_g1_sbi ; s_age_g2_sbi +age_g2_sbi ; s_age_g3_sbi +age_g3_sbi ; s_age_g4_sbi +age_g4_sbi ; 
 	s_age_g5_sbi +age_g5_sbi ;   
-	s_onart_sbi + onart_sbi ;  s_pcpp_sbi +  pcpp_sbi ; s_sbi_proph_sbi +  sbi_proph_sbi ;  s_sbi  +  sbi ;        
+	s_onart_sbi + onart_sbi ;  s_pcp_p_sbi +  pcp_p_sbi ; s_sbi_proph_sbi +  sbi_proph_sbi ;        
 	s_cd4_g1_dead +cd4_g1_dead ; s_cd4_g2_dead +cd4_g2_dead ; s_cd4_g3_dead +cd4_g3_dead ; s_cd4_g4_dead +cd4_g4_dead ; s_cd4_g5_dead +cd4_g5_dead ; s_cd4_g6_dead +cd4_g6_dead ;  
 	s_vl_g1_dead +vl_g1_dead ; s_vl_g2_dead +vl_g2_dead ; s_vl_g3_dead +vl_g3_dead ; s_vl_g4_dead +vl_g4_dead ; s_vl_g5_dead +vl_g5_dead ; 
 	s_age_g1_dead +age_g1_dead ; s_age_g2_dead +age_g2_dead ; s_age_g3_dead +age_g3_dead ; s_age_g4_dead +age_g4_dead ; s_age_g5_dead +age_g5_dead ;
-	s_onart_dead_80 + onart_dead ;  s_pcpp_dead + pcpp_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
+	s_onart_dead_80 + onart_dead ;  s_pcp_p_dead + pcp_p_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
 	s_sbi_proph_dead + sbi_proph_dead ;    s_who3_event_dead  +  who3_event_dead ;    s_adc_dead +   adc_dead ;  s_crypm_dead + crypm_dead ;  
 	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
 	s_dead_tb + dead_tb;  s_dead_crypm + dead_crypm ;  s_dead_sbi + dead_sbi ;  s_dead_oth_adc +  dead_oth_adc;
@@ -15155,7 +16459,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tb_tcur3m_cd4t0l200 + tb_tcur3m_cd4t0l200 ; s_crypm_tcur3m_cd4t0l200 + crypm_tcur3m_cd4t0l200 ; s_sbi_tcur3m_cd4t0l200 + sbi_tcur3m_cd4t0l200 ; 
 	s_tcur6m_cd4t0l200 + tcur6m_cd4t0l200 ; s_who3_tcur6m_cd4t0l200 + who3_tcur6m_cd4t0l200 ; s_adc_tcur6m_cd4t0l200 + adc_tcur6m_cd4t0l200 ; 
 	s_tb_tcur6m_cd4t0l200 + tb_tcur6m_cd4t0l200 ; s_crypm_tcur6m_cd4t0l200 + crypm_tcur6m_cd4t0l200 ; s_sbi_tcur6m_cd4t0l200 + sbi_tcur6m_cd4t0l200 ; 
-	s_ahd_re_enter_care_100 + ahd_re_enter_care_100; s_ahd_re_enter_care_200 + ahd_re_enter_care_200; s_re_enter_care + re_enter_care ;
+	s_ahd_enter_care_100 + ahd_enter_care_100; s_ahd_enter_care_200 + ahd_enter_care_200; s_enter_care + enter_care ;
 
 
 
@@ -15246,19 +16550,15 @@ the age cut-off for dalys (dead_dealys) - this section should not contain any va
 
 if 15 <= age or death ne . then do;
 
-	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; s_dead_allage + dead; 
-	s_dead_daly_80 + dead_daly_80 ; s_dead_ddaly_80 + dead_ddaly_80 ; 
-	s_dead_ddaly_oth_dol_adv_birth_e + dead_ddaly_oth_dol_adv_birth_e ; 
-	s_dead_ddaly_ntd + dead_ddaly_ntd ;
+	s_dead_daly + dead_daly ; s_dead_ddaly + dead_ddaly ; 
 
-	s_death_dcause3_allage + death_dcause3 ;  s_death_hivrel_allage + death_hivrel;
-  	s_art_attrit_1yr + art_attrit_1yr ; s_art_attrit_1yr_on + art_attrit_1yr_on ; s_art_attrit_2yr + art_attrit_2yr ;
+	s_art_attrit_1yr + art_attrit_1yr ; s_art_attrit_1yr_on + art_attrit_1yr_on ; s_art_attrit_2yr + art_attrit_2yr ;
 	s_art_attrit_2yr_on + art_attrit_2yr_on ; s_art_attrit_3yr + art_attrit_3yr ; s_art_attrit_3yr_on + art_attrit_3yr_on ; 
     s_art_attrit_4yr + art_attrit_4yr ; s_art_attrit_4yr_on + art_attrit_4yr_on ; s_art_attrit_5yr + art_attrit_5yr ; 
 	s_art_attrit_5yr_on + art_attrit_5yr_on ; s_art_attrit_6yr + art_attrit_6yr ; s_art_attrit_6yr_on + art_attrit_6yr_on ;
     s_art_attrit_7yr + art_attrit_7yr ; s_art_attrit_7yr_on + art_attrit_7yr_on ; s_art_attrit_8yr + art_attrit_8yr ;
-	s_art_attrit_8yr_on + art_attrit_8yr_on ; s_cost_child_hiv + cost_child_hiv ; 
-	s_cost_child_hiv_mo_art + cost_child_hiv_mo_art ; s_ddaly_mtct + ddaly_mtct ; s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
+																			   
+	s_art_attrit_8yr_on + art_attrit_8yr_on ;  s_x_n_zld_if_reg_op_116 + n_zld_if_reg_op_116 ;
 
 
 end;
@@ -15269,43 +16569,68 @@ if 0 <= age and (death = . or caldate&j = death ) then do;
 	s_vmmc1014m + vmmc1014m ; 	s_new_vmmc1014m + new_vmmc1014m ; s_ageg1014m + ageg1014m; 
 end;
 
-* note - I have stopped adding an "_80" for all of these variables - so we need to take care for each s_ variable whether it applies to 15-64 
-or 15-79 or all ages.   I think we should consider changing the above from 15-64 to 15+ or 15-79;
+
+
+* Note - all costs and DALYs now calculated to default age 80 (23Nov21);
+
+																																			  
+																								 
 if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
+	*undiscounted;
+	s_live_daly + live_daly; 
+	s_dead_daly_oth_dol_adv_birth_e + dead_daly_oth_dol_adv_birth_e ;
+	s_dead_daly_ntd + dead_daly_ntd;
+	s_daly_mtct + daly_mtct ;
+	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 
-	s_live_daly_80 + live_daly_80 ; s_live_ddaly_80 + live_ddaly_80 ; s_dyll_80 + dyll_80;
+	*discounted;
+	s_live_ddaly + live_ddaly ; 
+	s_dead_ddaly_oth_dol_adv_birth_e + dead_ddaly_oth_dol_adv_birth_e ;
+	s_dead_ddaly_ntd + dead_ddaly_ntd;
+	s_ddaly_mtct + ddaly_mtct ;
+	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
+	
+	s_dyll_Optima80 + dyll_Optima80;
 
-	s_cost_80 + cost ; s_art_cost_80 + art_cost ;  
-    s_adc_cost_80 + adc_cost ; s_cd4_cost_80 + cd4_cost ; s_vl_cost_80 + vl_cost ; s_vis_cost_80 + vis_cost ; 
-	s_full_vis_cost_80 + full_vis_cost ; s_non_tb_who3_cost_80 + non_tb_who3_cost ; s_cot_cost_80 + cot_cost ; s_tb_cost_80 + tb_cost ; s_cost_test_80 + cost_test ;
-	s_res_cost_80 + res_cost ; s_cost_circ_80 + cost_circ ; s_cost_condom_dn_80 + cost_condom_dn ; s_cost_sw_program_80 + cost_sw_program ;  
-	s_t_adh_int_cost_80 + t_adh_int_cost ; s_cost_test_m_80 + cost_test_m ; 
-	s_cost_test_f_80 + cost_test_f ; s_cost_prep_80 + cost_prep ; s_cost_prep_visit_80 + cost_prep_visit ; s_cost_prep_ac_adh_80 + cost_prep_ac_adh ; 
-	s_cost_test_m_sympt_80 + cost_test_m_sympt ; s_cost_test_f_sympt_80 + cost_test_f_sympt ;                         
-    s_cost_test_m_circ_80 + cost_test_m_circ ; s_cost_test_f_anc_80 + cost_test_f_anc ; s_cost_test_f_sw_80 + cost_test_f_sw ;                      
-  	s_cost_test_f_non_anc_80 + cost_test_f_non_anc ; s_pi_cost_80 + pi_cost ;	s_cost_switch_line_80 + cost_switch_line ; s_cost_child_hiv_80 + cost_child_hiv ;   			
-  	s_cost_child_hiv_mo_art_80 + cost_child_hiv_mo_art ; s_cost_art_init_80 + cost_art_init ; s_art_1_cost_80 + art_1_cost ; s_art_2_cost_80 + art_2_cost ;	     		     			 
-	s_art_3_cost_80 + art_3_cost ; s_cost_vl_not_done_80 + cost_vl_not_done ; s_cost_zdv_80 + cost_zdv ; s_cost_ten_80 + cost_ten ; s_cost_3tc_80 + cost_3tc ;  	    
- 	s_cost_nev_80 + cost_nev ; s_cost_lpr_80 + cost_lpr ; s_cost_dar_80 + cost_dar ; s_cost_taz_80 + cost_taz ; s_cost_efa_80 + cost_efa ; s_cost_dol_80 + cost_dol ;  
-    s_cost__80 + _cost_ ;   	  	 
-	s_dcost__80 + _dcost_ ; s_dart_cost_80 + _dart_cost ; s_dadc_cost_80 + _dadc_cost ; s_dcd4_cost_80 + _dcd4_cost ; s_dvl_cost_80 + _dvl_cost ; s_dvis_cost_80 + _dvis_cost ;  	  	    	   	     	 	 	  	  	  	      
-	s_dfull_vis_cost_80 + _dfull_vis_cost ; s_dnon_tb_who3_cost_80 + _dnon_tb_who3_cost ; s_dcot_cost_80 + _dcot_cost ; s_dtb_cost_80 + _dtb_cost ; s_dtest_cost_80 + _dtest_cost ;
-    s_dres_cost_80 + _dres_cost ; s_dcost_circ_80 + _dcost_circ ; s_dcost_condom_dn_80 + dcost_condom_dn ;  s_dcost_sw_program_80 + dcost_sw_program ;
-	s_d_t_adh_int_cost_80 + _d_t_adh_int_cost ; s_dtest_cost_m_80 + _dtest_cost_m ; 
-	s_dtest_cost_f_80 + _dtest_cost_f ; s_dcost_prep_80 + _dcost_prep ; s_dcost_prep_visit_80 + _dcost_prep_visit ; s_dcost_prep_ac_adh_80 + _dcost_prep_ac_adh ;          
-	s_dcost_test_m_sympt_80 + _dcost_test_m_sympt ; 
-	s_dcost_test_f_sympt_80 + _dcost_test_f_sympt ; s_dcost_test_m_circ_80 + _dcost_test_m_circ ; s_dcost_test_f_anc_80 + _dcost_test_f_anc ;
-  	s_dcost_test_f_sw_80 + _dcost_test_f_sw ; s_dcost_test_f_non_anc_80 + _dcost_test_f_non_anc ; s_dpi_cost_80 + _dpi_cost ; s_dcost_switch_line_80 + _dcost_switch_line ;       	     	    	       
-    s_dcost_child_hiv_80 + _dcost_child_hiv ; s_dcost_child_hiv_mo_art_80 + _dcost_child_hiv_mo_art ; s_dcost_art_init_80 + _dcost_art_init ;               
-   	s_dart_1_cost_80 + _dart_1_cost ; s_dart_2_cost_80 + _dart_2_cost ; s_dart_3_cost_80 + _dart_3_cost ; s_dcost_vl_not_done_80 + _dcost_vl_not_done ;		  		
-  	s_dcost_non_aids_pre_death_80 + _dcost_non_aids_pre_death ; s_ddaly_non_aids_pre_death_80 + ddaly_non_aids_pre_death ;     			  	  	   
- 	s_dcost_drug_level_test_80 + _dcost_drug_level_test ;    	 
-	s_cost_hypert_vis_80 + _cost_hypert_vis; s_cost_hypert_drug_80 + _cost_hypert_drug;  
+	*undiscounted;
+	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
+																											  
+	s_full_vis_cost + full_vis_cost; s_adc_cost + adc_cost; s_non_tb_who3_cost + non_tb_who3_cost; s_cot_cost + cot_cost;  
+	s_tb_cost + tb_cost;  s_cost_test + cost_test; s_res_cost + res_cost;  s_cost_circ + cost_circ;  s_cost_condom_dn + cost_condom_dn; 
+	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; 
+	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_prep_visit_oral + cost_prep_visit_oral; 
+	s_cost_prep_visit_inj + cost_prep_visit_inj; 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
+	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
+	s_cost_test_f_anc + cost_test_f_anc; s_cost_test_f_sw + cost_test_f_sw;  s_cost_test_f_non_anc + cost_test_f_non_anc;
+	s_pi_cost + pi_cost;  s_cost_switch_line + cost_switch_line;  s_cost_art_init + cost_art_init;
+	s_art_1_cost + art_1_cost; s_art_2_cost + art_2_cost;  s_art_3_cost + art_3_cost; s_cost_vl_not_done + cost_vl_not_done; 
+	s_cost_zdv + cost_zdv; s_cost_ten + cost_ten; s_cost_3tc + cost_3tc; s_cost_nev + cost_nev; s_cost_lpr + cost_lpr; 
+	s_cost_dar + cost_dar; s_cost_taz + cost_taz; s_cost_efa + cost_efa; s_cost_dol + cost_dol;  
+	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
+	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
+	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
+	*discounted; 
+	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
+	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
+	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
+	s_dcost_sw_program + dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
+	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; 
+	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; 
+	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
+	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
+																																		  
+	s_dcost_test_f_anc + _dcost_test_f_anc ;  s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; 
+	s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ; s_dcost_art_init + _dcost_art_init ;               
+   	s_dart_1_cost + _dart_1_cost ; s_dart_2_cost + _dart_2_cost ; s_dart_3_cost + _dart_3_cost ; s_dcost_vl_not_done + _dcost_vl_not_done ;	
+	s_dcost_zdv + _dcost_zdv; s_dcost_ten + _dcost_ten; s_dcost_3tc + _dcost_3tc; s_dcost_nev + _dcost_nev; s_dcost_lpr + _dcost_lpr; 
+	s_dcost_dar + _dcost_dar; s_dcost_taz + _dcost_taz; s_dcost_efa + _dcost_efa; s_dcost_dol + _dcost_dol; 
+	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
+ 	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
+	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
 	 	
-	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ;  
+	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ; 
 
 end;
-
 
 cald = caldate_never_dot ;
 
@@ -15318,7 +16643,277 @@ if dead=0 or dead=1 then cvd_death=0;
 if dcause=4 and caldate&j=death then cvd_death=1;
 
 
+hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
+
+
+
+
 * procs;
+
+
+/*
+
+
+proc freq; tables cald hiv ; where death=.; run;
+
+
+/*
+
+
+proc print; var 
+caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
+registd tested onart visit onartvisit0 naive prep_inj prob_onartvis_0_to_1 prob_onartvis_1_to_0
+;
+where caldate&j > 2022 and infection > 2022.5 and death = .; 
+run;
+
+proc freq; tables onartvisit0; where onart=1 and death=.; run;
+
+*/
+
+
+/*
+
+prep_inj_willing=1; hard_reach=0;
+prep_inj_efficacy = 0.1;
+pr_prep_inj_b =1;
+rate_choose_stop_prep_inj=0;
+
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; var caldate&j infection  prep_inj_tm1 prep_inj currently_in_prep_inj_tail  prep_oral  option prep_any_elig o_cab nactive_tm1 nactive 
+tcur_tm1 tcur newmut_tm1 adh_dl_tm1 adh_dl r_cab hiv infection dt_prep_inj_s dt_prep_inj_rs dt_prep_inj_c tested  c_in118m c_in140m c_in148m c_in263m 
+registd onart yrart
+;
+where prep_inj_ever =1 and hiv=1 and death=. ;
+run;
+
+*/
+
+
+/*
+
+prep_inj_efficacy=0.2;
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; 
+var caldate&j infection  prep_inj_tm1   prep_inj prep_oral prep_o_cab_off_3m_prim reg_option_107 reg_option onart o_dol o_taz  registd;
+
+where infection > 2022.75 and prep_inj_ever=1 and yrart ne .; 
+run;
+
+*/
+
+
+/*
+
+proc print; 
+var 
+caldate&j infection prep_any_strategy prep_any_elig prep_oral_ever prep_inj_ever prep_any_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
+prep_oral prep_o_cab_off_3m_prim reg_option onart o_dol o_taz 
+date_last_stop_prep_inj stop_prep_any_choice
+diagprim_prep_inj  prep_primary_prevented  diagprim_prep_oral  o_cab   r_cab r_3tc r_ten  primary     start_prep_inj_unl_prim_hiv_det
+o_cab_or_o_cab_tm1_no_r   prep_o_cab_off_3m_prim  em_inm_res_o_cab_off_3m_npr 
+em_inm_res_o_cab_off_3m_pr emerge_inm_res_cab_tail_pr
+cab_res_prep_inj_primary cab_res_primary
+emerge_inm_res_cab_tail  prep_inj_init_prim_res prep_inj_init_prim  prep_inj_reinit_prim_res prep_inj_init_prim_res prep_inj_reinit_prim   prep_inj_init_prim
+em_inm_res_o_cab_off_3m 
+cur_in_prep_inj_tail_no_r  tss_cab cab_time_to_lower_threshold currently_in_prep_inj_tail  dt_prep_inj_rs  registd date1pos 
+adh_dl_tm1 adh_dl dol_higher_potency nactive_tm1 nactive newmut_tm1  pr_res_dol  rr_res_cab_dol  
+prep_inj_ever prep_oral_ever hivtest_type_1_init_prep_inj  hivtest_type_1_prep_inj
+sens_ttype1_prep_inj_primary  sens_ttype1_prep_inj_inf3m   sens_ttype1_prep_inj_infge6m 
+sens_ttype3_prep_inj_primary  sens_ttype3_prep_inj_inf3m   sens_ttype3_prep_inj_infge6m 
+pr_inm_inj_prep_primary 
+;
+
+where infection > 2022.75 and prep_inj_ever=1 and yrart ne .; run;
+
+* where 15 <= age  and (diagprim_prep_inj=1 or diagprim_prep_oral=1 or prep_primary_prevented=1 or prep_any_ever=1) and infection > 2022  and death = . ;
+
+run;
+
+*/
+
+/*
+
+proc print; var  caldate&j infection in118m in118m_p in140m in140m_p in148m in148m_p in263m in263m_p t_prop_in263m res_trans_factor_ii r_dol r_cab ;
+
+where hiv=1 and death=. and primary=1 ;
+run;
+
+*/
+
+/* option registd yrart _ai_naive_no_pmtct_ onart r_cab r_dol o_cab o_dol _ai_naive_no_pmtct_e_inm_ */
+
+/*
+
+prep_inj_efficacy = 0.2;
+if caldate&j ge 2020 then fold_tr = 50;
+
+proc freq; tables cald hiv hivtest_type_1_init_prep_inj primary; where death=.; run;
+
+
+
+*/
+
+/*
+
+hivtest_type_1_prep_inj=1;
+cost_test_g=0.022;
+
+proc freq; tables cald hiv;
+
+proc print; var cald prep_inj tested cost_test cost_test_g hiv ; 
+where tested=1 and death = . and prep_any_elig=1;
+run;
+
+*/
+
+/*
+
+proc freq; tables cald hiv ; where death=.; run;
+
+proc print; var   cald   dt_prep_inj_s    prep_inj    o_cab   em_inm_res_o_cab_off_3m    cab_res_prep_inj_primary    primary     r_cab_tm1    r_cab ;
+
+where hiv=1 and dt_prep_inj_s > . and death=.  and primary ne 1; run;
+
+*/
+
+  
+
+/*
+
+proc freq; tables cald incidence1549w ; run;
+
+
+proc print; var cald onart reg_option o_dol o_lpr o_taz o_3tc o_ten o_zdv o_efa o_nev nod nactive 
+p_dol p_lpr p_taz p_3tc p_ten p_zdv p_efa p_nev ;
+
+where hiv=1 and registd=1 and (death = . or death = caldate&j);
+run;
+ 
+
+proc freq; tables cald caldate&j incidence1549w ; 
+
+proc print; var caldate&j prep_any_elig dt_prep_inj_s  primary  hiv  o_cab o_cab_tm1  prep_inj prep_inj_tm1 time_hiv_cab 
+o_cab_or_o_cab_tm1 o_cab_or_o_cab_tm1_no_r em_inm_res_o_cab_off_3m 
+
+currently_in_prep_inj_tail  
+cur_in_prep_inj_tail_hiv   cur_in_prep_inj_tail_no_r  emerge_inm_res_cab_tail  
+
+prep_primary_prevented
+
+prep_inj_at_infection hiv_cab o_cab_or_o_cab_tm1 o_cab_or_o_cab_tm1_no_r em_inm_res_o_cab_off_3m   diagprim_prep_inj cab_res_primary
+
+r_cab  cab_res_primary         
+
+diagprim  hiv_cab_3m  hiv_cab_6m  hiv_cab_9m  hiv_cab_ge12m  hivtest_type_1_init_prep_inj  hivtest_type_1_prep_inj  eff_sens_vct 
+eff_sens_primary  tested  registd
+
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
+sens_vct_testtype3_cab_tail sens_primary_testtype3
+
+; 
+
+where hiv = 1 and (prep_inj=1 or prep_inj_tm1=1 or currently_in_prep_inj_tail=1 or prep_primary_prevented=1) and (death=. or caldate&j=death) ;
+
+run;
+
+
+
+proc freq; tables caldate&j incidence1549w prevalence1549  ; 
+
+proc print; var caldate&j infection primary diagprim prep_any_elig prep_inj hiv o_cab tss_cab time_hiv_cab tested sens_vct eff_sens_vct registd 
+hivtest_type_1_init_prep_inj; 
+where (prep_inj=1 or prep_inj_tm1=1) and  hiv=1 and primary ne 1 ; 
+
+run; 
+
+
+proc print; var caldate&j
+primary diagprim diagprim_prep_inj tested sens_primary o111 hiv registd 
+hivtest_type hivtest_type_1_init_prep_inj dt_prep_inj_s
+
+;
+where age ge 15 and primary=1 and (death=. or dead=1)  ;
+run;
+
+
+
+proc freq; tables caldate&j ; 
+proc freq; tables caldate&j sw * prep_any  prep_inj prep_oral ; where prep_any_elig = 1;
+
+var 
+caldate&j prep_any_strategy prep_any_elig rate_test_startprep_any hard_reach rate_test_startprep_any prob_prep_inj_b  
+prob_prep_oral_b testfor_prep_oral  prep_oral_ever prep_inj_ever prep_any_ever 
+an_lin_incr_test testfor_prep_inj tested  switch_prep_from_oral  switch_prep_from_inj switch_prep_to_oral  switch_prep_to_inj 
+highest_prep_pref prep_oral_willing prep_inj_willing pref_prep_oral pref_prep_inj prep_oral prep_inj sw higher_future_prep_oral_cov
+stop_prep_inj_choice stop_prep_oral_choice
+;
+where age ge 15 and prep_any_elig=1 and (death=. or dead=1) and serial_no <  3000 ;
+run;
+
+run;
+
+*/
+
+
+/*
+
+
+* prep inj tetsing and cab resistance ;
+
+proc print; var caldate&j o_cab nactive
+prep_any_strategy prep_any_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_start_date 
+date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
+stop_prep_inj_choice  continuous_prep_inj_use  dt_prep_oral_rs
+hiv infection tested prep_falseneg sens_vct eff_sens_vct primary hivtest_type dt_last_test annual_testing_prep_inj
+registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl vl r_cab cab_res_o_cab cab_res_tail cab_res_primary 
+started_prep_hiv_test_sens_e 
+nactive nod onart 
+o_zdv o_3tc o_ten o_dar o_efa o_nev o_taz o_lpr o_dol o_cab r_zdv r_3tc r_ten r_dar r_efa r_nev r_taz r_lpr r_dol r_cab
+;
+where age ge 15 and (infected_prep_inj = 1 or infected_prep_inj_tail=1) and registd=0 and (death=. or dead=1) and hiv=1;
+run;
+
+*/
+
+/*
+
+
+proc print; var caldate&j newp ep age  date_prep_inj_intro prob_prep_inj_b highest_prep_pref tested hiv registd 
+prep_any_elig prep_oral_willing prep_inj_willing 	testfor_prep_oral testfor_prep_inj testfor_prep_vr 
+	prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever 
+	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_any_choice
+	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_any_elig
+	 dt_prep_any_rs dt_prep_any_c tmp_prep dt_last_test;
+where age ge 15 and prep_inj_ever = 1 and (death=. or dead=1);
+run; 
+
+*/
+
+/*
+
+proc means; var prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever;
+where age ge 15 and death = . and caldate&j=1995; run;
+
+proc univariate; var dt_prep_any_rs ; where caldate&j=2021.75; run;
+
+proc freq; tables tmp_prep  ; where caldate&j=2021.75; run;
+
+*/   
+
+/*proc univariate; var highest_prep_pref ; */
+/*proc univariate; var prep_oral_willing prep_inj_willing prep_vr_willing ; */
+/*proc univariate; var pref_prep_oral pref_prep_inj pref_prep_vr ; */
+
+
+
+
+
 
 /*
 
@@ -15427,11 +17022,11 @@ run;
 
 
 proc print; var serial_no caldate&j 
-prep prep_strategy prep_elig  prep_ever  dt_prep_s  dt_prep_e  continuous_prep_use
-adh_pattern_prep rate_test_startprep rate_test_restartprep rate_choose_stop_prep prob_prep_restart_choice prepuptake_sw  prepuptake_pop 
-eff_rate_test_startprep eff_rate_test_restartprep eff_rate_choose_stop_prep eff_prob_prep_restart_choice prepuptake_sw prepuptake_pop 
-prepuptake_pop annual_testing_prep hivtest_type prep_efficacy factor_prep_adh_older rate_test_onprep pr_prep_b prob_prep_restart prob_prep_visit_counsel
-tot_yrs_prep prob_prep_restart_choice prepuptake_sw prepuptake_pop pop_wide_tld_prob_egfr;
+prep prep_any_strategy prep_any_elig  prep_any_ever  dt_prep_oral_s   continuous_prep_any_use
+rate_test_startprep_any  rate_choose_stop_prep_oral prob_prep_any_restart_choice 
+eff_rate_test_startprep_any eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice 
+annual_testing_prep_oral hivtest_type prep_oral_efficacy factor_prep_adh_older rate_test_onprep_any pr_prep_oral_b prob_prep_any_restart prob_prep_any_visit_counsel
+tot_yrs_prep_oral prob_prep_any_restart_choice  pop_wide_tld_prob_egfr;
 where age ge 15 and hiv ne 1;
 run;
 
@@ -15474,6 +17069,7 @@ for any variables we want to save outputs, either to analyse afterwards, or to f
 data sums; set r&da1; if serial_no = &population;
 
 ***Variables created below are used to update the program ;
+
 
 *Code below used to determine if ep infected in main program;
 if s_ageg1m gt 0 then prevalence1524m = (s_hiv1519m + s_hiv2024m) /s_ageg1m;
@@ -15661,7 +17257,8 @@ end;
 s_prop_tam1 = .;s_prop_tam2 = .;s_prop_tam3 = .;s_prop_k103m =.;s_prop_y181m =.;s_prop_g190m =.;
 s_prop_m184m =.;s_prop_q151m =.;s_prop_k65m =.;
 s_prop_p32m =.;s_prop_p33m =.; s_prop_p46m =.;s_prop_p47m =.; ;s_prop_p50vm =.;
-s_prop_p50lm =.; s_prop_p54m =.;s_prop_p76m =.; s_prop_p82m =.;s_prop_p84m =.;s_prop_p88m =.; s_prop_p90m =.;s_prop_pim =.;s_prop_inpm =.;s_prop_insm =.;
+s_prop_p50lm =.; s_prop_p54m =.;s_prop_p76m =.; s_prop_p82m =.;s_prop_p84m =.;s_prop_p88m =.; s_prop_p90m =.;s_prop_pim =.;
+s_prop_in118m =.; s_prop_in140m =.; s_prop_in148m =.; s_prop_in155m =.; s_prop_in263m =.;
 
 
 s_prop_vlg1_rm=0; if s_i_v1_np >0 then do; s_prop_vlg1_rm = max(0,s_i_r_vlg1_np) / s_i_v1_np ; end;
@@ -15729,22 +17326,26 @@ s_prop_p84m 		 = max(0,s_p84m_   / s_rm_);
 s_prop_p88m 		 = max(0,s_p88m_   / s_rm_);
 s_prop_p90m 		 = max(0,s_p90m_   / s_rm_);
 s_prop_pim 			 = max(0,s_pim_    / s_rm_);
-s_prop_inpm 		 = max(0,s_inpm_   / s_rm_);
-s_prop_insm 		 = max(0,s_insm_   / s_rm_);
+s_prop_in118m 		 = max(0,s_in118m_   / s_rm_);
+s_prop_in140m 		 = max(0,s_in140m_   / s_rm_);
+s_prop_in148m 		 = max(0,s_in148m_   / s_rm_);
+s_prop_in155m 		 = max(0,s_in155m_   / s_rm_);
+s_prop_in263m 		 = max(0,s_in263m_   / s_rm_);
+
 
 end;
 
 
 * Used to update rates of viral suppression;
-if s_onart ge 1 then do; p_onart_vls = s_vl1000_art / s_onart ; end;
+if s_onart_age1564 ge 1 then do; p_onart_vls = s_vl1000_art_age1564 / s_onart_age1564 ; end;
 
 
 * Used to determine diagnosis in ep in main program;
-if s_hiv1564 > 0 then p_diag   = s_diag/s_hiv1564;
-if s_diag > 0     then p_diag_onart   = s_onart/s_diag;
+if s_hiv1564 > 0 then p_diag   = s_diag_age1564/s_hiv1564;
+if s_diag > 0     then p_diag_onart   = s_onart_age1564/s_diag_age1564;
 if s_epdiag > 0   then p_diag_eponart = s_eponart/s_epdiag;
-if s_hiv1564m > 0 then p_diag_m   = s_diag_m  /s_hiv1564m;
-if s_hiv1564w > 0 then p_diag_w   = s_diag_w  /s_hiv1564w;
+if s_hiv1564m > 0 then p_diag_m   = s_diag_m_age1564  /s_hiv1564m;
+if s_hiv1564w > 0 then p_diag_w   = s_diag_w_age1564  /s_hiv1564w;
 if s_epi_m    > 0 then p_epdiag_m = s_epdiag_m/s_epi_m; 
 if s_epi_w    > 0 then p_epdiag_w = s_epdiag_w/s_epi_w; 
 d_diag_m = p_diag_m - p_epdiag_w;
@@ -15769,9 +17370,6 @@ if s_w2534_ep2534 gt 0 then r_s_ep_m25w25 = s_m2534_ep2534 / s_w2534_ep2534 ;
 if s_w3544_ep3544 gt 0 then r_s_ep_m35w35 = s_m3544_ep3544 / s_w3544_ep3544 ; 
 if s_w4554_ep4554 gt 0 then r_s_ep_m45w45 = s_m4554_ep4554 / s_w4554_ep4554 ; 
 if s_w5564_ep5564 gt 0 then r_s_ep_m55w55 = s_m5564_ep5564 / s_w5564_ep5564 ;
-
-
-
 
 
 if sex_age_mixing_matrix_w=1 then do;
@@ -15899,6 +17497,9 @@ prevalence2529w = s_hiv2529w  / s_ageg2529w ;
 incidence1549w = (4 * 100 * s_primary1549w) / (s_alive1549_w - s_hiv1549w + s_primary1549w);
 incidence1549m = (4 * 100 * s_primary1549m) / (s_alive1549_m - s_hiv1549m + s_primary1549m);
 
+incidence1549  = (4 * 100 * (s_primary1549m + s_primary1549w )) 
+/ ((s_alive1549_m + s_alive1549_w) - (s_hiv1549m + s_hiv1549w) + (s_primary1549m + s_primary1549w ) );
+
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
 
 drop serial_no ;
@@ -15957,6 +17558,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -15989,7 +17592,7 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
-s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
+s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep s_newp_this_per_prep_sw s_newp_this_per_elig_prep_any 	s_newp_this_per_elig_prep_any_sw 
 s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg  s_newp_this_per_hivneg_1549  s_newp_this_per_1549 
   
 /*status of partner*/
@@ -16055,65 +17658,95 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_  s_in148m_  s_in155m_ s_in263m_ s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
 s_nn_res_pmtct  s_nn_res_pmtct_art_notdr  s_super_i_r  
 s_onart_efa_r  s_onart_efa_r_2l  s_onefa_linefail1_r  
-s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_nnm_
+s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_nnm_  s_ai_naive_no_pmtct_e_inm_
 s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_inm_   s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  s_ai_naive_no_pmtct_c_rttams_ 
 s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh0  s_o_dol_2nd_vlg1000_dolr1_adh1  s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 
 
 s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_nnm_ontle s_ontld  s_vlg1000_ontld  s_vlg1000_65m_ontld 
-s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld
+s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  s_cur_res_cab s_em_inm_res_o_cab_off_3m
+s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
+s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary
 
 
 /*prep*/
-s_prep  s_prep_sw  s_prep_w_1524 s_elig_prep_epdiag  s_infected_prep  s_prep_ever  s_primary_prep  s_hiv1_prep  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep  s_elig_prep  	 s_hr_noprep  s_primary_hr_noprep 
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
+s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
+s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
+s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prepstart  s_ever_stopped_prep_choice  s_preprestart 
+s_prep_any_start s_prep_inj_start s_prep_oral_start s_prep_vr_start  s_ever_stopped_prep_oral_choice  s_preprestart 
+s_prep_inj_restart s_prep_oral_restart s_prep_vr_restart  s_age_prepstart
 s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_prep   s_acq_rt184m_6_prep   s_acq_rtm_6_prep 
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
+s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
-s_elig_prep_w_1549 s_prep_w_1549 
+s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
-s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
-
-s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s_infected_prep_no_r    s_infected_prep_r  
-s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
-s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing  		    s_stop_prep_choice      s_started_prep_hiv_test_sens  
-s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
-s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
-s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
-s_cur_res_efa_ever_hiv1_prep   s_cur_res_ten_ever_hiv1_prep   				   s_cur_res_3tc_ever_hiv1_prep   
-s_prep_effectiveness_non_res_v 
+s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
+s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
+s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
+s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
+s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
+s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_inj_in_primary_e		s_started_prep_vr_in_primary_e
+s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m 				   			s_cur_res_efa 			
+s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000 				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
+s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep   		s_cur_res_3tc_ever_hiv1_prep   
+s_prep_oral_effect_non_res_v 
 s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
 s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
-s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
-s_prob_prep_restart_choice
-s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep	 								
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_ge1yr
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
+s_prob_prep_any_restart_choice
+s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
+s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
+
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection 
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_inj_tail s_prep_inj_ever_hiv s_cab_res_prep_inj_primary
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m   s_hiv_cab_ge12m
+
+s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_any s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
+s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
+s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim 
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_oral
+s_on_risk_informed_prep_inj
+s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj 
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+
 
 
 /*testing and diagnosis*/
@@ -16148,7 +17781,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-
+s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
 
 
 /*VL and CD4*/
@@ -16182,9 +17816,9 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
 s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r  s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -16231,7 +17865,12 @@ s_start_zld_if_reg_op_116   s_onart_start_zld_if_reg_op_116   s_e_rt65m_st_zld_i
 s_per1_art_int s_per2_art_int	s_dead_per1_art_int	s_dead_per2_art_int  s_cd4_before_int	s_cd4_before_int_lt100   	s_cd4_before_int_100200 
 s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per2_art_int 	s_cd4_per2_art_int_lt100	s_cd4_per2_art_int_100200
 
-s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
+s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 	s_restart   s_art_initiation 
+
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
+s_infected_inm  s_infected_inm_this_per
+
+s_onartvisit0
 
 /* note s_ variables below are for up to age 80 */
 
@@ -16276,72 +17915,65 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
-/*costs and dalys (default to age 65; _80 */
-s_cost       s_onart_cost    s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  	
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit 
+s_cost_prep_visit_oral s_cost_prep_visit_inj
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-s_dcost_  	   s_donart_cost	   s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn   s_dcost_sw_program  s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
-
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
-
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
+s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 
+s_ly  s_dly  s_qaly  s_dqaly    
+																																			   
+		
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
 s_pre_art_care   
-s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
+s_visit_prep_oral_no  s_visit_prep_oral_d  s_visit_prep_oral_dt  s_visit_prep_oral_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
-s_dead1564_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
+s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+s_dead_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
 s_sdg_1     s_sdg_2     s_sdg_3     s_sdg_4     s_sdg_5     s_sdg_6     s_sdg_7     s_sdg_8     s_sdg_9     s_sdg_99
 s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr_7  s_sdg_hr_8  s_sdg_hr_9  s_sdg_hr_99
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
- s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage  
+ s_ev_art_g1k_not2l_adead    
  s_dead_hivneg_anycause  s_dead_hivpos_anycause 
 
 /* deaths by cause - age 15+ */
 
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
-s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80 s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
+s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m s_dead_cvd_3039w  s_dead_cvd_4049w
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -16368,11 +18000,12 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1 s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
 s_adc_line2_lf2  s_adc_artexpoff 
+
 
 /* outputs for advanced hiv disease */ 
 
@@ -16380,25 +18013,25 @@ s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_pr
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tb_proph_tb  s_onart_80 s_pcpp_80 s_onart_80 s_pcpp_80  s_tb_80  s_tblam_measured_this_per_tb    
+s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_onart_80 s_pcp_p_80 s_pcp_p_80  s_tb_80  s_tblam_measured_this_per_tb    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  	s_onart_adc  s_pcpp_adc
+s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
-s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcpp_crypm   
+s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
-s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
+s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
@@ -16462,25 +18095,38 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
-res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
-prob_prep_restart_choice 			prepuptake_pop  add_prepuptake_sw cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
+prob_prep_any_restart_choice 	 add_prep_any_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
-sw_program  sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
-effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
-sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
-rate_tb_proph_init rate_sbi_proph_init
+effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
+sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
+rate_tb_proph_init rate_sbi_proph_init 
+prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_willingness_threshold 
+rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
+
+pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
+hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
+sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
+super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -16491,29 +18137,26 @@ non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
 prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
 
+discount
+
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	  decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_pattern_prep_year_i 
-inc_r_test_startprep_year_i   incr_r_test_restartprep_year_i decr_r_choose_stop_prep_year_i 
-inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_pop_year_i   prep_strategy_year_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
+inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
 incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
 
-prepuptake_pop add_prepuptake_sw e_decr_hard_reach_year_i  
+add_prep_any_uptake_sw e_decr_hard_reach_year_i  
 
-vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
+vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
-
-prep_strategy
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -16542,7 +18185,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549w incidence1549m cum_ratio_newp_mw
+prevalence1549  prev_ratio_1524 incidence1549 incidence1549w incidence1549m cum_ratio_newp_mw
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -16553,7 +18196,9 @@ s_prop_vlg1_rm1_naive  s_prop_vlg2_rm1_naive  s_prop_vlg3_rm1_naive  s_prop_vlg4
 s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190m   
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
-s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_inpm  s_prop_insm   
+s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m   
+s_prop_in148m s_prop_in155m  s_prop_in263m   
+
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
@@ -16745,8 +18390,11 @@ t_prop_p82m = s_prop_p82m ;
 t_prop_p84m = s_prop_p84m ;  
 t_prop_p88m = s_prop_p88m ;  
 t_prop_p90m = s_prop_p90m ;  
-t_prop_inpm = s_prop_inpm ;  
-t_prop_insm = s_prop_insm ; 
+t_prop_in118m = s_prop_in118m ;  
+t_prop_in140m = s_prop_in140m ; 
+t_prop_in148m = s_prop_in148m ; 
+t_prop_in155m = s_prop_in155m ; 
+t_prop_in263m = s_prop_in263m ; 
 t_prop_vlg1_rm0_diag = s_prop_vlg1_rm0_diag ;  
 t_prop_vlg1_rm0_naive = s_prop_vlg1_rm0_naive ; 
 t_prop_vlg1_rm1_diag = s_prop_vlg1_rm1_diag ;  
@@ -16829,6 +18477,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj  s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -16858,8 +18508,8 @@ s_n_newp_g_yw_0 s_n_newp_g_yw_1 s_n_newp_g_yw_2 s_n_newp_g_yw_3 s_n_newp_g_yw_4 
 	
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
-s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep 	
-s_newp_this_per_elig_prep_sw 
+s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw  s_newp_this_per_elig_prep_any 	
+s_newp_this_per_elig_prep_any_sw 
 s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
 
 s_s_m_newp  s_s_w_newp
@@ -16927,66 +18577,95 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
-s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
+s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art 
+s_pim_art s_tam_art s_m184_art s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
 s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
 s_nn_res_pmtct  s_nn_res_pmtct_art_notdr  s_super_i_r  
 s_onart_efa_r  s_onart_efa_r_2l  s_onefa_linefail1_r  
-s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_nnm_
+s_ai_naive_no_pmtct_ s_ai_naive_no_pmtct_c_nnm_  s_ai_naive_no_pmtct_e_inm_
 s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_inm_   s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  s_ai_naive_no_pmtct_c_rttams_ 
 s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh0  s_o_dol_2nd_vlg1000_dolr1_adh1  s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 
 
 
 s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_nnm_ontle s_ontld  s_vlg1000_ontld  s_vlg1000_65m_ontld 
-s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld
+s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  s_cur_res_cab s_em_inm_res_o_cab_off_3m
+s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
+s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary
 
 /*prep*/
-s_prep  s_prep_sw  s_prep_w_1524 s_elig_prep_epdiag  s_infected_prep  s_prep_ever  s_primary_prep  s_hiv1_prep  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep  s_elig_prep  	 s_hr_noprep  s_primary_hr_noprep 
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
+s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
+s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj  s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
+s_prep_any_elig  	s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prepstart  s_ever_stopped_prep_choice  s_preprestart 
+s_prep_any_start s_prep_inj_start s_prep_oral_start s_prep_vr_start  s_ever_stopped_prep_oral_choice  s_preprestart
+s_prep_inj_restart s_prep_oral_restart s_prep_vr_restart s_age_prepstart
 s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_prep   s_acq_rt184m_6_prep   s_acq_rtm_6_prep 
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
 
-s_elig_prep_w_1549 s_prep_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
-s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
+s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
-s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s_infected_prep_no_r    s_infected_prep_r  
-s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
-s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing  		    	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
-s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
-s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
-s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
-s_cur_res_efa_ever_hiv1_prep   s_cur_res_ten_ever_hiv1_prep   				   s_cur_res_3tc_ever_hiv1_prep   
-s_prep_effectiveness_non_res_v 
+s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
+s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
+s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
+s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
+s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e 	
+s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_inj_in_primary_e		s_started_prep_vr_in_primary_e
+s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m 				   			s_cur_res_efa 			
+s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000 				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
+s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep   		s_cur_res_3tc_ever_hiv1_prep   
+s_prep_oral_effect_non_res_v 
 s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
 s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp  s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
-s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
-s_prob_prep_restart_choice
-s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep	 							
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_ge1yr
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
+s_prob_prep_any_restart_choice
+s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
+s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_inj_tail s_prep_inj_ever_hiv s_cab_res_prep_inj_primary
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
+
+s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_any s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
+s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
+s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_oral
+s_on_risk_informed_prep_inj
+s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -17020,7 +18699,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-
+s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
 
 
 /*VL and CD4*/
@@ -17054,9 +18734,9 @@ s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
 s_onart_sw
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+s_eponart_m	 s_eponart_w  s_hiv1564_onart    s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -17103,7 +18783,11 @@ s_start_zld_if_reg_op_116   s_onart_start_zld_if_reg_op_116   s_e_rt65m_st_zld_i
 s_per1_art_int s_per2_art_int	s_dead_per1_art_int	s_dead_per2_art_int  s_cd4_before_int	s_cd4_before_int_lt100   	s_cd4_before_int_100200 
 s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per2_art_int 	s_cd4_per2_art_int_lt100	s_cd4_per2_art_int_100200
 
-s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
+s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
+
+s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
+
+s_onartvisit0
 
 /* note s_ variables below are for up to age 80 */
 
@@ -17148,72 +18832,65 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_visit_oral s_cost_prep_visit_inj
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-/*costs and dalys*/
-s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ  s_cost_condom_dn  s_cost_sw_program     s_t_adh_int_cost     s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+				   
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
+s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 
 
-s_dcost_  	   s_donart_cost		s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ   s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 		
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd	s_ddaly_mtct  s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
-
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80   s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly   
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
 s_pre_art_care   
-s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
+s_visit_prep_oral_no  s_visit_prep_oral_d  s_visit_prep_oral_dt  s_visit_prep_oral_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
-s_dead1564_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
+s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+s_dead_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
 s_sdg_1     s_sdg_2     s_sdg_3     s_sdg_4     s_sdg_5     s_sdg_6     s_sdg_7     s_sdg_8     s_sdg_9     s_sdg_99
 s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr_7  s_sdg_hr_8  s_sdg_hr_9  s_sdg_hr_99
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
- s_ev_art_g1k_not2l_adead  s_dead_allage   s_death_dcause3_allage  s_death_hivrel_allage
+ s_ev_art_g1k_not2l_adead  
 s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
-s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80 s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80 
+s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -17239,7 +18916,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1	s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
@@ -17250,25 +18927,25 @@ s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_pr
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80    
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  	s_onart_adc  s_pcpp_adc
+s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
-s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcpp_crypm   
+s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
-s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi     s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
+s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi     s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80 
 
@@ -17363,7 +19040,7 @@ s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     s_all_ai_e_rt65
 s_art_attrit_1yr     	s_art_attrit_1yr_on     s_art_attrit_2yr   s_art_attrit_2yr_on   s_art_attrit_3yr   
 s_art_attrit_3yr_on     s_art_attrit_4yr      s_art_attrit_4yr_on  s_art_attrit_5yr   
 s_art_attrit_5yr_on     s_art_attrit_6yr      s_art_attrit_6yr_on   s_art_attrit_7yr   s_art_attrit_7yr_on   
-s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_infection  s_m_newp 
+s_art_attrit_8yr    	s_art_attrit_8yr_on   s_dead_daly   s_epart    s_hiv1564  s_m_newp 
 s_naive_m       		s_naive_w      s_npgt1conc_l4p_1519m    s_npgt1conc_l4p_1519w   s_npgt1conc_l4p_1524m 
 s_npgt1conc_l4p_1524w    s_npgt1conc_l4p_2449m    s_npgt1conc_l4p_2449w    s_npgt1conc_l4p_5064m    s_npgt1conc_l4p_5064w 
 s_prop_ageg1_m_vlg1    s_prop_ageg1_m_vlg2    s_prop_ageg1_m_vlg3   s_prop_ageg1_m_vlg4  s_prop_ageg1_m_vlg5 
@@ -17377,7 +19054,7 @@ s_prop_ageg3_w_vlg6    s_prop_ageg4_m_vlg1   s_prop_ageg4_m_vlg2  s_prop_ageg4_m
 s_prop_ageg4_m_vlg6    s_prop_ageg4_w_vlg1    s_prop_ageg4_w_vlg2   s_prop_ageg4_w_vlg3    s_prop_ageg4_w_vlg4  s_prop_ageg4_w_vlg5  
 s_prop_ageg4_w_vlg6     s_prop_ageg5_m_vlg1   s_prop_ageg5_m_vlg2    s_prop_ageg5_m_vlg3   s_prop_ageg5_m_vlg4 
 s_prop_ageg5_m_vlg5   s_prop_ageg5_m_vlg6    s_prop_ageg5_w_vlg1   s_prop_ageg5_w_vlg2   s_prop_ageg5_w_vlg3   s_prop_ageg5_w_vlg4
-s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_inpm   s_prop_insm   s_prop_k103m   s_prop_k65m 
+s_prop_ageg5_w_vlg5   s_prop_ageg5_w_vlg6   s_prop_g190m  s_prop_in118m   s_prop_in140m  s_prop_in148m  s_prop_in155m s_prop_in263m s_prop_k103m   s_prop_k65m 
 s_prop_m184m    s_prop_m_vlg1    s_prop_m_vlg2   s_prop_m_vlg3    s_prop_m_vlg4    s_prop_m_vlg5   
 s_prop_m_vlg6     s_prop_newp_i_m_1524   s_prop_newp_i_m_2534   s_prop_newp_i_m_3544   s_prop_newp_i_m_4554 s_prop_newp_i_m_5564 
 s_prop_newp_i_w_1524   s_prop_newp_i_w_2534    s_prop_newp_i_w_3544   s_prop_newp_i_w_4554   s_prop_newp_i_w_5564 
@@ -17472,7 +19149,6 @@ end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
 
 
 
@@ -17606,16 +19282,14 @@ end;
 %update_r1(da1=2,da2=1,e=8,f=9,g=121,h=128,j=128,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=125,h=132,j=129,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
-
-data a; set r1; 
-
-
-
-data r1; set a;
-
-
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+
+data a ;  set r1 ;
+
+
+data r1 ; set a ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -17640,6 +19314,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
@@ -17656,6 +19331,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
@@ -17674,6 +19350,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
@@ -17698,6 +19375,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
@@ -17812,15 +19490,18 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
 
-data r1; set a;
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=1);
+
+data r1; set a      ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
@@ -17861,6 +19542,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
@@ -17879,6 +19561,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
@@ -17903,6 +19586,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
@@ -18017,16 +19701,20 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
 
-data r1; set a;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=2);
+
+
+data r1; set a     ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
@@ -18051,6 +19739,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
@@ -18067,6 +19756,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
@@ -18085,6 +19775,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
@@ -18109,6 +19800,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
@@ -18223,17 +19915,230 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
 
 
-data r1; set a;
+data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+data r1; set a       ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -18258,6 +20163,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
@@ -18274,6 +20180,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
@@ -18292,6 +20199,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
@@ -18316,6 +20224,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
@@ -18430,15 +20339,18 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
 
-data r1; set a;
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=1);
+
+data r1; set a      ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
@@ -18479,6 +20391,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
@@ -18497,6 +20410,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
@@ -18521,6 +20435,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
@@ -18635,16 +20550,20 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
 
-data r1; set a;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=2);
+
+
+data r1; set a     ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
@@ -18669,6 +20588,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
@@ -18685,6 +20605,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
@@ -18703,6 +20624,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
@@ -18727,6 +20649,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
@@ -18841,17 +20764,231 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
 
 
-data r1; set a;
+data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+
+data r1; set a       ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -18876,6 +21013,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
@@ -18892,6 +21030,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
@@ -18910,6 +21049,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
@@ -18934,6 +21074,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
@@ -19048,15 +21189,18 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
 
-data r1; set a;
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=1);
+
+data r1; set a      ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
@@ -19097,6 +21241,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
@@ -19115,6 +21260,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
@@ -19139,6 +21285,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
@@ -19253,16 +21400,20 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
 
-data r1; set a;
 
-%update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=2);
+
+
+data r1; set a     ;
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
@@ -19287,6 +21438,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
@@ -19303,6 +21455,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
@@ -19321,6 +21474,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
@@ -19345,6 +21499,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
@@ -19459,10 +21614,1930 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+
+
+data r1; set a       ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+
+
+
+
+data r1; set a     ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+
+
+data r1; set a       ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=0);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=1);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=1);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+
+
+
+
+data r1; set a     ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=2);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=2);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=2);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=2);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+
+
+data r1; set a      ;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
 
 
 
@@ -19559,6 +23634,8 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
+s_diagprim_prep_inj  s_diagprim
+
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
@@ -19592,8 +23669,9 @@ npgt1conc_l4p_2549w  npgt1conc_l4p_5064m  npgt1conc_l4p_5064w
 s_susc_np_inc_circ_1549_m  s_susc_np_1549_m  s_susc_np_1549_w
 
 s_newp_this_per_art_or_prep   s_newp_this_per_art   s_newp_this_per_prep  s_newp_this_per_prep_sw 
-s_newp_this_per_elig_prep 	s_newp_this_per_elig_prep_sw 
+s_newp_this_per_elig_prep_any 	s_newp_this_per_elig_prep_any_sw 
 s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_this_per_hivneg_1549  s_newp_this_per_1549
+
 
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
@@ -19660,7 +23738,7 @@ s_i_m_1549_np  s_i_w_1549_np
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
 s_p32m_  s_p33m_  s_p46m_  s_p47m_   s_p50vm_  s_p50lm_  s_p54m_   s_p76m_ s_p82m_   s_p84m_   s_p88m_	s_p90m_   s_pim_  
-s_inpm_  s_insm_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
+s_in118m_  s_in140m_ s_in148m_  s_in155m_ s_in263m_  s_rm_    s_i_nnm   s_i_rm    s_i_pim   s_i_tam   s_i_im  s_inm_    s_i_184m  s_im_art s_pim_art s_tam_art s_m184_art
 s_r_  	 s_r_3tc  s_r_nev  s_r_lpr   s_r_taz   s_r_efa   s_r_ten   s_r_zdv s_r_dol  
 s_rme_   s_iime_  s_nnme_  s_pime_   s_nrtime_
 s_res_1stline_startline2  s_nnm_art  s_nnm_art_m  s_nnm_art_w  s_r_art  s_acq_rt65m  s_acq_rt184m  s_acq_rtm  s_onart_iicu_res
@@ -19668,59 +23746,87 @@ s_nactive_art_start_lt2  s_nactive_art_start_lt3  s_nactive_art_start_lt1p5
 s_nactive_line2_lt4 	 s_nactive_line2_lt3 	  s_nactive_line2_lt2 		s_nactive_line2_lt1p5  s_pim_line2
 s_nn_res_pmtct  s_nn_res_pmtct_art_notdr  s_super_i_r  
 s_onart_efa_r  s_onart_efa_r_2l  s_onefa_linefail1_r  
-s_ai_naive_no_pmtct_   s_ai_naive_no_pmtct_c_nnm_
+s_ai_naive_no_pmtct_   s_ai_naive_no_pmtct_c_nnm_  s_ai_naive_no_pmtct_e_inm_
 s_ai_naive_no_pmtct_c_pim_  s_ai_naive_no_pmtct_c_inm_   s_ai_naive_no_pmtct_c_rt184m_  s_ai_naive_no_pmtct_c_rt65m_  s_ai_naive_no_pmtct_c_rttams_ 
 s_o_dol_2nd_vlg1000 s_o_dol_2nd_vlg1000_dolr1_adh0  s_o_dol_2nd_vlg1000_dolr1_adh1  s_o_dol_2nd_vlg1000_dolr0_adh0 s_o_dol_2nd_vlg1000_dolr0_adh1 
 
 
 s_ontle  s_vlg1000_ontle  s_vlg1000_184m_ontle  s_vlg1000_65m_ontle  s_vlg1000_nnm_ontle s_ontld s_vlg1000_ontld  s_vlg1000_65m_ontld 
-s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld
+s_vlg1000_184m_ontld  s_vlg1000_nnm_ontld s_vlg1000_inm_ontld  s_vlg1000_tams_ontle  s_vlg1000_tams_ontld  s_cur_res_cab s_em_inm_res_o_cab_off_3m
+s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail_npr 
+s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary
 
 /*prep*/
-s_prep s_prep_sw s_prep_w_1524 s_elig_prep_epdiag  s_infected_prep  s_prep_ever  s_primary_prep  s_hiv1_prep  s_i_r_prep  s_primary_r_prep  s_ever_i_nor_prep  
-s_rm_prep   s_elig_prep  	 s_hr_noprep  s_primary_hr_noprep 
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr   s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
+s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
+s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj  s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
+s_prep_any_elig  	 s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
 s_rt65m_18_prep s_rt184m_18_prep s_rtm_18_prep  
 s_onprep_3  s_onprep_6  s_onprep_9  s_onprep_12  s_onprep_18  
 
-s_prepstart  s_ever_stopped_prep_choice  s_preprestart 
+s_prep_any_start s_prep_inj_start s_prep_oral_start s_prep_vr_start  s_ever_stopped_prep_oral_choice  s_preprestart 
+s_prep_inj_restart s_prep_oral_restart s_prep_vr_restart s_age_prepstart
 s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_prep   s_acq_rt184m_6_prep   s_acq_rtm_6_prep 
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_sw   s_elig_prep_onprep
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
 
-s_elig_prep_w_1549 s_prep_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w  s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
-s_elig_prep_w_1524 s_elig_prep_w_2534 s_elig_prep_w_3544 s_prep_w_1524      s_prep_w_2534      s_prep_w_3544 
+s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
+s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
-s_infected_prep_source_prep_r  s_prepinfect_prep_r     s_prepinfect_prep_r_p   s_infected_prep_no_r    s_infected_prep_r  
-s_started_prep_in_primary	   s_tot_yrs_prep  		   s_onprep_3_i_prep_no_r  s_onprep_6_i_prep_no_r  s_onprep_9_i_prep_no_r 
-s_onprep_12_i_prep_no_r 	   s_onprep_18_i_prep_no_r s_prepinfect_rm_p      s_prepinfect_m184m_p    s_prepinfect_k65m_p 
-s_prepinfect_tam_p 			   s_prepinfect_rtm  	   s_prepinfect_k65m	   s_prepinfect_m184m  	   s_prepinfect_tam  
-s_prep_willing  		    	   s_stop_prep_choice      s_started_prep_hiv_test_sens  
-s_cur_res_prep_drug 		   s_started_prep_hiv_test_sens_e  				   s_started_prep_in_primary_e
-s_cur_res_ten				   s_cur_res_3tc  		   s_i_65m 				   s_cur_res_efa 			
-s_cur_res_ten_vlg1000 		   s_cur_res_3tc_vlg1000 						   s_cur_res_efa_vlg1000	s_ever_hiv1_prep 
-s_cur_res_efa_ever_hiv1_prep   s_cur_res_ten_ever_hiv1_prep   				   s_cur_res_3tc_ever_hiv1_prep   
-s_prep_effectiveness_non_res_v 
+s_inf_prep_any_source_prep_r	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
+s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
+s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
+s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
+s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice				s_started_prep_hiv_test_sens  
+s_cur_res_prep_drug 		   	s_started_prep_hiv_test_sens_e	
+s_started_prep_any_in_primary_e	s_started_prep_oral_in_primary_e	s_started_prep_inj_in_primary_e		s_started_prep_vr_in_primary_e
+s_cur_res_ten				   	s_cur_res_3tc  		   				s_i_65m								s_cur_res_efa 			
+s_cur_res_ten_vlg1000 		   	s_cur_res_3tc_vlg1000				s_cur_res_efa_vlg1000				s_ever_hiv1_prep_oral 
+s_cur_res_efa_ever_hiv1_prep   	s_cur_res_ten_ever_hiv1_prep		s_cur_res_3tc_ever_hiv1_prep   
+s_prep_oral_effect_non_res_v 
 s_prep_3m_after_inf_no_r 	s_prep_3m_after_inf_no_r_184  s_prep_3m_after_inf_no_r_65
 s_prep_6m_after_inf_no_r  s_prep_6m_after_inf_no_r_184  s_prep_6m_after_inf_no_r_65  s_prep_12m_after_inf_no_r  
 s_prep_12m_after_inf_no_r_184  s_prep_12m_after_inf_no_r_65
 s_hiv_prep_reason_1  s_hiv_prep_reason_2  s_hiv_prep_reason_3  s_hiv_prep_reason_4
 
 s_prep_newp  s_prep_newpg0  s_prep_newpg1  s_prep_newpg2  s_prep_newpg3  s_prep_newpg4  
-s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_ever_w_1524  s_prep_ever_w
-s_test_gt_period1_on_prep  s_test_gt_period1_on_prep_pos  s_test_period1_on_prep  s_test_period1_on_prep_pos  
-s_prob_prep_restart_choice
-s_prep_all_past_year s_tot_yrs_prep_gt_5  s_tot_yrs_prep_gt_10   s_tot_yrs_prep_gt_20
-s_pop_wide_tld_prep   
-s_prep_elig_past_year s_prep_elig_past_3year  s_prep_elig_past_5year s_newp_prep s_prop_elig_years_onprep_ayear_i	s_continuous_prep_ge1yr									
+s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_1524  s_prep_any_ever_w
+s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
+s_prob_prep_any_restart_choice
+s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
+s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_pop_wide_tld_prep    s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep s_prop_elig_years_onprep_ayear_i	s_continuous_prep_oral_ge1yr									
+			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep 
 
-										
+s_testfor_prep_oral  s_testfor_prep_inj  s_prep_oral s_prep_inj s_prep_oral_ever  s_prep_inj_ever  s_last_prep_used  s_stop_prep_inj_choice 
+s_stop_prep_oral_elig  s_stop_prep_inj_elig s_stop_prep_any_elig s_prep_oral_willing s_prep_inj_willing s_prep_oral_at_infection s_prep_inj_at_infection
+
+s_cab_res_o_cab s_cab_res_tail s_cab_res_primary s_currently_in_prep_inj_tail s_prep_inj_ever_hiv s_cab_res_prep_inj_primary
+
+s_hiv_cab_3m s_hiv_cab_6m s_hiv_cab_9m  s_hiv_cab_ge12m
+
+s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_to_oral  s_switch_prep_to_inj  s_hiv1_prep_any  s_hiv1_prep_inj s_cur_in_prep_inj_tail_hiv
+s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_inj_init_prim_res
+s_prep_inj_reinit_prim  s_prep_inj_reinit_prim_res s_cur_in_prep_inj_tail_prim  
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  s_on_risk_informed_prep_oral
+s_on_risk_informed_prep_inj
+s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
+
+s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
+s_started_prep_inj_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -19745,7 +23851,7 @@ s_diag
 s_diag_m1549_  s_diag_m1519_  s_diag_m2024_  s_diag_m2529_  s_diag_m3034_  s_diag_m3539_  s_diag_m4044_  s_diag_m4549_ 
 s_diag_m5054_  s_diag_m5559_  s_diag_m6064_ 
 s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_diag_w3539_  s_diag_w4044_  s_diag_w4549_ 
-s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
+s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
 s_nn_tdr_diag
 
 s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc 
@@ -19754,8 +23860,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w s_diag_w_15pl s_diag_m_15pl 
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-
-
+s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -19786,11 +23892,11 @@ s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
 s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
-s_onart_sw
-s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
-s_eponart_m	 s_eponart_w  s_hiv1564_onart  s_dead1564_onart  s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
-s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol
+s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
+s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
+
+s_lpr  s_taz  s_3tc  s_nev  s_efa  s_ten  s_zdv  s_dol  s_cab  s_o_cab_or_o_cab_tm1  s_o_cab_or_o_cab_tm1_no_r s_o_cab_or_o_cab_tm1_no_r_prim
 s_onefa_linefail1  s_ev_art_g1k_l1k  s_ev_art_g1k_not2l  s_ev_art_g1k_not2l_l1k  s_ev_art_g1k  s_ev_art_g1k_not2l_adc
 s_art_12m  s_vl1000_art_12m  s_art_24m  s_vl1000_art_24m  s_art_12m_onart  s_vl1000_art_12m_onart
 s_startedline2  s_start_line2_this_period  s_line2_12m  s_line2_12m_onart  s_line2_incl_int_clinic_not_aw
@@ -19837,7 +23943,11 @@ s_start_zld_if_reg_op_116   s_onart_start_zld_if_reg_op_116   s_e_rt65m_st_zld_i
 s_per1_art_int s_per2_art_int	s_dead_per1_art_int	s_dead_per2_art_int  s_cd4_before_int	s_cd4_before_int_lt100   	s_cd4_before_int_100200 
 s_cd4_per1_art_int 	s_cd4_per1_art_int_lt100	s_cd4_per1_art_int_100200 s_cd4_per2_art_int 	s_cd4_per2_art_int_lt100	s_cd4_per2_art_int_100200
 
-s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep 
+s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl1000     s_started_art_as_tld_prep s_restart  s_art_initiation
+
+s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
+
+s_onartvisit0
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19882,71 +23992,65 @@ s_art_36m_bcd4_ge500_adead s_art_39m_bcd4_ge500  s_art_39m_bcd4_ge500_adead s_ar
 s_art_45m_bcd4_ge500_adead s_art_48m_bcd4_ge500  s_art_48m_bcd4_ge500_adead s_art_51m_bcd4_ge500 s_art_51m_bcd4_ge500_adead s_art_54m_bcd4_ge500 
 s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art_60m_bcd4_ge500 s_art_60m_bcd4_ge500_adead
 
-/*costs and dalys*/
-s_cost       s_onart_cost		s_art_cost    s_adc_cost    s_cd4_cost    s_vl_cost    s_vis_cost     s_full_vis_cost    s_non_tb_who3_cost    s_cot_cost 
-s_tb_cost    s_cost_test   s_res_cost    s_cost_circ   s_cost_condom_dn  s_cost_sw_program  s_t_adh_int_cost      s_cost_test_m    s_cost_test_f
-s_cost_prep  s_cost_prep_visit			   s_cost_prep_ac_adh  			 
-s_cost_test_m_sympt  		   s_cost_test_f_sympt  		   s_cost_test_m_circ  			   s_cost_test_f_anc  s_cost_test_f_sw
-s_cost_test_f_non_anc  	   	   s_pi_cost  	   s_cost_switch_line  			  s_cost_child_hiv s_cost_child_hiv_mo_art  		   s_cost_art_init
-  	   s_art_1_cost   s_art_2_cost     s_art_3_cost  	  s_cost_vl_not_done 
-s_cost_zdv     s_cost_ten 	   s_cost_3tc 	   s_cost_nev  	   s_cost_lpr  	  s_cost_dar 	   s_cost_taz  	  	  s_cost_efa  	   s_cost_dol   
-s_cost_hypert_vis s_cost_hypert_drug
+/*costs and dalys (default to age 80) */
+s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
+s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_prep_visit_oral s_cost_prep_visit_inj
+s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
+s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
+s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
+s_cost_lpr 	  s_cost_dar  	s_cost_taz 	  s_cost_efa  s_cost_dol   	 s_cost_non_aids_pre_death   		   s_drug_level_test_cost  
+s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost_hypert_drug  
 
-s_ly  s_dly  s_qaly  s_dqaly  s_cost_  s_live_daly  s_live_ddaly   
+s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
+s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
+s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj   
+s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
+s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
-s_dcost_  	   s_donart_cost 		s_dart_cost     s_dadc_cost     s_dcd4_cost     s_dvl_cost	  s_dvis_cost    	s_dfull_vis_cost  s_dnon_tb_who3_cost     s_dcot_cost 
-s_dtb_cost     s_dtest_cost    s_dres_cost     s_dcost_circ  s_dcost_condom_dn  s_dcost_sw_program   s_d_t_adh_int_cost   s_dtest_cost_f  s_dtest_cost_m
-s_dcost_prep   s_dcost_prep_visit  			   s_dcost_prep_ac_adh 			  
-s_dcost_test_m_sympt  	       s_dcost_test_f_sympt  		   s_dcost_test_m_circ  	  	 	s_dcost_test_f_anc s_dcost_test_f_sw
-s_dcost_test_f_non_anc 	       s_dpi_cost     s_dcost_switch_line  		  s_dcost_child_hiv s_dcost_child_hiv_mo_art  		   s_dcost_art_init
-	   s_dart_1_cost  s_dart_2_cost     s_dart_3_cost	   s_dcost_vl_not_done 	
-s_dcost_non_aids_pre_death   s_ddaly_non_aids_pre_death  s_dead_ddaly_oth_dol_adv_birth_e   s_dcost_drug_level_test
-s_dead_ddaly_ntd  s_ddaly_mtct    s_dead_ddaly  s_live_daly_80  s_live_ddaly_80 s_dyll_80 s_dead_daly_80  s_dead_ddaly_80
-s_ddaly_non_aids_pre_death_80
+s_dead_daly	   s_dead_ddaly   
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+																		   
+s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_dyll_Optima80 		 
 
-s_cost_80  s_art_cost_80  s_adc_cost_80  s_cd4_cost_80  s_vl_cost_80  s_vis_cost_80  s_full_vis_cost_80  s_non_tb_who3_cost_80  s_cot_cost_80 
-s_tb_cost_80  s_cost_test_80  s_res_cost_80  s_cost_circ_80  s_cost_condom_dn_80  s_cost_sw_program_80  s_t_adh_int_cost_80  s_cost_test_m_80  
-s_cost_test_f_80  s_cost_prep_80  s_cost_prep_visit_80  s_cost_prep_ac_adh_80    s_cost_test_m_sympt_80    
-s_cost_test_f_sympt_80    s_cost_test_m_circ_80   s_cost_test_f_anc_80  s_cost_test_f_sw_80
-s_cost_test_f_non_anc_80   s_pi_cost_80  	  s_cost_switch_line_80    s_cost_child_hiv_80  s_cost_child_hiv_mo_art_80    s_cost_art_init_80
-s_art_1_cost_80  s_art_2_cost_80  s_art_3_cost_80  	  s_cost_vl_not_done_80 s_cost_zdv_80  s_cost_ten_80 	  s_cost_3tc_80 	  s_cost_nev_80  	  
-s_cost_lpr_80  	  s_cost_dar_80 	  s_cost_taz_80  	  	  s_cost_efa_80  	  s_cost_dol_80  
-s_cost__80   s_dcost__80  	  s_dart_cost_80  s_dadc_cost_80  s_dcd4_cost_80  s_dvl_cost_80	  s_dvis_cost_80  	s_dfull_vis_cost_80  s_dnon_tb_who3_cost_80 
-s_dcot_cost_80 s_dtb_cost_80  s_dtest_cost_80  s_dres_cost_80  s_dcost_circ_80  s_dcost_condom_dn_80  s_dcost_sw_program_80  s_d_t_adh_int_cost_80  
-s_dtest_cost_f_80  s_dtest_cost_m_80  s_dcost_prep_80  s_dcost_prep_visit_80  	 s_dcost_prep_ac_adh_80 	
-s_dcost_test_m_sympt_80  	  s_dcost_test_f_sympt_80  		  s_dcost_test_m_circ_80  	s_dcost_test_f_anc_80 s_dcost_test_f_sw_80
-s_dcost_test_f_non_anc_80 	  s_dpi_cost_80  s_dcost_switch_line_80   s_dcost_child_hiv_80  s_dcost_child_hiv_mo_art_80  s_dcost_art_init_80 
-s_dart_1_cost_80  s_dart_2_cost_80  s_dart_3_cost_80	  s_dcost_vl_not_done_80 s_dcost_non_aids_pre_death_80  s_dcost_drug_level_test_80
-s_cost_hypert_vis_80 s_cost_hypert_drug_80
+s_ly  s_dly  s_qaly  s_dqaly   
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
 s_pre_art_care  
-s_visit_prep_no  s_visit_prep_d  s_visit_prep_dt  s_visit_prep_dtc
+s_visit_prep_oral_no  s_visit_prep_oral_d  s_visit_prep_oral_dt  s_visit_prep_oral_dtc
 s_sv  s_sv_secondline   
 
 /*deaths*/
-s_dead  s_dead1564_all	   s_dead1564m_all    s_dead1564w_all
+s_dead  s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
 s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
-s_dead1564_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
+s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
+s_dead_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
 s_dead_u_vfail1  s_dead_line1_vlg1000  s_dead_line2_vlg1000  s_ev_onart_gt6m_vlg1000_dead
 s_sdg_1     s_sdg_2     s_sdg_3     s_sdg_4     s_sdg_5     s_sdg_6     s_sdg_7     s_sdg_8     s_sdg_9     s_sdg_99
 s_sdg_hr_1  s_sdg_hr_2  s_sdg_hr_3  s_sdg_hr_4  s_sdg_hr_5  s_sdg_hr_6  s_sdg_hr_7  s_sdg_hr_8  s_sdg_hr_9  s_sdg_hr_99
 s_art_dur_l6m_dead  	s_art_dur_g6m_dead  	s_art_tdur_l6m_dead  	s_art_tdur_g6m_dead  
 s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_vl_m_g1000_adead
-s_ev_art_g1k_not2l_adead  s_dead_allage  s_death_dcause3_allage  s_death_hivrel_allage
+s_ev_art_g1k_not2l_adead  
 s_dead_hivneg_anycause  s_dead_hivpos_anycause
 
 /* deaths by cause - age 15+ */
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
-s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
-s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80 s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80 
+s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
+s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+
 
 /*sex workers*/
 s_base_rate_sw  s_sw_1564	 s_sw_1549   s_sw_1849    s_sw_1519  s_sw_2024  s_sw_2529  s_sw_3039  s_sw_ov40 
@@ -19973,7 +24077,7 @@ s_sw_program_visit
 s_diag_sw_noprog  s_diag_sw_inprog  s_onart_sw_noprog  s_onart_sw_inprog  
 s_vl1000_art_gt6m_iicu_sw_noprog  s_vl1000_art_gt6m_iicu_sw_inprog 
 
-s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1
+s_sw1519_tp1  s_sw2024_tp1  s_sw2529_tp1  s_sw3039_tp1  s_swov40_tp1  s_sti_sw
 
 /*ADC etc*/
 s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naive  s_adc_line1_lf0  s_adc_line1_lf1  s_adc_line2_lf1 
@@ -19984,25 +24088,25 @@ s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_pr
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcpp_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcpp_80  s_tb_80  
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcpp_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
-s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  	s_onart_adc  s_pcpp_adc
+s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
-s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcpp_crypm   
+s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
 s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_sbi   s_cd4_g3_sbi   s_cd4_g4_sbi  s_cd4_g5_sbi    
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
-s_age_g5_sbi    s_onart_sbi   s_pcpp_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
+s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcpp_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead     s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_re_enter_care_100 s_ahd_re_enter_care_200 s_re_enter_care
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
 s_dead_80  s_death_hivrel_80
 
@@ -20065,32 +24169,40 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep 
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac 
-res_trans_factor_nn  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-adh_pattern_prep  rate_test_startprep  rate_test_restartprep  rate_choose_stop_prep  circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral  circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
-prob_prep_restart_choice 			prepuptake_pop  add_prepuptake_sw 
-
-eff_max_freq_testing 		eff_rate_restart 		eff_prob_loss_at_diag 		eff_rate_lost 		eff_prob_lost_art 		eff_rate_return 			
-eff_pr_art_init 	eff_rate_int_choice 	eff_prob_vl_meas_done 		eff_pr_switch_line 	eff_rate_test_startprep 	eff_rate_test_restartprep 	
-eff_rate_choose_stop_prep 		eff_prob_prep_restart_choice 	prepuptake_sw  prepuptake_pop e_decr_hard_reach_2020  eff_test_targeting
-
-cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
+prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
-greater_disability_tox 	  greater_tox_zdv 	higher_rate_res_dol  rel_dol_tox  dol_higher_potency  prop_bmi_ge23
+greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol  oth_dol_adv_birth_e_risk  zdv_potency_p75
-sw_program    sw_higher_int  prob_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
+sw_program    sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
 sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp   
-effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep
+effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv
-zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_cov rate_crypm_proph_init
-rate_tb_proph_init rate_sbi_proph_init
+zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
+rate_tb_proph_init rate_sbi_proph_init 
+prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_willingness_threshold 
+rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
+rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
+pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  oral_prep_eff_3tc_ten_res
+rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
+
+pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
+hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
+sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -20101,24 +24213,25 @@ non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed prob_imm_anti_hypertensive prob_start_anti_hyptertensive 
 prob_stop_anti_hypertensive prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 
+discount
+
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	  decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_pattern_prep_year_i 
-inc_r_test_startprep_year_i   incr_r_test_restartprep_year_i decr_r_choose_stop_prep_year_i 
-inc_p_prep_restart_choi_year_i  incr_prepuptake_sw_year_i      incr_prepuptake_pop_year_i   prep_strategy_year_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
+inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
 	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
 incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
- prepuptake_pop add_prepuptake_sw e_decr_hard_reach_year_i 
+add_prep_any_uptake_sw e_decr_hard_reach_year_i 
 
-vmmc_disrup_covid condom_disrup_covid prep_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
+vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
 cov_death_risk_mult
 
-prep_strategy
 
 /*supp material*/
 s_onart_vlg1     s_onart_vlg2     s_onart_vlg3     s_onart_vlg4     s_onart_vlg5    
@@ -20147,7 +24260,7 @@ s_covid
 
 /* used in abort statements */
 
-prevalence1549  prev_ratio_1524 incidence1549w  incidence1549m  cum_ratio_newp_mw
+prevalence1549  prev_ratio_1524  incidence1549 incidence1549w  incidence1549m  cum_ratio_newp_mw
 
 /* variables created after proc univariate which are used in the body of the program in order to update*/
 s_prop_vlg1_rm  s_prop_vlg2_rm  s_prop_vlg3_rm  s_prop_vlg4_rm  s_prop_vlg5_rm  s_prop_vlg6_rm  
@@ -20158,7 +24271,8 @@ s_prop_vlg1_rm1_naive  s_prop_vlg2_rm1_naive  s_prop_vlg3_rm1_naive  s_prop_vlg4
 s_prop_tam1   s_prop_tam2   s_prop_tam3  s_prop_k103m  s_prop_y181m  s_prop_g190m   
 s_prop_m184m  s_prop_q151m  s_prop_k65m   
 s_prop_p32m   s_prop_p33m   s_prop_p46m  s_prop_p47m  s_prop_p50vm   
-s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_inpm  s_prop_insm   
+s_prop_p50lm  s_prop_p54m   s_prop_p76m  s_prop_p82m  s_prop_p84m  s_prop_p88m  s_prop_p90m  s_prop_pim  s_prop_in118m  s_prop_in140m s_prop_in148m 
+s_prop_in155m s_prop_in263m 
 
 prevalence1524m  prevalence2534m  prevalence3544m  prevalence4554m  prevalence5564m
 prevalence1524w  prevalence2534w  prevalence3544w  prevalence4554w  prevalence5564w
@@ -20207,6 +24321,53 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 run;
 
 
+
+*
+
+s_ variables relating to cab-la and insti resistance 
+
+
+HIV already present at first cab-la initiation
+
+prep_inj_init_prim				Initiated cab-la for the first time when already in primary infection
+prep_inj_init_prim_res			Initiated cab-la for the first time when already in primary infection and insti resistance emerged in this period
+
+HIV at time of reinitiation or initiation of cab-la (remember reinitiation means previously stopped risk informed prep)
+
+prep_inj_reinit_prim			Cab-la was initiated or reinitiated in this period when already in primary infection
+prep_inj_reinit_prim_res		Cab-la was initiated or reinitiated in this period when already in primary infection and insti resistance emerged in this period
+start_restart_prep_inj_hiv		Cab-la was initiated or reinitiated in this period when already hiv infected 
+start_rest_prep_inj_hiv_cabr	Cab-la was initiated or reinitiated in this period when already hiv infected and insti resistance emerged in this period
+start_restart_prep_inj_prim		Cab-la was initiated or reinitiated in this period when already in primary infection
+(same as prep_inj_reinit_prim ?)
+start_rest_prep_inj_prim_cabr	Cab-la was initiated or reinitiated in this period when already in primary infection and insti resistance emerged in this period
+(prep_inj_reinit_prim_res ?)
+
+HIV infection while on cab-la (or past 3 months)
+
+o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+infected_on_prep_inj 			Has hiv and is on cab-la or was on cab-la in last period
+prep_o_cab_off_3m_prim  		Is in primary infection - is on cab-la or stopped this period
+
+HIV infection during cab-la tail
+
+emerge_inm_res_cab_tail			Has hiv and is currently in cab-la tail and insti resistance emerged in this period
+emerge_inm_res_cab_tail_pr		In primary infection and currently in cab-la tail and insti resistance emerged in this period
+cur_in_prep_inj_tail_hiv		Has hiv and is currently in cab-la tail
+cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail – did not have insti resistance as of the last period
+cur_in_prep_inj_tail_prim 		In primary infection and is currently in cab-la tail
+
+Non-specific 
+
+em_inm_res_o_cab_off_3m			Has hiv and is on cab-la was on cab-la last period and insti resistance emerged in this period due to cab-la 
+em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
+cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
+cab_res_emerge_primary			Is in primary infection and insti resistance emerged in this period from cab-la (was not infected with insti resistant virus) (could be the same as em_inm_res_o_cab_off_3m_pr)
+
+;
 
 
 
