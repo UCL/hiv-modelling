@@ -17492,11 +17492,17 @@ if s_w_3544_newp gt 0 then w35r = ptnewp35_w / s_w_3544_newp;
 if s_w_4554_newp gt 0 then w45r = ptnewp45_w / s_w_4554_newp;  
 if s_w_5564_newp gt 0 then w55r = ptnewp55_w / s_w_5564_newp;    
  
+
 *Used in abort statements below;
 if s_alive1549 gt 0 then prevalence1549 = (s_hiv1549w + s_hiv1549m) / (s_alive1549 );
 if s_alive1549_m gt 0 then prevalence1549m =  s_hiv1549m / s_alive1549_m;
 if s_alive1549_w gt 0 then prevalence1549w =  s_hiv1549w / s_alive1549_w;
 if prevalence1524m gt 0 then prev_ratio_1524 = prevalence1524w / prevalence1524m ;
+
+s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
+s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
+s_hivge15 = s_hivge15m + s_hivge15w ;
+if s_hivge15  > 0 then p_vg1000 = s_vg1000 / s_hivge15 ;  p_vl1000 = 1- p_vg1000 ;
 
 prevalence2024w = s_hiv2024w  / s_ageg2024w ;
 prevalence2024m = s_hiv2024m  / s_ageg2024m ;
@@ -17504,10 +17510,16 @@ prevalence2529w = s_hiv2529w  / s_ageg2529w ;
 incidence1549w = (4 * 100 * s_primary1549w) / (s_alive1549_w - s_hiv1549w + s_primary1549w);
 incidence1549m = (4 * 100 * s_primary1549m) / (s_alive1549_m - s_hiv1549m + s_primary1549m);
 
-incidence1549  = (4 * 100 * (s_primary1549m + s_primary1549w )) 
-/ ((s_alive1549_m + s_alive1549_w) - (s_hiv1549m + s_hiv1549w) + (s_primary1549m + s_primary1549w ) );
-
 cum_ratio_newp_mw = s_s_m_newp / s_s_w_newp;
+
+drop serial_no ;
+
+
+
+
+
+
+
 
 drop serial_no ;
 
@@ -20025,9 +20037,6 @@ end;
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=0);
 
-
-/*
-
 data a.mlw_2021_&dataset_id; set r1;
 
 data r1; set a.mlw_2021_&dataset_id;
@@ -20212,7 +20221,7 @@ data r1; set a.mlw_2021_&dataset_id;
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
 
-*/
+
 
 
 * ts1m:  need more update statements ;
