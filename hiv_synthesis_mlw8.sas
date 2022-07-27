@@ -849,7 +849,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 
-  %include "/home/rmjlaph/malawi_parameters.sas";
+  %include "/home/rmjlaph/malawi_parameters_mlw8.sas";
 
 
 
