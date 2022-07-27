@@ -1,5 +1,18 @@
 
 
+
+
+
+* need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
+ (but most people who are taking because have a prep/pep indication are prepared to test)
+ if status pre-pep not known then advice would be to test before stopping pep and again x weeks after 
+ ; 
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -623,7 +636,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);  prep_any_strategy =4;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;

@@ -21,7 +21,7 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
 
-%let single_var = n_death_hiv    ;
+%let single_var = p_elig_hivneg_onprep ;
 
 
 /*
@@ -196,16 +196,78 @@ ods html ;
 
 
 /*
+* p_pop_wide_tld_hiv ;			p_pop_wide_tld_hiv = s_pop_wide_tld_hiv / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_hiv ;			n_pop_wide_tld_hiv = n_pop_wide_tld_hiv * &sf ;
+* p_pop_wide_tld_prep_elig ;	p_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_prep_elig ;	n_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig * &sf ;
+* p_pop_tld_neg_prep_inel;	p_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig / s_pop_wide_tld_prep ;
+* n_pop_tld_neg_prep_inel;	n_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig * &sf ;
+*/
 
 
-p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
-n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of hiv negative people taking tld, proportion without a prevention indication (so no indication)" ;
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
+
+  label p50_p_pop_tld_neg_prep_inel_0 = "No PrEP (median) ";
+  label p50_p_pop_tld_neg_prep_inel_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_tld_neg_prep_inel_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_0 	upper=p95_p_pop_tld_neg_prep_inel_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_1 	upper=p95_p_pop_tld_neg_prep_inel_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_2 	upper=p95_p_pop_tld_neg_prep_inel_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
 
 
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of people without an hiv diagnosis taking tld, proportion with a prevention indication";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
+
+  label p50_p_pop_wide_tld_prep_elig_0 = "No PrEP (median) ";
+  label p50_p_pop_wide_tld_prep_elig_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_wide_tld_prep_elig_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_0 	upper=p95_p_pop_wide_tld_prep_elig_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_1 	upper=p95_p_pop_wide_tld_prep_elig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_2 	upper=p95_p_pop_wide_tld_prep_elig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
 
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of people without an hiv diagnosis taking tld, proportion with HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.10  by 0.01) valueattrs=(size=10);
 
+  label p50_p_pop_wide_tld_hiv_0 = "No PrEP (median) ";
+  label p50_p_pop_wide_tld_hiv_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_wide_tld_hiv_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_wide_tld_hiv_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_0 	upper=p95_p_pop_wide_tld_hiv_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_hiv_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_1 	upper=p95_p_pop_wide_tld_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_hiv_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_2 	upper=p95_p_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
+
+  
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV negative adults taking ARVs";
@@ -225,7 +287,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   
 run;quit;
 
-  
+
 
 ods html;
 proc sgplot data=d; 
@@ -270,6 +332,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -290,7 +353,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   
 run;quit;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -473,6 +536,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
  
 run;
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -493,7 +557,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -887,7 +951,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = (0 to 1        by  0
  
 run;
 
-
+*/
 
 
 ods html close;
