@@ -1,5 +1,5 @@
 
-* run 41 SOC;
+* run 44 CHV + linkage;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -686,39 +686,39 @@ prob_test_sbp_diagnosed = 0.05 * prob_htn_diagnosis;
 prob_test_sbp_young = 0.5; 
 
 * probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-%sample_uniform(prob_imm_htn_tx_s1, 0.1 0.2 0.3); 
+%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
 * probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
-%sample_uniform(prob_imm_htn_tx_s2, 0.4 0.5 0.6);
+%sample_uniform(prob_imm_htn_tx_s2, 0.85 0.9 0.95);
 * probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-%sample_uniform(prob_start_htn_tx_s1, 0.2 0.3 0.4);
+%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
 * probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
-%sample_uniform(prob_start_htn_tx_s2, 0.7 0.8 0.9);
+%sample_uniform(prob_start_htn_tx_s2, 0.9 0.95 1);
 * probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
 prob_restart_htn_tx_s1 = 1; 
 * probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 prob_restart_htn_tx_s2 = 1;
 
 ** Community testing;
-first_comm_test = .;
+first_comm_test = 2009;
 * prob testing in commmunity;
 %sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
 * prob link from community testing to clinic;
-%sample_uniform(prob_htn_link, 0.3 0.4 0.5);
+%sample_uniform(prob_htn_link, 0.6 0.7 0.8);
 * comm test interval;
-comm_test_interval = 3;
+comm_test_interval = 1;
 * comm test age (e.g. all adults vs targeted to >=40);
-comm_test_age = 18;
+comm_test_age = 40;
 
 
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-%sample_uniform(prob_visit_hypertension, 0.7 0.8 0.8);
+%sample_uniform(prob_visit_hypertension, 0.8 0.9 0.95);
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 interval_visit_hypertension=0.5;
 
 * for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-%sample_uniform(prob_intensify_1_2, 0.05 0.1 0.15); 
+%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 * for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-%sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
+%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05); 
 * effect of sbp on risk of cvd death;
 effect_sbp_cvd_death = 0.05;
 * effect of gender on risk of cvd death;
@@ -2738,7 +2738,8 @@ if sbp_comm_m >=140 then do;
 		when (symp_hty = 1) a_htn_link = a_htn_link / 2;
 		otherwise a_htn_link = a_htn_link;
 	end;
-	if a_htn_link < prob_htn_link then tested_bp = 1;
+	if age <40 and a_htn_link < (prob_htn_link - 0.05) then tested_bp = 1;
+	if age >=40 and a_htn_link < prob_htn_link then tested_bp = 1;
 end;
 
 * tested_bp = whether blood pressure measured in this period (1) or not (0) for people not currently under hypertension care;
@@ -17890,7 +17891,7 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
 
-
+/*
 data a ; set r1;
 data r1; set a;
 
@@ -18090,12 +18091,8 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=0);
-%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
 
-
+*/
 
 * ts1m:  need more update statements ;
 
