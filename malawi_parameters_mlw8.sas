@@ -24,8 +24,8 @@
 * date_start_testing;       date_start_testing = 2005  ;
 
 * an_lin_incr_test;         %sample(an_lin_incr_test,
-                                        0.005 0.0100 0.015  0.0200  ,
-                                        1.00   0.00  0.00  0.00    );
+                                  0.002    0.003   0.005 ,
+                                        0.40   0.40   0.20    );
 
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
                           
