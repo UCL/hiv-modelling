@@ -6,6 +6,12 @@
 * need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
  (but most people who are taking because have a prep/pep indication are prepared to test)
  if status pre-pep not known then advice would be to test before stopping pep and again x weeks after 
+
+
+Create an output of p_artexp_onart
+
+Are we fully incorporating benefit of pep – so increase in the number of people with prep indication who are on prep/pep ?
+
  ; 
 
 
