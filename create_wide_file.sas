@@ -1,16 +1,16 @@
 * Matt's local machine input;
 libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
-%let sasfile = out;
+data hiv_synthesis_base; set a.out;
 
 * Myriad input;
 *%let sasoutputdir = %scan(&sysparm,1," ");
 *libname a "&sasoutputdir/";
 *%let sasfile = %scan(&sysparm,2," ");
+*data hiv_synthesis_base; *set a.&sasfile;
 
 
 
 
-data hiv_synthesis_base; set a.&sasfile;
 /* proc contents; run;
 * proc print; var cald s_hiv1549; run; */
 
