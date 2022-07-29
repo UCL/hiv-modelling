@@ -1,17 +1,14 @@
 * Matt's local machine input;
 *libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
-*%let sasfile = out;
+*data hiv_synthesis_base; *set a.out:;
 
 * Myriad input;
 %let sasoutputdir = %scan(&sysparm,1," ");
 libname a "&sasoutputdir/";
-
 %let sasfile = %scan(&sysparm,2," ");
-
-
-
-
 data hiv_synthesis_base; set a.&sasfile;
+
+
 /* proc contents; run;
 * proc print; var cald s_hiv1549; run; */
 
@@ -696,19 +693,19 @@ end;
 * p_diagnosed_hypert_5564 ;	p_diagnosed_hypert_5564 = s_diagnosed_hypertension_5564 / s_hypertension_5564 ;
 * p_diagnosed_hypert_ge65 ;	p_diagnosed_hypert_ge65 = s_diagnosed_hypertension_ge65 / s_hypertension_ge65 ;
 
-* p_diagnosed_htn_true_1524 ;	p_diagnosed_htn_true_1524 = s_htn_true_dx_1524 / s_htn_true_1524 ;
-* p_diagnosed_htn_true_2534 ;	p_diagnosed_htn_true_2534 = s_htn_true_dx_2534 / s_htn_true_2534 ;
-* p_diagnosed_htn_true_3544 ;	p_diagnosed_htn_true_3544 = s_htn_true_dx_3544 / s_htn_true_3544 ;
-* p_diagnosed_htn_true_4554 ;	p_diagnosed_htn_true_4554 = s_htn_true_dx_4554 / s_htn_true_4554 ;
-* p_diagnosed_htn_true_5564 ;	p_diagnosed_htn_true_5564 = s_htn_true_dx_5564 / s_htn_true_5564 ;
-* p_diagnosed_htn_true_ge65 ;	p_diagnosed_htn_true_ge65 = s_htn_true_dx_ge65 / s_htn_true_ge65 ;
+* p_dx_htn_true_1524 ;	p_dx_htn_true_1524 = s_htn_true_dx_1524 / s_htn_true_1524 ;
+* p_dx_htn_true_2534 ;	p_dx_htn_true_2534 = s_htn_true_dx_2534 / s_htn_true_2534 ;
+* p_dx_htn_true_3544 ;	p_dx_htn_true_3544 = s_htn_true_dx_3544 / s_htn_true_3544 ;
+* p_dx_htn_true_4554 ;	p_dx_htn_true_4554 = s_htn_true_dx_4554 / s_htn_true_4554 ;
+* p_dx_htn_true_5564 ;	p_dx_htn_true_5564 = s_htn_true_dx_5564 / s_htn_true_5564 ;
+* p_dx_htn_true_ge65 ;	p_dx_htn_true_ge65 = s_htn_true_dx_ge65 / s_htn_true_ge65 ;
 
-* p_diagnosed_htn_over_1524 ;	p_diagnosed_htn_over_1524 = s_htn_over_dx_1524 / s_normotensive_1524 ;
-* p_diagnosed_htn_over_2534 ;	p_diagnosed_htn_over_2534 = s_htn_over_dx_2534 / s_normotensive_2534 ;
-* p_diagnosed_htn_over_3544 ;	p_diagnosed_htn_over_3544 = s_htn_over_dx_3544 / s_normotensive_3544 ;
-* p_diagnosed_htn_over_4554 ;	p_diagnosed_htn_over_4554 = s_htn_over_dx_4554 / s_normotensive_4554 ;
-* p_diagnosed_htn_over_5564 ;	p_diagnosed_htn_over_5564 = s_htn_over_dx_5564 / s_normotensive_5564 ;
-* p_diagnosed_htn_over_ge65 ;	p_diagnosed_htn_over_ge65 = s_htn_over_dx_ge65 / s_normotensive_ge65 ;
+* p_dx_htn_over_1524 ;	p_dx_htn_over_1524 = s_htn_over_dx_1524 / s_normotensive_1524 ;
+* p_dx_htn_over_2534 ;	p_dx_htn_over_2534 = s_htn_over_dx_2534 / s_normotensive_2534 ;
+* p_dx_htn_over_3544 ;	p_dx_htn_over_3544 = s_htn_over_dx_3544 / s_normotensive_3544 ;
+* p_dx_htn_over_4554 ;	p_dx_htn_over_4554 = s_htn_over_dx_4554 / s_normotensive_4554 ;
+* p_dx_htn_over_5564 ;	p_dx_htn_over_5564 = s_htn_over_dx_5564 / s_normotensive_5564 ;
+* p_dx_htn_over_ge65 ;	p_dx_htn_over_ge65 = s_htn_over_dx_ge65 / s_normotensive_ge65 ;
 
 * p_diagnosed_hypert_1549 ;	p_diagnosed_hypert_1549 = s_diagnosed_hypertension_1549 / s_hypertension_1549 ;
 * p_diagnosed_hypert_1539 ;	p_diagnosed_hypert_1539 = s_diagnosed_hypertension_1539 / s_hypertension_1539 ;
@@ -987,8 +984,8 @@ p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
 /* *HYPERTENSION */
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
-p_diagnosed_htn_true_1524 p_diagnosed_htn_true_2534 p_diagnosed_htn_true_3544 p_diagnosed_htn_true_4554 p_diagnosed_htn_true_5564 p_diagnosed_htn_true_ge65
-p_diagnosed_htn_over_1524 p_diagnosed_htn_over_2534 p_diagnosed_htn_over_3544 p_diagnosed_htn_over_4554 p_diagnosed_htn_over_5564 p_diagnosed_htn_over_ge65
+p_dx_htn_true_1524 p_dx_htn_true_2534 p_dx_htn_true_3544 p_dx_htn_true_4554 p_dx_htn_true_5564 p_dx_htn_true_ge65
+p_dx_htn_over_1524 p_dx_htn_over_2534 p_dx_htn_over_3544 p_dx_htn_over_4554 p_dx_htn_over_5564 p_dx_htn_over_ge65
 p_diagnosed_hypert_1524 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 
 	p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
 p_on_anti_hypert_1524 p_on_anti_hypert_2534 p_on_anti_hypert_3544
@@ -1028,6 +1025,7 @@ n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hiv
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w 
+
 sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -1114,16 +1112,16 @@ data y; set a.l_base;
 * &v ;
 
 /* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run ; where 1994.5 <= cald < 1995.5; 
-proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run ; where 1999.5 <= cald < 2000.5; 
-proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run ; where 2004.5 <= cald < 2005.5; 
-proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run ; where 2009.5 <= cald < 2010.5; 
-proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run ; where 2014.5 <= cald < 2015.5; 
-proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run ; where 2016.5 <= cald < 2017.5; 
-proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run ; where 2019.5 <= cald < 2020.5; 
-proc means  noprint data=y; var &v; output out=y_21 mean= &v._21; by run ; where 2020.5 <= cald < 2021.5; 
-proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run ; where 2039.5 <= cald < 2040.5; 
-proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where 2069.5 <= cald < 2070.5; 
+proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run option ; where 1994.5 <= cald < 1995.5; 
+proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run option ; where 1999.5 <= cald < 2000.5; 
+proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run option ; where 2004.5 <= cald < 2005.5; 
+proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run option ; where 2009.5 <= cald < 2010.5; 
+proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2014.5 <= cald < 2015.5; 
+proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run option ; where 2016.5 <= cald < 2017.5; 
+proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run option ; where 2019.5 <= cald < 2020.5; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2021.5 <= cald < 2022.5; 
+proc means  noprint data=y; var &v; output out=y_40 mean= &v._40; by run option ; where 2039.5 <= cald < 2040.5; 
+proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run option ; where 2069.5 <= cald < 2070.5; 
 
 /* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
 /* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
@@ -1147,7 +1145,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run ; where
 /* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
 																														
 
- proc sort data=y_21_71; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;  
+ proc sort data=y_22_72; by run option ; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run option ;  
 
 data &v ; merge y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_22_72  ;  
 drop _NAME_ _TYPE_ _FREQ_;
@@ -1235,8 +1233,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %var(v=p_hypert_1524); %var(v=p_hypert_2534); %var(v=p_hypert_3544); %var(v=p_hypert_4554); %var(v=p_hypert_5564); %var(v=p_hypert_ge65); 
 %var(v=p_htn_true_1524); %var(v=p_htn_true_2534); %var(v=p_htn_true_3544); %var(v=p_htn_true_4554); %var(v=p_htn_true_5564); %var(v=p_htn_true_ge65); 
-%var(v=p_diagnosed_htn_true_1524); %var(v=p_diagnosed_htn_true_2534); %var(v=p_diagnosed_htn_true_3544); %var(v=p_diagnosed_htn_true_4554); %var(v=p_diagnosed_htn_true_5564); %var(v=p_diagnosed_htn_true_ge65); 
-%var(v=p_diagnosed_htn_over_1524); %var(v=p_diagnosed_htn_over_2534); %var(v=p_diagnosed_htn_over_3544); %var(v=p_diagnosed_htn_over_4554); %var(v=p_diagnosed_htn_over_5564); %var(v=p_diagnosed_htn_over_ge65); 
+%var(v=p_dx_htn_true_1524); %var(v=p_dx_htn_true_2534); %var(v=p_dx_htn_true_3544); %var(v=p_dx_htn_true_4554); %var(v=p_dx_htn_true_5564); %var(v=p_dx_htn_true_ge65); 
+%var(v=p_dx_htn_over_1524); %var(v=p_dx_htn_over_2534); %var(v=p_dx_htn_over_3544); %var(v=p_dx_htn_over_4554); %var(v=p_dx_htn_over_5564); %var(v=p_dx_htn_over_ge65); 
 %var(v=p_diagnosed_hypert_1524); %var(v=p_diagnosed_hypert_2534); %var(v=p_diagnosed_hypert_3544); %var(v=p_diagnosed_hypert_4554); %var(v=p_diagnosed_hypert_5564); %var(v=p_diagnosed_hypert_ge65); 
 %var(v=p_on_anti_hypert_1524); %var(v=p_on_anti_hypert_2534); %var(v=p_on_anti_hypert_3544); %var(v=p_on_anti_hypert_4554); %var(v=p_on_anti_hypert_5564); %var(v=p_on_anti_hypert_ge65); 
 %var(v=p_hypert_control_1524); %var(v=p_hypert_control_2534); %var(v=p_hypert_control_3544); %var(v=p_hypert_control_4554); %var(v=p_hypert_control_5564); %var(v=p_hypert_control_ge65); 
@@ -1361,8 +1359,8 @@ t_sw_newp
 
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
-p_diagnosed_htn_true_1524 p_diagnosed_htn_true_2534 p_diagnosed_htn_true_3544 p_diagnosed_htn_true_4554 p_diagnosed_htn_true_5564 p_diagnosed_htn_true_ge65
-p_diagnosed_htn_over_1524 p_diagnosed_htn_over_2534 p_diagnosed_htn_over_3544 p_diagnosed_htn_over_4554 p_diagnosed_htn_over_5564 p_diagnosed_htn_over_ge65
+p_dx_htn_true_1524 p_dx_htn_true_2534 p_dx_htn_true_3544 p_dx_htn_true_4554 p_dx_htn_true_5564 p_dx_htn_true_ge65
+p_dx_htn_over_1524 p_dx_htn_over_2534 p_dx_htn_over_3544 p_dx_htn_over_4554 p_dx_htn_over_5564 p_dx_htn_over_ge65
 p_diagnosed_hypert_1524 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
 p_on_anti_hypert_1524 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
 p_hypert_control_1524 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
@@ -1434,8 +1432,8 @@ proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald 
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
-
-%par(p=sf_2021); /*%par(p=dataset)*/;
+/*
+%par(p=sf_2021); %par(p=dataset);
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1456,10 +1454,11 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p= incr_mort_risk_dol_weightg ); %par(p=prep_strategy ); %par(p=sw_init_newp); %par(p=sw_trans_matrix);
 %par(p=zero_tdf_activity_k65r );  %par(p=zero_3tc_activity_m184 ); 
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
+*/
 run;
 
 data wide_par; merge 
-/* sf_2021 dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+/* sf_2021 dataset sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1478,7 +1477,7 @@ p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
 zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-prep_strategy 
+prep_strategy */
 ;
 
 proc contents; run;
@@ -1514,8 +1513,8 @@ s_alive_95
 
 p_hypert_1524_95 p_hypert_2534_95 p_hypert_3544_95 p_hypert_4554_95 p_hypert_5564_95 p_hypert_ge65_95
 p_htn_true_1524_95 p_htn_true_2534_95 p_htn_true_3544_95 p_htn_true_4554_95 p_htn_true_5564_95 p_htn_true_ge65_95
-p_diagnosed_htn_true_1524_95 p_diagnosed_htn_true_2534_95 p_diagnosed_htn_true_3544_95 p_diagnosed_htn_true_4554_95 p_diagnosed_htn_true_5564_95 p_diagnosed_htn_true_ge65_95
-p_diagnosed_htn_over_1524_95 p_diagnosed_htn_over_2534_95 p_diagnosed_htn_over_3544_95 p_diagnosed_htn_over_4554_95 p_diagnosed_htn_over_5564_95 p_diagnosed_htn_over_ge65_95
+p_dx_htn_true_1524_95 p_dx_htn_true_2534_95 p_dx_htn_true_3544_95 p_dx_htn_true_4554_95 p_dx_htn_true_5564_95 p_dx_htn_true_ge65_95
+p_dx_htn_over_1524_95 p_dx_htn_over_2534_95 p_dx_htn_over_3544_95 p_dx_htn_over_4554_95 p_dx_htn_over_5564_95 p_dx_htn_over_ge65_95
 p_diagnosed_hypert_1524_95 p_diagnosed_hypert_2534_95 p_diagnosed_hypert_3544_95 p_diagnosed_hypert_4554_95 p_diagnosed_hypert_5564_95 p_diagnosed_hypert_ge65_95
 p_on_anti_hypert_1524_95 p_on_anti_hypert_2534_95 p_on_anti_hypert_3544_95 p_on_anti_hypert_4554_95 p_on_anti_hypert_5564_95 p_on_anti_hypert_ge65_95
 p_hypert_control_1524_95 p_hypert_control_2534_95 p_hypert_control_3544_95 p_hypert_control_4554_95 p_hypert_control_5564_95 p_hypert_control_ge65_95
@@ -1536,8 +1535,8 @@ n_dead_hivneg_cvd_95  rate_dead_hivneg_cvd_95
 
 p_hypert_1524_05 p_hypert_2534_05 p_hypert_3544_05 p_hypert_4554_05 p_hypert_5564_05 p_hypert_ge65_05
 p_htn_true_1524_05 p_htn_true_2534_05 p_htn_true_3544_05 p_htn_true_4554_05 p_htn_true_5564_05 p_htn_true_ge65_05
-p_diagnosed_htn_true_1524_05 p_diagnosed_htn_true_2534_05 p_diagnosed_htn_true_3544_05 p_diagnosed_htn_true_4554_05 p_diagnosed_htn_true_5564_05 p_diagnosed_htn_true_ge65_05
-p_diagnosed_htn_over_1524_05 p_diagnosed_htn_over_2534_05 p_diagnosed_htn_over_3544_05 p_diagnosed_htn_over_4554_05 p_diagnosed_htn_over_5564_05 p_diagnosed_htn_over_ge65_05
+p_dx_htn_true_1524_05 p_dx_htn_true_2534_05 p_dx_htn_true_3544_05 p_dx_htn_true_4554_05 p_dx_htn_true_5564_05 p_dx_htn_true_ge65_05
+p_dx_htn_over_1524_05 p_dx_htn_over_2534_05 p_dx_htn_over_3544_05 p_dx_htn_over_4554_05 p_dx_htn_over_5564_05 p_dx_htn_over_ge65_05
 p_diagnosed_hypert_1524_05 p_diagnosed_hypert_2534_05 p_diagnosed_hypert_3544_05 p_diagnosed_hypert_4554_05 p_diagnosed_hypert_5564_05 p_diagnosed_hypert_ge65_05
 p_on_anti_hypert_1524_05 p_on_anti_hypert_2534_05 p_on_anti_hypert_3544_05 p_on_anti_hypert_4554_05 p_on_anti_hypert_5564_05 p_on_anti_hypert_ge65_05
 p_hypert_control_1524_05 p_hypert_control_2534_05 p_hypert_control_3544_05 p_hypert_control_4554_05 p_hypert_control_5564_05 p_hypert_control_ge65_05
@@ -1558,8 +1557,8 @@ n_dead_hivneg_cvd_05  rate_dead_hivneg_cvd_05
 
 p_hypert_1524_15 p_hypert_2534_15 p_hypert_3544_15 p_hypert_4554_15 p_hypert_5564_15 p_hypert_ge65_15
 p_htn_true_1524_15 p_htn_true_2534_15 p_htn_true_3544_15 p_htn_true_4554_15 p_htn_true_5564_15 p_htn_true_ge65_15
-p_diagnosed_htn_true_1524_15 p_diagnosed_htn_true_2534_15 p_diagnosed_htn_true_3544_15 p_diagnosed_htn_true_4554_15 p_diagnosed_htn_true_5564_15 p_diagnosed_htn_true_ge65_15
-p_diagnosed_htn_over_1524_15 p_diagnosed_htn_over_2534_15 p_diagnosed_htn_over_3544_15 p_diagnosed_htn_over_4554_15 p_diagnosed_htn_over_5564_15 p_diagnosed_htn_over_ge65_15
+p_dx_htn_true_1524_15 p_dx_htn_true_2534_15 p_dx_htn_true_3544_15 p_dx_htn_true_4554_15 p_dx_htn_true_5564_15 p_dx_htn_true_ge65_15
+p_dx_htn_over_1524_15 p_dx_htn_over_2534_15 p_dx_htn_over_3544_15 p_dx_htn_over_4554_15 p_dx_htn_over_5564_15 p_dx_htn_over_ge65_15
 p_diagnosed_hypert_1524_15 p_diagnosed_hypert_2534_15 p_diagnosed_hypert_3544_15 p_diagnosed_hypert_4554_15 p_diagnosed_hypert_5564_15 p_diagnosed_hypert_ge65_15
 p_on_anti_hypert_1524_15 p_on_anti_hypert_2534_15 p_on_anti_hypert_3544_15 p_on_anti_hypert_4554_15 p_on_anti_hypert_5564_15 p_on_anti_hypert_ge65_15
 p_hypert_control_1524_15 p_hypert_control_2534_15 p_hypert_control_3544_15 p_hypert_control_4554_15 p_hypert_control_5564_15 p_hypert_control_ge65_15
@@ -1580,8 +1579,8 @@ n_dead_hivneg_cvd_15  rate_dead_hivneg_cvd_15
 
 p_hypert_1524_22 p_hypert_2534_22 p_hypert_3544_22 p_hypert_4554_22 p_hypert_5564_22 p_hypert_ge65_22
 p_htn_true_1524_22 p_htn_true_2534_22 p_htn_true_3544_22 p_htn_true_4554_22 p_htn_true_5564_22 p_htn_true_ge65_22
-p_diagnosed_htn_true_1524_22 p_diagnosed_htn_true_2534_22 p_diagnosed_htn_true_3544_22 p_diagnosed_htn_true_4554_22 p_diagnosed_htn_true_5564_22 p_diagnosed_htn_true_ge65_22
-p_diagnosed_htn_over_1524_22 p_diagnosed_htn_over_2534_22 p_diagnosed_htn_over_3544_22 p_diagnosed_htn_over_4554_22 p_diagnosed_htn_over_5564_22 p_diagnosed_htn_over_ge65_22
+p_dx_htn_true_1524_22 p_dx_htn_true_2534_22 p_dx_htn_true_3544_22 p_dx_htn_true_4554_22 p_dx_htn_true_5564_22 p_dx_htn_true_ge65_22
+p_dx_htn_over_1524_22 p_dx_htn_over_2534_22 p_dx_htn_over_3544_22 p_dx_htn_over_4554_22 p_dx_htn_over_5564_22 p_dx_htn_over_ge65_22
 p_diagnosed_hypert_1524_22 p_diagnosed_hypert_2534_22 p_diagnosed_hypert_3544_22 p_diagnosed_hypert_4554_22 p_diagnosed_hypert_5564_22 p_diagnosed_hypert_ge65_22
 p_on_anti_hypert_1524_22 p_on_anti_hypert_2534_22 p_on_anti_hypert_3544_22 p_on_anti_hypert_4554_22 p_on_anti_hypert_5564_22 p_on_anti_hypert_ge65_22
 p_hypert_control_1524_22 p_hypert_control_2534_22 p_hypert_control_3544_22 p_hypert_control_4554_22 p_hypert_control_5564_22 p_hypert_control_ge65_22
@@ -1602,8 +1601,8 @@ n_dead_hivneg_cvd_22  rate_dead_hivneg_cvd_22
 
 p_hypert_1524_70 p_hypert_2534_70 p_hypert_3544_70 p_hypert_4554_70 p_hypert_5564_70 p_hypert_ge65_70
 p_htn_true_1524_70 p_htn_true_2534_70 p_htn_true_3544_70 p_htn_true_4554_70 p_htn_true_5564_70 p_htn_true_ge65_70
-p_diagnosed_htn_true_1524_70 p_diagnosed_htn_true_2534_70 p_diagnosed_htn_true_3544_70 p_diagnosed_htn_true_4554_70 p_diagnosed_htn_true_5564_70 p_diagnosed_htn_true_ge65_70
-p_diagnosed_htn_over_1524_70 p_diagnosed_htn_over_2534_70 p_diagnosed_htn_over_3544_70 p_diagnosed_htn_over_4554_70 p_diagnosed_htn_over_5564_70 p_diagnosed_htn_over_ge65_70
+p_dx_htn_true_1524_70 p_dx_htn_true_2534_70 p_dx_htn_true_3544_70 p_dx_htn_true_4554_70 p_dx_htn_true_5564_70 p_dx_htn_true_ge65_70
+p_dx_htn_over_1524_70 p_dx_htn_over_2534_70 p_dx_htn_over_3544_70 p_dx_htn_over_4554_70 p_dx_htn_over_5564_70 p_dx_htn_over_ge65_70
 p_diagnosed_hypert_1524_70 p_diagnosed_hypert_2534_70 p_diagnosed_hypert_3544_70 p_diagnosed_hypert_4554_70 p_diagnosed_hypert_5564_70 p_diagnosed_hypert_ge65_70
 p_on_anti_hypert_1524_70 p_on_anti_hypert_2534_70 p_on_anti_hypert_3544_70 p_on_anti_hypert_4554_70 p_on_anti_hypert_5564_70 p_on_anti_hypert_ge65_70
 p_hypert_control_1524_70 p_hypert_control_2534_70 p_hypert_control_3544_70 p_hypert_control_4554_70 p_hypert_control_5564_70 p_hypert_control_ge65_70
@@ -1624,8 +1623,8 @@ n_dead_hivneg_cvd_70  rate_dead_hivneg_cvd_70
 
 p_hypert_1524_22_72 p_hypert_2534_22_72 p_hypert_3544_22_72 p_hypert_4554_22_72 p_hypert_5564_22_72 p_hypert_ge65_22_72
 p_htn_true_1524_22_72 p_htn_true_2534_22_72 p_htn_true_3544_22_72 p_htn_true_4554_22_72 p_htn_true_5564_22_72 p_htn_true_ge65_22_72
-p_diagnosed_htn_true_1524_22_72 p_diagnosed_htn_true_2534_22_72 p_diagnosed_htn_true_3544_22_72 p_diagnosed_htn_true_4554_22_72 p_diagnosed_htn_true_5564_22_72 p_diagnosed_htn_true_ge65_22_72
-p_diagnosed_htn_over_1524_22_72 p_diagnosed_htn_over_2534_22_72 p_diagnosed_htn_over_3544_22_72 p_diagnosed_htn_over_4554_22_72 p_diagnosed_htn_over_5564_22_72 p_diagnosed_htn_over_ge65_22_72
+p_dx_htn_true_1524_22_72 p_dx_htn_true_2534_22_72 p_dx_htn_true_3544_22_72 p_dx_htn_true_4554_22_72 p_dx_htn_true_5564_22_72 p_dx_htn_true_ge65_22_72
+p_dx_htn_over_1524_22_72 p_dx_htn_over_2534_22_72 p_dx_htn_over_3544_22_72 p_dx_htn_over_4554_22_72 p_dx_htn_over_5564_22_72 p_dx_htn_over_ge65_22_72
 p_diagnosed_hypert_1524_22_72 p_diagnosed_hypert_2534_22_72 p_diagnosed_hypert_3544_22_72 p_diagnosed_hypert_4554_22_72 p_diagnosed_hypert_5564_22_72 p_diagnosed_hypert_ge65_22_72
 p_on_anti_hypert_1524_22_72 p_on_anti_hypert_2534_22_72 p_on_anti_hypert_3544_22_72 p_on_anti_hypert_4554_22_72 p_on_anti_hypert_5564_22_72 p_on_anti_hypert_ge65_22_72
 p_hypert_control_1524_22_72 p_hypert_control_2534_22_72 p_hypert_control_3544_22_72 p_hypert_control_4554_22_72 p_hypert_control_5564_22_72 p_hypert_control_ge65_22_72
