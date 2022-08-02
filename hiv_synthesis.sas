@@ -558,7 +558,7 @@ newp_seed = 7;
 * prop_bmi_ge23;			%sample_uniform(prop_bmi_ge23, 0.5 0.75);
 * nnrti_res_no_effect; 		%sample(nnrti_res_no_effect, 0 0.25 0.5, 0.75 0.2 0.05);
 * res_level_dol_cab_mut;	%sample(res_level_dol_cab_mut, 0.75 1.00, 0.8 0.2 )
-* lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03);
+* lower_future_art_cov; 	%sample(lower_future_art_cov, 0 1, 0.97 0.03); * vmmc maaya;  lower_future_art_cov = 0;
 
 * effect_pcp_p_death_rate;	 	effect_pcp_p_death_rate = 0.8;
 * ind_effect_art_hiv_disease_death; 	ind_effect_art_hiv_disease_death = 0.6;
@@ -2172,6 +2172,11 @@ if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;
 
 
 ***Changes in ART coverage (~20% lower in 3% of runs) and oral PrEP coverage after option start date;
+
+* vmmc maaya - lower_future_art_cov and higher_future_prep_oral_cov not switched on so lines deleted;
+
+/*
+
 if caldate{t} = &year_interv then do;
 
 *lower future ART coverage;
@@ -2233,6 +2238,9 @@ if caldate{t} = &year_interv then do;
 						prep_any_strategy = 5;								* lapr - changed to strategy 4 (from 1) JAS Oct2021 ;
 
 		end;
+
+*/
+
 
 *Other potential changes after year_i which can be turned on in the Options code;
 *(impact of changes are coded below the options code);
