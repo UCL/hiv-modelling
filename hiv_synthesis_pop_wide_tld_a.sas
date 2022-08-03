@@ -12,6 +12,11 @@ Create an output of p_artexp_onart
 
 Are we fully incorporating benefit of pep – so increase in the number of people with prep indication who are on prep/pep ?
 
+check are aligned to description in slides
+
+explicitly model risks such as drug drug interactions, risk of iris, neuropsychiatric toxicity 
+
+
  ; 
 
 
