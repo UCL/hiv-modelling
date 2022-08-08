@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_15_07_22;   
+set a.fsw_16_06_22;   
 proc sort;
 by run cald option;run;
 
@@ -313,8 +313,6 @@ data a.fsw_15_07_22_key; set y;run;
 
 data y; set a.fsw_15_07_22_key;run;
 
-proc means n mean p5 p50 p95;var incidence_sw p_fsw_newp0_;where 2021.0 <= cald < 2022.0 and sw_trans_matrix=3;run;
-
 /*
 
 
@@ -440,7 +438,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_15_07_22;
+data a.wide_fsw_16_06_22;
 merge   wide_outputs  wide_par ;  
 by run;run;
 run;

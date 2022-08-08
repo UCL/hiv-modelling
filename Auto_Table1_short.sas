@@ -70,7 +70,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 ***Read in SAS file;
 data indata2;
-  set a.wide_fsw_16_06_22;  
+  set a.wide_core_03_08_22;  
 
 if incidence1549_22 <0.1 then delete;
 
@@ -139,13 +139,14 @@ proc sort data = indata2;
   by subgp;
 run;
 
+
 ***************************************************;
 *Set up macros for summary stats;
 ***************************************************;
 *Macro (s) for summary stats for continuous variables (median and 90% range);
 %macro s (var=, grpord=, label=, fmt=);
   
-  proc summary data=indata2;
+  proc means noprint data=indata2;
     output out=n_&var p5=p5 median=median p95=p95 n=num;
     var &var;
     by subgp;
@@ -368,9 +369,9 @@ options nodate nonumber orientation=landscape;
 
 *Output destination - saving as an rtf file and have specified Journal style (there are others to choose from);
 ods listing close;
-ods rtf file = "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\table1_16_06_22.rtf" style=journal;
+ods rtf file = "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\table1_03_08_22_core_CI.rtf" style=journal;
  
-title1 "Table 1: Key summary statistics 16 Jun 2022";
+title1 "Table 1: Key summary statistics 03 Aug 2022_core matrix_CI";
 
 *This code appears on the rtf as Page x of y. Can be placed as footnote or title and justified as left, centre or right (in this example, j=r);
 *footnote1 j=r "{Page \field {\*\fldinst PAGE \\*MERGEFORMAT}} { of \field{\*\fldinst NUMPAGES \\*MERGEFORMAT}}";
@@ -381,8 +382,10 @@ title1 "Table 1: Key summary statistics 16 Jun 2022";
 *SPLIT assigns a character (*) to start a new row - in this example, it is used to put the N= for each column under the column title; 
 *ASIS=ON preserves blank spaces at start of text - so allows indenting for row titles;
 proc report data=final split='*'; 
-  columns (grpord catlbl num1 ("Median (90% range)" col1 col2 col3 col4));
-  define grpord      / order noprint;
+  *columns (grpord catlbl num1 ("Median (90% range)" col1 col2 col3 col4));
+	columns (grpord catlbl num1 ("Mean (95% CI)" col1 col2 col3 col4));
+
+	define grpord      / order noprint;
   define catlbl      / "Variable" flow style(column) = [width = 25% textalign = left asis=on] style(header) =[textalign = left]; 
   define num1        / "N" flow style(column) = [width = 10% textalign = center] style(header) =[textalign = center]; 
   define col1        / "2010" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
