@@ -16,6 +16,9 @@ check are aligned to description in slides
 
 explicitly model risks such as drug drug interactions, risk of iris, neuropsychiatric toxicity 
 
+makes good sense to also consider an enhanced version of existing PrEP and PEP access which is still clinic or pharmacy based 
+but does require some contact with a person who releases the drugs after a conversation and possibly a rapid test.  
+
 
  ; 
 
