@@ -36,6 +36,8 @@ newp_seed = 10 ;
 
 * an_lin_incr_test;   		an_lin_incr_test = 0.0085;
 
+* rate_testanc_inc; 		rate_testanc_inc =0.05;
+
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
 
@@ -56,7 +58,7 @@ newp_seed = 10 ;
 * oth_adc_base_prob_diag_l;	* %sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
 
 * incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2  ;  * note values linked to adjustments to fold_decr_hivdeath ;
-* incr_death_rate_crypm;	incr_death_rate_crypm = 2 ;
+* incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
 * incr_death_rate_sbi;		incr_death_rate_sbi = 2  ;
 * incr_death_rate_tb;		incr_death_rate_tb = 2  ;
 
@@ -81,7 +83,10 @@ newp_seed = 10 ;
 
 * adh_pattern; 				adh_pattern = 3;
 
-* ind_effect_art3_death_rate; ind_effect_art3_death_rate =0.3 ;
+* ind_effect_art_hiv_disease_death; ind_effect_art_hiv_disease_death =0.3 ;
+
+* rr_non_aids_death_hiv_off_art;	rr_non_aids_death_hiv_off_art = 2;
+* rr_non_aids_death_hiv_on_art;		rr_non_aids_death_hiv_on_art = 1.3;
 
 
 * SEX WORKERS;				

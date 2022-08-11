@@ -8,7 +8,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 
 data b;
 * set a.l_base_sa4;
-  set a.l_base_keep_sa4;
+  set a.l_base_keep_sa5;
 
  
 
@@ -124,7 +124,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =  49   ;
+%let nfit =  22   ;
 %let year_end = 2041.00 ;
 run;
 proc sort;by cald option ;run;
