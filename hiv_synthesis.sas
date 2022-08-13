@@ -844,8 +844,15 @@ prob_restart_htn_tx_s1 = 1;
 * probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 prob_restart_htn_tx_s2 = 1;
 
-* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-%sample_uniform(prob_visit_hypertension, 0.7 0.8 0.8);
+* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+%sample_uniform(prob_visit_htn_v1, 0.57 0.60 0.63);
+%sample_uniform(prob_visit_htn_v2, 0.47 0.49 0.51);
+%sample_uniform(prob_visit_htn_v3, 0.70 0.74 0.78);
+%sample_uniform(prob_visit_htn_v4, 0.83 0.87 0.92);
+%sample_uniform(prob_visit_htn_v5, 0.88 0.93 0.97);
+%sample_uniform(prob_visit_htn_v6, 0.90 0.95 1);
+%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 interval_visit_hypertension=0.5;
 
@@ -2463,7 +2470,7 @@ who may be dead and hence have caldate{t} missing;
 	/*E.g. u=rand('uniform'); if u<0.90 then incr_test_year_i=1;*/
 
 
-
+* HYPERTENSION;
 	if option = 2 then do;
 		** Community testing;
 		first_comm_test = 2022;
@@ -2489,8 +2496,15 @@ who may be dead and hence have caldate{t} missing;
 		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 		prob_restart_htn_tx_s2 = 1;
 
-		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-		%sample_uniform(prob_visit_hypertension, 0.8 0.9 0.95);
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
+		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
+		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
+		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
+		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
+		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
@@ -2525,8 +2539,15 @@ who may be dead and hence have caldate{t} missing;
 		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 		prob_restart_htn_tx_s2 = 1;
 
-		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-		%sample_uniform(prob_visit_hypertension, 0.8 0.9 0.95);
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
+		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
+		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
+		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
+		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
+		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
@@ -2561,8 +2582,15 @@ who may be dead and hence have caldate{t} missing;
 		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
 		prob_restart_htn_tx_s2 = 1;
 
-		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit;
-		%sample_uniform(prob_visit_hypertension, 0.8 0.9 0.95);
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
+		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
+		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
+		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
+		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
+		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
@@ -3046,7 +3074,7 @@ end;
 if age <= 15.25  then do; 
 	%sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
 					0.27	0.20	0.19 	0.16 	0.10	0.05	0.02	0.01	0.00	0.00); 
-	diagnosed_hypertension = 0; on_anti_hypertensive = 0; 
+	diagnosed_hypertension = 0; on_anti_hypertensive = 0; htn_visit_count = 0;
 end;
 
 if age <=15.25 and gender = 2 then do;
@@ -3065,6 +3093,7 @@ select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to incl
 end; 
 
 if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
+if on_anti_hypertensive = 0 then htn_visit_count =  0;
 
 * symptoms of hypertension ;
 symp_hypertension=0;
@@ -3107,13 +3136,27 @@ end;
 * clinic visit for hypertension;
 visit_hypertension=0;
 if on_anti_hypertensive = 0 and htn_lifestyle_counsel_tm1 = 1 and 160 > sbp_m_tm1 >=140 then do; * prob of coming back after lifestyle recommendations for new stage 1 HTN dx;
-	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
+	e=rand('uniform'); if e < prob_visit_htn_v1 then visit_hypertension = 1;
 end;
 if most_recent_sbp_m < 140 and on_anti_hypertensive ge 1 and (caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension then do;
-	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
+	e=rand('uniform'); 
+	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count  = 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
+	if htn_visit_count  = 6 and e < prob_visit_htn_v6 then visit_hypertension = 1;
+	if htn_visit_count >= 7 and e < prob_visit_htn_v7 then visit_hypertension = 1;
 end;
 if most_recent_sbp_m >= 140 and on_anti_hypertensive ge 1 then do;
-	e=rand('uniform'); if e < prob_visit_hypertension then visit_hypertension = 1;
+	e=rand('uniform'); 
+	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
+	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
+	if htn_visit_count  = 3 and e < prob_visit_htn_v3 then visit_hypertension = 1;
+	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
+	if htn_visit_count  = 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
+	if htn_visit_count  = 6 and e < prob_visit_htn_v6 then visit_hypertension = 1;
+	if htn_visit_count >= 7 and e < prob_visit_htn_v7 then visit_hypertension = 1;
 end;
 
 * measurement of bp at clinic;
@@ -3124,7 +3167,7 @@ if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 
 * effect of stopping anti-hypertensive on sbp; *modified 2/25/22 to stop anti-hypertensive when beyond visit interval and no visit (removed prob_stop_anti_hypertensive);
 if on_anti_hypertensive >= 1 and ((caldate{t} - date_last_visit_hypertension) >= interval_visit_hypertension | most_recent_sbp_m >=140) and visit_hypertension = 0 then do;
-	previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ; date_last_stop_anti_hyp = caldate{t};
+	previous_anti_hyp = on_anti_hypertensive; on_anti_hypertensive =0; visit_hypertension=0; sbp = sbp_last_start_anti_hyp ; date_last_stop_anti_hyp = caldate{t}; htn_visit_count = 0;
 end;
 
 * initiation of anti-hypertensives - on_anti_hypertensive takes values 0, 1, 2, 3 to indicate number of drugs; 
@@ -3140,7 +3183,7 @@ if (visit_hypertension =1 and sbp_m >= 140 and diagnosed_hypertension = 1 and ev
 end; 
 if start_anti_hyp_this_per = 1 then do;
 	sbp_last_start_anti_hyp = sbp; ever_on_anti_hyp =1; date_start_anti_hyp = caldate{t}; on_anti_hypertensive = 1 ; * assume start with 1 drug ;
-	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
+	sbp = sbp - effect_anti_hyp_1 ;
 end;
 
 * restarting anti-hypertensives;
@@ -3150,7 +3193,7 @@ if (visit_hypertension=1 and visit_hypertension_tm1 =0 and sbp_m >= 140 and diag
 	if sbp_m >= 160 and i_sbp < prob_restart_htn_tx_s2 then restart_anti_hyp_this_per =1 ;
 end;
 if restart_anti_hyp_this_per = 1 then do;
-	sbp_restart_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_anti_hypertensive = previous_anti_hyp; 
+	sbp_restart_anti_hyp = sbp; date_restart_anti_hyp = caldate{t}; on_anti_hypertensive = previous_anti_hyp;
 	if on_anti_hypertensive =1 then sbp = sbp - effect_anti_hyp_1 ;
 	if on_anti_hypertensive =2 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 ;
 	if on_anti_hypertensive =3 then sbp = sbp - effect_anti_hyp_1 - effect_anti_hyp_2 - effect_anti_hyp_3;
@@ -3172,6 +3215,11 @@ end;
 * effect of intensification of anti-hypertensive on sbp;
 if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
 if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
+
+* duration of treatment;
+if on_anti_hypertensive ge 1 and visit_hypertension = 1 then do;
+	htn_visit_count =  htn_visit_count + 1;
+end;
 
 * hypertension control;
 hypertension = 0; if sbp >= 140 or on_anti_hypertensive ge 1 then hypertension = 1;
@@ -18574,7 +18622,9 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   e
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed
-prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link prob_visit_hypertension prob_visit_htn_lifestyle
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
+prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death base_cvd_death_risk
 
 discount
@@ -21254,7 +21304,9 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
 
 prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed 
-prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link prob_visit_hypertension prob_visit_htn_lifestyle
+prob_imm_htn_tx_s1 prob_imm_htn_tx_s2 prob_start_htn_tx_s1 prob_start_htn_tx_s2 prob_restart_htn_tx_s1 prob_restart_htn_tx_s2 prob_test_sbp_comm prob_htn_link 
+prob_visit_htn_v1 prob_visit_htn_v2 prob_visit_htn_v3 prob_visit_htn_v4 prob_visit_htn_v5 prob_visit_htn_v6 prob_visit_htn_v7 
+prob_visit_htn_lifestyle
 prob_intensify_1_2 prob_intensify_2_3 effect_sbp_cvd_death effect_gender_cvd_death effect_age_cvd_death  base_cvd_death_risk
 
 discount
