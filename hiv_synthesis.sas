@@ -809,8 +809,9 @@ prob_symp_hypertension = 0.2;
 * probabily of higher rate of diagnosis in women (greater health system exposure/health-seeking)
 	* References: 
 		Geldsetzer Lancet 2019 - RR for diagnosis in women 1.43 (1.36-1.50) in SSA using multivariate regression, 1.52 (1.45-1.60) with all countries having same weight)
-		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);
-%sample_uniform(prob_test_sbp_women, 1 1.25 1.5);
+								RR for measurement in women 1.10 (1.08-1.12) in SSA with all countries having same weight)
+		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
+%sample_uniform(prob_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
 prob_test_sbp_undiagnosed = 0.005 * prob_htn_diagnosis;
 * measurement error and variability in sbp ;
