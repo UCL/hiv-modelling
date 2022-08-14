@@ -34,7 +34,7 @@ newp_seed = 10 ;
 
 * HIV TESTING;
 
-* an_lin_incr_test;   		an_lin_incr_test = 0.0085;
+* an_lin_incr_test;   		an_lin_incr_test = 0.017 ;
 
 * rate_testanc_inc; 		rate_testanc_inc =0.05;
 
@@ -44,23 +44,23 @@ newp_seed = 10 ;
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
 * fold_change_in_risk_base_rate;
-							  fold_change_in_risk_base_rate = 0.85;
+							*  fold_change_in_risk_base_rate = 0.85;
 
 * fold_decr_hivdeath;		  fold_decr_hivdeath = 0.15 ; 	
 
 * fx;						  fx = 0.85;
 
-* gx;						* gx = 1;
+* gx;						  * gx = 1;
 
 * tb_base_prob_diag_l;		* %sample_uniform(tb_base_prob_diag_l, 0.50 0.75); 			* base probability that tb is diagnosed late ;
 * crypm_base_prob_diag_l;	* %sample_uniform(crypm_base_prob_diag_l, 0.50 0.75); 		* base probability that crypm is diagnosed late ; 
 * sbi_base_prob_diag_l;		* %sample_uniform(sbi_base_prob_diag_l, 0.50 0.75); 			* base probability that sbi is diagnosed late ;
 * oth_adc_base_prob_diag_l;	* %sample_uniform(oth_adc_base_prob_diag_l, 0.50 0.75); 		* base probability that other adc is diagnosed late; 
 
-* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 2  ;  * note values linked to adjustments to fold_decr_hivdeath ;
+* incr_death_rate_oth_adc;	incr_death_rate_oth_adc = 1.5  ;  * note values linked to adjustments to fold_decr_hivdeath ;
 * incr_death_rate_crypm;	incr_death_rate_crypm = 5 ;
-* incr_death_rate_sbi;		incr_death_rate_sbi = 2  ;
-* incr_death_rate_tb;		incr_death_rate_tb = 2  ;
+* incr_death_rate_sbi;		incr_death_rate_sbi = 1.5  ;
+* incr_death_rate_tb;		incr_death_rate_tb = 1.5  ;
 
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
