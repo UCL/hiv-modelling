@@ -4548,7 +4548,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 				else if	testfor_prep_vr = 1  	then do;	
 					prep_any=1;		continuous_prep_any_use=0.25;	
 					prep_vr=1; 		prep_vr_ever=1; 	continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};		
-					prep_oral_start_date=caldate{t};
+					prep_vr_start_date=caldate{t};
 				end; 
 
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
