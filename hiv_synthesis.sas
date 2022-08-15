@@ -13869,7 +13869,7 @@ if dt_prep_oral_c=caldate&j then prep_continue_np_ge1=1;
 
 
 * Time from infection whilst on oral or inj PrEP and whether they are still on PrEP after 3, 6, 9, 12, 18 months - only applies when pop_wide_tld not in place;
-if (infected_prep_inj=1 or infected_prep_oral=1 or infected_prep_vr) and pop_wide_tld ne 1 then do;
+if (infected_prep_inj=1 or infected_prep_oral=1 or infected_prep_vr=1) and pop_wide_tld ne 1 then do;
 	time_from_infection=caldate&j-infection;
 * dependent_on_time_step_length ;
 	time_stop_prep= max(date_last_stop_prep_oral, date_last_stop_prep_inj, date_last_stop_prep_vr) + 0.25 - infection;
