@@ -4665,6 +4665,11 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if prep_oral_ever ne 1 then dt_prep_oral_s=caldate{t};
 					switch_prep_from_inj = 1;	 switch_prep_to_oral=1;
 					end; 
+					if highest_prep_pref = 3 then do;
+					prep_vr=1;	continuous_prep_vr_use =  0.25; 
+					if prep_vr_ever ne 1 then dt_prep_vr_s=caldate{t};
+					switch_prep_from_inj = 1;	 switch_prep_to_vr=1;
+					end; 
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
 					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
@@ -4686,7 +4691,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					prep_inj=1;	continuous_prep_inj_use = 0.25; 
 					if prep_inj_ever ne 1 then do; dt_prep_inj_s=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t}; end;
 					switch_prep_from_vr   = 1;	 switch_prep_to_inj=1; 
-					end; 
+					end; 					
 				end;
 				else do; 	* variable for people who discontinued despite newp>1;
 					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
@@ -11492,7 +11497,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 	if t ge 2 and dead_tm1=1 then dead   =.;
 
 * f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
-cost_prep_oral=0;cost_prep_inj =0; cost_prep_visit=0;cost_prep_ac_adh=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;
+cost_prep_oral=0;cost_prep_inj =0; cost_prep_visit=0;cost_prep_ac_adh=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;cost_prep_visit_vr=0;
 if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
 	cost_prep_oral = prep_oral_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
