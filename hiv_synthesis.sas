@@ -13677,7 +13677,6 @@ prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
 prep_vr_w=0; if gender=2 and prep_vr =1 then prep_vr_w=1;
 prep_oral_m=0; if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_inj_m=0; if gender=1 and prep_inj=1 then prep_inj_m=1;
-prep_vr_m=0; if gender=1 and prep_vr=1 then prep_vr_m=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
 
@@ -13968,14 +13967,13 @@ prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
 onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
-onprep_vr_m=0; onprep_vr_w=0;
+onprep_vr_w=0;
 if prep_any=1 then do;
 	if (15<=age<49) then onprep_1549=1;
 	if gender=1 then onprep_m=1;
 	if gender=2 then onprep_w=1;
 	if gender=1 and prep_inj=1 then onprep_inj_m=1;
 	if gender=2 and prep_inj=1 then onprep_inj_w=1;
-	if gender=1 and prep_vr =1 then onprep_vr_m=1;
 	if gender=2 and prep_vr =1 then onprep_vr_w=1;
 	if gender=1 and prep_oral=1 then onprep_oral_m=1;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
@@ -15994,7 +15992,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_prep_any + prep_any; s_prep_oral + prep_oral; s_prep_inj + prep_inj; s_prep_vr + prep_vr; s_prep_oral_at_infection + prep_oral_at_infection;
 	s_prep_inj_at_infection + prep_inj_at_infection; s_prep_vr_at_infection + prep_vr_at_infection;
- 	s_prep_oral_w + prep_oral_w; s_prep_inj_w + prep_inj_w; s_prep_oral_m + prep_oral_m; s_prep_vr_w + prep_vr_w; s_prep_vr_m + prep_vr_m;
+ 	s_prep_oral_w + prep_oral_w; s_prep_inj_w + prep_inj_w; s_prep_oral_m + prep_oral_m; s_prep_vr_w + prep_vr_w;
 	s_prep_inj_m + prep_inj_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
 	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
@@ -16019,7 +16017,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_inf_prep_adhl50 + inf_prep_adhl50 ; s_prep_adhg80 + prep_adhg80 ; s_prep_adh5080 + prep_adh5080 ; s_prep_adhl50 + prep_adhl50 ;
 	s_onprep_1549 + onprep_1549 ; s_onprep_m + onprep_m ; s_onprep_w + onprep_w ; s_onprep_sw + onprep_sw ; s_onprep_1524 + onprep_1524 ;
 	s_onprep_inj_m + onprep_inj_m; s_onprep_inj_w + onprep_inj_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
-	s_onprep_vr_m + onprep_vr_m; s_onprep_vr_w + onprep_vr_w;
+	s_onprep_vr_w + onprep_vr_w;
 	s_onprep_1524w + onprep_1524w ; s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
@@ -17754,7 +17752,7 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  
 
 
 /*prep*/
-s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w   s_prep_vr_m
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
@@ -17772,7 +17770,7 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
-s_onprep_inj_m s_onprep_inj_w s_onprep_vr_m s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -18679,7 +18677,7 @@ s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail
 s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary
 
 /*prep*/
-s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w  s_prep_vr_m   
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
@@ -18695,7 +18693,7 @@ s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
 
-s_onprep_inj_m s_onprep_inj_w s_onprep_vr_m s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
@@ -23843,7 +23841,7 @@ s_emerge_inm_res_cab_tail   s_em_inm_res_o_cab_off_3m_npr 	s_em_inm_res_cab_tail
 s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab  s_cab_res_emerge_primary
 
 /*prep*/
-s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w  s_prep_vr_m   
+s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m  s_prep_vr_w   
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_vr s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
@@ -23859,7 +23857,7 @@ s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
 
-s_onprep_inj_m s_onprep_inj_w s_onprep_vr_m s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
+s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
