@@ -3,7 +3,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a; 
 set a.wide_fsw_08_08_22 ;
-if incidence1549_15 <0.1 then delete;
+if incidence1549_22 <0.1 then delete;
 run;
 
 data b;
@@ -32,8 +32,8 @@ incidence_sw_22		prevalence_sw_22
 p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
 run;
 
-
 proc freq;table sw_art_disadv;run;
+
 ***table 3 - characteristics by disadvantage in 2030;
 
 proc means n p50 p5 p95;var
