@@ -1147,7 +1147,7 @@ proc means  noprint data=y; var &v; output out=y_70 mean= &v._70; by run option 
 
  proc sort data=y_22_72; by run option ; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run option ;  
 
-data &v ; merge y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_21 y_40 y_70 t_22_72  ;  
+data &v ; merge y_95 y_00 y_05 y_10 y_15 y_17 y_20 y_22 y_40 y_70 y_22_72  ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 
