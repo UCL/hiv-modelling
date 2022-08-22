@@ -1,5 +1,5 @@
 
-* run 45 all;
+* run 48 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -869,7 +869,7 @@ effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
 * base risk of cvd (before adding effects of age, gender, sbp);
-base_cvd_death_risk = 0.00002;
+base_cvd_death_risk = 0.0002;
 
 
 * NON-HIV TB ;  * update_24_4_21;
