@@ -465,7 +465,7 @@ newp_seed = 7;
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
-								0.30 	0.40 	0.20 	0.05	0.05);
+								0.40 	0.40    0.10    0.05    0.05);
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
@@ -477,8 +477,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rate_return;  			%sample(rate_return, 
-								0.01	0.05  0.10 	0.30   0.60, 
-								0.05 	0.05  0.40	0.30   0.20);
+								0.05  0.10 	0.30   0.60, 
+								0.10  0.40	0.30   0.20);
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -504,7 +504,7 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.40   0.40   0.10 	 0.05 0.05); 
+														0.45   0.45   0.05   0.03 0.02); 
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
