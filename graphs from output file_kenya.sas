@@ -15,6 +15,26 @@ p_onart_vl1000_all = .;
 
 
 
+
+
+
+
+
+
+* add in observed data on circumcision ;
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 if option =0 or (prep_improvements  = 1 and option =1);
 
