@@ -11,6 +11,25 @@ data b;
   set a.l_base_uganda    ;
 
 
+
+
+
+
+
+
+* add in observed data on circumcision ;
+
+
+
+
+
+
+
+
+
+
+
+
 p_onart_vl1000_all = .;
 
 
