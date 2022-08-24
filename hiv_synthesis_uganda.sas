@@ -3866,7 +3866,7 @@ if t ge 3 and registd_tm2  ne 1 and registd_tm1 =1 and epdiag_tm1 ne 1 then e=e/
 * if t ge 3 and registd_tm1  ne 1 and epdiag_tm2=0  and epdiag_tm1 =  1 then e=e/(ch_risk_diag**(1/3)); 
 * if t ge 3 and registd_tm2  ne 1 and registd_tm1=1 and epdiag_tm1 ne 1 then e=e/(ch_risk_diag**(1/3));
 
-z=1; if caldate{t} ge 1995 then z=1/ch_risk_beh_ep; * dependent_on_time_step_length ;
+z=1; if caldate{t} ge 1985 then z=1/ch_risk_beh_ep; * uganda ;
 * ts1m ;  * change this line above to: 
 * z=1; 
 * if caldate{t} ge 1995 then z=1/(ch_risk_beh_ep**(1/3));
