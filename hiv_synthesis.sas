@@ -847,7 +847,7 @@ prob_restart_htn_tx_s2 = 1;
 
 * probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
 %sample_uniform(prob_visit_htn_v1, 0.57 0.60 0.63);
-%sample_uniform(prob_visit_htn_v2, 0.47 0.49 0.51);
+%sample_uniform(prob_visit_htn_v2, 0.46 0.49 0.51);
 %sample_uniform(prob_visit_htn_v3, 0.70 0.74 0.78);
 %sample_uniform(prob_visit_htn_v4, 0.83 0.87 0.92);
 %sample_uniform(prob_visit_htn_v5, 0.88 0.93 0.97);
@@ -2501,10 +2501,10 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
 		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
 		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
-		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
 		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
 		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
-		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
 
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
@@ -2544,10 +2544,10 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
 		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
 		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
-		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
 		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
 		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
-		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
 
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
@@ -2587,10 +2587,10 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
 		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
 		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
-		%sample_uniform(prob_visit_htn_v4, 0.78 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
 		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
 		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
-		%sample_uniform(prob_visit_htn_v7, 0.91 0.96 1);
+		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
 
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
