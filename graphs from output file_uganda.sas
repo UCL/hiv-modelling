@@ -251,10 +251,8 @@ merge
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93 /*  g94  g95  g96  g97  g98  g99  g100    g101 g102 
 g103 g104
-
-/*
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -265,8 +263,7 @@ g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 
 h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72  h73  h74  h75
-h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93  h94  h95  h96  h97  h98 h99  h100 h101 h102
-h103 h104
+h77  h78 h79  h80  h81  h82  h83  h84  h85  h86  h87  h88  h89  h90  h91  h92  h93 
 ;
 by cald;
 
@@ -341,7 +338,7 @@ Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
 */
 
 * placeholder;
-if cald=2019.00 then do: n_tests_f_obs_uga = 0 ; n_tests_m_obs_uga = 0 ;  end;
+if cald=2019.00 then do; n_tests_f_obs_uga = 0 ; n_tests_m_obs_uga = 0 ;  end;
 
 if cald=2011 then do;
 	ever_tested_w_1524_obs_uga= 0.61;
@@ -663,7 +660,7 @@ band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transp
 series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_m_obs_uga/	lineattrs = (color=green thickness = 3) ;
+series  x=cald y=prevalence1549_m_obs_uga/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
@@ -684,7 +681,7 @@ band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transp
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_w_obs_uga/	lineattrs = (color=green thickness = 3) ;
+series  x=cald y=prevalence1549_w_obs_uga/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
