@@ -849,7 +849,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 
-  %include "/home/rmjlaph/malawi_parameters_mlw8.sas";
+  %include "/home/rmjllob/malawi_parameters_mlw8.sas";
 
 
 
@@ -15613,8 +15613,8 @@ if 80 <= age      then do;
 	if hypertens180 = 1 then hypertens180_ge80 = 1;
 end;
 
- *%include "/home/rmjllob/death status.sas";
- %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\death status.sas";
+ %include "/home/rmjllob/death status.sas";
+ *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\death status.sas";
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
