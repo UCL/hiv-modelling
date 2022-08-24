@@ -3018,8 +3018,8 @@ if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc 
 
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
-if 1990 < caldate{t} <= 1995 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1990); * uganda;
-if        caldate{t} >  1995 then ch_risk_beh_ep = ych_risk_beh_ep**(1995-1990); * uganda;
+if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995); * kenya ;
+if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995); * kenya ;
 
 
 
@@ -6212,8 +6212,8 @@ end;
 
 * INTRODUCE HIV INTO POPULATION ;
 
-d=rand('uniform'); * uganda ;
-if caldate{t}=1980    and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+d=rand('uniform'); * kenya  ;
+if caldate{t}=1985    and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 

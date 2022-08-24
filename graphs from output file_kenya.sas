@@ -3,12 +3,12 @@
 ***Use 'include' statment in analysis program to read the code below in;
 
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\uganda\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-  set a.l_base_uganda    ;
+  set a.l_base_kenya    ;
 
 
 p_onart_vl1000_all = .;
@@ -275,65 +275,80 @@ Number of HIV tests done per year in adults (women, men, all adults)
 
 
 * dhs ; 
-ever_tested age 15-49  
-2011
-men 15-24 35%  25-29: 66%  30-39: 66%  40-49: 60%
-women 15-24 61%  25-29: 86%  30-39: 79%  40-49: 70%
-2016
-men 15-24 57%  25-29: 83%  30-39: 82%  40-49: 78%
-women 15-24 71%  25-29: 95%  30-39: 92%  40-49: 90%
+ever_tested  
+KIAS 2012
+men 15-19 45%  20-24 67%  25-29  75%  30-34: 72%  35-39: 71%  40-44  68%   45-49  59%  50-54: 57%   55-59  46%  60-64  50%  
+women 15-19 56%  20-24 92%  25-29  94%  30-34: 94%  35-39: 89%  40-44  79%   45-49  72%  50-54: 64%   55-59  51%  60-64  46%  
+
 
 
 Number of new diagnoses per year in adults  
 
 
+
+
 Number of adults on art  
 Aim file
 Men
-05: 38000   10: 97000    15: 217000    20: 375000
+05: 24000   10: 172000    15: 262000    20: 337000
 Women
-05: 45000   10: 118000   15: 436000   20: 697000
+05: 30000   10: 224000   15: 564000   20: 717000
 
 
 * spectrum aim;
 Prevalence 15-49   
-Men           75: 0.0   80: 0.7  85: 5.0  90: 8.1  95: 7.3  00: 6.0  05: 50.0.2  10:5.1  15:4.6   20:3.9   (UPHIA 2016: 4.7   2020: 3.8))
-Women     75: 0.0   80: 0.7  85: 6.2  90: 11.0 95: 10.6  00: 9.1  05: 7.9  10:7.4  15: 7.3  20:  6.8    (UPHIA 2016: 7.6   2020: 7.1)  
+Men           75: 0.0   80: 0.1  85: 0.7  90: 3.8  95: 7.3  00: 6.5  05: 4.8  10: 4.2  15: 3.5   20:2.8   
+Women     75: 0.0   80: 0.1  85: 0.8  90: 5.8 95: 12.4  00: 11.5  05: 8.7  10:7.4  15: 7.3  20:  6.5    
 
 
+Prevalence 15-49
+KDHS 2003
+Men  4.6%   women 8.9%
+KAIS 2007
+Men 5.6%  women 9.0%
+KAIS 2012
+Men 4.2%  women  6.9%
+KENPHIA 2018
+Men 2.7%   women 6.2%
 
-Incidence 15-49  
-UPHIA 
-2016
-Men           15-49:   0.31
-Women     15-49:  0.47
-2020
-Men            15-49:  0.21
-Women:    15-49: 0.42
+Prevalence by age 
+KENPHIA  2018 
+Men 15-19   0.5   20-24  0.6   25-29  2.2  30-34  3.2  35-39  4.3   40-44  6.3  45-49  8.3   50-54  6.6   55-59  5.9   60-64  5.6
+Women 15-19   1.2   20-24  3.4   25-29  6.0  30-34  9.5  35-39  8.7   40-44  11.9  45-49  10.6   50-54  11.7   55-59  9.0   60-64  6.2
+
+
+Incidence 15-64  
+KAIS 2007
+Men              0.9
+Women        1.1
+2012
+Men              0.7
+Women:      0.9
+2018  KENPHIA  15-64
+Men        0.15
+Women  0.15
+
+Proportion men circumcised:  KAIS 2012:  91%
 
 
 Proportion HIV+ diagnosed  
-2016
-Men    67.3%    women 75.4%    all 72.5%
-2020
-Men  76.1%   Women  83.5%   all  80.9%
+2012  KAIS
+All age 15-64   47%%  
+2018   KENPHIA
+Men age 15-64   72.6%   Women  82.7%   all  79.5%
+
+Proportion hiv+ diagnosed on art  
+2018  KENPHIA
+Men  94.5%   women 96.6%   all 96.0%
 
 
-Proportion hiv+ diagnosed on art   Men  Women
-2016
-Men  86.9%   women 92.1%   all 90.4%
-2020
-Men  94.7%   women  96.7%    all 96.1%
-
-Proportion adults on ART with VL < 1000  Men Women
-2016
-Men 81.5%  women 84.7%   all 83.7%
-
-2020
-Men 91.3    women  92.6    all 92.2
+Proportion adults on ART with VL < 1000 
+2018
+Men 90.9%  women 90.9%   all 90.9%
 
 
 Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
+
 
 */
 
