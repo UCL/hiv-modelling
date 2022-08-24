@@ -1,5 +1,5 @@
 
-* run 48 all;
+* run 50 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -869,7 +869,7 @@ effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
 effect_age_cvd_death = 0.03;
 * base risk of cvd (before adding effects of age, gender, sbp);
-base_cvd_death_risk = 0.0002;
+base_cvd_death_risk = 0.00005;
 
 
 * NON-HIV TB ;  * update_24_4_21;
@@ -1644,7 +1644,7 @@ diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 * define person-specific risk of sbp increase per period;
-%sample_uniform(sbp_risk, 0.5 1 1.5);
+%sample_uniform(sbp_risk, 0.5 1 2);
 * define person-specific risk of sbp increase per period during middle age (40-64);
 %sample_uniform(sbp_risk_age, 1 2 3);
 
@@ -3089,7 +3089,7 @@ end;
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-	when (40 <= age < 60) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
+	when (40 <= age < 65) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
 	otherwise a_sbp = a_sbp / sbp_risk ;
 end; 
 
@@ -3130,7 +3130,7 @@ if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do;
 	if gender = 2 then e = e / prob_test_sbp_women;
 	if age <40 then e = e / prob_test_sbp_young;
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
-	if (diagnosed_hypertension = 1) and e < prob_test_sbp_diagnosed then tested_bp = 1; *in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
+	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; *in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
 end;
 
 * clinic visit for hypertension;
@@ -3163,6 +3163,7 @@ end;
 if visit_hypertension=1 then tested_bp=1;
 if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
 if tested_bp and sbp_m >= 140 then visit_hypertension = 1; *captures those who tested this period and had first-time HTN dx;
+if tested_bp and sbp_m < 140 and on_anti_hypertensive = 0 then last_bp_ge140 = 0;
 if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 
 * effect of stopping anti-hypertensive on sbp; *modified 2/25/22 to stop anti-hypertensive when beyond visit interval and no visit (removed prob_stop_anti_hypertensive);
@@ -3174,10 +3175,10 @@ end;
 start_anti_hyp_this_per = 0 ; ah=rand('uniform'); i_sbp = rand('uniform'); htn_lifestyle_counsel = 0;
 if (visit_hypertension=1 and sbp_m >= 140 and diagnosed_hypertension ne 1) then do; *new diagnosis;
 	htn_lifestyle_counsel = 1;
-	if sbp_m >= 160 or prior_bp_ge140 = 1 then diagnosed_hypertension =1;
+	if sbp_m >= 160 or last_bp_ge140 = 1 then diagnosed_hypertension =1;
 	if sbp_m  < 160 and i_sbp < prob_imm_htn_tx_s1 then start_anti_hyp_this_per =1 and diagnosed_hypertension =1; 
 	if sbp_m >= 160 and i_sbp < prob_imm_htn_tx_s2 then start_anti_hyp_this_per =1; 
-	prior_bp_ge140 = 1; 
+	last_bp_ge140 = 1; 
 end;
 if (visit_hypertension =1 and sbp_m >= 140 and diagnosed_hypertension = 1 and ever_on_anti_hyp =0) then do; * known diagnosis but never started treatment;
 	if sbp_m  < 160 and i_sbp < prob_start_htn_tx_s1 then start_anti_hyp_this_per =1 ; 
