@@ -353,93 +353,84 @@ Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
 */
 
 * placeholder;
-if cald=2019.00 then do; n_tests_f_obs_uga = 0 ; n_tests_m_obs_uga = 0 ;  end;
+if cald=2019.00 then do; n_tests_f_obs_kya = 0 ; n_tests_m_obs_kya = 0 ;  end;
 
-if cald=2011 then do;
-	ever_tested_w_1524_obs_uga= 0.61;
-	ever_tested_w_2529_obs_uga= 0.86;
-	ever_tested_w_3039_obs_uga= 0.79;
-	ever_tested_w_4049_obs_uga= 0.70;
+if cald=2012 then do;
+	ever_tested_w_1524_obs_kya= 0.56;
+	ever_tested_w_2524_obs_kya= 0.92;
+	ever_tested_w_2529_obs_kya= 0.94;
+	ever_tested_w_3034_obs_kya= 0.94;
+	ever_tested_w_3539_obs_kya= 0.89;
+	ever_tested_w_4044_obs_kya= 0.79;
+	ever_tested_w_4549_obs_kya= 0.72;
+	ever_tested_w_5054_obs_kya= 0.64;
+	ever_tested_w_5559_obs_kya= 0.51;
+	ever_tested_w_6064_obs_kya= 0.46;
 
-	ever_tested_m_1524_obs_uga= 0.35;
-	ever_tested_m_2529_obs_uga= 0.66;
-	ever_tested_m_3039_obs_uga= 0.66;
-	ever_tested_m_4049_obs_uga= 0.60;
+	ever_tested_m_1524_obs_kya= 0.45;
+	ever_tested_m_2524_obs_kya= 0.67;
+	ever_tested_m_2529_obs_kya= 0.75;
+	ever_tested_m_3034_obs_kya= 0.72;
+	ever_tested_m_3539_obs_kya= 0.71;
+	ever_tested_m_4044_obs_kya= 0.68;
+	ever_tested_m_4549_obs_kya= 0.59;
+	ever_tested_m_5054_obs_kya= 0.57;
+	ever_tested_m_5559_obs_kya= 0.46;
+	ever_tested_m_6064_obs_kya= 0.50;
 end;
 
-if cald=2016 then do;
-	ever_tested_w_1524_obs_uga= 0.71;
-	ever_tested_w_2529_obs_uga= 0.95;
-	ever_tested_w_3039_obs_uga= 0.92;
-	ever_tested_w_4049_obs_uga= 0.90;
+if cald=2005.00 then n_onart_m_obs_kya= 24000 ;
+if cald=2010.00 then n_onart_m_obs_kya= 172000 ;
+if cald=2015.00 then n_onart_m_obs_kya= 262000 ;
+if cald=2020.00 then n_onart_m_obs_kya= 337000 ;
 
-	ever_tested_m_1524_obs_uga= 0.57;
-	ever_tested_m_2529_obs_uga= 0.83;
-	ever_tested_m_3039_obs_uga= 0.82;
-	ever_tested_m_4049_obs_uga= 0.78;
-end;
-
-if cald=2005.00 then n_onart_m_obs_uga= 38000 ;
-if cald=2010.00 then n_onart_m_obs_uga= 97000 ;
-if cald=2015.00 then n_onart_m_obs_uga= 217000 ;
-if cald=2020.00 then n_onart_m_obs_uga= 375000 ;
-
-if cald=2005.00 then n_onart_w_obs_uga= 45000 ;
-if cald=2010.00 then n_onart_w_obs_uga= 118000 ;
-if cald=2015.00 then n_onart_w_obs_uga= 436000 ;
-if cald=2020.00 then n_onart_w_obs_uga= 697000 ;
+if cald=2005.00 then n_onart_w_obs_kya= 30000 ;
+if cald=2010.00 then n_onart_w_obs_kya= 224000 ;
+if cald=2015.00 then n_onart_w_obs_kya= 564000 ;
+if cald=2020.00 then n_onart_w_obs_kya= 717000 ;
 
 
 * spectrum aim;
 
-if cald=1975 then prevalence1549_m_obs_uga= 0.000;
-if cald=1980 then prevalence1549_m_obs_uga= 0.007;
-if cald=1985 then prevalence1549_m_obs_uga= 0.050;
-if cald=1990 then prevalence1549_m_obs_uga= 0.081;
-if cald=1995 then prevalence1549_m_obs_uga= 0.073;
-if cald=2000 then prevalence1549_m_obs_uga= 0.060;
-if cald=2005 then prevalence1549_m_obs_uga= 0.052;
-if cald=2010 then prevalence1549_m_obs_uga= 0.051;
-if cald=2015 then prevalence1549_m_obs_uga= 0.046;
-if cald=2020 then prevalence1549_m_obs_uga= 0.039;
+if cald=1980 then prevalence1549_m_obs_kya= 0.001;
+if cald=1985 then prevalence1549_m_obs_kya= 0.007;
+if cald=1990 then prevalence1549_m_obs_kya= 0.038;
+if cald=1995 then prevalence1549_m_obs_kya= 0.073;
+if cald=2000 then prevalence1549_m_obs_kya= 0.065;
+if cald=2005 then prevalence1549_m_obs_kya= 0.048;
+if cald=2010 then prevalence1549_m_obs_kya= 0.042;
+if cald=2015 then prevalence1549_m_obs_kya= 0.035;
+if cald=2020 then prevalence1549_m_obs_kya= 0.028;
 
-if cald=1975 then prevalence1549_w_obs_uga= 0.000;
-if cald=1980 then prevalence1549_w_obs_uga= 0.007;
-if cald=1985 then prevalence1549_w_obs_uga= 0.062;
-if cald=1990 then prevalence1549_w_obs_uga= 0.110;
-if cald=1995 then prevalence1549_w_obs_uga= 0.106;
-if cald=2000 then prevalence1549_w_obs_uga= 0.091;
-if cald=2005 then prevalence1549_w_obs_uga= 0.079;
-if cald=2010 then prevalence1549_w_obs_uga= 0.074;
-if cald=2015 then prevalence1549_w_obs_uga= 0.073;
-if cald=2020 then prevalence1549_w_obs_uga= 0.068;
+if cald=1980 then prevalence1549_w_obs_kya= 0.001;
+if cald=1985 then prevalence1549_w_obs_kya= 0.008;
+if cald=1990 then prevalence1549_w_obs_kya= 0.058;
+if cald=1995 then prevalence1549_w_obs_kya= 0.124;
+if cald=2000 then prevalence1549_w_obs_kya= 0.115;
+if cald=2005 then prevalence1549_w_obs_kya= 0.087;
+if cald=2010 then prevalence1549_w_obs_kya= 0.074;
+if cald=2015 then prevalence1549_w_obs_kya= 0.073;
+if cald=2020 then prevalence1549_w_obs_kya= 0.065;
 
+if cald=2007.5 then incidence1564_m_obs_kya= 0.90;
+if cald=2007.5 then incidence1564_w_obs_kya= 1.10;
+if cald=2012.5 then incidence1564_m_obs_kya= 0.70;
+if cald=2012.5 then incidence1564_w_obs_kya= 0.90;
+if cald=2018.5 then incidence1564_m_obs_kya= 0.15;
+if cald=2018.5 then incidence1564_w_obs_kya= 0.15;
 
-if cald=2016.5 then incidence1549_m_obs_uga= 0.31;
-if cald=2020.5 then incidence1549_m_obs_uga= 0.21;
-if cald=2016.5 then incidence1549_w_obs_uga= 0.47;
-if cald=2020.5 then incidence1549_w_obs_uga= 0.42;
+if cald=2012.5 then p_diag_obs_kya = 0.47;
+if cald=2018.5 then p_diag_m_obs_kya = 0.73;
+if cald=2018.5 then p_diag_w_obs_kya = 0.83;
+if cald=2018.5 then p_diag_obs_kya = 0.80;
 
-if cald=2016.5 then p_diag_m_obs_uga = 0.67;
-if cald=2016.5 then p_diag_w_obs_uga = 0.75;
-if cald=2020.5 then p_diag_m_obs_uga = 0.76;
-if cald=2020.5 then p_diag_w_obs_uga = 0.84;
-if cald=2016.5 then p_diag_obs_uga = 0.72;
-if cald=2020.5 then p_diag_obs_uga = 0.81;
+if cald=2018.5 then p_onart_diag_m_obs_kya = 0.95;
+if cald=2018.5 then p_onart_diag_w_obs_kya = 0.97;
+if cald=2018.5 then p_onart_diag_obs_kya = 0.96;
 
-if cald=2016.5 then p_onart_diag_m_obs_uga = 0.87;
-if cald=2016.5 then p_onart_diag_w_obs_uga = 0.92;
-if cald=2020.5 then p_onart_diag_m_obs_uga = 0.95;
-if cald=2020.5 then p_onart_diag_w_obs_uga = 0.97;
-if cald=2016.5 then p_onart_diag_obs_uga = 0.90;
-if cald=2020.5 then p_onart_diag_obs_uga = 0.96;
-
-if cald=2016.5 then p_onart_vl1000_m_obs_uga= 0.82;
-if cald=2016.5 then p_onart_vl1000_w_obs_uga= 0.85;
-if cald=2020.5 then p_onart_vl1000_m_obs_uga= 0.91;
-if cald=2020.5 then p_onart_vl1000_w_obs_uga= 0.93;
-if cald=2016.5 then p_onart_vl1000_obs_uga= 0.84;
-if cald=2020.5 then p_onart_vl1000_obs_uga= 0.92;
+if cald=2020.5 then p_onart_vl1000_m_obs_kya= 0.91;
+if cald=2020.5 then p_onart_vl1000_w_obs_kya= 0.91;
+if cald=2020.5 then p_onart_vl1000_obs_kya= 0.91;
 
 
 
@@ -675,7 +666,7 @@ band    x=cald lower=p5_prevalence1549m_0 	upper=p95_prevalence1549m_0  / transp
 series  x=cald y=p50_prevalence1549m_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549m_1 	upper=p95_prevalence1549m_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_m_obs_uga/	lineattrs = (color=blue  thickness = 3) ;
+series  x=cald y=prevalence1549_m_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
@@ -696,7 +687,7 @@ band    x=cald lower=p5_prevalence1549w_0 	upper=p95_prevalence1549w_0  / transp
 series  x=cald y=p50_prevalence1549w_1/	lineattrs = (color=lightgreen thickness = 2);
 band    x=cald lower=p5_prevalence1549w_1 	upper=p95_prevalence1549w_1  / transparency=0.9 fillattrs = (color=lightgreen) legendlabel= "Model 90% range";
 
-series  x=cald y=prevalence1549_w_obs_uga/	lineattrs = (color=blue  thickness = 3) ;
+series  x=cald y=prevalence1549_w_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
@@ -714,7 +705,7 @@ series  x=cald y=p50_incidence1549m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549m_0 	upper=p95_incidence1549m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549m_1 	upper=p95_incidence1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_m_obs_uga / 		markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y=incidence1549_m_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
@@ -731,7 +722,42 @@ series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_incidence1549w_1 	upper=p95_incidence1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-scatter x=cald y=incidence1549_w_obs_uga / 		markerattrs = (symbol=square color=green size = 10);
+scatter x=cald y=incidence1549_w_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
+run;
+quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence men (age 15-64)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1975 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
+
+label p50_incidence1564m_0 = "Option 0 (median) ";
+label p50_incidence1564m_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_incidence1564m_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1564m_0 	upper=p95_incidence1564m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1564m_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1564m_1 	upper=p95_incidence1564m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=incidence1564_m_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
+run;
+quit;
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Incidence women (age 15-64)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1975 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 5 by 0.5) valueattrs=(size=10);
+
+label p50_incidence1564w_0 = "Option 0 (median) ";
+label p50_incidence1564w_1 = "Option 1  (median) ";
+
+series  x=cald y=p50_incidence1564w_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_incidence1564w_0 	upper=p95_incidence1564w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_incidence1564w_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_incidence1564w_1 	upper=p95_incidence1564w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+scatter x=cald y=incidence1564_w_obs_kya / 		markerattrs = (symbol=square color=green size = 10);
 run;
 quit;
 
@@ -998,7 +1024,7 @@ series  x=cald y=p50_n_onart_m_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_m_0 	upper=p95_n_onart_m_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_onart_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_onart_m_1 	upper=p95_n_onart_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=n_onart_m_obs_uga;
+series  x=cald y=n_onart_m_obs_kya;
 
 run;quit;
 
@@ -1015,7 +1041,7 @@ series  x=cald y=p50_n_onart_w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_onart_w_0 	upper=p95_n_onart_w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_onart_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_n_onart_w_1 	upper=p95_n_onart_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=n_onart_w_obs_uga;
+series  x=cald y=n_onart_w_obs_kya;
 
 run;quit;
 
@@ -1155,7 +1181,7 @@ band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transp
 series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series x=cald y = p_onart_vl1000_obs_uga;
+series x=cald y = p_onart_vl1000_obs_kya;
 
 run;quit;
 
@@ -1176,7 +1202,7 @@ band    x=cald lower=p5_p_onart_vl1000_m_0 	upper=p95_p_onart_vl1000_m_0  / tran
 series  x=cald y=p50_p_onart_vl1000_m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_m_1 	upper=p95_p_onart_vl1000_m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series x=cald y = p_onart_vl1000_m_obs_uga;
+series x=cald y = p_onart_vl1000_m_obs_kya;
 
 run;quit;
 
@@ -1196,7 +1222,7 @@ band    x=cald lower=p5_p_onart_vl1000_w_0 	upper=p95_p_onart_vl1000_w_0  / tran
 series  x=cald y=p50_p_onart_vl1000_w_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000_w_1 	upper=p95_p_onart_vl1000_w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-series x=cald y = p_onart_vl1000_w_obs_uga;
+series x=cald y = p_onart_vl1000_w_obs_kya;
 
 run;quit;
 
@@ -1497,111 +1523,56 @@ p95_prevalence5559w_0 	p95_prevalence5559m_0 p95_prevalence6064w_0 	p95_prevalen
 /*
 
 Prevalence by age 
-
-UPHIA  2016
-Men 15-19   0.5   20-24  1.3   25-29  3.7  30-34  5.5  35-39  9.2   40-44  10.8  45-49  14.0   50-54  9.7   55-59  8.9   60-64  5.3
-Women 15-19   1.8   20-24  5.1   25-29  8.5  30-34  11.4  35-39  12.9   40-44  11.9  45-49  12.8   50-54  10.5   55-59  9.4   60-64  6.9
-
-UPHIA  2020 
-Men 15-19   0.2   20-24  1.6   25-29  3.4  30-34  4.8  35-39  8.9   40-44  8.6  45-49  11.1   50-54  10.0   55-59  8.5   60-64  8.3  65+ 3.8%
-Women 15-19   1.7   20-24  4.2   25-29  7.5  30-34  11.4  35-39  12.4   40-44  11.1  45-49  13.1   50-54  13.6   55-59  8.9   60-64  6.0  65+ 3.1
+KENPHIA  2018 
+Men 15-19   0.5   20-24  0.6   25-29  2.2  30-34  3.2  35-39  4.3   40-44  6.3  45-49  8.3   50-54  6.6   55-59  5.9   60-64  5.6
+Women 15-19   1.2   20-24  3.4   25-29  6.0  30-34  9.5  35-39  8.7   40-44  11.9  45-49  10.6   50-54  11.7   55-59  9.0   60-64  6.2
 
 */
 
-/*
-
-if cald=2016;
+if cald=2018;
 
 data age15w ; set f;  ageg=15; sex=2; 	p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;
-p95_prevalence = p95_prevalence1519w_0 ; prev_obs_uga = 0.018 ;
+p95_prevalence = p95_prevalence1519w_0 ; prev_obs_kya = 0.012 ;
 data age20w ; set f;  ageg=20; sex=2; p5_prevalence = p5_prevalence2024w_0 ; p50_prevalence = p50_prevalence2024w_0 ; 
-p95_prevalence = p95_prevalence2024w_0 ; prev_obs_uga = 0.051 ;
+p95_prevalence = p95_prevalence2024w_0 ; prev_obs_kya = 0.034 ;
 data age25w ; set f;  ageg=25; sex=2; p5_prevalence = p5_prevalence2529w_0 ;p50_prevalence = p50_prevalence2529w_0 ;
-p95_prevalence = p95_prevalence2529w_0 ;prev_obs_uga = 0.085 ;
+p95_prevalence = p95_prevalence2529w_0 ;prev_obs_kya = 0.060 ;
 data age30w ; set f;  ageg=30; sex=2; p5_prevalence = p5_prevalence3034w_0 ; p50_prevalence = p50_prevalence3034w_0 ; 
-p95_prevalence = p95_prevalence3034w_0 ; prev_obs_uga = 0.114 ;
+p95_prevalence = p95_prevalence3034w_0 ; prev_obs_kya = 0.095 ;
 data age35w ; set f;  ageg=35; sex=2; p5_prevalence = p5_prevalence3539w_0 ; p50_prevalence = p50_prevalence3539w_0 ; 
-p95_prevalence = p95_prevalence3539w_0 ; prev_obs_uga = 0.129 ;
+p95_prevalence = p95_prevalence3539w_0 ; prev_obs_kya = 0.087 ;
 data age40w ; set f;  ageg=40; sex=2; p5_prevalence = p5_prevalence4044w_0 ;p50_prevalence = p50_prevalence4044w_0 ;
-p95_prevalence = p95_prevalence4044w_0 ;prev_obs_uga = 0.119 ;
+p95_prevalence = p95_prevalence4044w_0 ;prev_obs_kya = 0.119 ;
 data age45w ; set f;  ageg=45; sex=2; p5_prevalence = p5_prevalence4549w_0 ; p50_prevalence = p50_prevalence4549w_0 ;
- p95_prevalence = p95_prevalence4549w_0 ;prev_obs_uga = 0.128 ;
+ p95_prevalence = p95_prevalence4549w_0 ;prev_obs_kya = 0.106 ;
 data age50w ; set f;  ageg=50; sex=2; p5_prevalence = p5_prevalence5054w_0 ; p50_prevalence = p50_prevalence5054w_0 ; 
-p95_prevalence = p95_prevalence5054w_0 ; prev_obs_uga = 0.105 ;
+p95_prevalence = p95_prevalence5054w_0 ; prev_obs_kya = 0.117 ;
 data age55w ; set f;  ageg=55; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;
-p95_prevalence = p95_prevalence5559w_0 ;prev_obs_uga = 0.094 ;
+p95_prevalence = p95_prevalence5559w_0 ;prev_obs_kya = 0.090 ;
 data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
-p95_prevalence = p95_prevalence6064w_0 ;prev_obs_uga = 0.069 ;
+p95_prevalence = p95_prevalence6064w_0 ;prev_obs_kya = 0.062 ;
 
 
 data age15m ; set f;  ageg=15; sex=1; p5_prevalence = p5_prevalence1519m_0 ; p50_prevalence = p50_prevalence1519m_0 ; 
-p95_prevalence = p95_prevalence1519m_0 ; prev_obs_uga = 0.005 ;
+p95_prevalence = p95_prevalence1519m_0 ; prev_obs_kya = 0.005 ;
 data age20m ; set f;  ageg=20; sex=1; p5_prevalence = p5_prevalence2024m_0 ; p50_prevalence = p50_prevalence2024m_0 ; 
-p95_prevalence = p95_prevalence2024m_0 ; prev_obs_uga = 0.013 ;
+p95_prevalence = p95_prevalence2024m_0 ; prev_obs_kya = 0.006 ;
 data age25m ; set f;  ageg=25; sex=1; p5_prevalence = p5_prevalence2529m_0 ; p50_prevalence = p50_prevalence2529m_0 ; 
-p95_prevalence = p95_prevalence2529m_0 ; prev_obs_uga = 0.037 ;
+p95_prevalence = p95_prevalence2529m_0 ; prev_obs_kya = 0.022 ;
 data age30m ; set f;  ageg=30; sex=1; p5_prevalence = p5_prevalence3034m_0 ;p50_prevalence = p50_prevalence3034m_0 ;
-p95_prevalence = p95_prevalence3034m_0 ;prev_obs_uga = 0.055 ;
+p95_prevalence = p95_prevalence3034m_0 ;prev_obs_kya = 0.032 ;
 data age35m ; set f;  ageg=35; sex=1; p5_prevalence = p5_prevalence3539m_0 ;p50_prevalence = p50_prevalence3539m_0 ;
-p95_prevalence = p95_prevalence3539m_0 ;prev_obs_uga = 0.092 ;
+p95_prevalence = p95_prevalence3539m_0 ;prev_obs_kya = 0.043 ;
 data age40m ; set f;  ageg=40; sex=1; p5_prevalence = p5_prevalence4044m_0 ;p50_prevalence = p50_prevalence4044m_0 ;
-p95_prevalence = p95_prevalence4044m_0 ;prev_obs_uga = 0.108 ;
+p95_prevalence = p95_prevalence4044m_0 ;prev_obs_kya = 0.063 ;
 data age45m ; set f;  ageg=45; sex=1; p5_prevalence = p5_prevalence4549m_0 ;p50_prevalence = p50_prevalence4549m_0 ;
-p95_prevalence = p95_prevalence4549m_0 ;prev_obs_uga = 0.140 ;
+p95_prevalence = p95_prevalence4549m_0 ;prev_obs_kya = 0.083 ;
 data age50m ; set f;  ageg=50; sex=1; p5_prevalence = p5_prevalence5054m_0 ; p50_prevalence = p50_prevalence5054m_0 ;
- p95_prevalence = p95_prevalence5054m_0 ;prev_obs_uga = 0.097 ;
+ p95_prevalence = p95_prevalence5054m_0 ;prev_obs_kya = 0.066 ;
 data age55m ; set f;  ageg=55; sex=1; p5_prevalence = p5_prevalence5559m_0 ;p50_prevalence = p50_prevalence5559m_0 ;
-p95_prevalence = p95_prevalence5559m_0 ;prev_obs_uga = 0.089 ;
+p95_prevalence = p95_prevalence5559m_0 ;prev_obs_kya = 0.059 ;
 data age60m ; set f;  ageg=60; sex=1; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064m_0 ;
-p95_prevalence = p95_prevalence6064m_0 ;prev_obs_uga = 0.053 ;
-
-*/
-
-
-if cald=2020;
-
-data age15w ; set f;  ageg=15; sex=2; 	p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;
-p95_prevalence = p95_prevalence1519w_0 ; prev_obs_uga = 0.017 ;
-data age20w ; set f;  ageg=20; sex=2; p5_prevalence = p5_prevalence2024w_0 ; p50_prevalence = p50_prevalence2024w_0 ; 
-p95_prevalence = p95_prevalence2024w_0 ; prev_obs_uga = 0.042 ;
-data age25w ; set f;  ageg=25; sex=2; p5_prevalence = p5_prevalence2529w_0 ;p50_prevalence = p50_prevalence2529w_0 ;
-p95_prevalence = p95_prevalence2529w_0 ;prev_obs_uga = 0.075 ;
-data age30w ; set f;  ageg=30; sex=2; p5_prevalence = p5_prevalence3034w_0 ; p50_prevalence = p50_prevalence3034w_0 ; 
-p95_prevalence = p95_prevalence3034w_0 ; prev_obs_uga = 0.114 ;
-data age35w ; set f;  ageg=35; sex=2; p5_prevalence = p5_prevalence3539w_0 ; p50_prevalence = p50_prevalence3539w_0 ; 
-p95_prevalence = p95_prevalence3539w_0 ; prev_obs_uga = 0.124 ;
-data age40w ; set f;  ageg=40; sex=2; p5_prevalence = p5_prevalence4044w_0 ;p50_prevalence = p50_prevalence4044w_0 ;
-p95_prevalence = p95_prevalence4044w_0 ;prev_obs_uga = 0.111 ;
-data age45w ; set f;  ageg=45; sex=2; p5_prevalence = p5_prevalence4549w_0 ; p50_prevalence = p50_prevalence4549w_0 ;
- p95_prevalence = p95_prevalence4549w_0 ;prev_obs_uga = 0.131 ;
-data age50w ; set f;  ageg=50; sex=2; p5_prevalence = p5_prevalence5054w_0 ; p50_prevalence = p50_prevalence5054w_0 ; 
-p95_prevalence = p95_prevalence5054w_0 ; prev_obs_uga = 0.136 ;
-data age55w ; set f;  ageg=55; sex=2; p5_prevalence = p5_prevalence5559w_0 ;p50_prevalence = p50_prevalence5559w_0 ;
-p95_prevalence = p95_prevalence5559w_0 ;prev_obs_uga = 0.089 ;
-data age60w ; set f;  ageg=60; sex=2; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064w_0 ;
-p95_prevalence = p95_prevalence6064w_0 ;prev_obs_uga = 0.060 ;
-
-
-data age15m ; set f;  ageg=15; sex=1; p5_prevalence = p5_prevalence1519m_0 ; p50_prevalence = p50_prevalence1519m_0 ; 
-p95_prevalence = p95_prevalence1519m_0 ; prev_obs_uga = 0.002 ;
-data age20m ; set f;  ageg=20; sex=1; p5_prevalence = p5_prevalence2024m_0 ; p50_prevalence = p50_prevalence2024m_0 ; 
-p95_prevalence = p95_prevalence2024m_0 ; prev_obs_uga = 0.016 ;
-data age25m ; set f;  ageg=25; sex=1; p5_prevalence = p5_prevalence2529m_0 ; p50_prevalence = p50_prevalence2529m_0 ; 
-p95_prevalence = p95_prevalence2529m_0 ; prev_obs_uga = 0.034 ;
-data age30m ; set f;  ageg=30; sex=1; p5_prevalence = p5_prevalence3034m_0 ;p50_prevalence = p50_prevalence3034m_0 ;
-p95_prevalence = p95_prevalence3034m_0 ;prev_obs_uga = 0.048 ;
-data age35m ; set f;  ageg=35; sex=1; p5_prevalence = p5_prevalence3539m_0 ;p50_prevalence = p50_prevalence3539m_0 ;
-p95_prevalence = p95_prevalence3539m_0 ;prev_obs_uga = 0.089 ;
-data age40m ; set f;  ageg=40; sex=1; p5_prevalence = p5_prevalence4044m_0 ;p50_prevalence = p50_prevalence4044m_0 ;
-p95_prevalence = p95_prevalence4044m_0 ;prev_obs_uga = 0.086 ;
-data age45m ; set f;  ageg=45; sex=1; p5_prevalence = p5_prevalence4549m_0 ;p50_prevalence = p50_prevalence4549m_0 ;
-p95_prevalence = p95_prevalence4549m_0 ;prev_obs_uga = 0.111 ;
-data age50m ; set f;  ageg=50; sex=1; p5_prevalence = p5_prevalence5054m_0 ; p50_prevalence = p50_prevalence5054m_0 ;
- p95_prevalence = p95_prevalence5054m_0 ;prev_obs_uga = 0.100 ;
-data age55m ; set f;  ageg=55; sex=1; p5_prevalence = p5_prevalence5559m_0 ;p50_prevalence = p50_prevalence5559m_0 ;
-p95_prevalence = p95_prevalence5559m_0 ;prev_obs_uga = 0.085 ;
-data age60m ; set f;  ageg=60; sex=1; p5_prevalence = p5_prevalence6064w_0 ;p50_prevalence = p50_prevalence6064m_0 ;
-p95_prevalence = p95_prevalence6064m_0 ;prev_obs_uga = 0.083 ;
+p95_prevalence = p95_prevalence6064m_0 ;prev_obs_kya = 0.056 ;
 
 
 
@@ -1631,7 +1602,7 @@ xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 v
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-  series x=ageg y=prev_obs_uga / lineattrs = (color=blue thickness = 2);
+  series x=ageg y=prev_obs_kya / lineattrs = (color=blue thickness = 2);
 where sex=2;
 run;
 
@@ -1641,7 +1612,7 @@ xaxis label			= 'Age group'		labelattrs=(size=12)  values = (15 to 60 by 5)	 	 v
 yaxis grid label	= 'Prevalence'		labelattrs=(size=12)  values = (0 to 1 by 0.05) valueattrs=(size=10);
 series  x=ageg y=p50_prevalence/	lineattrs = (color=black thickness = 2);
 band    x=ageg lower=p5_prevalence 	upper=p95_prevalence  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-series x=ageg y=prev_obs_uga / lineattrs = (color=blue thickness = 2);
+series x=ageg y=prev_obs_kya / lineattrs = (color=blue thickness = 2);
 where sex=1;
 run;
 
