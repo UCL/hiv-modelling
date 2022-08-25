@@ -11,25 +11,6 @@ data b;
   set a.l_base_uganda    ;
 
 
-
-
-
-
-
-
-* add in observed data on circumcision ;
-
-
-
-
-
-
-
-
-
-
-
-
 p_onart_vl1000_all = .;
 
 
@@ -359,6 +340,9 @@ Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
 * placeholder;
 if cald=2019.00 then do; n_tests_f_obs_uga = 0 ; n_tests_m_obs_uga = 0 ;  end;
 
+if cald=2017 then prop_m_1549_circ_obs_uga = 0.42;
+
+
 if cald=2011 then do;
 	ever_tested_w_1524_obs_uga= 0.61;
 	ever_tested_w_2529_obs_uga= 0.86;
@@ -371,7 +355,7 @@ if cald=2011 then do;
 	ever_tested_m_4049_obs_uga= 0.60;
 end;
 
-if cald=2016 then do;
+if cald=2017 then do;
 	ever_tested_w_1524_obs_uga= 0.71;
 	ever_tested_w_2529_obs_uga= 0.95;
 	ever_tested_w_3039_obs_uga= 0.92;
@@ -419,30 +403,30 @@ if cald=2015 then prevalence1549_w_obs_uga= 0.073;
 if cald=2020 then prevalence1549_w_obs_uga= 0.068;
 
 
-if cald=2016.5 then incidence1549_m_obs_uga= 0.31;
+if cald=2017 then incidence1549_m_obs_uga= 0.31;
 if cald=2020.5 then incidence1549_m_obs_uga= 0.21;
-if cald=2016.5 then incidence1549_w_obs_uga= 0.47;
+if cald=2017 then incidence1549_w_obs_uga= 0.47;
 if cald=2020.5 then incidence1549_w_obs_uga= 0.42;
 
-if cald=2016.5 then p_diag_m_obs_uga = 0.67;
-if cald=2016.5 then p_diag_w_obs_uga = 0.75;
+if cald=2017 then p_diag_m_obs_uga = 0.67;
+if cald=2017 then p_diag_w_obs_uga = 0.75;
 if cald=2020.5 then p_diag_m_obs_uga = 0.76;
 if cald=2020.5 then p_diag_w_obs_uga = 0.84;
-if cald=2016.5 then p_diag_obs_uga = 0.72;
+if cald=2017 then p_diag_obs_uga = 0.72;
 if cald=2020.5 then p_diag_obs_uga = 0.81;
 
-if cald=2016.5 then p_onart_diag_m_obs_uga = 0.87;
-if cald=2016.5 then p_onart_diag_w_obs_uga = 0.92;
+if cald=2017 then p_onart_diag_m_obs_uga = 0.87;
+if cald=2017 then p_onart_diag_w_obs_uga = 0.92;
 if cald=2020.5 then p_onart_diag_m_obs_uga = 0.95;
 if cald=2020.5 then p_onart_diag_w_obs_uga = 0.97;
-if cald=2016.5 then p_onart_diag_obs_uga = 0.90;
+if cald=2017 then p_onart_diag_obs_uga = 0.90;
 if cald=2020.5 then p_onart_diag_obs_uga = 0.96;
 
-if cald=2016.5 then p_onart_vl1000_m_obs_uga= 0.82;
-if cald=2016.5 then p_onart_vl1000_w_obs_uga= 0.85;
+if cald=2017 then p_onart_vl1000_m_obs_uga= 0.82;
+if cald=2017 then p_onart_vl1000_w_obs_uga= 0.85;
 if cald=2020.5 then p_onart_vl1000_m_obs_uga= 0.91;
 if cald=2020.5 then p_onart_vl1000_w_obs_uga= 0.93;
-if cald=2016.5 then p_onart_vl1000_obs_uga= 0.84;
+if cald=2017 then p_onart_vl1000_obs_uga= 0.84;
 if cald=2020.5 then p_onart_vl1000_obs_uga= 0.92;
 
 
@@ -1514,7 +1498,7 @@ Women 15-19   1.7   20-24  4.2   25-29  7.5  30-34  11.4  35-39  12.4   40-44  1
 
 /*
 
-if cald=2016;
+if cald=2017;
 
 data age15w ; set f;  ageg=15; sex=2; 	p5_prevalence = p5_prevalence1519w_0 ;p50_prevalence = p50_prevalence1519w_0 ;
 p95_prevalence = p95_prevalence1519w_0 ; prev_obs_uga = 0.018 ;
