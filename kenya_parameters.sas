@@ -7,6 +7,13 @@
 
 * inc_cat; 					 inc_cat = 1 ;  
 
+
+* circ_inc_rate; 			circ_inc_rate = 0.1;  
+
+* prob_birth_circ; 			prob_birth_circ = 0.21 ; * KIAS 2012;
+				
+
+
 /*
 
 * SEXUAL BEHAVIOUR;
