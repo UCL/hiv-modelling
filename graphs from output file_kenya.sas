@@ -14,27 +14,6 @@ data b;
 p_onart_vl1000_all = .;
 
 
-
-
-
-
-
-
-
-* add in observed data on circumcision ;
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 if option =0 or (prep_improvements  = 1 and option =1);
 
@@ -131,7 +110,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 57    ;
+%let nfit =  99   ;
 %let year_end = 2022.00 ;
 run;
 proc sort;by cald option ;run;
