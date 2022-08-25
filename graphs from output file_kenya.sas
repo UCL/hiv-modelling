@@ -375,6 +375,8 @@ Of adults on art, proportion on efavirenz, dolutegravir, boosted PI – men women
 * placeholder;
 if cald=2019.00 then do; n_tests_f_obs_kya = 0 ; n_tests_m_obs_kya = 0 ;  end;
 
+if cald=2012 then prop_m_1549_circ_obs_kya = 0.91;
+
 if cald=2012 then do;
 	ever_tested_w_1524_obs_kya= 0.56;
 	ever_tested_w_2524_obs_kya= 0.92;
@@ -591,6 +593,8 @@ band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparen
 
 series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=prop_m_1549_circ_obs_kya/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
