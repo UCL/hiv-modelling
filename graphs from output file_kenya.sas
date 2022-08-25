@@ -14,17 +14,6 @@ data b;
 p_onart_vl1000_all = .;
 
 
-/*
-if option =0 or (prep_improvements  = 1 and option =1);
-
-ods  html;
-proc sgplot data=b; Title    height=1.5 justify=center "incidence1549";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to 2020.5 by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'incidence1549'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
-series  x=cald y=incidence1549/	lineattrs = (color=black thickness = 2); run;
-ods html close;
-*/
-
 
 * NB: note lines below, because variable names cannot end with a number;
 log_gender_r_newp  = log(gender_r_newp);
@@ -126,7 +115,7 @@ p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past
 p_mcirc_1549m	 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
 prevalence_vg1000_   
-incidence1549m incidence1549w  n_tested n_tested_m
+incidence1564m incidence1564w  n_tested n_tested_m
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
@@ -190,7 +179,7 @@ p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past
 p_mcirc_1549m	 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
 prevalence_vg1000_   
-incidence1549m incidence1549w  n_tested n_tested_m
+incidence1564m incidence1564w  n_tested n_tested_m
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
@@ -1184,7 +1173,7 @@ band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transp
 series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 
-scatter x=cald y = p_onart_vl1000_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);;
+scatter x=cald y = p_onart_vl1000_obs_kya/ 		markerattrs = (symbol=square color=green size = 10);
 
 run;quit;
 
