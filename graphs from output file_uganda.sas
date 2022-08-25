@@ -111,7 +111,7 @@ ods html close;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 57    ;
+%let nfit = 100   ;
 %let year_end = 2022.00 ;
 run;
 proc sort;by cald option ;run;
@@ -568,6 +568,8 @@ band    x=cald lower=p5_p_mcirc_1549m_0 	upper=p95_p_mcirc_1549m_0  / transparen
 
 series  x=cald y=p50_p_mcirc_1549m_1/	lineattrs = (color=red thickness = 2);
 band    x=cald lower=p5_p_mcirc_1549m_1 	upper=p95_p_mcirc_1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=prop_m_1549_circ_obs_uga/	lineattrs = (color=blue  thickness = 3) ;
 
 run;quit;
 
