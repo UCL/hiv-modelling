@@ -1559,7 +1559,7 @@ run;
 
 proc logistic ;
 * class prevalence_vg1000;
-model incidence_lt_1p1000_x =  prop_elig_on_prep prevalence_vg1000 p_mcirc p_newp_ge1 ;
+model incidence_lt_1p1000_x =  prop_elig_on_prep prevalence_vg1000 p_mcirc p_newp_ge1 cald ;
 run;
 
 proc univariate; var p_mcirc prop_elig_on_prep; where 2022.75 <= cald < 2030; 
@@ -1586,7 +1586,7 @@ ods html close;
 proc freq; 
 tables 
 prevalence_vg1000_g * prop_elig_on_prep_g * incidence_lt_1p1000 / nopercent nocol;
-where 2022 <= cald < 2070 and p_mcirc_g=1  ;
+where 2022 <= cald < 2070 and p_mcirc_g=3  ;
 run;
 
 
