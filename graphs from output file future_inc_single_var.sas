@@ -34,7 +34,7 @@ data option_0;
 set b;
 if option ne 0 then delete;
 
-%let var = p_inf_naive   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = p_inf_diag     ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -86,14 +86,14 @@ ods html ;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of new infections for which the source had never been on ART";
+Title    height=1.5 justify=center "Proportion of new infections that come from a person with diagnosed infection";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
-label p50_p_inf_naive_0 = "median ";
+label p50_p_inf_diag_0 = "median ";
 
-series  x=cald y=p50_p_inf_naive_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_inf_naive_0 	upper=p95_p_inf_naive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_inf_diag_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_inf_diag_0 	upper=p95_p_inf_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
 
@@ -101,7 +101,7 @@ run;quit;
 
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p_inf_primary";
+Title    height=1.5 justify=center "Proportion of new infections that come from a person in primary infection";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 
@@ -114,6 +114,22 @@ run;quit;
 
 
 
+
+
+
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion of new infections for which the source had never been on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
+
+label p50_p_inf_naive_0 = "median ";
+
+series  x=cald y=p50_p_inf_naive_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_inf_naive_0 	upper=p95_p_inf_naive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
 
 
 

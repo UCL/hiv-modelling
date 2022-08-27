@@ -2402,7 +2402,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
 
-* ==========================================================================================================================================;
+* =========================================================================================================================================;
 
 
 * OPTIONS TO IMPLEMENT FROM year_i onwards;

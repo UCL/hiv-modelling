@@ -1541,6 +1541,8 @@ incidence_lt_1p1000=0; if incidence1549 < 0.1 then incidence_lt_1p1000=1;
 
 incidence_lt_1p1000_x = 1 - incidence_lt_1p1000;
 
+log_incidence = log(incidence1549 + 0.0001); 
+sqrt_incidence = sqrt(incidence1549);
 
 * ods html;
 * proc sgplot; * scatter y=incidence1549 x=prevalence_vg1000; * run;
@@ -1551,6 +1553,17 @@ proc univariate; var p_prep_adhg80; run;
 proc glm ;
 model incidence1549 =  prop_elig_on_prep  prevalence_vg1000   p_mcirc    p_newp_ge1   / solution;
 run;
+
+ods html;
+proc univariate data= x ; var sqrt_incidence; run;
+ods html close;
+
+proc genmod data= x  ;
+class run;
+model sqrt_incidence =  prop_elig_on_prep  prevalence_vg1000   p_mcirc    p_newp_ge1 / LINK=IDENTITY DIST=NORMAL;
+repeated subject=run;
+run;
+
 
 proc genmod;
 * class prevalence_vg1000;
