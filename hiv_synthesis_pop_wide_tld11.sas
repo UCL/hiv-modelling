@@ -6,6 +6,11 @@ Andrew: Are you thinking of the people that don’t know they have hiv ?  In that 
 different pattern of use – on the one hand they might be more likely to interrupt because they are not diagnosed and 
 under care but on the other hand they have self-started due to their own health concerns, which could lead to better 
 persistence  
+
+
+re-listen to presentation and feedback received 
+there are potential coding changes needed based on the thinking when writing the slides
+
 ;
 
 
