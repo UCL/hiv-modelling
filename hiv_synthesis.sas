@@ -1,5 +1,32 @@
 
 
+
+
+
+* need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
+ (but most people who are taking because have a prep/pep indication are prepared to test)
+ if status pre-pep not known then advice would be to test before stopping pep and again x weeks after 
+
+
+Create an output of p_artexp_onart
+
+Are we fully incorporating benefit of pep – so increase in the number of people with prep indication who are on prep/pep ?
+
+check are aligned to description in slides
+
+explicitly model risks such as drug drug interactions, risk of iris, neuropsychiatric toxicity 
+
+makes good sense to also consider an enhanced version of existing PrEP and PEP access which is still clinic or pharmacy based 
+but does require some contact with a person who releases the drugs after a conversation and possibly a rapid test.  
+
+
+ ; 
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -623,7 +650,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);  prep_any_strategy =4;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
