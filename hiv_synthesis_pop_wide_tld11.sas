@@ -10,6 +10,7 @@ persistence
 
 re-listen to presentation and feedback received 
 there are potential coding changes needed based on the thinking when writing the slides
+make sure all potwential harms (incl iris)
 
 ;
 
