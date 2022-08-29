@@ -3,21 +3,30 @@
 
 
 
-* need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
+* 
+
+need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
  (but most people who are taking because have a prep/pep indication are prepared to test)
  if status pre-pep not known then advice would be to test before stopping pep and again x weeks after 
+* dont think this needed on reflection 
 
+**** Create an output of p_artexp_onart * done 
 
-Create an output of p_artexp_onart
-
-Are we fully incorporating benefit of easy access to pep – so increase in the number of people with prep indication who are on prep/pep ?
+**** Are we fully incorporating benefit of easy access to pep – so increase in the number of people with prep indication who are on prep/pep ? 
+No - now done
 
 check are aligned to description in slides
 
-explicitly model risks such as drug drug interactions, risk of iris, neuropsychiatric toxicity 
+drug drug interactions, (a person prescribed a drug which interacts with tld drugs would be warned about what to do if taking tld)
+* dont think this needed on reflection 
 
-makes good sense to also consider an enhanced version of existing PrEP and PEP access which is still clinic or pharmacy based 
-but does require some contact with a person who releases the drugs after a conversation and possibly a rapid test.  
+**** risk of iris, (need to explicitly add at iris risk if start art at cd4 < 200 without being under clinical care) - * done
+
+neuropsychiatric toxicity (can think of this as incorporated in rate of stopping ?) * dont think this needed on reflection 
+
+****  also consider an enhanced version of existing PrEP and PEP access which is still clinic or pharmacy based 
+but does require some contact with a person who releases the drugs after a conversation and possibly a rapid test.  * dont think this needed on
+reflection 
 
 
  ; 
@@ -807,6 +816,8 @@ end;
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 );
 
 * pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.8 0.2); 
+
+* death_r_iris_pop_wide_tld;	death_r_iris_pop_wide_tld = 0.03 ; * sereti et al - assumed higher risk due to not in care;
 
 
 * COVID-19 ;
@@ -2088,6 +2099,8 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
 
+* if pop_wide_tld pep prep available then higher willingness due to ease of access.
+if pop_wide_tld = 1 then pref_prep_oral = pref_prep_oral + ((1 - pref_prep_oral) * inc_oral_prep_pref_pop_wide_tld);
 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 * pref_prep_inj;				pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;
@@ -2455,6 +2468,8 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do; * pop_wide_tld ;
 		pop_wide_tld = 1; 
 		%sample_uniform(prob_prep_pop_wide_tld, 0.05  0.1  0.3 );
+		%sample_uniform(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8);
+
 	end;
 
 
@@ -11146,6 +11161,9 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		if pcp_p   =1  then hiv_death_rate = hiv_death_rate*effect_pcp_p_death_rate;  
 		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
 
+		* iris risk due to starting art with very low cd4 count and not under clinical care;
+		if pop_wide_tld_prep = 1 and time0=caldate{t} and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
+
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
@@ -18147,7 +18165,7 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
-pref_prep_oral_beta_s1 prob_prep_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
 super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
@@ -20596,8 +20614,8 @@ prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_willing
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
-pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  oral_prep_eff_3tc_ten_res
-rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
+inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
+oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
