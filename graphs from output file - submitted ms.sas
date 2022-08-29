@@ -1,4 +1,8 @@
 
+
+* used for submitted manuscript;
+
+
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
