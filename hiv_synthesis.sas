@@ -14283,7 +14283,7 @@ end;
 cur_efa_cns_tox=0; if o_efa and c_cns=1 then cur_efa_cns_tox=1;
 cur_dol_cns_tox=0; if o_dol and c_cns=1 then cur_dol_cns_tox=1;
 
-if 15 <= age < 65 then do;
+if 15 <= age  then do;
 util=1; * these in order ;
 if c_tox=1 then util=util_tox;
 if cur_efa_cns_tox=1 then util=min(util,util_cns_efa_tox);
