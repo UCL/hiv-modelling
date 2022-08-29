@@ -1,0 +1,17 @@
+name: Static checks for style
+
+on:
+  pull_request:
+
+jobs:
+  check_sample:
+    runs-on: ubuntu-latest
+    name: Valid call of sample macro
+    steps:
+      # Checkout the code we are testing
+      - uses: actions/checkout@v2
+      # Setup Python
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - run: python tests/test_sas_code.py
