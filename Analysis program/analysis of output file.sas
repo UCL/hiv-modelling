@@ -59,21 +59,64 @@ incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onar
 run;
 
 
+*First part of table 4 - impact of SW program irrespective of disadvantage (below this is split into specific aspects);
+
+proc means n p50 p5 p95;var
+p_fsw_newp0__30_1	prop_sw_onprep_30_1		p_sti_sw_30_1	incidence_sw_30_1	prevalence_sw_30_1
+p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1
+incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
+
+p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
+run;
 
 
 
 
-proc means n p50 p5 p95;var incidence_sw_22 p_fsw_newp0__22 ;where sw_trans_matrix=1;run;
 
-proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=2;run;
-proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=3;run;
-proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=4;run;
-proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=5;run;
-proc means n p50 p5 p95;var incidence_sw_22_1 incidence_sw_22_2 p_fsw_newp0__22_1 p_fsw_newp0__22_2;where sw_trans_matrix=6;run;
 
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=1;run;
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=2;run;
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=3;run;
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=4;run;
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=5;run;
-proc means n p50 p5 p95;var incidence_sw_30_1 incidence_sw_30_2 p_fsw_newp0__30_1 p_fsw_newp0__30_2;where sw_trans_matrix=6;run;
+
+**Impact of specific aspects of a SW program;
+
+**Assuming SW only improves PrEP;
+data prep;
+set a.wide_fsw_16_08_22_prep;
+if incidence1549_22 <0.1 then delete;
+run;
+
+data prep1;
+set prep;
+proc means n p50 p5 p95;var
+p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
+run;
+
+**Assuming SW only improves condomless sex;
+data newp;
+set a.wide_fsw_16_08_22_newp;
+if incidence1549_22 <0.1 then delete;
+run;
+
+data newp1;
+set newp;
+proc means n p50 p5 p95;var
+p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
+run;
+
+**Assuming SW only improves ART retention;
+data art;
+set a.wide_fsw_16_08_22_art;
+if incidence1549_22 <0.1 then delete;
+run;
+
+data art1;
+set art;
+proc means n p50 p5 p95;var
+p_fsw_newp0__30_2	prop_sw_onprep_30_2		p_sti_sw_30_2	incidence_sw_30_2	prevalence_sw_30_2
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
+incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2;
+run;
