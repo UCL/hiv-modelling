@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\log1";
 
 data b;
-set a.l_pop_wide_tld_a_y ;
+set a.l_pop_wide_tld   ;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -18,10 +18,9 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_onart_vl1000_ = p_onart_vl1000;
 n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
-p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
 
-%let single_var = p_elig_hivneg_onprep ;
+%let single_var = n_death_hiv  ;
 
 
 /*
@@ -41,7 +40,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 4000    ;
+%let nfit = 344    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -267,7 +266,9 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.10  by 0
   
 run;quit;
 
-  
+ 
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV negative adults taking ARVs";
@@ -310,7 +311,7 @@ run;quit;
 
 * p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj ;
 
-
+  
 
 ods html;
 proc sgplot data=d; 
@@ -332,7 +333,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -353,7 +353,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   
 run;quit;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -438,6 +438,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = (50 to 100   by 
 run;quit;
 
 
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_onart_diag";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -455,6 +456,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
   band    x=cald lower=p5_p_onart_diag_2 	upper=p95_p_onart_diag_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
 
 run;quit;
+
 
 
 ods html;
@@ -475,7 +477,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
   band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
  
 run;quit;
-
 
 
 ods html;
@@ -536,7 +537,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
  
 run;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -557,7 +558,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -598,6 +599,8 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
+*/
+
  
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
@@ -617,6 +620,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 
 run;
 
+
+/*
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
@@ -765,7 +770,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -788,7 +793,7 @@ run;quit;
 
 ods html close;
 
-
+/*
  
 ods html;
 proc sgplot data=d; 

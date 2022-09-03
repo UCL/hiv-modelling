@@ -1,10 +1,17 @@
 
 
+
+
 *
 
-mainly assume low level of prob_tld_prep_if_untested 
+ prob_tld_prep_if_untested
+
+investigate why high proportion starting tld without prep indication even when level of this is low
 
 ;
+
+
+
 
 
 
@@ -33,6 +40,7 @@ neuropsychiatric toxicity (can think of this as incorporated in rate of stopping
 but does require some contact with a person who releases the drugs after a conversation and possibly a rapid test.  * dont think this needed on
 reflection 
 
+* mainly assume low level of prob_tld_prep_if_untested 
 
  ; 
 
@@ -813,7 +821,7 @@ end;
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.05 0.1 );
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.02 );
 
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
@@ -4790,7 +4798,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
 			r=rand('uniform'); a = rand('uniform'); 
 			if pop_wide_tld_selective_hiv = 1 and hiv ne 1 then a = a * 2; 
-			if (prep_oral_willing=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
+			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
 			then do ;		
 * ts1m ; 
 				pop_wide_tld_prep=1;  			
@@ -19421,6 +19429,8 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 
+/*
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
@@ -19544,6 +19554,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
+*/
 
 data r1; set a      ;
 
@@ -19631,6 +19642,8 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
+
+/*
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
@@ -19755,7 +19768,7 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
 
-
+*/
 
 
 data r1; set a     ;
@@ -19845,6 +19858,8 @@ data r1; set a     ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=2);
+
+/*
 
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=2);
@@ -19969,7 +19984,7 @@ data r1; set a     ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
 
-
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
