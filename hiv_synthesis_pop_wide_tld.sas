@@ -821,7 +821,7 @@ end;
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.001 0.005 0.01 0.02 );
+* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.0 0.001 0.01 );
 
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
@@ -4801,7 +4801,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
 			then do ;		
 * ts1m ; 
-				pop_wide_tld_prep=1;  			
+				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then ev_pop_wide_tld_prep_not_eli = 1;
 				prep_any=1;		prep_oral_start_date=caldate{t};	
 				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
 			end;
@@ -4812,12 +4812,12 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 
 	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
 			r=rand('uniform');	
-			if r < (1-x_stop_tld) then do; 
+			if r < (1-x_stop_tld) and (prep_any_elig =1 or ev_pop_wide_tld_prep_not_eli = 1) then do; 
 				pop_wide_tld_prep=1; 				
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
 				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
 			end;
-			if r >= (1-x_stop_tld) then do; 
+			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and ev_pop_wide_tld_prep_not_eli ne 1) then do; 
 				pop_wide_tld_prep=0;	
 				stop_prep_any_choice=1;  
 				stop_prep_oral_choice=1; 
@@ -19640,6 +19640,7 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=1);
 
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=1);
@@ -19762,8 +19763,6 @@ data r1; set a      ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
-
-
 
 
 data r1; set a     ;
@@ -19976,7 +19975,6 @@ data r1; set a     ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
-
 
 
 

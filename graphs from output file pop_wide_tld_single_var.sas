@@ -20,7 +20,8 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 
 
-%let single_var = n_death_hiv  ;
+%let single_var = p_pop_tld_neg_prep_inel  ;
+
 
 
 /*
@@ -204,7 +205,7 @@ ods html ;
 */
 
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -226,6 +227,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -599,7 +601,6 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
-*/
 
  
 proc sgplot data=d; 
@@ -621,7 +622,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 run;
 
 
-/*
+
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
