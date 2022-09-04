@@ -2,12 +2,12 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
-  proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
+  proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\log1";
 
 data b;
-set a.l_pop_wide_tld11_with_lost_y ;
+set a.l_pop_wide_tld   ;
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
 n_k65m = p_k65m * n_hiv;
@@ -18,10 +18,12 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_onart_vl1000_ = p_onart_vl1000;
 n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
-p_popwidetld_prep_inelig = p_pop_wide_tld_neg_prep_inelig;
 
 
-%let single_var = n_death_hiv    ;
+%let single_var = p_pop_tld_neg_prep_inel  ;
+
+
+if prob_tld_prep_if_untested = 0;
 
 
 /*
@@ -41,7 +43,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 4000    ;
+%let nfit = 344    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -185,57 +187,10 @@ run;
 
 
 
-data option_3;
-set b;
-if option =3;
-
-%let var = &single_var ; 
-run;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_3;
-%let p25_var = p25_&var_3;
-%let p75_var = p75_&var_3;
-%let p5_var = p5_&var_3;
-%let p95_var = p95_&var_3;
-%let p50_var = median_&var_3;
-%let mean_var = mean_&var_3;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_3 out=l&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data l&count;set l&count;***creates one dataset per variable;
-p25_&varb._3  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._3 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._3 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._3 = median(of &varb.1-&varb.&nfit);
-mean_&varb._3 = mean(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._3 p95_&varb._3 p50_&varb._3 p25_&varb._3 p75_&varb._3 mean_&varb._3;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  ll&count;quit;run;
-%end;
-%mend;
-
-
-%option_3;
-run;
-
-
-
-
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1  h1  k1  l1;
+merge g1  h1  k1    ;
 by cald;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
@@ -243,6 +198,80 @@ ods html ;
 
 
 /*
+* p_pop_wide_tld_hiv ;			p_pop_wide_tld_hiv = s_pop_wide_tld_hiv / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_hiv ;			n_pop_wide_tld_hiv = n_pop_wide_tld_hiv * &sf ;
+* p_pop_wide_tld_prep_elig ;	p_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig / s_pop_wide_tld_prep ;
+* n_pop_wide_tld_prep_elig ;	n_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig * &sf ;
+* p_pop_tld_neg_prep_inel;	p_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig / s_pop_wide_tld_prep ;
+* n_pop_tld_neg_prep_inel;	n_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig * &sf ;
+*/
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of hiv negative people taking tld, proportion without a prevention indication (so no indication)" ;
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
+
+  label p50_p_pop_tld_neg_prep_inel_0 = "No PrEP (median) ";
+  label p50_p_pop_tld_neg_prep_inel_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_tld_neg_prep_inel_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_0 	upper=p95_p_pop_tld_neg_prep_inel_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_1 	upper=p95_p_pop_tld_neg_prep_inel_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_tld_neg_prep_inel_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_tld_neg_prep_inel_2 	upper=p95_p_pop_tld_neg_prep_inel_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
+
+
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of people without an hiv diagnosis taking tld, proportion with a prevention indication";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1 ) valueattrs=(size=10);
+
+  label p50_p_pop_wide_tld_prep_elig_0 = "No PrEP (median) ";
+  label p50_p_pop_wide_tld_prep_elig_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_wide_tld_prep_elig_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_0 	upper=p95_p_pop_wide_tld_prep_elig_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_1 	upper=p95_p_pop_wide_tld_prep_elig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_prep_elig_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_2 	upper=p95_p_pop_wide_tld_prep_elig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "of people without an hiv diagnosis taking tld, proportion with HIV";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.10  by 0.01) valueattrs=(size=10);
+
+  label p50_p_pop_wide_tld_hiv_0 = "No PrEP (median) ";
+  label p50_p_pop_wide_tld_hiv_1 = "Oral PrEP only (median) ";
+  label p50_p_pop_wide_tld_hiv_2 = "Accessible TLD/PEP (median) ";
+
+  series  x=cald y=p50_p_pop_wide_tld_hiv_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_0 	upper=p95_p_pop_wide_tld_hiv_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_hiv_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_1 	upper=p95_p_pop_wide_tld_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_pop_wide_tld_hiv_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_pop_wide_tld_hiv_2 	upper=p95_p_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+  
+run;quit;
+
+ 
+
 
 ods html;
 proc sgplot data=d; 
@@ -252,8 +281,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 
   label p50_prop_hivneg_onprep_0 = "No PrEP (median) ";
   label p50_prop_hivneg_onprep_1 = "Oral PrEP only (median) ";
-  label p50_prop_hivneg_onprep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_prop_hivneg_onprep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_prop_hivneg_onprep_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_prop_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_prop_hivneg_onprep_0 	upper=p95_prop_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
@@ -261,12 +289,10 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
   band    x=cald lower=p5_prop_hivneg_onprep_1 	upper=p95_prop_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prop_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prop_hivneg_onprep_2 	upper=p95_prop_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prop_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prop_hivneg_onprep_3 	upper=p95_prop_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
-  
+
 
 ods html;
 proc sgplot data=d; 
@@ -276,23 +302,20 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15  by 0
 
   label p50_prop_1564_hivneg_onprep_0 = "No PrEP (median) ";
   label p50_prop_1564_hivneg_onprep_1 = "Oral PrEP only (median) ";
-  label p50_prop_1564_hivneg_onprep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_prop_1564_hivneg_onprep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_prop_1564_hivneg_onprep_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_prop_1564_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_0 	upper=p95_prop_1564_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_prop_1564_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_1 	upper=p95_prop_1564_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prop_1564_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prop_1564_hivneg_onprep_2 	upper=p95_prop_1564_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prop_1564_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prop_1564_hivneg_onprep_3 	upper=p95_prop_1564_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 * p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj ;
 
-
+  
 
 ods html;
 proc sgplot data=d; 
@@ -302,18 +325,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
   label p50_p_prep_elig_onprep_inj_0 = "No PrEP (median) ";
   label p50_p_prep_elig_onprep_inj_1 = "Oral PrEP only (median) ";
-  label p50_p_prep_elig_onprep_inj_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_prep_elig_onprep_inj_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_prep_elig_onprep_inj_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_p_prep_elig_onprep_inj_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_p_prep_elig_onprep_inj_0 	upper=p95_p_prep_elig_onprep_inj_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_prep_elig_onprep_inj_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_prep_elig_onprep_inj_1 	upper=p95_p_prep_elig_onprep_inj_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_prep_elig_onprep_inj_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_prep_elig_onprep_inj_2 	upper=p95_p_prep_elig_onprep_inj_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_prep_elig_onprep_inj_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_prep_elig_onprep_inj_3 	upper=p95_p_prep_elig_onprep_inj_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 
@@ -326,18 +346,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
   label p50_p_elig_hivneg_onprep_0 = "No PrEP (median) ";
   label p50_p_elig_hivneg_onprep_1 = "Oral PrEP only (median) ";
-  label p50_p_elig_hivneg_onprep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_elig_hivneg_onprep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_elig_hivneg_onprep_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_p_elig_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_0 	upper=p95_p_elig_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_elig_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_1 	upper=p95_p_elig_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_elig_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_2 	upper=p95_p_elig_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_3 	upper=p95_p_elig_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 
@@ -350,18 +367,15 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
   label p50_p_newp_prep_hivneg_0 = "No PrEP (median) ";
   label p50_p_newp_prep_hivneg_1 = "Oral PrEP only (median) ";
-  label p50_p_newp_prep_hivneg_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_newp_prep_hivneg_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_newp_prep_hivneg_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_p_newp_prep_hivneg_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_p_newp_prep_hivneg_0 	upper=p95_p_newp_prep_hivneg_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_newp_prep_hivneg_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_newp_prep_hivneg_1 	upper=p95_p_newp_prep_hivneg_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_newp_prep_hivneg_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_newp_prep_hivneg_2 	upper=p95_p_newp_prep_hivneg_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_newp_prep_hivneg_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_newp_prep_hivneg_3 	upper=p95_p_newp_prep_hivneg_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 
@@ -374,18 +388,15 @@ yaxis grid label	= '$m per year' 	labelattrs=(size=12)  values = (0 to 250   by 
 
   label p50_dcost_0 = "No PrEP (median) ";
   label p50_dcost_1 = "Oral PrEP only (median) ";
-  label p50_dcost_2 = "Oral and cab-la PrEP (median) ";
-  label p50_dcost_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_dcost_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_dcost_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_dcost_0 	upper=p95_dcost_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_dcost_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_dcost_1 	upper=p95_dcost_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_dcost_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_dcost_2 	upper=p95_dcost_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_dcost_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_dcost_3 	upper=p95_dcost_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 
@@ -398,18 +409,15 @@ yaxis grid label	= '$m per year' 	labelattrs=(size=12)  values = (0 to 500   by 
 
   label p50_cost_0 = "No PrEP (median) ";
   label p50_cost_1 = "Oral PrEP only (median) ";
-  label p50_cost_2 = "Oral and cab-la PrEP (median) ";
-  label p50_cost_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_cost_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_cost_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_cost_0 	upper=p95_cost_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_cost_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_cost_1 	upper=p95_cost_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_cost_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_cost_2 	upper=p95_cost_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_cost_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_cost_3 	upper=p95_cost_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
 
 
@@ -422,19 +430,17 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = (50 to 100   by 
 
   label p50_p_diag_0 = "No PrEP (median) ";
   label p50_p_diag_1 = "Oral PrEP only (median) ";
-  label p50_p_diag_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_diag_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_diag_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_p_diag_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_diag_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_diag_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_diag_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+  
 run;quit;
+
 
 
 proc sgplot data=d; 
@@ -444,19 +450,17 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 
   label p50_p_onart_diag_0 = "No PrEP (median) ";
   label p50_p_onart_diag_1 = "Oral PrEP only (median) ";
-  label p50_p_onart_diag_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_onart_diag_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_onart_diag_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_p_onart_diag_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_onart_diag_0 	upper=p95_p_onart_diag_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_diag_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_onart_diag_1 	upper=p95_p_onart_diag_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_diag_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_onart_diag_2 	upper=p95_p_onart_diag_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_diag_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_onart_diag_3 	upper=p95_p_onart_diag_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
+
 
 
 ods html;
@@ -467,20 +471,16 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 
   label p50_p_onart_0 = "No PrEP (median) ";
   label p50_p_onart_1 = "Oral PrEP only (median) ";
-  label p50_p_onart_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_onart_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_onart_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_p_onart_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_onart_0 	upper=p95_p_onart_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_onart_1 	upper=p95_p_onart_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_onart_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_onart_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_onart_3 	upper=p95_p_onart_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;quit;
-
 
 
 ods html;
@@ -491,8 +491,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 0.3 by  
 
   label p50_p_iime_0 = "No PrEP (median) ";
   label p50_p_iime_1 = "Oral PrEP only (median) ";
-  label p50_p_iime_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_iime_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_p_iime_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_p_iime_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_iime_0 	upper=p95_p_iime_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -500,8 +499,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 0.3 by  
   band    x=cald lower=p5_p_iime_1 	upper=p95_p_iime_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_iime_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_iime_2 	upper=p95_p_iime_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_iime_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_iime_3 	upper=p95_p_iime_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
@@ -514,19 +511,15 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0   to 300000 b
 
   label p50_n_cur_res_cab_0 = "No PrEP (median) ";
   label p50_n_cur_res_cab_1 = "Oral PrEP only (median) ";
-  label p50_n_cur_res_cab_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_cur_res_cab_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_n_cur_res_cab_2 = "Accessible TLD/PEP (median) ";
+  
   series  x=cald y=p50_n_cur_res_cab_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_cur_res_cab_0 	upper=p95_n_cur_res_cab_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_cur_res_cab_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_cur_res_cab_1 	upper=p95_n_cur_res_cab_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_cur_res_cab_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_cur_res_cab_2 	upper=p95_n_cur_res_cab_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_cur_res_cab_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_cur_res_cab_3 	upper=p95_n_cur_res_cab_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
-run;quit;
+ run;quit;
 
 
 ods html;
@@ -537,19 +530,17 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
   label p50_p_vl1000__0 = "No PrEP (median) ";
   label p50_p_vl1000__1 = "Oral PrEP only (median) ";
-  label p50_p_vl1000__2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_vl1000__3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_vl1000__2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_p_vl1000__0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_vl1000__0 	upper=p95_p_vl1000__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_vl1000__1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_vl1000__1 	upper=p95_p_vl1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_vl1000__2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_vl1000__2 	upper=p95_p_vl1000__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_vl1000__3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_vl1000__3 	upper=p95_p_vl1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;
+
 
 
 ods html;
@@ -560,17 +551,14 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
   label p50_incidence1549__0 = "No PrEP (median) ";
   label p50_incidence1549__1 = "Oral PrEP only (median) ";
-  label p50_incidence1549__2 = "Oral and cab-la PrEP (median) ";
-  label p50_incidence1549__3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_incidence1549__2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_incidence1549__0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_incidence1549__1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_incidence1549__2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -584,17 +572,14 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     
 
   label p50_prevalence1549__0 = "No PrEP (median) ";
   label p50_prevalence1549__1 = "Oral PrEP only (median) ";
-  label p50_prevalence1549__2 = "Oral and cab-la PrEP (median) ";
-  label p50_prevalence1549__3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_prevalence1549__2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prevalence1549__2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence1549__3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -607,8 +592,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
   label p50_prevalence_vg1000__0 = "No PrEP (median) ";
   label p50_prevalence_vg1000__1 = "Oral PrEP only (median) ";
-  label p50_prevalence_vg1000__2 = "Oral and cab-la PrEP (median) ";
-  label p50_prevalence_vg1000__3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_prevalence_vg1000__2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -616,12 +600,10 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
   band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prevalence_vg1000__2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prevalence_vg1000__2 	upper=p95_prevalence_vg1000__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prevalence_vg1000__3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prevalence_vg1000__3 	upper=p95_prevalence_vg1000__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
-*/
+
  
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
@@ -630,8 +612,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 
   label p50_n_death_hiv_0 = "No PrEP (median) ";
   label p50_n_death_hiv_1 = "Oral PrEP only (median) ";
-  label p50_n_death_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_death_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_n_death_hiv_2 = "Accessible TLD/PEP (median)  ";
 
   series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -639,13 +620,11 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
   band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_death_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_death_hiv_3 	upper=p95_n_death_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
 
-/*
+
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
@@ -658,18 +637,14 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 200000   
 
   label p50_n_cd4_lt200__0 = "No PrEP (median) ";
   label p50_n_cd4_lt200__1 = "Oral PrEP only (median) ";
-  label p50_n_cd4_lt200__2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_cd4_lt200__3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
-  series  x=cald y=p50_n_cd4_lt200__0/	lineattrs = (color=ggr   thickness = 3);
+  label p50_n_cd4_lt200__2 = "Accessible TLD/PEP (median) ";
+   series  x=cald y=p50_n_cd4_lt200__0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_cd4_lt200__0 	upper=p95_n_cd4_lt200__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_cd4_lt200__1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_cd4_lt200__1 	upper=p95_n_cd4_lt200__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_cd4_lt200__2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_cd4_lt200__2 	upper=p95_n_cd4_lt200__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_cd4_lt200__3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_cd4_lt200__3 	upper=p95_n_cd4_lt200__3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;
 
 
@@ -681,19 +656,15 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 5    by  
 
   label p50_aids_death_rate_0 = "No PrEP (median) ";
   label p50_aids_death_rate_1 = "Oral PrEP only (median) ";
-  label p50_aids_death_rate_2 = "Oral and cab-la PrEP (median) ";
-  label p50_aids_death_rate_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_aids_death_rate_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_aids_death_rate_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_aids_death_rate_0 	upper=p95_aids_death_rate_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_aids_death_rate_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_aids_death_rate_1 	upper=p95_aids_death_rate_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_aids_death_rate_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_aids_death_rate_2 	upper=p95_aids_death_rate_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_aids_death_rate_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_aids_death_rate_3 	upper=p95_aids_death_rate_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
-run;
+ run;
 
 
 
@@ -705,18 +676,14 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 5    by  
 
   label p50_death_rate_hiv_0 = "No PrEP (median) ";
   label p50_death_rate_hiv_1 = "Oral PrEP only (median) ";
-  label p50_death_rate_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label p50_death_rate_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_death_rate_hiv_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_death_rate_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_0 	upper=p95_death_rate_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_1 	upper=p95_death_rate_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_2 	upper=p95_death_rate_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_death_rate_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_death_rate_hiv_3 	upper=p95_death_rate_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
 run;
 
 
@@ -729,17 +696,14 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.5  by  
 
   label p50_death_rate_hiv_all_0 = "No PrEP (median) ";
   label p50_death_rate_hiv_all_1 = "Oral PrEP only (median) ";
-  label p50_death_rate_hiv_all_2 = "Oral and cab-la PrEP (median) ";
-  label p50_death_rate_hiv_all_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_death_rate_hiv_all_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_death_rate_hiv_all_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_all_0 	upper=p95_death_rate_hiv_all_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_all_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_all_1 	upper=p95_death_rate_hiv_all_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_death_rate_hiv_all_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_death_rate_hiv_all_2 	upper=p95_death_rate_hiv_all_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_death_rate_hiv_all_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_death_rate_hiv_all_3 	upper=p95_death_rate_hiv_all_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -753,18 +717,15 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
 
   label p50_n_pop_wide_tld_prep_0 = "No PrEP (median) ";
   label p50_n_pop_wide_tld_prep_1 = "Oral PrEP only (median) ";
-  label p50_n_pop_wide_tld_prep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_pop_wide_tld_prep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_n_pop_wide_tld_prep_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_n_pop_wide_tld_prep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_prep_0 	upper=p95_n_pop_wide_tld_prep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_prep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_prep_1 	upper=p95_n_pop_wide_tld_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_prep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_prep_2 	upper=p95_n_pop_wide_tld_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_pop_wide_tld_prep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_pop_wide_tld_prep_3 	upper=p95_n_pop_wide_tld_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;quit;
 
   
@@ -778,8 +739,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
 
   label p50_n_onart_0 = "No PrEP (median) ";
   label p50_n_onart_1 = "Oral PrEP only (median) ";
-  label p50_n_onart_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_onart_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_n_onart_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_n_onart_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_n_onart_0 	upper=p95_n_onart_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
@@ -787,8 +747,6 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
   band    x=cald lower=p5_n_onart_1 	upper=p95_n_onart_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_onart_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_onart_2 	upper=p95_n_onart_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_onart_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_onart_3 	upper=p95_n_onart_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
@@ -802,23 +760,20 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0
 
   label p50_prop_art_or_prep_0 = "No PrEP (median) ";
   label p50_prop_art_or_prep_1 = "Oral PrEP only (median) ";
-  label p50_prop_art_or_prep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_prop_art_or_prep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_prop_art_or_prep_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_prop_art_or_prep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_prop_art_or_prep_0 	upper=p95_prop_art_or_prep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_prop_art_or_prep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_prop_art_or_prep_1 	upper=p95_prop_art_or_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_prop_art_or_prep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_prop_art_or_prep_2 	upper=p95_prop_art_or_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_prop_art_or_prep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_prop_art_or_prep_3 	upper=p95_prop_art_or_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -828,23 +783,20 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 3000000  by 10
 
   label p50_n_art_or_prep_0 = "No PrEP (median) ";
   label p50_n_art_or_prep_1 = "Oral PrEP only (median) ";
-  label p50_n_art_or_prep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_art_or_prep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_n_art_or_prep_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_n_art_or_prep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_n_art_or_prep_0 	upper=p95_n_art_or_prep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_art_or_prep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_art_or_prep_1 	upper=p95_n_art_or_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_art_or_prep_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_art_or_prep_2 	upper=p95_n_art_or_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_art_or_prep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_art_or_prep_3 	upper=p95_n_art_or_prep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
-
+/*
  
 ods html;
 proc sgplot data=d; 
@@ -854,8 +806,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000   by 1
 
   label p50_n_prep_inj_0 = "No PrEP (median) ";
   label p50_n_prep_inj_1 = "Oral PrEP only (median) ";
-  label p50_n_prep_inj_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_prep_inj_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_n_prep_inj_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_n_prep_inj_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_n_prep_inj_0 	upper=p95_n_prep_inj_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
@@ -863,9 +814,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000   by 1
   band    x=cald lower=p5_n_prep_inj_1 	upper=p95_n_prep_inj_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_prep_inj_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_prep_inj_2 	upper=p95_n_prep_inj_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_prep_inj_3 	upper=p95_n_prep_inj_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;quit;
 
 ods html close;
@@ -879,8 +828,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 320000   
 
   label p50_n_death_hivneg_anycause_0 = "No PrEP (median) ";
   label p50_n_death_hivneg_anycause_1 = "Oral PrEP only (median) ";
-  label p50_n_death_hivneg_anycause_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_death_hivneg_anycause_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_n_death_hivneg_anycause_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_n_death_hivneg_anycause_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_death_hivneg_anycause_0 	upper=p95_n_death_hivneg_anycause_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -888,8 +836,6 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 320000   
   band    x=cald lower=p5_n_death_hivneg_anycause_1 	upper=p95_n_death_hivneg_anycause_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_death_hivneg_anycause_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_death_hivneg_anycause_2 	upper=p95_n_death_hivneg_anycause_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hivneg_anycause_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_death_hivneg_anycause_3 	upper=p95_n_death_hivneg_anycause_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -904,18 +850,15 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1000    by  1
 
   label mean_n_started_prep_inj_hiv_0 = "No PrEP (median) ";
   label mean_n_started_prep_inj_hiv_1 = "Oral PrEP only (median) ";
-  label mean_n_started_prep_inj_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label mean_n_started_prep_inj_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label mean_n_started_prep_inj_hiv_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=mean_n_started_prep_inj_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_started_prep_inj_hiv_0 	upper=p95_n_started_prep_inj_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_inj_hiv_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_started_prep_inj_hiv_1 	upper=p95_n_started_prep_inj_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_inj_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_started_prep_inj_hiv_2 	upper=p95_n_started_prep_inj_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=mean_n_started_prep_inj_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_started_prep_inj_hiv_3 	upper=p95_n_started_prep_inj_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;
 
 
@@ -927,17 +870,14 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 10000   by  1
 
   label mean_n_started_prep_any_hiv_0 = "No PrEP (median) ";
   label mean_n_started_prep_any_hiv_1 = "Oral PrEP only (median) ";
-  label mean_n_started_prep_any_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label mean_n_started_prep_any_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label mean_n_started_prep_any_hiv_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=mean_n_started_prep_any_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_started_prep_any_hiv_0 	upper=p95_n_started_prep_any_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_any_hiv_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_started_prep_any_hiv_1 	upper=p95_n_started_prep_any_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=mean_n_started_prep_any_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_started_prep_any_hiv_2 	upper=p95_n_started_prep_any_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=mean_n_started_prep_any_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_started_prep_any_hiv_3 	upper=p95_n_started_prep_any_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -949,17 +889,14 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 500000   by  
 
   label p50_n_pop_wide_tld_hiv_0 = "No PrEP (median) ";
   label p50_n_pop_wide_tld_hiv_1 = "Oral PrEP only (median) ";
-  label p50_n_pop_wide_tld_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label p50_n_pop_wide_tld_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_n_pop_wide_tld_hiv_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_n_pop_wide_tld_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_hiv_0 	upper=p95_n_pop_wide_tld_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_hiv_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_hiv_1 	upper=p95_n_pop_wide_tld_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_n_pop_wide_tld_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_n_pop_wide_tld_hiv_2 	upper=p95_n_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_n_pop_wide_tld_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_n_pop_wide_tld_hiv_3 	upper=p95_n_pop_wide_tld_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -972,8 +909,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
 
   label p50_p_pop_wide_tld_hiv_0 = "No PrEP (median) ";
   label p50_p_pop_wide_tld_hiv_1 = "Oral PrEP only (median) ";
-  label p50_p_pop_wide_tld_hiv_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_pop_wide_tld_hiv_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_p_pop_wide_tld_hiv_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_p_pop_wide_tld_hiv_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_hiv_0 	upper=p95_p_pop_wide_tld_hiv_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -981,8 +917,6 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
   band    x=cald lower=p5_p_pop_wide_tld_hiv_1 	upper=p95_p_pop_wide_tld_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_pop_wide_tld_hiv_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_hiv_2 	upper=p95_p_pop_wide_tld_hiv_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_pop_wide_tld_hiv_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_pop_wide_tld_hiv_3 	upper=p95_p_pop_wide_tld_hiv_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;
 
@@ -995,18 +929,15 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 1        by  
 
   label p50_p_pop_wide_tld_prep_elig_0 = "No PrEP (median) ";
   label p50_p_pop_wide_tld_prep_elig_1 = "Oral PrEP only (median) ";
-  label p50_p_pop_wide_tld_prep_elig_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_pop_wide_tld_prep_elig_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
-
+  label p50_p_pop_wide_tld_prep_elig_2 = "Accessible TLD/PEP (median) ";
+ 
   series  x=cald y=p50_p_pop_wide_tld_prep_elig_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_0 	upper=p95_p_pop_wide_tld_prep_elig_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
   series  x=cald y=p50_p_pop_wide_tld_prep_elig_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_1 	upper=p95_p_pop_wide_tld_prep_elig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_pop_wide_tld_prep_elig_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_2 	upper=p95_p_pop_wide_tld_prep_elig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_pop_wide_tld_prep_elig_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_pop_wide_tld_prep_elig_3 	upper=p95_p_pop_wide_tld_prep_elig_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;
 
 
@@ -1017,8 +948,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = (0 to 1        by  0
 
   label p50_p_popwidetld_prep_inelig_0 = "No PrEP (median) ";
   label p50_p_popwidetld_prep_inelig_1 = "Oral PrEP only (median) ";
-  label p50_p_popwidetld_prep_inelig_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_popwidetld_prep_inelig_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_p_popwidetld_prep_inelig_2 = "Accessible TLD/PEP (median) ";
 
   series  x=cald y=p50_p_popwidetld_prep_inelig_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_p_popwidetld_prep_inelig_0 	upper=p95_p_popwidetld_prep_inelig_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
@@ -1026,12 +956,10 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = (0 to 1        by  0
   band    x=cald lower=p5_p_popwidetld_prep_inelig_1 	upper=p95_p_popwidetld_prep_inelig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
   series  x=cald y=p50_p_popwidetld_prep_inelig_2/	lineattrs = (color=viyg thickness = 3);
   band    x=cald lower=p5_p_popwidetld_prep_inelig_2 	upper=p95_p_popwidetld_prep_inelig_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_popwidetld_prep_inelig_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_popwidetld_prep_inelig_3 	upper=p95_p_popwidetld_prep_inelig_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
-
+ 
 run;
 
-
+*/
 
 
 ods html close;
