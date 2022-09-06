@@ -1,42 +1,30 @@
-* options user="/folders/myfolders/";
+libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base";
+data a;
+set a.malawi_23_08_22;
+run;
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\base_out\";
-
-  data a.base_03_12_21;   set b.out:;
-
-
-/** show the contents of the input SAS file */
-* proc contents data=a.hiv_synthesis_base;
-*	title "Compressed SAS Input Data"
-*run;
-
-data g; set  a.base_03_12_21;
+proc freq;table run;where cald=2030;run;
 
 
-proc sort data=g; 
-by run cald option;run;
 
 
-* calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
-
-set g ;
-
-if cald=2021.5;
+set a;
+ 
+if cald=2022;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
-proc sort; by run;
-*With the following command we can change only here instead of in all the lines below,
-in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2021;
+sf_2022 = 10000000 / s_alive;
+keep run sf_2022;
+proc sort; by run;run;
+
+
+%let sf=sf_2022;
+
 
 data y; 
-merge g sf;
+merge a sf;
 by run ;
-
 
 * preparatory code ;
 
@@ -54,179 +42,6 @@ s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  
 
 s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
 s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
-
-*r_bir_w_infected_child_ = rate_birth_with_infected_child_;
-
-
-*reg_option = s_reg_option / s_n;
-
-* ================================================================================= ;
-
-
-* discount rate;
-
-* ================================================================================= ;
-
-* discount rate is 3%; 
-* note discounting is from 2021 - no adjustment needed;
-* ts1m - this code needs to change for ts1m;
-
-%let year_start_disc=2022.5;
-discount_3py = 1/(1.03**(cald-&year_start_disc));
-discount_10py = 1/(1.10**(cald-&year_start_disc));
-*The following can be changed if we want instead 10% discount rate;
-%let discount=discount_3py;
-
-
-* ================================================================================= ;
-
-
-
-
-
-* dalys and life years;
-
-* ================================================================================= ;
-
-ly = s_ly * &sf;
-dly = s_dly * &sf;
-
-s_ddaly = s_dead_ddaly + s_live_ddaly;
-
-dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
-*  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
-*  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
-
-ddaly = s_ddaly * &sf * 4;
-
-
-* sensitivity analysis;
-* dead_ddaly_ntd = dead_ddaly_ntd * (0.0061 / 0.0022) ; 
-
-
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * &sf * 4; * odabe ;
-
-ddaly_mtct = s_ddaly_mtct * &sf * 4;
-
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * &sf * 4; * napd;
-
-ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
-
-ddaly_ac_ntd_mtct_odabe = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe ;
-
-ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_death;
-
-ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe + ddaly_non_aids_pre_death;
-
-ddaly_all = ddaly_ntd_mtct_odab_napd;
-
-ddaly_80 = (s_live_ddaly_80 + s_dead_ddaly_80) * &sf * 4;
-
-* ================================================================================= ;
-
-/*
-proc print; var cald  run option ddaly_ntd_mtct_odab_napd  ddaly  dead_ddaly_ntd  ddaly_mtct  dead_ddaly_odabe   
-ddaly_non_aids_pre_death;
-where cald = 2021;
-run;
-*/
-
-
-
-* costs ;
-
-* ================================================================================= ;
-
-* all costs expressed as $ millions per year in 2018 USD;
-
-* ts1m - 12 instead of 4; 
-
-dzdv_cost = s_cost_zdv * &discount * &sf * 4 / 1000;
-dten_cost = s_cost_ten * &discount * &sf * 4 / 1000;
-d3tc_cost = s_cost_3tc * &discount * &sf * 4 / 1000; 
-dnev_cost = s_cost_nev * &discount * &sf * 4 / 1000;
-dlpr_cost = s_cost_lpr * &discount * &sf * 4 / 1000;
-ddar_cost = s_cost_dar * &discount * &sf * 4 / 1000;
-dtaz_cost = s_cost_taz * &discount * &sf * 4 / 1000;
-defa_cost = s_cost_efa * &discount * &sf * 4 / 1000;
-ddol_cost = s_cost_dol * &discount * &sf * 4 / 1000;
-
-
-if s_dart_cost=. then s_dart_cost=0;
-if s_dcost_cascade_interventions=. then s_dcost_cascade_interventions=0;
-if s_dcost_prep=. then s_dcost_prep=0;
-if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
-if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
-if s_dcost_circ=. then s_dcost_circ=0;
-if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
-
-* ts1m - 12 instead of 4; 
-dvis_cost = s_dvis_cost * &sf * 4 / 1000;
-dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
-dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
-dart_3_cost = s_dart_3_cost * &sf * 4 / 1000;
-dart_cost = s_dart_cost * &sf * 4 / 1000;
-dvl_cost = s_dvl_cost * &sf * 4 / 1000;
-dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
-dadc_cost = s_dadc_cost * &sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
-dtb_cost = s_dtb_cost * &sf * 4 / 1000;
-dtest_cost = s_dtest_cost * &sf * 4 / 1000;
-dtest_cost_prep = s_dtest_cost_prep * &sf * 4 / 1000;  * note that this cost is part of dtest_cost so if want to change this cost need to subtract first from total cost;
-dcot_cost = s_dcot_cost * &sf * 4 / 1000;
-dres_cost = s_dres_cost * &sf * 4 / 1000;
-d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
-dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
-dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 			   
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
-
-
-* note this below can be used if outputs are from program beyond 1-1-20;
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
-  dcost_non_aids_pre_death = ddaly_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
-
-dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
-dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
-dcost_condom_dn = s_dcost_condom_dn * &sf * 4 / 1000; 
-dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
-if dswitchline_cost=. then dswitchline_cost=0;
-if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
-dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
- 
-
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
-
-* sens analysis;
-
-* dtaz_cost = dtaz_cost * (100 / 180);
-* dtaz_cost = dtaz_cost * (50 / 180);
-* dzdv_cost = dzdv_cost * (25 / 45);
-
-
-dart_cost_x = dart_1_cost + dart_2_cost + dart_3_cost; 
-dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
-
-* dcost = dart_cost_y + dclin_cost + dcd4_cost + dvl_cost + dvis_cost + dtest_cost + d_t_adh_int_cost + dswitchline_cost
-		+dcost_circ + dcost_condom_dn  + dcost_child_hiv  + dcost_non_aids_pre_death ;
-
-
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test+dcost_cascade_interventions + dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
-
-
-s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz + s_cost_efa + s_cost_dol ;
-
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
-
-if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
-
-if &discount gt 0 then cost = dcost / &discount;
-
-dcost_80 = s_dcost__80 * &sf * 4 / 1000;
 
 * ================================================================================= ;
 
