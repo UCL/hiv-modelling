@@ -1254,6 +1254,8 @@ sim_year
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 
+av_prep_oral_eff_non_res_v
+
 n_alive_m n_alive_w n_alive prevalence1549m   prevalence1549w   prevalence1549   incidence1549m   incidence1549w   incidence1549   
 p_onart_m      p_onart_w      p_onart   p_vl1000_m      p_vl1000_w      p_vl1000   prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral
 p_prep_any_ever  p_prep_oral_ever p_prep_inj_ever
@@ -1306,10 +1308,19 @@ pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
 ;
 
 
-
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
+
+
+
+
+proc means; var av_prep_oral_eff_non_res_v; by run option ; run;
+proc means; var av_prep_oral_eff_non_res_v; by option; run;
+
+
+
+
 
 data    a.l_hptn20_sep22; set y;  
 
