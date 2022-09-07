@@ -1,0 +1,211 @@
+libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
+
+data a;
+set a.malawi_23_08_22;
+if run=. then delete;
+proc sort;by run;run;
+
+data sf;
+set a;
+ 
+if cald=2022.5;
+s_alive = s_alive_m + s_alive_w ;
+sf_2022 = 10000000 / s_alive;
+keep s_alive run sf_2022;
+
+proc sort; by run;run;
+
+%let sf=sf_2022;
+
+proc freq;table s_dead_undiag;run;
+
+data y; 
+merge a sf;
+by run ;
+
+keep cald
+s_dead_undiag  s_dead_diag_not_linked  
+s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
+s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200  
+s_dead_A_vl1000  s_dead_A_vg1000  s_dead_Alt6_vl1000  s_dead_Alt6_vg1000  
+s_dead_Agt6_vl1000  s_dead_Agt6_vg1000  
+s_dead_int_lost  s_dead_1stint_lost  s_dead_subintlt6_lost  s_dead_subintgt6_lost  
+s_dead_A_cd4lt200  s_dead_A_cd4gt200  
+s_dead_Alt6_cd4lt200  s_dead_Alt6_cd4gt200  s_dead_Agt6_cd4lt200  s_dead_Agt6_cd4gt200  
+
+s_dead_undiag_m  s_dead_undiag_w  
+s_dead_undiag1519m  s_dead_undiag2024m  s_dead_undiag2529m  s_dead_undiag3034m  s_dead_undiag3539m  
+s_dead_undiag4044m  s_dead_undiag4549m  s_dead_undiag5054m  s_dead_undiag5559m  s_dead_undiag6064m  
+s_dead_undiag6569m  s_dead_undiag7074m  s_dead_undiag7579m  s_dead_undiag8084m  
+s_dead_undiag1519w  s_dead_undiag2024w  s_dead_undiag2529w  s_dead_undiag3034w  s_dead_undiag3539w  
+s_dead_undiag4044w  s_dead_undiag4549w  s_dead_undiag5054w  s_dead_undiag5559w  s_dead_undiag6064w  
+s_dead_undiag6569w  s_dead_undiag7074w  s_dead_undiag7579w  s_dead_undiag8084w  
+
+s_dead_diag_not_linked_m  s_dead_diag_not_linked_w  
+s_dead_diag_not_linked1519m  s_dead_diag_not_linked2024m  s_dead_diag_not_linked2529m  s_dead_diag_not_linked3034m  s_dead_diag_not_linked3539m  
+s_dead_diag_not_linked4044m  s_dead_diag_not_linked4549m  s_dead_diag_not_linked5054m  s_dead_diag_not_linked5559m  s_dead_diag_not_linked6064m  
+s_dead_diag_not_linked6569m  s_dead_diag_not_linked7074m  s_dead_diag_not_linked7579m  s_dead_diag_not_linked8084m  
+s_dead_diag_not_linked1519w  s_dead_diag_not_linked2024w  s_dead_diag_not_linked2529w  s_dead_diag_not_linked3034w  s_dead_diag_not_linked3539w  
+s_dead_diag_not_linked4044w  s_dead_diag_not_linked4549w  s_dead_diag_not_linked5054w  s_dead_diag_not_linked5559w  s_dead_diag_not_linked6064w  
+s_dead_diag_not_linked6569w  s_dead_diag_not_linked7074w  s_dead_diag_not_linked7579w  s_dead_diag_not_linked8084w  
+
+s_dead_Alt6_artcd4lt200_m  s_dead_Alt6_artcd4lt200_w  
+s_dead_Alt6_artcd4lt2001519m  s_dead_Alt6_artcd4lt2002024m  s_dead_Alt6_artcd4lt2002529m  s_dead_Alt6_artcd4lt2003034m  s_dead_Alt6_artcd4lt2003539m  
+s_dead_Alt6_artcd4lt2004044m  s_dead_Alt6_artcd4lt2004549m  s_dead_Alt6_artcd4lt2005054m  s_dead_Alt6_artcd4lt2005559m  s_dead_Alt6_artcd4lt2006064m  
+s_dead_Alt6_artcd4lt2006569m  s_dead_Alt6_artcd4lt2007074m  s_dead_Alt6_artcd4lt2007579m  s_dead_Alt6_artcd4lt2008084m  
+s_dead_Alt6_artcd4lt2001519w  s_dead_Alt6_artcd4lt2002024w  s_dead_Alt6_artcd4lt2002529w  s_dead_Alt6_artcd4lt2003034w  s_dead_Alt6_artcd4lt2003539w  
+s_dead_Alt6_artcd4lt2004044w  s_dead_Alt6_artcd4lt2004549w  s_dead_Alt6_artcd4lt2005054w  s_dead_Alt6_artcd4lt2005559w  s_dead_Alt6_artcd4lt2006064w  
+s_dead_Alt6_artcd4lt2006569w  s_dead_Alt6_artcd4lt2007074w  s_dead_Alt6_artcd4lt2007579w  s_dead_Alt6_artcd4lt2008084w  
+
+s_dead_Alt6_artcd4gt200_m  s_dead_Alt6_artcd4gt200_w  
+s_dead_Alt6_artcd4gt2001519m  s_dead_Alt6_artcd4gt2002024m  s_dead_Alt6_artcd4gt2002529m  s_dead_Alt6_artcd4gt2003034m  s_dead_Alt6_artcd4gt2003539m  
+s_dead_Alt6_artcd4gt2004044m  s_dead_Alt6_artcd4gt2004549m  s_dead_Alt6_artcd4gt2005054m  s_dead_Alt6_artcd4gt2005559m  s_dead_Alt6_artcd4gt2006064m  
+s_dead_Alt6_artcd4gt2006569m  s_dead_Alt6_artcd4gt2007074m  s_dead_Alt6_artcd4gt2007579m  s_dead_Alt6_artcd4gt2008084m  
+s_dead_Alt6_artcd4gt2001519w  s_dead_Alt6_artcd4gt2002024w  s_dead_Alt6_artcd4gt2002529w  s_dead_Alt6_artcd4gt2003034w  s_dead_Alt6_artcd4gt2003539w  
+s_dead_Alt6_artcd4gt2004044w  s_dead_Alt6_artcd4gt2004549w  s_dead_Alt6_artcd4gt2005054w  s_dead_Alt6_artcd4gt2005559w  s_dead_Alt6_artcd4gt2006064w  
+s_dead_Alt6_artcd4gt2006569w  s_dead_Alt6_artcd4gt2007074w  s_dead_Alt6_artcd4gt2007579w  s_dead_Alt6_artcd4gt2008084w  
+
+s_dead_int_Alt6_rescd4lt200_m  s_dead_int_Alt6_rescd4lt200_w  
+s_dead_int_Alt6_rescd4lt2001519m  s_dead_int_Alt6_rescd4lt2002024m  s_dead_int_Alt6_rescd4lt2002529m  s_dead_int_Alt6_rescd4lt2003034m  s_dead_int_Alt6_rescd4lt2003539m  
+s_dead_int_Alt6_rescd4lt2004044m  s_dead_int_Alt6_rescd4lt2004549m  s_dead_int_Alt6_rescd4lt2005054m  s_dead_int_Alt6_rescd4lt2005559m   s_dead_int_Alt6_rescd4lt2006064m  
+s_dead_int_Alt6_rescd4lt2006569m  s_dead_int_Alt6_rescd4lt2007074m  s_dead_int_Alt6_rescd4lt2007579m  s_dead_int_Alt6_rescd4lt2008084m  
+s_dead_int_Alt6_rescd4lt2001519w  s_dead_int_Alt6_rescd4lt2002024w  s_dead_int_Alt6_rescd4lt2002529w  s_dead_int_Alt6_rescd4lt2003034w  s_dead_int_Alt6_rescd4lt2003539w  
+s_dead_int_Alt6_rescd4lt2004044w  s_dead_int_Alt6_rescd4lt2004549w  s_dead_int_Alt6_rescd4lt2005054w  s_dead_int_Alt6_rescd4lt2005559w   s_dead_int_Alt6_rescd4lt2006064w  
+s_dead_int_Alt6_rescd4lt2006569w  s_dead_int_Alt6_rescd4lt2007074w  s_dead_int_Alt6_rescd4lt2007579w  s_dead_int_Alt6_rescd4lt2008084w  
+
+s_dead_int_Alt6_rescd4gt200_m  s_dead_int_Alt6_rescd4gt200_w  
+s_dead_int_Alt6_rescd4gt2001519m  s_dead_int_Alt6_rescd4gt2002024m  s_dead_int_Alt6_rescd4gt2002529m  s_dead_int_Alt6_rescd4gt2003034m  s_dead_int_Alt6_rescd4gt2003539m  
+s_dead_int_Alt6_rescd4gt2004044m  s_dead_int_Alt6_rescd4gt2004549m  s_dead_int_Alt6_rescd4gt2005054m  s_dead_int_Alt6_rescd4gt2005559m   s_dead_int_Alt6_rescd4gt2006064m  
+s_dead_int_Alt6_rescd4gt2006569m  s_dead_int_Alt6_rescd4gt2007074m  s_dead_int_Alt6_rescd4gt2007579m  s_dead_int_Alt6_rescd4gt2008084m  
+s_dead_int_Alt6_rescd4gt2001519w  s_dead_int_Alt6_rescd4gt2002024w  s_dead_int_Alt6_rescd4gt2002529w  s_dead_int_Alt6_rescd4gt2003034w  s_dead_int_Alt6_rescd4gt2003539w  
+s_dead_int_Alt6_rescd4gt2004044w  s_dead_int_Alt6_rescd4gt2004549w  s_dead_int_Alt6_rescd4gt2005054w  s_dead_int_Alt6_rescd4gt2005559w   s_dead_int_Alt6_rescd4gt2006064w  
+s_dead_int_Alt6_rescd4gt2006569w  s_dead_int_Alt6_rescd4gt2007074w  s_dead_int_Alt6_rescd4gt2007579w  s_dead_int_Alt6_rescd4gt2008084w  
+
+s_dead_A_vl1000_m  s_dead_A_vl1000_w  
+s_dead_A_vl10001519m  s_dead_A_vl10002024m  s_dead_A_vl10002529m  s_dead_A_vl10003034m  s_dead_A_vl10003539m  
+s_dead_A_vl10004044m  s_dead_A_vl10004549m  s_dead_A_vl10005054m  s_dead_A_vl10005559m  s_dead_A_vl10006064m  
+s_dead_A_vl10006569m  s_dead_A_vl10007074m  s_dead_A_vl10007579m   s_dead_A_vl10008084m  
+s_dead_A_vl10001519w  s_dead_A_vl10002024w  s_dead_A_vl10002529w  s_dead_A_vl10003034w  s_dead_A_vl10003539w  
+s_dead_A_vl10004044w  s_dead_A_vl10004549w  s_dead_A_vl10005054w  s_dead_A_vl10005559w  s_dead_A_vl10006064w  
+s_dead_A_vl10006569w  s_dead_A_vl10007074w  s_dead_A_vl10007579w   s_dead_A_vl10008084w  
+
+s_dead_A_vg1000_m  s_dead_A_vg1000_w  
+s_dead_A_vg10001519m  s_dead_A_vg10002024m  s_dead_A_vg10002529m  s_dead_A_vg10003034m  s_dead_A_vg10003539m  
+s_dead_A_vg10004044m  s_dead_A_vg10004549m  s_dead_A_vg10005054m  s_dead_A_vg10005559m  s_dead_A_vg10006064m  
+s_dead_A_vg10006569m  s_dead_A_vg10007074m  s_dead_A_vg10007579m   s_dead_A_vg10008084m  
+s_dead_A_vg10001519w  s_dead_A_vg10002024w  s_dead_A_vg10002529w  s_dead_A_vg10003034w  s_dead_A_vg10003539w  
+s_dead_A_vg10004044w  s_dead_A_vg10004549w  s_dead_A_vg10005054w  s_dead_A_vg10005559w  s_dead_A_vg10006064w  
+s_dead_A_vg10006569w  s_dead_A_vg10007074w  s_dead_A_vg10007579w   s_dead_A_vg10008084w  
+
+s_dead_Alt6_vl1000_m  s_dead_Alt6_vl1000_w  
+s_dead_Alt6_vl10001519m  s_dead_Alt6_vl10002024m  s_dead_Alt6_vl10002529m  s_dead_Alt6_vl10003034m  s_dead_Alt6_vl10003539m  
+s_dead_Alt6_vl10004044m  s_dead_Alt6_vl10004549m  s_dead_Alt6_vl10005054m  s_dead_Alt6_vl10005559m  s_dead_Alt6_vl10006064m  
+s_dead_Alt6_vl10006569m  s_dead_Alt6_vl10007074m  s_dead_Alt6_vl10007579m   s_dead_Alt6_vl10008084m  
+s_dead_Alt6_vl10001519w  s_dead_Alt6_vl10002024w  s_dead_Alt6_vl10002529w  s_dead_Alt6_vl10003034w  s_dead_Alt6_vl10003539w  
+s_dead_Alt6_vl10004044w  s_dead_Alt6_vl10004549w  s_dead_Alt6_vl10005054w  s_dead_Alt6_vl10005559w  s_dead_Alt6_vl10006064w  
+s_dead_Alt6_vl10006569w  s_dead_Alt6_vl10007074w  s_dead_Alt6_vl10007579w   s_dead_Alt6_vl10008084w  
+
+s_dead_Alt6_vg1000_m  s_dead_Alt6_vg1000_w  
+s_dead_Alt6_vg10001519m  s_dead_Alt6_vg10002024m  s_dead_Alt6_vg10002529m  s_dead_Alt6_vg10003034m  s_dead_Alt6_vg10003539m  
+s_dead_Alt6_vg10004044m  s_dead_Alt6_vg10004549m  s_dead_Alt6_vg10005054m  s_dead_Alt6_vg10005559m  s_dead_Alt6_vg10006064m  
+s_dead_Alt6_vg10006569m  s_dead_Alt6_vg10007074m  s_dead_Alt6_vg10007579m   s_dead_Alt6_vg10008084m  
+s_dead_Alt6_vg10001519w  s_dead_Alt6_vg10002024w  s_dead_Alt6_vg10002529w  s_dead_Alt6_vg10003034w  s_dead_Alt6_vg10003539w  
+s_dead_Alt6_vg10004044w  s_dead_Alt6_vg10004549w  s_dead_Alt6_vg10005054w  s_dead_Alt6_vg10005559w  s_dead_Alt6_vg10006064w  
+s_dead_Alt6_vg10006569w  s_dead_Alt6_vg10007074w  s_dead_Alt6_vg10007579w   s_dead_Alt6_vg10008084w  
+
+s_dead_Agt6_vl1000_m  s_dead_Agt6_vl1000_w  
+s_dead_Agt6_vl10001519m  s_dead_Agt6_vl10002024m  s_dead_Agt6_vl10002529m  s_dead_Agt6_vl10003034m  s_dead_Agt6_vl10003539m  
+s_dead_Agt6_vl10004044m  s_dead_Agt6_vl10004549m  s_dead_Agt6_vl10005054m  s_dead_Agt6_vl10005559m  s_dead_Agt6_vl10006064m  
+s_dead_Agt6_vl10006569m  s_dead_Agt6_vl10007074m  s_dead_Agt6_vl10007579m   s_dead_Agt6_vl10008084m  
+s_dead_Agt6_vl10001519w  s_dead_Agt6_vl10002024w  s_dead_Agt6_vl10002529w  s_dead_Agt6_vl10003034w  s_dead_Agt6_vl10003539w  
+s_dead_Agt6_vl10004044w  s_dead_Agt6_vl10004549w  s_dead_Agt6_vl10005054w  s_dead_Agt6_vl10005559w  s_dead_Agt6_vl10006064w  
+s_dead_Agt6_vl10006569w  s_dead_Agt6_vl10007074w  s_dead_Agt6_vl10007579w   s_dead_Agt6_vl10008084w  
+
+s_dead_Agt6_vg1000_m  s_dead_Agt6_vg1000_w  
+s_dead_Agt6_vg10001519m  s_dead_Agt6_vg10002024m  s_dead_Agt6_vg10002529m  s_dead_Agt6_vg10003034m  s_dead_Agt6_vg10003539m  
+s_dead_Agt6_vg10004044m  s_dead_Agt6_vg10004549m  s_dead_Agt6_vg10005054m  s_dead_Agt6_vg10005559m  s_dead_Agt6_vg10006064m  
+s_dead_Agt6_vg10006569m  s_dead_Agt6_vg10007074m  s_dead_Agt6_vg10007579m   s_dead_Agt6_vg10008084m  
+s_dead_Agt6_vg10001519w  s_dead_Agt6_vg10002024w  s_dead_Agt6_vg10002529w  s_dead_Agt6_vg10003034w  s_dead_Agt6_vg10003539w  
+s_dead_Agt6_vg10004044w  s_dead_Agt6_vg10004549w  s_dead_Agt6_vg10005054w  s_dead_Agt6_vg10005559w  s_dead_Agt6_vg10006064w  
+s_dead_Agt6_vg10006569w  s_dead_Agt6_vg10007074w  s_dead_Agt6_vg10007579w   s_dead_Agt6_vg10008084w  
+
+s_dead_int_lost_m  s_dead_int_lost_w  
+s_dead_int_lost1519m  s_dead_int_lost2024m  s_dead_int_lost2529m  s_dead_int_lost3034m  s_dead_int_lost3539m  
+s_dead_int_lost4044m  s_dead_int_lost4549m  s_dead_int_lost5054m  s_dead_int_lost5559m  s_dead_int_lost6064m  
+s_dead_int_lost6569m  s_dead_int_lost7074m  s_dead_int_lost7579m  s_dead_int_lost8084m  
+s_dead_int_lost1519w  s_dead_int_lost2024w  s_dead_int_lost2529w  s_dead_int_lost3034w  s_dead_int_lost3539w  
+s_dead_int_lost4044w  s_dead_int_lost4549w  s_dead_int_lost5054w  s_dead_int_lost5559w  s_dead_int_lost6064w  
+s_dead_int_lost6569w  s_dead_int_lost7074w  s_dead_int_lost7579w  s_dead_int_lost8084w  
+
+s_dead_1stint_lost_m  s_dead_1stint_lost_w  
+s_dead_1stint_lost1519m  s_dead_1stint_lost2024m  s_dead_1stint_lost2529m  s_dead_1stint_lost3034m  s_dead_1stint_lost3539m  
+s_dead_1stint_lost4044m  s_dead_1stint_lost4549m  s_dead_1stint_lost5054m  s_dead_1stint_lost5559m  s_dead_1stint_lost6064m  
+s_dead_1stint_lost6569m  s_dead_1stint_lost7074m  s_dead_1stint_lost7579m  s_dead_1stint_lost8084m  
+s_dead_1stint_lost1519w  s_dead_1stint_lost2024w  s_dead_1stint_lost2529w  s_dead_1stint_lost3034w  s_dead_1stint_lost3539w  
+s_dead_1stint_lost4044w  s_dead_1stint_lost4549w  s_dead_1stint_lost5054w  s_dead_1stint_lost5559w  s_dead_1stint_lost6064w  
+s_dead_1stint_lost6569w  s_dead_1stint_lost7074w  s_dead_1stint_lost7579w  s_dead_1stint_lost8084w  
+
+s_dead_subintlt6_lost_m  s_dead_subintlt6_lost_w  
+s_dead_subintlt6_lost1519m  s_dead_subintlt6_lost2024m  s_dead_subintlt6_lost2529m  s_dead_subintlt6_lost3034m  s_dead_subintlt6_lost3539m  
+s_dead_subintlt6_lost4044m  s_dead_subintlt6_lost4549m  s_dead_subintlt6_lost5054m  s_dead_subintlt6_lost5559m  s_dead_subintlt6_lost6064m  
+s_dead_subintlt6_lost6569m  s_dead_subintlt6_lost7074m  s_dead_subintlt6_lost7579m  s_dead_subintlt6_lost8084m  
+s_dead_subintlt6_lost1519w  s_dead_subintlt6_lost2024w  s_dead_subintlt6_lost2529w  s_dead_subintlt6_lost3034w  s_dead_subintlt6_lost3539w  
+s_dead_subintlt6_lost4044w  s_dead_subintlt6_lost4549w  s_dead_subintlt6_lost5054w  s_dead_subintlt6_lost5559w  s_dead_subintlt6_lost6064w  
+s_dead_subintlt6_lost6569w  s_dead_subintlt6_lost7074w  s_dead_subintlt6_lost7579w  s_dead_subintlt6_lost8084w  
+
+s_dead_subintgt6_lost_m  s_dead_subintgt6_lost_w  
+s_dead_subintgt6_lost1519m  s_dead_subintgt6_lost2024m  s_dead_subintgt6_lost2529m  s_dead_subintgt6_lost3034m  s_dead_subintgt6_lost3539m  
+s_dead_subintgt6_lost4044m  s_dead_subintgt6_lost4549m  s_dead_subintgt6_lost5054m  s_dead_subintgt6_lost5559m  s_dead_subintgt6_lost6064m  
+s_dead_subintgt6_lost6569m  s_dead_subintgt6_lost7074m  s_dead_subintgt6_lost7579m  s_dead_subintgt6_lost8084m  
+s_dead_subintgt6_lost1519w  s_dead_subintgt6_lost2024w  s_dead_subintgt6_lost2529w  s_dead_subintgt6_lost3034w  s_dead_subintgt6_lost3539w  
+s_dead_subintgt6_lost4044w  s_dead_subintgt6_lost4549w  s_dead_subintgt6_lost5054w  s_dead_subintgt6_lost5559w  s_dead_subintgt6_lost6064w  
+s_dead_subintgt6_lost6569w  s_dead_subintgt6_lost7074w  s_dead_subintgt6_lost7579w  s_dead_subintgt6_lost8084w  
+
+s_dead_A_cd4lt200_m  s_dead_A_cd4lt200_w  
+s_dead_A_cd4lt2001519m  s_dead_A_cd4lt2002024m  s_dead_A_cd4lt2002529m  s_dead_A_cd4lt2003034m  s_dead_A_cd4lt2003539m  
+s_dead_A_cd4lt2004044m  s_dead_A_cd4lt2004549m  s_dead_A_cd4lt2005054m  s_dead_A_cd4lt2005559m  s_dead_A_cd4lt2006064m  
+s_dead_A_cd4lt2006569m  s_dead_A_cd4lt2007074m  s_dead_A_cd4lt2007579m  s_dead_A_cd4lt2008084m  
+s_dead_A_cd4lt2001519w  s_dead_A_cd4lt2002024w  s_dead_A_cd4lt2002529w  s_dead_A_cd4lt2003034w  s_dead_A_cd4lt2003539w  
+s_dead_A_cd4lt2004044w  s_dead_A_cd4lt2004549w  s_dead_A_cd4lt2005054w  s_dead_A_cd4lt2005559w  s_dead_A_cd4lt2006064w  
+s_dead_A_cd4lt2006569w  s_dead_A_cd4lt2007074w  s_dead_A_cd4lt2007579w  s_dead_A_cd4lt2008084w  
+
+s_dead_A_cd4gt200_m  s_dead_A_cd4gt200_w  
+s_dead_A_cd4gt2001519m  s_dead_A_cd4gt2002024m  s_dead_A_cd4gt2002529m  s_dead_A_cd4gt2003034m  s_dead_A_cd4gt2003539m  
+s_dead_A_cd4gt2004044m  s_dead_A_cd4gt2004549m  s_dead_A_cd4gt2005054m  s_dead_A_cd4gt2005559m  s_dead_A_cd4gt2006064m  
+s_dead_A_cd4gt2006569m  s_dead_A_cd4gt2007074m  s_dead_A_cd4gt2007579m  s_dead_A_cd4gt2008084m  
+s_dead_A_cd4gt2001519w  s_dead_A_cd4gt2002024w  s_dead_A_cd4gt2002529w  s_dead_A_cd4gt2003034w  s_dead_A_cd4gt2003539w  
+s_dead_A_cd4gt2004044w  s_dead_A_cd4gt2004549w  s_dead_A_cd4gt2005054w  s_dead_A_cd4gt2005559w  s_dead_A_cd4gt2006064w  
+s_dead_A_cd4gt2006569w  s_dead_A_cd4gt2007074w  s_dead_A_cd4gt2007579w  s_dead_A_cd4gt2008084w  
+
+s_dead_Alt6_cd4lt200_m  s_dead_Alt6_cd4lt200_w  
+s_dead_Alt6_cd4lt2001519m  s_dead_Alt6_cd4lt2002024m  s_dead_Alt6_cd4lt2002529m  s_dead_Alt6_cd4lt2003034m  s_dead_Alt6_cd4lt2003539m  
+s_dead_Alt6_cd4lt2004044m  s_dead_Alt6_cd4lt2004549m  s_dead_Alt6_cd4lt2005054m  s_dead_Alt6_cd4lt2005559m  s_dead_Alt6_cd4lt2006064m  
+s_dead_Alt6_cd4lt2006569m  s_dead_Alt6_cd4lt2007074m  s_dead_Alt6_cd4lt2007579m  s_dead_Alt6_cd4lt2008084m  
+s_dead_Alt6_cd4lt2001519w  s_dead_Alt6_cd4lt2002024w  s_dead_Alt6_cd4lt2002529w  s_dead_Alt6_cd4lt2003034w  s_dead_Alt6_cd4lt2003539w  
+s_dead_Alt6_cd4lt2004044w  s_dead_Alt6_cd4lt2004549w  s_dead_Alt6_cd4lt2005054w  s_dead_Alt6_cd4lt2005559w  s_dead_Alt6_cd4lt2006064w  
+s_dead_Alt6_cd4lt2006569w  s_dead_Alt6_cd4lt2007074w  s_dead_Alt6_cd4lt2007579w  s_dead_Alt6_cd4lt2008084w  
+
+s_dead_Alt6_cd4gt200_m  s_dead_Alt6_cd4gt200_w  
+s_dead_Alt6_cd4gt2001519m  s_dead_Alt6_cd4gt2002024m  s_dead_Alt6_cd4gt2002529m  s_dead_Alt6_cd4gt2003034m  s_dead_Alt6_cd4gt2003539m  
+s_dead_Alt6_cd4gt2004044m  s_dead_Alt6_cd4gt2004549m  s_dead_Alt6_cd4gt2005054m  s_dead_Alt6_cd4gt2005559m  s_dead_Alt6_cd4gt2006064m  
+s_dead_Alt6_cd4gt2006569m  s_dead_Alt6_cd4gt2007074m  s_dead_Alt6_cd4gt2007579m  s_dead_Alt6_cd4gt2008084m  
+s_dead_Alt6_cd4gt2001519w  s_dead_Alt6_cd4gt2002024w  s_dead_Alt6_cd4gt2002529w  s_dead_Alt6_cd4gt2003034w  s_dead_Alt6_cd4gt2003539w  
+s_dead_Alt6_cd4gt2004044w  s_dead_Alt6_cd4gt2004549w  s_dead_Alt6_cd4gt2005054w  s_dead_Alt6_cd4gt2005559w  s_dead_Alt6_cd4gt2006064w  
+s_dead_Alt6_cd4gt2006569w  s_dead_Alt6_cd4gt2007074w  s_dead_Alt6_cd4gt2007579w  s_dead_Alt6_cd4gt2008084w  
+
+s_dead_Agt6_cd4lt200_m  s_dead_Agt6_cd4lt200_w  
+s_dead_Agt6_cd4lt2001519m  s_dead_Agt6_cd4lt2002024m  s_dead_Agt6_cd4lt2002529m  s_dead_Agt6_cd4lt2003034m  s_dead_Agt6_cd4lt2003539m  
+s_dead_Agt6_cd4lt2004044m  s_dead_Agt6_cd4lt2004549m  s_dead_Agt6_cd4lt2005054m  s_dead_Agt6_cd4lt2005559m  s_dead_Agt6_cd4lt2006064m  
+s_dead_Agt6_cd4lt2006569m  s_dead_Agt6_cd4lt2007074m  s_dead_Agt6_cd4lt2007579m  s_dead_Agt6_cd4lt2008084m  
+s_dead_Agt6_cd4lt2001519w  s_dead_Agt6_cd4lt2002024w  s_dead_Agt6_cd4lt2002529w  s_dead_Agt6_cd4lt2003034w  s_dead_Agt6_cd4lt2003539w  
+s_dead_Agt6_cd4lt2004044w  s_dead_Agt6_cd4lt2004549w  s_dead_Agt6_cd4lt2005054w  s_dead_Agt6_cd4lt2005559w  s_dead_Agt6_cd4lt2006064w  
+s_dead_Agt6_cd4lt2006569w  s_dead_Agt6_cd4lt2007074w  s_dead_Agt6_cd4lt2007579w  s_dead_Agt6_cd4lt2008084w  
+
+s_dead_Agt6_cd4gt200_m  s_dead_Agt6_cd4gt200_w  
+s_dead_Agt6_cd4gt2001519m  s_dead_Agt6_cd4gt2002024m  s_dead_Agt6_cd4gt2002529m  s_dead_Agt6_cd4gt2003034m  s_dead_Agt6_cd4gt2003539m  
+s_dead_Agt6_cd4gt2004044m  s_dead_Agt6_cd4gt2004549m  s_dead_Agt6_cd4gt2005054m  s_dead_Agt6_cd4gt2005559m  s_dead_Agt6_cd4gt2006064m  
+s_dead_Agt6_cd4gt2006569m  s_dead_Agt6_cd4gt2007074m  s_dead_Agt6_cd4gt2007579m  s_dead_Agt6_cd4gt2008084m  
+s_dead_Agt6_cd4gt2001519w  s_dead_Agt6_cd4gt2002024w  s_dead_Agt6_cd4gt2002529w  s_dead_Agt6_cd4gt2003034w  s_dead_Agt6_cd4gt2003539w  
+s_dead_Agt6_cd4gt2004044w  s_dead_Agt6_cd4gt2004549w  s_dead_Agt6_cd4gt2005054w  s_dead_Agt6_cd4gt2005559w  s_dead_Agt6_cd4gt2006064w  
+s_dead_Agt6_cd4gt2006569w  s_dead_Agt6_cd4gt2007074w  s_dead_Agt6_cd4gt2007579w  s_dead_Agt6_cd4gt2008084w  ;
+run;
