@@ -34,6 +34,20 @@ data a.g_hptn20; set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 data g_hptn20; set  a.g_hptn18 a.g_hptn19 a.g_hptn20 ;
 
+/*
+
+data x; set a.g_hptn20;
+
+* p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
+* av_prep_oral_eff_non_res_v;  	if s_prep_oral > 0 then av_prep_oral_eff_non_res_v = s_prep_oral_effect_non_res_v  / s_prep_oral;	
+* p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
+
+proc univariate  data = x ; var av_prep_oral_eff_non_res_v p_newp_prep p_newp_this_per_prep; 
+where option ge 1 and 2033 <= cald < 2042;
+run;
+
+*/
+
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 s_hivge15 = s_hivge15m + s_hivge15w ;
@@ -1248,13 +1262,11 @@ run option cald
 
 prop_1564_hivneg_onprep n_prep_inj_willing n_prep_oral_willing p_prep_elig_onprep_inj
 
-p_oral_prep_10yr p_la_prep_10yr p_oral_prep_w_10yr p_la_prep_w_10yr 
+p_oral_prep_10yr p_la_prep_10yr p_oral_prep_w_10yr p_la_prep_w_10yr av_prep_oral_eff_non_res_v
 
 sim_year 
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
-
-av_prep_oral_eff_non_res_v
 
 n_alive_m n_alive_w n_alive prevalence1549m   prevalence1549w   prevalence1549   incidence1549m   incidence1549w   incidence1549   
 p_onart_m      p_onart_w      p_onart   p_vl1000_m      p_vl1000_w      p_vl1000   prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral
@@ -1308,19 +1320,18 @@ pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
 ;
 
 
+
 proc sort data=y;by run option;run;
-
-* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-
-
 
 
 proc means; var av_prep_oral_eff_non_res_v; by run option ; run;
+
+proc sort; by option;
 proc means; var av_prep_oral_eff_non_res_v; by option; run;
 
 
 
-
+* l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
 data    a.l_hptn20_sep22; set y;  
 
