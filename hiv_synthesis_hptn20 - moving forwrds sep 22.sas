@@ -4,7 +4,7 @@
 
 * if running again check against latest hiv_synthesis.sas ;
 * check on why av_prep_oral_eff_non_res_v is above 1 in 0.05% of 3 month periods;
-
+* hiv incidence value specifically for those not eligible for PrEP ;
 
 
 

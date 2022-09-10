@@ -41,10 +41,20 @@ data x; set a.g_hptn20;
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
 * av_prep_oral_eff_non_res_v;  	if s_prep_oral > 0 then av_prep_oral_eff_non_res_v = s_prep_oral_effect_non_res_v  / s_prep_oral;	
 * p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
+* prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
+* prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
+* p_newp_ge1_age1549;			p_newp_ge1_age1549 = (s_w1549_newp_ge1 + s_m1549_newp_ge1) / (s_alive1549_w + s_alive1549_m) ;
 
-proc univariate  data = x ; var av_prep_oral_eff_non_res_v p_newp_prep p_newp_this_per_prep; 
+proc univariate  data = x ; var av_prep_oral_eff_non_res_v p_newp_prep p_newp_this_per_prep p_newp_ge1_age1549; 
 where option ge 1 and 2033 <= cald < 2042;
 run;
+
+proc univariate  data = x ; var  p_newp_ge1_age1549; 
+where  2022 <= cald < 2042;
+run;
+
+proc glm; model p_newp_this_per_prep = prop_1564_onprep ; run;
+
 
 */
 
