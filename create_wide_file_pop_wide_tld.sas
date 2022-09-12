@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_d_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_f_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -1081,6 +1081,8 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
 n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel  p_prep_adhg80  n_em_inm_res_o_cab
 
+n_pop_tld_neg_prep_inel
+
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1127,11 +1129,13 @@ p_emerge_inm_res_cab_notpr
 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
-pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol
+pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
+
 ;
 
 
 proc sort data=y;by run option;run;
+
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
@@ -1342,7 +1346,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
 n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_pop_wide_tld_hiv n_pop_wide_tld_prep_elig 
-n_pop_wide_tld_neg_prep_inelig;
+;
 
 
 proc contents; run;
@@ -1351,7 +1355,9 @@ proc sort; by run; run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
-if cald=2020;
+
+if cald=2022.5 and option=2; * note this is 2 because this is from dataset y where options are still 0, 1, 2 ; 
+
 
 keep 
 
@@ -1396,7 +1402,7 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
-prob_prep_pop_wide_tld
+prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
@@ -1455,7 +1461,9 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=pref_prep_inj_beta_s1); %par(p=testt1_prep_inj_eff_on_res_prim);  %par(p=incr_res_risk_cab_inf_3m);
 %par(p=p_emerge_inm_res_cab_notpr);
 %par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
- %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
+ %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);
+%par(p=inc_oral_prep_pref_pop_wide_tld);
+  %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol);
 
 data   wide_par; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1498,7 +1506,7 @@ effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_tim
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
- prob_prep_pop_wide_tld
+ prob_prep_pop_wide_tld   inc_oral_prep_pref_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol
 ;
@@ -1514,12 +1522,13 @@ proc sort; by run;run;
   by run;
 
 
-
-
   data w_pop_wide_tld ;
   set a.w_pop_wide_tld ;
 
-  if incidence1549_22 >= 0.1  and prevalence1549_22 <= 0.30;
+
+ 
+
+if incidence1549_22 >= 0.1  and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
 
 * if prep_any_strategy = 4;
 
@@ -1578,6 +1587,7 @@ if 0 < netdaly500_3 < netdaly500_2 then ce_cab_la_oral_prep = 1;
 
 d_n_death_hiv_50y_3_2 = n_death_hiv_50y_3 - n_death_hiv_50y_2;
 
+d_prop_elig_on_prep_20y_3_2 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_2;
 d_prop_1564_onprep_20y_3_2 = prop_1564_onprep_20y_3 - prop_1564_onprep_20y_2;
 d_prop_prep_inj_20y_3_2 = prop_prep_inj_20y_3 - prop_prep_inj_20y_2 ;
 d_p_prep_any_ever_42_3_2 = p_prep_any_ever_42_3 - p_prep_any_ever_42_2 ;
@@ -1708,6 +1718,55 @@ run;
 
 
 proc freq; tables pop_wide_tld_ce ; run;
+
+
+
+proc logistic  data=  w_pop_wide_tld ; model pop_wide_tld_ce = 
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
+ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
+external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
+fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
+date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
+test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
+rate_lost prob_lost_art rate_return rate_restart rate_int_choice
+clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
+poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
+fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
+red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
+prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
+fold_tr fold_tr_newp switch_for_tox  
+circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
+p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
+rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
+incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
+zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+
+effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
+rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
+incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate_sbi  cm_1stvis_return_vlmg1000  
+crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph   effect_crypm_proph  effect_sbi_proph
+
+effect_sw_prog_prep_any  prob_prep_any_restart_choice 
+ rate_test_startprep_any    rate_choose_stop_prep_oral
+prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prob_prep_any_restart_choice  
+pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
+higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
+rate_choose_stop_prep_inj   prep_inj_effect_inm_partner  res_trans_factor_ii
+rel_pr_inm_inj_prep_tail_primary      rr_res_cab_dol  hivtest_type_1_init_prep_inj   hivtest_type_1_prep_inj
+sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m
+sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
+
+effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
+sens_tests_prep_inj  pr_inm_inj_prep_primary
+pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+ prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
+
+p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol
+;
+run;
 
 
 
