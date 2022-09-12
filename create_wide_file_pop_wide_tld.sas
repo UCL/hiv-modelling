@@ -1358,10 +1358,9 @@ data f; set y;
 
 if cald=2022.5 and option=2; * note this is 2 because this is from dataset y where options are still 0, 1, 2 ; 
 
-
 keep 
 
-run cald 
+run cald option
 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1526,9 +1525,7 @@ proc sort; by run;run;
   set a.w_pop_wide_tld ;
 
 
- 
-
-if incidence1549_22 >= 0.1  and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
+* if incidence1549_22 >= 0.1  and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
 
 * if prep_any_strategy = 4;
 
@@ -1721,7 +1718,9 @@ proc freq; tables pop_wide_tld_ce ; run;
 
 
 
-proc logistic  data=  w_pop_wide_tld ; model pop_wide_tld_ce = 
+proc logistic  data=  w_pop_wide_tld ; model pop_wide_tld_ce =
+
+proc univariate; var
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
