@@ -7,15 +7,15 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_g_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\core_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data a.k_core;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
-proc sort data=a.k_pop_wide_tld; 
+proc sort data=a.k_core; 
 by run cald option;
 run;
 
@@ -24,7 +24,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_pop_wide_tld ;
+set a.k_core ;
 
 if cald=2021.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -42,7 +42,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge a.k_pop_wide_tld sf;
+merge a.k_core sf;
 by run ;
 
 * if incidence1549_2022 >= 0.15 and prevalence1549_2022 <= 0.3;
@@ -1139,13 +1139,13 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld  ; set y;  
+data    a.l_core  ; set y;  
 
 proc freq; tables run; where cald = 2020;
 
 run;
 
-data y ; set a.l_pop_wide_tld  ; 
+data y ; set a.l_core  ; 
 
 
   options nomprint;
@@ -1519,16 +1519,16 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data  a.w_pop_wide_tld     ; 
+  data  a.w_core     ; 
   merge   wide_outputs           wide_par     ;
   by run;
 
 
-  data w_pop_wide_tld ;
-  set a.w_pop_wide_tld ;
+  data w_core ;
+  set a.w_core ;
 
 
-  if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
+* if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
 
 * if prep_any_strategy = 4;
 
@@ -1640,7 +1640,7 @@ if super_infection_pop = 1 and super_inf_res = 0.8 then super_inf=3;
 
 * table 1;
 
-proc means data=   w_pop_wide_tld n p50 p5 p95 min max;  *  w_pop_wide_tld ;
+proc means data=   w_core n p50 p5 p95 min max;  *  w_core ;
 var prevalence1549w_22 prevalence1549m_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
 run;
 
@@ -1662,7 +1662,7 @@ ods html close;
 
 * table 2;
 
-proc means data=  w_pop_wide_tld n mean p5 p95;
+proc means data=  w_core n mean p5 p95;
 var 
 prop_elig_on_prep_20y_1  prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3  d_prop_elig_on_prep_20y_3_2
 prop_1564_onprep_20y_1  prop_1564_onprep_20y_2  prop_1564_onprep_20y_3   d_prop_1564_onprep_20y_3_2
@@ -1677,7 +1677,7 @@ n_hiv_42_1 n_hiv_42_2 n_hiv_42_3 r_n_hiv_42_3_2
 ; 
 run;
 
-proc means data=  w_pop_wide_tld n mean p5 p95 min max;
+proc means data=  w_core n mean p5 p95 min max;
 var 
 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3  d_prop_elig_on_prep_20y_3_2
 prop_1564_onprep_20y_2  prop_1564_onprep_20y_3  d_prop_1564_onprep_20y_3_2
@@ -1691,13 +1691,13 @@ prevalence1549_42_2 prevalence1549_42_3  r_prevalence1549_42_3_2
 n_hiv_42_2 n_hiv_42_3 r_n_hiv_42_3_2 
 ; 
 run;
-proc freq data=  w_pop_wide_tld; tables d_prop_elig_on_prep_20y_3_2; run;
+proc freq data=  w_core; tables d_prop_elig_on_prep_20y_3_2; run;
 
 
 
 * table 3;
 
-proc means data=   w_pop_wide_tld n mean  p5 p95 ;
+proc means data=   w_core n mean  p5 p95 ;
 var 
 p_hiv1_prep_20y_1 p_hiv1_prep_20y_2 p_hiv1_prep_20y_3   d_p_hiv1_prep_20y_3_2
 p_hiv1_prep_oral_20y_1 p_hiv1_prep_oral_20y_2 p_hiv1_prep_oral_20y_3 d_p_hiv1_prep_oral_20y_3_2
@@ -1722,7 +1722,7 @@ run;
 
 
 * table 4;
-proc means data=  w_pop_wide_tld n mean p5 p95;
+proc means data=  w_core n mean p5 p95;
   var 
 n_death_hiv_50y_1 n_death_hiv_50y_2 n_death_hiv_50y_3 d_n_death_hiv_50y_3_2
 ddaly_50y_1 ddaly_50y_2 ddaly_50y_3  d_ddaly_50y_3_2
@@ -1733,11 +1733,11 @@ run;
 
 
 
-proc freq; tables pop_wide_tld_ce ; run;
+proc freq; tables core_ce ; run;
 
 
 
-proc glm data=  w_pop_wide_tld ; model prevalence1549_22 =
+proc glm data=  w_core ; model prevalence1549_22 =
 
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
