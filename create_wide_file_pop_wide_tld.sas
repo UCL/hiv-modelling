@@ -1187,7 +1187,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc) ; * %var(v=p_mcirc_1519m); * %var(v=p_mcirc_2024m);* %var(v=p_mcirc_2529m);
 * %var(v=p_mcirc_3034m);* %var(v=p_mcirc_3539m);* %var(v=p_mcirc_4044m);* %var(v=p_mcirc_4549m); 
-* %var(v=p_mcirc_5064m); * %var(v=p_mcirc_1549m);
+* %var(v=p_mcirc_5064m);   %var(v=p_mcirc_1549m);
 * %var(v=p_vmmc); * %var(v=p_vmmc_1519m); * %var(v=p_vmmc_2024m);* %var(v=p_vmmc_2529m); * %var(v=p_vmmc_3039m);*  %var(v=p_vmmc_4049m);
 * %var(v=p_vmmc_5064m); *  %var(v=p_vmmc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_1564_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_sw_program_visit); 
@@ -1346,6 +1346,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
 n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_pop_wide_tld_hiv n_pop_wide_tld_prep_elig 
+p_mcirc_1549m
 ;
 
 
@@ -1408,10 +1409,12 @@ p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_
 
 ;
 
+
+
 %macro par(p=);
 
 * &p ;
-proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2020; run;
+proc means noprint data=f; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
@@ -1525,7 +1528,7 @@ proc sort; by run;run;
   set a.w_pop_wide_tld ;
 
 
-* if incidence1549_22 >= 0.1  and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
+  if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
 
 * if prep_any_strategy = 4;
 
@@ -1641,6 +1644,22 @@ proc means data=   w_pop_wide_tld n p50 p5 p95 min max;  *  w_pop_wide_tld ;
 var prevalence1549w_22 prevalence1549m_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22   ;
 run;
 
+
+ods html;
+proc means  n median p5 p95 min max ;
+var	prevalence1549m_22 prevalence1549w_22  prevalence1524w_22 incidence1549w_22 
+incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
+p_onart_diag_w_22 	p_onart_diag_m_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22 p_onart_cd4_l500_22  
+p_startedline2_22  prop_sw_hiv_22 prop_sw_onprep_22 p_newp_sw_22  n_tested_22   p_newp_sw_22 ;
+run;
+ods html close;
+
+
+
+
+
+
+
 * table 2;
 
 proc means data=  w_pop_wide_tld n mean p5 p95;
@@ -1718,9 +1737,8 @@ proc freq; tables pop_wide_tld_ce ; run;
 
 
 
-proc logistic  data=  w_pop_wide_tld ; model pop_wide_tld_ce =
+proc glm data=  w_pop_wide_tld ; model prevalence1549_22 =
 
-proc univariate; var
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -1739,7 +1757,7 @@ circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
 rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
 incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-zero_tdf_activity_k65r  zero_3tc_activity_m184  red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
+ red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
@@ -1763,7 +1781,7 @@ pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 
-p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol
+res_level_dol_cab_mut  pr_res_dol
 ;
 run;
 
