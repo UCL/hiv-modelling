@@ -202,7 +202,7 @@ newp_seed = 7;
 
 * ch_risk_diag;  			%sample_uniform(ch_risk_diag, 0.7 0.8 0.9 1.0);
 * ch_risk_diag_newp;  		%sample_uniform(ch_risk_diag_newp, 0.7 0.8 0.9 1.0);		*mf - aug18;
-* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.40 0.30 0.15 0.05 0.05); * change jun21;  
+* ych_risk_beh_newp;  		%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05); * change sep22 for pop_wide_tld;
 					
 * ych2_risk_beh_newp;  		%sample(ych2_risk_beh_newp, 
 								0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
@@ -213,7 +213,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 * newp_factor;  			%sample_uniform(newp_factor, 0.5 1 2);						* 15_1_20 4pm ;
 * rred_initial;				rred_initial = 1;  * this is to allow changes to the initial proportions in newp categories (applies in first period only);
-* p_rred_p; 				%sample_uniform(p_rred_p, 0.3 0.5 0.7); 
+* p_rred_p; 				%sample(p_rred_p, 0.3 0.5 0.7, 0.60 0.30 0.1);  * change sep22 for pop_wide_tld;
 * p_hsb_p; 					%sample_uniform(p_hsb_p, 0.05 0.08 0.15); 
 
 * exp_setting_lower_p_vl1000;	
@@ -465,8 +465,7 @@ newp_seed = 7;
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
-								0.2 	0.3 	0.3 	0.1		0.1	);
-
+								0.40 	0.35	0.2 	0.04	0.01	); * change sep22 for pop_wide_tld;
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
@@ -477,8 +476,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rate_return;  			%sample(rate_return, 
-								0.01	0.05  0.10 	0.30   0.60, 
-								0.15 	0.15  0.40	0.15   0.15);
+								0.05  0.10 	0.30   0.60, 
+							  	0.25  0.25	0.25   0.25); * change sep22 for pop_wide_tld;
 
 							* dependent_on_time_step_length
 * rate_restart;  			%sample_uniform(rate_restart, 0.80 0.85 0.90 0.95);
@@ -515,7 +514,7 @@ newp_seed = 7;
 
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
-* prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.2 0.3 0.5);
+* prob_return_adc; 			%sample(prob_return_adc, 0.7 0.8 0.9, 0.05 0.15 0.8); * change sep22 for pop_wide_tld;
 * switch_for_tox; 			%sample(switch_for_tox, 0 1, 0.8 0.2);
 * higher_newp_less_engagement; 
 							%sample(higher_newp_less_engagement, 0 1, 0.8 0.2);
