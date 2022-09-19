@@ -2471,7 +2471,7 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8);						
 	end;
 
-	if option = 3; then do;
+	if option = 3  then do;
 		date_prep_inj_intro= 2022.75;
 	end;
 
