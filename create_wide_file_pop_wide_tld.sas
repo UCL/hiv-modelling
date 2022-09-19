@@ -7,13 +7,17 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_h_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_i_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
 data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+
+
+if 0 <= option <= 2 ;
+
 
 proc sort data=a.k_pop_wide_tld; 
 by run cald option;
@@ -1174,6 +1178,7 @@ proc means noprint data=e; var &v; output out=y_42 mean= &v._42; by run option ;
 																				   
 proc sort data=y_50y    ; by run; proc transpose data=y_50y     out=t_50y     prefix=&v._50y_  ; var &v._50y    ; by run; 																														
 proc sort data=y_20y    ; by run; proc transpose data=y_20y     out=t_20y     prefix=&v._20y_  ; var &v._20y    ; by run; 																														
+proc sort data=y_5y    ; by run; proc transpose data=y_5y     out=t_5y     prefix=&v._5y_  ; var &v._5y    ; by run; 																														
 /* proc sort data=y_32; by run; proc transpose data=y_32 out=t_32 prefix=&v._32_; var &v._32; by run; */																														
 proc sort data=y_42; by run; proc transpose data=y_42 out=t_42 prefix=&v._42_; var &v._42; by run; 																														
 
