@@ -1,15 +1,5 @@
 
 
-* note that assuming under pop wide tld that adherence to pep = adherence to prep - not distinguishing between the two ;
-* assuming 20% 0.9 and 80% 0.95 for prep oral efficacy and hence the same for tld prep and tld pep - pep was estimated as 0.9 - although
-  note the above comment;
-* distinguish between whether tld used as prep or pep and change efficacy accordingly ?;
-* add in mortality risk due to ckd if on tdf;
-* add in disability weight for tdf tox (as already have for hiv+) ;
-* only use prep/prep when prevalence vl > 1000 > 1% ;
-
-
-
 
 * 
 
@@ -727,6 +717,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 								* dependent_on_time_step_length ;
 																* not applicable for lapr or dpv-vr; * not marked with '_oral' as tld prep is separate intervention ;
 
+* rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);
+
+
 * pr_184m_oral_prep_primary ; pr_184m_oral_prep_primary = 0.3; ******************* placeholder ;
 * pr_65m_oral_prep_primary ;	pr_65m_oral_prep_primary = 0.1; ******************* placeholder ;
 
@@ -834,6 +827,9 @@ end;
 * pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); 
 
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
+
+* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
+* pep_effiacy;					pep_efficacy=0.9;
 
 * COVID-19 ;
 
@@ -2472,9 +2468,12 @@ who may be dead and hence have caldate{t} missing;
 	if option = 2 then do; * pop_wide_tld ;
 		pop_wide_tld = 1; 
 		%sample_uniform(prob_prep_pop_wide_tld, 0.05  0.1  0.3 );
-		%sample_uniform(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8);
+		%sample_uniform(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8);						
+	end;
 
-						
+	if option = 3; then do;
+
+
 	end;
 
 end;
@@ -4927,6 +4926,7 @@ on_risk_informed_prep_vr   = 0;
 if prep_oral_vr =1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_vr_choice ne 1 then on_risk_informed_prep_vr  = 1;
 
 
+
 * prep_falseneg var - Mar2017 f_prep;
 * use this var to ensure that these people who incorrectly start PrEP are not diagnosed later in the same period below;
 if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
@@ -5040,7 +5040,7 @@ end;
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_any and other individual types if needed;
 if prep_oral   =1 then do; 
 	if prep_oral_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;
-	if caldate{t} ge prep_oral_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
+	if caldate{t} gt prep_oral_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
 	* ts1m ; * change this line to: 
 	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
 	;
@@ -5066,6 +5066,7 @@ tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
+if pop_wide_tld_prep = 1 then do; a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
 
 
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
@@ -5923,8 +5924,11 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
-			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 and pop_wide_tld_prep=1)  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			if pop_wide_tld_prep=1 then do;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;  
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			end;
 		end;
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_inj_efficacy);
@@ -6128,9 +6132,11 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			if m184m_p=1 and k65m_p ne 1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p  + in155m_p + in263m_p <= 0 and pop_wide_tld_prep=1)  then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
-			if m184m_p=1 and k65m_p=1 and in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 and pop_wide_tld_prep=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
-
+			if pop_wide_tld_prep=1 then do;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;  
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_eip = risk_eip * (1-(adh * prev_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+			end;
 		end;
 
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
@@ -11737,6 +11743,9 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if i_mort_risk_dol_prep_weightg = . then i_mort_risk_dol_prep_weightg = 1.00 ;
 	if pop_wide_tld_prep=1 then ac_death_rate = ac_death_rate  * i_mort_risk_dol_prep_weightg; 
 
+* increased risk of death due to tdf toxicity (ckd / osteoporosis);
+	if prep_oral=1 and tot_yrs_prep_oral > 5 then ac_death_rate = ac_death_rate * rr_mort_tdf_prep ;
+
 	if gender = 1 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_m ; 
 	if gender = 2 then 	ac_death_rate = ac_death_rate * fold_change_ac_death_rate_w ; 
 
@@ -14110,8 +14119,6 @@ if 0 <= caldate&j - date_most_recent_prep_any_elig < 1 then prep_any_elig_past_y
 if 0 <= caldate&j - date_most_recent_prep_any_elig < 3 then prep_any_elig_past_3year=1;
 if 0 <= caldate&j - date_most_recent_prep_any_elig < 5 then prep_any_elig_past_5year=1;
 
-prop_elig_years_onprep_ayear_i=0;
-if cum_years_prep_any_elig_ayear_i > 0 and registd ne 1 then prop_elig_years_onprep_ayear_i =  cum_years_onprep_ayear_i / cum_years_prep_any_elig_ayear_i;
 
 continuous_prep_oral_ge1yr=0; if prep_oral=1 and continuous_prep_oral_use >= 1 then continuous_prep_oral_ge1yr=1;
 
@@ -18267,9 +18274,9 @@ nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_pro
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000
+prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
@@ -20736,9 +20743,9 @@ effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
-prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000
+prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
