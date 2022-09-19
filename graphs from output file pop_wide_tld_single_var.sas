@@ -20,7 +20,7 @@ n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 n_hiv_undiag = (1 - (p_diag/100)) * n_hiv ;
 
-%let single_var =   dcost        ;
+%let single_var =   p_elig_hivneg_onprep   ;
 
 
 
@@ -334,6 +334,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   
 run;quit;
 
+*/
 
 
 ods html;
@@ -356,6 +357,9 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
+/*
+
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_prep_hivneg";
@@ -375,7 +379,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   
 run;quit;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -397,7 +401,6 @@ yaxis grid label	= '$m per year' 	labelattrs=(size=12)  values = (0 to 250   by 
 run;quit;
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
