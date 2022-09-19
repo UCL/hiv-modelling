@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_g_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_h_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -1164,6 +1164,8 @@ proc means  noprint data=e; var &v; output out=y_22 mean= &v._22; by run ; where
 
 proc means noprint data=e; var &v; output out=y_20y mean= &v._20y; by run option ; where 2022.5 <= cald < 2042.50;   
 
+proc means noprint data=e; var &v; output out=y_5y mean= &v._5y; by run option ; where 2022.5 <= cald < 2027.50;   
+
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2022.5 <= cald < 2072.50;
 /*
 proc means noprint data=e; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.5 <= cald < 2032.50;
@@ -1176,7 +1178,7 @@ proc sort data=y_20y    ; by run; proc transpose data=y_20y     out=t_20y     pr
 proc sort data=y_42; by run; proc transpose data=y_42 out=t_42 prefix=&v._42_; var &v._42; by run; 																														
 
 
-data &v ; merge y_22 t_20y /* t_32 */ t_42 t_50y ;  
+data &v ; merge y_22 t_20y  t_5y  t_42 t_50y ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1527,8 +1529,9 @@ proc sort; by run;run;
   data w_pop_wide_tld ;
   set a.w_pop_wide_tld ;
 
+  if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 ;
 
-  if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 and p_onart_diag_22 > 0.7;
+if run <=  771069705 ;
 
 * if prep_any_strategy = 4;
 
@@ -1590,6 +1593,13 @@ d_n_death_hiv_50y_3_2 = n_death_hiv_50y_3 - n_death_hiv_50y_2;
 d_prop_elig_on_prep_20y_3_2 = prop_elig_on_prep_20y_3 - prop_elig_on_prep_20y_2;
 d_prop_1564_onprep_20y_3_2 = prop_1564_onprep_20y_3 - prop_1564_onprep_20y_2;
 d_prop_prep_inj_20y_3_2 = prop_prep_inj_20y_3 - prop_prep_inj_20y_2 ;
+d_p_onart_20y_3_2 = p_onart_20y_3 - p_onart_20y_2 ;
+
+d_prop_elig_on_prep_5y_3_2 = prop_elig_on_prep_5y_3 - prop_elig_on_prep_5y_2;
+d_prop_1564_onprep_5y_3_2 = prop_1564_onprep_5y_3 - prop_1564_onprep_5y_2;
+d_prop_prep_inj_5y_3_2 = prop_prep_inj_5y_3 - prop_prep_inj_5y_2 ;
+d_p_onart_5y_3_2 = p_onart_5y_3 - p_onart_5y_2 ;
+
 d_p_prep_any_ever_42_3_2 = p_prep_any_ever_42_3 - p_prep_any_ever_42_2 ;
 r_incidence1549_20y_3_2 = incidence1549_20y_3 / incidence1549_20y_2 ;
 d_incidence_onprep_20y_3_2 = incidence_onprep_20y_3 - incidence_onprep_20y_2 ;
@@ -1636,6 +1646,11 @@ super_inf = 0;
 if super_infection_pop = 1 and super_inf_res = 0.2 then super_inf=2;
 if super_infection_pop = 1 and super_inf_res = 0.8 then super_inf=3;
 
+if incidence1549_22 < 0.2 then incidence1549_22_g=1;
+if 0.2 <= incidence1549_22 < 0.4 then incidence1549_22_g=2;
+if 0.4 <= incidence1549_22 < 0.6 then incidence1549_22_g=3;
+if 0.6 <= incidence1549_22 < 0.8 then incidence1549_22_g=4;
+if 0.8 <= incidence1549_22       then incidence1549_22_g=5;
 
 
 * table 1;
@@ -1674,6 +1689,7 @@ incidence_onprep_20y_1 incidence_onprep_20y_2 incidence_onprep_20y_3  d_incidenc
 n_birth_with_inf_child_20y_1 n_birth_with_inf_child_20y_2 n_birth_with_inf_child_20y_3  d_n_birth_with_inf_child_20y_3_2
 prevalence1549_42_1 prevalence1549_42_2 prevalence1549_42_3  r_prevalence1549_42_3_2
 n_hiv_42_1 n_hiv_42_2 n_hiv_42_3 r_n_hiv_42_3_2 
+d_p_onart_20y_3_2 p_onart_20y_3  p_onart_20y_2 
 ; 
 run;
 
@@ -1733,11 +1749,13 @@ run;
 
 
 
-proc freq; tables pop_wide_tld_ce ; run;
+proc freq; tables pop_wide_tld_ce incidence1549_22_g*pop_wide_tld_ce ; run;
+
+proc freq; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
 
 
-proc glm data=  w_pop_wide_tld ; model prevalence1549_22 =
+proc logistic data=  w_pop_wide_tld ; model pop_wide_tld_ce =
 
 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1787,4 +1805,9 @@ run;
 
 
 
+
+proc logistic data=  w_pop_wide_tld ; model pop_wide_tld_ce_x  =  incidence1549_22 ; run;
+
+
+proc freq; tables incidence1549_42_2 incidence1549_42_3  ; run; 
 
