@@ -2,7 +2,7 @@
 
 *
 
-some setting scenarios those self-accessing ART have lower adherence to ART, in others higher.    
+some setting scenarios those self-accessing ART have lower adherence to ART, in others higher.     * done   
 
 some setting scenarios where under community TLD prevention effectiveness is lower and some where it is higher   
 
@@ -12,6 +12,12 @@ This doesn’t seem to have much effect and in future runs I need to try higher pe
 Euphemia:  what is impact among key groups we worry about who have been left behind: young people, sex workers. Impact on PMTCT
 
 Katy Godfrey: the use of TLD in this setting will mean that HIVDR *may be mitigated?  
+
+add in costs for the free self tests
+
+consider higher levels of targeting of use to people with hiv due to those self test kits being freely available
+
+consider some stopping of art due to people self testing -ve (say that assumed effect on interruption and restart is net of this)
 
 ;
 
@@ -849,6 +855,9 @@ end;
 
 * prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
 * pep_effiacy;					pep_efficacy=0.9;
+
+* artvis0_adh;					%sample(artvis0_adh, 0 1 2, 0.6 0.2 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+
 
 * COVID-19 ;
 
@@ -8552,6 +8561,12 @@ if t ge 2 then adhmin=min(adh,adhmin_tm1);
 if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
 
+* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+
+if artvis0_adh = 1 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.5, 10);  end;
+if artvis0_adh = 2 then do;  if onartvisit0 = 1 then adh = adh + rand('beta', 1.5, 10);  end;
+
+
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
 
 	pt_cd4_rise_art=patient_cd4_rise_art;
@@ -8582,6 +8597,7 @@ if gender=2 then gender_art_adj=2;
 
 cd4_art_adj = cd4_art_adj + age_art_adj + pi_art_adj + gender_art_adj;  * note for ts1m we divide cc by 3 below ;
 
+if adh < 0 then adh=0;
 if adh gt 1 then adh=1;
 
 
@@ -18297,6 +18313,7 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_depe
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
+artvis0_adh 
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -20981,7 +20998,7 @@ prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
-
+artvis0_adh
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
