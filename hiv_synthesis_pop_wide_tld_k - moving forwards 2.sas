@@ -4,29 +4,17 @@
 
 some setting scenarios those self-accessing ART have lower adherence to ART, in others higher.     * done   
 
-some setting scenarios where under community TLD prevention effectiveness is lower and some where it is higher   
+some setting scenarios where under community TLD prevention effectiveness is lower and some where it is higher
+(using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep)    * done
 
-I’ve tried to implement PrEP/PEP such that people are far less likely to use it if the prevalence of VL > 1000 in the population drops below 0.5%.  
-This doesn’t seem to have much effect and in future runs I need to try higher percentages. 
+Euphemia:  what is impact among key groups we worry about who have been left behind: young people, sex workers. Impact on PMTCT * think have outputs for these groups
 
-Euphemia:  what is impact among key groups we worry about who have been left behind: young people, sex workers. Impact on PMTCT
+Katy Godfrey: the use of TLD in this setting will mean that HIVDR *may be mitigated?  * should have relevant outputs
 
-Katy Godfrey: the use of TLD in this setting will mean that HIVDR *may be mitigated?  
+add in costs for the free self tests  
 
-add in costs for the free self tests
+consider some stopping of art due to people self testing -ve * assumed effect on interruption and restart is net of this)
 
-consider higher levels of targeting of use to people with hiv due to those self test kits being freely available
-
-consider some stopping of art due to people self testing -ve (say that assumed effect on interruption and restart is net of this)
-
-;
-
-
-
-
-
-
-* 
 
 need to distinguish between tld as pep and tld as prep for people with hiv - if pep then consider as not being on art 
  (but most people who are taking because have a prep/pep indication are prepared to test)
@@ -695,6 +683,7 @@ newp_seed = 7;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.2 0.8);
+* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); 
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
@@ -847,7 +836,7 @@ end;
 * prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
 
-* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 );
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 ); * using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep ;
 
 * pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); 
 
@@ -857,6 +846,9 @@ end;
 * pep_effiacy;					pep_efficacy=0.9;
 
 * artvis0_adh;					%sample(artvis0_adh, 0 1 2, 0.6 0.2 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+
+* pop_wide_tld_prev_eff;		%sample(pop_wide_prev_eff, 0 1 2, 0.6 0.2 0.2) ; * effect of taking pop wide tld without clinical supervision 
+																					(indicated by testing=1) on prev effectiveness;
 
 
 * COVID-19 ;
@@ -991,6 +983,8 @@ cost_prep_inj_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in H
 cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
 	* lapr and dpv-vr - use same value for now, will need update lapr and dpv-vr costs;
 cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
+av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kits available - we dont know how frequently they will be used - we 
+									dont explicitly model self tests use, it only helps status informed tld use - cost ;
  
 * not * dependent_on_time_step_length ;
 * todo: add in crag and tb lam test costs, add in cost of treating tb crypm sbi (may be higher if diagnosed early, + costs of tb crypm prophylaxis;
@@ -2150,7 +2144,7 @@ else highest_prep_pref=3;																		* 3=preference for vaginal ring;
 * willingness to take prep if offered;
 
 pwt = prep_willingness_threshold ;
-if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < 0.005 then pwt = 0.9; * only those very keen to take prep will do so once prevalebce of vlg1000 is very low;
+if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then pwt = 0.9; * only those very keen to take prep will do so once prevalebce of vlg1000 is very low;
 
 if caldate{t} ge date_prep_oral_intro then do;
 prep_oral_willing = 0; if  pref_prep_oral > pwt  	then prep_oral_willing =1;
@@ -5953,9 +5947,14 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			if m184m_p=1 and k65m_p=1  then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			* note this is one situation in which we are assuming a prevention effect of dolutegravir;
 			if pop_wide_tld_prep=1 then do;
-				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;  
+				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
+				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
+				alrady positive from previous exposures;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
+				if pop_wide_tld_prev_eff=1 and tested ne 1 then prev_efficacy = prev_efficacy * .8;
+				if pop_wide_tld_prev_eff=2 and tested ne 1 then prev_efficacy = prev_efficacy * 1.25;
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
@@ -6161,10 +6160,16 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 			if m184m_p ne 1 and k65m_p=1 and tam_p>=3 then risk_eip = risk_eip * (1-(adh * prep_oral_efficacy));
 			if m184m_p=1 and k65m_p=1  then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
 			if pop_wide_tld_prep=1 then do;
-				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;  
+				* using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep (self testing doesnt count as tested=1);
+				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
+				alrady positive from previous exposures;
+				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
+				if pop_wide_tld_prev_eff=1 and tested ne 1 then prev_efficacy = prev_efficacy * .8;
+				if pop_wide_tld_prev_eff=2 and tested ne 1 then prev_efficacy = prev_efficacy * 1.25;
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_eip = risk_eip * (1-(adh * prev_efficacy));
-				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prep_oral_efficacy));
+				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
+
 		end;
 
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
@@ -11607,6 +11612,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 
 * f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
 cost_prep_oral=0;cost_prep_inj =0; cost_prep_visit=0;cost_prep_ac_adh=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;cost_prep_visit_vr=0;
+cost_avail_self_test=0;
 if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
 	cost_prep_oral = prep_oral_drug_cost ;  cost_prep_ac_adh=cost_prep_oral*adh;
@@ -11637,6 +11643,10 @@ if pop_wide_tld_prep = 1 then do;
 	if visit_prep_oral = 2 then cost_prep_visit = cost_prep_oral_clinic; 
 	if visit_prep_oral = 3 then cost_prep_visit = cost_prep_oral_clinic+cost_prep_any_clinic_couns;
 	cost_prep_visit_oral=cost_prep_visit;
+	* if visit_prep_oral = 2 means tested=1 and person is under clinical supervision;
+	* need to include cost of self test kit availability for people whoe are not under clinical supervision (ie tested ne 1) - dont know how much use there will be; 
+	if cost_prep_visit <= 0 then cost_avail_self_test=av_cost_self_test_avail; * of course this is not an actual visit but seems as good a place as any to add the 
+																			cost of self test kits; 
 end;
 
 
@@ -11672,7 +11682,7 @@ cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_an
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) 
-+ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+  max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
 + max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
@@ -11699,7 +11709,7 @@ cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
 res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_prep_vr = 0;
  cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
- cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0; cost_prep_visit_vr=0;end;
+ cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0; cost_prep_visit_vr=0;cost_avail_self_test=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
 * low cost partially is to take account of possibility of child dying ;
@@ -14634,6 +14644,7 @@ _dcost_prep_inj = cost_prep_inj*discount;
 _dcost_prep_vr  = cost_prep_vr*discount;
 _dcost_prep_ac_adh = cost_prep_ac_adh*discount;
 _dcost_prep_visit = cost_prep_visit*discount;
+_dcost_avail_self_test = cost_avail_self_test*discount;
 _dcost_prep_visit_oral = cost_prep_visit_oral*discount;
 _dcost_prep_visit_inj = cost_prep_visit_inj*discount;
 _dcost_prep_visit_vr  = cost_prep_visit_vr*discount;
@@ -16785,7 +16796,8 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_full_vis_cost + full_vis_cost; s_adc_cost + adc_cost; s_non_tb_who3_cost + non_tb_who3_cost; s_cot_cost + cot_cost;  
 	s_tb_cost + tb_cost;  s_cost_test + cost_test; s_res_cost + res_cost;  s_cost_circ + cost_circ;  s_cost_condom_dn + cost_condom_dn; 
 	s_cost_sw_program + cost_sw_program;  s_t_adh_int_cost + t_adh_int_cost; s_cost_test_m + cost_test_m; 
-	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_prep_visit_oral + cost_prep_visit_oral; 
+	s_cost_test_f + cost_test_f; s_cost_prep + cost_prep; s_cost_prep_visit + cost_prep_visit; s_cost_avail_self_test + cost_avail_self_test ; 
+	s_cost_prep_visit_oral + cost_prep_visit_oral; 
 	s_cost_prep_visit_inj + cost_prep_visit_inj; s_cost_prep_visit_vr + cost_prep_visit_vr; 	s_cost_prep_ac_adh + cost_prep_ac_adh; 
 	s_cost_test_m_sympt + cost_test_m_sympt; s_cost_test_f_sympt + cost_test_f_sympt; s_cost_test_m_circ + cost_test_m_circ;
 	s_cost_test_f_anc + cost_test_f_anc; s_cost_test_f_sw + cost_test_f_sw;  s_cost_test_f_non_anc + cost_test_f_non_anc;
@@ -16802,7 +16814,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
 	s_dcost_sw_program + dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; s_dcost_prep_vr + _dcost_prep_vr ; 
-	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; 
+	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
 																																		  
@@ -18114,7 +18126,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit 
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -18125,7 +18137,7 @@ s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  
-s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr
+s_dcost_prep_vr  s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
@@ -18309,11 +18321,11 @@ nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_pro
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  rr_mort_tdf_prep
+prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
-artvis0_adh 
+artvis0_adh  pop_wide_tld_prev_eff
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
@@ -19034,8 +19046,8 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
-s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit   s_cost_avail_self_test
+s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
 s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  	  s_cost_zdv 	 s_cost_ten			s_cost_3tc  	   s_cost_nev   
@@ -19046,7 +19058,7 @@ s_cost_child_hiv  			s_cost_child_hiv_mo_art   s_cost_hypert_vis   			    s_cost
 s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost    		s_dfull_vis_cost    s_dadc_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj  s_dcost_prep_vr 
-s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr
+s_dcost_prep_visit s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
@@ -20797,7 +20809,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit   s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -20809,7 +20821,7 @@ s_dcost_  s_dart_cost   	s_donart_cost  s_dcd4_cost   s_dvl_cost     s_dvis_cost
 s_dnon_tb_who3_cost 		s_dcot_cost    s_dtb_cost 	 s_dtest_cost   s_dres_cost   		s_dcost_circ	    s_dcost_condom_dn 
 s_dcost_sw_program      	s_d_t_adh_int_cost 			 s_dtest_cost_m s_dtest_cost_f	s_dtest_cost_type1	s_dcost_prep_oral s_dcost_prep_inj   
  s_dcost_prep_vr    
-s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr 
+s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_visit_vr  s_dcost_avail_self_test
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
@@ -20992,13 +21004,13 @@ effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
-prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  rr_mort_tdf_prep
+prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
-artvis0_adh
+artvis0_adh  pop_wide_tld_prev_eff
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
