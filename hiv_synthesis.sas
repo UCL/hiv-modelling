@@ -786,7 +786,10 @@ end;
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 ); * using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep ;
 
 * pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); * under tld, is there a greater chance of a person with hiv starting tld art compared with a person without hiv;
-
+																					* i think reasonable to assume that most will have hiv becuase they can self test and seems unlikely
+																						a person would be prepared to take tld becuase they are worried they have hiv but not prepared at
+																						any time to check this with a self test;											
+	
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk of iris due to not in care
 																							so might start art when have detectable cm or tb;
 
