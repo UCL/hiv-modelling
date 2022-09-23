@@ -780,19 +780,22 @@ end;
 
 * prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.0 0.001 0.005);
 
-* prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); 
-* prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); 
+* prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); * for people on art under pop wide tld, rate of transission from not being in care to being in care;
+* prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); * for people on art under pop wide tld, rate of transission from being in care to not being in care;
 
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 ); * using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep ;
 
-* pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); 
+* pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); * under tld, is there a greater chance of a person with hiv starting tld art compared with a person without hiv;
 
-* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
+* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk of iris due to not in care
+																							so might start art when have detectable cm or tb;
 
-* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
-* pep_effiacy;					pep_efficacy=0.9;
+* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8);  * of those with prep/pep indication, proportion on tld as pep rather than prep; 	 		
+* pep_effiacy;					pep_efficacy=0.9;    * efficacy of pop_wide_tld_prep in preventing infection when used as pep;
 
 * artvis0_adh;					%sample(artvis0_adh, 0 1 2, 0.6 0.2 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+																				* for people with hiv on tld but not in care, is adherence higher or lower or the same
+																				   as if they were in care; 
 
 * pop_wide_tld_prev_eff;		%sample(pop_wide_prev_eff, 0 1 2, 0.6 0.2 0.2) ; * effect of taking pop wide tld without clinical supervision 
 																					(indicated by testing=1) on prev effectiveness;
