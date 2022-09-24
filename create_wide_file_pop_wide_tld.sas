@@ -1136,7 +1136,8 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 
-prep_dependent_prev_vg1000 
+prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
+
 ;
 
 
@@ -1355,7 +1356,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 pref_prep_oral_beta_s1 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
 n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel prop_prep_tot5yrs n_start_rest_prep_inj_hiv n_prep_inj n_prep_any
 p_prep_adhg80 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3 n_pop_wide_tld_hiv n_pop_wide_tld_prep_elig 
-p_mcirc_1549m prev_vg1000_1549
+p_mcirc_1549m prev_vg1000_1549  
 ;
 
 
@@ -1416,7 +1417,7 @@ prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-prep_dependent_prev_vg1000 
+prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
 ;
 
 
@@ -1476,6 +1477,8 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);
 %par(p=inc_oral_prep_pref_pop_wide_tld);
   %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol); %par(p=prep_dependent_prev_vg1000);
+ %par(p= prep_vlg1000_threshold);    %par(p=prop_pep); %par(p=pep_effiacy);  %par(p=artvis0_adh);  %par(p=pop_wide_tld_prev_eff);
+
 
 data   wide_par; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1521,6 +1524,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
  prob_prep_pop_wide_tld   inc_oral_prep_pref_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol prep_dependent_prev_vg1000 
+ prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
 ;
 
 run;
@@ -1665,14 +1669,8 @@ if 0.4 <= incidence1549_22 < 0.6 then incidence1549_22_g=3;
 if 0.6 <= incidence1549_22 < 0.8 then incidence1549_22_g=4;
 if 0.8 <= incidence1549_22       then incidence1549_22_g=5;
 
-
-
-
-
-
-
-  if d_p_onart_5y_3_2 < 0.08;
-  if d_p_elig_hivneg_onprep_5y_3_2 < 0.35;
+* if d_p_onart_5y_3_2 < 0.08;
+* if d_p_elig_hivneg_onprep_5y_3_2 < 0.35;
 
 
 * table 1;

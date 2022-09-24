@@ -21,7 +21,7 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 n_hiv_undiag = (1 - (p_diag/100)) * n_hiv ;
 prev_vg1000_1549_ = prev_vg1000_1549;
 
-  if prep_dependent_prev_vg1000 =  1  ;
+  if prep_dependent_prev_vg1000 =  1 and prep_vlg1000_threshold = 0.01;
 
 %let single_var =  prop_elig_on_prep  ;
 

@@ -829,7 +829,7 @@ end;
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
 
-* rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
+* rr_interrupt_pop_wide_tld;	%sample(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5, 0.3 0.3 0.3 0.1);
 
 * prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.0 0.001 0.005);
 
@@ -2143,19 +2143,20 @@ else highest_prep_pref=3;																		* 3=preference for vaginal ring;
 
 * willingness to take prep if offered;
 
-pwt = prep_willingness_threshold ;
-if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then pwt = 0.9; * only those very keen to take prep will do so once prevalebce of vlg1000 is very low;
-
 if caldate{t} ge date_prep_oral_intro then do;
-prep_oral_willing = 0; if  pref_prep_oral > pwt  	then prep_oral_willing =1;
+prep_oral_willing = 0; if  pref_prep_oral > prep_willingness_threshold  	then prep_oral_willing =1;
 end;
 
 if caldate{t} ge date_prep_inj_intro then do;
-prep_inj_willing = 0; if  pref_prep_inj  > pwt  	then prep_inj_willing =1;
+prep_inj_willing = 0; if  pref_prep_inj  > prep_willingness_threshold  	then prep_inj_willing =1;
 end;
 
 if caldate{t} ge date_prep_vr_intro then do;
-prep_vr_willing = 0; if  pref_prep_vr > pwt  	then prep_vr_willing =1;
+prep_vr_willing = 0; if  pref_prep_vr > prep_willingness_threshold  	then prep_vr_willing =1;
+end;
+
+if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then do; 
+	prep_oral_willing=0; prep_inj_willing=0; prep_vr_willing=0;
 end;
 
 prep_any_willing = 0;
@@ -2489,8 +2490,8 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 2 then do; * pop_wide_tld ;
 		pop_wide_tld = 1; 
-		%sample_uniform(prob_prep_pop_wide_tld, 0.05  0.1  0.3 );
-		%sample_uniform(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8);						
+		%sample(prob_prep_pop_wide_tld, 0.05  0.1  0.3, 0.4  0.4  0.2 );
+		%sample(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8, 0.4 0.4 0.2);						
 	end;
 
 	if option = 3  then do;
@@ -2527,11 +2528,11 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			* select which prep type individual will be willing to use based on preference;
 			* increase preference for highest preference to ensure pref_prep_oral (or inj)  is above threshold  =1 ; 
 			select;
-				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	pwt + pref_prep_oral ; end;
-				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	pwt + pref_prep_inj ; end;
-				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	pwt + pref_prep_vr ; end;	* This will apply only to women;								
+				when (highest_prep_pref = 1)	do; prep_oral_willing = 1;	pref_prep_oral=	prep_willingness_threshold + pref_prep_oral ; end;
+				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + pref_prep_inj ; end;
+				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
 				otherwise xxx=1;
-			* note the higher prep willingness threshold when prev_vlg1000 is below 0.005 does not apply to sw;
+			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
 		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
@@ -4462,7 +4463,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
 								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_inj=1;ever_testfor_prep_inj=1; 
+								testfor_prep_inj=1;
 							end;
 							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
 								*(1) prefer oral prep to inj and willing;
@@ -4473,7 +4474,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 								*(2) prefer inj prep to oral and willing;
 								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 then do;
 									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_inj=1;  ever_testfor_prep_inj=1;
+									testfor_prep_inj=1;  
 								end; 
 								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
@@ -18321,7 +18322,7 @@ nnrti_res_no_effect  sw_init_newp sw_trans_matrix  p_rred_sw_newp  effect_sw_pro
 effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_prog_adh  effect_sw_prog_lossdiag effect_sw_prog_prep_any
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
+prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -21004,7 +21005,7 @@ effect_sw_prog_6mtest effect_sw_prog_int effect_sw_prog_pers_sti effect_sw_prog_
 sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
-prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any pwt prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
+prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
