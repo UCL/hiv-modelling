@@ -16,8 +16,6 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 
-* if 0 <= option <= 2 ;
-
 
 proc sort data=a.k_pop_wide_tld; 
 by run cald option;
