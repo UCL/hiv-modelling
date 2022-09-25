@@ -21,9 +21,10 @@ n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 n_hiv_undiag = (1 - (p_diag/100)) * n_hiv ;
 prev_vg1000_1549_ = prev_vg1000_1549;
 
-  if prep_dependent_prev_vg1000 =  1 and prep_vlg1000_threshold = 0.01;
+  if prep_dependent_prev_vg1000 = 0 ;
+* if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;
 
-%let single_var =  prop_elig_on_prep  ;
+%let single_var =  prevalence1549_  ;
 
 
 /*
@@ -358,7 +359,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 run;quit;
 
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -378,11 +378,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_prop_elig_on_prep_2 	upper=p95_prop_elig_on_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
   
 run;quit;
-
-
-
-
-/*
 
 
 ods html;
@@ -609,7 +604,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 run;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "HIV incidence in people aged 1549";
@@ -629,6 +623,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -649,6 +644,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     
 
 run;
 
+/*
 
 ods html;
 proc sgplot data=d; 

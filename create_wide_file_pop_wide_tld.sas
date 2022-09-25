@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_l_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_l2_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -1766,11 +1766,14 @@ ddaly_50y_1 ddaly_50y_2 ddaly_50y_3  d_ddaly_50y_3_2
 dcost_50y_1   dcost_50y_2 dcost_50y_3   d_dcost_50y_3_2
 netdaly500_1 netdaly500_2 netdaly500_3 netdaly_averted_3_2
 ;
+* where prep_dependent_prev_vg1000 = 1    and prep_vlg1000_threshold = 0.01    ;
 run;
 
 
 
-proc freq; tables pop_wide_tld_ce incidence1549_22_g*pop_wide_tld_ce ; run;
+proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce incidence1549_22_g*pop_wide_tld_ce ; 
+where prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;
+run;
 
 proc freq; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
