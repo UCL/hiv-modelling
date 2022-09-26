@@ -1114,7 +1114,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any    
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
@@ -1133,7 +1133,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 
-prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
+prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced
 
 ;
 
@@ -1365,7 +1365,7 @@ proc sort; by run; run;
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
 
-if cald=2022.5 and option=2; * note this is 2 because this is from dataset y where options are still 0, 1, 2 ; 
+if cald=2022.5 and option=1; * note this is 2 because this is from dataset y where options are still 0, 1, 2 ; 
 
 keep 
 
@@ -1398,7 +1398,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any    
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
@@ -1414,7 +1414,7 @@ prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 p_emerge_inm_res_cab_notpr
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
+prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced
 ;
 
 
@@ -1459,7 +1459,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=red_adh_multi_pill_pop );   %par(p=greater_disability_tox );	   %par(p=greater_tox_zdv ); 
 
 %par(p=effect_sw_prog_prep_any);  %par(p=prob_prep_any_restart_choice);  
-%par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=prep_willingness_threshold);  
+%par(p=prob_prep_any_visit_counsel);  %par(p=rate_test_onprep_any); %par(p=);  
 %par(p=prob_prep_any_restart_choice);  
 %par(p=pr_prep_oral_b);  %par(p=rel_prep_oral_adh_younger); %par(p=prep_oral_efficacy);    
 %par(p=rate_choose_stop_prep_oral);  %par(p=higher_future_prep_oral_cov);  %par(p=pr_prep_inj_b);  %par(p=prep_inj_efficacy);
@@ -1474,8 +1474,8 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);
 %par(p=inc_oral_prep_pref_pop_wide_tld);
   %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol); %par(p=prep_dependent_prev_vg1000);
- %par(p= prep_vlg1000_threshold);    %par(p=prop_pep); %par(p=pep_effiacy);  %par(p=artvis0_adh);  %par(p=pop_wide_tld_prev_eff);
-
+ %par(p= prep_vlg1000_threshold);    %par(p=prop_pep); %par(p=pep_efficacy);  %par(p=artvis0_adh);  %par(p=pop_wide_tld_prev_eff);
+%par(p=prep_inj_introduced);
 
 data   wide_par; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
@@ -1505,7 +1505,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
 adh_pattern_prep_oral   rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any    
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
@@ -1521,7 +1521,7 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
  prob_prep_pop_wide_tld   inc_oral_prep_pref_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol prep_dependent_prev_vg1000 
- prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
+ prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced
 ;
 
 run;
@@ -1539,7 +1539,6 @@ proc sort; by run;run;
   set a.w_pop_wide_tld ;
 
   if incidence1549_22 >= 0.2 and prevalence1549_22 <= 0.30 ;
-
 
 * if run <=  771069705 ;
 
@@ -1693,8 +1692,7 @@ prevalence1549_42_1 prevalence1549_42_2  r_prevalence1549_42_2_1
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1 
 d_p_onart_20y_2_1  p_onart_20y_2 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1  d_prop_prep_inj_20y_2_1
-; 
-where pref_prep_inj_beta_s1 = 6;
+;
 run;
 
 
@@ -1734,12 +1732,16 @@ ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
 dcost_50y_1   dcost_50y_2  d_dcost_50y_2_1
 netdaly500_1 netdaly500_2  netdaly_averted_2_1
 ;
+where prep_inj_introduced=0;
 * where prep_dependent_prev_vg1000 = 1    and prep_vlg1000_threshold = 0.01    ;
 run;
 
 
 
-proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce incidence1549_22_g*pop_wide_tld_ce ; 
+proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce  ; 
+  where prep_inj_introduced ;
+run;
+
 * where prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;
 run;
 
@@ -1747,9 +1749,10 @@ proc freq; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
 
 
-proc logistic data=  w_pop_wide_tld ; model pop_wide_tld_ce =
-
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+proc logistic data=  w_pop_wide_tld ; 
+class pref_prep_oral_beta_s1 pref_prep_inj_beta_s1 ;
+model pop_wide_tld_ce =
+sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1776,7 +1779,7 @@ crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100    effect_tb_proph  
 
 effect_sw_prog_prep_any  prob_prep_any_restart_choice 
  rate_test_startprep_any    rate_choose_stop_prep_oral
-prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any  prep_willingness_threshold  
+prep_any_strategy   prob_prep_any_visit_counsel  rate_test_onprep_any    
 prob_prep_any_restart_choice  
 pr_prep_oral_b  rel_prep_oral_adh_younger prep_oral_efficacy    
 higher_future_prep_oral_cov  pr_prep_inj_b  prep_inj_efficacy
@@ -1787,15 +1790,43 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
-pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 
 res_level_dol_cab_mut  pr_res_dol
 
-prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_effiacy artvis0_adh pop_wide_tld_prev_eff
+prep_dependent_prev_vg1000   prop_pep  artvis0_adh /* pop_wide_tld_prev_eff */
+ prep_inj_introduced 
 ;
+  where prep_inj_introduced =1;
 run;
+
+
+* currently implausibly large a difference in inj use according to pop wide tld introduction ;
+
+
+proc glm  data=  w_pop_wide_tld ; 
+model r_incidence1549_20y_2_1 =
+d_p_elig_hivneg_onprep_5y_2_1 
+;
+  where prep_inj_introduced =1;
+run;
+
+
+
+proc glm; 
+class pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  inc_oral_prep_pref_pop_wide_tld;
+model d_prop_prep_inj_20y_2_1 =
+pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  inc_oral_prep_pref_pop_wide_tld
+/ solution
+;
+  where prep_inj_introduced =1;
+run;
+
+
+
+
 
 
 
