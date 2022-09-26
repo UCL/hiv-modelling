@@ -2483,6 +2483,7 @@ date_prep_inj_intro= 2022.75;
 	end;
 
 	if option = 1 then do; * as option 1 plus pop_wide_tld ;
+pref_prep_inj_beta_s1=50;
 		pop_wide_tld = 1; 
 		%sample(prob_prep_pop_wide_tld, 0.05  0.1  0.3, 0.5  0.3  0.2 );
 		%sample(inc_oral_prep_pref_pop_wide_tld, 0.3 0.5 0.8, 0.5 0.3 0.2);						
@@ -16841,10 +16842,10 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 proc freq; tables caldate&j hiv ; run;
 
-proc print; var caldate&j prep_any_elig  
-prep_oral_willing  prep_inj_willing  pref_prep_inj  pref_prep_oral
+proc print; var caldate&j option prep_any_elig  
+prep_oral_willing  prep_inj_willing  pref_prep_inj  pref_prep_oral testfor_prep_inj
 tested  testfor_prep_oral testfor_prep_inj  prep_oral  prep_inj  pop_wide_tld_prep  ;
-where prep_any_elig_past_year = 1;
+where prep_any_elig = 1 and hard_reach ne 1;
 run;
 
 
@@ -19487,7 +19488,6 @@ end;
 
 data a.k; set r1;
 
-*/
 
 data r1; set a.k;
 
@@ -19502,6 +19502,7 @@ data r1; set a.k;
 
 data a.k2; set r1;
 
+*/
 
 data r1; set a.k2;
 
@@ -19512,7 +19513,7 @@ data r1; set a.k2;
 
 
 
-
+/*
 
 
 
