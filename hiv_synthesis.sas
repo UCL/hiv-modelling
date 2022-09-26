@@ -630,8 +630,8 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67);
-* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); 
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
+* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
@@ -2070,7 +2070,8 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 end;
 
 * if pop_wide_tld pep prep available then higher willingness due to ease of access;
-if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do;
+* variable inc_oral_prep_pref_pop_wide_tld determines the extent to which the appeal / willingness / preference  of oral prep increases with pop_wide_tld due to the increased access; 
+if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do; * inc_o_prep_pref_pop_wide_tld_d becomes 1 once been through this loop as an indicator;
 	pref_prep_oral = pref_prep_oral + ((1 - pref_prep_oral) * inc_oral_prep_pref_pop_wide_tld); inc_o_prep_pref_pop_wide_tld_d=1;
 end;
 
