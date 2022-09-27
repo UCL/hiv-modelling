@@ -5075,7 +5075,9 @@ tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
-if pop_wide_tld_prep = 1 and prep_any_elig=1 then do; a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
+if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and (ever_newp ne 1 or ever_tested = 1)
+then do; a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
+* those taking tld as prep/pep and not because they think they might have hiv;
 
 
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
@@ -8557,6 +8559,9 @@ if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
 if artvis0_adh = 1 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.5, 10);  end;
 if artvis0_adh = 2 then do;  if onartvisit0 = 1 then adh = adh + rand('beta', 1.5, 10);  end;
+
+* if on pop_wide_tld_prep as pep then equivalent to 0 adherence;
+if pop_wide_tld_prep=1 and registd ne 1 and pep_not_prep=1 then adh=0;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;

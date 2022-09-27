@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_m_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_n_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -1676,6 +1676,7 @@ d_p_onart_5y_2_1 p_onart_5y_1  p_onart_5y_2
 d_p_onart_m_5y_2_1 p_onart_m_5y_1  p_onart_m_5y_2
 d_p_onart_w_5y_2_1 p_onart_w_5y_1  p_onart_w_5y_2
 
+n_prep_inj_20y_1 n_prep_inj_20y_2
 p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2  d_p_elig_hivneg_onprep_20y_2_1
 prop_1564_onprep_20y_1  prop_1564_onprep_20y_2    d_prop_1564_onprep_20y_2_1
 n_prep_any_20y_1 n_prep_any_20y_2  
@@ -1689,7 +1690,7 @@ n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1
 d_p_onart_20y_2_1  p_onart_20y_2 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1  d_prop_prep_inj_20y_2_1
 ;
-where prep_inj_introduced=1;
+where pref_prep_inj_beta_s1=2;
 run;
 
 
@@ -1729,14 +1730,11 @@ ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
 dcost_50y_1   dcost_50y_2  d_dcost_50y_2_1
 netdaly500_1 netdaly500_2  netdaly_averted_2_1
 ;
-where prep_inj_introduced=0;
-* where prep_dependent_prev_vg1000 = 1    and prep_vlg1000_threshold = 0.01    ;
 run;
 
 
 
 proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce  ; 
-  where prep_inj_introduced = 1;
 run;
 
 * where prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;
@@ -1747,7 +1745,7 @@ proc freq; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
 
 proc logistic data=  w_pop_wide_tld ; 
-class pref_prep_oral_beta_s1 pref_prep_inj_beta_s1 ;
+class pref_prep_oral_beta_s1 pref_prep_inj_beta_s1 prep_inj_efficacy;
 model pop_wide_tld_ce =
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
@@ -1793,21 +1791,25 @@ rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  pro
 
 res_level_dol_cab_mut  pr_res_dol
 
-prep_dependent_prev_vg1000   prop_pep  artvis0_adh /* pop_wide_tld_prev_eff */
- prep_inj_introduced 
+prep_dependent_prev_vg1000   prop_pep  artvis0_adh  pop_wide_tld_prev_eff 
+
 ;
-  where prep_inj_introduced =1;
 run;
 
 
-* currently implausibly large a difference in inj use according to pop wide tld introduction ;
 
 
 proc glm  data=  w_pop_wide_tld ; 
-model r_incidence1549_20y_2_1 =
-d_p_elig_hivneg_onprep_5y_2_1 
+model p_elig_hivneg_onprep_5y_1 =
+
+pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+ prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
+
+res_level_dol_cab_mut  pr_res_dol
+
+prep_dependent_prev_vg1000   prop_pep  artvis0_adh  pop_wide_tld_prev_eff 
 ;
-  where prep_inj_introduced =1;
 run;
 
 
@@ -1818,7 +1820,6 @@ model d_prop_prep_inj_20y_2_1 =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  inc_oral_prep_pref_pop_wide_tld
 / solution
 ;
-  where prep_inj_introduced =1;
 run;
 
 
