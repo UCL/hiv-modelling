@@ -751,6 +751,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+								* note this is for women and assumed the value **2 for men;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -2132,6 +2133,10 @@ end;
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
 if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+* delay in roll-out of prep_inj in men as no direct data in msw yet;
+if gender=1 and caldate{t} < 2027 then prep_prep_inj=0;
+
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
@@ -5951,8 +5956,9 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 			end;
 		end;
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_nip = risk_nip * (1-prep_inj_efficacy);
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+			if gender =2 then gender_spec_prep_inj_eff = prep_inj_efficacy; if gender =1 then gender_spec_prep_inj_eff = prep_inj_efficacy**2;
+			risk_nip = risk_nip * (1-gender_spec_prep_inj_eff); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
 		end;
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_vr_efficacy);
@@ -6166,8 +6172,9 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		end;
 
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_eip = risk_eip * (1-prep_inj_efficacy);
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+			if gender =2 then gender_spec_prep_inj_eff = prep_inj_efficacy; if gender =1 then gender_spec_prep_inj_eff = prep_inj_efficacy**2;
+			risk_eip = risk_eip * (1-gender_spec_prep_inj_eff); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
 		end;
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_eip = risk_eip * (1-prep_vr_efficacy);
