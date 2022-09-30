@@ -4,6 +4,20 @@
 * program used for submitted ms;
 
 
+
+* look at latest changes in pop_wide_tld to see which to introduce
+
+e.g. higeher efficacy of prep_inj but also lower effiacy in men;
+
+
+
+
+
+
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
