@@ -750,7 +750,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.6 0.2); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -842,7 +842,7 @@ end;
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
 
 * prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
-* pep_effiacy;					%sample(pep_efficacy, 0.80 0.9 0.95, 0.2  0.6  0.2);
+* pep_effiacy;					%sample(pep_efficacy, 0.9 0.95,  0.8  0.2);
 
 * artvis0_adh;					%sample(artvis0_adh, 0 1 2, 0.6 0.2 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
 
@@ -4854,7 +4854,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
 			then do ;		
 * ts1m ; 
-				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then ev_pop_wide_tld_prep_not_eli = 1;
+				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then pop_wide_tld_as_art = 1;
 				prep_any=1;		prep_oral_start_date=caldate{t};	
 				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
 			end;
@@ -4865,12 +4865,12 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 
 	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
 			r=rand('uniform');	
-			if r < (1-x_stop_tld) and (prep_any_elig =1 or ev_pop_wide_tld_prep_not_eli = 1) then do; 
+			if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; 
 				pop_wide_tld_prep=1; 				
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
 				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
 			end;
-			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and ev_pop_wide_tld_prep_not_eli ne 1) then do; 
+			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
 				pop_wide_tld_prep=0;	
 				stop_prep_any_choice=1;  
 				stop_prep_oral_choice=1; 
@@ -4894,6 +4894,9 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 	
 	if (ever_newp = 1 and ever_tested ne 1) and prep_any_elig ne 1 and pop_wide_tld_prep=1 then tld_notest_notprepelig = 1;
 end;
+
+if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0; 
+
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
@@ -5075,8 +5078,9 @@ tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
-if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and (ever_newp ne 1 or ever_tested = 1)
-then do; a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
+pep_not_prep = 0; 
+if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and (ever_newp ne 1 or ever_tested = 1) and pop_wide_tld_as_art ne 1
+then do;  a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
 * those taking tld as prep/pep and not because they think they might have hiv;
 
 
@@ -8561,7 +8565,7 @@ if artvis0_adh = 1 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.
 if artvis0_adh = 2 then do;  if onartvisit0 = 1 then adh = adh + rand('beta', 1.5, 10);  end;
 
 * if on pop_wide_tld_prep as pep then equivalent to 0 adherence;
-if pop_wide_tld_prep=1 and registd ne 1 and pep_not_prep=1 then adh=0;
+if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
@@ -11908,7 +11912,7 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
-	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.; 
+	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
 end;
 
 
@@ -16175,7 +16179,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
 	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
-	s_pep_not_prep + pep_not_prep;
+	s_pep_not_prep + pep_not_prep; s_pop_wide_tld_as_art + pop_wide_tld_as_art ;
  
 	s_testfor_prep_oral + testfor_prep_oral ; s_testfor_prep_inj + testfor_prep_inj ;   s_testfor_prep_vr  + testfor_prep_vr  ;  
 	s_prep_oral_ever + prep_oral_ever ; s_prep_inj_ever + prep_inj_ever ; s_prep_vr_ever + prep_vr_ever ; 
@@ -17921,7 +17925,7 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+s_pop_wide_tld_as_art			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
 
@@ -18845,7 +18849,7 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+s_pop_wide_tld_as_art		   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep  s_pep_not_prep
 
@@ -20183,7 +20187,7 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+s_pop_wide_tld_as_art			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep  s_pep_not_prep
 

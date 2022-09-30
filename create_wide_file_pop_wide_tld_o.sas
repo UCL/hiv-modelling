@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_n_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_o_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -1692,7 +1692,7 @@ n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1
 d_p_onart_20y_2_1  p_onart_20y_2 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1  d_prop_prep_inj_20y_2_1
 ;
-  where pref_prep_inj_beta_s1 <= 1.5 and pref_prep_oral_beta_s1 <= pref_prep_inj_beta_s1 ;
+* where pref_prep_inj_beta_s1 <= 1.5 and pref_prep_oral_beta_s1 <= pref_prep_inj_beta_s1 ;
 run;
 
 
@@ -1737,13 +1737,13 @@ run;
 
 
 proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce  ; 
-  where pref_prep_inj_beta_s1 <= 1.5 and pref_prep_oral_beta_s1 <= pref_prep_inj_beta_s1 ;
+* where pref_prep_inj_beta_s1 <= 1.5 and pref_prep_oral_beta_s1 <= pref_prep_inj_beta_s1 ;
 run;
 
 * where prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;
 run;
 
-proc freq; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
+proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
 
 
@@ -1820,8 +1820,9 @@ run;
 
 
 proc logistic  data=  w_pop_wide_tld ; 
-model  pop_wide_tld_ce_x    =
-
+class artvis0_adh;
+model  pop_wide_tld_ce_x    = artvis0_adh ;
+*
 d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1   d_prevalence_vg1000_5y_2_1
 
 ;
