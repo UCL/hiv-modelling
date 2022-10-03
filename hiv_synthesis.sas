@@ -2667,9 +2667,11 @@ if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_i
 end;
 
 if caldate{t} >= &year_interv then do;
-	rate_1sttest = rate_1sttest*fold_rate_decr_test_future;
-	rate_reptest = rate_1sttest*fold_rate_decr_test_future;
+	rate_1sttest = rate_1sttest - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+	rate_reptest = rate_1sttest - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
 end;
+
+((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
