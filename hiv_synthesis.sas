@@ -2224,7 +2224,7 @@ if caldate{t} = &year_interv then do;
 *(impact of changes are coded below the options code);
 
 *increase in testing;
-incr_test_year_i = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
+incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022;
 
 *decrease in the proportion of people hard to reach;
 decr_hard_reach_year_i = 0;
