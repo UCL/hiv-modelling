@@ -7,7 +7,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_s_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_t_out\";
 
 data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
@@ -15,7 +15,7 @@ data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b
 
 data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;  
 
-  if artvis0_adh ne 1;
+
 
 proc sort data=a.k_pop_wide_tld; 
 by run cald option;
@@ -1724,6 +1724,7 @@ p_pop_tld_neg_prep_inel_3y_2
 prop_1564_onprep_3y_1  prop_1564_onprep_3y_2    d_prop_1564_onprep_3y_2_1
 prop_prep_inj_3y_2 prop_prep_inj_3y_1  d_prop_prep_inj_3y_2_1
 
+p_onartvisit0_vl1000_42_2 
 n_prep_inj_20y_1 n_prep_inj_20y_2
 p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2  d_p_elig_hivneg_onprep_20y_2_1
 n_prep_any_20y_1 n_prep_any_20y_2  
@@ -1737,7 +1738,6 @@ n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1
 d_p_onart_20y_2_1  p_onart_20y_2 
 
 ;
-where low_prep_inj_uptake = 1;
 run;
 
 
@@ -1763,7 +1763,6 @@ d_p_nacti_art_start_lt2_42_2_1  p_nactive_art_start_lt2_42_1  p_nactive_art_star
 d_p_nacti_art_start_lt3_42_2_1  p_nactive_art_start_lt3_42_1  p_nactive_art_start_lt3_42_2 
 
 ;
-  where artvis0_adh =  1;
 run;
 
 
@@ -1777,14 +1776,10 @@ ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
 dcost_50y_1   dcost_50y_2  d_dcost_50y_2_1
 netdaly500_1 netdaly500_2  netdaly_averted_2_1
 ;
-* where artvis0_adh ne 1;
 run;
 
 
-
 proc freq data=  w_pop_wide_tld; tables pop_wide_tld_ce  ; 
-  where artvis0_adh = 1;
-* where prob_tld_if_untested gt 0 and pop_wide_tld_selective_hiv =0 ;
 run;
 
 * where prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01  ;

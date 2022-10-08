@@ -750,7 +750,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
-* low_prep_inj_uptake;			%sample(low_prep_inj_uptake, 0 1, 0.5 0.5);
+* low_prep_inj_uptake;			%sample(low_prep_inj_uptake, 0 1, 0.67 0.33);
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 								* note this is for women and assumed the value **2 for men;
@@ -827,7 +827,7 @@ end;
 
 * new for pop_wide_tld ;
 
-* POP WIDE TLD ;
+* POP WIDE TLD * ;
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
 
@@ -1950,7 +1950,9 @@ option=.;
 dataset_id=trim(left(round(rand('uniform')*1000000)));
 call symput('dataset_id',dataset_id);
 
-
+* this is a random uniform number for each person;
+_p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
+_p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
 
 
 
@@ -2114,6 +2116,8 @@ else 	prob_prep_vr_b = pr_prep_vr_b;
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
+if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
+
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
@@ -2138,7 +2142,6 @@ if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr
 
 * delay in roll-out of prep_inj in men as no direct data in msw yet;
 if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;
-if low_prep_inj_uptake = 1 and pref_prep_inj_lowered ne 1 then do; pref_prep_inj = pref_prep_inj / 3; pref_prep_inj_lowered=1; end;
 
 
 * highest_prep_pref;
@@ -8568,9 +8571,8 @@ if t ge 2 then adhmin=min(adh,adhmin_tm1);
 if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
 
-* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
-
-if artvis0_adh = 1 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.5, 10);  end;
+* effect of onartvisit0 on adh (in context of pop_wide_tld=1) - if artvis0_adh = 1 then 20% of people with artvisit0 have reduced adherence; 
+if artvis0_adh = 1 and _p1 < 0.2 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.5, 10);  end;
 
 * if on pop_wide_tld_prep as pep then equivalent to 0 adherence;
 if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
