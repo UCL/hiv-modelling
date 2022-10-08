@@ -13,7 +13,7 @@ data i1; set b.out1:; data i2; set b.out2:; data i3; set b.out3:; data i4; set b
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
 
-data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data a.k_pop_wide_tld;  set i1 i2 i3 i4 i5 i6 i7 i8 i9 ;  
 
 
 proc sort data=a.k_pop_wide_tld; 
@@ -1131,11 +1131,11 @@ pref_prep_inj_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m
 
 p_emerge_inm_res_cab_notpr
 
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 
 pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 
-prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced
+prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_prep_adh_effect  prep_inj_introduced
 low_prep_inj_uptake 
 ;
 
@@ -1414,9 +1414,9 @@ sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1 pref_prep_oral_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
 prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld
 p_emerge_inm_res_cab_notpr
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis_0_to_1 prob_onartvis_1_to_0
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  res_level_dol_cab_mut  pr_res_dol
-prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced
+prep_dependent_prev_vg1000  prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_prep_adh_effect  prep_inj_introduced
 low_prep_inj_uptake
 ;
 
@@ -1473,11 +1473,11 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=dol_higher_potency); %par(p=cab_time_to_lower_threshold_g);  %par(p=sens_tests_prep_inj);  %par(p=pr_inm_inj_prep_primary);
 %par(p=pref_prep_inj_beta_s1);%par(p=pref_prep_oral_beta_s1); %par(p=testt1_prep_inj_eff_on_res_prim);  %par(p=incr_res_risk_cab_inf_3m);
 %par(p=p_emerge_inm_res_cab_notpr);
-%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_prep_if_untested);  %par(p=prob_onartvis_0_to_1);
+%par(p=rr_return_pop_wide_tld); %par(p=rr_interrupt_pop_wide_tld);  %par(p=prob_tld_if_untested);  %par(p=prob_onartvis_0_to_1);
  %par(p=prob_onartvis_1_to_0);   %par(p=prob_prep_pop_wide_tld);
 %par(p=inc_oral_prep_pref_pop_wide_tld);
   %par(p=res_level_dol_cab_mut); %par(p=pr_res_dol); %par(p=prep_dependent_prev_vg1000);
- %par(p= prep_vlg1000_threshold);    %par(p=prop_pep); %par(p=pep_efficacy);  %par(p=artvis0_adh);  %par(p=pop_wide_tld_prev_eff);
+ %par(p= prep_vlg1000_threshold);    %par(p=prop_pep); %par(p=pep_efficacy);  %par(p=artvis0_adh);  %par(p=pop_wide_prep_adh_effect);
 %par(p=prep_inj_introduced); %par(p=low_prep_inj_uptake);
 
 data   wide_par; merge 
@@ -1520,11 +1520,11 @@ sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_inf
 effect_sw_prog_prep_any prob_prep_any_restart_choice dol_higher_potency  cab_time_to_lower_threshold_g
 sens_tests_prep_inj  pr_inm_inj_prep_primary
 pref_prep_inj_beta_s1  pref_prep_oral_beta_s1  testt1_prep_inj_eff_on_res_prim  incr_res_risk_cab_inf_3m  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
  prob_prep_pop_wide_tld   inc_oral_prep_pref_pop_wide_tld
 
 p_emerge_inm_res_cab_notpr res_level_dol_cab_mut  pr_res_dol prep_dependent_prev_vg1000 
- prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_tld_prev_eff  prep_inj_introduced low_prep_inj_uptake
+ prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_adh pop_wide_prep_adh_effect  prep_inj_introduced low_prep_inj_uptake
 ;
 
 run;
@@ -1796,22 +1796,22 @@ run;
 
 
 proc logistic data=  w_pop_wide_tld ; 
-class artvis0_adh pop_wide_tld_prev_eff ;
+class artvis0_adh pop_wide_prep_adh_effect ;
 model pop_wide_tld_ce_x = 
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
-prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_adh  pop_wide_tld_prev_eff 
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_adh  pop_wide_prep_adh_effect 
 ;
 run;
 
 
 
 proc glm  data=  w_pop_wide_tld ; 
-class artvis0_adh pop_wide_tld_prev_eff ;
+class artvis0_adh pop_wide_prep_adh_effect ;
 model r_incidence1549_20y_2_1    =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
-prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_adh  pop_wide_tld_prev_eff 
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis_1_to_0 prob_onartvis_1_to_0
+prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_adh  pop_wide_prep_adh_effect 
 / solution ;
 * where artvis0_adh ne 1   ;
 run;
