@@ -573,7 +573,7 @@ newp_seed = 7;
 * p_rred_sw_newp;	 		%sample_uniform(p_rred_sw_newp, 0.01 0.03 0.10);
 							* rate of sex workers moving to one category lower;
 
-* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.25 0.75);
+* sw_art_disadv;           %sample(sw_art_disadv, 0 1, 0.25 0.75);sw_art_disadv=1;*For FSW project, assume all FSW have disadv;
                               if sw_art_disadv=0  then do; sw_higher_int = 1; rel_sw_lower_adh = 1;sw_higher_prob_loss_at_diag = 1;end;
 
 						   	  if sw_art_disadv=1  then do; 
