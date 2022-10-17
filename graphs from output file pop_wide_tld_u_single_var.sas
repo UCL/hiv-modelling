@@ -63,7 +63,9 @@ ods html close;
 */
 
 
-%let single_var =  incidence1549_ ;
+%let single_var =  n_death_hiv        ;  * n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
+
+if artvis0_lower_adh ne 1 ;
 
 
 /*
@@ -83,7 +85,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2300   ;
+%let nfit = 970    ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -469,6 +471,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 run;quit;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people on ART";
@@ -485,6 +488,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0.5 to 1   by  
 
 run;quit;
 
+  
 
 ods html;
 proc sgplot data=d; 
@@ -536,7 +540,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -554,8 +558,6 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -577,7 +579,7 @@ run;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Prevalence of VL > 1000 in whole adult population 15-49 (HIV+ and HIV-)";
+Title    height=1.5 justify=center "Prevalence of VL > 1000 in whole adult population (HIV+ and HIV-)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	  valueattrs=(size=10); 
 yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      by  0.01  ) valueattrs=(size=10);
 
@@ -610,6 +612,7 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
+*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
@@ -626,14 +629,15 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 
 run;
 
-
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
+
+/*
 
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_cd4_lt200_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 200000    by  50000  ) valueattrs=(size=10);
 
   label p50_n_cd4_lt200__0 = "No community TLD/PEP (median)";
@@ -647,23 +651,24 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 200000   
 run;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "aids_death_rate";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 5    by  0.5  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2028      by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 3.5  by  0.5  ) valueattrs=(size=10);
 
-  label p50_aids_death_rate_0 = "No community TLD/PEP (median)";
-  label p50_aids_death_rate_1 = "Community TLD/PEP (median)";
+  label mean_aids_death_rate_0 = "No community TLD/PEP (median)";
+  label mean_aids_death_rate_1 = "Community TLD/PEP (median)";
 
  
-  series  x=cald y=p50_aids_death_rate_0/	lineattrs = (color=ggr   thickness = 3);
+  series  x=cald y=mean_aids_death_rate_0/	lineattrs = (color=ggr   thickness = 3);
   band    x=cald lower=p5_aids_death_rate_0 	upper=p95_aids_death_rate_0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
-  series  x=cald y=p50_aids_death_rate_1/	lineattrs = (color=black thickness = 3);
+  series  x=cald y=mean_aids_death_rate_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_aids_death_rate_1 	upper=p95_aids_death_rate_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
  run;
 
-
+  
 
 ods html;
 proc sgplot data=d; 
@@ -751,7 +756,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1000000   by 1
 
 run;quit;
 
-  
+
 
 ods html;
 proc sgplot data=d; 
@@ -766,6 +771,23 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 300000   by 10
   band    x=cald lower=p5_n_hiv_undiag_0 	upper=p95_n_hiv_undiag_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
   series  x=cald y=p50_n_hiv_undiag_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_n_hiv_undiag_1 	upper=p95_n_hiv_undiag_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "number living with hiv";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1300000   by 100000 ) valueattrs=(size=10);
+
+  label p50_n_hiv_0 = "No community TLD/PEP (median)";
+  label p50_n_hiv_1 = "Community TLD/PEP (median)";
+
+  series  x=cald y=p50_n_hiv_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_n_hiv_0 	upper=p95_n_hiv_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_n_hiv_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_n_hiv_1 	upper=p95_n_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
 

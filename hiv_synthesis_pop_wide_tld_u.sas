@@ -5019,7 +5019,7 @@ end;
 *Adherence to oral PrEP - modified Jan2017 f_prep;
 	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
 	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
-if prep_oral = 1 then do;
+if prep_oral = 1 and registd ne 1 then do;
 	adh=adhav_prep_oral + adhvar*normal(0);  
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
@@ -5027,9 +5027,10 @@ if prep_oral = 1 then do;
 		f=rand('uniform');
 		if f < 0.5 then adh = adh * rel_prep_oral_adh_younger ;
 	end;
-	if adh gt 1 then adh=1; if adh < 0 then adh=0;
 
-	if pop_wide_tld_prep=1 and pep_not_prep=1 and tested ne 1 then adh = adh * pop_wide_prep_adh_effect;
+	if pop_wide_tld_prep=1 and registd ne 1  and tested ne 1 then adh = adh * pop_wide_prep_adh_effect;
+
+	if adh gt 1 then adh=1; if adh < 0 then adh=0;
 
 end;
 
