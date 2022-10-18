@@ -1,5 +1,5 @@
 
-* run 50 all;
+* run 55 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -12,7 +12,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
- proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log";
+ proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
 %let population = 100000 ; 
@@ -803,23 +803,28 @@ end;
 * probability of 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
 %sample_uniform(prob_sbp_increase, 0.1 0.125 0.15); 
 * probability of having symptoms if SBP >180;
-prob_symp_hypertension = 0.2; 
+prob_symp_hypertension = 0.1; 
 * Probability of hypertension diagnosis for a given setting (low, med, high);
-%sample_uniform(prob_htn_diagnosis, 0.5 1 1.5);
+%sample_uniform(rr_htn_diagnosis, 0.5 1 1.5);
 * probabily of higher rate of diagnosis in women (greater health system exposure/health-seeking)
 	* References: 
 		Geldsetzer Lancet 2019 - RR for diagnosis in women 1.43 (1.36-1.50) in SSA using multivariate regression, 1.52 (1.45-1.60) with all countries having same weight)
 								RR for measurement in women 1.10 (1.08-1.12) in SSA with all countries having same weight)
 		Zhou Lancet 2021 - proportion women in SSA diagnosed 54%, proportion men diagnosed 34% (1.59-fold higher);		
-%sample_uniform(prob_test_sbp_women, 1 1.1 1.2);
+%sample_uniform(rr_test_sbp_women, 1 1.1 1.2);
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
-prob_test_sbp_undiagnosed = 0.01 * prob_htn_diagnosis;
+prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 %sample_uniform(measurement_error_var_sbp, 10 15); 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
-prob_test_sbp_diagnosed = 0.05 * prob_htn_diagnosis; 
+prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
 * probability of getting bp tested in a person <40 years of age compared to baseline probability;
-prob_test_sbp_young = 0.5; 
+rr_test_sbp_young = 0.5; 
+
+* CVD risk parameters;
+risk_smoke_men = 0.001;
+risk_smoke_women = 0.0002;
+risk_dm = 0.0004;
 
 ** Community testing;
 first_comm_test = .;
@@ -862,8 +867,16 @@ interval_visit_hypertension=0.5;
 * for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 %sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 
+* cost of hypertension care (in thousands);
+cost_htn_link_voucher = .;
+cost_htn_screen_comm = .;
+cost_htn_visit = 0.0017;
+cost_htn_drug1 = 0.002;
+cost_htn_drug2 = 0.004;
+cost_htn_drug3 = 0.015;
+
 * effect of sbp on risk of cvd death;
-effect_sbp_cvd_death = 0.05;
+effect_sbp_cvd_death = 0.04;
 * effect of gender on risk of cvd death;
 effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
@@ -2473,16 +2486,16 @@ who may be dead and hence have caldate{t} missing;
 
 * HYPERTENSION;
 	if option = 2 then do;
-		** Community testing;
-		first_comm_test = 2022;
+		** Patient-centered care only (no community screening;
+		*first_comm_test = 2022;
 		* prob testing in commmunity;
-		%sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
+		*%sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
 		* prob link from community testing to clinic;
-		%sample_uniform(prob_htn_link, 0.3 0.4 0.5);
+		*%sample_uniform(prob_htn_link, 0.3 0.4 0.5);
 		* comm test interval;
-		comm_test_interval = 3;
+		*comm_test_interval = 3;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 18;
+		*comm_test_age = 18;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2513,58 +2526,20 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 		%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05); 
+
+		* cost of hypertension interventions;
+		*cost_htn_link_voucher = 0;
+		*cost_htn_screen_comm = 0.001;
+
 	end;
 
 	if option = 3 then do;
-		** Community testing;
+		** CHW community screening without voucher;
 		first_comm_test = 2022;
 		* prob testing in commmunity;
 		%sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
 		* prob link from community testing to clinic;
-		%sample_uniform(prob_htn_link, 0.5 0.6 0.7);
-		* comm test interval;
-		comm_test_interval = 3;
-		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 18;
-
-		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
-		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
-		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
-		%sample_uniform(prob_imm_htn_tx_s2, 0.85 0.9 0.95);
-		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
-		%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
-		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
-		%sample_uniform(prob_start_htn_tx_s2, 0.9 0.95 1);
-		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
-		prob_restart_htn_tx_s1 = 1; 
-		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
-		prob_restart_htn_tx_s2 = 1;
-
-		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
-		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
-		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
-		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
-		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
-		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
-		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
-		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
-
-		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
-		interval_visit_hypertension=0.5;
-
-		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
-		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-		%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05);
-	end;
-
-	if option = 4 then do;
-		** Community testing;
-		first_comm_test = 2022;
-		* prob testing in commmunity;
-		%sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
-		* prob link from community testing to clinic;
-		%sample_uniform(prob_htn_link, 0.6 0.7 0.8);
+		%sample_uniform(prob_htn_link, 0.46 0.56 0.66);
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
@@ -2599,6 +2574,57 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 		%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05);
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0;
+		cost_htn_screen_comm = 0.0017;
+	end;
+
+	if option = 4 then do;
+		** CHV Community Screening with voucher;
+		first_comm_test = 2022;
+		* prob testing in commmunity;
+		%sample_uniform(prob_test_sbp_comm, 0.63 0.68 0.73);
+		* prob link from community testing to clinic;
+		%sample_uniform(prob_htn_link, 0.64 0.78 0.92);
+		* comm test interval;
+		comm_test_interval = 1;
+		* comm test age (e.g. all adults vs targeted to >=40);
+		comm_test_age = 40;
+
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
+		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_imm_htn_tx_s2, 0.85 0.9 0.95);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is 140-159 ;
+		%sample_uniform(prob_start_htn_tx_s1, 0.3 0.4 0.5);
+		* probability of initiating anti-hypertensive at clinic visit with KNOWN diagnosis where SBP is >=160 ;
+		%sample_uniform(prob_start_htn_tx_s2, 0.9 0.95 1);
+		* probability of restarting anti-hypertensive at clinic visit where SBP is 140-159 ;
+		prob_restart_htn_tx_s1 = 1; 
+		* probability of restarting anti-hypertensive at clinic visit where SBP is >=160 ;
+		prob_restart_htn_tx_s2 = 1;
+
+		* probability of having a clinic visit for hypertension if on antihypertensives and due a visit (+/- 5%)=;
+		%sample_uniform(prob_visit_htn_v1, 0.59 0.62 0.65);
+		%sample_uniform(prob_visit_htn_v2, 0.67 0.71 0.74);
+		%sample_uniform(prob_visit_htn_v3, 0.81 0.85 0.89);
+		%sample_uniform(prob_visit_htn_v4, 0.87 0.92 0.96);
+		%sample_uniform(prob_visit_htn_v5, 0.90 0.94 0.99);
+		%sample_uniform(prob_visit_htn_v6, 0.91 0.95 1);
+		%sample_uniform(prob_visit_htn_v7, 0.92 0.96 1);
+
+		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
+		interval_visit_hypertension=0.5;
+
+		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
+		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
+		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
+		%sample_uniform(prob_intensify_2_3, 0.01 0.025 0.05);
+
+		* cost of hypertension interventions;
+		cost_htn_link_voucher = 0.005;
+		cost_htn_screen_comm = 0.0017;
 	end;
 
 
@@ -3093,7 +3119,8 @@ select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to incl
 	otherwise a_sbp = a_sbp / sbp_risk ;
 end; 
 
-if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
+* if on_anti_hypertensive = 0 and a_sbp < prob_sbp_increase then sbp = sbp + 1 ;
+if  a_sbp < prob_sbp_increase then sbp = sbp + 1 ; *see what happens when anti_HTN does not prevent SBP rise;
 if on_anti_hypertensive = 0 then htn_visit_count =  0;
 
 * symptoms of hypertension ;
@@ -3105,11 +3132,12 @@ if symp_hypertension_tm1=1 and sbp < 160 then symp_hypertension=0;
 
 * Community testing: if tested in the commmunity, must link to clinic to have tested_bp = 1;
 	*allows repeat bp measurement in clinic which may/may not be >=140 based on measurement error;
+	*if hard_reach =1, assumes will not test unless symptoms present;
 if caldate{t} = first_comm_test and first_comm_test ne . then last_comm_test = first_comm_test - comm_test_interval; *set first_comm_test date in options;
 test_sbp_comm = 0; link = 0; sbp_comm_m = .; a_comm_test = rand('uniform'); a_htn_link = rand('uniform');
 if (caldate{t} - last_comm_test) >= comm_test_interval then do;
 	last_comm_test = caldate{t};
-	if a_comm_test < prob_test_sbp_comm and age >= comm_test_age then test_sbp_comm = 1;
+	if a_comm_test < prob_test_sbp_comm and age >= comm_test_age and (hard_reach ne 1 or symp_hypertension = 1) then test_sbp_comm = 1;
 end;
 if test_sbp_comm =1 then do;
 	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
@@ -3127,10 +3155,11 @@ end;
 if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do; 
 	e=rand('uniform'); 
 	if symp_hypertension = 1 then e = e / 2;
-	if gender = 2 then e = e / prob_test_sbp_women;
-	if age <40 then e = e / prob_test_sbp_young;
-	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed then tested_bp = 1; 
-	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed then tested_bp = 1; *in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
+	if gender = 2 then e = e / rr_test_sbp_women;
+	if age <40 then e = e / rr_test_sbp_young;
+	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed and (hard_reach ne 1 or symp_hypertension = 1) then tested_bp = 1; 
+	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed and (hard_reach ne 1 or symp_hypertension = 1) then tested_bp = 1; 
+		*in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
 end;
 
 * clinic visit for hypertension;
@@ -3162,8 +3191,8 @@ end;
 * measurement of bp at clinic;
 if visit_hypertension=1 then tested_bp=1;
 if tested_bp = 1 then sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
-if tested_bp and sbp_m >= 140 then visit_hypertension = 1; *captures those who tested this period and had first-time HTN dx;
-if tested_bp and sbp_m < 140 and on_anti_hypertensive = 0 then last_bp_ge140 = 0;
+if tested_bp = 1 and sbp_m >= 140 then visit_hypertension = 1; *captures those who tested this period and had first-time HTN dx;
+if tested_bp = 1 and sbp_m < 140 and on_anti_hypertensive = 0 then last_bp_ge140 = 0;
 if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 
 * effect of stopping anti-hypertensive on sbp; *modified 2/25/22 to stop anti-hypertensive when beyond visit interval and no visit (removed prob_stop_anti_hypertensive);
@@ -3240,6 +3269,19 @@ htn_true = 0; if max_sbp >= 140 then htn_true = 1;
 normotensive = 0; if max_sbp <140 then normotensive = 1;
 htn_true_dx = 0; if diagnosed_hypertension = 1 and max_sbp >= 140 then htn_true_dx = 1;
 htn_over_dx = 0; if diagnosed_hypertension = 1 and max_sbp < 140 then htn_over_dx = 1;
+
+* hypertension cost this period;
+htn_cost_scr = 0; *cost of screening this period;
+htn_cost_drug = 0; * drug costs this period; 
+htn_cost_clin = 0; * clinical care costs this period (exclusive of drugs);
+if test_sbp_comm =1 then do;
+	htn_cost_scr = cost_htn_screen_comm;
+	if sbp_comm_m >=140 and visit_hypertension = 1 then htn_cost_scr = htn_cost_scr + cost_htn_link_voucher;
+end;
+if visit_hypertension = 1 then htn_cost_clin = cost_htn_visit;
+if on_anti_hypertensive = 1 then htn_cost_drug = cost_htn_drug1;
+if on_anti_hypertensive = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
+if on_anti_hypertensive = 3 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2 + cost_htn_drug3;
 
 
 * SEXUAL BEHAVIOUR;
@@ -11490,8 +11532,12 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 * cvd mortality; * update_24_4_21;
 
 * risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
-	if sbp  < 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1))) ;
-	if sbp >= 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+	if sbp  < 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
+	if sbp >= 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+
+* HYPERTENSION: risk of fatal and nonfatal CHD and stroke;
+
+
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -11881,8 +11927,8 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 * cvd mortality; * update_24_4_21; * update_1_28_2022;
 
 * risk of cvd death per 3 months according to sbp, age and gender ; * remember this appears twice - once for hiv +ve people ;
-	if sbp  < 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1))) ;
-	if sbp >= 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(gender - 1)) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+	if sbp  < 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2)))) ;
+	if sbp >= 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cvd_death)) ;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -14634,6 +14680,17 @@ if age ge 80 then do; live_daly_80=0;  live_ddaly_80=0;  end;
 end;
 */
 
+* HYPERTENSION: YLL for CVD deaths;
+dyll_cvd_Optima80=0;
+if caldate&j = death and deathcause = 4 and death ne . then do;
+	cvd_yll = 80 - agedeath;
+
+	i=0;
+	do until (i >= cvd_yll+0.25);
+		dyll_cvd_Optima80 = dyll_cvd_Optima80 + (0.25 *  (1/1.03)**i);
+	i=i+0.25;
+	end;
+end;
 
 *Discounted years lost at age 80 using Optima approach (all YLL counted at time of death);
 dyll_Optima80=0;
@@ -14648,6 +14705,8 @@ if caldate&j =death and death ne . then do;
 end;
 
 
+
+* discounted costs;
 _dcost = cost* discount;
 _dart_cost = art_cost*discount ;
 _donart_cost = cost_onart*discount ;
@@ -14674,6 +14733,11 @@ _dcost_test_f_non_anc = cost_test_f_non_anc*discount ;
 _dres_cost = res_cost*discount ; 
 _dcost_hypert_vis  = cost_hypert_vis*discount ; 
 _dcost_hypert_drug = cost_hypert_drug*discount ; 
+_dhtn_cost_scr = htn_cost_scr*discount;
+_dhtn_cost_drug = htn_cost_drug*discount;
+_dhtn_cost_clin = htn_cost_clin*discount;
+
+
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
 _dpi_cost=pi_cost*discount;
@@ -16689,7 +16753,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on3drug_antihyp_7079 + on3drug_antihyp_7079 ; s_on3drug_antihyp_ge80 + on3drug_antihyp_ge80 ; 
 
      		
-	/*visits and linkage*/
+	/*visits and linkage*/ 
 
 	s_visit + visit ; s_lost + lost ; s_linked_to_care + linked_to_care ; s_linked_to_care_this_period + linked_to_care_this_period ;
 	s_pre_art_care + pre_art_care ; s_visit_prep_oral_no + visit_prep_oral_no ; s_visit_prep_oral_d + visit_prep_oral_d ; s_visit_prep_oral_dt + visit_prep_oral_dt ;
@@ -17057,6 +17121,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
 	
 	s_dyll_Optima80 + dyll_Optima80;
+	s_dyll_cvd_Optima80 + dyll_cvd_Optima80;
 
 	*undiscounted;
 	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
@@ -17075,6 +17140,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
 	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
 	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
+	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin;
+
+
 	*discounted; 
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
@@ -17093,6 +17161,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
+	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin;
 	 	
 	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ; 
 
@@ -18405,7 +18474,7 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 
+s_dyll_Optima80 s_dyll_cvd_Optima80
 s_ly  s_dly  s_qaly  s_dqaly    
 																																			   
 		
@@ -18577,7 +18646,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
 
 /*parameters sampled*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
@@ -19350,7 +19420,7 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 
+s_dyll_Optima80 s_dyll_cvd_Optima80
 
 s_ly  s_dly  s_qaly  s_dqaly   
 
@@ -19520,6 +19590,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
 
 /* covid */
 
@@ -19802,6 +19874,7 @@ end;
 
 
 data a ; set r1;
+
 data r1; set a;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
@@ -20004,6 +20077,7 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
+
 
 data r1; set a;
 
@@ -21091,7 +21165,7 @@ s_dead_daly	   s_dead_ddaly
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 																		   
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 		 
+s_dyll_Optima80 s_dyll_cvd_Optima80		 
 
 s_ly  s_dly  s_qaly  s_dqaly   
 
@@ -21258,6 +21332,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
 
 /*parameters sampled*/
 
@@ -21468,4 +21544,4 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 ;
 
-
+*proc printto; *run;
