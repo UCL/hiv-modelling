@@ -1,5 +1,5 @@
 
-* run 55 all;
+* run 56 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -870,17 +870,17 @@ interval_visit_hypertension=0.5;
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
-cost_htn_visit = 0.0017;
+cost_htn_visit = 0.023;
 cost_htn_drug1 = 0.002;
 cost_htn_drug2 = 0.004;
 cost_htn_drug3 = 0.015;
 
 * effect of sbp on risk of cvd death;
-effect_sbp_cvd_death = 0.04;
+effect_sbp_cvd_death = 0.03;
 * effect of gender on risk of cvd death;
 effect_gender_cvd_death = 0.4;
 * effect of age on risk of cvd death;
-effect_age_cvd_death = 0.03;
+effect_age_cvd_death = 0.06;
 * base risk of cvd (before adding effects of age, gender, sbp);
 base_cvd_death_risk = 0.00005;
 
@@ -3115,7 +3115,7 @@ end;
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-	when (40 <= age < 65) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
+	when (40 <= age < 60) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
 	otherwise a_sbp = a_sbp / sbp_risk ;
 end; 
 
@@ -14682,7 +14682,7 @@ end;
 
 * HYPERTENSION: YLL for CVD deaths;
 dyll_cvd_Optima80=0;
-if caldate&j = death and deathcause = 4 and death ne . then do;
+if caldate&j = death and dcause = 4 and death ne . then do;
 	cvd_yll = 80 - agedeath;
 
 	i=0;
@@ -14703,8 +14703,6 @@ if caldate&j =death and death ne . then do;
 	i=i+0.25;
 	end;
 end;
-
-
 
 * discounted costs;
 _dcost = cost* discount;
