@@ -103,23 +103,41 @@ data i9i; set b.out99:; %include "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips
 
 
 
-data   k_pop_wide_tld;  set  
+data   a.k_pop_wide_tld_a;  set  
 i1a i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
 i4a i4b i4c i4d i4e i4f i4g i4h i4i i5a i5b i5c i5d i5e i5f i5g i5h i5i  i6a i6b i6c i6d i6e i6f i6g i6h i6i  
 i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i 
 ;
 
 
-proc freq ; tables run; where cald=2021;
+proc freq ; tables run; where cald=2021; run;
 
-proc sort data = k_pop_wide_tld out=a.k_pop_wide_tld ; 
+
+
+
+* =========================================================================================================================================;
+
+
+* re-start sas; 
+
+
+* =========================================================================================================================================;
+
+
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
+
+proc sort data = a.k_pop_wide_tld_a out=a.k_pop_wide_tld_b ; 
 by run cald option;
 run;
+
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set a.k_pop_wide_tld ;
+set a.k_pop_wide_tld_b ;
 
 if cald=2021.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -137,8 +155,22 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 
-data y; 
-merge a.k_pop_wide_tld sf;
+
+* =========================================================================================================================================;
+
+
+* re-start sas; 
+
+
+* =========================================================================================================================================;
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
+
+
+data a.k_pop_wide_tld_c; 
+merge a.k_pop_wide_tld_b sf;
 by run ;
 
 * if incidence1549_2022 >= 0.15 and prevalence1549_2022 <= 0.3;
@@ -1258,14 +1290,31 @@ prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_efficacy artv
 low_prep_inj_uptake pop_wide_tld_selective_hiv  death_r_iris_pop_wide_tld  rr_mort_tdf_prep  prob_test_pop_wide_tld_prep
 ;
 
-proc sort data=y;by run option;run;
+proc freq; tables run; where cald = 2020; run;
 
-proc freq; tables run; where cald = 2020;
+proc sort data=a.k_pop_wide_tld_c ; by run option;run;
+
+proc freq; tables run; where cald = 2020; run;
+
+
+
+* =========================================================================================================================================;
+
+
+* re-start sas; 
+
+
+* =========================================================================================================================================;
+
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
 
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pop_wide_tld  ; set y;  
+data    a.l_pop_wide_tld  ; set a.k_pop_wide_tld_c;  
 
 proc freq; tables run; where cald = 2020;
 
