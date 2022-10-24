@@ -83,7 +83,7 @@ s_dead3034w_all s_dead3539w_all s_dead4044w_all s_dead4549w_all s_dead5054w_all 
 s_restart s_line1_fail_this_period  s_give_birth_with_hiv  s_birth_with_inf_child s_pregnant_ntd  s_pregnant_oth_dol_adv_birth_e s_onart_gt6m_iicu
 
 /* parameters */
-&sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -131,7 +131,7 @@ pref_prep_oral_beta_s1  res_level_dol_cab_mut  pr_res_dol prob_prep_pop_wide_tld
 
 prep_dependent_prev_vg1000   prep_vlg1000_threshold   prop_pep pep_efficacy artvis0_lower_adh pop_wide_prep_adh_effect 
 low_prep_inj_uptake pop_wide_tld_selective_hiv  death_r_iris_pop_wide_tld  rr_mort_tdf_prep
-
+prob_test_pop_wide_tld_prep
  ;
 
 

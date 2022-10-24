@@ -852,6 +852,8 @@ end;
 * pop_wide_prep_adh_effect;		%sample(pop_wide_prep_adh_effect, 1 0.75 0.9 1/0.9 1/0.75, 0.6 0.1 0.1 0.1 0.1) ; * effect of taking pop wide tld without clinical supervision 
 																					(indicated by testing=1) on prev effectiveness;
 
+* prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
+* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
 
 * COVID-19 ;
 
@@ -2493,8 +2495,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 1 then do; * as option 1 plus pop_wide_tld ;
 		pop_wide_tld = 1; 
-		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
-		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);						
+					
 	end;
 
 end;
