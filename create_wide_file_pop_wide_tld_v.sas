@@ -135,7 +135,7 @@ run;
 
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
-data sf;
+data a.sf;
 
 set a.k_pop_wide_tld_b ;
 
@@ -151,7 +151,7 @@ keep run sf_2022 incidence1549_2022 prevalence1549_2022;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2022;
+
 
 
 
@@ -167,10 +167,10 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
-
+%let sf=sf_2022;
 
 data a.k_pop_wide_tld_c; 
-merge a.k_pop_wide_tld_b sf;
+merge a.k_pop_wide_tld_b a.sf;
 by run ;
 
 * if incidence1549_2022 >= 0.15 and prevalence1549_2022 <= 0.3;
@@ -1198,7 +1198,7 @@ n_infection  = s_primary     * &sf * 4;
 
 keep 
 
-run cald option
+run cald option &sf
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost  
@@ -1235,7 +1235,7 @@ p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_pr
 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
 n_pop_wide_tld_hiv  n_pop_wide_tld_prep_elig  n_pop_tld_neg_prep_inel  p_prep_adhg80  n_em_inm_res_o_cab
 prev_vg1000_1549  n_dead_hivpos_cause1   n_inf_pre_yr_interv  n_inf_post_yr_interv
-n_death_hiv_inf_pre_yr_interv   n_death_hiv_inf_post_yr_interv
+n_death_hiv_inf_pre_yr_interv   n_death_hiv_inf_post_yr_interv  rate_dead_hivpos_anycause
 
 p_nactive_art_start_lt1p5 p_nactive_art_start_lt2  p_nactive_art_start_lt3  p_onartvisit0  p_oral_pep_not_prep 
 p_iime_all_adults  p_onartvisit0_vl1000
@@ -1292,7 +1292,23 @@ low_prep_inj_uptake pop_wide_tld_selective_hiv  death_r_iris_pop_wide_tld  rr_mo
 
 proc freq; tables run; where cald = 2020; run;
 
-proc sort data=a.k_pop_wide_tld_c ; by run option;run;
+
+* =========================================================================================================================================;
+
+
+* re-start sas; 
+
+
+* =========================================================================================================================================;
+
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
+
+%let sf=sf_2022;
+
+proc sort data=a.k_pop_wide_tld_c1 out=a.k_pop_wide_tld_c ; by run option; run;
 
 proc freq; tables run; where cald = 2020; run;
 
@@ -1311,6 +1327,7 @@ proc freq; tables run; where cald = 2020; run;
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
+%let sf=sf_2022;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
@@ -1320,10 +1337,31 @@ proc freq; tables run; where cald = 2020;
 
 run;
 
+
+
+
+
+* =========================================================================================================================================;
+
+
+* re-start sas; 
+
+
+* =========================================================================================================================================;
+
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
+
 data y ; set a.l_pop_wide_tld  ; 
 
   options nomprint;
   option nospool;
+
+
+%let sf=sf_2022;
+
 
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
@@ -1460,7 +1498,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=n_dead_hivneg_tb ); * %var(v=rate_dead_hivneg_tb); * %var(v=n_dead_hivneg_cause2); * %var(v=rate_dead_hivneg_cause2 ); * %var(v=n_dead_hivneg_cause3 ); 
 * %var(v=rate_dead_hivneg_cause3 );	* %var(v=n_dead_hivneg_cause4 ); * %var(v=rate_dead_hivneg_cause4 ); * %var(v=n_dead_hivneg_cause5 ); 
 * %var(v=n_cd4_lt50);   %var(v=n_cd4_lt200);
-* %var(v=rate_dead_hivneg_cause5 );  * %var(v=rate_dead_allage); * %var(v=rate_dead_hivneg_anycause); * %var(v=rate_dead_hivpos_anycause); 
+* %var(v=rate_dead_hivneg_cause5 );  * %var(v=rate_dead_allage); * %var(v=rate_dead_hivneg_anycause);  %var(v=rate_dead_hivpos_anycause); 
 * %var(v=rate_dead_cvd_3039m);	* %var(v=rate_dead_cvd_4049m); * %var(v=rate_dead_cvd_5059m); * %var(v=rate_dead_cvd_6069m); * %var(v=rate_dead_cvd_7079m); 
 * %var(v=rate_dead_cvd_ge80m); * %var(v=rate_dead_cvd_3039w); 
 * %var(v=rate_dead_cvd_4049w); * %var(v=rate_dead_cvd_5059w); * %var(v=rate_dead_cvd_6069w); * %var(v=rate_dead_cvd_7079w); * %var(v=rate_dead_cvd_ge80w); 
@@ -1540,13 +1578,15 @@ proc freq; tables run;
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 data f; set y; 
 
+%let sf=sf_2022;
+
 if cald=2022.5 and option=1; * note this is 2 because this is from dataset y where options are still 0, 1, 2 ; 
 
 keep 
 
 run cald option
 
-&sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1654,7 +1694,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=prob_test_pop_wide_tld_prep);
 
 data   wide_par; merge 
-&sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf_2022 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1706,7 +1746,6 @@ proc sort; by run;run;
 
 proc freq; tables run;
 
-proc freq data=wide_par; tables artvis0_lower_adh; run;
 
 * To get one row per run;
 
@@ -1726,7 +1765,11 @@ dcost_non_aids_pre_death_50y_1 = dcost_non_aids_pre_death_50y_1 / 5;
 dcost_non_aids_pre_death_50y_2 = dcost_non_aids_pre_death_50y_2 / 5;
 
 
-  if incidence1549_22 >= 0.15  and prevalence1549_22 <= 0.35 ;
+  if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.30 ;
+
+
+  if run <= 838506127 ;
+
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1872,10 +1915,12 @@ if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01 then prep_de
 
 * suppl table 1;
 
+ods html;
 proc means data=   w_pop_wide_tld n p50 p5 p95 min max;  *  w_pop_wide_tld ;
 var prevalence1549w_22 prevalence1549m_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22 
-prev_vg1000_1549_22  ;
+prev_vg1000_1549_22 death_rate_hiv_22 ;
 run;
+ods html close;
 
 
 ods html;
@@ -1883,7 +1928,9 @@ proc means  data=   w_pop_wide_tld n median p5 p95 min max ;
 var	prevalence1549m_22 prevalence1549w_22  prevalence1524w_22 incidence1549w_22 
 incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
 p_onart_diag_w_22 	p_onart_diag_m_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22 p_onart_cd4_l500_22  
-p_startedline2_22  prop_sw_hiv_22  prop_1564_onprep_22   prop_sw_onprep_22 p_newp_sw_22  n_tested_22   p_newp_sw_22 ;
+p_startedline2_22  prop_sw_hiv_22  prop_1564_onprep_22   prop_sw_onprep_22 p_newp_sw_22  n_tested_22   p_newp_sw_22 
+death_rate_hiv_22
+;
 run;
 ods html close;
 
@@ -1987,7 +2034,7 @@ dalys_averted=0; if . < d_ddaly_50y_2_1 < 0 then dalys_averted=1;
 deaths_averted=0; if . < d_n_death_hiv_50y_2_1 < 0 then deaths_averted=1;
 cost_saving=0; if dalys_averted=1 and d_dcost_50y_2_1 < 0 then cost_saving=1;
 
-death_averted_x = 1-deaths_averted;
+deaths_averted_x = 1-deaths_averted;
 dalys_averted_x = 1-dalys_averted_x;
 d_incidence1549_20y_2_1_gtp3_x = 1-d_incidence1549_20y_2_1_gtp3;
 
@@ -2068,7 +2115,6 @@ proc freq ; tables  d_prevalence_vg1000_3y_2_1_g *  pop_wide_tld_ce;
 run;
 
 proc freq data=j; tables  d_n_death_hiv_50y_2_1  d_ddaly_50y_2_1 pop_wide_tld_ce  d_dcost_50y_2_1  cost_saving r_incidence1549_50y_2_1; 
-
 run;
 
 
@@ -2093,6 +2139,11 @@ prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1
 pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep  death_r_iris_pop_wide_tld
 ;
 run;
+
+
+
+
+
 
 
 
