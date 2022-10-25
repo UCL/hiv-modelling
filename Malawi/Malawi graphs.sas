@@ -1,7 +1,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
 data a;
-set a.malawi_16;
+set a.malawi_18;
 proc sort;by run;run;
 
 data sf;
@@ -525,8 +525,8 @@ if cald=2020.5 then do;
 	p_art_vl1000_obs_mlw=0.969;
 	p_art_vl1000_m_obs_mlw=0.968;
 	p_art_vl1000_w_obs_mlw=0.969;
+	incidence1549_obs_mlw=0.23;
 end;
-
 run;
 
 
@@ -534,7 +534,7 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_16.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_18.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
