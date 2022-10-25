@@ -7,7 +7,11 @@
 
 * look at latest changes in pop_wide_tld to see which to introduce
 
-e.g. higeher efficacy of prep_inj but also lower effiacy in men;
+e.g. higeher efficacy of prep_inj but also lower effiacy in men
+
+also look at some changes to initial distributions
+
+;
 
 
 
