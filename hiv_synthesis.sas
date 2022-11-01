@@ -874,12 +874,12 @@ end;
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*1= PCR (RNA VL) tests - assume window period of 10 days; 
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
-if hivtest_type=1 then do; sens_primary=0.86; sens_primary_ts1m = 0.67  ; sens_vct=0.98; spec_vct=1;     end; 
-else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
+if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
+else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
+else if hivtest_type=4 then do; sens_primary=0.65; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
 
 
 * COSTS;
@@ -6816,11 +6816,11 @@ naive=1;
 * can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
 * dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
-* ts1m - replace sens_primary below with sens_primary_ts1m ;
+
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*1= PCR (RNA VL) tests - assume window period of 10 days; 
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 
