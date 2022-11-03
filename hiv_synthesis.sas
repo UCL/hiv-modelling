@@ -465,7 +465,7 @@ newp_seed = 7;
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
-								0.40 	0.35	0.2 	0.04	0.01	); * change sep22 for pop_wide_tld;
+								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
@@ -489,7 +489,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;  
 * adh_pattern; 				%sample(adh_pattern, 
 								1		2		3		4		5		6		7, 
-								0.05	0.55	0.10	0.10	0.10	0.05	0.05);
+								0.05	0.75	0.10	0.05	0.03	0.01	0.01);
 * red_adh_tb_adc; 			red_adh_tb_adc=round(0.1 * exp(rand('normal')*0.5),.01);			
 							* reduced adherence in those with TB disease or active WHO4;
 * red_adh_tox_pop; 			%sample_uniform(tmp, 0.05 0.10); red_adh_tox_pop=round(tmp * exp(rand('normal')*0.5),.01);	
@@ -535,7 +535,7 @@ newp_seed = 7;
 * cd4_monitoring;			r=rand('uniform'); cd4_monitoring=0; if prob_vl_meas_done=0.0 and r < 0.5 then cd4_monitoring = 1;
 * red_adh_multi_pill_pop; 	%sample_uniform(tmp, 0.05 0.10 0.15); red_adh_multi_pill_pop=round(tmp * exp(rand('normal')*0.5),.01);
 * greater_disability_tox;  	%sample_uniform(greater_disability_tox, 0 1);
-* rr_int_tox ;				%sample_uniform(rr_int_tox, 2 10 30);
+* rr_int_tox ;				%sample_uniform(rr_int_tox, 1.5 3 10);
 * greater_tox_zdv;			%sample_uniform(greater_tox_zdv, 0 1 2);
 							if greater_tox_zdv = 1 then do;	
 								r_nau_start_zdv_lpr = 	2 * r_nau_start_zdv_lpr ; 	r_lip_start_zdv = 2 * r_lip_start_zdv ;		r_ane_start_zdv = 2 * r_ane_start_zdv ; 
@@ -656,7 +656,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3  0.7); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -666,14 +666,13 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* changed from 0.7 to 0.8 after discussion due to low overall adherence resulting from 0.7;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
 
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
+* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.02 0.10 0.30);
 								* dependent_on_time_step_length ;
 
 * higher_future_prep_oral_cov;	%sample(higher_future_prep_oral_cov, 0 1, 1    0   ); if lower_future_art_cov=1 then higher_future_prep_oral_cov=0;
 								* note we have switched this off - apr 2022;
 								* lapr - leave for now but we may want to specify the extent to which this is tdf/3tc versus la cab versus dpv-vr;
-* pref_prep_oral_beta_s1;		pref_prep_oral_beta_s1 = 2 ;
-
+* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 1.1 1.3 1.5) ;
 
 * pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
@@ -688,8 +687,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=.;			* Introduction of injectable PrEP ;
-* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=2;			* Assume 2 years to scale up injectable prep; * lapr;
+* date_prep_inj_intro;			date_prep_inj_intro=.2024;		* Introduction of injectable PrEP ;
+* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=7;			* Assume 5 years to scale up injectable prep; * lapr;
 * pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
 
@@ -698,7 +697,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
@@ -714,7 +713,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * new for pop_wide_tld ;
 
-* pref_prep_inj_beta_s1;		%sample_uniform(pref_prep_inj_beta_s1, 2 3 4 5 6) ;
+* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
@@ -772,36 +771,39 @@ end;
 
 * new for pop_wide_tld ;
 
-* POP WIDE TLD ;
+* POP WIDE TLD * ;
 
 * rr_return_pop_wide_tld;		%sample_uniform(rr_return_pop_wide_tld, 1.5 2 3 5);
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_prep_if_untested;	%sample_uniform(prob_tld_prep_if_untested, 0.0 0.001 0.005);
+* prob_tld_if_untested;	%sample_uniform(prob_tld_if_untested, 0.0 0.001 0.005);
 
-* prob_onartvis_0_to_1;			%sample_uniform(prob_onartvis_0_to_1, 0.02 0.05 0.1 0.2); * for people on art under pop wide tld, rate of transission from not being in care to being in care;
-* prob_onartvis_1_to_0;			%sample_uniform(prob_onartvis_1_to_0, 0.005 0.01 0.03 0.05); * for people on art under pop wide tld, rate of transission from being in care to not being in care;
+* prob_onartvis0_0_to_1;			%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 0.2); 
+* prob_onartvis0_1_to_0;			%sample_uniform(prob_onartvis0_1_to_0, 0.005 0.01 0.03 0.05); 
 
 * prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 ); * using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep ;
 
-* pop_wide_tld_selective_hiv;	%sample(pop_wide_tld_selective_hiv, 0 1, 0.1 0.9); * under tld, is there a greater chance of a person with hiv starting tld art compared with a person without hiv;
-																					* i think reasonable to assume that most will have hiv becuase they can self test and seems unlikely
-																						a person would be prepared to take tld becuase they are worried they have hiv but not prepared at
-																						any time to check this with a self test;											
-	
-* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk of iris due to not in care
-																							so might start art when have detectable cm or tb;
+* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv, 5  10  50); 
+																														 
+																													   
+																		 
 
-* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8);  * of those with prep/pep indication, proportion on tld as pep rather than prep; 	 		
-* pep_effiacy;					pep_efficacy=0.9;    * efficacy of pop_wide_tld_prep in preventing infection when used as pep;
+* death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
+																		
 
-* artvis0_adh;					%sample(artvis0_adh, 0 1 2, 0.6 0.2 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
-																				* for people with hiv on tld but not in care, is adherence higher or lower or the same
-																				   as if they were in care; 
+* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
+* pep_effiacy;					%sample(pep_efficacy, 0.9 0.95,  0.8  0.2);
 
-* pop_wide_tld_prev_eff;		%sample(pop_wide_prev_eff, 0 1 2, 0.6 0.2 0.2) ; * effect of taking pop wide tld without clinical supervision 
+* artvis0_lower_adh;					%sample(artvis0_lower_adh, 0 1 , 0.8 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+																										  
+												
+
+* pop_wide_prep_adh_effect;		%sample(pop_wide_prep_adh_effect, 1 0.75 0.9 1/0.9 1/0.75, 0.6 0.1 0.1 0.1 0.1) ; * effect of taking pop wide tld without clinical supervision 
 																					(indicated by testing=1) on prev effectiveness;
+
+* prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
+* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
 
 
 * COVID-19 ;
@@ -967,6 +969,7 @@ cost_vis_hypert = 0.0015; * clinic cost per hypertension visit (in $1000);
 
 
 * based on salomom et al lancet 2012;
+util_hiv = 0.98;
 util_tox = rand('beta',10,2); util_tox = 0.95;
 if greater_disability_tox = 1 then util_tox = 0.75 ;
 util_non_tb_who3 = rand('beta',8,2);  util_non_tb_who3 = 0.78;
@@ -1901,6 +1904,9 @@ option=.;
 dataset_id=trim(left(round(rand('uniform')*1000000)));
 call symput('dataset_id',dataset_id);
 
+* this is a random uniform number for each person;
+_p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
+_p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
 
 
 
@@ -2065,13 +2071,16 @@ else 	prob_prep_vr_b = pr_prep_vr_b;
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
+if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
+
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
 
+
 * if pop_wide_tld pep prep available then higher willingness due to ease of access;
-* variable inc_oral_prep_pref_pop_wide_tld determines the extent to which the appeal / willingness / preference  of oral prep increases with pop_wide_tld due to the increased access; 
-if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do; * inc_o_prep_pref_pop_wide_tld_d becomes 1 once been through this loop as an indicator;
+																																													   
+if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do;
 	pref_prep_oral = pref_prep_oral + ((1 - pref_prep_oral) * inc_oral_prep_pref_pop_wide_tld); inc_o_prep_pref_pop_wide_tld_d=1;
 end;
 
@@ -2087,6 +2096,9 @@ end;
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
 if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
+
+* delay in roll-out of prep_inj in men as no direct data in msw yet;
+if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
@@ -2477,7 +2489,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 				when (highest_prep_pref = 2) 	do; prep_inj_willing = 1;	pref_prep_inj=	prep_willingness_threshold + pref_prep_inj ; end;
 				when (highest_prep_pref = 3)	do; prep_vr_willing = 1;	pref_prep_vr=	prep_willingness_threshold + pref_prep_vr ; end;	* This will apply only to women;								
 				otherwise xxx=1;
-			* note the higher prep willingness threshold when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
+			* note making prep willing =0 when prev_vlg1000 is below 0.005 / 0.01 does not apply to sw;
 			end;
 		end;
 		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
