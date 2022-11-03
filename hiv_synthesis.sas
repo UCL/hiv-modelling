@@ -4821,11 +4821,11 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 			* new for pop_wide_tld;
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
 			r=rand('uniform'); a = rand('uniform'); 
-			if pop_wide_tld_selective_hiv = 1 and hiv ne 1 then a = a * 10; 
-			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_prep_if_untested)
+			if hiv ne 1 then a = a * pop_wide_tld_selective_hiv; 
+			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and ever_tested ne 1 and a < prob_tld_if_untested)
 			then do ;		
 * ts1m ; 
-				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then ev_pop_wide_tld_prep_not_eli = 1;
+				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then pop_wide_tld_as_art = 1;
 				prep_any=1;		prep_oral_start_date=caldate{t};	
 				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
 			end;
@@ -4836,12 +4836,12 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 
 	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
 			r=rand('uniform');	
-			if r < (1-x_stop_tld) and (prep_any_elig =1 or ev_pop_wide_tld_prep_not_eli = 1) then do; 
+			if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; 
 				pop_wide_tld_prep=1; 				
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
 				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
 			end;
-			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and ev_pop_wide_tld_prep_not_eli ne 1) then do; 
+			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
 				pop_wide_tld_prep=0;	
 				stop_prep_any_choice=1;  
 				stop_prep_oral_choice=1; 
@@ -4865,6 +4865,8 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 	
 	if (ever_newp = 1 and ever_tested ne 1) and prep_any_elig ne 1 and pop_wide_tld_prep=1 then tld_notest_notprepelig = 1;
 end;
+
+if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0; 
 
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
@@ -4976,7 +4978,7 @@ end;
 *Adherence to oral PrEP - modified Jan2017 f_prep;
 	* lapr and dpv-vr - as noted above - this will not apply to lapr and dpv-vr - the efficacy and risk of resistance will 
 	be fixed while on injections, and efficacy will drop / resistance risk increase in the periods after stopping; 
-if prep_oral = 1 then do;
+if prep_oral = 1 and registd ne 1 then do;
 	adh=adhav_prep_oral + adhvar*normal(0);  
 	*if adh ge 0.75 then adh=0.95; *based on conversation with Sheena McCormack and John Mellors - commented out as prep effectiveness too good otherwise for hets;
 	*added age effect - adolescents to be 50% less likely to adhere;
@@ -4984,7 +4986,11 @@ if prep_oral = 1 then do;
 		f=rand('uniform');
 		if f < 0.5 then adh = adh * rel_prep_oral_adh_younger ;
 	end;
+
+	if pop_wide_tld_prep=1 and registd ne 1  and tested ne 1 then adh = adh * pop_wide_prep_adh_effect;
+
 	if adh gt 1 then adh=1; if adh < 0 then adh=0;
+
 end;
 
 * this could be modified so that we account for suboptimal adherence to prep - so we could make prep a continuous variable
@@ -5046,7 +5052,10 @@ tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
-if pop_wide_tld_prep = 1 then do; a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
+pep_not_prep = 0; 
+if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and (ever_newp ne 1 or ever_tested = 1) and pop_wide_tld_as_art ne 1
+then do;  a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
+* those taking tld as prep/pep and not because they think they might have hiv;
 
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
 *  - men ; 
@@ -5908,16 +5917,16 @@ of transmission.  if so, the tr_rate_primary should be lowered;
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
 				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
-				if pop_wide_tld_prev_eff=1 and tested ne 1 then prev_efficacy = prev_efficacy * .8;
-				if pop_wide_tld_prev_eff=2 and tested ne 1 then prev_efficacy = prev_efficacy * 1.25;
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_nip = risk_nip * (1-(adh * prev_efficacy));
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_nip = risk_nip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
 		end;
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_nip = risk_nip * (1-prep_inj_efficacy);
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+			if gender =2 then gender_spec_prep_inj_eff = prep_inj_efficacy; if gender =1 then gender_spec_prep_inj_eff = prep_inj_efficacy**2;
+			risk_nip = risk_nip * (1-gender_spec_prep_inj_eff); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_nip = risk_nip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
 		end;
+
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_nip = risk_nip * (1-prep_vr_efficacy);
 			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_nip = risk_nip * (1- (0.5 * prep_vr_efficacy));
@@ -6121,8 +6130,8 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 				* even if taking as pep rather than prep testing every 3 months may be indicated - recent infection wont be picked up but want to know if
 				alrady positive from previous exposures;
 				prev_efficacy = prep_oral_efficacy; if pep_not_prep =1 then prev_efficacy = pep_efficacy;
-				if pop_wide_tld_prev_eff=1 and tested ne 1 then prev_efficacy = prev_efficacy * .8;
-				if pop_wide_tld_prev_eff=2 and tested ne 1 then prev_efficacy = prev_efficacy * 1.25;
+																					   
+																						 
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p <= 0) then risk_eip = risk_eip * (1-(adh * prev_efficacy));
 				if m184m_p=1 and k65m_p=1 and (in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1) then risk_eip = risk_eip * (1-(adh * oral_prep_eff_3tc_ten_res * prev_efficacy));
 			end;
@@ -6130,15 +6139,15 @@ if epi=1 then do;  * dependent_on_time_step_length ;
 		end;
 
 		if prep_inj   =1 then do; 	* lapr and dpv-vr;
-			risk_eip = risk_eip * (1-prep_inj_efficacy);
-			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * prep_inj_efficacy));
+			if gender =2 then gender_spec_prep_inj_eff = prep_inj_efficacy; if gender =1 then gender_spec_prep_inj_eff = prep_inj_efficacy**2;
+			risk_eip = risk_eip * (1-gender_spec_prep_inj_eff); 
+			if in118m_p + in140m_p + in148m_p + in155m_p + in263m_p >= 1 then risk_eip = risk_eip * (1 - (prep_inj_effect_inm_partner * gender_spec_prep_inj_eff));
 		end;
 		if prep_vr   =1 then do; 	* lapr and dpv-vr;
 			risk_eip = risk_eip * (1-prep_vr_efficacy);
 			if (k103m_p + y181m_p + g190m_p) >= 1 then risk_eip = risk_eip * (1- (0.5 * prep_vr_efficacy));
 
 		end;
-
 
 
 
@@ -7922,8 +7931,8 @@ end;
 * for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
 
 a = rand('uniform'); b = rand('uniform'); 
-if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and onartvisit0 ne 1 and a < prob_onartvis_0_to_1 then onartvisit0=1;
-if pop_wide_tld=1 and onart=1 and onartvisit0=1 and b < prob_onartvis_1_to_0 then onartvisit0=0;
+if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and onartvisit0 ne 1 and a < prob_onartvis0_0_to_1 then onartvisit0=1;
+if pop_wide_tld=1 and onart=1 and onartvisit0=1 and b < prob_onartvis0_1_to_0 then onartvisit0=0;
 if onart ne 1 then onartvisit0=0;
 
 
@@ -8522,10 +8531,11 @@ if t ge 2 then adhmin=min(adh,adhmin_tm1);
 * effect of art_low_adh_disrup_covid ;
 if art_low_adh_disrup_covid = 1 then adh = adh - 0.25 ;
 
-* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
+* effect of onartvisit0 on adh (in context of pop_wide_tld=1) - if artvis0_lower_adh = 1 then 20% of people with artvisit0 have reduced adherence; 
+if artvis0_lower_adh = 1 and onartvisit0 = 1 and _p1 < 0.5  then adh = adh - rand('beta', 1.5, 10);  
 
-if artvis0_adh = 1 then do;  if onartvisit0 = 1 then adh = adh - rand('beta', 1.5, 10);  end;
-if artvis0_adh = 2 then do;  if onartvisit0 = 1 then adh = adh + rand('beta', 1.5, 10);  end;
+* if on pop_wide_tld_prep as pep then equivalent to 0 adherence;
+if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
 
 
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
@@ -11236,7 +11246,7 @@ if vm ne . then do; latest_vm = vm; date_latest_vm=caldate{t}; end;
 		if onart = 1 then hiv_death_rate = ind_effect_art_hiv_disease_death * hiv_death_rate;   
 
 		* iris risk due to starting art with very low cd4 count and not under clinical care;
-		if pop_wide_tld_prep = 1 and time0=caldate{t} and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
+		if time0=caldate{t} and onartvisit0=1 and . < cd4 < 100 then hiv_death_rate = hiv_death_rate + death_r_iris_pop_wide_tld ;
 
 		death_rix = 1 - exp(-0.25*hiv_death_rate); 
 * ts1m: *	death_rix = 1 - exp (-(1/12)*hiv_death_rate);
@@ -11520,7 +11530,10 @@ t_adh_int_cost=0;  if caldate{t}=date_v_alert then  t_adh_int_cost = cost_t_adh_
 
 * visit costs;
 full_vis_cost=0; vis_cost=0; 
-if visit=1 then do; vis_cost=vis_cost_a; full_vis_cost=vis_cost_a; end;* what is cost of an outpatient visit ? / doctor/nurse/admin time plus other tests;
+if visit=1 then do; 
+	vis_cost=vis_cost_a; full_vis_cost=vis_cost_a; 
+	if onartvisit0=1 then vis_cost = 0;
+end;* what is cost of an outpatient visit ? / doctor/nurse/admin time plus other tests;
 
 
 * possibility of lower clinic cost if have measured VL < 1000 ;  *http://www.sajhivmed.org.za/index.php/sajhivmed/article/view/924/821;
@@ -11531,7 +11544,7 @@ if sv=1 then do;	vis_cost=vis_cost-redn_in_vis_cost_vlm_supp; full_vis_cost_sv =
 
 * pre-death morbidity costs if people dying with dcause =2;
 
-cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_aids_pre_death = 1.000;
+cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_aids_pre_death = 0.200;
 
 
 
@@ -11579,13 +11592,13 @@ if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_prep_visit_oral=cost_prep_visit;
 	*cost depends on whether they are just picking up the drug or also receiving further clinic time (counselling);
 end;
-if prep_inj =1 and pop_wide_tld_prep ne 1 then do;
+if prep_inj =1 then do;
 	cost_prep_inj  = prep_inj_drug_cost ;   
 	if visit_prep_inj  = 2 then cost_prep_visit = cost_prep_inj_clinic; 
 	if visit_prep_inj  = 3 then cost_prep_visit = cost_prep_inj_clinic+cost_prep_any_clinic_couns;
 	cost_prep_visit_inj =cost_prep_visit;
 end;
-if prep_vr  =1 and pop_wide_tld_prep ne 1 then do;
+if prep_vr  =1 then do;
 	cost_prep_vr   = prep_vr_drug_cost ;  
 	if visit_prep_vr   = 1 then cost_prep_visit = cost_prep_vr_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep_vr   = 2 then cost_prep_visit = cost_prep_vr_clinic; 
@@ -11639,8 +11652,8 @@ cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_an
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) 
-+ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) 
-+ max(0,cost_sw_program);
++ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
+
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
 + max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
@@ -11874,7 +11887,7 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
 	tested_circ=.;tested_anc_prevdiag=.;
 	ever_hiv1_prep_any=.; ever_hiv1_prep_oral=.; visit_prep_oral=.;  ever_stopped_prep_oral_choice=.; preprestart=.; n_test_prev_4p_onprep=.;pop_wide_tld_prep=.;
-	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.; 
+	prep_inj_start=.; prep_oral_start=.;  prep_vr_start=.;  pop_wide_tld_as_art=.;
 end;
 
 
@@ -12997,6 +13010,15 @@ hiv85plw=0; if hiv=1 and gender=2 and 85 <= age      then hiv85plw=1;
 hiv1564w=0; if hiv=1 and gender=2 and 15 <= age < 65 then hiv1564w=1;
 hiv1549w=0; if hiv=1 and gender=2 and 15 <= age < 50 then hiv1549w=1;
 
+*** infection before &year_interv ;
+infection_pre_year_interv=.;
+if hiv = 1 then do;
+	infection_pre_year_interv = 0; infection_post_year_interv = 0; 
+	if . < infection < &year_interv then do; infection_pre_year_interv = 1; end;
+	if . < &year_interv < infection then do; infection_post_year_interv = 1;  end;
+end;
+
+
 
 ***HIV amongst FSW;
 hiv_sw=0;hiv_sw1849_=0;hiv_sw1549_=0;hiv_sw1519_=0;hiv_sw2024_=0;hiv_sw2529_=0;hiv_sw3039_=0;hiv_swov40_=0;
@@ -13021,7 +13043,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 
 
 ***HIV specific outputs;
-vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_1549=.;
+vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
 dead_=.;dead_diag=.;
@@ -13843,6 +13865,9 @@ pop_wide_tld_hiv=0; if  pop_wide_tld_prep = 1 and hiv=1 then pop_wide_tld_hiv=1;
 pop_wide_tld_prep_elig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig=1 then pop_wide_tld_prep_elig=1;
 pop_wide_tld_neg_prep_inelig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig ne 1 then pop_wide_tld_neg_prep_inelig=1;
 
+onartvisit0_vl1000 = .;
+if onart =1 and onartvisit0=1 then onartvisit0_vl1000 = vl1000; 
+
 primary_prep_oral = 0; if infected_prep_oral=1 and primary=1 then primary_prep_oral = 1;
 primary_prep_inj = 0; if infected_prep_inj =1 and primary=1 then primary_prep_inj  = 1;
 primary_prep_vr  = 0; if infected_prep_vr  =1 and primary=1 then primary_prep_vr   = 1;
@@ -14365,6 +14390,7 @@ cur_dol_cns_tox=0; if o_dol and c_cns=1 then cur_dol_cns_tox=1;
 
 if 15 <= age  then do;
 util=1; * these in order ;
+if hiv=1 then util=util_hiv;* note this is for all with hiv - considered making it just for those registd;
 if c_tox=1 then util=util_tox;
 if cur_efa_cns_tox=1 then util=min(util,util_cns_efa_tox);
 if cur_dol_cns_tox=1 then util=min(util,util_cns_dol_tox); * cant be on both efa and dol;
@@ -14697,11 +14723,19 @@ if visit=1 and naive=1 then pre_art_care=1;
 ;
 
 * status at hiv-related  death for people with hiv;
+* status at hiv-related  death for people with hiv;
 status_death_hr_g=.;death_hiv=.;death_hiv_m=.;death_hiv_w=.;
 sdg_hr_1=.;sdg_hr_2=.;sdg_hr_3=.;sdg_hr_4=.;sdg_hr_5=.;sdg_hr_6=.;sdg_hr_7=.;sdg_hr_8=.;sdg_hr_9=.;sdg_hr_99=.;
 death_hiv_age_1524=0; death_hiv_age_2534=0; death_hiv_age_3544=0; death_hiv_age_4554=0; death_hiv_age_5564=0; 
+death_hiv_inf_pre_year_interv=.; death_hiv_inf_post_year_interv=.; 
+
 if hiv=1 and caldate&j=death and dead_ = 1 and rdcause=1 then do;
-death_hiv=1;if gender=1 then death_hiv_m=1;if gender=2 then death_hiv_w=1;
+death_hiv=1;if gender=1 then death_hiv_m=1;
+
+if infection_pre_year_interv=1 then death_hiv_inf_pre_year_interv=1; 
+if infection_post_year_interv=1 then death_hiv_inf_post_year_interv=1; 
+
+if gender=2 then death_hiv_w=1;
 if 15 <= age < 25 and death_hiv=1 then death_hiv_age_1524=1;
 if 25 <= age < 35 and death_hiv=1 then death_hiv_age_2534=1;
 if 35 <= age < 45 and death_hiv=1 then death_hiv_age_3544=1;
@@ -15598,18 +15632,16 @@ end;
 * AP 19-7-19;
 ddaly_non_aids_pre_death=0;
 if death = caldate&j and rdcause=2 then do;
-	daly_non_aids_pre_death=0.25;
+	daly_non_aids_pre_death=0.05;
 	ddaly_non_aids_pre_death = daly_non_aids_pre_death * discount;
 end;
 * ts1m: replace above with : 
-* if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 1 * (1/12) * discount;
+* if death = caldate&j and rdcause=2 then ddaly_non_aids_pre_death = 0.2 * (1/12) * discount;
 
 dead_rdcause2=0;
 if death = caldate&j and rdcause=2 then dead_rdcause2=1;
 dead_onart_rdcause2=0;
 if death = caldate&j and onart=1 and rdcause=2 then dead_onart_rdcause2=1;
-
-
 
 
 * variables to follow newp andd infection risk dynamics ;
@@ -15819,6 +15851,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_sg_1 + sg_1 ; s_sg_2 + sg_2 ; s_sg_3 + sg_3 ; s_sg_4 + sg_4 ; s_sg_5 + sg_5 ; s_sg_6 + sg_6 ; s_sg_7 + sg_7 ; s_sg_8 + sg_8 ; 
 	s_sg_9 + sg_9 ; s_sg_99 + sg_99 ; 	
+
+	s_infection_pre_year_interv + infection_pre_year_interv ; s_infection_post_year_interv + infection_post_year_interv;
+
 
 	/*primary infection*/
 
@@ -16141,7 +16176,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
 	s_newp_tp_hivneg_age1524w_prep + newp_tp_hivneg_age1524w_prep ;   s_newp_this_per_hivneg_sw_prep + newp_this_per_hivneg_sw_prep;
-	s_pep_not_prep + pep_not_prep ;
+	s_pep_not_prep + pep_not_prep; s_pop_wide_tld_as_art + pop_wide_tld_as_art ;
  
 	s_testfor_prep_oral + testfor_prep_oral ; s_testfor_prep_inj + testfor_prep_inj ;   s_testfor_prep_vr  + testfor_prep_vr  ;  
 	s_prep_oral_ever + prep_oral_ever ; s_prep_inj_ever + prep_inj_ever ; s_prep_vr_ever + prep_vr_ever ; 
@@ -16339,7 +16374,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_infected_in118m + infected_in118m ; s_infected_in140m + infected_in140m ; s_infected_in148m + infected_in148m ;  s_infected_in155m + infected_in155m ; 
 	s_infected_in263m + infected_in263m ; s_infected_inm + infected_inm;  s_infected_inm_this_per + infected_inm_this_per;
 
-	s_onartvisit0 + onartvisit0;
+	s_onartvisit0 + onartvisit0; s_onartvisit0_vl1000 + onartvisit0_vl1000;
+
+
 
 	/* blood pressure */
 
@@ -16430,6 +16467,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80m + dead_cvd_ge80m ;
 	s_dead_cvd_3039w + dead_cvd_3039w ; s_dead_cvd_4049w + dead_cvd_4049w ; s_dead_cvd_5059w + dead_cvd_5059w ;s_dead_cvd_6069w + dead_cvd_6069w ;
 	s_dead_cvd_7079w + dead_cvd_7079w ; s_dead_cvd_ge80w + dead_cvd_ge80w ;
+	s_death_hiv_inf_pre_year_interv + death_hiv_inf_pre_year_interv;   s_death_hiv_inf_post_year_interv + death_hiv_inf_post_year_interv;
 
 
 	/* death by time on art */
@@ -17691,6 +17729,7 @@ s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
+s_infection_pre_year_interv  s_infection_post_year_interv 
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
@@ -17813,7 +17852,7 @@ s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
-s_i_m_1549_np  s_i_w_1549_np
+s_i_m_1549_np  s_i_w_1549_np  s_i_w_newp  s_i_m_newp
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -17887,7 +17926,9 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+			
+s_pop_wide_tld_as_art
+
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep s_pep_not_prep
 
@@ -18036,7 +18077,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m
 s_infected_inm  s_infected_inm_this_per
 
-s_onartvisit0
+s_onartvisit0 s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
@@ -18138,7 +18179,7 @@ s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
 
 /*sex workers*/
@@ -18282,16 +18323,17 @@ sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy
+
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
-artvis0_adh  pop_wide_tld_prev_eff
+artvis0_lower_adh  pop_wide_prep_adh_effect 
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary pr_inm_inj_prep_primary  rel_pr_inm_inj_prep_tail_primary  rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
 pref_prep_oral_beta_s1 prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
 super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
@@ -18617,6 +18659,8 @@ s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
+s_infection_pre_year_interv  s_infection_post_year_interv 
+
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
@@ -18739,7 +18783,7 @@ s_i_age1_w_np	s_i_age2_w_np	s_i_age3_w_np	s_i_age4_w_np	s_i_age5_w_np
 s_i_age1_m_newp s_i_age2_m_newp	s_i_age3_m_newp	s_i_age4_m_newp	s_i_age5_m_newp
 s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
-s_i_m_1549_np  s_i_w_1549_np
+s_i_m_1549_np  s_i_w_1549_np   s_i_w_newp  s_i_m_newp
 
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -18811,7 +18855,9 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+			 
+s_pop_wide_tld_as_art	
+
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep  s_pep_not_prep
 
@@ -18957,7 +19003,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 
 s_vl1000_art_age1564  s_onart_age1564   s_infected_in118m s_infected_in140m s_infected_in148m  s_infected_in155m s_infected_in263m  s_infected_inm s_infected_inm_this_per
 
-s_onartvisit0
+s_onartvisit0 s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
@@ -19059,7 +19105,7 @@ s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
 
 /*sex workers*/
@@ -23717,6 +23763,7 @@ data r1; set a      ;
 
 
 
+
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -23778,6 +23825,7 @@ s_hiv4549m		s_hiv5054m 		s_hiv5559m		s_hiv6064m		s_hiv1564m		s_hiv1549m
 s_hiv1517w		s_hiv1819w		s_hiv1519w  	s_hiv2024w		s_hiv2529w  	s_hiv3034w		s_hiv3539w		s_hiv4044w	
 s_hiv4549w		s_hiv5054w 		s_hiv5559w		s_hiv6064w		s_hiv1564w		s_hiv1549w	
 s_sg_1 			s_sg_2 			s_sg_3 			s_sg_4			s_sg_5 			s_sg_6 			s_sg_7 			s_sg_8 		s_sg_9	 s_sg_99
+s_infection_pre_year_interv  s_infection_post_year_interv 
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
@@ -23904,7 +23952,7 @@ s_i_age1_w_newp	s_i_age2_w_newp	s_i_age3_w_newp	s_i_age4_w_newp	s_i_age5_w_newp
 
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r 
 
-s_i_m_1549_np  s_i_w_1549_np
+s_i_m_1549_np  s_i_w_1549_np    s_i_w_newp  s_i_m_newp
  
 /*resistance*/
 s_tam1_  s_tam2_  s_tam3_  s_m184m_  s_k103m_  s_y181m_  s_g190m_  s_nnm_  s_q151m_  s_k65m_  
@@ -23976,9 +24024,9 @@ s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_y
 s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
-			   
+s_pop_wide_tld_as_art			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
-s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep   s_pep_not_prep
+s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep  s_pep_not_prep
 
 s_testfor_prep_oral  s_testfor_prep_inj s_testfor_prep_vr  s_prep_oral s_prep_inj s_prep_vr s_prep_oral_ever  s_prep_inj_ever  s_prep_vr_ever
 s_last_prep_used  s_stop_prep_inj_choice s_stop_prep_vr_choice 
@@ -24121,7 +24169,7 @@ s_started_art_as_tld_prep_vl1000    s_onart_as_tld_prep   s_onart_as_tld_prep_vl
 
 s_vl1000_art_age1564  s_onart_age1564    s_infected_in118m s_infected_in140m s_infected_in148m s_infected_in155m s_infected_in263m  s_infected_inm  s_infected_inm_this_per
 
-s_onartvisit0
+s_onartvisit0  s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
@@ -24224,7 +24272,7 @@ s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
-s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w 
+s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
 
 /*sex workers*/
@@ -24366,18 +24414,18 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy
+prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
-artvis0_adh  pop_wide_tld_prev_eff
+artvis0_lower_adh  pop_wide_prep_adh_effect 
 
 pr_184m_oral_prep_primary pr_65m_oral_prep_primary    pr_inm_inj_prep_primary    rel_pr_inm_inj_prep_tail_primary    rr_res_cab_dol
 hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_prep_if_untested  prob_onartvis_1_to_0 prob_onartvis_0_to_1
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
 pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
