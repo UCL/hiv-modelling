@@ -1,5 +1,5 @@
 * Matt's local machine input;
-libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
+libname a "C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\";
 data hiv_synthesis_base; set a.out:;
 
 * Myriad input;
@@ -1180,8 +1180,10 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var;
 
-/*
+%var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=incidence1549); %var(v=p_diag); %var(v=p_onart_diag); 
+%var(v=p_onart_vl1000); %var(v=p_vl1000); %var(v=prevalence_vg1000); %var(v=death_rate_hiv);
 
+/*
 %var(v=s_alive); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=n_tested_m);
@@ -1193,11 +1195,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vmmc_5064m); %var(v=p_vmmc_1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_1564_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_sw_program_visit); 
 %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
-%var(v=prop_sw_onprep); %var(v=prevalence1549m); %var(v=prevalence1549w); %var(v=prevalence1549); 
+%var(v=prop_sw_onprep);  %var(v=prevalence1549); 
 %var(v=prevalence1519w);  	%var(v=prevalence1519m);  	  %var(v=prevalence2024w);  	  %var(v=prevalence2024m);  	  %var(v=prevalence2529w);  	  
 %var(v=prevalence2529m);    %var(v=prevalence3034w);    %var(v=prevalence3034m);  	%var(v=prevalence3539w);  	  %var(v=prevalence3539m);  	  
 %var(v=prevalence4044w);  	 %var(v=prevalence4044m);  	  %var(v=prevalence4549w);  	  %var(v=prevalence4549m);  
-%var(v=prevalence_vg1000); %var(v=incidence1549);  %var(v=incidence1564);  %var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
+   %var(v=incidence1564);  %var(v=prevalence1524w); %var(v=prevalence1524m);   %var(v=prevalence_sw);
 %var(v=prevalence5054w); %var(v=prevalence5054m); %var(v=prevalence5559w); %var(v=prevalence5559m); %var(v=prevalence6064w); %var(v=prevalence6064m); 
 %var(v=prevalence65plw); %var(v=prevalence65plm);
 %var(v=r_prev_1519w_4549w );  %var(v=r_prev_2024w_4549w  );  %var(v=r_prev_2529w_4549w );  %var(v=r_prev_3034w_4549w  ); 
@@ -1207,13 +1209,13 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=r_prev_5559m_4549w );  %var(v=r_prev_6064m_4549w );  %var(v=r_prev_65plm_4549w );
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
 %var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
+%var(v=mtct_prop);  %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);
 %var(v=p_diag_m1524); %var(v=p_diag_w1524);
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_c_inm); 
-%var(v=p_artexp_diag); %var(v=p_onart_diag); %var(v=p_onart_diag_w); %var(v=p_onart_diag_m); %var(v=p_onart_diag_sw); %var(v=p_efa); %var(v=p_taz);
-%var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000);  %var(v=p_artexp_vl1000);
-%var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
+%var(v=p_artexp_diag);  %var(v=p_onart_diag_w); %var(v=p_onart_diag_m); %var(v=p_onart_diag_sw); %var(v=p_efa); %var(v=p_taz);
+%var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev);   %var(v=p_artexp_vl1000);
+ %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
 %var(v=p_onart_m); %var(v=p_onart_w); 
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
@@ -1241,7 +1243,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_184m_ontle_vlg1000);  %var(v=p_65m_ontle_vlg1000);  %var(v=p_nnm_ontle_vlg1000);   %var(v=p_184m_ontld_vlg1000);   %var(v=p_65m_ontld_vlg1000);  
 %var(v=p_nnm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   %var(v=p_inm_ontld_vlg1000);   
 %var(v=p_tams_ontle_vlg1000);  %var(v=p_tams_ontld_vlg1000);  %var(v=p_k65m); %var(v=p_m184m);
-%var(v=death_rate);   %var(v=death_rate_hiv); %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
+%var(v=death_rate);    %var(v=death_rate_hiv_m); %var(v=death_rate_hiv_w);
 %var(v=death_rate_hiv_all);%var(v=death_rate_hiv_all_m);%var(v=death_rate_hiv_all_w);
 %var(v=p_iime);   %var(v=p_pime);   %var(v=p_nnme);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=n_birth_with_inf_child);
@@ -1390,6 +1392,9 @@ n_new_inf1549m n_new_inf1549
 t_sw_newp
 
 */
+
+prevalence1549m  prevalence1549w  incidence1549  p_diag  p_onart_diag  
+p_onart_vl1000  p_vl1000  prevalence_vg1000  death_rate_hiv 
 
 p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
 p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
@@ -1631,6 +1636,8 @@ htn_cost_total_22 htn_cost_scr_22 htn_cost_drug_22 htn_cost_clin_22
 tot_dyll_cvd_22 tot_dyll_22
 dcost_22 ddaly_22
 n_dead_allage_22 n_dead_hivneg_anycause_22 n_dead_hivpos_anycause_22
+prevalence1549m_22 prevalence1549w_22 incidence1549_22 p_diag_22 p_onart_diag_22 
+p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22 death_rate_hiv_22
 
 p_hypert_1524_32 p_hypert_2534_32 p_hypert_3544_32 p_hypert_4554_32 p_hypert_5564_32 p_hypert_ge65_32
 p_htn_true_1524_32 p_htn_true_2534_32 p_htn_true_3544_32 p_htn_true_4554_32 p_htn_true_5564_32 p_htn_true_ge65_32
