@@ -1,5 +1,5 @@
 
-* run 56 all;
+* run 57 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -873,14 +873,28 @@ cost_htn_drug1 = 0.002;
 cost_htn_drug2 = 0.004;
 cost_htn_drug3 = 0.015;
 
-* effect of sbp on risk of cvd death;
-effect_sbp_cvd_death = 0.03;
-* effect of gender on risk of cvd death;
-effect_gender_cvd_death = 0.4;
-* effect of age on risk of cvd death;
-effect_age_cvd_death = 0.06;
-* base risk of cvd (before adding effects of age, gender, sbp);
-base_cvd_death_risk = 0.00005;
+** CVD events;
+	* Ischemic heart disease (IHD);
+	* effect of sbp on risk of cvd events;
+	effect_sbp_ihd = 0.03;
+	* effect of gender on risk of cvd death;
+	effect_gender_ihd = 0.4;
+	* effect of age on risk of cvd death;
+	effect_age_ihd = 0.08;
+	* base risk of cvd (before adding effects of age, gender, sbp);
+	base_ihd_risk = 0.000025;
+
+	* Stroke (CVA);
+	* effect of sbp on risk of cvd events;
+	effect_sbp_cva = 0.03;
+	* effect of gender on risk of cvd death;
+	effect_gender_cva = 0;
+	* effect of age on risk of cvd death;
+	effect_age_cva = 0.07;
+	* base risk of cvd (before adding effects of age, gender, sbp);
+	base_cva_risk = 0.00004;
+
+	risk_cvd_hiv = 1.2;
 
 
 * NON-HIV TB ;  * update_24_4_21;
@@ -11588,15 +11602,77 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		dead   =1; death=caldate{t}; dcause=3; agedeath=age; 
 	end;
 
-* cvd mortality; * update_24_4_21;
+* HYPERTENSION: cvd events and mortality; * update_3-11-2022;
 
-* risk of cvd death per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
-	if sbp  < 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
-	if sbp >= 115 then cvd_death_risk = base_cvd_death_risk * exp (((age - 15) * effect_age_cvd_death) + (effect_gender_cvd_death*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cvd_death)) ;
+* risk of ihd and cva per 3 months according to sbp, age and gender ;  * remember this appears twice - once for hiv -ve people below;
+	* ischemic heart disease;
+	if sbp  < 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
+	if sbp >= 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd)) ;
 
-* HYPERTENSION: risk of fatal and nonfatal CHD and stroke;
+	if prior_ihd = 1 then do;
+		if (ihd_type = 1 or ihd_type = 2) and ihd_risk < 0.016 then ihd_risk = 0.016;
+		if ihd_type = 3 and ihd_risk < 0.00875 then ihd_risk = 0.00875;
+	end;
 
+	if prior_cva = 1 and ihd_risk <0.0055 then ihd_risk = 0.0055;
 
+	xihd = rand('uniform');
+	if hiv = 1 then do;
+		if vg1000 = 0 and cd4 >=500 then xihd = xihd / risk_cvd_hiv;
+		if vg1000 = 1 and cd4 >=500 then xihd = xihd / (risk_cvd_hiv^2);
+		if vg1000 = 0 and cd4 < 500 then xihd = xihd / (risk_cvd_hiv^2);
+		if vg1000 = 1 and cd4 < 500 then xihd = xihd / (risk_cvd_hiv^4);
+	end;
+	if xihd le ihd_risk then ihd_this_per =1;
+	
+
+	if ihd_this_per = 1 then do;
+		if prior_ihd =1 then do;
+			repeat_mi = 1;
+			%sample(ihd_type, 1 2, 0.1 0.9);
+			if ihd_type = 1 then cvd_death_risk = 0.95;
+			if ihd_type = 2 then cvd_death_risk = 0.1;
+		end;
+		if prior_ihd =0 then do;
+			if gender =1 then %sample(ihd_type, 1 2 3, 0.1 0.35 0.55); *IHD = 1 if cardiac arrest, 2 if MI, 3 if angina;
+			if gender =2 then %sample(ihd_type, 1 2 3, 0.1 0.2 0.7);
+			if ihd_type = 1 then cvd_death_risk = 0.95;
+			if ihd_type = 2 then cvd_death_risk = 0.05;
+			if ihd_type = 3 then cvd_death_risk = 0.045;
+			prior_ihd = 1;
+		end;
+	end;
+
+	if prior_ihd = 1 and ihd_this_per = 0 then do;
+		if ihd_type = 1 or ihd_type = 2 then do; 
+			if repeat_mi =1 then cvd_death_rate = 0.025; else cvd_death_rate = 0.01; 
+		end;
+		if ihd_type = 3 then cvd_death_rate = 0.0075;
+	end;
+
+	* Cerebrovascular disease ;
+	if sbp  < 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
+	if sbp >= 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva)) ;
+
+	if prior_cva = 1 and cva_risk < 0.01 then cva_risk = 0.01
+		
+	xcva = rand('uniform');
+	if hiv = 1 then do;
+		if vg1000 = 0 and cd4 >=500 then xcva = xcva / risk_cvd_hiv;
+		if vg1000 = 1 and cd4 >=500 then xcva = xcva / (risk_cvd_hiv^2);
+		if vg1000 = 0 and cd4 < 500 then xcva = xcva / (risk_cvd_hiv^2);
+		if vg1000 = 1 and cd4 < 500 then xcva = xcva / (risk_cvd_hiv^4);
+	end;
+	if xcva le cva_risk then cva_this_per =1;
+	
+	if cva_this_per = 1 then do;
+		if cvd_death_risk < 0.38 then cvd_death_risk = 0.38;
+		prior_cva = 1;
+	end;
+
+	if prior_cva = 1 and cva_this_per = 0 then do;
+		if cvd_death_risk < 0.0125 then cvd_death_risk = 0.0125;
+	end;
 
 	xcvd = rand('uniform');
 	if xcvd le cvd_death_risk then do;
@@ -11604,6 +11680,8 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	end;
 
 
+		ihd_this_per = 0;
+		cvd_this_per = 0;
 
 * time known to have been virally suppressed at last vlm;
 
