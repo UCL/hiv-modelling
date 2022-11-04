@@ -11658,7 +11658,7 @@ if dead ne 1 then do;
 	if sbp  < 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
 	if sbp >= 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva)) ;
 
-	if prior_cva = 1 and cva_risk < 0.01 then cva_risk = 0.01
+	if prior_cva = 1 and cva_risk < 0.01 then cva_risk = 0.01;
 		
 	xcva = rand('uniform');
 		* increased CVD risk with HIV;
@@ -12122,7 +12122,7 @@ if dead ne 1 then do;
 	if sbp  < 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2)))) ; *male = 1 and female = 2, greater mortality in men;
 	if sbp >= 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva)) ;
 
-	if prior_cva = 1 and cva_risk < 0.01 then cva_risk = 0.01
+	if prior_cva = 1 and cva_risk < 0.01 then cva_risk = 0.01;
 		
 	xcva = rand('uniform');
 
@@ -22258,7 +22258,7 @@ data x; set cum_l1;
 
 put   
  
-libname b 'C:\Users\sf124046\Box\sapphire_modelling\synthesis\';
+libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
