@@ -804,6 +804,8 @@ end;
 
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
 * inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
+									* how much does the appeal (preference) of oral prep increase with pop_wide_tld, due to the easy access ? 
+									   this could diminish the use of prep_inj which is a negative as prep_inj has higher effectiveness ; 
 
 
 * COVID-19 ;
