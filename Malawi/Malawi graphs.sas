@@ -1,7 +1,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
 data a;
-set a.malawi_18;
+set a.malawi_19;
 proc sort;by run;run;
 
 data sf;
@@ -132,7 +132,7 @@ n_cd4_lt200_		n_hiv		n_alive;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =50;
+%let nfit =56;
 proc sort;by cald option ;run;
 
 data option_0;
@@ -534,7 +534,7 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_18.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_19.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
