@@ -1,6 +1,6 @@
 *Status at time of death - categories as per Excel sheet;
 *'A' means 'on ART';
-
+hiv_death=0; hiv_death_m=0; hiv_death_w=0;
 dead_undiag=0;dead_diag_not_linked=0;
 dead_Alt6_artcd4lt200=0;dead_Alt6_artcd4gt200=0;
 dead_int_Alt6_rescd4lt200=0;dead_int_Alt6_rescd4gt200=0;
@@ -222,9 +222,9 @@ Status at death;
 
 if hiv=1 and caldate&j=death and rdcause=1 then do; 
 
-death_hiv=1;
-if gender=1 then death_hiv_m=1;
-if gender=2 then death_hiv_w=1;
+hiv_death=1;
+if gender=1 then hiv_death_m=1;
+if gender=2 then hiv_death_w=1;
 
 * 1	Undiagnosed (also included those undiag in last 3m, e.g person presenting with AIDS in hospital and then being diag); 
 if registd_tm1 ne 1 then dead_undiag=1; 

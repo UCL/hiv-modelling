@@ -835,8 +835,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
-  %include "/home/rmjllob/malawi_parameters_mlw18.sas";
-
+ %include "/home/rmjllob/malawi_parameters_mlw19.sas";
+ *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Malawi\malawi_parameters_mlw19.sas";
 * ===================== ;
 * END OF PARAMETER LIST ;
 * ===================== ;
@@ -15682,7 +15682,7 @@ if 80 <= age      then do;
 end;
 
 %include "/home/rmjllob/death status.sas";
-
+*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\death status.sas";
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -16627,7 +16627,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_covid + covid ; 
 
 	/*Attribution of deaths*/	
-s_death_hiv + death_hiv;  s_death_hiv_m +death_hiv_m;  s_death_hiv_w + death_hiv_w;  
+s_hiv_death + hiv_death; s_hiv_death_m + hiv_death_m;  s_hiv_death_w + hiv_death_w;  
 s_dead_undiag + dead_undiag;  s_dead_diag_not_linked + dead_diag_not_linked;  
 s_dead_Alt6_artcd4lt200 + dead_Alt6_artcd4lt200;  s_dead_Alt6_artcd4gt200 + dead_Alt6_artcd4gt200;  
 s_dead_int_Alt6_rescd4lt200 + dead_int_Alt6_rescd4lt200;  s_dead_int_Alt6_rescd4gt200 + dead_int_Alt6_rescd4gt200;  
@@ -17072,6 +17072,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
+proc print;var caldate&j hiv death_hiv death dead_undiag s_dead_undiag s_dead_diag_not_linked  
+s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
+s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200;run;
 
 
 
@@ -18619,6 +18622,7 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 s_covid
 
 /* attribution of deaths */
+s_hiv_death  s_hiv_death_m  s_hiv_death_w 
 s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
 s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200  
@@ -18865,14 +18869,14 @@ ptnewp15_w  ptnewp25_w  ptnewp35_w  ptnewp45_w  ptnewp55_w
 keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020   
 
 ;
-
+/*
 if cald = 1998.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
 if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 
 if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
-
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -19638,6 +19642,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 s_covid
 
 /*Attribution of deaths */
+s_hiv_death  s_hiv_death_m  s_hiv_death_w
 s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
 s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200  
@@ -20945,6 +20950,7 @@ s_npge1_l4p_1564_hivpos  s_npge2_l4p_1564_hivpos  s_npge1_l4p_1564_hivdiag  s_np
 s_covid
 
 /* attribution of deaths */
+s_hiv_death  s_hiv_death_m  s_hiv_death_w
 s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
 s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200  

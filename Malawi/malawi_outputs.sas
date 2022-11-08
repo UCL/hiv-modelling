@@ -1,12 +1,12 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
 data a;
-set a.malawi_18;
+set a.malawi_19;
 if run=. then delete;
 proc sort;by run;run;
 proc freq;table cald;run;
 
-proc contents;run;
+proc freq;table s_dead_undiag;run;
 
 data sf;
 set a;
@@ -19,9 +19,6 @@ keep s_alive run sf_2022;
 proc sort; by run;run;
 
 %let sf=sf_2022;
-
-***RENAME dead_int_Alt6_rescd4lt200_m variables replaced with I and R;;
-
 
 
 data y; 
@@ -252,7 +249,14 @@ s_dead_Agt6_cd4gt2004044w  s_dead_Agt6_cd4gt2004549w  s_dead_Agt6_cd4gt2005054w 
 s_dead_Agt6_cd4gt2006569w  s_dead_Agt6_cd4gt2007074w  s_dead_Agt6_cd4gt2007579w  s_dead_Agt6_cd4gt2008084w  ;
 run;
 
-
+proc freq;table  s_dead_undiag  s_dead_diag_not_linked  
+s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
+s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200  
+s_dead_A_vl1000  s_dead_A_vg1000  s_dead_Alt6_vl1000  s_dead_Alt6_vg1000  
+s_dead_Agt6_vl1000  s_dead_Agt6_vg1000  
+s_dead_int_lost  s_dead_1stint_lost  s_dead_subintlt6_lost  s_dead_subintgt6_lost  
+s_dead_A_cd4lt200  s_dead_A_cd4gt200  
+s_dead_Alt6_cd4lt200  s_dead_Alt6_cd4gt200  s_dead_Agt6_cd4lt200  s_dead_Agt6_cd4gt200  ;run;
 
 data b; 
 set y;
