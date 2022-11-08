@@ -849,6 +849,63 @@ m_sbp_7074  = (s_sbp_7074w  + s_sbp_7074m ) / (s_ageg7074w + s_ageg7074m ) ;
 m_sbp_7579  = (s_sbp_7579w  + s_sbp_7579m ) / (s_ageg7579w + s_ageg7579m ) ;
 m_sbp_ge80  = (s_sbp_ge80w  + s_sbp_ge80m ) / (s_ageg8084w + s_ageg85plw + s_ageg8084m + s_ageg85plm) ;
 
+* CVD events;
+
+rate_cvd_ihd = (s_ihd_inc * 4 * 100) / s_alive;
+*rate_cvd_ihd_3039m = (s_ihd_inc_3039m * 4 * 100) / (s_ageg3034m + s_ageg3539m) ;
+rate_cvd_ihd_4049m = (s_ihd_inc_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
+rate_cvd_ihd_5059m = (s_ihd_inc_5059m * 4 * 100) / (s_ageg5054m + s_ageg5559m) ;
+rate_cvd_ihd_6069m = (s_ihd_inc_6069m * 4 * 100) / (s_ageg6064m + s_ageg6569m) ;
+rate_cvd_ihd_7079m = (s_ihd_inc_7079m * 4 * 100) / (s_ageg7074m + s_ageg7579m) ;
+rate_cvd_ihd_ge80m = (s_ihd_inc_ge80m * 4 * 100) / (s_ageg8084m + s_ageg85plm) ;
+*rate_cvd_ihd_3039w = (s_ihd_inc_3039w * 4 * 100) / (s_ageg3034w + s_ageg3539w) ;
+rate_cvd_ihd_4049w = (s_ihd_inc_4049w * 4 * 100) / (s_ageg4044w + s_ageg4549w) ;
+rate_cvd_ihd_5059w = (s_ihd_inc_5059w * 4 * 100) / (s_ageg5054w + s_ageg5559w) ;
+rate_cvd_ihd_6069w = (s_ihd_inc_6069w * 4 * 100) / (s_ageg6064w + s_ageg6569w) ;
+rate_cvd_ihd_7079w = (s_ihd_inc_7079w * 4 * 100) / (s_ageg7074w + s_ageg7579w) ;
+rate_cvd_ihd_ge80w = (s_ihd_inc_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
+
+rate_cvd_cva = (s_cva_inc * 4 * 100) / s_alive;
+*rate_cvd_cva_3039m = (s_cva_inc_3039m * 4 * 100) / (s_ageg3034m + s_ageg3539m) ;
+rate_cvd_cva_4049m = (s_cva_inc_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
+rate_cvd_cva_5059m = (s_cva_inc_5059m * 4 * 100) / (s_ageg5054m + s_ageg5559m) ;
+rate_cvd_cva_6069m = (s_cva_inc_6069m * 4 * 100) / (s_ageg6064m + s_ageg6569m) ;
+rate_cvd_cva_7079m = (s_cva_inc_7079m * 4 * 100) / (s_ageg7074m + s_ageg7579m) ;
+rate_cvd_cva_ge80m = (s_cva_inc_ge80m * 4 * 100) / (s_ageg8084m + s_ageg85plm) ;
+*rate_cvd_cva_3039w = (s_cva_inc_3039w * 4 * 100) / (s_ageg3034w + s_ageg3539w) ;
+rate_cvd_cva_4049w = (s_cva_inc_4049w * 4 * 100) / (s_ageg4044w + s_ageg4549w) ;
+rate_cvd_cva_5059w = (s_cva_inc_5059w * 4 * 100) / (s_ageg5054w + s_ageg5559w) ;
+rate_cvd_cva_6069w = (s_cva_inc_6069w * 4 * 100) / (s_ageg6064w + s_ageg6569w) ;
+rate_cvd_cva_7079w = (s_cva_inc_7079w * 4 * 100) / (s_ageg7074w + s_ageg7579w) ;
+rate_cvd_cva_ge80w = (s_cva_inc_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
+
+prev_cvd_ihd = (s_ihd_prev) / s_alive;
+*prev_cvd_ihd_3039m = (s_ihd_prev_3039m) / (s_ageg3034m + s_ageg3539m) ;
+prev_cvd_ihd_4049m = (s_ihd_prev_4049m) / (s_ageg4044m + s_ageg4549m) ;
+prev_cvd_ihd_5059m = (s_ihd_prev_5059m) / (s_ageg5054m + s_ageg5559m) ;
+prev_cvd_ihd_6069m = (s_ihd_prev_6069m) / (s_ageg6064m + s_ageg6569m) ;
+prev_cvd_ihd_7079m = (s_ihd_prev_7079m) / (s_ageg7074m + s_ageg7579m) ;
+prev_cvd_ihd_ge80m = (s_ihd_prev_ge80m) / (s_ageg8084m + s_ageg85plm) ;
+*prev_cvd_ihd_3039w = (s_ihd_prev_3039w) / (s_ageg3034w + s_ageg3539w) ;
+prev_cvd_ihd_4049w = (s_ihd_prev_4049w) / (s_ageg4044w + s_ageg4549w) ;
+prev_cvd_ihd_5059w = (s_ihd_prev_5059w) / (s_ageg5054w + s_ageg5559w) ;
+prev_cvd_ihd_6069w = (s_ihd_prev_6069w) / (s_ageg6064w + s_ageg6569w) ;
+prev_cvd_ihd_7079w = (s_ihd_prev_7079w) / (s_ageg7074w + s_ageg7579w) ;
+prev_cvd_ihd_ge80w = (s_ihd_prev_ge80w) / (s_ageg8084w + s_ageg85plw) ;
+
+prev_cvd_cva = (s_cva_prev) / s_alive;
+*prev_cvd_cva_3039m = (s_cva_prev_3039m) / (s_ageg3034m + s_ageg3539m) ;
+prev_cvd_cva_4049m = (s_cva_prev_4049m) / (s_ageg4044m + s_ageg4549m) ;
+prev_cvd_cva_5059m = (s_cva_prev_5059m) / (s_ageg5054m + s_ageg5559m) ;
+prev_cvd_cva_6069m = (s_cva_prev_6069m) / (s_ageg6064m + s_ageg6569m) ;
+prev_cvd_cva_7079m = (s_cva_prev_7079m) / (s_ageg7074m + s_ageg7579m) ;
+prev_cvd_cva_ge80m = (s_cva_prev_ge80m) / (s_ageg8084m + s_ageg85plm) ;
+*prev_cvd_cva_3039w = (s_cva_prev_3039w) / (s_ageg3034w + s_ageg3539w) ;
+prev_cvd_cva_4049w = (s_cva_prev_4049w) / (s_ageg4044w + s_ageg4549w) ;
+prev_cvd_cva_5059w = (s_cva_prev_5059w) / (s_ageg5054w + s_ageg5559w) ;
+prev_cvd_cva_6069w = (s_cva_prev_6069w) / (s_ageg6064w + s_ageg6569w) ;
+prev_cvd_cva_7079w = (s_cva_prev_7079w) / (s_ageg7074w + s_ageg7579w) ;
+prev_cvd_cva_ge80w = (s_cva_prev_ge80w) / (s_ageg8084w + s_ageg85plw) ;
  
 
 * p_ahd_re_enter_care_100;		p_ahd_re_enter_care_100 = s_ahd_re_enter_care_100 / s_re_enter_care;
