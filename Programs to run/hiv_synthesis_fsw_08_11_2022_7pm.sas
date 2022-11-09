@@ -2407,14 +2407,14 @@ who may be dead and hence have caldate{t} missing;
 	if option = 0 then do;  *SW program discontinued;
 		eff_sw_program=0;sw_program=0; 
 	end; 
- 
+
 	if option = 1 then do; * SW program stays at current impact (low);
 	end;
 
 	if option = 2  then do; *SW program has higher impact;
 							eff_sw_program=1;sw_program=1;
-							%sample_uniform(rate_engage_sw_program, 0.10, 0.20, 0.30); 
-							%sample_uniform(rate_disengage_sw_program, 0.01, 0.025);
+							%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
+							%sample_uniform(rate_disengage_sw_program, 0.01 0.025);
 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.05 0.1 0.2);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.25 0.50 0.75);
@@ -2425,8 +2425,36 @@ who may be dead and hence have caldate{t} missing;
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.5 0.7);
 	end;
 
-
-
+/*
+a=uniform(0); b=uniform(0); c=uniform(0); d=uniform(0); e=uniform(0); f=uniform(0); g=uniform(0); h=uniform(0); i=uniform(0); 
+	if option = 2  then do; *SW program has higher impact;
+							eff_sw_program=1;sw_program=1;
+*rate_engage_sw_program;	if a < 0.33 then rate_engage_sw_program=0.10;
+							if 0.33 <= a < 0.66 then rate_engage_sw_program=0.20;
+							if a >= 0.66 then rate_engage_sw_program=0.30;
+*rate_disengage_sw_program;	if b < 0.50 then rate_disengage_sw_program=0.01;
+							if b >= 0.50 then rate_disengage_sw_program=0.025;
+*effect_sw_prog_newp;		if c < 0.33 then rate_engage_sw_program=0.05;
+							if 0.33 <= c < 0.66 then rate_engage_sw_program=0.10;
+							if c >= 0.66 then rate_engage_sw_program=0.20;
+*effect_sw_prog_6mtest;		if d < 0.33 then rate_engage_sw_program=0.25;
+							if 0.33 <= d < 0.66 then rate_engage_sw_program=0.50;
+							if d >= 0.66 then rate_engage_sw_program=0.75;
+*effect_sw_prog_int;		if e < 0.33 then rate_engage_sw_program=0.3;
+							if 0.33 <= e < 0.66 then rate_engage_sw_program=0.5;
+							if e >= 0.66 then rate_engage_sw_program=0.8;
+*effect_sw_prog_adh;		if f < 0.33 then rate_engage_sw_program=0.25;
+							if 0.33 <= f < 0.66 then rate_engage_sw_program=0.50;
+							if f >= 0.66 then rate_engage_sw_program=0.75;
+*effect_sw_prog_lossdiag;	if g < 0.33 then rate_engage_sw_program=0.3;
+							if 0.33 <= g < 0.66 then rate_engage_sw_program=0.5;
+							if g >= 0.66 then rate_engage_sw_program=0.8;
+*effect_sw_prog_prep_any;	if h < 0.50 then rate_engage_sw_program=0.80;
+							if h >= 0.50 then rate_engage_sw_program=0.95;
+*effect_sw_prog_pers_sti;	if i < 0.50 then rate_engage_sw_program=0.50;
+							if i >= 0.50 then rate_engage_sw_program=0.70;
+	end;
+*/
 end;
 
 
