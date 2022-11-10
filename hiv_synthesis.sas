@@ -1,5 +1,5 @@
 
-* run 59 all;
+* run 60 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -882,7 +882,7 @@ cost_htn_drug3 = 0.015;
 	* effect of age on risk of cvd death;
 	effect_age_ihd = 0.08;
 	* base risk of cvd (before adding effects of age, gender, sbp);
-	base_ihd_risk = 0.000025;
+	base_ihd_risk = 0.00000625;
 
 	* Stroke (CVA);
 	* effect of sbp on risk of cvd events;
@@ -892,7 +892,7 @@ cost_htn_drug3 = 0.015;
 	* effect of age on risk of cvd death;
 	effect_age_cva = 0.07;
 	* base risk of cvd (before adding effects of age, gender, sbp);
-	base_cva_risk = 0.00004;
+	base_cva_risk = 0.00001;
 
 	risk_cvd_hiv = 1.2;
 
@@ -14726,9 +14726,9 @@ if adc=1 then util=util_adc;
 * HYPERTENSION;
 if cva_this_per = 1 then util = min(util, util_cva_acute);
 if prior_cva = 1 then util = min(util, util_cva_chron);
-if ihd_this_per = 1 & ihd_type !=3 then util = min(util, util_mi_acute);
-if prior_ihd = 1 & ihd_type !=3 then util = min(util, util_mi_chron);
-if prior_ihd = 1 & ihd_type ==3 then util = min(util, util_angina);
+if ihd_this_per = 1 and ihd_type ne 3 then util = min(util, util_mi_acute);
+if prior_ihd = 1 and ihd_type ne 3 then util = min(util, util_mi_chron);
+if prior_ihd = 1 and ihd_type = 3 then util = min(util, util_angina);
 
 end;
 
