@@ -688,7 +688,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * INJECTABLE CABOTEGRAVIR ; * lapr;
 
 * date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
-* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=7;			* Assume 5 years to scale up injectable prep; * lapr;
+* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=7;			* Assume 7 years to scale up injectable prep; * lapr;
 * pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
 
