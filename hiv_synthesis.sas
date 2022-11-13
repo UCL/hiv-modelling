@@ -2081,7 +2081,8 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 end;
 
 
-* if pop_wide_tld pep prep available then higher willingness due to ease of access;
+* if pop_wide_tld pep prep available then higher willingness due to ease of access (inc_o_prep_pref_pop_wide_tld_d indicates whether the increase
+has yet been applied);
 																																													   
 if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do;
 	pref_prep_oral = pref_prep_oral + ((1 - pref_prep_oral) * inc_oral_prep_pref_pop_wide_tld); inc_o_prep_pref_pop_wide_tld_d=1;
