@@ -341,7 +341,7 @@ newp_seed = 7;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
 
-* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;			* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
+* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.01;			* rate of development of non-hiv symptoms, regardless of hiv status;
 							* dependent_on_time_step_length ;
 
 * np_lasttest;				np_lasttest=0;  
@@ -879,7 +879,7 @@ end;
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
 else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; sens_vct=0.98; spec_vct=1; end;
+else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
 
 
 * COSTS;
@@ -3934,10 +3934,15 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 
 if t ge 2 then do;
 s=rand('uniform');   * dependent_on_time_step_length ;
-tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
-and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
-tested_symptoms_not_hiv =1; tested=1; 
-if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+tested_symptoms_not_hiv =0; 
+if s < rate_non_hiv_symptoms then do;u=rand('uniform');
+	if . < date_start_testing <= caldate{t} and tested ne 1 and registd_tm1 ne 1
+	and (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) 
+	and u < (test_rate_non_tb_who3+test_rate_who4)/2 then do; 
+	tested_symptoms_not_hiv =1; tested=1; 
+	if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+	end;
+end;
 end;
 
 
@@ -4280,7 +4285,7 @@ tested_as_sw=.;
 
 testfor_prep_oral=0; testfor_prep_inj=0; testfor_prep_vr=0;
  
-if registd ne 1 and caldate{t} ge (date_start_testing+3.5) and tested ne 1 
+if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
@@ -6147,7 +6152,7 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 
 			if s < j then epdiag=1;
 
-			a=rand('uniform');if (date_start_testing+3.5) <= caldate{t} then do;
+			a=rand('uniform');if (date_start_testing+5.5) <= caldate{t} then do;
 				if s <  0.9 then epdiag=mr_epdiag;
 				if s >=0.9 and a < j then epdiag=1;
 			end;
@@ -6812,7 +6817,7 @@ naive=1;
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		sens_primary=0.65;
+		sens_primary=0.75;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
