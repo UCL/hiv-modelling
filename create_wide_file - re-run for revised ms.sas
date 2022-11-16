@@ -2637,9 +2637,12 @@ d_p_prep_any_ever_42_3_2 = p_prep_any_ever_42_3 - p_prep_any_ever_42_2 ;
 r_incidence1549_20y_3_2 = incidence1549_20y_3 / incidence1549_20y_2 ;
 d_incidence_onprep_20y_3_2 = incidence_onprep_20y_3 - incidence_onprep_20y_2 ;
 d_n_birth_with_inf_child_20y_3_2 = n_birth_with_inf_child_20y_3 - n_birth_with_inf_child_20y_2 ;
+d_n_prep_any_20y_3_2 = n_prep_any_20y_3 - n_prep_any_20y_2;
+
 r_prevalence1549_42_3_2 = prevalence1549_42_3 / prevalence1549_42_2 ;
 r_n_hiv_42_3_2 = n_hiv_42_3 / n_hiv_42_2 ;
 d_n_ai_naive_inm_42_3_2 = n_ai_naive_no_pmtct_e_inm_42_3 - n_ai_naive_no_pmtct_e_inm_42_2;  
+d_prop_prep_tot5yrs_42_3_2 = prop_prep_tot5yrs_42_3 - prop_prep_tot5yrs_42_2 ;
 
 d_p_hiv1_prep_20y_3_2 = p_hiv1_prep_20y_3 - p_hiv1_prep_20y_2 ; 
 d_p_hiv1_prep_inj_20y_3_2 = p_hiv1_prep_inj_20y_3 - p_hiv1_prep_inj_20y_2 ; 
@@ -2716,10 +2719,10 @@ var
 prop_elig_on_prep_20y_2 prop_elig_on_prep_20y_3  d_prop_elig_on_prep_20y_3_2
 prop_1564_onprep_20y_2  prop_1564_onprep_20y_3  d_prop_1564_onprep_20y_3_2
 n_prep_inj_20y_2 n_prep_inj_20y_3 
-n_prep_any_20y_2 n_prep_any_20y_3 
+n_prep_any_20y_2 n_prep_any_20y_3 d_n_prep_any_20y_3_2
 prop_prep_inj_20y_2 prop_prep_inj_20y_3  d_prop_prep_inj_20y_3_2
 p_prep_any_ever_42_2 p_prep_any_ever_42_3  d_p_prep_any_ever_42_3_2
-prop_prep_tot5yrs_42_2 prop_prep_tot5yrs_42_3 
+prop_prep_tot5yrs_42_2 prop_prep_tot5yrs_42_3 d_prop_prep_tot5yrs_42_3_2
 ;
 run;
 
