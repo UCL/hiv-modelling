@@ -336,7 +336,7 @@ newp_seed = 7;
 * hivtest_type;				hivtest_type=3; 						* HIV test type (1=RNA VL test, 3=3rd gen, 4=4th gen); *Jul2016; 
 * date_pmtct;				date_pmtct=2004;
 * pmtct_inc_rate;			pmtct_inc_rate = 0.20; 					* rate_per_year ; 
-* incr_test_year_i;			incr_test_year_i = 0;
+* incr_test_year_i;			incr_test_year_i = 3;
 * sw_test_6mthly;			sw_test_6mthly=0;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
@@ -357,6 +357,7 @@ newp_seed = 7;
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
 
+*% fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
@@ -465,7 +466,9 @@ newp_seed = 7;
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
 								0.02 	0.05 	0.15 	0.35 	0.50, 
+
 								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
+
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
 * prob_lossdiag_non_tb_who3e;  
@@ -581,7 +584,7 @@ newp_seed = 7;
 						   		%sample_uniform(sw_higher_prob_loss_at_diag, 2 3);
 							  end;
 
-							 
+* date_sw_prog_intro;		date_sw_prog_intro=2015;
 * sw_program;               %sample(sw_program, 0 1, 0.8 0.2);
 					            if sw_program = 1  then do; rate_engage_sw_program =0.10; rate_disengage_sw_program = 0.025;  end;
 
@@ -899,12 +902,12 @@ end;
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*1= PCR (RNA VL) tests - assume window period of 10 days; 
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
-if hivtest_type=1 then do; sens_primary=0.86; sens_primary_ts1m = 0.67  ; sens_vct=0.98; spec_vct=1;     end; 
-else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
+if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
+else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
+else if hivtest_type=4 then do; sens_primary=0.65; sens_vct=0.98; spec_vct=1; end;
 
 
 * COSTS;
@@ -2272,7 +2275,7 @@ if caldate{t} = &year_interv then do;
 *(impact of changes are coded below the options code);
 
 *increase in testing;
-incr_test_year_i = 0; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only;
+incr_test_year_i = 3; *  1= 2-fold increase in testing for everyone, 2= 2-fold increase in testing for men only, 3= decrease in testing after 2022;
 
 *decrease in the proportion of people hard to reach;
 decr_hard_reach_year_i = 0;
@@ -2312,12 +2315,6 @@ incr_pr_switch_line_year_i = 0 ;
 
 *increase in test targeting;
 incr_test_targeting_year_i = 0;
-
-*increase in the maximum frequency of testing;
-incr_max_freq_testing_year_i = 0;
-
-*testing SW every 6 months;
-sw_test_6mthly_year_i = 0;
 
 *switching regimens;
 reg_option_switch_year_i = 0;
@@ -2468,8 +2465,8 @@ end;
 
 
 
-* SW programs starts in 2015;
-if caldate{t} = 2015 then eff_sw_program=sw_program;
+
+if caldate{t} = date_sw_prog_intro or caldate_never_dot = &year_interv then eff_sw_program=sw_program;
 
 * Attendance at SW program (if it exists) and effects of program;
 
@@ -2631,15 +2628,6 @@ if incr_test_targeting_year_i = 1 then do;
 	if 0.45 <= _u42 < 0.9 then eff_test_targeting = 5;
 end;						
 
-* incr_max_freq_testing_year_i;
-if incr_max_freq_testing_year_i=1 then do;
-	if eff_max_freq_testing = 2 then eff_max_freq_testing = 4; 
-	if eff_max_freq_testing = 1 then eff_max_freq_testing = 2;
-end;  
-
-* sw_test_6mthly_year_i; 
-if sw_test_6mthly_year_i = 1 then sw_test_6mthly =1; 
-
 * reg_option_switch_year_i;	
 if reg_option_switch_year_i = 1 then do;
 	if _u49 < 0.30 then reg_option = 104; 
@@ -2704,20 +2692,28 @@ end;
 
 tested_anc=.;
 
-* Jan2017 - modified testing criteria so that prep_oral_tm1 =0 as people previously on oral prep would only test for prep purposes;
 * lapr - also excluded inj and vr ; * JAS Sep2021 ;
-if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_inj_tm1 ne 1 and prep_vr_tm1 ne 1 then do; 
+if t ge 2 and date_start_testing <= caldate{t} then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
+		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-end;
 
+end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+
+***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
+if caldate{t} >= 2022.5 and incr_test_year_i = 3 then do; 
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
+		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
+		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
+end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -6883,11 +6879,11 @@ naive=1;
 * can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
 * dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
-* ts1m - replace sens_primary below with sens_primary_ts1m ;
+
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*1= PCR (RNA VL) tests - assume window period of 10 days; 
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 
@@ -18361,7 +18357,7 @@ incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
-incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
+initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
 
 add_prep_any_uptake_sw e_decr_hard_reach_year_i  
@@ -24451,7 +24447,7 @@ incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
 	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
-incr_max_freq_testing_year_i      initial_pr_switch_line       initial_prob_vl_meas_done  sw_test_6mthly_year_i   reg_option_switch_year_i 
+initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
 add_prep_any_uptake_sw e_decr_hard_reach_year_i 
