@@ -11684,6 +11684,7 @@ if dead ne 1 then do;
 	end;
 
 	xcvd = rand('uniform');
+	xcvd = 1;
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
@@ -12140,6 +12141,7 @@ if dead ne 1 then do;
 	end;
 
 	xcvd = rand('uniform');
+	xcvd = 1;
 	if xcvd le cvd_death_risk then do;
 		dead   =1; death=caldate{t}; dcause=4; agedeath=age; 
 	end;
