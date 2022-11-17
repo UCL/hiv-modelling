@@ -1,5 +1,5 @@
 
-* run 60 all;
+* run 61 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -882,17 +882,17 @@ cost_htn_drug3 = 0.015;
 	* effect of age on risk of cvd death;
 	effect_age_ihd = 0.08;
 	* base risk of cvd (before adding effects of age, gender, sbp);
-	base_ihd_risk = 0.00000625;
+	base_ihd_risk = 0.00001;
 
 	* Stroke (CVA);
 	* effect of sbp on risk of cvd events;
-	effect_sbp_cva = 0.03;
+	effect_sbp_cva = 0.04;
 	* effect of gender on risk of cvd death;
 	effect_gender_cva = 0;
 	* effect of age on risk of cvd death;
 	effect_age_cva = 0.07;
 	* base risk of cvd (before adding effects of age, gender, sbp);
-	base_cva_risk = 0.00001;
+	base_cva_risk = 0.000008;
 
 	risk_cvd_hiv = 1.2;
 
