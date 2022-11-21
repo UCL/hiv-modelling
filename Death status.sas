@@ -239,10 +239,10 @@ if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and . < cd
 if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
 
 * 5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  ;
-if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j < date_last_return_restart <= 0.5) and 0 < cd4_tcur0 <200 then dead_int_Alt6_rescd4lt200=1;
+if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and 0 < cd4_tcur0 <200 then dead_int_Alt6_rescd4lt200=1;
 
 * 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
-if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j < date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_int_Alt6_rescd4gt200=1;
+if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_int_Alt6_rescd4gt200=1;
 
 * 7	On ART (irrespective of time on ART), current VL <1000;
 if onart=1 and vl1000=1 then dead_A_vl1000=1;
@@ -257,10 +257,10 @@ if onart=1 and tcur <= 0.5 and vl1000=1 then dead_Alt6_vl1000=1;
 if onart=1 and tcur <= 0.5 and vg1000=1 then dead_Alt6_vg1000=1;
 
 * 11	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL<1000;
-if onart=1 and tcur > 0.5 and vl1000=1 then dead_Alt6_vl1000=1;
+if onart=1 and tcur > 0.5 and vl1000=1 then dead_Agt6_vl1000=1;
 
 * 12	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL>1000;
-if onart=1 and tcur > 0.5 and vg1000=1 then dead_Alt6_vg1000=1;
+if onart=1 and tcur > 0.5 and vg1000=1 then dead_Agt6_vg1000=1;
 
 * 13	ART interrupted, out of care, any interruption;
 if yrart ne . and onart ne 1 and lost=1 then dead_int_lost=1;

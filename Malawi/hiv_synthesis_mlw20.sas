@@ -835,8 +835,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
- %include "/home/rmjllob/malawi_parameters_mlw19.sas";
- *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Malawi\malawi_parameters_mlw19.sas";
+ *%include "/home/rmjllob/malawi_parameters_mlw19.sas";
+ %include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Malawi\malawi_parameters_mlw19a.sas";
 * ===================== ;
 * END OF PARAMETER LIST ;
 * ===================== ;
@@ -15681,8 +15681,1120 @@ if 80 <= age      then do;
 	if hypertens180 = 1 then hypertens180_ge80 = 1;
 end;
 
-%include "/home/rmjllob/death status.sas";
+*%include "/home/rmjllob/death status.sas";
 *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\death status.sas";
+*Status at time of death - categories as per Excel sheet;
+*'A' means 'on ART';
+hiv_death=0; hiv_death_m=0; hiv_death_w=0;
+dead_undiag=0;dead_diag_not_linked=0;
+dead_Alt6_artcd4lt200=0;dead_Alt6_artcd4gt200=0;
+dead_int_Alt6_rescd4lt200=0;dead_int_Alt6_rescd4gt200=0;
+dead_A_vl1000=0;dead_A_vg1000=0;dead_Alt6_vl1000=0;dead_Alt6_vg1000=0;
+dead_Agt6_vl1000=0;dead_Agt6_vg1000=0;
+dead_int_lost=0;dead_1stint_lost=0;dead_subintlt6_lost=0;dead_subintgt6_lost=0;
+dead_A_cd4lt200=0;dead_A_cd4gt200=0;
+dead_Alt6_cd4lt200=0;dead_Alt6_cd4gt200=0;dead_Agt6_cd4lt200=0;dead_Agt6_cd4gt200=0;
+
+dead_undiag_m=0;dead_undiag_w=0;
+dead_undiag1519m=0;dead_undiag2024m=0;dead_undiag2529m=0;dead_undiag3034m=0;dead_undiag3539m=0;
+dead_undiag4044m=0;dead_undiag4549m=0;dead_undiag5054m=0;dead_undiag5559m=0; dead_undiag6064m=0;
+dead_undiag6569m=0;dead_undiag7074m=0;dead_undiag7579m=0; dead_undiag8084m=0;
+dead_undiag1519w=0;dead_undiag2024w=0;dead_undiag2529w=0;dead_undiag3034w=0;dead_undiag3539w=0;
+dead_undiag4044w=0;dead_undiag4549w=0;dead_undiag5054w=0;dead_undiag5559w=0; dead_undiag6064w=0;
+dead_undiag6569w=0;dead_undiag7074w=0;dead_undiag7579w=0; dead_undiag8084w=0;
+
+dead_diag_not_linked_m=0;dead_diag_not_linked_w=0;
+dead_diag_not_linked1519m=0;dead_diag_not_linked2024m=0;dead_diag_not_linked2529m=0;dead_diag_not_linked3034m=0;dead_diag_not_linked3539m=0;
+dead_diag_not_linked4044m=0;dead_diag_not_linked4549m=0;dead_diag_not_linked5054m=0;dead_diag_not_linked5559m=0; dead_diag_not_linked6064m=0;
+dead_diag_not_linked6569m=0;dead_diag_not_linked7074m=0;dead_diag_not_linked7579m=0; dead_diag_not_linked8084m=0;
+dead_diag_not_linked1519w=0;dead_diag_not_linked2024w=0;dead_diag_not_linked2529w=0;dead_diag_not_linked3034w=0;dead_diag_not_linked3539w=0;
+dead_diag_not_linked4044w=0;dead_diag_not_linked4549w=0;dead_diag_not_linked5054w=0;dead_diag_not_linked5559w=0; dead_diag_not_linked6064w=0;
+dead_diag_not_linked6569w=0;dead_diag_not_linked7074w=0;dead_diag_not_linked7579w=0; dead_diag_not_linked8084w=0;
+
+dead_Alt6_artcd4lt200_m=0;dead_Alt6_artcd4lt200_w=0;
+dead_Alt6_artcd4lt2001519m=0;dead_Alt6_artcd4lt2002024m=0;dead_Alt6_artcd4lt2002529m=0;dead_Alt6_artcd4lt2003034m=0;dead_Alt6_artcd4lt2003539m=0;
+dead_Alt6_artcd4lt2004044m=0;dead_Alt6_artcd4lt2004549m=0;dead_Alt6_artcd4lt2005054m=0;dead_Alt6_artcd4lt2005559m=0; dead_Alt6_artcd4lt2006064m=0;
+dead_Alt6_artcd4lt2006569m=0;dead_Alt6_artcd4lt2007074m=0;dead_Alt6_artcd4lt2007579m=0; dead_Alt6_artcd4lt2008084m=0;
+dead_Alt6_artcd4lt2001519w=0;dead_Alt6_artcd4lt2002024w=0;dead_Alt6_artcd4lt2002529w=0;dead_Alt6_artcd4lt2003034w=0;dead_Alt6_artcd4lt2003539w=0;
+dead_Alt6_artcd4lt2004044w=0;dead_Alt6_artcd4lt2004549w=0;dead_Alt6_artcd4lt2005054w=0;dead_Alt6_artcd4lt2005559w=0; dead_Alt6_artcd4lt2006064w=0;
+dead_Alt6_artcd4lt2006569w=0;dead_Alt6_artcd4lt2007074w=0;dead_Alt6_artcd4lt2007579w=0; dead_Alt6_artcd4lt2008084w=0;
+
+dead_Alt6_artcd4gt200_m=0;dead_Alt6_artcd4gt200_w=0;
+dead_Alt6_artcd4gt2001519m=0;dead_Alt6_artcd4gt2002024m=0;dead_Alt6_artcd4gt2002529m=0;dead_Alt6_artcd4gt2003034m=0;dead_Alt6_artcd4gt2003539m=0;
+dead_Alt6_artcd4gt2004044m=0;dead_Alt6_artcd4gt2004549m=0;dead_Alt6_artcd4gt2005054m=0;dead_Alt6_artcd4gt2005559m=0; dead_Alt6_artcd4gt2006064m=0;
+dead_Alt6_artcd4gt2006569m=0;dead_Alt6_artcd4gt2007074m=0;dead_Alt6_artcd4gt2007579m=0; dead_Alt6_artcd4gt2008084m=0;
+dead_Alt6_artcd4gt2001519w=0;dead_Alt6_artcd4gt2002024w=0;dead_Alt6_artcd4gt2002529w=0;dead_Alt6_artcd4gt2003034w=0;dead_Alt6_artcd4gt2003539w=0;
+dead_Alt6_artcd4gt2004044w=0;dead_Alt6_artcd4gt2004549w=0;dead_Alt6_artcd4gt2005054w=0;dead_Alt6_artcd4gt2005559w=0; dead_Alt6_artcd4gt2006064w=0;
+dead_Alt6_artcd4gt2006569w=0;dead_Alt6_artcd4gt2007074w=0;dead_Alt6_artcd4gt2007579w=0; dead_Alt6_artcd4gt2008084w=0;
+
+dead_I_Alt6_Rcd4lt200_m=0;dead_I_Alt6_Rcd4lt200_w=0;
+dead_I_Alt6_Rcd4lt2001519m=0;dead_I_Alt6_Rcd4lt2002024m=0;dead_I_Alt6_Rcd4lt2002529m=0;dead_I_Alt6_Rcd4lt2003034m=0;dead_I_Alt6_Rcd4lt2003539m=0;
+dead_I_Alt6_Rcd4lt2004044m=0;dead_I_Alt6_Rcd4lt2004549m=0;dead_I_Alt6_Rcd4lt2005054m=0;dead_I_Alt6_Rcd4lt2005559m=0; dead_I_Alt6_Rcd4lt2006064m=0;
+dead_I_Alt6_Rcd4lt2006569m=0;dead_I_Alt6_Rcd4lt2007074m=0;dead_I_Alt6_Rcd4lt2007579m=0; dead_I_Alt6_Rcd4lt2008084m=0;
+dead_I_Alt6_Rcd4lt2001519w=0;dead_I_Alt6_Rcd4lt2002024w=0;dead_I_Alt6_Rcd4lt2002529w=0;dead_I_Alt6_Rcd4lt2003034w=0;dead_I_Alt6_Rcd4lt2003539w=0;
+dead_I_Alt6_Rcd4lt2004044w=0;dead_I_Alt6_Rcd4lt2004549w=0;dead_I_Alt6_Rcd4lt2005054w=0;dead_I_Alt6_Rcd4lt2005559w=0; dead_I_Alt6_Rcd4lt2006064w=0;
+dead_I_Alt6_Rcd4lt2006569w=0;dead_I_Alt6_Rcd4lt2007074w=0;dead_I_Alt6_Rcd4lt2007579w=0; dead_I_Alt6_Rcd4lt2008084w=0;
+
+dead_I_Alt6_Rcd4gt200_m=0;dead_I_Alt6_Rcd4gt200_w=0;
+dead_I_Alt6_Rcd4gt2001519m=0;dead_I_Alt6_Rcd4gt2002024m=0;dead_I_Alt6_Rcd4gt2002529m=0;dead_I_Alt6_Rcd4gt2003034m=0;dead_I_Alt6_Rcd4gt2003539m=0;
+dead_I_Alt6_Rcd4gt2004044m=0;dead_I_Alt6_Rcd4gt2004549m=0;dead_I_Alt6_Rcd4gt2005054m=0;dead_I_Alt6_Rcd4gt2005559m=0; dead_I_Alt6_Rcd4gt2006064m=0;
+dead_I_Alt6_Rcd4gt2006569m=0;dead_I_Alt6_Rcd4gt2007074m=0;dead_I_Alt6_Rcd4gt2007579m=0; dead_I_Alt6_Rcd4gt2008084m=0;
+dead_I_Alt6_Rcd4gt2001519w=0;dead_I_Alt6_Rcd4gt2002024w=0;dead_I_Alt6_Rcd4gt2002529w=0;dead_I_Alt6_Rcd4gt2003034w=0;dead_I_Alt6_Rcd4gt2003539w=0;
+dead_I_Alt6_Rcd4gt2004044w=0;dead_I_Alt6_Rcd4gt2004549w=0;dead_I_Alt6_Rcd4gt2005054w=0;dead_I_Alt6_Rcd4gt2005559w=0; dead_I_Alt6_Rcd4gt2006064w=0;
+dead_I_Alt6_Rcd4gt2006569w=0;dead_I_Alt6_Rcd4gt2007074w=0;dead_I_Alt6_Rcd4gt2007579w=0; dead_I_Alt6_Rcd4gt2008084w=0;
+
+dead_A_vl1000_m=0;dead_A_vl1000_w=0;
+dead_A_vl10001519m=0;dead_A_vl10002024m=0;dead_A_vl10002529m=0;dead_A_vl10003034m=0;dead_A_vl10003539m=0;
+dead_A_vl10004044m=0;dead_A_vl10004549m=0;dead_A_vl10005054m=0;dead_A_vl10005559m=0; dead_A_vl10006064m=0;
+dead_A_vl10006569m=0;dead_A_vl10007074m=0;dead_A_vl10007579m=0; dead_A_vl10008084m=0;
+dead_A_vl10001519w=0;dead_A_vl10002024w=0;dead_A_vl10002529w=0;dead_A_vl10003034w=0;dead_A_vl10003539w=0;
+dead_A_vl10004044w=0;dead_A_vl10004549w=0;dead_A_vl10005054w=0;dead_A_vl10005559w=0; dead_A_vl10006064w=0;
+dead_A_vl10006569w=0;dead_A_vl10007074w=0;dead_A_vl10007579w=0; dead_A_vl10008084w=0;
+
+dead_A_vg1000_m=0;dead_A_vg1000_w=0;
+dead_A_vg10001519m=0;dead_A_vg10002024m=0;dead_A_vg10002529m=0;dead_A_vg10003034m=0;dead_A_vg10003539m=0;
+dead_A_vg10004044m=0;dead_A_vg10004549m=0;dead_A_vg10005054m=0;dead_A_vg10005559m=0; dead_A_vg10006064m=0;
+dead_A_vg10006569m=0;dead_A_vg10007074m=0;dead_A_vg10007579m=0; dead_A_vg10008084m=0;
+dead_A_vg10001519w=0;dead_A_vg10002024w=0;dead_A_vg10002529w=0;dead_A_vg10003034w=0;dead_A_vg10003539w=0;
+dead_A_vg10004044w=0;dead_A_vg10004549w=0;dead_A_vg10005054w=0;dead_A_vg10005559w=0; dead_A_vg10006064w=0;
+dead_A_vg10006569w=0;dead_A_vg10007074w=0;dead_A_vg10007579w=0; dead_A_vg10008084w=0;
+
+dead_Alt6_vl1000_m=0;dead_Alt6_vl1000_w=0;
+dead_Alt6_vl10001519m=0;dead_Alt6_vl10002024m=0;dead_Alt6_vl10002529m=0;dead_Alt6_vl10003034m=0;dead_Alt6_vl10003539m=0;
+dead_Alt6_vl10004044m=0;dead_Alt6_vl10004549m=0;dead_Alt6_vl10005054m=0;dead_Alt6_vl10005559m=0; dead_Alt6_vl10006064m=0;
+dead_Alt6_vl10006569m=0;dead_Alt6_vl10007074m=0;dead_Alt6_vl10007579m=0; dead_Alt6_vl10008084m=0;
+dead_Alt6_vl10001519w=0;dead_Alt6_vl10002024w=0;dead_Alt6_vl10002529w=0;dead_Alt6_vl10003034w=0;dead_Alt6_vl10003539w=0;
+dead_Alt6_vl10004044w=0;dead_Alt6_vl10004549w=0;dead_Alt6_vl10005054w=0;dead_Alt6_vl10005559w=0; dead_Alt6_vl10006064w=0;
+dead_Alt6_vl10006569w=0;dead_Alt6_vl10007074w=0;dead_Alt6_vl10007579w=0; dead_Alt6_vl10008084w=0;
+
+dead_Alt6_vg1000_m=0;dead_Alt6_vg1000_w=0;
+dead_Alt6_vg10001519m=0;dead_Alt6_vg10002024m=0;dead_Alt6_vg10002529m=0;dead_Alt6_vg10003034m=0;dead_Alt6_vg10003539m=0;
+dead_Alt6_vg10004044m=0;dead_Alt6_vg10004549m=0;dead_Alt6_vg10005054m=0;dead_Alt6_vg10005559m=0; dead_Alt6_vg10006064m=0;
+dead_Alt6_vg10006569m=0;dead_Alt6_vg10007074m=0;dead_Alt6_vg10007579m=0; dead_Alt6_vg10008084m=0;
+dead_Alt6_vg10001519w=0;dead_Alt6_vg10002024w=0;dead_Alt6_vg10002529w=0;dead_Alt6_vg10003034w=0;dead_Alt6_vg10003539w=0;
+dead_Alt6_vg10004044w=0;dead_Alt6_vg10004549w=0;dead_Alt6_vg10005054w=0;dead_Alt6_vg10005559w=0; dead_Alt6_vg10006064w=0;
+dead_Alt6_vg10006569w=0;dead_Alt6_vg10007074w=0;dead_Alt6_vg10007579w=0; dead_Alt6_vg10008084w=0;
+
+dead_Agt6_vl1000_m=0;dead_Agt6_vl1000_w=0;
+dead_Agt6_vl10001519m=0;dead_Agt6_vl10002024m=0;dead_Agt6_vl10002529m=0;dead_Agt6_vl10003034m=0;dead_Agt6_vl10003539m=0;
+dead_Agt6_vl10004044m=0;dead_Agt6_vl10004549m=0;dead_Agt6_vl10005054m=0;dead_Agt6_vl10005559m=0; dead_Agt6_vl10006064m=0;
+dead_Agt6_vl10006569m=0;dead_Agt6_vl10007074m=0;dead_Agt6_vl10007579m=0; dead_Agt6_vl10008084m=0;
+dead_Agt6_vl10001519w=0;dead_Agt6_vl10002024w=0;dead_Agt6_vl10002529w=0;dead_Agt6_vl10003034w=0;dead_Agt6_vl10003539w=0;
+dead_Agt6_vl10004044w=0;dead_Agt6_vl10004549w=0;dead_Agt6_vl10005054w=0;dead_Agt6_vl10005559w=0; dead_Agt6_vl10006064w=0;
+dead_Agt6_vl10006569w=0;dead_Agt6_vl10007074w=0;dead_Agt6_vl10007579w=0; dead_Agt6_vl10008084w=0;
+
+dead_Agt6_vg1000_m=0;dead_Agt6_vg1000_w=0;
+dead_Agt6_vg10001519m=0;dead_Agt6_vg10002024m=0;dead_Agt6_vg10002529m=0;dead_Agt6_vg10003034m=0;dead_Agt6_vg10003539m=0;
+dead_Agt6_vg10004044m=0;dead_Agt6_vg10004549m=0;dead_Agt6_vg10005054m=0;dead_Agt6_vg10005559m=0; dead_Agt6_vg10006064m=0;
+dead_Agt6_vg10006569m=0;dead_Agt6_vg10007074m=0;dead_Agt6_vg10007579m=0; dead_Agt6_vg10008084m=0;
+dead_Agt6_vg10001519w=0;dead_Agt6_vg10002024w=0;dead_Agt6_vg10002529w=0;dead_Agt6_vg10003034w=0;dead_Agt6_vg10003539w=0;
+dead_Agt6_vg10004044w=0;dead_Agt6_vg10004549w=0;dead_Agt6_vg10005054w=0;dead_Agt6_vg10005559w=0; dead_Agt6_vg10006064w=0;
+dead_Agt6_vg10006569w=0;dead_Agt6_vg10007074w=0;dead_Agt6_vg10007579w=0; dead_Agt6_vg10008084w=0;
+
+dead_int_lost_m=0;dead_int_lost_w=0;
+dead_int_lost1519m=0;dead_int_lost2024m=0;dead_int_lost2529m=0;dead_int_lost3034m=0;dead_int_lost3539m=0;
+dead_int_lost4044m=0;dead_int_lost4549m=0;dead_int_lost5054m=0;dead_int_lost5559m=0; dead_int_lost6064m=0;
+dead_int_lost6569m=0;dead_int_lost7074m=0;dead_int_lost7579m=0; dead_int_lost8084m=0;
+dead_int_lost1519w=0;dead_int_lost2024w=0;dead_int_lost2529w=0;dead_int_lost3034w=0;dead_int_lost3539w=0;
+dead_int_lost4044w=0;dead_int_lost4549w=0;dead_int_lost5054w=0;dead_int_lost5559w=0; dead_int_lost6064w=0;
+dead_int_lost6569w=0;dead_int_lost7074w=0;dead_int_lost7579w=0; dead_int_lost8084w=0;
+
+dead_1stint_lost_m=0;dead_1stint_lost_w=0;
+dead_1stint_lost1519m=0;dead_1stint_lost2024m=0;dead_1stint_lost2529m=0;dead_1stint_lost3034m=0;dead_1stint_lost3539m=0;
+dead_1stint_lost4044m=0;dead_1stint_lost4549m=0;dead_1stint_lost5054m=0;dead_1stint_lost5559m=0; dead_1stint_lost6064m=0;
+dead_1stint_lost6569m=0;dead_1stint_lost7074m=0;dead_1stint_lost7579m=0; dead_1stint_lost8084m=0;
+dead_1stint_lost1519w=0;dead_1stint_lost2024w=0;dead_1stint_lost2529w=0;dead_1stint_lost3034w=0;dead_1stint_lost3539w=0;
+dead_1stint_lost4044w=0;dead_1stint_lost4549w=0;dead_1stint_lost5054w=0;dead_1stint_lost5559w=0; dead_1stint_lost6064w=0;
+dead_1stint_lost6569w=0;dead_1stint_lost7074w=0;dead_1stint_lost7579w=0; dead_1stint_lost8084w=0;
+
+dead_subintlt6_lost_m=0;dead_subintlt6_lost_w=0;
+dead_subintlt6_lost1519m=0;dead_subintlt6_lost2024m=0;dead_subintlt6_lost2529m=0;dead_subintlt6_lost3034m=0;dead_subintlt6_lost3539m=0;
+dead_subintlt6_lost4044m=0;dead_subintlt6_lost4549m=0;dead_subintlt6_lost5054m=0;dead_subintlt6_lost5559m=0; dead_subintlt6_lost6064m=0;
+dead_subintlt6_lost6569m=0;dead_subintlt6_lost7074m=0;dead_subintlt6_lost7579m=0; dead_subintlt6_lost8084m=0;
+dead_subintlt6_lost1519w=0;dead_subintlt6_lost2024w=0;dead_subintlt6_lost2529w=0;dead_subintlt6_lost3034w=0;dead_subintlt6_lost3539w=0;
+dead_subintlt6_lost4044w=0;dead_subintlt6_lost4549w=0;dead_subintlt6_lost5054w=0;dead_subintlt6_lost5559w=0; dead_subintlt6_lost6064w=0;
+dead_subintlt6_lost6569w=0;dead_subintlt6_lost7074w=0;dead_subintlt6_lost7579w=0; dead_subintlt6_lost8084w=0;
+
+dead_subintgt6_lost_m=0;dead_subintgt6_lost_w=0;
+dead_subintgt6_lost1519m=0;dead_subintgt6_lost2024m=0;dead_subintgt6_lost2529m=0;dead_subintgt6_lost3034m=0;dead_subintgt6_lost3539m=0;
+dead_subintgt6_lost4044m=0;dead_subintgt6_lost4549m=0;dead_subintgt6_lost5054m=0;dead_subintgt6_lost5559m=0; dead_subintgt6_lost6064m=0;
+dead_subintgt6_lost6569m=0;dead_subintgt6_lost7074m=0;dead_subintgt6_lost7579m=0; dead_subintgt6_lost8084m=0;
+dead_subintgt6_lost1519w=0;dead_subintgt6_lost2024w=0;dead_subintgt6_lost2529w=0;dead_subintgt6_lost3034w=0;dead_subintgt6_lost3539w=0;
+dead_subintgt6_lost4044w=0;dead_subintgt6_lost4549w=0;dead_subintgt6_lost5054w=0;dead_subintgt6_lost5559w=0; dead_subintgt6_lost6064w=0;
+dead_subintgt6_lost6569w=0;dead_subintgt6_lost7074w=0;dead_subintgt6_lost7579w=0; dead_subintgt6_lost8084w=0;
+
+dead_A_cd4lt200_m=0;dead_A_cd4lt200_w=0;
+dead_A_cd4lt2001519m=0;dead_A_cd4lt2002024m=0;dead_A_cd4lt2002529m=0;dead_A_cd4lt2003034m=0;dead_A_cd4lt2003539m=0;
+dead_A_cd4lt2004044m=0;dead_A_cd4lt2004549m=0;dead_A_cd4lt2005054m=0;dead_A_cd4lt2005559m=0; dead_A_cd4lt2006064m=0;
+dead_A_cd4lt2006569m=0;dead_A_cd4lt2007074m=0;dead_A_cd4lt2007579m=0; dead_A_cd4lt2008084m=0;
+dead_A_cd4lt2001519w=0;dead_A_cd4lt2002024w=0;dead_A_cd4lt2002529w=0;dead_A_cd4lt2003034w=0;dead_A_cd4lt2003539w=0;
+dead_A_cd4lt2004044w=0;dead_A_cd4lt2004549w=0;dead_A_cd4lt2005054w=0;dead_A_cd4lt2005559w=0; dead_A_cd4lt2006064w=0;
+dead_A_cd4lt2006569w=0;dead_A_cd4lt2007074w=0;dead_A_cd4lt2007579w=0; dead_A_cd4lt2008084w=0;
+
+dead_A_cd4gt200_m=0;dead_A_cd4gt200_w=0;
+dead_A_cd4gt2001519m=0;dead_A_cd4gt2002024m=0;dead_A_cd4gt2002529m=0;dead_A_cd4gt2003034m=0;dead_A_cd4gt2003539m=0;
+dead_A_cd4gt2004044m=0;dead_A_cd4gt2004549m=0;dead_A_cd4gt2005054m=0;dead_A_cd4gt2005559m=0; dead_A_cd4gt2006064m=0;
+dead_A_cd4gt2006569m=0;dead_A_cd4gt2007074m=0;dead_A_cd4gt2007579m=0; dead_A_cd4gt2008084m=0;
+dead_A_cd4gt2001519w=0;dead_A_cd4gt2002024w=0;dead_A_cd4gt2002529w=0;dead_A_cd4gt2003034w=0;dead_A_cd4gt2003539w=0;
+dead_A_cd4gt2004044w=0;dead_A_cd4gt2004549w=0;dead_A_cd4gt2005054w=0;dead_A_cd4gt2005559w=0; dead_A_cd4gt2006064w=0;
+dead_A_cd4gt2006569w=0;dead_A_cd4gt2007074w=0;dead_A_cd4gt2007579w=0; dead_A_cd4gt2008084w=0;
+
+dead_Alt6_cd4lt200_m=0;dead_Alt6_cd4lt200_w=0;
+dead_Alt6_cd4lt2001519m=0;dead_Alt6_cd4lt2002024m=0;dead_Alt6_cd4lt2002529m=0;dead_Alt6_cd4lt2003034m=0;dead_Alt6_cd4lt2003539m=0;
+dead_Alt6_cd4lt2004044m=0;dead_Alt6_cd4lt2004549m=0;dead_Alt6_cd4lt2005054m=0;dead_Alt6_cd4lt2005559m=0; dead_Alt6_cd4lt2006064m=0;
+dead_Alt6_cd4lt2006569m=0;dead_Alt6_cd4lt2007074m=0;dead_Alt6_cd4lt2007579m=0; dead_Alt6_cd4lt2008084m=0;
+dead_Alt6_cd4lt2001519w=0;dead_Alt6_cd4lt2002024w=0;dead_Alt6_cd4lt2002529w=0;dead_Alt6_cd4lt2003034w=0;dead_Alt6_cd4lt2003539w=0;
+dead_Alt6_cd4lt2004044w=0;dead_Alt6_cd4lt2004549w=0;dead_Alt6_cd4lt2005054w=0;dead_Alt6_cd4lt2005559w=0; dead_Alt6_cd4lt2006064w=0;
+dead_Alt6_cd4lt2006569w=0;dead_Alt6_cd4lt2007074w=0;dead_Alt6_cd4lt2007579w=0; dead_Alt6_cd4lt2008084w=0;
+
+dead_Alt6_cd4gt200_m=0;dead_Alt6_cd4gt200_w=0;
+dead_Alt6_cd4gt2001519m=0;dead_Alt6_cd4gt2002024m=0;dead_Alt6_cd4gt2002529m=0;dead_Alt6_cd4gt2003034m=0;dead_Alt6_cd4gt2003539m=0;
+dead_Alt6_cd4gt2004044m=0;dead_Alt6_cd4gt2004549m=0;dead_Alt6_cd4gt2005054m=0;dead_Alt6_cd4gt2005559m=0; dead_Alt6_cd4gt2006064m=0;
+dead_Alt6_cd4gt2006569m=0;dead_Alt6_cd4gt2007074m=0;dead_Alt6_cd4gt2007579m=0; dead_Alt6_cd4gt2008084m=0;
+dead_Alt6_cd4gt2001519w=0;dead_Alt6_cd4gt2002024w=0;dead_Alt6_cd4gt2002529w=0;dead_Alt6_cd4gt2003034w=0;dead_Alt6_cd4gt2003539w=0;
+dead_Alt6_cd4gt2004044w=0;dead_Alt6_cd4gt2004549w=0;dead_Alt6_cd4gt2005054w=0;dead_Alt6_cd4gt2005559w=0; dead_Alt6_cd4gt2006064w=0;
+dead_Alt6_cd4gt2006569w=0;dead_Alt6_cd4gt2007074w=0;dead_Alt6_cd4gt2007579w=0; dead_Alt6_cd4gt2008084w=0;
+
+dead_Agt6_cd4lt200_m=0;dead_Agt6_cd4lt200_w=0;
+dead_Agt6_cd4lt2001519m=0;dead_Agt6_cd4lt2002024m=0;dead_Agt6_cd4lt2002529m=0;dead_Agt6_cd4lt2003034m=0;dead_Agt6_cd4lt2003539m=0;
+dead_Agt6_cd4lt2004044m=0;dead_Agt6_cd4lt2004549m=0;dead_Agt6_cd4lt2005054m=0;dead_Agt6_cd4lt2005559m=0; dead_Agt6_cd4lt2006064m=0;
+dead_Agt6_cd4lt2006569m=0;dead_Agt6_cd4lt2007074m=0;dead_Agt6_cd4lt2007579m=0; dead_Agt6_cd4lt2008084m=0;
+dead_Agt6_cd4lt2001519w=0;dead_Agt6_cd4lt2002024w=0;dead_Agt6_cd4lt2002529w=0;dead_Agt6_cd4lt2003034w=0;dead_Agt6_cd4lt2003539w=0;
+dead_Agt6_cd4lt2004044w=0;dead_Agt6_cd4lt2004549w=0;dead_Agt6_cd4lt2005054w=0;dead_Agt6_cd4lt2005559w=0; dead_Agt6_cd4lt2006064w=0;
+dead_Agt6_cd4lt2006569w=0;dead_Agt6_cd4lt2007074w=0;dead_Agt6_cd4lt2007579w=0; dead_Agt6_cd4lt2008084w=0;
+
+dead_Agt6_cd4gt200_m=0;dead_Agt6_cd4gt200_w=0;
+dead_Agt6_cd4gt2001519m=0;dead_Agt6_cd4gt2002024m=0;dead_Agt6_cd4gt2002529m=0;dead_Agt6_cd4gt2003034m=0;dead_Agt6_cd4gt2003539m=0;
+dead_Agt6_cd4gt2004044m=0;dead_Agt6_cd4gt2004549m=0;dead_Agt6_cd4gt2005054m=0;dead_Agt6_cd4gt2005559m=0; dead_Agt6_cd4gt2006064m=0;
+dead_Agt6_cd4gt2006569m=0;dead_Agt6_cd4gt2007074m=0;dead_Agt6_cd4gt2007579m=0; dead_Agt6_cd4gt2008084m=0;
+dead_Agt6_cd4gt2001519w=0;dead_Agt6_cd4gt2002024w=0;dead_Agt6_cd4gt2002529w=0;dead_Agt6_cd4gt2003034w=0;dead_Agt6_cd4gt2003539w=0;
+dead_Agt6_cd4gt2004044w=0;dead_Agt6_cd4gt2004549w=0;dead_Agt6_cd4gt2005054w=0;dead_Agt6_cd4gt2005559w=0; dead_Agt6_cd4gt2006064w=0;
+dead_Agt6_cd4gt2006569w=0;dead_Agt6_cd4gt2007074w=0;dead_Agt6_cd4gt2007579w=0; dead_Agt6_cd4gt2008084w=0;
+
+
+/*
+Status at death;
+1	Undiagnosed; 
+2	Diagnosed without ART initiation, not in care
+
+3	On ART <6months after first ART initiation, initiated with CD4 <200 
+4	On ART <6months after first ART initiation, initiated with CD4 >=200   
+
+5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  
+6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200  
+
+7	On ART (irrespective of time on ART), current VL <1000
+8	On ART (irrespective of time on ART), current VL >=1000
+9	On ART <6 months (regardless of first or subsequent ART initiation), current VL<1000
+10	On ART <6 months (regardless of first or subsequent ART initiation), current VL>1000
+
+11	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL<1000
+12	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL>1000
+
+13	ART interrupted, out of care, any interruption
+14	ART interrupted, out of care, first interruption
+15	ART interrupted, out of care, subsequent interruption, < 6 months from last interruption
+16	ART interrupted, out of care, subsequent interruption, > 6 months from last interruption 
+
+17	On ART, no time restrictions, CD4<200 at time of death
+18	On ART, no time restrictions, CD4>200 at time of death
+19	On ART, <6 months since first ART initiation, CD4<200 at time of death (not stated in template but I am assuming regardless of interruption for last 4)
+20	On ART, <6 months since first ART initiation, CD4>200 at time of death
+21	On ART, >6 months since first ART initiation, CD4<200 at time of death
+22	On ART, >6 months since first ART initiation, CD4>200 at time of death
+
+*/
+
+if hiv=1 and caldate&j=death and rdcause=1 then do; 
+
+hiv_death=1;
+if gender=1 then hiv_death_m=1;
+if gender=2 then hiv_death_w=1;
+
+* 1	Undiagnosed (also included those undiag in last 3m, e.g person presenting with AIDS in hospital and then being diag); 
+if registd_tm1 ne 1 then dead_undiag=1; 
+
+* 2	Diagnosed without ART initiation, not in care;
+if registd_tm1=1 and visit ne 1 then dead_diag_not_linked=1; 
+
+* 3	On ART <6months after first ART initiation, initiated with CD4 <200 ;
+if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and . < cd4art <200 then dead_Alt6_artcd4lt200=1;
+
+* 4	On ART <6months after first ART initiation, initiated with CD4 >=200  ;
+if onart=1 and (caldate&j - yrart <= 0.5) and date_last_interrupt = . and  . < cd4art >=200 then dead_Alt6_artcd4gt200=1;
+
+* 5	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 <200  ;
+if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and 0 < cd4_tcur0 <200 then dead_int_Alt6_rescd4lt200=1;
+
+* 6	After interruption, on ART <6 months after last re-initiation, last re-initiated with CD4 >=200 ;
+if onart=1 and date_last_interrupt ne . and date_last_return_restart ne . and (caldate&j - date_last_return_restart <= 0.5) and cd4_tcur0 >=200 then dead_int_Alt6_rescd4gt200=1;
+
+* 7	On ART (irrespective of time on ART), current VL <1000;
+if onart=1 and vl1000=1 then dead_A_vl1000=1;
+
+* 8	On ART (irrespective of time on ART), current VL >=1000;
+if onart=1 and vg1000=1 then dead_A_vg1000=1;
+
+* 9	On ART <6 months (regardless of first or subsequent ART initiation), current VL<1000;
+if onart=1 and tcur <= 0.5 and vl1000=1 then dead_Alt6_vl1000=1;
+
+* 10	On ART <6 months (regardless of first or subsequent ART initiation), current VL>1000;
+if onart=1 and tcur <= 0.5 and vg1000=1 then dead_Alt6_vg1000=1;
+
+* 11	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL<1000;
+if onart=1 and tcur > 0.5 and vl1000=1 then dead_Agt6_vl1000=1;
+
+* 12	On ART continuously for >6months (regardless of first or subsequent ART initiation), current VL>1000;
+if onart=1 and tcur > 0.5 and vg1000=1 then dead_Agt6_vg1000=1;
+
+* 13	ART interrupted, out of care, any interruption;
+if yrart ne . and onart ne 1 and lost=1 then dead_int_lost=1;
+
+* 14	ART interrupted, out of care, first interruption;
+if yrart ne . and onart ne 1 and lost=1 and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
+
+* 15	ART interrupted, out of care, subsequent interruption, < 6 months from last interruption ;
+if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
+
+* 16	ART interrupted, out of care, subsequent interruption, > 6 months from last interruption ;
+if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
+
+* 17	On ART, no time restrictions, CD4<200 at time of death;
+if onart=1 and 0 < cd4_dead lt 200 then dead_A_cd4lt200=1; 
+
+* 18	On ART, no time restrictions, CD4>200 at time of death;
+if onart=1 and cd4_dead ge 200 then dead_A_cd4gt200=1;
+
+* 19	On ART, <6 months since first ART initiation, CD4<200 at time of death (not stated in template but I am assuming regardless of interruption for last 4);
+if onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead lt 200 then dead_Alt6_cd4lt200=1;
+
+* 20	On ART, <6 months since first ART initiation, CD4>200 at time of death;
+if onart=1 and (caldate&j - yrart <= 0.5) and cd4_dead ge 200 then dead_Alt6_cd4gt200=1;
+
+* 21	On ART, >6 months since first ART initiation, CD4<200 at time of death;
+if onart=1 and (caldate&j - yrart > 0.5) and cd4_dead lt 200 then dead_Agt6_cd4lt200=1;
+
+* 22	On ART, >6 months since first ART initiation, CD4>200 at time of death;
+if onart=1 and (caldate&j - yrart > 0.5) and cd4_dead ge 200 then dead_Agt6_cd4gt200=1;
+
+
+
+***By gender and age;
+	if dead_undiag=1 then do;
+		if gender=1 then do;
+			dead_undiag_m=1;
+			if 15 <= age < 20 then dead_undiag1519m=1;
+			if 20 <= age < 25 then dead_undiag2024m=1;
+			if 25 <= age < 30 then dead_undiag2529m=1;
+			if 30 <= age < 35 then dead_undiag3034m=1;
+			if 35 <= age < 40 then dead_undiag3539m=1;
+			if 40 <= age < 45 then dead_undiag4044m=1;
+			if 45 <= age < 50 then dead_undiag4549m=1;
+			if 50 <= age < 55 then dead_undiag5054m=1;
+			if 55 <= age < 60 then dead_undiag5559m=1;
+			if 60 <= age < 65 then dead_undiag6064m=1;
+			if 65 <= age < 70 then dead_undiag6569m=1;
+			if 70 <= age < 75 then dead_undiag7074m=1;
+			if 75 <= age < 80 then dead_undiag7579m=1;
+			if 80 <= age < 85 then dead_undiag8084m=1;
+		end;
+		if gender=2 then do;
+			dead_undiag_w=1;
+			if 15 <= age < 20 then dead_undiag1519w=1;
+			if 20 <= age < 25 then dead_undiag2024w=1;
+			if 25 <= age < 30 then dead_undiag2529w=1;
+			if 30 <= age < 35 then dead_undiag3034w=1;
+			if 35 <= age < 40 then dead_undiag3539w=1;
+			if 40 <= age < 45 then dead_undiag4044w=1;
+			if 45 <= age < 50 then dead_undiag4549w=1;
+			if 50 <= age < 55 then dead_undiag5054w=1;
+			if 55 <= age < 60 then dead_undiag5559w=1;
+			if 60 <= age < 65 then dead_undiag6064w=1;
+			if 65 <= age < 70 then dead_undiag6569w=1;
+			if 70 <= age < 75 then dead_undiag7074w=1;
+			if 75 <= age < 80 then dead_undiag7579w=1;
+			if 80 <= age < 85 then dead_undiag8084w=1;
+		end;
+	end;
+
+	if dead_diag_not_linked=1 then do;
+		if gender=1 then do;
+			dead_diag_not_linked_m=1;	
+			if 15 <= age < 20 then dead_diag_not_linked1519m=1;
+			if 20 <= age < 25 then dead_diag_not_linked2024m=1;
+			if 25 <= age < 30 then dead_diag_not_linked2529m=1;
+			if 30 <= age < 35 then dead_diag_not_linked3034m=1;
+			if 35 <= age < 40 then dead_diag_not_linked3539m=1;
+			if 40 <= age < 45 then dead_diag_not_linked4044m=1;
+			if 45 <= age < 50 then dead_diag_not_linked4549m=1;
+			if 50 <= age < 55 then dead_diag_not_linked5054m=1;
+			if 55 <= age < 60 then dead_diag_not_linked5559m=1;
+			if 60 <= age < 65 then dead_diag_not_linked6064m=1;
+			if 65 <= age < 70 then dead_diag_not_linked6569m=1;
+			if 70 <= age < 75 then dead_diag_not_linked7074m=1;
+			if 75 <= age < 80 then dead_diag_not_linked7579m=1;
+			if 80 <= age < 85 then dead_diag_not_linked8084m=1;
+		end;
+		if gender=2 then do;
+			dead_diag_not_linked_w=1;	
+			if 15 <= age < 20 then dead_diag_not_linked1519w=1;
+			if 20 <= age < 25 then dead_diag_not_linked2024w=1;
+			if 25 <= age < 30 then dead_diag_not_linked2529w=1;
+			if 30 <= age < 35 then dead_diag_not_linked3034w=1;
+			if 35 <= age < 40 then dead_diag_not_linked3539w=1;
+			if 40 <= age < 45 then dead_diag_not_linked4044w=1;
+			if 45 <= age < 50 then dead_diag_not_linked4549w=1;
+			if 50 <= age < 55 then dead_diag_not_linked5054w=1;
+			if 55 <= age < 60 then dead_diag_not_linked5559w=1;
+			if 60 <= age < 65 then dead_diag_not_linked6064w=1;
+			if 65 <= age < 70 then dead_diag_not_linked6569w=1;
+			if 70 <= age < 75 then dead_diag_not_linked7074w=1;
+			if 75 <= age < 80 then dead_diag_not_linked7579w=1;
+			if 80 <= age < 85 then dead_diag_not_linked8084w=1;
+		end;
+	end;
+
+	if dead_Alt6_artcd4lt200=1 then do;
+		if gender=1 then do;
+			dead_Alt6_artcd4lt200_m=1;	
+			if 15 <= age < 20 then dead_Alt6_artcd4lt2001519m=1;
+			if 20 <= age < 25 then dead_Alt6_artcd4lt2002024m=1;
+			if 25 <= age < 30 then dead_Alt6_artcd4lt2002529m=1;
+			if 30 <= age < 35 then dead_Alt6_artcd4lt2003034m=1;
+			if 35 <= age < 40 then dead_Alt6_artcd4lt2003539m=1;
+			if 40 <= age < 45 then dead_Alt6_artcd4lt2004044m=1;
+			if 45 <= age < 50 then dead_Alt6_artcd4lt2004549m=1;
+			if 50 <= age < 55 then dead_Alt6_artcd4lt2005054m=1;
+			if 55 <= age < 60 then dead_Alt6_artcd4lt2005559m=1;
+			if 60 <= age < 65 then dead_Alt6_artcd4lt2006064m=1;
+			if 65 <= age < 70 then dead_Alt6_artcd4lt2006569m=1;
+			if 70 <= age < 75 then dead_Alt6_artcd4lt2007074m=1;
+			if 75 <= age < 80 then dead_Alt6_artcd4lt2007579m=1;
+			if 80 <= age < 85 then dead_Alt6_artcd4lt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_artcd4lt200_w=1;	
+			if 15 <= age < 20 then dead_Alt6_artcd4lt2001519w=1;
+			if 20 <= age < 25 then dead_Alt6_artcd4lt2002024w=1;
+			if 25 <= age < 30 then dead_Alt6_artcd4lt2002529w=1;
+			if 30 <= age < 35 then dead_Alt6_artcd4lt2003034w=1;
+			if 35 <= age < 40 then dead_Alt6_artcd4lt2003539w=1;
+			if 40 <= age < 45 then dead_Alt6_artcd4lt2004044w=1;
+			if 45 <= age < 50 then dead_Alt6_artcd4lt2004549w=1;
+			if 50 <= age < 55 then dead_Alt6_artcd4lt2005054w=1;
+			if 55 <= age < 60 then dead_Alt6_artcd4lt2005559w=1;
+			if 60 <= age < 65 then dead_Alt6_artcd4lt2006064w=1;
+			if 65 <= age < 70 then dead_Alt6_artcd4lt2006569w=1;
+			if 70 <= age < 75 then dead_Alt6_artcd4lt2007074w=1;
+			if 75 <= age < 80 then dead_Alt6_artcd4lt2007579w=1;
+			if 80 <= age < 85 then dead_Alt6_artcd4lt2008084w=1;
+		end;
+	end;
+
+	if dead_Alt6_artcd4gt200=1 then do;
+		if gender=1 then do;
+			dead_Alt6_artcd4gt200_m=1;	
+			if 15 <= age < 20 then dead_Alt6_artcd4gt2001519m=1;
+			if 20 <= age < 25 then dead_Alt6_artcd4gt2002024m=1;
+			if 25 <= age < 30 then dead_Alt6_artcd4gt2002529m=1;
+			if 30 <= age < 35 then dead_Alt6_artcd4gt2003034m=1;
+			if 35 <= age < 40 then dead_Alt6_artcd4gt2003539m=1;
+			if 40 <= age < 45 then dead_Alt6_artcd4gt2004044m=1;
+			if 45 <= age < 50 then dead_Alt6_artcd4gt2004549m=1;
+			if 50 <= age < 55 then dead_Alt6_artcd4gt2005054m=1;
+			if 55 <= age < 60 then dead_Alt6_artcd4gt2005559m=1;
+			if 60 <= age < 65 then dead_Alt6_artcd4gt2006064m=1;
+			if 65 <= age < 70 then dead_Alt6_artcd4gt2006569m=1;
+			if 70 <= age < 75 then dead_Alt6_artcd4gt2007074m=1;
+			if 75 <= age < 80 then dead_Alt6_artcd4gt2007579m=1;
+			if 80 <= age < 85 then dead_Alt6_artcd4gt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_artcd4gt200_w=1;	
+			if 15 <= age < 20 then dead_Alt6_artcd4gt2001519w=1;
+			if 20 <= age < 25 then dead_Alt6_artcd4gt2002024w=1;
+			if 25 <= age < 30 then dead_Alt6_artcd4gt2002529w=1;
+			if 30 <= age < 35 then dead_Alt6_artcd4gt2003034w=1;
+			if 35 <= age < 40 then dead_Alt6_artcd4gt2003539w=1;
+			if 40 <= age < 45 then dead_Alt6_artcd4gt2004044w=1;
+			if 45 <= age < 50 then dead_Alt6_artcd4gt2004549w=1;
+			if 50 <= age < 55 then dead_Alt6_artcd4gt2005054w=1;
+			if 55 <= age < 60 then dead_Alt6_artcd4gt2005559w=1;
+			if 60 <= age < 65 then dead_Alt6_artcd4gt2006064w=1;
+			if 65 <= age < 70 then dead_Alt6_artcd4gt2006569w=1;
+			if 70 <= age < 75 then dead_Alt6_artcd4gt2007074w=1;
+			if 75 <= age < 80 then dead_Alt6_artcd4gt2007579w=1;
+			if 80 <= age < 85 then dead_Alt6_artcd4gt2008084w=1;
+		end;
+	end;
+
+	if dead_I_Alt6_Rcd4lt200=1 then do;
+		if gender=1 then do;
+			dead_I_Alt6_Rcd4lt200_m=1;	
+			if 15 <= age < 20 then dead_I_Alt6_Rcd4lt2001519m=1;
+			if 20 <= age < 25 then dead_I_Alt6_Rcd4lt2002024m=1;
+			if 25 <= age < 30 then dead_I_Alt6_Rcd4lt2002529m=1;
+			if 30 <= age < 35 then dead_I_Alt6_Rcd4lt2003034m=1;
+			if 35 <= age < 40 then dead_I_Alt6_Rcd4lt2003539m=1;
+			if 40 <= age < 45 then dead_I_Alt6_Rcd4lt2004044m=1;
+			if 45 <= age < 50 then dead_I_Alt6_Rcd4lt2004549m=1;
+			if 50 <= age < 55 then dead_I_Alt6_Rcd4lt2005054m=1;
+			if 55 <= age < 60 then dead_I_Alt6_Rcd4lt2005559m=1;
+			if 60 <= age < 65 then dead_I_Alt6_Rcd4lt2006064m=1;
+			if 65 <= age < 70 then dead_I_Alt6_Rcd4lt2006569m=1;
+			if 70 <= age < 75 then dead_I_Alt6_Rcd4lt2007074m=1;
+			if 75 <= age < 80 then dead_I_Alt6_Rcd4lt2007579m=1;
+			if 80 <= age < 85 then dead_I_Alt6_Rcd4lt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_I_Alt6_Rcd4lt200_w=1;	
+			if 15 <= age < 20 then dead_I_Alt6_Rcd4lt2001519w=1;
+			if 20 <= age < 25 then dead_I_Alt6_Rcd4lt2002024w=1;
+			if 25 <= age < 30 then dead_I_Alt6_Rcd4lt2002529w=1;
+			if 30 <= age < 35 then dead_I_Alt6_Rcd4lt2003034w=1;
+			if 35 <= age < 40 then dead_I_Alt6_Rcd4lt2003539w=1;
+			if 40 <= age < 45 then dead_I_Alt6_Rcd4lt2004044w=1;
+			if 45 <= age < 50 then dead_I_Alt6_Rcd4lt2004549w=1;
+			if 50 <= age < 55 then dead_I_Alt6_Rcd4lt2005054w=1;
+			if 55 <= age < 60 then dead_I_Alt6_Rcd4lt2005559w=1;
+			if 60 <= age < 65 then dead_I_Alt6_Rcd4lt2006064w=1;
+			if 65 <= age < 70 then dead_I_Alt6_Rcd4lt2006569w=1;
+			if 70 <= age < 75 then dead_I_Alt6_Rcd4lt2007074w=1;
+			if 75 <= age < 80 then dead_I_Alt6_Rcd4lt2007579w=1;
+			if 80 <= age < 85 then dead_I_Alt6_Rcd4lt2008084w=1;
+		end;
+	end;
+
+	if dead_I_Alt6_Rcd4gt200=1 then do;
+		if gender=1 then do;
+			dead_I_Alt6_Rcd4gt200_m=1;	
+			if 15 <= age < 20 then dead_I_Alt6_Rcd4gt2001519m=1;
+			if 20 <= age < 25 then dead_I_Alt6_Rcd4gt2002024m=1;
+			if 25 <= age < 30 then dead_I_Alt6_Rcd4gt2002529m=1;
+			if 30 <= age < 35 then dead_I_Alt6_Rcd4gt2003034m=1;
+			if 35 <= age < 40 then dead_I_Alt6_Rcd4gt2003539m=1;
+			if 40 <= age < 45 then dead_I_Alt6_Rcd4gt2004044m=1;
+			if 45 <= age < 50 then dead_I_Alt6_Rcd4gt2004549m=1;
+			if 50 <= age < 55 then dead_I_Alt6_Rcd4gt2005054m=1;
+			if 55 <= age < 60 then dead_I_Alt6_Rcd4gt2005559m=1;
+			if 60 <= age < 65 then dead_I_Alt6_Rcd4gt2006064m=1;
+			if 65 <= age < 70 then dead_I_Alt6_Rcd4gt2006569m=1;
+			if 70 <= age < 75 then dead_I_Alt6_Rcd4gt2007074m=1;
+			if 75 <= age < 80 then dead_I_Alt6_Rcd4gt2007579m=1;
+			if 80 <= age < 85 then dead_I_Alt6_Rcd4gt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_I_Alt6_Rcd4gt200_w=1;	
+			if 15 <= age < 20 then dead_I_Alt6_Rcd4gt2001519w=1;
+			if 20 <= age < 25 then dead_I_Alt6_Rcd4gt2002024w=1;
+			if 25 <= age < 30 then dead_I_Alt6_Rcd4gt2002529w=1;
+			if 30 <= age < 35 then dead_I_Alt6_Rcd4gt2003034w=1;
+			if 35 <= age < 40 then dead_I_Alt6_Rcd4gt2003539w=1;
+			if 40 <= age < 45 then dead_I_Alt6_Rcd4gt2004044w=1;
+			if 45 <= age < 50 then dead_I_Alt6_Rcd4gt2004549w=1;
+			if 50 <= age < 55 then dead_I_Alt6_Rcd4gt2005054w=1;
+			if 55 <= age < 60 then dead_I_Alt6_Rcd4gt2005559w=1;
+			if 60 <= age < 65 then dead_I_Alt6_Rcd4gt2006064w=1;
+			if 65 <= age < 70 then dead_I_Alt6_Rcd4gt2006569w=1;
+			if 70 <= age < 75 then dead_I_Alt6_Rcd4gt2007074w=1;
+			if 75 <= age < 80 then dead_I_Alt6_Rcd4gt2007579w=1;
+			if 80 <= age < 85 then dead_I_Alt6_Rcd4gt2008084w=1;
+		end;
+	end;
+
+	if dead_A_vl1000=1 then do;
+		if gender=1 then do;
+			dead_A_vl1000_m=1;	
+			if 15 <= age < 20 then dead_A_vl10001519m=1;
+			if 20 <= age < 25 then dead_A_vl10002024m=1;
+			if 25 <= age < 30 then dead_A_vl10002529m=1;
+			if 30 <= age < 35 then dead_A_vl10003034m=1;
+			if 35 <= age < 40 then dead_A_vl10003539m=1;
+			if 40 <= age < 45 then dead_A_vl10004044m=1;
+			if 45 <= age < 50 then dead_A_vl10004549m=1;
+			if 50 <= age < 55 then dead_A_vl10005054m=1;
+			if 55 <= age < 60 then dead_A_vl10005559m=1;
+			if 60 <= age < 65 then dead_A_vl10006064m=1;
+			if 65 <= age < 70 then dead_A_vl10006569m=1;
+			if 70 <= age < 75 then dead_A_vl10007074m=1;
+			if 75 <= age < 80 then dead_A_vl10007579m=1;
+			if 80 <= age < 85 then dead_A_vl10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_A_vl1000_w=1;	
+			if 15 <= age < 20 then dead_A_vl10001519w=1;
+			if 20 <= age < 25 then dead_A_vl10002024w=1;
+			if 25 <= age < 30 then dead_A_vl10002529w=1;
+			if 30 <= age < 35 then dead_A_vl10003034w=1;
+			if 35 <= age < 40 then dead_A_vl10003539w=1;
+			if 40 <= age < 45 then dead_A_vl10004044w=1;
+			if 45 <= age < 50 then dead_A_vl10004549w=1;
+			if 50 <= age < 55 then dead_A_vl10005054w=1;
+			if 55 <= age < 60 then dead_A_vl10005559w=1;
+			if 60 <= age < 65 then dead_A_vl10006064w=1;
+			if 65 <= age < 70 then dead_A_vl10006569w=1;
+			if 70 <= age < 75 then dead_A_vl10007074w=1;
+			if 75 <= age < 80 then dead_A_vl10007579w=1;
+			if 80 <= age < 85 then dead_A_vl10008084w=1;
+		end;
+	end;
+
+	if dead_A_vg1000=1 then do;
+		if gender=1 then do;
+			dead_A_vg1000_m=1;	
+			if 15 <= age < 20 then dead_A_vg10001519m=1;
+			if 20 <= age < 25 then dead_A_vg10002024m=1;
+			if 25 <= age < 30 then dead_A_vg10002529m=1;
+			if 30 <= age < 35 then dead_A_vg10003034m=1;
+			if 35 <= age < 40 then dead_A_vg10003539m=1;
+			if 40 <= age < 45 then dead_A_vg10004044m=1;
+			if 45 <= age < 50 then dead_A_vg10004549m=1;
+			if 50 <= age < 55 then dead_A_vg10005054m=1;
+			if 55 <= age < 60 then dead_A_vg10005559m=1;
+			if 60 <= age < 65 then dead_A_vg10006064m=1;
+			if 65 <= age < 70 then dead_A_vg10006569m=1;
+			if 70 <= age < 75 then dead_A_vg10007074m=1;
+			if 75 <= age < 80 then dead_A_vg10007579m=1;
+			if 80 <= age < 85 then dead_A_vg10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_A_vg1000_w=1;	
+			if 15 <= age < 20 then dead_A_vg10001519w=1;
+			if 20 <= age < 25 then dead_A_vg10002024w=1;
+			if 25 <= age < 30 then dead_A_vg10002529w=1;
+			if 30 <= age < 35 then dead_A_vg10003034w=1;
+			if 35 <= age < 40 then dead_A_vg10003539w=1;
+			if 40 <= age < 45 then dead_A_vg10004044w=1;
+			if 45 <= age < 50 then dead_A_vg10004549w=1;
+			if 50 <= age < 55 then dead_A_vg10005054w=1;
+			if 55 <= age < 60 then dead_A_vg10005559w=1;
+			if 60 <= age < 65 then dead_A_vg10006064w=1;
+			if 65 <= age < 70 then dead_A_vg10006569w=1;
+			if 70 <= age < 75 then dead_A_vg10007074w=1;
+			if 75 <= age < 80 then dead_A_vg10007579w=1;
+			if 80 <= age < 85 then dead_A_vg10008084w=1;
+		end;
+	end;
+
+	if dead_Alt6_vl1000=1 then do;
+		if gender=1 then do;
+			dead_Alt6_vl1000m=1;	
+			if 15 <= age < 20 then dead_Alt6_vl10001519m=1;
+			if 20 <= age < 25 then dead_Alt6_vl10002024m=1;
+			if 25 <= age < 30 then dead_Alt6_vl10002529m=1;
+			if 30 <= age < 35 then dead_Alt6_vl10003034m=1;
+			if 35 <= age < 40 then dead_Alt6_vl10003539m=1;
+			if 40 <= age < 45 then dead_Alt6_vl10004044m=1;
+			if 45 <= age < 50 then dead_Alt6_vl10004549m=1;
+			if 50 <= age < 55 then dead_Alt6_vl10005054m=1;
+			if 55 <= age < 60 then dead_Alt6_vl10005559m=1;
+			if 60 <= age < 65 then dead_Alt6_vl10006064m=1;
+			if 65 <= age < 70 then dead_Alt6_vl10006569m=1;
+			if 70 <= age < 75 then dead_Alt6_vl10007074m=1;
+			if 75 <= age < 80 then dead_Alt6_vl10007579m=1;
+			if 80 <= age < 85 then dead_Alt6_vl10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_vl1000m=1;	
+			if 15 <= age < 20 then dead_Alt6_vl10001519w=1;
+			if 20 <= age < 25 then dead_Alt6_vl10002024w=1;
+			if 25 <= age < 30 then dead_Alt6_vl10002529w=1;
+			if 30 <= age < 35 then dead_Alt6_vl10003034w=1;
+			if 35 <= age < 40 then dead_Alt6_vl10003539w=1;
+			if 40 <= age < 45 then dead_Alt6_vl10004044w=1;
+			if 45 <= age < 50 then dead_Alt6_vl10004549w=1;
+			if 50 <= age < 55 then dead_Alt6_vl10005054w=1;
+			if 55 <= age < 60 then dead_Alt6_vl10005559w=1;
+			if 60 <= age < 65 then dead_Alt6_vl10006064w=1;
+			if 65 <= age < 70 then dead_Alt6_vl10006569w=1;
+			if 70 <= age < 75 then dead_Alt6_vl10007074w=1;
+			if 75 <= age < 80 then dead_Alt6_vl10007579w=1;
+			if 80 <= age < 85 then dead_Alt6_vl10008084w=1;
+		end;
+	end;
+
+	if dead_Alt6_vg1000=1 then do;
+		if gender=1 then do;
+			dead_Alt6_vg1000_m=1;	
+			if 15 <= age < 20 then dead_Alt6_vg10001519m=1;
+			if 20 <= age < 25 then dead_Alt6_vg10002024m=1;
+			if 25 <= age < 30 then dead_Alt6_vg10002529m=1;
+			if 30 <= age < 35 then dead_Alt6_vg10003034m=1;
+			if 35 <= age < 40 then dead_Alt6_vg10003539m=1;
+			if 40 <= age < 45 then dead_Alt6_vg10004044m=1;
+			if 45 <= age < 50 then dead_Alt6_vg10004549m=1;
+			if 50 <= age < 55 then dead_Alt6_vg10005054m=1;
+			if 55 <= age < 60 then dead_Alt6_vg10005559m=1;
+			if 60 <= age < 65 then dead_Alt6_vg10006064m=1;
+			if 65 <= age < 70 then dead_Alt6_vg10006569m=1;
+			if 70 <= age < 75 then dead_Alt6_vg10007074m=1;
+			if 75 <= age < 80 then dead_Alt6_vg10007579m=1;
+			if 80 <= age < 85 then dead_Alt6_vg10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_vg1000_w=1;	
+			if 15 <= age < 20 then dead_Alt6_vg10001519w=1;
+			if 20 <= age < 25 then dead_Alt6_vg10002024w=1;
+			if 25 <= age < 30 then dead_Alt6_vg10002529w=1;
+			if 30 <= age < 35 then dead_Alt6_vg10003034w=1;
+			if 35 <= age < 40 then dead_Alt6_vg10003539w=1;
+			if 40 <= age < 45 then dead_Alt6_vg10004044w=1;
+			if 45 <= age < 50 then dead_Alt6_vg10004549w=1;
+			if 50 <= age < 55 then dead_Alt6_vg10005054w=1;
+			if 55 <= age < 60 then dead_Alt6_vg10005559w=1;
+			if 60 <= age < 65 then dead_Alt6_vg10006064w=1;
+			if 65 <= age < 70 then dead_Alt6_vg10006569w=1;
+			if 70 <= age < 75 then dead_Alt6_vg10007074w=1;
+			if 75 <= age < 80 then dead_Alt6_vg10007579w=1;
+			if 80 <= age < 85 then dead_Alt6_vg10008084w=1;
+		end;
+	end;
+
+	if dead_Agt6_vl1000=1 then do;
+		if gender=1 then do;
+			dead_Agt6_vl1000_m=1;	
+			if 15 <= age < 20 then dead_Agt6_vl10001519m=1;
+			if 20 <= age < 25 then dead_Agt6_vl10002024m=1;
+			if 25 <= age < 30 then dead_Agt6_vl10002529m=1;
+			if 30 <= age < 35 then dead_Agt6_vl10003034m=1;
+			if 35 <= age < 40 then dead_Agt6_vl10003539m=1;
+			if 40 <= age < 45 then dead_Agt6_vl10004044m=1;
+			if 45 <= age < 50 then dead_Agt6_vl10004549m=1;
+			if 50 <= age < 55 then dead_Agt6_vl10005054m=1;
+			if 55 <= age < 60 then dead_Agt6_vl10005559m=1;
+			if 60 <= age < 65 then dead_Agt6_vl10006064m=1;
+			if 65 <= age < 70 then dead_Agt6_vl10006569m=1;
+			if 70 <= age < 75 then dead_Agt6_vl10007074m=1;
+			if 75 <= age < 80 then dead_Agt6_vl10007579m=1;
+			if 80 <= age < 85 then dead_Agt6_vl10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Agt6_vl1000_w=1;	
+			if 15 <= age < 20 then dead_Agt6_vl10001519w=1;
+			if 20 <= age < 25 then dead_Agt6_vl10002024w=1;
+			if 25 <= age < 30 then dead_Agt6_vl10002529w=1;
+			if 30 <= age < 35 then dead_Agt6_vl10003034w=1;
+			if 35 <= age < 40 then dead_Agt6_vl10003539w=1;
+			if 40 <= age < 45 then dead_Agt6_vl10004044w=1;
+			if 45 <= age < 50 then dead_Agt6_vl10004549w=1;
+			if 50 <= age < 55 then dead_Agt6_vl10005054w=1;
+			if 55 <= age < 60 then dead_Agt6_vl10005559w=1;
+			if 60 <= age < 65 then dead_Agt6_vl10006064w=1;
+			if 65 <= age < 70 then dead_Agt6_vl10006569w=1;
+			if 70 <= age < 75 then dead_Agt6_vl10007074w=1;
+			if 75 <= age < 80 then dead_Agt6_vl10007579w=1;
+			if 80 <= age < 85 then dead_Agt6_vl10008084w=1;
+		end;
+	end;
+
+	if dead_Agt6_vg1000=1 then do;
+		if gender=1 then do;
+			dead_Agt6_vg1000_m=1;	
+			if 15 <= age < 20 then dead_Agt6_vg10001519m=1;
+			if 20 <= age < 25 then dead_Agt6_vg10002024m=1;
+			if 25 <= age < 30 then dead_Agt6_vg10002529m=1;
+			if 30 <= age < 35 then dead_Agt6_vg10003034m=1;
+			if 35 <= age < 40 then dead_Agt6_vg10003539m=1;
+			if 40 <= age < 45 then dead_Agt6_vg10004044m=1;
+			if 45 <= age < 50 then dead_Agt6_vg10004549m=1;
+			if 50 <= age < 55 then dead_Agt6_vg10005054m=1;
+			if 55 <= age < 60 then dead_Agt6_vg10005559m=1;
+			if 60 <= age < 65 then dead_Agt6_vg10006064m=1;
+			if 65 <= age < 70 then dead_Agt6_vg10006569m=1;
+			if 70 <= age < 75 then dead_Agt6_vg10007074m=1;
+			if 75 <= age < 80 then dead_Agt6_vg10007579m=1;
+			if 80 <= age < 85 then dead_Agt6_vg10008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Agt6_vg1000_w=1;	
+			if 15 <= age < 20 then dead_Agt6_vg10001519w=1;
+			if 20 <= age < 25 then dead_Agt6_vg10002024w=1;
+			if 25 <= age < 30 then dead_Agt6_vg10002529w=1;
+			if 30 <= age < 35 then dead_Agt6_vg10003034w=1;
+			if 35 <= age < 40 then dead_Agt6_vg10003539w=1;
+			if 40 <= age < 45 then dead_Agt6_vg10004044w=1;
+			if 45 <= age < 50 then dead_Agt6_vg10004549w=1;
+			if 50 <= age < 55 then dead_Agt6_vg10005054w=1;
+			if 55 <= age < 60 then dead_Agt6_vg10005559w=1;
+			if 60 <= age < 65 then dead_Agt6_vg10006064w=1;
+			if 65 <= age < 70 then dead_Agt6_vg10006569w=1;
+			if 70 <= age < 75 then dead_Agt6_vg10007074w=1;
+			if 75 <= age < 80 then dead_Agt6_vg10007579w=1;
+			if 80 <= age < 85 then dead_Agt6_vg10008084w=1;
+		end;
+	end;
+
+	if dead_int_lost=1 then do;
+		if gender=1 then do;
+			dead_int_lost_m=1;
+			if 15 <= age < 20 then dead_int_lost1519m=1;
+			if 20 <= age < 25 then dead_int_lost2024m=1;
+			if 25 <= age < 30 then dead_int_lost2529m=1;
+			if 30 <= age < 35 then dead_int_lost3034m=1;
+			if 35 <= age < 40 then dead_int_lost3539m=1;
+			if 40 <= age < 45 then dead_int_lost4044m=1;
+			if 45 <= age < 50 then dead_int_lost4549m=1;
+			if 50 <= age < 55 then dead_int_lost5054m=1;
+			if 55 <= age < 60 then dead_int_lost5559m=1;
+			if 60 <= age < 65 then dead_int_lost6064m=1;
+			if 65 <= age < 70 then dead_int_lost6569m=1;
+			if 70 <= age < 75 then dead_int_lost7074m=1;
+			if 75 <= age < 80 then dead_int_lost7579m=1;
+			if 80 <= age < 85 then dead_int_lost8084m=1;
+		end;
+		if gender=2 then do;
+			dead_int_lost_m=1;
+			if 15 <= age < 20 then dead_int_lost1519m=1;
+			if 20 <= age < 25 then dead_int_lost2024m=1;
+			if 25 <= age < 30 then dead_int_lost2529m=1;
+			if 30 <= age < 35 then dead_int_lost3034m=1;
+			if 35 <= age < 40 then dead_int_lost3539m=1;
+			if 40 <= age < 45 then dead_int_lost4044m=1;
+			if 45 <= age < 50 then dead_int_lost4549m=1;
+			if 50 <= age < 55 then dead_int_lost5054m=1;
+			if 55 <= age < 60 then dead_int_lost5559m=1;
+			if 60 <= age < 65 then dead_int_lost6064m=1;
+			if 65 <= age < 70 then dead_int_lost6569m=1;
+			if 70 <= age < 75 then dead_int_lost7074m=1;
+			if 75 <= age < 80 then dead_int_lost7579m=1;
+			if 80 <= age < 85 then dead_int_lost8084m=1;
+		end;
+	end;
+
+	if dead_1stint_lost=1 then do;
+		if gender=1 then do;
+			dead_1stint_lost_m=1;
+			if 15 <= age < 20 then dead_1stint_lost1519m=1;
+			if 20 <= age < 25 then dead_1stint_lost2024m=1;
+			if 25 <= age < 30 then dead_1stint_lost2529m=1;
+			if 30 <= age < 35 then dead_1stint_lost3034m=1;
+			if 35 <= age < 40 then dead_1stint_lost3539m=1;
+			if 40 <= age < 45 then dead_1stint_lost4044m=1;
+			if 45 <= age < 50 then dead_1stint_lost4549m=1;
+			if 50 <= age < 55 then dead_1stint_lost5054m=1;
+			if 55 <= age < 60 then dead_1stint_lost5559m=1;
+			if 60 <= age < 65 then dead_1stint_lost6064m=1;
+			if 65 <= age < 70 then dead_1stint_lost6569m=1;
+			if 70 <= age < 75 then dead_1stint_lost7074m=1;
+			if 75 <= age < 80 then dead_1stint_lost7579m=1;
+			if 80 <= age < 85 then dead_1stint_lost8084m=1;
+		end;
+		if gender=2 then do;
+			dead_1stint_lost_w=1;
+			if 15 <= age < 20 then dead_1stint_lost1519w=1;
+			if 20 <= age < 25 then dead_1stint_lost2024w=1;
+			if 25 <= age < 30 then dead_1stint_lost2529w=1;
+			if 30 <= age < 35 then dead_1stint_lost3034w=1;
+			if 35 <= age < 40 then dead_1stint_lost3539w=1;
+			if 40 <= age < 45 then dead_1stint_lost4044w=1;
+			if 45 <= age < 50 then dead_1stint_lost4549w=1;
+			if 50 <= age < 55 then dead_1stint_lost5054w=1;
+			if 55 <= age < 60 then dead_1stint_lost5559w=1;
+			if 60 <= age < 65 then dead_1stint_lost6064w=1;
+			if 65 <= age < 70 then dead_1stint_lost6569w=1;
+			if 70 <= age < 75 then dead_1stint_lost7074w=1;
+			if 75 <= age < 80 then dead_1stint_lost7579w=1;
+			if 80 <= age < 85 then dead_1stint_lost8084w=1;
+		end;
+	end;
+
+	if dead_subintlt6_lost=1 then do;
+		if gender=1 then do;
+			dead_subintlt6_lost_m=1;
+			if 15 <= age < 20 then dead_subintlt6_lost1519m=1;
+			if 20 <= age < 25 then dead_subintlt6_lost2024m=1;
+			if 25 <= age < 30 then dead_subintlt6_lost2529m=1;
+			if 30 <= age < 35 then dead_subintlt6_lost3034m=1;
+			if 35 <= age < 40 then dead_subintlt6_lost3539m=1;
+			if 40 <= age < 45 then dead_subintlt6_lost4044m=1;
+			if 45 <= age < 50 then dead_subintlt6_lost4549m=1;
+			if 50 <= age < 55 then dead_subintlt6_lost5054m=1;
+			if 55 <= age < 60 then dead_subintlt6_lost5559m=1;
+			if 60 <= age < 65 then dead_subintlt6_lost6064m=1;
+			if 65 <= age < 70 then dead_subintlt6_lost6569m=1;
+			if 70 <= age < 75 then dead_subintlt6_lost7074m=1;
+			if 75 <= age < 80 then dead_subintlt6_lost7579m=1;
+			if 80 <= age < 85 then dead_subintlt6_lost8084m=1;
+		end;
+		if gender=2 then do;
+			dead_subintlt6_lost_w=1;
+			if 15 <= age < 20 then dead_subintlt6_lost1519w=1;
+			if 20 <= age < 25 then dead_subintlt6_lost2024w=1;
+			if 25 <= age < 30 then dead_subintlt6_lost2529w=1;
+			if 30 <= age < 35 then dead_subintlt6_lost3034w=1;
+			if 35 <= age < 40 then dead_subintlt6_lost3539w=1;
+			if 40 <= age < 45 then dead_subintlt6_lost4044w=1;
+			if 45 <= age < 50 then dead_subintlt6_lost4549w=1;
+			if 50 <= age < 55 then dead_subintlt6_lost5054w=1;
+			if 55 <= age < 60 then dead_subintlt6_lost5559w=1;
+			if 60 <= age < 65 then dead_subintlt6_lost6064w=1;
+			if 65 <= age < 70 then dead_subintlt6_lost6569w=1;
+			if 70 <= age < 75 then dead_subintlt6_lost7074w=1;
+			if 75 <= age < 80 then dead_subintlt6_lost7579w=1;
+			if 80 <= age < 85 then dead_subintlt6_lost8084w=1;
+		end;
+	end;
+
+	if dead_subintgt6_lost=1 then do;
+		if gender=1 then do;
+			dead_subintgt6_lost_m=1;
+			if 15 <= age < 20 then dead_subintgt6_lost1519m=1;
+			if 20 <= age < 25 then dead_subintgt6_lost2024m=1;
+			if 25 <= age < 30 then dead_subintgt6_lost2529m=1;
+			if 30 <= age < 35 then dead_subintgt6_lost3034m=1;
+			if 35 <= age < 40 then dead_subintgt6_lost3539m=1;
+			if 40 <= age < 45 then dead_subintgt6_lost4044m=1;
+			if 45 <= age < 50 then dead_subintgt6_lost4549m=1;
+			if 50 <= age < 55 then dead_subintgt6_lost5054m=1;
+			if 55 <= age < 60 then dead_subintgt6_lost5559m=1;
+			if 60 <= age < 65 then dead_subintgt6_lost6064m=1;
+			if 65 <= age < 70 then dead_subintgt6_lost6569m=1;
+			if 70 <= age < 75 then dead_subintgt6_lost7074m=1;
+			if 75 <= age < 80 then dead_subintgt6_lost7579m=1;
+			if 80 <= age < 85 then dead_subintgt6_lost8084m=1;
+		end;
+		if gender=2 then do;
+			dead_subintgt6_lost_w=1;
+			if 15 <= age < 20 then dead_subintgt6_lost1519w=1;
+			if 20 <= age < 25 then dead_subintgt6_lost2024w=1;
+			if 25 <= age < 30 then dead_subintgt6_lost2529w=1;
+			if 30 <= age < 35 then dead_subintgt6_lost3034w=1;
+			if 35 <= age < 40 then dead_subintgt6_lost3539w=1;
+			if 40 <= age < 45 then dead_subintgt6_lost4044w=1;
+			if 45 <= age < 50 then dead_subintgt6_lost4549w=1;
+			if 50 <= age < 55 then dead_subintgt6_lost5054w=1;
+			if 55 <= age < 60 then dead_subintgt6_lost5559w=1;
+			if 60 <= age < 65 then dead_subintgt6_lost6064w=1;
+			if 65 <= age < 70 then dead_subintgt6_lost6569w=1;
+			if 70 <= age < 75 then dead_subintgt6_lost7074w=1;
+			if 75 <= age < 80 then dead_subintgt6_lost7579w=1;
+			if 80 <= age < 85 then dead_subintgt6_lost8084w=1;
+		end;
+	end;
+
+	if dead_A_cd4lt200=1 then do;
+		if gender=1 then do;
+			dead_A_cd4lt200_m=1;
+			if 15 <= age < 20 then dead_A_cd4lt2001519m=1;
+			if 20 <= age < 25 then dead_A_cd4lt2002024m=1;
+			if 25 <= age < 30 then dead_A_cd4lt2002529m=1;
+			if 30 <= age < 35 then dead_A_cd4lt2003034m=1;
+			if 35 <= age < 40 then dead_A_cd4lt2003539m=1;
+			if 40 <= age < 45 then dead_A_cd4lt2004044m=1;
+			if 45 <= age < 50 then dead_A_cd4lt2004549m=1;
+			if 50 <= age < 55 then dead_A_cd4lt2005054m=1;
+			if 55 <= age < 60 then dead_A_cd4lt2005559m=1;
+			if 60 <= age < 65 then dead_A_cd4lt2006064m=1;
+			if 65 <= age < 70 then dead_A_cd4lt2006569m=1;
+			if 70 <= age < 75 then dead_A_cd4lt2007074m=1;
+			if 75 <= age < 80 then dead_A_cd4lt2007579m=1;
+			if 80 <= age < 85 then dead_A_cd4lt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_A_cd4lt200_w=1;
+			if 15 <= age < 20 then dead_A_cd4lt2001519w=1;
+			if 20 <= age < 25 then dead_A_cd4lt2002024w=1;
+			if 25 <= age < 30 then dead_A_cd4lt2002529w=1;
+			if 30 <= age < 35 then dead_A_cd4lt2003034w=1;
+			if 35 <= age < 40 then dead_A_cd4lt2003539w=1;
+			if 40 <= age < 45 then dead_A_cd4lt2004044w=1;
+			if 45 <= age < 50 then dead_A_cd4lt2004549w=1;
+			if 50 <= age < 55 then dead_A_cd4lt2005054w=1;
+			if 55 <= age < 60 then dead_A_cd4lt2005559w=1;
+			if 60 <= age < 65 then dead_A_cd4lt2006064w=1;
+			if 65 <= age < 70 then dead_A_cd4lt2006569w=1;
+			if 70 <= age < 75 then dead_A_cd4lt2007074w=1;
+			if 75 <= age < 80 then dead_A_cd4lt2007579w=1;
+			if 80 <= age < 85 then dead_A_cd4lt2008084w=1;
+		end;
+	end;
+
+	if dead_A_cd4gt200=1 then do;
+		if gender=1 then do;
+			dead_A_cd4gt200_m=1;
+			if 15 <= age < 20 then dead_A_cd4gt2001519m=1;
+			if 20 <= age < 25 then dead_A_cd4gt2002024m=1;
+			if 25 <= age < 30 then dead_A_cd4gt2002529m=1;
+			if 30 <= age < 35 then dead_A_cd4gt2003034m=1;
+			if 35 <= age < 40 then dead_A_cd4gt2003539m=1;
+			if 40 <= age < 45 then dead_A_cd4gt2004044m=1;
+			if 45 <= age < 50 then dead_A_cd4gt2004549m=1;
+			if 50 <= age < 55 then dead_A_cd4gt2005054m=1;
+			if 55 <= age < 60 then dead_A_cd4gt2005559m=1;
+			if 60 <= age < 65 then dead_A_cd4gt2006064m=1;
+			if 65 <= age < 70 then dead_A_cd4gt2006569m=1;
+			if 70 <= age < 75 then dead_A_cd4gt2007074m=1;
+			if 75 <= age < 80 then dead_A_cd4gt2007579m=1;
+			if 80 <= age < 85 then dead_A_cd4gt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_A_cd4gt200_w=1;
+			if 15 <= age < 20 then dead_A_cd4gt2001519w=1;
+			if 20 <= age < 25 then dead_A_cd4gt2002024w=1;
+			if 25 <= age < 30 then dead_A_cd4gt2002529w=1;
+			if 30 <= age < 35 then dead_A_cd4gt2003034w=1;
+			if 35 <= age < 40 then dead_A_cd4gt2003539w=1;
+			if 40 <= age < 45 then dead_A_cd4gt2004044w=1;
+			if 45 <= age < 50 then dead_A_cd4gt2004549w=1;
+			if 50 <= age < 55 then dead_A_cd4gt2005054w=1;
+			if 55 <= age < 60 then dead_A_cd4gt2005559w=1;
+			if 60 <= age < 65 then dead_A_cd4gt2006064w=1;
+			if 65 <= age < 70 then dead_A_cd4gt2006569w=1;
+			if 70 <= age < 75 then dead_A_cd4gt2007074w=1;
+			if 75 <= age < 80 then dead_A_cd4gt2007579w=1;
+			if 80 <= age < 85 then dead_A_cd4gt2008084w=1;
+		end;
+	end;
+
+	if dead_Alt6_cd4lt200=1 then do;
+		if gender=1 then do;
+			dead_Alt6_cd4lt200_m=1;
+			if 15 <= age < 20 then dead_Alt6_cd4lt2001519m=1;
+			if 20 <= age < 25 then dead_Alt6_cd4lt2002024m=1;
+			if 25 <= age < 30 then dead_Alt6_cd4lt2002529m=1;
+			if 30 <= age < 35 then dead_Alt6_cd4lt2003034m=1;
+			if 35 <= age < 40 then dead_Alt6_cd4lt2003539m=1;
+			if 40 <= age < 45 then dead_Alt6_cd4lt2004044m=1;
+			if 45 <= age < 50 then dead_Alt6_cd4lt2004549m=1;
+			if 50 <= age < 55 then dead_Alt6_cd4lt2005054m=1;
+			if 55 <= age < 60 then dead_Alt6_cd4lt2005559m=1;
+			if 60 <= age < 65 then dead_Alt6_cd4lt2006064m=1;
+			if 65 <= age < 70 then dead_Alt6_cd4lt2006569m=1;
+			if 70 <= age < 75 then dead_Alt6_cd4lt2007074m=1;
+			if 75 <= age < 80 then dead_Alt6_cd4lt2007579m=1;
+			if 80 <= age < 85 then dead_Alt6_cd4lt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_cd4lt200_w=1;
+			if 15 <= age < 20 then dead_Alt6_cd4lt2001519w=1;
+			if 20 <= age < 25 then dead_Alt6_cd4lt2002024w=1;
+			if 25 <= age < 30 then dead_Alt6_cd4lt2002529w=1;
+			if 30 <= age < 35 then dead_Alt6_cd4lt2003034w=1;
+			if 35 <= age < 40 then dead_Alt6_cd4lt2003539w=1;
+			if 40 <= age < 45 then dead_Alt6_cd4lt2004044w=1;
+			if 45 <= age < 50 then dead_Alt6_cd4lt2004549w=1;
+			if 50 <= age < 55 then dead_Alt6_cd4lt2005054w=1;
+			if 55 <= age < 60 then dead_Alt6_cd4lt2005559w=1;
+			if 60 <= age < 65 then dead_Alt6_cd4lt2006064w=1;
+			if 65 <= age < 70 then dead_Alt6_cd4lt2006569w=1;
+			if 70 <= age < 75 then dead_Alt6_cd4lt2007074w=1;
+			if 75 <= age < 80 then dead_Alt6_cd4lt2007579w=1;
+			if 80 <= age < 85 then dead_Alt6_cd4lt2008084w=1;
+		end;
+	end;
+
+	if dead_Alt6_cd4gt200=1 then do;
+		if gender=1 then do;
+			dead_Alt6_cd4gt200_m=1;
+			if 15 <= age < 20 then dead_Alt6_cd4gt2001519m=1;
+			if 20 <= age < 25 then dead_Alt6_cd4gt2002024m=1;
+			if 25 <= age < 30 then dead_Alt6_cd4gt2002529m=1;
+			if 30 <= age < 35 then dead_Alt6_cd4gt2003034m=1;
+			if 35 <= age < 40 then dead_Alt6_cd4gt2003539m=1;
+			if 40 <= age < 45 then dead_Alt6_cd4gt2004044m=1;
+			if 45 <= age < 50 then dead_Alt6_cd4gt2004549m=1;
+			if 50 <= age < 55 then dead_Alt6_cd4gt2005054m=1;
+			if 55 <= age < 60 then dead_Alt6_cd4gt2005559m=1;
+			if 60 <= age < 65 then dead_Alt6_cd4gt2006064m=1;
+			if 65 <= age < 70 then dead_Alt6_cd4gt2006569m=1;
+			if 70 <= age < 75 then dead_Alt6_cd4gt2007074m=1;
+			if 75 <= age < 80 then dead_Alt6_cd4gt2007579m=1;
+			if 80 <= age < 85 then dead_Alt6_cd4gt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Alt6_cd4gt200_w=1;
+			if 15 <= age < 20 then dead_Alt6_cd4gt2001519w=1;
+			if 20 <= age < 25 then dead_Alt6_cd4gt2002024w=1;
+			if 25 <= age < 30 then dead_Alt6_cd4gt2002529w=1;
+			if 30 <= age < 35 then dead_Alt6_cd4gt2003034w=1;
+			if 35 <= age < 40 then dead_Alt6_cd4gt2003539w=1;
+			if 40 <= age < 45 then dead_Alt6_cd4gt2004044w=1;
+			if 45 <= age < 50 then dead_Alt6_cd4gt2004549w=1;
+			if 50 <= age < 55 then dead_Alt6_cd4gt2005054w=1;
+			if 55 <= age < 60 then dead_Alt6_cd4gt2005559w=1;
+			if 60 <= age < 65 then dead_Alt6_cd4gt2006064w=1;
+			if 65 <= age < 70 then dead_Alt6_cd4gt2006569w=1;
+			if 70 <= age < 75 then dead_Alt6_cd4gt2007074w=1;
+			if 75 <= age < 80 then dead_Alt6_cd4gt2007579w=1;
+			if 80 <= age < 85 then dead_Alt6_cd4gt2008084w=1;
+		end;
+	end;
+
+	if dead_Agt6_cd4lt200=1 then do;
+		if gender=1 then do;
+			dead_Agt6_cd4lt200_m=1;
+			if 15 <= age < 20 then dead_Agt6_cd4lt2001519m=1;
+			if 20 <= age < 25 then dead_Agt6_cd4lt2002024m=1;
+			if 25 <= age < 30 then dead_Agt6_cd4lt2002529m=1;
+			if 30 <= age < 35 then dead_Agt6_cd4lt2003034m=1;
+			if 35 <= age < 40 then dead_Agt6_cd4lt2003539m=1;
+			if 40 <= age < 45 then dead_Agt6_cd4lt2004044m=1;
+			if 45 <= age < 50 then dead_Agt6_cd4lt2004549m=1;
+			if 50 <= age < 55 then dead_Agt6_cd4lt2005054m=1;
+			if 55 <= age < 60 then dead_Agt6_cd4lt2005559m=1;
+			if 60 <= age < 65 then dead_Agt6_cd4lt2006064m=1;
+			if 65 <= age < 70 then dead_Agt6_cd4lt2006569m=1;
+			if 70 <= age < 75 then dead_Agt6_cd4lt2007074m=1;
+			if 75 <= age < 80 then dead_Agt6_cd4lt2007579m=1;
+			if 80 <= age < 85 then dead_Agt6_cd4lt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Agt6_cd4lt200_w=1;
+			if 15 <= age < 20 then dead_Agt6_cd4lt2001519w=1;
+			if 20 <= age < 25 then dead_Agt6_cd4lt2002024w=1;
+			if 25 <= age < 30 then dead_Agt6_cd4lt2002529w=1;
+			if 30 <= age < 35 then dead_Agt6_cd4lt2003034w=1;
+			if 35 <= age < 40 then dead_Agt6_cd4lt2003539w=1;
+			if 40 <= age < 45 then dead_Agt6_cd4lt2004044w=1;
+			if 45 <= age < 50 then dead_Agt6_cd4lt2004549w=1;
+			if 50 <= age < 55 then dead_Agt6_cd4lt2005054w=1;
+			if 55 <= age < 60 then dead_Agt6_cd4lt2005559w=1;
+			if 60 <= age < 65 then dead_Agt6_cd4lt2006064w=1;
+			if 65 <= age < 70 then dead_Agt6_cd4lt2006569w=1;
+			if 70 <= age < 75 then dead_Agt6_cd4lt2007074w=1;
+			if 75 <= age < 80 then dead_Agt6_cd4lt2007579w=1;
+			if 80 <= age < 85 then dead_Agt6_cd4lt2008084w=1;
+		end;
+	end;
+
+	if dead_Agt6_cd4gt200_m=1 then do;
+		if gender=1 then do;
+			dead_Agt6_cd4gt200_m=1;
+			if 15 <= age < 20 then dead_Agt6_cd4gt2001519m=1;
+			if 20 <= age < 25 then dead_Agt6_cd4gt2002024m=1;
+			if 25 <= age < 30 then dead_Agt6_cd4gt2002529m=1;
+			if 30 <= age < 35 then dead_Agt6_cd4gt2003034m=1;
+			if 35 <= age < 40 then dead_Agt6_cd4gt2003539m=1;
+			if 40 <= age < 45 then dead_Agt6_cd4gt2004044m=1;
+			if 45 <= age < 50 then dead_Agt6_cd4gt2004549m=1;
+			if 50 <= age < 55 then dead_Agt6_cd4gt2005054m=1;
+			if 55 <= age < 60 then dead_Agt6_cd4gt2005559m=1;
+			if 60 <= age < 65 then dead_Agt6_cd4gt2006064m=1;
+			if 65 <= age < 70 then dead_Agt6_cd4gt2006569m=1;
+			if 70 <= age < 75 then dead_Agt6_cd4gt2007074m=1;
+			if 75 <= age < 80 then dead_Agt6_cd4gt2007579m=1;
+			if 80 <= age < 85 then dead_Agt6_cd4gt2008084m=1;
+		end;
+		if gender=2 then do;
+			dead_Agt6_cd4gt200_w=1;
+			if 15 <= age < 20 then dead_Agt6_cd4gt2001519w=1;
+			if 20 <= age < 25 then dead_Agt6_cd4gt2002024w=1;
+			if 25 <= age < 30 then dead_Agt6_cd4gt2002529w=1;
+			if 30 <= age < 35 then dead_Agt6_cd4gt2003034w=1;
+			if 35 <= age < 40 then dead_Agt6_cd4gt2003539w=1;
+			if 40 <= age < 45 then dead_Agt6_cd4gt2004044w=1;
+			if 45 <= age < 50 then dead_Agt6_cd4gt2004549w=1;
+			if 50 <= age < 55 then dead_Agt6_cd4gt2005054w=1;
+			if 55 <= age < 60 then dead_Agt6_cd4gt2005559w=1;
+			if 60 <= age < 65 then dead_Agt6_cd4gt2006064w=1;
+			if 65 <= age < 70 then dead_Agt6_cd4gt2006569w=1;
+			if 70 <= age < 75 then dead_Agt6_cd4gt2007074w=1;
+			if 75 <= age < 80 then dead_Agt6_cd4gt2007579w=1;
+			if 80 <= age < 85 then dead_Agt6_cd4gt2008084w=1;
+		end;
+	end;
+
+end;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -17072,15 +18184,10 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
-proc print;var caldate&j hiv death_hiv death dead_undiag s_dead_undiag s_dead_diag_not_linked  
-s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
-s_dead_int_Alt6_rescd4lt200  s_dead_int_Alt6_rescd4gt200;run;
-
-
 
 * procs;
 
-
+proc print;var caldate&j;run;
 /*
 
 
@@ -18876,7 +19983,6 @@ if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do;
 if cald = 2016.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.13 ) then do; abort abend; end;
 
 if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
-
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

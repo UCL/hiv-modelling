@@ -1,12 +1,12 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Malawi\";
 
 data a;
-set a.malawi_19;
+set a.malawi_19a;
 if run=. then delete;
 proc sort;by run;run;
 proc freq;table cald;run;
 
-proc freq;table s_dead_undiag;run;
+proc freq;table s_death_hiv s_hiv_death;run;
 
 data sf;
 set a;
