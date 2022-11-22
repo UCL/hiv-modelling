@@ -34,7 +34,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 * p_newp_ge1;					p_newp_ge1_ = s_newp_ge1 / s_alive1564 ;
 * p_newp_ge5;					p_newp_ge5_ = s_newp_ge5 / s_alive1564 ;
-* gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
+* gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; *log_gender_r_newp  = log(gender_r_newp);
 * n_tested;						n_tested = s_tested * &sf * 4;
 * p_tested_past_year_1549m;		if s_alive1549_m - s_diag_m1549_ > 0 then p_tested_past_year_1549m = s_tested_4p_m1549_ /  (s_alive1549_m - s_diag_m1549_) ;
 * p_tested_past_year_1549w;		if s_alive1549_w - s_diag_w1549_ > 0 then p_tested_past_year_1549w = s_tested_4p_w1549_ /  (s_alive1549_w - s_diag_w1549_) ;
@@ -116,7 +116,7 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 * n_alive;						n_alive = s_alive * &sf;
 
 keep	cald	run		option
-p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			log_gender_r_newp	
+p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	p_mcirc_1549m		prop_w_1549_sw		prop_w_ever_sw	
 prop_sw_hiv			prop_w_1524_onprep	prop_1564_onprep	prevalence1549_		prevalence1549m		prevalence1549w	
 incidence1549_		incidence1564_		incidence1524m		incidence1524w		incidence2534m		incidence2534w
@@ -132,7 +132,7 @@ n_cd4_lt200_		n_hiv		n_alive;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =56;
+%let nfit =45;
 proc sort;by cald option ;run;
 
 data option_0;
@@ -140,7 +140,7 @@ set b;
 if option =1 then delete;
 
 %let var =  
-p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			log_gender_r_newp	
+p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_				
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	p_mcirc_1549m		prop_w_1549_sw		prop_w_ever_sw	
 prop_sw_hiv	prop_w_1524_onprep			prop_1564_onprep	prevalence1549_		prevalence1549m		prevalence1549w	
 incidence1549_		incidence1564_		incidence1524m		incidence1524w		incidence2534m		incidence2534w
@@ -196,7 +196,7 @@ if option =0 then delete;
 
 %let var =  
 
-p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_			log_gender_r_newp	
+p_w_giv_birth_this_per	mtct_prop		p_newp_ge1_	 		p_newp_ge5_				
 n_tested	p_tested_past_year_1549m	p_tested_past_year_1549w	p_mcirc_1549m		prop_w_1549_sw	prop_w_ever_sw
 prop_sw_hiv	prop_w_1524_onprep			prop_1564_onprep	prevalence1549_		prevalence1549m		prevalence1549w	
 incidence1549_		incidence1564_		incidence1524m		incidence1524w		incidence2534m		incidence2534w
@@ -255,9 +255,9 @@ data d; * this is number of variables in %let var = above ;
 merge 
 g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
-g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  
+g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66   
 
-/*g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
+/*g67 g68  g69  g70  g71 g72  g73  g74 g75 g76  g77  g78 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -534,7 +534,7 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_19a.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Malawi_19aa.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";

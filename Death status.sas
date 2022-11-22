@@ -269,10 +269,10 @@ if yrart ne . and onart ne 1 and lost=1 then dead_int_lost=1;
 if yrart ne . and onart ne 1 and lost=1 and date_last_interrupt=date_1st_int then dead_1stint_lost=1; 
 
 * 15	ART interrupted, out of care, subsequent interruption, < 6 months from last interruption ;
-if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interruption - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
+if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then dead_subintlt6_lost=1; 
 
 * 16	ART interrupted, out of care, subsequent interruption, > 6 months from last interruption ;
-if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interruption - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
+if yrart ne . and onart ne 1 and lost=1 and date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart >0.5) then dead_subintgt6_lost=1;
 
 * 17	On ART, no time restrictions, CD4<200 at time of death;
 if onart=1 and 0 < cd4_dead lt 200 then dead_A_cd4lt200=1; 
