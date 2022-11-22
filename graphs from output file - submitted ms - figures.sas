@@ -44,7 +44,7 @@ data option_0;
 set b;
 if option ne 0 then delete;
 
-%let var = p_vl1000_art_12m_onart ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = incidence1549_ ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -88,7 +88,7 @@ data option_1;
 set b;
 if option ne 1 then delete;
 
-%let var = p_vl1000_art_12m_onart  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = incidence1549_  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -144,12 +144,13 @@ ods html ;
 filename odsout "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
 /* Specify the output environment, including SGE=ON. */
-ods html path=odsout file="mySGEfile.htm" sge=on;
-ods graphics / reset width=4.5in imagename="editableImage_fig_1d";
+* ods html path=odsout file="mySGEfile.htm" sge=on;
+* ods graphics / reset width=4.5in imagename="editableImage_fig_1d";
 
-/*
+ods pdf file="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\fig_1a.pdf";
 
-ods html;
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -165,9 +166,9 @@ band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transpar
 
 
 run;
-quit;
 
 
+/*
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
@@ -182,7 +183,7 @@ band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transp
 series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
-run;quit; 
+run;
 
 
 
@@ -203,7 +204,6 @@ band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / tr
 run;quit;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
@@ -220,9 +220,8 @@ band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transp
 
 run;quit;
 
-*/
 
-ods html;
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of people on ART 12 months from start of ART, proportion with VL < 1000";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -236,12 +235,12 @@ band    x=cald lower=p5_p_vl1000_art_12m_onart_0 	upper=p95_p_vl1000_art_12m_ona
 series  x=cald y=p50_p_vl1000_art_12m_onart_1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_p_vl1000_art_12m_onart_1 	upper=p95_p_vl1000_art_12m_onart_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
-run;quit;
+run;
+
+ods pdf close;
 
 
-/*
 
-ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of AIDS deaths per year";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -255,7 +254,8 @@ band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0
 series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
 band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
-run;quit;
+run;
+
 
 
 ods html;
@@ -276,3 +276,6 @@ run;quit;
 ods html close;
 
 */
+
+
+ods pdf close;
