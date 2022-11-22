@@ -4836,16 +4836,18 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1 a
 
 	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
 			r=rand('uniform');	
-			if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; 
-				pop_wide_tld_prep=1; 				
-				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
-				prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+			if prep_oral_tm1 = 1 then do;
+				if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; 
+					pop_wide_tld_prep=1; 				
+					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
+					prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
+				end;
+				if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
+					pop_wide_tld_prep=0;	
+					stop_prep_any_choice=1;  
+					stop_prep_oral_choice=1; 
+				end; 
 			end;
-			if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
-				pop_wide_tld_prep=0;	
-				stop_prep_any_choice=1;  
-				stop_prep_oral_choice=1; 
-			end; 
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
