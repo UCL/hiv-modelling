@@ -7,6 +7,10 @@ make sure rate_choose_stop_prep_oral and rate_choose_stop_prep_inj are consisten
 
 corrected date_prep_inj_intro=2024
 
+compare this program with andrew_
+
+do a pull request for core on resolving the extra dalys to be counted
+
 ;
 
 
