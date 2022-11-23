@@ -5117,7 +5117,7 @@ currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
 pep_not_prep = 0; 
-if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and (ever_newp ne 1 or ever_tested = 1) and pop_wide_tld_as_art ne 1
+if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and pop_wide_tld_as_art ne 1
 then do;  a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
 * those taking tld as prep/pep and not because they think they might have hiv;
 
