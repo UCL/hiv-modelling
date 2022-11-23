@@ -11,6 +11,8 @@ compare this program with andrew_
 
 do a pull request for core on resolving the extra dalys to be counted
 
+documentation to justify disability weight 0.02 for diagnosed hiv
+
 ;
 
 
