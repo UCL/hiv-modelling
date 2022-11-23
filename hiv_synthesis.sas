@@ -4819,7 +4819,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) 
 	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
 
 			* new for pop_wide_tld;
-			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 and ever_tested ne 1 condition;
+			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 condition;
 			r=rand('uniform'); a = rand('uniform'); 
 			if hiv ne 1 then a = a * pop_wide_tld_selective_hiv; 
 			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and a < prob_tld_if_untested)
