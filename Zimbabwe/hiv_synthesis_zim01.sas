@@ -143,7 +143,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1984 + 0.25;
+startyr = 1991 + 0.25; *zim specific;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
