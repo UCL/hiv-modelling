@@ -20312,11 +20312,12 @@ end;
 
 * Currently runs 3 replicates through 2022 - add back 2022-2052 later;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=1);
-data a ; set r2;
+%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data a ; set r1;
 
 * Replicate 1;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
+
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20464,8 +20465,7 @@ data r1; set b;
 
 
 * Replicate 2;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20611,8 +20611,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
 
 * Replicate 3;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20756,6 +20755,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
+
 
 * ts1m:  need more update statements ;
 
