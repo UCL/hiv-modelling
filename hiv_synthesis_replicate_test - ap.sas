@@ -1,7 +1,16 @@
 
 * run 62 all;
 * Matt's local machine input;
-libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
+libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc\';
+
+/*
+
+data e; set a.out861880;
+
+proc print; var run cald option; run; 
+
+*/
+
 %let tmpfilename = out;
 
 * Myriad input; 
@@ -19359,6 +19368,7 @@ values from that 3 month period
 
 data cum_l&da2; set cum_l&da1 sums;
 
+proc print data=cum_l&da2; var run cald option; run;
 
 data s;set sums;
 do i=1 to &population; 
@@ -20315,11 +20325,12 @@ end;
 
 * Currently runs 3 replicates through 2022 - add back 2022-2052 later;
 %update_r1(da1=1,da2=2,e=1,f=2,g=1,h=8,j=1,s=1);
-data a ; set r2;
+%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data a ; set r1;
 
 * Replicate 1;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
+
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20467,8 +20478,7 @@ data r1; set b;
 
 
 * Replicate 2;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20614,8 +20624,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
 
 * Replicate 3;
-data r2; set a;
-%update_r1(da1=2,da2=1,e=2,f=3,g=1,h=8,j=2,s=1);
+data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
 %update_r1(da1=2,da2=1,e=4,f=5,g=1,h=8,j=4,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=1,h=8,j=5,s=1);
@@ -20786,7 +20795,7 @@ data x; set cum_l1;
 
 put   
  
-libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
+libname b 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc';
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
