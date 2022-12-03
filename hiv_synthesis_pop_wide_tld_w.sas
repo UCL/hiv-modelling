@@ -580,7 +580,8 @@ newp_seed = 7;
 							* adjustment to degree of cd4 change for being on nnrti not pi when nactive <= 2 ;
 							* dependent_on_time_step_length ;
 * rate_int_choice;  		%sample(rate_int_choice, 	0.0020 0.0040 0.0080 0.02 0.05, 
-														0.25 0.25 0.25 0.15 0.05); 
+														0.35 0.40 0.20 0.04 0.01);  * change sep22 for pop_wide_tld;
+
 
 * clinic_not_aw_int_frac;  	%sample_uniform(clinic_not_aw_int_frac, 0.1 0.3 0.5 0.7 0.9);
 							* fraction of people who are visiting clinic who have interrupted art in whom clinic is not aware (and hence wrongly called virologic failure);
@@ -707,7 +708,7 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.60 0.40);
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67);
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); 
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
@@ -858,7 +859,7 @@ end;
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_if_untested;	%sample_uniform(prob_tld_if_untested, 0.0 0.005 0.0025);
+* prob_tld_if_untested;	%sample_uniform(prob_tld_if_untested, 0.0 0.0005 0.0025);
 
 * prob_onartvis0_0_to_1;			%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 0.2); 
 * prob_onartvis0_1_to_0;			%sample_uniform(prob_onartvis0_1_to_0, 0.005 0.01 0.03 0.05); 
@@ -975,7 +976,7 @@ end;
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_primary_ts1m = 0.67  ; sens_vct=0.98; spec_vct=1;     end; 
 else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; * sens_primary_ts1m = 0 ;  sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
+else if hivtest_type=4 then do; sens_primary=0.75; * sens_primary_ts1m = 0 ; sens_vct=0.98; spec_vct=1; test_4thgen=1; * test_4thgen=1 moved here mar19;  end;
 
 
 * COSTS;
@@ -2767,20 +2768,29 @@ end;
 
 tested_anc=.;
 
-* Jan2017 - modified testing criteria so that prep_oral_tm1 =0 as people previously on oral prep would only test for prep purposes;
-* lapr - also excluded inj and vr ; * JAS Sep2021 ;
-if t ge 2 and date_start_testing <= caldate{t} and prep_oral_tm1 ne 1 and prep_inj_tm1 ne 1 and prep_vr_tm1 ne 1 then do; 
+if t ge 2 and date_start_testing <= caldate{t} then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
 
 		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
-
+		rate_1sttest_2011 = initial_rate_1sttest + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
+		rate_reptest_2011 = 0.0000 + (min(2011,date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;																					
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
-end;
+	
 
+end;
 
 if caldate{t} >= &year_interv and incr_test_year_i = 1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 if caldate{t} >= &year_interv and incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
+
+***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
+if caldate{t} >= 2022.5 and incr_test_year_i = 3 then do; 
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
+		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
+		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
+		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
+end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -4053,11 +4063,17 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 
 if t ge 2 then do;
 s=rand('uniform');   * dependent_on_time_step_length ;
-tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
-and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
-tested_symptoms_not_hiv =1; tested=1; 
-if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+tested_symptoms_not_hiv =0; 
+if s < rate_non_hiv_symptoms then do;u=rand('uniform');
+	if . < date_start_testing <= caldate{t} and tested ne 1 and registd_tm1 ne 1
+	and (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) 
+	and u < (test_rate_non_tb_who3+test_rate_who4)/2 then do; 
+	tested_symptoms_not_hiv =1; tested=1; 
+	if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+	end;
 end;
+end;
+
 
 
 *choice of value for rate_non_hiv_symptoms will be informed by data in proportion of people who are tested for 
@@ -4399,7 +4415,7 @@ tested_as_sw=.;
 
 testfor_prep_oral=0; testfor_prep_inj=0; testfor_prep_vr=0;
  
-if registd ne 1 and caldate{t} ge (date_start_testing+3.5) and tested ne 1 
+if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
@@ -6294,7 +6310,7 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 
 			if s < j then epdiag=1;
 
-			a=rand('uniform');if (date_start_testing+3.5) <= caldate{t} then do;
+			a=rand('uniform');if (date_start_testing+5.5) <= caldate{t} then do;
 				if s <  0.9 then epdiag=mr_epdiag;
 				if s >=0.9 and a < j then epdiag=1;
 			end;
@@ -6959,7 +6975,7 @@ naive=1;
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		sens_primary=0.65;
+		sens_primary=0.75;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
