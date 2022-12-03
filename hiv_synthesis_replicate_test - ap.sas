@@ -5,7 +5,7 @@ libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc\';
 
 /*
 
-data e; set a.out861880;
+data e; set a.out741576;
 
 proc print; var run cald option; run; 
 
@@ -20786,12 +20786,13 @@ data r1; set b;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 data x; set cum_l1;
 
 * file "/home/rmjlxxx/Scratch/_output_base_28_05_21_&dataset_id";  
 * file "C:\Users\sf124046\Box\sapphire_modelling\synthesis\_output_base_08_09_21_&dataset_id";
+
 
 put   
  
@@ -20801,7 +20802,7 @@ libname b 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-
+*/
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
