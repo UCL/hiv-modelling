@@ -770,7 +770,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * low_prep_inj_uptake;			%sample(low_prep_inj_uptake, 0 1, 0.67 0.33);
 
-* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
+* prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 								* note this is for women and assumed the value **2 for men;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
@@ -787,7 +787,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * new for pop_wide_tld ;
 
-* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 0.3 ; * tends to be more preference for inj ;
+* pref_prep_inj_beta_s1;		pref_prep_inj_beta_s1 = pref_prep_oral_beta_s1 + 1.0 ; * tends to be more preference for inj ;
 
 * hivtest_type_1_init_prep_inj; %sample(hivtest_type_1_init_prep_inj, 0 1, 0.5 0.5);
 								if hivtest_type_1_init_prep_inj=0 then hivtest_type_1_prep_inj=0;
@@ -871,7 +871,7 @@ end;
 																					(indicated by testing=1) on prev effectiveness;
 
 * prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
-* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
+* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.2 0.5 0.8, 0.33 0.34 0.33);	
 
 * COVID-19 ;
 
