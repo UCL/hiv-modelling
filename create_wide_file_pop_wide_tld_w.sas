@@ -1749,7 +1749,7 @@ proc freq; tables run;
 
 * To get one row per run;
 
-  data  w_pwt_w     ; 
+  data  a.w_pwt_w     ; 
   merge   wide_outputs           wide_par     ;
   by run;
 
@@ -1764,7 +1764,7 @@ dcost_non_aids_pre_death_50y_2 = dcost_non_aids_pre_death_50y_2 / 5;
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.30 ;
 
 
-  if run <= 838506127 ;
+* if run <= 838506127 ;
 
 
 
