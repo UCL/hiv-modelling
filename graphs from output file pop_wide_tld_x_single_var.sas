@@ -64,7 +64,7 @@ ods html close;
 
 * n_death_hiv = n_death_hiv_inf_pre_year_interv + n_death_hiv_inf_post_year_interv;
 
-%let single_var =  n_cd4_lt200_     ;  * n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
+%let single_var =  incidence1549_     ;  * n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
 
 * if artvis0_lower_adh ne 1 ;
 
@@ -542,7 +542,7 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -560,6 +560,8 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
+
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -632,7 +634,6 @@ run;
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -650,8 +651,6 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 200000   
 
 run;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 

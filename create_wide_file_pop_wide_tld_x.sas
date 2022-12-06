@@ -1331,7 +1331,7 @@ proc freq; tables run; where cald = 2020; run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    l_pwt_x  ; set k_pwt_x_c;  
+data    a.l_pwt_x  ; set k_pwt_x_c;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1354,7 +1354,7 @@ run;
 * libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-data y ; set l_pwt_x  ; 
+data y ; set a.l_pwt_x  ; 
 
   options nomprint;
   option nospool;
