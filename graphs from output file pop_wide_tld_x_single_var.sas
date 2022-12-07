@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\log1";
 
 data b;
-set l_pwt_x   ;
+ set a.l_pwt_x   ;
 
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
@@ -64,10 +64,12 @@ ods html close;
 
 * n_death_hiv = n_death_hiv_inf_pre_year_interv + n_death_hiv_inf_post_year_interv;
 
-%let single_var =  incidence1549_     ;  * n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
+%let single_var =  p_pop_wide_tld_prep_elig  ;  * s_pop_wide_tld_neg_prep_inelig  s_pop_wide_tld_prep  n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
 
+* if rate_choose_stop_prep_oral = 0.30; 
 * if artvis0_lower_adh ne 1 ;
-
+* if rate_int_choice = 0.002 ;
+  if pop_wide_tld_selective_hiv = 5 ;
 
 
 /*
@@ -199,10 +201,8 @@ ods html ;
 * n_pop_wide_tld_prep_elig ;	n_pop_wide_tld_prep_elig = s_pop_wide_tld_prep_elig * &sf ;
 * p_pop_tld_neg_prep_inel;	p_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig / s_pop_wide_tld_prep ;
 * n_pop_tld_neg_prep_inel;	n_pop_tld_neg_prep_inel = s_pop_wide_tld_neg_prep_inelig * &sf ;
-*/
 
 
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -220,6 +220,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
 run;quit;
 
+*/
 
 ods html;
 proc sgplot data=d; 
@@ -236,6 +237,45 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_p_pop_wide_tld_prep_elig_1 	upper=p95_p_pop_wide_tld_prep_elig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
+
+/*
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "........";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n'		labelattrs=(size=12)  values = (0 to 3000     by 1000 ) valueattrs=(size=10);
+
+  label p50_s_pop_wide_tld_prep_0 = "No community TLD/PEP (median)";
+  label p50_s_pop_wide_tld_prep_1 = "Community TLD/PEP (median)";
+
+  series  x=cald y=p50_s_pop_wide_tld_prep_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_s_pop_wide_tld_prep_0 	upper=p95_s_pop_wide_tld_prep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_s_pop_wide_tld_prep_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_s_pop_wide_tld_prep_1 	upper=p95_s_pop_wide_tld_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;quit;
+
+
+/*
+
+
+proc sgplot data=d; 
+Title    height=1.5 justify=center "........";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'n'		labelattrs=(size=12)  values = (0 to 3000     by 1000 ) valueattrs=(size=10);
+
+  label p50_s_pop_wide_tld_prep_elig_0 = "No community TLD/PEP (median)";
+  label p50_s_pop_wide_tld_prep_elig_1 = "Community TLD/PEP (median)";
+
+  series  x=cald y=p50_s_pop_wide_tld_prep_elig_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_s_pop_wide_tld_prep_elig_0 	upper=p95_s_pop_wide_tld_prep_elig_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_s_pop_wide_tld_prep_elig_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_s_pop_wide_tld_prep_elig_1 	upper=p95_s_pop_wide_tld_prep_elig_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+run;
+
 
 
 ods html;
@@ -347,6 +387,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
   band    x=cald lower=p5_prop_elig_on_prep_1 	upper=p95_prop_elig_on_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
+
 
 
 ods html;
@@ -542,7 +583,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -560,8 +600,6 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -812,6 +850,7 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_art_or_prep";
@@ -828,8 +867,9 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 3000000  by 10
 
 run;quit;
 
-ods html close;
 
+
+ods html close;
 
  
 ods html;
@@ -849,7 +889,6 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000   by 1
 run;quit;
 
 ods html close;
-
 
 
 proc sgplot data=d; 
