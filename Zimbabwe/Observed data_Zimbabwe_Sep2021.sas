@@ -1734,6 +1734,14 @@ if cald=2016.25 then do;
 	o_p_diag_1564w_zimphia=0.801;o_p_diag_1564w_ll_zimphia=0.781;o_p_diag_1564w_ul_zimphia=0.820;
 
 end;
+
+***ZIMPHIA 2020;
+if cald=2020.25 then do;
+	o_p_diag_1564_zimphia=0.868;
+	o_p_diag_1564m_zimphia=0.843;	
+	o_p_diag_1564w_zimphia=0.883;
+end;
+
 * Source: Summary sheet December 2020 Zimbabwe population-based HIV impact assessment;
 if cald=2020 then do;
 	o_p_diag_15pl_zimphia=0.868;
