@@ -12,7 +12,7 @@ s_alive = s_alive_m + s_alive_w ;
 sf_2022 = (15117400 * 0.581) / s_alive;  
 *Source for Zimbabwe population is https://www.worldometers.info/world-population/zimbabwe-population/ accessed 6/9/2021;
 * 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
-keep s_alive run sf_2022;
+keep run sf_2022;
 
 
 proc sort; by run;run;
