@@ -5,7 +5,7 @@ combinedsas="combined_data"
 runs="100"
 jobname="hivmodel"
 model="hiv_synthesis.sas"
-clock="h_rt=08:00:00"
+clock="h_rt=24:00:00"
 account="HIVSynthMod"
 
 while getopts a:i:o:r:j:m:c:t: flag

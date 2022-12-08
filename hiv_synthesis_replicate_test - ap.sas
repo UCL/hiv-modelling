@@ -1,8 +1,8 @@
 
 * run 62 all;
 * Matt's local machine input;
-libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc\';
-
+*libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\misc\';
+libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 /*
 
 data e; set a.out741576;
@@ -21,7 +21,7 @@ proc print; var run cald option; run;
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
- proc printto ; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
+ proc printto log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; run;
 
 	
 %let population = 1000 ; 
@@ -21672,4 +21672,4 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 ;
 
-*proc printto; *run;
+proc printto; run;

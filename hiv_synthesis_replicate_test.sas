@@ -12,7 +12,7 @@ libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
- proc printto ; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
+ proc printto log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; run;
 
 	
 %let population = 1000 ; 
@@ -20780,7 +20780,7 @@ data r1; set b;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 data x; set cum_l1;
 
@@ -20789,13 +20789,13 @@ data x; set cum_l1;
 
 put   
  
-libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
+libname c 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
 
-
+*/
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
 
@@ -21665,4 +21665,4 @@ cab_res_emerge_primary			Is in primary infection and insti resistance emerged in
 
 ;
 
-*proc printto; *run;
+proc printto; run;

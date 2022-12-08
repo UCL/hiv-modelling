@@ -1,5 +1,5 @@
 
-* run 62 all;
+* run 65 all;
 * Matt's local machine input;
 *libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 *%let tmpfilename = out;
@@ -868,29 +868,29 @@ interval_visit_hypertension=0.5;
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
-cost_htn_visit = 0.005;
-cost_htn_drug1 = 0.002;
-cost_htn_drug2 = 0.004;
-cost_htn_drug3 = 0.015;
+cost_htn_visit = 0.023;
+cost_htn_drug1 = 0.0027;
+cost_htn_drug2 = 0.0027;
+cost_htn_drug3 = 0.0052;
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
 	* effect of sbp on risk of cvd events;
-	effect_sbp_ihd = 0.03;
+	effect_sbp_ihd = 0.035;
 	* effect of gender on risk of cvd death;
 	effect_gender_ihd = 0.4;
 	* effect of age on risk of cvd death;
-	effect_age_ihd = 0.08;
+	effect_age_ihd = 0.09;
 	* base risk of cvd (before adding effects of age, gender, sbp);
 	base_ihd_risk = 0.00001;
 
 	* Stroke (CVA);
 	* effect of sbp on risk of cvd events;
-	effect_sbp_cva = 0.04;
+	effect_sbp_cva = 0.05;
 	* effect of gender on risk of cvd death;
 	effect_gender_cva = 0;
 	* effect of age on risk of cvd death;
-	effect_age_cva = 0.07;
+	effect_age_cva = 0.09;
 	* base risk of cvd (before adding effects of age, gender, sbp);
 	%sample_uniform(base_cva_risk, 0.000008 0.00001);
 
@@ -1648,7 +1648,7 @@ end;
 
 * for simplicity assume nobody on anti-hypertensives at baseline in 1989 and no one with prior CVD;
 diagnosed_hypertension = 0; on_anti_hypertensive = 0; ever_on_anti_hyp=0;
-prior_cvd = 0;
+prior_cvd = 0; prior_cva = 0; prior_ihd = 0;
 
 * define person-specific effect of 1, 2 and 3 anti-hypertensives;
 %sample(effect_anti_hyp_1, 10 20 30, 0.7 0.2 0.1); 
@@ -2059,6 +2059,8 @@ sbp_m_tm1 = sbp_m;
 htn_lifestyle_counsel_tm1 = htn_lifestyle_counsel;
 ihd_this_per = 0;
 cva_this_per = 0;
+first_ihd = 0;
+first_cva = 0;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -3115,6 +3117,7 @@ if age <= 15.25  then do;
 	%sample(sbp, 	95		105		115 	125 	135 	145 	155 	165 	175 	185, 
 					0.27	0.20	0.19 	0.16 	0.10	0.05	0.02	0.01	0.00	0.00); 
 	diagnosed_hypertension = 0; on_anti_hypertensive = 0; htn_visit_count = 0;
+	prior_cvd = 0; prior_cva = 0; prior_ihd = 0;
 end;
 
 if age <=15.25 and gender = 2 then do;
@@ -11523,9 +11526,49 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 ;
 
 
-* based on SA death rates in 1997 (pre most AIDS deaths); 
-		*HYPERTENSION - ALL CAUSE MORTALITY;
-				if gender=1 then do; 
+* 1989 death rates are based on SA death rates in 1997 (pre most AIDS deaths) with multiplier to remove CVD deaths
+		death rates change linearly between 1989 and 2019 to arrive at 2019 global burden of disease data
+		death rates remain constant at GBD 2019 levels after 2019; 
+		*HYPERTENSION - ALL CAUSE MORTALITY HIV;
+	if caldate{t} < 2019 then do;
+		if gender=1 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00200 - (0.000024 * (caldate{t} - 1989));
+			if 20 <= age < 25 then ac_death_rate = 0.00320 - (0.000044 * (caldate{t} - 1989));
+			if 25 <= age < 30 then ac_death_rate = 0.00580 - (0.000024 * (caldate{t} - 1989));
+			if 30 <= age < 35 then ac_death_rate = 0.00750 - (0.000118 * (caldate{t} - 1989));
+			if 35 <= age < 40 then ac_death_rate = 0.00800 - (0.000153 * (caldate{t} - 1989));
+			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97 - (0.000166 * (caldate{t} - 1989));
+			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97 - (0.000174 * (caldate{t} - 1989));
+			if 50 <= age < 55 then ac_death_rate = 0.01900*0.90 - (0.000252 * (caldate{t} - 1989));
+			if 55 <= age < 60 then ac_death_rate = 0.02500*0.90 - (0.000287 * (caldate{t} - 1989));
+			if 60 <= age < 65 then ac_death_rate = 0.03500*0.90 - (0.000368 * (caldate{t} - 1989));
+			if 65 <= age < 70 then ac_death_rate = 0.04500*0.90 - (0.000379 * (caldate{t} - 1989));
+			if 70 <= age < 75 then ac_death_rate = 0.05500*0.90 - (0.000224 * (caldate{t} - 1989));
+			if 75 <= age < 80 then ac_death_rate = 0.06500*0.90 + (0.000100 * (caldate{t} - 1989));
+			if 80 <= age < 85 then ac_death_rate = 0.10000*0.90 + (0.000035 * (caldate{t} - 1989));
+			if 85 <= age  then ac_death_rate = 0.4000*0.90 - (0.007056 * (caldate{t} - 1989));
+		end;
+
+		if gender=2 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00150 - (0.000023 * (caldate{t} - 1989));
+			if 20 <= age < 25 then ac_death_rate = 0.00280 - (0.000057 * (caldate{t} - 1989));
+			if 25 <= age < 30 then ac_death_rate = 0.00400 - (0.000087 * (caldate{t} - 1989));
+			if 30 <= age < 35 then ac_death_rate = 0.00400 - (0.000075 * (caldate{t} - 1989));
+			if 35 <= age < 40 then ac_death_rate = 0.00420 - (0.000064 * (caldate{t} - 1989));
+			if 40 <= age < 45 then ac_death_rate = 0.00550*0.97 - (0.000074 * (caldate{t} - 1989));
+			if 45 <= age < 50 then ac_death_rate = 0.00750*0.97 - (0.000103 * (caldate{t} - 1989));
+			if 50 <= age < 55 then ac_death_rate = 0.01100*0.90 - (0.000127 * (caldate{t} - 1989));
+			if 55 <= age < 60 then ac_death_rate = 0.01500*0.90 - (0.000153 * (caldate{t} - 1989));	
+			if 60 <= age < 65 then ac_death_rate = 0.02100*0.90 - (0.000179 * (caldate{t} - 1989));
+			if 65 <= age < 70 then ac_death_rate = 0.03000*0.90 - (0.000249 * (caldate{t} - 1989));
+			if 70 <= age < 75 then ac_death_rate = 0.03800*0.90 - (0.000125 * (caldate{t} - 1989));
+			if 75 <= age < 80 then ac_death_rate = 0.05000*0.90 - (0.000002 * (caldate{t} - 1989));
+			if 80 <= age < 85 then ac_death_rate = 0.07000*0.90 + (0.000316 * (caldate{t} - 1989));
+			if 85 <= age  then ac_death_rate = 0.15000*0.90 - (0.000415 * (caldate{t} - 1989));
+		end;
+	end;
+	if caldate{t} ge 2019 then do;
+		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00128;
 			if 20 <= age < 25 then ac_death_rate = 0.00205;
 			if 25 <= age < 30 then ac_death_rate = 0.00260;
@@ -11560,7 +11603,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 			if 80 <= age < 85 then ac_death_rate = 0.07249;
 			if 85 <= age  then ac_death_rate = 0.12256;
 		end;
-
+	end;
 		if c_neph=1 then ac_death_rate=ac_death_rate+0.005;
 		if c_lac=1 then ac_death_rate=ac_death_rate+0.10;
 
@@ -11614,12 +11657,23 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	
 if dead ne 1 then do;
 	* risk of ihd and cva;
-	if sbp  < 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd) ; *male = 1 and female = 2, greater mortality in men;
-	if sbp >= 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd) ;
-	
-	if sbp  < 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd) ; *male = 1 and female = 2, greater mortality in men;
-	if sbp >= 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd) ;
-	
+	if age ge 60 then do;
+		effect_sbp_ihd = 0.04;
+		effect_sbp_cva = 0.03;
+	end;
+	if age ge 80 then do;
+		effect_sbp_ihd = 0.02;
+		effect_sbp_cva = 0.02;
+	end;
+	if sbp  < 115 then do; *male = 1 and female = 2;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd) ; 
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd) ;
+	end;
+	if sbp ge 115 then do;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd) ;
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd) ;
+	end;
+
 	* risk of cvd death;	
 	xihd = rand('uniform');
 		* increased CVD risk with HIV;
@@ -11638,16 +11692,17 @@ if dead ne 1 then do;
 		end;
 		if prior_ihd =0 then do;
 			cvd_death_risk = 0.4;
-			prior_ihd = 1;
-			prior_cvd = 1;
+			first_ihd = 1;
 		end;
+		prior_ihd = 1;
+		prior_cvd = 1;
 	end;
 	
 	if prior_ihd = 1 and ihd_this_per = 0 then do;
-		cvd_death_rate = 0.0125;
+		cvd_death_risk = 0.0125;
 		if subsequent_ihd = 1 then do;
-			if ihd_date + 1 <= caldate{t} then cvd_death_rate = 0.05;
-			if ihd_date + 1 >  caldate{t} then cvd_death_rate = 0.025;
+			if ihd_date + 1 <= caldate{t} then cvd_death_risk = 0.05;
+			if ihd_date + 1 >  caldate{t} then cvd_death_risk = 0.025;
 		end;
 	end;
 
@@ -11660,14 +11715,15 @@ if dead ne 1 then do;
 
 	if xcva le cva_risk then do;
 		cva_this_per =1;
+		if prior_cva = 0 then first_cva = 1;
 		cvd_this_per =1;
-		if cvd_death_risk < 0.32 then cvd_death_risk = 0.32;
+		if cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
 
 	if prior_cva = 1 and cva_this_per = 0 then do;
-		if cvd_death_risk < 0.06 then cvd_death_risk = 0.06;
+		if cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
 	end;
 
 	xcvd = rand('uniform');
@@ -11986,42 +12042,85 @@ TB death ~ 7% of deaths in > 15�s
 so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 
 * HYPERTENSION - ADDING IN GBD DEATH * 0.93 TO REMOVE NON-HIV TB;
-* based on SA death rates in 1997 (pre most AIDS deaths); 
+* 1989 death rates are based on SA death rates in 1997 (pre most AIDS deaths) with multiplier to remove CVD deaths
+		death rates change linearly between 1989 and 2019 to arrive at 2019 global burden of disease data
+		death rates remain constant at GBD 2019 levels after 2019; 
+		*HYPERTENSION - ALL CAUSE MORTALITY non-HIV;
+		* all death rates multiplied by 0.93 to remove non-HIV TB deaths since these are explicitly modeled;
+	if caldate{t} < 2019 then do;
 		if gender=1 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00128*0.93;
-			if 20 <= age < 25 then ac_death_rate = 0.00205*0.93;
-			if 25 <= age < 30 then ac_death_rate = 0.00260*0.93;
-			if 30 <= age < 35 then ac_death_rate = 0.00353*0.93;
-			if 35 <= age < 40 then ac_death_rate = 0.00484*0.93;
-			if 40 <= age < 45 then ac_death_rate = 0.00663*0.93;
-			if 45 <= age < 50 then ac_death_rate = 0.00866*0.93;
-			if 50 <= age < 55 then ac_death_rate = 0.01164*0.93;
-			if 55 <= age < 60 then ac_death_rate = 0.01557*0.93;
-			if 60 <= age < 65 then ac_death_rate = 0.02169*0.93;
-			if 65 <= age < 70 then ac_death_rate = 0.03005*0.93;
-			if 70 <= age < 75 then ac_death_rate = 0.04352*0.93;
-			if 75 <= age < 80 then ac_death_rate = 0.06210*0.93;
-			if 80 <= age < 85 then ac_death_rate = 0.09132*0.93;
-			if 85 <= age  then ac_death_rate = 0.14857*0.93;
+			if 15 <= age < 20 then ac_death_rate = (0.00200 - (0.000024 * (caldate{t} - 1989))) * 0.93;
+			if 20 <= age < 25 then ac_death_rate = (0.00320 - (0.000044 * (caldate{t} - 1989))) * 0.93;
+			if 25 <= age < 30 then ac_death_rate = (0.00580 - (0.000024 * (caldate{t} - 1989))) * 0.93;
+			if 30 <= age < 35 then ac_death_rate = (0.00750 - (0.000118 * (caldate{t} - 1989))) * 0.93;
+			if 35 <= age < 40 then ac_death_rate = (0.00800 - (0.000153 * (caldate{t} - 1989))) * 0.93;
+			if 40 <= age < 45 then ac_death_rate = (0.01000*0.97 - (0.000166 * (caldate{t} - 1989))) * 0.93;
+			if 45 <= age < 50 then ac_death_rate = (0.01200*0.97 - (0.000174 * (caldate{t} - 1989))) * 0.93;
+			if 50 <= age < 55 then ac_death_rate = (0.01900*0.90 - (0.000252 * (caldate{t} - 1989))) * 0.93;
+			if 55 <= age < 60 then ac_death_rate = (0.02500*0.90 - (0.000287 * (caldate{t} - 1989))) * 0.93;
+			if 60 <= age < 65 then ac_death_rate = (0.03500*0.90 - (0.000368 * (caldate{t} - 1989))) * 0.93;
+			if 65 <= age < 70 then ac_death_rate = (0.04500*0.90 - (0.000379 * (caldate{t} - 1989))) * 0.93;
+			if 70 <= age < 75 then ac_death_rate = (0.05500*0.90 - (0.000224 * (caldate{t} - 1989))) * 0.93;
+			if 75 <= age < 80 then ac_death_rate = (0.06500*0.90 + (0.000100 * (caldate{t} - 1989))) * 0.93;
+			if 80 <= age < 85 then ac_death_rate = (0.10000*0.90 + (0.000035 * (caldate{t} - 1989))) * 0.93;
+			if 85 <= age  then ac_death_rate = (0.4000*0.90 - (0.007056 * (caldate{t} - 1989))) * 0.93;
 		end;
 
 		if gender=2 then do; 
-			if 15 <= age < 20 then ac_death_rate = 0.00081*0.93;
-			if 20 <= age < 25 then ac_death_rate = 0.00110*0.93;
-			if 25 <= age < 30 then ac_death_rate = 0.00139*0.93;
-			if 30 <= age < 35 then ac_death_rate = 0.00175*0.93;
-			if 35 <= age < 40 then ac_death_rate = 0.00229*0.93;
-			if 40 <= age < 45 then ac_death_rate = 0.00310*0.93;
-			if 45 <= age < 50 then ac_death_rate = 0.00419*0.93;
-			if 50 <= age < 55 then ac_death_rate = 0.00608*0.93;
-			if 55 <= age < 60 then ac_death_rate = 0.00891*0.93;	
-			if 60 <= age < 65 then ac_death_rate = 0.01353*0.93;
-			if 65 <= age < 70 then ac_death_rate = 0.01953*0.93;
-			if 70 <= age < 75 then ac_death_rate = 0.03046*0.93;
-			if 75 <= age < 80 then ac_death_rate = 0.04494*0.93;
-			if 80 <= age < 85 then ac_death_rate = 0.07249*0.93;
-			if 85 <= age  then ac_death_rate = 0.12256*0.93;
+			if 15 <= age < 20 then ac_death_rate = (0.00150 - (0.000023 * (caldate{t} - 1989))) * 0.93;
+			if 20 <= age < 25 then ac_death_rate = (0.00280 - (0.000057 * (caldate{t} - 1989))) * 0.93;
+			if 25 <= age < 30 then ac_death_rate = (0.00400 - (0.000087 * (caldate{t} - 1989))) * 0.93;
+			if 30 <= age < 35 then ac_death_rate = (0.00400 - (0.000075 * (caldate{t} - 1989))) * 0.93;
+			if 35 <= age < 40 then ac_death_rate = (0.00420 - (0.000064 * (caldate{t} - 1989))) * 0.93;
+			if 40 <= age < 45 then ac_death_rate = (0.00550*0.97 - (0.000074 * (caldate{t} - 1989))) * 0.93;
+			if 45 <= age < 50 then ac_death_rate = (0.00750*0.97 - (0.000103 * (caldate{t} - 1989))) * 0.93;
+			if 50 <= age < 55 then ac_death_rate = (0.01100*0.90 - (0.000127 * (caldate{t} - 1989))) * 0.93;
+			if 55 <= age < 60 then ac_death_rate = (0.01500*0.90 - (0.000153 * (caldate{t} - 1989))) * 0.93;	
+			if 60 <= age < 65 then ac_death_rate = (0.02100*0.90 - (0.000179 * (caldate{t} - 1989))) * 0.93;
+			if 65 <= age < 70 then ac_death_rate = (0.03000*0.90 - (0.000249 * (caldate{t} - 1989))) * 0.93;
+			if 70 <= age < 75 then ac_death_rate = (0.03800*0.90 - (0.000125 * (caldate{t} - 1989))) * 0.93;
+			if 75 <= age < 80 then ac_death_rate = (0.05000*0.90 - (0.000002 * (caldate{t} - 1989))) * 0.93;
+			if 80 <= age < 85 then ac_death_rate = (0.07000*0.90 + (0.000316 * (caldate{t} - 1989))) * 0.93;
+			if 85 <= age  then ac_death_rate = (0.15000*0.90 - (0.000415 * (caldate{t} - 1989))) * 0.93;
 		end;
+	end;
+	if caldate{t} ge 2019 then do;
+		if gender=1 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00128 * 0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00205 * 0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00260 * 0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00353 * 0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00484 * 0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.00663 * 0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.00866 * 0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.01164 * 0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.01557 * 0.93;
+			if 60 <= age < 65 then ac_death_rate = 0.02169 * 0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.03005 * 0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.04352 * 0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.06210 * 0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.09132 * 0.93;
+			if 85 <= age  then ac_death_rate = 0.14857 * 0.93;
+		end;
+
+		if gender=2 then do; 
+			if 15 <= age < 20 then ac_death_rate = 0.00081 * 0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00110 * 0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00139 * 0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00175 * 0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00229 * 0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.00310 * 0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.00419 * 0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.00608 * 0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.00891 * 0.93;	
+			if 60 <= age < 65 then ac_death_rate = 0.01353 * 0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.01953 * 0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.03046 * 0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.04494 * 0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.07249 * 0.93;
+			if 85 <= age  then ac_death_rate = 0.12256 * 0.93;
+		end;
+	end;
 
 
 * if using tld_prep in whole population need to consider effects of dolutegravir on weight gain and any consequent effect on mortality;
@@ -12068,11 +12167,22 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	
 if dead ne 1 then do;
 	* risk of ihd and cva;
-	if sbp  < 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd) ; *male = 1 and female = 2, greater mortality in men;
-	if sbp >= 115 then ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd) ;
-	
-	if sbp  < 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd) ; *male = 1 and female = 2, greater mortality in men;
-	if sbp >= 115 then cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd) ;
+	if age ge 60 then do;
+		effect_sbp_ihd = 0.04;
+		effect_sbp_cva = 0.03;
+	end;
+	if age ge 80 then do;
+		effect_sbp_ihd = 0.02;
+		effect_sbp_cva = 0.02;
+	end;
+	if sbp  < 115 then do; *male = 1 and female = 2;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + prior_cvd) ; 
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + prior_cvd) ;
+	end;
+	if sbp ge 115 then do;
+		ihd_risk = base_ihd_risk * exp (((age - 15) * effect_age_ihd) + (effect_gender_ihd*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_ihd) + prior_cvd) ;
+		cva_risk = base_cva_risk * exp (((age - 15) * effect_age_cva) + (effect_gender_cva*(-1*(gender - 2))) + ((sbp - 115)* effect_sbp_cva) + prior_cvd) ;
+	end;
 	
 	* risk of cvd death;	
 	xihd = rand('uniform');
@@ -12087,16 +12197,17 @@ if dead ne 1 then do;
 		end;
 		if prior_ihd =0 then do;
 			cvd_death_risk = 0.4;
-			prior_ihd = 1;
-			prior_cvd = 1;
+			first_ihd = 1;
 		end;
+		prior_ihd = 1;
+		prior_cvd = 1;
 	end;
 	
 	if prior_ihd = 1 and ihd_this_per = 0 then do;
-		cvd_death_rate = 0.0125;
+		cvd_death_risk = 0.0125;
 		if subsequent_ihd = 1 then do;
-			if ihd_date + 1 <= caldate{t} then cvd_death_rate = 0.05;
-			if ihd_date + 1 >  caldate{t} then cvd_death_rate = 0.025;
+			if ihd_date + 1 <= caldate{t} then cvd_death_risk = 0.05;
+			if ihd_date + 1 >  caldate{t} then cvd_death_risk = 0.025;
 		end;
 	end;
 
@@ -12104,14 +12215,15 @@ if dead ne 1 then do;
 
 	if xcva le cva_risk then do;
 		cva_this_per =1;
+		if prior_cva = 0 then first_cva = 1;
 		cvd_this_per =1;
-		if cvd_death_risk < 0.32 then cvd_death_risk = 0.32;
+		if cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
 
 	if prior_cva = 1 and cva_this_per = 0 then do;
-		if cvd_death_risk < 0.06 then cvd_death_risk = 0.06;
+		if cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
 	end;
 
 	xcvd = rand('uniform');
@@ -12153,10 +12265,11 @@ end;
 
 if tested=1 then ever_tested=1;
 
-if  caldate{t} > death > . then do; * update_24_4_21;
+if  caldate{t} > death > . then do; * update_24_4_21; *HYPERTENSION;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
-	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
+	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.; prior_ihd =.; prior_cvd =.; prior_cva =.;
+	non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
 	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
 	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
 	cd4=.;cc=.;vc=.;vl=.;age=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
@@ -16092,16 +16205,16 @@ if 15 <= age < 50 then do;
 	if hypertension = 1 and gender=2 then hypertension_1549w = 1;
 	if hypertens180 = 1 then hypertens180_1549 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_1549 = 1;
-	if cva_this_per = 1 then cva_this_per_1549 = 1;
+	if first_ihd=1 then ihd_this_per_1549 = 1;
+	if first_cva= 1 then cva_this_per_1549 = 1;
 	if prior_ihd = 1 then prior_ihd_1549 = 1;
 	if prior_cva = 1 then prior_cva_1549 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_1549m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_1549m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_1549m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_1549m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_1549m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_1549m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_1549w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_1549w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_1549w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_1549w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_1549w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_1549w = 1;
 	if cvd_this_per =1 then cvd_this_per_1549 = 1;
@@ -16126,16 +16239,16 @@ if 15 <= age < 40 then do;
 	if hypertension = 1 and gender=2 then hypertension_1539w = 1;
 	if hypertens180 = 1 then hypertens180_1539 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_1539 = 1;
-	if cva_this_per = 1 then cva_this_per_1539 = 1;
+	if first_ihd=1 then ihd_this_per_1539 = 1;
+	if first_cva= 1 then cva_this_per_1539 = 1;
 	if prior_ihd = 1 then prior_ihd_1539 = 1;
 	if prior_cva = 1 then prior_cva_1539 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_1539m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_1539m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_1539m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_1539m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_1539m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_1539m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_1539w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_1539w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_1539w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_1539w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_1539w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_1539w = 1;
 	if cvd_this_per =1 then cvd_this_per_1539 = 1;
@@ -16160,16 +16273,16 @@ if 40 <= age < 50 then do;
 	if hypertension = 1 and gender=2 then hypertension_4049w = 1;
 	if hypertens180 = 1 then hypertens180_4049 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_4049 = 1;
-	if cva_this_per = 1 then cva_this_per_4049 = 1;
+	if first_ihd=1 then ihd_this_per_4049 = 1;
+	if first_cva= 1 then cva_this_per_4049 = 1;
 	if prior_ihd = 1 then prior_ihd_4049 = 1;
 	if prior_cva = 1 then prior_cva_4049 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_4049m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_4049m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_4049m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_4049m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_4049m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_4049m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_4049w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_4049w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_4049w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_4049w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_4049w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_4049w = 1;
 	if cvd_this_per =1 then cvd_this_per_4049 = 1;
@@ -16193,16 +16306,16 @@ if 50 <= age < 59 then do;
 	if hypertension = 1 and gender=2 then hypertension_5059w = 1;
 	if hypertens180 = 1 then hypertens180_5059 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_5059 = 1;
-	if cva_this_per = 1 then cva_this_per_5059 = 1;
+	if first_ihd=1 then ihd_this_per_5059 = 1;
+	if first_cva= 1 then cva_this_per_5059 = 1;
 	if prior_ihd = 1 then prior_ihd_5059 = 1;
 	if prior_cva = 1 then prior_cva_5059 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_5059m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_5059m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_5059m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_5059m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_5059m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_5059m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_5059w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_5059w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_5059w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_5059w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_5059w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_5059w = 1;
 	if cvd_this_per =1 then cvd_this_per_5059 = 1;
@@ -16226,16 +16339,16 @@ if 60 <= age < 69 then do;
 	if hypertension = 1 and gender=2 then hypertension_6069w = 1;
 	if hypertens180 = 1 then hypertens180_6069 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_6069 = 1;
-	if cva_this_per = 1 then cva_this_per_6069 = 1;
+	if first_ihd=1 then ihd_this_per_6069 = 1;
+	if first_cva= 1 then cva_this_per_6069 = 1;
 	if prior_ihd = 1 then prior_ihd_6069 = 1;
 	if prior_cva = 1 then prior_cva_6069 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_6069m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_6069m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_6069m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_6069m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_6069m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_6069m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_6069w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_6069w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_6069w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_6069w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_6069w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_6069w = 1;
 	if cvd_this_per =1 then cvd_this_per_6069 = 1;
@@ -16259,16 +16372,16 @@ if 70 <= age < 79 then do;
 	if hypertension = 1 and gender=2 then hypertension_7079w = 1;
 	if hypertens180 = 1 then hypertens180_7079 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_7079 = 1;
-	if cva_this_per = 1 then cva_this_per_7079 = 1;
+	if first_ihd=1 then ihd_this_per_7079 = 1;
+	if first_cva= 1 then cva_this_per_7079 = 1;
 	if prior_ihd = 1 then prior_ihd_7079 = 1;
 	if prior_cva = 1 then prior_cva_7079 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_7079m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_7079m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_7079m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_7079m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_7079m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_7079m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_7079w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_7079w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_7079w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_7079w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_7079w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_7079w = 1;
 	if cvd_this_per =1 then cvd_this_per_7079 = 1;
@@ -16293,16 +16406,16 @@ if 80 <= age      then do;
 	if hypertension = 1 and gender=2 then hypertension_ge80w = 1;
 	if hypertens180 = 1 then hypertens180_ge80 = 1;
 
-	if ihd_this_per =1 then ihd_this_per_ge80 = 1;
-	if cva_this_per = 1 then cva_this_per_ge80 = 1;
+	if first_ihd=1 then ihd_this_per_ge80 = 1;
+	if first_cva= 1 then cva_this_per_ge80 = 1;
 	if prior_ihd = 1 then prior_ihd_ge80 = 1;
 	if prior_cva = 1 then prior_cva_ge80 = 1;
-	if ihd_this_per =1 and gender = 1 then ihd_this_per_ge80m = 1;
-	if cva_this_per = 1 and gender = 1 then cva_this_per_ge80m = 1;
+	if first_ihd=1 and gender = 1 then ihd_this_per_ge80m = 1;
+	if first_cva= 1 and gender = 1 then cva_this_per_ge80m = 1;
 	if prior_ihd = 1 and gender = 1 then prior_ihd_ge80m = 1;
 	if prior_cva = 1 and gender = 1 then prior_cva_ge80m = 1;
-	if ihd_this_per =1 and gender = 2 then ihd_this_per_ge80w = 1;
-	if cva_this_per = 1 and gender = 2 then cva_this_per_ge80w = 1;
+	if first_ihd=1 and gender = 2 then ihd_this_per_ge80w = 1;
+	if first_cva= 1 and gender = 2 then cva_this_per_ge80w = 1;
 	if prior_ihd = 1 and gender = 2 then prior_ihd_ge80w = 1;
 	if prior_cva = 1 and gender = 2 then prior_cva_ge80w = 1;
 	if cvd_this_per =1 then cvd_this_per_ge80 = 1;
@@ -17108,8 +17221,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_sbp_7579  + sbp_7579 ;   				
 	s_sbp_ge80  + sbp_ge80 ;	
 
-	s_ihd_inc + ihd_this_per ;
-	s_cva_inc + cva_this_per ;
+	s_ihd_inc + first_ihd ;
+	s_cva_inc + first_cva ;
 	s_ihd_prev + prior_ihd ;
 	s_cva_prev + prior_cva ;
 	s_cvd_inc + cvd_this_per ;
@@ -20695,10 +20808,6 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
@@ -20827,6 +20936,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
 %update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+
 
 data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=4);
@@ -21328,10 +21438,6 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
@@ -21969,10 +22075,6 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=2);
@@ -22244,7 +22346,7 @@ data r1; set b;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
-
+/*
 
 data x; set cum_l1;
 
@@ -22253,12 +22355,13 @@ data x; set cum_l1;
 
 put   
  
-libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
+libname b "&outputdir/"; 
+*libname b 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 * libname b '/home/rmjlaph/Scratch/';
 * libname b '/home/rmjllob/Scratch/';
 * libname b '/home/rmjlvca/Scratch/';
 * libname b '/home/rmjljes/Scratch/';
-
+*/
 
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
