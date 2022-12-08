@@ -12,7 +12,7 @@ set a ;
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
 sf_2022 = (58500000 * 0.706) / s_alive;  * statistica 70.6% of sa population in 2019 >= age 15 (https://www.statista.com/statistics/1116077/total-population-of-south-africa-by-age-group/);
-keep s_alive run sf_2022;
+keep run sf_2022;
 proc sort; by run;
 
 %let sf=sf_2022;
@@ -23,6 +23,8 @@ merge a sf;
 by run;
 
 ***Define variables used in graphs to compare Malawi outputs to observed data;
+s_alive = s_alive_m + s_alive_w ;
+
 s_mcirc_1549m = s_mcirc_1519m + s_mcirc_2024m + s_mcirc_2529m + s_mcirc_3034m + s_mcirc_3539m + s_mcirc_4044m + s_mcirc_4549m ;
 s_new_vmmc1549m = s_new_vmmc1519m + s_new_vmmc2024m + s_new_vmmc2529m + s_new_vmmc3034m + s_new_vmmc3539m + s_new_vmmc4044m + s_new_vmmc4549m;
 s_hiv1524w = s_hiv1519w + s_hiv2024w ;
@@ -371,7 +373,7 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\SA\SA_01.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\SA\SA_02.doc' startpage=never; 
 
 ods html ;
 
