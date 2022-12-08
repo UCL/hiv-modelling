@@ -556,6 +556,9 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 * n_prep_oral;					n_prep_oral = s_prep_oral * &sf;
 * n_prep_inj;					n_prep_inj = s_prep_inj * &sf;
 
+* n_prep_any_willing;			n_prep_any_willing = s_prep_any_willing * &sf;
+* n_prep_oral_willing;			n_prep_oral_willing = s_prep_oral_willing * &sf;
+
 * p_oral_pep_not_prep;			p_oral_pep_not_prep = s_pep_not_prep / s_prep_oral;
 
 * n_pop_wide_tld_prep;			n_pop_wide_tld_prep = s_pop_wide_tld_prep * &sf;
@@ -1233,7 +1236,7 @@ ddaly daly  p_emerge_inm_res_cab  p_emerge_inm_res_cab_tail of_all_o_cab_prop_du
 s_em_inm_res_o_cab_off_3m  s_o_cab_or_o_cab_tm1_no_r   s_emerge_inm_res_cab_tail   s_cur_in_prep_inj_tail_no_r  p_emerge_inm_res_cab 
 p_cabr_start_rest_prep_inj p_emerge_inm_res_cab_tail  n_death_hiv death_rate_onart n_birth_with_inf_child  p_u_vfail1_this_period n_infection
 p_prep_init_primary_res  p_prep_reinit_primary_res  p_emerge_inm_res_cab_prim  n_prep_primary_prevented  p_prep_primary_prevented ddaly_ac_ntd_mtct
-dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m
+dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line1_fail_this_period  n_need_cd4m n_prep_oral_willing n_prep_any_willing
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart n_pop_wide_tld_prep  n_art_or_prep n_prep_inj n_death_hivneg_anycause
@@ -1767,12 +1770,6 @@ proc freq; tables run;
 data w_pwt_x1; set a.w_pwt_x1;
 
 
-* remove in any new runs;
-
-dcost_non_aids_pre_death_50y_1 = dcost_non_aids_pre_death_50y_1 / 5;
-dcost_non_aids_pre_death_50y_2 = dcost_non_aids_pre_death_50y_2 / 5;
-
-
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.30 ;
 
 
@@ -2131,26 +2128,43 @@ run;
 proc freq  data=  j ; tables 
 (prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld prop_pep pep_efficacy pop_wide_prep_adh_effect rr_interrupt_pop_wide_tld rr_return_pop_wide_tld
 pop_wide_tld_selective_hiv prob_tld_if_untested prob_test_pop_wide_tld_prep    prob_onartvis0_0_to_1    prob_onartvis0_1_to_0 artvis0_lower_adh 
-death_r_iris_pop_wide_tld)
+death_r_iris_pop_wide_tld low_prep_inj_uptake)
 * (deaths_averted dalys_averted pop_wide_tld_ce )
 / nofreq nocol nopercent;
 run;
 
+proc freq data = j; tables deaths_averted dalys_averted pop_wide_tld_ce ; run; 
 
-proc   logistic data=  w_pwt_x1 ; 
+
+proc   logistic data=  j        ; 
 class pref_prep_oral_beta_s1 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_0_to_1 prob_onartvis0_1_to_0
 prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_lower_adh  pop_wide_prep_adh_effect 
 pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep death_r_iris_pop_wide_tld;
-model pop_wide_tld_ce_x = 
+model deaths_averted = 
 pref_prep_oral_beta_s1 
 rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_0_to_1 prob_onartvis0_1_to_0
 prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_lower_adh  pop_wide_prep_adh_effect 
-pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep  death_r_iris_pop_wide_tld
+pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep  death_r_iris_pop_wide_tld P_hard_reach_w p_hard_reach_m
 ;
 run;
 
 
+
+proc  glm data=  j        ; 
+class pref_prep_oral_beta_s1 
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_0_to_1 prob_onartvis0_1_to_0
+prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_lower_adh  pop_wide_prep_adh_effect 
+pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep death_r_iris_pop_wide_tld;
+model n_death_hiv_50y_2 = 
+pref_prep_oral_beta_s1 
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_0_to_1 prob_onartvis0_1_to_0
+prob_prep_pop_wide_tld  inc_oral_prep_pref_pop_wide_tld  prep_dependent_prev_vg1000_g   prop_pep  artvis0_lower_adh  pop_wide_prep_adh_effect 
+pop_wide_tld_selective_hiv pep_efficacy  prob_test_pop_wide_tld_prep  death_r_iris_pop_wide_tld P_hard_reach_w p_hard_reach_m
+/ solution ;
+run;
+
+ods html close; 
 
 
 
