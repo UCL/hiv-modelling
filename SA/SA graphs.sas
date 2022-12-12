@@ -1430,4 +1430,16 @@ band    x=cald lower=p5_p_prep_any_ever_0 	upper=p95_p_prep_any_ever_0  / transp
 run;quit;
 
 
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_prep_ever";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by 1000000) valueattrs=(size=10);
+
+label p50_n_prep_ever_0 = "Option 0 (median) ";
+
+series  x=cald y=p50_n_prep_ever_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_prep_ever_0 	upper=p95_n_prep_ever_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+run;quit;
+
+
 */
