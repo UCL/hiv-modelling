@@ -7,7 +7,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\log1";
 
 data b;
- set a.l_pwt_x1   ;
+ set a.l_pwt_x7   ;
 
 
 if prop_elig_on_prep = . then prop_elig_on_prep = 0;
@@ -64,16 +64,18 @@ ods html close;
 
 * n_death_hiv = n_death_hiv_inf_pre_year_interv + n_death_hiv_inf_post_year_interv;
 
-%let single_var =  p_elig_hivneg_onprep ; * p_elig_hivneg_onprep s_pop_wide_tld_neg_prep_inelig  s_pop_wide_tld_prep  n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
+%let single_var =  p_elig_hivneg_onprep  ; * p_elig_hivneg_onprep s_pop_wide_tld_neg_prep_inelig  s_pop_wide_tld_prep  n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
 
 
 * if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01;
-  if prep_dependent_prev_vg1000 = 0 ;
+* if prep_dependent_prev_vg1000 = 0 ;
 * if rate_choose_stop_prep_oral = 0.30; 
 * if artvis0_lower_adh ne 1 ;
 * if rate_int_choice = 0.002 ;
 * if pop_wide_tld_selective_hiv = 5 ;
 * if low_prep_inj_uptake = 1;
+* if prob_prep_pop_wide_tld = 0.5 ;
+
 
 /*
 
@@ -310,7 +312,7 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 20000000  
 
 run;quit;
 
-
+  
 
 ods html;
 proc sgplot data=d; 
@@ -406,21 +408,23 @@ run;quit;
 
 */
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of HIV negative people who have an indication for PrEP, proportion on PREP/PEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1  ) valueattrs=(size=10);
 
-  label p50_p_elig_hivneg_onprep_0 = "No community TLD/PEP (median)";
-  label p50_p_elig_hivneg_onprep_1 = "Community TLD/PEP (median)";
+  label mean_p_elig_hivneg_onprep_0 = "No community TLD/PEP (median)";
+  label mean_p_elig_hivneg_onprep_1 = "Community TLD/PEP (median)";
   
-  series  x=cald y=p50_p_elig_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
+  series  x=cald y=mean_p_elig_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_0 	upper=p95_p_elig_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
+  series  x=cald y=mean_p_elig_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
   band    x=cald lower=p5_p_elig_hivneg_onprep_1 	upper=p95_p_elig_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;quit;
+
 
 /*
 
@@ -635,13 +639,13 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "HIV incidence in people aged 1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = ( 0 to 1       by  0.1  ) valueattrs=(size=10);
+yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = ( 0 to 2       by  0.1  ) valueattrs=(size=10);
 
   label p50_incidence1549__0 = "No community TLD/PEP (median)";
   label p50_incidence1549__1 = "Community TLD/PEP (median)";
@@ -653,12 +657,13 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
+/*
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "HIV prevalence in people aged 1549";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.15     by  0.01  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.20     by  0.01  ) valueattrs=(size=10);
 
   label p50_prevalence1549__0 = "No community TLD/PEP (median)";
   label p50_prevalence1549__1 = "Community TLD/PEP (median)";
@@ -706,10 +711,11 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 run;
 
 
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 20000    by  5000  ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  5000  ) valueattrs=(size=10);
 
   label p50_n_death_hiv_0 = "No community TLD/PEP (median)";
   label p50_n_death_hiv_1 = "Community TLD/PEP (median)";
@@ -720,6 +726,8 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 20000    by  
   band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 
 run;
+
+
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
