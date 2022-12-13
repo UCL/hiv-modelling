@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a; 
-set a.wide_fsw_16_08_22 ;
+set a.wide_fsw_12_12_22 ;
 if incidence1549_22 <0.1 then delete;
 run;
 
@@ -46,15 +46,7 @@ p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22  p_fsw_ne
 p_sti_sw_22
 incidence_sw_22		prevalence_sw_22
 p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
-where sw_art_disadv=0;run;
-
-proc means n p50 p5 p95;var
-n_sw_1549__22		prop_w_1549_sw_22 		prop_w_ever_sw_22		act_dur_sw_22 
-p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22  p_fsw_newp0__22 prop_sw_onprep_22
-p_sti_sw_22
-incidence_sw_22		prevalence_sw_22
-p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
-where sw_art_disadv=1;run;
+run;
 
 proc freq;table sw_art_disadv;run;
 
