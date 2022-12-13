@@ -64,7 +64,7 @@ ods html close;
 
 * n_death_hiv = n_death_hiv_inf_pre_year_interv + n_death_hiv_inf_post_year_interv;
 
-%let single_var =  p_elig_hivneg_onprep  ; * p_elig_hivneg_onprep s_pop_wide_tld_neg_prep_inelig  s_pop_wide_tld_prep  n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
+%let single_var =  n_death_hiv   ; * p_elig_hivneg_onprep s_pop_wide_tld_neg_prep_inelig  s_pop_wide_tld_prep  n_death_hiv_inf_post_year_interv  n_death_hiv_inf_pre_year_interv ;
 
 
 * if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01;
@@ -406,7 +406,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
 run;quit;
 
-*/
 
 
 ods html;
@@ -425,8 +424,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0
 
 run;quit;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -639,7 +636,6 @@ yaxis grid label	= 'Proportion' 	labelattrs=(size=12)  values = (0  to 1   by  0
 
 run;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -657,7 +653,7 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
@@ -710,12 +706,12 @@ yaxis grid label	= 'Percentage' 	labelattrs=(size=12)  values = ( 0 to 0.1      
 
 run;
 
-
+*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of HIV deaths";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  5000  ) valueattrs=(size=10);
+yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 100000    by  5000  ) valueattrs=(size=10);
 
   label p50_n_death_hiv_0 = "No community TLD/PEP (median)";
   label p50_n_death_hiv_1 = "Community TLD/PEP (median)";
@@ -727,7 +723,7 @@ yaxis grid label	= 'Number' 	labelattrs=(size=12)  values = ( 0 to 50000    by  
 
 run;
 
-
+/*
 
 * n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  death_rate_hiv death_rate_hiv_all ;
 
