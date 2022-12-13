@@ -143,7 +143,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1991 + 0.25; *zim specific;
+startyr = 1993 + 0.25;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -835,8 +835,8 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
- %include "/home/rmjllob/Zim_parameters_01.sas";
- *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Zim_parameters_01.sas";
+ %include "/home/rmjllob/SA_parameters_02.sas";
+ *include "C:\Users\lovel\Documents\GitHub\hiv-modelling\SA\SA_parameters_01.sas";
 * ===================== ;
 * END OF PARAMETER LIST ;
 * ===================== ;
@@ -19976,13 +19976,15 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Zim specific;
-
-if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
-if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+/*
+if cald = 1999.5 and (prevalence1549 < 0.08  or prevalence1549 > 0.19 ) then do; abort abend; end;
+if cald = 2004.5 and (prevalence1549 < 0.07  or prevalence1549 > 0.20 ) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 
-*if cald = 2020 and p_vl1000 < 0.75 then do; *abort abend; *end;
+if cald = 2020 and p_vl1000 < 0.75 then do; abort abend; end;
+*/
 
+if cald = 2017.5 and (prevalence1549 < 0.176 or prevalence1549 > 0.236) then do;abort abend; end;
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;

@@ -1,7 +1,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 data a;
-set a.Zim_01;
+set a.Zim_02;
 proc sort;by run;run;
 
 data sf;
@@ -72,8 +72,6 @@ s_hiv1524w = s_hiv1519w + s_hiv2024w ;
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
 s_hivge15 = s_hivge15m + s_hivge15w ;
-s_dead_m_all = s_dead1564m_all + s_dead6569m_all + s_dead7074m_all + s_dead7579m_all + s_dead8084m_all + s_dead85plm_all;
-s_dead_w_all = s_dead1564w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w_all + s_dead8084w_all + s_dead85plw_all;
 
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
@@ -176,9 +174,9 @@ s_dead_w_all = s_dead1564w_all + s_dead6569w_all + s_dead7074w_all + s_dead7579w
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
 * n_death_hiv_m;				n_death_hiv_m = s_death_hiv_m * 4 * &sf;
 * n_death_hiv_w;				n_death_hiv_w = s_death_hiv_w * 4 * &sf;		
-* rate_dead_allage;				rate_dead_allage = ((s_dead_m_all + s_dead_w_all) * 4 * 100) / s_alive ;
-* rate_dead_allage_m;			rate_dead_allage_m = (s_dead_m_all * 4 * 100) / s_alive_m ; 
-* rate_dead_allage_w;			rate_dead_allage_w = (s_dead_w_all * 4 * 100) / s_alive_w ; 
+* rate_dead_allage;				rate_dead_allage = ((s_deadm_all + s_deadw_all) * 4 * 100) / s_alive ;
+* rate_dead_allage_m;			rate_dead_allage_m = (s_deadm_all * 4 * 100) / s_alive_m ; 
+* rate_dead_allage_w;			rate_dead_allage_w = (s_deadw_all * 4 * 100) / s_alive_w ; 
 
 * n_cd4_lt200;					n_cd4_lt200_ = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
@@ -214,7 +212,7 @@ n_prep 				n_prep_ever			p_prep_ever				;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =84;
+%let nfit =86;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 

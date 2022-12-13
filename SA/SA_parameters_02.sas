@@ -1,7 +1,5 @@
 
 ****% on ART of those diag too high***
-***Check prep ever***
-27% of those eligible now on prep***
 
 
 /***************************************************************************/
@@ -47,7 +45,6 @@ newp_seed = 10 ;
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
 
-***** on ART of htose diag too high*********
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 
@@ -73,7 +70,7 @@ newp_seed = 10 ;
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
-* prob_loss_at_diag;  		prob_loss_at_diag = 0.2; 
+* prob_loss_at_diag;  		prob_loss_at_diag = 0.4; 
 
 * rate_return;  			rate_return = 0.2; 
 
@@ -83,7 +80,7 @@ newp_seed = 10 ;
 
 * pr_art_init; 				pr_art_init = 0.95; 
 
-* rate_int_choice;  		rate_int_choice = 0.015 ; 					
+* rate_int_choice;  		rate_int_choice = 0.03 ; 					
 * prob_vl_meas_done; 		prob_vl_meas_done = 0.9;  
 
 * rate_ch_art_init_str;	
@@ -106,4 +103,4 @@ newp_seed = 10 ;
 
 
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75);
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
