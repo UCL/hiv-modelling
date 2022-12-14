@@ -8,7 +8,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_x9_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_x10_out\";
 
 
 data i1a; set b.out11:; %include "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\GitHub\hiv-modelling\keep_statement.sas";
@@ -103,7 +103,7 @@ data i9i; set b.out99:; %include "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips
 
 
 
-data   k_pwt_x9_a;  set  
+data   k_pwt_x10_a;  set  
 i1a i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
 i4a i4b i4c i4d i4e i4f i4g i4h i4i i5a i5b i5c i5d i5e i5f i5g i5h i5i  i6a i6b i6c i6d i6e i6f i6g i6h i6i  
 i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i 
@@ -118,7 +118,7 @@ proc print data=i1b; var s_prep_any  s_prep_any_elig  s_prep_elig_hivneg_onprep 
 prob_tld_hiv_concern;
 run;
 
-proc means data=k_pwt_x9_a; var s_pop_wide_tld_as_art;
+proc means data=k_pwt_x10_a; var s_pop_wide_tld_as_art;
 where prob_tld_hiv_concern = 0.00005;
 run;
 
@@ -141,7 +141,7 @@ run;
 * libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-proc sort data = k_pwt_x9_a out=k_pwt_x9_b ; 
+proc sort data = k_pwt_x10_a out=k_pwt_x10_b ; 
 by run cald option;
 run;
 
@@ -149,7 +149,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_pwt_x9_b ;
+set k_pwt_x10_b ;
 
 if cald=2021.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -181,8 +181,8 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 %let sf=sf_2022;
 
-data k_pwt_x9_c; 
-merge k_pwt_x9_b sf;
+data k_pwt_x10_c; 
+merge k_pwt_x10_b sf;
 by run ;
 
 
@@ -1328,9 +1328,9 @@ proc freq; tables run; where cald = 2020; run;
 
 %let sf=sf_2022;
 
-proc sort data=k_pwt_x9_c out=k_pwt_x9_c ; by run option; run;
+proc sort data=k_pwt_x10_c out=k_pwt_x10_c ; by run option; run;
 
-proc freq data=k_pwt_x9_c ; tables run; where cald = 2020; run;
+proc freq data=k_pwt_x10_c ; tables run; where cald = 2020; run;
 
 
 
@@ -1351,7 +1351,7 @@ proc freq data=k_pwt_x9_c ; tables run; where cald = 2020; run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pwt_x9 ; set k_pwt_x9_c;  
+data    a.l_pwt_x10 ; set k_pwt_x10_c;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1374,7 +1374,7 @@ run;
 * libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-data y ; set a.l_pwt_x9  ; 
+data y ; set a.l_pwt_x10  ; 
 
   options nomprint;
   option nospool;
@@ -1770,12 +1770,12 @@ proc freq; tables run;
 
 * To get one row per run;
 
-  data  a.w_pwt_x9     ; 
+  data  a.w_pwt_x10     ; 
   merge   wide_outputs           wide_par     ;
   by run;
 
 
-data w_pwt_x9; set a.w_pwt_x9;
+data w_pwt_x10; set a.w_pwt_x10;
 
 
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.30 ;
@@ -1929,7 +1929,7 @@ if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01 then prep_de
 * suppl table 1;
 
 ods html;
-proc means data=   w_pwt_x9 n p50 p5 p95 min max;  *  w_pwt_x9 ;
+proc means data=   w_pwt_x10 n p50 p5 p95 min max;  *  w_pwt_x10 ;
 var prevalence1549w_22 prevalence1549m_22 incidence1549_22 p_diag_22 p_onart_diag_22 p_onart_vl1000_22 p_vl1000_22 prevalence_vg1000_22 
 prev_vg1000_1549_22 death_rate_hiv_22 ;
 run;
@@ -1937,7 +1937,7 @@ ods html close;
 
 
 ods html;
-proc means  data=   w_pwt_x9 n median p5 p95 min max ;
+proc means  data=   w_pwt_x10 n median p5 p95 min max ;
 var	prevalence1549m_22 prevalence1549w_22  prevalence1524m_22 prevalence1524w_22 incidence1549w_22 
 incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
 p_onart_diag_w_22 	p_onart_diag_m_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22 p_onart_cd4_l500_22  
@@ -1951,7 +1951,7 @@ ods html close;
 * table 1;
 
 
-proc means data=  w_pwt_x9 n mean p5 p95;
+proc means data=  w_pwt_x10 n mean p5 p95;
 var 
 p_elig_hivneg_onprep_3y_1 p_elig_hivneg_onprep_3y_2 d_p_elig_hivneg_onprep_3y_2_1
 d_p_onart_3y_2_1 p_onart_3y_1  p_onart_3y_2
@@ -1991,7 +1991,7 @@ run;
 
 * table 1;
 
-proc means data=   w_pwt_x9 n mean  p5 p95 ;
+proc means data=   w_pwt_x10 n mean  p5 p95 ;
 var 
 p_hiv1_prep_20y_1 p_hiv1_prep_20y_2    d_p_hiv1_prep_20y_2_1
 p_hiv1_prep_oral_20y_1 p_hiv1_prep_oral_20y_2  d_p_hiv1_prep_oral_20y_2_1
@@ -2015,7 +2015,7 @@ run;
 
 
 * table 1;
-proc means data=  w_pwt_x9 n mean p5 p95 ;
+proc means data=  w_pwt_x10 n mean p5 p95 ;
   var 
 d_n_cd4_lt200_50y_2_1   n_cd4_lt200_50y_2   n_cd4_lt200_50y_1 
 n_death_hiv_50y_1 n_death_hiv_50y_2 d_n_death_hiv_50y_2_1
@@ -2039,7 +2039,7 @@ run;
 
 
 * table 2;
-data j; set w_pwt_x9;
+data j; set w_pwt_x10;
 
 * note these in reverse becuase proc logistic is in revwerse;
 d_incidence1549_20y_2_1_gtp3 = 0; if d_incidence1549_20y_2_1 < -0.3 then d_incidence1549_20y_2_1_gtp3 = 1;
@@ -2205,10 +2205,10 @@ ods html close;
 
 
 
-proc univariate data=  w_pwt_x9; var d_n_death_hiv_50y_2_1 ; where artvis0_lower_adh = 0; run;
+proc univariate data=  w_pwt_x10; var d_n_death_hiv_50y_2_1 ; where artvis0_lower_adh = 0; run;
 proc freq; tables d_n_death_hiv_50y_2_1 d_n_cd4_lt200_50y_2_1 ;  where artvis0_lower_adh = 0; run;
 
-proc freq data=  w_pwt_x9; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
+proc freq data=  w_pwt_x10; tables pop_wide_tld_ce  ; where incidence1549_22 >= 0.5; run;
 
 proc freq; tables incidence1549_42_1 incidence1549_42_2 ; run;
 
@@ -2217,7 +2217,7 @@ proc univariate ; var d_p_elig_hivneg_onprep_5y_2_1   d_p_onart_5y_2_1  d_prop_p
 d_prevalence_vg1000_5y_2_1;
 run;
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model r_incidence1549_20y_2_1    =
 d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1   d_prevalence_vg1000_5y_2_1
 ;
@@ -2225,13 +2225,13 @@ run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_death_hiv_50y_2_1    =  d_n_cd4_lt200_50y_2_1;
 run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_death_hiv_50y_2_1    =  d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1  /*  d_prevalence_vg1000_5y_2_1 */
 d_p_vl1000_3y_2_1  
 d_p_oral_pep_not_prep_3y_2_1  
@@ -2243,42 +2243,42 @@ where artvis0_lower_adh=0;
 run;
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_death_hiv_50y_2_1    =  
 d_p_vl1000_3y_2_1  
 ;
 where artvis0_lower_adh=0;
 run;
 
-proc univariate  data=  w_pwt_x9; var d_p_vl1000_3y_2_1 d_n_death_hiv_50y_2_1; 
+proc univariate  data=  w_pwt_x10; var d_p_vl1000_3y_2_1 d_n_death_hiv_50y_2_1; 
 where artvis0_lower_adh=0;
 run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_death_hiv_50y_2_1    =   d_p_elig_hivneg_onprep_5y_2_1  p_onartvisit0_3y_2 ;
 run;
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_death_hiv_50y_2_1    =  p_onartvisit0_3y_2 ;
 where artvis0_lower_adh=0;
 run;
 
 proc means ; var d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1   d_prevalence_vg1000_5y_2_1 ; run;
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_cd4_lt200_50y_2_1    =   d_p_elig_hivneg_onprep_5y_2_1  ;
 run;
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 model d_n_cd4_lt200_50y_2_1    =  d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1   d_prevalence_vg1000_5y_2_1;
 run;
 
 
 
 
-proc   logistic data=  w_pwt_x9 ; 
+proc   logistic data=  w_pwt_x10 ; 
 class pop_wide_prep_adh_effect ;
 model pop_wide_tld_ce_x = 
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
@@ -2289,7 +2289,7 @@ run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 class artvis0_lower_adh pop_wide_prep_adh_effect ;
 model r_incidence1549_20y_2_1    =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
@@ -2301,7 +2301,7 @@ run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 class artvis0_lower_adh pop_wide_prep_adh_effect ;
 model d_p_elig_hivneg_onprep_5y_2_1    =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
@@ -2313,7 +2313,7 @@ run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 class  pop_wide_prep_adh_effect adh_pattern ;
 model d_n_death_hiv_50y_2_1    =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
@@ -2332,7 +2332,7 @@ proc means ; var d_n_death_hiv_50y_2_1  ; where rr_interrupt_pop_wide_tld =1/  5
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 class  pop_wide_prep_adh_effect ;
 model d_p_vl1000_3y_2_1    =
 pref_prep_oral_beta_s1 pref_prep_inj_beta_s1  
@@ -2345,7 +2345,7 @@ run;
 
 
 
-proc glm  data=  w_pwt_x9 ; 
+proc glm  data=  w_pwt_x10 ; 
 class  pop_wide_prep_adh_effect sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w;
 model d_n_death_hiv_50y_2_1    =
 
