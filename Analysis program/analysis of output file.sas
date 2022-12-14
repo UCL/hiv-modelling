@@ -50,17 +50,25 @@ run;
 
 proc freq;table sw_art_disadv;run;
 
-***table 3 - characteristics by disadvantage in 2030;
+***table 3 - characteristics in 2030 by option;
 
 proc means n p50 p5 p95;var
+/*discontinuted*/
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
 incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
 
+/*current level*/
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
-;where sw_art_disadv=0;
+
+/*high impact*/
+p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
+p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
+incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3
+
+;
 run;
 
 proc means n p50 p5 p95;var
