@@ -1986,7 +1986,6 @@ prevalence1549_50y_1 prevalence1549_50y_2  r_prevalence1549_50y_2_1
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1 
 d_p_onart_20y_2_1  p_onart_20y_2 
 ;
-where prob_tld_hiv_concern = 0.00005;
 run;
 
 * table 1;
