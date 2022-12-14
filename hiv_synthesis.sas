@@ -2549,7 +2549,6 @@ who may be dead and hence have caldate{t} missing;
 		* cost of hypertension interventions;
 		*cost_htn_link_voucher = 0;
 		*cost_htn_screen_comm = 0.005;
-
 	end;
 
 	if option = 3 then do;
@@ -2644,7 +2643,6 @@ who may be dead and hence have caldate{t} missing;
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0.005;
 		cost_htn_screen_comm = 0.005;
-
 	end;
 
 
@@ -11641,7 +11639,7 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		if x3 le ac_deathrix then do;
 			dead=1; death=caldate{t}; timedead=death-infection; cd4_dead=cd4; dcause=2; rdcause=2; agedeath=age;
 		end;
-	end;
+	end; * HYPERTENSION CODE QUESTION: this closes if dead = 0 stmt - should it be moved down to below CVD deaths?
 
 
 * covid and covid death (effectively assuming all get covid); * update_24_4_21;
@@ -16284,8 +16282,8 @@ if 15 <= age < 50 then do;
 	if first_cva_modsev=1 and gender = 1 then cva_this_per_modsev_1549m = 1;
 	if first_ihd_modsev=1 and gender = 2 then ihd_this_per_modsev_1549w = 1; 
 	if first_cva_modsev=1 and gender = 2 then cva_this_per_modsev_1549w = 1;
-
 end;
+
 if 15 <= age < 40 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_1539 = 1 ;
 	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_1539m = 1 ;
@@ -16324,8 +16322,8 @@ if 15 <= age < 40 then do;
 	if first_cva_modsev=1 and gender = 1 then cva_this_per_modsev_1539m = 1;
 	if first_ihd_modsev=1 and gender = 2 then ihd_this_per_modsev_1539w = 1; 
 	if first_cva_modsev=1 and gender = 2 then cva_this_per_modsev_1539w = 1;
-
 end;
+
 if 40 <= age < 50 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_4049 = 1 ;
 	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_4049m = 1 ;
@@ -16365,6 +16363,7 @@ if 40 <= age < 50 then do;
 	if first_ihd_modsev=1 and gender = 2 then ihd_this_per_modsev_4049w = 1; 
 	if first_cva_modsev=1 and gender = 2 then cva_this_per_modsev_4049w = 1;
 end;
+
 if 50 <= age < 59 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_5059 = 1 ;
 	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_5059m = 1 ;
@@ -16404,6 +16403,7 @@ if 50 <= age < 59 then do;
 	if first_ihd_modsev=1 and gender = 2 then ihd_this_per_modsev_5059w = 1; 
 	if first_cva_modsev=1 and gender = 2 then cva_this_per_modsev_5059w = 1;
 end;
+
 if 60 <= age < 69 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_6069 = 1 ;
 	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_6069m = 1 ;
@@ -16443,6 +16443,7 @@ if 60 <= age < 69 then do;
 	if first_ihd_modsev=1 and gender = 2 then ihd_this_per_modsev_6069w = 1; 
 	if first_cva_modsev=1 and gender = 2 then cva_this_per_modsev_6069w = 1;
 end;
+
 if 70 <= age < 79 then do; 
 	if diagnosed_hypertension = 1 then diagnosed_hypertension_7079 = 1 ;
 	if diagnosed_hypertension = 1 and gender=1 then diagnosed_hypertension_7079m = 1 ;
@@ -16534,7 +16535,6 @@ if 15 <= age < 25 then do;
 	if normotensive = 1 then normotensive_1524 = 1;
 	if htn_true_dx = 1 then htn_true_dx_1524 = 1;
 	if htn_over_dx = 1 then htn_over_dx_1524 = 1;
-
 end;
 
 if 25 <= age < 35 then do;
