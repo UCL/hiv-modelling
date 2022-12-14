@@ -212,7 +212,7 @@ n_prep 				n_prep_ever			p_prep_ever				;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =86;
+%let nfit =127;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
@@ -683,7 +683,7 @@ proc freq data=d;table p95_n_prep_0;run;*/
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1500000   by 50000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000   by 50000 ) valueattrs=(size=10);
 label p50_n_prep_0 = "Option 0 (median) ";
 label p50_n_prep_1 = "Option 1  (median) ";
 
@@ -744,7 +744,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people aged 15-64 on PrEP";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.01   by 0.01 ) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05   by 0.01 ) valueattrs=(size=10);
 label p50_prop_1564_onprep_0 = "Option 0 (median) ";
 label p50_prop_1564_onprep_1 = "Option 1  (median) ";
 
