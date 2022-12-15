@@ -1927,3 +1927,6 @@ run;quit;
 
 ods rtf close; run;
 */
+
+
+*prop of preg women attending anc (98%);

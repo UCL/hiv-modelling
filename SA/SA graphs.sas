@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 
 data a;
-set a.SA_01;
+set a.SA_02;
 proc sort;by run;run;
 
 
@@ -171,7 +171,7 @@ n_prep 				n_prep_ever			p_prep_ever			p_elig_prep			prop_elig_on_prep	p_prep_an
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =126;
+%let nfit =142;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
