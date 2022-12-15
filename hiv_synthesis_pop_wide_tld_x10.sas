@@ -14478,6 +14478,7 @@ if adc=1 then util=util_adc;
 * ts1m:  note that disability due to adc, who3 etc will only last 1 month when time step is 1 month ;
 end;
 
+util2  = max(util, 0.1);
 
 *** VF according to line of ART;
 if line2=1 and line3 ne 1 then startedline2=1;
@@ -14610,13 +14611,15 @@ _ly = 1/12 ; _dly = discount*(1/12);  _qaly = (1/12)*util ; _dqaly = (1/12)*disc
 _ly=.; _dly=.; _qaly=.; _dqaly=.;
 	
 
-dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; age_would_be_now =.;
+dead_daly=.; dead_ddaly=.;live_daly=.;  live_ddaly=.; live_ddaly2=.; age_would_be_now =.; 
 
 
 if 15 <= age < 80 and (death = .) then do;  
 _ly = 0.25 ; _dly = discount*0.25;  _qaly = 0.25*util ; _dqaly = 0.25*discount*util ; 
+_qaly2 = 0.25*util2;
 
 live_ddaly = (1 - util)*0.25*discount; 
+live_ddaly2= (1 - util2)*0.25*discount;
 live_daly = (1 - util)*0.25; 
 end;
 /* 
@@ -14624,7 +14627,7 @@ ts1m: replace two lines above with:
 live_ddaly = (1 - util)*(1/12)*discount; 
 live_daly = (1 - util)*(1/12); end;
 */
-if age ge 80 then do; live_daly=0;  live_ddaly=0;  end;
+if age ge 80 then do; live_daly=0;  live_ddaly=0;  live_ddaly2=0; end;
 if death >= 1993 then do;
 	age_would_be_now = (agedeath + (caldate_never_dot - death));
 	dead_daly=0; dead_ddaly=0;
@@ -16856,7 +16859,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 
 	*discounted;
-	s_live_ddaly + live_ddaly ; 
+	s_live_ddaly + live_ddaly ; s_live_ddaly2 + live_ddaly2 ; 
 	s_dead_ddaly_oth_dol_adv_birth_e + dead_ddaly_oth_dol_adv_birth_e ;
 	s_dead_ddaly_ntd + dead_ddaly_ntd;
 	s_ddaly_mtct + ddaly_mtct ;
@@ -18220,7 +18223,7 @@ s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_live_ddaly  s_live_ddaly2 s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 
 s_ly  s_dly  s_qaly  s_dqaly    
 																																			   
@@ -19152,7 +19155,7 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_live_ddaly  s_live_ddaly2 s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 
 
 s_ly  s_dly  s_qaly  s_dqaly   
@@ -22136,7 +22139,7 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 																		   
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
+s_live_ddaly s_live_ddaly2  s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
 s_dyll_Optima80 		 
 
 s_ly  s_dly  s_qaly  s_dqaly   
