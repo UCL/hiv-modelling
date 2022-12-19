@@ -8,7 +8,7 @@
 
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_x10_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_x10c_out\";
 
 
 data i1a; set b.out11:; %include "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\GitHub\hiv-modelling\keep_statement.sas";
@@ -103,7 +103,7 @@ data i9i; set b.out99:; %include "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips
 
 
 
-data   k_pwt_x10_a;  set  
+data   k_pwt_x10c_a;  set  
 i1a i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
 i4a i4b i4c i4d i4e i4f i4g i4h i4i i5a i5b i5c i5d i5e i5f i5g i5h i5i  i6a i6b i6c i6d i6e i6f i6g i6h i6i  
 i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i 
@@ -118,7 +118,7 @@ proc print data=i1b; var s_prep_any  s_prep_any_elig  s_prep_elig_hivneg_onprep 
 prob_tld_hiv_concern;
 run;
 
-proc means data=k_pwt_x10_a; var s_pop_wide_tld_as_art;
+proc means data=k_pwt_x10c_a; var s_pop_wide_tld_as_art;
 where prob_tld_hiv_concern = 0.00005;
 run;
 
@@ -141,7 +141,7 @@ run;
 * libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-proc sort data = k_pwt_x10_a out=k_pwt_x10_b ; 
+proc sort data = k_pwt_x10c_a out=k_pwt_x10c_b ; 
 by run cald option;
 run;
 
@@ -149,7 +149,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set k_pwt_x10_b ;
+set k_pwt_x10c_b ;
 
 if cald=2021.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -181,8 +181,8 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 %let sf=sf_2022;
 
-data k_pwt_x10_c; 
-merge k_pwt_x10_b sf;
+data k_pwt_x10c_c; 
+merge k_pwt_x10c_b sf;
 by run ;
 
 
@@ -1328,9 +1328,9 @@ proc freq; tables run; where cald = 2020; run;
 
 %let sf=sf_2022;
 
-proc sort data=k_pwt_x10_c out=k_pwt_x10_c ; by run option; run;
+proc sort data=k_pwt_x10c_c out=k_pwt_x10c_c ; by run option; run;
 
-proc freq data=k_pwt_x10_c ; tables run; where cald = 2020; run;
+proc freq data=k_pwt_x10c_c ; tables run; where cald = 2020; run;
 
 
 
@@ -1351,7 +1351,7 @@ proc freq data=k_pwt_x10_c ; tables run; where cald = 2020; run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pwt_x10 ; set k_pwt_x10_c;  
+data    a.l_pwt_x10c ; set k_pwt_x10c_c;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1374,7 +1374,7 @@ run;
 * libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-data y ; set a.l_pwt_x10  ; 
+data y ; set a.l_pwt_x10c  ; 
 
   options nomprint;
   option nospool;
@@ -1770,19 +1770,18 @@ proc freq; tables run;
 
 * To get one row per run;
 
-  data  a.w_pwt_x10     ; 
+  data  a.w_pwt_x10c     ; 
   merge   wide_outputs           wide_par     ;
   by run;
 
 
-data w_pwt_x10; set a.w_pwt_x10;
+data w_pwt_x10 ; set a.w_pwt_x10a a.w_pwt_x10b  a.w_pwt_x10c;
 
 
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.30 ;
 
 
-* if run <= 838506127 ;
-
+if run <= 972534905; * to give n = 1000;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1880,10 +1879,14 @@ d_p_taz_42_2_1 = p_taz_42_2 - p_taz_42_1 ;
 d_p_iime_all_adults_42_2_1 = p_iime_all_adults_42_2 - p_iime_all_adults_42_1;
 d_prevalence_vg1000_42_2_1 = prevalence_vg1000_42_2 - prevalence_vg1000_42_1;
 d_incidence1549_20y_2_1 = incidence1549_20y_2 - incidence1549_20y_1 ;
+d_p_vl1000_42_2_1 = p_vl1000_42_2 - p_vl1000_42_1 ; 
+
 
 d_p_nacti_art_start_lt1p5_42_2_1 = p_nactive_art_start_lt1p5_42_2 - p_nactive_art_start_lt1p5_42_1 ;
 d_p_nacti_art_start_lt2_42_2_1 = p_nactive_art_start_lt2_42_2 - p_nactive_art_start_lt2_42_1 ;
 d_p_nacti_art_start_lt3_42_2_1 = p_nactive_art_start_lt3_42_2 - p_nactive_art_start_lt3_42_1 ;
+
+d_p_onart_vl1000_42_2_1 = p_onart_vl1000_42_2 - p_onart_vl1000_42_1 ; 
 
 d_p_vl1000_art_12m_onart_50y_2_1 = p_vl1000_art_12m_onart_50y_2 - p_vl1000_art_12m_onart_50y_1 ;  
 
@@ -1967,6 +1970,8 @@ n_pop_tld_neg_prep_inel_3y_2
 prop_1564_onprep_3y_1  prop_1564_onprep_3y_2    d_prop_1564_onprep_3y_2_1
 prop_prep_inj_3y_2 prop_prep_inj_3y_1  d_prop_prep_inj_3y_2_1
 
+p_onart_vl1000_42_1  p_onart_vl1000_42_2   d_p_onart_vl1000_42_2_1 
+d_p_vl1000_42_2_1   p_vl1000_42_2   p_vl1000_42_1 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1 
 p_elig_hivneg_onprep_42_1 p_elig_hivneg_onprep_42_2 
 p_onartvisit0_vl1000_42_2 
@@ -1986,6 +1991,7 @@ prevalence1549_50y_1 prevalence1549_50y_2  r_prevalence1549_50y_2_1
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1 
 d_p_onart_20y_2_1  p_onart_20y_2 
 ;
+* where artvis0_lower_adh = 1;
 run;
 
 * table 1;
