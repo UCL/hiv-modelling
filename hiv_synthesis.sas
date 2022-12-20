@@ -6911,24 +6911,29 @@ t_prop_onart		= t_prop_vlg6_rm1_onart;
 end;
 
 if infected_newp=1 then do;	
-	infected_diagnosed=0; infected_naive=1;
+	infected_diagnosed=0; infected_naive=1;infected_onart=0;
 	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
 	if infected_diagnosed=1 then do; 
 		s=rand('uniform');
 		infected_naive=0; if s < t_prop_naive then infected_naive=1;
+
+		if infected_naive=0 then do;
+		t=rand('uniform');
+		infected_onart=0; if t < t_prop_onart then infected_onart=1;	
 		***Need to incorporate t_prop_onart here somehow I think to define infected_onart;
 	end;
 end;
 
 if infected_ep=1 then do;
-	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1;  
+	infected_diagnosed=0;infected_onart=0; if epdiag_tm1=1 then infected_diagnosed=1;  
 	infected_naive=1;
-	if epart_tm1=1 then infected_naive=0;
+	if epart_tm1=1 then do;infected_naive=0;infected_onart=1;end;
 	if epdiag_tm1=1 and epart_tm1=0 then do;
 		* have to make this approximation below because dont track naive status of ep;
 		a=rand('uniform'); infected_naive=0; if a < t_prop_naive_dna then infected_naive=1;*dna=diagnosed not on ART;
 	end;
+
 end;
 
 
@@ -13441,23 +13446,23 @@ if 15 <= age     then do;
 	
 
 	* whether diagnosed and art naive, according to viral load and resistance;
-	i_diag_naive_vlg1_rm0_np=0; if hiv=1 and diag_naive=1 and vlg1=1 and registd=1 and rm_=0 then i_diag_naive_vlg1_rm0_np=np;
-	i_diag_naive_vlg1_rm1_np=0; if hiv=1 and diag_naive=1 and vlg1=1 and registd=1 and rm_=1 then i_diag_naive_vlg1_rm1_np=np;
+	i_diag_naive_vlg1_rm0_np=0; if hiv=1 and naive=1 and vlg1=1 and registd=1 and rm_=0 then i_diag_naive_vlg1_rm0_np=np;
+	i_diag_naive_vlg1_rm1_np=0; if hiv=1 and naive=1 and vlg1=1 and registd=1 and rm_=1 then i_diag_naive_vlg1_rm1_np=np;
 	
-	i_diag_naive_vlg2_rm0_np=0; if hiv=1 and diag_naive=1 and vlg2=1 and registd=1 and rm_=0 then i_diag_naive_vlg2_rm0_np=np;
-	i_diag_naive_vlg2_rm1_np=0; if hiv=1 and diag_naive=1 and vlg2=1 and registd=1 and rm_=1 then i_diag_naive_vlg2_rm1_np=np;
+	i_diag_naive_vlg2_rm0_np=0; if hiv=1 and naive=1 and vlg2=1 and registd=1 and rm_=0 then i_diag_naive_vlg2_rm0_np=np;
+	i_diag_naive_vlg2_rm1_np=0; if hiv=1 and naive=1 and vlg2=1 and registd=1 and rm_=1 then i_diag_naive_vlg2_rm1_np=np;
 
-	i_diag_naive_vlg3_rm0_np=0; if hiv=1 and diag_naive=1 and vlg3=1 and registd=1 and rm_=0 then i_diag_naive_vlg3_rm0_np=np;
-	i_diag_naive_vlg3_rm1_np=0; if hiv=1 and diag_naive=1 and vlg3=1 and registd=1 and rm_=1 then i_diag_naive_vlg3_rm1_np=np;
+	i_diag_naive_vlg3_rm0_np=0; if hiv=1 and naive=1 and vlg3=1 and registd=1 and rm_=0 then i_diag_naive_vlg3_rm0_np=np;
+	i_diag_naive_vlg3_rm1_np=0; if hiv=1 and naive=1 and vlg3=1 and registd=1 and rm_=1 then i_diag_naive_vlg3_rm1_np=np;
 
-	i_diag_naive_vlg4_rm0_np=0; if hiv=1 and diag_naive=1 and vlg4=1 and registd=1 and rm_=0 then i_diag_naive_vlg4_rm0_np=np;
-	i_diag_naive_vlg4_rm1_np=0; if hiv=1 and diag_naive=1 and vlg4=1 and registd=1 and rm_=1 then i_diag_naive_vlg4_rm1_np=np;
+	i_diag_naive_vlg4_rm0_np=0; if hiv=1 and naive=1 and vlg4=1 and registd=1 and rm_=0 then i_diag_naive_vlg4_rm0_np=np;
+	i_diag_naive_vlg4_rm1_np=0; if hiv=1 and naive=1 and vlg4=1 and registd=1 and rm_=1 then i_diag_naive_vlg4_rm1_np=np;
 	
-	i_diag_naive_vlg5_rm0_np=0; if hiv=1 and diag_naive=1 and vlg5=1 and registd=1 and rm_=0 then i_diag_naive_vlg5_rm0_np=np;
-	i_diag_naive_vlg5_rm1_np=0; if hiv=1 and diag_naive=1 and vlg5=1 and registd=1 and rm_=1 then i_diag_naive_vlg5_rm1_np=np;
+	i_diag_naive_vlg5_rm0_np=0; if hiv=1 and naive=1 and vlg5=1 and registd=1 and rm_=0 then i_diag_naive_vlg5_rm0_np=np;
+	i_diag_naive_vlg5_rm1_np=0; if hiv=1 and naive=1 and vlg5=1 and registd=1 and rm_=1 then i_diag_naive_vlg5_rm1_np=np;
 
-	i_diag_naive_vlg6_rm0_np=0; if hiv=1 and diag_naive=1 and vlg6=1 and registd=1 and rm_=0 then i_diag_naive_vlg6_rm0_np=np;
-	i_diag_naive_vlg6_rm1_np=0; if hiv=1 and diag_naive=1 and vlg6=1 and registd=1 and rm_=1 then i_diag_naive_vlg6_rm1_np=np;
+	i_diag_naive_vlg6_rm0_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=0 then i_diag_naive_vlg6_rm0_np=np;
+	i_diag_naive_vlg6_rm1_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=1 then i_diag_naive_vlg6_rm1_np=np;
 
 
 	* whether diagnosed, not on ART, according to viral load and resistance;
@@ -17650,6 +17655,7 @@ s_prop_vlg5_rm0_naive_dna=0; if s_i_diag_not_onart_vlg5_rm0_np >0 then do; s_pro
 s_prop_vlg6_rm0_naive_dna=0; if s_i_diag_not_onart_vlg6_rm0_np >0 then do; s_prop_vlg6_rm0_naive_dna = max(0,s_i_diag_naive_vlg6_rm0_np) / s_i_diag_not_onart_vlg6_rm0_np ; end;
 
 *Prop on ART of those diagnosed or total??  currently total;
+*denom=artexp;
 
 s_prop_vlg1_rm1_onart=0; if s_i_r_vlg1_np >0 then do; s_prop_vlg1_rm1_onart = max(0,s_i_onart_vlg1_rm1_np) / s_i_r_vlg1_np; end;
 s_prop_vlg2_rm1_onart=0; if s_i_r_vlg2_np >0 then do; s_prop_vlg2_rm1_onart = max(0,s_i_onart_vlg2_rm1_np) / s_i_r_vlg2_np ; end;
