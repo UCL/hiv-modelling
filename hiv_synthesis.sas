@@ -6849,7 +6849,8 @@ t_prop_diag			= 	t_prop_vlg2_rm0_diag;
 t_prop_naive		= 	t_prop_vlg2_rm0_naive; 
 t_prop_dnaive_dna	= 	t_prop_vlg2_rm0_dnaive_dna;
 t_prop_onart_artexp	= 	t_prop_vlg2_rm0_onart_artexp;
-t_p_onartle6m_onart = 	t_prop_vlg2_rm0_artle6m_onart;
+t_p_onartle6m_onart = 	t_prop_vlg2_rm0_artle6m
+_onart;
 t_p_artle6m_cd4lt200= 	t_p_vlg2_rm0_artle6m_cd4lt200;
 t_p_AIAle6m_onart	= 	t_prop_vlg2_rm0_AIAle6m;
 t_p_artle6m_cd4lt200= 	t_p_vlg2_rm0_AIAle6m_cd4lt200;
@@ -7009,6 +7010,15 @@ if infected_newp=1 then do;
 			infected_AIAle6m_cd4lt200=0; if u < t_p_AIAle6m_onart_cd4lt200 then infected_AIAle6m_cd4lt200=1;
 			infected_AIAle6m_cd4ge200=0; if infected_AIAle6m_cd4lt200=0 then infected_AIAle6m_cd4ge200=1;;
 		end;
+
+		***On ART, current VL<1000;
+		if infected_onart=1 then do;
+			u=rand('uniform');
+			infected_onart_vllt1000=0; if u < t_p_vllt1000_onart then infected_onart_vllt1000=1;
+			infected_onart_vlge1000=0; if infected_onart_vllt1000=0 then infected_onart_vlge1000=1;
+		***we could get someone on ART<6m with CD4<200=1 and on ART, VL<1000=1...think this is ok?;
+		end;
+
 
 	end;
 end;
