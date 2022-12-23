@@ -1,5 +1,5 @@
 /*
-* run 65 all;
+* run 71 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 %let tmpfilename = out;
@@ -865,6 +865,14 @@ interval_visit_hypertension=0.5;
 * for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 %sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 
+* probability of acute treatment for MI or CVA;
+prob_ihd_tx = 0.1;
+prob_cva_tx = 0.1;
+
+* effect of admission for MI or CVA treatment;
+rr_mort_ihd_tx = 0.85;
+rr_mort_cva_tx = 0.75;
+
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
@@ -872,6 +880,8 @@ cost_htn_visit = 0.023;
 cost_htn_drug1 = 0.0027;
 cost_htn_drug2 = 0.0027;
 cost_htn_drug3 = 0.0052;
+cost_ihd_tx = 1.1;
+cost_cva_tx = 1.5;
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
@@ -880,7 +890,7 @@ cost_htn_drug3 = 0.0052;
 	* effect of gender on risk of cvd death;
 	effect_gender_ihd = 0.4;
 	* effect of age on risk of cvd death;
-	effect_age_ihd = 0.075;
+	effect_age_ihd = 0.08;
 	* base risk of cvd (before adding effects of age, gender, sbp);
 	%sample_uniform(base_ihd_risk, 0.00002 0.00003);
 	* effect of prior CVD on IHD risk;
@@ -892,9 +902,9 @@ cost_htn_drug3 = 0.0052;
 	* effect of gender on risk of cvd death;
 	effect_gender_cva = 0;
 	* effect of age on risk of cvd death;
-	effect_age_cva = 0.1;
+	effect_age_cva = 0.09;
 	* base risk of cvd (before adding effects of age, gender, sbp);
-	%sample_uniform(base_cva_risk, 0.000004 0.000006);
+	%sample_uniform(base_cva_risk, 0.000006 0.000009);
 	* effect of prior CVD on CVA risk;
 	effect_cvd_cva = 1.8;
 	
@@ -2565,7 +2575,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 40;
+		comm_test_age = 30;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2599,7 +2609,7 @@ who may be dead and hence have caldate{t} missing;
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0;
-		cost_htn_screen_comm = 0.005;
+		cost_htn_screen_comm = 0.0057;
 	end;
 
 	if option = 4 then do;
@@ -2612,7 +2622,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 40;
+		comm_test_age = 30;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2646,7 +2656,7 @@ who may be dead and hence have caldate{t} missing;
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0.005;
-		cost_htn_screen_comm = 0.005;
+		cost_htn_screen_comm = 0.0057;
 	end;
 
 
@@ -3308,6 +3318,7 @@ htn_over_dx = 0; if diagnosed_hypertension = 1 and max_sbp < 140 then htn_over_d
 htn_cost_scr = 0; *cost of screening this period;
 htn_cost_drug = 0; * drug costs this period; 
 htn_cost_clin = 0; * clinical care costs this period (exclusive of drugs);
+htn_cost_cvd = 0; * costs of acute CVD treatment;
 if test_sbp_comm =1 then do;
 	htn_cost_scr = cost_htn_screen_comm;
 	if sbp_comm_m >=140 and visit_hypertension = 1 then htn_cost_scr = htn_cost_scr + cost_htn_link_voucher;
@@ -11709,17 +11720,24 @@ if dead ne 1 then do;
 	if xihd le ihd_risk then do;
 		ihd_this_per =1;
 		cvd_this_per =1;
-		%sample(ihd_severity_this_per, 1 2 3, 0.5 0.3 0.2);
-		if ihd_severity_this_per ge 2 and (prior_ihd = 0 or ihd_severity = 1) then first_ihd_modsev = 1;
+		%sample(ihd_severity_this_per, 1 2 3, 0.6 0.25 0.15);
 		if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
-		if ihd_severity_this_per ge 2 then ihd_this_per_modsev = 1;
+		if ihd_severity_this_per = 1 and cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
+		if ihd_severity_this_per = 2 and cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
+		if ihd_severity_this_per = 3 and cvd_death_risk < 0.4 then cvd_death_risk = 0.4;
 		if prior_ihd = 0 then do;
 			first_ihd = 1;
 			if prior_cvd = 0 then first_cvd = 1;
 		end;
-		if ihd_severity_this_per = 1 and cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
-		if ihd_severity_this_per = 2 and cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
-		if ihd_severity_this_per = 3 and cvd_death_risk < 0.4 then cvd_death_risk = 0.4;
+		if ihd_severity_this_per ge 2 then do;
+			if (prior_ihd = 0 or ihd_severity = 1) then first_ihd_modsev = 1;
+			ihd_this_per_modsev = 1;
+			zihd = rand('uniform');
+			if zihd le prob_ihd_tx then do;
+				htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
+				cvd_death_risk = cvd_death_risk * rr_mort_ihd_tx;
+			end;
+		end;	
 		prior_ihd = 1;
 		prior_cvd = 1;
 	end;
@@ -11743,17 +11761,23 @@ if dead ne 1 then do;
 		cva_this_per =1;
 		cvd_this_per =1;
 		%sample(cva_severity_this_per, 1 2 3, 0.5 0.3 0.2);
-		if cva_severity_this_per ge 2 and (prior_cva = 0 or cva_severity = 1) then first_cva_modsev = 1;
 		if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
-		if cva_severity_this_per ge 2 then cva_this_per_modsev = 1;
+		if cva_severity_this_per = 1 and cvd_death_risk < 0.1 then cvd_death_risk = 0.1;
+		if cva_severity_this_per = 2 and cvd_death_risk < 0.3 then cvd_death_risk = 0.3;
+		if cva_severity_this_per = 3 and cvd_death_risk < 0.6 then cvd_death_risk = 0.6;
 		if prior_cva = 0 then do;
 			first_cva = 1;
 			if prior_cvd = 0 then first_cvd = 1;
 		end;
-
-		if cva_severity_this_per = 1 and cvd_death_risk < 0.1 then cvd_death_risk = 0.1;
-		if cva_severity_this_per = 2 and cvd_death_risk < 0.3 then cvd_death_risk = 0.3;
-		if cva_severity_this_per = 3 and cvd_death_risk < 0.6 then cvd_death_risk = 0.6;
+		if cva_severity_this_per ge 2 then do;
+			if (prior_cva = 0 or cva_severity = 1) then first_cva_modsev = 1;
+			if cva_severity_this_per ge 2 then cva_this_per_modsev = 1;
+		end;
+		zcva = rand('uniform');
+			if zcva le prob_cva_tx then do;
+				htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+				cvd_death_risk = cvd_death_risk * rr_mort_cva_tx;
+			end;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
@@ -12228,17 +12252,24 @@ if dead ne 1 then do;
 	if xihd le ihd_risk then do;
 		ihd_this_per =1;
 		cvd_this_per =1;
-		%sample(ihd_severity_this_per, 1 2 3, 0.5 0.3 0.2);
-		if ihd_severity_this_per ge 2 and (prior_ihd = 0 or ihd_severity = 1) then first_ihd_modsev = 1;
+		%sample(ihd_severity_this_per, 1 2 3, 0.6 0.25 0.15);
 		if ihd_severity < ihd_severity_this_per then ihd_severity = ihd_severity_this_per;
-		if ihd_severity_this_per ge 2 then ihd_this_per_modsev = 1;
+		if ihd_severity_this_per = 1 and cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
+		if ihd_severity_this_per = 2 and cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
+		if ihd_severity_this_per = 3 and cvd_death_risk < 0.4 then cvd_death_risk = 0.4;
 		if prior_ihd = 0 then do;
 			first_ihd = 1;
 			if prior_cvd = 0 then first_cvd = 1;
 		end;
-		if ihd_severity_this_per = 1 and cvd_death_risk < 0.05 then cvd_death_risk = 0.05;
-		if ihd_severity_this_per = 2 and cvd_death_risk < 0.2 then cvd_death_risk = 0.2;
-		if ihd_severity_this_per = 3 and cvd_death_risk < 0.4 then cvd_death_risk = 0.4;
+		if ihd_severity_this_per ge 2 then do;
+			if (prior_ihd = 0 or ihd_severity = 1) then first_ihd_modsev = 1;
+			ihd_this_per_modsev = 1;
+			zihd = rand('uniform');
+			if zihd le prob_ihd_tx then do;
+				htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
+				cvd_death_risk = cvd_death_risk * rr_mort_ihd_tx;
+			end;
+		end;	
 		prior_ihd = 1;
 		prior_cvd = 1;
 	end;
@@ -12255,16 +12286,23 @@ if dead ne 1 then do;
 		cva_this_per =1;
 		cvd_this_per =1;
 		%sample(cva_severity_this_per, 1 2 3, 0.5 0.3 0.2);
-		if cva_severity_this_per ge 2 and (prior_cva = 0 or cva_severity = 1) then first_cva_modsev = 1;
 		if cva_severity < cva_severity_this_per then cva_severity = cva_severity_this_per;
-		if cva_severity_this_per ge 2 then cva_this_per_modsev = 1;
+		if cva_severity_this_per = 1 and cvd_death_risk < 0.1 then cvd_death_risk = 0.1;
+		if cva_severity_this_per = 2 and cvd_death_risk < 0.3 then cvd_death_risk = 0.3;
+		if cva_severity_this_per = 3 and cvd_death_risk < 0.6 then cvd_death_risk = 0.6;
 		if prior_cva = 0 then do;
 			first_cva = 1;
 			if prior_cvd = 0 then first_cvd = 1;
 		end;
-		if cva_severity_this_per = 1 and cvd_death_risk < 0.1 then cvd_death_risk = 0.1;
-		if cva_severity_this_per = 2 and cvd_death_risk < 0.3 then cvd_death_risk = 0.3;
-		if cva_severity_this_per = 3 and cvd_death_risk < 0.6 then cvd_death_risk = 0.6;
+		if cva_severity_this_per ge 2 then do;
+			if (prior_cva = 0 or cva_severity = 1) then first_cva_modsev = 1;
+			if cva_severity_this_per ge 2 then cva_this_per_modsev = 1;
+		end;
+		zcva = rand('uniform');
+			if zcva le prob_cva_tx then do;
+				htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
+				cvd_death_risk = cvd_death_risk * rr_mort_cva_tx;
+			end;
 		prior_cva = 1;
 		prior_cvd = 1;
 	end;
@@ -15104,7 +15142,7 @@ _dcost_hypert_drug = cost_hypert_drug*discount ;
 _dhtn_cost_scr = htn_cost_scr*discount;
 _dhtn_cost_drug = htn_cost_drug*discount;
 _dhtn_cost_clin = htn_cost_clin*discount;
-
+_dhtn_cost_cvd = htn_cost_cvd*discount;
 
 
 _d_t_adh_int_cost = t_adh_int_cost *discount;
@@ -17824,7 +17862,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_cost_non_aids_pre_death + cost_non_aids_pre_death ; s_drug_level_test_cost + drug_level_test_cost;
 	s_cost_child_hiv + cost_child_hiv;  s_cost_child_hiv_mo_art + cost_child_hiv_mo_art;
 	s_cost_hypert_vis + _cost_hypert_vis; s_cost_hypert_drug + _cost_hypert_drug;  
-	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin;
+	s_htn_cost_scr + htn_cost_scr; s_htn_cost_drug + htn_cost_drug; s_htn_cost_clin + htn_cost_clin; s_htn_cost_cvd + htn_cost_cvd;
 
 
 	*discounted; 
@@ -17845,7 +17883,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
-	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin;
+	s_dhtn_cost_scr + _dhtn_cost_scr; s_dhtn_cost_drug + _dhtn_cost_drug; s_dhtn_cost_clin + _dhtn_cost_clin; s_dhtn_cost_cvd + _dhtn_cost_cvd;
 	 	
 	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ; 
 
@@ -19333,8 +19371,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
-s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
 	s_ihd_inc_one s_cva_inc_one
 	s_ihd_inc_all s_cva_inc_all 
@@ -20347,8 +20385,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
-s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
 	s_ihd_inc_one s_cva_inc_one
 	s_ihd_inc_all s_cva_inc_all 
@@ -20579,7 +20617,7 @@ data r1; set a;
 %update_r1(da1=1,da2=2,e=7,f=8,g=1,h=8,j=7,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=1,h=8,j=8,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=5,h=12,j=9,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=5,h=12,j=10,s=1); 
 %update_r1(da1=1,da2=2,e=7,f=8,g=5,h=12,j=11,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=5,h=12,j=12,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=9,h=16,j=13,s=1);
@@ -23116,8 +23154,8 @@ s_sbp_1519w s_sbp_2024w s_sbp_2529w s_sbp_3034w s_sbp_3539w s_sbp_4044w s_sbp_45
 s_sbp_1519m s_sbp_2024m s_sbp_2529m s_sbp_3034m s_sbp_3539m s_sbp_4044m s_sbp_4549m s_sbp_5054m s_sbp_5559m	s_sbp_6064m s_sbp_6569m s_sbp_7074m s_sbp_7579m s_sbp_ge80m 
 s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_4549  s_sbp_5054	s_sbp_5559  s_sbp_6064  s_sbp_6569  s_sbp_7074  s_sbp_7579  s_sbp_ge80  
 
-s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin
-s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin
+s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
+s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
 	s_ihd_inc_one s_cva_inc_one
 	s_ihd_inc_all s_cva_inc_all 
