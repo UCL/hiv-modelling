@@ -1897,6 +1897,11 @@ d_dcost_50y_2_1 =  dcost_50y_2 - dcost_50y_1 ;
 netdaly_averted_2_1 = netdaly500_2 - netdaly500_1;
 
 
+netdaly300_1 = ddaly_50y_1 + (dcost_50y_1 / 0.0003);
+netdaly300_2 = ddaly_50y_2 + (dcost_50y_2 / 0.0003);
+netdaly300_averted_2_1 = netdaly300_2 - netdaly300_1;
+
+
 r_incidence1549_50y_2_1 = incidence1549_50y_2 / incidence1549_50y_1 ;
 
 if hivtest_type_1_init_prep_inj = 1 and hivtest_type_1_prep_inj = 1 then hiv_test_strat3=1; else hiv_test_strat3=0;
@@ -1923,8 +1928,8 @@ if 0.8 <= incidence1549_22       then incidence1549_22_g=5;
 
 
 if prep_dependent_prev_vg1000 = 0 then prep_dependent_prev_vg1000_g=1;
-if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.005 then prep_dependent_prev_vg1000_g=2;
-if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01 then prep_dependent_prev_vg1000_g=3;
+if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.01 then prep_dependent_prev_vg1000_g=2;
+if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.005 then prep_dependent_prev_vg1000_g=3;
 
 
 
@@ -1992,6 +1997,7 @@ n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1
 d_p_onart_20y_2_1  p_onart_20y_2 
 ;
 * where artvis0_lower_adh = 1;
+* where d_p_elig_hivneg_onprep_3y_2_1 < 0.07; 
 run;
 
 * table 1;
@@ -2039,6 +2045,7 @@ ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
 			
 dcost_50y_1   dcost_50y_2  d_dcost_50y_2_1
 netdaly500_1 netdaly500_2  netdaly_averted_2_1
+netdaly300_averted_2_1
 ;
 run;
 
@@ -2139,13 +2146,19 @@ run;
 proc freq  data=  j ; tables 
 (prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld prop_pep pep_efficacy pop_wide_prep_adh_effect rr_interrupt_pop_wide_tld rr_return_pop_wide_tld
 pop_wide_tld_selective_hiv prob_tld_hiv_concern prob_test_pop_wide_tld_prep    prob_onartvis0_0_to_1    prob_onartvis0_1_to_0 artvis0_lower_adh 
-death_r_iris_pop_wide_tld low_prep_inj_uptake prep_dependent_prev_vg1000_g prob_tld_hiv_concern)
+death_r_iris_pop_wide_tld low_prep_inj_uptake prep_dependent_prev_vg1000_g )
 * (deaths_averted dalys_averted pop_wide_tld_ce )
 / nofreq nocol nopercent;
 run;
 
+proc freq  data=  j ; tables 
+death_r_iris_pop_wide_tld * (deaths_averted dalys_averted pop_wide_tld_ce )
+/ nofreq nocol nopercent;
+run;
+
 proc freq data = j; tables deaths_averted dalys_averted pop_wide_tld_ce ;
-* where artvis0_lower_adh = 0;
+* where artvis0_lower_adh = 1;
+* where d_p_elig_hivneg_onprep_3y_2_1 >= 0.07; 
  run; 
 
 
