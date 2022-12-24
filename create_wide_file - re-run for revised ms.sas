@@ -2817,7 +2817,7 @@ var
 dcost_50y_2  dcost_hiv_50y_2  dcost_prep_total_50y_2  dtest_cost_50y_2 dcost_circ_50y_2
 dcost_50y_3  dcost_hiv_50y_3  dcost_prep_total_50y_3  dtest_cost_50y_3 dcost_circ_50y_3
 ;
-  where  hivtest_type_1_init_prep_inj =  1 and hivtest_type_1_prep_inj =  1  ;
+  where  hivtest_type_1_init_prep_inj ne 1 and hivtest_type_1_prep_inj ne 1  ;
 run;
 
 
