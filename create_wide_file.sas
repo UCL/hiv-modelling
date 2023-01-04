@@ -1168,8 +1168,8 @@ m_sbp_1519w m_sbp_2024w m_sbp_2529w m_sbp_3034w m_sbp_3539w m_sbp_4044w m_sbp_45
 m_sbp_1519m m_sbp_2024m m_sbp_2529m m_sbp_3034m m_sbp_3539m m_sbp_4044m m_sbp_4549m m_sbp_5054m m_sbp_5559m	m_sbp_6064m m_sbp_6569m m_sbp_7074m m_sbp_7579m m_sbp_ge80m 
 m_sbp_1519  m_sbp_2024  m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_4549  m_sbp_5054  m_sbp_5559	m_sbp_6064  m_sbp_6569  m_sbp_7074  m_sbp_7579  m_sbp_ge80 
 
-htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin
-dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin
+htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
+dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
 tot_dyll_cvd tot_dyll
 
 rate_ihd_one 
@@ -1392,8 +1392,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_on_anti_hypert_1549w); %var(v=p_on_anti_hypert_1539w); %var(v=p_on_anti_hypert_4049w); 
 	%var(v=p_on_anti_hypert_5059w);  %var(v=p_on_anti_hypert_6069w);  %var(v=p_on_anti_hypert_7079w); %var(v=p_on_anti_hypert_ge80w);
 
-%var(v=htn_cost_total); %var(v=htn_cost_scr); %var(v=htn_cost_drug); %var(v=htn_cost_clin);
-%var(v=dhtn_cost_total); %var(v=dhtn_cost_scr); %var(v=dhtn_cost_drug); %var(v=dhtn_cost_clin);
+%var(v=htn_cost_total); %var(v=htn_cost_scr); %var(v=htn_cost_drug); %var(v=htn_cost_clin); %var(v=htn_cost_cvd);
+%var(v=dhtn_cost_total); %var(v=dhtn_cost_scr); %var(v=dhtn_cost_drug); %var(v=dhtn_cost_clin); %var(v=dhtn_cost_cvd);
 %var(v=tot_dyll_cvd); %var(v=tot_dyll);
 %var(v=dcost); %var(v=ddaly);
 
@@ -1530,8 +1530,8 @@ rate_dead_hivneg_anycause rate_dead_hivpos_anycause
 n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_hivneg_cvd  rate_dead_hivneg_cvd
 
-htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin
-dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin
+htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
+dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
 tot_dyll_cvd tot_dyll
 dcost ddaly
 n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
@@ -1651,8 +1651,8 @@ rate_dead_cvd_4049w_95 rate_dead_cvd_5059w_95 rate_dead_cvd_6069w_95 rate_dead_c
 rate_dead_hivneg_anycause_95 rate_dead_hivpos_anycause_95
 n_dead_hivpos_cvd_95  rate_dead_hivpos_cvd_95 
 n_dead_hivneg_cvd_95  rate_dead_hivneg_cvd_95
-dhtn_cost_total_95 dhtn_cost_scr_95 dhtn_cost_drug_95 dhtn_cost_clin_95
-htn_cost_total_95 htn_cost_scr_95 htn_cost_drug_95 htn_cost_clin_95
+dhtn_cost_total_95 dhtn_cost_scr_95 dhtn_cost_drug_95 dhtn_cost_clin_95 dhtn_cost_cvd_95
+htn_cost_total_95 htn_cost_scr_95 htn_cost_drug_95 htn_cost_clin_95 htn_cost_cvd_95
 tot_dyll_cvd_95 tot_dyll_95
 dcost_95 ddaly_95
 n_dead_allage_95 n_dead_hivneg_anycause_95 n_dead_hivpos_anycause_95
@@ -1711,8 +1711,8 @@ rate_dead_cvd_4049w_15 rate_dead_cvd_5059w_15 rate_dead_cvd_6069w_15 rate_dead_c
 rate_dead_hivneg_anycause_15 rate_dead_hivpos_anycause_15
 n_dead_hivpos_cvd_15  rate_dead_hivpos_cvd_15 
 n_dead_hivneg_cvd_15  rate_dead_hivneg_cvd_15
-dhtn_cost_total_15 dhtn_cost_scr_15 dhtn_cost_drug_15 dhtn_cost_clin_15
-htn_cost_total_15 htn_cost_scr_15 htn_cost_drug_15 htn_cost_clin_15
+dhtn_cost_total_15 dhtn_cost_scr_15 dhtn_cost_drug_15 dhtn_cost_clin_15 dhtn_cost_cvd_15
+htn_cost_total_15 htn_cost_scr_15 htn_cost_drug_15 htn_cost_clin_15 htn_cost_cvd_15
 tot_dyll_cvd_15 tot_dyll_15
 dcost_15 ddaly_15
 n_dead_allage_15 n_dead_hivneg_anycause_15 n_dead_hivpos_anycause_15
@@ -1769,8 +1769,8 @@ rate_dead_cvd_4049w_22 rate_dead_cvd_5059w_22 rate_dead_cvd_6069w_22 rate_dead_c
 rate_dead_hivneg_anycause_22 rate_dead_hivpos_anycause_22
 n_dead_hivpos_cvd_22  rate_dead_hivpos_cvd_22 
 n_dead_hivneg_cvd_22  rate_dead_hivneg_cvd_22
-dhtn_cost_total_22 dhtn_cost_scr_22 dhtn_cost_drug_22 dhtn_cost_clin_22
-htn_cost_total_22 htn_cost_scr_22 htn_cost_drug_22 htn_cost_clin_22
+dhtn_cost_total_22 dhtn_cost_scr_22 dhtn_cost_drug_22 dhtn_cost_clin_22 dhtn_cost_cvd_22
+htn_cost_total_22 htn_cost_scr_22 htn_cost_drug_22 htn_cost_clin_22 htn_cost_cvd_22
 tot_dyll_cvd_22 tot_dyll_22
 dcost_22 ddaly_22
 n_dead_allage_22 n_dead_hivneg_anycause_22 n_dead_hivpos_anycause_22
@@ -1829,8 +1829,8 @@ rate_dead_cvd_4049w_32 rate_dead_cvd_5059w_32 rate_dead_cvd_6069w_32 rate_dead_c
 rate_dead_hivneg_anycause_32 rate_dead_hivpos_anycause_32
 n_dead_hivpos_cvd_32  rate_dead_hivpos_cvd_32 
 n_dead_hivneg_cvd_32  rate_dead_hivneg_cvd_32
-dhtn_cost_total_32 dhtn_cost_scr_32 dhtn_cost_drug_32 dhtn_cost_clin_32
-htn_cost_total_32 htn_cost_scr_32 htn_cost_drug_32 htn_cost_clin_32
+dhtn_cost_total_32 dhtn_cost_scr_32 dhtn_cost_drug_32 dhtn_cost_clin_32 dhtn_cost_cvd_32
+htn_cost_total_32 htn_cost_scr_32 htn_cost_drug_32 htn_cost_clin_32 htn_cost_cvd_32
 tot_dyll_cvd_32 tot_dyll_32
 dcost_32 ddaly_32
 n_dead_allage_32 n_dead_hivneg_anycause_32 n_dead_hivpos_anycause_32
@@ -1887,8 +1887,8 @@ rate_dead_cvd_4049w_52 rate_dead_cvd_5059w_52 rate_dead_cvd_6069w_52 rate_dead_c
 rate_dead_hivneg_anycause_52 rate_dead_hivpos_anycause_52
 n_dead_hivpos_cvd_52  rate_dead_hivpos_cvd_52 
 n_dead_hivneg_cvd_52  rate_dead_hivneg_cvd_52
-dhtn_cost_total_52 dhtn_cost_scr_52 dhtn_cost_drug_52 dhtn_cost_clin_52
-htn_cost_total_52 htn_cost_scr_52 htn_cost_drug_52 htn_cost_clin_52
+dhtn_cost_total_52 dhtn_cost_scr_52 dhtn_cost_drug_52 dhtn_cost_clin_52 dhtn_cost_cvd_52
+htn_cost_total_52 htn_cost_scr_52 htn_cost_drug_52 htn_cost_clin_52 htn_cost_cvd_52
 tot_dyll_cvd_52 tot_dyll_52
 dcost_52 ddaly_52
 n_dead_allage_52 n_dead_hivneg_anycause_52 n_dead_hivpos_anycause_52
@@ -1945,8 +1945,8 @@ rate_dead_cvd_4049w_2232  rate_dead_cvd_5059w_2232  rate_dead_cvd_6069w_2232  ra
 rate_dead_hivneg_anycause_2232  rate_dead_hivpos_anycause_2232 
 n_dead_hivpos_cvd_2232   rate_dead_hivpos_cvd_2232  
 n_dead_hivneg_cvd_2232   rate_dead_hivneg_cvd_2232 
-dhtn_cost_total_2232  dhtn_cost_scr_2232  dhtn_cost_drug_2232  dhtn_cost_clin_2232 
-htn_cost_total_2232  htn_cost_scr_2232  htn_cost_drug_2232  htn_cost_clin_2232 
+dhtn_cost_total_2232  dhtn_cost_scr_2232  dhtn_cost_drug_2232  dhtn_cost_clin_2232 dhtn_cost_cvd_2232
+htn_cost_total_2232  htn_cost_scr_2232  htn_cost_drug_2232  htn_cost_clin_2232 htn_cost_cvd_2232
 tot_dyll_cvd_2232  tot_dyll_2232 
 dcost_2232  ddaly_2232
 n_dead_allage_2232 n_dead_hivneg_anycause_2232 n_dead_hivpos_anycause_2232 
@@ -2003,8 +2003,8 @@ rate_dead_cvd_4049w_2252  rate_dead_cvd_5059w_2252  rate_dead_cvd_6069w_2252  ra
 rate_dead_hivneg_anycause_2252  rate_dead_hivpos_anycause_2252 
 n_dead_hivpos_cvd_2252   rate_dead_hivpos_cvd_2252  
 n_dead_hivneg_cvd_2252   rate_dead_hivneg_cvd_2252 
-dhtn_cost_total_2252  dhtn_cost_scr_2252  dhtn_cost_drug_2252  dhtn_cost_clin_2252 
-htn_cost_total_2252  htn_cost_scr_2252  htn_cost_drug_2252  htn_cost_clin_2252 
+dhtn_cost_total_2252  dhtn_cost_scr_2252  dhtn_cost_drug_2252  dhtn_cost_clin_2252 dhtn_cost_cvd_2252
+htn_cost_total_2252  htn_cost_scr_2252  htn_cost_drug_2252  htn_cost_clin_2252 htn_cost_cvd_2252
 tot_dyll_cvd_2252  tot_dyll_2252 
 dcost_2252  ddaly_2252 
 n_dead_allage_2252 n_dead_hivneg_anycause_2252 n_dead_hivpos_anycause_2252
