@@ -1,5 +1,6 @@
+* NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 71 all;
+* run 72 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 %let tmpfilename = out;
@@ -803,10 +804,12 @@ end;
 
 * values of these will be sampled from distributions as part of the calibration to reflect uncertainty and variability ;
 
-* probability of 1 mmHg rise in sbp in a period, if not on anti-hypertensive treatment;
+* probability of 1 mmHg rise in sbp in a period;
 %sample_uniform(prob_sbp_increase, 0.1 0.125 0.15); 
+* relative risk of SBP increase if on antihypertensive medication;
+rr_sbp_inc_on_antihyp = 0.5;
 * probability of having symptoms if SBP >180;
-prob_symp_hypertension = 0.1; 
+prob_symp_hypertension = 0.025; 
 * Probability of hypertension diagnosis for a given setting (low, med, high);
 %sample_uniform(rr_htn_diagnosis, 0.5 1 1.5);
 * probabily of higher rate of diagnosis in women (greater health system exposure/health-seeking)
@@ -818,7 +821,7 @@ prob_symp_hypertension = 0.1;
 * probability of getting bp tested in a person aged over 15 with no diagnosed hypertension per period;
 prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
-%sample_uniform(measurement_error_var_sbp, 10 15); 
+measurement_error_var_sbp = 10; 
 * probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
 * probability of getting bp tested in a person <40 years of age compared to baseline probability;
@@ -871,7 +874,7 @@ prob_cva_tx = 0.1;
 
 * effect of admission for MI or CVA treatment;
 rr_mort_ihd_tx = 0.85;
-rr_mort_cva_tx = 0.75;
+rr_mort_cva_tx = 0.85;
 
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
@@ -880,8 +883,8 @@ cost_htn_visit = 0.023;
 cost_htn_drug1 = 0.0027;
 cost_htn_drug2 = 0.0027;
 cost_htn_drug3 = 0.0052;
-cost_ihd_tx = 1.1;
-cost_cva_tx = 1.5;
+cost_ihd_tx = 2.27;
+cost_cva_tx = 2.42;
 
 ** CVD events;
 	* Ischemic heart disease (IHD);
@@ -1679,9 +1682,9 @@ cva_severity = 0; ihd_severity = 0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 * define person-specific risk of sbp increase per period;
-%sample_uniform(sbp_risk, 0.5 1 2);
+%sample_uniform(sbp_rr, 0.5 1 2);
 * define person-specific risk of sbp increase per period during middle age (40-64);
-%sample_uniform(sbp_risk_age, 1 2 3);
+%sample_uniform(sbp_rr_age, 1 2 3);
 
 u=rand('uniform');low_preg_risk=0;
 if u>can_be_pregnant then low_preg_risk=1;
@@ -2575,7 +2578,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 30;
+		comm_test_age = 40;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2622,7 +2625,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 30;
+		comm_test_age = 40;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -3159,11 +3162,11 @@ end;
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-	when (40 <= age < 60) a_sbp = a_sbp / (sbp_risk * sbp_risk_age) ;
-	otherwise a_sbp = a_sbp / sbp_risk ;
+	when (40 <= age < 60) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ;
+	otherwise a_sbp = a_sbp / sbp_rr ;
 end; 
 
-if on_anti_hypertensive >=1 then a_sbp = a_sbp / 0.5 ; *probabilty of SBP increase is reduced by half if on antihypertensive;
+if on_anti_hypertensive >=1 then a_sbp = a_sbp / rr_sbp_inc_on_antihyp ; *probabilty of SBP increase is reduced if on antihypertensive;
 if  a_sbp < prob_sbp_increase then sbp = sbp + 1 ; 
 if on_anti_hypertensive = 0 then htn_visit_count =  0;
 
@@ -11733,7 +11736,7 @@ if dead ne 1 then do;
 			if (prior_ihd = 0 or ihd_severity = 1) then first_ihd_modsev = 1;
 			ihd_this_per_modsev = 1;
 			zihd = rand('uniform');
-			if zihd le prob_ihd_tx then do;
+			if zihd le prob_ihd_tx and ihd_severity_this_per ge 2 then do;
 				htn_cost_cvd = htn_cost_cvd + cost_ihd_tx;
 				cvd_death_risk = cvd_death_risk * rr_mort_ihd_tx;
 			end;
@@ -11774,7 +11777,7 @@ if dead ne 1 then do;
 			if cva_severity_this_per ge 2 then cva_this_per_modsev = 1;
 		end;
 		zcva = rand('uniform');
-			if zcva le prob_cva_tx then do;
+			if zcva le prob_cva_tx and cva_severity_this_per ge 2 then do;
 				htn_cost_cvd = htn_cost_cvd + cost_cva_tx;
 				cvd_death_risk = cvd_death_risk * rr_mort_cva_tx;
 			end;
