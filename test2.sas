@@ -19378,6 +19378,8 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=0);
 
+/*
+
 %update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=0);
@@ -19523,8 +19525,6 @@ data r1 ; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=349,h=356,j=353,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=349,h=356,j=354,s=0);
-
-/*
 
 data r1; set a      ;
 
