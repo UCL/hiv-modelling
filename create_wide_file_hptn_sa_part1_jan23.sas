@@ -1123,26 +1123,6 @@ p_any_prep_10yr = p_oral_prep_10yr + p_la_prep_10yr ;
 p_any_prep_w_10yr = p_oral_prep_w_10yr + p_la_prep_w_10yr ;
 
 
-proc freq ; tables prevalence1549 ; where cald = 2017.5;
-
-proc freq  ; tables s_onart; where cald = 2021 ;
-
-run;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 keep
 
 run option cald
