@@ -341,7 +341,7 @@ newp_seed = 7;
 
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
 
-* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.005;			* rate of development of non-hiv symptoms leading to hiv testing, regardless of hiv status;
+* rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.01;			* rate of development of non-hiv symptoms, regardless of hiv status;
 							* dependent_on_time_step_length ;
 
 * np_lasttest;				np_lasttest=0;  
@@ -780,36 +780,28 @@ end;
 
 * rr_interrupt_pop_wide_tld;	%sample_uniform(rr_interrupt_pop_wide_tld, 1/1.5 1/2 1/3 1/5);
 
-* prob_tld_if_untested;	%sample_uniform(prob_tld_if_untested, 0.0 0.0005 0.0025);
+* prob_tld_hiv_concern;	%sample_uniform(prob_tld_hiv_concern, 0.0   0.0001  0.001 );
 
-* prob_onartvis0_0_to_1;			%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 0.2); 
+* prob_onartvis0_0_to_1;			%sample_uniform(prob_onartvis0_0_to_1, 0.02 0.05 0.1 ); 
 * prob_onartvis0_1_to_0;			%sample_uniform(prob_onartvis0_1_to_0, 0.005 0.01 0.03 0.05); 
 
-* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25 0.5 ); * using tested=1 as a marker of whether under clinical supertvision while taking tld pep/prep ;
+* prob_test_pop_wide_tld_prep;	%sample_uniform(prob_test_pop_wide_tld_prep, 0.1 0.25     ); 
 
-* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv, 5  10  50); 
-																														 
-																													   
-																		 
+* pop_wide_tld_selective_hiv;	%sample_uniform(pop_wide_tld_selective_hiv,  10  30  100); 
 
 * death_r_iris_pop_wide_tld;	%sample_uniform(death_r_iris_pop_wide_tld, 0.01 0.03 0.05); * 0.03 sereti et al - assumed higher risk due to not in care;
-																		
 
-* prop_pep;						%sample_uniform(prop_pep, 0.2 0.5 0.8); 
+* prop_pep;						%sample_uniform(prop_pep, 0.5 0.7 0.9); 
 * pep_effiacy;					%sample(pep_efficacy, 0.9 0.95,  0.8  0.2);
 
 * artvis0_lower_adh;					%sample(artvis0_lower_adh, 0 1 , 0.8 0.2	);		* effect of onartvisit0 on adh (in context of pop_wide_tld=1); 
-																										  
-												
 
 * pop_wide_prep_adh_effect;		%sample(pop_wide_prep_adh_effect, 1 0.75 0.9 1/0.9 1/0.75, 0.6 0.1 0.1 0.1 0.1) ; * effect of taking pop wide tld without clinical supervision 
 																					(indicated by testing=1) on prev effectiveness;
 
-* prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld, 0.02  0.05  0.1     , 0.33 0.34 0.33);
-* inc_oral_prep_pref_pop_wide_tld;		%sample(inc_oral_prep_pref_pop_wide_tld, 0.1 0.3 0.5, 0.33 0.34 0.33);	
-									* how much does the appeal (preference) of oral prep increase with pop_wide_tld, due to the easy access ? 
-										(this is indicated by inc_oral_prep_pref_pop_wide_tld)
-									   this could diminish the use of prep_inj which is a negative as prep_inj has higher effectiveness ; 
+* prob_prep_pop_wide_tld;		%sample(prob_prep_pop_wide_tld,  0.05  0.1     , 0.5 0.5 );
+
+																								 																									   
 
 
 * COVID-19 ;
@@ -907,7 +899,7 @@ end;
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 if hivtest_type=1 then do; sens_primary=0.86; sens_vct=0.98; spec_vct=1;     end; 
 else if hivtest_type=3 then do; sens_primary=sens_primary_testtype3; sens_vct=0.98; spec_vct=0.992; end;
-else if hivtest_type=4 then do; sens_primary=0.65; sens_vct=0.98; spec_vct=1; end;
+else if hivtest_type=4 then do; sens_primary=0.75; sens_vct=0.98; spec_vct=1; end;
 
 
 * COSTS;
@@ -2075,7 +2067,6 @@ else 	prob_prep_vr_b = pr_prep_vr_b;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
-* Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
@@ -2083,17 +2074,9 @@ if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldat
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
 end;
 
-
-* if pop_wide_tld pep prep available then higher willingness due to ease of access (inc_o_prep_pref_pop_wide_tld_d indicates whether the increase
-has yet been applied);
-																																													   
-if pop_wide_tld = 1 and inc_o_prep_pref_pop_wide_tld_d ne 1 then do;
-	pref_prep_oral = pref_prep_oral + ((1 - pref_prep_oral) * inc_oral_prep_pref_pop_wide_tld); inc_o_prep_pref_pop_wide_tld_d=1;
-end;
-
-
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
-* pref_prep_inj;				pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;
+					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
+* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;	
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro) then do;
@@ -2118,9 +2101,12 @@ else highest_prep_pref=3;																		* 3=preference for vaginal ring;
 * willingness to take prep if offered;
 
 if caldate{t} ge date_prep_oral_intro then do;
-prep_oral_willing = 0; if  pref_prep_oral > prep_willingness_threshold  	then prep_oral_willing =1;
-end;
+if  pref_prep_oral > prep_willingness_threshold  	then prep_oral_willing =1;
+ 
+q=rand('uniform');
+if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05  then prep_oral_willing =1; 
 
+end;
 if caldate{t} ge date_prep_inj_intro then do;
 prep_inj_willing = 0; if  pref_prep_inj  > prep_willingness_threshold  	then prep_inj_willing =1;
 end;
@@ -3986,10 +3972,15 @@ sw_gt1ep=0;if episodes_sw  gt 1 then sw_gt1ep=1;
 
 if t ge 2 then do;
 s=rand('uniform');   * dependent_on_time_step_length ;
-tested_symptoms_not_hiv =0;  if . < date_start_testing <= caldate{t} and s < rate_non_hiv_symptoms and tested ne 1  and registd_tm1 ne 1
-and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) ) then do; 
-tested_symptoms_not_hiv =1; tested=1; 
-if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+tested_symptoms_not_hiv =0; 
+if s < rate_non_hiv_symptoms then do;u=rand('uniform');
+	if . < date_start_testing <= caldate{t} and tested ne 1 and registd_tm1 ne 1
+	and (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) 
+	and u < (test_rate_non_tb_who3+test_rate_who4)/2 then do; 
+	tested_symptoms_not_hiv =1; tested=1; 
+	if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+	end;
+end;
 end;
 
 
@@ -4332,7 +4323,7 @@ tested_as_sw=.;
 
 testfor_prep_oral=0; testfor_prep_inj=0; testfor_prep_vr=0;
  
-if registd ne 1 and caldate{t} ge (date_start_testing+3.5) and tested ne 1 
+if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1 
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
@@ -4814,7 +4805,15 @@ if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1;
 
 tld_notest_notprepelig = 0;
 
-if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) then do;  
+if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1; 
+
+
+* tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
+* lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
+
+tld_notest_notprepelig = 0;
+
+if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) ) then do;  
 
 	if prep_any_ever ne 1 then do;   * dependent_on_time_step_length; 
 
@@ -4822,7 +4821,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) 
 			* note below that rate_choose_stop_prep_oral also applies to people who started tld_prep due to the ever_newp = 1 condition;
 			r=rand('uniform'); a = rand('uniform'); 
 			if hiv ne 1 then a = a * pop_wide_tld_selective_hiv; 
-			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ( ever_newp = 1 and a < prob_tld_if_untested)
+			if (prep_oral_willing=1 and prep_any_elig=1 and r < prob_prep_pop_wide_tld) or ((ever_newp = 1) and a < prob_tld_hiv_concern)
 			then do ;		
 * ts1m ; 
 				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then pop_wide_tld_as_art = 1;
@@ -4832,12 +4831,11 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) 
 	end;
 
 	x_stop_tld = eff_rate_choose_stop_prep_oral;
-	if ever_newp = 1 and prep_any_elig ne 1 then x_stop_tld = eff_rate_int_choice; 
+	if (ever_newp = 1 ) and prep_any_elig ne 1 then x_stop_tld = eff_rate_int_choice; 
 
 	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
 			r=rand('uniform');	
-			if prep_oral_tm1 = 1 then do;
-				if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; 
+					if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; * assume dont re-start pop_wide_tld_as_art if stop;
 					pop_wide_tld_prep=1; 				
 					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
 					prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
@@ -4847,17 +4845,17 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) 
 					stop_prep_any_choice=1;  
 					stop_prep_oral_choice=1; 
 				end; 
-			end;
+		
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
-				if r < eff_prob_prep_any_restart_choice then do;  * dependent_on_time_step_length;
+				if r < eff_prob_prep_any_restart_choice and prep_any_elig =1 then do;  * dependent_on_time_step_length; 
 					pop_wide_tld_prep=1; 
 					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0;  continuous_prep_any_use=0.25;
 					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; continuous_prep_oral_use=0.25; 
 				end;
 			end; 
-			else if stop_prep_oral_choice ne 1 then do;
+			else if stop_prep_oral_choice ne 1 and prep_any_elig =1 then do; 
 					pop_wide_tld_prep=1; 
 					prep_any=1; 		dt_prep_any_c=caldate{t};  continuous_prep_any_use = continuous_prep_any_use + 0.25;
 					prep_oral=1; 	 	dt_prep_oral_c=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
@@ -4865,7 +4863,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or ever_newp = 1 ) 
 			end;
 	end;
 	
-	if  ever_newp = 1 and prep_any_elig ne 1 and pop_wide_tld_prep=1 then tld_notest_notprepelig = 1;
+	if (ever_newp = 1) and prep_any_elig ne 1 and pop_wide_tld_prep=1 then tld_notest_notprepelig = 1;
 end;
 
 if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0; 
@@ -6227,7 +6225,7 @@ if ep_tm1=0 and ep=1 and epi    ne 1 then do;
 
 			if s < j then epdiag=1;
 
-			a=rand('uniform');if (date_start_testing+3.5) <= caldate{t} then do;
+			a=rand('uniform');if (date_start_testing+5.5) <= caldate{t} then do;
 				if s <  0.9 then epdiag=mr_epdiag;
 				if s >=0.9 and a < j then epdiag=1;
 			end;
@@ -6892,7 +6890,7 @@ naive=1;
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		sens_primary=0.65;
+		sens_primary=0.75;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
@@ -7933,10 +7931,9 @@ end;
 * for tld_prep - determine if onart but not under care (in this situation (confusingly) visit = 1 but onartvisit0=1; 
 
 a = rand('uniform'); b = rand('uniform'); 
-if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and onartvisit0 ne 1 and a < prob_onartvis0_0_to_1 then onartvisit0=1;
-if pop_wide_tld=1 and onart=1 and onartvisit0=1 and b < prob_onartvis0_1_to_0 then onartvisit0=0;
+if pop_wide_tld=1 and onart=1 and o_dol=1 and o_ten=1 and o_3tc=1 and adc_tm1 ne 1 and onartvisit0 ne 1 and a < prob_onartvis0_0_to_1 then onartvisit0=1;
+if pop_wide_tld=1 and onart=1 and onartvisit0=1 and (b < prob_onartvis0_1_to_0 or adc_tm1 = 1) then onartvisit0=0;
 if onart ne 1 then onartvisit0=0;
-
 
 
 
@@ -10866,6 +10863,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 
 	if caldate{t} ge 2015 and visit=1 and d < 0.8 then pcp_p   =1;
+
+	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
 
 	if  cotrim_disrup_covid = 1 and covid_disrup_affected = 1 then pcp_p = 0;
 
@@ -18338,8 +18337,8 @@ hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3   testt1_prep_inj_eff_on_res_prim   reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
-pref_prep_oral_beta_s1 prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_hiv_concern  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
+pref_prep_oral_beta_s1 prob_prep_pop_wide_tld  pop_wide_tld  prob_test_pop_wide_tld_prep  pop_wide_tld_selective_hiv res_level_dol_cab_mut
 super_inf_res  oral_prep_eff_3tc_ten_res  rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
@@ -24421,7 +24420,7 @@ prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_depende
 rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
-inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
+pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
@@ -24430,7 +24429,7 @@ hivtest_type_1_init_prep_inj hivtest_type_1_prep_inj
 sens_ttype3_prep_inj_primary sens_ttype3_prep_inj_inf3m sens_ttype3_prep_inj_infge6m
 sens_ttype1_prep_inj_primary sens_ttype1_prep_inj_inf3m sens_ttype1_prep_inj_infge6m  sens_tests_prep_inj
 sens_vct_testtype3_cab_tail sens_primary_testtype3  testt1_prep_inj_eff_on_res_prim  reg_option_107_after_cab
-rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_if_untested  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
+rr_return_pop_wide_tld rr_interrupt_pop_wide_tld  prob_tld_hiv_concern  prob_onartvis0_1_to_0 prob_onartvis0_0_to_1
 pref_prep_oral_beta_s1
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
