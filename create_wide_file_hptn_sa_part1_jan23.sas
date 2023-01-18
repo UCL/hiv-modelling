@@ -7,14 +7,12 @@
 
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
 
-
-
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\hptn_to2022_jan23_out\";
+libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\hptn_jan23_i_out\";
 
 data i1; set b.out1:;data i2; set b.out2:; data i3; set b.out3:; data i4; set b.out4:; data i5; set b.out5:; 
 data i6; set b.out6:; data i7; set b.out7:; data i8; set b.out8:; data i9; set b.out9:;  
 
-data g_hptn_to2022_jan23; set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
+data g_hptn_jan23; set  i1 i2 i3 i4 i5 i6 i7 i8 i9 ;
 
 s_hivge15m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv85plm ;
 s_hivge15w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w + s_hiv85plw ;
@@ -37,7 +35,7 @@ s_hiv = s_hivge15 ;
 
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
 
-keep 
+* keep 
 
 run option cald
 
@@ -49,9 +47,9 @@ s_onart_w  s_onart
 s_hiv1564m  s_hiv6569m  s_hiv7074m  s_hiv7579m  s_hiv8084m  s_hiv85plm
 s_hiv1564w s_hiv6569w  s_hiv7074w  s_hiv7579w  s_hiv8084w  s_hiv85plw
 
-s_alive s_prep_any_ever s_prep_oral_ever s_prep_inj_ever 
+s_alive s_prep_any_ever s_prep_oral_ever s_prep_inj_ever s_prep_any_elig
 
-s_onart_m  s_onart  s_vg1000    s_vg1000_m   s_vg1000_w s_prep_oral_w  s_prep_oral_m  s_prep_oral
+s_onart_m  s_onart  s_vg1000    s_vg1000_m   s_vg1000_w s_prep_oral_w  s_prep_oral_m  s_prep_oral  s_primary_prep_not_elig s_primary_prep_elig
 s_diag_w s_diag_m s_vg1000_w  s_vg1000_m  s_primary5054w  s_primary5559w  s_primary6064w  s_primary5054m  s_primary5559m  s_primary6064m
 s_primary_prep_oral s_primary_prep_inj s_onprep_oral_w s_onprep_oral_m s_onprep_inj_w  s_onprep_inj_m s_elig_prep_any_w_1564  
 s_elig_prep_any_m_1564  s_death_hiv_w  s_death_hiv_m s_death_hiv_age_1524  s_death_hiv_age_2534 s_death_hiv_age_3544 s_death_hiv_age_4554 
@@ -105,7 +103,7 @@ prep_any_strategy
 
 proc freq; tables run; where cald=2020;
 
-proc sort data=g_hptn_to2022_jan23; 
+proc sort data=g_hptn_jan23; 
 by run cald option;
 run;
 
@@ -113,7 +111,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set g_hptn_to2022_jan23 ;
+set g_hptn_jan23 ;
 
 if cald=2022.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -128,7 +126,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 
 
 data y; 
-merge g_hptn_to2022_jan23 sf;
+merge g_hptn_jan23 sf;
 by run ;
 
 
@@ -451,7 +449,8 @@ s_hiv = s_hivge15 ;
 
 * prop_hivneg_onprep;			prop_hivneg_onprep =   max((s_prep_any -s_hiv1_prep_any), 0) / (s_alive - s_hiv) ;
 
-* p_elig_prep;   				p_elig_prep = s_prep_any_elig / (s_alive1564 - s_hiv1564);
+
+* p_elig_prep;   				p_elig_prep = s_prep_any_elig / (s_alive1564_w + s_alive1564_m - s_hiv1564);
 
 * prop_w_1524_onprep;			prop_w_1524_onprep = s_onprep_1524w / ((s_ageg1519w + s_ageg2024w) - s_hiv1524w) ;
 * prop_1564_onprep;				prop_1564_onprep =   max(s_prep_any, 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564)  ;
@@ -641,6 +640,10 @@ s_hiv = s_hivge15 ;
 * incidence_sw;					if (s_sw_1564  - s_hiv_sw  + s_primary_sw) gt 0 then incidence_sw=(s_primary_sw * 4 * 100) / (s_sw_1564  - s_hiv_sw  + s_primary_sw);
 
 * incidence_onprep ; 			if s_prep_any > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep_any ;
+
+* incidence_prep_not_elig;		incidence_prep_not_elig = (s_primary_prep_not_elig * 4 * 100) / (s_alive1564  - s_hiv1564 - s_prep_any_elig) ;
+* incidence_prep_elig;			incidence_prep_elig = (s_primary_prep_elig * 4 * 100) / s_prep_any_elig ;
+
 
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
@@ -1129,6 +1132,8 @@ run option cald
 
 prop_1564_hivneg_onprep n_prep_inj_willing n_prep_oral_willing p_prep_elig_onprep_inj
 
+incidence_prep_not_elig incidence_prep_elig 
+
 p_oral_prep_10yr p_la_prep_10yr p_oral_prep_w_10yr p_la_prep_w_10yr av_prep_oral_eff_non_res_v
 
 sim_year 
@@ -1191,26 +1196,19 @@ pref_prep_inj_beta_s1  prep_from_2042  prep_scale_up
 proc sort data=y;by run option;run;
 
 
-proc means; var av_prep_oral_eff_non_res_v; by run option ; run;
-
-proc sort; by option;
-proc means; var av_prep_oral_eff_non_res_v; by option; run;
-
-
-
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    l_hptn_to2022_jan23; set y;  
+data    l_hptn_jan23; set y;  
 
 proc freq; tables run; where cald = 2020;
 
 run;
 
 
-proc contents data = l_hptn_to2022_jan23; run;
+proc contents data = l_hptn_jan23; run;
 
 
-data y; set  l_hptn_to2022_jan23; 
+data y; set  l_hptn_jan23; 
 
 
   options nomprint;
@@ -1252,6 +1250,7 @@ proc means noprint data=y; var &v; output out=y_42 mean= &v._42; by run option ;
 
 */
 
+proc means noprint data=y; var &v; output out=y_10y mean= &v._10y; by run option ; where 2022.0 <= cald < 2032.0 ;
 
 proc means noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2022.0 <= cald < 2023.0 ;
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2023.0 <= cald < 2024.0 ;
@@ -1306,7 +1305,7 @@ proc means noprint data=y; var &v; output out=y_70 mean= &v._70; by run option ;
 proc means noprint data=y; var &v; output out=y_71 mean= &v._71; by run option ; where 2071.0 <= cald < 2072.0 ;
 proc means noprint data=y; var &v; output out=y_72 mean= &v._72; by run option ; where 2072.0 <= cald < 2073.0 ;
 
-																										
+proc sort data=y_22; by run; proc transpose data=y_10y out=t_10y prefix=&v._10y_; var &v._10y; by run; 																																																								
 
 proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run; 																														
 proc sort data=y_23; by run; proc transpose data=y_23 out=t_23 prefix=&v._23_; var &v._23; by run; 																														
@@ -1362,7 +1361,7 @@ proc sort data=y_71; by run; proc transpose data=y_71 out=t_71 prefix=&v._71_; v
 proc sort data=y_72; by run; proc transpose data=y_72 out=t_72 prefix=&v._72_; var &v._72; by run; 	
 
 
-data &v ; merge 
+data &v ; merge t_10y
 t_22 t_23 t_24 t_25 t_26 t_27 t_28 t_29 t_30 t_31 t_32 t_33 t_34 t_35 t_36 t_37 t_38 t_39 t_40 t_41 t_42
  t_43 t_44 t_45 t_46 t_47 t_48 t_49 t_50 t_51 t_52 t_53 t_54 t_55 t_56 t_57 t_58 t_59 t_60 t_61 t_62 t_63 t_64 t_65 t_66 t_67 t_68 t_69 t_70 t_71 t_72
 ;
@@ -1376,14 +1375,16 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=vs_m); %var(v=inf_w); %var(v=inf_m); %var(v=inf_oral); %var(v=inf_la); %var(v=deaths_w); %var(v=deaths_m); %var(v=elig_prep_w);  
 %var(v=elig_prep_m); %var(v=oral_prep_w); %var(v=oral_prep_m); %var(v=la_prep_w);  %var(v=la_prep_m); %var(v=cd4_500pl); %var(v=cd4_350_500); 
 %var(v=cd4_200_350); %var(v=cd4_200); %var(v=deaths_1); %var(v=deaths_2); %var(v=deaths_3); %var(v=deaths_4); %var(v=deaths_5); 
-%var(v=p_prep_any_ever);%var(v=p_prep_oral_ever);%var(v=p_prep_inj_ever);%var(v=p_elig_prep);
+%var(v=p_prep_any_ever);%var(v=p_prep_oral_ever);%var(v=p_prep_inj_ever);%var(v=p_elig_prep); %var(v=incidence_prep_not_elig);
+%var(v=incidence_prep_elig); 
 
-data   wide_outputs_hptn_to2022_jan23; merge 
+
+data   wide_outputs_hptn_jan23; merge 
 
 sim_year 
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
-p_prep_any_ever p_prep_inj_ever p_prep_oral_ever  p_elig_prep ;
+p_prep_any_ever p_prep_inj_ever p_prep_oral_ever  p_elig_prep  incidence_prep_not_elig incidence_prep_elig ;
 
 proc sort; by run; run;
 
@@ -1409,7 +1410,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %blvar(b=prop_prep_oral_w); %blvar(b=prop_prep_oral_m);   %blvar(b=prop_prep_oral);
 %blvar(b=art_w); %blvar(b=art_m); %blvar(b= p_elig_prep);
 
-data   wide_bl_l_hptn_to2022_jan23; merge 
+data   wide_bl_l_hptn_jan23; merge 
 n_alive_m n_alive_w n_alive
 prevalence1549m   prevalence1549w   prevalence1549   
 incidence1549m   incidence1549w   incidence1549   
@@ -1478,7 +1479,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=pref_prep_inj_beta_s1);   %par(p=prep_from_2042);    %par(p=prep_scale_up); 
 %par(p=prep_any_strategy);
 
-data wide_par_l_hptn_to2022_jan23; merge 
+data wide_par_l_hptn_jan23; merge 
 &sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
@@ -1529,8 +1530,14 @@ proc sort; by run;run;
 * To get one row per run;
 
 
-  data   w_hptn_to2022_jan23 ;
-  merge   wide_outputs_hptn_to2022_jan23_hptn_to2022_jan23  wide_par_hptn_to2022_jan23 ;  
+  data   w_hptn_jan23 ;
+  merge   wide_outputs_hptn_jan23  wide_par_l_hptn_jan23 wide_bl_l_hptn_jan23  ;  
   by run;
-proc contents; run;
+
+* for croi poster ;
+proc univariate; 
+var incidence_prep_not_elig_22_2 incidence_prep_elig_22_2  p_elig_prep_22_2;  
+var incidence_prep_not_elig_10y_2 incidence_prep_elig_10y_2  p_elig_prep_10y_2;  
 run;
+
+
