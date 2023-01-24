@@ -1775,6 +1775,12 @@ proc freq; tables run;
   by run;
 
 
+
+* ########################################################################################################################### ;
+
+
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+
 data w_pwt_x10 ; set a.w_pwt_x10a a.w_pwt_x10b  a.w_pwt_x10c;
 
 
@@ -1979,6 +1985,10 @@ p_onart_vl1000_42_1  p_onart_vl1000_42_2   d_p_onart_vl1000_42_2_1
 d_p_vl1000_42_2_1   p_vl1000_42_2   p_vl1000_42_1 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1 
 p_elig_hivneg_onprep_42_1 p_elig_hivneg_onprep_42_2 
+p_onartvisit0_42_2
+p_onartvisit0_5y_2
+p_onartvisit0_20y_2
+p_onartvisit0_50y_2
 p_onartvisit0_vl1000_42_2 
 p_onartvisit0_vl1000_20y_2 
 p_onartvisit0_vl1000_50y_2 
