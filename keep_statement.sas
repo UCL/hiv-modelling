@@ -6,7 +6,7 @@ run s_pregnant_oth_dol_adv_birth_e s_pregnant s_pregnant_not_diagnosed_pos s_m_1
 s_w_1524_newp  s_w_2534_newp  s_w_3544_newp s_w_4554_newp s_w_5564_newp s_i_age1_m_newp s_i_age2_m_newp s_i_age3_m_newp s_i_age4_m_newp 
 s_i_age5_m_newp s_i_age1_w_newp s_i_age2_w_newp s_i_age3_w_newp s_i_age4_w_newp s_i_age5_w_newp  s_dead_ddaly  s_live_ddaly  s_dead_daly  
 s_live_daly  s_dead_ddaly_ntd  s_dead_ddaly_oth_dol_adv_birth_e  s_ddaly_mtct s_ddaly_non_aids_pre_death s_dcost_zdv s_dcost_ten 
-s_pop_wide_tld_prep_elig  s_pop_wide_tld_prep  s_prep_oral_willing s_prep_any_willing
+s_pop_wide_tld_prep_elig  s_pop_wide_tld_prep  s_prep_oral_willing s_prep_any_willing  s_adh_hi
 s_dcost_3tc  s_dcost_nev s_dcost_lpr s_dcost_dar s_dcost_taz s_dcost_efa s_dcost_dol s_dart_cost s_dcost_prep_oral s_dcost_prep_inj s_dcost_prep_visit
 s_dcost_prep_ac_adh s_dcost_circ s_dcost_condom_dn s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dvis_cost s_pop_wide_tld_as_art
 s_dart_1_cost s_dart_2_cost s_dart_3_cost s_dart_cost s_dvl_cost s_dcd4_cost s_dadc_cost s_dnon_tb_who3_cost s_dtb_cost s_dtest_cost s_dcot_cost 
@@ -46,7 +46,7 @@ s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_inj_gt_5 s_prep_oral_ever  s_prep_inj_e
 s_prep_reinit_primary  s_prep_init_primary  s_prep_primary_prevented s_cab_res_o_cab  s_cab_res_tail  s_cab_res_primary s_cur_res_cab
 s_diagprim_prep_inj s_prep_inj_at_infection  s_diagprim_prep_inj s_hiv_cab_3m  s_hiv_cab_6m  s_hiv_cab_9m  s_hiv_cab_ge12m 
 s_hiv_cab s_emerge_inm_res_cab  s_switch_prep_from_oral  s_switch_prep_from_inj  s_switch_prep_to_oral s_switch_prep_to_inj 
-s_cur_res_cab  s_iime_  s_pop_wide_tld_hiv  s_pop_wide_tld_prep  s_pop_wide_tld_hiv  s_pop_wide_tld_prep_elig  s_pop_wide_tld_prep_elig  
+s_cur_res_cab  s_iime_  s_nrtime_  s_pop_wide_tld_hiv  s_pop_wide_tld_prep  s_pop_wide_tld_hiv  s_pop_wide_tld_prep_elig  s_pop_wide_tld_prep_elig  
 s_pop_wide_tld_neg_prep_inelig  s_hiv1549m  s_hiv1549w  s_hiv_pregnant  s_hiv1549   
 s_primary1549w  s_hiv1549w  s_primary1549m  s_hiv1549m  s_primary1519w   s_primary2024w s_primary1519m s_primary2024m 
 s_primary2529w  s_primary3034w s_primary2529w s_primary3034w  s_primary2529m s_primary3034m    s_primary3539w  s_primary4044w s_primary3539m 

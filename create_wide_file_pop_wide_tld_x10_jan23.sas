@@ -1028,6 +1028,8 @@ run;
 
 * p_iime_all_adults;			p_iime_all_adults = s_iime_ / s_alive;
 
+* p_nrtime_all_adults;			p_nrtime_all_adults = s_nrtime_ / s_alive;
+
 * blood pressure;
 
 /*
@@ -1232,7 +1234,7 @@ p_ai_no_arv_e_inm p_artexp_diag p_artexp_onart p_onart_diag p_onart_diag_w p_ona
 p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_prep_tot5yrs prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
-death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm 
+death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm  p_nrtime_all_adults
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
 p_prep_any_ever p_hiv1_prep  p_hiv1_prep_inj p_hiv1_prep_oral   incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
 prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
@@ -1248,6 +1250,8 @@ dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line
 
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart n_pop_wide_tld_prep  n_art_or_prep n_prep_inj n_death_hivneg_anycause
+
+p_adh_hi
 
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj n_start_rest_prep_inj_hiv  prop_hivneg_onprep
 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
@@ -1473,7 +1477,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 * %var(v=p_o_nev_tox);  * %var(v=p_o_dol_tox);   * %var(v=p_o_zdv_adh_hi);   * %var(v=p_o_3tc_adh_hi);   * %var(v=p_o_ten_adh_hi);  
 * %var(v=p_o_taz_adh_hi);   * %var(v=p_o_lpr_adh_hi);   * %var(v=p_o_efa_adh_hi);   * %var(v=p_o_nev_adh_hi);   * %var(v=p_o_dol_adh_hi);  
 * %var(v= p_o_tle_tox);   * %var(v=p_o_tld_tox);   * %var(v=p_o_zla_tox);   * %var(v=p_o_zld_tox);    * %var(v=p_o_tle_adh_hi);   * %var(v=p_o_tld_adh_hi);   
-* %var(v=p_o_zla_adh_hi);   * %var(v=p_o_zld_adh_hi);   * %var(v=p_adh_hi);    * %var(v=s_a_zld_if_reg_op_116);
+* %var(v=p_o_zla_adh_hi);   * %var(v=p_o_zld_adh_hi);     %var(v=p_adh_hi);    * %var(v=s_a_zld_if_reg_op_116);
 * %var(v=p_nactive_ge2p75_xyz);  * %var(v=p_adh_hi_xyz_ot1);   * %var(v=p_adh_hi_xyz_ot2);   * %var(v=p_adh_hi_xyz_itt);   * %var(v=p_e_rt65m_xyz);   
 %var(v=p_nactive_ge2p00_xyz);   %var(v=p_nactive_ge1p50_xyz); 
 * %var(v=p_184m_ontle_vlg1000);  * %var(v=p_65m_ontle_vlg1000);  * %var(v=p_nnm_ontle_vlg1000);   * %var(v=p_184m_ontld_vlg1000);   * %var(v=p_65m_ontld_vlg1000);  
@@ -1550,6 +1554,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prop_prep_tot5yrs); %var(v=n_start_rest_prep_inj_hiv); %var(v=n_prep_inj);%var(v=p_prep_adhg80);
 %var(v=p_nactive_art_start_lt1p5);   %var(v=p_nactive_art_start_lt2);   %var(v=p_nactive_art_start_lt3); 
 %var(v=prev_vg1000_1549);  %var(v=p_onartvisit0);  %var(v=p_oral_pep_not_prep); %var(v=n_pop_tld_neg_prep_inel); %var(v=p_iime_all_adults);
+%var(v=p_nrtime_all_adults);
 %var(v=p_onartvisit0_vl1000); %var(v=n_inf_pre_yr_interv);  %var(v=n_inf_post_yr_interv);
 %var(v=n_death_hiv_inf_pre_yr_interv);   %var(v=n_death_hiv_inf_post_yr_interv);
 
@@ -1569,6 +1574,7 @@ p_ten p_zdv p_dol p_3tc p_lpr p_nev p_onart_vl1000  p_artexp_vl1000 p_vl1000 p_v
 p_vl1000_art_12m p_vl1000_art_12m_onart  p_onart_vl1000_w p_onart_vl1000_m  p_startedline2 p_linefail_ge1 m15r  m25r  m35r  m45r  m55r  w15r  
 w25r  w35r  w45r  w55r p_onart_cd4_l500  prop_art_or_prep  prop_sw_onprep   p_onart p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz death_rate_hiv 
 death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w p_iime n_infected_inm n_dead_hivpos_cause1
+p_nrtime_all_adults p_adh_hi
 n_tested n_tested_sw test_prop_positive p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  
 p_prep_any_ever p_hiv1_prep p_hiv1_prep_inj p_hiv1_prep_oral incidence1524w  incidence_sw p_onart_w p_onart_m  p_diag_w p_diag_m p_onart_vl1000 n_tested_w test_prop_positive
 prop_prep_inj   ratio_inj_prep_on_tail    pr_ever_prep_inj_res_cab    pr_ev_prep_inj_res_cab_hiv prop_cab_res_o_cab    prop_cab_res_tail    
@@ -1774,14 +1780,18 @@ proc freq; tables run;
   merge   wide_outputs           wide_par     ;
   by run;
 
+  proc contents; run;
 
 
 * ########################################################################################################################### ;
 
 
+
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 data w_pwt_x10 ; set 
+   a.w_pwt_x10a_jan23
+   a.w_pwt_x10b_jan23
    a.w_pwt_x10c_jan23
 ;
 
@@ -1879,6 +1889,7 @@ d_n_st_rest_prep_inj_hiv_20y_2_1 = n_start_rest_prep_inj_hiv_20y_2 - n_start_res
 d_n_prep_inj_20y_2_1 = n_prep_inj_20y_2 - n_prep_inj_20y_1 ;
 d_p_ai_no_arv_e_inm_42_2_1 = p_ai_no_arv_e_inm_42_2 - p_ai_no_arv_e_inm_42_1 ;
 d_p_iime_42_2_1 = p_iime_42_2 - p_iime_42_1 ;
+d_p_nrtime_all_adults_42_2_1 = p_nrtime_all_adults_42_2 - p_nrtime_all_adults_42_1 ;
 d_n_infected_inm_42_2_1 = n_infected_inm_42_2 - n_infected_inm_42_1 ;   
 d_n_cur_res_cab_42_2_1 = n_cur_res_cab_42_2 - n_cur_res_cab_42_1 ;
 d_p_vl1000_art_12m_onart_42_2_1 = p_vl1000_art_12m_onart_42_2 - p_vl1000_art_12m_onart_42_1 ;  
@@ -1982,9 +1993,9 @@ p_pop_tld_neg_prep_inel_3y_2
 n_pop_tld_neg_prep_inel_3y_2
 prop_1564_onprep_3y_1  prop_1564_onprep_3y_2    d_prop_1564_onprep_3y_2_1
 prop_prep_inj_3y_2 prop_prep_inj_3y_1  d_prop_prep_inj_3y_2_1
+p_prep_adhg80_3y_1 p_prep_adhg80_3y_2
 
-n_hiv1_prep_oral_3y_1 n_hiv1_prep_oral_3y_2
-
+p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2 
 p_onart_vl1000_42_1  p_onart_vl1000_42_2   d_p_onart_vl1000_42_2_1 
 d_p_vl1000_42_2_1   p_vl1000_42_2   p_vl1000_42_1 
 prop_prep_inj_20y_2 prop_prep_inj_20y_1 
@@ -2012,6 +2023,7 @@ d_p_onart_20y_2_1  p_onart_20y_2
 ;
 * where artvis0_lower_adh = 1;
 * where d_p_elig_hivneg_onprep_3y_2_1 < 0.07; 
+  where pop_wide_prep_adh_effect = 1;
 run;
 
 * table 1;
@@ -2030,6 +2042,7 @@ prevalence_vg1000_42_1 prevalence_vg1000_42_2   d_prevalence_vg1000_42_2_1
 p_vl1000_42_1  p_vl1000_42_2 
 p_taz_42_1 p_taz_42_2 d_p_taz_42_2_1  
 d_p_iime_all_adults_42_2_1   p_iime_all_adults_42_2   p_iime_all_adults_42_1 
+d_p_nrtime_all_adults_42_2_1   p_nrtime_all_adults_42_2   p_nrtime_all_adults_42_1 
 d_p_nacti_art_start_lt1p5_42_2_1  p_nactive_art_start_lt1p5_42_1  p_nactive_art_start_lt1p5_42_2 
 d_p_nacti_art_start_lt2_42_2_1  p_nactive_art_start_lt2_42_1  p_nactive_art_start_lt2_42_2 
 d_p_nacti_art_start_lt3_42_2_1  p_nactive_art_start_lt3_42_1  p_nactive_art_start_lt3_42_2 
@@ -2262,9 +2275,8 @@ model d_n_death_hiv_50y_2_1    =  d_n_cd4_lt200_50y_2_1;
 run;
 
 
-
 proc glm  data=  w_pwt_x10 ; 
-model d_n_death_hiv_50y_2_1    =  d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1  /*  d_prevalence_vg1000_5y_2_1 */
+model d_n_death_hiv_50y_2_1    =  d_p_elig_hivneg_onprep_5y_2_1  d_prop_prep_inj_5y_2_1  
 d_p_vl1000_3y_2_1  
 d_p_oral_pep_not_prep_3y_2_1  
 p_onartvisit0_3y_2 
@@ -2381,29 +2393,6 @@ proc glm  data=  w_pwt_x10 ;
 class  pop_wide_prep_adh_effect sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w;
 model d_n_death_hiv_50y_2_1    =
 
-/*
-
-sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
-p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
-ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
-external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
-fold_change_yw fold_change_sti tr_rate_undetec_vl super_infection_pop  super_inf_res  an_lin_incr_test
-date_test_rate_plateau rate_testanc_inc incr_test_rate_sympt max_freq_testing
-test_targeting fx gx adh_pattern prob_loss_at_diag pr_art_init 
-rate_lost prob_lost_art rate_return rate_restart rate_int_choice
-clinic_not_aw_int_frac res_trans_factor_nn rate_loss_persistence incr_rate_int_low_adh
-poorer_cd4rise_fail_nn poorer_cd4rise_fail_ii rate_res_ten
-fold_change_mut_risk adh_effect_of_meas_alert pr_switch_line prob_vl_meas_done
-red_adh_tb_adc red_adh_tox_pop add_eff_adh_nnrti altered_adh_sec_line_pop
-prob_return_adc prob_lossdiag_adctb prob_lossdiag_non_tb_who3e higher_newp_less_engagement
-fold_tr fold_tr_newp switch_for_tox  
-circ_inc_rate p_hard_reach_w hard_reach_higher_in_men
-p_hard_reach_m inc_cat  base_rate_sw base_rate_stop_sexwork    rred_a_p
-rr_int_tox   nnrti_res_no_effect  double_rate_gas_tox_taz   
-incr_mort_risk_dol_weightg  sw_init_newp sw_trans_matrix
-red_adh_multi_pill_pop   greater_disability_tox	  greater_tox_zdv
-
-*/
 
 effect_visit_prob_diag_l  tb_base_prob_diag_l crypm_base_prob_diag_l tblam_eff_prob_diag_l  crag_eff_prob_diag_l sbi_base_prob_diag_l
 rel_rate_death_tb_diag_e rel_rate_death_oth_adc_diag_e rel_rate_death_crypm_diag_e  rel_rate_death_sbi_diag_e
