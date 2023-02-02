@@ -1,22 +1,23 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
-/*
-* run 76 all;
+
+* run 77 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 %let tmpfilename = out;
-*/
+
+/*
 * Myriad input; 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
-
+*/
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
  proc printto ; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2022.5;
 
 
@@ -850,10 +851,12 @@ prob_symp_hypertension = 0.025;
 prob_test_sbp_undiagnosed = 0.01 * rr_htn_diagnosis;
 * measurement error and variability in sbp ;
 measurement_error_var_sbp = 10; 
-* probability of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
+* RR of getting bp tested in a person aged over 15 with previously diagnosed hypertension but currently not in care for hypertension, per period;
 prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis; 
-* probability of getting bp tested in a person <40 years of age compared to baseline probability;
+* RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
+* relative risk of bp testing for current HIV visit;
+%sample_uniform(rr_test_sbp_hiv, 2 2 2);
 
 ** Community testing;
 first_comm_test = .;
@@ -891,26 +894,32 @@ prob_restart_htn_tx_s2 = 1;
 * interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 interval_visit_hypertension=0.5;
 
+* integration of hiv and hypertension visits;
+integration = 0;
+
 * for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
 %sample_uniform(prob_intensify_1_2, 0.05 0.1 0.15); 
 * for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
 %sample_uniform(prob_intensify_2_3, 0 0.02 0.04); 
 
 * probability of acute treatment for MI or CVA;
-prob_ihd_tx = 0.1;
-prob_cva_tx = 0.1;
-prob_ihd_tx_lowqual = 0.4;
-prob_cva_tx_lowqual = 0.4;
+%sample_uniform(rr_cvd_tx, 0.5 1 2);
+prob_ihd_tx = 0.1 * rr_cvd_tx;
+prob_cva_tx = 0.1 * rr_cvd_tx;
+%sample_uniform(rr_cvd_tx_lowqual, 0.5 1 2);
+prob_ihd_tx_lowqual = 0.3 * rr_cvd_tx_lowqual;
+prob_cva_tx_lowqual = 0.3 * rr_cvd_tx_lowqual;
 
 * effect of admission for MI or CVA treatment;
-rr_mort_ihd_tx = 0.85;
-rr_mort_cva_tx = 0.70;
+rr_mort_ihd_tx = 0.8;
+rr_mort_cva_tx = 0.6;
 
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
 cost_htn_visit1 = 0.010;
 cost_htn_visit2 = 0.020;
+cost_htn_visitInt = 0;
 cost_htn_drug1 = 0.0027;
 cost_htn_drug2 = 0.0027;
 cost_htn_drug3 = 0.0052;
@@ -2582,6 +2591,9 @@ who may be dead and hence have caldate{t} missing;
 		*comm_test_interval = 3;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		*comm_test_age = 18;
+		
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2608,6 +2620,9 @@ who may be dead and hence have caldate{t} missing;
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
 		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
@@ -2615,7 +2630,7 @@ who may be dead and hence have caldate{t} missing;
 
 		* cost of hypertension interventions;
 		*cost_htn_link_voucher = 0;
-		*cost_htn_screen_comm = 0.0044;
+		*cost_htn_screen_comm = 0.003;
 	end;
 
 	if option = 3 then do;
@@ -2630,6 +2645,9 @@ who may be dead and hence have caldate{t} missing;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
+
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
@@ -2655,6 +2673,9 @@ who may be dead and hence have caldate{t} missing;
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
 		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
@@ -2662,7 +2683,7 @@ who may be dead and hence have caldate{t} missing;
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0;
-		cost_htn_screen_comm = 0.0044;
+		cost_htn_screen_comm = 0.003;
 	end;
 
 	if option = 4 then do;
@@ -2677,6 +2698,9 @@ who may be dead and hence have caldate{t} missing;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
+		*relative risk of BP testing at HIV visit if out of hypertension care;
+		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
+
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is >=160 ;
@@ -2702,6 +2726,9 @@ who may be dead and hence have caldate{t} missing;
 		* interval between visits for a person on anti hypertensives and with most recent measured sbp < 140;
 		interval_visit_hypertension=0.5;
 
+		* integration of hiv and hypertension visits;
+		integration = 1;
+
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
 		%sample_uniform(prob_intensify_1_2, 0.2 0.3 0.4); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
@@ -2709,7 +2736,7 @@ who may be dead and hence have caldate{t} missing;
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0.005;
-		cost_htn_screen_comm = 0.0044;
+		cost_htn_screen_comm = 0.003;
 	end;
 
 
@@ -3199,7 +3226,7 @@ if age <=15.25 and gender = 1 then do;
 	sbp = sbp + 2;
 end;
 
-* underlying increases in blood pressure in people not on anti-hypertensives; *updated 29dec2021 to make sbp slope increase less steep as bp rises;
+* underlying increases in blood pressure in people not on anti-hypertensives; 
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
@@ -3245,6 +3272,8 @@ if on_anti_hypertensive = 0 and visit_hypertension_tm1 = 0 then do;
 	if symp_hypertension = 1 or prior_cvd =1 then e = e / 2;
 	if gender = 2 then e = e / rr_test_sbp_women;
 	if age <40 then e = e / rr_test_sbp_young;
+	if visit = 1 then e = e / rr_test_sbp_hiv; * relative risk of BP measure at HIV visit;
+		* QUESTION: is visit assigned yet for this period in section 3A?;
 	if diagnosed_hypertension = 0 and e < prob_test_sbp_undiagnosed and (hard_reach ne 1 or symp_hypertension = 1) then tested_bp = 1; 
 	if diagnosed_hypertension = 1 and e < prob_test_sbp_diagnosed and (hard_reach ne 1 or symp_hypertension = 1) then tested_bp = 1; 
 		*in SEARCH: community dx still have higher rate of delayed linkage but this is ignored here;
@@ -3370,6 +3399,7 @@ end;
 if visit_hypertension = 1 then do;
 	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
 	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
+	if visit = 1 and integration = 1 then htn_cost_clin = cost_htn_visitInt;
 end;
 if on_anti_hypertensive = 1 then htn_cost_drug = cost_htn_drug1;
 if on_anti_hypertensive = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
@@ -18053,25 +18083,24 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
+
+
 /*
-
-
 proc freq; tables cald hiv ; where death=.; run;
+*/
 
 
-/*
 
 
 proc print; var 
-caldate&j prep_any_elig prep_oral_willing ever_newp ever_tested  pop_wide_tld_prep prep_oral hiv infection o_dol 
-registd tested onart visit onartvisit0 naive prep_inj prob_onartvis_0_to_1 prob_onartvis_1_to_0
+caldate&j age hiv visit diagnosed_hypertension visit_hypertension tested_bp on_anti_hypertensive hard_reach symp_hypertension
 ;
-where caldate&j > 2022 and infection > 2022.5 and death = .; 
+where caldate&j > 2022 and death = .; 
 run;
-
+/*
 proc freq; tables onartvisit0; where onart=1 and death=.; run;
-
 */
+
 
 
 /*
@@ -21401,7 +21430,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=4);
-
+/*
 * Replicate 2;
 data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
