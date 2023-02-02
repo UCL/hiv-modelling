@@ -835,7 +835,7 @@ non_hiv_tb_death_risk = 0.3 ;
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
 * OVERWRITES country specific parameters;
- %include "/home/rmjllob/Zim_parameters_02.sas";
+ %include "/home/rmjllob/Zim_parameters_03.sas";
  *%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Zim_parameters_01.sas";
 * ===================== ;
 * END OF PARAMETER LIST ;
