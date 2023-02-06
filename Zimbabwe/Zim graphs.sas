@@ -1,7 +1,7 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 data a;
-set a.Zim_02;
+set a.Zim_03;
 proc sort;by run;run;
 
 data sf;
@@ -212,7 +212,7 @@ n_prep 				n_prep_ever			p_prep_ever				;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit =127;
+%let nfit =124;
 %let year_end = 2045.00 ;
 proc sort;by cald option ;run;
 
@@ -369,7 +369,7 @@ run;
 
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Zim_02.doc' startpage=never; 
+ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Zim_03.doc' startpage=never; 
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive 15+";
