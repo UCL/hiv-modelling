@@ -2287,10 +2287,10 @@ pop_wide_tld = 0;
 pop_wide_tld_year_i = 0;
 
 *covid disruption variables;
-vmmc_disrup_covid = 1 ; 
+vmmc_disrup_covid = 0 ; 
 condom_disrup_covid = 0; 
 prep_oral_disrup_covid = 0; 	* lapr and dpv-vr - no change as this is before lapr and dpv-vr introduced ;
-testing_disrup_covid = 1; 
+testing_disrup_covid = 0; 
 art_init_disrup_covid = 0; 
 vl_adh_switch_disrup_covid = 0; 
 cotrim_disrup_covid = 0; 
