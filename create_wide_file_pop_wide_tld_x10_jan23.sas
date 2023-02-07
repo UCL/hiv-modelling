@@ -1251,7 +1251,7 @@ dcost_prep  n_art_initiation  n_restart  dcost_prep_oral  dcost_prep_inj  n_line
 prop_1564_hivneg_onprep  p_newp_prep_hivneg cost n_cd4_lt200 n_cd4_lt200 aids_death_rate  death_rate_onart  death_rate_artexp  
 death_rate_hiv death_rate_hiv_all  n_onart n_pop_wide_tld_prep  n_art_or_prep n_prep_inj n_death_hivneg_anycause
 
-p_adh_hi
+p_adh_hi  
 
 p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj n_start_rest_prep_inj_hiv  prop_hivneg_onprep
 n_started_prep_inj_hiv n_started_prep_any_hiv  p_pop_wide_tld_hiv  p_pop_wide_tld_prep_elig  p_pop_tld_neg_prep_inel
@@ -1404,20 +1404,20 @@ proc means noprint data=e; var &v; output out=y_3y mean= &v._3y; by run option ;
 proc means noprint data=e; var &v; output out=y_5y mean= &v._5y; by run option ; where 2022.5 <= cald < 2027.50;   
 
 proc means noprint data=e; var &v; output out=y_50y mean= &v._50y; by run option ; where 2022.5 <= cald < 2072.50;
-/*
-proc means noprint data=e; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.5 <= cald < 2032.50;
-*/
+
+proc means noprint data=e; var &v; output out=y_27 mean= &v._27; by run option ; where 2026.5 <= cald < 2027.50;
+
 proc means noprint data=e; var &v; output out=y_42 mean= &v._42; by run option ; where 2038.5 <= cald < 2045.50;
 																				   
 proc sort data=y_50y    ; by run; proc transpose data=y_50y     out=t_50y     prefix=&v._50y_  ; var &v._50y    ; by run; 																														
 proc sort data=y_20y    ; by run; proc transpose data=y_20y     out=t_20y     prefix=&v._20y_  ; var &v._20y    ; by run; 																														
 proc sort data=y_3y    ; by run; proc transpose data=y_3y     out=t_3y     prefix=&v._3y_  ; var &v._3y    ; by run; 																														
 proc sort data=y_5y    ; by run; proc transpose data=y_5y     out=t_5y     prefix=&v._5y_  ; var &v._5y    ; by run; 																														
-/* proc sort data=y_32; by run; proc transpose data=y_32 out=t_32 prefix=&v._32_; var &v._32; by run; */																														
+proc sort data=y_27; by run; proc transpose data=y_27 out=t_27 prefix=&v._27_; var &v._27; by run; 																													
 proc sort data=y_42; by run; proc transpose data=y_42 out=t_42 prefix=&v._42_; var &v._42; by run; 																														
 
 
-data &v ; merge y_22 t_20y  t_3y  t_5y  t_42 t_50y ;  
+data &v ; merge y_22 t_20y  t_3y  t_5y t_27  t_42 t_50y ;  
 drop _NAME_ _TYPE_ _FREQ_;
 
 %mend var; 
@@ -1785,13 +1785,41 @@ proc freq; tables run;
 
 * ########################################################################################################################### ;
 
-
-
 libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
+
+data x ; set a.w_pwt_x10b_jan23;
+
+if run in (
+ 2312550
+ 20654193
+66128059
+68952443
+69219516
+92209611
+232592918
+ 244626141
+299649408
+ 468401301
+ 471663083
+ 476073457
+ 496262955
+ 529839502
+ 578562211
+ 586869114
+672182870
+761275831
+ 761296425
+ 783179868
+ 871862949
+884824898
+922227865
+)
+then delete;
+
 data w_pwt_x10 ; set 
+   x                   
    a.w_pwt_x10a_jan23
-   a.w_pwt_x10b_jan23
    a.w_pwt_x10c_jan23
 ;
 
@@ -1882,6 +1910,8 @@ r_prevalence1549_42_2_1 = prevalence1549_42_2 / prevalence1549_42_1 ;
 r_prevalence1549_50y_2_1 = prevalence1549_50y_2 / prevalence1549_50y_1 ;
 r_n_hiv_42_2_1 = n_hiv_42_2 / n_hiv_42_1 ;
 
+d_p_elig_hivneg_onprep_20y_2_1 =   p_elig_hivneg_onprep_20y_2 -   p_elig_hivneg_onprep_20y_1 ;
+
 d_p_hiv1_prep_20y_2_1 = p_hiv1_prep_20y_2 - p_hiv1_prep_20y_1 ; 
 d_p_hiv1_prep_inj_20y_2_1 = p_hiv1_prep_inj_20y_2 - p_hiv1_prep_inj_20y_1 ; 
 d_p_hiv1_prep_oral_20y_2_1 = p_hiv1_prep_oral_20y_2 - p_hiv1_prep_oral_20y_1 ; 
@@ -1899,6 +1929,11 @@ d_p_iime_all_adults_42_2_1 = p_iime_all_adults_42_2 - p_iime_all_adults_42_1;
 d_prevalence_vg1000_42_2_1 = prevalence_vg1000_42_2 - prevalence_vg1000_42_1;
 d_incidence1549_20y_2_1 = incidence1549_20y_2 - incidence1549_20y_1 ;
 d_p_vl1000_42_2_1 = p_vl1000_42_2 - p_vl1000_42_1 ; 
+d_p_oral_pep_not_prep_20y_2_1 = p_oral_pep_not_prep_20y_2 - p_oral_pep_not_prep_20y_1 ;
+d_p_onart_m_20y_2_1 = p_onart_m_20y_2 - p_onart_m_20y_1 ;
+d_p_onart_w_20y_2_1 = p_onart_w_20y_2 - p_onart_w_20y_1 ;
+
+d_pop_tld_neg_prep_inel_20y_2_1 = p_pop_tld_neg_prep_inel_20y_2 - p_pop_tld_neg_prep_inel_20y_1 ;
 
 
 d_p_nacti_art_start_lt1p5_42_2_1 = p_nactive_art_start_lt1p5_42_2 - p_nactive_art_start_lt1p5_42_1 ;
@@ -1953,6 +1988,8 @@ if prep_dependent_prev_vg1000 = 1 and prep_vlg1000_threshold = 0.005 then prep_d
 
 
 
+
+
 * suppl table 1;
 
 ods html;
@@ -1969,7 +2006,7 @@ var	prevalence1549m_22 prevalence1549w_22  prevalence1524m_22 prevalence1524w_22
 incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
 p_onart_diag_w_22 	p_onart_diag_m_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22 p_onart_cd4_l500_22  
 p_startedline2_22  prop_sw_hiv_22  prop_1564_onprep_22   prop_sw_onprep_22 p_newp_sw_22  n_tested_22   p_newp_sw_22 
-death_rate_hiv_22
+death_rate_hiv_22  p_adh_hi_22
 ;
 run;
 ods html close;
@@ -1995,10 +2032,13 @@ prop_1564_onprep_3y_1  prop_1564_onprep_3y_2    d_prop_1564_onprep_3y_2_1
 prop_prep_inj_3y_2 prop_prep_inj_3y_1  d_prop_prep_inj_3y_2_1
 p_prep_adhg80_3y_1 p_prep_adhg80_3y_2
 
-p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2 
+p_adh_hi_42_1 p_adh_hi_42_2
+prop_1564_onprep_20y_1  prop_1564_onprep_20y_2    d_prop_1564_onprep_20y_2_1
+p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2  d_p_elig_hivneg_onprep_20y_2_1 
 p_onart_vl1000_42_1  p_onart_vl1000_42_2   d_p_onart_vl1000_42_2_1 
 d_p_vl1000_42_2_1   p_vl1000_42_2   p_vl1000_42_1 
-prop_prep_inj_20y_2 prop_prep_inj_20y_1 
+prop_prep_inj_20y_2 prop_prep_inj_20y_1  d_prop_prep_inj_20y_2_1
+d_p_oral_pep_not_prep_20y_2_1   p_oral_pep_not_prep_20y_2  p_oral_pep_not_prep_20y_1 
 p_elig_hivneg_onprep_42_1 p_elig_hivneg_onprep_42_2 
 p_onartvisit0_42_2
 p_onartvisit0_5y_2
@@ -2007,6 +2047,8 @@ p_onartvisit0_50y_2
 p_onartvisit0_vl1000_42_2 
 p_onartvisit0_vl1000_20y_2 
 p_onartvisit0_vl1000_50y_2 
+d_p_onart_m_20y_2_1 p_onart_m_20y_1  p_onart_m_20y_2
+d_p_onart_w_20y_2_1 p_onart_w_20y_1  p_onart_w_20y_2
 n_prep_inj_20y_1 n_prep_inj_20y_2
 p_elig_hivneg_onprep_20y_1 p_elig_hivneg_onprep_20y_2  d_p_elig_hivneg_onprep_20y_2_1
 n_prep_any_20y_1 n_prep_any_20y_2  
@@ -2020,10 +2062,11 @@ prevalence1549_42_1 prevalence1549_42_2  r_prevalence1549_42_2_1
 prevalence1549_50y_1 prevalence1549_50y_2  r_prevalence1549_50y_2_1
 n_hiv_42_1 n_hiv_42_2 r_n_hiv_42_2_1 
 d_p_onart_20y_2_1  p_onart_20y_2 
+d_pop_tld_neg_prep_inel_20y_2_1 p_pop_tld_neg_prep_inel_20y_2 p_pop_tld_neg_prep_inel_20y_1 
 ;
 * where artvis0_lower_adh = 1;
 * where d_p_elig_hivneg_onprep_3y_2_1 < 0.07; 
-  where pop_wide_prep_adh_effect = 1;
+* where pop_wide_prep_adh_effect = 1;
 run;
 
 * table 1;

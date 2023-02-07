@@ -1951,6 +1951,11 @@ ods html close;
 
 
 ods html;
+proc print nobs; var run; run;
+ods html close;
+
+
+ods html;
 proc means  data=   w_pwt_x10 n median p5 p95 min max ;
 var	prevalence1549m_22 prevalence1549w_22  prevalence1524m_22 prevalence1524w_22 incidence1549w_22 
 incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
