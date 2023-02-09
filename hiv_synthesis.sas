@@ -25,7 +25,6 @@ To set a variable my_var to 0, 1 or 5 with probabilities 0.2, 0.1 and 0.7 respec
 
 The above example is essentially the same as:
 
-r = rand('uniform');
 if r < 0.2 then my_var = 0;
 if 0.2 <= r < 0.2 + 0.1 then my_var = 1;
 if 0.2 + 0.1 <= r then my_var = 5;
@@ -6820,35 +6819,276 @@ nactive = round(nactive,0.25);
 (the program below only determines whether a person is infected from a person diagnosed or 
 naive or not, I would leave this as it is);
 
-if vl_source_inf=1 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg1_rm0_diag;t_prop_naive=t_prop_vlg1_rm0_naive; end;
-if vl_source_inf=1 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg1_rm1_diag;t_prop_naive=t_prop_vlg1_rm1_naive; end;
+***LBMJan23;
+if vl_source_inf=1 and c_rm_inf=0 then do;
+t_prop_diag				= t_prop_vlg1_rm0_diag;
+t_prop_naive			= t_prop_vlg1_rm0_naive; 
 
-if vl_source_inf=2 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg2_rm0_diag;t_prop_naive=t_prop_vlg2_rm0_naive; end;
-if vl_source_inf=2 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg2_rm1_diag;t_prop_naive=t_prop_vlg2_rm1_naive; end;
+t_p_startart			= t_p_vlg1_rm0_startart;
+t_p_onart				= t_p_vlg1_rm0_onart;
+t_p_offart				= t_p_vlg1_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg1_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg1_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg1_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg1_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg1_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg1_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg1_rm0_offart_SI_gt6m;
+end;
 
-if vl_source_inf=3 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg3_rm0_diag;t_prop_naive=t_prop_vlg3_rm0_naive; end;
-if vl_source_inf=3 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg3_rm1_diag;t_prop_naive=t_prop_vlg3_rm1_naive; end;
 
-if vl_source_inf=4 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg4_rm0_diag;t_prop_naive=t_prop_vlg4_rm0_naive; end;
-if vl_source_inf=4 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg4_rm1_diag;t_prop_naive=t_prop_vlg4_rm1_naive; end;
+if vl_source_inf=1 and c_rm_inf=1 then do; 
+t_prop_diag				= t_prop_vlg1_rm1_diag;
+t_prop_naive			= t_prop_vlg1_rm1_naive; 
 
-if vl_source_inf=5 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg5_rm0_diag;t_prop_naive=t_prop_vlg5_rm0_naive; end;
-if vl_source_inf=5 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg5_rm1_diag;t_prop_naive=t_prop_vlg5_rm1_naive; end;
+t_p_startart			= t_p_vlg1_rm1_startart;
+t_p_onart				= t_p_vlg1_rm1_onart;
+t_p_offart				= t_p_vlg1_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg1_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg1_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg1_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg1_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg1_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg1_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg1_rm1_offart_SI_gt6m;
+end;
 
-if vl_source_inf=6 and c_rm_inf=0 then do; t_prop_diag=t_prop_vlg6_rm0_diag;t_prop_naive=t_prop_vlg6_rm0_naive; end;
-if vl_source_inf=6 and c_rm_inf=1 then do; t_prop_diag=t_prop_vlg6_rm1_diag;t_prop_naive=t_prop_vlg6_rm1_naive; end;
+
+if vl_source_inf=2 and c_rm_inf=0 then do; 
+t_prop_diag				= t_prop_vlg2_rm0_diag;
+t_prop_naive			= t_prop_vlg2_rm0_naive;
+ 
+t_p_startart			= t_p_vlg2_rm0_startart;
+t_p_onart				= t_p_vlg2_rm0_onart;
+t_p_offart				= t_p_vlg2_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg2_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg2_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg2_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg2_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg2_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg2_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg2_rm0_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=2 and c_rm_inf=1 then do;
+t_prop_diag				= t_prop_vlg2_rm1_diag;
+t_prop_naive			= t_prop_vlg2_rm1_naive;
+
+t_p_startart			= t_p_vlg2_rm1_startart;
+t_p_onart				= t_p_vlg2_rm1_onart;
+t_p_offart				= t_p_vlg2_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg2_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg2_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg2_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg2_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg2_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg2_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg2_rm1_offart_SI_gt6m;
+end;
+
+if vl_source_inf=3 and c_rm_inf=0 then do;
+t_prop_diag				= t_prop_vlg3_rm0_diag;
+t_prop_naive			= t_prop_vlg3_rm0_naive; 
+
+t_p_startart			= t_p_vlg3_rm0_startart;
+t_p_onart				= t_p_vlg3_rm0_onart;
+t_p_offart				= t_p_vlg3_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg3_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg3_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg3_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg3_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg3_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg3_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg3_rm0_offart_SI_gt6m;
+end;
+
+if vl_source_inf=3 and c_rm_inf=1 then do; 
+t_prop_diag				= t_prop_vlg3_rm1_diag;
+t_prop_naive			= t_prop_vlg3_rm1_naive; 
+
+t_p_startart			= t_p_vlg3_rm1_startart;
+t_p_onart				= t_p_vlg3_rm1_onart;
+t_p_offart				= t_p_vlg3_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg3_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg3_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg3_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg3_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg3_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg3_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg3_rm1_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=4 and c_rm_inf=0 then do; 
+t_prop_diag				= t_prop_vlg4_rm0_diag;
+t_prop_naive			= t_prop_vlg4_rm0_naive; 
+
+t_p_startart			= t_p_vlg4_rm0_startart;
+t_p_onart				= t_p_vlg4_rm0_onart;
+t_p_offart				= t_p_vlg4_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg4_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg4_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg4_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg4_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg4_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg4_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg4_rm0_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=4 and c_rm_inf=1 then do; 
+t_prop_diag				= t_prop_vlg4_rm1_diag;
+t_prop_naive			= t_prop_vlg4_rm1_naive; 
+
+t_p_startart			= t_p_vlg4_rm1_startart;
+t_p_onart				= t_p_vlg4_rm1_onart;
+t_p_offart				= t_p_vlg4_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg4_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg4_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg4_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg4_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg4_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg4_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg4_rm1_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=5 and c_rm_inf=0 then do; 
+t_prop_diag				= t_prop_vlg5_rm0_diag;
+t_prop_naive			= t_prop_vlg5_rm0_naive;
+
+t_p_startart			= t_p_vlg5_rm0_startart;
+t_p_onart				= t_p_vlg5_rm0_onart;
+t_p_offart				= t_p_vlg5_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg5_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg5_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg5_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg5_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg5_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg5_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg5_rm0_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=5 and c_rm_inf=1 then do; 
+t_prop_diag				= t_prop_vlg5_rm1_diag;
+t_prop_naive			= t_prop_vlg5_rm1_naive; 
+
+t_p_startart			= t_p_vlg5_rm1_startart;
+t_p_onart				= t_p_vlg5_rm1_onart;
+t_p_offart				= t_p_vlg5_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg5_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg5_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg5_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg5_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg5_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg5_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg5_rm1_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=6 and c_rm_inf=0 then do;
+t_prop_diag				= t_prop_vlg6_rm0_diag;
+t_prop_naive			= t_prop_vlg6_rm0_naive; 
+
+t_p_startart			= t_p_vlg6_rm0_startart;
+t_p_onart				= t_p_vlg6_rm0_onart;
+t_p_offart				= t_p_vlg6_rm0_offart;
+t_p_onart_lt6m			= t_p_vlg5_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg5_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg5_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg5_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg5_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg5_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg5_rm0_offart_SI_gt6m;
+end;
+
+
+if vl_source_inf=6 and c_rm_inf=1 then do; 
+t_prop_diag				= t_prop_vlg6_rm1_diag;
+t_prop_naive			= t_prop_vlg6_rm1_naive; 
+
+t_p_startart			= t_p_vlg6_rm1_startart;
+t_p_onart				= t_p_vlg6_rm1_onart;
+t_p_offart				= t_p_vlg6_rm1_offart;
+t_p_onart_lt6m			= t_p_vlg6_rm1_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg6_rm1_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg6_rm1_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg6_rm1_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg6_rm1_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg6_rm1_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg6_rm1_offart_SI_gt6m;
+end;
+
+
 
 if infected_newp=1 then do;	
 	infected_diagnosed=0; infected_naive=1;
+	I_undiag=0;I_diag_naive=0;I_diag_startart=0;I_onart=0;I_offart=0;I_onart_lt6m=0;I_onart_lt6m_nvs=0;I_onart_gt6m_nvs=0;I_onart_gt6m_vs=0; 
+	I_offart_1stI=0;I_offart_SI=0;I_offart_SIlt6m=0;I_offart_SIgt6m=0;
+
 	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
 	if infected_diagnosed=1 then do; 
 		s=rand('uniform');
 		infected_naive=0; if s < t_prop_naive then infected_naive=1;
 	end;
+
+	*LBMJan23;*
+	*partner is undiagnosed;
+	I_undiag = 1-infected_diagnosed;
+
+	*partner diag without starting ART;
+	I_diag_naive = infected_naive;
+	I_diag_startart = 1 - I_diag_naive;
+	
+	*partner started ART and is currently on ART/off ART;
+	if I_diag_startart=1 then do;
+		u=rand('uniform');
+     	if u <  t_p_onart then I_onart = 1;
+		if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
+	end;
+
+	*partner started ART and on ART<6m;
+	if I_diag_startart=1 then do;
+		u=rand('uniform');
+     	if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
+		if u >= t_p_onart_lt6m then I_onart_gt6m = 1;*this is currently unrelated to i_onart_gt6m_vlg1_rm0_np;
+	end;
+
+	*partner on ART<6m, current VL >1000;
+	if I_onart_lt6m=1 then do; 
+		u=rand('uniform');
+     	if u < t_p_onart_lt6m_nvs then I_onart_lt6m_nvs = 1;
+	end;
+
+	*partner on ART>6m, current VL >1000/current VL <1000;
+	if I_onart_gt6m=1 then do; 
+		u=rand('uniform');
+     	if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
+		if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
+	end;
+
+	*partner off ART, 1st interruption/SI;
+	if I_offart=1 then do;
+		u=rand('uniform');
+     	if u <   t_p_offart_1stI then I_offart_1stI = 1;
+		if u >=  t_p_offart_1stI then I_offart_SI = 1;*this is currently unrelated to i_offart_vlg1_rm0_np;
+
+			if I_offart_SI=1 then do;
+			v=rand('uniform');
+				if v <  t_p_offart_SI_lt6m then I_offart_SIlt6m=1;
+				if v >= t_p_offart_SI_lt6m then I_offart_SIgt6m=1;
+			end;
+	end;
 end;
 
+
 if infected_ep=1 then do;
+	I_undiag=0;I_diag_naive=0;I_diag_startart=0;I_onart=0;I_offart=0;I_onart_lt6m=0;I_onart_lt6m_nvs=0;I_onart_gt6m_nvs=0;I_onart_gt6m_vs=0; 
+	I_offart_1stI=0;I_offart_SI=0;I_offart_SIlt6m=0;I_offart_SIgt6m=0;
+
 	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1;  
 	infected_naive=1;
 	if epart_tm1=1 then infected_naive=0;
@@ -6856,7 +7096,56 @@ if infected_ep=1 then do;
 		* have to make this approximation below because dont track naive status of ep;
 		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
 	end;
+
+	*LBMJan23;*
+	*partner is undiagnosed;
+	I_undiag = 1-infected_diagnosed;
+
+	*partner diag without starting ART;
+	I_diag_naive = infected_naive;
+	I_diag_startart = 1 - I_diag_naive;
+	
+	*partner started ART and is currently on ART/off ART;
+	if I_diag_startart=1 then do;
+		u=rand('uniform');
+     	if u <  t_p_onart then I_onart = 1;
+		if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
+	end;
+
+	*partner started ART and on ART<6m;
+	if I_diag_startart=1 then do;
+		u=rand('uniform');
+     	if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
+		if u >= t_p_onart_lt6m then I_onart_gt6m = 1;*this is currently unrelated to i_onart_gt6m_vlg1_rm0_np;
+	end;
+
+	*partner on ART<6m, current VL >1000;
+	if I_onart_lt6m=1 then do; 
+		u=rand('uniform');
+     	if u < t_p_onart_lt6m_nvs then I_onart_lt6m_nvs = 1;
+	end;
+
+	*partner on ART>6m, current VL >1000/current VL <1000;
+	if I_onart_gt6m=1 then do; 
+		u=rand('uniform');
+     	if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
+		if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
+	end;
+
+	*partner off ART, 1st interruption/SI;
+	if I_offart=1 then do;
+		u=rand('uniform');
+     	if u <   t_p_offart_1stI then I_offart_1stI = 1;
+		if u >=  t_p_offart_1stI then I_offart_SI = 1;*this is currently unrelated to i_offart_vlg1_rm0_np;
+
+			if I_offart_SI=1 then do;
+			v=rand('uniform');
+				if v <  t_p_offart_SI_lt6m then I_offart_SIlt6m=1;
+				if v >= t_p_offart_SI_lt6m then I_offart_SIgt6m=1;
+			end;
+	end;
 end;
+
 
 
 * previously stopped drug due to toxicity  ;
@@ -13386,6 +13675,379 @@ if 15 <= age     then do;
 	i_naive_vlg6_rm0_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=0 then i_naive_vlg6_rm0_np=np;
 	i_naive_vlg6_rm1_np=0; if hiv=1 and naive=1 and vlg6=1 and registd=1 and rm_=1 then i_naive_vlg6_rm1_np=np;
 
+	***LBMJan23;
+	***Diagnosed, have started ART;
+	i_startart_vlg1_rm0_np=0; if hiv=1 and naive ne 1 and vlg1=1 and registd=1 and rm_=0 then i_startart_vlg1_rm0_np=np;
+	i_startart_vlg1_rm1_np=0; if hiv=1 and naive ne 1 and vlg1=1 and registd=1 and rm_=1 then i_startart_vlg1_rm1_np=np;
+	
+	i_startart_vlg2_rm0_np=0; if hiv=1 and naive ne 1 and vlg2=1 and registd=1 and rm_=0 then i_startart_vlg2_rm0_np=np;
+	i_startart_vlg2_rm1_np=0; if hiv=1 and naive ne 1 and vlg2=1 and registd=1 and rm_=1 then i_startart_vlg2_rm1_np=np;
+
+	i_startart_vlg3_rm0_np=0; if hiv=1 and naive ne 1 and vlg3=1 and registd=1 and rm_=0 then i_startart_vlg3_rm0_np=np;
+	i_startart_vlg3_rm1_np=0; if hiv=1 and naive ne 1 and vlg3=1 and registd=1 and rm_=1 then i_startart_vlg3_rm1_np=np;
+
+	i_startart_vlg4_rm0_np=0; if hiv=1 and naive ne 1 and vlg4=1 and registd=1 and rm_=0 then i_startart_vlg4_rm0_np=np;
+	i_startart_vlg4_rm1_np=0; if hiv=1 and naive ne 1 and vlg4=1 and registd=1 and rm_=1 then i_startart_vlg4_rm1_np=np;
+	
+	i_startart_vlg5_rm0_np=0; if hiv=1 and naive ne 1 and vlg5=1 and registd=1 and rm_=0 then i_startart_vlg5_rm0_np=np;
+	i_startart_vlg5_rm1_np=0; if hiv=1 and naive ne 1 and vlg5=1 and registd=1 and rm_=1 then i_startart_vlg5_rm1_np=np;
+
+	i_startart_vlg6_rm0_np=0; if hiv=1 and naive ne 1 and vlg6=1 and registd=1 and rm_=0 then i_startart_vlg6_rm0_np=np;
+	i_startart_vlg6_rm1_np=0; if hiv=1 and naive ne 1 and vlg6=1 and registd=1 and rm_=1 then i_startart_vlg6_rm1_np=np;
+
+	***Diagnosed, have started ART, currently on ART;
+	i_onart_vlg1_rm0_np=0; if hiv=1 and onart=1 and vlg1=1 and registd=1 and rm_=0 then i_onart_vlg1_rm0_np=np;
+	i_onart_vlg1_rm1_np=0; if hiv=1 and onart=1 and vlg1=1 and registd=1 and rm_=1 then i_onart_vlg1_rm1_np=np;
+	
+	i_onart_vlg2_rm0_np=0; if hiv=1 and onart=1 and vlg2=1 and registd=1 and rm_=0 then i_onart_vlg2_rm0_np=np;
+	i_onart_vlg2_rm1_np=0; if hiv=1 and onart=1 and vlg2=1 and registd=1 and rm_=1 then i_onart_vlg2_rm1_np=np;
+
+	i_onart_vlg3_rm0_np=0; if hiv=1 and onart=1 and vlg3=1 and registd=1 and rm_=0 then i_onart_vlg3_rm0_np=np;
+	i_onart_vlg3_rm1_np=0; if hiv=1 and onart=1 and vlg3=1 and registd=1 and rm_=1 then i_onart_vlg3_rm1_np=np;
+
+	i_onart_vlg4_rm0_np=0; if hiv=1 and onart=1 and vlg4=1 and registd=1 and rm_=0 then i_onart_vlg4_rm0_np=np;
+	i_onart_vlg4_rm1_np=0; if hiv=1 and onart=1 and vlg4=1 and registd=1 and rm_=1 then i_onart_vlg4_rm1_np=np;
+	
+	i_onart_vlg5_rm0_np=0; if hiv=1 and onart=1 and vlg5=1 and registd=1 and rm_=0 then i_onart_vlg5_rm0_np=np;
+	i_onart_vlg5_rm1_np=0; if hiv=1 and onart=1 and vlg5=1 and registd=1 and rm_=1 then i_onart_vlg5_rm1_np=np;
+
+	i_onart_vlg6_rm0_np=0; if hiv=1 and onart=1 and vlg6=1 and registd=1 and rm_=0 then i_onart_vlg6_rm0_np=np;
+	i_onart_vlg6_rm1_np=0; if hiv=1 and onart=1 and vlg6=1 and registd=1 and rm_=1 then i_onart_vlg6_rm1_np=np;
+
+***Diagnosed, have started ART, currently ff ART;
+	i_offart_vlg1_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg1=1 and registd=1 and rm_=0 then i_offart_vlg1_rm0_np=np;
+	i_offart_vlg1_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg1=1 and registd=1 and rm_=1 then i_offart_vlg1_rm1_np=np;
+	
+	i_offart_vlg2_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg2=1 and registd=1 and rm_=0 then i_offart_vlg2_rm0_np=np;
+	i_offart_vlg2_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg2=1 and registd=1 and rm_=1 then i_offart_vlg2_rm1_np=np;
+
+	i_offart_vlg3_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg3=1 and registd=1 and rm_=0 then i_offart_vlg3_rm0_np=np;
+	i_offart_vlg3_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg3=1 and registd=1 and rm_=1 then i_offart_vlg3_rm1_np=np;
+
+	i_offart_vlg4_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg4=1 and registd=1 and rm_=0 then i_offart_vlg4_rm0_np=np;
+	i_offart_vlg4_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg4=1 and registd=1 and rm_=1 then i_offart_vlg4_rm1_np=np;
+	
+	i_offart_vlg5_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg5=1 and registd=1 and rm_=0 then i_offart_vlg5_rm0_np=np;
+	i_offart_vlg5_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg5=1 and registd=1 and rm_=1 then i_offart_vlg5_rm1_np=np;
+
+	i_offart_vlg6_rm0_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg6=1 and registd=1 and rm_=0 then i_offart_vlg6_rm0_np=np;
+	i_offart_vlg6_rm1_np=0; if hiv=1 and naive ne 1 and onart ne 1 and vlg6=1 and registd=1 and rm_=1 then i_offart_vlg6_rm1_np=np;
+
+
+	*Diagnosed, on ART <6m stratified by viral suppression; 
+	if hiv=1 and registd=1 and onart=1 and tcur <= 0.5 then do;
+
+		i_onart_lt6m_vlg1_rm0_np=0;i_onart_lt6m_vs_vlg1_rm0_np=0;i_onart_lt6m_nvs_vlg1_rm0_np=0;
+		if vlg1=1 and rm_=0 then do; 
+			i_onart_lt6m_vlg1_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg1_rm0_np=np;*vs=viral suppresion;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg1_rm0_np=np;*nvs=no viral suppresion;
+		end;
+
+		i_onart_lt6m_vlg2_rm0_np=0;i_onart_lt6m_vs_vlg2_rm0_np=0;i_onart_lt6m_nvs_vlg2_rm0_np=0;
+		if vlg2=1 and rm_=0 then do; 
+			i_onart_lt6m_vlg2_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg2_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg2_rm0_np=np;
+		end;
+
+		i_onart_lt6m_vlg3_rm0_np=0;i_onart_lt6m_vs_vlg3_rm0_np=0;i_onart_lt6m_nvs_vlg3_rm0_np=0;
+		if vlg3=1 and rm_=0 then do;
+			i_onart_lt6m_vlg3_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg3_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg3_rm0_np=np;
+		end;
+
+		i_onart_lt6m_vlg4_rm0_np=0;i_onart_lt6m_vs_vlg4_rm0_np=0;i_onart_lt6m_nvs_vlg4_rm0_np=0;
+		if vlg4=1 and rm_=0 then do; 
+			i_onart_lt6m_vlg4_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg4_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg4_rm0_np=np;
+		end;
+
+		i_onart_lt6m_vlg5_rm0_np=0;i_onart_lt6m_vs_vlg5_rm0_np=0;i_onart_lt6m_nvs_vlg5_rm0_np=0; 
+		if vlg5=1 and rm_=0 then do;
+			i_onart_lt6m_vlg5_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg5_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg5_rm0_np=np;
+		end;
+
+		i_onart_lt6m_vlg6_rm0_np=0;i_onart_lt6m_vs_vlg6_rm0_np=0;i_onart_lt6m_nvs_vlg6_rm0_np=0; 
+		if vlg6=1 and rm_=0 then do; 
+			i_onart_lt6m_vlg6_rm0_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg6_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg6_rm0_np=np;
+		end;
+
+		i_onart_lt6m_vlg1_rm1_np=0;i_onart_lt6m_vs_vlg1_rm1_np=0;i_onart_lt6m_nvs_vlg1_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_lt6m_vlg1_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg1_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg1_rm1_np=np;
+		end;
+
+		i_onart_lt6m_vlg2_rm1_np=0;i_onart_lt6m_vs_vlg2_rm1_np=0;i_onart_lt6m_nvs_vlg2_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_lt6m_vlg2_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg2_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg2_rm1_np=np;
+		end;
+
+		i_onart_lt6m_vlg3_rm1_np=0;i_onart_lt6m_vs_vlg3_rm1_np=0;i_onart_lt6m_nvs_vlg3_rm1_np=0; 
+		if vlg1=1 and rm_=1 then do;
+			i_onart_lt6m_vlg3_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg3_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg3_rm1_np=np;
+		end;
+
+		i_onart_lt6m_vlg4_rm1_np=0;i_onart_lt6m_vs_vlg4_rm1_np=0;i_onart_lt6m_nvs_vlg4_rm1_np=0;
+		if vlg1=1 and rm_=1 then do;
+			i_onart_lt6m_vlg4_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg4_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg4_rm1_np=np;
+		end;
+
+		i_onart_lt6m_vlg5_rm1_np=0;i_onart_lt6m_vs_vlg5_rm1_np=0;i_onart_lt6m_nvs_vlg5_rm1_np=0;
+		if vlg1=1 and rm_=1 then do;
+			i_onart_lt6m_vlg5_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg5_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg5_rm1_np=np;
+		end;
+
+		i_onart_lt6m_vlg6_rm1_np=0;i_onart_lt6m_vs_vlg6_rm1_np=0;i_onart_lt6m_nvs_vlg6_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_lt6m_vlg6_rm1_np=np;
+			if vl1000=1 	then i_onart_lt6m_vs_vlg6_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg6_rm1_np=np;
+		end;
+	
+	end;
+
+*Diagnosed, on ART >6m stratified by viral suppression; 
+	if hiv=1 and registd=1 and onart=1 and tcur > 0.5 then do;
+
+		i_onart_gt6m_vlg1_rm0_np=0;i_onart_gt6m_vs_vlg1_rm0_np=0;i_onart_gt6m_nvs_vlg1_rm0_np=0;
+		if vlg1=1 and rm_=0 then do; 
+			i_onart_gt6m_vlg1_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg1_rm0_np=np;*vs=viral suppresion;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg1_rm0_np=np;*nvs=no viral suppresion;
+		end;
+
+		i_onart_gt6m_vlg2_rm0_np=0;i_onart_gt6m_vs_vlg2_rm0_np=0;i_onart_gt6m_nvs_vlg2_rm0_np=0;
+		if vlg2=1 and rm_=0 then do; 
+			i_onart_gt6m_vlg2_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg2_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg2_rm0_np=np;
+		end;
+
+		i_onart_gt6m_vlg3_rm0_np=0;i_onart_gt6m_vs_vlg3_rm0_np=0;i_onart_gt6m_nvs_vlg3_rm0_np=0;
+		if vlg3=1 and rm_=0 then do;
+			i_onart_gt6m_vlg3_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg3_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg3_rm0_np=np;
+		end;
+
+		i_onart_gt6m_vlg4_rm0_np=0;i_onart_gt6m_vs_vlg4_rm0_np=0;i_onart_gt6m_nvs_vlg4_rm0_np=0;
+		if vlg4=1 and rm_=0 then do; 
+			i_onart_gt6m_vlg4_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg4_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg4_rm0_np=np;
+		end;
+
+		i_onart_gt6m_vlg5_rm0_np=0;i_onart_gt6m_vs_vlg5_rm0_np=0;i_onart_gt6m_nvs_vlg5_rm0_np=0; 
+		if vlg5=1 and rm_=0 then do;
+			i_onart_gt6m_vlg5_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg5_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg5_rm0_np=np;
+		end;
+
+		i_onart_gt6m_vlg6_rm0_np=0;i_onart_gt6m_vs_vlg6_rm0_np=0;i_onart_gt6m_nvs_vlg6_rm0_np=0; 
+		if vlg6=1 and rm_=0 then do; 
+			i_onart_gt6m_vlg6_rm0_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg6_rm0_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg6_rm0_np=np;
+		end;
+
+		i_onart_gt6m_vlg1_rm1_np=0;i_onart_gt6m_vs_vlg1_rm1_np=0;i_onart_gt6m_nvs_vlg1_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_gt6m_vlg1_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg1_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg1_rm1_np=np;
+		end;
+
+		i_onart_gt6m_vlg2_rm1_np=0;i_onart_gt6m_vs_vlg2_rm1_np=0;i_onart_gt6m_nvs_vlg2_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_gt6m_vlg2_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg2_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg2_rm1_np=np;
+		end;
+
+		i_onart_gt6m_vlg3_rm1_np=0;i_onart_gt6m_vs_vlg3_rm1_np=0;i_onart_gt6m_nvs_vlg3_rm1_np=0; 
+		if vlg1=1 and rm_=1 then do;
+			i_onart_gt6m_vlg3_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg3_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg3_rm1_np=np;
+		end;
+
+		i_onart_gt6m_vlg4_rm1_np=0;i_onart_gt6m_vs_vlg4_rm1_np=0;i_onart_gt6m_nvs_vlg4_rm1_np=0;
+		if vlg1=1 and rm_=1 then do;
+			i_onart_gt6m_vlg4_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg4_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg4_rm1_np=np;
+		end;
+
+		i_onart_gt6m_vlg5_rm1_np=0;i_onart_gt6m_vs_vlg5_rm1_np=0;i_onart_gt6m_nvs_vlg5_rm1_np=0;
+		if vlg1=1 and rm_=1 then do;
+			i_onart_gt6m_vlg5_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg5_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg5_rm1_np=np;
+		end;
+
+		i_onart_gt6m_vlg6_rm1_np=0;i_onart_gt6m_vs_vlg6_rm1_np=0;i_onart_gt6m_nvs_vlg6_rm1_np=0;
+		if vlg1=1 and rm_=1 then do; 
+			i_onart_gt6m_vlg6_rm1_np=np;
+			if vl1000=1 	then i_onart_gt6m_vs_vlg6_rm1_np=np;
+			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg6_rm1_np=np;
+		end;
+	
+	end;
+
+	***ART interruption, stratified by first or subsequent. If subsequent, stratified by <6m/>6 since last interruption;
+	if yrart ne . and onart ne 1 and lost=1 then do;***do we need lost=1, I think perhaps not;
+
+		i_offart_vlg1_rm0_np=0;i_offart_1stI_vlg1_rm0_np=0;i_offart_SI_vlg1_rm0_np=0;i_offart_SI_lt6m_vlg1_rm0_np=0;i_offart_SI_gt6m_vlg1_rm0_np=0;*SI=subsequent interruption;
+		if vlg1=1 and rm_=0 then do; 
+			i_offart_vlg1_rm0_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg1_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg1_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg1_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg1_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg2_rm0_np=0;i_offart_1stI_vlg2_rm0_np=0;i_offart_SI_vlg2_rm0_np=0;i_offart_SI_lt6m_vlg2_rm0_np=0;i_offart_SI_gt6m_vlg2_rm0_np=0;*SI=subsequent interruption;
+		if vlg2=1 and rm_=0 then do; 
+			i_offart_vlg2_rm0_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg2_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg2_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg2_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg2_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg3_rm0_np=0;i_offart_1stI_vlg3_rm0_np=0;i_offart_SI_vlg3_rm0_np=0;i_offart_SI_lt6m_vlg3_rm0_np=0;i_offart_SI_gt6m_vlg3_rm0_np=0;*SI=subsequent interruption;
+		if vlg3=1 and rm_=0 then do; 
+			i_offart_vlg3_rm0_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg3_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg3_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg3_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg3_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg4_rm0_np=0;i_offart_1stI_vlg4_rm0_np=0;i_offart_SI_vlg4_rm0_np=0;i_offart_SI_lt6m_vlg4_rm0_np=0;i_offart_SI_gt6m_vlg4_rm0_np=0;*SI=subsequent interruption;
+		if vlg4=1 and rm_=0 then do; 
+			i_offart_vlg4_rm0_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg4_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg4_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg4_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg4_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg5_rm0_np=0;i_offart_1stI_vlg5_rm0_np=0;i_offart_SI_vlg5_rm0_np=0;i_offart_SI_lt6m_vlg5_rm0_np=0;i_offart_SI_gt6m_vlg5_rm0_np=0;*SI=subsequent interruption;
+		if vlg5=1 and rm_=0 then do; 
+			i_offart_vlg5_rm0_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg5_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg5_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg5_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg5_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg6_rm0_np=0;i_offart_1stI_vlg6_rm0_np=0;i_offart_SI_vlg6_rm0_np=0;i_offart_SI_lt6m_vlg6_rm0_np=0;i_offart_SI_gt6m_vlg6_rm0_np=0;*SI=subsequent interruption;
+		if vlg6=1 and rm_=0 then do;
+			i_offart_vlg6_rm0_np=np; 
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg6_rm0_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg6_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg6_rm0_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg6_rm0_np=np;
+			end;
+		end;
+
+		i_offart_vlg1_rm1_np=0;i_offart_1stI_vlg1_rm1_np=0;i_offart_SI_vlg1_rm1_np=0;i_offart_SI_lt6m_vlg1_rm1_np=0;i_offart_SI_gt6m_vlg1_rm1_np=0;*SI=subsequent interruption;
+		if vlg1=1 and rm_=1 then do; 
+			i_offart_vlg1_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg1_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg1_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg1_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg1_rm1_np=np;
+			end;
+		end;
+
+		i_offart_vlg2_rm1_np=0;i_offart_1stI_vlg2_rm1_np=0;i_offart_SI_vlg2_rm1_np=0;i_offart_SI_lt6m_vlg2_rm1_np=0;i_offart_SI_gt6m_vlg2_rm1_np=0;*SI=subsequent interruption;
+		if vlg2=1 and rm_=1 then do; 
+			i_offart_vlg2_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg2_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg2_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg2_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg2_rm1_np=np;
+			end;
+		end;
+
+		i_offart_vlg3_rm1_np=0;i_offart_1stI_vlg3_rm1_np=0;i_offart_SI_vlg3_rm1_np=0;i_offart_SI_lt6m_vlg3_rm1_np=0;i_offart_SI_gt6m_vlg3_rm1_np=0;*SI=subsequent interruption;
+		if vlg3=1 and rm_=1 then do; 
+			i_offart_vlg3_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg3_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg3_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg3_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg3_rm1_np=np;
+			end;
+		end;
+
+		i_offart_vlg4_rm1_np=0;i_offart_1stI_vlg4_rm1_np=0;i_offart_SI_vlg4_rm1_np=0;i_offart_SI_lt6m_vlg4_rm1_np=0;i_offart_SI_gt6m_vlg4_rm1_np=0;*SI=subsequent interruption;
+		if vlg4=1 and rm_=1 then do; 
+			i_offart_vlg4_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg4_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg4_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg4_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg4_rm1_np=np;
+			end;
+		end;
+
+		i_offart_vlg5_rm1_np=0;i_offart_1stI_vlg5_rm1_np=0;i_offart_SI_vlg5_rm1_np=0;i_offart_SI_lt6m_vlg5_rm1_np=0;i_offart_SI_gt6m_vlg5_rm1_np=0;*SI=subsequent interruption;
+		if vlg5=1 and rm_=1 then do; 
+			i_offart_vlg5_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg5_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg5_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg5_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg5_rm1_np=np;
+			end;
+		end;
+
+		i_offart_vlg6_rm1_np=0;i_offart_1stI_vlg6_rm1_np=0;i_offart_SI_vlg6_rm1_np=0;i_offart_SI_lt6m_vlg6_rm1_np=0;i_offart_SI_gt6m_vlg6_rm1_np=0;*SI=subsequent interruption;
+		if vlg6=1 and rm_=1 then do; 
+			i_offart_vlg6_rm1_np=np;
+			if date_last_interrupt=date_1st_int then i_offart_1stI_vlg6_rm1_np=np;
+			if date_last_interruption ne date_1st_int then do;
+				i_offart_SI_vlg6_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart <=0.5) then i_offart_SI_lt6m_vlg6_rm1_np=np;
+				if date_last_return_restart ne . and (date_last_interrupt - date_last_return_restart > 0.5) then i_offart_SI_gt6m_vlg6_rm1_np=np;
+			end;
+		end;
+
+	end;
 end;
 
 
@@ -15919,6 +16581,126 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim + diagprim ;s_diagprim_prep_vr  + diagprim_prep_vr  ; s_diagprim + diagprim ;
 
+	/*LBMJan23*/
+
+	/*Inf partner started ART*/
+	s_i_startart_vlg1_rm0_np + i_startart_vlg1_rm0_np; s_i_startart_vlg2_rm0_np + i_startart_vlg2_rm0_np;
+	s_i_startart_vlg3_rm0_np + i_startart_vlg3_rm0_np; s_i_startart_vlg4_rm0_np + i_startart_vlg4_rm0_np;
+	s_i_startart_vlg5_rm0_np + i_startart_vlg5_rm0_np; s_i_startart_vlg6_rm0_np + i_startart_vlg6_rm0_np;
+	s_i_startart_vlg1_rm1_np + i_startart_vlg1_rm1_np; s_i_startart_vlg2_rm1_np + i_startart_vlg2_rm1_np;
+	s_i_startart_vlg3_rm1_np + i_startart_vlg3_rm1_np; s_i_startart_vlg4_rm1_np + i_startart_vlg4_rm1_np;
+	s_i_startart_vlg5_rm1_np + i_startart_vlg5_rm1_np; s_i_startart_vlg6_rm1_np + i_startart_vlg6_rm1_np;
+
+	/*Inf partner on ART*/
+	s_i_onart_vlg1_rm0_np + i_onart_vlg1_rm0_np; s_i_onart_vlg2_rm0_np + i_onart_vlg2_rm0_np;
+	s_i_onart_vlg3_rm0_np + i_onart_vlg3_rm0_np; s_i_onart_vlg4_rm0_np + i_onart_vlg4_rm0_np;
+	s_i_onart_vlg5_rm0_np + i_onart_vlg5_rm0_np; s_i_onart_vlg6_rm0_np + i_onart_vlg6_rm0_np;
+	s_i_onart_vlg1_rm1_np + i_onart_vlg1_rm1_np; s_i_onart_vlg2_rm1_np + i_onart_vlg2_rm1_np;
+	s_i_onart_vlg3_rm1_np + i_onart_vlg3_rm1_np; s_i_onart_vlg4_rm1_np + i_onart_vlg4_rm1_np;
+	s_i_onart_vlg5_rm1_np + i_onart_vlg5_rm1_np; s_i_onart_vlg6_rm1_np + i_onart_vlg6_rm1_np;
+
+	/*Inf partner off ART*/
+	s_i_offart_vlg1_rm0_np + i_offart_vlg1_rm0_np; s_i_offart_vlg2_rm0_np + i_offart_vlg2_rm0_np;
+	s_i_offart_vlg3_rm0_np + i_offart_vlg3_rm0_np; s_i_offart_vlg4_rm0_np + i_offart_vlg4_rm0_np;
+	s_i_offart_vlg5_rm0_np + i_offart_vlg5_rm0_np; s_i_offart_vlg6_rm0_np + i_offart_vlg6_rm0_np;
+	s_i_offart_vlg1_rm1_np + i_offart_vlg1_rm1_np; s_i_offart_vlg2_rm1_np + i_offart_vlg2_rm1_np;
+	s_i_offart_vlg3_rm1_np + i_offart_vlg3_rm1_np; s_i_offart_vlg4_rm1_np + i_offart_vlg4_rm1_np;
+	s_i_offart_vlg5_rm1_np + i_offart_vlg5_rm1_np; s_i_offart_vlg6_rm1_np + i_offart_vlg6_rm1_np;
+
+	/*Inf partner on ART<6m*/
+	s_i_onart_lt6m_vlg1_rm0_np + i_onart_lt6m_vlg1_rm0_np; s_i_onart_lt6m_vlg2_rm0_np + i_onart_lt6m_vlg2_rm0_np;
+	s_i_onart_lt6m_vlg3_rm0_np + i_onart_lt6m_vlg3_rm0_np; s_i_onart_lt6m_vlg4_rm0_np + i_onart_lt6m_vlg4_rm0_np;
+	s_i_onart_lt6m_vlg5_rm0_np + i_onart_lt6m_vlg5_rm0_np; s_i_onart_lt6m_vlg6_rm0_np + i_onart_lt6m_vlg6_rm0_np;
+	s_i_onart_lt6m_vlg1_rm1_np + i_onart_lt6m_vlg1_rm1_np; s_i_onart_lt6m_vlg2_rm1_np + i_onart_lt6m_vlg2_rm1_np;
+	s_i_onart_lt6m_vlg3_rm1_np + i_onart_lt6m_vlg3_rm1_np; s_i_onart_lt6m_vlg4_rm1_np + i_onart_lt6m_vlg4_rm1_np;
+	s_i_onart_lt6m_vlg5_rm1_np + i_onart_lt6m_vlg5_rm1_np; s_i_onart_lt6m_vlg6_rm1_np + i_onart_lt6m_vlg6_rm1_np;
+
+	/*Inf partner on ART<6m, virally suppressed*/
+	s_i_onart_lt6m_vs_vlg1_rm0_np + i_onart_lt6m_vs_vlg1_rm0_np; s_i_onart_lt6m_vs_vlg2_rm0_np + i_onart_lt6m_vs_vlg2_rm0_np;
+	s_i_onart_lt6m_vs_vlg3_rm0_np + i_onart_lt6m_vs_vlg3_rm0_np; s_i_onart_lt6m_vs_vlg4_rm0_np + i_onart_lt6m_vs_vlg4_rm0_np;
+	s_i_onart_lt6m_vs_vlg5_rm0_np + i_onart_lt6m_vs_vlg5_rm0_np; s_i_onart_lt6m_vs_vlg6_rm0_np + i_onart_lt6m_vs_vlg6_rm0_np;
+	s_i_onart_lt6m_vs_vlg1_rm1_np + i_onart_lt6m_vs_vlg1_rm1_np; s_i_onart_lt6m_vs_vlg2_rm1_np + i_onart_lt6m_vs_vlg2_rm1_np;
+	s_i_onart_lt6m_vs_vlg3_rm1_np + i_onart_lt6m_vs_vlg3_rm1_np; s_i_onart_lt6m_vs_vlg4_rm1_np + i_onart_lt6m_vs_vlg4_rm1_np;
+	s_i_onart_lt6m_vs_vlg5_rm1_np + i_onart_lt6m_vs_vlg5_rm1_np; s_i_onart_lt6m_vs_vlg6_rm1_np + i_onart_lt6m_vs_vlg6_rm1_np;
+
+	/*Inf partner on ART<6m, not virally suppressed*/
+	s_i_onart_lt6m_nvs_vlg1_rm0_np + i_onart_lt6m_nvs_vlg1_rm0_np; s_i_onart_lt6m_nvs_vlg2_rm0_np + i_onart_lt6m_nvs_vlg2_rm0_np;
+	s_i_onart_lt6m_nvs_vlg3_rm0_np + i_onart_lt6m_nvs_vlg3_rm0_np; s_i_onart_lt6m_nvs_vlg4_rm0_np + i_onart_lt6m_nvs_vlg4_rm0_np;
+	s_i_onart_lt6m_nvs_vlg5_rm0_np + i_onart_lt6m_nvs_vlg5_rm0_np; s_i_onart_lt6m_nvs_vlg6_rm0_np + i_onart_lt6m_nvs_vlg6_rm0_np;
+	s_i_onart_lt6m_nvs_vlg1_rm1_np + i_onart_lt6m_nvs_vlg1_rm1_np; s_i_onart_lt6m_nvs_vlg2_rm1_np + i_onart_lt6m_nvs_vlg2_rm1_np;
+	s_i_onart_lt6m_nvs_vlg3_rm1_np + i_onart_lt6m_nvs_vlg3_rm1_np; s_i_onart_lt6m_nvs_vlg4_rm1_np + i_onart_lt6m_nvs_vlg4_rm1_np;
+	s_i_onart_lt6m_nvs_vlg5_rm1_np + i_onart_lt6m_nvs_vlg5_rm1_np; s_i_onart_lt6m_nvs_vlg6_rm1_np + i_onart_lt6m_nvs_vlg6_rm1_np;
+
+	/*Inf partner on ART>6m*/
+	s_i_onart_gt6m_vlg1_rm0_np + i_onart_gt6m_vlg1_rm0_np; s_i_onart_gt6m_vlg2_rm0_np + i_onart_gt6m_vlg2_rm0_np;
+	s_i_onart_gt6m_vlg3_rm0_np + i_onart_gt6m_vlg3_rm0_np; s_i_onart_gt6m_vlg4_rm0_np + i_onart_gt6m_vlg4_rm0_np;
+	s_i_onart_gt6m_vlg5_rm0_np + i_onart_gt6m_vlg5_rm0_np; s_i_onart_gt6m_vlg6_rm0_np + i_onart_gt6m_vlg6_rm0_np;
+	s_i_onart_gt6m_vlg1_rm1_np + i_onart_gt6m_vlg1_rm1_np; s_i_onart_gt6m_vlg2_rm1_np + i_onart_gt6m_vlg2_rm1_np;
+	s_i_onart_gt6m_vlg3_rm1_np + i_onart_gt6m_vlg3_rm1_np; s_i_onart_gt6m_vlg4_rm1_np + i_onart_gt6m_vlg4_rm1_np;
+	s_i_onart_gt6m_vlg5_rm1_np + i_onart_gt6m_vlg5_rm1_np; s_i_onart_gt6m_vlg6_rm1_np + i_onart_gt6m_vlg6_rm1_np;
+
+	/*Inf partner on ART>6m, virally suppressed*/
+	s_i_onart_gt6m_vs_vlg1_rm0_np + i_onart_gt6m_vs_vlg1_rm0_np; s_i_onart_gt6m_vs_vlg2_rm0_np + i_onart_gt6m_vs_vlg2_rm0_np;
+	s_i_onart_gt6m_vs_vlg3_rm0_np + i_onart_gt6m_vs_vlg3_rm0_np; s_i_onart_gt6m_vs_vlg4_rm0_np + i_onart_gt6m_vs_vlg4_rm0_np;
+	s_i_onart_gt6m_vs_vlg5_rm0_np + i_onart_gt6m_vs_vlg5_rm0_np; s_i_onart_gt6m_vs_vlg6_rm0_np + i_onart_gt6m_vs_vlg6_rm0_np;
+	s_i_onart_gt6m_vs_vlg1_rm1_np + i_onart_gt6m_vs_vlg1_rm1_np; s_i_onart_gt6m_vs_vlg2_rm1_np + i_onart_gt6m_vs_vlg2_rm1_np;
+	s_i_onart_gt6m_vs_vlg3_rm1_np + i_onart_gt6m_vs_vlg3_rm1_np; s_i_onart_gt6m_vs_vlg4_rm1_np + i_onart_gt6m_vs_vlg4_rm1_np;
+	s_i_onart_gt6m_vs_vlg5_rm1_np + i_onart_gt6m_vs_vlg5_rm1_np; s_i_onart_gt6m_vs_vlg6_rm1_np + i_onart_gt6m_vs_vlg6_rm1_np;
+
+	/*Inf partner on ART>6m, not virally suppressed*/
+	s_i_onart_gt6m_nvs_vlg1_rm0_np + i_onart_gt6m_nvs_vlg1_rm0_np; s_i_onart_gt6m_nvs_vlg2_rm0_np + i_onart_gt6m_nvs_vlg2_rm0_np;
+	s_i_onart_gt6m_nvs_vlg3_rm0_np + i_onart_gt6m_nvs_vlg3_rm0_np; s_i_onart_gt6m_nvs_vlg4_rm0_np + i_onart_gt6m_nvs_vlg4_rm0_np;
+	s_i_onart_gt6m_nvs_vlg5_rm0_np + i_onart_gt6m_nvs_vlg5_rm0_np; s_i_onart_gt6m_nvs_vlg6_rm0_np + i_onart_gt6m_nvs_vlg6_rm0_np;
+	s_i_onart_gt6m_nvs_vlg1_rm1_np + i_onart_gt6m_nvs_vlg1_rm1_np; s_i_onart_gt6m_nvs_vlg2_rm1_np + i_onart_gt6m_nvs_vlg2_rm1_np;
+	s_i_onart_gt6m_nvs_vlg3_rm1_np + i_onart_gt6m_nvs_vlg3_rm1_np; s_i_onart_gt6m_nvs_vlg4_rm1_np + i_onart_gt6m_nvs_vlg4_rm1_np;
+	s_i_onart_gt6m_nvs_vlg5_rm1_np + i_onart_gt6m_nvs_vlg5_rm1_np; s_i_onart_gt6m_nvs_vlg6_rm1_np + i_onart_gt6m_nvs_vlg6_rm1_np;
+
+	/*Inf partner off ART*/
+	s_i_offart_vlg1_rm0_np + i_offart_vlg1_rm0_np; s_i_offart_vlg2_rm0_np + i_offart_vlg2_rm0_np;
+	s_i_offart_vlg3_rm0_np + i_offart_vlg3_rm0_np; s_i_offart_vlg4_rm0_np + i_offart_vlg4_rm0_np;
+	s_i_offart_vlg5_rm0_np + i_offart_vlg5_rm0_np; s_i_offart_vlg6_rm0_np + i_offart_vlg6_rm0_np;
+	s_i_offart_vlg1_rm1_np + i_offart_vlg1_rm1_np; s_i_offart_vlg2_rm1_np + i_offart_vlg2_rm1_np;
+	s_i_offart_vlg3_rm1_np + i_offart_vlg3_rm1_np; s_i_offart_vlg4_rm1_np + i_offart_vlg4_rm1_np;
+	s_i_offart_vlg5_rm1_np + i_offart_vlg5_rm1_np; s_i_offart_vlg6_rm1_np + i_offart_vlg6_rm1_np;
+
+	/*Inf partner off ART, first interruption*/
+	s_i_offart_1stI_vlg1_rm0_np + i_offart_1stI_vlg1_rm0_np; s_i_offart_1stI_vlg2_rm0_np + i_offart_1stI_vlg2_rm0_np;
+	s_i_offart_1stI_vlg3_rm0_np + i_offart_1stI_vlg3_rm0_np; s_i_offart_1stI_vlg4_rm0_np + i_offart_1stI_vlg4_rm0_np;
+	s_i_offart_1stI_vlg5_rm0_np + i_offart_1stI_vlg5_rm0_np; s_i_offart_1stI_vlg6_rm0_np + i_offart_1stI_vlg6_rm0_np;
+	s_i_offart_1stI_vlg1_rm1_np + i_offart_1stI_vlg1_rm1_np; s_i_offart_1stI_vlg2_rm1_np + i_offart_1stI_vlg2_rm1_np;
+	s_i_offart_1stI_vlg3_rm1_np + i_offart_1stI_vlg3_rm1_np; s_i_offart_1stI_vlg4_rm1_np + i_offart_1stI_vlg4_rm1_np;
+	s_i_offart_1stI_vlg5_rm1_np + i_offart_1stI_vlg5_rm1_np; s_i_offart_1stI_vlg6_rm1_np + i_offart_1stI_vlg6_rm1_np;
+
+	/*Inf partner off ART, subsequent interruption*/
+	s_i_offart_SI_vlg1_rm0_np + i_offart_SI_vlg1_rm0_np; s_i_offart_SI_vlg2_rm0_np + i_offart_SI_vlg2_rm0_np;
+	s_i_offart_SI_vlg3_rm0_np + i_offart_SI_vlg3_rm0_np; s_i_offart_SI_vlg4_rm0_np + i_offart_SI_vlg4_rm0_np;
+	s_i_offart_SI_vlg5_rm0_np + i_offart_SI_vlg5_rm0_np; s_i_offart_SI_vlg6_rm0_np + i_offart_SI_vlg6_rm0_np;
+	s_i_offart_SI_vlg1_rm1_np + i_offart_SI_vlg1_rm1_np; s_i_offart_SI_vlg2_rm1_np + i_offart_SI_vlg2_rm1_np;
+	s_i_offart_SI_vlg3_rm1_np + i_offart_SI_vlg3_rm1_np; s_i_offart_SI_vlg4_rm1_np + i_offart_SI_vlg4_rm1_np;
+	s_i_offart_SI_vlg5_rm1_np + i_offart_SI_vlg5_rm1_np; s_i_offart_SI_vlg6_rm1_np + i_offart_SI_vlg6_rm1_np;
+
+	/*Inf partner off ART, subsequent interruption <6m since last interruption*/
+	s_i_offart_SI_lt6m_vlg1_rm0_np + i_offart_SI_lt6m_vlg1_rm0_np; s_i_offart_SI_lt6m_vlg2_rm0_np + i_offart_SI_lt6m_vlg2_rm0_np;
+	s_i_offart_SI_lt6m_vlg3_rm0_np + i_offart_SI_lt6m_vlg3_rm0_np; s_i_offart_SI_lt6m_vlg4_rm0_np + i_offart_SI_lt6m_vlg4_rm0_np;
+	s_i_offart_SI_lt6m_vlg5_rm0_np + i_offart_SI_lt6m_vlg5_rm0_np; s_i_offart_SI_lt6m_vlg6_rm0_np + i_offart_SI_lt6m_vlg6_rm0_np;
+	s_i_offart_SI_lt6m_vlg1_rm1_np + i_offart_SI_lt6m_vlg1_rm1_np; s_i_offart_SI_lt6m_vlg2_rm1_np + i_offart_SI_lt6m_vlg2_rm1_np;
+	s_i_offart_SI_lt6m_vlg3_rm1_np + i_offart_SI_lt6m_vlg3_rm1_np; s_i_offart_SI_lt6m_vlg4_rm1_np + i_offart_SI_lt6m_vlg4_rm1_np;
+	s_i_offart_SI_lt6m_vlg5_rm1_np + i_offart_SI_lt6m_vlg5_rm1_np; s_i_offart_SI_lt6m_vlg6_rm1_np + i_offart_SI_lt6m_vlg6_rm1_np;
+
+	/*Inf partner off ART, subsequent interruption >6m since last interruption*/
+	s_i_offart_SI_gt6m_vlg1_rm0_np + i_offart_SI_gt6m_vlg1_rm0_np; s_i_offart_SI_gt6m_vlg2_rm0_np + i_offart_SI_gt6m_vlg2_rm0_np;
+	s_i_offart_SI_gt6m_vlg3_rm0_np + i_offart_SI_gt6m_vlg3_rm0_np; s_i_offart_SI_gt6m_vlg4_rm0_np + i_offart_SI_gt6m_vlg4_rm0_np;
+	s_i_offart_SI_gt6m_vlg5_rm0_np + i_offart_SI_gt6m_vlg5_rm0_np; s_i_offart_SI_gt6m_vlg6_rm0_np + i_offart_SI_gt6m_vlg6_rm0_np;
+	s_i_offart_SI_gt6m_vlg1_rm1_np + i_offart_SI_gt6m_vlg1_rm1_np; s_i_offart_SI_gt6m_vlg2_rm1_np + i_offart_SI_gt6m_vlg2_rm1_np;
+	s_i_offart_SI_gt6m_vlg3_rm1_np + i_offart_SI_gt6m_vlg3_rm1_np; s_i_offart_SI_gt6m_vlg4_rm1_np + i_offart_SI_gt6m_vlg4_rm1_np;
+	s_i_offart_SI_gt6m_vlg5_rm1_np + i_offart_SI_gt6m_vlg5_rm1_np; s_i_offart_SI_gt6m_vlg6_rm1_np + i_offart_SI_gt6m_vlg6_rm1_np;
+
+	***Infected partner status;
+	s_I_undiag + I_undiag;	s_I_diag_naive + I_diag_naive;	s_I_diag_startart + I_diag_startart;   s_I_onart + I_onart;
+	s_I_offart + I_offart;	s_I_onart_lt6m + I_onart_lt6m;	s_I_onart_lt6m_nvs + I_onart_lt6m_nvs; s_I_onart_gt6m_nvs + I_onart_gt6m_nvs;	
+	s_I_onart_gt6m_vs + I_onart_gt6m_vs;  s_I_offart_1stI + I_offart_1stI;	s_I_offart_SI + I_offart_SI;
+	s_I_offart_SIlt6m + I_offart_SIlt6m;  s_I_offart_SIgt6m + I_offart_SIgt6m;
+
 	/*Number ep and newp*/
 
 	s_np + np ; s_newp + newp ; s_newp_ge1 + newp_ge1 ; s_newp_ge5 + newp_ge5 ; s_newp_ge10 + newp_ge10 ; s_newp_ge50 +  newp_ge50 ;
@@ -17454,12 +18236,13 @@ end;
 
 
 * if infected by existing partner maybe this should be for np rather than newp;
-/*** LBM Aug19; Do lines commented with '*' need to be set to missing if they are set to 0 at start of each line below?;*/
-*s_prop_vlg1_rm=.;s_prop_vlg2_rm=.;s_prop_vlg3_rm=.;s_prop_vlg4_rm=.;s_prop_vlg5_rm=.;s_prop_vlg6_rm=.;
-*s_prop_vlg1_rm0_diag=.;s_prop_vlg2_rm0_diag=.;s_prop_vlg3_rm0_diag=.;s_prop_vlg4_rm0_diag=.;s_prop_vlg5_rm0_diag=.;s_prop_vlg6_rm0_diag=.;
-*s_prop_vlg1_rm1_diag=.;s_prop_vlg2_rm1_diag=.;s_prop_vlg3_rm1_diag=.;s_prop_vlg4_rm1_diag=.;s_prop_vlg5_rm1_diag=.;s_prop_vlg6_rm1_diag=.;
-*s_prop_vlg1_rm0_naive=.;s_prop_vlg2_rm0_naive=.;s_prop_vlg3_rm0_naive=.;s_prop_vlg4_rm0_naive=.;s_prop_vlg5_rm0_naive=.;s_prop_vlg6_rm0_naive=.;
-*s_prop_vlg1_rm1_naive=.;s_prop_vlg2_rm1_naive=.;s_prop_vlg3_rm1_naive=.;s_prop_vlg4_rm1_naive=.;s_prop_vlg5_rm1_naive=.;s_prop_vlg6_rm1_naive=.;
+* LBM Jan23 Do these lines need to be set to missing if they are set to 0 at start of each line below?;
+s_prop_vlg1_rm=.;s_prop_vlg2_rm=.;s_prop_vlg3_rm=.;s_prop_vlg4_rm=.;s_prop_vlg5_rm=.;s_prop_vlg6_rm=.;
+s_prop_vlg1_rm0_diag=.;s_prop_vlg2_rm0_diag=.;s_prop_vlg3_rm0_diag=.;s_prop_vlg4_rm0_diag=.;s_prop_vlg5_rm0_diag=.;s_prop_vlg6_rm0_diag=.;
+s_prop_vlg1_rm1_diag=.;s_prop_vlg2_rm1_diag=.;s_prop_vlg3_rm1_diag=.;s_prop_vlg4_rm1_diag=.;s_prop_vlg5_rm1_diag=.;s_prop_vlg6_rm1_diag=.;
+s_prop_vlg1_rm0_naive=.;s_prop_vlg2_rm0_naive=.;s_prop_vlg3_rm0_naive=.;s_prop_vlg4_rm0_naive=.;s_prop_vlg5_rm0_naive=.;s_prop_vlg6_rm0_naive=.;
+s_prop_vlg1_rm1_naive=.;s_prop_vlg2_rm1_naive=.;s_prop_vlg3_rm1_naive=.;s_prop_vlg4_rm1_naive=.;s_prop_vlg5_rm1_naive=.;s_prop_vlg6_rm1_naive=.;
+
 s_prop_tam1 = .;s_prop_tam2 = .;s_prop_tam3 = .;s_prop_k103m =.;s_prop_y181m =.;s_prop_g190m =.;
 s_prop_m184m =.;s_prop_q151m =.;s_prop_k65m =.;
 s_prop_p32m =.;s_prop_p33m =.; s_prop_p46m =.;s_prop_p47m =.; ;s_prop_p50vm =.;
@@ -17508,6 +18291,145 @@ s_prop_vlg3_rm0_naive=0; if s_i_diag_vlg3_rm0_np >0 then do; s_prop_vlg3_rm0_nai
 s_prop_vlg4_rm0_naive=0; if s_i_diag_vlg4_rm0_np >0 then do; s_prop_vlg4_rm0_naive = max(0,s_i_naive_vlg4_rm0_np) / s_i_diag_vlg4_rm0_np ; end;
 s_prop_vlg5_rm0_naive=0; if s_i_diag_vlg5_rm0_np >0 then do; s_prop_vlg5_rm0_naive = max(0,s_i_naive_vlg5_rm0_np) / s_i_diag_vlg5_rm0_np ; end;
 s_prop_vlg6_rm0_naive=0; if s_i_diag_vlg6_rm0_np >0 then do; s_prop_vlg6_rm0_naive = max(0,s_i_naive_vlg6_rm0_np) / s_i_diag_vlg6_rm0_np ; end;
+
+*LBMJan23;
+
+*Of those who have started ART, those on ART;
+s_p_vlg1_rm0_onart=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart = max(0,s_i_onart_vlg1_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart=0;if s_i_startart_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_onart = max(0,s_i_onart_vlg2_rm0_np) / s_i_startart_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_onart=0;if s_i_startart_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_onart = max(0,s_i_onart_vlg3_rm0_np) / s_i_startart_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_onart=0;if s_i_startart_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_onart = max(0,s_i_onart_vlg4_rm0_np) / s_i_startart_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_onart=0;if s_i_startart_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_onart = max(0,s_i_onart_vlg5_rm0_np) / s_i_startart_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_onart=0;if s_i_startart_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_onart = max(0,s_i_onart_vlg6_rm0_np) / s_i_startart_vlg6_rm0_np ; end;
+
+s_p_vlg1_rm1_onart=0;if s_i_startart_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart = max(0,s_i_onart_vlg1_rm1_np) / s_i_startart_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_onart=0;if s_i_startart_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart = max(0,s_i_onart_vlg2_rm1_np) / s_i_startart_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_onart=0;if s_i_startart_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_onart = max(0,s_i_onart_vlg3_rm1_np) / s_i_startart_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_onart=0;if s_i_startart_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_onart = max(0,s_i_onart_vlg4_rm1_np) / s_i_startart_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_onart=0;if s_i_startart_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_onart = max(0,s_i_onart_vlg5_rm1_np) / s_i_startart_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_onart=0;if s_i_startart_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_onart = max(0,s_i_onart_vlg6_rm1_np) / s_i_startart_vlg6_rm1_np ; end;
+
+*Of those who have started ART, those off ART;
+s_p_vlg1_rm0_offart=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_offart = max(0,s_i_offart_vlg1_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_offart=0;if s_i_startart_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_offart = max(0,s_i_offart_vlg2_rm0_np) / s_i_startart_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_offart=0;if s_i_startart_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_offart = max(0,s_i_offart_vlg3_rm0_np) / s_i_startart_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_offart=0;if s_i_startart_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_offart = max(0,s_i_offart_vlg4_rm0_np) / s_i_startart_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_offart=0;if s_i_startart_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_offart = max(0,s_i_offart_vlg5_rm0_np) / s_i_startart_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_offart=0;if s_i_startart_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_offart = max(0,s_i_offart_vlg6_rm0_np) / s_i_startart_vlg6_rm0_np ; end;
+
+s_p_vlg1_rm1_offart=0;if s_i_startart_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_offart = max(0,s_i_offart_vlg1_rm1_np) / s_i_startart_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_offart=0;if s_i_startart_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_offart = max(0,s_i_offart_vlg2_rm1_np) / s_i_startart_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_offart=0;if s_i_startart_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_offart = max(0,s_i_offart_vlg3_rm1_np) / s_i_startart_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_offart=0;if s_i_startart_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_offart = max(0,s_i_offart_vlg4_rm1_np) / s_i_startart_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_offart=0;if s_i_startart_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_offart = max(0,s_i_offart_vlg5_rm1_np) / s_i_startart_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_offart=0;if s_i_startart_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_offart = max(0,s_i_offart_vlg6_rm1_np) / s_i_startart_vlg6_rm1_np ; end;
+
+
+*Of those who have started ART, those on ART for <6m;
+s_p_vlg1_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg1_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg2_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg2_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg3_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg3_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg3_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg4_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg4_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg4_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg5_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg5_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg5_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+s_p_vlg6_rm0_onart_lt6m=0;if s_i_startart_vlg1_rm0_np >0 then do; s_p_vlg6_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg6_rm0_np) / s_i_startart_vlg1_rm0_np ; end;
+
+s_p_vlg1_rm1_onart_lt6m=0;if s_i_startart_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg1_rm1_np) / s_i_startart_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_onart_lt6m=0;if s_i_startart_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg2_rm1_np) / s_i_startart_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_onart_lt6m=0;if s_i_startart_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg3_rm1_np) / s_i_startart_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_onart_lt6m=0;if s_i_startart_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg4_rm1_np) / s_i_startart_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_onart_lt6m=0;if s_i_startart_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg5_rm1_np) / s_i_startart_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_onart_lt6m=0;if s_i_startart_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg6_rm1_np) / s_i_startart_vlg6_rm1_np ; end;
+
+*Of those on ART for <6m, current VL>1000 (nvs=no viral suppression);
+s_p_vlg1_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg1_rm0_np) / s_i_onart_lt6m_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg2_rm0_np) / s_i_onart_lt6m_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg3_rm0_np) / s_i_onart_lt6m_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg4_rm0_np) / s_i_onart_lt6m_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg5_rm0_np) / s_i_onart_lt6m_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg6_rm0_np) / s_i_onart_lt6m_vlg6_rm0_np ; end;
+
+s_p_vlg1_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg1_rm1_np) / s_i_onart_lt6m_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg2_rm1_np) / s_i_onart_lt6m_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg3_rm1_np) / s_i_onart_lt6m_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg4_rm1_np) / s_i_onart_lt6m_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg5_rm1_np) / s_i_onart_lt6m_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_onart_lt6m_nvs=0;if s_i_onart_lt6m_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_onart_lt6m_nvs = max(0,s_i_onart_lt6m_nvs_vlg6_rm1_np) / s_i_onart_lt6m_vlg6_rm1_np ; end;
+
+*Of those on ART for >6m, current VL<1000;
+s_p_vlg1_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg1_rm0_np) / s_i_onart_gt6m_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg2_rm0_np) / s_i_onart_gt6m_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg3_rm0_np) / s_i_onart_gt6m_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg4_rm0_np) / s_i_onart_gt6m_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg5_rm0_np) / s_i_onart_gt6m_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg6_rm0_np) / s_i_onart_gt6m_vlg6_rm0_np ; end;
+
+s_p_vlg1_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg1_rm1_np) / s_i_onart_gt6m_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg2_rm1_np) / s_i_onart_gt6m_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg3_rm1_np) / s_i_onart_gt6m_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg4_rm1_np) / s_i_onart_gt6m_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg5_rm1_np) / s_i_onart_gt6m_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_onart_gt6m_vs=0;if s_i_onart_gt6m_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_onart_gt6m_vs = max(0,s_i_onart_gt6m_vs_vlg6_rm1_np) / s_i_onart_gt6m_vlg6_rm1_np ; end;
+
+*Of those on ART for >6m, current VL>1000;
+s_p_vlg1_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg1_rm0_np) / s_i_onart_gt6m_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg2_rm0_np) / s_i_onart_gt6m_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg3_rm0_np) / s_i_onart_gt6m_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg4_rm0_np) / s_i_onart_gt6m_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg5_rm0_np) / s_i_onart_gt6m_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg6_rm0_np) / s_i_onart_gt6m_vlg6_rm0_np ; end;
+
+s_p_vlg1_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg1_rm1_np) / s_i_onart_gt6m_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg2_rm1_np) / s_i_onart_gt6m_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg3_rm1_np) / s_i_onart_gt6m_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg4_rm1_np) / s_i_onart_gt6m_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg5_rm1_np) / s_i_onart_gt6m_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_onart_gt6m_nvs=0;if s_i_onart_gt6m_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_onart_gt6m_nvs = max(0,s_i_onart_gt6m_nvs_vlg6_rm1_np) / s_i_onart_gt6m_vlg6_rm1_np ; end;
+
+*Of those off ART, first interruption;
+s_p_vlg1_rm0_offart_1stI=0;if s_i_offart_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg1_rm0_np) / s_i_offart_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_offart_1stI=0;if s_i_offart_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg2_rm0_np) / s_i_offart_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_offart_1stI=0;if s_i_offart_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg3_rm0_np) / s_i_offart_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_offart_1stI=0;if s_i_offart_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg4_rm0_np) / s_i_offart_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_offart_1stI=0;if s_i_offart_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg5_rm0_np) / s_i_offart_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_offart_1stI=0;if s_i_offart_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_offart_1stI = max(0,s_i_offart_1stI_vlg6_rm0_np) / s_i_offart_vlg6_rm0_np ; end;
+  
+s_p_vlg1_rm1_offart_1stI=0;if s_i_offart_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg1_rm1_np) / s_i_offart_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_offart_1stI=0;if s_i_offart_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg2_rm1_np) / s_i_offart_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_offart_1stI=0;if s_i_offart_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg3_rm1_np) / s_i_offart_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_offart_1stI=0;if s_i_offart_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg4_rm1_np) / s_i_offart_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_offart_1stI=0;if s_i_offart_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg5_rm1_np) / s_i_offart_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_offart_1stI=0;if s_i_offart_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_offart_1stI = max(0,s_i_offart_1stI_vlg6_rm1_np) / s_i_offart_vlg6_rm1_np ; end;
+
+*Of those off ART with subsequent interruption (i.e. not first), <6 months from last interruption;
+s_p_vlg1_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg1_rm0_np) / s_i_offart_SI_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg2_rm0_np) / s_i_offart_SI_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg3_rm0_np) / s_i_offart_SI_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg4_rm0_np) / s_i_offart_SI_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg5_rm0_np) / s_i_offart_SI_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_offart_SI_lt6m=0;if s_i_offart_SI_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg6_rm0_np) / s_i_offart_SI_vlg6_rm0_np ; end;
+  
+s_p_vlg1_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg1_rm1_np) / s_i_offart_SI_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg2_rm1_np) / s_i_offart_SI_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg3_rm1_np) / s_i_offart_SI_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg4_rm1_np) / s_i_offart_SI_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg5_rm1_np) / s_i_offart_SI_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_offart_SI_lt6m=0;if s_i_offart_SI_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_offart_SI_lt6m = max(0,s_i_offart_SI_lt6m_vlg6_rm1_np) / s_i_offart_SI_vlg6_rm1_np ; end;
+
+*Of those off ART with subsequent interruption (i.e. not first), >6 months from last interruption;
+s_p_vlg1_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg1_rm0_np) / s_i_offart_SI_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg2_rm0_np) / s_i_offart_SI_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg3_rm0_np) / s_i_offart_SI_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg4_rm0_np) / s_i_offart_SI_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg5_rm0_np) / s_i_offart_SI_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_offart_SI_gt6m=0;if s_i_offart_SI_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg6_rm0_np) / s_i_offart_SI_vlg6_rm0_np ; end;
+  
+s_p_vlg1_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg1_rm1_np) / s_i_offart_SI_vlg1_rm1_np ; end;
+s_p_vlg2_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg2_rm1_np) / s_i_offart_SI_vlg2_rm1_np ; end;
+s_p_vlg3_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg3_rm1_np >0 then do; s_p_vlg3_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg3_rm1_np) / s_i_offart_SI_vlg3_rm1_np ; end;
+s_p_vlg4_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg4_rm1_np >0 then do; s_p_vlg4_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg4_rm1_np) / s_i_offart_SI_vlg4_rm1_np ; end;
+s_p_vlg5_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg5_rm1_np) / s_i_offart_SI_vlg5_rm1_np ; end;
+s_p_vlg6_rm1_offart_SI_gt6m=0;if s_i_offart_SI_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_offart_SI_gt6m = max(0,s_i_offart_SI_gt6m_vlg6_rm1_np) / s_i_offart_SI_vlg6_rm1_np ; end;
+
 
 if s_rm_ > 0 then do;
 s_prop_tam1			 = max(0,s_tam1_   / s_rm_);
@@ -17768,6 +18690,82 @@ s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_v
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
 s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
+
+/*LBMJan23*/
+
+/*Inf partner started ART*/
+s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
+s_i_startart_vlg5_rm0_np  s_i_startart_vlg6_rm0_np  s_i_startart_vlg1_rm1_np  s_i_startart_vlg2_rm1_np 
+s_i_startart_vlg3_rm1_np  s_i_startart_vlg4_rm1_np	s_i_startart_vlg5_rm1_np  s_i_startart_vlg6_rm1_np 
+
+/*Inf partner on ART*/
+s_i_onart_vlg1_rm0_np  s_i_onart_vlg2_rm0_np  s_i_onart_vlg3_rm0_np  s_i_onart_vlg4_rm0_np
+s_i_onart_vlg5_rm0_np  s_i_onart_vlg6_rm0_np  s_i_onart_vlg1_rm1_np  s_i_onart_vlg2_rm1_np 
+s_i_onart_vlg3_rm1_np  s_i_onart_vlg4_rm1_np	s_i_onart_vlg5_rm1_np  s_i_onart_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np	s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*If partner on ART<6m*/
+s_i_onart_lt6m_vlg1_rm0_np  s_i_onart_lt6m_vlg2_rm0_np  s_i_onart_lt6m_vlg3_rm0_np  s_i_onart_lt6m_vlg4_rm0_np
+s_i_onart_lt6m_vlg5_rm0_np  s_i_onart_lt6m_vlg6_rm0_np  s_i_onart_lt6m_vlg1_rm1_np  s_i_onart_lt6m_vlg2_rm1_np 
+s_i_onart_lt6m_vlg3_rm1_np  s_i_onart_lt6m_vlg4_rm1_np	s_i_onart_lt6m_vlg5_rm1_np  s_i_onart_lt6m_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, virally suppressed*/
+s_i_onart_lt6m_vs_vlg1_rm0_np  s_i_onart_lt6m_vs_vlg2_rm0_np  s_i_onart_lt6m_vs_vlg3_rm0_np  s_i_onart_lt6m_vs_vlg4_rm0_np
+s_i_onart_lt6m_vs_vlg5_rm0_np  s_i_onart_lt6m_vs_vlg6_rm0_np  s_i_onart_lt6m_vs_vlg1_rm1_np  s_i_onart_lt6m_vs_vlg2_rm1_np 
+s_i_onart_lt6m_vs_vlg3_rm1_np  s_i_onart_lt6m_vs_vlg4_rm1_np  s_i_onart_lt6m_vs_vlg5_rm1_np  s_i_onart_lt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, not virally suppressed*/
+s_i_onart_lt6m_nvs_vlg1_rm0_np  s_i_onart_lt6m_nvs_vlg2_rm0_np  s_i_onart_lt6m_nvs_vlg3_rm0_np  s_i_onart_lt6m_nvs_vlg4_rm0_np
+s_i_onart_lt6m_nvs_vlg5_rm0_np  s_i_onart_lt6m_nvs_vlg6_rm0_np  s_i_onart_lt6m_nvs_vlg1_rm1_np  s_i_onart_lt6m_nvs_vlg2_rm1_np 
+s_i_onart_lt6m_nvs_vlg3_rm1_np  s_i_onart_lt6m_nvs_vlg4_rm1_np  s_i_onart_lt6m_nvs_vlg5_rm1_np  s_i_onart_lt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m*/
+s_i_onart_gt6m_vlg1_rm0_np  s_i_onart_gt6m_vlg2_rm0_np  s_i_onart_gt6m_vlg3_rm0_np  s_i_onart_gt6m_vlg4_rm0_np
+s_i_onart_gt6m_vlg5_rm0_np  s_i_onart_gt6m_vlg6_rm0_np  s_i_onart_gt6m_vlg1_rm1_np  s_i_onart_gt6m_vlg2_rm1_np 
+s_i_onart_gt6m_vlg3_rm1_np  s_i_onart_gt6m_vlg4_rm1_np	s_i_onart_gt6m_vlg5_rm1_np  s_i_onart_gt6m_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, virally suppressed*/
+s_i_onart_gt6m_vs_vlg1_rm0_np  s_i_onart_gt6m_vs_vlg2_rm0_np  s_i_onart_gt6m_vs_vlg3_rm0_np  s_i_onart_gt6m_vs_vlg4_rm0_np
+s_i_onart_gt6m_vs_vlg5_rm0_np  s_i_onart_gt6m_vs_vlg6_rm0_np  s_i_onart_gt6m_vs_vlg1_rm1_np  s_i_onart_gt6m_vs_vlg2_rm1_np 
+s_i_onart_gt6m_vs_vlg3_rm1_np  s_i_onart_gt6m_vs_vlg4_rm1_np  s_i_onart_gt6m_vs_vlg5_rm1_np  s_i_onart_gt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, not virally suppressed*/
+s_i_onart_gt6m_nvs_vlg1_rm0_np  s_i_onart_gt6m_nvs_vlg2_rm0_np  s_i_onart_gt6m_nvs_vlg3_rm0_np  s_i_onart_gt6m_nvs_vlg4_rm0_np
+s_i_onart_gt6m_nvs_vlg5_rm0_np  s_i_onart_gt6m_nvs_vlg6_rm0_np  s_i_onart_gt6m_nvs_vlg1_rm1_np  s_i_onart_gt6m_nvs_vlg2_rm1_np 
+s_i_onart_gt6m_nvs_vlg3_rm1_np  s_i_onart_gt6m_nvs_vlg4_rm1_np  s_i_onart_gt6m_nvs_vlg5_rm1_np  s_i_onart_gt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np  s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*Inf partner off ART, first interruption*/
+s_i_offart_1stI_vlg1_rm0_np  s_i_offart_1stI_vlg2_rm0_np  s_i_offart_1stI_vlg3_rm0_np  s_i_offart_1stI_vlg4_rm0_np
+s_i_offart_1stI_vlg5_rm0_np  s_i_offart_1stI_vlg6_rm0_np  s_i_offart_1stI_vlg1_rm1_np  s_i_offart_1stI_vlg2_rm1_np 
+s_i_offart_1stI_vlg3_rm1_np  s_i_offart_1stI_vlg4_rm1_np  s_i_offart_1stI_vlg5_rm1_np  s_i_offart_1stI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption*/
+s_i_offart_SI_vlg1_rm0_np  s_i_offart_SI_vlg2_rm0_np  s_i_offart_SI_vlg3_rm0_np  s_i_offart_SI_vlg4_rm0_np
+s_i_offart_SI_vlg5_rm0_np  s_i_offart_SI_vlg6_rm0_np  s_i_offart_SI_vlg1_rm1_np  s_i_offart_SI_vlg2_rm1_np 
+s_i_offart_SI_vlg3_rm1_np  s_i_offart_SI_vlg4_rm1_np  s_i_offart_SI_vlg5_rm1_np  s_i_offart_SI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption <6m since last interruption*/
+s_i_offart_SI_lt6m_vlg1_rm0_np  s_i_offart_SI_lt6m_vlg2_rm0_np  s_i_offart_SI_lt6m_vlg3_rm0_np  s_i_offart_SI_lt6m_vlg4_rm0_np
+s_i_offart_SI_lt6m_vlg5_rm0_np  s_i_offart_SI_lt6m_vlg6_rm0_np  s_i_offart_SI_lt6m_vlg1_rm1_np  s_i_offart_SI_lt6m_vlg2_rm1_np 
+s_i_offart_SI_lt6m_vlg3_rm1_np  s_i_offart_SI_lt6m_vlg4_rm1_np  s_i_offart_SI_lt6m_vlg5_rm1_np  s_i_offart_SI_lt6m_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption >6m since last interruption*/
+s_i_offart_SI_gt6m_vlg1_rm0_np  s_i_offart_SI_gt6m_vlg2_rm0_np  s_i_offart_SI_gt6m_vlg3_rm0_np  s_i_offart_SI_gt6m_vlg4_rm0_np
+s_i_offart_SI_gt6m_vlg5_rm0_np  s_i_offart_SI_gt6m_vlg6_rm0_np  s_i_offart_SI_gt6m_vlg1_rm1_np  s_i_offart_SI_gt6m_vlg2_rm1_np 
+s_i_offart_SI_gt6m_vlg3_rm1_np  s_i_offart_SI_gt6m_vlg4_rm1_np  s_i_offart_SI_gt6m_vlg5_rm1_np  s_i_offart_SI_gt6m_vlg6_rm1_np 
+
+/*Infected partner status*/
+s_I_undiag 			s_I_diag_naive  	s_I_diag_startart  	s_I_onart		s_I_offart 		   s_I_onart_lt6m 	 s_I_onart_lt6m_nvs 
+s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
@@ -18638,6 +19636,161 @@ t_prop_vlg6_rm0_diag = s_prop_vlg6_rm0_diag ;
 t_prop_vlg6_rm0_naive = s_prop_vlg6_rm0_naive ; 
 t_prop_vlg6_rm1_diag = s_prop_vlg6_rm1_diag ;  
 t_prop_vlg6_rm1_naive = s_prop_vlg6_rm1_naive ;  
+
+***LBMJan23;
+*Started ART;
+t_p_vlg1_rm0_startart = s_p_vlg1_rm0_startart;
+t_p_vlg2_rm0_startart = s_p_vlg2_rm0_startart;
+t_p_vlg3_rm0_startart = s_p_vlg3_rm0_startart;
+t_p_vlg4_rm0_startart = s_p_vlg4_rm0_startart;
+t_p_vlg5_rm0_startart = s_p_vlg5_rm0_startart;
+t_p_vlg6_rm0_startart = s_p_vlg6_rm0_startart;
+
+t_p_vlg1_rm1_startart = s_p_vlg1_rm1_startart;
+t_p_vlg2_rm1_startart = s_p_vlg2_rm1_startart;
+t_p_vlg3_rm1_startart = s_p_vlg3_rm1_startart;
+t_p_vlg4_rm1_startart = s_p_vlg4_rm1_startart;
+t_p_vlg5_rm1_startart = s_p_vlg5_rm1_startart;
+t_p_vlg6_rm1_startart = s_p_vlg6_rm1_startart;
+
+*On ART;
+t_p_vlg1_rm0_onart = s_p_vlg1_rm0_onart;
+t_p_vlg2_rm0_onart = s_p_vlg2_rm0_onart;
+t_p_vlg3_rm0_onart = s_p_vlg3_rm0_onart;
+t_p_vlg4_rm0_onart = s_p_vlg4_rm0_onart;
+t_p_vlg5_rm0_onart = s_p_vlg5_rm0_onart;
+t_p_vlg6_rm0_onart = s_p_vlg6_rm0_onart;
+
+t_p_vlg1_rm1_onart = s_p_vlg1_rm1_onart;
+t_p_vlg2_rm1_onart = s_p_vlg2_rm1_onart;
+t_p_vlg3_rm1_onart = s_p_vlg3_rm1_onart;
+t_p_vlg4_rm1_onart = s_p_vlg4_rm1_onart;
+t_p_vlg5_rm1_onart = s_p_vlg5_rm1_onart;
+t_p_vlg6_rm1_onart = s_p_vlg6_rm1_onart;
+
+
+*Had started ART but now off ART;
+t_p_vlg1_rm0_offart = s_p_vlg1_rm0_offart;
+t_p_vlg2_rm0_offart = s_p_vlg2_rm0_offart;
+t_p_vlg3_rm0_offart = s_p_vlg3_rm0_offart;
+t_p_vlg4_rm0_offart = s_p_vlg4_rm0_offart;
+t_p_vlg5_rm0_offart = s_p_vlg5_rm0_offart;
+t_p_vlg6_rm0_offart = s_p_vlg6_rm0_offart;
+
+t_p_vlg1_rm1_offart = s_p_vlg1_rm1_offart;
+t_p_vlg2_rm1_offart = s_p_vlg2_rm1_offart;
+t_p_vlg3_rm1_offart = s_p_vlg3_rm1_offart;
+t_p_vlg4_rm1_offart = s_p_vlg4_rm1_offart;
+t_p_vlg5_rm1_offart = s_p_vlg5_rm1_offart;
+t_p_vlg6_rm1_offart = s_p_vlg6_rm1_offart;
+
+
+*On ART <6m;
+t_p_vlg1_rm0_onart_lt6m = s_p_vlg1_rm0_onart_lt6m;
+t_p_vlg2_rm0_onart_lt6m = s_p_vlg2_rm0_onart_lt6m;
+t_p_vlg3_rm0_onart_lt6m = s_p_vlg3_rm0_onart_lt6m;
+t_p_vlg4_rm0_onart_lt6m = s_p_vlg4_rm0_onart_lt6m;
+t_p_vlg5_rm0_onart_lt6m = s_p_vlg5_rm0_onart_lt6m;
+t_p_vlg6_rm0_onart_lt6m = s_p_vlg6_rm0_onart_lt6m;
+
+t_p_vlg1_rm1_onart_lt6m = s_p_vlg1_rm1_onart_lt6m;
+t_p_vlg2_rm1_onart_lt6m = s_p_vlg2_rm1_onart_lt6m;
+t_p_vlg3_rm1_onart_lt6m = s_p_vlg3_rm1_onart_lt6m;
+t_p_vlg4_rm1_onart_lt6m = s_p_vlg4_rm1_onart_lt6m;
+t_p_vlg5_rm1_onart_lt6m = s_p_vlg5_rm1_onart_lt6m;
+t_p_vlg6_rm1_onart_lt6m = s_p_vlg6_rm1_onart_lt6m;
+
+*Of those on ART for <6m, current VL >1000;
+t_p_vlg1_rm0_onart_lt6m_nvs = s_p_vlg1_rm0_onart_lt6m_nvs;
+t_p_vlg2_rm0_onart_lt6m_nvs = s_p_vlg2_rm0_onart_lt6m_nvs;
+t_p_vlg3_rm0_onart_lt6m_nvs = s_p_vlg3_rm0_onart_lt6m_nvs;
+t_p_vlg4_rm0_onart_lt6m_nvs = s_p_vlg4_rm0_onart_lt6m_nvs;
+t_p_vlg5_rm0_onart_lt6m_nvs = s_p_vlg5_rm0_onart_lt6m_nvs;
+t_p_vlg6_rm0_onart_lt6m_nvs = s_p_vlg6_rm0_onart_lt6m_nvs;
+
+t_p_vlg1_rm1_onart_lt6m_nvs = s_p_vlg1_rm1_onart_lt6m_nvs;
+t_p_vlg2_rm1_onart_lt6m_nvs = s_p_vlg2_rm1_onart_lt6m_nvs;
+t_p_vlg3_rm1_onart_lt6m_nvs = s_p_vlg3_rm1_onart_lt6m_nvs;
+t_p_vlg4_rm1_onart_lt6m_nvs = s_p_vlg4_rm1_onart_lt6m_nvs;
+t_p_vlg5_rm1_onart_lt6m_nvs = s_p_vlg5_rm1_onart_lt6m_nvs;
+t_p_vlg6_rm1_onart_lt6m_nvs = s_p_vlg6_rm1_onart_lt6m_nvs;
+
+*Of those on ART for >6m, current VL<1000;
+t_p_vlg1_rm0_onart_gt6m_vs = s_p_vlg1_rm0_onart_gt6m_vs;
+t_p_vlg2_rm0_onart_gt6m_vs = s_p_vlg2_rm0_onart_gt6m_vs;
+t_p_vlg3_rm0_onart_gt6m_vs = s_p_vlg3_rm0_onart_gt6m_vs;
+t_p_vlg4_rm0_onart_gt6m_vs = s_p_vlg4_rm0_onart_gt6m_vs;
+t_p_vlg5_rm0_onart_gt6m_vs = s_p_vlg5_rm0_onart_gt6m_vs;
+t_p_vlg6_rm0_onart_gt6m_vs = s_p_vlg6_rm0_onart_gt6m_vs;
+
+t_p_vlg1_rm1_onart_gt6m_vs = s_p_vlg1_rm1_onart_gt6m_vs;
+t_p_vlg2_rm1_onart_gt6m_vs = s_p_vlg2_rm1_onart_gt6m_vs;
+t_p_vlg3_rm1_onart_gt6m_vs = s_p_vlg3_rm1_onart_gt6m_vs;
+t_p_vlg4_rm1_onart_gt6m_vs = s_p_vlg4_rm1_onart_gt6m_vs;
+t_p_vlg5_rm1_onart_gt6m_vs = s_p_vlg5_rm1_onart_gt6m_vs;
+t_p_vlg6_rm1_onart_gt6m_vs = s_p_vlg6_rm1_onart_gt6m_vs;
+
+*Of those on ART for >6m, current VL>1000;
+t_p_vlg1_rm0_onart_gt6m_nvs = s_p_vlg1_rm0_onart_gt6m_nvs;
+t_p_vlg2_rm0_onart_gt6m_nvs = s_p_vlg2_rm0_onart_gt6m_nvs;
+t_p_vlg3_rm0_onart_gt6m_nvs = s_p_vlg3_rm0_onart_gt6m_nvs;
+t_p_vlg4_rm0_onart_gt6m_nvs = s_p_vlg4_rm0_onart_gt6m_nvs;
+t_p_vlg5_rm0_onart_gt6m_nvs = s_p_vlg5_rm0_onart_gt6m_nvs;
+t_p_vlg6_rm0_onart_gt6m_nvs = s_p_vlg6_rm0_onart_gt6m_nvs;
+
+t_p_vlg1_rm1_onart_gt6m_nvs = s_p_vlg1_rm1_onart_gt6m_nvs;
+t_p_vlg2_rm1_onart_gt6m_nvs = s_p_vlg2_rm1_onart_gt6m_nvs;
+t_p_vlg3_rm1_onart_gt6m_nvs = s_p_vlg3_rm1_onart_gt6m_nvs;
+t_p_vlg4_rm1_onart_gt6m_nvs = s_p_vlg4_rm1_onart_gt6m_nvs;
+t_p_vlg5_rm1_onart_gt6m_nvs = s_p_vlg5_rm1_onart_gt6m_nvs;
+t_p_vlg6_rm1_onart_gt6m_nvs = s_p_vlg6_rm1_onart_gt6m_nvs;
+
+*Of those off ART, first interruption;
+t_p_vlg1_rm0_offart_1stI = s_p_vlg1_rm0_offart_1stI;
+t_p_vlg2_rm0_offart_1stI = s_p_vlg2_rm0_offart_1stI;
+t_p_vlg3_rm0_offart_1stI = s_p_vlg3_rm0_offart_1stI;
+t_p_vlg4_rm0_offart_1stI = s_p_vlg4_rm0_offart_1stI;
+t_p_vlg5_rm0_offart_1stI = s_p_vlg5_rm0_offart_1stI;
+t_p_vlg6_rm0_offart_1stI = s_p_vlg6_rm0_offart_1stI;
+
+t_p_vlg1_rm1_offart_1stI = s_p_vlg1_rm1_offart_1stI;
+t_p_vlg2_rm1_offart_1stI = s_p_vlg2_rm1_offart_1stI;
+t_p_vlg3_rm1_offart_1stI = s_p_vlg3_rm1_offart_1stI;
+t_p_vlg4_rm1_offart_1stI = s_p_vlg4_rm1_offart_1stI;
+t_p_vlg5_rm1_offart_1stI = s_p_vlg5_rm1_offart_1stI;
+t_p_vlg6_rm1_offart_1stI = s_p_vlg6_rm1_offart_1stI;
+
+*Of those off ART with subsequent interruption (i.e. not first), <6 months from last interruption;
+t_p_vlg1_rm0_offart_SI_lt6m = s_p_vlg1_rm0_offart_SI_lt6m;
+t_p_vlg2_rm0_offart_SI_lt6m = s_p_vlg2_rm0_offart_SI_lt6m;
+t_p_vlg3_rm0_offart_SI_lt6m = s_p_vlg3_rm0_offart_SI_lt6m;
+t_p_vlg4_rm0_offart_SI_lt6m = s_p_vlg4_rm0_offart_SI_lt6m;
+t_p_vlg5_rm0_offart_SI_lt6m = s_p_vlg5_rm0_offart_SI_lt6m;
+t_p_vlg6_rm0_offart_SI_lt6m = s_p_vlg6_rm0_offart_SI_lt6m;
+
+t_p_vlg1_rm1_offart_SI_lt6m = s_p_vlg1_rm1_offart_SI_lt6m;
+t_p_vlg2_rm1_offart_SI_lt6m = s_p_vlg2_rm1_offart_SI_lt6m;
+t_p_vlg3_rm1_offart_SI_lt6m = s_p_vlg3_rm1_offart_SI_lt6m;
+t_p_vlg4_rm1_offart_SI_lt6m = s_p_vlg4_rm1_offart_SI_lt6m;
+t_p_vlg5_rm1_offart_SI_lt6m = s_p_vlg5_rm1_offart_SI_lt6m;
+t_p_vlg6_rm1_offart_SI_lt6m = s_p_vlg6_rm1_offart_SI_lt6m;
+
+*Of those off ART with subsequent interruption (i.e. not first), >6 months from last interruption;
+t_p_vlg1_rm0_offart_SI_gt6m = s_p_vlg1_rm0_offart_SI_gt6m;
+t_p_vlg2_rm0_offart_SI_gt6m = s_p_vlg2_rm0_offart_SI_gt6m;
+t_p_vlg3_rm0_offart_SI_gt6m = s_p_vlg3_rm0_offart_SI_gt6m;
+t_p_vlg4_rm0_offart_SI_gt6m = s_p_vlg4_rm0_offart_SI_gt6m;
+t_p_vlg5_rm0_offart_SI_gt6m = s_p_vlg5_rm0_offart_SI_gt6m;
+t_p_vlg6_rm0_offart_SI_gt6m = s_p_vlg6_rm0_offart_SI_gt6m;
+
+t_p_vlg1_rm1_offart_SI_gt6m = s_p_vlg1_rm1_offart_SI_gt6m;
+t_p_vlg2_rm1_offart_SI_gt6m = s_p_vlg2_rm1_offart_SI_gt6m;
+t_p_vlg3_rm1_offart_SI_gt6m = s_p_vlg3_rm1_offart_SI_gt6m;
+t_p_vlg4_rm1_offart_SI_gt6m = s_p_vlg4_rm1_offart_SI_gt6m;
+t_p_vlg5_rm1_offart_SI_gt6m = s_p_vlg5_rm1_offart_SI_gt6m;
+t_p_vlg6_rm1_offart_SI_gt6m = s_p_vlg6_rm1_offart_SI_gt6m;
+
+
 t_m_newp = s_m_newp; 
 t_w_newp = s_w_newp;
 
@@ -18699,6 +19852,82 @@ s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_v
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
 s_diagprim_prep_inj s_diagprim_prep_vr  s_diagprim
+
+/*LBMJan23*/
+
+/*Inf partner started ART*/
+s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
+s_i_startart_vlg5_rm0_np  s_i_startart_vlg6_rm0_np  s_i_startart_vlg1_rm1_np  s_i_startart_vlg2_rm1_np 
+s_i_startart_vlg3_rm1_np  s_i_startart_vlg4_rm1_np	s_i_startart_vlg5_rm1_np  s_i_startart_vlg6_rm1_np 
+
+/*Inf partner on ART*/
+s_i_onart_vlg1_rm0_np  s_i_onart_vlg2_rm0_np  s_i_onart_vlg3_rm0_np  s_i_onart_vlg4_rm0_np
+s_i_onart_vlg5_rm0_np  s_i_onart_vlg6_rm0_np  s_i_onart_vlg1_rm1_np  s_i_onart_vlg2_rm1_np 
+s_i_onart_vlg3_rm1_np  s_i_onart_vlg4_rm1_np	s_i_onart_vlg5_rm1_np  s_i_onart_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np	s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*If partner on ART<6m*/
+s_i_onart_lt6m_vlg1_rm0_np  s_i_onart_lt6m_vlg2_rm0_np  s_i_onart_lt6m_vlg3_rm0_np  s_i_onart_lt6m_vlg4_rm0_np
+s_i_onart_lt6m_vlg5_rm0_np  s_i_onart_lt6m_vlg6_rm0_np  s_i_onart_lt6m_vlg1_rm1_np  s_i_onart_lt6m_vlg2_rm1_np 
+s_i_onart_lt6m_vlg3_rm1_np  s_i_onart_lt6m_vlg4_rm1_np	s_i_onart_lt6m_vlg5_rm1_np  s_i_onart_lt6m_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, virally suppressed*/
+s_i_onart_lt6m_vs_vlg1_rm0_np  s_i_onart_lt6m_vs_vlg2_rm0_np  s_i_onart_lt6m_vs_vlg3_rm0_np  s_i_onart_lt6m_vs_vlg4_rm0_np
+s_i_onart_lt6m_vs_vlg5_rm0_np  s_i_onart_lt6m_vs_vlg6_rm0_np  s_i_onart_lt6m_vs_vlg1_rm1_np  s_i_onart_lt6m_vs_vlg2_rm1_np 
+s_i_onart_lt6m_vs_vlg3_rm1_np  s_i_onart_lt6m_vs_vlg4_rm1_np  s_i_onart_lt6m_vs_vlg5_rm1_np  s_i_onart_lt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, not virally suppressed*/
+s_i_onart_lt6m_nvs_vlg1_rm0_np  s_i_onart_lt6m_nvs_vlg2_rm0_np  s_i_onart_lt6m_nvs_vlg3_rm0_np  s_i_onart_lt6m_nvs_vlg4_rm0_np
+s_i_onart_lt6m_nvs_vlg5_rm0_np  s_i_onart_lt6m_nvs_vlg6_rm0_np  s_i_onart_lt6m_nvs_vlg1_rm1_np  s_i_onart_lt6m_nvs_vlg2_rm1_np 
+s_i_onart_lt6m_nvs_vlg3_rm1_np  s_i_onart_lt6m_nvs_vlg4_rm1_np  s_i_onart_lt6m_nvs_vlg5_rm1_np  s_i_onart_lt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m*/
+s_i_onart_gt6m_vlg1_rm0_np  s_i_onart_gt6m_vlg2_rm0_np  s_i_onart_gt6m_vlg3_rm0_np  s_i_onart_gt6m_vlg4_rm0_np
+s_i_onart_gt6m_vlg5_rm0_np  s_i_onart_gt6m_vlg6_rm0_np  s_i_onart_gt6m_vlg1_rm1_np  s_i_onart_gt6m_vlg2_rm1_np 
+s_i_onart_gt6m_vlg3_rm1_np  s_i_onart_gt6m_vlg4_rm1_np	s_i_onart_gt6m_vlg5_rm1_np  s_i_onart_gt6m_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, virally suppressed*/
+s_i_onart_gt6m_vs_vlg1_rm0_np  s_i_onart_gt6m_vs_vlg2_rm0_np  s_i_onart_gt6m_vs_vlg3_rm0_np  s_i_onart_gt6m_vs_vlg4_rm0_np
+s_i_onart_gt6m_vs_vlg5_rm0_np  s_i_onart_gt6m_vs_vlg6_rm0_np  s_i_onart_gt6m_vs_vlg1_rm1_np  s_i_onart_gt6m_vs_vlg2_rm1_np 
+s_i_onart_gt6m_vs_vlg3_rm1_np  s_i_onart_gt6m_vs_vlg4_rm1_np  s_i_onart_gt6m_vs_vlg5_rm1_np  s_i_onart_gt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, not virally suppressed*/
+s_i_onart_gt6m_nvs_vlg1_rm0_np  s_i_onart_gt6m_nvs_vlg2_rm0_np  s_i_onart_gt6m_nvs_vlg3_rm0_np  s_i_onart_gt6m_nvs_vlg4_rm0_np
+s_i_onart_gt6m_nvs_vlg5_rm0_np  s_i_onart_gt6m_nvs_vlg6_rm0_np  s_i_onart_gt6m_nvs_vlg1_rm1_np  s_i_onart_gt6m_nvs_vlg2_rm1_np 
+s_i_onart_gt6m_nvs_vlg3_rm1_np  s_i_onart_gt6m_nvs_vlg4_rm1_np  s_i_onart_gt6m_nvs_vlg5_rm1_np  s_i_onart_gt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np  s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*Inf partner off ART, first interruption*/
+s_i_offart_1stI_vlg1_rm0_np  s_i_offart_1stI_vlg2_rm0_np  s_i_offart_1stI_vlg3_rm0_np  s_i_offart_1stI_vlg4_rm0_np
+s_i_offart_1stI_vlg5_rm0_np  s_i_offart_1stI_vlg6_rm0_np  s_i_offart_1stI_vlg1_rm1_np  s_i_offart_1stI_vlg2_rm1_np 
+s_i_offart_1stI_vlg3_rm1_np  s_i_offart_1stI_vlg4_rm1_np  s_i_offart_1stI_vlg5_rm1_np  s_i_offart_1stI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption*/
+s_i_offart_SI_vlg1_rm0_np  s_i_offart_SI_vlg2_rm0_np  s_i_offart_SI_vlg3_rm0_np  s_i_offart_SI_vlg4_rm0_np
+s_i_offart_SI_vlg5_rm0_np  s_i_offart_SI_vlg6_rm0_np  s_i_offart_SI_vlg1_rm1_np  s_i_offart_SI_vlg2_rm1_np 
+s_i_offart_SI_vlg3_rm1_np  s_i_offart_SI_vlg4_rm1_np  s_i_offart_SI_vlg5_rm1_np  s_i_offart_SI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption <6m since last interruption*/
+s_i_offart_SI_lt6m_vlg1_rm0_np  s_i_offart_SI_lt6m_vlg2_rm0_np  s_i_offart_SI_lt6m_vlg3_rm0_np  s_i_offart_SI_lt6m_vlg4_rm0_np
+s_i_offart_SI_lt6m_vlg5_rm0_np  s_i_offart_SI_lt6m_vlg6_rm0_np  s_i_offart_SI_lt6m_vlg1_rm1_np  s_i_offart_SI_lt6m_vlg2_rm1_np 
+s_i_offart_SI_lt6m_vlg3_rm1_np  s_i_offart_SI_lt6m_vlg4_rm1_np  s_i_offart_SI_lt6m_vlg5_rm1_np  s_i_offart_SI_lt6m_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption >6m since last interruption*/
+s_i_offart_SI_gt6m_vlg1_rm0_np  s_i_offart_SI_gt6m_vlg2_rm0_np  s_i_offart_SI_gt6m_vlg3_rm0_np  s_i_offart_SI_gt6m_vlg4_rm0_np
+s_i_offart_SI_gt6m_vlg5_rm0_np  s_i_offart_SI_gt6m_vlg6_rm0_np  s_i_offart_SI_gt6m_vlg1_rm1_np  s_i_offart_SI_gt6m_vlg2_rm1_np 
+s_i_offart_SI_gt6m_vlg3_rm1_np  s_i_offart_SI_gt6m_vlg4_rm1_np  s_i_offart_SI_gt6m_vlg5_rm1_np  s_i_offart_SI_gt6m_vlg6_rm1_np 
+
+/*Infected partner status*/
+s_I_undiag 			s_I_diag_naive  	s_I_diag_startart  	s_I_onart		s_I_offart 		   s_I_onart_lt6m 	 s_I_onart_lt6m_nvs 
+s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
@@ -23864,6 +25093,82 @@ s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_v
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
 s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
+
+/*LBMJan23*/
+
+/*Inf partner started ART*/
+s_i_startart_vlg1_rm0_np  s_i_startart_vlg2_rm0_np  s_i_startart_vlg3_rm0_np  s_i_startart_vlg4_rm0_np
+s_i_startart_vlg5_rm0_np  s_i_startart_vlg6_rm0_np  s_i_startart_vlg1_rm1_np  s_i_startart_vlg2_rm1_np 
+s_i_startart_vlg3_rm1_np  s_i_startart_vlg4_rm1_np	s_i_startart_vlg5_rm1_np  s_i_startart_vlg6_rm1_np 
+
+/*Inf partner on ART*/
+s_i_onart_vlg1_rm0_np  s_i_onart_vlg2_rm0_np  s_i_onart_vlg3_rm0_np  s_i_onart_vlg4_rm0_np
+s_i_onart_vlg5_rm0_np  s_i_onart_vlg6_rm0_np  s_i_onart_vlg1_rm1_np  s_i_onart_vlg2_rm1_np 
+s_i_onart_vlg3_rm1_np  s_i_onart_vlg4_rm1_np	s_i_onart_vlg5_rm1_np  s_i_onart_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np	s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*If partner on ART<6m*/
+s_i_onart_lt6m_vlg1_rm0_np  s_i_onart_lt6m_vlg2_rm0_np  s_i_onart_lt6m_vlg3_rm0_np  s_i_onart_lt6m_vlg4_rm0_np
+s_i_onart_lt6m_vlg5_rm0_np  s_i_onart_lt6m_vlg6_rm0_np  s_i_onart_lt6m_vlg1_rm1_np  s_i_onart_lt6m_vlg2_rm1_np 
+s_i_onart_lt6m_vlg3_rm1_np  s_i_onart_lt6m_vlg4_rm1_np	s_i_onart_lt6m_vlg5_rm1_np  s_i_onart_lt6m_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, virally suppressed*/
+s_i_onart_lt6m_vs_vlg1_rm0_np  s_i_onart_lt6m_vs_vlg2_rm0_np  s_i_onart_lt6m_vs_vlg3_rm0_np  s_i_onart_lt6m_vs_vlg4_rm0_np
+s_i_onart_lt6m_vs_vlg5_rm0_np  s_i_onart_lt6m_vs_vlg6_rm0_np  s_i_onart_lt6m_vs_vlg1_rm1_np  s_i_onart_lt6m_vs_vlg2_rm1_np 
+s_i_onart_lt6m_vs_vlg3_rm1_np  s_i_onart_lt6m_vs_vlg4_rm1_np  s_i_onart_lt6m_vs_vlg5_rm1_np  s_i_onart_lt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART<6m, not virally suppressed*/
+s_i_onart_lt6m_nvs_vlg1_rm0_np  s_i_onart_lt6m_nvs_vlg2_rm0_np  s_i_onart_lt6m_nvs_vlg3_rm0_np  s_i_onart_lt6m_nvs_vlg4_rm0_np
+s_i_onart_lt6m_nvs_vlg5_rm0_np  s_i_onart_lt6m_nvs_vlg6_rm0_np  s_i_onart_lt6m_nvs_vlg1_rm1_np  s_i_onart_lt6m_nvs_vlg2_rm1_np 
+s_i_onart_lt6m_nvs_vlg3_rm1_np  s_i_onart_lt6m_nvs_vlg4_rm1_np  s_i_onart_lt6m_nvs_vlg5_rm1_np  s_i_onart_lt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m*/
+s_i_onart_gt6m_vlg1_rm0_np  s_i_onart_gt6m_vlg2_rm0_np  s_i_onart_gt6m_vlg3_rm0_np  s_i_onart_gt6m_vlg4_rm0_np
+s_i_onart_gt6m_vlg5_rm0_np  s_i_onart_gt6m_vlg6_rm0_np  s_i_onart_gt6m_vlg1_rm1_np  s_i_onart_gt6m_vlg2_rm1_np 
+s_i_onart_gt6m_vlg3_rm1_np  s_i_onart_gt6m_vlg4_rm1_np	s_i_onart_gt6m_vlg5_rm1_np  s_i_onart_gt6m_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, virally suppressed*/
+s_i_onart_gt6m_vs_vlg1_rm0_np  s_i_onart_gt6m_vs_vlg2_rm0_np  s_i_onart_gt6m_vs_vlg3_rm0_np  s_i_onart_gt6m_vs_vlg4_rm0_np
+s_i_onart_gt6m_vs_vlg5_rm0_np  s_i_onart_gt6m_vs_vlg6_rm0_np  s_i_onart_gt6m_vs_vlg1_rm1_np  s_i_onart_gt6m_vs_vlg2_rm1_np 
+s_i_onart_gt6m_vs_vlg3_rm1_np  s_i_onart_gt6m_vs_vlg4_rm1_np  s_i_onart_gt6m_vs_vlg5_rm1_np  s_i_onart_gt6m_vs_vlg6_rm1_np 
+
+/*Inf partner on ART>6m, not virally suppressed*/
+s_i_onart_gt6m_nvs_vlg1_rm0_np  s_i_onart_gt6m_nvs_vlg2_rm0_np  s_i_onart_gt6m_nvs_vlg3_rm0_np  s_i_onart_gt6m_nvs_vlg4_rm0_np
+s_i_onart_gt6m_nvs_vlg5_rm0_np  s_i_onart_gt6m_nvs_vlg6_rm0_np  s_i_onart_gt6m_nvs_vlg1_rm1_np  s_i_onart_gt6m_nvs_vlg2_rm1_np 
+s_i_onart_gt6m_nvs_vlg3_rm1_np  s_i_onart_gt6m_nvs_vlg4_rm1_np  s_i_onart_gt6m_nvs_vlg5_rm1_np  s_i_onart_gt6m_nvs_vlg6_rm1_np 
+
+/*Inf partner off ART*/
+s_i_offart_vlg1_rm0_np  s_i_offart_vlg2_rm0_np  s_i_offart_vlg3_rm0_np  s_i_offart_vlg4_rm0_np
+s_i_offart_vlg5_rm0_np  s_i_offart_vlg6_rm0_np  s_i_offart_vlg1_rm1_np  s_i_offart_vlg2_rm1_np 
+s_i_offart_vlg3_rm1_np  s_i_offart_vlg4_rm1_np  s_i_offart_vlg5_rm1_np  s_i_offart_vlg6_rm1_np 
+
+/*Inf partner off ART, first interruption*/
+s_i_offart_1stI_vlg1_rm0_np  s_i_offart_1stI_vlg2_rm0_np  s_i_offart_1stI_vlg3_rm0_np  s_i_offart_1stI_vlg4_rm0_np
+s_i_offart_1stI_vlg5_rm0_np  s_i_offart_1stI_vlg6_rm0_np  s_i_offart_1stI_vlg1_rm1_np  s_i_offart_1stI_vlg2_rm1_np 
+s_i_offart_1stI_vlg3_rm1_np  s_i_offart_1stI_vlg4_rm1_np  s_i_offart_1stI_vlg5_rm1_np  s_i_offart_1stI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption*/
+s_i_offart_SI_vlg1_rm0_np  s_i_offart_SI_vlg2_rm0_np  s_i_offart_SI_vlg3_rm0_np  s_i_offart_SI_vlg4_rm0_np
+s_i_offart_SI_vlg5_rm0_np  s_i_offart_SI_vlg6_rm0_np  s_i_offart_SI_vlg1_rm1_np  s_i_offart_SI_vlg2_rm1_np 
+s_i_offart_SI_vlg3_rm1_np  s_i_offart_SI_vlg4_rm1_np  s_i_offart_SI_vlg5_rm1_np  s_i_offart_SI_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption <6m since last interruption*/
+s_i_offart_SI_lt6m_vlg1_rm0_np  s_i_offart_SI_lt6m_vlg2_rm0_np  s_i_offart_SI_lt6m_vlg3_rm0_np  s_i_offart_SI_lt6m_vlg4_rm0_np
+s_i_offart_SI_lt6m_vlg5_rm0_np  s_i_offart_SI_lt6m_vlg6_rm0_np  s_i_offart_SI_lt6m_vlg1_rm1_np  s_i_offart_SI_lt6m_vlg2_rm1_np 
+s_i_offart_SI_lt6m_vlg3_rm1_np  s_i_offart_SI_lt6m_vlg4_rm1_np  s_i_offart_SI_lt6m_vlg5_rm1_np  s_i_offart_SI_lt6m_vlg6_rm1_np 
+
+/*Inf partner off ART, subsequent interruption >6m since last interruption*/
+s_i_offart_SI_gt6m_vlg1_rm0_np  s_i_offart_SI_gt6m_vlg2_rm0_np  s_i_offart_SI_gt6m_vlg3_rm0_np  s_i_offart_SI_gt6m_vlg4_rm0_np
+s_i_offart_SI_gt6m_vlg5_rm0_np  s_i_offart_SI_gt6m_vlg6_rm0_np  s_i_offart_SI_gt6m_vlg1_rm1_np  s_i_offart_SI_gt6m_vlg2_rm1_np 
+s_i_offart_SI_gt6m_vlg3_rm1_np  s_i_offart_SI_gt6m_vlg4_rm1_np  s_i_offart_SI_gt6m_vlg5_rm1_np  s_i_offart_SI_gt6m_vlg6_rm1_np 
+
+/*Infected partner status*/
+s_I_undiag 			s_I_diag_naive  	s_I_diag_startart  	s_I_onart		s_I_offart 		   s_I_onart_lt6m 	 s_I_onart_lt6m_nvs 
+s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
