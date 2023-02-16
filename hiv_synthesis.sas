@@ -4198,7 +4198,7 @@ end;
 
 u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
-if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) and pregnant ne 1 then do;
+if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) and dt_start_pregn=. then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
 	if (ep=1   and . lt u lt prob_pregnancy) or      
 	   (newp=1 and . lt u lt prob_pregnancy_newp) then do;
@@ -4206,7 +4206,7 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) an
 	end;
 	if pregnant ne 1 and newp gt 1 then do; * dependent_on_time_step_length ;
 	* consider if pregnant will be 1 only for 1 period ;
-		uu=2;do until (uu gt newp);
+		uu=2;do until (uu gt newp or pregnant=1);
 			ua=rand('uniform');
 			if (. lt ua lt prob_pregnancy_newp) then do;
 				dt_start_pregn=caldate{t};pregnant=1;pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;anc=0;
@@ -4223,24 +4223,22 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) an
 	end;  end;
 
 end;
-
-if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
-if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1; dt_start_pregn=.; end;
-if                   caldate{t} gt dt_start_pregn+0.75 then anc=0;																												
+																									
 
 *HIV Testing in ANC;
 *VCFeb2023 I thought I would determine at the beginning of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
 a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
-if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
+if caldate{t} = dt_start_pregn+0.25 then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
+anc=anc_tm1;
 if anc=1 then do;
 	***LBM Aug19;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
-		if (caldate{t} = dt_start_pregn and u lt 0.5 ) or caldate{t} = dt_start_pregn then do;
+		if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
 			tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
 	end;
 	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
@@ -4249,11 +4247,16 @@ if anc=1 then do;
 end;
 
 *5Nov2016: additional HIV test 3 months after birth, this is because it is the easiest way to capture the fact that pregnant women are tested twice during pregnancy;
+pd_test=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;anc=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and u lt 0.33 then do;pd_test=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
+
+if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
+if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1; dt_start_pregn=.; end;
+if                   caldate{t} gt dt_start_pregn+0.75 then anc=0;
 
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
@@ -7518,7 +7521,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 
 * pregnancy leads to re-engagement once option b+ implemented; 
-	if registd=1 and (pregnant=1 or . < caldate{t} - dt_lastbirth <= 1) and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;
+	if registd=1 and pregnant=1 and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;
 		return=1;lost=0;visit=1;end;
 
 * return cant happen if no_art_disrup_covid ;
@@ -7642,7 +7645,7 @@ res_test=.;
 		if art_initiation_strategy=3 then do;
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
-				if pregnant =1 then u=u/10; * jul18 ;
+				if dt_lastbirth=caldate{t} then u=u/10; * jul18 ;
 
 				if u < eff_pr_art_init then time0=caldate{t};
 
@@ -7677,7 +7680,7 @@ res_test=.;
 		end;
 
 		if art_initiation_strategy in (3, 9, 10) then do;  * pregnancy leads to re-engagement once option b+ implemented;
-			if (pregnant=1 or . < caldate{t} - dt_lastbirth <= 1) and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
+			if pregnant=1 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if dt_first_elig=. then dt_first_elig=caldate{t};
 				time0=caldate{t};  art_init_bplus_=1;
 			end;
@@ -7793,7 +7796,7 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-		if pregnant=1 then prointer = prointer/100; * jul18;
+		if dt_lastbirth=caldate{t} then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
@@ -7892,7 +7895,7 @@ end;
 
 		if non_tb_who3_ev_tm1=1 then e_rate_restart = e_rate_restart*3;
 		if adc_tm1=1 then e_rate_restart = e_rate_restart*5;
-		if pregnant=1 then e_rate_restart = e_rate_restart*5; * jul18;
+		if dt_lastbirth=caldate{t} then e_rate_restart = e_rate_restart*5; * jul18;
 		if return   =1 then e_rate_restart = 1;
 
 		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
@@ -9620,7 +9623,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * amended jun18 ;
 	onart_birth_with_inf_child=0;onart_birth_with_inf_child_res=0;give_birth_with_hiv=0;birth_with_inf_child=0;	
 
-	if pregnant=1 and hiv=1 and t ge 2 then do; 
+	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do; 
 		give_birth_with_hiv=1;
 		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
@@ -13500,7 +13503,7 @@ end;
 	if caldate&j=yrart >. then do;
 		art_start=1;
 		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; 
-		if gender=2 and (pregnant=1 or . < caldate&j - dt_lastbirth <= 1) then art_start_pregnant=1;
+		if gender=2 and pregnant=1 then art_start_pregnant=1;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
 		if nnm_art=1 and gender=1 then nnm_art_m=1;if nnm_art=1 and gender=2 then nnm_art_w=1;
