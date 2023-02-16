@@ -2009,6 +2009,7 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
+anc_tm1=anc;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
@@ -2445,6 +2446,21 @@ if caldate_never_dot = &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  
+	*Minimal;
+	sw_program = 1;*starts from 2010;
+	sw_test_6mthly = 1;*Not sure as this I think means that all FSWs are testing every 6 months, which is more than if we have a program;
+	*SWITCH OFF SBCC;
+	circ_inc_rate_year_i = 2;
+	date_prep_oral_intro=2100;
+	date_prep_inj_intro=2100;
+	date_prep_vr_intro=2100;
+	*SWITCH OFF SCREENING FOR CRYPTOCCOL MENINGITIS;
+	*What should we assume in terms of monitoring for people naive? hiv_monitoring_strategy. I think we need 2 to have the CD4 measurement at ART initiation;
+	*What is cd4_monitoring?
+	*if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  *art_monitoring_strategy = 81 not defined;
+	* art_monitoring_strategy=150; *Thi is VL at 6m,12m, yearly;
+	prob_vl_meas_done=0.33;* This should be in the Zim parameters. 
+	*I'm wondering whether it should be a characteristic of the individual. AS I assume that whetehr they get a VL or not depend mainly on the facility they attend;
 	end;
  
 	if option = 1 then do; 
@@ -2682,6 +2698,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	test_rate_tb  = min(0.8,test_rate_tb*incr_test_rate_sympt);  
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
 * testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
+		*Is it correct to have the following lines at this point? can testing of a person happen here?I think this is meant for people withou HIV but it is not specified, so it will apply to all of them;																																																
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
 		e=rand('uniform'); 
 		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
@@ -2905,7 +2922,7 @@ end;
 * PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
 
 if t ge 2 and gender=2 then do;
-	pregnant=0;anc=0;on_sd_nvp=0;on_dual_nvp=0;
+	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;
 	if cum_children=. and dead=0 then cum_children=0;
 	if episodes_sw=.     then episodes_sw=0;
 	if years_ep=.		  then years_ep=0;
@@ -4181,45 +4198,54 @@ end;
 
 u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
-if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 1.25) or dt_lastbirth=.) then do;
+if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) and pregnant ne 1 then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
-	if (ep_tm3=1   and . lt u lt prob_pregnancy) or      
-	   (newp_tm3 =1 and . lt u lt prob_pregnancy_newp) then do;
-		pregnant=1;dt_lastbirth=caldate{t};cum_children=cum_children+1; pregnant_ntd=0;pregnant_oth_dol_adv_birth_e=0;
+	if (ep=1   and . lt u lt prob_pregnancy) or      
+	   (newp=1 and . lt u lt prob_pregnancy_newp) then do;
+		dt_start_pregn=caldate{t};pregnant=1;pregnant_ntd=0;pregnant_oth_dol_adv_birth_e=0;anc=0;		 
 	end;
-	if pregnant ne 1 and newp_tm3  gt 1 then do; * dependent_on_time_step_length ;
+	if pregnant ne 1 and newp gt 1 then do; * dependent_on_time_step_length ;
 	* consider if pregnant will be 1 only for 1 period ;
-		uu=2;do until (uu gt newp_tm3 );
+		uu=2;do until (uu gt newp);
 			ua=rand('uniform');
 			if (. lt ua lt prob_pregnancy_newp) then do;
-				pregnant=1;dt_lastbirth=caldate{t};cum_children=cum_children+1; pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
+				dt_start_pregn=caldate{t};pregnant=1;pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;anc=0;
 			end;
 		uu=uu+1;
 		end;
 	end;
-	if pregnant=1 and o_dol_tm3 =1 then do; u = rand('uniform'); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
-			pregnant_ntd=1;prev_pregnant_ntd=1; date_pregnancy_ntd = caldate{t}; 
+	if dt_start_pregn=caldate{t} and o_dol =1 then do; u = rand('uniform'); if u < ntd_risk_dol then do; * not * dependent_on_time_step_length ;
+			*What is the difference between pregnant_ntd and prev_pregnant_ntd? is it ok that they have a value of 1 only for one 3 month period?;
+			pregnant_ntd=1;prev_pregnant_ntd=1; date_pregnancy_ntd = caldate{t}+0.75; 
 	end;  end;
-	if pregnant=1 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
+	if dt_start_pregn=caldate{t} and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
 			pregnant_oth_dol_adv_birth_e=1; prev_oth_dol_adv_birth_e=1;
 	end;  end;
 
 end;
 
+if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
+if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1; dt_start_pregn=.; end;
+if                   caldate{t} gt dt_start_pregn+0.75 then anc=0;																												
 
 *HIV Testing in ANC;
+*VCFeb2023 I thought I would determine at the beginning of the pregnancy whether they are going to attend ANC,
+so that it is the same as before, but then I do allow for re-testing;
 a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
-if pregnant=1 then do;  * dependent_on_time_step_length ;
-	if a < prob_anc then do; * dec15 - remove age effect for malawi to simplify;
-		anc=1;
-		***LBM Aug19;
-		if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
-		if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
-        if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
-		if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
-        *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-         u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
-    end;
+if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
+	if a < prob_anc then anc=1;
+end;
+if anc=1 then do;
+	***LBM Aug19;
+	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
+	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
+    if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
+		if (caldate{t} = dt_start_pregn and u lt 0.5 ) or caldate{t} = dt_start_pregn then do;
+			tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
+	end;
+	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
+    *5Nov2016: women who are already diagnosed but who do not disclose get tested;
+    u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
 end;
 
 *5Nov2016: additional HIV test 3 months after birth, this is because it is the easiest way to capture the fact that pregnant women are tested twice during pregnancy;
