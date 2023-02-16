@@ -2009,7 +2009,6 @@ onart_tm2=onart_tm1;
 sw_tm2=sw_tm1; 
 
 tested_tm1=tested; tested=0;
-anc_tm1=anc;
 visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
@@ -4226,13 +4225,12 @@ end;
 																									
 
 *HIV Testing in ANC;
-*VCFeb2023 I thought I would determine at the beginning of the pregnancy whether they are going to attend ANC,
+*VCFeb2023 I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
 a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
 if caldate{t} = dt_start_pregn+0.25 then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
-anc=anc_tm1;
 if anc=1 then do;
 	***LBM Aug19;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
