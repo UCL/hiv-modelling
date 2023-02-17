@@ -2,7 +2,7 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\sf124046\Box\sapphire_modelling\synthesis\";
+libname a "C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\";
 
 proc printto ; *log="C:\Users\sf124046\Box\sapphire_modelling\synthesis\grph_log.log";   
 

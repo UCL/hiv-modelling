@@ -1,23 +1,23 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
-
-* run 77 all;
+/*
+* run 79 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\';
 %let tmpfilename = out;
+*/
 
-/*
 * Myriad input; 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
-*/
+
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
 * proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
  proc printto ; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
-%let population = 10000 ; 
+%let population = 100000 ; 
 %let year_interv = 2022.5;
 
 
@@ -11682,8 +11682,8 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00200 - (0.000024 * (caldate{t} - 1989));
 			if 20 <= age < 25 then ac_death_rate = 0.00320 - (0.000044 * (caldate{t} - 1989));
-			if 25 <= age < 30 then ac_death_rate = 0.00580 - (0.000024 * (caldate{t} - 1989));
-			if 30 <= age < 35 then ac_death_rate = 0.00750 - (0.000118 * (caldate{t} - 1989));
+			if 25 <= age < 30 then ac_death_rate = 0.00580 - (0.000118 * (caldate{t} - 1989));
+			if 30 <= age < 35 then ac_death_rate = 0.00750 - (0.000159 * (caldate{t} - 1989));
 			if 35 <= age < 40 then ac_death_rate = 0.00800 - (0.000153 * (caldate{t} - 1989));
 			if 40 <= age < 45 then ac_death_rate = 0.01000*0.97 - (0.000166 * (caldate{t} - 1989));
 			if 45 <= age < 50 then ac_death_rate = 0.01200*0.97 - (0.000174 * (caldate{t} - 1989));
@@ -11718,20 +11718,20 @@ so reduce all cause mortality by 0.93 / 0.90 since cvd death now separated
 	if caldate{t} ge 2019 then do;
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00128;
-			if 20 <= age < 25 then ac_death_rate = 0.00205;
-			if 25 <= age < 30 then ac_death_rate = 0.00260;
-			if 30 <= age < 35 then ac_death_rate = 0.00353;
-			if 35 <= age < 40 then ac_death_rate = 0.00484;
-			if 40 <= age < 45 then ac_death_rate = 0.00663;
-			if 45 <= age < 50 then ac_death_rate = 0.00866;
-			if 50 <= age < 55 then ac_death_rate = 0.01164;
-			if 55 <= age < 60 then ac_death_rate = 0.01557;
-			if 60 <= age < 65 then ac_death_rate = 0.02169;
-			if 65 <= age < 70 then ac_death_rate = 0.03005;
-			if 70 <= age < 75 then ac_death_rate = 0.04352;
-			if 75 <= age < 80 then ac_death_rate = 0.06210;
-			if 80 <= age < 85 then ac_death_rate = 0.09132;
-			if 85 <= age  then ac_death_rate = 0.14857;
+			if 20 <= age < 25 then ac_death_rate = 0.00189;
+			if 25 <= age < 30 then ac_death_rate = 0.00226;
+			if 30 <= age < 35 then ac_death_rate = 0.00274;
+			if 35 <= age < 40 then ac_death_rate = 0.00342;
+			if 40 <= age < 45 then ac_death_rate = 0.00472;
+			if 45 <= age < 50 then ac_death_rate = 0.00643;
+			if 50 <= age < 55 then ac_death_rate = 0.00954;
+			if 55 <= age < 60 then ac_death_rate = 0.01388;
+			if 60 <= age < 65 then ac_death_rate = 0.02045;
+			if 65 <= age < 70 then ac_death_rate = 0.02913;
+			if 70 <= age < 75 then ac_death_rate = 0.04279;
+			if 75 <= age < 80 then ac_death_rate = 0.06150;
+			if 80 <= age < 85 then ac_death_rate = 0.09105;
+			if 85 <= age  then ac_death_rate = 0.14833;
 		end;
 
 		if gender=2 then do; 
@@ -12245,8 +12245,8 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = (0.00200 - (0.000024 * (caldate{t} - 1989))) * 0.93;
 			if 20 <= age < 25 then ac_death_rate = (0.00320 - (0.000044 * (caldate{t} - 1989))) * 0.93;
-			if 25 <= age < 30 then ac_death_rate = (0.00580 - (0.000024 * (caldate{t} - 1989))) * 0.93;
-			if 30 <= age < 35 then ac_death_rate = (0.00750 - (0.000118 * (caldate{t} - 1989))) * 0.93;
+			if 25 <= age < 30 then ac_death_rate = (0.00580 - (0.000118 * (caldate{t} - 1989))) * 0.93;
+			if 30 <= age < 35 then ac_death_rate = (0.00750 - (0.000159 * (caldate{t} - 1989))) * 0.93;
 			if 35 <= age < 40 then ac_death_rate = (0.00800 - (0.000153 * (caldate{t} - 1989))) * 0.93;
 			if 40 <= age < 45 then ac_death_rate = (0.01000*0.97 - (0.000166 * (caldate{t} - 1989))) * 0.93;
 			if 45 <= age < 50 then ac_death_rate = (0.01200*0.97 - (0.000174 * (caldate{t} - 1989))) * 0.93;
@@ -12281,20 +12281,20 @@ so reduce all cause mortality by 0.93 since non-hiv tb now separated;
 	if caldate{t} ge 2019 then do;
 		if gender=1 then do; 
 			if 15 <= age < 20 then ac_death_rate = 0.00128 * 0.93;
-			if 20 <= age < 25 then ac_death_rate = 0.00205 * 0.93;
-			if 25 <= age < 30 then ac_death_rate = 0.00260 * 0.93;
-			if 30 <= age < 35 then ac_death_rate = 0.00353 * 0.93;
-			if 35 <= age < 40 then ac_death_rate = 0.00484 * 0.93;
-			if 40 <= age < 45 then ac_death_rate = 0.00663 * 0.93;
-			if 45 <= age < 50 then ac_death_rate = 0.00866 * 0.93;
-			if 50 <= age < 55 then ac_death_rate = 0.01164 * 0.93;
-			if 55 <= age < 60 then ac_death_rate = 0.01557 * 0.93;
-			if 60 <= age < 65 then ac_death_rate = 0.02169 * 0.93;
-			if 65 <= age < 70 then ac_death_rate = 0.03005 * 0.93;
-			if 70 <= age < 75 then ac_death_rate = 0.04352 * 0.93;
-			if 75 <= age < 80 then ac_death_rate = 0.06210 * 0.93;
-			if 80 <= age < 85 then ac_death_rate = 0.09132 * 0.93;
-			if 85 <= age  then ac_death_rate = 0.14857 * 0.93;
+			if 20 <= age < 25 then ac_death_rate = 0.00189 * 0.93;
+			if 25 <= age < 30 then ac_death_rate = 0.00226 * 0.93;
+			if 30 <= age < 35 then ac_death_rate = 0.00274 * 0.93;
+			if 35 <= age < 40 then ac_death_rate = 0.00342 * 0.93;
+			if 40 <= age < 45 then ac_death_rate = 0.00472 * 0.93;
+			if 45 <= age < 50 then ac_death_rate = 0.00643 * 0.93;
+			if 50 <= age < 55 then ac_death_rate = 0.00954 * 0.93;
+			if 55 <= age < 60 then ac_death_rate = 0.01388 * 0.93;
+			if 60 <= age < 65 then ac_death_rate = 0.02045 * 0.93;
+			if 65 <= age < 70 then ac_death_rate = 0.02913 * 0.93;
+			if 70 <= age < 75 then ac_death_rate = 0.04279 * 0.93;
+			if 75 <= age < 80 then ac_death_rate = 0.06150 * 0.93;
+			if 80 <= age < 85 then ac_death_rate = 0.09105 * 0.93;
+			if 85 <= age  then ac_death_rate = 0.14833 * 0.93;
 		end;
 
 		if gender=2 then do; 
@@ -18089,7 +18089,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 */
 
-
+/*
 
 
 proc print; var 
@@ -21430,7 +21430,7 @@ data r1; set b;
 %update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=4);
 %update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=4);
-/*
+
 * Replicate 2;
 data r1; set a;
 %update_r1(da1=1,da2=2,e=3,f=4,g=1,h=8,j=3,s=1);
