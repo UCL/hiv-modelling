@@ -13622,11 +13622,20 @@ end;
 	elig_treat350=0; if hiv1564=1 and (naive=0 or cl350=1 or who4_=1) then elig_treat350=1;
 	elig_treat500=0; if hiv1564=1 and (naive=0 or cl500=1 or who4_=1) then elig_treat500=1;
 
-
+not_on_art_cd4l50=0;  if hiv=1 and onart ne 1 and 0 <= cd4 < 50 then not_on_art_cd4l50=1;*VCFeb2023;
 not_on_art_cd4l200=0; if hiv=1 and onart ne 1 and 0 <= cd4 < 200 then not_on_art_cd4l200=1;
 not_on_art_cd4200350=0; if hiv=1 and onart ne 1 and 200 <= cd4 < 350 then not_on_art_cd4200350=1;
 not_on_art_cd4350500=0; if hiv=1 and onart ne 1 and 350 <= cd4 < 500 then not_on_art_cd4350500=1;
 not_on_art_cd4ge500=0; if hiv=1 and onart ne 1 and 500 <= cd4 then not_on_art_cd4ge500=1;
+
+*Number of people 15+ years old living with HIV, asymptomatic, undiagnosed;
+asympt_Undiag=0;     if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd ne 1 then asympt_Undiag=1;*VCFeb2023;
+asympt_diagoffart=0; if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd =  1  and onart ne 1 then asympt_diagoffart=1;*VCFeb2023;
+asympt_diagonart=0;  if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd =  1  and onart =  1 then asympt_diagonart=1;*VCFeb2023;
+*Number of people 15+ years old living with HIV, symptomatic, not AIDS;
+sympt_notaids=0; if hiv=1 and (tb = 1 or who3_event = 1) and who4_ ne 1 then sympt_notaids=1;*VCFeb2023;
+*Number of people 15+ years old living with HIV, symptomatic, AIDS;
+sympt_aids=0;    if hiv=1 and                                who4_ =  1 then sympt_aids=1;*VCFeb2023;
 
 
 ***Outputs for specific periods;
@@ -13661,6 +13670,9 @@ hiv1epi1_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi
 hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1; 
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
+
+hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1; 
+hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1; 
 
 *** Existing partner infected this period;
 hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1; 
@@ -14961,9 +14973,15 @@ firsttest=0; if caldate&j=date1test > . then firsttest=1;
 if naive=1 and gender=1 then naive_m=1;
 if naive=1 and gender=2 then naive_w=1;
 
+m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;*VCFeb2023;
+w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;*VCFeb2023;
+w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;*VCFeb2023;
+sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1;*VCFeb2023;
+
 *** Number of partners >2 / >10;
 npge2=0; if np ge 2 then npge2=1;
 npge10=0; if np ge 10 then npge10=1;
+
 
 
 *** Prep code;
@@ -16033,7 +16051,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*Number ep and newp*/
 
 	s_np + np ; s_newp + newp ; s_newp_ge1 + newp_ge1 ; s_newp_ge5 + newp_ge5 ; s_newp_ge10 + newp_ge10 ; s_newp_ge50 +  newp_ge50 ;
-	s_ep + ep ; s_ep_m + ep_m ; s_ep_w + ep_w ; s_npge10 + npge10 ; s_npge2 + npge2 ; s_npge2_l4p_1549m + npge2_l4p_1549m;
+	s_ep + ep ; s_ep_m + ep_m ; s_ep_w + ep_w ;
+	s_m_npge1 + m_npge1; s_w_npge1 + w_npge1; s_w1524_npge1 + w1524_npge1; s_sw_npge1 + sw_npge1;
+	s_npge10 + npge10 ; s_npge2 + npge2 ; s_npge2_l4p_1549m + npge2_l4p_1549m;
 	s_npge2_l4p_1549w + npge2_l4p_1549w ;
 
 	s_m_1524_ep + m_1524_ep ; s_m_2534_ep + m_2534_ep ; s_m_3544_ep + m_3544_ep ; s_m_4554_ep + m_4554_ep ; s_m_5564_ep + m_5564_ep ;
@@ -16105,7 +16125,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_newp_hiv + newp_hiv ; s_newp_ge1_hiv_diag + newp_ge1_hiv_diag ; s_epdiag + epdiag ; s_diag_epun + diag_epun ; s_epart + epart ;
 	s_epvls + epvls ; s_hiv1epi0_w + hiv1epi0_w ; s_hiv0epi1_w + hiv0epi1_w ; s_hiv1epi0_m + hiv1epi0_m ; s_hiv0epi1_m + hiv0epi1_m ;
-	s_hiv1epi1_m + hiv1epi1_m ; s_hiv1epi1_w + hiv1epi1_w ; s_hiv0epprim + hiv0epprim ; s_ever_ep_hiv + ever_ep_hiv ; s_ever_ep_diag + ever_ep_diag ;
+	s_hiv1epi1_m + hiv1epi1_m ; s_hiv1epi1_w + hiv1epi1_w ; s_hiv0epart1_w + hiv0epart1_w; s_hiv0epart1_m + hiv0epart1_m;
+	s_hiv0epprim + hiv0epprim ; s_ever_ep_hiv + ever_ep_hiv ; s_ever_ep_diag + ever_ep_diag ;
 	s_ever_newp_hiv + ever_newp_hiv ; s_ever_newp_diag + ever_newp_diag ; s_infected_newp_m + infected_newp_m ; s_infected_newp_w + infected_newp_w ;
     s_infected_ep_m + infected_ep_m ; s_infected_ep_w + infected_ep_w ;
   
@@ -16405,9 +16426,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_year_4_infection + year_4_infection ; s_year_5_infection + year_5_infection ;  
 	s_year_1_infection_diag + year_1_infection_diag ; s_year_2_infection_diag + year_2_infection_diag ; s_year_3_infection_diag + year_3_infection_diag ;
 	s_year_4_infection_diag + year_4_infection_diag ; s_year_5_infection_diag + year_5_infection_diag ;
-	s_not_on_art_cd4l200 + not_on_art_cd4l200; s_not_on_art_cd4200350 + not_on_art_cd4200350; s_not_on_art_cd4ge500 + not_on_art_cd4ge500;
+	s_not_on_art_cd4l50 + not_on_art_cd4l50;s_not_on_art_cd4l200 + not_on_art_cd4l200; s_not_on_art_cd4200350 + not_on_art_cd4200350; s_not_on_art_cd4ge500 + not_on_art_cd4ge500;
 	s_not_on_art_cd4350500 + not_on_art_cd4350500;
-  
+	s_asympt_Undiag + asympt_Undiag; s_asympt_diagoffart + asympt_diagoffart; s_asympt_diagonart + asympt_diagonart;
+	s_sympt_notaids + sympt_notaids; s_sympt_aids + sympt_aids;
 
 	/*ART*/
 
@@ -17881,7 +17903,9 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
 
 /*Number ep and newp*/
-s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
+s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
 s_m_1524_newp  	 s_m_2534_newp    s_m_3544_newp    s_m_4554_newp  	s_m_5564_newp
@@ -17918,7 +17942,7 @@ s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg  s_newp_this
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -18109,7 +18133,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -18364,7 +18389,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
+s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 	
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
@@ -18812,7 +18837,9 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 s_diagprim_prep_inj s_diagprim_prep_vr  s_diagprim
 
 /*Number ep and newp*/
-s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
+s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
 s_m_1524_newp  	 s_m_2534_newp    s_m_3544_newp    s_m_4554_newp  	s_m_5564_newp
@@ -18849,7 +18876,7 @@ s_s_m_newp  s_s_w_newp
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -19036,7 +19063,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -19287,7 +19315,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
+s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
@@ -23977,7 +24005,9 @@ s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np
 s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
 
 /*Number ep and newp*/
-s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
+s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
+s_m_npge1 		s_w_npge1 		s_w1524_npge1 		s_sw_npge1 
+s_npge10  s_npge2  s_npge2_l4p_1549m  s_npge2_l4p_1549w
 s_m_1524_ep  	 s_m_2534_ep 	  s_m_3544_ep 	   s_m_4554_ep 		s_m_5564_ep 	 
 s_w_1524_ep		 s_w_2534_ep 	  s_w_3544_ep	   s_w_4554_ep 		s_w_5564_ep 
 s_m_1524_newp  	 s_m_2534_newp    s_m_3544_newp    s_m_4554_newp  	s_m_5564_newp
@@ -24016,7 +24046,7 @@ s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_thi
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -24203,7 +24233,8 @@ s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w s_diag_w_15pl s_diag_m_15pl 
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
-s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4ge500  s_not_on_art_cd4350500
+s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
 
 /*VL and CD4*/
@@ -24455,7 +24486,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 
+s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
