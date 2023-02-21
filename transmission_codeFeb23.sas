@@ -7156,6 +7156,284 @@ if infected_ep=1 then do;
 end;
 
 
+I_undiag_m=0;I_diag_naive_m=0;I_diag_startart_m=0;I_onart_m=0;I_offart_m=0;I_onart_lt6m_m=0;I_onart_lt6m_nvs_m=0;
+I_onart_gt6m_nvs_m=0;I_onart_gt6m_vs_m=0;I_offart_1stI_m=0;I_offart_SI_m=0;I_offart_SIlt6m_m=0;I_offart_SIgt6m_m=0;
+I_undiag_w=0;I_diag_naive_w=0;I_diag_startart_w=0;I_onart_w=0;I_offart_w=0;I_onart_lt6w_w=0;I_onart_lt6w_nvs_w=0;
+I_onart_gt6w_nvs_w=0;I_onart_gt6w_vs_w=0;I_offart_1stI_w=0;I_offart_SI_w=0;I_offart_SIlt6w_w=0;I_offart_SIgt6w_w=0;
+
+I_undiag1519m=0;I_diag_naive1519m=0;I_diag_startart1519m=0;I_onart1519m=0;I_offart1519m=0;I_onart_lt6m1519m=0;
+I_onart_lt6m_nvs1519m=0;I_onart_gt6m_nvs1519m=0;I_onart_gt6m_vs1519m=0;I_offart_1stI1519m=0;I_offart_SI1519m=0;
+I_offart_SIlt6m1519m=0;I_offart_SIgt6m1519m=0;
+I_undiag2024m=0;I_diag_naive2024m=0;I_diag_startart2024m=0;I_onart2024m=0;I_offart2024m=0;I_onart_lt6m2024m=0;
+I_onart_lt6m_nvs2024m=0;I_onart_gt6m_nvs2024m=0;I_onart_gt6m_vs2024m=0;I_offart_1stI2024m=0;I_offart_SI2024m=0;
+I_offart_SIlt6m2024m=0;I_offart_SIgt6m2024m=0;
+I_undiag2529m=0;I_diag_naive2529m=0;I_diag_startart2529m=0;I_onart2529m=0;I_offart2529m=0;I_onart_lt6m2529m=0;
+I_onart_lt6m_nvs2529m=0;I_onart_gt6m_nvs2529m=0;I_onart_gt6m_vs2529m=0;I_offart_1stI2529m=0;I_offart_SI2529m=0;
+I_offart_SIlt6m2529m=0;I_offart_SIgt6m2529m=0;
+I_undiag3034m=0;I_diag_naive3034m=0;I_diag_startart3034m=0;I_onart3034m=0;I_offart3034m=0;I_onart_lt6m3034m=0;
+I_onart_lt6m_nvs3034m=0;I_onart_gt6m_nvs3034m=0;I_onart_gt6m_vs3034m=0;I_offart_1stI3034m=0;I_offart_SI3034m=0;
+I_offart_SIlt6m3034m=0;I_offart_SIgt6m3034m=0;
+I_undiag3539m=0;I_diag_naive3539m=0;I_diag_startart3539m=0;I_onart3539m=0;I_offart3539m=0;I_onart_lt6m3539m=0;
+I_onart_lt6m_nvs3539m=0;I_onart_gt6m_nvs3539m=0;I_onart_gt6m_vs3539m=0;I_offart_1stI3539m=0;I_offart_SI3539m=0;
+I_offart_SIlt6m3539m=0;I_offart_SIgt6m3539m=0;
+I_undiag4044m=0;I_diag_naive4044m=0;I_diag_startart4044m=0;I_onart4044m=0;I_offart4044m=0;I_onart_lt6m4044m=0;
+I_onart_lt6m_nvs4044m=0;I_onart_gt6m_nvs4044m=0;I_onart_gt6m_vs4044m=0;I_offart_1stI4044m=0;I_offart_SI4044m=0;
+I_offart_SIlt6m4044m=0;I_offart_SIgt6m4044m=0;
+I_undiag4549m=0;I_diag_naive4549m=0;I_diag_startart4549m=0;I_onart4549m=0;I_offart4549m=0;I_onart_lt6m4549m=0;
+I_onart_lt6m_nvs4549m=0;I_onart_gt6m_nvs4549m=0;I_onart_gt6m_vs4549m=0;I_offart_1stI4549m=0;I_offart_SI4549m=0;
+I_offart_SIlt6m4549m=0;I_offart_SIgt6m4549m=0;
+I_undiag5054m=0;I_diag_naive5054m=0;I_diag_startart5054m=0;I_onart5054m=0;I_offart5054m=0;I_onart_lt6m5054m=0;
+I_onart_lt6m_nvs5054m=0;I_onart_gt6m_nvs5054m=0;I_onart_gt6m_vs5054m=0;I_offart_1stI5054m=0;I_offart_SI5054m=0;
+I_offart_SIlt6m5054m=0;I_offart_SIgt6m5054m=0;
+I_undiag5559m=0;I_diag_naive5559m=0;I_diag_startart5559m=0;I_onart5559m=0;I_offart5559m=0;I_onart_lt6m5559m=0;
+I_onart_lt6m_nvs5559m=0;I_onart_gt6m_nvs5559m=0;I_onart_gt6m_vs5559m=0;I_offart_1stI5559m=0;I_offart_SI5559m=0;
+I_offart_SIlt6m5559m=0;I_offart_SIgt6m5559m=0;
+I_undiag6064m=0;I_diag_naive6064m=0;I_diag_startart6064m=0;I_onart6064m=0;I_offart6064m=0;I_onart_lt6m6064m=0;
+I_onart_lt6m_nvs6064m=0;I_onart_gt6m_nvs6064m=0;I_onart_gt6m_vs6064m=0;I_offart_1stI6064m=0;I_offart_SI6064m=0;
+I_offart_SIlt6m6064m=0;I_offart_SIgt6m6064m=0;
+I_undiag6569m=0;I_diag_naive6569m=0;I_diag_startart6569m=0;I_onart6569m=0;I_offart6569m=0;I_onart_lt6m6569m=0;
+I_onart_lt6m_nvs6569m=0;I_onart_gt6m_nvs6569m=0;I_onart_gt6m_vs6569m=0;I_offart_1stI6569m=0;I_offart_SI6569m=0;
+I_offart_SIlt6m6569m=0;I_offart_SIgt6m6569m=0;
+I_undiag7074m=0;I_diag_naive7074m=0;I_diag_startart7074m=0;I_onart7074m=0;I_offart7074m=0;I_onart_lt6m7074m=0;
+I_onart_lt6m_nvs7074m=0;I_onart_gt6m_nvs7074m=0;I_onart_gt6m_vs7074m=0;I_offart_1stI7074m=0;I_offart_SI7074m=0;
+I_offart_SIlt6m7074m=0;I_offart_SIgt6m7074m=0;
+I_undiag7579m=0;I_diag_naive7579m=0;I_diag_startart7579m=0;I_onart7579m=0;I_offart7579m=0;I_onart_lt6m7579m=0;
+I_onart_lt6m_nvs7579m=0;I_onart_gt6m_nvs7579m=0;I_onart_gt6m_vs7579m=0;I_offart_1stI7579m=0;I_offart_SI7579m=0;
+I_offart_SIlt6m7579m=0;I_offart_SIgt6m7579m=0;
+I_undiag8084m=0;I_diag_naive8084m=0;I_diag_startart8084m=0;I_onart8084m=0;I_offart8084m=0;I_onart_lt6m8084m=0;
+I_onart_lt6m_nvs8084m=0;I_onart_gt6m_nvs8084m=0;I_onart_gt6m_vs8084m=0;I_offart_1stI8084m=0;I_offart_SI8084m=0;
+I_offart_SIlt6m8084m=0;I_offart_SIgt6m8084m=0;
+
+I_undiag1519w=0;I_diag_naive1519w=0;I_diag_startart1519w=0;I_onart1519w=0;I_offart1519w=0;I_onart_lt6w1519w=0;
+I_onart_lt6w_nvs1519w=0;I_onart_gt6w_nvs1519w=0;I_onart_gt6w_vs1519w=0;I_offart_1stI1519w=0;I_offart_SI1519w=0;
+I_offart_SIlt6w1519w=0;I_offart_SIgt6w1519w=0;
+I_undiag2024w=0;I_diag_naive2024w=0;I_diag_startart2024w=0;I_onart2024w=0;I_offart2024w=0;I_onart_lt6w2024w=0;
+I_onart_lt6w_nvs2024w=0;I_onart_gt6w_nvs2024w=0;I_onart_gt6w_vs2024w=0;I_offart_1stI2024w=0;I_offart_SI2024w=0;
+I_offart_SIlt6w2024w=0;I_offart_SIgt6w2024w=0;
+I_undiag2529w=0;I_diag_naive2529w=0;I_diag_startart2529w=0;I_onart2529w=0;I_offart2529w=0;I_onart_lt6w2529w=0;
+I_onart_lt6w_nvs2529w=0;I_onart_gt6w_nvs2529w=0;I_onart_gt6w_vs2529w=0;I_offart_1stI2529w=0;I_offart_SI2529w=0;
+I_offart_SIlt6w2529w=0;I_offart_SIgt6w2529w=0;
+I_undiag3034w=0;I_diag_naive3034w=0;I_diag_startart3034w=0;I_onart3034w=0;I_offart3034w=0;I_onart_lt6w3034w=0;
+I_onart_lt6w_nvs3034w=0;I_onart_gt6w_nvs3034w=0;I_onart_gt6w_vs3034w=0;I_offart_1stI3034w=0;I_offart_SI3034w=0;
+I_offart_SIlt6w3034w=0;I_offart_SIgt6w3034w=0;
+I_undiag3539w=0;I_diag_naive3539w=0;I_diag_startart3539w=0;I_onart3539w=0;I_offart3539w=0;I_onart_lt6w3539w=0;
+I_onart_lt6w_nvs3539w=0;I_onart_gt6w_nvs3539w=0;I_onart_gt6w_vs3539w=0;I_offart_1stI3539w=0;I_offart_SI3539w=0;
+I_offart_SIlt6w3539w=0;I_offart_SIgt6w3539w=0;
+I_undiag4044w=0;I_diag_naive4044w=0;I_diag_startart4044w=0;I_onart4044w=0;I_offart4044w=0;I_onart_lt6w4044w=0;
+I_onart_lt6w_nvs4044w=0;I_onart_gt6w_nvs4044w=0;I_onart_gt6w_vs4044w=0;I_offart_1stI4044w=0;I_offart_SI4044w=0;
+I_offart_SIlt6w4044w=0;I_offart_SIgt6w4044w=0;
+I_undiag4549w=0;I_diag_naive4549w=0;I_diag_startart4549w=0;I_onart4549w=0;I_offart4549w=0;I_onart_lt6w4549w=0;
+I_onart_lt6w_nvs4549w=0;I_onart_gt6w_nvs4549w=0;I_onart_gt6w_vs4549w=0;I_offart_1stI4549w=0;I_offart_SI4549w=0;
+I_offart_SIlt6w4549w=0;I_offart_SIgt6w4549w=0;
+I_undiag5054w=0;I_diag_naive5054w=0;I_diag_startart5054w=0;I_onart5054w=0;I_offart5054w=0;I_onart_lt6w5054w=0;
+I_onart_lt6w_nvs5054w=0;I_onart_gt6w_nvs5054w=0;I_onart_gt6w_vs5054w=0;I_offart_1stI5054w=0;I_offart_SI5054w=0;
+I_offart_SIlt6w5054w=0;I_offart_SIgt6w5054w=0;
+I_undiag5559w=0;I_diag_naive5559w=0;I_diag_startart5559w=0;I_onart5559w=0;I_offart5559w=0;I_onart_lt6w5559w=0;
+I_onart_lt6w_nvs5559w=0;I_onart_gt6w_nvs5559w=0;I_onart_gt6w_vs5559w=0;I_offart_1stI5559w=0;I_offart_SI5559w=0;
+I_offart_SIlt6w5559w=0;I_offart_SIgt6w5559w=0;
+I_undiag6064w=0;I_diag_naive6064w=0;I_diag_startart6064w=0;I_onart6064w=0;I_offart6064w=0;I_onart_lt6w6064w=0;
+I_onart_lt6w_nvs6064w=0;I_onart_gt6w_nvs6064w=0;I_onart_gt6w_vs6064w=0;I_offart_1stI6064w=0;I_offart_SI6064w=0;
+I_offart_SIlt6w6064w=0;I_offart_SIgt6w6064w=0;
+I_undiag6569w=0;I_diag_naive6569w=0;I_diag_startart6569w=0;I_onart6569w=0;I_offart6569w=0;I_onart_lt6w6569w=0;
+I_onart_lt6w_nvs6569w=0;I_onart_gt6w_nvs6569w=0;I_onart_gt6w_vs6569w=0;I_offart_1stI6569w=0;I_offart_SI6569w=0;
+I_offart_SIlt6w6569w=0;I_offart_SIgt6w6569w=0;
+I_undiag7074w=0;I_diag_naive7074w=0;I_diag_startart7074w=0;I_onart7074w=0;I_offart7074w=0;I_onart_lt6w7074w=0;
+I_onart_lt6w_nvs7074w=0;I_onart_gt6w_nvs7074w=0;I_onart_gt6w_vs7074w=0;I_offart_1stI7074w=0;I_offart_SI7074w=0;
+I_offart_SIlt6w7074w=0;I_offart_SIgt6w7074w=0;
+I_undiag7579w=0;I_diag_naive7579w=0;I_diag_startart7579w=0;I_onart7579w=0;I_offart7579w=0;I_onart_lt6w7579w=0;
+I_onart_lt6w_nvs7579w=0;I_onart_gt6w_nvs7579w=0;I_onart_gt6w_vs7579w=0;I_offart_1stI7579w=0;I_offart_SI7579w=0;
+I_offart_SIlt6w7579w=0;I_offart_SIgt6w7579w=0;
+I_undiag8084w=0;I_diag_naive8084w=0;I_diag_startart8084w=0;I_onart8084w=0;I_offart8084w=0;I_onart_lt6w8084w=0;
+I_onart_lt6w_nvs8084w=0;I_onart_gt6w_nvs8084w=0;I_onart_gt6w_vs8084w=0;I_offart_1stI8084w=0;I_offart_SI8084w=0;
+I_offart_SIlt6w8084w=0;I_offart_SIgt6w8084w=0;
+
+
+
+if gender=1 then do;
+	I_undiag_m=I_undiag; I_diag_naive_m=I_diag_naive; I_diag_startart_m=I_diag_startart; I_onart_m=I_onart;
+	I_offart_m=I_offart; I_onart_lt6m_m=I_onart_lt6m; I_onart_lt6m_nvs_m=I_onart_lt6m_nvs; I_onart_gt6m_nvs_m=I_onart_gt6m_nvs;
+	I_onart_gt6m_vs_m=I_onart_gt6m_vs; I_offart_1stI_m=I_offart_1stI; I_offart_SI_m=I_offart_SI;
+	I_offart_SIlt6m_m=I_offart_SIlt6m;I_offart_SIgt6m_m=I_offart_SIgt6m; 
+
+	if 15 <= age < 20 then do;
+	I_undiag1519m=I_undiag; I_diag_naive1519m=I_diag_naive; I_diag_startart1519m=I_diag_startart; I_onart1519m=I_onart; 
+	I_offart1519m=I_offart; I_onart_lt6m1519m=I_onart_lt6m; I_onart_lt6m_nvs1519m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs1519m=I_onart_gt6m_nvs;	I_onart_gt6m_vs1519m=I_onart_gt6m_vs;I_offart_1stI1519m=I_offart_1stI;
+	I_offart_SI1519m=I_offart_SI; I_offart_SIlt6m1519m=I_diag_startart; I_offart_SIgt6m1519m=I_offart_SIgt6m; 
+	end;
+	if 20 <= age < 25 then do;
+	I_undiag2024m=I_undiag; I_diag_naive2024m=I_diag_naive; I_diag_startart2024m=I_diag_startart; I_onart2024m=I_onart;
+	I_offart2024m=I_offart; I_onart_lt6m2024m=I_onart_lt6m; I_onart_lt6m_nvs2024m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs2024m=I_onart_gt6m_nvs;	I_onart_gt6m_vs2024m=I_onart_gt6m_vs;I_offart_1stI2024m=I_offart_1stI;
+	I_offart_SI2024m=I_offart_SI; I_offart_SIlt6m2024m=I_diag_startart; I_offart_SIgt6m2024m=I_offart_SIgt6m; 
+	end;
+	if 25 <= age < 30 then do;
+	I_undiag2529m=I_undiag; I_diag_naive2529m=I_diag_naive; I_diag_startart2529m=I_diag_startart; I_onart2529m=I_onart; 
+	I_offart2529m=I_offart; I_onart_lt6m2529m=I_onart_lt6m; I_onart_lt6m_nvs2529m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs2529m=I_onart_gt6m_nvs; I_onart_gt6m_vs2529m=I_onart_gt6m_vs;I_offart_1stI2529m=I_offart_1stI;
+	I_offart_SI2529m=I_offart_SI; I_offart_SIlt6m2529m=I_offart_SIlt6m; I_offart_SIgt6m2529m=I_offart_SIgt6m; 
+	end;
+	if 30 <= age < 35 then do;
+	I_undiag3034m=I_undiag; I_diag_naive3034m=I_diag_naive; I_diag_startart3034m=I_diag_startart; I_onart3034m=I_onart; 
+	I_offart3034m=I_offart; I_onart_lt6m3034m=I_onart_lt6m; I_onart_lt6m_nvs3034m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs3034m=I_onart_gt6m_nvs; I_onart_gt6m_vs3034m=I_onart_gt6m_vs; I_offart_1stI3034m=I_offart_1stI; 
+	I_offart_SI3034m=I_offart_SI; I_offart_SIlt6m3034m=I_offart_SIlt6m; I_offart_SIgt6m3034m=I_offart_SIgt6m; 
+	end;
+	if 35 <= age < 40 then do;
+	I_undiag3539m=I_undiag; I_diag_naive3539m=I_diag_naive; I_diag_startart3539m=I_diag_startart; I_onart3539m=I_onart;
+	I_offart3539m=I_offart; I_onart_lt6m3539m=I_onart_lt6m; I_onart_lt6m_nvs3539m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs3539m=I_onart_gt6m_nvs; I_onart_gt6m_vs3539m=I_onart_gt6m_vs; I_offart_1stI3539m=I_onart_gt6m_vs;
+	I_offart_SI3539m=I_offart_SI; I_offart_SIlt6m3539m=I_offart_SIlt6m; I_offart_SIgt6m3539m=I_offart_SIgt6m; 
+	end;
+	if 40 <= age < 45 then do;
+	I_undiag4044m=I_undiag; I_diag_naive4044m=I_diag_naive; I_diag_startart4044m=I_diag_startart; I_onart4044m=I_onart;
+	I_offart4044m=I_offart; I_onart_lt6m4044m=I_onart_lt6m; I_onart_lt6m_nvs4044m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs4044m=I_onart_gt6m_nvs; I_onart_gt6m_vs4044m=I_onart_gt6m_vs; I_offart_1stI4044m=I_offart_1stI; 
+	I_offart_SI4044m=I_offart_SI; I_offart_SIlt6m4044m=I_offart_SIlt6m; I_offart_SIgt6m4044m=I_offart_SIgt6m; 
+	end;
+	if 45 <= age < 50 then do;
+	I_undiag4549m=I_undiag; I_diag_naive4549m=I_diag_naive; I_diag_startart4549m=I_diag_startart; I_onart4549m=I_onart;
+	I_offart4549m=I_offart; I_onart_lt6m4549m=I_onart_lt6m; I_onart_lt6m_nvs4549m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs4549m=I_onart_gt6m_nvs; I_onart_gt6m_vs4549m=I_onart_gt6m_vs; I_offart_1stI4549m=I_offart_1stI;
+	I_offart_SI4549m=I_offart_SI; I_offart_SIlt6m4549m=I_offart_SIlt6m; I_offart_SIgt6m4549m=I_offart_SIgt6m; 
+	end;
+	if 50 <= age < 55 then do;
+	I_undiag5054m=I_undiag; I_diag_naive5054m=I_diag_naive; I_diag_startart5054m=I_diag_startart; I_onart5054m=I_onart; 
+	I_offart5054m=I_offart; I_onart_lt6m5054m=I_onart_lt6m; I_onart_lt6m_nvs5054m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs5054m=I_onart_gt6m_nvs; I_onart_gt6m_vs5054m=I_onart_gt6m_vs; I_offart_1stI5054m=I_offart_1stI;
+	I_offart_SI5054m=I_offart_SI; I_offart_SIlt6m5054m=I_offart_SIlt6m; I_offart_SIgt6m5054m=I_offart_SIgt6m; 
+	end;
+	if 55 <= age < 60 then do;
+	I_undiag5559m=I_undiag; I_diag_naive5559m=I_diag_naive; I_diag_startart5559m=I_diag_startart; I_onart5559m=I_onart; 
+	I_offart5559m=I_offart; I_onart_lt6m5559m=I_onart_lt6m; I_onart_lt6m_nvs5559m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs5559m=I_onart_gt6m_nvs; I_onart_gt6m_vs5559m=I_onart_gt6m_vs; I_offart_1stI5559m=I_offart_1stI;
+	I_offart_SI5559m=I_offart_SI; I_offart_SIlt6m5559m=I_offart_SIlt6m; I_offart_SIgt6m5559m=I_offart_SIgt6m; 
+	end;
+	if 60 <= age < 65 then do;
+	I_undiag6064m=I_undiag; I_diag_naive6064m=I_diag_naive; I_diag_startart6064m=I_diag_startart; I_onart6064m=I_onart; 
+	I_offart6064m=I_offart; I_onart_lt6m6064m=I_onart_lt6m; I_onart_lt6m_nvs6064m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs6064m=I_onart_gt6m_nvs; I_onart_gt6m_vs6064m=I_onart_gt6m_vs; I_offart_1stI6064m=I_offart_1stI;
+	I_offart_SI6064m=I_offart_SI; I_offart_SIlt6m6064m=I_offart_SIlt6m; I_offart_SIgt6m6064m=I_offart_SIgt6m; 
+	end;
+	if 65 <= age < 70 then do;
+	I_undiag6569m=I_undiag; I_diag_naive6569m=II_diag_naive; I_diag_startart6569m=I_diag_startart; I_onart6569m=I_onart;
+	I_offart6569m=I_offart; I_onart_lt6m6569m=I_onart_lt6m; I_onart_lt6m_nvs6569m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs6569m=I_onart_gt6m_nvs; I_onart_gt6m_vs6569m=I_onart_gt6m_vs; I_offart_1stI6569m=I_offart_1stI; 
+	I_offart_SI6569m=I_offart_SI; I_offart_SIlt6m6569m=I_offart_SIlt6m; I_offart_SIgt6m6569m=I_offart_SIgt6m; 
+	end;
+	if 70 <= age < 75 then do;
+	I_undiag7074m=I_undiag; I_diag_naive7074m=I_diag_naive; I_diag_startart7074m=I_diag_startart; I_onart7074m=I_onart;
+	I_offart7074m=I_offart; I_onart_lt6m7074m=I_onart_lt6m; I_onart_lt6m_nvs7074m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs7074m=I_onart_gt6m_nvs; I_onart_gt6m_vs7074m=I_onart_gt6m_vs; I_offart_1stI7074m=I_offart_1stI;
+	I_offart_SI7074m=I_offart_SI; I_offart_SIlt6m7074m=I_offart_SIlt6m; I_offart_SIgt6m7074m=I_offart_SIgt6m; 
+	end;
+	if 75 <= age < 80 then do;
+	I_undiag7579m=I_undiag; I_diag_naive7579m=I_diag_naive; I_diag_startart7579m=I_diag_startart; I_onart7579m=I_onart;
+	I_offart7579m=I_offart; I_onart_lt6m7579m=I_onart_lt6m; I_onart_lt6m_nvs7579m=I_onart_lt6m_nvs;
+	I_onart_gt6m_nvs7579m=I_onart_gt6m_nvs; I_onart_gt6m_vs7579m=I_onart_gt6m_vs; I_offart_1stI7579m=I_offart_1stI;
+	I_offart_SI7579m=I_offart_SI; I_offart_SIlt6m7579m=I_offart_SIlt6m; I_offart_SIgt6m7579m=I_offart_SIgt6m; 
+	end;
+	if 80 <= age < 85 then do;
+	I_undiag8084m=I_undiag; I_diag_naive8084m=I_diag_naive; I_diag_startart8084m=I_diag_startart; I_onart8084m=I_onart; 
+	I_offart8084m=I_offart; I_onart_lt6m8084m=I_onart_lt6m; I_onart_lt6m_nvs8084m=I_onart_lt6m_nvs; 
+	I_onart_gt6m_nvs8084m=I_onart_gt6m_nvs; I_onart_gt6m_vs8084m=I_onart_gt6m_vs; I_offart_1stI8084m=I_offart_1stI;
+	I_offart_SI8084m=I_offart_SI; I_offart_SIlt6m8084m=I_offart_SIlt6m; I_offart_SIgt6m8084m=I_offart_SIgt6m; 
+	end;
+end;
+
+if gender=2 then do;
+	I_undiag_w=I_undiag; I_diag_naive_w=I_diag_naive; I_diag_startart_w=I_diag_startart; I_onart_w=I_onart;
+	I_offart_w=I_offart; I_onart_lt6w_w=I_onart_lt6w; I_onart_lt6w_nvs_w=I_onart_lt6w_nvs; I_onart_gt6w_nvs_w=I_onart_gt6w_nvs;
+	I_onart_gt6w_vs_w=I_onart_gt6w_vs; I_offart_1stI_w=I_offart_1stI; I_offart_SI_w=I_offart_SI;
+	I_offart_SIlt6w_w=I_offart_SIlt6w;I_offart_SIgt6w_w=I_offart_SIgt6w; 
+
+	if 15 <= age < 20 then do;
+	I_undiag1519w=I_undiag; I_diag_naive1519w=I_diag_naive; I_diag_startart1519w=I_diag_startart; I_onart1519w=I_onart; 
+	I_offart1519w=I_offart; I_onart_lt6w1519w=I_onart_lt6w; I_onart_lt6w_nvs1519w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs1519w=I_onart_gt6w_nvs;	I_onart_gt6w_vs1519w=I_onart_gt6w_vs;I_offart_1stI1519w=I_offart_1stI;
+	I_offart_SI1519w=I_offart_SI; I_offart_SIlt6w1519w=I_diag_startart; I_offart_SIgt6w1519w=I_offart_SIgt6w; 
+	end;
+	if 20 <= age < 25 then do;
+	I_undiag2024w=I_undiag; I_diag_naive2024w=I_diag_naive; I_diag_startart2024w=I_diag_startart; I_onart2024w=I_onart;
+	I_offart2024w=I_offart; I_onart_lt6w2024w=I_onart_lt6w; I_onart_lt6w_nvs2024w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs2024w=I_onart_gt6w_nvs;	I_onart_gt6w_vs2024w=I_onart_gt6w_vs;I_offart_1stI2024w=I_offart_1stI;
+	I_offart_SI2024w=I_offart_SI; I_offart_SIlt6w2024w=I_diag_startart; I_offart_SIgt6w2024w=I_offart_SIgt6w; 
+	end;
+	if 25 <= age < 30 then do;
+	I_undiag2529w=I_undiag; I_diag_naive2529w=I_diag_naive; I_diag_startart2529w=I_diag_startart; I_onart2529w=I_onart; 
+	I_offart2529w=I_offart; I_onart_lt6w2529w=I_onart_lt6w; I_onart_lt6w_nvs2529w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs2529w=I_onart_gt6w_nvs; I_onart_gt6w_vs2529w=I_onart_gt6w_vs;I_offart_1stI2529w=I_offart_1stI;
+	I_offart_SI2529w=I_offart_SI; I_offart_SIlt6w2529w=I_offart_SIlt6w; I_offart_SIgt6w2529w=I_offart_SIgt6w; 
+	end;
+	if 30 <= age < 35 then do;
+	I_undiag3034w=I_undiag; I_diag_naive3034w=I_diag_naive; I_diag_startart3034w=I_diag_startart; I_onart3034w=I_onart; 
+	I_offart3034w=I_offart; I_onart_lt6w3034w=I_onart_lt6w; I_onart_lt6w_nvs3034w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs3034w=I_onart_gt6w_nvs; I_onart_gt6w_vs3034w=I_onart_gt6w_vs; I_offart_1stI3034w=I_offart_1stI; 
+	I_offart_SI3034w=I_offart_SI; I_offart_SIlt6w3034w=I_offart_SIlt6w; I_offart_SIgt6w3034w=I_offart_SIgt6w; 
+	end;
+	if 35 <= age < 40 then do;
+	I_undiag3539w=I_undiag; I_diag_naive3539w=I_diag_naive; I_diag_startart3539w=I_diag_startart; I_onart3539w=I_onart;
+	I_offart3539w=I_offart; I_onart_lt6w3539w=I_onart_lt6w; I_onart_lt6w_nvs3539w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs3539w=I_onart_gt6w_nvs; I_onart_gt6w_vs3539w=I_onart_gt6w_vs; I_offart_1stI3539w=I_onart_gt6w_vs;
+	I_offart_SI3539w=I_offart_SI; I_offart_SIlt6w3539w=I_offart_SIlt6w; I_offart_SIgt6w3539w=I_offart_SIgt6w; 
+	end;
+	if 40 <= age < 45 then do;
+	I_undiag4044w=I_undiag; I_diag_naive4044w=I_diag_naive; I_diag_startart4044w=I_diag_startart; I_onart4044w=I_onart;
+	I_offart4044w=I_offart; I_onart_lt6w4044w=I_onart_lt6w; I_onart_lt6w_nvs4044w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs4044w=I_onart_gt6w_nvs; I_onart_gt6w_vs4044w=I_onart_gt6w_vs; I_offart_1stI4044w=I_offart_1stI; 
+	I_offart_SI4044w=I_offart_SI; I_offart_SIlt6w4044w=I_offart_SIlt6w; I_offart_SIgt6w4044w=I_offart_SIgt6w; 
+	end;
+	if 45 <= age < 50 then do;
+	I_undiag4549w=I_undiag; I_diag_naive4549w=I_diag_naive; I_diag_startart4549w=I_diag_startart; I_onart4549w=I_onart;
+	I_offart4549w=I_offart; I_onart_lt6w4549w=I_onart_lt6w; I_onart_lt6w_nvs4549w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs4549w=I_onart_gt6w_nvs; I_onart_gt6w_vs4549w=I_onart_gt6w_vs; I_offart_1stI4549w=I_offart_1stI;
+	I_offart_SI4549w=I_offart_SI; I_offart_SIlt6w4549w=I_offart_SIlt6w; I_offart_SIgt6w4549w=I_offart_SIgt6w; 
+	end;
+	if 50 <= age < 55 then do;
+	I_undiag5054w=I_undiag; I_diag_naive5054w=I_diag_naive; I_diag_startart5054w=I_diag_startart; I_onart5054w=I_onart; 
+	I_offart5054w=I_offart; I_onart_lt6w5054w=I_onart_lt6w; I_onart_lt6w_nvs5054w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs5054w=I_onart_gt6w_nvs; I_onart_gt6w_vs5054w=I_onart_gt6w_vs; I_offart_1stI5054w=I_offart_1stI;
+	I_offart_SI5054w=I_offart_SI; I_offart_SIlt6w5054w=I_offart_SIlt6w; I_offart_SIgt6w5054w=I_offart_SIgt6w; 
+	end;
+	if 55 <= age < 60 then do;
+	I_undiag5559w=I_undiag; I_diag_naive5559w=I_diag_naive; I_diag_startart5559w=I_diag_startart; I_onart5559w=I_onart; 
+	I_offart5559w=I_offart; I_onart_lt6w5559w=I_onart_lt6w; I_onart_lt6w_nvs5559w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs5559w=I_onart_gt6w_nvs; I_onart_gt6w_vs5559w=I_onart_gt6w_vs; I_offart_1stI5559w=I_offart_1stI;
+	I_offart_SI5559w=I_offart_SI; I_offart_SIlt6w5559w=I_offart_SIlt6w; I_offart_SIgt6w5559w=I_offart_SIgt6w; 
+	end;
+	if 60 <= age < 65 then do;
+	I_undiag6064w=I_undiag; I_diag_naive6064w=I_diag_naive; I_diag_startart6064w=I_diag_startart; I_onart6064w=I_onart; 
+	I_offart6064w=I_offart; I_onart_lt6w6064w=I_onart_lt6w; I_onart_lt6w_nvs6064w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs6064w=I_onart_gt6w_nvs; I_onart_gt6w_vs6064w=I_onart_gt6w_vs; I_offart_1stI6064w=I_offart_1stI;
+	I_offart_SI6064w=I_offart_SI; I_offart_SIlt6w6064w=I_offart_SIlt6w; I_offart_SIgt6w6064w=I_offart_SIgt6w; 
+	end;
+	if 65 <= age < 70 then do;
+	I_undiag6569w=I_undiag; I_diag_naive6569w=II_diag_naive; I_diag_startart6569w=I_diag_startart; I_onart6569w=I_onart;
+	I_offart6569w=I_offart; I_onart_lt6w6569w=I_onart_lt6w; I_onart_lt6w_nvs6569w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs6569w=I_onart_gt6w_nvs; I_onart_gt6w_vs6569w=I_onart_gt6w_vs; I_offart_1stI6569w=I_offart_1stI; 
+	I_offart_SI6569w=I_offart_SI; I_offart_SIlt6w6569w=I_offart_SIlt6w; I_offart_SIgt6w6569w=I_offart_SIgt6w; 
+	end;
+	if 70 <= age < 75 then do;
+	I_undiag7074w=I_undiag; I_diag_naive7074w=I_diag_naive; I_diag_startart7074w=I_diag_startart; I_onart7074w=I_onart;
+	I_offart7074w=I_offart; I_onart_lt6w7074w=I_onart_lt6w; I_onart_lt6w_nvs7074w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs7074w=I_onart_gt6w_nvs; I_onart_gt6w_vs7074w=I_onart_gt6w_vs; I_offart_1stI7074w=I_offart_1stI;
+	I_offart_SI7074w=I_offart_SI; I_offart_SIlt6w7074w=I_offart_SIlt6w; I_offart_SIgt6w7074w=I_offart_SIgt6w; 
+	end;
+	if 75 <= age < 80 then do;
+	I_undiag7579w=I_undiag; I_diag_naive7579w=I_diag_naive; I_diag_startart7579w=I_diag_startart; I_onart7579w=I_onart;
+	I_offart7579w=I_offart; I_onart_lt6w7579w=I_onart_lt6w; I_onart_lt6w_nvs7579w=I_onart_lt6w_nvs;
+	I_onart_gt6w_nvs7579w=I_onart_gt6w_nvs; I_onart_gt6w_vs7579w=I_onart_gt6w_vs; I_offart_1stI7579w=I_offart_1stI;
+	I_offart_SI7579w=I_offart_SI; I_offart_SIlt6w7579w=I_offart_SIlt6w; I_offart_SIgt6w7579w=I_offart_SIgt6w; 
+	end;
+	if 80 <= age < 85 then do;
+	I_undiag8084w=I_undiag; I_diag_naive8084w=I_diag_naive; I_diag_startart8084w=I_diag_startart; I_onart8084w=I_onart; 
+	I_offart8084w=I_offart; I_onart_lt6w8084w=I_onart_lt6w; I_onart_lt6w_nvs8084w=I_onart_lt6w_nvs; 
+	I_onart_gt6w_nvs8084w=I_onart_gt6w_nvs; I_onart_gt6w_vs8084w=I_onart_gt6w_vs; I_offart_1stI8084w=I_offart_1stI;
+	I_offart_SI8084w=I_offart_SI; I_offart_SIlt6w8084w=I_offart_SIlt6w; I_offart_SIgt6w8084w=I_offart_SIgt6w; 
+	end;
+end;
+
+
 
 * previously stopped drug due to toxicity  ;
 t_zdv = 0;
@@ -13922,7 +14200,7 @@ if 15 <= age     then do;
 	end;
 
 	***ART interruption, stratified by first or subsequent. If subsequent, stratified by <6m/>6 since last interruption;
-	if yrart ne . and onart ne 1 and lost=1 then do;***do we need lost=1, I think perhaps not;
+	if yrart ne . and onart ne 1 then do;
 
 		i_offart_vlg1_rm0_np=0;i_offart_1stI_vlg1_rm0_np=0;i_offart_SI_vlg1_rm0_np=0;i_offart_SI_lt6m_vlg1_rm0_np=0;i_offart_SI_gt6m_vlg1_rm0_np=0;*SI=subsequent interruption;
 		if vlg1=1 and rm_=0 then do; 
@@ -16709,6 +16987,117 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_I_offart + I_offart;	s_I_onart_lt6m + I_onart_lt6m;	s_I_onart_lt6m_nvs + I_onart_lt6m_nvs; s_I_onart_gt6m_nvs + I_onart_gt6m_nvs;	
 	s_I_onart_gt6m_vs + I_onart_gt6m_vs;  s_I_offart_1stI + I_offart_1stI;	s_I_offart_SI + I_offart_SI;
 	s_I_offart_SIlt6m + I_offart_SIlt6m;  s_I_offart_SIgt6m + I_offart_SIgt6m;
+
+
+	s_I_undiag_m + I_undiag_m; s_I_diag_naive_m + I_diag_naive_m; s_I_diag_startart_m + I_diag_startart_m;
+	s_I_onart_m + I_onart_m; s_I_offart_m + I_offart_m; s_I_onart_lt6m_m + I_onart_lt6m_m; s_I_onart_lt6m_nvs_m + I_onart_lt6m_nvs_m; 
+	s_I_onart_gt6m_nvs_m + I_onart_gt6m_nvs_m; s_I_onart_gt6m_vs_m + I_onart_gt6m_vs_m; s_I_offart_1sts_I_m + _offart_1sts_I_m;
+	s_I_offart_Ss_I_m + I_offart_Ss_I_m; s_I_offart_SIlt6m_m + I_offart_SIlt6m_m; s_I_offart_SIgt6m_m + I_offart_SIgt6m_m;
+	s_I_undiag_w + I_undiag_w; s_I_diag_naive_w + I_diag_naive_w; s_I_diag_startart_w + I_diag_startart_w; s_I_onart_w + I_onart_w;
+	s_I_offart_w + I_offart_w; s_I_onart_lt6w_w + I_onart_lt6w_w; s_I_onart_lt6w_nvs_w + I_onart_lt6w_nvs_w; 
+	s_I_onart_gt6w_nvs_w + I_onart_gt6w_nvs_w; s_I_onart_gt6w_vs_w + I_onart_gt6w_vs_w; s_I_offart_1sts_I_w + I_offart_1sts_I_w; 
+	s_I_offart_Ss_I_w + I_offart_Ss_I_w; s_I_offart_SIlt6w_w + I_offart_SIlt6w_w; s_I_offart_SIgt6w_w + I_offart_SIgt6w_w;
+
+	s_I_undiag1519m + I_undiag1519m; s_I_diag_naive1519m + I_diag_naive1519m; s_I_diag_startart1519m + I_diag_startart1519m;
+	s_I_onart1519m + I_onart1519m; s_I_offart1519m + I_offart1519m; s_I_onart_lt6m1519m + I_onart_lt6m1519m; s_I_onart_lt6m_nvs1519m + I_onart_lt6m_nvs1519m; 
+	s_I_onart_gt6m_nvs1519m + I_onart_gt6m_nvs1519m; s_I_onart_gt6m_vs1519m + I_onart_gt6m_vs1519m; s_I_offart_1sts_I1519m + _offart_1sts_I1519m;
+	s_I_offart_Ss_I1519m + I_offart_Ss_I1519m; s_I_offart_SIlt6m1519m + I_offart_SIlt6m1519m; s_I_offart_SIgt6m1519m + I_offart_SIgt6m1519m;
+	s_I_undiag_1519w + I_undiag_1519w; s_I_diag_naive_1519w + I_diag_naive_1519w; s_I_diag_startart_1519w + I_diag_startart_1519w; s_I_onart_1519w + I_onart_1519w;
+	s_I_offart_1519w + I_offart_1519w; s_I_onart_lt61519w_1519w + I_onart_lt61519w_1519w; s_I_onart_lt61519w_nvs_1519w + I_onart_lt61519w_nvs_1519w; 
+	s_I_onart_gt61519w_nvs_1519w + I_onart_gt61519w_nvs_1519w; s_I_onart_gt61519w_vs_1519w + I_onart_gt61519w_vs_1519w; s_I_offart_1sts_I_1519w + I_offart_1sts_I_1519w; 
+	s_I_offart_Ss_I_1519w + I_offart_Ss_I_1519w; s_I_offart_SIlt61519w_1519w + I_offart_SIlt61519w_1519w; s_I_offart_SIgt61519w_1519w + I_offart_SIgt61519w_1519w;
+
+	s_I_undiag2024m + I_undiag2024m; s_I_diag_naive2024m + I_diag_naive2024m; s_I_diag_startart2024m + I_diag_startart2024m;
+	s_I_onart2024m + I_onart2024m; s_I_offart2024m + I_offart2024m; s_I_onart_lt6m2024m + I_onart_lt6m2024m; s_I_onart_lt6m_nvs2024m + I_onart_lt6m_nvs2024m; 
+	s_I_onart_gt6m_nvs2024m + I_onart_gt6m_nvs2024m; s_I_onart_gt6m_vs2024m + I_onart_gt6m_vs2024m; s_I_offart_1sts_I2024m + _offart_1sts_I2024m;
+	s_I_offart_Ss_I2024m + I_offart_Ss_I2024m; s_I_offart_SIlt6m2024m + I_offart_SIlt6m2024m; s_I_offart_SIgt6m2024m + I_offart_SIgt6m2024m;
+	s_I_undiag_2024w + I_undiag_2024w; s_I_diag_naive_2024w + I_diag_naive_2024w; s_I_diag_startart_2024w + I_diag_startart_2024w; s_I_onart_2024w + I_onart_2024w;
+	s_I_offart_2024w + I_offart_2024w; s_I_onart_lt62024w_2024w + I_onart_lt62024w_2024w; s_I_onart_lt62024w_nvs_2024w + I_onart_lt62024w_nvs_2024w; 
+	s_I_onart_gt62024w_nvs_2024w + I_onart_gt62024w_nvs_2024w; s_I_onart_gt62024w_vs_2024w + I_onart_gt62024w_vs_2024w; s_I_offart_1sts_I_2024w + I_offart_1sts_I_2024w; 
+	s_I_offart_Ss_I_2024w + I_offart_Ss_I_2024w; s_I_offart_SIlt62024w_2024w + I_offart_SIlt62024w_2024w; s_I_offart_SIgt62024w_2024w + I_offart_SIgt62024w_2024w;
+
+	s_I_undiag2529m + I_undiag2529m; s_I_diag_naive2529m + I_diag_naive2529m; s_I_diag_startart2529m + I_diag_startart2529m;
+	s_I_onart2529m + I_onart2529m; s_I_offart2529m + I_offart2529m; s_I_onart_lt6m2529m + I_onart_lt6m2529m; s_I_onart_lt6m_nvs2529m + I_onart_lt6m_nvs2529m; 
+	s_I_onart_gt6m_nvs2529m + I_onart_gt6m_nvs2529m; s_I_onart_gt6m_vs2529m + I_onart_gt6m_vs2529m; s_I_offart_1sts_I2529m + _offart_1sts_I2529m;
+	s_I_offart_Ss_I2529m + I_offart_Ss_I2529m; s_I_offart_SIlt6m2529m + I_offart_SIlt6m2529m; s_I_offart_SIgt6m2529m + I_offart_SIgt6m2529m;
+	s_I_undiag_2529w + I_undiag_2529w; s_I_diag_naive_2529w + I_diag_naive_2529w; s_I_diag_startart_2529w + I_diag_startart_2529w; s_I_onart_2529w + I_onart_2529w;
+	s_I_offart_2529w + I_offart_2529w; s_I_onart_lt62529w_2529w + I_onart_lt62529w_2529w; s_I_onart_lt62529w_nvs_2529w + I_onart_lt62529w_nvs_2529w; 
+	s_I_onart_gt62529w_nvs_2529w + I_onart_gt62529w_nvs_2529w; s_I_onart_gt62529w_vs_2529w + I_onart_gt62529w_vs_2529w; s_I_offart_1sts_I_2529w + I_offart_1sts_I_2529w; 
+	s_I_offart_Ss_I_2529w + I_offart_Ss_I_2529w; s_I_offart_SIlt62529w_2529w + I_offart_SIlt62529w_2529w; s_I_offart_SIgt62529w_2529w + I_offart_SIgt62529w_2529w;
+
+	s_I_undiag3034m + I_undiag3034m; s_I_diag_naive3034m + I_diag_naive3034m; s_I_diag_startart3034m + I_diag_startart3034m;
+	s_I_onart3034m + I_onart3034m; s_I_offart3034m + I_offart3034m; s_I_onart_lt6m3034m + I_onart_lt6m3034m; s_I_onart_lt6m_nvs3034m + I_onart_lt6m_nvs3034m; 
+	s_I_onart_gt6m_nvs3034m + I_onart_gt6m_nvs3034m; s_I_onart_gt6m_vs3034m + I_onart_gt6m_vs3034m; s_I_offart_1sts_I3034m + _offart_1sts_I3034m;
+	s_I_offart_Ss_I3034m + I_offart_Ss_I3034m; s_I_offart_SIlt6m3034m + I_offart_SIlt6m3034m; s_I_offart_SIgt6m3034m + I_offart_SIgt6m3034m;
+	s_I_undiag_3034w + I_undiag_3034w; s_I_diag_naive_3034w + I_diag_naive_3034w; s_I_diag_startart_3034w + I_diag_startart_3034w; s_I_onart_3034w + I_onart_3034w;
+	s_I_offart_3034w + I_offart_3034w; s_I_onart_lt63034w_3034w + I_onart_lt63034w_3034w; s_I_onart_lt63034w_nvs_3034w + I_onart_lt63034w_nvs_3034w; 
+	s_I_onart_gt63034w_nvs_3034w + I_onart_gt63034w_nvs_3034w; s_I_onart_gt63034w_vs_3034w + I_onart_gt63034w_vs_3034w; s_I_offart_1sts_I_3034w + I_offart_1sts_I_3034w; 
+	s_I_offart_Ss_I_3034w + I_offart_Ss_I_3034w; s_I_offart_SIlt63034w_3034w + I_offart_SIlt63034w_3034w; s_I_offart_SIgt63034w_3034w + I_offart_SIgt63034w_3034w;
+
+	s_I_undiag3539m + I_undiag3539m; s_I_diag_naive3539m + I_diag_naive3539m; s_I_diag_startart3539m + I_diag_startart3539m;
+	s_I_onart3539m + I_onart3539m; s_I_offart3539m + I_offart3539m; s_I_onart_lt6m3539m + I_onart_lt6m3539m; s_I_onart_lt6m_nvs3539m + I_onart_lt6m_nvs3539m; 
+	s_I_onart_gt6m_nvs3539m + I_onart_gt6m_nvs3539m; s_I_onart_gt6m_vs3539m + I_onart_gt6m_vs3539m; s_I_offart_1sts_I3539m + _offart_1sts_I3539m;
+	s_I_offart_Ss_I3539m + I_offart_Ss_I3539m; s_I_offart_SIlt6m3539m + I_offart_SIlt6m3539m; s_I_offart_SIgt6m3539m + I_offart_SIgt6m3539m;
+	s_I_undiag_3539w + I_undiag_3539w; s_I_diag_naive_3539w + I_diag_naive_3539w; s_I_diag_startart_3539w + I_diag_startart_3539w; s_I_onart_3539w + I_onart_3539w;
+	s_I_offart_3539w + I_offart_3539w; s_I_onart_lt63539w_3539w + I_onart_lt63539w_3539w; s_I_onart_lt63539w_nvs_3539w + I_onart_lt63539w_nvs_3539w; 
+	s_I_onart_gt63539w_nvs_3539w + I_onart_gt63539w_nvs_3539w; s_I_onart_gt63539w_vs_3539w + I_onart_gt63539w_vs_3539w; s_I_offart_1sts_I_3539w + I_offart_1sts_I_3539w; 
+	s_I_offart_Ss_I_3539w + I_offart_Ss_I_3539w; s_I_offart_SIlt63539w_3539w + I_offart_SIlt63539w_3539w; s_I_offart_SIgt63539w_3539w + I_offart_SIgt63539w_3539w;
+
+
+	start here
+
+
+	s_I_undiag1519m + I_undiag1519m; s_I_diag_naive1519m + I_diag_naive1519m; s_I_diag_startart1519m + I_diag_startart1519m;
+	s_I_onart1519m + I_onart1519m; s_I_offart1519m + I_offart1519m; s_I_onart_lt6m1519m + I_onart_lt6m1519m; s_I_onart_lt6m_nvs1519m + I_onart_lt6m_nvs1519m; 
+	s_I_onart_gt6m_nvs1519m + I_onart_gt6m_nvs1519m; s_I_onart_gt6m_vs1519m + I_onart_gt6m_vs1519m; s_I_offart_1sts_I1519m + _offart_1sts_I1519m;
+	s_I_offart_Ss_I1519m + I_offart_Ss_I1519m; s_I_offart_SIlt6m1519m + I_offart_SIlt6m1519m; s_I_offart_SIgt6m1519m + I_offart_SIgt6m1519m;
+	s_I_undiag_1519w + I_undiag_1519w; s_I_diag_naive_1519w + I_diag_naive_1519w; s_I_diag_startart_1519w + I_diag_startart_1519w; s_I_onart_1519w + I_onart_1519w;
+	s_I_offart_1519w + I_offart_1519w; s_I_onart_lt61519w_1519w + I_onart_lt61519w_1519w; s_I_onart_lt61519w_nvs_1519w + I_onart_lt61519w_nvs_1519w; 
+	s_I_onart_gt61519w_nvs_1519w + I_onart_gt61519w_nvs_1519w; s_I_onart_gt61519w_vs_1519w + I_onart_gt61519w_vs_1519w; s_I_offart_1sts_I_1519w + I_offart_1sts_I_1519w; 
+	s_I_offart_Ss_I_1519w + I_offart_Ss_I_1519w; s_I_offart_SIlt61519w_1519w + I_offart_SIlt61519w_1519w; s_I_offart_SIgt61519w_1519w + I_offart_SIgt61519w_1519w;
+
+	s_I_undiag1519m + I_undiag1519m; s_I_diag_naive1519m + I_diag_naive1519m; s_I_diag_startart1519m + I_diag_startart1519m;
+	s_I_onart1519m + I_onart1519m; s_I_offart1519m + I_offart1519m; s_I_onart_lt6m1519m + I_onart_lt6m1519m; s_I_onart_lt6m_nvs1519m + I_onart_lt6m_nvs1519m; 
+	s_I_onart_gt6m_nvs1519m + I_onart_gt6m_nvs1519m; s_I_onart_gt6m_vs1519m + I_onart_gt6m_vs1519m; s_I_offart_1sts_I1519m + _offart_1sts_I1519m;
+	s_I_offart_Ss_I1519m + I_offart_Ss_I1519m; s_I_offart_SIlt6m1519m + I_offart_SIlt6m1519m; s_I_offart_SIgt6m1519m + I_offart_SIgt6m1519m;
+	s_I_undiag_1519w + I_undiag_1519w; s_I_diag_naive_1519w + I_diag_naive_1519w; s_I_diag_startart_1519w + I_diag_startart_1519w; s_I_onart_1519w + I_onart_1519w;
+	s_I_offart_1519w + I_offart_1519w; s_I_onart_lt61519w_1519w + I_onart_lt61519w_1519w; s_I_onart_lt61519w_nvs_1519w + I_onart_lt61519w_nvs_1519w; 
+	s_I_onart_gt61519w_nvs_1519w + I_onart_gt61519w_nvs_1519w; s_I_onart_gt61519w_vs_1519w + I_onart_gt61519w_vs_1519w; s_I_offart_1sts_I_1519w + I_offart_1sts_I_1519w; 
+	s_I_offart_Ss_I_1519w + I_offart_Ss_I_1519w; s_I_offart_SIlt61519w_1519w + I_offart_SIlt61519w_1519w; s_I_offart_SIgt61519w_1519w + I_offart_SIgt61519w_1519w;
+
+	s_I_undiag1519m + I_undiag1519m; s_I_diag_naive1519m + I_diag_naive1519m; s_I_diag_startart1519m + I_diag_startart1519m;
+	s_I_onart1519m + I_onart1519m; s_I_offart1519m + I_offart1519m; s_I_onart_lt6m1519m + I_onart_lt6m1519m; s_I_onart_lt6m_nvs1519m + I_onart_lt6m_nvs1519m; 
+	s_I_onart_gt6m_nvs1519m + I_onart_gt6m_nvs1519m; s_I_onart_gt6m_vs1519m + I_onart_gt6m_vs1519m; s_I_offart_1sts_I1519m + _offart_1sts_I1519m;
+	s_I_offart_Ss_I1519m + I_offart_Ss_I1519m; s_I_offart_SIlt6m1519m + I_offart_SIlt6m1519m; s_I_offart_SIgt6m1519m + I_offart_SIgt6m1519m;
+	s_I_undiag_1519w + I_undiag_1519w; s_I_diag_naive_1519w + I_diag_naive_1519w; s_I_diag_startart_1519w + I_diag_startart_1519w; s_I_onart_1519w + I_onart_1519w;
+	s_I_offart_1519w + I_offart_1519w; s_I_onart_lt61519w_1519w + I_onart_lt61519w_1519w; s_I_onart_lt61519w_nvs_1519w + I_onart_lt61519w_nvs_1519w; 
+	s_I_onart_gt61519w_nvs_1519w + I_onart_gt61519w_nvs_1519w; s_I_onart_gt61519w_vs_1519w + I_onart_gt61519w_vs_1519w; s_I_offart_1sts_I_1519w + I_offart_1sts_I_1519w; 
+	s_I_offart_Ss_I_1519w + I_offart_Ss_I_1519w; s_I_offart_SIlt61519w_1519w + I_offart_SIlt61519w_1519w; s_I_offart_SIgt61519w_1519w + I_offart_SIgt61519w_1519w;
+
+	s_I_undiag1519m + I_undiag1519m; s_I_diag_naive1519m + I_diag_naive1519m; s_I_diag_startart1519m + I_diag_startart1519m;
+	s_I_onart1519m + I_onart1519m; s_I_offart1519m + I_offart1519m; s_I_onart_lt6m1519m + I_onart_lt6m1519m; s_I_onart_lt6m_nvs1519m + I_onart_lt6m_nvs1519m; 
+	s_I_onart_gt6m_nvs1519m + I_onart_gt6m_nvs1519m; s_I_onart_gt6m_vs1519m + I_onart_gt6m_vs1519m; s_I_offart_1sts_I1519m + _offart_1sts_I1519m;
+	s_I_offart_Ss_I1519m + I_offart_Ss_I1519m; s_I_offart_SIlt6m1519m + I_offart_SIlt6m1519m; s_I_offart_SIgt6m1519m + I_offart_SIgt6m1519m;
+	s_I_undiag_1519w + I_undiag_1519w; s_I_diag_naive_1519w + I_diag_naive_1519w; s_I_diag_startart_1519w + I_diag_startart_1519w; s_I_onart_1519w + I_onart_1519w;
+	s_I_offart_1519w + I_offart_1519w; s_I_onart_lt61519w_1519w + I_onart_lt61519w_1519w; s_I_onart_lt61519w_nvs_1519w + I_onart_lt61519w_nvs_1519w; 
+	s_I_onart_gt61519w_nvs_1519w + I_onart_gt61519w_nvs_1519w; s_I_onart_gt61519w_vs_1519w + I_onart_gt61519w_vs_1519w; s_I_offart_1sts_I_1519w + I_offart_1sts_I_1519w; 
+	s_I_offart_Ss_I_1519w + I_offart_Ss_I_1519w; s_I_offart_SIlt61519w_1519w + I_offart_SIlt61519w_1519w; s_I_offart_SIgt61519w_1519w + I_offart_SIgt61519w_1519w;
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/*Number ep and newp*/
 
