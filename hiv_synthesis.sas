@@ -2498,6 +2498,9 @@ who may be dead and hence have caldate{t} missing;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
 	if option = 15 then do;*Oral TDF/FTC PrEP for AGWY;
+		prep_any_strategy=3;
+		eff_prob_prep_inj_b=0;          eff_prob_prep_vr_b=0;
+		eff_rate_choose_stop_prep_inj=1;eff_rate_choose_stop_prep_vr=1;
 	end;
 	if option = 16 then do;*Oral TDF/FTC PrEP for FSW;
 	end;
@@ -2531,25 +2534,11 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
 	end;
-	if option = 34 then do;
-	end;
-	if option = 35 then do;
-	end;
-	if option = 36 then do;
-	end;
-	if option = 37 then do;
-	end;
-	if option = 38 then do;
-	end;
-	if option = 39 then do;
-	end;
-	if option = 40 then do;
-	end;
-	if option = 41 then do;
-	end;
-	if option = 42 then do;
-	end;
 
+	*Structural interventions and social enablers;
+	if option = 40 then do;*DREAMS;
+	end;
+	
 end;
 
 
