@@ -7030,14 +7030,14 @@ if infected_newp=1 then do;
 
 	g=rand('uniform');
     if g < t_prop_diag then infected_diagnosed=1;
+	*LBMJan23;
+	*partner is undiagnosed;
+	I_undiag = 1-infected_diagnosed;
+
 	if infected_diagnosed=1 then do; 
 		s=rand('uniform');
 		infected_naive=0; if s < t_prop_naive then infected_naive=1;
-	end;
-
-	*LBMJan23;*
-	*partner is undiagnosed;
-	I_undiag = 1-infected_diagnosed;
+	
 
 	*partner diag without starting ART;
 	I_diag_naive = infected_naive;
@@ -7050,7 +7050,7 @@ if infected_newp=1 then do;
 		if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
 	end;
 
-	*partner on ART and on ART<6m;
+	*partner started ART and on ART<6m;
 	if I_onart=1 then do;
 		u=rand('uniform');
      	if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
@@ -7081,6 +7081,8 @@ if infected_newp=1 then do;
 				if v <  t_p_offart_SI_lt6m then I_offart_SIlt6m=1;
 				if v >= t_p_offart_SI_lt6m then I_offart_SIgt6m=1;
 			end;
+	end;
+
 	end;
 end;
 
@@ -7089,17 +7091,23 @@ if infected_ep=1 then do;
 	I_undiag=0;I_diag_naive=0;I_diag_startart=0;I_onart=0;I_offart=0;I_onart_lt6m=0;I_onart_lt6m_nvs=0;I_onart_gt6m_nvs=0;I_onart_gt6m_vs=0; 
 	I_offart_1stI=0;I_offart_SI=0;I_offart_SIlt6m=0;I_offart_SIgt6m=0;
 
-	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1;  
-	infected_naive=1;
-	if epart_tm1=1 then infected_naive=0;
-	if epdiag_tm1=1 and epart_tm1=0 then do;
-		* have to make this approximation below because dont track naive status of ep;
-		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
-	end;
+	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1; 
 
 	*LBMJan23;*
 	*partner is undiagnosed;
 	I_undiag = 1-infected_diagnosed;
+ 
+	infected_naive=1;
+	if epart_tm1=1 then infected_naive=0;
+
+	*partner diag without starting ART;
+	I_diag_naive = infected_naive;
+	I_diag_startart = 1 - I_diag_naive;
+
+	if epdiag_tm1=1 and epart_tm1=0 then do;
+		* have to make this approximation below because dont track naive status of ep;
+		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
+
 
 	*partner diag without starting ART;
 	I_diag_naive = infected_naive;
@@ -7112,7 +7120,7 @@ if infected_ep=1 then do;
 		if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
 	end;
 
-	*partner on ART and on ART<6m;
+	*partner started ART and on ART<6m;
 	if I_onart=1 then do;
 		u=rand('uniform');
      	if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
@@ -7128,8 +7136,8 @@ if infected_ep=1 then do;
 	*partner on ART>6m, current VL >1000/current VL <1000;
 	if I_onart_gt6m=1 then do; 
 		u=rand('uniform');
-     	if u <  t_p_onart_gt6m_nvs then I_onart_gt6m_nvs = 1;
-		if u >= t_p_onart_gt6m_nvs then I_onart_gt6m_vs = 1;
+     	if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
+		if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
 	end;
 
 	*partner off ART, 1st interruption/SI;
@@ -7143,6 +7151,7 @@ if infected_ep=1 then do;
 				if v <  t_p_offart_SI_lt6m then I_offart_SIlt6m=1;
 				if v >= t_p_offart_SI_lt6m then I_offart_SIgt6m=1;
 			end;
+	end;
 	end;
 end;
 
