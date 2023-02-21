@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 10000  ; 
+%let population = 100000  ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -6995,13 +6995,13 @@ t_prop_naive			= t_prop_vlg6_rm0_naive;
 t_p_startart			= t_p_vlg6_rm0_startart;
 t_p_onart				= t_p_vlg6_rm0_onart;
 t_p_offart				= t_p_vlg6_rm0_offart;
-t_p_onart_lt6m			= t_p_vlg5_rm0_onart_lt6m;
-t_p_onart_lt6m_nvs		= t_p_vlg5_rm0_onart_lt6m_nvs;
-t_p_onart_gt6m_vs		= t_p_vlg5_rm0_onart_gt6m_vs;
-t_p_onart_gt6m_nvs		= t_p_vlg5_rm0_onart_gt6m_nvs;
-t_p_offart_1stI			= t_p_vlg5_rm0_offart_1stI;
-t_p_offart_SI_lt6m 		= t_p_vlg5_rm0_offart_SI_lt6m;
-t_p_offart_SI_gt6m 		= t_p_vlg5_rm0_offart_SI_gt6m;
+t_p_onart_lt6m			= t_p_vlg6_rm0_onart_lt6m;
+t_p_onart_lt6m_nvs		= t_p_vlg6_rm0_onart_lt6m_nvs;
+t_p_onart_gt6m_vs		= t_p_vlg6_rm0_onart_gt6m_vs;
+t_p_onart_gt6m_nvs		= t_p_vlg6_rm0_onart_gt6m_nvs;
+t_p_offart_1stI			= t_p_vlg6_rm0_offart_1stI;
+t_p_offart_SI_lt6m 		= t_p_vlg6_rm0_offart_SI_lt6m;
+t_p_offart_SI_gt6m 		= t_p_vlg6_rm0_offart_SI_gt6m;
 end;
 
 
@@ -7066,8 +7066,8 @@ if infected_newp=1 then do;
 	*partner on ART>6m, current VL >1000/current VL <1000;
 	if I_onart_gt6m=1 then do; 
 		u=rand('uniform');
-     	if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
-		if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
+     	if u <  t_p_onart_gt6m_nvs then I_onart_gt6m_nvs = 1;
+		if u >= t_p_onart_gt6m_nvs then I_onart_gt6m_vs = 1;
 	end;
 
 	*partner off ART, 1st interruption/SI;
@@ -13796,35 +13796,35 @@ if 15 <= age     then do;
 		end;
 
 		i_onart_lt6m_vlg2_rm1_np=0;i_onart_lt6m_vs_vlg2_rm1_np=0;i_onart_lt6m_nvs_vlg2_rm1_np=0;
-		if vlg1=1 and rm_=1 then do; 
+		if vlg2=1 and rm_=1 then do; 
 			i_onart_lt6m_vlg2_rm1_np=np;
 			if vl1000=1 	then i_onart_lt6m_vs_vlg2_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg2_rm1_np=np;
 		end;
 
 		i_onart_lt6m_vlg3_rm1_np=0;i_onart_lt6m_vs_vlg3_rm1_np=0;i_onart_lt6m_nvs_vlg3_rm1_np=0; 
-		if vlg1=1 and rm_=1 then do;
+		if vlg3=1 and rm_=1 then do;
 			i_onart_lt6m_vlg3_rm1_np=np;
 			if vl1000=1 	then i_onart_lt6m_vs_vlg3_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg3_rm1_np=np;
 		end;
 
 		i_onart_lt6m_vlg4_rm1_np=0;i_onart_lt6m_vs_vlg4_rm1_np=0;i_onart_lt6m_nvs_vlg4_rm1_np=0;
-		if vlg1=1 and rm_=1 then do;
+		if vlg4=1 and rm_=1 then do;
 			i_onart_lt6m_vlg4_rm1_np=np;
 			if vl1000=1 	then i_onart_lt6m_vs_vlg4_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg4_rm1_np=np;
 		end;
 
 		i_onart_lt6m_vlg5_rm1_np=0;i_onart_lt6m_vs_vlg5_rm1_np=0;i_onart_lt6m_nvs_vlg5_rm1_np=0;
-		if vlg1=1 and rm_=1 then do;
+		if vlg5=1 and rm_=1 then do;
 			i_onart_lt6m_vlg5_rm1_np=np;
 			if vl1000=1 	then i_onart_lt6m_vs_vlg5_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg5_rm1_np=np;
 		end;
 
 		i_onart_lt6m_vlg6_rm1_np=0;i_onart_lt6m_vs_vlg6_rm1_np=0;i_onart_lt6m_nvs_vlg6_rm1_np=0;
-		if vlg1=1 and rm_=1 then do; 
+		if vlg6=1 and rm_=1 then do; 
 			i_onart_lt6m_vlg6_rm1_np=np;
 			if vl1000=1 	then i_onart_lt6m_vs_vlg6_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_lt6m_nvs_vlg6_rm1_np=np;
@@ -13885,35 +13885,35 @@ if 15 <= age     then do;
 		end;
 
 		i_onart_gt6m_vlg2_rm1_np=0;i_onart_gt6m_vs_vlg2_rm1_np=0;i_onart_gt6m_nvs_vlg2_rm1_np=0;
-		if vlg1=1 and rm_=1 then do; 
+		if vlg2=1 and rm_=1 then do; 
 			i_onart_gt6m_vlg2_rm1_np=np;
 			if vl1000=1 	then i_onart_gt6m_vs_vlg2_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg2_rm1_np=np;
 		end;
 
 		i_onart_gt6m_vlg3_rm1_np=0;i_onart_gt6m_vs_vlg3_rm1_np=0;i_onart_gt6m_nvs_vlg3_rm1_np=0; 
-		if vlg1=1 and rm_=1 then do;
+		if vlg3=1 and rm_=1 then do;
 			i_onart_gt6m_vlg3_rm1_np=np;
 			if vl1000=1 	then i_onart_gt6m_vs_vlg3_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg3_rm1_np=np;
 		end;
 
 		i_onart_gt6m_vlg4_rm1_np=0;i_onart_gt6m_vs_vlg4_rm1_np=0;i_onart_gt6m_nvs_vlg4_rm1_np=0;
-		if vlg1=1 and rm_=1 then do;
+		if vlg4=1 and rm_=1 then do;
 			i_onart_gt6m_vlg4_rm1_np=np;
 			if vl1000=1 	then i_onart_gt6m_vs_vlg4_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg4_rm1_np=np;
 		end;
 
 		i_onart_gt6m_vlg5_rm1_np=0;i_onart_gt6m_vs_vlg5_rm1_np=0;i_onart_gt6m_nvs_vlg5_rm1_np=0;
-		if vlg1=1 and rm_=1 then do;
+		if vlg5=1 and rm_=1 then do;
 			i_onart_gt6m_vlg5_rm1_np=np;
 			if vl1000=1 	then i_onart_gt6m_vs_vlg5_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg5_rm1_np=np;
 		end;
 
 		i_onart_gt6m_vlg6_rm1_np=0;i_onart_gt6m_vs_vlg6_rm1_np=0;i_onart_gt6m_nvs_vlg6_rm1_np=0;
-		if vlg1=1 and rm_=1 then do; 
+		if vlg6=1 and rm_=1 then do; 
 			i_onart_gt6m_vlg6_rm1_np=np;
 			if vl1000=1 	then i_onart_gt6m_vs_vlg6_rm1_np=np;
 			if vl1000 ne 1 	then i_onart_gt6m_nvs_vlg6_rm1_np=np;
@@ -17643,10 +17643,6 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
-proc print;var cald hiv infection infected_diagnosed infected_newp infected_ep infected_naive
-I_undiag I_diag_naive I_diag_startart I_onart I_offart I_onart_lt6m I_onart_lt6m_nvs I_onart_gt6m_nvs I_onart_gt6m_vs  
-I_offart_1stI I_offart_SI I_offart_SIlt6m I_offart_SIgt6m;where hiv=1 and i_undiag ne 1;run; 
-
 
 
 * procs;
@@ -18338,13 +18334,13 @@ s_p_vlg5_rm1_offart=0;if s_i_startart_vlg5_rm1_np >0 then do; s_p_vlg5_rm1_offar
 s_p_vlg6_rm1_offart=0;if s_i_startart_vlg6_rm1_np >0 then do; s_p_vlg6_rm1_offart = max(0,s_i_offart_vlg6_rm1_np) / s_i_startart_vlg6_rm1_np ; end;
 
 
-*Of those on ART, those on ART for <6m;
+*Of those who are on ART, those on ART for <6m;
 s_p_vlg1_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg1_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg1_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
-s_p_vlg2_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg2_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg2_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
-s_p_vlg3_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg3_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg3_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
-s_p_vlg4_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg4_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg4_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
-s_p_vlg5_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg5_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg5_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
-s_p_vlg6_rm0_onart_lt6m=0;if s_i_onart_vlg1_rm0_np >0 then do; s_p_vlg6_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg6_rm0_np) / s_i_onart_vlg1_rm0_np ; end;
+s_p_vlg2_rm0_onart_lt6m=0;if s_i_onart_vlg2_rm0_np >0 then do; s_p_vlg2_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg2_rm0_np) / s_i_onart_vlg2_rm0_np ; end;
+s_p_vlg3_rm0_onart_lt6m=0;if s_i_onart_vlg3_rm0_np >0 then do; s_p_vlg3_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg3_rm0_np) / s_i_onart_vlg3_rm0_np ; end;
+s_p_vlg4_rm0_onart_lt6m=0;if s_i_onart_vlg4_rm0_np >0 then do; s_p_vlg4_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg4_rm0_np) / s_i_onart_vlg4_rm0_np ; end;
+s_p_vlg5_rm0_onart_lt6m=0;if s_i_onart_vlg5_rm0_np >0 then do; s_p_vlg5_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg5_rm0_np) / s_i_onart_vlg5_rm0_np ; end;
+s_p_vlg6_rm0_onart_lt6m=0;if s_i_onart_vlg6_rm0_np >0 then do; s_p_vlg6_rm0_onart_lt6m = max(0,s_i_onart_lt6m_vlg6_rm0_np) / s_i_onart_vlg6_rm0_np ; end;
 
 s_p_vlg1_rm1_onart_lt6m=0;if s_i_onart_vlg1_rm1_np >0 then do; s_p_vlg1_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg1_rm1_np) / s_i_onart_vlg1_rm1_np ; end;
 s_p_vlg2_rm1_onart_lt6m=0;if s_i_onart_vlg2_rm1_np >0 then do; s_p_vlg2_rm1_onart_lt6m = max(0,s_i_onart_lt6m_vlg2_rm1_np) / s_i_onart_vlg2_rm1_np ; end;
