@@ -24,13 +24,12 @@ ods html close;
 
 
 * NB: note lines below, because variable names cannot end with a number;
-n_sw_1599 = n_sw_1599_;
-n_not_on_art_cd4050 = n_not_on_art_cd4050_;
-n_not_on_art_cd450200 = n_not_on_art_cd450200_;
-n_not_on_art_cd4200350 = n_not_on_art_cd4200350_;
-n_not_on_art_cd4350500 = n_not_on_art_cd4350500_;
-n_not_on_art_cd4ge500  = n_not_on_art_cd4ge500_;
-
+n_sw_1599 = n_sw_1599_;*VCFeb2023;
+n_not_on_art_cd4050 = n_not_on_art_cd4050_;*VCFeb2023;
+n_not_on_art_cd450200 = n_not_on_art_cd450200_;*VCFeb2023;
+n_not_on_art_cd4200350 = n_not_on_art_cd4200350_;*VCFeb2023;
+n_not_on_art_cd4350500 = n_not_on_art_cd4350500_;*VCFeb2023;
+n_not_on_art_cd4ge500  = n_not_on_art_cd4ge500_;*VCFeb2023;
 
 log_gender_r_newp  = log(gender_r_newp);
 prevalence1549_ = prevalence1549;
@@ -44,7 +43,7 @@ incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
 incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
 
 p_onart_vl1000_ = p_onart_vl1000;
-p_onart_vl1000_1524_ = p_onart_vl1000_1524;
+p_onart_vl1000_1524_ = p_onart_vl1000_1524;*VCFeb2023;
 p_vl1000_ = p_vl1000;
 p_vg1000_ = p_vg1000;
 prevalence_vg1000_ = prevalence_vg1000;
@@ -202,8 +201,10 @@ if option =0 then delete;
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_  
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_ p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_ log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m 		
+n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
+p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
+p_mcirc_1549m
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 
 n_hivge15m	n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
@@ -263,8 +264,8 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52 
 g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77 g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90 g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 /*g103 g104
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90 g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
+g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 /*g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
 g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
@@ -1293,7 +1294,8 @@ proc gchart;
  run;
 
 */
-
+*VCFeb2023;
+*Output to be exported to fill in the file "Output template MIHPSAZimP2";
 *STOCK;
 %macro stock(o=);
 *Note: we do export 90% range even if they are name 95% LL and UL
@@ -1301,7 +1303,8 @@ proc gchart;
 			- any outcome about children (0-14 years old), TG and MSM
 			- % who ever had sex (i.e. sexually active)
 			- % who used condom the last time they had sex among  sexually active;
-data e;set d;
+data s&o;set d;
+if option =&o;
 where cald in 
 (					 2023.5 2024.5 2025.5 2026.5 2027.5 2028.5 2029.5 
 2030.5 2031.5 2032.5 2033.5 2034.5 2035.5 2036.5 2037.5 2038.5 2039.5 
@@ -1309,165 +1312,165 @@ where cald in
 2050.5 2051.5 2052.5 2053.5 2054.5 2055.5 2056.5 2057.5 2058.5 2059.5
 2060.5 2061.5 2062.5 2063.5 2064.5 2065.5 2066.5 2067.5 2068.5 2069.5
 2070.5 2071.5 2072.5 );
-rename p50_prevalence1549m_&o = HIVprev_M1549_M_&o;
-rename p5_prevalence1549m_&o  = HIVprev_M1549_95LL_&o;
-rename p95_prevalence1549m_&o = HIVprev_M1549_95UL_&o;
-rename p50_prevalence1549w_&o = HIVprev_F1549_M_&o;
-rename p5_prevalence1549w_&o  = HIVprev_F1549_95LL_&o;
-rename p95_prevalence1549w_&o = HIVprev_F1549_95UL_&o;
-rename p50_prevalence1549__&o  = HIVprev_A1549_M_&o;
-rename p5_prevalence1549__&o   = HIVprev_A1549_95LL_&o;
-rename p95_prevalence1549__&o  = HIVprev_A1549_95UL_&o;
-rename p50_prevalence1549preg_&o = HIVprev_pregF1549_M_&o;
-rename p5_prevalence1549preg_&o  = HIVprev_pregF1549_95LL_&o;
-rename p95_prevalence1549preg_&o = HIVprev_pregF1549_95UL_&o;
-rename p50_prevalence1524preg_&o = HIVprev_F1524_M_&o;
-rename p5_prevalence1524preg_&o  = HIVprev_F1524_95LL_&o;
-rename p95_prevalence1524preg_&o = HIVprev_F1524_95UL_&o;
-rename p50_prevalence_sw_&o = HIVprev_FSW1599_M_&o;
-rename p5_prevalence_sw_&o  = HIVprev_FSW1599_95LL_&o;
-rename p95_prevalence_sw_&o = HIVprev_FSW1599_95UL_&o;
+rename p50_prevalence1549m_&o = HIVprev_M1549_M;
+rename p5_prevalence1549m_&o  = HIVprev_M1549_95LL;
+rename p95_prevalence1549m_&o = HIVprev_M1549_95UL;
+rename p50_prevalence1549w_&o = HIVprev_F1549_M;
+rename p5_prevalence1549w_&o  = HIVprev_F1549_95LL;
+rename p95_prevalence1549w_&o = HIVprev_F1549_95UL;
+rename p50_prevalence1549__&o  = HIVprev_A1549_M;
+rename p5_prevalence1549__&o   = HIVprev_A1549_95LL;
+rename p95_prevalence1549__&o  = HIVprev_A1549_95UL;
+rename p50_prevalence1549preg_&o = HIVprev_pregF1549_M;
+rename p5_prevalence1549preg_&o  = HIVprev_pregF1549_95LL;
+rename p95_prevalence1549preg_&o = HIVprev_pregF1549_95UL;
+rename p50_prevalence1524preg_&o = HIVprev_F1524_M;
+rename p5_prevalence1524preg_&o  = HIVprev_F1524_95LL;
+rename p95_prevalence1524preg_&o = HIVprev_F1524_95UL;
+rename p50_prevalence_sw_&o = HIVprev_FSW1599_M;
+rename p5_prevalence_sw_&o  = HIVprev_FSW1599_95LL;
+rename p95_prevalence_sw_&o = HIVprev_FSW1599_95UL;
 
-rename p50_n_alive_m_&o = NAlive_M1599_M_&o;
-rename p5_n_alive_m_&o  = NAlive_M1599_95LL_&o;
-rename p95_n_alive_m_&o = NAlive_M1599_95UL_&o;
-rename p50_n_alive_w_&o = NAlive_F1599_M_&o;
-rename p5_n_alive_w_&o  = NAlive_F1599_95LL_&o;
-rename p95_n_alive_w_&o = NAlive_F1599_95UL_&o;
-rename p50_n_alive_1524m_&o = NAlive_M1524_M_&o;
-rename p50_n_alive_1524w_&o = NAlive_F1524_M_&o;
-rename p50_n_alive_2549m_&o = NAlive_M2549_M_&o;
-rename p50_n_alive_2549w_&o = NAlive_F2549_M_&o;
-rename p50_n_sw_1599__&o = NAlive_FSW1599_M_&o;
-rename p5_n_sw_1599__&o  = NAlive_FSW1599_95LL_&o;
-rename p95_n_sw_1599__&o = NAlive_FSW1599_95UL_&o;
-rename p50_n_hivneg_sdpartner_&o = Nalive_NEGInSDA1599_M_&o;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
-rename p50_n_hivneg_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTA1599_M_&o;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART;
-rename p50_n_hivnegw_sdpartner_&o = Nalive_NEGInSDF1599_M_&o;
-rename p50_n_hivnegw_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTF1599_M_&o;
+rename p50_n_alive_m_&o = NAlive_M1599_M;
+rename p5_n_alive_m_&o  = NAlive_M1599_95LL;
+rename p95_n_alive_m_&o = NAlive_M1599_95UL;
+rename p50_n_alive_w_&o = NAlive_F1599_M;
+rename p5_n_alive_w_&o  = NAlive_F1599_95LL;
+rename p95_n_alive_w_&o = NAlive_F1599_95UL;
+rename p50_n_alive_1524m_&o = NAlive_M1524_M;
+rename p50_n_alive_1524w_&o = NAlive_F1524_M;
+rename p50_n_alive_2549m_&o = NAlive_M2549_M;
+rename p50_n_alive_2549w_&o = NAlive_F2549_M;
+rename p50_n_sw_1599__&o = NAlive_FSW1599_M;
+rename p5_n_sw_1599__&o  = NAlive_FSW1599_95LL;
+rename p95_n_sw_1599__&o = NAlive_FSW1599_95UL;
+rename p50_n_hivneg_sdpartner_&o = Nalive_NEGInSDA1599_M;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
+rename p50_n_hivneg_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTA1599_M;*Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART;
+rename p50_n_hivnegw_sdpartner_&o = Nalive_NEGInSDF1599_M;
+rename p50_n_hivnegw_sdpartneroffart_&o = Nalive_NEGInSDNotOnARTF1599_M;
 
-rename p50_n_hivge15m_&o = NHIV_M1599_M_&o;
-rename p5_n_hivge15m_&o  = NHIV_M1599_95LL_&o;
-rename p95_n_hivge15m_&o = NHIV_M1599_95UL_&o;
-rename p50_n_hivge15w_&o = NHIV_F1599_M_&o;
-rename p5_n_hivge15w_&o  = NHIV_F1599_95LL_&o;
-rename p95_n_hivge15w_&o = NHIV_F1599_95UL_&o;
-rename p50_n_hiv1524m_&o = NHIV_M1524_M_&o;
-rename p50_n_hiv1524w_&o = NHIV_F1524_M_&o;
-rename p50_n_hiv2549m_&o = NHIV_M2549_M_&o;
-rename p50_n_hiv2549w_&o = NHIV_F2549_M_&o;
-rename p50_n_hiv_sw_&o = NHIV_FSW1599_M_&o;
-rename p5_n_hiv_sw_&o  = NHIV_FSW1599_LL_&o;
-rename p95_n_hiv_sw_&o = NHIV_FSW1599_UL_&o;
+rename p50_n_hivge15m_&o = NHIV_M1599_M;
+rename p5_n_hivge15m_&o  = NHIV_M1599_95LL;
+rename p95_n_hivge15m_&o = NHIV_M1599_95UL;
+rename p50_n_hivge15w_&o = NHIV_F1599_M;
+rename p5_n_hivge15w_&o  = NHIV_F1599_95LL;
+rename p95_n_hivge15w_&o = NHIV_F1599_95UL;
+rename p50_n_hiv1524m_&o = NHIV_M1524_M;
+rename p50_n_hiv1524w_&o = NHIV_F1524_M;
+rename p50_n_hiv2549m_&o = NHIV_M2549_M;
+rename p50_n_hiv2549w_&o = NHIV_F2549_M;
+rename p50_n_hiv_sw_&o = NHIV_FSW1599_M;
+rename p5_n_hiv_sw_&o  = NHIV_FSW1599_LL;
+rename p95_n_hiv_sw_&o = NHIV_FSW1599_UL;
 
-rename p50_n_not_on_art_cd4ge500__&o = NHIV_A1599_NoART_CD4500pl_M_&o;
-rename p50_n_not_on_art_cd4350500__&o = NHIV_A1599_NoART_CD4350499_M_&o;
-rename p50_n_not_on_art_cd4200350__&o = NHIV_A1599_NoART_CD4200349_M_&o;
-rename p50_n_not_on_art_cd450200__&o = NHIV_A1599_NoART_CD450199_M_&o;
-rename p50_n_not_on_art_cd4050__&o = NHIV_A1599_NoART_CD4050_M_&o;
+rename p50_n_not_on_art_cd4ge500__&o = NHIV_A1599_NoART_CD4500pl_M;
+rename p50_n_not_on_art_cd4350500__&o = NHIV_A1599_NoART_CD4350499_M;
+rename p50_n_not_on_art_cd4200350__&o = NHIV_A1599_NoART_CD4200349_M;
+rename p50_n_not_on_art_cd450200__&o = NHIV_A1599_NoART_CD450199_M;
+rename p50_n_not_on_art_cd4050__&o = NHIV_A1599_NoART_CD4050_M;
    
-rename p50_n_asympt_Undiag_&o = NHIV_A1599_Asympt_Undiag_M_&o;
-rename p50_n_asympt_diagoffart_&o = NHIV_A1599_Asympt_Diag_NoART_M_&o;
-rename p50_n_asympt_diagonart_&o = NHIV_A1599_Asympt_Diag_ART_M_&o;
-rename p50_n_sympt_notaids_&o = NHIV_A1599_Sympt_NOAIDS_M_&o;
-rename p50_n_sympt_aids_&o = NHIV_A1599_Sympt_AIDS_M_&o;
+rename p50_n_asympt_Undiag_&o = NHIV_A1599_Asympt_Undiag_M;
+rename p50_n_asympt_diagoffart_&o = NHIV_A1599_Asympt_Diag_NoART_M;
+rename p50_n_asympt_diagonart_&o = NHIV_A1599_Asympt_Diag_ART_M;
+rename p50_n_sympt_notaids_&o = NHIV_A1599_Sympt_NOAIDS_M;
+rename p50_n_sympt_aids_&o = NHIV_A1599_Sympt_AIDS_M;
 
-rename p50_p_diag_&o = P_DIAG_A1599_M_&o;
-rename p5_p_diag_&o  = P_DIAG_A1599_95LL_&o;
-rename p95_p_diag_&o = P_DIAG_A1599_95UL_&o;
-rename p50_p_diag_m_&o = P_DIAG_M1599_M_&o;
-rename p5_p_diag_m_&o  = P_DIAG_M1599_95LL_&o;
-rename p95_p_diag_m_&o = P_DIAG_M1599_95UL_&o;
-rename p50_p_diag_w_&o = P_DIAG_F1599_M_&o;
-rename p5_p_diag_w_&o  = P_DIAG_F1599_95LL_&o;
-rename p95_p_diag_w_&o = P_DIAG_F1599_95UL_&o;
-rename p50_p_diag_m1524_&o = P_DIAG_M1524_M_&o;
-rename p50_p_diag_w1524_&o = P_DIAG_F1524_M_&o;
-rename p50_p_diag_sw_&o = P_DIAG_FSW1599_M_&o;
-rename p50_p_m_npge1__&o = P_CLS3m_M1599_M_&o;
-rename p50_p_w_npge1__&o = P_CLS3m_F1599_M_&o;
-rename p50_p_w1524_npge1__&o = P_CLS3m_F1524_M_&o;
-rename p50_p_sw_npge1__&o = P_CLS3m_FSW_M_&o;
+rename p50_p_diag_&o = P_DIAG_A1599_M;
+rename p5_p_diag_&o  = P_DIAG_A1599_95LL;
+rename p95_p_diag_&o = P_DIAG_A1599_95UL;
+rename p50_p_diag_m_&o = P_DIAG_M1599_M;
+rename p5_p_diag_m_&o  = P_DIAG_M1599_95LL;
+rename p95_p_diag_m_&o = P_DIAG_M1599_95UL;
+rename p50_p_diag_w_&o = P_DIAG_F1599_M;
+rename p5_p_diag_w_&o  = P_DIAG_F1599_95LL;
+rename p95_p_diag_w_&o = P_DIAG_F1599_95UL;
+rename p50_p_diag_m1524_&o = P_DIAG_M1524_M;
+rename p50_p_diag_w1524_&o = P_DIAG_F1524_M;
+rename p50_p_diag_sw_&o = P_DIAG_FSW1599_M;
+rename p50_p_m_npge1__&o = P_CLS3m_M1599_M;
+rename p50_p_w_npge1__&o = P_CLS3m_F1599_M;
+rename p50_p_w1524_npge1__&o = P_CLS3m_F1524_M;
+rename p50_p_sw_npge1__&o = P_CLS3m_FSW_M;
 
-rename p50_prev_sti_sw_&o = P_STI_FSW1599_M_&o;
+rename p50_prev_sti_sw_&o = P_STI_FSW1599_M;
 
-rename p50_p_mcirc_1549m_&o = CIRC_PREV_M1549_M_&o;
-rename p5_p_mcirc_1549m_&o  = CIRC_PREV_M1549_95LL_&o;
-rename p95_p_mcirc_1549m_&o = CIRC_PREV_M1549_95UL_&o;
+rename p50_p_mcirc_1549m_&o = CIRC_PREV_M1549_M;
+rename p5_p_mcirc_1549m_&o  = CIRC_PREV_M1549_95LL;
+rename p95_p_mcirc_1549m_&o = CIRC_PREV_M1549_95UL;
 
-rename p50_n_onart_m_&o = NOnART_M1599_M_&o;
-rename p5_n_onart_m_&o  = NOnART_M1599_95LL_&o;
-rename p95_n_onart_m_&o = NOnART_M1599_95UL_&o;
-rename p50_n_onart_w_&o = NOnART_F1599_M_&o;
-rename p5_n_onart_w_&o  = NOnART_F1599_95LL_&o;
-rename p95_n_onart_w_&o = NOnART_F1599_95UL_&o;
-rename p50_n_onart_1524__&o = NOnART_A1524_M_&o;
-rename p5_n_onart_1524__&o  = NOnART_A1524_95LL_&o;
-rename p95_n_onart_1524__&o = NOnART_A1524_95UL_&o;
-rename p50_n_onart_&o = NOnART_A1599_M_&o;
-rename p5_n_onart_&o  = NOnART_A1599_95LL_&o;
-rename p95_n_onart_&o = NOnART_A1599_95UL_&o;
+rename p50_n_onart_m_&o = NOnART_M1599_M;
+rename p5_n_onart_m_&o  = NOnART_M1599_95LL;
+rename p95_n_onart_m_&o = NOnART_M1599_95UL;
+rename p50_n_onart_w_&o = NOnART_F1599_M;
+rename p5_n_onart_w_&o  = NOnART_F1599_95LL;
+rename p95_n_onart_w_&o = NOnART_F1599_95UL;
+rename p50_n_onart_1524__&o = NOnART_A1524_M;
+rename p5_n_onart_1524__&o  = NOnART_A1524_95LL;
+rename p95_n_onart_1524__&o = NOnART_A1524_95UL;
+rename p50_n_onart_&o = NOnART_A1599_M;
+rename p5_n_onart_&o  = NOnART_A1599_95LL;
+rename p95_n_onart_&o = NOnART_A1599_95UL;
 
-rename p50_p_onart_diag_m_&o = P_onART_DiagM1599_M_&o;
-rename p5_p_onart_diag_m_&o  = P_onART_DiagM1599_95LL_&o;
-rename p95_p_onart_diag_m_&o = P_onART_DiagM1599_95UL_&o;
-rename p50_p_onart_diag_w_&o = P_onART_DiagF1599_M_&o;
-rename p5_p_onart_diag_w_&o  = P_onART_DiagF1599_95LL_&o;
-rename p95_p_onart_diag_w_&o = P_onART_DiagF1599_95UL_&o;
-rename p50_p_onart_diag_w1524__&o = P_onART_DiagF1524_M_&o;
-rename p50_p_onart_diag_1524__&o = P_onART_DiagA1524_M_&o;
-rename p5_p_onart_diag_1524__&o  = P_onART_DiagA1524_95LL_&o;
-rename p95_p_onart_diag_1524__&o = P_onART_DiagA1524_95UL_&o;
-rename p50_p_onart_diag_&o = P_onART_DiagA1599_M_&o;
-rename p5_p_onart_diag_&o = P_onART_DiagA1599_95LL_&o;
-rename p95_p_onart_diag_&o = P_onART_DiagA1599_95UL_&o;
-rename p50_p_onart_diag_sw_&o = P_onART_DiagFSW1599_M_&o;
+rename p50_p_onart_diag_m_&o = P_onART_DiagM1599_M;
+rename p5_p_onart_diag_m_&o  = P_onART_DiagM1599_95LL;
+rename p95_p_onart_diag_m_&o = P_onART_DiagM1599_95UL;
+rename p50_p_onart_diag_w_&o = P_onART_DiagF1599_M;
+rename p5_p_onart_diag_w_&o  = P_onART_DiagF1599_95LL;
+rename p95_p_onart_diag_w_&o = P_onART_DiagF1599_95UL;
+rename p50_p_onart_diag_w1524__&o = P_onART_DiagF1524_M;
+rename p50_p_onart_diag_1524__&o = P_onART_DiagA1524_M;
+rename p5_p_onart_diag_1524__&o  = P_onART_DiagA1524_95LL;
+rename p95_p_onart_diag_1524__&o = P_onART_DiagA1524_95UL;
+rename p50_p_onart_diag_&o = P_onART_DiagA1599_M;
+rename p5_p_onart_diag_&o = P_onART_DiagA1599_95LL;
+rename p95_p_onart_diag_&o = P_onART_DiagA1599_95UL;
+rename p50_p_onart_diag_sw_&o = P_onART_DiagFSW1599_M;
 
 *% of individuals 15+ years old diagnosed 12 months ago with AHD on ART;
-*rename p50__&o = P_onART_Diag12mAHDA1599_M_&o;
+*rename p50__&o = P_onART_Diag12mAHDA1599_M;
 *% of individuals 15+ years old diagnosed 12 months ago without AHD on ART;
-*rename _&o = P_onART_Diag12mNOAHDA1599_M_&o;
+*rename _&o = P_onART_Diag12mNOAHDA1599_M;
 *% of individuals 15-24 years old diagnosed 12 months ago with AHD on ART;
-*rename _&o = P_onART_Diag12mAHDA1524_M_&o;
+*rename _&o = P_onART_Diag12mAHDA1524_M;
 *% of individuals 15-24 years old diagnosed 12 months ago without AHD on ART;
-*rename _&o = P_onART_Diag12mNOAHDA1524_M_&o;
+*rename _&o = P_onART_Diag12mNOAHDA1524_M;
 
-rename p50_p_onart_m_&o = P_onART_HIVM1599_M_&o;
-rename p5_p_onart_m_&o  = P_onART_HIVM1599_95LL_&o;
-rename p95_p_onart_m_&o = P_onART_HIVM1599_95UL_&o;
-rename p50_p_onart_w_&o = P_onART_HIVF1599_M_&o;
-rename p5_p_onart_w_&o  = P_onART_HIVF1599_95LL_&o;
-rename p95_p_onart_w_&o = P_onART_HIVF1599_95UL_&o;
-rename p50_p_onart_w1524__&o = P_onART_HIVF1524_M_&o;
-rename p50_p_onart_1524__&o = P_onART_HIVA1524_M_&o;
-rename p50_p_onart_&o = P_onART_HIVA1599_M_&o;
-rename p5_p_onart_&o = P_onART_HIVA1599_95LL_&o;
-rename p95_p_onart_&o = P_onART_HIVA1599_95UL_&o;
-rename p50_p_onart_sw_&o = P_onART_HIVFSW1599_M_&o;
+rename p50_p_onart_m_&o = P_onART_HIVM1599_M;
+rename p5_p_onart_m_&o  = P_onART_HIVM1599_95LL;
+rename p95_p_onart_m_&o = P_onART_HIVM1599_95UL;
+rename p50_p_onart_w_&o = P_onART_HIVF1599_M;
+rename p5_p_onart_w_&o  = P_onART_HIVF1599_95LL;
+rename p95_p_onart_w_&o = P_onART_HIVF1599_95UL;
+rename p50_p_onart_w1524__&o = P_onART_HIVF1524_M;
+rename p50_p_onart_1524__&o = P_onART_HIVA1524_M;
+rename p50_p_onart_&o = P_onART_HIVA1599_M;
+rename p5_p_onart_&o = P_onART_HIVA1599_95LL;
+rename p95_p_onart_&o = P_onART_HIVA1599_95UL;
+rename p50_p_onart_sw_&o = P_onART_HIVFSW1599_M;
     
-rename p50_p_onart_artexp_m_&o = P_onART_ExpM1599_M_&o;
-rename p5_p_onart_artexp_m_&o = P_onART_ExpM1599_95LL_&o;
-rename p95_p_onart_artexp_m_&o = P_onART_ExpM1599_95UL_&o;
-rename p50_p_onart_artexp_w_&o = P_onART_ExpF1599_M_&o;
-rename p5_p_onart_artexp_w_&o = P_onART_ExpF1599_95LL_&o;
-rename p95_p_onart_artexp_w_&o = P_onART_ExpF1599_95UL_&o;
-rename p50_p_onart_artexp_1524__&o = P_onART_ExpA1524_M_&o;
-rename p5_p_onart_artexp_1524__&o = P_onART_ExpA1524_95LL_&o;
-rename p95_p_onart_artexp_1524__&o = P_onART_ExpA1524_95UL_&o;
-rename p50_p_onart_artexp_&o = P_onART_ExpA1599_M_&o;
-rename p5_p_onart_artexp_&o = P_onART_ExpA1599_95LL_&o;
-rename p95_p_onart_artexp_&o = P_onART_ExpA1599_95UL_&o;
-rename p50_p_onart_artexp_sw_&o = P_onART_ExpFSW1599_M_&o;
-rename p50_p_onart_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M_&o;
-rename p50_p_onart_vl1000_&o = P_VLS_onARTA1599_M_&o;
-rename p5_p_onart_vl1000_&o = P_VLS_onARTA1599_95LL_&o;
-rename p95_p_onart_vl1000_&o = P_VLS_onARTA1599_95UL_&o;
-rename p50_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_M_&o;
-rename p5_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95LL_&o;
-rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL_&o;
-rename p50_p_onart_vl1000_w1524evpreg_&o = P_VLS_onARTpregEverBirthF1524_M_&o;
+rename p50_p_onart_artexp_m_&o = P_onART_ExpM1599_M;
+rename p5_p_onart_artexp_m_&o = P_onART_ExpM1599_95LL;
+rename p95_p_onart_artexp_m_&o = P_onART_ExpM1599_95UL;
+rename p50_p_onart_artexp_w_&o = P_onART_ExpF1599_M;
+rename p5_p_onart_artexp_w_&o = P_onART_ExpF1599_95LL;
+rename p95_p_onart_artexp_w_&o = P_onART_ExpF1599_95UL;
+rename p50_p_onart_artexp_1524__&o = P_onART_ExpA1524_M;
+rename p5_p_onart_artexp_1524__&o = P_onART_ExpA1524_95LL;
+rename p95_p_onart_artexp_1524__&o = P_onART_ExpA1524_95UL;
+rename p50_p_onart_artexp_&o = P_onART_ExpA1599_M;
+rename p5_p_onart_artexp_&o = P_onART_ExpA1599_95LL;
+rename p95_p_onart_artexp_&o = P_onART_ExpA1599_95UL;
+rename p50_p_onart_artexp_sw_&o = P_onART_ExpFSW1599_M;
+rename p50_p_onart_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M;
+rename p50_p_onart_vl1000_&o = P_VLS_onARTA1599_M;
+rename p5_p_onart_vl1000_&o = P_VLS_onARTA1599_95LL;
+rename p95_p_onart_vl1000_&o = P_VLS_onARTA1599_95UL;
+rename p50_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_M;
+rename p5_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95LL;
+rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL;
+rename p50_p_onart_vl1000_w1524evpreg_&o = P_VLS_onARTpregEverBirthF1524_M;
 *% of adults 15+ years living with HIV who are on ART and who have ever been viremic (measured VL>1000) who are virally suppressed (if possible, at a threshold of <1000)
-*rename _&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;
+*rename _&o = P_VLS_onARTMVLgt1000EverA1599_M;
 
 keep cald
 p50_prevalence1549m_&o 		p5_prevalence1549m_&o		p95_prevalence1549m_&o
@@ -1566,16 +1569,24 @@ p50_p_onart_vl1000_w1524evpreg_&o
 run;
 
 %mend;
-
+%stock(o=1);
+%stock(o=15);
 
 *FLOW;
-data f;set d;
+%macro flow(o=);
+data f&o;set d;
+if option =&o;
 *note that 1991 would refer to the period 1990.5-1991.5;
 where cald in 
-(1991 1992 1993 1994 1995 1996 1997 1998 1999 
-2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 
-2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 
-2020 2021 2022 2023 2024 2025 2026 2027 2028 2029 
-2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 
-2040 2041);
+(2023 2024 20 2026 2027 2028 2029 
+2030 2031 2032 2033 2034 20 2036 2037 2038 2039 
+2040 2041 2042 2043 2044 20 2046 2047 2048 2049
+20 21 22 23 24 25 26 27 28 29
+2060 2061 2062 2063 2064 20 2066 2067 2068 2069
+2070 2071 2072 );
+
+%mend;
+%flow(o=1);
+%flow(o=15);
+
 	

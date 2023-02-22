@@ -293,19 +293,19 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_ep;							p_ep = s_ep / s_alive1564 ;
 
-* p_m_npge1_; 					p_m_npge1_ = s_m_npge1/s_alive1564_m;*VCFeb2023;
-* p_w_npge1_; 					p_w_npge1_ = s_w_npge1/s_alive1564_w;*VCFeb2023;
-* p_w1524_npge1_;		 		p_w1524_npge1_ = s_w1524_npge1/(s_ageg1519w + s_ageg2024w);*VCFeb2023;
-* p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 /s_sw;*VCFeb2023;
+* p_m_npge1_; 					p_m_npge1_ = s_m_npge1 / s_alive1564_m; *VCFeb2023;
+* p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
+* p_w1524_npge1_;		 		p_w1524_npge1_ = s_w1524_npge1 / (s_ageg1519w + s_ageg2024w); *VCFeb2023;
+* p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 / s_sw; *VCFeb2023;
 
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
-* n_sw_1599;					n_sw_1599 = s_sw * &sf;*VCFeb2023;
+* n_sw_1599;					n_sw_1599 = s_sw * &sf; *VCFeb2023;
 * n_sw_1564;					n_sw_1564 = s_sw_1564 * &sf;
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * &sf;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
-* prev_sti_sw;					prev_sti_sw = s_sti_sw / s_sw;
+* prev_sti_sw;					prev_sti_sw = s_sti_sw / s_sw; *VCFeb2023;
 
 * rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
 * rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
@@ -411,8 +411,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
 * prevalence1549;				prevalence1549 = (s_hiv1549w  + s_hiv1549m ) / (s_alive1549_w + s_alive1549_m);
 * prevalence_hiv_preg;			prevalence_hiv_preg = s_hiv_pregnant / s_pregnant ;
-* prevalence1549_hiv_preg;		prevalence1549preg  = s_hiv_pregn_w1549_ / s_pregnant_w1549 ;*VCFeb2023;
-* prevalence1524_hiv_preg;		prevalence1524preg  = s_hiv_pregn_w1524_ / s_pregnant_w1524 ;*VCFeb2023;
+* prevalence1549_hiv_preg;		prevalence1549preg  = s_hiv_pregn_w1549_ / s_pregnant_w1549; *VCFeb2023;
+* prevalence1524_hiv_preg;		prevalence1524preg  = s_hiv_pregn_w1524_ / s_pregnant_w1524; *VCFeb2023;
 
 * ts1m - below change 4 to 12;
 
@@ -471,7 +471,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence1524w;				prevalence1524w =  s_hiv1524w  / (s_ageg1519w + s_ageg2024w) ;
 * prevalence1524m;				prevalence1524m =  s_hiv1524m  / (s_ageg1519m + s_ageg2024m) ;
 
-* prevalence_sw;				prevalence_sw     = s_hiv_sw / s_sw;*VCFeb2023;
+* prevalence_sw;				prevalence_sw     = s_hiv_sw / s_sw; *VCFeb2023;
 
 * r_prev_1519w_4549w;			r_prev_1519w_4549w = prevalence1519w / prevalence4549w ;
 * r_prev_2024w_4549w;			r_prev_2024w_4549w = prevalence2024w / prevalence4549w ;
@@ -533,37 +533,35 @@ end;
 * p_ai_no_arv_c_inm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_inm = s_ai_naive_no_pmtct_c_inm_ / s_ai_naive_no_pmtct_;
 
 * p_artexp_diag;  				if s_diag > 0 then p_artexp_diag = s_artexp / s_diag;
-* p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;*VCFeb2023: why the numerator here is different?;
+* p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag; *VCFeb2023: why the numerator here is different?;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
-* p_onart_diag_w1524_;			if (s_diag_w1519_+s_diag_w2024_) > 0 then p_onart_diag_w1524_ = (s_onart_w1519_ + s_onart_w2024_)/ (s_diag_w1519_+s_diag_w2024_);*VCFeb2023;
+* p_onart_diag_w1524_;			if (s_diag_w1519_+s_diag_w2024_) > 0 then p_onart_diag_w1524_ = (s_onart_w1519_ + s_onart_w2024_) / (s_diag_w1519_+s_diag_w2024_); *VCFeb2023;
 * p_onart_diag_1524_;			if (s_diag_w1519_+s_diag_w2024_+s_diag_m1519_+s_diag_m2024_) > 0 then 
-								p_onart_diag_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_)/(s_diag_w1519_+s_diag_w2024_+s_diag_m1519_+s_diag_m2024_);*VCFeb2023;
+								p_onart_diag_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_) / (s_diag_w1519_+s_diag_w2024_+s_diag_m1519_+s_diag_m2024_); *VCFeb2023;
 
 * p_onart_w;					if s_hivge15w gt 0 then p_onart_w = s_onart_w / s_hivge15w;
 * p_onart_m;					if s_hivge15m gt 0 then p_onart_m = s_onart_m / s_hivge15m;
 * p_onart;						if s_hivge15 gt 0 then p_onart = s_onart / s_hivge15; 
-* p_onart_w1524_;				if s_hiv1524w gt 0 then p_onart_w1524_ = (s_onart_w1519_ + s_onart_w2024_)/s_hiv1524w;*VCFeb2023;
+* p_onart_w1524_;				if s_hiv1524w gt 0 then p_onart_w1524_ = (s_onart_w1519_ + s_onart_w2024_) / s_hiv1524w; *VCFeb2023;
 * p_onart_1524_;				if (s_hiv1524w+s_hiv1524m) gt 0 then 
-								p_onart_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_)/(s_hiv1524w+s_hiv1524m);*VCFeb2023;
-* p_onart_sw;					if s_hiv_sw gt 0 then p_onart_sw = s_onart_sw / s_hiv_sw;
-* p_onart_m_age50pl;			p_onart_m_age50pl = s_onart_m50pl / (s_onart_m1549_ + s_onart_m50pl);*VCFeb2023: I moved it here but is the denominator correct?
-* p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);
+								p_onart_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_) / (s_hiv1524w+s_hiv1524m); *VCFeb2023;
+* p_onart_sw;					if s_hiv_sw gt 0 then p_onart_sw = s_onart_sw / s_hiv_sw; *VCFeb2023;
 
-* p_onart_artexp; 				if s_artexp 	  gt 0 then p_onart_artexp   = s_onart / s_artexp;
-* p_onart_artexp_m; 			if s_artexp_m 	  gt 0 then p_onart_artexp_m = s_onart_m / s_artexp_m;
-* p_onart_artexp_w;				if s_artexp_w 	  gt 0 then p_onart_artexp_w = s_onart_w / s_artexp_w;
+* p_onart_artexp; 				if s_artexp 	  gt 0 then p_onart_artexp   = s_onart / s_artexp; *VCFeb2023;
+* p_onart_artexp_m; 			if s_artexp_m 	  gt 0 then p_onart_artexp_m = s_onart_m / s_artexp_m; *VCFeb2023;
+* p_onart_artexp_w;				if s_artexp_w 	  gt 0 then p_onart_artexp_w = s_onart_w / s_artexp_w; *VCFeb2023;
 * p_onart_artexp_1524_;			if s_artexp_1524_ gt 0 then 
-								p_onart_artexp_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_) / s_artexp_1524_;
-* p_onart_artexp_sw;			if s_artexp_sw 	  gt 0 then p_onart_artexp_sw =	s_onart_sw / s_artexp_sw;
-* p_onart_artexp_w1524evpreg;   if s_artexp_w1524evpreg gt 0 then p_onart_artexp_w1524evpreg = s_onart_w1524evpreg / s_artexp_w1524evpreg;
+								p_onart_artexp_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_) / s_artexp_1524_; *VCFeb2023;
+* p_onart_artexp_sw;			if s_artexp_sw 	  gt 0 then p_onart_artexp_sw =	s_onart_sw / s_artexp_sw; *VCFeb2023;
+* p_onart_artexp_w1524evpreg;   if s_artexp_w1524evpreg gt 0 then p_onart_artexp_w1524evpreg = s_onart_w1524evpreg / s_artexp_w1524evpreg; *VCFeb2023;
 
 
 * n_onart_w;					n_onart_w = s_onart_w * &sf;
 * n_onart_m;					n_onart_m = s_onart_m * &sf;
 * n_onart  ;					n_onart   = s_onart   * &sf;
-* n_onart_1524_;				n_onart_1524_ = (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) * &sf;
+* n_onart_1524_;				n_onart_1524_ = (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) * &sf; *VCFeb2023;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -672,12 +670,13 @@ end;
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-* p_onart_vl1000_w1524evpreg;   if s_onart_gt6m_iicu_w1524evpreg gt 0 then p_onart_vl1000_w1524evpreg = s_vl1000_art_gt6m_iicu_w1524evpreg / s_onart_gt6m_iicu_w1524evpreg;
-
+* p_onart_vl1000_w1524evpreg;   if s_onart_gt6m_iicu_w1524evpreg gt 0 then p_onart_vl1000_w1524evpreg = s_vl1000_art_gt6m_iicu_w1524evpreg / s_onart_gt6m_iicu_w1524evpreg; *VCFeb2023;
 
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
 * p_vl1000_art_12m_onart;		if s_art_12m_onart > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m_onart / s_art_12m_onart ;
 
+* p_onart_m_age50pl;			p_onart_m_age50pl = s_onart_m50pl / (s_onart_m1549_ + s_onart_m50pl);
+* p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);																			
 
 * prevalence_vg1000;			if s_alive > 0 then prevalence_vg1000 = s_vg1000 / s_alive;
 * prev_vg1000_newp_m;			prev_vg1000_newp_m = (s_i_m_newp - s_i_vl1000_m_newp) /  s_m_newp;
@@ -844,41 +843,41 @@ end;
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
-* n_hivge15m;					n_hivge15m = s_hivge15m * &sf;*VCFeb2023;
-* n_hivge15w;					n_hivge15w = s_hivge15w * &sf;*VCFeb2023;
-* n_hiv1524m;					n_hiv1524m = s_hiv1524m * &sf;*VCFeb2023;
-* n_hiv1524w;					n_hiv1524w = s_hiv1524w * &sf;*VCFeb2023;
-* n_hiv2549m;					n_hiv2549m = (s_hiv1549m - s_hiv1524m) * &sf;*VCFeb2023;
-* n_hiv2549w;					n_hiv2549w = (s_hiv1549w - s_hiv1524w) * &sf;*VCFeb2023;
+* n_hivge15m;					n_hivge15m = s_hivge15m * &sf; *VCFeb2023;
+* n_hivge15w;					n_hivge15w = s_hivge15w * &sf; *VCFeb2023;
+* n_hiv1524m;					n_hiv1524m = s_hiv1524m * &sf; *VCFeb2023;
+* n_hiv1524w;					n_hiv1524w = s_hiv1524w * &sf; *VCFeb2023;
+* n_hiv2549m;					n_hiv2549m = (s_hiv1549m - s_hiv1524m) * &sf; *VCFeb2023;
+* n_hiv2549w;					n_hiv2549w = (s_hiv1549w - s_hiv1524w) * &sf; *VCFeb2023;
 * n_hiv_sw;						n_hiv_sw = s_hiv_sw * &sf;*VCFeb2023;
 
 * n_alive;						n_alive = s_alive * &sf;
-* n_alive_m;					n_alive_m = s_alive_m * &sf;*VCFeb2023;
-* n_alive_w;					n_alive_w = s_alive_w * &sf;*VCFeb2023;
-* n_alive_1524m;				n_alive_1524m = s_ageg1m * &sf;*VCFeb2023;
-* n_alive_1524w;				n_alive_1524w = s_ageg1w * &sf;*VCFeb2023;
-* n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * &sf;*VCFeb2023; 
-* n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * &sf;*VCFeb2023; 
+* n_alive_m;					n_alive_m = s_alive_m * &sf; *VCFeb2023;
+* n_alive_w;					n_alive_w = s_alive_w * &sf; *VCFeb2023;
+* n_alive_1524m;				n_alive_1524m = s_ageg1m * &sf; *VCFeb2023;
+* n_alive_1524w;				n_alive_1524w = s_ageg1w * &sf; *VCFeb2023;
+* n_alive_2549m;				n_alive_2549m = (s_alive1549_m - s_ageg1m) * &sf; *VCFeb2023; 
+* n_alive_2549w;				n_alive_2549w = (s_alive1549_w - s_ageg1w) * &sf; *VCFeb2023; 
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship;
-* n_hivneg_sdpartner;			n_hivneg_sdpartner = (s_hiv0epi1_w + s_hiv0epi1_m) * &sf;*VCFeb2023; 
+* n_hivneg_sdpartner;			n_hivneg_sdpartner = (s_hiv0epi1_w + s_hiv0epi1_m) * &sf; *VCFeb2023; 
 *Number of HIV-negative  adults 15+ years old in a sero-discordant relationship, whom partner is not on ART; 
-* n_hivneg_sdpartneroffart;		n_hivneg_sdpartneroffart = (s_hiv0epi1_w - s_hiv0epart1_w + s_hiv0epi1_m - s_hiv0epart1_m) * &sf;*VCFeb2023; 
+* n_hivneg_sdpartneroffart;		n_hivneg_sdpartneroffart = (s_hiv0epi1_w - s_hiv0epart1_w + s_hiv0epi1_m - s_hiv0epart1_m) * &sf; *VCFeb2023; 
 *Number of HIV-negative  females 15+ years old in a sero-discordant relationship;
-* n_hivnegw_sdpartner;			n_hivnegw_sdpartner = s_hiv0epi1_w * &sf;*VCFeb2023; 
+* n_hivnegw_sdpartner;			n_hivnegw_sdpartner = s_hiv0epi1_w * &sf; *VCFeb2023; 
 *Number of HIV-negative  females 15+ years old in a sero-discordant relationship, whom partner is not on ART; 
-* n_hivnegw_sdpartneroffart;	n_hivnegw_sdpartneroffart = (s_hiv0epi1_w - s_hiv0epart1_w) * &sf;*VCFeb2023; 
+* n_hivnegw_sdpartneroffart;	n_hivnegw_sdpartneroffart = (s_hiv0epi1_w - s_hiv0epart1_w) * &sf; *VCFeb2023; 
 
-*n_not_on_art_cd4ge500;			n_not_on_art_cd4ge500  = s_not_on_art_cd4ge500 * &sf;*VCFeb2023; 
-*n_not_on_art_cd4350500;		n_not_on_art_cd4350500 = s_not_on_art_cd4350500 * &sf;*VCFeb2023; 
-*n_not_on_art_cd4200350;		n_not_on_art_cd4200350 = s_not_on_art_cd4200350 * &sf;*VCFeb2023; 
-*n_not_on_art_cd4502000;		n_not_on_art_cd450200  = (s_not_on_art_cd4l200 - s_not_on_art_cd4l50) * &sf;*VCFeb2023; 
-*n_not_on_art_cd4050;		    n_not_on_art_cd4050    = s_not_on_art_cd4l50 * &sf;*VCFeb2023; 
+*n_not_on_art_cd4ge500;			n_not_on_art_cd4ge500  = s_not_on_art_cd4ge500 * &sf; *VCFeb2023; 
+*n_not_on_art_cd4350500;		n_not_on_art_cd4350500 = s_not_on_art_cd4350500 * &sf; *VCFeb2023; 
+*n_not_on_art_cd4200350;		n_not_on_art_cd4200350 = s_not_on_art_cd4200350 * &sf; *VCFeb2023; 
+*n_not_on_art_cd4502000;		n_not_on_art_cd450200  = (s_not_on_art_cd4l200 - s_not_on_art_cd4l50) * &sf; *VCFeb2023; 
+*n_not_on_art_cd4050;		    n_not_on_art_cd4050    = s_not_on_art_cd4l50 * &sf; *VCFeb2023; 
 
-*n_asympt_Undiag;				n_asympt_Undiag     = s_asympt_Undiag * &sf;*VCFeb2023;  
-*n_asympt_diagoffart;			n_asympt_diagoffart = s_asympt_diagoffart * &sf;*VCFeb2023; 
-*n_asympt_diagonart;			n_asympt_diagonart  = s_asympt_diagonart * &sf;*VCFeb2023; 
-*n_sympt_notaids;				n_sympt_notaids 	= s_sympt_notaids * &sf;*VCFeb2023; 
-*n_sympt_aids;					n_sympt_aids 		= s_sympt_aids * &sf;*VCFeb2023; 
+*n_asympt_Undiag;				n_asympt_Undiag     = s_asympt_Undiag * &sf; *VCFeb2023;  
+*n_asympt_diagoffart;			n_asympt_diagoffart = s_asympt_diagoffart * &sf; *VCFeb2023; 
+*n_asympt_diagonart;			n_asympt_diagonart  = s_asympt_diagonart * &sf; *VCFeb2023; 
+*n_sympt_notaids;				n_sympt_notaids 	= s_sympt_notaids * &sf; *VCFeb2023; 
+*n_sympt_aids;					n_sympt_aids 		= s_sympt_aids * &sf; *VCFeb2023; 
 
 
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
@@ -1522,7 +1521,7 @@ run;
 
 ods html;
 proc means data=a.w_base_03_12_21 n p50 p5 p95 mean;
-var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21	prevalence1549preg_21 prevalence1524preg_21
+var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
 p_onart_diag_21 p_onart_vl1000_21   p_vl1000_21	p_onart_vl1000_w_21	p_onart_vl1000_m_21   p_onart_cd4_l500_21  p_onart_m_age50pl_21 p_onart_w_age50pl_21  
