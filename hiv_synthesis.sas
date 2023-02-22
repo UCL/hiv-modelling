@@ -13729,7 +13729,7 @@ onart_iicu_2549_ 		= .;	vl1000_art_iicu_2549_ 	= .;	onart_gt6m_2549_		= .; 	vl10
 onart_gt6m_iicu_2549_	= .;	vl1000_art_gt6m_iicu_2549_ = .;	vl1000_art_50pl_ 		= .;	onart_iicu_50pl_ 		= .;
 vl1000_art_iicu_50pl_ 	= .;	onart_gt6m_50pl_		= .; 	vl1000_art_gt6m_50pl_	= .;	onart_gt6m_iicu_50pl_	= .;
 vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;
-vl1000_art_gt6m_iicu_w1524evpreg=.;onart_gt6m_iicu_w1524evpreg=.;
+vl1000_artgt6miicu_w1524evpr=.;onartgt6miicu_w1524evpr=.;
 
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
@@ -13804,8 +13804,8 @@ end;
 
 *VCFeb2023;
 if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) then do;
-	onart_gt6m_iicu_w1524evpreg = onart_gt6m_iicu;
-	vl1000_art_gt6m_iicu_w1524evpreg = vl1000_art_gt6m_iicu;
+	onartgt6miicu_w1524evpr = onart_gt6m_iicu;
+	vl1000_artgt6miicu_w1524evpr = vl1000_art_gt6m_iicu;
 end;
 
 ***90-90-90 indicators for SW according to whether or not they have visited a SW program;
@@ -16438,7 +16438,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onart_gt6m_50pl_ + onart_gt6m_50pl_ ; s_vl1000_art_gt6m_50pl_ + vl1000_art_gt6m_50pl_ ; s_onart_gt6m_iicu_50pl_ + onart_gt6m_iicu_50pl_ ;
  	s_vl1000_art_gt6m_iicu_50pl_ + vl1000_art_gt6m_iicu_50pl_ ; s_vl1000_art_incintcun_sw + vl1000_art_incintcun_sw ;
 	s_vl1000_art_gt6m_iicu_sw + vl1000_art_gt6m_iicu_sw ; s_onart_gt6m_iicu_sw + onart_gt6m_iicu_sw ;
-	s_vl1000_art_gt6m_iicu_w1524evpreg + vl1000_art_gt6m_iicu_w1524evpreg; s_onart_gt6m_iicu_w1524evpreg + onart_gt6m_iicu_w1524evpreg;
+	s_vl1000_artgt6miicu_w1524evpr + vl1000_artgt6miicu_w1524evpr; s_onartgt6miicu_w1524evpr + onartgt6miicu_w1524evpr;
     s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
@@ -18176,7 +18176,7 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
+s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
@@ -19108,7 +19108,7 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
+s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
@@ -24279,7 +24279,7 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
+s_vl1000_artgt6miicu_w1524evpr s_onartgt6miicu_w1524evpr
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
