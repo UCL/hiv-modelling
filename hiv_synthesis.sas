@@ -13726,6 +13726,7 @@ onart_iicu_2549_ 		= .;	vl1000_art_iicu_2549_ 	= .;	onart_gt6m_2549_		= .; 	vl10
 onart_gt6m_iicu_2549_	= .;	vl1000_art_gt6m_iicu_2549_ = .;	vl1000_art_50pl_ 		= .;	onart_iicu_50pl_ 		= .;
 vl1000_art_iicu_50pl_ 	= .;	onart_gt6m_50pl_		= .; 	vl1000_art_gt6m_50pl_	= .;	onart_gt6m_iicu_50pl_	= .;
 vl1000_art_gt6m_iicu_50pl_ = .;  onart_gt6m_iicu_sw	= .;	vl1000_art_gt6m_iicu_sw = .;
+vl1000_art_gt6m_iicu_w1524evpreg=.;onart_gt6m_iicu_w1524evpreg=.;
 
 if gender=1 then do;
 	vl1000_art_m 		= vl1000_art;
@@ -13796,6 +13797,12 @@ end;
 if sw=1 then do;
 	onart_gt6m_iicu_sw		= onart_gt6m_iicu;
 	vl1000_art_gt6m_iicu_sw = vl1000_art_gt6m_iicu;
+end;
+
+*VCFeb2023;
+if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) then do;
+	onart_gt6m_iicu_w1524evpreg = onart_gt6m_iicu;
+	vl1000_art_gt6m_iicu_w1524evpreg = vl1000_art_gt6m_iicu;
 end;
 
 ***90-90-90 indicators for SW according to whether or not they have visited a SW program;
@@ -13894,9 +13901,19 @@ if onart=1 then do;
 end;
 
 *** Diagnosed and on ART by sex and ep;
-artexp=0; if naive=0 then artexp=1; 
+artexp=0; if naive=0 then artexp=1;
+artexp_m=0;    if gender=1        and artexp=1 then artexp_m=1;*VCFeb2023;
+artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1;*VCFeb2023;
+artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1;*VCFeb2023;
+artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1;*VCFeb2023;
+artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and artexp=1 then artexp_w1524evpreg=1;*VCFeb2023;
+ 
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
 else if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
+onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1;*VCFeb2023;
+
+
+
 
 ***VL on 2nd line;
 if (onart=1 or int_clinic_not_aw=1) and caldate&j >= date_line2 > . then line2_incl_int_clinic_not_aw = 1;
@@ -16419,6 +16436,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onart_gt6m_50pl_ + onart_gt6m_50pl_ ; s_vl1000_art_gt6m_50pl_ + vl1000_art_gt6m_50pl_ ; s_onart_gt6m_iicu_50pl_ + onart_gt6m_iicu_50pl_ ;
  	s_vl1000_art_gt6m_iicu_50pl_ + vl1000_art_gt6m_iicu_50pl_ ; s_vl1000_art_incintcun_sw + vl1000_art_incintcun_sw ;
 	s_vl1000_art_gt6m_iicu_sw + vl1000_art_gt6m_iicu_sw ; s_onart_gt6m_iicu_sw + onart_gt6m_iicu_sw ;
+	s_vl1000_art_gt6m_iicu_w1524evpreg + vl1000_art_gt6m_iicu_w1524evpreg; s_onart_gt6m_iicu_w1524evpreg + onart_gt6m_iicu_w1524evpreg;
     s_u_vfail1_dol_this_period + u_vfail1_dol_this_period ; s_o_dol_at_risk_uvfail + o_dol_at_risk_uvfail ; s_elig_treat200 + elig_treat200 ;
     s_elig_treat350 + elig_treat350 ; s_elig_treat500 + elig_treat500 ; s_cl100 + cl100 ; s_cl50 + cl50 ; s_cl200 + cl200 ; s_cl350 + cl350 ;
 	s_cd4art_started_this_period + cd4art_started_this_period ; s_cd4diag_diag_this_period + cd4diag_diag_this_period ;
@@ -16434,8 +16452,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	/*ART*/
 
 	s_naive + naive; s_naive_m + naive_m ; s_naive_w + naive_w ; s_onart + onart ; s_int_clinic_not_aw + int_clinic_not_aw ; s_art_start + art_start ; 
-	s_art_start_m + art_start_m ; s_art_start_w + art_start_w ; s_artexp  + artexp  ; s_artexpoff +  artexpoff ; s_onart_m + onart_m ; s_onart_w + onart_w ; 
-    s_onart_sw + onart_sw ; s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
+	s_art_start_m + art_start_m ; s_art_start_w + art_start_w ; s_artexp  + artexp  ;
+	s_artexp_m + artexp_m; s_artexp_w + artexp_w; s_artexp_1524_ + artexp_1524_; s_artexp_sw + artexp_sw; s_artexp_w1524evpreg + artexp_w1524evpreg;
+	s_artexpoff +  artexpoff ; s_onart_m + onart_m ; s_onart_w + onart_w ; 
+    s_onart_sw + onart_sw ; s_onart_w1524evpreg + onart_w1524evpreg; s_art_dur_l6m + art_dur_l6m ; s_art_dur_g6m + art_dur_g6m ; s_art_tdur_l6m + art_tdur_l6m ; s_art_tdur_g6m + art_tdur_g6m ;
 	s_eponart_m + eponart_m ; s_eponart_w + eponart_w ; s_hiv1564_onart + hiv1564_onart ; 
 	s_non_tb_who3_art_init + non_tb_who3_art_init ; s_who4_art_init + who4_art_init ; s_art_start_pregnant + art_start_pregnant ; 
 	s_lpr + o_lpr ; s_taz + o_taz ; s_3tc + o_3tc ; s_nev + o_nev ; s_efa + o_efa ; s_ten + o_ten ; s_zdv + o_zdv ; s_dol + o_dol ; s_cab + o_cab ;
@@ -18154,20 +18174,22 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-
+s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
 /*ART*/
  s_naive    s_onart  s_int_clinic_not_aw
-s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
+s_art_start  	s_art_start_m   s_art_start_w   s_artexp  
+s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
+s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
 s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_
-s_onart_sw
+s_onart_sw 	s_onart_w1524evpreg
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart   s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
@@ -19084,20 +19106,22 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-
+s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
 /*ART*/
  s_naive    s_onart  s_int_clinic_not_aw
-s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
+s_art_start  	s_art_start_m   s_art_start_w   s_artexp  
+s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
+s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
 s_onart_w1549_  s_onart_w1564_  s_onart_w1519_  s_onart_w2024_  s_onart_w2529_  s_onart_w3034_  s_onart_w3539_  
 s_onart_w4044_  s_onart_w4549_  s_onart_w5054_  s_onart_w5559_  s_onart_w6064_	
 s_onart_w6569_	s_onart_w7074_	s_onart_w7579_	s_onart_w8084_	s_onart_w85pl_	
-s_onart_sw
+s_onart_sw 	s_onart_w1524evpreg
 s_art_dur_l6m   s_art_dur_g6m   s_art_tdur_l6m  s_art_tdur_g6m
 s_eponart_m	 s_eponart_w  s_hiv1564_onart    s_non_tb_who3_art_init  s_who4_art_init  s_art_start_pregnant 
 
@@ -24253,13 +24277,15 @@ s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_15
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
 s_vl1000_art_50pl_  s_onart_iicu_50pl_  s_vl1000_art_iicu_50pl_  s_onart_gt6m_50pl_  s_vl1000_art_gt6m_50pl_  s_onart_gt6m_iicu_50pl_  s_vl1000_art_gt6m_iicu_50pl_
 s_vl1000_art_incintcun_sw s_vl1000_art_gt6m_iicu_sw  s_onart_gt6m_iicu_sw
-
+s_vl1000_art_gt6m_iicu_w1524evpreg s_onart_gt6m_iicu_w1524evpreg
 s_u_vfail1_dol_this_period   s_o_dol_at_risk_uvfail
 s_elig_treat200  s_elig_treat350  s_elig_treat500  s_cl100 s_cl50  s_cl200  s_cl350  s_cd4art_started_this_period  s_cd4diag_diag_this_period
 
 /*ART*/
   s_naive    s_onart  s_int_clinic_not_aw
-s_art_start  	s_art_start_m   s_art_start_w   s_artexp  s_artexpoff  s_onart_m  s_onart_w
+s_art_start  	s_art_start_m   s_art_start_w   s_artexp  
+s_artexp_m 		s_artexp_w 		s_artexp_1524_ 	s_artexp_sw 	s_artexp_w1524evpreg
+s_artexpoff  s_onart_m  s_onart_w
 s_onart_m1549_  s_onart_m1564_  s_onart_m1519_  s_onart_m2024_  s_onart_m2529_  s_onart_m3034_  s_onart_m3539_  
 s_onart_m4044_  s_onart_m4549_  s_onart_m5054_  s_onart_m5559_  s_onart_m6064_	
 s_onart_m6569_	s_onart_m7074_	s_onart_m7579_	s_onart_m8084_	s_onart_m85pl_	
@@ -24437,7 +24463,7 @@ s_i_v1_newp 	s_i_v2_newp 	s_i_v3_newp 	s_i_v4_newp 	s_i_v5_newp  	s_i_v6_newp
 s_sw_newp   s_sw1524_newp s_sw_newp_cat1 s_sw_newp_cat2 s_sw_newp_cat3 s_sw_newp_cat4 s_sw_newp_cat5  
 s_episodes_sw  s_sw_gt1ep
 s_new_1519sw  s_new_2024sw  s_new_2529sw  s_new_3039sw  s_new_ge40sw  
-s_diag_sw s_onart_sw s_vs_sw 
+s_diag_sw s_onart_sw s_onart_w1524evpreg s_vs_sw 
 
 s_age_deb_sw1519_  s_age_deb_sw2024_  s_age_deb_sw2529_  s_age_deb_sw3039_  s_age_deb_swov40_ 
 

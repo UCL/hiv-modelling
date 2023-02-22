@@ -293,8 +293,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_ep;							p_ep = s_ep / s_alive1564 ;
 
-* p_m_np_ge1_; 					p_m_np_ge1_ = s_m_npge1/s_alive1564_m;*VCFeb2023;
-* p_w_np_ge1_; 					p_w_np_ge1_ = s_w_npge1/s_alive1564_w;*VCFeb2023;
+* p_m_npge1_; 					p_m_npge1_ = s_m_npge1/s_alive1564_m;*VCFeb2023;
+* p_w_npge1_; 					p_w_npge1_ = s_w_npge1/s_alive1564_w;*VCFeb2023;
 * p_w1524_npge1_;		 		p_w1524_npge1_ = s_w1524_npge1/(s_ageg1519w + s_ageg2024w);*VCFeb2023;
 * p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 /s_sw;*VCFeb2023;
 
@@ -547,8 +547,18 @@ end;
 * p_onart_w1524_;				if s_hiv1524w gt 0 then p_onart_w1524_ = (s_onart_w1519_ + s_onart_w2024_)/s_hiv1524w;*VCFeb2023;
 * p_onart_1524_;				if (s_hiv1524w+s_hiv1524m) gt 0 then 
 								p_onart_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_)/(s_hiv1524w+s_hiv1524m);*VCFeb2023;
+* p_onart_sw;					if s_hiv_sw gt 0 then p_onart_sw = s_onart_sw / s_hiv_sw;
 * p_onart_m_age50pl;			p_onart_m_age50pl = s_onart_m50pl / (s_onart_m1549_ + s_onart_m50pl);*VCFeb2023: I moved it here but is the denominator correct?
 * p_onart_w_age50pl;			p_onart_w_age50pl = s_onart_w50pl / (s_onart_w1549_ + s_onart_w50pl);
+
+* p_onart_artexp; 				if s_artexp 	  gt 0 then p_onart_artexp   = s_onart / s_artexp;
+* p_onart_artexp_m; 			if s_artexp_m 	  gt 0 then p_onart_artexp_m = s_onart_m / s_artexp_m;
+* p_onart_artexp_w;				if s_artexp_w 	  gt 0 then p_onart_artexp_w = s_onart_w / s_artexp_w;
+* p_onart_artexp_1524_;			if s_artexp_1524_ gt 0 then 
+								p_onart_artexp_1524_ = (s_onart_w1519_+s_onart_w2024_+s_onart_m1519_+s_onart_m2024_) / s_artexp_1524_;
+* p_onart_artexp_sw;			if s_artexp_sw 	  gt 0 then p_onart_artexp_sw =	s_onart_sw / s_artexp_sw;
+* p_onart_artexp_w1524evpreg;   if s_artexp_w1524evpreg gt 0 then p_onart_artexp_w1524evpreg = s_onart_w1524evpreg / s_artexp_w1524evpreg;
+
 
 * n_onart_w;					n_onart_w = s_onart_w * &sf;
 * n_onart_m;					n_onart_m = s_onart_m * &sf;
@@ -662,6 +672,8 @@ end;
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
+* p_onart_vl1000_w1524evpreg;   if s_onart_gt6m_iicu_w1524evpreg gt 0 then p_onart_vl1000_w1524evpreg = s_vl1000_art_gt6m_iicu_w1524evpreg / s_onart_gt6m_iicu_w1524evpreg;
+
 
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
 * p_vl1000_art_12m_onart;		if s_art_12m_onart > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m_onart / s_art_12m_onart ;
@@ -917,7 +929,9 @@ p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m   p_ai_no_arv_c_rtt
 p_artexp_diag p_onart_diag p_onart_diag_w p_onart_diag_m p_onart_diag_sw p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev 
 p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
-p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw
+p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_sw 
+p_onart_artexp p_onart_artexp_m p_onart_artexp_w p_onart_artexp_1524_ p_onart_artexp_sw p_onart_artexp_w1524evpreg
+p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw 	p_onart_vl1000_w1524evpreg
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
@@ -1038,7 +1052,7 @@ p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
 test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
-p_m_np_ge1_ p_w_np_ge1_ p_w1524_npge1_ p_sw_npge1_
+p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
  s_cost_prep s_cost_prep_visit
 
 dcost_80 ddaly_80
@@ -1122,7 +1136,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_asympt_Undiag);%var(v=n_asympt_diagoffart);%var(v=n_asympt_diagonart);%var(v=n_sympt_notaids);%var(v=n_sympt_aids);
 %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5);   %var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
-%var(v=p_m_np_ge1_); %var(v=p_w_np_ge1_); %var(v=p_w1524_npge1_); %var(v=p_sw_npge1_);
+%var(v=p_m_npge1_); %var(v=p_w_npge1_); %var(v=p_w1524_npge1_); %var(v=p_sw_npge1_);
 %var(v=n_tested_m);
 %var(v=p_tested_past_year_1549m)  ; %var(v=p_tested_past_year_1549w)  ;
 %var(v=p_mcirc) ;%var(v=p_mcirc_1519m); %var(v=p_mcirc_2024m);%var(v=p_mcirc_2529m);
@@ -1155,8 +1169,9 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_ten); %var(v=p_zdv); %var(v=p_dol); %var(v=p_3tc); %var(v=p_lpr); %var(v=p_nev); %var(v=p_onart_vl1000);  %var(v=p_artexp_vl1000);
 %var(v=p_vl1000); %var(v=p_vg1000); %var(v=p_vl1000_m);  %var(v=p_vl1000_w);  %var(v=p_vl1000_m_1524);  %var(v=p_vl1000_w_1524);  
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
-%var(v=p_onart);%var(v=p_onart_m); %var(v=p_onart_w); %var(v=p_onart_w1524_);%var(v=p_onart_1524_);
-%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);
+%var(v=p_onart);%var(v=p_onart_m); %var(v=p_onart_w); %var(v=p_onart_w1524_);%var(v=p_onart_1524_);%var(v=p_onart_sw);
+%var(v=p_onart_artexp);%var(v=p_onart_artexp_m);%var(v=p_onart_artexp_w);%var(v=p_onart_artexp_1524_);%var(v=p_onart_artexp_sw);%var(v=p_onart_artexp_w1524evpreg);
+%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);%var(v=p_onart_vl1000_w1524evpreg);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 %var(v=aids_death_rate);  %var(v=death_rate_onart);   %var(v=dcost);  %var(v= dart_cost_y);
@@ -1265,7 +1280,9 @@ p_ai_no_arv_c_nnm  p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m 
 p_artexp_diag  p_onart_diag  p_onart_diag_w  p_onart_diag_m  p_onart_diag_sw   p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa  p_taz  p_ten  p_zdv  p_dol  p_3tc  p_lpr  p_nev  
 p_onart_vl1000  p_artexp_vl1000  p_vl1000  p_vg1000  p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
-p_vl1000_art_12m  p_vl1000_art_12m_onart p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_vl1000_w  p_onart_vl1000_m   p_onart_vl1000_1524  p_onart_vl1000_sw
+p_vl1000_art_12m  p_vl1000_art_12m_onart p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_sw 
+p_onart_artexp p_onart_artexp_m p_onart_artexp_w p_onart_artexp_1524_ p_onart_artexp_sw p_onart_artexp_w1524evpreg
+p_onart_vl1000_w  p_onart_vl1000_m   p_onart_vl1000_1524  p_onart_vl1000_sw  p_onart_vl1000_w1524evpreg
 prev_vg1000_newp_m  prev_vg1000_newp_w  p_startedline2
 p_tle  p_tld  p_zld  p_zla  p_otherreg  p_drug_level_test p_linefail_ge1
 aids_death_rate  death_rate_onart  dcost   dart_cost_y

@@ -44,6 +44,7 @@ incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
 incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
 
 p_onart_vl1000_ = p_onart_vl1000;
+p_onart_vl1000_1524_ = p_onart_vl1000_1524;
 p_vl1000_ = p_vl1000;
 p_vg1000_ = p_vg1000;
 prevalence_vg1000_ = prevalence_vg1000;
@@ -137,7 +138,7 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  p_m_np_ge1_ p_w_np_ge1_ p_w1524_npge1_ p_sw_npge1_
+p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m	 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	
@@ -151,8 +152,9 @@ mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524 		p_diag_w1524	p_diag_sw
 p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_  
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_
-p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
+p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
+p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpreg logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_
 ;
 
@@ -200,7 +202,7 @@ if option =0 then delete;
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_  
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_ p_m_np_ge1_ p_w_np_ge1_ p_w1524_npge1_ p_sw_npge1_ log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
+p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_ p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_ log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
 p_mcirc_1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 
 n_hivge15m	n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
@@ -213,8 +215,9 @@ mtct_prop 	p_diag  p_diag_m    p_diag_w		p_diag_m1524 		p_diag_w1524	p_diag_sw
 p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_ 
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart  p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_
-p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart  p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
+p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
+p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpreg logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart n_onart_m 	n_onart_w n_onart_1524_;
 
 
@@ -260,7 +263,7 @@ g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52 
 g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77 g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90 g91  g92  g93  g94  g95  /*g96  g97  g98  g99  g100 g101 g102 g103 g104
+g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90 g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 /*g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
 g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
 g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
@@ -1381,8 +1384,8 @@ rename p95_p_diag_w_&o = P_DIAG_F1599_95UL_&o;
 rename p50_p_diag_m1524_&o = P_DIAG_M1524_M_&o;
 rename p50_p_diag_w1524_&o = P_DIAG_F1524_M_&o;
 rename p50_p_diag_sw_&o = P_DIAG_FSW1599_M_&o;
-rename p50_p_m_np_ge1__&o = P_CLS3m_M1599_M_&o;
-rename p50_p_w_np_ge1__&o = P_CLS3m_F1599_M_&o;
+rename p50_p_m_npge1__&o = P_CLS3m_M1599_M_&o;
+rename p50_p_w_npge1__&o = P_CLS3m_F1599_M_&o;
 rename p50_p_w1524_npge1__&o = P_CLS3m_F1524_M_&o;
 rename p50_p_sw_npge1__&o = P_CLS3m_FSW_M_&o;
 
@@ -1440,33 +1443,128 @@ rename p50_p_onart_1524__&o = P_onART_HIVA1524_M_&o;
 rename p50_p_onart_&o = P_onART_HIVA1599_M_&o;
 rename p5_p_onart_&o = P_onART_HIVA1599_95LL_&o;
 rename p95_p_onart_&o = P_onART_HIVA1599_95UL_&o;
+rename p50_p_onart_sw_&o = P_onART_HIVFSW1599_M_&o;
+    
+rename p50_p_onart_artexp_m_&o = P_onART_ExpM1599_M_&o;
+rename p5_p_onart_artexp_m_&o = P_onART_ExpM1599_95LL_&o;
+rename p95_p_onart_artexp_m_&o = P_onART_ExpM1599_95UL_&o;
+rename p50_p_onart_artexp_w_&o = P_onART_ExpF1599_M_&o;
+rename p5_p_onart_artexp_w_&o = P_onART_ExpF1599_95LL_&o;
+rename p95_p_onart_artexp_w_&o = P_onART_ExpF1599_95UL_&o;
+rename p50_p_onart_artexp_1524__&o = P_onART_ExpA1524_M_&o;
+rename p5_p_onart_artexp_1524__&o = P_onART_ExpA1524_95LL_&o;
+rename p95_p_onart_artexp_1524__&o = P_onART_ExpA1524_95UL_&o;
+rename p50_p_onart_artexp_&o = P_onART_ExpA1599_M_&o;
+rename p5_p_onart_artexp_&o = P_onART_ExpA1599_95LL_&o;
+rename p95_p_onart_artexp_&o = P_onART_ExpA1599_95UL_&o;
+rename p50_p_onart_artexp_sw_&o = P_onART_ExpFSW1599_M_&o;
+rename p50_p_onart_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M_&o;
+rename p50_p_onart_vl1000_&o = P_VLS_onARTA1599_M_&o;
+rename p5_p_onart_vl1000_&o = P_VLS_onARTA1599_95LL_&o;
+rename p95_p_onart_vl1000_&o = P_VLS_onARTA1599_95UL_&o;
+rename p50_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_M_&o;
+rename p5_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95LL_&o;
+rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL_&o;
+rename p50_p_onart_vl1000_w1524evpreg_&o = P_VLS_onARTpregEverBirthF1524_M_&o;
+*% of adults 15+ years living with HIV who are on ART and who have ever been viremic (measured VL>1000) who are virally suppressed (if possible, at a threshold of <1000)
+*rename _&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;
 
-rename _&o = P_onART_HIVFSW1599_M_&o;
-rename _&o = P_onART_ExpM1599_M_&o;
-rename _&o = P_onART_ExpM1599_95LL_&o;
-rename _&o = P_onART_ExpM1599_95UL_&o;
-rename _&o = P_onART_ExpF1599_M_&o;
-rename _&o = P_onART_ExpF1599_95LL_&o;
-rename _&o = P_onART_ExpF1599_95UL_&o;
-rename _&o = P_onART_ExpA1524_M_&o;
-rename _&o = P_onART_ExpA1524_95LL_&o;
-rename _&o = P_onART_ExpA1524_95UL_&o;
-rename _&o = P_onART_ExpA1599_M_&o;
-rename _&o = P_onART_ExpA1599_95LL_&o;
-rename _&o = P_onART_ExpA1599_95UL_&o;
-rename _&o = P_onART_ExpFSW1599_M_&o;
-rename _&o = P_onART_ExpFpregEverBirth1524_M_&o;
-rename _&o = P_VLS_onARTA1599_M_&o;
-rename _&o = P_VLS_onARTA1599_95LL_&o;
-rename _&o = P_VLS_onARTA1599_95UL_&o;
-rename _&o = P_VLS_onARTA1524_M_&o;
-rename _&o = P_VLS_onARTA1524_95LL_&o;
-rename _&o = P_VLS_onARTA1524_95UL_&o;
-rename _&o = P_VLS_onARTpregEverBirthF1524_M_&o;
-rename _&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;
+keep cald
+p50_prevalence1549m_&o 		p5_prevalence1549m_&o		p95_prevalence1549m_&o
+p50_prevalence1549w_&o		p5_prevalence1549w_&o 		p95_prevalence1549w_&o
+p50_prevalence1549__&o		p5_prevalence1549__&o		p95_prevalence1549__&o
+p50_prevalence1549preg_&o	p5_prevalence1549preg_&o	p95_prevalence1549preg_&o
+p50_prevalence1524preg_&o	p5_prevalence1524preg_&o 	p95_prevalence1524preg_&o
+p50_prevalence_sw_&o		p5_prevalence_sw_&o			p95_prevalence_sw_&o
 
-keep cald;
+p50_n_alive_m_&o		p5_n_alive_m_&o		p95_n_alive_m_&o
+p50_n_alive_w_&o		p5_n_alive_w_&o		p95_n_alive_w_&o
+p50_n_alive_1524m_&o
+p50_n_alive_1524w_&o
+p50_n_alive_2549m_&o 
+p50_n_alive_2549w_&o 
+p50_n_sw_1599__&o 		p5_n_sw_1599__&o	p95_n_sw_1599__&o
+
+p50_n_hivneg_sdpartner_&o 
+p50_n_hivneg_sdpartneroffart_&o
+p50_n_hivnegw_sdpartner_&o 
+p50_n_hivnegw_sdpartneroffart_&o
+
+p50_n_hivge15m_&o	p5_n_hivge15m_&o 	p95_n_hivge15m_&o
+p50_n_hivge15w_&o	p5_n_hivge15w_&o	p95_n_hivge15w_&o
+p50_n_hiv1524m_&o	
+p50_n_hiv1524w_&o	
+p50_n_hiv2549m_&o
+p50_n_hiv2549w_&o	
+p50_n_hiv_sw_&o		p5_n_hiv_sw_&o 		p95_n_hiv_sw_&o
+
+p50_n_not_on_art_cd4ge500__&O
+p50_n_not_on_art_cd4350500__&o
+p50_n_not_on_art_cd4200350__&o
+p50_n_not_on_art_cd450200__&o 
+p50_n_not_on_art_cd4050__&o
+   
+p50_n_asympt_Undiag_&o
+p50_n_asympt_diagoffart_&o
+p50_n_asympt_diagonart_&o
+p50_n_sympt_notaids_&o
+p50_n_sympt_aids_&o
+
+p50_p_diag_&o 		p5_p_diag_&o	p95_p_diag_&o
+p50_p_diag_m_&o		p5_p_diag_m_&o	p95_p_diag_m_&o
+p50_p_diag_w_&o		p5_p_diag_w_&o	p95_p_diag_w_&o
+p50_p_diag_m1524_&o	
+p50_p_diag_w1524_&o
+p50_p_diag_sw_&o
+
+p50_p_m_npge1__&o
+p50_p_w_npge1__&o
+p50_p_w1524_npge1__&o
+p50_p_sw_npge1__&o 
+
+p50_prev_sti_sw_&o 
+
+p50_p_mcirc_1549m_&o 	p5_p_mcirc_1549m_&o  	p95_p_mcirc_1549m_&o 
+
+p50_n_onart_m_&o 		p5_n_onart_m_&o  		p95_n_onart_m_&o 
+p50_n_onart_w_&o 		p5_n_onart_w_&o  		p95_n_onart_w_&o 
+p50_n_onart_1524__&o 	p5_n_onart_1524__&o  	p95_n_onart_1524__&o 
+p50_n_onart_&o 			p5_n_onart_&o  			p95_n_onart_&o 
+
+p50_p_onart_diag_m_&o 		p5_p_onart_diag_m_&o  		p95_p_onart_diag_m_&o 
+p50_p_onart_diag_w_&o 		p5_p_onart_diag_w_&o		p95_p_onart_diag_w_&o
+p50_p_onart_diag_w1524__&o	
+p50_p_onart_diag_1524__&o	p5_p_onart_diag_1524__&o	p95_p_onart_diag_1524__&o
+p50_p_onart_diag_&o			p5_p_onart_diag_&o 			p95_p_onart_diag_&o
+p50_p_onart_diag_sw_&o
+
+/*
+_&o = P_onART_Diag12mAHDA1599_M_&o;
+_&o = P_onART_Diag12mNOAHDA1599_M_&o;
+_&o = P_onART_Diag12mAHDA1524_M_&o;
+_&o = P_onART_Diag12mNOAHDA1524_M_&o;*/
+
+p50_p_onart_m_&o		p5_p_onart_m_&o 	p95_p_onart_m_&o
+p50_p_onart_w_&o		p5_p_onart_w_&o 	p95_p_onart_w_&o
+p50_p_onart_w1524__&o
+p50_p_onart_1524__&o
+p50_p_onart_&o			p5_p_onart_&o		p95_p_onart_&o
+p50_p_onart_sw_&o
+    
+p50_p_onart_artexp_m_&o			p5_p_onart_artexp_m_&o		p95_p_onart_artexp_m_&o
+p50_p_onart_artexp_w_&o			p5_p_onart_artexp_w_&o		p95_p_onart_artexp_w_&o
+p50_p_onart_artexp_1524__&o		p5_p_onart_artexp_1524__&o	p95_p_onart_artexp_1524__&o
+p50_p_onart_artexp_&o			p5_p_onart_artexp_&o		p95_p_onart_artexp_&o
+p50_p_onart_artexp_sw_&o
+p50_p_onart_artexp_w1524evpreg_&o
+
+p50_p_onart_vl1000_&o			p5_p_onart_vl1000_&o		p95_p_onart_vl1000_&o
+p50_p_onart_vl1000_1524__&o		p5_p_onart_vl1000_1524__&o	p95_p_onart_vl1000_1524__&o
+p50_p_onart_vl1000_w1524evpreg_&o
+/*_&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;*/
+;
 run;
+
 %mend;
 
 
