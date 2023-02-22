@@ -4341,8 +4341,8 @@ end;
 
 *VCFeb2023;
 if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
-if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1; dt_start_pregn=.; end;
-if                   caldate{t} gt dt_start_pregn+0.75 then anc=0;
+if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1;end;
+if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
