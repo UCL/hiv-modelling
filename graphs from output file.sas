@@ -153,7 +153,7 @@ p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ 
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
 p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
-p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpreg logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_
 ;
 
@@ -218,7 +218,7 @@ p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ 
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart  p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
 p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
-p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpreg logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
+p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart n_onart_m 	n_onart_w n_onart_1524_;
 
 
@@ -1468,7 +1468,7 @@ rename p95_p_onart_vl1000_&o = P_VLS_onARTA1599_95UL;
 rename p50_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_M;
 rename p5_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95LL;
 rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL;
-rename p50_p_onart_vl1000_w1524evpreg_&o = P_VLS_onARTpregEverBirthF1524_M;
+rename p50_p_onart_vl1000_w1524evpr_&o = P_VLS_onARTpregEverBirthF1524_M;
 *% of adults 15+ years living with HIV who are on ART and who have ever been viremic (measured VL>1000) who are virally suppressed (if possible, at a threshold of <1000)
 *rename _&o = P_VLS_onARTMVLgt1000EverA1599_M;
 
@@ -1563,7 +1563,7 @@ p50_p_onart_artexp_w1524evpreg_&o
 
 p50_p_onart_vl1000_&o			p5_p_onart_vl1000_&o		p95_p_onart_vl1000_&o
 p50_p_onart_vl1000_1524__&o		p5_p_onart_vl1000_1524__&o	p95_p_onart_vl1000_1524__&o
-p50_p_onart_vl1000_w1524evpreg_&o
+p50_p_onart_vl1000_w1524evpr_&o
 /*_&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;*/
 ;
 run;

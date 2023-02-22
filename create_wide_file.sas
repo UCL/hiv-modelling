@@ -670,7 +670,7 @@ end;
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_1524;			if s_onart_gt6m_iicu_1524_ > 0 then p_onart_vl1000_1524 = s_vl1000_art_gt6m_iicu_1524_ / s_onart_gt6m_iicu_1524_ ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-* p_onart_vl1000_w1524evpreg;   if s_onart_gt6m_iicu_w1524evpreg gt 0 then p_onart_vl1000_w1524evpreg = s_vl1000_art_gt6m_iicu_w1524evpreg / s_onart_gt6m_iicu_w1524evpreg; *VCFeb2023;
+* p_onart_vl1000_w1524evpr;   if s_onartgt6miicu_w1524evpr gt 0 then p_onart_vl1000_w1524evpr = s_vl1000_artgt6miicu_w1524evpr / s_onartgt6miicu_w1524evpr; *VCFeb2023;
 
 * p_vl1000_art_12m;				if s_art_12m > 0 then p_vl1000_art_12m = s_vl1000_art_12m / s_art_12m ;
 * p_vl1000_art_12m_onart;		if s_art_12m_onart > 0 then p_vl1000_art_12m_onart = s_vl1000_art_12m_onart / s_art_12m_onart ;
@@ -930,7 +930,7 @@ p_efa p_taz p_ten p_zdv p_dol  p_3tc p_lpr p_nev
 p_onart_vl1000 p_vl1000 p_vg1000 p_vl1000_m  p_vl1000_w   p_vl1000_m_1524  p_vl1000_w_1524    
 p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_sw 
 p_onart_artexp p_onart_artexp_m p_onart_artexp_w p_onart_artexp_1524_ p_onart_artexp_sw p_onart_artexp_w1524evpreg
-p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw 	p_onart_vl1000_w1524evpreg
+p_onart_vl1000_w p_onart_vl1000_m  p_onart_vl1000_1524	  p_onart_vl1000_sw 	p_onart_vl1000_w1524evpr
 prevalence_vg1000  prev_vg1000_newp_m prev_vg1000_newp_w  p_startedline2
  p_tle p_tld p_zld p_zla p_otherreg p_drug_level_test p_linefail_ge1 aids_death_rate  death_rate_onart  ddaly  ddaly_all  dcost dart_cost_y
 dadc_cost   dcd4_cost   dvl_cost   dvis_cost   dnon_tb_who3_cost   dcot_cost   dtb_cost   dres_cost   dtest_cost   d_t_adh_int_cost   dswitchline_cost
@@ -1170,7 +1170,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_vl1000_art_12m); %var(v=p_vl1000_art_12m_onart); 
 %var(v=p_onart);%var(v=p_onart_m); %var(v=p_onart_w); %var(v=p_onart_w1524_);%var(v=p_onart_1524_);%var(v=p_onart_sw);
 %var(v=p_onart_artexp);%var(v=p_onart_artexp_m);%var(v=p_onart_artexp_w);%var(v=p_onart_artexp_1524_);%var(v=p_onart_artexp_sw);%var(v=p_onart_artexp_w1524evpreg);
-%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);%var(v=p_onart_vl1000_w1524evpreg);
+%var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); %var(v= p_onart_vl1000_1524);  %var(v=p_onart_vl1000_sw);%var(v=p_onart_vl1000_w1524evpr);
 %var(v=prev_vg1000_newp_m);  %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;
 %var(v=p_tle);  %var(v=p_tld);  %var(v=p_zld);  %var(v=p_zla);  %var(v=p_otherreg);  %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
 %var(v=aids_death_rate);  %var(v=death_rate_onart);   %var(v=dcost);  %var(v= dart_cost_y);
@@ -1281,7 +1281,7 @@ p_efa  p_taz  p_ten  p_zdv  p_dol  p_3tc  p_lpr  p_nev
 p_onart_vl1000  p_artexp_vl1000  p_vl1000  p_vg1000  p_vl1000_m  p_vl1000_w  p_vl1000_m_1524  p_vl1000_w_1524  
 p_vl1000_art_12m  p_vl1000_art_12m_onart p_onart p_onart_m p_onart_w p_onart_w1524_ p_onart_1524_ p_onart_sw 
 p_onart_artexp p_onart_artexp_m p_onart_artexp_w p_onart_artexp_1524_ p_onart_artexp_sw p_onart_artexp_w1524evpreg
-p_onart_vl1000_w  p_onart_vl1000_m   p_onart_vl1000_1524  p_onart_vl1000_sw  p_onart_vl1000_w1524evpreg
+p_onart_vl1000_w  p_onart_vl1000_m   p_onart_vl1000_1524  p_onart_vl1000_sw  p_onart_vl1000_w1524evpr
 prev_vg1000_newp_m  prev_vg1000_newp_w  p_startedline2
 p_tle  p_tld  p_zld  p_zla  p_otherreg  p_drug_level_test p_linefail_ge1
 aids_death_rate  death_rate_onart  dcost   dart_cost_y
