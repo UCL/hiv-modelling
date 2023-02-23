@@ -96,7 +96,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 								0.25	0.5		0.25);
 
 ***Higher circ post 2015 - adding this here as if we increase the above, we will miss the DHS data point in 2015 on circ prev;
-* rel_incr_circ_post_2013;	%sample(rel_incr_circ_post_2015, 
+* rel_incr_circ_post_2015;	%sample(rel_incr_circ_post_2015, 
 								7		8		9, 
 								0.35	0.5		0.20);
 

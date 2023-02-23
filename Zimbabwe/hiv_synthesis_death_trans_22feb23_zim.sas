@@ -614,6 +614,7 @@ newp_seed = 7;
 								0.8		1		3		7, 
 								0.10	0.25	0.25	0.40);
 								if circ_inc_rate=0.1 then rel_incr_circ_post_2013=min(rel_incr_circ_post_2013, 1);
+* rel_incr_circ_post_2015;	rel_incr_circ_post_2015=1; *This is overwritten in the Zimbabwe file to account for higher circ rates post 2015;
 * prob_birth_circ; 			%sample(prob_birth_circ, 
 								0.05	0.1		0.40	0.9, 
 								0.30	0.40	0.20	0.10);
