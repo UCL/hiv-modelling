@@ -9,7 +9,7 @@ proc sort;
 by run cald option;run;
 
 proc freq;table run;where cald=1990;run;
-
+proc freq;table cald;run;
 
 data sf;
 set a;
@@ -361,14 +361,20 @@ proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 
 ***baseline outputs in 2022;
 proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
 
-***outputs in 2030;
+***outputs in 2030 by option;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
-**Outputs
+**Outputs for CE analyses, 5, 20 and 50 years by option;
+proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option_new ; where 2022.5 <= cald < 2027.50;
+proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option_new ; where 2021.5 <= cald < 2042.50;
+proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option_new ; where 2021.5 <= cald < 2072.50;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
+proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
+proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
+proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
 
-data &v ; merge  y_22 y_10 y_15 y_20 t_30;  
+data &v ; merge  y_10 y_15 y_20 y_22 t_30 t21_26 t21_42 t21;  
 
 %mend var;
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
