@@ -9,7 +9,8 @@ proc sort;
 by run cald option;run;
 
 proc freq;table run;where cald=1990;run;
-proc freq;table cald;run;
+
+proc contents;run;
 
 data sf;
 set a;
@@ -102,31 +103,34 @@ ddaly_adults = ddaly;
 
 * ================================================================================= ;
 
-
 * costs ;
 
 * ================================================================================= ;
 
 * all costs expressed as $ millions per year in 2018 USD;
 
+* ts1m - 12 instead of 4; 
 
-dzdv_cost = s_cost_zdv * &discount * &sf * 4 / 1000;
-dten_cost = s_cost_ten * &discount * &sf * 4 / 1000;
-d3tc_cost = s_cost_3tc * &discount * &sf * 4 / 1000; 
-dnev_cost = s_cost_nev * &discount * &sf * 4 / 1000;
-dlpr_cost = s_cost_lpr * &discount * &sf * 4 / 1000;
-ddar_cost = s_cost_dar * &discount * &sf * 4 / 1000;
-dtaz_cost = s_cost_taz * &discount * &sf * 4 / 1000;
-defa_cost = s_cost_efa * &discount * &sf * 4 / 1000;
-ddol_cost = s_cost_dol * &discount * &sf * 4 / 1000;
-
+dzdv_cost = s_dcost_zdv * &sf * 4 / 1000;
+dten_cost = s_dcost_ten * &sf * 4 / 1000;
+d3tc_cost = s_dcost_3tc * &sf * 4 / 1000; 
+dnev_cost = s_dcost_nev * &sf * 4 / 1000;
+dlpr_cost = s_dcost_lpr * &sf * 4 / 1000;
+ddar_cost = s_dcost_dar * &sf * 4 / 1000;
+dtaz_cost = s_dcost_taz * &sf * 4 / 1000;
+defa_cost = s_dcost_efa * &sf * 4 / 1000;
+ddol_cost = s_dcost_dol * &sf * 4 / 1000;
 
 if s_dart_cost=. then s_dart_cost=0;
-if s_dcost_prep=. then s_dcost_prep=0;
+if s_dcost_prep_oral=. then s_dcost_prep_oral=0;
+if s_dcost_prep_inj=. then s_dcost_prep_inj=0;
 if s_dcost_prep_visit=. then s_dcost_prep_visit=0;
 if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
+
+s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
+s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
 
 * ts1m - 12 instead of 4; 
 dvis_cost = s_dvis_cost * &sf * 4 / 1000;
@@ -137,20 +141,28 @@ dart_cost = s_dart_cost * &sf * 4 / 1000;
 dvl_cost = s_dvl_cost * &sf * 4 / 1000;
 dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
 dadc_cost = s_dadc_cost * &sf * 4 / 1000;
+dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
 dtb_cost = s_dtb_cost * &sf * 4 / 1000;
 dtest_cost = s_dtest_cost * &sf * 4 / 1000;
-*dwho3_cost = s_dwho3_cost * &sf * 4 / 1000;
-dnon_tb_who3_cost = s_dnon_tb_who3_cost * &sf * 4 / 1000;
 dcot_cost = s_dcot_cost * &sf * 4 / 1000;
 dres_cost = s_dres_cost * &sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * &sf * 4 / 1000;  
-*dcost_cascade_interventions = s_dcost_cascade_interventions * &sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * &sf * 4 / 1000; 
-dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 			   
+dcost_prep_inj = s_dcost_prep_inj * &sf * 4 / 1000; 
+dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000; 
+dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
+dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
+dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
 
-* dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
-  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000;
+
+*dcost_avail_self_test = s_cost_avail_self_test * &sf * discount* 4 / 1000 ;
+
+
+* note this below can be used if outputs are from program beyond 1-1-20;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
+  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -159,29 +171,31 @@ dswitchline_cost = s_dcost_switch_line * &sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; * s_cost_child_hiv is discounted cost;
-dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
+dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
+
+dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
+
+* sens analysis;
+
+* ;
 
 
-dart_cost_x = dart_1_cost + dart_2_cost + dart_3_cost; 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
-
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test +  dcost_circ + dcost_condom_dn + dcost_prep_visit + dcost_prep +
-		dcost_child_hiv + dcost_non_aids_pre_death ;
-
-s_cost_art_x = s_cost_zdv + s_cost_ten + s_cost_3tc + s_cost_nev + s_cost_lpr + s_cost_dar + s_cost_taz
-+ s_cost_efa + s_cost_dol ;
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
+		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dcost_child_hiv + dcost_non_aids_pre_death + dcost_avail_self_test +  dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj 
+		+ dcost_prep_inj;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
 				dswitchline_cost; 
 
-if &discount gt 0 then cost_clin_care = dcost_clin_care / &discount;
+cost_clin_care = dcost_clin_care / discount;
 
-if &discount gt 0 then cost = dcost / &discount;
+cost = dcost / discount;
 
 * ================================================================================= ;
+
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -304,15 +318,16 @@ p_sti_sw
 
 /*Sampled parameters*/
 sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
-effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_trans_matrix;
+effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_trans_matrix
 
+dcost ddaly;
 
 proc sort data=y;by run option;run;
 
 
-data a.fsw_03_02_23; set y;run;
+data a.fsw_03_02_23_short; set y;run;
 
-data y; set a.fsw_03_02_22;run;
+data y; set a.fsw_03_02_22_short;run;
 
 /*
 
@@ -365,16 +380,16 @@ proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
 **Outputs for CE analyses, 5, 20 and 50 years by option;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option_new ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option_new ; where 2021.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option_new ; where 2021.5 <= cald < 2072.50;
+proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
+proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
+proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
 proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
 proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
 proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
 
-data &v ; merge  y_10 y_15 y_20 y_22 t_30 t21_26 t21_42 t21;  
+data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;  
 
 %mend var;
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
@@ -400,6 +415,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t21_26 t21_42 t21;
 
 %var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=prop_sw_onprep);	    %var(v=prevalence_sw);	  %var(v=incidence_sw);
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
+%var(v=dcost);			%var(v=ddaly);
 run;
 
 data wide_outputs;merge
@@ -424,7 +440,8 @@ p_actdur_0to3_  p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_
 p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 
 p_sw_prog_vis   n_tested_sw	   	   prop_sw_onprep	prevalence_sw	  incidence_sw
-p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw;
+p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
+dcost			ddaly;
 
 proc sort; by run;run;
 
