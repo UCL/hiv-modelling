@@ -23,7 +23,6 @@ ods html close;
 
 
 * NB: note lines below, because variable names cannot end with a number;
-p_hypert_1549_ = p_hypert_1549;
 p_hypert_1539_ = p_hypert_1539;
 p_hypert_4049_ = p_hypert_4049;
 p_hypert_5059_ = p_hypert_5059;
@@ -111,11 +110,11 @@ proc sort;by cald option ;run;
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option !=0 then delete;
+if option ne 1 then delete;
 
 %let var =  
 
-p_hypert_1549_ p_hypert_1539_ p_hypert_4049_ p_hypert_5059_ p_hypert_6069_  p_hypert_7079_  
+p_hypert_1539_ p_hypert_4049_ p_hypert_5059_ p_hypert_6069_  p_hypert_7079_  
 p_diagnosed_hypert_1549_ p_diagnosed_hypert_1539_ p_diagnosed_hypert_4049_ p_diagnosed_hypert_5059_  p_diagnosed_hypert_6069_  p_diagnosed_hypert_7079_  
 p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_hypert_5059_  p_on_anti_hypert_6069_  p_on_anti_hypert_7079_ rate_dead_cvd_ ;
 /* 
@@ -171,11 +170,11 @@ run;
 
 data option_1;
 set b;
-if option !=1 then delete;
+if option ne 2 then delete;
 
 %let var =  
 
-p_hypert_1549_ p_hypert_1539_ p_hypert_4049_ p_hypert_5059_ p_hypert_6069_  p_hypert_7079_  
+p_hypert_1539_ p_hypert_4049_ p_hypert_5059_ p_hypert_6069_  p_hypert_7079_  
 p_diagnosed_hypert_1549_ p_diagnosed_hypert_1539_ p_diagnosed_hypert_4049_ p_diagnosed_hypert_5059_  p_diagnosed_hypert_6069_  p_diagnosed_hypert_7079_  
 p_on_anti_hypert_1549_ p_on_anti_hypert_1539_ p_on_anti_hypert_4049_ p_on_anti_hypert_5059_  p_on_anti_hypert_6069_  p_on_anti_hypert_7079_ rate_dead_cvd_ ;
 /* 
@@ -231,7 +230,7 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19 /* g20  g21  g22  g23  g24  g25  g26 
+g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18 /* g19  g20  g21  g22  g23  g24  g25  g26 
 g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52 
 g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72  g73 g74 g75  g76  g77  g78 
@@ -243,7 +242,7 @@ g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 
 g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
 g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 */
 
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19 /* h20  h21  h22  h23  h24  h25  h26 
+h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18 /* h19  h20  h21  h22  h23  h24  h25  h26 
 h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
 h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73 */
 

@@ -856,7 +856,7 @@ prob_test_sbp_diagnosed = 0.05 * rr_htn_diagnosis;
 * RR of getting bp tested in a person <40 years of age compared to baseline probability;
 rr_test_sbp_young = 0.5; 
 * relative risk of bp testing for current HIV visit;
-%sample_uniform(rr_test_sbp_hiv, 2 2 2);
+rr_test_sbp_hiv = 2;
 
 ** Community testing;
 first_comm_test = .;
@@ -2593,7 +2593,7 @@ who may be dead and hence have caldate{t} missing;
 		*comm_test_age = 18;
 		
 		*relative risk of BP testing at HIV visit if out of hypertension care;
-		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
+		rr_test_sbp_hiv =10;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2646,7 +2646,7 @@ who may be dead and hence have caldate{t} missing;
 		comm_test_age = 40;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
-		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
+		rr_test_sbp_hiv =10;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -2699,7 +2699,7 @@ who may be dead and hence have caldate{t} missing;
 		comm_test_age = 40;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
-		%sample_uniform(rr_test_sbp_hiv, 5 10 20);
+		rr_test_sbp_hiv =10;
 
 		* probability of initiating anti-hypertensive at clinic visit with NEW diagnosis where SBP is 140-159 ;
 		%sample_uniform(prob_imm_htn_tx_s1, 0.2 0.3 0.4); 
@@ -3397,9 +3397,9 @@ if test_sbp_comm =1 then do;
 	if sbp_comm_m >=140 and visit_hypertension = 1 then htn_cost_scr = htn_cost_scr + cost_htn_link_voucher;
 end;
 if visit_hypertension = 1 then do;
-	if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
-	if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;
 	if visit = 1 and integration = 1 then htn_cost_clin = cost_htn_visitInt;
+	else if sbp_m <  140 then htn_cost_clin = cost_htn_visit1;
+	else if sbp_m >= 140 then htn_cost_clin = cost_htn_visit2;	
 end;
 if on_anti_hypertensive = 1 then htn_cost_drug = cost_htn_drug1;
 if on_anti_hypertensive = 2 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2;
