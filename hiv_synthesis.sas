@@ -16821,7 +16821,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
 	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
-	s_dcost_sw_program + dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
+	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; s_dcost_prep_vr + _dcost_prep_vr ; 
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
