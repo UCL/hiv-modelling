@@ -16,9 +16,9 @@ data hiv_synthesis_base; set a.out:;
 * proc contents data=a.hiv_synthesis_base;
 *	title "Compressed SAS Input Data"
 *run;
-
 /*
-proc print; var run cald option s_hiv1564 ; run;  
+proc freq; tables run; run;
+proc print; var run cald option ; where run = 381239484 ; run;  
 */
 
 proc sort data=hiv_synthesis_base; 
@@ -1354,42 +1354,20 @@ data y; set a.l_base;
 
 * &v ;
 
-/* proc means  noprint data=y; var &v; output out=y_19 mean= &v._19; by run ; where 2019.25 <= cald <= 2019.5; */
-/* proc means  noprint data=y; var &v; output out=y_95 mean= &v._95; by run option ; where 1994.5 <= cald < 1995.5; */
-/* proc means  noprint data=y; var &v; output out=y_00 mean= &v._00; by run option ; where 1999.5 <= cald < 2000.5;  */
-/* proc means  noprint data=y; var &v; output out=y_05 mean= &v._05; by run option ; where 2004.5 <= cald < 2005.5;  */
-/* proc means  noprint data=y; var &v; output out=y_10 mean= &v._10; by run option ; where 2009.5 <= cald < 2010.5;  */
-proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2014.5 <= cald < 2015.5; 
-/* proc means  noprint data=y; var &v; output out=y_17 mean= &v._17; by run option ; where 2016.5 <= cald < 2017.5; */
-/* proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run option ; where 2019.5 <= cald < 2020.5; */
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2021.5 <= cald < 2022.5; 
-proc means  noprint data=y; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.5 <= cald < 2032.5; 
-proc means  noprint data=y; var &v; output out=y_52 mean= &v._52; by run option ; where 2051.5 <= cald < 2052.5; 
+proc means noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2014.5 <= cald < 2015.5; 
+proc means noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2021.5 <= cald < 2022.5; 
 
-/* proc means noprint data=y; var &v; output out=y_20b   mean= &v._20b; by run option ; where 2020.25 <= cald < 2020.5; */
-/* proc means noprint data=y; var &v; output out=y_20_21 mean= &v._20_21; by run option ; where 2020.25 <= cald < 2021.25;*/   
-/* proc means noprint data=y; var &v; output out=y_21 mean= &v._21; by run option ; where cald = 2021.50; */
-/* proc means noprint data=y; var &v; output out=y_21_22 mean= &v._21_22; by run option ; where 2021.5 <= cald < 2022.50;*/
-/* proc means noprint data=y; var &v; output out=y_21_26 mean= &v._21_26; by run option ; where 2021.5 <= cald < 2026.50;*/
-/* proc means noprint data=y; var &v; output out=y_20_30 mean= &v._20_30; by run option ; where 2020.5 <= cald < 2030.50;*/
-/* proc means noprint data=y; var &v; output out=y_20_40 mean= &v._20_40; by run option ; where 2020.5 <= cald < 2040.50; */
-
+proc means noprint data=y; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.5 <= cald < 2032.5; 
+proc means noprint data=y; var &v; output out=y_52 mean= &v._52; by run option ; where 2051.5 <= cald < 2052.5; 
 proc means noprint data=y; var &v; output out=y_2232 mean= &v._2232; by run option ; where 2022 <= cald < 2032.00; 
 proc means noprint data=y; var &v; output out=y_2252 mean= &v._2252; by run option ; where 2022 <= cald < 2052.00; 
   
-/* proc sort data=y_20b; by run; proc transpose data=y_20b out=t_20b prefix=&v._20b_; var &v._20b; by run; */ 
-/* proc sort data=y_21; by run; proc transpose data=y_21 out=t_21 prefix=&v._21_; var &v._21; by run; */
-/*   proc sort data=y_20_21; by run; proc transpose data=y_20_21 out=t_20_21 prefix=&v._20_21_; var &v._20_21; by run;  */
-																													   
-																													   
-/* proc sort data=y_21_22; by run; proc transpose data=y_21_22 out=t_21_22 prefix=&v._21_22_; var &v._21_22; by run; */
-/* proc sort data=y_21_26; by run; proc transpose data=y_21_26 out=t_21_26 prefix=&v._21_26_; var &v._21_26; by run; */
-/* proc sort data=y_20_30; by run; proc transpose data=y_20_30 out=t_20_30 prefix=&v._20_30_; var &v._20_30; by run; */
-/* proc sort data=y_20_40; by run; proc transpose data=y_20_40 out=t_20_40 prefix=&v._20_40_; var &v._20_40; by run; */
-																														
-
- proc sort data=y_2232; by run option ; proc transpose data=y_2232 out=t_2232 prefix=&v._2232_; var &v._2232; by run option ;  
- proc sort data=y_2252; by run option ; proc transpose data=y_2252 out=t_2252 prefix=&v._2252_; var &v._2252; by run option ;  
+proc sort data=y_15; by run option ; proc transpose data=y_15 out=t_15 prefix=&v._15_; var &v._15; by run option ; 
+proc sort data=y_22; by run option ; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run option ;																														
+proc sort data=y_32; by run option ; proc transpose data=y_32 out=t_32 prefix=&v._32_; var &v._32; by run option ; 
+proc sort data=y_52; by run option ; proc transpose data=y_52 out=t_52 prefix=&v._52_; var &v._52; by run option ;  
+proc sort data=y_2232; by run option ; proc transpose data=y_2232 out=t_2232 prefix=&v._2232_; var &v._2232; by run option ;  
+proc sort data=y_2252; by run option ; proc transpose data=y_2252 out=t_2252 prefix=&v._2252_; var &v._2252; by run option ;  
 
 data &v ; merge   y_15 y_22 y_32 y_52 y_2232 y_2252 ;  
 drop _NAME_ _TYPE_ _FREQ_;
