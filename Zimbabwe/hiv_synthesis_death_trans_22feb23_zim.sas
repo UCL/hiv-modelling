@@ -128,7 +128,7 @@ dataset_id=trim(left(run));
 call symput('dataset_id',dataset_id);
 
 caldate1=1984;
-caldate_never_dot=1984
+caldate_never_dot=1984;
 
 * these used after year_interv - code is here so value the same for all people;
 _u1 = rand('uniform'); _u2 = rand('uniform'); _u3 = rand('uniform'); _u4 = rand('uniform'); _u5 = rand('uniform');  _u6 = rand('uniform'); _u7 = rand('uniform'); _u8 = rand('uniform');
