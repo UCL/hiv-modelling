@@ -4224,7 +4224,8 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * lapr and dpv-vr - changed name from 'prep_strategy' to 'prep_any_strategy' - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
-if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
+if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  
+* note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	if prep_any_strategy=1 then do;
 		r = rand('Uniform');
@@ -4810,8 +4811,6 @@ if pop_wide_tld=1 and prep_oral=1 then pop_wide_tld_prep=1;
 
 * tld initiation in person without hiv or with hiv but undiagnosed - note this can be in a person with hiv who has not tested;
 * lapr and dpv-vr - I dont see any of the pop_wide_tld or tld_prep code changing;
-
-tld_notest_notprepelig = 0;
 
 if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) ) then do;  
 
