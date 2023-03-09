@@ -50,6 +50,9 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_newp_ge1_ = p_newp_ge1 ;
 p_newp_ge5_ = p_newp_ge5 ;
 
+p_diag_m1524_ = p_diag_m1524;
+p_diag_w1524_ = p_diag_w1524;
+
 loggender_r_newp = log(gender_r_newp+0.0001);
 
 logw15r = log(w15r+0.0001);
@@ -119,18 +122,13 @@ ods html close;
 
 */
 
-proc sort; by cald run option ;run;
-data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
-proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 500   ;
-%let year_end = 2041.00 ;
+proc sort data=b; by option cald run ;run;
+data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit = 13   ;
+%let year_end = 2027.75 ;
 run;
 proc sort;by cald option ;run;
-
-***Two macros, one for each option. Gives medians ranges etc by option;
-data option_0;
-set b;
-if option  in (1 15) then delete;
 
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
@@ -147,7 +145,7 @@ prevalence1549_ prevalence1549preg prevalence1524preg prevalence_vg1000_  incide
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
 incidence5564w_ incidence5564m_ n_tested n_tested_m
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
-mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524 		p_diag_w1524	p_diag_sw	
+mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_sw	
 p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_  
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
@@ -156,30 +154,34 @@ p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onar
 p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_
 ;
+run;
 
+*I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
-%macro option_0;
-%let p25_var = p25_&var_0;
-%let p75_var = p75_&var_0;
-%let p5_var = p5_&var_0;
-%let p95_var = p95_&var_0;
-%let p50_var = median_&var_0;
+%macro option_(s);
+data option_&s;set b;
+if option=&s;
+%let p25_var = p25_&var._&s;
+%let p75_var = p75_&var._&s;
+%let p5_var = p5_&var._&s;
+%let p95_var = p95_&var._&s;
+%let p50_var = median_&var._&s;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_&s out=g&s._&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data g&count;set g&count;***creates one dataset per variable;
-p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+data g&s._&count;set g&s._&count;***creates one dataset per variable;
+p25_&varb._&s  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb._&s = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb._&s  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb._&s = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb._&s = median(of &varb.1-&varb.&nfit);
 
-keep cald option_ p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald p5_&varb._&s p95_&varb._&s p50_&varb._&s p25_&varb._&s p75_&varb._&s;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -188,125 +190,58 @@ run;
 %mend;
 
 
-%option_0;
+%option_(0);
+%option_(1);
+%option_(15);
 run;
-
-
-
-data option_1;
-set b;
-if option =0 then delete;
-
-%let var =  
-n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
-n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
-n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_  
-n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
-log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m
-prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 
-n_hivge15m	n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
-prevalence1549m prevalence1549w
-prevalence1549_ prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1564_ 
-incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
-mtct_prop 	p_diag  p_diag_m    p_diag_w		p_diag_m1524 		p_diag_w1524	p_diag_sw 
-p_ai_no_arv_c_nnm 				p_artexp_diag
-p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_ 
-p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart  p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
-p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
-p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart n_onart_m 	n_onart_w n_onart_1524_;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_1;
-%let p25_var = p25_&var_1;
-%let p75_var = p75_&var_1;
-%let p5_var = p5_&var_1;
-%let p95_var = p95_&var_1;
-%let p50_var = median_&var_1;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
-p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._1 = median(of &varb.1-&varb.&nfit);
-
-keep cald option_ p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
-%end;
-%mend;
-
-
-%option_1;
-run;
-
 
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
-g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
-g51  g52 
-g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77 g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90 g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 /*g130
-g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
-g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
-g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
-g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
-g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 
+g0_1   g0_2   g0_3   g0_4   g0_5   g0_6   g0_7   g0_8   g0_9   g0_10  g0_11  g0_12  g0_13  g0_14  g0_15  g0_16  g0_17  g0_18  g0_19  g0_20  g0_21  g0_22  g0_23  g0_24  g0_25  g0_26 
+g0_27  g0_28  g0_29  g0_30  g0_31  g0_32  g0_33  g0_34  g0_35  g0_36  g0_37  g0_38  g0_39  g0_40  g0_41  g0_42  g0_43  g0_44  g0_45  g0_46  g0_47  g0_48   g0_49  g0_50 
+g0_51  g0_52 
+g0_53  g0_54  g0_55  g0_56  g0_57  g0_58  g0_59  g0_60 g0_61  g0_62  g0_63  g0_64  g0_65  g0_66  g0_67  g0_68  g0_69  g0_70  g0_71 g0_72 g0_73 g0_74 g0_75  g0_76  g0_77 g0_78 
+g0_79  g0_80  g0_81  g0_82  g0_83  g0_84  g0_85  g0_86  g0_87  g0_88  g0_89  g0_90 g0_91  g0_92  g0_93  g0_94  g0_95  g0_96  g0_97  g0_98  g0_99  g0_100 g0_101 g0_102 g0_103 g0_104
+g0_105 g0_106 g0_107 g0_108 g0_109 g0_110 g0_111 g0_112 g0_113 g0_114 g0_115 g0_116 g0_117 g0_118 g0_119 g0_120 g0_121 g0_122 g0_123 g0_124 g0_125 g0_126 g0_127 g0_128 g0_129 /*g0_130
+g0_131 g0_132 g0_133 g0_134 g0_135 g0_136 g0_137 g0_138 g0_139 g0_140 g0_141 g0_142 g0_143 g0_144 g0_145 g0_146 g0_147 g0_148 g0_149 g0_150 g0_151 g0_152 g0_153 g0_154 g0_155 g0_156
+g0_157 g0_158 g0_159 g0_160 g0_161 g0_162 g0_163 g0_164 g0_165 g0_166 g0_167 g0_168 g0_169 g0_170 g0_171 g0_172 g0_173 g0_174 g0_175 g0_176 g0_177 g0_178 g0_179 g0_180 g0_181 g0_182
+g0_183 g0_184 g0_185 g0_186 g0_187 g0_188 g0_189 g0_190 g0_191 g0_192 g0_193 g0_194 g0_195 g0_196 g0_197 g0_198 g0_199 g0_200 g0_201 g0_202 g0_203 g0_204 g0_205 g0_206 g0_207 g0_208
+g0_209 g0_210 g0_211 g0_212 g0_213 g0_214 g0_215 g0_216 g0_217 g0_218 g0_219 g0_220 g0_221 g0_222 g0_223 g0_224 g0_225 g0_226 g0_227 g0_228 g0_229 g0_230 g0_231 g0_232 g0_233 g0_234
+g0_235 g0_236 g0_237 g0_238 g0_239 g0_240 g0_241 g0_242 g0_243 g0_244 g0_245 g0_246 g0_247 g0_248 g0_249 g0_250 g0_251 g0_252 
+*/
 
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
-h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
-h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
+g1_1   g1_2   g1_3   g1_4   g1_5   g1_6   g1_7   g1_8   g1_9   g1_10  g1_11  g1_12  g1_13  g1_14  g1_15  g1_16  g1_17  g1_18  g1_19  g1_20  g1_21  g1_22  g1_23  g1_24  g1_25  g1_26 
+g1_27  g1_28  g1_29  g1_30  g1_31  g1_32  g1_33  g1_34  g1_35  g1_36  g1_37  g1_38  g1_39  g1_40  g1_41  g1_42  g1_43  g1_44  g1_45  g1_46  g1_47  g1_48   g1_49  g1_50 
+g1_51  g1_52 
+g1_53  g1_54  g1_55  g1_56  g1_57  g1_58  g1_59  g1_60 g1_61  g1_62  g1_63  g1_64  g1_65  g1_66  g1_67  g1_68  g1_69  g1_70  g1_71 g1_72 g1_73 g1_74 g1_75  g1_76  g1_77 g1_78 
+g1_79  g1_80  g1_81  g1_82  g1_83  g1_84  g1_85  g1_86  g1_87  g1_88  g1_89  g1_90 g1_91  g1_92  g1_93  g1_94  g1_95  g1_96  g1_97  g1_98  g1_99  g1_100 g1_101 g1_102 g1_103 g1_104
+g1_105 g1_106 g1_107 g1_108 g1_109 g1_110 g1_111 g1_112 g1_113 g1_114 g1_115 g1_116 g1_117 g1_118 g1_119 g1_120 g1_121 g1_122 g1_123 g1_124 g1_125 g1_126 g1_127 g1_128 g1_129 /*g1_130
+g1_131 g1_132 g1_133 g1_134 g1_135 g1_136 g1_137 g1_138 g1_139 g1_140 g1_141 g1_142 g1_143 g1_144 g1_145 g1_146 g1_147 g1_148 g1_149 g1_150 g1_151 g1_152 g1_153 g1_154 g1_155 g1_156
+g1_157 g1_158 g1_159 g1_160 g1_161 g1_162 g1_163 g1_164 g1_165 g1_166 g1_167 g1_168 g1_169 g1_170 g1_171 g1_172 g1_173 g1_174 g1_175 g1_176 g1_177 g1_178 g1_179 g1_180 g1_181 g1_182
+g1_183 g1_184 g1_185 g1_186 g1_187 g1_188 g1_189 g1_190 g1_191 g1_192 g1_193 g1_194 g1_195 g1_196 g1_197 g1_198 g1_199 g1_200 g1_201 g1_202 g1_203 g1_204 g1_205 g1_206 g1_207 g1_208
+g1_209 g1_210 g1_211 g1_212 g1_213 g1_214 g1_215 g1_216 g1_217 g1_218 g1_219 g1_220 g1_221 g1_222 g1_223 g1_224 g1_225 g1_226 g1_227 g1_228 g1_229 g1_230 g1_231 g1_232 g1_233 g1_234
+g1_235 g1_236 g1_237 g1_238 g1_239 g1_240 g1_241 g1_242 g1_243 g1_244 g1_245 g1_246 g1_247 g1_248 g1_249 g1_250 g1_251 g1_252 
+*/
+
+g15_1   g15_2   g15_3   g15_4   g15_5   g15_6   g15_7   g15_8   g15_9   g15_10  g15_11  g15_12  g15_13  g15_14  g15_15  g15_16  g15_17  g15_18  g15_19  g15_20  g15_21  g15_22  g15_23  g15_24  g15_25  g15_26 
+g15_27  g15_28  g15_29  g15_30  g15_31  g15_32  g15_33  g15_34  g15_35  g15_36  g15_37  g15_38  g15_39  g15_40  g15_41  g15_42  g15_43  g15_44  g15_45  g15_46  g15_47  g15_48   g15_49  g15_50 
+g15_51  g15_52 
+g15_53  g15_54  g15_55  g15_56  g15_57  g15_58  g15_59  g15_60 g15_61  g15_62  g15_63  g15_64  g15_65  g15_66  g15_67  g15_68  g15_69  g15_70  g15_71 g15_72 g15_73 g15_74 g15_75  g15_76  g15_77 g15_78 
+g15_79  g15_80  g15_81  g15_82  g15_83  g15_84  g15_85  g15_86  g15_87  g15_88  g15_89  g15_90 g15_91  g15_92  g15_93  g15_94  g15_95  g15_96  g15_97  g15_98  g15_99  g15_100 g15_101 g15_102 g15_103 g15_104
+g15_105 g15_106 g15_107 g15_108 g15_109 g15_110 g15_111 g15_112 g15_113 g15_114 g15_115 g15_116 g15_117 g15_118 g15_119 g15_120 g15_121 g15_122 g15_123 g15_124 g15_125 g15_126 g15_127 g15_128 g15_129 /*g15_130
+g15_131 g15_132 g15_133 g15_134 g15_135 g15_136 g15_137 g15_138 g15_139 g15_140 g15_141 g15_142 g15_143 g15_144 g15_145 g15_146 g15_147 g15_148 g15_149 g15_150 g15_151 g15_152 g15_153 g15_154 g15_155 g15_156
+g15_157 g15_158 g15_159 g15_160 g15_161 g15_162 g15_163 g15_164 g15_165 g15_166 g15_167 g15_168 g15_169 g15_170 g15_171 g15_172 g15_173 g15_174 g15_175 g15_176 g15_177 g15_178 g15_179 g15_180 g15_181 g15_182
+g15_183 g15_184 g15_185 g15_186 g15_187 g15_188 g15_189 g15_190 g15_191 g15_192 g15_193 g15_194 g15_195 g15_196 g15_197 g15_198 g15_199 g15_200 g15_201 g15_202 g15_203 g15_204 g15_205 g15_206 g15_207 g15_208
+g15_209 g15_210 g15_211 g15_212 g15_213 g15_214 g15_215 g15_216 g15_217 g15_218 g15_219 g15_220 g15_221 g15_222 g15_223 g15_224 g15_225 g15_226 g15_227 g15_228 g15_229 g15_230 g15_231 g15_232 g15_233 g15_234
+g15_235 g15_236 g15_237 g15_238 g15_239 g15_240 g15_241 g15_242 g15_243 g15_244 g15_245 g15_246 g15_247 g15_248 g15_249 g15_250 g15_251 g15_252 
 */
 ;
 by cald;
 
 
-
-if cald = 2012 then n_onart_obs_sa = 2200000 / 5.85 ;
-if cald = 2013 then n_onart_obs_sa = 2660000 / 5.85 ;
-if cald = 2014 then n_onart_obs_sa = 3080000 / 5.85 ;
-if cald = 2015 then n_onart_obs_sa = 3430000 / 5.85 ;
-if cald = 2016 then n_onart_obs_sa = 3770000 / 5.85 ;
-if cald = 2017 then n_onart_obs_sa = 4250000 / 5.85 ;
-if cald = 2018 then n_onart_obs_sa = 4630000 / 5.85 ;
-if cald = 2019 then n_onart_obs_sa = 5060000 / 5.85 ;
-if cald = 2020 then n_onart_obs_sa = 5330000 / 5.85 ;
-
-if cald=2008 then do; prev_w_obs_sa = 0.202 ;prev_m_obs_sa = 0.117 ; prev_obs_sa = 0.162 ; end;
-if cald=2012 then do; prev_obs_sa = 0.169 ; end;
-if cald=2016 then do; prev_w_obs_sa = 0.277 ;prev_m_obs_sa = 0.145 ; prev_obs_sa = 0.188 ; end;
-if cald=2017 then do; prev_w_obs_sa = 0.263 ;prev_m_obs_sa = 0.148 ; prev_obs_sa = 0.188 ; end;
-
-if cald=2011 then n_tested_obs_sa = 9523400 / 5.85;
-if cald=2012 then n_tested_obs_sa = 8772000 / 5.85;
-if cald=2013 then n_tested_obs_sa = 8978177 / 5.85;
-if cald=2014 then n_tested_obs_sa = 7334942 / 5.85;
-if cald=2015 then n_tested_obs_sa = 8636033 / 5.85;
-if cald=2016 then n_tested_obs_sa = 11324134 / 5.85;
-if cald=2017 then n_tested_obs_sa = 12465313 / 5.85;
-if cald=2018 then n_tested_obs_sa = 11902403 / 5.85;
-if cald=2019 then n_tested_obs_sa = 12714196 / 5.85;
-if cald=2020 then n_tested_obs_sa = 16316808 / 5.85;
-
+%include "C:\Users\ValentinaCambiano\OneDrive - University College London\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe_Sep2021.sas";
+run;
 
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 * ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
@@ -1384,8 +1319,8 @@ rename p95_p_diag_m_&o = P_DIAG_M1599_95UL;
 rename p50_p_diag_w_&o = P_DIAG_F1599_M;
 rename p5_p_diag_w_&o  = P_DIAG_F1599_95LL;
 rename p95_p_diag_w_&o = P_DIAG_F1599_95UL;
-rename p50_p_diag_m1524_&o = P_DIAG_M1524_M;
-rename p50_p_diag_w1524_&o = P_DIAG_F1524_M;
+rename p50_p_diag_m1524__&o = P_DIAG_M1524_M;
+rename p50_p_diag_w1524__&o = P_DIAG_F1524_M;
 rename p50_p_diag_sw_&o = P_DIAG_FSW1599_M;
 rename p50_p_m_npge1__&o = P_CLS3m_M1599_M;
 rename p50_p_w_npge1__&o = P_CLS3m_F1599_M;
@@ -1516,8 +1451,8 @@ p50_n_sympt_aids_&o
 p50_p_diag_&o 		p5_p_diag_&o	p95_p_diag_&o
 p50_p_diag_m_&o		p5_p_diag_m_&o	p95_p_diag_m_&o
 p50_p_diag_w_&o		p5_p_diag_w_&o	p95_p_diag_w_&o
-p50_p_diag_m1524_&o	
-p50_p_diag_w1524_&o
+p50_p_diag_m1524__&o	
+p50_p_diag_w1524__&o
 p50_p_diag_sw_&o
 
 p50_p_m_npge1__&o
