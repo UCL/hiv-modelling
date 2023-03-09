@@ -2,12 +2,12 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\base\";
+libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
   proc printto   ; *     log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log1";
 
 data b;
-set a.l_base_09_11_2021;
+set a.l_base_09_03_23;
 
 p_onart_vl1000_all = .;
 
@@ -119,7 +119,7 @@ ods html close;
 
 */
 
-proc sort; by cald run ;run;
+proc sort; by cald run option ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
 %let nfit = 500   ;
@@ -130,7 +130,7 @@ proc sort;by cald option ;run;
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option =1 then delete;
+if option  in (1 15) then delete;
 
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
