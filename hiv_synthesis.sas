@@ -342,7 +342,7 @@ newp_seed = 7;
 * sens_primary_testtype3;	%sample_uniform(sens_primary_testtype3,  0.5 0.75);
 
 * rate_non_hiv_symptoms;	rate_non_hiv_symptoms=0.01;			* rate of development of non-hiv symptoms, regardless of hiv status;
-							* dependent_on_time_step_length ;
+							* dependent_on_time_step_length   ;
 
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
