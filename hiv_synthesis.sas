@@ -2736,7 +2736,6 @@ end;
 
 
 
-
 * MALE CIRCUMCISION ;
   
 if t ge 2 then do;
@@ -2758,32 +2757,32 @@ end;
 
 
 if 10 le age_tm1 lt 20 then do;
-if 2013 < caldate{t} le 2019 then prob_circ =  ((2013-mc_int)*circ_inc_rate) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013);
+if 2013 < caldate{t} le 2019 then prob_circ =  ((2013-mc_int)*circ_inc_rate) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
 end;
 
 if 20 le age_tm1 lt 30 then do;
-if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_red_20_30;
+if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_red_20_30;
 end;
 
 if 30 le age_tm1 le 50 then do;
-if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 end;
 
 * this is the default if note circ_inc_rate_year_i = .  - no change in circ policy ;
 if t ge 2 and 2019 < caldate{t} and circ_inc_rate_year_i=0         then do;
-if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 * note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
 if  age_tm1 lt 15 then prob_circ =0;
-if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013)*circ_inc_15_19;
-if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_inc_15_19;
+if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
@@ -2792,17 +2791,17 @@ end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
 if age_tm1 lt 15 then prob_circ =0;
-if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
 	if caldate{t} <= 2026.5 then do;
       if age_tm1 lt 15 then prob_circ =0;
-      if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013);
-	  if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_20_30;
-	  if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013) * circ_red_30_50;
+      if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+	  if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+	  if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
     end;
 
     if caldate{t} > 2026.5 then do;
@@ -2828,6 +2827,7 @@ if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
 			date_mcirc=caldate{t};
 		end;
 end;
+
 
 
 * circumcision intervention ;
@@ -16818,7 +16818,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_ + _dcost ; s_dart_cost + _dart_cost ;  s_donart_cost + _donart_cost;  s_dcd4_cost + _dcd4_cost ; s_dvl_cost + _dvl_cost ; s_dvis_cost + _dvis_cost ;  	 
 	s_dfull_vis_cost + _dfull_vis_cost ;  s_dadc_cost + _dadc_cost ;  s_dnon_tb_who3_cost + _dnon_tb_who3_cost ; s_dcot_cost + _dcot_cost ; 
 	s_dtb_cost + _dtb_cost ; s_dtest_cost + _dtest_cost ;  s_dres_cost + _dres_cost ; s_dcost_circ + _dcost_circ ; s_dcost_condom_dn + dcost_condom_dn ; 
-	s_dcost_sw_program + dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
+	s_dcost_sw_program + _dcost_sw_program ;  s_d_t_adh_int_cost + _d_t_adh_int_cost ; s_dtest_cost_m + _dtest_cost_m ; s_dtest_cost_type1 + dtest_cost_type1;
 	s_dtest_cost_f + _dtest_cost_f ; s_dcost_prep_oral + _dcost_prep_oral ; s_dcost_prep_inj + _dcost_prep_inj ; s_dcost_prep_vr + _dcost_prep_vr ; 
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
