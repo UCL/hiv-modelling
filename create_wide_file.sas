@@ -22,15 +22,24 @@ by run cald option;run;
 data sf;
 
 set g ;
-
+/*
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
-sf_2021 = 10000000 / s_alive;
-keep run sf_2021;
+sf_2021 = 10000000 / s_alive;*/
+
+*Zimbabwe;
+*Source for Zimbabwe population is https:https://population.un.org/dataportal/data/indicators/49/locations/716/start/1990/end/2023/line/linetimeplot;
+*accessed 9/2/2023;
+* 58.1% of Zim population in 2020 >= age 15. Source: https://data.worldbank.org/indicator/SP.POP.0014.TO.ZS?locations=ZW accessed 6/9/2021;
+if cald=2022.5;
+s_alive = s_alive_m + s_alive_w ;
+sf = (16320000 * 0.581) / s_alive; 
+
+keep run sf;
 proc sort; by run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
-%let sf=sf_2021;
+%let sf=sf;
 
 data y; 
 merge g sf;
@@ -317,6 +326,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
 * n_tested_sw;					n_tested_sw = s_tested_sw * &sf * 4;
 * n_tested;						n_tested = s_tested * &sf * 4;
+* n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
@@ -345,6 +355,8 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_vmmc_4049m;					p_vmmc_4049m = s_vmmc4049m / (s_ageg4044m + s_ageg4549m) ;
 * p_vmmc_5064m;					p_vmmc_5064m = s_vmmc5064m / (s_ageg5054m + s_ageg5559m + s_ageg6064m) ;
 * p_vmmc_1549m;					p_vmmc_1549m = s_vmmc1549m / s_ageg1549m ;
+
+* n_new_vmmc1549m;				n_new_vmmc1549m = s_new_vmmc1549m * &sf * 4;
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
 * prop_w_1564_sw;				if s_alive1564_w gt 0 then prop_w_1564_sw = s_sw_1564 / s_alive1564_w ;
@@ -561,6 +573,7 @@ end;
 * n_onart_m;					n_onart_m = s_onart_m * &sf;
 * n_onart  ;					n_onart   = s_onart   * &sf;
 * n_onart_1524_;				n_onart_1524_ = (s_onart_m1519_ + s_onart_m2024_ + s_onart_w1519_ + s_onart_w2024_) * &sf; *VCFeb2023;
+* n_art_start_y;				n_art_start_y = s_art_start * 4 * &sf;
 
 * p_efa;						if s_onart > 0 then p_efa = s_efa / s_onart ;
 * p_taz;						if s_onart > 0 then p_taz = s_taz / s_onart ;
@@ -908,7 +921,8 @@ s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_
 p_newp_sw  n_tested_m  n_tested_w   p_tested_past_year_1549m  p_tested_past_year_1549w
 p_diag_m1524 p_diag_w1524 p_diag_sw  p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
-p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m																								 
+p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
+n_new_vmmc1549m 
 prop_w_1549_sw  prop_w_1564_sw	prop_w_ever_sw prop_sw_program_visit
 prop_sw_hiv prop_w_1524_onprep prop_1564_hivneg_onprep prop_sw_onprep p_prep_adhg80
 prevalence1549m prevalence1549w prevalence1549 
@@ -949,7 +963,7 @@ p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000  p_tams_ontle_vl
 death_rate_artexp  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_infection p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
-n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
+n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_diagnosed p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel /*p_death_hivrel_age_le64 */
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
@@ -977,11 +991,11 @@ n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_h
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
-n_death_hiv_m n_death_hiv_w n_cd4_lt50 n_cd4_lt200
+/*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
-sf_2021 sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
@@ -1047,8 +1061,8 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 
-prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ p_diag_w p_diag_m p_onart_vl1000 
- n_new_inf1549m n_new_inf1549w n_death_hiv_m n_death_hiv_w n_tested_m n_tested_w
+prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 
+ n_new_inf1549m n_new_inf1549w /*n_death_hiv_m n_death_hiv_w*/ n_tested_m n_tested_w
 test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
  s_cost_prep s_cost_prep_visit
@@ -1141,7 +1155,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_mcirc_3034m);%var(v=p_mcirc_3539m);%var(v=p_mcirc_4044m);%var(v=p_mcirc_4549m); 
 %var(v=p_mcirc_5064m); %var(v=p_mcirc_1549m);
 %var(v=p_vmmc); %var(v=p_vmmc_1519m); %var(v=p_vmmc_2024m);%var(v=p_vmmc_2529m); %var(v=p_vmmc_3039m); %var(v=p_vmmc_4049m);
-%var(v=p_vmmc_5064m); %var(v=p_vmmc_1549m);
+%var(v=p_vmmc_5064m); %var(v=p_vmmc_1549m);%var(v=n_new_vmmc1549m);
 %var(v=prop_w_1549_sw); %var(v=prop_w_1564_sw); %var(v=prop_w_ever_sw); %var(v=prop_sw_hiv); %var(v=prop_sw_program_visit); 
 %var(v=prop_w_1524_onprep); %var(v=prop_1564_onprep);
 %var(v=n_hivge15m);%var(v=n_hivge15w);%var(v=n_hiv1524m);%var(v=n_hiv1524w);%var(v=n_hiv2549m);%var(v=n_hiv2549w);%var(v=n_hiv_sw);
@@ -1198,7 +1212,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=death_rate_hiv_all);%var(v=death_rate_hiv_all_m);%var(v=death_rate_hiv_all_w);
 %var(v=p_iime);   %var(v=p_pime);   %var(v=p_nnme);     %var(v=n_pregnant_ntd);   %var(v=n_preg_odabe);
 %var(v=n_birth_with_inf_child);
-%var(v=n_tested); %var(v=n_tested_sw); %var(v=test_prop_positive);
+%var(v=n_tested); %var(v=n_tested_sw); %var(v=n_diagnosed); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v= n_prep); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 *%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
@@ -1241,10 +1255,11 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_dead_cvd_ge80m); %var(v=rate_dead_cvd_3039w); 
 %var(v=rate_dead_cvd_4049w); %var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
 %var(v=n_death_hivpos_anycause); %var(v= n_death_2059_m);  %var(v=n_death_2059_w);
-%var(v=n_death_hiv_m); %var(v=n_death_hiv_w); 
+*%var(v=n_death_hiv_m); *%var(v=n_death_hiv_w); 
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
-%var(v=prevalence_hiv_preg);%var(v=prevalence1549preg);%var(v=prevalence1524preg); %var(v=n_onart_w); %var(v=n_onart_m);%var(v=n_onart_1524_);  %var(v=p_diag_w); %var(v=p_diag_m); 
-%var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); %var(v=n_death_hiv_m); %var(v=n_death_hiv_w); %var(v=n_tested_m); 
+%var(v=prevalence_hiv_preg);%var(v=prevalence1549preg);%var(v=prevalence1524preg); %var(v=n_onart_w); %var(v=n_onart_m);%var(v=n_onart_1524_);%var(v=n_art_start_y);
+%var(v=p_diag_w); %var(v=p_diag_m); 
+%var(v=p_onart_vl1000);  %var(v=n_new_inf1549m); %var(v=n_new_inf1549w); *%var(v=n_death_hiv_m); *%var(v=n_death_hiv_w); %var(v=n_tested_m); 
 %var(v=n_tested_w); %var(v=test_prop_positive);
 
 
@@ -1258,7 +1273,7 @@ p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
 p_tested_past_year_1549m  p_tested_past_year_1549w  
 p_mcirc   p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m 
 p_mcirc_4044m p_mcirc_4549m  p_mcirc_5064m p_mcirc_1549m
-p_vmmc  p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m
+p_vmmc  p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m n_new_vmmc1549m
 prop_w_1549_sw  prop_w_1564_sw  prop_w_ever_sw  prop_sw_hiv  prop_sw_program_visit  prop_w_1524_onprep  prop_1564_onprep  prop_sw_onprep 
 n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 
@@ -1303,11 +1318,11 @@ p_nactive_ge2p00_xyz   p_nactive_ge1p50_xyz
 p_184m_ontle_vlg1000  p_65m_ontle_vlg1000  p_nnm_ontle_vlg1000   p_184m_ontld_vlg1000   p_65m_ontld_vlg1000  
 p_nnm_ontld_vlg1000   p_inm_ontld_vlg1000   p_inm_ontld_vlg1000   
 p_tams_ontle_vlg1000  p_tams_ontld_vlg1000  p_k65m p_m184m
-death_rate  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
+/*death_rate*/  death_rate_hiv death_rate_hiv_m death_rate_hiv_w death_rate_hiv_all death_rate_hiv_all_m death_rate_hiv_all_w
 p_iime   p_pime   p_nnme     n_pregnant_ntd   n_preg_odabe;run;
 data   wide_outputs_b; merge 
 n_birth_with_inf_child
-n_tested n_tested_sw test_prop_positive
+n_tested n_tested_sw n_diagnosed test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
 n_prep  n_covid  n_death_covid  n_death  n_death_hivrel 
 /*p_death_hivrel_age_le64*/  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
@@ -1339,10 +1354,10 @@ n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivne
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
-n_death_hiv_m n_death_hiv_w
+/*n_death_hiv_m n_death_hiv_w*/
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
-prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w n_death_hiv_m 
-n_death_hiv_w n_tested_m n_tested_w test_prop_positive
+prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 n_new_inf1549m n_new_inf1549w /*n_death_hiv_m 
+n_death_hiv_w*/ n_tested_m /*n_tested_w*/ test_prop_positive
 ;run;
 data wide_outputs;merge wide_outputs_a wide_outputs_b;run;
 proc sort; by run; run;
@@ -1357,7 +1372,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
-%par(p=sf_2021); /*%par(p=dataset)*/;
+%par(p=sf); /*%par(p=dataset)*/;
 %par(p=sex_beh_trans_matrix_m ); %par(p=sex_beh_trans_matrix_w ); %par(p=sex_age_mixing_matrix_m ); %par(p=sex_age_mixing_matrix_w ); %par(p=p_rred_p );
 %par(p=p_hsb_p ); %par(p=newp_factor ); %par(p=eprate ) %par(p=conc_ep ); %par(p=ch_risk_diag ); %par(p=ch_risk_diag_newp );
 %par(p=ych_risk_beh_newp ); %par(p=ych2_risk_beh_newp ); %par(p=ych_risk_beh_ep ); %par(p=exp_setting_lower_p_vl1000 );
@@ -1389,7 +1404,7 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 run;
 
 data wide_par; merge 
-sf_2021 /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
+sf /*dataset*/ sex_beh_trans_matrix_m sex_beh_trans_matrix_w sex_age_mixing_matrix_m sex_age_mixing_matrix_w p_rred_p
 p_hsb_p newp_factor eprate conc_ep ch_risk_diag ch_risk_diag_newp
 ych_risk_beh_newp ych2_risk_beh_newp ych_risk_beh_ep exp_setting_lower_p_vl1000
 external_exp_factor rate_exp_set_lower_p_vl1000 prob_pregnancy_base fold_change_w
