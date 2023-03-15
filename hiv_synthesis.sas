@@ -404,7 +404,7 @@ newp_seed = 7;
 * sv_secondline;			sv_secondline = 1;
 
 * AP 19-7-19 ;
-* ntd_risk_dol;				ntd_risk_dol = 0.0022; 				* todo - update this when tsepamo results updated ;
+* ntd_risk_dol;				ntd_risk_dol = 0;*VCFeb2023;
 * dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
@@ -2449,7 +2449,8 @@ if caldate_never_dot = &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
  *VCFeb2023;
-	if option = 1 then do;  *Given value of 1 as 0 usually is continuation of current;
+ 	*Otion 0 is continuation at current rates;
+	if option ge 1 then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -4284,7 +4285,7 @@ end;
 u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
 *VCFeb2023;
-if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0) or dt_lastbirth=.) and dt_start_pregn=. then do;
+if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0.25) or dt_lastbirth=.) and dt_start_pregn=. then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
 	if (ep=1   and . lt u lt prob_pregnancy) or      
 	   (newp=1 and . lt u lt prob_pregnancy_newp) then do;
@@ -4315,7 +4316,7 @@ end;
 *VCFeb2023 I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
 a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
-if caldate{t} = dt_start_pregn+0.25 then do;  * dependent_on_time_step_length ;
+if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
 if anc=1 then do;
@@ -9715,8 +9716,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 		if 3 < vl <= 4 then u=u*2;
 		if 4 < vl <= 5 then u=u*1;
 		if 5 < vl then u=u/2;
-		if . < caldate{t}-yrart <= 0.75 and onart=1 then u = u * 10 ; * jul18 - this is due to fact that pregnancy and birth are in same period and in 
-		fact art would be started a few months earlier in women with hiv detected in pregnancy; 
+		if . < caldate{t}-yrart <= 0.25 and onart=1 then u = u * 10 ; * VCFeb2023 - despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
 		if u < rate_birth_with_infected_child then do; * apr 2019;
 			birth_with_inf_child=1; if caldate{t} ge 2018.75 then ever_birth_with_inf_child = 1;
 			if c_rt184m_tm1=1 or c_rttams_tm1=1  or c_rt65m_tm1=1 or c_rt103m_tm1=1 or c_rt181m_tm1=1 or c_rt190m_tm1=1
@@ -10616,7 +10616,7 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 * measure cd4 crag tb lam when (re)entering care;
 crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_enter_care=.; enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
-	if cm  =. then cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; 
+	if cm  =. then do; cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_incur = 1; end;
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
