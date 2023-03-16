@@ -2747,7 +2747,7 @@ eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if absence_cd4_year_i ne 1 then do;
+if absence_cd4_year_i ne 1 then do;*VCFeb2023;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -2792,7 +2792,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 
 end;
 
-if caldate{t} >= &year_interv then do;
+if caldate{t} >= &year_interv then do;*VCFeb2023;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
@@ -2994,7 +2994,7 @@ end;
 * PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
 
 if t ge 2 and gender=2 then do;
-	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;
+	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;*VCFeb2023;
 	if cum_children=. and dead=0 then cum_children=0;
 	if episodes_sw=.     then episodes_sw=0;
 	if years_ep=.		  then years_ep=0;
@@ -7643,7 +7643,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 
 * pregnancy leads to re-engagement once option b+ implemented; 
-	if registd=1 and pregnant=1 and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;
+	if registd=1 and pregnant=1 and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;*VCFeb2023;
 		return=1;lost=0;visit=1;end;
 
 * return cant happen if no_art_disrup_covid ;
@@ -7767,7 +7767,7 @@ res_test=.;
 		if art_initiation_strategy=3 then do;
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
-				if dt_lastbirth=caldate{t} then u=u/10; * jul18 ;
+				if dt_lastbirth=caldate{t} then u=u/10; * jul18 ;*VCFeb2023;
 
 				if u < eff_pr_art_init then time0=caldate{t};
 
@@ -7802,7 +7802,7 @@ res_test=.;
 		end;
 
 		if art_initiation_strategy in (3, 9, 10) then do;  * pregnancy leads to re-engagement once option b+ implemented;
-			if pregnant=1 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
+			if pregnant=1 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;*VCFeb2023;
 				if dt_first_elig=. then dt_first_elig=caldate{t};
 				time0=caldate{t};  art_init_bplus_=1;
 			end;
@@ -7918,7 +7918,7 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-		if dt_lastbirth=caldate{t} then prointer = prointer/100; * jul18;
+		if dt_lastbirth=caldate{t} then prointer = prointer/100; * jul18;*VCFeb2023;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
@@ -8017,7 +8017,7 @@ end;
 
 		if non_tb_who3_ev_tm1=1 then e_rate_restart = e_rate_restart*3;
 		if adc_tm1=1 then e_rate_restart = e_rate_restart*5;
-		if dt_lastbirth=caldate{t} then e_rate_restart = e_rate_restart*5; * jul18;
+		if dt_lastbirth=caldate{t} then e_rate_restart = e_rate_restart*5; * jul18;*VCFeb2023;
 		if return   =1 then e_rate_restart = 1;
 
 		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
@@ -9744,7 +9744,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * amended jun18 ;
 	onart_birth_with_inf_child=0;onart_birth_with_inf_child_res=0;give_birth_with_hiv=0;birth_with_inf_child=0;	
 
-	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do; 
+	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do; *VCFeb2023;
 		give_birth_with_hiv=1;
 		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
@@ -10651,7 +10651,7 @@ end;tb_diag_e = .; tb_prob_diag_l = .;
 * measure cd4 crag tb lam when (re)entering care;
 crag_measured_this_per = 0; tblam_measured_this_per = 0; cm_this_per =0; cd4_enter_care=.; enter_care=0;
 if cm_1stvis_return_vlmg1000=1 and (date_1st_hiv_care_visit=caldate{t} or return=1 or vm gt log10(vl_threshold)) then do; 
-	if cm  =. then do; cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_incur = 1; end;
+	if cm  =. then do; cm   =(sqrt(cd4)+(rand('normal')*sd_measured_cd4))**2; cd4_cost_incur = 1; end;*VCFeb2023;
 	if (crag_cd4_l200=1 and 0 <= cm < 200) or (crag_cd4_l100=1 and 0 <= cm < 100) then crag_measured_this_per = 1;
 	if (tblam_cd4_l200=1 and 0 <= cm < 200) or (tblam_cd4_l100=1 and 0 <= cm < 100) then tblam_measured_this_per = 1;
 end;
@@ -13625,7 +13625,7 @@ end;
 	if caldate&j=yrart >. then do;
 		art_start=1;
 		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; 
-		if gender=2 and pregnant=1 then art_start_pregnant=1;
+		if gender=2 and pregnant=1 then art_start_pregnant=1;*VCFeb2023;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
 		if nnm_art=1 and gender=1 then nnm_art_m=1;if nnm_art=1 and gender=2 then nnm_art_w=1;
@@ -13678,10 +13678,6 @@ sympt_notaids=0; if hiv=1 and (tb = 1 or who3_event = 1) and who4_ ne 1 then sym
 sympt_aids=0;    if hiv=1 and                                who4_ =  1 then sympt_aids=1; *VCFeb2023;
 
 
-not_on_art_cd4l200=0; if hiv=1 and onart ne 1 and 0 <= cd4 < 200 then not_on_art_cd4l200=1;
-not_on_art_cd4200350=0; if hiv=1 and onart ne 1 and 200 <= cd4 < 350 then not_on_art_cd4200350=1;
-not_on_art_cd4350500=0; if hiv=1 and onart ne 1 and 350 <= cd4 < 500 then not_on_art_cd4350500=1;
-not_on_art_cd4ge500=0; if hiv=1 and onart ne 1 and 500 <= cd4 then not_on_art_cd4ge500=1;
 
 
 ***Outputs for specific periods;
@@ -13957,9 +13953,6 @@ artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastb
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
 else if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
 onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1; *VCFeb2023;
-
-
-
 
 ***VL on 2nd line;
 if (onart=1 or int_clinic_not_aw=1) and caldate&j >= date_line2 > . then line2_incl_int_clinic_not_aw = 1;
