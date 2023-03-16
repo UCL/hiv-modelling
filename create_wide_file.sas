@@ -1,5 +1,6 @@
 * options user="/folders/myfolders/";
 
+
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
 libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v0_out";
@@ -8,9 +9,7 @@ data a.base_09_03_23;   set b.out:;
 /*proc freq data=a.base_09_03_23;table s_tested_anc s_pregnant;run;*/
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
-*	title "Compressed SAS Input Data"
-*run;
-/*proc freq data=a.base_09_03_23;table s_prep_any s_prep_any_ever;run;*/
+
 
 data g; set  a.base_09_03_23;
 
@@ -305,7 +304,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
 * p_w1524_npge1_;		 		p_w1524_npge1_ = s_w1524_npge1 / (s_ageg1519w + s_ageg2024w); *VCFeb2023;
 * p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 / s_sw; *VCFeb2023;
-
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
@@ -459,6 +457,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * incidence_onprep ; 			if s_prep_any > 0 then incidence_onprep  = (s_primary_prep * 4 * 100) / s_prep_any ;
 
+
 * prevalence1519w;				prevalence1519w = s_hiv1519w  / s_ageg1519w ;
 * prevalence1519m;				prevalence1519m = s_hiv1519m  / s_ageg1519m ;
 * prevalence2024w;				prevalence2024w = s_hiv2024w  / s_ageg2024w ;
@@ -530,9 +529,11 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 end;
 
 * mtct_prop;					if s_give_birth_with_hiv > 0 then mtct_prop = s_birth_with_inf_child / s_give_birth_with_hiv  ;
+
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag / (s_hivge15m+s_hivge15w) ;  p_diag = p_diag;
 * p_diag_m;						if s_hivge15m  > 0 then p_diag_m = s_diag_m / s_hivge15m ;  p_diag_m = p_diag_m;
 * p_diag_w;						if s_hivge15w  > 0 then p_diag_w = s_diag_w / s_hivge15w ;  p_diag_w = p_diag_w;
+
 
 * p_diag_m1524;					if s_hiv1524m > 0 then p_diag_m1524 = (s_diag_m1519_+s_diag_m2024_)/(s_hiv1524m);
 * p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
@@ -898,6 +899,7 @@ end;
 *n_sympt_aids;					n_sympt_aids 		= s_sympt_aids * &sf; *VCFeb2023; 
 
 
+
 inc_adeathr_disrup_covid = inc_death_rate_aids_disrup_covid ;
 
 * number of women with hiv giving birth per year;
@@ -1041,8 +1043,7 @@ clinic_not_aw_int_frac    rate_loss_persistence   incr_rate_int_low_adh
 fold_change_mut_risk   adh_effect_of_meas_alert   pr_switch_line   prob_vl_meas_done  
 red_adh_tb_adc   red_adh_tox_pop   add_eff_adh_nnrti   altered_adh_sec_line_pop  
 prob_return_adc   higher_newp_less_engagement  higher_newp_with_lower_adhav
-fold_tr fold_tr_newp  switch_for_tox   base_rate_sw   prep_depends_on_pr_vl_1000
-
+fold_tr fold_tr_newp  switch_for_tox   adh_pattern_prep    base_rate_sw   prep_depends_on_pr_vl_1000
 condom_incr_year_i     		 incr_test_year_i              decr_hard_reach_year_i   
 decr_prob_loss_at_diag_year_i  	decr_rate_lost_year_i 		decr_rate_lost_art_year_i     incr_rate_return_year_i      
 incr_rate_restart_year_i         incr_rate_init_year_i        decr_rate_int_choice_year_i  
@@ -1066,13 +1067,11 @@ p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep
 prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
-
 prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 
  n_new_inf1549m n_new_inf1549w /*n_death_hiv_m n_death_hiv_w*/ n_tested_m n_tested_w
 test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
- s_cost_prep s_cost_prep_visit
-
+s_cost_prep s_cost_prep_visit
 dcost_80 ddaly_80
 ;
 
@@ -1085,6 +1084,7 @@ proc sort data=y;by run option;run;
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_09_03_23; set y;  
 
+
 *
 
 28332103
@@ -1094,6 +1094,7 @@ data a.l_base_09_03_23; set y;
 
 
 data y; set a.l_base_09_03_23; 
+
 
   options nomprint;
   option nospool;
@@ -1581,6 +1582,7 @@ n_onart_21 n_death_hivpos_anycause_21  n_death_2059_m_21 n_death_2059_w_21
 ;
   where 0.10 <= incidence1549w_21 <= 2.25 and 0.1 <= incidence1549m_21 <= 1.75 ;
 run;
+ods html close;
 
 ods html;
 proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;

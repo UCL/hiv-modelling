@@ -9,6 +9,7 @@ run;
 data b;
 set a.l_base_09_03_23;
 /*proc freq data=a.l_base_09_03_23;table n_prep n_prep_ever;run;*/
+
 p_onart_vl1000_all = .;
 
 /*
