@@ -2282,7 +2282,7 @@ decr_hard_reach_year_i = 0;
 decr_prob_loss_at_diag_year_i = 0;
 
 *absence CD4;
-absence_cd4_year_i = 0; *VCFeb2023;
+absence_cd4vl_year_i = 0; *VCFeb2023;
 
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
@@ -2461,7 +2461,7 @@ who may be dead and hence have caldate{t} missing;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
 		*Linkage, management, ART Interv;
-		absence_cd4_year_i = 1;*If CD4 is not available I am assuming clinical monitoring;
+		absence_cd4vl_year_i = 1;*If CD4 is not available I am assuming clinical monitoring;
 		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
 		tblam_cd4_l200=0;
 		*VL monitoring is switched off as clinical monitoring is assumed;
@@ -2647,7 +2647,7 @@ if	decr_prob_loss_at_diag_year_i = 1 then do;
 end;
 
 *VCFeb2023;
-if absence_cd4_year_i = 1 then do;
+if absence_cd4vl_year_i = 1 then do;
 	hiv_monitoring_strategy=1; 
 	art_monitoring_strategy=1; 
 end;
@@ -2747,7 +2747,7 @@ eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if absence_cd4_year_i ne 1 then do;*VCFeb2023;
+if absence_cd4vl_year_i ne 1 then do;*VCFeb2023;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -4310,7 +4310,9 @@ end;
 *HIV Testing in ANC;
 *VCFeb2023 I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
-a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+a=rand('uniform');
+tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+tested_labdel=0;
 if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
@@ -4320,14 +4322,15 @@ if anc=1 then do;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
 		if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
-			tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
+			tested=1; dt_last_test=caldate{t};np_lasttest=0; end;  
+			if caldate{t} = dt_start_pregn+0.25 then tested_anc=1;
+			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
 	end;
 	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
     u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
 end;
 
-*5Nov2016: additional HIV test 3 months after birth, this is because it is the easiest way to capture the fact that pregnant women are tested twice during pregnancy;
 pd_test=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
@@ -4336,9 +4339,9 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do
 end;
 
 *VCFeb2023;
-if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
+if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
 if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1;end;
-if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;
+if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
@@ -11731,6 +11734,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 	end;
 	
 	vl_cost_inc=0;
+	vm_this_per=0;if vm ne . then vm_this_per =1;*VCFeb2023;
 
 	res_cost=0; if res_test=1 then res_cost=res_cost_a;
 
@@ -16812,7 +16816,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc_naive + adc_naive ; s_adc_line1_lf0 + adc_line1_lf0 ; s_adc_line1_lf1 + adc_line1_lf1 ; s_adc_line2_lf1 + adc_line2_lf1 ;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per;
-	s_cm_this_per + cm_this_per ;  s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
+	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
 	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
  	s_vl_g1 + vl_g1 ;  s_vl_g2 + vl_g2 ;  s_vl_g3 + vl_g3 ;  s_vl_g4 + vl_g4 ;  s_vl_g5 + vl_g5 ;  
@@ -18422,7 +18426,7 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
@@ -18557,7 +18561,7 @@ discount
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	 absence_cd4vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
@@ -19349,7 +19353,7 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
@@ -21120,7 +21124,7 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per    s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
@@ -21254,7 +21258,7 @@ discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	  absence_cd4_year_i 	decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	  absence_cd4vl_year_i 	decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
