@@ -4310,7 +4310,9 @@ end;
 *HIV Testing in ANC;
 *VCFeb2023 I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
-a=rand('uniform');tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+a=rand('uniform');
+tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
+tested_labdel=0;
 if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
@@ -4320,14 +4322,15 @@ if anc=1 then do;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
 		if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
-			tested=1; dt_last_test=caldate{t};np_lasttest=0; tested_anc=1;end;      
+			tested=1; dt_last_test=caldate{t};np_lasttest=0; end;  
+			if caldate{t} = dt_start_pregn+0.25 then tested_anc=1;
+			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
 	end;
 	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
     u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
 end;
 
-*5Nov2016: additional HIV test 3 months after birth, this is because it is the easiest way to capture the fact that pregnant women are tested twice during pregnancy;
 pd_test=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
@@ -4336,9 +4339,9 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do
 end;
 
 *VCFeb2023;
-if dt_start_pregn le caldate{t} le dt_start_pregn+0.75 then pregnant=1;
+if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
 if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1;end;
-if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;
+if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
