@@ -2282,7 +2282,7 @@ decr_hard_reach_year_i = 0;
 decr_prob_loss_at_diag_year_i = 0;
 
 *absence CD4;
-absence_cd4_year_i = 0; *VCFeb2023;
+absence_cd4vl_year_i = 0; *VCFeb2023;
 
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
@@ -2461,7 +2461,7 @@ who may be dead and hence have caldate{t} missing;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
 		*Linkage, management, ART Interv;
-		absence_cd4_year_i = 1;*If CD4 is not available I am assuming clinical monitoring;
+		absence_cd4vl_year_i = 1;*If CD4 is not available I am assuming clinical monitoring;
 		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
 		tblam_cd4_l200=0;
 		*VL monitoring is switched off as clinical monitoring is assumed;
@@ -2647,7 +2647,7 @@ if	decr_prob_loss_at_diag_year_i = 1 then do;
 end;
 
 *VCFeb2023;
-if absence_cd4_year_i = 1 then do;
+if absence_cd4vl_year_i = 1 then do;
 	hiv_monitoring_strategy=1; 
 	art_monitoring_strategy=1; 
 end;
@@ -2747,7 +2747,7 @@ eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if absence_cd4_year_i ne 1 then do;*VCFeb2023;
+if absence_cd4vl_year_i ne 1 then do;*VCFeb2023;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -18561,7 +18561,7 @@ discount
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	 absence_cd4vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
@@ -21258,7 +21258,7 @@ discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	  absence_cd4_year_i 	decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	  absence_cd4vl_year_i 	decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
