@@ -661,8 +661,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
-																* lapr and dpv-vr - define pr_lapr_b and pr_dpv_b which may be different to pr_prep_oral_b - we may need to 
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* lapr JAS - should this be the same for all prep? may want more frequently for CAB-LA;
@@ -694,7 +694,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep; * lapr;
-* pr_prep_inj_b;				pr_prep_inj_b = pr_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
+* prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
 
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -759,7 +759,7 @@ end;
 * date_prep_vr_intro;			date_prep_vr_intro=2100; 			* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
 * dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
-* pr_prep_vr_b;					pr_prep_vr_b = pr_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
+* prob_prep_vr_b;					prob_prep_vr_b = prob_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
 * annual_testing_prep_vr;		annual_testing_prep_vr=0.25;	* frequency of HIV testing for people on DPV-VR PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
@@ -1660,6 +1660,8 @@ eff_pr_switch_line = pr_switch_line;
 * define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
+*eff_prob_prep_oral_b is defined later on;
+
 * define effective rate_choose_stop_prep_oral;
 eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
 
@@ -2056,26 +2058,24 @@ prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 	* lapr and dpv-vr;
 
 * Oral prep scale-up over 4 years;
-if caldate{t} < date_prep_oral_intro then prob_prep_oral_b = 0;
+if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
 else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) 
-		then prob_prep_oral_b = 0.05 +  (  (pr_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else 	prob_prep_oral_b = pr_prep_oral_b;
-	* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
-eff_prob_prep_oral_b = prob_prep_oral_b; *VCFeb2023;
+		then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
+else 	eff_prob_prep_oral_b = prob_prep_oral_b;*VCFeb2023;
+* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
+
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
-if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then prob_prep_inj_b = 0;
+if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
 else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
-		then prob_prep_inj_b = 0.05 +  (  (pr_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else 	prob_prep_inj_b = pr_prep_inj_b;
-eff_prob_prep_inj_b = prob_prep_inj_b; *VCFeb2023;
+		then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
+else 	eff_prob_prep_inj_b = prob_prep_inj_b;*VCFeb2023;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
-if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then prob_prep_vr_b = 0;
+if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
 else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
-		then prob_prep_vr_b = 0.05 +  (  (pr_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else 	prob_prep_vr_b = pr_prep_vr_b;
-eff_prob_prep_vr_b = prob_prep_vr_b; *VCFeb2023;
+		then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
+else 	eff_prob_prep_vr_b = prob_prep_vr_b;*VCFeb2023;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
@@ -17077,7 +17077,7 @@ proc freq; tables onartvisit0; where onart=1 and death=.; run;
 
 prep_inj_willing=1; hard_reach=0;
 prep_inj_efficacy = 0.1;
-pr_prep_inj_b =1;
+prob_prep_inj_b =1;
 rate_choose_stop_prep_inj=0;
 
 
@@ -17426,7 +17426,7 @@ proc print; var serial_no caldate&j
 prep prep_any_strategy prep_any_elig  prep_any_ever  dt_prep_oral_s   continuous_prep_any_use
 rate_test_startprep_any  rate_choose_stop_prep_oral prob_prep_any_restart_choice 
 eff_rate_test_startprep_any eff_rate_choose_stop_prep_oral eff_prob_prep_any_restart_choice 
-annual_testing_prep_oral hivtest_type prep_oral_efficacy factor_prep_adh_older rate_test_onprep_any pr_prep_oral_b prob_prep_any_restart prob_prep_any_visit_counsel
+annual_testing_prep_oral hivtest_type prep_oral_efficacy factor_prep_adh_older rate_test_onprep_any prob_prep_oral_b prob_prep_any_restart prob_prep_any_visit_counsel
 tot_yrs_prep_oral prob_prep_any_restart_choice  pop_wide_tld_prob_egfr;
 where age ge 15 and hiv ne 1;
 run;
@@ -18520,7 +18520,7 @@ res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_lo
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral pr_prep_oral_b circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice 	 add_prep_any_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
@@ -18532,9 +18532,9 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
+rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw prob_prep_oral_b rel_prep_oral_adh_younger
 
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy  low_prep_inj_uptake
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
@@ -21217,7 +21217,7 @@ res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
-rate_test_startprep_any   rate_choose_stop_prep_oral pr_prep_oral_b circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
+rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  nnrti_res_no_effect  double_rate_gas_tox_taz   incr_mort_risk_dol_weightg 
@@ -21230,8 +21230,8 @@ sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
-prob_prep_any_restart_choice add_prep_any_uptake_sw pr_prep_oral_b rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov pr_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
+prob_prep_any_restart_choice add_prep_any_uptake_sw rel_prep_oral_adh_younger
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
