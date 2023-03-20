@@ -3,19 +3,19 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v0_out";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v1_out";
 
-data a.base_09_03_23;   set b.out:;
+data a.base17_03_23;   set b.out:;
 /*proc freq data=a.base_09_03_23;table s_tested_anc s_pregnant;run;*/
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base_09_03_23;
+data g; set  a.base_17_03_23;
 
 proc sort data=g; 
 by run cald option;run;
-
+*8 out of 100;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -1082,7 +1082,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_09_03_23; set y;  
+data a.l_base_17_03_23; set y;  
 
 
 *
@@ -1093,7 +1093,7 @@ data a.l_base_09_03_23; set y;
 ;
 
 
-data y; set a.l_base_09_03_23; 
+data y; set a.l_base_17_03_23; 
 
 
   options nomprint;
@@ -1445,7 +1445,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
-  data a.w_base_09_03_23; 
+  data a.w_base_17_03_23; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
@@ -1454,10 +1454,10 @@ proc sort; by run;run;
 
 
 proc contents;run;
-
+/*
 ods html;
 
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_95	p_mcirc_95	prevalence1549m_95 prevalence1549w_95
 incidence1549w_95  incidence1549m_95   incidence_sw_95  	p_diag_95 	p_diag_m_95   p_diag_w_95	p_ai_no_arv_c_nnm_95   
 prop_w_1549_sw_95  mtct_prop_95  prop_1564_onprep_95
@@ -1468,7 +1468,7 @@ n_alive_95
 rate_dead_hivpos_cause1_95   rate_dead_hivpos_tb_95  rate_dead_hivpos_cause4_95 rate_dead_hivpos_crypm_95 
 rate_dead_hivpos_sbi_95  rate_dead_hivpos_oth_adc_95  rate_dead_hivpos_cause2_95  rate_dead_hivpos_cause3_95  rate_dead_hivpos_cvd_95 
 rate_dead_cvd_95 rate_dead_tb_95  rate_dead_hivneg_cvd_95  rate_dead_hivneg_tb_95  rate_dead_hivneg_cause2_95 rate_dead_hivneg_cause3_95 
-rate_dead_hivneg_cause4_95 rate_dead_hivneg_cause5_95 /*rate_dead_allage_95 rate_dead_hivneg_anycause_95 rate_dead_hivpos_anycause_95*/
+rate_dead_hivneg_cause4_95 rate_dead_hivneg_cause5_95 
 n_cd4_lt50_95 n_cd4_lt200_95
 p_ahd_re_enter_care_100_95 p_ahd_re_enter_care_200_95
 incidence1524w_95   incidence1524m_95 incidence2534w_95   incidence2534m_95 incidence3544w_95   incidence3544m_95 
@@ -1484,7 +1484,7 @@ r_prev_6064m_4549w_95 r_prev_65plm_4549w_95  p_age1549_hivneg_95 p_age1549_hiv_9
 ;
 run;
 
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_05	p_mcirc_05		prevalence1549m_05 prevalence1549w_05
 incidence1549w_05  incidence1549m_05   incidence_sw_05  	p_diag_05 	p_diag_m_05   p_diag_w_05	p_ai_no_arv_c_nnm_05   
 prop_w_1549_sw_05  mtct_prop_05  prop_1564_onprep_05
@@ -1495,7 +1495,7 @@ n_alive_05
 rate_dead_hivpos_cause1_05   rate_dead_hivpos_tb_05  rate_dead_hivpos_cause4_05 rate_dead_hivpos_crypm_05 
 rate_dead_hivpos_sbi_05  rate_dead_hivpos_oth_adc_05  rate_dead_hivpos_cause2_05  rate_dead_hivpos_cause3_05  rate_dead_hivpos_cvd_05 
 rate_dead_cvd_05 rate_dead_tb_05  rate_dead_hivneg_cvd_05  rate_dead_hivneg_tb_05  rate_dead_hivneg_cause2_05 rate_dead_hivneg_cause3_05 
-rate_dead_hivneg_cause4_05 rate_dead_hivneg_cause5_05  /*rate_dead_allage_05 rate_dead_hivneg_anycause_05 rate_dead_hivpos_anycause_05*/
+rate_dead_hivneg_cause4_05 rate_dead_hivneg_cause5_05  
 n_cd4_lt50_05 n_cd4_lt200_05
 p_ahd_re_enter_care_100_05 p_ahd_re_enter_care_200_05
 incidence1524w_05   incidence1524m_05 incidence2534w_05   incidence2534m_05 incidence3544w_05   incidence3544m_05 
@@ -1512,7 +1512,7 @@ n_death_2059_w_05 n_death_hivrel_05
 ;
 run;
 
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_15	p_mcirc_15	prevalence1549m_15 prevalence1549w_15
 incidence1549w_15  incidence1549m_15   incidence_sw_15  	p_diag_15 	p_diag_m_15   p_diag_w_15	p_ai_no_arv_c_nnm_15   
 prop_w_1549_sw_15  mtct_prop_15  prop_1564_onprep_15
@@ -1523,7 +1523,7 @@ n_alive_15
 rate_dead_hivpos_cause1_15   rate_dead_hivpos_tb_15  rate_dead_hivpos_cause4_15 rate_dead_hivpos_crypm_15 
 rate_dead_hivpos_sbi_15  rate_dead_hivpos_oth_adc_15  rate_dead_hivpos_cause2_15  rate_dead_hivpos_cause3_15  rate_dead_hivpos_cvd_15 
 rate_dead_cvd_15 rate_dead_tb_15  rate_dead_hivneg_cvd_15  rate_dead_hivneg_tb_15  rate_dead_hivneg_cause2_15 rate_dead_hivneg_cause3_15 
-rate_dead_hivneg_cause4_15 rate_dead_hivneg_cause5_15  /*rate_dead_allage_15 rate_dead_hivneg_anycause_15 rate_dead_hivpos_anycause_15*/
+rate_dead_hivneg_cause4_15 rate_dead_hivneg_cause5_15  
 n_cd4_lt50_15 n_cd4_lt200_15
 p_ahd_re_enter_care_100_15 p_ahd_re_enter_care_200_15
 incidence1524w_15   incidence1524m_15 incidence2534w_15   incidence2534m_15 incidence3544w_15   incidence3544m_15 
@@ -1542,7 +1542,7 @@ run;
 
 
 ods html;
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_21	p_mcirc_21	prevalence1549m_21 prevalence1549w_21  prevalence_hiv_preg_21
 incidence1549w_21  incidence1549m_21   incidence_sw_21  	p_diag_21 	p_diag_m_21   p_diag_w_21	p_ai_no_arv_c_nnm_21   
 prop_w_1549_sw_21  mtct_prop_21  prop_1564_onprep_21
@@ -1585,7 +1585,7 @@ run;
 ods html close;
 
 ods html;
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_40	p_mcirc_40	prevalence1549m_40 	prevalence1549w_40
 incidence1549w_40  incidence1549m_40   incidence_sw_40  	p_diag_40 	p_diag_m_40   p_diag_w_40	p_ai_no_arv_c_nnm_40   
 prop_w_1549_sw_40  mtct_prop_40  prop_1564_onprep_40
@@ -1596,7 +1596,7 @@ n_alive_40
 rate_dead_hivpos_cause1_40   rate_dead_hivpos_tb_40  rate_dead_hivpos_cause4_40 rate_dead_hivpos_crypm_40 
 rate_dead_hivpos_sbi_40  rate_dead_hivpos_oth_adc_40  rate_dead_hivpos_cause2_40  rate_dead_hivpos_cause3_40  rate_dead_hivpos_cvd_40 
 rate_dead_cvd_40 rate_dead_tb_40  rate_dead_hivneg_cvd_40  rate_dead_hivneg_tb_40  rate_dead_hivneg_cause2_40 rate_dead_hivneg_cause3_40 
-rate_dead_hivneg_cause4_40 rate_dead_hivneg_cause5_40  /*rate_dead_allage_40   rate_dead_hivneg_anycause_40 rate_dead_hivpos_anycause_40*/
+rate_dead_hivneg_cause4_40 rate_dead_hivneg_cause5_40  
 p_ahd_re_enter_care_100_40 p_ahd_re_enter_care_200_40
 incidence1524w_40   incidence1524m_40 incidence2534w_40   incidence2534m_40 incidence3544w_40   incidence3544m_40 
 incidence4554w_40   incidence4554m_40 incidence5564w_40   incidence5564m_40
@@ -1611,7 +1611,7 @@ r_prev_6064m_4549w_40 r_prev_65plm_4549w_40 p_age1549_hivneg_40 p_age1549_hiv_40
 ;
 run;
 
-proc means data=a.w_base_09_03_23 n p50 p5 p95 mean;
+proc means data=a.w_base_17_03_23 n p50 p5 p95 mean;
 var p_w_giv_birth_this_per_70	p_mcirc_70		prevalence1549m_70 prevalence1549w_70
 incidence1549w_70  incidence1549m_70   incidence_sw_70  	p_diag_70 	p_diag_m_70   p_diag_w_70	p_ai_no_arv_c_nnm_70   
 prop_w_1549_sw_70  mtct_prop_70  prop_1564_onprep_70
@@ -1622,7 +1622,7 @@ n_alive_70
 rate_dead_hivpos_cause1_70   rate_dead_hivpos_tb_70  rate_dead_hivpos_cause4_70 rate_dead_hivpos_crypm_70 
 rate_dead_hivpos_sbi_70  rate_dead_hivpos_oth_adc_70  rate_dead_hivpos_cause2_70  rate_dead_hivpos_cause3_70  rate_dead_hivpos_cvd_70 
 rate_dead_cvd_70 rate_dead_tb_70  rate_dead_hivneg_cvd_70  rate_dead_hivneg_tb_70  rate_dead_hivneg_cause2_70 rate_dead_hivneg_cause3_70 
-rate_dead_hivneg_cause4_70 rate_dead_hivneg_cause5_70 /*rate_dead_allage_70  rate_dead_hivneg_anycause_70 rate_dead_hivpos_anycause_70*/
+rate_dead_hivneg_cause4_70 rate_dead_hivneg_cause5_70 
 p_ahd_re_enter_care_100_70 p_ahd_re_enter_care_200_70
 incidence1524w_70   incidence1524m_70 incidence2534w_70   incidence2534m_70 incidence3544w_70   incidence3544m_70 
 incidence4554w_70   incidence4554m_70 incidence5564w_70   incidence5564m_70
@@ -1639,4 +1639,4 @@ run;
 
 ods html close;
 
-
+*/
