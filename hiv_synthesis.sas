@@ -2160,8 +2160,8 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 4  cd4 < 200 or who4
 5  cd4 < 200 or tb or who4
 6  cd4 < 350 or who4
-7 at diagnosis
-;
+9  cd4<350 + ART immediately to pregnant women
+10 cd4<500 + ART immediately to pregnant women;
 
 if		caldate{t} < 2005.5 then do; 
 	hiv_monitoring_strategy=1; 
