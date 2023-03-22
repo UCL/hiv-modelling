@@ -1242,7 +1242,7 @@ proc gchart;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230313.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230317.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -1448,7 +1448,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sw";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  100000 by 20000) valueattrs=(size=10);
 label p50_n_tested_sw_0  = "Baseline (median) - 15+";
 label p50_n_tested_sw_1  = "Essential (median) - 15+  ";
 label p50_n_tested_sw_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -1462,7 +1462,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_anc";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000000 by 200000) valueattrs=(size=10);
 label p50_n_tested_anc_0  = "Baseline (median) - 15+";
 label p50_n_tested_anc_1  = "Essential (median) - 15+  ";
 label p50_n_tested_anc_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -1476,7 +1476,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_anc_0  = "Baseline (median) - 15+";
 label p50_p_anc_1  = "Essential (median) - 15+  ";
 label p50_p_anc_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -1560,7 +1560,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual # new circumcisions";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_new_vmmc1549m_0 = "Option 0 (median) ";
 label p50_n_new_vmmc1549m_1 = "Option 1 (median) ";
 label p50_n_new_vmmc1549m_15 = "Option 15 (median) ";
@@ -2477,7 +2477,7 @@ band    x=cald lower=p5_n_death_hiv_m_0 	upper=p95_n_death_hiv_m_0  / transparen
 run;quit;
 */
 
-/*
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of CD4 measurements";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
@@ -2513,7 +2513,7 @@ band    x=cald lower=p5_n_pcp_p_80__15 	upper=p95_n_pcp_p_80__15  / transparency
 run;quit;
 
 
-*/
+
 ods rtf close;run;
 
 *Output about cotrimaxazole (s_pcp_p_adc s_pcp_p_crypm s_pcp_p_dead s_pcp_p_sbi s_pcp_p_tb s_pcp_p_who3 );
