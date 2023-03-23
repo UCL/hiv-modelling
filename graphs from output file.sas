@@ -2499,7 +2499,11 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_pcp_p_80_ ";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+<<<<<<< Updated upstream
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
+=======
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 4000000 by 500000) valueattrs=(size=10);
+>>>>>>> Stashed changes
 label p50_n_pcp_p_80__0 = "Option 0  (median)";
 label p50_n_pcp_p_80__1 = "Option 1  (median)";
 label p50_n_pcp_p_80__15 = "Option 15 (median)";
