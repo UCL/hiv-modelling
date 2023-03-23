@@ -2163,12 +2163,27 @@ newp_tm2 = max(0,newp_tm1); if t ge 2 then newp_tm1 = max(0,newp_tm1);
 9  cd4<350 + ART immediately to pregnant women
 10 cd4<500 + ART immediately to pregnant women;
 
+* art_monitoring_strategy
+1. Clinical monitoring alone
+2. Clinical monitoring with single VL confirmation
+3. Clinical monitoring with VL confirmation
+7. Clinical monitoring with CD4 confirmation
+8. CD4 monitoring (6 mthly) alone
+9. CD4 count monitoring (6 mthly) with single VL confirmation
+10. CD4 monitoring (6 mthly) with VL confirmation
+150. Viral load monitoring (6m, 12m, annual) - WHO
+152. As above with 2 yearly viral load monitoring
+153. Viral load monitoring (6m, annual) no confirmation
+1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+
 if		caldate{t} < 2005.5 then do; 
 	hiv_monitoring_strategy=1; 
 	art_initiation_strategy=2;
 	art_monitoring_strategy=1; 
 end;
 
+*VCFeb2023: given until 2008 art_initiation_strategy=2 (all with tb or who4), 
+should the switch to measure CD4 6 monthly be gradually in 2008, instead of 2005?;
 if 2005.5 <= caldate{t} then do;
 	hiv_monitoring_strategy = 2; 
 end;  * few facilities measuring cd4 early on;
@@ -2185,11 +2200,9 @@ q=rand('uniform');
 if art_initiation_strategy ne 10 and 2014 <= caldate{t} < 2016.5 and q < rate_ch_art_init_str_10  then art_initiation_strategy=10;  
 * dependent_on_time_step_length ; 
 
-
-
-
+*VCFeb2023: Given at this point individuals gradually switch to being eligible to start treatment at diagnosis, before starting treatment they do not require repeated CD4 measurement;
 q=rand('uniform');
-if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then art_initiation_strategy=3;  
+if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_init_str_3 then do; art_initiation_strategy=3; hiv_monitoring_strategy = 1; end;  
 * dependent_on_time_step_length ;
 
 
@@ -2200,7 +2213,7 @@ if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
 end;
-
+*VCFeb2023: should it be art_monitoring_strategy = 8, I can't find 81;
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
  
 
@@ -2282,7 +2295,10 @@ decr_hard_reach_year_i = 0;
 decr_prob_loss_at_diag_year_i = 0;
 
 *absence CD4;
-absence_cd4vl_year_i = 0; *VCFeb2023;
+absence_cd4_year_i = 0; *VCFeb2023;
+
+*absence VL;
+absence_vl_year_i = 0; *VCFeb2023;
 
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
@@ -2446,8 +2462,18 @@ if caldate_never_dot = &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
  *VCFeb2023;
- 	*Otion 0 is continuation at current rates;
-	if option ge 1 then do; 
+ 	*Option 0 is continuation at current rates;
+ 	*Option 1 is essential scenario;
+	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;
+	*Option 10,11,12,13,14 are essential + different prevention strategies;
+	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops;
+	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops;
+	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops;
+	*Option 30,31,32,33    are essential + Linkage, management, ART Interv;
+	*Option 40			   is  essential + DREAMS;
+
+
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2455,13 +2481,15 @@ who may be dead and hence have caldate{t} missing;
 		*Note: at the moment the other testing modalities to be swicthed off are not modelled;
 
 		*Prevention;
+		*Condom promotion and provision: currently not in essential scenario but under discussion;
 		*SBCC: not currently modelled;
-		condom_incr_year_i=2;    *No condom use promotion and provision;
+		condom_incr_year_i=2;    *No condom use promotion and provision & SBCC;
 		circ_inc_rate_year_i = 2;*No VMMC;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
 		*Linkage, management, ART Interv;
-		absence_cd4vl_year_i = 1;*If CD4 is not available I am assuming clinical monitoring;
+		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;
+		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, but CD4 is measured at diagnosis(check) and re-entry;
 		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
 		tblam_cd4_l200=0;
 		*VL monitoring is switched off as clinical monitoring is assumed;
@@ -2496,11 +2524,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
-	if option = 15 then do;*Oral TDF/FTC PrEP for AGWY;
-		prep_any_strategy=3;
-		eff_prob_prep_inj_b=0;          eff_prob_prep_vr_b=0;
-		eff_rate_choose_stop_prep_inj=1;eff_rate_choose_stop_prep_vr=1;
-	end;
+	*option 15: Oral TDF/FTC PrEP for AGWY;
 	if option = 16 then do;*Oral TDF/FTC PrEP for FSW;
 	end;
 	if option = 17 then do;*Oral TDF/FTC PrEP for sero-discordant couples;
@@ -2646,11 +2670,7 @@ if	decr_prob_loss_at_diag_year_i = 1 then do;
 	eff_prob_loss_at_diag = eff_prob_loss_at_diag  * _u8/3; eff_prob_loss_at_diag = round(eff_prob_loss_at_diag,0.001);
 end;
 
-*VCFeb2023;
-if absence_cd4vl_year_i = 1 then do;
-	hiv_monitoring_strategy=1; 
-	art_monitoring_strategy=1; 
-end;
+
 
 
 * decr_rate_lost_year_i; 	
@@ -2695,6 +2715,8 @@ end;
 if	incr_prob_vl_meas_done_year_i = 1 then do;
 	eff_prob_vl_meas_done = 0.85; 
 	cd4_monitoring=0; * this needed because cd4_monitoring was = 1 in half of people with no vl; 
+	*VCFeb2023: I think the line above does not do anything at this point, 
+				as what cd4_monitoring=1 does is switching  art_monitoring_strategy = 81;  
 end;
 
 * art_mon_drug_levels_year_i;
@@ -2747,7 +2769,21 @@ eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-if absence_cd4vl_year_i ne 1 then do;*VCFeb2023;
+*VCFeb2023;
+* art_monitoring_strategy
+150. Viral load monitoring (6m, 12m, annual) - WHO
+152. As above with 2 yearly viral load monitoring
+153. Viral load monitoring (6m, annual) no confirmation
+1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+if absence_cd4_year_i =  1 and absence_vl_year_i =  1 then do;
+	art_monitoring_strategy=1; *Clinical monitoring alone;
+	*cd4_monitoring=1 is not specified here as what it does is changing art_monitoring_strategy for people with cd4_monitoring=1;
+end;
+if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
+	art_monitoring_strategy=7; *Clinical monitoring with CD4 confirmation;
+	*cd4_monitoring=1 is not specified here as what it does is changing art_monitoring_strategy for people with cd4_monitoring=1;
+end;
+if absence_vl_year_i ne 1 then do;*VCFeb2023;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -2770,7 +2806,7 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	test_rate_tb  = min(0.8,test_rate_tb*incr_test_rate_sympt);  
 	test_rate_non_tb_who3 = min(0.7,test_rate_non_tb_who3*incr_test_rate_sympt); * 0.7 mar19;
 * testing for hiv for a person with non_hiv_tb (i.e. who was hiv negative in last period) ;  * update_24_4_21;
-	*VCFeb2023: Is it correct to have the following lines at this point? can testing of a person happen here?I think this is meant for people withou HIV but it is not specified, so it will apply to all of them;																																																
+	*This is intended for people who did not have HIV 3 months ago;																																																
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
 		e=rand('uniform'); 
 		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
@@ -2797,8 +2833,8 @@ if caldate{t} >= &year_interv then do;*VCFeb2023;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
 	if incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-2022.5)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
@@ -3137,8 +3173,15 @@ if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995)
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
 if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if 2021 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
+*In 2021
+%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05)
+%sample(ych2_risk_beh_newp, 0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
+*condom_incr_year_i = 2 refers to SBCC being switched off,
+ SBCC in Zimbabwe was introduced at least in 2011
+ In 2011 rred_rc depending on the sampling varies from 0.03125 to 1.026
+ In 2021 from 0.03125 to 1.321;
 if caldate{t} >= &year_interv and condom_incr_year_i = 2 then rred_rc = 1; *VCFeb2023;
 
 * not * dependent_on_time_step_length ;
@@ -3148,6 +3191,7 @@ if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
 if caldate{t} >= &year_interv and condom_incr_year_i = 2 then ch_risk_beh_ep = 1; *VCFeb2023;
 
 *VCFeb2023;
+*In the essential scenario: higher_future_prep_oral_cov=2;
 if higher_future_prep_oral_cov=2 then do;
 	eff_rate_test_startprep_any=0;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 	eff_prob_prep_oral_b=0;
@@ -3156,9 +3200,18 @@ if higher_future_prep_oral_cov=2 then do;
 	eff_rate_choose_stop_prep_oral=1;
 	eff_rate_choose_stop_prep_inj=1;
 	eff_rate_choose_stop_prep_vr=1;
-	eff_prob_prep_any_restart_choice=0;		
+	eff_prob_prep_any_restart_choice=0;	
+	prep_any_strategy = 0;	
+end;   
+ 
+*VCFeb2023;
+if option = 15 then do;*Essential + Oral TDF/FTC PrEP for AGWY;
+		prep_any_strategy=3;
+		*Following values need to change;
+		eff_rate_test_startprep_any=rate_test_startprep_any;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 end;
-
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 * SECTION 3B 
@@ -4300,7 +4353,7 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0.25) or dt_lastbirth=.)
 			*What is the difference between pregnant_ntd and prev_pregnant_ntd? is it ok that they have a value of 1 only for one 3 month period?;
 			pregnant_ntd=1;prev_pregnant_ntd=1; date_pregnancy_ntd = caldate{t}+0.75; 
 	end;  end;
-	if dt_start_pregn=caldate{t} and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
+	if dt_start_pregn=caldate{t}+0.75 and bmi_gt23_start_dol = 1 and o_dol=1 then do; u = rand('uniform'); if u < oth_dol_adv_birth_e_risk then do; 
 			pregnant_oth_dol_adv_birth_e=1; prev_oth_dol_adv_birth_e=1;
 	end;  end;
 
@@ -4321,7 +4374,7 @@ if anc=1 then do;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
-		if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
+		 u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
 			tested=1; dt_last_test=caldate{t};np_lasttest=0; end;  
 			if caldate{t} = dt_start_pregn+0.25 then tested_anc=1;
 			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
@@ -10088,7 +10141,9 @@ x=rand('uniform');if c_rt103m=0 and e_rt103m=1 and c_rt103m_inf=0 and p_nev ne 1
 10. CD4 monitoring (6 mthly) with VL confirmation
 150. Viral load monitoring (6m, 12m, annual) - WHO
 152. As above with 2 yearly viral load monitoring
-153. Viral load monitoring (6m, annual) no confirmation;
+153. Viral load monitoring (6m, annual) no confirmation
+1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
+
 
 
 * underlying virologic failure (this used to compare with data from studies, not used to instigate switch);
@@ -18532,9 +18587,9 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw prob_prep_oral_b rel_prep_oral_adh_younger
+rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw rel_prep_oral_adh_younger
 
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prep_inj_efficacy  prop_pep  pep_efficacy  low_prep_inj_uptake
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
 artvis0_lower_adh  pop_wide_prep_adh_effect 
 
@@ -18561,7 +18616,7 @@ discount
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	 absence_cd4vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
@@ -21231,7 +21286,7 @@ zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_futu
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
 prob_prep_any_restart_choice add_prep_any_uptake_sw rel_prep_oral_adh_younger
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
+prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy  low_prep_inj_uptake
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
 oral_prep_eff_3tc_ten_res rr_non_aids_death_hiv_off_art rr_non_aids_death_hiv_on_art
@@ -21258,7 +21313,7 @@ discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	  absence_cd4vl_year_i 	decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
