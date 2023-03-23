@@ -2182,14 +2182,11 @@ if		caldate{t} < 2005.5 then do;
 	art_monitoring_strategy=1; 
 end;
 
-*VCFeb2023: given until 2008 art_initiation_strategy=2 (all with tb or who4), 
-should the switch to measure CD4 6 monthly be gradually in 2008, instead of 2005?;
-if 2005.5 <= caldate{t} then do;
-	hiv_monitoring_strategy = 2; 
-end;  * few facilities measuring cd4 early on;
-
 q=rand('uniform');
-if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str_4  then art_initiation_strategy=4;  
+if art_initiation_strategy ne 4 and 2008 <= caldate{t} < 2011.5 and q < rate_ch_art_init_str_4  then do;
+	hiv_monitoring_strategy=2;
+	art_initiation_strategy=4;  
+end;
 * dependent_on_time_step_length ; 
 
 q=rand('uniform');
@@ -2213,8 +2210,8 @@ if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
 end;
-*VCFeb2023: should it be art_monitoring_strategy = 8, I can't find 81;
-if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 81;  
+
+if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;  
  
 
 
@@ -2464,13 +2461,13 @@ who may be dead and hence have caldate{t} missing;
  *VCFeb2023;
  	*Option 0 is continuation at current rates;
  	*Option 1 is essential scenario;
-	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;
-	*Option 10,11,12,13,14 are essential + different prevention strategies;
-	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops;
-	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops;
-	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops;
-	*Option 30,31,32,33    are essential + Linkage, management, ART Interv;
-	*Option 40			   is  essential + DREAMS;
+	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
+	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Vale;
+	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
+	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
+	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
+	*Option 30,31,32,33    are essential + Linkage, management, ART Interv;			 *Andrew;	
+	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
 	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 40) then do; 
@@ -2514,9 +2511,9 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*PREVENTION;
-	if option = 10 then do; *HIV P&T program targeting FSWf;
+	if option = 10 then do;*HIV P&T program targeting FSWf;
 	end;
-	if option = 11 then do; *Social and behavioral change communication (SBCC);
+	if option = 11 then do;*Social and behavioral change communication (SBCC);
 	end;
 	if option = 12 then do;*Condom use promotion and provision;
 	end;
@@ -2714,9 +2711,7 @@ end;
 * incr_prob_vl_meas_done_year_i; 
 if	incr_prob_vl_meas_done_year_i = 1 then do;
 	eff_prob_vl_meas_done = 0.85; 
-	cd4_monitoring=0; * this needed because cd4_monitoring was = 1 in half of people with no vl; 
-	*VCFeb2023: I think the line above does not do anything at this point, 
-				as what cd4_monitoring=1 does is switching  art_monitoring_strategy = 81;  
+	art_monitoring_strategy = 150;*WHO standard VL annual monitoring;
 end;
 
 * art_mon_drug_levels_year_i;
@@ -2777,11 +2772,9 @@ if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_pro
 1500.Viral load monitoring (6m, 12m, annual) + adh > 0.8 based on tdf level test;
 if absence_cd4_year_i =  1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
-	*cd4_monitoring=1 is not specified here as what it does is changing art_monitoring_strategy for people with cd4_monitoring=1;
 end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
-	art_monitoring_strategy=7; *Clinical monitoring with CD4 confirmation;
-	*cd4_monitoring=1 is not specified here as what it does is changing art_monitoring_strategy for people with cd4_monitoring=1;
+	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
 if absence_vl_year_i ne 1 then do;*VCFeb2023;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
@@ -3181,7 +3174,7 @@ if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc 
 *condom_incr_year_i = 2 refers to SBCC being switched off,
  SBCC in Zimbabwe was introduced at least in 2011
  In 2011 rred_rc depending on the sampling varies from 0.03125 to 1.026
- In 2021 from 0.03125 to 1.321;
+ In 2021                                          from 0.03125 to 1.321;
 if caldate{t} >= &year_interv and condom_incr_year_i = 2 then rred_rc = 1; *VCFeb2023;
 
 * not * dependent_on_time_step_length ;
@@ -5050,7 +5043,6 @@ if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0;
 
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
-
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
 
@@ -5073,43 +5065,6 @@ if prep_vr = 1 then prep_vr_ever=1;
 start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral = 1;
 start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj = 1;
 start_restart_prep_vr  = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr  = 1;
-
-
-* these variables are intending to capture people who are currently taking PEP/PrEP in any three month period in which they have risk 
-(ie are prep eligible);
-on_risk_informed_prep_oral = 0; 
-if prep_oral_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_oral_choice ne 1 then on_risk_informed_prep_oral = 1;
-
-on_risk_informed_prep_inj  = 0; 
-if prep_inj_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_inj_choice ne 1 then on_risk_informed_prep_inj  = 1;
-
-on_risk_informed_prep_vr   = 0; 
-if prep_oral_vr =1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_vr_choice ne 1 then on_risk_informed_prep_vr  = 1;
-
-
-if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
-then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
-
-if tested=1 and hivtest_type_1_prep_inj=1 and prep_inj = 1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
-
-if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_any variable indicates if a person is on any prep;
-if prep_inj=0 then continuous_prep_inj_use=0;	
-if prep_vr=0 then continuous_prep_vr_use=0;	
-if prep_any=0 then continuous_prep_any_use=0;
-
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
-
-if prep_inj = 1 then prep_inj_ever=1;
-if prep_oral = 1 then prep_oral_ever=1;
-if prep_vr = 1 then prep_vr_ever=1;
-
-* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
-start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral = 1;
-start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj = 1;
-start_restart_prep_vr  = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr  = 1;
-
 
 * these variables are intending to capture people who are currently taking PEP/PrEP in any three month period in which they have risk 
 (ie are prep eligible);
@@ -7823,7 +7778,7 @@ res_test=.;
 		if art_initiation_strategy=3 then do;
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
-				if dt_lastbirth=caldate{t} then u=u/10; * jul18 ;*VCFeb2023;
+				if pregnant=1 then u=u/4; * jul18 ;*VCFeb2023;
 
 				if u < eff_pr_art_init then time0=caldate{t};
 
@@ -7974,7 +7929,7 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-		if dt_lastbirth=caldate{t} then prointer = prointer/100; * jul18;*VCFeb2023;
+		if pregnant=1 then prointer = prointer/100; * jul18;*VCFeb2023;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
@@ -8073,7 +8028,7 @@ end;
 
 		if non_tb_who3_ev_tm1=1 then e_rate_restart = e_rate_restart*3;
 		if adc_tm1=1 then e_rate_restart = e_rate_restart*5;
-		if dt_lastbirth=caldate{t} then e_rate_restart = e_rate_restart*5; * jul18;*VCFeb2023;
+		if pregnant=1 then e_rate_restart = e_rate_restart*3; * jul18;*VCFeb2023;
 		if return   =1 then e_rate_restart = 1;
 
 		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
@@ -13728,13 +13683,13 @@ not_on_art_cd4350500=0; if hiv=1 and onart ne 1 and 350 <= cd4 < 500 then not_on
 not_on_art_cd4ge500=0; if hiv=1 and onart ne 1 and 500 <= cd4 then not_on_art_cd4ge500=1;
 
 *Number of people 15+ years old living with HIV, asymptomatic, undiagnosed;
-asympt_Undiag=0;     if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd ne 1 then asympt_Undiag=1; *VCFeb2023;
-asympt_diagoffart=0; if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd =  1  and onart ne 1 then asympt_diagoffart=1; *VCFeb2023;
-asympt_diagonart=0;  if hiv=1 and tb ne 1 and who3_event ne 1 and who4_ ne 1 and registd =  1  and onart =  1 then asympt_diagonart=1; *VCFeb2023;
+asympt_Undiag=0;     if hiv=1 and who3_event ne 1 and adc ne 1 and registd ne 1 then asympt_Undiag=1; *VCFeb2023;
+asympt_diagoffart=0; if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart ne 1 then asympt_diagoffart=1; *VCFeb2023;
+asympt_diagonart=0;  if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart =  1 then asympt_diagonart=1; *VCFeb2023;
 *Number of people 15+ years old living with HIV, symptomatic, not AIDS;
-sympt_notaids=0; if hiv=1 and (tb = 1 or who3_event = 1) and who4_ ne 1 then sympt_notaids=1; *VCFeb2023;
+sympt_notaids=0; if hiv=1 and who3_event = 1 and adc ne 1 then sympt_notaids=1; *VCFeb2023;
 *Number of people 15+ years old living with HIV, symptomatic, AIDS;
-sympt_aids=0;    if hiv=1 and                                who4_ =  1 then sympt_aids=1; *VCFeb2023;
+sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1; *VCFeb2023;
 
 
 
