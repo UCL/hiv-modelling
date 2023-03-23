@@ -2479,8 +2479,8 @@ who may be dead and hence have caldate{t} missing;
 
 		*Prevention;
 		*Condom promotion and provision: currently not in essential scenario but under discussion;
-		*SBCC: not currently modelled;
-		condom_incr_year_i=2;    *No condom use promotion and provision & SBCC;
+		*SBCC: not explicitly modelled, but the switch off is;
+		condom_incr_year_i=2;    *Switchs off SBCC;
 		circ_inc_rate_year_i = 2;*No VMMC;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
