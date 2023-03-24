@@ -404,7 +404,7 @@ newp_seed = 7;
 * sv_secondline;			sv_secondline = 1;
 
 * AP 19-7-19 ;
-* ntd_risk_dol;				ntd_risk_dol = 0;*VCFeb2023;
+* ntd_risk_dol;				ntd_risk_dol = 0;
 * dol_higher_potency;   	%sample(dol_higher_potency, 0.5 1 , 0.25 0.75);		
 																* updated to sample between 0.5 and 1.0 after discussion with AP and VC; * JAS Nov 2021;
 * efa_higher_potency;		efa_higher_potency=dol_higher_potency; 			
@@ -2061,7 +2061,7 @@ prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
 else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) 
 		then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
-else 	eff_prob_prep_oral_b = prob_prep_oral_b;*VCFeb2023;
+else 	eff_prob_prep_oral_b = prob_prep_oral_b;
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep;
 
 
@@ -2069,13 +2069,13 @@ else 	eff_prob_prep_oral_b = prob_prep_oral_b;*VCFeb2023;
 if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
 else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
 		then eff_prob_prep_inj_b = 0.05 +  (  (prob_prep_inj_b-0.05) * ( 1 -    (date_prep_inj_intro + dur_prep_inj_scaleup - caldate{t}) / dur_prep_inj_scaleup  )   );
-else 	eff_prob_prep_inj_b = prob_prep_inj_b;*VCFeb2023;
+else 	eff_prob_prep_inj_b = prob_prep_inj_b;
 
 * DPV VR prep scale-up; * dpv-vr JAS Sep2021;
 if 		. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro =. then eff_prob_prep_vr_b = 0;
 else if . < date_prep_vr_intro <= caldate{t} < (date_prep_vr_intro + dur_prep_vr_scaleup) 
 		then eff_prob_prep_vr_b = 0.05 +  (  (prob_prep_vr_b-0.05) * ( 1 -    (date_prep_vr_intro + dur_prep_vr_scaleup - caldate{t}) / dur_prep_vr_scaleup  )   );
-else 	eff_prob_prep_vr_b = prob_prep_vr_b;*VCFeb2023;
+else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
@@ -2291,11 +2291,13 @@ decr_hard_reach_year_i = 0;
 *decrease in probability of being lost at diagnosis; 
 decr_prob_loss_at_diag_year_i = 0;
 
+*absence PCP;
+absence_pcp_year_i = 0;*VCMar2023; 
 *absence CD4;
-absence_cd4_year_i = 0; *VCFeb2023;
+absence_cd4_year_i = 0;
 
 *absence VL;
-absence_vl_year_i = 0; *VCFeb2023;
+absence_vl_year_i = 0;
 
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
@@ -2458,7 +2460,6 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- *VCFeb2023;
  	*Option 0 is continuation at current rates;
  	*Option 1 is essential scenario for Zimbabwe;
 	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
@@ -2485,6 +2486,7 @@ who may be dead and hence have caldate{t} missing;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
 		*Linkage, management, ART Interv;
+		absence_pcp_year_i = 1;*VCMar2023;							
 		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;
 		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
 		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
@@ -2764,7 +2766,6 @@ eff_pr_switch_line=initial_pr_switch_line; eff_prob_vl_meas_done=initial_prob_vl
 
 if vl_adh_switch_disrup_covid = 1 and covid_disrup_affected = 1 then do; eff_prob_vl_meas_done=0; eff_pr_switch_line=0; end; 
 
-*VCFeb2023;
 * art_monitoring_strategy
 150. Viral load monitoring (6m, 12m, annual) - WHO
 152. As above with 2 yearly viral load monitoring
@@ -2776,7 +2777,7 @@ end;
 if absence_cd4_year_i ne 1 and absence_vl_year_i =  1 then do;
 	art_monitoring_strategy=1; *Clinical monitoring alone;
 end;
-if absence_vl_year_i ne 1 then do;*VCFeb2023;
+if absence_vl_year_i ne 1 then do;
 	if reg_option in (101 102 103 104 107 110 113 116 120 121) then art_monitoring_strategy=150;
 	if reg_option in (105 106 108 109 111 112 114) then art_monitoring_strategy=153;
 	if reg_option in (115 117 118 119) then art_monitoring_strategy=1500;
@@ -2821,7 +2822,7 @@ if t ge 2 and date_start_testing <= caldate{t} then do;
 
 end;
 
-if caldate{t} >= &year_interv then do;*VCFeb2023;
+if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 1              then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
@@ -2832,7 +2833,7 @@ if caldate{t} >= &year_interv then do;*VCFeb2023;
 		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
 	end;
-	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; *VCFeb2023;
+	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end;
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
@@ -3023,7 +3024,7 @@ end;
 * PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
 
 if t ge 2 and gender=2 then do;
-	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;*VCFeb2023;
+	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;
 	if cum_children=. and dead=0 then cum_children=0;
 	if episodes_sw=.     then episodes_sw=0;
 	if years_ep=.		  then years_ep=0;
@@ -3193,7 +3194,6 @@ if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
 if caldate{t} >= &year_interv and condom_incr_year_i = 2 then 
 ch_risk_beh_ep = (ych_risk_beh_ep**5)+((1-(ych_risk_beh_ep**5))*prop_redattr_sbcc); *VCMar2023;
 
-*VCFeb2023;
 *In the essential scenario: higher_future_prep_oral_cov=2;
 if higher_future_prep_oral_cov=2 then do;
 	eff_rate_test_startprep_any=0;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
@@ -3207,7 +3207,6 @@ if higher_future_prep_oral_cov=2 then do;
 	prep_any_strategy = 0;	
 end;   
  
-*VCFeb2023;
 if option = 15 then do;*Essential + Oral TDF/FTC PrEP for AGWY;
 		prep_any_strategy=3;
 		*Following values need to change;
@@ -4335,7 +4334,6 @@ end;
 
 u=rand('uniform');
 pregnant_ntd=0; pregnant_oth_dol_adv_birth_e=0;
-*VCFeb2023;
 if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0.25) or dt_lastbirth=.) and dt_start_pregn=. then do;
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
 	if (ep=1   and . lt u lt prob_pregnancy) or      
@@ -4364,7 +4362,7 @@ end;
 																									
 
 *HIV Testing in ANC;
-*VCFeb2023 I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
+*I thought I would determine in the first trimester of the pregnancy whether they are going to attend ANC,
 so that it is the same as before, but then I do allow for re-testing;
 a=rand('uniform');
 tested_anc_prevdiag=0;w1549_birthanc=0;w1524_birthanc=0;hiv_w1549_birthanc=0;hiv_w1524_birthanc=0;
@@ -4394,9 +4392,8 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do
 	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and u lt 0.33 then do;tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
-*VCFeb2023;
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
-if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};cum_children=cum_children+1;end;
+birth=0;if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};birth=1;cum_children=cum_children+1;end;
 if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
@@ -4775,43 +4772,43 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
-						when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do;*VCFeb2023; 	*Oral PrEP preferred and is available from start of PrEP rollout;
+						when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do; 	*Oral PrEP preferred and is available from start of PrEP rollout;
 							prep_any=1;		continuous_prep_any_use=0.25;		
 							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
 							prep_oral_start_date=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do;*VCFeb2023;	*Inj PrEP preferred and is available;
+							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do;	*Inj PrEP preferred and is available;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
 								prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
 							end; 
-							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;*VCFeb2023; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
 								prep_any=1;		continuous_prep_any_use=0.25;		
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
 								prep_oral_start_date=caldate{t}; 
 							end;
 						when (highest_prep_pref = 3) 	 
-							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;*VCFeb2023; 	*VR PrEP preferred and is available;
+							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do; 	*VR PrEP preferred and is available;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 
 							end; 
 							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
-								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;*VCFeb2023;
+								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
 									prep_any=1;		continuous_prep_any_use=0.25;	
 									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
 									prep_oral_start_date=caldate{t};
 								end; 
 								*(2) Prefer inj PrEP to oral and willing;
-								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 and r < eff_prob_prep_inj_b then do;*VCFeb2023;
+								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 and r < eff_prob_prep_inj_b then do;
 									prep_any=1;		continuous_prep_any_use=0.25;	
 									prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
 									prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
-							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;*VCFeb2023;	*VR PrEP preferred but not available - start oral PrEP if willing;
+							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
 							end;
@@ -7664,7 +7661,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 
 * pregnancy leads to re-engagement once option b+ implemented; 
-	if registd=1 and pregnant=1 and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;*VCFeb2023;
+	if registd=1 and pregnant=1 and art_initiation_strategy in (3,9,10) and lost=1 and return ne 1 then do;
 		return=1;lost=0;visit=1;end;
 
 * return cant happen if no_art_disrup_covid ;
@@ -7788,7 +7785,7 @@ res_test=.;
 		if art_initiation_strategy=3 then do;
 			if t ge 3 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if (who4_tm1=1 or 0 <= (caldate{t} - date_most_recent_tb) <= 0.5) then u=u/2;
-				if pregnant=1 then u=u/4; * jul18 ;*VCFeb2023;
+				if pregnant=1 then u=u/4; * jul18 ;
 
 				if u < eff_pr_art_init then time0=caldate{t};
 
@@ -7823,7 +7820,7 @@ res_test=.;
 		end;
 
 		if art_initiation_strategy in (3, 9, 10) then do;  * pregnancy leads to re-engagement once option b+ implemented;
-			if pregnant=1 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;*VCFeb2023;
+			if pregnant=1 and visit=1 and naive_tm1=1 and art_intro_date <= caldate{t} then do;
 				if dt_first_elig=. then dt_first_elig=caldate{t};
 				time0=caldate{t};  art_init_bplus_=1;
 			end;
@@ -7939,7 +7936,7 @@ res_test=.;
 			    if c_tox_tm1=1 then prointer=rr_int_tox*2*incr_rate_int_low_adh*eff_rate_int_choice;
 			end;
 
-		if pregnant=1 then prointer = prointer/100; * jul18;*VCFeb2023;
+		if pregnant=1 then prointer = prointer/100; * jul18;
 		* reduction in prob interruption after 1 year continuous art - mar16;
 		if tcur ge 1 then prointer=prointer/2;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
@@ -8038,7 +8035,7 @@ end;
 
 		if non_tb_who3_ev_tm1=1 then e_rate_restart = e_rate_restart*3;
 		if adc_tm1=1 then e_rate_restart = e_rate_restart*5;
-		if pregnant=1 then e_rate_restart = e_rate_restart*3; * jul18;*VCFeb2023;
+		if pregnant=1 then e_rate_restart = e_rate_restart*3; * jul18;
 		if return   =1 then e_rate_restart = 1;
 
 		if d < e_rate_restart  then do;restart=1; onart   =1;tcur=0; cd4_tcur0 = cd4; interrupt_choice=0; end;
@@ -9765,14 +9762,14 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 * amended jun18 ;
 	onart_birth_with_inf_child=0;onart_birth_with_inf_child_res=0;give_birth_with_hiv=0;birth_with_inf_child=0;	
 
-	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do; *VCFeb2023;
+	if dt_lastbirth=caldate{t} and hiv=1 and t ge 2 then do;
 		give_birth_with_hiv=1;
 		u=rand('uniform');
 		if . < vl <= 3 then u=u*1000; 
 		if 3 < vl <= 4 then u=u*2;
 		if 4 < vl <= 5 then u=u*1;
 		if 5 < vl then u=u/2;
-		if . < caldate{t}-yrart <= 0.25 and onart=1 then u = u * 10 ; * VCFeb2023 - despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
+		if . < caldate{t}-yrart <= 0.25 and onart=1 then u = u * 10 ; *  despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
 		if u < rate_birth_with_infected_child then do; * apr 2019;
 			birth_with_inf_child=1; if caldate{t} ge 2018.75 then ever_birth_with_inf_child = 1;
 			if c_rt184m_tm1=1 or c_rttams_tm1=1  or c_rt65m_tm1=1 or c_rt103m_tm1=1 or c_rt181m_tm1=1 or c_rt190m_tm1=1
@@ -11042,7 +11039,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 
-	if caldate{t} ge 2015 and visit=1 and d < 0.8 then pcp_p   =1;
+	*VCMar2023: is the following line correct? people receives PCP every time they have a visit;	 
+	if caldate{t} ge 2015 and visit=1 and d < 0.8 and absence_pcp_year_i ne 1 then pcp_p   =1;
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
 
@@ -11754,7 +11752,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 	end;
 	
 	vl_cost_inc=0;
-	vm_this_per=0;if vm ne . then vm_this_per =1;*VCFeb2023;
+	vm_this_per=0;if vm ne . then vm_this_per =1;
 
 	res_cost=0; if res_test=1 then res_cost=res_cost_a;
 
@@ -12066,7 +12064,7 @@ if  caldate{t} > death > . then do; * update_24_4_21;
 	ever_prim_nor_prep=.;prim_r_prep=.;
 	rt65m_3_prep=.;rt184m_3_prep=.;rtm_3_prep=.;rt65m_6_prep=.;rt184m_6_prep=.;rtm_6_prep=.;rt65m_9_prep=.;rt184m_9_prep=.;rtm_9_prep=.;
 	rt65m_12_prep=.;rt184m_12_prep=.;rtm_12_prep=.;rt65m_18_prep=.;rt184m_18_prep=.;rtm_18_prep=.;onprep_3=.;onprep_6=.;onprep_9=.;onprep_12=.;onprep_18=.;
-	cum_children=.;pregnant=.;anc=.;on_sd_nvp=.;on_dual_nvp=.;int_clinic_not_aw=.;
+	cum_children=.;pregnant=.;anc=.;birth=.;on_sd_nvp=.;on_dual_nvp=.;int_clinic_not_aw=.;
 	dead_6m_onart=.; dead_12m_onart=.;dead_24m_onart=.;dead_36m_onart=.;
 	np_ever=.;newp_ever=.;
 	episodes_sw=.;sw_gt1ep=.; age_deb_sw=.; sw=.;
@@ -13649,7 +13647,7 @@ end;
 	if caldate&j=yrart >. then do;
 		art_start=1;
 		if gender=1 then art_start_m=1; if gender=2 then art_start_w=1; 
-		if gender=2 and pregnant=1 then art_start_pregnant=1;*VCFeb2023;
+		if gender=2 and pregnant=1 then art_start_pregnant=1;
 
 		if c_rt103m=1 or c_rt181m=1 or c_rt190m=1 then nnm_art=1;
 		if nnm_art=1 and gender=1 then nnm_art_m=1;if nnm_art=1 and gender=2 then nnm_art_w=1;
@@ -13686,20 +13684,20 @@ end;
 	elig_treat350=0; if hiv1564=1 and (naive=0 or cl350=1 or who4_=1) then elig_treat350=1;
 	elig_treat500=0; if hiv1564=1 and (naive=0 or cl500=1 or who4_=1) then elig_treat500=1;
 
-not_on_art_cd4l50=0;  if hiv=1 and onart ne 1 and 0 <= cd4 < 50 then not_on_art_cd4l50=1; *VCFeb2023;
+not_on_art_cd4l50=0;  if hiv=1 and onart ne 1 and 0 <= cd4 < 50 then not_on_art_cd4l50=1;
 not_on_art_cd4l200=0; if hiv=1 and onart ne 1 and 0 <= cd4 < 200 then not_on_art_cd4l200=1;
 not_on_art_cd4200350=0; if hiv=1 and onart ne 1 and 200 <= cd4 < 350 then not_on_art_cd4200350=1;
 not_on_art_cd4350500=0; if hiv=1 and onart ne 1 and 350 <= cd4 < 500 then not_on_art_cd4350500=1;
 not_on_art_cd4ge500=0; if hiv=1 and onart ne 1 and 500 <= cd4 then not_on_art_cd4ge500=1;
 
 *Number of people 15+ years old living with HIV, asymptomatic, undiagnosed;
-asympt_Undiag=0;     if hiv=1 and who3_event ne 1 and adc ne 1 and registd ne 1 then asympt_Undiag=1; *VCFeb2023;
-asympt_diagoffart=0; if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart ne 1 then asympt_diagoffart=1; *VCFeb2023;
-asympt_diagonart=0;  if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart =  1 then asympt_diagonart=1; *VCFeb2023;
+asympt_Undiag=0;     if hiv=1 and who3_event ne 1 and adc ne 1 and registd ne 1 then asympt_Undiag=1;
+asympt_diagoffart=0; if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart ne 1 then asympt_diagoffart=1;
+asympt_diagonart=0;  if hiv=1 and who3_event ne 1 and adc ne 1 and registd =  1  and onart =  1 then asympt_diagonart=1;
 *Number of people 15+ years old living with HIV, symptomatic, not AIDS;
-sympt_notaids=0; if hiv=1 and who3_event = 1 and adc ne 1 then sympt_notaids=1; *VCFeb2023;
+sympt_notaids=0; if hiv=1 and who3_event = 1 and adc ne 1 then sympt_notaids=1;
 *Number of people 15+ years old living with HIV, symptomatic, AIDS;
-sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1; *VCFeb2023;
+sympt_aids=0;    if hiv=1 and                    adc =  1 then sympt_aids=1;
 
 
 
@@ -13737,8 +13735,8 @@ hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
 
-hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1; *VCFeb2023;
-hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1; *VCFeb2023;
+hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1;
+hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;
 
 *** Existing partner infected this period;
 hiv0epprim=0; if hiv=0 and epi  =1 and epi_tm1=0 and ep_tm1=1 then hiv0epprim=1; 
@@ -13865,7 +13863,6 @@ if sw=1 then do;
 	vl1000_art_gt6m_iicu_sw = vl1000_art_gt6m_iicu;
 end;
 
-*VCFeb2023;
 if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) then do;
 	onartgt6miicu_w1524evpr = onart_gt6m_iicu;
 	vl1000_artgt6miicu_w1524evpr = vl1000_art_gt6m_iicu;
@@ -13968,15 +13965,15 @@ end;
 
 *** Diagnosed and on ART by sex and ep;
 artexp=0; if naive=0 then artexp=1;
-artexp_m=0;    if gender=1        and artexp=1 then artexp_m=1; *VCFeb2023;
-artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1; *VCFeb2023;
-artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1; *VCFeb2023;
-artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1; *VCFeb2023;
-artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and artexp=1 then artexp_w1524evpreg=1; *VCFeb2023;
+artexp_m=0;    if gender=1        and artexp=1 then artexp_m=1;
+artexp_w=0;    if gender=2        and artexp=1 then artexp_w=1;
+artexp_1524_=0;if 15 le age lt 25 and artexp=1 then artexp_1524_=1;
+artexp_sw=0;   if sw=1            and artexp=1 then artexp_sw=1;
+artexp_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and artexp=1 then artexp_w1524evpreg=1;
  
 if      gender=1 then do; diag_m=registd; epdiag_m=epdiag; epi_m=epi  ; onart_m=onart; eponart_m=epart; end;
 else if gender=2 then do; diag_w=registd; epdiag_w=epdiag; epi_w=epi  ; onart_w=onart; eponart_w=epart; end;
-onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1; *VCFeb2023;
+onart_w1524evpreg=0;if gender=2 and 15 le age lt 25 and (pregnant=1 or dt_lastbirth ne .) and onart=1 then onart_w1524evpreg=1;
 
 ***VL on 2nd line;
 if (onart=1 or int_clinic_not_aw=1) and caldate&j >= date_line2 > . then line2_incl_int_clinic_not_aw = 1;
@@ -15053,10 +15050,10 @@ firsttest=0; if caldate&j=date1test > . then firsttest=1;
 if naive=1 and gender=1 then naive_m=1;
 if naive=1 and gender=2 then naive_w=1;
 
-m_npge1=0; if gender=1 and np ge 1 then m_npge1=1; *VCFeb2023;
-w_npge1=0; if gender=2 and np ge 1 then w_npge1=1; *VCFeb2023;
-w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1; *VCFeb2023;
-sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1; *VCFeb2023;
+m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
+w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
+w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;
+sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1; 
 
 *** Number of partners >2 / >10;
 npge2=0; if np ge 2 then npge2=1;
@@ -16885,7 +16882,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*Pregnancy and children*/
 
-	s_pregnant + pregnant ; s_anc + anc ; s_w1549_birthanc + w1549_birthanc ; s_w1524_birthanc + w1524_birthanc ; s_hiv_w1549_birthanc + hiv_w1549_birthanc ;
+	s_pregnant + pregnant ; s_anc + anc ; s_birth + birth; s_w1549_birthanc + w1549_birthanc ; s_w1524_birthanc + w1524_birthanc ; s_hiv_w1549_birthanc + hiv_w1549_birthanc ;
 	s_hiv_w1524_birthanc + hiv_w1524_birthanc ; s_hiv_pregnant + hiv_pregnant ; s_pregnant_not_diagnosed_pos + pregnant_not_diagnosed_pos ;
 	s_hiv_pregn_w1549_ + hiv_pregn_w1549_ ; s_hiv_pregn_w1524_ + hiv_pregn_w1524_ ; s_hiv_anc + hiv_anc ; s_pmtct + pmtct ; s_on_sd_nvp + on_sd_nvp ;
 	s_on_dual_nvp + on_dual_nvp ; s_ever_sd_nvp + ever_sd_nvp ; s_ever_dual_nvp + ever_dual_nvp ; s_pregnant_w1549 + pregnant_w1549 ; 
@@ -18473,7 +18470,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 	
+s_pregnant 	s_anc s_birth s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 	
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
@@ -18581,7 +18578,7 @@ discount
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	 absence_pcp_year_i  absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
@@ -19400,7 +19397,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
+s_pregnant 	s_anc s_birth  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
