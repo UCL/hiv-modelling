@@ -145,7 +145,9 @@ n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
 prevalence1549_ prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1564_ 
 incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m n_tested_sw n_tested_anc p_anc n_diagnosed
+incidence5564w_ incidence5564m_ n_tested n_tested_m n_tested_sw n_tested_anc 
+n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
+p_anc n_diagnosed
 test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_sw	
@@ -1473,6 +1475,7 @@ band    x=cald lower=p5_n_tested_anc_1 	upper=p95_n_tested_anc_1  / transparency
 series  x=cald y=p50_n_tested_anc_15/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_tested_anc_15 	upper=p95_n_tested_anc_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
+*n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
