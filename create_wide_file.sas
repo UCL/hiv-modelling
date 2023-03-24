@@ -3,17 +3,15 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v1_out";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v2_out";
 
 data a.base24_03_23;   set b.out:;
-proc freq data=a.base_24_03_23;
-table s_tested_f_sympt s_tested_m_sympt 
-s_tested_m_circ s_tested_f_non_anc s_tested_labdel s_tested_pd;run;
+proc freq;table s_birth;run;*to calculate p_anc;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base_17_03_23;
+data g; set  a.base24_03_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -328,12 +326,12 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested;						n_tested = s_tested * &sf * 4;
 * n_tested_anc;					n_tested_anc = s_tested_anc * &sf * 4;
 * p_anc;						p_anc = s_anc /s_pregnant;
-* n_tested_m_sympt;				n_tested_m_sympt = s_tested_m_sympt * &sf * 4;
-* n_tested_w_sympt;				n_tested_w_sympt = s_tested_f_sympt * &sf * 4;
-* n_tested_m_circ; 				n_tested_m_circ = s_tested_m_circ  * &sf * 4;
-* n_tested_w_non_anc; 			n_tested_w_non_anc = s_tested_f_non_anc * &sf * 4; 
-* n_tested_labdel;				n_tested_w_labdel = s_tested_labdel * &sf * 4; 
-* n_tested_pd;					n_tested_w_pd = s_tested_pd * &sf * 4;
+* n_tested_m_sympt;				n_tested_m_sympt = s_tested_m_sympt * &sf * 4;*VCFeb2023;
+* n_tested_w_sympt;				n_tested_w_sympt = s_tested_f_sympt * &sf * 4;*VCFeb2023;
+* n_tested_m_circ; 				n_tested_m_circ = s_tested_m_circ  * &sf * 4;*VCFeb2023;
+* n_tested_w_non_anc; 			n_tested_w_non_anc = s_tested_f_non_anc * &sf * 4; *VCFeb2023;
+* n_tested_labdel;				n_tested_w_labdel = s_tested_labdel * &sf * 4; *VCFeb2023;
+* n_tested_pd;					n_tested_w_pd = s_tested_pd * &sf * 4;*VCFeb2023;
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 
@@ -549,6 +547,7 @@ end;
 * p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw = s_diag_sw / s_sw; *VCFeb2023;
 
 * n_cm;							n_cm = s_cm_this_per * 4 * &sf;
+* n_vm;							n_vm = s_vm_this_per * 4 * &sf;*VCFeb2023;
 * n_pcp_p_80;					n_pcp_p_80_ = s_pcp_p_80 * 4 *&sf;
 
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
@@ -935,7 +934,7 @@ n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 s_alive p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w
-p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_pcp_p_80_ p_onart_cd4_l200
+p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm n_pcp_p_80_ p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
 n_new_vmmc1549m 
@@ -1092,7 +1091,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_17_03_23; set y;  
+data a.l_base_24_03_23; set y;  
 
 
 *
@@ -1103,7 +1102,7 @@ data a.l_base_17_03_23; set y;
 ;
 
 
-data y; set a.l_base_17_03_23; 
+data y; set a.l_base_24_03_23; 
 
 
   options nomprint;
@@ -1190,7 +1189,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=r_prev_5559m_4549w );  %var(v=r_prev_6064m_4549w );  %var(v=r_prev_65plm_4549w );
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
 %var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);%var(v=n_cm);%var(v=n_pcp_p_80_);
+%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);%var(v=n_cm);%var(v=n_vm);%var(v=n_pcp_p_80_);
 %var(v=p_diag_m1524); %var(v=p_diag_w1524);
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_c_inm); 
@@ -1307,7 +1306,7 @@ r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_p
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1564 incidence1549w  incidence1549m incidence_sw
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary 
-mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw p_diag_m1524  p_diag_w1524 n_cm n_pcp_p_80_
+mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw p_diag_m1524  p_diag_w1524 n_cm n_vm n_pcp_p_80_
 p_ai_no_arv_c_nnm  p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m  p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm 
 p_artexp_diag  p_onart_diag  p_onart_diag_w  p_onart_diag_m  p_onart_diag_sw   p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa  p_taz  p_ten  p_zdv  p_dol  p_3tc  p_lpr  p_nev  
@@ -1457,7 +1456,7 @@ proc sort; by run;run;
 
 
 * To get one row per run;
-
+ data a.w_base_24_03_23; set wide_outputs;run;
   data a.w_base_17_03_23; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
