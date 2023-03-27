@@ -9,7 +9,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000  ; 
-%let year_interv = 2022.5;
+%let year_interv = 2023;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -864,7 +864,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
- %include "/home/rmjllob/Zim_parameters_03.sas";
+ *%include "/home/rmjllob/Zim_parameters_03.sas";
 
 
 * ===================== ;
@@ -2718,7 +2718,7 @@ end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
-***LBMJan23 COVID disruption, copied across from VC's Zim program;
+***LBMJan23 COVID disruption, copied across from VCs Zim program;
 if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;       
 
 
