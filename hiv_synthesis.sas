@@ -21172,7 +21172,7 @@ s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 s_dead_80  s_death_hivrel_80
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
+s_pregnant 	s_anc s_birth s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
@@ -21279,7 +21279,7 @@ discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i  absence_pcp_year_i	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
 incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
