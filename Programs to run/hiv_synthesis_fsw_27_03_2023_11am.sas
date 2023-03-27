@@ -18478,7 +18478,7 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 
-*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
