@@ -3,14 +3,14 @@
 libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_03_02_23;  
+set a.fsw_27_02_23;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
 
 proc freq;table run;where cald=1990;run;
 
-proc freq;table s_sw_program_visit;where option=0 and cald =2023;run;
+proc freq;table s_sw_program_visit;where option=0 and cald =2024;run;
 
 proc print;var cald run s_sw_program_visit sw_program;where option=0;run;
 
