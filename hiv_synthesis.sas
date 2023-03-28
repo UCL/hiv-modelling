@@ -514,6 +514,9 @@ newp_seed = 7;
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
 
+* red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
+
+* incr_adh_poc_vl;		   %sample_uniform(incr_adh_poc_vl, 0.1  0.2  0.3  0.4);   * effect of poc vl monitoring on ART adherence;
 
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
@@ -2204,6 +2207,12 @@ if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_ini
 
 
 if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early so can assess 2 year influence of v alert before baseline;
+* 
+vm_format=1  plasma  lab 
+vm_format=2  whb     lab 
+vm_format=3  plasma  poc 
+vm_format=4  whb     poc 
+;
 		art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
@@ -7942,6 +7951,7 @@ res_test=.;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
+		if art_moniutoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -8697,6 +8707,8 @@ if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
 
 if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+
+if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh * ((1-adh)*incr_adh_poc_vl);
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -18531,8 +18543,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -21228,8 +21240,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
