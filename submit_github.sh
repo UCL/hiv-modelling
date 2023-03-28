@@ -2,7 +2,7 @@
 inputdir="${HOME}/hiv-modelling"
 tmpfiles="out"
 combinedsas="combined_data"
-runs="100"
+runs="400"
 jobname="hivmodel"
 model="hiv_synthesis.sas"
 clock="h_rt=48:00:00"
