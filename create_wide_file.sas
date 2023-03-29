@@ -3,15 +3,15 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v2_out";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v3_out";
 
-data a.base24_03_23;   set b.out:;
+data a.base29_03_23;   set b.out:;
 proc freq;table s_birth;run;*to calculate p_anc;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base24_03_23;
+data g; set  a.base29_03_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -405,6 +405,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 * n_prep;						n_prep = s_prep_any * &sf;
+* n_prep_1524w;					n_prep_1524w = s_onprep_1524w * &sf;
 * n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * &sf;
 * p_hiv1_prep;					if s_prep_any gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep_any ;
 
@@ -981,7 +982,7 @@ ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtc
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 p_anc n_diagnosed p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
-prop_elig_on_prep n_hiv1_prep  n_prep n_prep_ever  n_covid  n_death_covid n_death n_death_hivrel /*p_death_hivrel_age_le64 */
+prop_elig_on_prep n_hiv1_prep  n_prep n_prep_1524w n_prep_ever  n_covid  n_death_covid n_death n_death_hivrel /*p_death_hivrel_age_le64 */
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  
@@ -1091,7 +1092,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_24_03_23; set y;  
+data a.l_base_29_03_23; set y;  
 
 
 *
@@ -1102,7 +1103,7 @@ data a.l_base_24_03_23; set y;
 ;
 
 
-data y; set a.l_base_24_03_23; 
+data y; set a.l_base_29_03_23; 
 
 
   options nomprint;
@@ -1232,7 +1233,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_tested_m_sympt); %var(v=n_tested_w_sympt); %var(v=n_tested_m_circ); %var(v=n_tested_w_non_anc); %var(v=n_tested_w_labdel); %var(v=n_tested_w_pd);
 %var(v=p_anc); %var(v=n_diagnosed); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
-%var(v= n_prep); %var(v= n_prep_ever); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
+%var(v=n_prep); %var(v=n_prep_1524w); %var(v= n_prep_ever); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 *%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
 %var(v=incidence2534w);   %var(v=incidence2534m) ; %var(v=incidence3544w);   %var(v=incidence3544m) ;%var(v=incidence4554w);   %var(v=incidence4554m) ;
 %var(v=incidence5564w);   %var(v=incidence5564m) ;
@@ -1343,7 +1344,7 @@ n_birth_with_inf_child
 n_tested n_tested_sw n_tested_anc n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd 
 p_anc n_diagnosed test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
-n_prep n_prep_ever  n_covid  n_death_covid  n_death  n_death_hivrel 
+n_prep n_prep_1524w n_prep_ever  n_covid  n_death_covid  n_death  n_death_hivrel 
 /*p_death_hivrel_age_le64*/  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m    incidence_sw
  n_mcirc1549_3m  n_vmmc1549_3m 
@@ -1456,8 +1457,8 @@ proc sort; by run;run;
 
 
 * To get one row per run;
- data a.w_base_24_03_23; set wide_outputs;run;
-  data a.w_base_17_03_23; 
+ data a.w_base_29_03_23; set wide_outputs;run;
+  data a.w_base_29_03_23; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
