@@ -690,7 +690,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * oral_prep_eff_3tc_ten_res;	%sample_uniform(oral_prep_eff_3tc_ten_res, 0.25 0.5);
 
-* INJECTABLE CABOTEGRAVIR ; * lapr;
+
+* INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
 * date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep; * lapr;
@@ -752,25 +753,26 @@ end;
 * reg_option_107_after_cab;		%sample(reg_option_107_after_cab, 0 1, 0.8 0.2);
 
 
-* DAPIVIRINE VAGINAL RING ; * dpv-vr;
+* DAPIVIRINE VAGINAL RING PREP ; * dpv-vr;
 * vr code needs more work before using ;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
 
-* date_prep_vr_intro;			date_prep_vr_intro=2100; 			* Introduction of DPV-VR PrEP ;
+* date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
-* dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
-* prob_prep_vr_b;					prob_prep_vr_b = prob_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
-																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
-* annual_testing_prep_vr;		annual_testing_prep_vr=0.25;	* frequency of HIV testing for people on DPV-VR PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
+* dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
+* prob_prep_vr_b;				prob_prep_vr_b = prob_prep_oral_b;	* probability of starting vr PrEP in people (who are eligible and willing to take vr prep) tested for HIV according to the base rate of testing;
+																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
+* annual_testing_prep_vr;		annual_testing_prep_vr=annual_testing_prep_oral;	
+																* frequency of HIV testing for people on DPV-VR PrEP same as oral PrEP; 
 /** add_prep_vr_uptake_sw;		add_prep_vr_uptake_sw=0; 		***this may be sampled at a later date;
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
-* rate_choose_stop_prep_vr; 	%sample(rate_choose_stop_prep_vr, 0.05 0.15 0.30, 0.8 0.1 0.1); * currently the same as for inj prep;
+* rate_choose_stop_prep_vr; 	%sample(rate_choose_stop_prep_vr, 0.05 0.15 0.30, 0.8 0.1 0.1); 
+																* currently the same as for inj prep, values for oral PrEP are higher;
 								* dependent_on_time_step_length ;
 
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ; * this will change depending on assumed uptake;
-
 
 
 
@@ -1660,7 +1662,7 @@ eff_pr_switch_line = pr_switch_line;
 * define effective rate_test_startprep_any;
 eff_rate_test_startprep_any = rate_test_startprep_any;
 
-*eff_prob_prep_oral_b is defined later on;
+*eff_prob_prep_oral_b, eff_prob_prep_inj_b and eff_prob_prep_vr_b are defined later on;
 
 * define effective rate_choose_stop_prep_oral;
 eff_rate_choose_stop_prep_oral = rate_choose_stop_prep_oral;
