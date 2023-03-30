@@ -3,15 +3,15 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v3_out";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v4_out";
 
-data a.base29_03_23;   set b.out:;
-proc freq data=a.base29_03_23;table s_pmtct;run;
+data a.base_30_03_23;   set b.out:;
+proc freq data=a.base_30_03_23;table s_pmtct;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base29_03_23;
+data g; set  a.base_30_03_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1104,7 +1104,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_29_03_23; set y;  
+data a.l_base_30_03_23; set y;  
 
 
 *
@@ -1115,7 +1115,7 @@ data a.l_base_29_03_23; set y;
 ;
 
 
-data y; set a.l_base_29_03_23; 
+data y; set a.l_base_30_03_23; 
 
 
   options nomprint;
@@ -1471,8 +1471,8 @@ proc sort; by run;run;
 
 
 * To get one row per run;
- data a.w_base_29_03_23; set wide_outputs;run;
-  data a.w_base_29_03_23; 
+ data a.w_base_30_03_23; set wide_outputs;run;
+  data a.w_base_30_03_23; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
