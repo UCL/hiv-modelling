@@ -37,7 +37,7 @@
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
 * fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
-							 %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
+							 %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
@@ -94,21 +94,4 @@ rate_ch_art_init_str_9 = 0.1 ;
 							%sample(rel_incr_circ_post_2013, 
 								4		5		6, 
 								0.25	0.5		0.25);
-
-***Higher circ post 2015 - adding this here as if we increase the above, we will miss the DHS data point in 2015 on circ prev;
-* rel_incr_circ_post_2015;	%sample(rel_incr_circ_post_2015, 
-								7		8		9, 
-								0.35	0.5		0.20);
-
-
-***Too many people on PrEP;
-
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
-
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
-
-* pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
-
-* rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.10 0.20 0.30);
-
-
+						
