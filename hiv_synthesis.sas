@@ -2218,6 +2218,7 @@ vm_format=4  whb     poc
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
+	if poc_vl_monitoring_i = 1 then do; vm_format=4;  end;
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;  
@@ -2331,6 +2332,9 @@ decr_rate_int_choice_year_i = 0 ;
 
 *increase in the the probability of a VL measure being done;
 incr_prob_vl_meas_done_year_i = 0;  
+
+* poc viral load monitoring;
+poc_vl_monitoring_i = 0 ;
 
 *ART monitoring drug levels;
 art_mon_drug_levels_year_i = 0;
@@ -8708,7 +8712,7 @@ if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have dis
 
 if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
 
-if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh * ((1-adh)*incr_adh_poc_vl);
+if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -18592,7 +18596,7 @@ discount
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	 absence_pcp_year_i  absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
@@ -21289,7 +21293,7 @@ discount
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
 	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
