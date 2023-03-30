@@ -7951,7 +7951,7 @@ res_test=.;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
-		if art_moniutoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;
+		if art_monitoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
