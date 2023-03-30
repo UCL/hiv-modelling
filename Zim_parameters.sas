@@ -105,7 +105,7 @@ rate_ch_art_init_str_9 = 0.1 ;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.10 0.15  0.30);
 
-* pr_prep_oral_b;				%sample_uniform(pr_prep_oral_b, 0.05 0.1);
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05 0.1);
 
 * pref_prep_oral_beta_s1;		%sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) ;
 
