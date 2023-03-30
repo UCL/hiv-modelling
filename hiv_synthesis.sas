@@ -2445,9 +2445,19 @@ if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
- *VCFeb2023;
- 	*Otion 0 is continuation at current rates;
-	if option ge 1 then do; 
+
+ 	*Option 0 is continuation at current rates;
+ 	*Option 1 is essential scenario for Zimbabwe;
+	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
+	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Vale;
+	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
+	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
+	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
+	*Option 30,31,32,33, 34 are essential + Linkage, management, ART Interv;			 *Andrew;	
+	*Option 40			   is  essential + DREAMS;									 *Vale;
+
+
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 35 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -3136,16 +3146,43 @@ rred_rc=1.0;
 if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995);
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
 if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
-if 2021 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
+if        caldate{t}  = 2011 then rred_rc2011_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2011-2010));
+if        caldate{t}  = 2021 then rred_rc2021_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
+if 2021 < caldate{t}         then rred_rc = rred_rc2021_;
+
+*In 2021
+%sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05)
+%sample(ych2_risk_beh_newp, 0.975  0.990  0.995  	1	1/0.995  1/0.990  1/0.975, 	0.05  0.05  0.15  0.5  0.15  0.05  0.05);
 
 if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc * 1.5;
-if caldate{t} >= &year_interv and condom_incr_year_i = 2 then rred_rc = 1; *VCFeb2023;
+*
+ condom_incr_year_i = 2 refers to SBCC being switched off,
+ SBCC in Zimbabwe was introduced at least in 2011
+ In 2011 rred_rc depending on the sampling varies from 0.031 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+													to 1.026 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975)
+ In 2021                                          from 0.024 (ych_risk_beh_newp = 0.5, ych2_risk_beh_newp =0.975)
+													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
+													to 1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975);
+*Proportion in reduction attributable to SBCC: prop_redattr_sbcc;
+*We are using rred_rc2011_ if sbbc was implemented from 2011 (this needs to be cheked),
+and 1 if we assume it was implemented from 1995
+if SBBC implemented before 2000 then it shoudl affect ch_risk_beh_ep.
+We have not modelled SBBC retrospectively and so we have not included its cost;
+if caldate{t} >= &year_interv and condom_incr_year_i = 2 then do;
+*rred_rc =rred_rc2021_+((rred_rc2011_-rred_rc2021_)*prop_redattr_sbcc);
+rred_rc =rred_rc2021_+((1-rred_rc2021_)*prop_redattr_sbcc);
+end;
+
 
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
 if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995);
-if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
-if caldate{t} >= &year_interv and condom_incr_year_i = 2 then ch_risk_beh_ep = 1; *VCFeb2023;
+if        caldate{t} =  2000 then ch_risk_beh_ep2000_ = ych_risk_beh_ep**(2000-1995);
+if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
+if caldate{t} >= &year_interv and condom_incr_year_i = 2 then 
+ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
+
 
 *VCFeb2023;
 if higher_future_prep_oral_cov=2 then do;
