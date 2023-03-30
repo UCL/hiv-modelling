@@ -2490,7 +2490,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 34 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 35 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
