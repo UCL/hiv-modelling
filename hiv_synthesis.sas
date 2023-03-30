@@ -514,6 +514,9 @@ newp_seed = 7;
 								0.0		0.1		0.7		1,
 								0.05	0.30	0.50	0.15);
 
+* red_int_risk_poc_vl;		%sample_uniform(red_int_risk_poc_vl, 0.7  0.8   0.9);  * relative reduction in risk of interrupting ART with poc vl monitoring;
+
+* incr_adh_poc_vl;		   %sample_uniform(incr_adh_poc_vl, 0.1  0.2  0.3  0.4);   * effect of poc vl monitoring on ART adherence;
 
 							* dependent_on_time_step_length ;	
 * incr_rate_int_low_adh;	%sample(incr_rate_int_low_adh, 1 2 5, 0.5 0.25 0.25);
@@ -2203,11 +2206,18 @@ if art_initiation_strategy ne 3 and 2016.5 <= caldate{t} and q < rate_ch_art_ini
 
 
 if caldate{t} ge 2016.25  then do;  * need to show vl testing started this early so can assess 2 year influence of v alert before baseline;
+* 
+vm_format=1  plasma  lab 
+vm_format=2  whb     lab 
+vm_format=3  plasma  poc 
+vm_format=4  whb     poc 
+;
 		art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
+	if poc_vl_monitoring_i = 1 then do; vm_format=4;  end;
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;  
@@ -2299,6 +2309,12 @@ absence_cd4_year_i = 0;
 *absence VL;
 absence_vl_year_i = 0;
 
+* crag cd4 < 200;
+crag_cd4_l200 = 0;
+
+* tblam cd4 < 200;
+tblam_cd4_l200 = 0;
+
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
 
@@ -2322,6 +2338,9 @@ decr_rate_int_choice_year_i = 0 ;
 
 *increase in the the probability of a VL measure being done;
 incr_prob_vl_meas_done_year_i = 0;  
+
+* poc viral load monitoring;
+poc_vl_monitoring_i = 0 ;
 
 *ART monitoring drug levels;
 art_mon_drug_levels_year_i = 0;
@@ -2456,7 +2475,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot = &year_interv then do;
+if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2467,11 +2486,11 @@ who may be dead and hence have caldate{t} missing;
 	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
 	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
 	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
-	*Option 30,31,32,33    are essential + Linkage, management, ART Interv;			 *Andrew;	
+	*Option 30,31,32,33, 34 are essential + Linkage, management, ART Interv;			 *Andrew;	
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 34 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2548,13 +2567,20 @@ who may be dead and hence have caldate{t} missing;
 	end;
 
 	*Linkage, management, ART Interv;
-	if option = 30 then do;*CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available;
+	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
+	absence_cd4_year_i = 0; crag_cd4_l200=1;	
 	end;
-	if option = 31 then do;*CD4 + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
-	end;
-	if option = 32 then do;*CD4 + Other advanced HIV disease management when CD4 is <200 or clical stage 3 o 4;
+	if option = 32 then do;*CD4  at initiation and re-initiation + TBLAM when CD4 is <200 or clical stage 3 o 4;
+	absence_cd4_year_i = 0; tblam_cd4_l200=1;
 	end;
 	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
+	absence_vl_year_i = 0;
+	end;
+	if option = 34 then do; * poc vl monitoring ;
+	absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;
+	end;
+	if option = 35 then do; * pcp prophylaxis for all ;
+	absence_pcp_year_i = 0;
 	end;
 
 	*Structural interventions and social enablers;
@@ -7952,6 +7978,7 @@ res_test=.;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
+		if art_monitoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -8707,6 +8734,8 @@ if gender=2 and 50 <= age      and adh < 0.8 and e < 0.9 then adh=0.90;
 if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have disadvantages;
 
 if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
+
+if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -18540,8 +18569,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -18589,7 +18618,7 @@ discount
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i 	 absence_pcp_year_i  absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
@@ -21237,8 +21266,8 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -21286,7 +21315,7 @@ discount
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
 decr_prob_loss_at_diag_year_i  absence_pcp_year_i	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i 
+incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
 inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
 	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
