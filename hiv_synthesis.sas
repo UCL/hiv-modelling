@@ -2309,6 +2309,12 @@ absence_cd4_year_i = 0;
 *absence VL;
 absence_vl_year_i = 0;
 
+* crag cd4 < 200;
+crag_cd4_l200 = 0;
+
+* tblam cd4 < 200;
+tblam_cd4_l200 = 0;
+
 *decrease in the rate of being lost;
 decr_rate_lost_year_i = 0;
 
@@ -2469,7 +2475,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot = &year_interv then do;
+if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
@@ -2480,11 +2486,11 @@ who may be dead and hence have caldate{t} missing;
 	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
 	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
 	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
-	*Option 30,31,32,33    are essential + Linkage, management, ART Interv;			 *Andrew;	
+	*Option 30,31,32,33, 34 are essential + Linkage, management, ART Interv;			 *Andrew;	
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 34 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2564,10 +2570,18 @@ who may be dead and hence have caldate{t} missing;
 	if option = 30 then do;*CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available;
 	end;
 	if option = 31 then do;*CD4 + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
+	absence_cd4_year_i = 0; crag_cd4_l200=1;	
 	end;
-	if option = 32 then do;*CD4 + Other advanced HIV disease management when CD4 is <200 or clical stage 3 o 4;
+	if option = 32 then do;*CD4 + TBLAM when CD4 is <200 or clical stage 3 o 4;
+	absence_cd4_year_i = 0; tblam_cd4_l200=1;
 	end;
 	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
+	end;
+	if option = 34 then do; * poc vl monitoring ;
+	poc_vl_monitoring_i = 1 ;
+	end;
+	if option = 35 then do; * pcp prophylaxis for all ;
+	absence_pcp_year_i = 0;
 	end;
 
 	*Structural interventions and social enablers;
