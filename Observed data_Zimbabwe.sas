@@ -1892,7 +1892,7 @@ if cald=2014.5 then do;
 end;
 
 
-** Source for all fo the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
+** Source for all of the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 *# of women who were tested for the first time in ANC (not clear whetehr it includes those tested for the first time at delivery);
 if cald=2022.5 then o_n_firsttested_anc =411830;*VCMar2023;
 *# test done in ANC;
@@ -1945,12 +1945,13 @@ if cald=2012.5  then     o_s_pregnant_pmtct_Z_GF=11626;*(62% REPORTING RATE);
 if cald=2012.75 then     o_s_pregnant_pmtct_Z_GF=14450;*(83% REPORTING RATE); 
 if cald=2013.00 then do; o_s_pregnant_pmtct_Z_GF=14450;*(83% REPORTING RATE);
 			*Cumulative; o_s_pregnant_pmtct_Z_GF_ly=59224; end;
-
 if cald=2013.25 then     o_s_pregnant_pmtct_Z_GF=13444;*(84% REPORTING RATE); 
+
+*Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
+if cald=2022.5 then     o_s_pregnant_pmtct_Z_NAC=43856;
 
 
 *** % HIV+ pregnant women receiving PMTCT;
-
 if cald=2010.25 then o_P_hivpospreg_pmtct_Z_GF=0.16;
 if cald=2010.5  then o_P_hivpospreg_pmtct_Z_GF=0.20;
 if cald=2010.75 then o_P_hivpospreg_pmtct_Z_GF=0.56;
@@ -2111,6 +2112,8 @@ if cald=2017.75 then o_s_all_onart_NAC=1051790;
 if cald=2018.75 then o_s_all_onart_NAC=1086674;
 if cald=2019.75 then o_s_all_onart_NAC=1087360;
 if cald=2020.75 then o_s_all_onart_NAC=1128432;
+*Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
+if cald=2022.5  then o_s_all_onart_NAC=1182126;
 
 
 *Source: Operational and Service Delivery Manual for the Prevention, Care and Treatment of HIV in Zimbabwe 
@@ -2450,7 +2453,7 @@ if cald=2005 then o_medcd4_artinit=91;
 
 ***% on treatment who received at least one VL measurement in the last year;
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
-if cald=2021.5 thenp_vlmeasuredly_onart=0.71;*VCMar2023;
+if cald=2021.5 then o_p_vlmeasuredly_onart=0.71;*VCMar2023;
 
 
 ***LBM update Jan 2017;
