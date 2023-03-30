@@ -3167,8 +3167,8 @@ if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995)
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
 if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if        caldate{t}  = 2011 then rred_rc2011_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2011-2010));
-if 2021 < caldate{t}         then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
 if        caldate{t}  = 2021 then rred_rc2021_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
+if 2021 < caldate{t}         then rred_rc = rred_rc2021_;
 
 *In 2021
 %sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05)
@@ -3185,17 +3185,22 @@ if condom_disrup_covid = 1 and covid_disrup_affected = 1 then rred_rc = rred_rc 
 													   0.168 (ych_risk_beh_newp = 0.7, ych2_risk_beh_newp =1)
 													to 1.321 (ych_risk_beh_newp = 1,  ych2_risk_beh_newp =1/0.975);
 *Proportion in reduction attributable to SBCC: prop_redattr_sbcc;
-*Below we are using rred_rc2011_ assuming sbbc was implemented in 2011 (this needs to be cheked),
+*We are using rred_rc2011_ if sbbc was implemented from 2011 (this needs to be cheked),
+and 1 if we assume it was implemented from 1995
 if SBBC implemented before 2000 then it shoudl affect ch_risk_beh_ep.
 We have not modelled SBBC retrospectively and so we have not included its cost;
-if caldate{t} >= &year_interv and condom_incr_year_i = 2 then 
-rred_rc =rred_rc2021_+((rred_rc2011_-rred_rc2021_)*prop_redattr_sbcc);
+if caldate{t} >= &year_interv and condom_incr_year_i = 2 then do;
+*rred_rc =rred_rc2021_+((rred_rc2011_-rred_rc2021_)*prop_redattr_sbcc);
+rred_rc =rred_rc2021_+((1-rred_rc2021_)*prop_redattr_sbcc);
+end;
 
 * not * dependent_on_time_step_length ;
 ch_risk_beh_ep=1.0;
 if 1995 < caldate{t} <= 2000 then ch_risk_beh_ep = ych_risk_beh_ep**(caldate{t}-1995);
-if        caldate{t} >  2000 then ch_risk_beh_ep = ych_risk_beh_ep**(2000-1995);
-* %sample_uniform(ych_risk_beh_ep, 0.8 0.9 0.95 1);  
+if        caldate{t} =  2000 then ch_risk_beh_ep2000_ = ych_risk_beh_ep**(2000-1995);
+if        caldate{t} >  2000 then ch_risk_beh_ep = ch_risk_beh_ep2000_;
+if caldate{t} >= &year_interv and condom_incr_year_i = 2 then 
+ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
 
 
 *In the essential scenario: higher_future_prep_oral_cov=2;
