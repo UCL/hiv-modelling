@@ -71,7 +71,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-s_ddaly = (s_dead_ddaly* &discount) + s_live_ddaly;
+s_ddaly = (s_dead_ddaly) + s_live_ddaly;
 
 dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
 *  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
