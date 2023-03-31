@@ -6,7 +6,7 @@ libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv syn
 libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v4_out";
 
 data a.base_30_03_23;   set b.out:;
-proc freq data=a.base_30_03_23;table s_pmtct;run;
+proc freq data=a.base_30_03_23;table cald;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
@@ -297,8 +297,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_m1524_newp_ge1 ) 
 									/ (s_ageg1517m + s_ageg1819m + s_ageg1519m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
 
-* p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
-
 * p_ep;							p_ep = s_ep / s_alive1564 ;
 
 * p_m_npge1_; 					p_m_npge1_ = s_m_npge1 / s_alive1564_m; *VCFeb2023;
@@ -326,7 +324,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_sw;					n_tested_sw = s_tested_sw * &sf * 4;
 * n_tested;						n_tested = s_tested * &sf * 4;
 * n_tested_anc;					n_tested_anc = s_tested_anc * &sf * 4;
-* p_anc;						p_anc = s_anc /s_birth;
+* p_anc;						p_anc = s_anc /(s_pregnant+s_birth);
 * n_tested_m_sympt;				n_tested_m_sympt = s_tested_m_sympt * &sf * 4;*VCFeb2023;
 * n_tested_w_sympt;				n_tested_w_sympt = s_tested_f_sympt * &sf * 4;*VCFeb2023;
 * n_tested_m_circ; 				n_tested_m_circ = s_tested_m_circ  * &sf * 4;*VCFeb2023;
