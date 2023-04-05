@@ -14,15 +14,15 @@ proc freq;table run;where cald=1990;run;
 
 data sf;
 set a;
- 
-if cald=2023.25;
+
+if cald=2023.25; ***Update as required;
 s_alive = s_alive_m + s_alive_w ;
-sf_2022 = 10000000 / s_alive;
-keep run sf_2022;
+sf_2023 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
+keep run sf_2023;
 proc sort; by run;run;
 
 
-%let sf=sf_2022;
+%let sf=sf_2023;
 
 
 data y; 
@@ -31,31 +31,18 @@ by run ;
 
 * preparatory code ;
 
-* ================================================================================= ;
-
-if s_pregnant_oth_dol_adv_birth_e = . then s_pregnant_oth_dol_adv_birth_e = 0;
-
-pregnant_hiv_diagnosed = s_pregnant - s_pregnant_not_diagnosed_pos;
-
-s_m_newp = s_m_1524_newp  +	 s_m_2534_newp  +  s_m_3544_newp +   s_m_4554_newp  +	s_m_5564_newp ;
-s_w_newp = s_w_1524_newp  +	 s_w_2534_newp  +  s_w_3544_newp +   s_w_4554_newp  +	s_w_5564_newp ;
-
-s_i_m_newp = s_i_age1_m_newp + s_i_age2_m_newp + s_i_age3_m_newp + s_i_age4_m_newp + s_i_age5_m_newp ;
-s_i_w_newp = s_i_age1_w_newp + s_i_age2_w_newp + s_i_age3_w_newp + s_i_age4_w_newp + s_i_age5_w_newp ;
 
 * ================================================================================= ;
-
 
 * discount rate;
 
 * ================================================================================= ;
 
 * discount rate is 3%; 
-* note discounting is from 2021 - no adjustment needed;
-* ts1m - this code needs to change for ts1m;
+* note discounting is from start of intervention - no adjustment needed;
 
-%let year_start_disc=2022;
-discount_3py = 1/(1.03**(cald-&year_start_disc));
+%let year_start_disc=2023;
+*discount_3py = 1/(1.03**(cald-&year_start_disc)); ***This is already calculated in HIV Synthesis;
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 *The following can be changed if we want instead 10% discount rate;
@@ -63,42 +50,22 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-
-
 * dalys and life years;
 
 * ================================================================================= ;
 
-s_ddaly = (s_dead_ddaly) + s_live_ddaly;
+ly = s_ly * &sf;  *life years;
+dly = s_dly * &sf; *discounted life years;
 
-dead_ddaly_ntd = s_dead_ddaly_ntd * &sf * 4 * (0.0022 / 0.0058); 
-*  0.21% is 0.30% minus background rate in hiv uninfected 0.08% ;
-*  0.58%  is 0.67% updated Zash data from ias2018 minus background rate in hiv uninfected 0.09% ;
+s_ddaly = s_dead_ddaly + s_live_ddaly;
 
-
+***Scaling up to annual discounted DALYs in the whole population;
 ddaly = s_ddaly * &sf * 4;
 
-***Do we need to add these to total DALYs?;
-dead_ddaly_odabe = s_dead_ddaly_oth_dol_adv_birth_e * &sf * 4; * odabe ;
 
-ddaly_mtct = s_ddaly_mtct * &sf * 4;
+***These are additional potential DALYs to include which have not so far been included;
 
-ddaly_non_aids_pre_death = s_ddaly_non_aids_pre_death * &sf * 4; * napd;
-
-ddaly_ac_ntd_mtct = ddaly + dead_ddaly_ntd + ddaly_mtct ;
-
-ddaly_ac_ntd_mtct_odabe = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe ;
-
-ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_death;
-
-ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe + ddaly_non_aids_pre_death;
-
-ddaly_all = ddaly_ntd_mtct_odab_napd;
-
-
-ddaly_adults = ddaly;
-
-
+ddaly_mtct = s_ddaly_mtct * &sf * 4;  ***Crude estimate of number of DALYs incurred in a child born with HIV;
 
 
 * ================================================================================= ;
@@ -106,11 +73,11 @@ ddaly_adults = ddaly;
 * costs ;
 
 * ================================================================================= ;
-
 * all costs expressed as $ millions per year in 2018 USD;
 
 * ts1m - 12 instead of 4; 
 
+***These are scaled up discounted costs;
 dzdv_cost = s_dcost_zdv * &sf * 4 / 1000;
 dten_cost = s_dcost_ten * &sf * 4 / 1000;
 d3tc_cost = s_dcost_3tc * &sf * 4 / 1000; 
@@ -129,18 +96,12 @@ if s_dcost_prep_ac_adh=. then s_dcost_prep_ac_adh=0;
 if s_dcost_circ=. then s_dcost_circ=0;
 if s_dcost_condom_dn=. then s_dcost_condom_dn=0;
 
+***Vaginal ring cost will also needed to be added here when used in HIV Synthesis;
 s_dcost_prep = s_dcost_prep_oral + s_dcost_prep_inj;
 s_dcost_prep_visit = s_dcost_prep_visit_oral + s_dcost_prep_visit_inj;
 
-***SW program costs - need to add in the discount here as this was not correctly collected in the sum statement;
-dcost_sw_program = s_cost_sw_program * &discount * &sf * 4 / 1000; 
-
-* ts1m - 12 instead of 4; 
 dvis_cost = s_dvis_cost * &sf * 4 / 1000;
-dart_1_cost = s_dart_1_cost * &sf * 4 / 1000;
-dart_2_cost = s_dart_2_cost * &sf * 4 / 1000;
-dart_3_cost = s_dart_3_cost * &sf * 4 / 1000;
-dart_cost = s_dart_cost * &sf * 4 / 1000;
+dart_cost = s_dart_cost * &sf * 4 / 1000; ***This should be the same as dart_cost_y below (and is not used);
 dvl_cost = s_dvl_cost * &sf * 4 / 1000;
 dcd4_cost = s_dcd4_cost * &sf * 4 / 1000;
 dadc_cost = s_dadc_cost * &sf * 4 / 1000;
@@ -156,17 +117,8 @@ dcost_prep_oral = s_dcost_prep_oral * &sf * 4 / 1000;
 dcost_prep_visit  = s_dcost_prep_visit * &sf * 4 / 1000; 	
 dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
-dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; 
-
-dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000;
-*dcost_avail_self_test = s_cost_avail_self_test * &sf * discount* 4 / 1000 ;
-
-
-
-
-* note this below can be used if outputs are from program beyond 1-1-20;
-  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000;
-  dcost_non_aids_pre_death = s_dcost_non_aids_pre_death * &sf * 4 / 1000; * each death from dcause 2 gives 0.25 dalys and costs 1 ($1000) ;
+dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
+dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -177,23 +129,20 @@ if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * &sf * 4 / 1000;
 dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000; 
 
-dclin_cost = dadc_cost+dnon_tb_who3_cost+dcot_cost+dtb_cost;
-
-* sens analysis;
-
-* ;
-
+dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
-dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost+dres_cost + dtest_cost + d_t_adh_int_cost
-		+ dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		dcost_child_hiv + dcost_non_aids_pre_death + dcost_avail_self_test +  dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj 
-		+ dcost_prep_inj + dcost_sw_program;
+***Will need to add the cost of VG when included in HIV Synthesis;
+dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_sw_program;
 
-dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost + d_t_adh_int_cost + 
-				dswitchline_cost; 
+dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
+				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
 
+***This reverses the discount (if needed);
 cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
