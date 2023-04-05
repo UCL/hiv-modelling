@@ -53,9 +53,6 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-ly = s_ly * &sf;  *life years;
-dly = s_dly * &sf; *discounted life years;
-
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
 ***Scaling up to annual discounted DALYs in the whole population;
@@ -118,6 +115,7 @@ dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
+dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
