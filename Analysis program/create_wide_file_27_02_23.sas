@@ -54,8 +54,8 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-ly = s_ly * &sf;  *life years;
-dly = s_dly * &sf; *discounted life years;
+*ly = s_ly * &sf;  *life years;
+*dly = s_dly * &sf; *discounted life years;
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
@@ -119,6 +119,7 @@ dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
+dcost_avail_self_test = s_dcost_avail_self_test * &sf * 4 / 1000; 
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -182,8 +183,8 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 
 ***FSW;
-* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2022;
-* n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2022;
+* n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
+* n_sw_1564;					n_sw_1564_ = s_sw_1564 * sf_2023;
 
 
 * prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
@@ -236,7 +237,7 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
-* n_tested_sw;					n_tested_sw = s_tested_sw * sf_2022 * 4;
+* n_tested_sw;					n_tested_sw = s_tested_sw * sf_2023 * 4;
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
