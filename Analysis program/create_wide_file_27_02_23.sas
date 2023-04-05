@@ -54,9 +54,6 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-*ly = s_ly * &sf;  *life years;
-*dly = s_dly * &sf; *discounted life years;
-
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
 ***Scaling up to annual discounted DALYs in the whole population;
