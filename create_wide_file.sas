@@ -3,15 +3,15 @@
 
 libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v4_out";
+libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v5_out";
 
-data a.base_30_03_23;   set b.out:;
-proc freq data=a.base_30_03_23;table cald;run;
+data a.base_04_04_23;   set b.out:;
+proc freq data=a.base_04_04_23;table cald;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base_30_03_23;
+data g; set  a.base_04_04_23;
 
 proc sort data=g; 
 by run cald option;run;
