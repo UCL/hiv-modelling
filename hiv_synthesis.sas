@@ -1,21 +1,21 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
-/*
-* run 81 all;
+
+* run 84 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
-*/
 
+/*
 * Myriad input; 
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
 
-
- proc printto;* log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
+ proc printto; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2023.5;
 
 
@@ -2151,6 +2151,7 @@ first_cva_modsev = 0;
 first_cvd = 0;
 severity_cva_this_per = 0;
 severity_ihd_this_per = 0;
+cvd_death_risk = 0;
 ep_tm1=ep;
 if t > 1 then do; newp_tm1=newp; newp = .; end;
 np_tm1=np; np = .;
@@ -18246,11 +18247,11 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 proc freq; tables cald hiv ; where death=.; run;
 */
 
-/*
+
 
 
 proc print; var 
-caldate&j age hiv visit diagnosed_hypertension visit_hypertension tested_bp on_anti_hypertensive hard_reach symp_hypertension
+caldate&j age hiv visit diagnosed_hypertension visit_hypertension tested_bp on_anti_hypertensive hard_reach symp_hypertension ihd_this_per cva_this_per cvd_death_risk
 ;
 where caldate&j > 2022 and death = .; 
 run;
