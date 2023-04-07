@@ -15,7 +15,7 @@ libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
  proc printto; *log="C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\synthesis_log.log"; *run;
 
 	
-%let population = 10000 ; 
+%let population = 1000 ; 
 %let year_interv = 2023.5;
 
 
@@ -18243,15 +18243,15 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 
-/*
+
 proc freq; tables cald hiv ; where death=.; run;
-*/
+
 
 
 
 
 proc print; var 
-caldate&j age hiv visit diagnosed_hypertension visit_hypertension tested_bp on_anti_hypertensive hard_reach symp_hypertension ihd_this_per cva_this_per cvd_death_risk
+caldate&j age hiv sbp visit diagnosed_hypertension visit_hypertension tested_bp on_anti_hypertensive hard_reach symp_hypertension ihd_this_per severity_ihd_this_per cva_this_per severity_cva_this_per cvd_death_risk
 ;
 where caldate&j > 2022 and death = .; 
 run;
@@ -21318,7 +21318,7 @@ data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=1);
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=1);
 
-
+/*
 data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
@@ -21945,7 +21945,7 @@ data r1; set b;
 %update_r1(da1=1,da2=2,e=7,f=8,g=333,h=340,j=339,s=4);
 %update_r1(da1=2,da2=1,e=8,f=9,g=333,h=340,j=340,s=4);
 
-
+*/
 
 * ts1m:  need more update statements ;
 
