@@ -1,11 +1,11 @@
 #!/bin/bash -l
-inputdir="${HOME}"
+inputdir="${HOME}/hiv-modelling"
 tmpfiles="out"
 combinedsas="combined_data"
-runs="100"
+runs="200"
 jobname="hivmodel"
 model="hiv_synthesis.sas"
-clock="h_rt=08:00:00"
+clock="h_rt=48:00:00"
 account="HIVSynthMod"
 
 while getopts a:i:o:r:j:m:c:t: flag
@@ -41,6 +41,5 @@ echo "clock is set to: $clock";
 echo "using SAS HIV model file: $model";
 echo "job is run on account: $account";
 qsub -N $jobname -A $account -t 1-$runs -wd $finaloutdir -l $clock -v SASINPUT=$inputdir,SASOUTPUTDIR=$finaloutdir,SASMODEL=$model,SASTMPFILES=$tmpfiles $inputdir/testmodel.sh
-qsub -hold_jid $jobname -N concatenate -v SASINPUT=$inputdir,SASOUTPUT=$combinedsas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles $inputdir/concatenate.sh 
-
+qsub -hold_jid $jobname -N create_wide -v sas_infile=$inputdir/create_wide_myriad.sas,SASOUTPUTDIR=$finaloutdir,SASTMPFILES=$tmpfiles  run_create_wide_file
 
