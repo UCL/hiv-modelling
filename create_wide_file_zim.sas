@@ -9,10 +9,6 @@ takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald;run;
 
-
-
-proc freq;table s_death_hiv s_hiv_death;run;
-
 data sf;
 set a;
  
@@ -364,9 +360,9 @@ s_dead_Alt6_cd4lt200  s_dead_Alt6_cd4gt200  s_dead_Agt6_cd4lt200  s_dead_Agt6_cd
 
 proc freq;table 
 s_I_undiag 			s_I_diag_naive  	s_I_diag_startart  	s_I_onart		s_I_offart 		   s_I_onart_lt6m 	 s_I_onart_lt6m_nvs 
-s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m 
+s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m;run;
 
-
+proc freq;table
 s_I_undiag_m s_I_diag_naive_m s_I_diag_startart_m s_I_onart_m s_I_offart_m s_I_onart_lt6m_m s_I_onart_lt6m_nvs_m 
 s_I_onart_gt6m_nvs_m s_I_onart_gt6m_vs_m s_I_offart_1stI_m s_I_offart_SI_m s_I_offart_SIlt6m_m s_I_offart_SIgt6m_m 
 s_I_undiag_w s_I_diag_naive_w s_I_diag_startart_w s_I_onart_w s_I_offart_w s_I_onart_lt6m_w s_I_onart_lt6m_nvs_w 
