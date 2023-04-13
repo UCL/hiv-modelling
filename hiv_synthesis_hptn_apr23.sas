@@ -1,14 +1,7 @@
 
 
 * easier to just have prep_any_strategy = 4;
-* get out the proportion with a prep indication amongst those who did not have a prep indication 3 months ago, and vice versa ;
-* break down of prep eligibility and proportion of eligible on prep for age < 25 and age >= 25 (and by gender ?);
-* hiv incidence by prep eligibility (with prep efficacy 0) by gender ;
 * check on why av_prep_oral_eff_non_res_v is above 1 in 0.05% of 3 month periods;
-* number and proportion of adults age 15-64 who have a prep indication in current 3 month period by < 25 >= 25 and gender.    
-* number and proportion of adults age 15-64 who have had a prep indication in current calendar year by < 25 >= 25 and gender.    
-* proportion of those with a prep indication who are on prep
-
 
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
@@ -4248,6 +4241,7 @@ end;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
+prep_any_elig_tm1=prep_any_elig; prep_any_elig_tm2=prep_any_elig_tm1;  prep_any_elig_tm3=prep_any_elig_tm2;   
 prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and different eligibility for new users than previous users;
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
@@ -4340,6 +4334,9 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
 end;
+
+
+
 
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
@@ -13408,7 +13405,6 @@ if prep_any   ne 1 then do;	* lapr - define which prep? ;
 	if onart_gt6m_iicu=1 then vl1000_art_gt6m_iicu = vl1000; 
 end;
 
-
 * hiv+ and started art due to being on tld_prep, currently hiv+ and on tld_prep, and vl1000 for these ;
 
 started_art_as_tld_prep_vl1000=.; onart_as_tld_prep=.; onart_as_tld_prep_vl1000=.;
@@ -13644,8 +13640,40 @@ if gender = 2 and 25 <= age < 35 then do;  if prep_any=1 then prep_any_w_2534 = 
 if gender = 2 and 35 <= age < 45 then do;  if prep_any=1 then prep_any_w_3544 = 1;  end;
 if gender = 2 and 15 <= age < 49 then do;  if prep_any=1 then prep_any_w_1549 = 1;  end;
 
+elig_prep_any_m_1564 = 0; 
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
 
-elig_prep_any_m_1564 = 0; if gender = 1 and 15 <= age < 65 then do; if prep_any_elig=1 then elig_prep_any_m_1564 = 1;  end;
+not_elig_prep_any_w_1564 = 0;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig ne 1 then not_elig_prep_any_w_1564 = 1;  end;
+not_elig_prep_any_m_1564 = 0;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig ne 1 then not_elig_prep_any_m_1564 = 1;  end;
+
+newly_elig_prep_w_1564 = 0;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig = 1 and prep_any_elig_tm1 ne 1 then newly_elig_prep_w_1564 = 1;  end;
+newly_not_elig_prep_w_1564 = 0;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig ne 1 and prep_any_elig_tm1 = 1 then newly_not_elig_prep_w_1564 = 1;  end;
+newly_elig_prep_m_1564 = 0;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig = 1 and prep_any_elig_tm1 ne 1 then newly_elig_prep_m_1564 = 1;  end;
+newly_not_elig_prep_m_1564 = 0;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig ne 1 and prep_any_elig_tm1 = 1 then newly_not_elig_prep_m_1564 = 1;  end;
+
+elig_prep_tm1_w_1564 = 0;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig_tm1 = 1 then elig_prep_tm1_w_1564 = 1;  end;
+not_elig_prep_tm1_w_1564 = 0;
+if gender = 2 and 15 <= age < 65 then do; if prep_any_elig_tm1 ne 1 then not_elig_prep_tm1_w_1564 = 1;  end;
+elig_prep_tm1_m_1564 = 0;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig_tm1 = 1 then elig_prep_tm1_m_1564 = 1;  end;
+not_elig_prep_tm1_m_1564 = 0;
+if gender = 1 and 15 <= age < 65 then do; if prep_any_elig_tm1 ne 1 then not_elig_prep_tm1_m_1564 = 1;  end;
+
+elig_prep_last_year_w_1524=0;
+if gender=2 and 15 <= age < 25 then do; if prep_any_elig = 1 or prep_any_elig_tm1 = 1 or prep_any_elig_tm2 = 1 or prep_any_elig_tm3 = 1 then elig_prep_last_year_w_1524=1; end;
+elig_prep_last_year_w_2564=0;
+if gender=2 and 25 <= age < 65 then do; if prep_any_elig = 1 or prep_any_elig_tm1 = 1 or prep_any_elig_tm2 = 1 or prep_any_elig_tm3 = 1 then elig_prep_last_year_w_2564=1; end;
+elig_prep_last_year_m_1524=0;
+if gender=1 and 15 <= age < 25 then do; if prep_any_elig = 1 or prep_any_elig_tm1 = 1 or prep_any_elig_tm2 = 1 or prep_any_elig_tm3 = 1 then elig_prep_last_year_m_1524=1; end;
+elig_prep_last_year_m_2564=0;
+if gender=1 and 25 <= age < 65 then do; if prep_any_elig = 1 or prep_any_elig_tm1 = 1 or prep_any_elig_tm2 = 1 or prep_any_elig_tm3 = 1 then elig_prep_last_year_m_2564=1; end;
 
 
 * number on prep women age 15-24;
@@ -13685,6 +13713,12 @@ started_prep_vr_in_primary =0; 		if hiv=1 and dt_prep_vr_s=caldate&j 	and primar
 
 primary_prep_elig = 0; if prep_any_elig = 1 and primary=1 then primary_prep_elig = 1;
 primary_prep_not_elig = 0; if prep_any_elig ne 1 and primary=1 then primary_prep_not_elig = 1;
+
+primary_prep_elig_w = 0; if gender=2 and prep_any_elig = 1 and primary=1 then primary_prep_elig_w = 1;
+primary_prep_not_elig_w = 0; if gender=2 and prep_any_elig ne 1 and primary=1 then primary_prep_not_elig_w = 1;
+
+primary_prep_elig_m = 0; if gender=1 and prep_any_elig = 1 and primary=1 then primary_prep_elig_w = 1;
+primary_prep_not_elig_m = 0; if gender=1 and prep_any_elig ne 1 and primary=1 then primary_prep_not_elig_w = 1;
 
 
 
@@ -15923,10 +15957,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_prep_inj_m + prep_inj_m; 	s_prep_any_sw + prep_any_sw ; s_prep_oral_sw + prep_oral_sw ; s_prep_inj_sw + prep_inj_sw ; s_prep_vr_sw + prep_vr_sw ; 
 	s_prep_any_w_1524 + prep_any_w_1524 ; s_prep_oral_w_1524 + prep_oral_w_1524 ; s_prep_inj_w_1524 + prep_inj_w_1524 ; s_prep_vr_w_1524 + prep_vr_w_1524 ; 
 	s_elig_prep_any_m_1564 + elig_prep_any_m_1564 ;s_elig_prep_any_w_1564 + elig_prep_any_w_1564 ;
+	s_not_elig_prep_any_w_1564 + not_elig_prep_any_w_1564 ; s_not_elig_prep_any_m_1564 + not_elig_prep_any_m_1564 ;
+	s_newly_elig_prep_w_1564 + newly_elig_prep_w_1564 ; s_newly_not_elig_prep_w_1564 + newly_not_elig_prep_w_1564 ;
+	s_newly_elig_prep_m_1564 + newly_elig_prep_m_1564 ; s_newly_not_elig_prep_m_1564 + newly_not_elig_prep_m_1564 ;
+	s_elig_prep_tm1_w_1564 + elig_prep_tm1_w_1564 ;  s_not_elig_prep_tm1_w_1564 + not_elig_prep_tm1_w_1564 ;
+	s_elig_prep_tm1_m_1564 + elig_prep_tm1_m_1564 ;  s_not_elig_prep_tm1_m_1564 + not_elig_prep_tm1_m_1564 ;
 	s_infected_prep_any + infected_prep_any ; s_infected_prep_oral + infected_prep_oral ; s_infected_prep_inj + infected_prep_inj ; s_infected_prep_vr + infected_prep_vr ;
 	s_prep_any_ever + prep_any_ever ; s_primary_prep + primary_prep ; s_hiv1_prep_oral + hiv1_prep_oral ; s_prim_r_prep + prim_r_prep ; 
 	s_ever_prim_nor_prep + ever_prim_nor_prep ;   s_primary_prep_inj  + primary_prep_inj ;  s_primary_prep_not_elig + primary_prep_not_elig;
 	s_primary_prep_elig + primary_prep_elig;
+	s_primary_prep_elig_w + primary_prep_elig_w; s_primary_prep_not_elig_w + primary_prep_not_elig_w; 
+	s_primary_prep_elig_m + primary_prep_elig_m ;s_primary_prep_not_elig_m + primary_prep_not_elig_m; 
 	s_prep_any_elig + prep_any_elig ;  s_primary_prep_oral + primary_prep_oral; s_prim_r_prep + prim_r_prep; s_ever_prim_tdr_prep + ever_prim_tdr_prep;
 	s_rt65m_3_prep + rt65m_3_prep ; s_rt184m_3_prep + rt184m_3_prep ; s_rtm_3_prep + rtm_3_prep ; s_rt65m_6_prep + rt65m_6_prep ; 
 	s_rt184m_6_prep + rt184m_6_prep ; s_rtm_6_prep + rtm_6_prep ; s_rt65m_9_prep + rt65m_9_prep ; s_rt184m_9_prep + rt184m_9_prep ;               
@@ -15947,6 +15988,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onprep_inj_m + onprep_inj_m; s_onprep_inj_w + onprep_inj_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
 	s_onprep_1524w + onprep_1524w ; s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
+	s_elig_prep_last_year_w_1524 + elig_prep_last_year_w_1524; s_elig_prep_last_year_w_2564 + elig_prep_last_year_w_2564;
+	s_elig_prep_last_year_m_1524 + elig_prep_last_year_m_1524; s_elig_prep_last_year_m_2564 + elig_prep_last_year_m_2564;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
     s_infected_prep_r + infected_prep_r ; 
@@ -17661,10 +17704,12 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab
 /*prep*/
 s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
-s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564 s_not_elig_prep_any_w_1564  s_not_elig_prep_any_m_1564 s_newly_elig_prep_w_1564 
+s_newly_not_elig_prep_w_1564 s_newly_elig_prep_m_1564 s_newly_not_elig_prep_m_1564 s_elig_prep_tm1_w_1564  s_not_elig_prep_tm1_w_1564 
+s_elig_prep_tm1_m_1564  s_not_elig_prep_tm1_m_1564 
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  s_primary_prep_not_elig
-s_primary_prep_elig
+s_primary_prep_elig s_primary_prep_elig_w s_primary_prep_not_elig_w s_primary_prep_elig_m s_primary_prep_not_elig_m 
 s_prep_any_elig s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
 s_rt65m_9_prep  s_rt184m_9_prep  s_rtm_9_prep  s_rt65m_12_prep  s_rt184m_12_prep  s_rtm_12_prep  
@@ -17681,6 +17726,7 @@ s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_
 s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_elig_prep_last_year_w_1524 s_elig_prep_last_year_w_2564 s_elig_prep_last_year_m_1524 s_elig_prep_last_year_m_2564
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
@@ -18584,8 +18630,12 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab
 s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr  s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564 s_not_elig_prep_any_w_1564  s_not_elig_prep_any_m_1564 s_newly_elig_prep_w_1564 
+s_newly_not_elig_prep_w_1564 s_newly_elig_prep_m_1564 s_newly_not_elig_prep_m_1564 s_elig_prep_tm1_w_1564  s_not_elig_prep_tm1_w_1564 
+s_elig_prep_tm1_m_1564  s_not_elig_prep_tm1_m_1564 
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj s_primary_prep_not_elig s_primary_prep_elig 
+s_primary_prep_elig_w s_primary_prep_not_elig_w s_primary_prep_elig_m s_primary_prep_not_elig_m 
 s_hiv1_prep_oral  s_prim_r_prep    s_ever_prim_nor_prep  
 s_prep_any_elig  	s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
@@ -18604,6 +18654,7 @@ s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_
 s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_elig_prep_last_year_w_1524 s_elig_prep_last_year_w_2564 s_elig_prep_last_year_m_1524 s_elig_prep_last_year_m_2564
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
@@ -22753,8 +22804,12 @@ s_em_inm_res_o_cab_off_3m_pr  s_emerge_inm_res_cab_tail_pr  s_em_inm_res_o_cab
 s_prep_any 		s_prep_oral 	s_prep_inj 		s_prep_vr   s_prep_oral_w  s_prep_inj_w  s_prep_oral_m   s_prep_inj_m 
 s_prep_any_sw 	s_prep_oral_sw 	s_prep_inj_sw 	s_prep_vr_sw  
 s_elig_prep_any_m_1564 s_elig_prep_any_w_1564
+s_elig_prep_any_m_1564 s_elig_prep_any_w_1564 s_not_elig_prep_any_w_1564  s_not_elig_prep_any_m_1564 s_newly_elig_prep_w_1564 
+s_newly_not_elig_prep_w_1564 s_newly_elig_prep_m_1564 s_newly_not_elig_prep_m_1564 s_elig_prep_tm1_w_1564  s_not_elig_prep_tm1_w_1564 
+s_elig_prep_tm1_m_1564  s_not_elig_prep_tm1_m_1564 
 s_infected_prep_any	s_infected_prep_oral	s_infected_prep_inj 	s_infected_prep_vr 
 s_prep_any_ever  s_primary_prep  s_primary_prep_oral s_primary_prep_inj  s_primary_prep_not_elig  s_primary_prep_elig
+s_primary_prep_elig_w s_primary_prep_not_elig_w s_primary_prep_elig_m s_primary_prep_not_elig_m 
 s_hiv1_prep_oral  s_prim_r_prep   s_ever_prim_nor_prep  
 s_prep_any_elig  	 s_prim_r_prep  s_ever_prim_tdr_prep
 s_rt65m_3_prep  s_rt184m_3_prep  s_rtm_3_prep  s_rt65m_6_prep  s_rt184m_6_prep  s_rtm_6_prep 
@@ -22773,6 +22828,8 @@ s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_
 s_onprep_inj_m s_onprep_inj_w s_onprep_oral_m  s_onprep_oral_w  s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
+s_elig_prep_last_year_w_1524 s_elig_prep_last_year_w_2564 s_elig_prep_last_year_m_1524 s_elig_prep_last_year_m_2564
+
 s_prep_any_w_1524      	s_prep_any_w_2534      	s_prep_any_w_3544 
 s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524 
 
