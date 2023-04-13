@@ -3,8 +3,13 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 data a;
 set a.zim_22feb23;
 if run=. then delete;
+
+if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
+takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald;run;
+
+
 
 proc freq;table s_death_hiv s_hiv_death;run;
 
