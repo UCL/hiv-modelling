@@ -19734,6 +19734,7 @@ data r1 ; set a;
 %update_r1(da1=2,da2=1,e=8,f=9,g=329,h=336,j=336,s=0);
 
 
+<<<<<<< Updated upstream:Programs to run/hiv_synthesis_fsw_03_02_2023_11am.sas
 data r1; set a;
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
@@ -20137,6 +20138,8 @@ data r1; set a;
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=329,h=336,j=335,s=2);
 %update_r1(da1=2,da2=1,e=8,f=9,g=329,h=336,j=336,s=2);
+=======
+>>>>>>> Stashed changes:Zimbabwe/hiv_synthesis_death_trans_22feb23_zim.sas
 
 
 
