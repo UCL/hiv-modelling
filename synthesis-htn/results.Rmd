@@ -1,0 +1,649 @@
+---
+title: "Results"
+author: "Matt Hickey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+
+options(tinytex.verbose = TRUE)
+options(scipen = 999)
+load("SynthesisHTN.RData")
+
+knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=8, fig.width=12)
+
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
+
+load("SynthesisHTN.RData")
+
+```
+
+## Table 1. Characteristics of Hypertension in 1000 setting scenarios at baseline (year = 2015)
+
+```{r table1_model}
+t1_htn <- df_htn %>% filter(year == "15", source == "SOC") %>% group_by(age) %>% summarize(htn_median = paste0(pct(median(htn)), " (", round(100*quantile(htn, 0.05, q = 0.05),0), " to ", pct(quantile(htn, 0.95, q=0.95)), ")"))
+
+t1_dx <- df_dx %>% filter(year == "15", source == "SOC") %>% group_by(age) %>% summarize(dx_median = paste0(pct(median(dx)), " (", round(100*quantile(dx, 0.05, q = 0.05),0), " to ", pct(quantile(dx, 0.95, q=0.95)), ")"))
+
+t1_tx <- df_sas_tx_long %>% filter(year == "15", source == "SOC", age %in% c("25-44", "45-64", "65+")) %>% group_by(age) %>% summarize(tx_median = paste0(pct(median(tx)), " (", round(100*quantile(tx, 0.05, q = 0.05),0), " to ", pct(quantile(tx, 0.95, q=0.95)), ")"))
+
+t1_ctrl <- df_sas_ctrl_long %>% filter(year == "15", source == "SOC", age %in% c("25-44", "45-64", "65+")) %>% group_by(age) %>% summarize(control_median = paste0(pct(median(control)), " (", round(100*quantile(control, 0.05, q = 0.05),0), " to ", pct(quantile(control, 0.95, q=0.95)), ")"))
+
+t1_htn %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+")) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+t1_dx %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+")) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+t1_tx %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+t1_ctrl %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+```
+
+### country data
+```{r table1_country}
+t1_ssahtn <- df_ssa_htn %>% filter(age != "15-24", country %in% c("Kenya", "Uganda", "BurkinaFaso", "Swaziland", "SouthAfrica", "Tanzania", "Togo")) %>% mutate(htn = pct(htn)) %>% arrange(age, country)
+
+t1_ssadx <- df_ssa_dx %>% filter(age != "15-24", country %in% c("Kenya", "Uganda", "BurkinaFaso", "Swaziland", "SouthAfrica", "Tanzania", "Togo")) %>% mutate(dx = pct(dx)) %>% arrange(age, country)
+
+```
+
+
+``` {r table3}
+y <- c("2373")
+
+x <- df_icer_wide %>% 
+  filter(dcost_cat == "total htn", year == y) %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(age = "All",
+         parameter = "Proportion of setting-scenarios where strategy is cost-effective (considering all 4 policies)†")
+x <- df_icer %>% 
+  filter(dcost_cat == "total htn", year == y) %>%
+  group_by(source) %>% 
+  summarize(cost_eff = pct(mean(cf_netdaly))) %>%
+  pivot_wider(names_from = source, values_from = cost_eff) %>% 
+  mutate(SOC = NA, 
+         age = "All",
+         parameter = "Proportion of setting-scenarios where strategy is cost-effective (considering only each new strategy and the SOC strategy)†") %>% 
+  rbind(x)
+x <- df_icer %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(netdaly_averted = paste0(round(mean(netdaly_averted),0), " (", round(quantile(netdaly_averted, 0.05, q = 0.05),0), " to " , round(quantile(netdaly_averted, 0.95, q=0.95),0), ")")) %>%
+  pivot_wider(names_from = source, values_from = netdaly_averted) %>% 
+  mutate(SOC = NA,
+         parameter = "Net DALYs averted",
+         age = "All") %>% 
+  rbind(x)
+x <- df_icer %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(cost = paste0(round(mean(cost),0), " (", round(quantile(cost, 0.05, q = 0.05),0), " to ", round(quantile(cost, 0.95, q=0.95),0), ")")) %>%
+  pivot_wider(names_from = source, values_from = cost) %>% 
+  mutate(SOC = NA,
+         parameter = "Incremental cost",
+         age = "All") %>% 
+  rbind(x)
+x <- df_dcost_long %>% 
+  filter(year == y, dcost_cat %in% c("scr", "clin", "drug", "cvd", "total htn") ) %>% 
+  group_by(source, dcost_cat) %>% 
+  summarize(cost = paste0(round(mean(dcost),1), " (", round(quantile(dcost, 0.05, q = 0.05),1), " to ", round(quantile(dcost, 0.95, q=0.95),1), ")")) %>% 
+  pivot_wider(names_from = source, values_from = cost) %>% 
+  mutate(age = "All",
+         dcost_cat = recode_factor(dcost_cat, 
+                                   scr = "Screening cost",
+                                   clin = "Clinic cost",
+                                   drug = "Drug cost",
+                                   cvd = "CVD cost",
+                                   'total htn' = "Total HTN cost")) %>% 
+  rename(parameter = dcost_cat) %>% 
+  rbind(x)
+x <- df_icer %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(ddaly = paste0(round(mean(ddaly_averted),1), " (", round(quantile(ddaly_averted, 0.05, q = 0.05),1), " to ", round(quantile(ddaly_averted, 0.95, q=0.95),1), ")")) %>%
+  pivot_wider(names_from = source, values_from = ddaly) %>% 
+  mutate(SOC = NA,
+         parameter = "DALYs Averted (thousands)",
+         age = "All") %>% 
+  rbind(x)
+x <- df_acmort_hivpos %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(ac_mort = paste0(round(mean(mortality_rr),2), " (", round(quantile(mortality_rr, 0.05, q = 0.05),2), " to ", round(quantile(mortality_rr, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = ac_mort) %>% 
+  mutate(parameter = "Relative reduction in all-cause mortality (HIV-positive)",
+         age = "All",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_deadr_hivpos_long %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(ac_mort = paste0(round(mean(death_rate),2), " (", round(quantile(death_rate, 0.05, q = 0.05),2), " to ", round(quantile(death_rate, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = ac_mort) %>% 
+  mutate(parameter = "All-cause mortality rate (HIV-positive; per 100 person-years)",
+         age = "All") %>% 
+  rbind(x)
+x <- df_cvdmort_hivpos %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(cvd_mort_rr = paste0(round(mean(cvd_mortality_rr),2), " (", round(quantile(cvd_mortality_rr, 0.05, q = 0.05),2), " to ", round(quantile(cvd_mortality_rr, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_mort_rr) %>% 
+  mutate(parameter = "Relative reduction in CVD mortality (HIV-positive)",
+         age = "All",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_deadcvdr_hivpos_long %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(cvd_mort_rate = paste0(round(mean(cvd_death_rate),2), " (", round(quantile(cvd_death_rate, 0.05, q = 0.05),2), " to ", round(quantile(cvd_death_rate, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_mort_rate) %>% 
+  mutate(parameter = "CVD mortality rate (HIV-positive; per 100 person-years)",
+         age = "All") %>% 
+  rbind(x)
+x <- df_acmort_all %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(ac_mort = paste0(round(mean(mortality_rr),2), " (", round(quantile(mortality_rr, 0.05, q = 0.05),2), " to ", round(quantile(mortality_rr, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = ac_mort) %>% 
+  mutate(parameter = "Relative reduction in all-cause mortality",
+         age = "All",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_deadr_all_long %>% 
+  filter(year == y) %>% 
+  group_by(source) %>% 
+  summarize(ac_mort = paste0(round(mean(death_rate),2), " (", round(quantile(death_rate, 0.05, q = 0.05),2), " to ", round(quantile(death_rate, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = ac_mort) %>% 
+  mutate(parameter = "All-cause mortality rate (per 100 person-years)",
+         age = "All") %>% 
+  rbind(x)
+x <- df_cvd_summ %>% 
+  filter(year == y, is.na(sex) | sex == "All", measure == "rr") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_mort_rr = paste0(round(mean(cvd_risk_reduction),2), " (", round(quantile(cvd_risk_reduction, 0.05, q = 0.05),2), " to ", round(quantile(cvd_risk_reduction, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_mort_rr) %>% 
+  mutate(parameter = "Relative reduction of CVD mortality",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_cvd_dead_r_long %>% 
+  filter(year == y, is.na(sex) | sex == "All") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_mort = paste0(round(mean(cvd_death_rate),2), " (", round(quantile(cvd_death_rate, 0.05, q = 0.05),2), " to ", round(quantile(cvd_death_rate, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_mort) %>% 
+  mutate(parameter = "CVD Mortality rate (per 100 person-years)") %>% 
+  rbind(x)
+x <- df_cvdevent_rr %>% 
+  filter(year == y, is.na(sex), cause == "Stroke", type == "all", sev == "modsev") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_rr = paste0(round(mean(cvd_event_rr),2), " (", round(quantile(cvd_event_rr, 0.05, q = 0.05),2), " to ", round(quantile(cvd_event_rr, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_rr) %>% 
+  mutate(parameter = "Relative reduction in CVA incidence",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_sas_cvd_long %>% 
+  filter(year == y, is.na(sex), cause == "Stroke", type == "all", sev == "modsev") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_inc = paste0(round(mean(value),2), " (", round(quantile(value, 0.05, q = 0.05),2), " to ", round(quantile(value, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_inc) %>% 
+  mutate(parameter = "CVA incidence") %>% 
+  rbind(x)
+x <- df_cvdevent_rr %>% 
+  filter(year == y, is.na(sex), cause == "Ischemic heart disease", type == "all", sev == "modsev") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_rr = paste0(round(mean(cvd_event_rr),2), " (", round(quantile(cvd_event_rr, 0.05, q = 0.05),2), " to ", round(quantile(cvd_event_rr, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_rr) %>% 
+  mutate(parameter = "Relative reduction in IHD incidence",
+         SOC = NA) %>% 
+  rbind(x)
+x <- df_sas_cvd_long %>% 
+  filter(year == y, is.na(sex), cause == "Ischemic heart disease", type == "all", sev == "modsev") %>% 
+  group_by(source, age) %>% 
+  summarize(cvd_inc = paste0(round(mean(value),2), " (", round(quantile(value, 0.05, q = 0.05),2), " to ", round(quantile(value, 0.95, q=0.95),2), ")")) %>%
+  pivot_wider(names_from = source, values_from = cvd_inc) %>% 
+  mutate(parameter = "IHD incidence") %>% 
+  rbind(x)
+x <- df_sas_ctrl_long %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(control_mean = paste0(pct(mean(control)), " (", pct(quantile(control, 0.05, q = 0.05)), " to ", pct(quantile(control, 0.95, q=0.95)), ")")) %>%
+  pivot_wider(names_from = source, values_from = control_mean) %>% 
+  mutate(parameter = "Control") %>% 
+  rbind(x)
+x <- df_sas_tx_long %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(tx_mean = paste0(pct(mean(tx)), " (", pct(quantile(tx, 0.05, q = 0.05)), " to ", pct(quantile(tx, 0.95, q=0.95)), ")")) %>%
+  pivot_wider(names_from = source, values_from = tx_mean) %>% 
+  mutate(parameter = "Treatment (current)") %>% 
+  rbind(x)
+x <- df_sas_tx_ever_long %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(tx_mean = paste0(pct(mean(tx_ever)), " (", pct(quantile(tx_ever, 0.05, q = 0.05)), " to ", pct(quantile(tx_ever, 0.95, q=0.95)), ")")) %>%
+  pivot_wider(names_from = source, values_from = tx_mean) %>% 
+  mutate(parameter = "Treatment (ever)") %>% 
+  rbind(x)
+x <- df_dx_over %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>%  
+  group_by(source, age) %>% 
+  summarize(dx_mean = paste0(pct(mean(dx_over)), " (", pct(quantile(dx_over, 0.05, q = 0.05)), " to ", pct(quantile(dx_over, 0.95, q=0.95)), ")")) %>%
+  pivot_wider(names_from = source, values_from = dx_mean) %>% 
+  mutate(parameter = "Overdiagnosis") %>% 
+  rbind(x)
+x <- df_dx_true %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>%  
+  group_by(source, age) %>% 
+  summarize(dx_mean = paste0(pct(mean(dx_true)), " (", pct(quantile(dx_true, 0.05, q = 0.05)), " to ", pct(quantile(dx_true, 0.95, q=0.95)), ")")) %>%
+  pivot_wider(names_from = source, values_from = dx_mean) %>% 
+  mutate(parameter = "Diagnosis") %>% 
+  rbind(x)
+x <- df_sas_sevhtn_long %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(htn_mean = paste0(pct(mean(sevhtn)), " (", pct(quantile(sevhtn, 0.05, q = 0.05)), " to ", pct(quantile(sevhtn, 0.95, q=0.95)), ")")) %>% 
+  pivot_wider(names_from = source, values_from = htn_mean) %>% 
+  mutate(parameter = "Prevalence") %>% 
+  rbind(x)
+x <- df_htn %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(htn_mean = paste0(pct(mean(htn)), " (", pct(quantile(htn, 0.05, q = 0.05)), " to ", pct(quantile(htn, 0.95, q=0.95)), ")")) %>% 
+  pivot_wider(names_from = source, values_from = htn_mean) %>% 
+  mutate(parameter = "Prevalence") %>% 
+  rbind(x)
+x <- df_sas_sbp_long %>% 
+  filter(year == y, age %in% c("25-44", "45-64", "65+")) %>% 
+  group_by(source, age) %>% 
+  summarize(sbp_mean = paste0(round(mean(sbp),0), " (", round(quantile(sbp, 0.05, q = 0.05),0), " to ", round(quantile(sbp, 0.95, q=0.95),0), ")")) %>% 
+  pivot_wider(names_from = source, values_from = sbp_mean) %>% 
+  mutate(parameter = "Systolic blood pressure") %>% 
+  rbind(x)
+
+x <- x %>% select(parameter, age, SOC, PCC, CHW, CHW_link)
+write_csv(x, paste0("./results/","htn_", y, ".csv"))
+```
+
+```{r table5}
+df_netdaly_params %>% 
+  select(p_hypert_4564_23, p_diagnosed_hypert_4564_23, p_on_anti_hypert_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4059_23, prevalence1549_23) %>% 
+  summary()
+
+df_netdaly_params <- df_netdaly_params %>% 
+  filter(year == y) %>% 
+  mutate(sbp_cat = factor(ifelse(m_sbp_4564_23 <132, "<132",
+                          ifelse(m_sbp_4564_23 >=132 & m_sbp_4564_23 <135, "132 to <135", 
+                          ifelse(m_sbp_4564_23 >=135 & m_sbp_4564_23 <138, "135 to <138", 
+                          ifelse(m_sbp_4564_23 >=138 , ">=138", NA)))),
+                          levels = c("<132", "132 to <135", "135 to <138", ">=138"),
+                          labels = c("<132", "132 to <135", "135 to <138", ">=138")),
+         hiv_cat = factor(ifelse(prevalence1549_23 <0.05, "<5%",
+                          ifelse(prevalence1549_23 >=0.05 & prevalence1549_23 <0.10, "5 to <10%", 
+                          ifelse(prevalence1549_23 >=0.10 & prevalence1549_23 <0.15, "10 to <15%", 
+                          ifelse(prevalence1549_23 >=0.15 , ">=15%", NA)))),
+                          levels = c("<5%", "5 to <10%", "10 to <15%", ">=15%"),
+                          labels = c("<5%", "5 to <10%", "10 to <15%", ">=15%")),
+         htn_cat = factor(ifelse(p_hypert_4564_23 <0.35, "<35%",
+                          ifelse(p_hypert_4564_23 >=0.35 & p_hypert_4564_23 <0.42, "35 to <42%", 
+                          ifelse(p_hypert_4564_23 >=0.42 & p_hypert_4564_23 <0.48, "42 to <48%", 
+                          ifelse(p_hypert_4564_23 >=0.48 , ">=48%", NA)))),
+                          levels = c("<35%", "35 to <42%", "42 to <48%", ">=48%"),
+                          labels = c("<35%", "35 to <42%", "42 to <48%", ">=48%")),
+         dx_cat = factor(ifelse(p_diagnosed_hypert_4564_23 <0.16, "<16%",
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.16 & p_diagnosed_hypert_4564_23 <0.27, "16 to <27%", 
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.27 & p_diagnosed_hypert_4564_23 <0.34, "27 to <34%", 
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.34 , ">=34%", NA)))),
+                         levels = c("<16%", "16 to <27%", "27 to <34%", ">=34%"),
+                         labels = c("<16%", "16 to <27%", "27 to <34%", ">=34%")),
+         tx_cat = factor(ifelse(p_on_anti_hypert_4564_23  <0.03, "<3%",
+                         ifelse(p_on_anti_hypert_4564_23 >=0.03 & p_on_anti_hypert_4564_23 <0.06, "3 to <6%", 
+                         ifelse(p_on_anti_hypert_4564_23 >=0.06 & p_on_anti_hypert_4564_23 <0.09, "6 to <9%", 
+                         ifelse(p_on_anti_hypert_4564_23 >=0.09 , ">=9%", NA)))),
+                         levels = c("<3%", "3 to <6%", "6 to <9%", ">=9%"),
+                         labels = c("<3%", "3 to <6%", "6 to <9%", ">=9%")),
+         ctrl_cat = factor(ifelse(p_hypert_control_4564_23 <0.02, "<2%",
+                           ifelse(p_hypert_control_4564_23 >=0.02 & p_hypert_control_4564_23 <0.04, "2 to <4%", 
+                           ifelse(p_hypert_control_4564_23 >=0.04 & p_hypert_control_4564_23 <0.06, "4 to <6%", 
+                           ifelse(p_hypert_control_4564_23 >=0.06 , ">=6%", NA)))),
+                           levels = c("<2%", "2 to <4%", "4 to <6%", ">=6%"),
+                           labels = c("<2%", "2 to <4%", "4 to <6%", ">=6%")),
+         cvd_cat = factor(ifelse(rate_dead_cvd_4059_23 <0.3, "<30 per 100,000",
+                          ifelse(rate_dead_cvd_4059_23 >=0.3 & rate_dead_cvd_4059_23 <0.4, "30 to <40 per 100,000", 
+                          ifelse(rate_dead_cvd_4059_23 >=0.4 & rate_dead_cvd_4059_23 <0.5, "40 to <50 per 100,000", 
+                          ifelse(rate_dead_cvd_4059_23 >=0.5 , ">=50 per 100,000", NA)))),
+                           levels = c("<30 per 100,000", "30 to <40 per 100,000", "40 to <50 per 100,000", ">=50 per 100,000"),
+                           labels = c("<30 per 100,000", "30 to <40 per 100,000", "40 to <50 per 100,000", ">=50 per 100,000")),
+         setting_cvd_tx = factor(setting_cvd_tx),
+         setting_cvd_tx_eff = factor(setting_cvd_tx_eff))
+
+z <- df_netdaly_params %>% 
+  filter(dcost_cat == "total htn (200%)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "200% total hypertension costs")
+
+z <- df_netdaly_params %>% 
+  filter(dcost_cat == "total (double drug cost)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "200% drug costs")  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  filter(dcost_cat == "total htn") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "Base cost assumptions")  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  filter(dcost_cat == "total (half drug cost)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "50% drug costs")  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  filter(dcost_cat == "total htn (50%)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "50% total hypertension costs")  %>% 
+  rbind(z)
+
+df_netdaly_params <- df_netdaly_params %>% filter(dcost_cat == "total htn") 
+
+z <- df_netdaly_params %>% 
+  group_by(source, hiv_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "HIV prevalence among age 15-49")  %>% 
+  rename(prop = hiv_cat)  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, setting_cvd_tx_eff) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Proportion of acute CVD events receiving effective emergency care")  %>% 
+  rename(prop = setting_cvd_tx_eff)  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, setting_cvd_tx) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Proportion of acute CVD events receiving emergency care")  %>% 
+  rename(prop = setting_cvd_tx)  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, setting_sbp_cal) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "SBP rise per decade after 2015",
+         setting_sbp_cal = paste0(setting_sbp_cal*40, " mmHg"))  %>% 
+  rename(prop = setting_sbp_cal)  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, cvd_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "CVD mortality rate among all adults")  %>% 
+  rename(prop = cvd_cat)  %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, ctrl_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension control among adults aged 45-64")  %>% 
+  rename(prop = ctrl_cat) %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, tx_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension treatment among adults aged 45-64")  %>% 
+  rename(prop = tx_cat) %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, dx_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension diagnosis among adults aged 45-64")  %>% 
+  rename(prop = dx_cat) %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, htn_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly)))%>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension prevalence among adults aged 45-64") %>% 
+  rename(prop = htn_cat) %>% 
+  rbind(z)
+z <- df_netdaly_params %>% 
+  group_by(source, sbp_cat) %>% 
+  summarize(prop = pct(mean(cf_netdaly)))%>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Mean SBP among adults aged 45-64") %>% 
+  rename(prop = sbp_cat) %>% 
+  rbind(z)
+
+
+z <- z %>% select(parameter, prop, PCC, CHW, CHW_link)
+write_csv(z, paste0("./results/", "params_", y, ".csv"))
+```
+
+```{r table6}
+df_cf_params %>% 
+  select(m_sbp_4564_23, p_hypert_4564_23, p_diagnosed_hypert_4564_23, p_on_anti_hypert_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4059_23, prevalence1549_23) %>% 
+  summary()
+
+df_cf_params <- df_cf_params %>% 
+  filter(year == y) %>% 
+  mutate(sbp_cat = factor(ifelse(m_sbp_4564_23 <132, "<132",
+                          ifelse(m_sbp_4564_23 >=132 & m_sbp_4564_23 <135, "132 to <135", 
+                          ifelse(m_sbp_4564_23 >=135 & m_sbp_4564_23 <138, "135 to <138", 
+                          ifelse(m_sbp_4564_23 >=138 , ">=138", NA)))),
+                          levels = c("<132", "132 to <135", "135 to <138", ">=138"),
+                          labels = c("<132", "132 to <135", "135 to <138", ">=138")),
+         hiv_cat = factor(ifelse(prevalence1549_23 <0.05, "<5%",
+                          ifelse(prevalence1549_23 >=0.05 & prevalence1549_23 <0.10, "5 to <10%", 
+                          ifelse(prevalence1549_23 >=0.10 & prevalence1549_23 <0.15, "10 to <15%", 
+                          ifelse(prevalence1549_23 >=0.15 , ">=15%", NA)))),
+                          levels = c("<5%", "5 to <10%", "10 to <15%", ">=15%"),
+                          labels = c("<5%", "5 to <10%", "10 to <15%", ">=15%")),
+         htn_cat = factor(ifelse(p_hypert_4564_23 <0.35, "<35%",
+                          ifelse(p_hypert_4564_23 >=0.35 & p_hypert_4564_23 <0.42, "35 to <42%", 
+                          ifelse(p_hypert_4564_23 >=0.42 & p_hypert_4564_23 <0.48, "42 to <48%", 
+                          ifelse(p_hypert_4564_23 >=0.48 , ">=48%", NA)))),
+                          levels = c("<35%", "35 to <42%", "42 to <48%", ">=48%"),
+                          labels = c("<35%", "35 to <42%", "42 to <48%", ">=48%")),
+         dx_cat = factor(ifelse(p_diagnosed_hypert_4564_23 <0.16, "<16%",
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.16 & p_diagnosed_hypert_4564_23 <0.27, "16 to <27%", 
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.27 & p_diagnosed_hypert_4564_23 <0.34, "27 to <34%", 
+                         ifelse(p_diagnosed_hypert_4564_23 >=0.34 , ">=34%", NA)))),
+                         levels = c("<16%", "16 to <27%", "27 to <34%", ">=34%"),
+                         labels = c("<16%", "16 to <27%", "27 to <34%", ">=34%")),
+         tx_cat = factor(ifelse(p_on_anti_hypert_4564_23  <0.03, "<3%",
+                         ifelse(p_on_anti_hypert_4564_23 >=0.03 & p_on_anti_hypert_4564_23 <0.06, "3 to <6%", 
+                         ifelse(p_on_anti_hypert_4564_23 >=0.06 & p_on_anti_hypert_4564_23 <0.09, "6 to <9%", 
+                         ifelse(p_on_anti_hypert_4564_23 >=0.09 , ">=9%", NA)))),
+                         levels = c("<3%", "3 to <6%", "6 to <9%", ">=9%"),
+                         labels = c("<3%", "3 to <6%", "6 to <9%", ">=9%")),
+         ctrl_cat = factor(ifelse(p_hypert_control_4564_23 <0.02, "<2%",
+                           ifelse(p_hypert_control_4564_23 >=0.02 & p_hypert_control_4564_23 <0.04, "2 to <4%", 
+                           ifelse(p_hypert_control_4564_23 >=0.04 & p_hypert_control_4564_23 <0.06, "4 to <6%", 
+                           ifelse(p_hypert_control_4564_23 >=0.06 , ">=6%", NA)))),
+                           levels = c("<2%", "2 to <4%", "4 to <6%", ">=6%"),
+                           labels = c("<2%", "2 to <4%", "4 to <6%", ">=6%")),
+         cvd_cat = factor(ifelse(rate_dead_cvd_4059_23 <0.3, "<30 per 100,000",
+                          ifelse(rate_dead_cvd_4059_23 >=0.3 & rate_dead_cvd_4059_23 <0.4, "30 to <40 per 100,000", 
+                          ifelse(rate_dead_cvd_4059_23 >=0.4 & rate_dead_cvd_4059_23 <0.5, "40 to <50 per 100,000", 
+                          ifelse(rate_dead_cvd_4059_23 >=0.5 , ">=50 per 100,000", NA)))),
+                           levels = c("<30 per 100,000", "30 to <40 per 100,000", "40 to <50 per 100,000", ">=50 per 100,000"),
+                           labels = c("<30 per 100,000", "30 to <40 per 100,000", "40 to <50 per 100,000", ">=50 per 100,000")),
+         setting_cvd_tx = factor(setting_cvd_tx),
+         setting_cvd_tx_eff = factor(setting_cvd_tx_eff))
+
+
+z1 <- df_cf_params %>% 
+  filter(dcost_cat == "total htn (200%)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "200% total hypertension costs")
+z1 <- df_cf_params %>% 
+  filter(dcost_cat == "total (double drug cost)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "200% drug costs")  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  filter(dcost_cat == "total htn") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "Base cost assumptions")  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  filter(dcost_cat == "total (half drug cost)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "50% drug costs")  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  filter(dcost_cat == "total htn (50%)") %>% 
+  group_by(source) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Drug cost",
+         prop = "50% total hypertension costs")  %>% 
+  rbind(z1)
+
+df_cf_params <- df_cf_params %>% filter(dcost_cat == "total htn") 
+
+z1 <- df_cf_params %>% 
+  group_by(source, hiv_cat) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "HIV prevalence among age 15-49")  %>% 
+  rename(prop = hiv_cat)  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, setting_cvd_tx_eff) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Proportion of acute CVD events receiving effective emergency care")  %>% 
+  rename(prop = setting_cvd_tx_eff)  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, setting_cvd_tx) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Proportion of acute CVD events receiving emergency care")  %>% 
+  rename(prop = setting_cvd_tx)  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, setting_sbp_cal) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "SBP rise per decade after 2015",
+         setting_sbp_cal = paste0(setting_sbp_cal*40, " mmHg"))  %>% 
+  rename(prop = setting_sbp_cal)  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, cvd_cat) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "CVD mortality rate among all adults")  %>% 
+  rename(prop = cvd_cat)  %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, ctrl_cat) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension control among adults aged 45-64")  %>% 
+  rename(prop = ctrl_cat) %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, tx_cat) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension treatment among adults aged 45-64")  %>% 
+  rename(prop = tx_cat) %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, dx_cat) %>% 
+  summarize(prop = pct(mean(cost_effective))) %>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension diagnosis among adults aged 45-64")  %>% 
+  rename(prop = dx_cat) %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, htn_cat) %>% 
+  summarize(prop = pct(mean(cost_effective)))%>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Hypertension prevalence among adults aged 45-64") %>% 
+  rename(prop = htn_cat) %>% 
+  rbind(z1)
+z1 <- df_cf_params %>% 
+  group_by(source, sbp_cat) %>% 
+  summarize(prop = pct(mean(cost_effective)))%>% 
+  pivot_wider(names_from = source, values_from = prop) %>% 
+  mutate(parameter = "Mean SBP among adults aged 45-64") %>% 
+  rename(prop = sbp_cat) %>% 
+  rbind(z1)
+
+
+z1 <- z1 %>% select(parameter, prop, SOC, PCC, CHW, CHW_link)
+write_csv(z1, paste0("./results/","cfparams_", y, ".csv"))
+```
+
+
+
+# Results
+
+We evaluated `r df_sas %>% filter(source == "SOC") %>% nrow()` setting-scenarios representing a range of settings across sub-Saharan Africa. Table 1 shows hypertension prevalence and care cascade parameters estimated by the model and from the literature. In 2015, the mean (90% range) model-estimated hypertension prevalence among adults aged 45-64 was `r t1_htn %>% filter(age == "45-64") %>% select(htn_median)`. An estimated `r t1_dx %>% filter(age == "45-64") %>% select(dx_median)` were aware of their hypertension diagnosis, `r t1_tx %>% filter(age == "45-64") %>% select(tx_median)` were on treatment, and `r t1_ctrl %>% filter(age == "45-64") %>% select(control_median)` had controlled hypertension.
+
+### Year `r y`
+
+Over the next 20 years (2023 to `r y`), the proportion of adults aged 45-64 who are aware of their diagnosis is expected to remain at `r x %>% filter(parameter == "Diagnosis", age == "45-64") %>% select(SOC)` under current conditions (Table 3). Improving care at the clinic without added screening would only improve the proportion diagnosed to `r x %>% filter(parameter == "Diagnosis", age == "45-64") %>% select(PCC)`, whereas CHW screening would increase diagnosis to `r x %>% filter(parameter == "Diagnosis", age == "45-64") %>% select(CHW)` and CHW screening inclusive of a transport voucher incentive to `r x %>% filter(parameter == "Diagnosis", age == "45-64") %>% select(CHW_link)`.  
+
+The proportion currently on antihypertensive treatment among adults aged 45-64 would remain low at `r x %>% filter(parameter == "Treatment (current)", age == "45-64") %>% select(SOC)` under standard of care, whereas the proportion treated would increase to `r x %>% filter(parameter == "Treatment (current)", age == "45-64") %>% select(PCC)` with patient-centered clinic care, `r x %>% filter(parameter == "Treatment (current)", age == "45-64") %>% select(CHW)` with CHW screening, and `r x %>% filter(parameter == "Treatment (current)", age == "45-64") %>% select(CHW_link)` with CHW screening plus transport voucher. 
+
+We project that hypertension control among those with true hypertension (SBP ≥140 mmHg) would remain low at `r x %>% filter(parameter == "Control", age == "45-64") %>% select(SOC)` among adults aged 45-64 years over the next 20 years under standard of care conditions. Implementing the patient-centered care model alone would increase the proportion of those with hypertension maintaining blood pressure control to `r x %>% filter(parameter == "Control", age == "45-64") %>% select(PCC)`, CHW screening to `r x %>% filter(parameter == "Control", age == "45-64") %>% select(CHW)`, and CHW screening plus transport voucher to `r x %>% filter(parameter == "Control", age == "45-64") %>% select(CHW_link)`.
+
+Incident ischemic heart disease events are projected to be `r x %>% filter(parameter == "IHD incidence", age == "60-79") %>% select(SOC)` per 100 person-years in adults aged 60-79 under standard of care conditions with expected relative reduction by `r x %>% filter(parameter == "Relative reduction in IHD incidence", age == "60-79") %>% select(CHW_link)` with community-based CHW screening plus transport voucher. The rate of incident stroke over 20 years is projected to be `r x %>% filter(parameter == "CVA incidence", age == "60-79") %>% select(SOC)` per 100 person-years in adults aged 60-79 under standard of care conditions with expected relative reduction by `r x %>% filter(parameter == "Relative reduction in CVA incidence", age == "60-79") %>% select(CHW_link)` with community-based CHW screening plus transport voucher. Projected relative risk reductions in CVD mortality over the next 20 years are `r x %>% filter(parameter == "Relative reduction of CVD mortality", age == "All") %>% select(PCC)` with implementation of patient-centered clinic-based care, `r x %>% filter(parameter == "Relative reduction of CVD mortality", age == "All") %>% select(CHW)` with CHW screening, and `r x %>% filter(parameter == "Relative reduction of CVD mortality", age == "All") %>% select(CHW_link)` with CHW screening plus transport voucher policies.
+
+
+### Year `r y`
+
+Projecting health outcomes and costs over the next 50 years (2023 to `r y`), improved clinic-based hypertension care alone expected to avert a mean of `r x %>% filter(parameter == "DALYs Averted (thousands)") %>% select(PCC)` thousand DALYs per year for a population of 10 million, whereas the addition of CHW screening is expected to avert a mean of `r x %>% filter(parameter == "DALYs Averted (thousands)") %>% select(CHW)` thousand DALYs annually and CHW screening plus transportation vouchers `r x %>% filter(parameter == "DALYs Averted (thousands)") %>% select(CHW_link)` thousand DALYs annually. Anticipated mean incremental costs compared to standard care are $`r x %>% filter(parameter == "Incremental cost") %>% select(PCC)` million USD for patient centered care, $`r x %>% filter(parameter == "Incremental cost") %>% select(CHW)` million USD for additional CHW screening, and $`r x %>% filter(parameter == "Incremental cost") %>% select(CHW_link)` million USD for additional CHW screening plus transport vouchers.
+
+--
+
+Using a cost-effectiveness threshold of $500 USD/DALY averted and considering only each new policy and standard of care over the next 50 years, we estimate that implementation of patient-centered integrated hypertension care within clinics will be cost-effective in `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering only each new strategy and the SOC strategy)†") %>% select(PCC)` of setting-scenarios and that the addition of community-wide hypertension screening by community health workers will be cost-effective in `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering only each new strategy and the SOC strategy)†") %>% select(CHW)` of setting scenarios without transport vouchers and `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering only each new strategy and the SOC strategy)†") %>% select(CHW_link)` of setting-scenarios with the addition of transport vouchers to incentivize linkage to care.
+
+Table 5 shows variability in cost-effectiveness of each policy across baseline setting-scenario characteristics (in 2023). Community-wide screening approaches were more cost-effective in settings with higher hypertension prevalence, lower awareness of hypertension diagnosis, higher cardiovascular disease mortality rates, and greater proportions of individuals with acute cardiovascular events seeking emergency medical services. As expected, there was no trend in cost-effectiveness by HIV prevalence for any of the three policies. In sensitivity analysis, we evaluated several cost scenarios. Community screening approaches were most sensitive to cost and were cost-effective in nearly all setting-scenarios under the assumption that all costs were 50% of base assumptions. CHW hypertension screening with and without transport vouchers was cost-effective in `r z %>% filter(prop == "50% drug costs") %>% select(CHW)` and `r z %>% filter(prop == "50% drug costs") %>% select(CHW_link)` setting-scenarios where hypertension drugs were assumed to be available at generic cost (50% of base assumption). 
+
+--
+
+Using a cost-effectiveness threshold of $500 USD/DALY averted and considering all four policies over the next 50 years, we estimate that implementation of patient-centered integrated hypertension care within clinics will be cost-effective in `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering all 4 policies)†") %>% select(PCC)` of setting-scenarios and that the addition of community-wide hypertension screening by community health workers will be cost-effective in `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering all 4 policies)†") %>% select(CHW)` of setting scenarios without transport vouchers and `r x %>% filter(parameter == "Proportion of setting-scenarios where strategy is cost-effective (considering all 4 policies)†") %>% select(CHW_link)` of setting-scenarios with the addition of transport vouchers to incentivize linkage to care.
+
+Table 6 shows variability in cost-effectiveness of each policy across baseline setting-scenario characteristics (in 2023). Community-wide screening approaches were more cost-effective in settings with higher hypertension prevalence, lower awareness of hypertension diagnosis, higher cardiovascular disease mortality rates, and greater proportions of individuals with acute cardiovascular events seeking emergency medical services. As expected, there was no trend in cost-effectiveness by HIV prevalence for any of the three policies. In sensitivity analysis, we evaluated several cost scenarios. Community screening approaches were most sensitive to cost and were cost-effective in nearly all setting-scenarios under the assumption that all costs were 50% of base assumptions. CHW hypertension screening with and without transport vouchers was cost-effective in `r z1 %>% filter(prop == "50% drug costs") %>% select(CHW)` and `r z1 %>% filter(prop == "50% drug costs") %>% select(CHW_link)` setting-scenarios where hypertension drugs were assumed to be available at generic cost (50% of base assumption). 
