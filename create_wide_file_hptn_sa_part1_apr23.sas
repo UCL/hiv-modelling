@@ -422,7 +422,6 @@ s_hiv = s_hivge15 ;
 * p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
 
 * prop_elig_on_prep;			if s_prep_any_elig > 0 then prop_elig_on_prep = s_prep_any / s_prep_any_elig ;
-								if s_prep_any_elig = 0 then prop_elig_on_prep = 0;
 
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
 
@@ -565,7 +564,7 @@ s_hiv = s_hivge15 ;
 * n_primary_prep_not_elig_w;	n_primary_prep_not_elig_w = s_primary_prep_not_elig_w  * &sf; 
 * n_elig_prep_last_year_w_1524;	n_elig_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
 * n_elig_prep_last_year_w_2564;	n_elig_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564 * &sf; 
-* p_elig_prep_any_w_1564;		p_elig_prep_any_w_1564 = _s_elig_prep_any_w_1564 / (s_not_elig_prep_any_w_1564 + s_elig_prep_any_w_1564);
+* p_elig_prep_any_w_1564;		p_elig_prep_any_w_1564 = s_elig_prep_any_w_1564 / (s_not_elig_prep_any_w_1564 + s_elig_prep_any_w_1564);
 * p_newly_elig_prep_w_1564;		p_newly_elig_prep_w_1564 = s_newly_elig_prep_w_1564 / s_not_elig_prep_tm1_w_1564 ;
 * p_newly_not_elig_prep_w_1564; p_newly_not_elig_prep_w_1564 = s_newly_not_elig_prep_w_1564 / s_elig_prep_tm1_w_1564 ;
 * n_elig_prep_last_year_w_1524;	n_elig_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
@@ -573,7 +572,17 @@ s_hiv = s_hivge15 ;
 * incidence_in_prep_elig_w;		incidence_in_prep_elig_w = (s_primary_prep_elig_w * 100 * 4) / s_elig_prep_any_w_1564 ;
 * incidence_in_prep_not_elig_w;	incidence_in_prep_not_elig_w = (s_primary_prep_not_elig_w * 100 * 4) / (s_not_elig_prep_any_w_1564 - s_hiv1564) ;
 
+/*
 
+proc means; var 
+n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
+n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
+p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
+incidence_in_prep_elig_w  incidence_in_prep_not_elig_w;
+where cald = 2030;
+run;
+
+*/
 
 * n_start_restart_prep_inj; 		n_start_restart_prep_inj = s_start_restart_prep_inj * &sf ;
 * n_start_restart_prep_inj_prim; 	n_start_restart_prep_inj_prim = s_start_restart_prep_inj_prim * &sf ;

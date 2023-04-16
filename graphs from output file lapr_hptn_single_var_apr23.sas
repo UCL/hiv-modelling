@@ -7,10 +7,11 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 data b;
-set a.l_hptn_apr23;
+  set a.l_hptn_apr23;
+* set a.l_hptn20;
 
 
-if prop_elig_on_prep = . then prop_elig_on_prep = 0;
+if p_elig_prep = . then p_elig_prep = 0;
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
@@ -20,7 +21,9 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_cd4_lt200_ = n_cd4_lt200;
 n_dead_hivpos_cause1_ = n_dead_hivpos_cause1;
 
-%let single_var = prop_1564_hivneg_onprep   ;
+%let single_var = incidence1549_  ;
+
+* if prep_any_strategy = 4;
 
 proc univariate; var &single_var  ;  run;
 
@@ -43,7 +46,7 @@ run;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 165     ;
+%let nfit = 1065     ;
 %let year_end = 2042.75 ;
 run;
 proc sort;by cald option ;run;
@@ -241,7 +244,6 @@ yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.25  by 0
 run;quit;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_la_prep_10yr";
@@ -306,7 +308,7 @@ yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000000  by 1
 
 run;quit;
 
-* p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_hivneg_onprep  p_prep_elig_onprep_inj ;
+* p_elig_all_prep_criteria  p_elig_all_prep_cri_hivneg  p_elig_prep  p_prep_elig_onprep_inj ;
 
 
 
@@ -336,23 +338,20 @@ run;quit;
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Of HIV negative people who have an indication for PrEP, proportion on PREP/PEP";
+Title    height=1.5 justify=center "p_elig_prep";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1     by 0.1  ) valueattrs=(size=10);
 
-  label p50_p_elig_hivneg_onprep_0 = "No PrEP (median) ";
-  label p50_p_elig_hivneg_onprep_1 = "Oral PrEP only (median) ";
-  label p50_p_elig_hivneg_onprep_2 = "Oral and cab-la PrEP (median) ";
-  label p50_p_elig_hivneg_onprep_3 = "Oral and cab-la PrEP and accessible TLD/PEP (median) ";
+  label p50_p_elig_prep_0 = "Continuation of oral PrEP at current level (median) ";
+  label p50_p_elig_prep_1 = "Scaled-up Oral PrEP (median) ";
+  label p50_p_elig_prep_2 = "Scaled-up cab-la PrEP, replacing oral PrEP (median) ";
 
-  series  x=cald y=p50_p_elig_hivneg_onprep_0/	lineattrs = (color=liggr   thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_0 	upper=p95_p_elig_hivneg_onprep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_1/	lineattrs = (color=black thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_1 	upper=p95_p_elig_hivneg_onprep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_2/	lineattrs = (color=viyg thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_2 	upper=p95_p_elig_hivneg_onprep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
-  series  x=cald y=p50_p_elig_hivneg_onprep_3/	lineattrs = (color=orange thickness = 3);
-  band    x=cald lower=p5_p_elig_hivneg_onprep_3 	upper=p95_p_elig_hivneg_onprep_3  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_0/	lineattrs = (color=liggr   thickness = 3);
+  band    x=cald lower=p5_p_elig_prep_0 	upper=p95_p_elig_prep_0  / transparency=0.9 fillattrs = (color=liggr  ) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_p_elig_prep_1 	upper=p95_p_elig_prep_1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_elig_prep_2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_p_elig_prep_2 	upper=p95_p_elig_prep_2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
 
 run;quit;
 
@@ -573,7 +572,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "HIV incidence in people aged 1549";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = ( 0 to 1       by  0.1  ) valueattrs=(size=10);
+yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = ( 0 to 2       by  0.1  ) valueattrs=(size=10);
 
   label p50_incidence1549__0 = "No PrEP (median) ";
   label p50_incidence1549__1 = "Oral PrEP only (median) ";
@@ -588,7 +587,27 @@ yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = (
 
 run;
 
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "HIV incidence in people aged 1549";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Rate per 100 person years' 	labelattrs=(size=12)  values = ( 0 to 2       by  0.1  ) valueattrs=(size=10);
+
+  label mean_incidence1549__0 = "No PrEP (median) ";
+  label mean_incidence1549__1 = "Oral PrEP only (median) ";
+  label mean_incidence1549__2 = "Oral and cab-la PrEP (median) ";
+
+  series  x=cald y=mean_incidence1549__0/	lineattrs = (color=ggr   thickness = 3);
+  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color= ggr  ) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__1/	lineattrs = (color=black thickness = 3);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=mean_incidence1549__2/	lineattrs = (color=viyg thickness = 3);
+  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=viyg) legendlabel= "90% range";
+
+run;
+
 /*
+
 
 ods html;
 proc sgplot data=d; 
