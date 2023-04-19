@@ -7103,62 +7103,60 @@ if infected_ep=1 then do;
 	*LBMJan23;*
 	*partner is undiagnosed;
 	I_undiag = 1-infected_diagnosed;
- 
-	infected_naive=1;
-	if epart_tm1=1 then infected_naive=0;
+ 	
+	if infected_diagnosed=1 then do;
 
-	*partner diag without starting ART;
-	I_diag_naive = infected_naive;
-	I_diag_startart = 1 - I_diag_naive;
+		infected_naive=1;
+		if epart_tm1=1 then infected_naive=0;
 
-	if epdiag_tm1=1 and epart_tm1=0 then do;
-		* have to make this approximation below because dont track naive status of ep;
-		a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
+		if epdiag_tm1=1 and epart_tm1=0 then do;
+			* have to make this approximation below because dont track naive status of ep;
+			a=rand('uniform'); infected_naive=0; if a < t_prop_naive then infected_naive=1;
 
+			*partner diag without starting ART;
+			I_diag_naive = infected_naive;
+			I_diag_startart = 1 - I_diag_naive;
+		end;
 
-	*partner diag without starting ART;
-	I_diag_naive = infected_naive;
-	I_diag_startart = 1 - I_diag_naive;
-	
-	*partner started ART and is currently on ART/off ART;
-	if I_diag_startart=1 then do;
-		u=rand('uniform');
-     	if u <  t_p_onart then I_onart = 1;
-		if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
-	end;
+		*partner started ART and is currently on ART/off ART;
+		if I_diag_startart=1 then do;
+			u=rand('uniform');
+     		if u <  t_p_onart then I_onart = 1;
+			if u >= t_p_onart then I_offart= 1;*this is currently unrelated to t_p_offart - delete t_p_offart?;
+		end;
 
-	*partner started ART and on ART<6m;
-	if I_onart=1 then do;
-		u=rand('uniform');
-     	if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
-		if u >= t_p_onart_lt6m then I_onart_gt6m = 1;*this is currently unrelated to i_onart_gt6m_vlg1_rm0_np;
-	end;
+		*partner started ART and on ART<6m;
+		if I_onart=1 then do;
+			u=rand('uniform');
+     		if u <  t_p_onart_lt6m then I_onart_lt6m = 1;
+			if u >= t_p_onart_lt6m then I_onart_gt6m = 1;*this is currently unrelated to i_onart_gt6m_vlg1_rm0_np;
+		end;
 
-	*partner on ART<6m, current VL >1000;
-	if I_onart_lt6m=1 then do; 
-		u=rand('uniform');
-     	if u < t_p_onart_lt6m_nvs then I_onart_lt6m_nvs = 1;
-	end;
+		*partner on ART<6m, current VL >1000;
+		if I_onart_lt6m=1 then do; 
+			u=rand('uniform');
+     		if u < t_p_onart_lt6m_nvs then I_onart_lt6m_nvs = 1;
+		end;
 
-	*partner on ART>6m, current VL >1000/current VL <1000;
-	if I_onart_gt6m=1 then do; 
-		u=rand('uniform');
-     	if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
-		if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
-	end;
+		*partner on ART>6m, current VL >1000/current VL <1000;
+		if I_onart_gt6m=1 then do; 
+			u=rand('uniform');
+     		if u <  t_p_onart_lt6m_nvs then I_onart_gt6m_nvs = 1;
+			if u >= t_p_onart_lt6m_nvs then I_onart_gt6m_vs = 1;
+		end;
 
-	*partner off ART, 1st interruption/SI;
-	if I_offart=1 then do;
-		u=rand('uniform');
-     	if u <   t_p_offart_1stI then I_offart_1stI = 1;
-		if u >=  t_p_offart_1stI then I_offart_SI = 1;*this is currently unrelated to i_offart_vlg1_rm0_np;
+		*partner off ART, 1st interruption/SI;
+		if I_offart=1 then do;
+			u=rand('uniform');
+     		if u <   t_p_offart_1stI then I_offart_1stI = 1;
+			if u >=  t_p_offart_1stI then I_offart_SI = 1;*this is currently unrelated to i_offart_vlg1_rm0_np;
 
 			if I_offart_SI=1 then do;
-			v=rand('uniform');
+				v=rand('uniform');
 				if v <  t_p_offart_SI_lt6m then I_offart_SIlt6m=1;
 				if v >= t_p_offart_SI_lt6m then I_offart_SIgt6m=1;
 			end;
-	end;
+		end;
 	end;
 end;
 
@@ -19557,19 +19555,19 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
-/*
+
 proc print;var i_startart_vlg4_rm0_np i_onart_vlg4_rm0_np s_i_startart_vlg4_rm0_np s_i_onart_vlg4_rm0_np s_p_vlg4_rm0_onart
 ;
 where hiv=1 and age gt 15 and s_i_startart_vlg4_rm0_np >0;run;
-*/
+/*
 proc print; var  
 
 t_p_onart  t_p_startart  t_prop_diag newp ep   
 
 I_undiag 			I_diag_naive  	infected_diagnosed infected_naive /*I_diag_startart  	I_onart		I_offart 		   I_onart_lt6m 	 I_onart_lt6m_nvs 
-I_onart_gt6m_nvs	I_onart_gt6m_vs   I_offart_1stI 	I_offart_SI 	I_offart_SIlt6m  I_offart_SIgt6m */
+I_onart_gt6m_nvs	I_onart_gt6m_vs   I_offart_1stI 	I_offart_SI 	I_offart_SIlt6m  I_offart_SIgt6m 
 
-;where hiv=1 and age gt 15;run;
+;where hiv=1 and age gt 15;run;*/
 /*if hiv=1 and naive ne 1 and vlg6=1 and registd=1 and rm_=0 then i_startart_vlg6_rm0_np=np;
 
 
