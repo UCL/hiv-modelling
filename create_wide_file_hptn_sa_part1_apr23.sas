@@ -5,9 +5,9 @@
  proc printto  ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\";
+libname a "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\lapr\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\hptn_apr23_out\";
+libname b "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\lapr\hptn_apr23_out\";
 
 
 data g_hptn_apr23; set b.out:;  
