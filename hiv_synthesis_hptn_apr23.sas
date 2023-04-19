@@ -663,7 +663,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr and dpv-vr - may need to define different values? -  JAS dont think this is relevent for inj & vr forms? ;
 
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 
-* hptn - incidence by prep eligibility; prep_oral_efficacy = 0;
+* hptn - incidence by prep eligibility; 
 
 		* Oral PrEP effectiveness with 100% adherence ;
 * adh_pattern_prep_oral;  		%sample(adh_pattern_prep_oral, 1 2 3 4, 0.3 0.3 0.3 0.1);
@@ -700,7 +700,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95, 0.2 0.8); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
-* hptn - incidence by prep eligibility; prep_inj_efficacy = 0;
+* hptn - incidence by prep eligibility; 
 
 
 * hptn sa;
