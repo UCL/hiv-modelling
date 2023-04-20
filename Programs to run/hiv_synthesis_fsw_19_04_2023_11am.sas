@@ -2452,11 +2452,10 @@ if caldate_never_dot = &year_interv then do;
 who may be dead and hence have caldate{t} missing;
 
 	if option = 0 then do;  *SW program discontinued;
-		eff_sw_program=0;sw_program=0; 
+		eff_sw_program=0;sw_program=0; sw_program_visit=0;
 	end; 
 
 	if option = 1 then do; * SW program stays at current impact (low);
-	eff_sw_program = sw_program;
 	end;
 
 	if option = 2  then do; *SW program has higher impact;
