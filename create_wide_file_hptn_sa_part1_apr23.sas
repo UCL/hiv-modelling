@@ -5,7 +5,7 @@
  proc printto  ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
 
-libname a "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\lapr\";
+libname a "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\lapr\hptn_apr23\";
 
 libname b "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\lapr\hptn_apr23_out\";
 
@@ -536,53 +536,42 @@ s_hiv = s_hivge15 ;
 * n_prep_vr_start;				n_prep_vr_start = s_prep_vr_start * &sf; 
 
 
-* n_elig_prep_any_m_1564;		n_elig_prep_any_m_1564 = s_elig_prep_any_m_1564  * &sf; 
-* n_not_elig_prep_any_m_1564;	n_not_elig_prep_any_m_1564 = s_not_elig_prep_any_m_1564  * &sf; 
-* n_newly_elig_prep_m_1564;		n_newly_elig_prep_m_1564 = s_newly_elig_prep_m_1564  * &sf; 
-* n_newly_not_elig_prep_m_1564;	n_newly_not_elig_prep_m_1564 = s_newly_not_elig_prep_m_1564  * &sf; 
-* n_elig_prep_tm1_m_1564;		n_elig_prep_tm1_m_1564 = s_elig_prep_tm1_m_1564   * &sf; 
-* n_not_elig_prep_tm1_m_1564;	n_not_elig_prep_tm1_m_1564 = s_not_elig_prep_tm1_m_1564  * &sf; 
-* n_primary_prep_elig_m;		n_primary_prep_elig_m = s_primary_prep_elig_m  * &sf; 
-* n_primary_prep_not_elig_m;	n_primary_prep_not_elig_m = s_primary_prep_not_elig_m  * &sf; 
-* n_elig_prep_last_year_m_1524;	n_elig_prep_last_year_m_1524 = s_elig_prep_last_year_m_1524  * &sf; 
-* n_elig_prep_last_year_m_2564;	n_elig_prep_last_year_m_2564 = s_elig_prep_last_year_m_2564 * &sf; 
-* p_elig_prep_any_m_1564;		p_elig_prep_any_m_1564 = _s_elig_prep_any_m_1564 / (s_not_elig_prep_any_m_1564 + s_elig_prep_any_m_1564);
-* p_newly_elig_prep_m_1564;		p_newly_elig_prep_m_1564 = s_newly_elig_prep_m_1564 / s_not_elig_prep_tm1_m_1564 ;
-* p_newly_not_elig_prep_m_1564; p_newly_not_elig_prep_m_1564 = s_newly_not_elig_prep_m_1564 / s_elig_prep_tm1_m_1564 ;
-* n_elig_prep_last_year_m_1524;	n_elig_prep_last_year_m_1524 = s_elig_prep_last_year_m_1524  * &sf; 
-* n_elig_prep_last_year_m_2564;	n_elig_prep_last_year_m_2564 = s_elig_prep_last_year_m_2564  * &sf; 
-* incidence_in_prep_elig_m;		incidence_in_prep_elig_m = (s_primary_prep_elig_m * 100 * 4) / s_elig_prep_any_m_1564 ;
-* incidence_in_prep_not_elig_m;	incidence_in_prep_not_elig_m = (s_primary_prep_not_elig_m * 100 * 4) / (s_not_elig_prep_any_m_1564 - s_hiv1564) ;
+* n_el_prep_any_m_1564;		n_el_prep_any_m_1564 = s_elig_prep_any_m_1564  * &sf; 
+* n_not_el_prep_any_m_1564;	n_not_el_prep_any_m_1564 = s_not_elig_prep_any_m_1564  * &sf; 
+* n_newly_el_prep_m_1564;		n_newly_el_prep_m_1564 = s_newly_elig_prep_m_1564  * &sf; 
+* n_newly_not_el_prep_m_1564;	n_newly_not_el_prep_m_1564 = s_newly_not_elig_prep_m_1564  * &sf; 
+* n_el_prep_tm1_m_1564;		n_el_prep_tm1_m_1564 = s_el_prep_tm1_m_1564   * &sf; 
+* n_not_el_prep_tm1_m_1564;	n_not_el_prep_tm1_m_1564 = s_not_elig_prep_tm1_m_1564  * &sf; 
+* n_primary_prep_el_m;		n_primary_prep_el_m = s_primary_prep_elig_m  * &sf; 
+* n_primary_prep_not_el_m;	n_primary_prep_not_el_m = s_primary_prep_not_elig_m  * &sf; 
+* n_el_prep_last_year_m_1524;	n_el_prep_last_year_m_1524 = s_elig_prep_last_year_m_1524  * &sf; 
+* n_el_prep_last_year_m_2564;	n_el_prep_last_year_m_2564 = s_elig_prep_last_year_m_2564 * &sf; 
+* p_el_prep_any_m_1564;		p_el_prep_any_m_1564 = s_elig_prep_any_m_1564 / (s_not_elig_prep_any_m_1564 + s_elig_prep_any_m_1564);
+* p_newly_el_prep_m_1564;		p_newly_el_prep_m_1564 = s_newly_elig_prep_m_1564 / s_not_elig_prep_tm1_m_1564 ;
+* p_newly_not_el_prep_m_1564; p_newly_not_el_prep_m_1564 = s_newly_not_elig_prep_m_1564 / s_elig_prep_tm1_m_1564 ;
+* n_el_prep_last_year_m_1524;	n_el_prep_last_year_m_1524 = s_elig_prep_last_year_m_1524  * &sf; 
+* n_el_prep_last_year_m_2564;	n_el_prep_last_year_m_2564 = s_elig_prep_last_year_m_2564  * &sf; 
+* inc_in_prep_el_m;		inc_in_prep_el_m = (s_primary_prep_el_m * 100 * 4) / s_elig_prep_any_m_1564 ;
+* inc_in_prep_not_el_m;	inc_in_prep_not_el_m = (s_primary_prep_not_elig_m * 100 * 4) / (s_not_elig_prep_any_m_1564 - s_hiv1564) ;
 
-* n_elig_prep_any_w_1564;		n_elig_prep_any_w_1564 = s_elig_prep_any_w_1564  * &sf; 
-* n_not_elig_prep_any_w_1564;	n_not_elig_prep_any_w_1564 = s_not_elig_prep_any_w_1564  * &sf; 
-* n_newly_elig_prep_w_1564;		n_newly_elig_prep_w_1564 = s_newly_elig_prep_w_1564  * &sf; 
-* n_newly_not_elig_prep_w_1564;	n_newly_not_elig_prep_w_1564 = s_newly_not_elig_prep_w_1564  * &sf; 
-* n_elig_prep_tm1_w_1564;		n_elig_prep_tm1_w_1564 = s_elig_prep_tm1_w_1564   * &sf; 
-* n_not_elig_prep_tm1_w_1564;	n_not_elig_prep_tm1_w_1564 = s_not_elig_prep_tm1_w_1564  * &sf; 
-* n_primary_prep_elig_w;		n_primary_prep_elig_w = s_primary_prep_elig_w  * &sf; 
-* n_primary_prep_not_elig_w;	n_primary_prep_not_elig_w = s_primary_prep_not_elig_w  * &sf; 
-* n_elig_prep_last_year_w_1524;	n_elig_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
-* n_elig_prep_last_year_w_2564;	n_elig_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564 * &sf; 
-* p_elig_prep_any_w_1564;		p_elig_prep_any_w_1564 = s_elig_prep_any_w_1564 / (s_not_elig_prep_any_w_1564 + s_elig_prep_any_w_1564);
-* p_newly_elig_prep_w_1564;		p_newly_elig_prep_w_1564 = s_newly_elig_prep_w_1564 / s_not_elig_prep_tm1_w_1564 ;
-* p_newly_not_elig_prep_w_1564; p_newly_not_elig_prep_w_1564 = s_newly_not_elig_prep_w_1564 / s_elig_prep_tm1_w_1564 ;
-* n_elig_prep_last_year_w_1524;	n_elig_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
-* n_elig_prep_last_year_w_2564;	n_elig_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564  * &sf; 
-* incidence_in_prep_elig_w;		incidence_in_prep_elig_w = (s_primary_prep_elig_w * 100 * 4) / s_elig_prep_any_w_1564 ;
-* incidence_in_prep_not_elig_w;	incidence_in_prep_not_elig_w = (s_primary_prep_not_elig_w * 100 * 4) / (s_not_elig_prep_any_w_1564 - s_hiv1564) ;
 
-/*
-
-proc means; var 
-n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
-n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-incidence_in_prep_elig_w  incidence_in_prep_not_elig_w;
-where cald = 2030;
-run;
-
-*/
+* n_el_prep_any_w_1564;		n_el_prep_any_w_1564 = s_elig_prep_any_w_1564  * &sf; 
+* n_not_el_prep_any_w_1564;	n_not_el_prep_any_w_1564 = s_not_elig_prep_any_w_1564  * &sf; 
+* n_newly_el_prep_w_1564;		n_newly_el_prep_w_1564 = s_newly_elig_prep_w_1564  * &sf; 
+* n_newly_not_el_prep_w_1564;	n_newly_not_el_prep_w_1564 = s_newly_not_elig_prep_w_1564  * &sf; 
+* n_el_prep_tm1_w_1564;		n_el_prep_tm1_w_1564 = s_el_prep_tm1_w_1564   * &sf; 
+* n_not_el_prep_tm1_w_1564;	n_not_el_prep_tm1_w_1564 = s_not_elig_prep_tm1_w_1564  * &sf; 
+* n_primary_prep_el_w;		n_primary_prep_el_w = s_primary_prep_elig_w  * &sf; 
+* n_primary_prep_not_el_w;	n_primary_prep_not_el_w = s_primary_prep_not_elig_w  * &sf; 
+* n_el_prep_last_year_w_1524;	n_el_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
+* n_el_prep_last_year_w_2564;	n_el_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564 * &sf; 
+* p_el_prep_any_w_1564;		p_el_prep_any_w_1564 = s_elig_prep_any_w_1564 / (s_not_elig_prep_any_w_1564 + s_elig_prep_any_w_1564);
+* p_newly_el_prep_w_1564;		p_newly_el_prep_w_1564 = s_newly_elig_prep_w_1564 / s_not_elig_prep_tm1_w_1564 ;
+* p_newly_not_el_prep_w_1564; p_newly_not_el_prep_w_1564 = s_newly_not_elig_prep_w_1564 / s_elig_prep_tm1_w_1564 ;
+* n_el_prep_last_year_w_1524;	n_el_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
+* n_el_prep_last_year_w_2564;	n_el_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564  * &sf; 
+* inc_in_prep_el_w;		inc_in_prep_el_w = (s_primary_prep_el_w * 100 * 4) / s_elig_prep_any_w_1564 ;
+* inc_in_prep_not_el_w;	inc_in_prep_not_el_w = (s_primary_prep_not_elig_w * 100 * 4) / (s_not_elig_prep_any_w_1564 - s_hiv1564) ;
 
 * n_start_restart_prep_inj; 		n_start_restart_prep_inj = s_start_restart_prep_inj * &sf ;
 * n_start_restart_prep_inj_prim; 	n_start_restart_prep_inj_prim = s_start_restart_prep_inj_prim * &sf ;
@@ -1189,14 +1178,14 @@ n_alive_m n_alive_w n_alive prevalence1549m   prevalence1549w   prevalence1549  
 p_onart_m      p_onart_w      p_onart   p_vl1000_m      p_vl1000_w      p_vl1000   prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral
 p_prep_any_ever  p_prep_oral_ever p_prep_inj_ever  p_elig_prep
 
-n_elig_prep_any_m_1564	n_not_elig_prep_any_m_1564	 n_newly_elig_prep_m_1564	n_newly_not_elig_prep_m_1564  n_elig_prep_tm1_m_1564
-n_not_elig_prep_tm1_m_1564	n_primary_prep_elig_m n_primary_prep_not_elig_m	 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-p_elig_prep_any_m_1564	p_newly_elig_prep_m_1564 p_newly_not_elig_prep_m_1564 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-incidence_in_prep_elig_m  incidence_in_prep_not_elig_m	
-n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
-n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-incidence_in_prep_elig_w  incidence_in_prep_not_elig_w	
+n_el_prep_any_m_1564	n_not_el_prep_any_m_1564	 n_newly_el_prep_m_1564	n_newly_not_el_prep_m_1564  n_el_prep_tm1_m_1564
+n_not_el_prep_tm1_m_1564	n_primary_prep_el_m n_primary_prep_not_el_m	 n_el_prep_last_year_m_1524	n_el_prep_last_year_m_2564	
+p_el_prep_any_m_1564	p_newly_el_prep_m_1564 p_newly_not_el_prep_m_1564 
+inc_in_prep_el_m  inc_in_prep_not_el_m	
+n_el_prep_any_w_1564	n_not_el_prep_any_w_1564	 n_newly_el_prep_w_1564	n_newly_not_el_prep_w_1564  n_el_prep_tm1_w_1564
+n_not_el_prep_tm1_w_1564	n_primary_prep_el_w n_primary_prep_not_el_w	 n_el_prep_last_year_w_1524	n_el_prep_last_year_w_2564	
+p_el_prep_any_w_1564	p_newly_el_prep_w_1564 p_newly_not_el_prep_w_1564 
+inc_in_prep_el_w  inc_in_prep_not_el_w	
 
 &sf 
 
@@ -1264,7 +1253,6 @@ proc contents data = a.l_hptn_apr23; run;
 
 data y; set  a.l_hptn_apr23; 
 
-
   options nomprint;
   option nospool;
 
@@ -1275,40 +1263,12 @@ data y; set  a.l_hptn_apr23;
 
 * &v ;
 
-
-/*
-
-* 3 year moving averages;
-
-proc means noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2021.0 <= cald < 2024.0 ;
-proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2022.0 <= cald < 2025.0 ;
-proc means noprint data=y; var &v; output out=y_24 mean= &v._24; by run option ; where 2023.0 <= cald < 2026.0 ;
-proc means noprint data=y; var &v; output out=y_25 mean= &v._25; by run option ; where 2024.0 <= cald < 2027.0 ;
-proc means noprint data=y; var &v; output out=y_26 mean= &v._26; by run option ; where 2025.0 <= cald < 2028.0 ;
-proc means noprint data=y; var &v; output out=y_27 mean= &v._27; by run option ; where 2026.0 <= cald < 2029.0 ;
-proc means noprint data=y; var &v; output out=y_28 mean= &v._28; by run option ; where 2027.0 <= cald < 2030.0 ;
-proc means noprint data=y; var &v; output out=y_29 mean= &v._29; by run option ; where 2028.0 <= cald < 2031.0 ;
-proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option ; where 2029.0 <= cald < 2032.0 ;
-proc means noprint data=y; var &v; output out=y_31 mean= &v._31; by run option ; where 2030.0 <= cald < 2033.0 ;
-proc means noprint data=y; var &v; output out=y_32 mean= &v._32; by run option ; where 2031.0 <= cald < 2034.0 ;
-proc means noprint data=y; var &v; output out=y_33 mean= &v._33; by run option ; where 2032.0 <= cald < 2035.0 ;
-proc means noprint data=y; var &v; output out=y_34 mean= &v._34; by run option ; where 2033.0 <= cald < 2036.0 ;
-proc means noprint data=y; var &v; output out=y_35 mean= &v._35; by run option ; where 2034.0 <= cald < 2037.0 ;
-proc means noprint data=y; var &v; output out=y_36 mean= &v._36; by run option ; where 2035.0 <= cald < 2038.0 ;
-proc means noprint data=y; var &v; output out=y_37 mean= &v._37; by run option ; where 2036.0 <= cald < 2039.0 ;
-proc means noprint data=y; var &v; output out=y_38 mean= &v._38; by run option ; where 2037.0 <= cald < 2040.0 ;
-proc means noprint data=y; var &v; output out=y_39 mean= &v._39; by run option ; where 2038.0 <= cald < 2041.0 ;
-proc means noprint data=y; var &v; output out=y_40 mean= &v._40; by run option ; where 2039.0 <= cald < 2042.0 ;
-proc means noprint data=y; var &v; output out=y_41 mean= &v._41; by run option ; where 2040.0 <= cald < 2043.0 ;
-proc means noprint data=y; var &v; output out=y_42 mean= &v._42; by run option ; where 2041.0 <= cald < 2044.0 ;
-
-*/
-
 proc means noprint data=y; var &v; output out=y_10y mean= &v._10y; by run option ; where 2022.0 <= cald < 2032.0 ;
 
 proc means noprint data=y; var &v; output out=y_22 mean= &v._22; by run option ; where 2022.0 <= cald < 2023.0 ;
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2023.0 <= cald < 2024.0 ;
 proc means noprint data=y; var &v; output out=y_24 mean= &v._24; by run option ; where 2024.0 <= cald < 2025.0 ;
+
 proc means noprint data=y; var &v; output out=y_25 mean= &v._25; by run option ; where 2025.0 <= cald < 2026.0 ;
 proc means noprint data=y; var &v; output out=y_26 mean= &v._26; by run option ; where 2026.0 <= cald < 2027.0 ;
 proc means noprint data=y; var &v; output out=y_27 mean= &v._27; by run option ; where 2027.0 <= cald < 2028.0 ;
@@ -1364,6 +1324,7 @@ proc sort data=y_22; by run; proc transpose data=y_10y out=t_10y prefix=&v._10y_
 proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run; 																														
 proc sort data=y_23; by run; proc transpose data=y_23 out=t_23 prefix=&v._23_; var &v._23; by run; 																														
 proc sort data=y_24; by run; proc transpose data=y_24 out=t_24 prefix=&v._24_; var &v._24; by run; 																														
+
 proc sort data=y_25; by run; proc transpose data=y_25 out=t_25 prefix=&v._25_; var &v._25; by run; 																														
 proc sort data=y_26; by run; proc transpose data=y_26 out=t_26 prefix=&v._26_; var &v._26; by run; 																														
 proc sort data=y_27; by run; proc transpose data=y_27 out=t_27 prefix=&v._27_; var &v._27; by run; 																														
@@ -1415,9 +1376,12 @@ proc sort data=y_71; by run; proc transpose data=y_71 out=t_71 prefix=&v._71_; v
 proc sort data=y_72; by run; proc transpose data=y_72 out=t_72 prefix=&v._72_; var &v._72; by run; 	
 
 
+
 data &v ; merge t_10y
-t_22 t_23 t_24 t_25 t_26 t_27 t_28 t_29 t_30 t_31 t_32 t_33 t_34 t_35 t_36 t_37 t_38 t_39 t_40 t_41 t_42
- t_43 t_44 t_45 t_46 t_47 t_48 t_49 t_50 t_51 t_52 t_53 t_54 t_55 t_56 t_57 t_58 t_59 t_60 t_61 t_62 t_63 t_64 t_65 t_66 t_67 t_68 t_69 t_70 t_71 t_72
+t_22 t_23 t_24 
+t_25 t_26 t_27 t_28 t_29 t_30 t_31 t_32 t_33 t_34 t_35 t_36 t_37 t_38 t_39 t_40 t_41 t_42
+ t_43 t_44 t_45 t_46 t_47 t_48 t_49 t_50 t_51 t_52 t_53 t_54 t_55 t_56 t_57 t_58 t_59 t_60 
+t_61 t_62 t_63 t_64 t_65 t_66 t_67 t_68 t_69 t_70 t_71 t_72
 ;
 drop _NAME_ _TYPE_ _FREQ_;
 
@@ -1432,15 +1396,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_prep_any_ever);%var(v=p_prep_oral_ever);%var(v=p_prep_inj_ever);%var(v=p_elig_prep); %var(v=incidence_prep_not_elig);
 %var(v=incidence_prep_elig); 
 
-%var(v=n_elig_prep_any_m_1564);	%var(v=n_not_elig_prep_any_m_1564);	 %var(v=n_newly_elig_prep_m_1564);	%var(v=n_newly_not_elig_prep_m_1564);  
-%var(v=n_elig_prep_tm1_m_1564); %var(v=n_not_elig_prep_tm1_m_1564);	   %var(v=n_primary_prep_elig_m);    %var(v=n_primary_prep_not_elig_m);	 
-%var(v=n_elig_prep_last_year_m_1524);	   %var(v=n_elig_prep_last_year_m_2564);	 %var(v=p_elig_prep_any_m_1564);  %var(v=p_newly_elig_prep_m_1564); 
-%var(v=p_newly_not_elig_prep_m_1564); %var(v=n_elig_prep_last_year_m_1524);	%var(v=n_elig_prep_last_year_m_2564);  %var(v=incidence_in_prep_elig_m);  
-%var(v=incidence_in_prep_not_elig_m);   %var(v=n_elig_prep_any_w_1564);	 %var(v=n_not_elig_prep_any_w_1564);	%var(v=n_newly_elig_prep_w_1564);	
-%var(v=n_newly_not_elig_prep_w_1564);  %var(v=n_elig_prep_tm1_w_1564);  %var(v=n_not_elig_prep_tm1_w_1564);	%var(v=n_primary_prep_elig_w); 
-%var(v=n_primary_prep_not_elig_w);	 %var(v=n_elig_prep_last_year_w_1524);	%var(v=n_elig_prep_last_year_w_2564);	
-%var(v=p_elig_prep_any_w_1564);	%var(v=p_newly_elig_prep_w_1564);  %var(v=p_newly_not_elig_prep_w_1564);  %var(v=n_elig_prep_last_year_w_1524);	
-%var(v=n_elig_prep_last_year_w_2564);	 %var(v=incidence_in_prep_elig_w);  %var(v=incidence_in_prep_not_elig_w);	
+%var(v=n_el_prep_any_m_1564);	%var(v=n_not_el_prep_any_m_1564);	 %var(v=n_newly_el_prep_m_1564);	%var(v=n_newly_not_el_prep_m_1564);  
+%var(v=n_el_prep_tm1_m_1564); %var(v=n_not_el_prep_tm1_m_1564);	   %var(v=n_primary_prep_el_m);    %var(v=n_primary_prep_not_el_m);	 
+%var(v=n_el_prep_last_year_m_1524);	   %var(v=n_el_prep_last_year_m_2564);	 %var(v=p_el_prep_any_m_1564);  
+%var(v=p_newly_el_prep_m_1564); %var(v=p_newly_not_el_prep_m_1564);  %var(v=inc_in_prep_el_m);  
+%var(v=inc_in_prep_not_el_m);   %var(v=n_el_prep_any_w_1564);	 %var(v=n_not_el_prep_any_w_1564);	%var(v=n_newly_el_prep_w_1564);	
+%var(v=n_newly_not_el_prep_w_1564);  %var(v=n_el_prep_tm1_w_1564);  %var(v=n_not_el_prep_tm1_w_1564);	%var(v=n_primary_prep_el_w); 
+%var(v=n_primary_prep_not_el_w);	 %var(v=n_el_prep_last_year_w_1524);	%var(v=n_el_prep_last_year_w_2564);	
+%var(v=p_el_prep_any_w_1564);	%var(v=p_newly_el_prep_w_1564);  %var(v=p_newly_not_el_prep_w_1564);  
+ %var(v=inc_in_prep_el_w);  %var(v=inc_in_prep_not_el_w);	
 
 
 data   wide_outputs_hptn_apr23; merge 
@@ -1449,14 +1413,14 @@ sim_year
 pop_size_w pop_size_m hiv_w hiv_m diag_w diag_m art_w art_m vs_w vs_m inf_w inf_m inf_oral inf_la deaths_w deaths_m elig_prep_w  elig_prep_m 
 oral_prep_w oral_prep_m la_prep_w  la_prep_m cd4_500pl cd4_350_500 cd4_200_350 cd4_200 deaths_1 deaths_2 deaths_3 deaths_4 deaths_5 
 p_prep_any_ever p_prep_inj_ever p_prep_oral_ever  p_elig_prep  incidence_prep_not_elig incidence_prep_elig 
-n_elig_prep_any_m_1564	n_not_elig_prep_any_m_1564	 n_newly_elig_prep_m_1564	n_newly_not_elig_prep_m_1564  n_elig_prep_tm1_m_1564
-n_not_elig_prep_tm1_m_1564	n_primary_prep_elig_m n_primary_prep_not_elig_m	 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-p_elig_prep_any_m_1564	p_newly_elig_prep_m_1564 p_newly_not_elig_prep_m_1564 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-incidence_in_prep_elig_m  incidence_in_prep_not_elig_m	
-n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
-n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-incidence_in_prep_elig_w  incidence_in_prep_not_elig_w	
+n_el_prep_any_m_1564	n_not_el_prep_any_m_1564	 n_newly_el_prep_m_1564	n_newly_not_el_prep_m_1564  n_el_prep_tm1_m_1564
+n_not_el_prep_tm1_m_1564	n_primary_prep_el_m n_primary_prep_not_el_m	 n_el_prep_last_year_m_1524	n_el_prep_last_year_m_2564	
+p_el_prep_any_m_1564	p_newly_el_prep_m_1564 p_newly_not_el_prep_m_1564 	
+inc_in_prep_el_m  inc_in_prep_not_el_m	
+n_el_prep_any_w_1564	n_not_el_prep_any_w_1564	 n_newly_el_prep_w_1564	n_newly_not_el_prep_w_1564  n_el_prep_tm1_w_1564
+n_not_el_prep_tm1_w_1564	n_primary_prep_el_w n_primary_prep_not_el_w	 n_el_prep_last_year_w_1524	n_el_prep_last_year_w_2564	
+p_el_prep_any_w_1564	p_newly_el_prep_w_1564 p_newly_not_el_prep_w_1564 	
+inc_in_prep_el_w  inc_in_prep_not_el_w	
 ;
 
 proc sort; by run; run;
@@ -1505,12 +1469,12 @@ prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral  art_w  art_m   p_elig_prep
 p_prep_any_ever p_prep_inj_ever p_prep_oral_ever  p_elig_prep  incidence_prep_not_elig incidence_prep_elig 
 n_elig_prep_any_m_1564	n_not_elig_prep_any_m_1564	 n_newly_elig_prep_m_1564	n_newly_not_elig_prep_m_1564  n_elig_prep_tm1_m_1564
 n_not_elig_prep_tm1_m_1564	n_primary_prep_elig_m n_primary_prep_not_elig_m	 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-p_elig_prep_any_m_1564	p_newly_elig_prep_m_1564 p_newly_not_elig_prep_m_1564 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-incidence_in_prep_elig_m  incidence_in_prep_not_elig_m	
+p_elig_prep_any_m_1564	p_newly_elig_prep_m_1564 p_newly_not_elig_prep_m_1564
+inc_in_prep_elig_m  inc_in_prep_not_elig_m	
 n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
 n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-incidence_in_prep_elig_w  incidence_in_prep_not_elig_w	
+p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 
+inc_in_prep_elig_w  inc_in_prep_not_elig_w	
 ;
 run;
 
@@ -1633,5 +1597,4 @@ proc univariate;
 var incidence_prep_not_elig_22_2 incidence_prep_elig_22_2  p_elig_prep_22_2;  
 var incidence_prep_not_elig_10y_2 incidence_prep_elig_10y_2  p_elig_prep_10y_2;  
 run;
-
 
