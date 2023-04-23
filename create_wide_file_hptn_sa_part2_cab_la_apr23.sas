@@ -9,7 +9,6 @@ libname a "C:\Users\w3sth\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 data w_hptn; set a.w_hptn_apr23 ;
 
-
 * for sa;
 n_onart_21 = art_w_21 + art_m_21;
 if 0.122 <= prevalence1549_05 < 0.202  and  0.166 < prevalence1549_17 < 0.246  and 4000000 <= n_onart_21 < 6400000;
