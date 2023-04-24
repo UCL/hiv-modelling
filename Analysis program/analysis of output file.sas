@@ -217,6 +217,39 @@ d_incidence1549_30	d_prevalence1549_30		d_p_diag_30	  	d_p_onart_diag_30   d_p_o
 run;
 
 
+data costs;
+set a;
+
 
 ****Cost effectiveness;
+/*
+_1=no program
+_2=low impact sw program
+_3=high impact sw program
+*/
 
+
+*dalys averted;
+diff_ddaly_swprog_high = ddaly_22_27_3 - ddaly_22_27_1;
+
+*difference in total costs;
+diff_dcost_swprog_high = dcost_22_27_3 - dcost_22_27_1;
+
+*net dalys using $500;
+netdalys_no_swprog =  ddaly_22_27_1 + (dcost_22_27_1)/0.0005;
+netdalys_swprog_high =  ddaly_22_27_3 + (dcost_22_27_3)/0.0005;
+
+*net dalys averted;
+diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog;
+
+*sw prog cost-effective?;
+ce_swprog_high=0;if diff_netdalys_swprog_high gt 0 then ce_swprog_high=1;
+
+*cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
+/*proc freq;table diff_dcost_swprog_high;run;*/
+
+cost_daly_avert_swprog_high=15.9*1000000;
+if diff_ddaly_swprog_high gt 0 then cost_daly_avert_swprog_high = (diff_dcost_swprog_high / diff_ddaly_swprog_high)*1000000;
+
+proc freq;table 
+run;
