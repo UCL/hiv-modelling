@@ -551,8 +551,8 @@ s_hiv = s_hivge15 ;
 * p_newly_not_el_prep_m_1564; p_newly_not_el_prep_m_1564 = s_newly_not_elig_prep_m_1564 / s_elig_prep_tm1_m_1564 ;
 * n_el_prep_last_year_m_1524;	n_el_prep_last_year_m_1524 = s_elig_prep_last_year_m_1524  * &sf; 
 * n_el_prep_last_year_m_2564;	n_el_prep_last_year_m_2564 = s_elig_prep_last_year_m_2564  * &sf; 
-* inc_in_prep_el_m;		inc_in_prep_el_m = (s_primary_prep_el_m * 100 * 4) / s_elig_prep_any_m_1564 ;
-* inc_in_prep_not_el_m;	inc_in_prep_not_el_m = (s_primary_prep_not_elig_m * 100 * 4) / (s_not_elig_prep_any_m_1564 - s_hiv1564) ;
+* inc_in_prep_el_m;		inc_in_prep_el_m = (s_primary_prep_elig_m * 100 * 4) / s_elig_prep_any_m_1564 ;
+* inc_in_prep_not_el_m;	inc_in_prep_not_el_m = (s_primary_prep_not_elig_m * 100 * 4) / (s_not_elig_prep_any_m_1564 - s_hiv1564m) ;
 
 
 * n_el_prep_any_w_1564;		n_el_prep_any_w_1564 = s_elig_prep_any_w_1564  * &sf; 
@@ -570,8 +570,8 @@ s_hiv = s_hivge15 ;
 * p_newly_not_el_prep_w_1564; p_newly_not_el_prep_w_1564 = s_newly_not_elig_prep_w_1564 / s_elig_prep_tm1_w_1564 ;
 * n_el_prep_last_year_w_1524;	n_el_prep_last_year_w_1524 = s_elig_prep_last_year_w_1524  * &sf; 
 * n_el_prep_last_year_w_2564;	n_el_prep_last_year_w_2564 = s_elig_prep_last_year_w_2564  * &sf; 
-* inc_in_prep_el_w;		inc_in_prep_el_w = (s_primary_prep_el_w * 100 * 4) / s_elig_prep_any_w_1564 ;
-* inc_in_prep_not_el_w;	inc_in_prep_not_el_w = (s_primary_prep_not_elig_w * 100 * 4) / (s_not_elig_prep_any_w_1564 - s_hiv1564) ;
+* inc_in_prep_el_w;		inc_in_prep_el_w = (s_primary_prep_elig_w * 100 * 4) / s_elig_prep_any_w_1564 ;
+* inc_in_prep_not_el_w;	inc_in_prep_not_el_w = (s_primary_prep_not_elig_w * 100 * 4) / (s_not_elig_prep_any_w_1564 - s_hiv1564w) ;
 
 * n_start_restart_prep_inj; 		n_start_restart_prep_inj = s_start_restart_prep_inj * &sf ;
 * n_start_restart_prep_inj_prim; 	n_start_restart_prep_inj_prim = s_start_restart_prep_inj_prim * &sf ;
@@ -1406,6 +1406,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_el_prep_any_w_1564);	%var(v=p_newly_el_prep_w_1564);  %var(v=p_newly_not_el_prep_w_1564);  
  %var(v=inc_in_prep_el_w);  %var(v=inc_in_prep_not_el_w);	
 
+proc univariate data = inc_in_prep_el_w ; var inc_in_prep_el_w: ; run;
 
 data   wide_outputs_hptn_apr23; merge 
 
@@ -1422,6 +1423,7 @@ n_not_el_prep_tm1_w_1564	n_primary_prep_el_w n_primary_prep_not_el_w	 n_el_prep_
 p_el_prep_any_w_1564	p_newly_el_prep_w_1564 p_newly_not_el_prep_w_1564 	
 inc_in_prep_el_w  inc_in_prep_not_el_w	
 ;
+
 
 proc sort; by run; run;
 
@@ -1447,15 +1449,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %blvar(b=prop_prep_oral_w); %blvar(b=prop_prep_oral_m);   %blvar(b=prop_prep_oral);
 %blvar(b=art_w); %blvar(b=art_m); %blvar(b= p_elig_prep);
 
-%blvar(b=n_elig_prep_any_m_1564);	%blvar(b=n_not_elig_prep_any_m_1564);	 %blvar(b=n_newly_elig_prep_m_1564);	%blvar(b=n_newly_not_elig_prep_m_1564);  
-%blvar(b=n_elig_prep_tm1_m_1564); %blvar(b=n_not_elig_prep_tm1_m_1564);	   %blvar(b=n_primary_prep_elig_m);    %blvar(b=n_primary_prep_not_elig_m);	 
-%blvar(b=n_elig_prep_last_year_m_1524);	   %blvar(b=n_elig_prep_last_year_m_2564);	 %blvar(b=p_elig_prep_any_m_1564);  %blvar(b=p_newly_elig_prep_m_1564); 
-%blvar(b=p_newly_not_elig_prep_m_1564); %blvar(b=n_elig_prep_last_year_m_1524);	%blvar(b=n_elig_prep_last_year_m_2564);  %blvar(b=incidence_in_prep_elig_m);  
-%blvar(b=incidence_in_prep_not_elig_m);   %blvar(b=n_elig_prep_any_w_1564);	 %blvar(b=n_not_elig_prep_any_w_1564);	%blvar(b=n_newly_elig_prep_w_1564);	
-%blvar(b=n_newly_not_elig_prep_w_1564);  %blvar(b=n_elig_prep_tm1_w_1564);  %blvar(b=n_not_elig_prep_tm1_w_1564);	%blvar(b=n_primary_prep_elig_w); 
-%blvar(b=n_primary_prep_not_elig_w);	 %blvar(b=n_elig_prep_last_year_w_1524);	%blvar(b=n_elig_prep_last_year_w_2564);	
-%blvar(b=p_elig_prep_any_w_1564);	%blvar(b=p_newly_elig_prep_w_1564);  %blvar(b=p_newly_not_elig_prep_w_1564);  %blvar(b=n_elig_prep_last_year_w_1524);	
-%blvar(b=n_elig_prep_last_year_w_2564);	 %blvar(b=incidence_in_prep_elig_w);  %blvar(b=incidence_in_prep_not_elig_w);	
+%blvar(b=n_el_prep_any_m_1564);	%blvar(b=n_not_el_prep_any_m_1564);	 %blvar(b=n_newly_el_prep_m_1564);	%blvar(b=n_newly_not_el_prep_m_1564);  
+%blvar(b=n_el_prep_tm1_m_1564); %blvar(b=n_not_el_prep_tm1_m_1564);	   %blvar(b=n_primary_prep_el_m);    %blvar(b=n_primary_prep_not_el_m);	 
+%blvar(b=n_el_prep_last_year_m_1524);	   %blvar(b=n_el_prep_last_year_m_2564);	 %blvar(b=p_el_prep_any_m_1564);  %blvar(b=p_newly_el_prep_m_1564); 
+%blvar(b=p_newly_not_el_prep_m_1564); %blvar(b=n_el_prep_last_year_m_1524);	%blvar(b=n_el_prep_last_year_m_2564);  %blvar(b=inc_in_prep_el_m);  
+%blvar(b=inc_in_prep_not_el_m);   %blvar(b=n_el_prep_any_w_1564);	 %blvar(b=n_not_el_prep_any_w_1564);	%blvar(b=n_newly_el_prep_w_1564);	
+%blvar(b=n_newly_not_el_prep_w_1564);  %blvar(b=n_el_prep_tm1_w_1564);  %blvar(b=n_not_el_prep_tm1_w_1564);	%blvar(b=n_primary_prep_el_w); 
+%blvar(b=n_primary_prep_not_el_w);	 %blvar(b=n_el_prep_last_year_w_1524);	%blvar(b=n_el_prep_last_year_w_2564);	
+%blvar(b=p_el_prep_any_w_1564);	%blvar(b=p_newly_el_prep_w_1564);  %blvar(b=p_newly_not_el_prep_w_1564);  %blvar(b=n_el_prep_last_year_w_1524);	
+%blvar(b=n_el_prep_last_year_w_2564);	 %blvar(b=inc_in_prep_el_w);  %blvar(b=inc_in_prep_not_el_w);	
 
 
 
@@ -1467,14 +1469,14 @@ p_onart_m      p_onart_w      p_onart
 p_vl1000_m      p_vl1000_w      p_vl1000   
 prop_prep_oral_w  prop_prep_oral_m  prop_prep_oral  art_w  art_m   p_elig_prep
 p_prep_any_ever p_prep_inj_ever p_prep_oral_ever  p_elig_prep  incidence_prep_not_elig incidence_prep_elig 
-n_elig_prep_any_m_1564	n_not_elig_prep_any_m_1564	 n_newly_elig_prep_m_1564	n_newly_not_elig_prep_m_1564  n_elig_prep_tm1_m_1564
-n_not_elig_prep_tm1_m_1564	n_primary_prep_elig_m n_primary_prep_not_elig_m	 n_elig_prep_last_year_m_1524	n_elig_prep_last_year_m_2564	
-p_elig_prep_any_m_1564	p_newly_elig_prep_m_1564 p_newly_not_elig_prep_m_1564
-inc_in_prep_elig_m  inc_in_prep_not_elig_m	
-n_elig_prep_any_w_1564	n_not_elig_prep_any_w_1564	 n_newly_elig_prep_w_1564	n_newly_not_elig_prep_w_1564  n_elig_prep_tm1_w_1564
-n_not_elig_prep_tm1_w_1564	n_primary_prep_elig_w n_primary_prep_not_elig_w	 n_elig_prep_last_year_w_1524	n_elig_prep_last_year_w_2564	
-p_elig_prep_any_w_1564	p_newly_elig_prep_w_1564 p_newly_not_elig_prep_w_1564 
-inc_in_prep_elig_w  inc_in_prep_not_elig_w	
+n_el_prep_any_m_1564	n_not_el_prep_any_m_1564	 n_newly_el_prep_m_1564	n_newly_not_el_prep_m_1564  n_el_prep_tm1_m_1564
+n_not_el_prep_tm1_m_1564	n_primary_prep_el_m n_primary_prep_not_el_m	 n_el_prep_last_year_m_1524	n_el_prep_last_year_m_2564	
+p_el_prep_any_m_1564	p_newly_el_prep_m_1564 p_newly_not_el_prep_m_1564
+inc_in_prep_el_m  inc_in_prep_not_el_m	
+n_el_prep_any_w_1564	n_not_el_prep_any_w_1564	 n_newly_el_prep_w_1564	n_newly_not_el_prep_w_1564  n_el_prep_tm1_w_1564
+n_not_el_prep_tm1_w_1564	n_primary_prep_el_w n_primary_prep_not_el_w	 n_el_prep_last_year_w_1524	n_el_prep_last_year_w_2564	
+p_el_prep_any_w_1564	p_newly_el_prep_w_1564 p_newly_not_el_prep_w_1564 
+inc_in_prep_el_w  inc_in_prep_not_el_w	
 ;
 run;
 
@@ -1592,9 +1594,14 @@ proc sort; by run;run;
   merge   wide_outputs_hptn_apr23  wide_par_l_hptn_apr23 wide_bl_l_hptn_apr23  ;  
   by run;
 
-* for croi poster ;
-proc univariate; 
-var incidence_prep_not_elig_22_2 incidence_prep_elig_22_2  p_elig_prep_22_2;  
-var incidence_prep_not_elig_10y_2 incidence_prep_elig_10y_2  p_elig_prep_10y_2;  
+
+
+proc print ; 
+var 
+inc_in_prep_el_w_25_:
+;
 run;
+
+
+
 
