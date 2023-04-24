@@ -251,5 +251,5 @@ ce_swprog_high=0;if diff_netdalys_swprog_high gt 0 then ce_swprog_high=1;
 cost_daly_avert_swprog_high=15.9*1000000;
 if diff_ddaly_swprog_high gt 0 then cost_daly_avert_swprog_high = (diff_dcost_swprog_high / diff_ddaly_swprog_high)*1000000;
 
-proc freq;table 
-run;
+
+proc means n mean p50 p5 p95 lclm uclm;var cost_daly_avert_swprog_high;run;
