@@ -1,13 +1,14 @@
+
 * Matt's local machine input;
 libname a "C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\";
 data hiv_synthesis_base; set a.out:;
-
+/*
 * Myriad input;
-*%let sasoutputdir = %scan(&sysparm,1," ");
-*libname a "&sasoutputdir/";
-*%let sasfile = %scan(&sysparm,2," ");
-*data hiv_synthesis_base; *set a.out:;
-
+%let sasoutputdir = %scan(&sysparm,1," ");
+libname a "&sasoutputdir/";
+%let sasfile = %scan(&sysparm,2," ");
+data hiv_synthesis_base; set a.out:;
+*/
 
 /* proc contents; run;
 * proc print; var cald s_hiv1549; run; */
@@ -593,169 +594,119 @@ pop5564 = s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w ;
 pop6574 = s_ageg6569m + s_ageg7074m +  + s_ageg6569w + s_ageg7074w ;
 pop7584 = s_ageg7579m + s_ageg8084m + s_ageg7579w + s_ageg8084w;
 popge85 = s_ageg85plm + s_ageg85plw;
+popge18 = pop1524 + pop2534 + pop3544 + pop4554 + pop5564 + pop6574 + pop7584 + popge85 ; 
 
-* p_hypert_1524 ;			p_hypert_1524 = s_hypertension_1524 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg2024w) ;
-* p_hypert_2534 ;			p_hypert_2534 = s_hypertension_2534 / (s_ageg2529m + s_ageg3034m + s_ageg2529w + s_ageg3034w) ;
-* p_hypert_3544 ;			p_hypert_3544 = s_hypertension_3544 / (s_ageg3539m + s_ageg4044m + s_ageg3539w + s_ageg4044w) ;
-* p_hypert_4554 ;			p_hypert_4554 = s_hypertension_4554 / (s_ageg4549m + s_ageg5054m + s_ageg4549w + s_ageg5054w) ;
-* p_hypert_5564 ;			p_hypert_5564 = s_hypertension_5564 / (s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w) ;
-* p_hypert_2544 ;			p_hypert_2544 = (s_hypertension_2534 + s_hypertension_3544) / (s_ageg2529m + s_ageg3034m + s_ageg2529w + s_ageg3034w + s_ageg3539m + s_ageg4044m + s_ageg3539w + s_ageg4044w) ;
-* p_hypert_4564 ;			p_hypert_4564 = (s_hypertension_4554 + s_hypertension_5564) / (s_ageg4549m + s_ageg5054m + s_ageg4549w + s_ageg5054w + s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w) ;
-* p_hypert_ge65 ;			p_hypert_ge65 = s_hypertension_ge65 / (s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm + s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw) ;
+* p_hypert_ge18 ;			p_hypert_ge18 = s_hypertension_ge18 / (popge18) ;
+* p_hypert_2534 ;			p_hypert_2534 = s_hypertension_2534 / (pop2534) ;
+* p_hypert_3544 ;			p_hypert_3544 = s_hypertension_3544 / (pop3544) ;
+* p_hypert_4554 ;			p_hypert_4554 = s_hypertension_4554 / (pop4554) ;
+* p_hypert_5564 ;			p_hypert_5564 = s_hypertension_5564 / (pop5564) ;
+* p_hypert_2544 ;			p_hypert_2544 = (s_hypertension_2534 + s_hypertension_3544) / (pop2534 + pop3544) ;
+* p_hypert_4564 ;			p_hypert_4564 = (s_hypertension_4554 + s_hypertension_5564) / (pop4554 + pop5564) ;
+* p_hypert_ge65 ;			p_hypert_ge65 = s_hypertension_ge65 / (pop6574 + pop7584 + popge85) ;
 
-* p_htn_true_1524 ;			p_htn_true_1524 = s_htn_true_1524 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg2024w) ;
-* p_htn_true_2534 ;			p_htn_true_2534 = s_htn_true_2534 / (s_ageg2529m + s_ageg3034m + s_ageg2529w + s_ageg3034w) ;
-* p_htn_true_3544 ;			p_htn_true_3544 = s_htn_true_3544 / (s_ageg3539m + s_ageg4044m + s_ageg3539w + s_ageg4044w) ;
-* p_htn_true_4554 ;			p_htn_true_4554 = s_htn_true_4554 / (s_ageg4549m + s_ageg5054m + s_ageg4549w + s_ageg5054w) ;
-* p_htn_true_5564 ;			p_htn_true_5564 = s_htn_true_5564 / (s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w) ;
-* p_htn_true_2544 ;			p_htn_true_2544 = (s_htn_true_2534 + s_htn_true_3544) / (s_ageg2529m + s_ageg3034m + s_ageg2529w + s_ageg3034w + s_ageg3539m + s_ageg4044m + s_ageg3539w + s_ageg4044w) ;
-* p_htn_true_4564 ;			p_htn_true_4564 = (s_htn_true_4554 + s_htn_true_5564) / (s_ageg4549m + s_ageg5054m + s_ageg4549w + s_ageg5054w + s_ageg5559m + s_ageg6064m + s_ageg5559w + s_ageg6064w) ;
-* p_htn_true_ge65 ;			p_htn_true_ge65 = s_htn_true_ge65 / (s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg8084m + s_ageg85plm + s_ageg6569w + s_ageg7074w + s_ageg7579w + s_ageg8084w + s_ageg85plw) ;
+* p_htn_true_ge18 ;			p_htn_true_ge18 = s_htn_true_ge18 / (popge18) ;
+* p_htn_true_2534 ;			p_htn_true_2534 = s_htn_true_2534 / (pop2534) ;
+* p_htn_true_3544 ;			p_htn_true_3544 = s_htn_true_3544 / (pop3544) ;
+* p_htn_true_4554 ;			p_htn_true_4554 = s_htn_true_4554 / (pop4554) ;
+* p_htn_true_5564 ;			p_htn_true_5564 = s_htn_true_5564 / (pop5564) ;
+* p_htn_true_2544 ;			p_htn_true_2544 = (s_htn_true_2534 + s_htn_true_3544) / (pop2534 + pop3544) ;
+* p_htn_true_4564 ;			p_htn_true_4564 = (s_htn_true_4554 + s_htn_true_5564) / (pop4554 + pop5564) ;
+* p_htn_true_ge65 ;			p_htn_true_ge65 = s_htn_true_ge65 / (pop6574 + pop7584 + popge85) ;
 
-* p_hypert_1549 ;			p_hypert_1549 = s_hypertension_1549 / s_alive1549 ;
-* p_hypert_1539 ;			p_hypert_1539 = s_hypertension_1539 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w);
-* p_hypert_4049 ;			p_hypert_4049 = s_hypertension_4049 / (s_ageg4044m + s_ageg4549m + s_ageg4044w + s_ageg4549w) ;
-* p_hypert_5059 ;			p_hypert_5059 = s_hypertension_5059 / (s_ageg5054m + s_ageg5559m + s_ageg5054w + s_ageg5559w) ;
-* p_hypert_6069 ;			p_hypert_6069 = s_hypertension_6069 / (s_ageg6064m + s_ageg6569m + s_ageg6064w + s_ageg6569w) ;
-* p_hypert_7079 ;			p_hypert_7079 = s_hypertension_7079 / (s_ageg7074m + s_ageg7579m + s_ageg7074w + s_ageg7579w) ;
-* p_hypert_ge80 ;			p_hypert_ge80 = s_hypertension_ge80 / (s_ageg8084m + s_ageg85plm + s_ageg8084w + s_ageg85plw) ;
-* p_hypert_1549m ;			p_hypert_1549m = s_hypertension_1549m / s_alive1549_m ;
-* p_hypert_1539m ;			p_hypert_1539m = s_hypertension_1539m / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m) ;
-* p_hypert_4049m ;			p_hypert_4049m = s_hypertension_4049m / (s_ageg4044m + s_ageg4549m ) ;
-* p_hypert_5059m ;			p_hypert_5059m = s_hypertension_5059m / (s_ageg5054m + s_ageg5559m ) ;
-* p_hypert_6069m ;			p_hypert_6069m = s_hypertension_6069m / (s_ageg6064m + s_ageg6569m ) ;
-* p_hypert_7079m ;			p_hypert_7079m = s_hypertension_7079m / (s_ageg7074m + s_ageg7579m ) ;
-* p_hypert_ge80m ;			p_hypert_ge80m = s_hypertension_ge80m / (s_ageg8084m + s_ageg85plm ) ;
-* p_hypert_1549w ;			p_hypert_1549w = s_hypertension_1549w / s_alive1549_w ;
-* p_hypert_1539w ;			p_hypert_1539w = s_hypertension_1539w / (s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w) ;
-* p_hypert_4049w ;			p_hypert_4049w = s_hypertension_4049w / (s_ageg4044w + s_ageg4549w ) ;
-* p_hypert_5059w ;			p_hypert_5059w = s_hypertension_5059w / (s_ageg5054w + s_ageg5559w ) ;
-* p_hypert_6069w ;			p_hypert_6069w = s_hypertension_6069w / (s_ageg6064w + s_ageg6569w ) ;
-* p_hypert_7079w ;			p_hypert_7079w = s_hypertension_7079w / (s_ageg7074w + s_ageg7579w ) ;
-* p_hypert_ge80w ;			p_hypert_ge80w = s_hypertension_ge80w / (s_ageg8084w + s_ageg85plw ) ;
+* p_diagnosed_hypert_ge18 ;	p_diagnosed_hypert_ge18 = s_dx_htn_ge18 / s_hypertension_ge18 ;
+* p_diagnosed_hypert_2534 ;	p_diagnosed_hypert_2534 = s_dx_htn_2534 / s_hypertension_2534 ;
+* p_diagnosed_hypert_3544 ;	p_diagnosed_hypert_3544 = s_dx_htn_3544 / s_hypertension_3544 ;
+* p_diagnosed_hypert_4554 ;	p_diagnosed_hypert_4554 = s_dx_htn_4554 / s_hypertension_4554 ;
+* p_diagnosed_hypert_5564 ;	p_diagnosed_hypert_5564 = s_dx_htn_5564 / s_hypertension_5564 ;
+* p_diagnosed_hypert_2544 ;	p_diagnosed_hypert_2544 = (s_dx_htn_2534 + s_dx_htn_3544) / (s_hypertension_2534 + s_hypertension_3544) ;
+* p_diagnosed_hypert_4564 ;	p_diagnosed_hypert_4564 = (s_dx_htn_4554 + s_dx_htn_5564) / (s_hypertension_4554 + s_hypertension_5564) ;
+* p_diagnosed_hypert_ge65 ;	p_diagnosed_hypert_ge65 = s_dx_htn_ge65 / s_hypertension_ge65 ;
 
-* p_hypert160_1549 ;		p_hypert160_1549 = s_hypertens160_1549 / s_alive1549 ;
-* p_hypert160_1539 ;		p_hypert160_1539 = s_hypertens160_1539 / (s_ageg1517m + s_ageg1819m + s_ageg2024m + s_ageg2529m + s_ageg3034m + s_ageg3539m + s_ageg1517w + s_ageg1819w + s_ageg2024w + s_ageg2529w + s_ageg3034w + s_ageg3539w) ;
-* p_hypert160_4049 ;		p_hypert160_4049 = s_hypertens160_4049 / (s_ageg4044m + s_ageg4549m + s_ageg4044w + s_ageg4549w) ;
-* p_hypert160_5059 ;		p_hypert160_5059 = s_hypertens160_5059 / (s_ageg5054m + s_ageg5559m + s_ageg5054w + s_ageg5559w) ;
-* p_hypert160_6069 ;		p_hypert160_6069 = s_hypertens160_6069 / (s_ageg6064m + s_ageg6569m + s_ageg6064w + s_ageg6569w) ;
-* p_hypert160_7079 ;		p_hypert160_7079 = s_hypertens160_7079 / (s_ageg7074m + s_ageg7579m + s_ageg7074w + s_ageg7579w) ;
-* p_hypert160_ge80 ;		p_hypert160_ge80 = s_hypertens160_ge80 / (s_ageg8084m + s_ageg85plm + s_ageg8084w + s_ageg85plw) ;
-
-* p_diagnosed_hypert_1524 ;	p_diagnosed_hypert_1524 = s_diagnosed_hypertension_1524 / s_hypertension_1524 ;
-* p_diagnosed_hypert_2534 ;	p_diagnosed_hypert_2534 = s_diagnosed_hypertension_2534 / s_hypertension_2534 ;
-* p_diagnosed_hypert_3544 ;	p_diagnosed_hypert_3544 = s_diagnosed_hypertension_3544 / s_hypertension_3544 ;
-* p_diagnosed_hypert_4554 ;	p_diagnosed_hypert_4554 = s_diagnosed_hypertension_4554 / s_hypertension_4554 ;
-* p_diagnosed_hypert_5564 ;	p_diagnosed_hypert_5564 = s_diagnosed_hypertension_5564 / s_hypertension_5564 ;
-* p_diagnosed_hypert_2544 ;	p_diagnosed_hypert_2544 = (s_diagnosed_hypertension_2534 + s_diagnosed_hypertension_3544) / (s_hypertension_2534 + s_hypertension_3544) ;
-* p_diagnosed_hypert_4564 ;	p_diagnosed_hypert_4564 = (s_diagnosed_hypertension_4554 + s_diagnosed_hypertension_5564) / (s_hypertension_4554 + s_hypertension_5564) ;
-* p_diagnosed_hypert_ge65 ;	p_diagnosed_hypert_ge65 = s_diagnosed_hypertension_ge65 / s_hypertension_ge65 ;
-
-* p_dx_htn_true_1524 ;	p_dx_htn_true_1524 = s_htn_true_dx_1524 / s_htn_true_1524 ;
-* p_dx_htn_true_2534 ;	p_dx_htn_true_2534 = s_htn_true_dx_2534 / s_htn_true_2534 ;
+* p_dx_htn_true_ge18 ;	p_dx_htn_true_ge18 = s_htn_true_dx_ge18 / s_htn_true_ge18 ;
+/* p_dx_htn_true_2534 ;	p_dx_htn_true_2534 = s_htn_true_dx_2534 / s_htn_true_2534 ;
 * p_dx_htn_true_3544 ;	p_dx_htn_true_3544 = s_htn_true_dx_3544 / s_htn_true_3544 ;
 * p_dx_htn_true_4554 ;	p_dx_htn_true_4554 = s_htn_true_dx_4554 / s_htn_true_4554 ;
-* p_dx_htn_true_5564 ;	p_dx_htn_true_5564 = s_htn_true_dx_5564 / s_htn_true_5564 ;
+* p_dx_htn_true_5564 ;	p_dx_htn_true_5564 = s_htn_true_dx_5564 / s_htn_true_5564 ; */
 * p_dx_htn_true_2544 ;	p_dx_htn_true_2544 = (s_htn_true_dx_2534 + s_htn_true_dx_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
 * p_dx_htn_true_4564 ;	p_dx_htn_true_4564 = (s_htn_true_dx_4554 + s_htn_true_dx_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
 * p_dx_htn_true_ge65 ;	p_dx_htn_true_ge65 = s_htn_true_dx_ge65 / s_htn_true_ge65 ;
 
-* p_dx_htn_over_1524 ;	p_dx_htn_over_1524 = s_htn_over_dx_1524 / s_normotensive_1524 ;
-* p_dx_htn_over_2534 ;	p_dx_htn_over_2534 = s_htn_over_dx_2534 / s_normotensive_2534 ;
+* p_dx_htn_over_ge18 ;	p_dx_htn_over_ge18 = s_htn_over_dx_ge18 / s_normotensive_ge18 ;
+/* p_dx_htn_over_2534 ;	p_dx_htn_over_2534 = s_htn_over_dx_2534 / s_normotensive_2534 ;
 * p_dx_htn_over_3544 ;	p_dx_htn_over_3544 = s_htn_over_dx_3544 / s_normotensive_3544 ;
 * p_dx_htn_over_4554 ;	p_dx_htn_over_4554 = s_htn_over_dx_4554 / s_normotensive_4554 ;
-* p_dx_htn_over_5564 ;	p_dx_htn_over_5564 = s_htn_over_dx_5564 / s_normotensive_5564 ;
+* p_dx_htn_over_5564 ;	p_dx_htn_over_5564 = s_htn_over_dx_5564 / s_normotensive_5564 ; */
 * p_dx_htn_over_2544 ;	p_dx_htn_over_2544 = (s_htn_over_dx_2534 + s_htn_over_dx_3544) / (s_normotensive_2534 + s_normotensive_3544) ;
 * p_dx_htn_over_4564 ;	p_dx_htn_over_4564 = (s_htn_over_dx_4554 + s_htn_over_dx_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
 * p_dx_htn_over_ge65 ;	p_dx_htn_over_ge65 = s_htn_over_dx_ge65 / s_normotensive_ge65 ;
 
-* p_diagnosed_hypert_1549 ;	p_diagnosed_hypert_1549 = s_diagnosed_hypertension_1549 / s_hypertension_1549 ;
-* p_diagnosed_hypert_1539 ;	p_diagnosed_hypert_1539 = s_diagnosed_hypertension_1539 / s_hypertension_1539 ;
-* p_diagnosed_hypert_4049 ;	p_diagnosed_hypert_4049 = s_diagnosed_hypertension_4049 / s_hypertension_4049 ;
-* p_diagnosed_hypert_5059 ;	p_diagnosed_hypert_5059 = s_diagnosed_hypertension_5059 / s_hypertension_5059 ;
-* p_diagnosed_hypert_6069 ;	p_diagnosed_hypert_6069 = s_diagnosed_hypertension_6069 / s_hypertension_6069 ;
-* p_diagnosed_hypert_7079 ;	p_diagnosed_hypert_7079 = s_diagnosed_hypertension_7079 / s_hypertension_7079 ;
-* p_diagnosed_hypert_ge80 ;	p_diagnosed_hypert_ge80 = s_diagnosed_hypertension_ge80 / s_hypertension_ge80 ;
-* p_diagnosed_hypert_1549m ;	p_diagnosed_hypert_1549m = s_diagnosed_hypertension_1549m / s_hypertension_1549m ;
-* p_diagnosed_hypert_1539m ;	p_diagnosed_hypert_1539m = s_diagnosed_hypertension_1539m / s_hypertension_1539m ;
-* p_diagnosed_hypert_4049m ;	p_diagnosed_hypert_4049m = s_diagnosed_hypertension_4049m / s_hypertension_4049m ;
-* p_diagnosed_hypert_5059m ;	p_diagnosed_hypert_5059m = s_diagnosed_hypertension_5059m / s_hypertension_5059m ;
-* p_diagnosed_hypert_6069m ;	p_diagnosed_hypert_6069m = s_diagnosed_hypertension_6069m / s_hypertension_6069m ;
-* p_diagnosed_hypert_7079m ;	p_diagnosed_hypert_7079m = s_diagnosed_hypertension_7079m / s_hypertension_7079m ;
-* p_diagnosed_hypert_ge80m ;	p_diagnosed_hypert_ge80m = s_diagnosed_hypertension_ge80m / s_hypertension_ge80m ;
-* p_diagnosed_hypert_1549w ;	p_diagnosed_hypert_1549w = s_diagnosed_hypertension_1549w / s_hypertension_1549w ;
-* p_diagnosed_hypert_1539w ;	p_diagnosed_hypert_1539w = s_diagnosed_hypertension_1539w / s_hypertension_1539w ;
-* p_diagnosed_hypert_4049w ;	p_diagnosed_hypert_4049w = s_diagnosed_hypertension_4049w / s_hypertension_4049w ;
-* p_diagnosed_hypert_5059w ;	p_diagnosed_hypert_5059w = s_diagnosed_hypertension_5059w / s_hypertension_5059w ;
-* p_diagnosed_hypert_6069w ;	p_diagnosed_hypert_6069w = s_diagnosed_hypertension_6069w / s_hypertension_6069w ;
-* p_diagnosed_hypert_7079w ;	p_diagnosed_hypert_7079w = s_diagnosed_hypertension_7079w / s_hypertension_7079w ;
-* p_diagnosed_hypert_ge80w ;	p_diagnosed_hypert_ge80w = s_diagnosed_hypertension_ge80w / s_hypertension_ge80w ;
+* p_on_anti_hypert_ge18 ;		p_on_anti_hypert_ge18 = s_on_tx_htn_ge18 / s_htn_true_ge18 ;
+* p_on_anti_hypert_2534 ;		p_on_anti_hypert_2534 = s_on_tx_htn_2534 / s_htn_true_2534 ;
+* p_on_anti_hypert_3544 ;		p_on_anti_hypert_3544 = s_on_tx_htn_3544 / s_htn_true_3544 ;
+* p_on_anti_hypert_4554 ;		p_on_anti_hypert_4554 = s_on_tx_htn_4554 / s_htn_true_4554 ;
+* p_on_anti_hypert_5564 ;		p_on_anti_hypert_5564 = s_on_tx_htn_5564 / s_htn_true_5564 ;
+* p_on_anti_hypert_2544 ;		p_on_anti_hypert_2544 = (s_on_tx_htn_2534 + s_on_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
+* p_on_anti_hypert_4564 ;		p_on_anti_hypert_4564 = (s_on_tx_htn_4554 + s_on_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
+* p_on_anti_hypert_ge65 ;		p_on_anti_hypert_ge65 = s_on_tx_htn_ge65 / s_htn_true_ge65 ;
 
-* p_on_anti_hypert_1524 ;		p_on_anti_hypert_1524 = s_on_anti_hypertensive_1524 / s_hypertension_1524 ;
-* p_on_anti_hypert_2534 ;		p_on_anti_hypert_2534 = s_on_anti_hypertensive_2534 / s_hypertension_2534 ;
-* p_on_anti_hypert_3544 ;		p_on_anti_hypert_3544 = s_on_anti_hypertensive_3544 / s_hypertension_3544 ;
-* p_on_anti_hypert_4554 ;		p_on_anti_hypert_4554 = s_on_anti_hypertensive_4554 / s_hypertension_4554 ;
-* p_on_anti_hypert_5564 ;		p_on_anti_hypert_5564 = s_on_anti_hypertensive_5564 / s_hypertension_5564 ;
-* p_on_anti_hypert_2544 ;		p_on_anti_hypert_2544 = (s_on_anti_hypertensive_2534 + s_on_anti_hypertensive_3544) / (s_hypertension_2534 + s_hypertension_3544) ;
-* p_on_anti_hypert_4564 ;		p_on_anti_hypert_4564 = (s_on_anti_hypertensive_4554 + s_on_anti_hypertensive_5564) / (s_hypertension_4554 + s_hypertension_5564) ;
-* p_on_anti_hypert_ge65 ;		p_on_anti_hypert_ge65 = s_on_anti_hypertensive_ge65 / s_hypertension_ge65 ;
+* p_ever_anti_hypert_ge18 ;		p_ever_anti_hypert_ge18 = s_ever_tx_htn_ge18 / s_htn_true_ge18 ;
+* p_ever_anti_hypert_2544 ;		p_ever_anti_hypert_2544 = (s_ever_tx_htn_2534 + s_ever_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
+* p_ever_anti_hypert_4564 ;		p_ever_anti_hypert_4564 = (s_ever_tx_htn_4554 + s_ever_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
+* p_ever_anti_hypert_ge65 ;		p_ever_anti_hypert_ge65 = s_ever_tx_htn_ge65 / s_htn_true_ge65 ;
 
-* p_on_anti_hypert_1549 ;		p_on_anti_hypert_1549 = s_on_anti_hypertensive_1549 / s_hypertension_1549 ;
-* p_on_anti_hypert_1539 ;		p_on_anti_hypert_1539 = s_on_anti_hypertensive_1539 / s_hypertension_1539 ;
-* p_on_anti_hypert_4049 ;		p_on_anti_hypert_4049 = s_on_anti_hypertensive_4049 / s_hypertension_4049 ;
-* p_on_anti_hypert_5059 ;		p_on_anti_hypert_5059 = s_on_anti_hypertensive_5059 / s_hypertension_5059 ;
-* p_on_anti_hypert_6069 ;		p_on_anti_hypert_6069 = s_on_anti_hypertensive_6069 / s_hypertension_6069 ;
-* p_on_anti_hypert_7079 ;		p_on_anti_hypert_7079 = s_on_anti_hypertensive_7079 / s_hypertension_7079 ;
-* p_on_anti_hypert_ge80 ;		p_on_anti_hypert_ge80 = s_on_anti_hypertensive_ge80 / s_hypertension_ge80 ;
-* p_on_anti_hypert_1549m ;		p_on_anti_hypert_1549m = s_on_anti_hypertensive_1549m / s_hypertension_1549m ;
-* p_on_anti_hypert_1539m ;		p_on_anti_hypert_1539m = s_on_anti_hypertensive_1539m / s_hypertension_1539m ;
-* p_on_anti_hypert_4049m ;		p_on_anti_hypert_4049m = s_on_anti_hypertensive_4049m / s_hypertension_4049m ;
-* p_on_anti_hypert_5059m ;		p_on_anti_hypert_5059m = s_on_anti_hypertensive_5059m / s_hypertension_5059m ;
-* p_on_anti_hypert_6069m ;		p_on_anti_hypert_6069m = s_on_anti_hypertensive_6069m / s_hypertension_6069m ;
-* p_on_anti_hypert_7079m ;		p_on_anti_hypert_7079m = s_on_anti_hypertensive_7079m / s_hypertension_7079m ;
-* p_on_anti_hypert_ge80m ;		p_on_anti_hypert_ge80m = s_on_anti_hypertensive_ge80m / s_hypertension_ge80m ;
-* p_on_anti_hypert_1549w ;		p_on_anti_hypert_1549w = s_on_anti_hypertensive_1549w / s_hypertension_1549w ;
-* p_on_anti_hypert_1539w ;		p_on_anti_hypert_1539w = s_on_anti_hypertensive_1539w / s_hypertension_1539w ;
-* p_on_anti_hypert_4049w ;		p_on_anti_hypert_4049w = s_on_anti_hypertensive_4049w / s_hypertension_4049w ;
-* p_on_anti_hypert_5059w ;		p_on_anti_hypert_5059w = s_on_anti_hypertensive_5059w / s_hypertension_5059w ;
-* p_on_anti_hypert_6069w ;		p_on_anti_hypert_6069w = s_on_anti_hypertensive_6069w / s_hypertension_6069w ;
-* p_on_anti_hypert_7079w ;		p_on_anti_hypert_7079w = s_on_anti_hypertensive_7079w / s_hypertension_7079w ;
-* p_on_anti_hypert_ge80w ;		p_on_anti_hypert_ge80w = s_on_anti_hypertensive_ge80w / s_hypertension_ge80w ;
+* p_on1drug_antihyp_ge18 ;		p_on1drug_antihyp_ge18 = s_on1drug_antihyp_ge18 / (s_on_tx_htn_ge18);
+* p_on2drug_antihyp_ge18 ;		p_on2drug_antihyp_ge18 = s_on2drug_antihyp_ge18 / (s_on_tx_htn_ge18);
+* p_on3drug_antihyp_ge18 ;		p_on3drug_antihyp_ge18 = s_on3drug_antihyp_ge18 / (s_on_tx_htn_ge18);
+* p_on1drug_antihyp_2544 ;		p_on1drug_antihyp_2544 = (s_on1drug_antihyp_2534 + s_on1drug_antihyp_3544) / (s_on_tx_htn_2534 + s_on_tx_htn_3544);
+* p_on2drug_antihyp_2544 ;		p_on2drug_antihyp_2544 = (s_on2drug_antihyp_2534 + s_on2drug_antihyp_3544) / (s_on_tx_htn_2534 + s_on_tx_htn_3544);
+* p_on3drug_antihyp_2544 ;		p_on3drug_antihyp_2544 = (s_on3drug_antihyp_2534 + s_on3drug_antihyp_3544) / (s_on_tx_htn_2534 + s_on_tx_htn_3544);
+* p_on1drug_antihyp_4564 ;		p_on1drug_antihyp_4564 = (s_on1drug_antihyp_4554 + s_on1drug_antihyp_5564) / (s_on_tx_htn_4554 + s_on_tx_htn_5564);
+* p_on2drug_antihyp_4564 ;		p_on2drug_antihyp_4564 = (s_on2drug_antihyp_4554 + s_on2drug_antihyp_5564) / (s_on_tx_htn_4554 + s_on_tx_htn_5564);
+* p_on3drug_antihyp_4564 ;		p_on3drug_antihyp_4564 = (s_on3drug_antihyp_4554 + s_on3drug_antihyp_5564) / (s_on_tx_htn_4554 + s_on_tx_htn_5564);
+* p_on1drug_antihyp_ge65 ;		p_on1drug_antihyp_ge65 = s_on1drug_antihyp_ge65 / (s_on_tx_htn_ge65);
+* p_on2drug_antihyp_ge65 ;		p_on2drug_antihyp_ge65 = s_on2drug_antihyp_ge65 / (s_on_tx_htn_ge65);
+* p_on3drug_antihyp_ge65 ;		p_on3drug_antihyp_ge65 = s_on3drug_antihyp_ge65 / (s_on_tx_htn_ge65);
 
-* p_on1drug_antihyp_1549 ;		p_on1drug_antihyp_1549 = s_on1drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
-* p_on2drug_antihyp_1549 ;		p_on2drug_antihyp_1549 = s_on2drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
-* p_on3drug_antihyp_1549 ;		p_on3drug_antihyp_1549 = s_on3drug_antihyp_1549 / (s_on1drug_antihyp_1549 + s_on2drug_antihyp_1549 + s_on3drug_antihyp_1549);
-* p_on1drug_antihyp_1539 ;		p_on1drug_antihyp_1539 = s_on1drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
-* p_on2drug_antihyp_1539 ;		p_on2drug_antihyp_1539 = s_on2drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
-* p_on3drug_antihyp_1539 ;		p_on3drug_antihyp_1539 = s_on3drug_antihyp_1539 / (s_on1drug_antihyp_1539 + s_on2drug_antihyp_1539 + s_on3drug_antihyp_1539);
-* p_on1drug_antihyp_4049 ;		p_on1drug_antihyp_4049 = s_on1drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
-* p_on2drug_antihyp_4049 ;		p_on2drug_antihyp_4049 = s_on2drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
-* p_on3drug_antihyp_4049 ;		p_on3drug_antihyp_4049 = s_on3drug_antihyp_4049 / (s_on1drug_antihyp_4049 + s_on2drug_antihyp_4049 + s_on3drug_antihyp_4049);
-* p_on1drug_antihyp_5059 ;		p_on1drug_antihyp_5059 = s_on1drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
-* p_on2drug_antihyp_5059 ;		p_on2drug_antihyp_5059 = s_on2drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
-* p_on3drug_antihyp_5059 ;		p_on3drug_antihyp_5059 = s_on3drug_antihyp_5059 / (s_on1drug_antihyp_5059 + s_on2drug_antihyp_5059 + s_on3drug_antihyp_5059);
-* p_on1drug_antihyp_6069 ;		p_on1drug_antihyp_6069 = s_on1drug_antihyp_6069 / (s_on1drug_antihyp_6069 + s_on2drug_antihyp_6069 + s_on3drug_antihyp_6069);
-* p_on2drug_antihyp_6069 ;		p_on2drug_antihyp_6069 = s_on2drug_antihyp_6069 / (s_on1drug_antihyp_6069 + s_on2drug_antihyp_6069 + s_on3drug_antihyp_6069);
-* p_on3drug_antihyp_6069 ;		p_on3drug_antihyp_6069 = s_on3drug_antihyp_6069 / (s_on1drug_antihyp_6069 + s_on2drug_antihyp_6069 + s_on3drug_antihyp_6069);
-* p_on1drug_antihyp_7079 ;		p_on1drug_antihyp_7079 = s_on1drug_antihyp_7079 / (s_on1drug_antihyp_7079 + s_on2drug_antihyp_7079 + s_on3drug_antihyp_7079);
-* p_on2drug_antihyp_7079 ;		p_on2drug_antihyp_7079 = s_on2drug_antihyp_7079 / (s_on1drug_antihyp_7079 + s_on2drug_antihyp_7079 + s_on3drug_antihyp_7079);
-* p_on3drug_antihyp_7079 ;		p_on3drug_antihyp_7079 = s_on3drug_antihyp_7079 / (s_on1drug_antihyp_7079 + s_on2drug_antihyp_7079 + s_on3drug_antihyp_7079);
-* p_on1drug_antihyp_ge80 ;		p_on1drug_antihyp_ge80 = s_on1drug_antihyp_ge80 / (s_on1drug_antihyp_ge80 + s_on2drug_antihyp_ge80 + s_on3drug_antihyp_ge80);
-* p_on2drug_antihyp_ge80 ;		p_on2drug_antihyp_ge80 = s_on2drug_antihyp_ge80 / (s_on1drug_antihyp_ge80 + s_on2drug_antihyp_ge80 + s_on3drug_antihyp_ge80);
-* p_on3drug_antihyp_ge80 ;		p_on3drug_antihyp_ge80 = s_on3drug_antihyp_ge80 / (s_on1drug_antihyp_ge80 + s_on2drug_antihyp_ge80 + s_on3drug_antihyp_ge80);
+* p_hypert_control_ge18 ;		p_hypert_control_ge18 = s_htn_control_ge18 / s_htn_true_ge18 ;
+* p_hypert_control_2534 ;		p_hypert_control_2534 = s_htn_control_2534 / s_htn_true_2534 ;
+* p_hypert_control_3544 ;		p_hypert_control_3544 = s_htn_control_3544 / s_htn_true_3544 ;
+* p_hypert_control_4554 ;		p_hypert_control_4554 = s_htn_control_4554 / s_htn_true_4554 ;
+* p_hypert_control_5564 ;		p_hypert_control_5564 = s_htn_control_5564 / s_htn_true_5564 ;
+* p_hypert_control_2544 ;		p_hypert_control_2544 = (s_htn_control_2534 + s_htn_control_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
+* p_hypert_control_4564 ;		p_hypert_control_4564 = (s_htn_control_4554 + s_htn_control_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
+* p_hypert_control_ge65 ;		p_hypert_control_ge65 = s_htn_control_ge65 / s_htn_true_ge65 ;
 
-* p_hypert_control_1524 ;		p_hypert_control_1524 = s_hypert_control_1524 / s_hypertension_1524 ;
-* p_hypert_control_2534 ;		p_hypert_control_2534 = s_hypert_control_2534 / s_hypertension_2534 ;
-* p_hypert_control_3544 ;		p_hypert_control_3544 = s_hypert_control_3544 / s_hypertension_3544 ;
-* p_hypert_control_4554 ;		p_hypert_control_4554 = s_hypert_control_4554 / s_hypertension_4554 ;
-* p_hypert_control_5564 ;		p_hypert_control_5564 = s_hypert_control_5564 / s_hypertension_5564 ;
-* p_hypert_control_2544 ;		p_hypert_control_2544 = (s_hypert_control_2534 + s_hypert_control_3544) / (s_hypertension_2534 + s_hypertension_3544) ;
-* p_hypert_control_4564 ;		p_hypert_control_4564 = (s_hypert_control_4554 + s_hypert_control_5564) / (s_hypertension_4554 + s_hypertension_5564) ;
-* p_hypert_control_ge65 ;		p_hypert_control_ge65 = s_hypert_control_ge65 / s_hypertension_ge65 ;
+
+* Severe Hypertension (sbp >=160);
+* p_hypertens160_ge18 ;			p_hypertens160_ge18 = s_hypertens160_ge18 / (popge18) ;
+* p_hypertens160_2544 ;			p_hypertens160_2544 = (s_hypertens160_2534 + s_hypertens160_3544) / (pop2534 + pop4554) ;
+* p_hypertens160_4564 ;			p_hypertens160_4564 = (s_hypertens160_4554 + s_hypertens160_5564) / (pop4554 + pop5564) ;
+* p_hypertens160_ge65 ;			p_hypertens160_ge65 = s_hypertens160_ge65 / (pop6574 + pop7584 + popge85) ;
+
+* p_htn_true160_ge18 ;			p_htn_true160_ge18 = s_htn_true160_ge18 / (popge18) ;
+* p_htn_true160_2544 ;			p_htn_true160_2544 = (s_htn_true160_2534 + s_htn_true160_3544) / (pop2534 + pop4554) ;
+* p_htn_true160_4564 ;			p_htn_true160_4564 = (s_htn_true160_4554 + s_htn_true160_5564) / (pop4554 + pop5564) ;
+* p_htn_true160_ge65 ;			p_htn_true160_ge65 = s_htn_true160_ge65 / (pop6574 + pop7584 + popge85) ;
+
+* p_dx_htn_true160_ge18 ;		p_dx_htn_true160_ge18 = s_htn_true_dx160_ge18 / s_htn_true160_ge18 ;
+* p_dx_htn_true160_2544 ;		p_dx_htn_true160_2544 = (s_htn_true_dx160_2534 + s_htn_true_dx160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
+* p_dx_htn_true160_4564 ;		p_dx_htn_true160_4564 = (s_htn_true_dx160_4554 + s_htn_true_dx160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
+* p_dx_htn_true160_ge65 ;		p_dx_htn_true160_ge65 = s_htn_true_dx160_ge65 / s_htn_true160_ge65 ;
+
+* p_on_anti_hypert160_ge18 ;	p_on_anti_hypert160_ge18 = s_on_tx_htn160_ge18 / s_htn_true160_ge18 ;
+* p_on_anti_hypert160_2544 ;	p_on_anti_hypert160_2544 = (s_on_tx_htn160_2534 + s_on_tx_htn160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
+* p_on_anti_hypert160_4564 ;	p_on_anti_hypert160_4564 = (s_on_tx_htn160_4554 + s_on_tx_htn160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
+* p_on_anti_hypert160_ge65 ;	p_on_anti_hypert160_ge65 = s_on_tx_htn160_ge65 / s_htn_true160_ge65 ;
+
+* p_hypert_control160_ge18 ;	p_hypert_control160_ge18 = s_htn_control160_ge18 / s_htn_true160_ge18 ;
+* p_hypert_control160_2544 ;	p_hypert_control160_2544 = (s_htn_control160_2534 + s_htn_control160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
+* p_hypert_control160_4564 ;	p_hypert_control160_4564 = (s_htn_control160_4554 + s_htn_control160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
+* p_hypert_control160_ge65 ;	p_hypert_control160_ge65 = s_htn_control160_ge65 / s_htn_true160_ge65 ;
 
 * mean SBP;
-m_sbp_1519w  = s_sbp_1519w  / (s_ageg1517w + s_ageg1819w);   
-m_sbp_2024w  = s_sbp_2024w  / s_ageg2024w ;
+*m_sbp_1519w  = s_sbp_1519w  / (s_ageg1517w + s_ageg1819w);   
+*m_sbp_2024w  = s_sbp_2024w  / s_ageg2024w ;
 m_sbp_2529w  = s_sbp_2529w  / s_ageg2529w ;   
 m_sbp_3034w  = s_sbp_3034w  / s_ageg3034w ;
 m_sbp_3539w  = s_sbp_3539w  / s_ageg3539w ;   
@@ -769,8 +720,8 @@ m_sbp_7074w  = s_sbp_7074w  / s_ageg7074w ;
 m_sbp_7579w  = s_sbp_7579w  / s_ageg7579w ;   
 m_sbp_ge80w  = s_sbp_ge80w  / (s_ageg8084w + s_ageg85plw);
 
-m_sbp_1519m  = s_sbp_1519m  / (s_ageg1517m + s_ageg1819m) ;   
-m_sbp_2024m  = s_sbp_2024m  / s_ageg2024m ;
+*m_sbp_1519m  = s_sbp_1519m  / (s_ageg1517m + s_ageg1819m) ;   
+*m_sbp_2024m  = s_sbp_2024m  / s_ageg2024m ;
 m_sbp_2529m  = s_sbp_2529m  / s_ageg2529m ;   
 m_sbp_3034m  = s_sbp_3034m  / s_ageg3034m ;
 m_sbp_3539m  = s_sbp_3539m  / s_ageg3539m ;   
@@ -784,8 +735,8 @@ m_sbp_7074m  = s_sbp_7074m  / s_ageg7074m ;
 m_sbp_7579m  = s_sbp_7579m  / s_ageg7579m ;   
 m_sbp_ge80m  = s_sbp_ge80m  / (s_ageg8084m + s_ageg85plm) ;
 
-m_sbp_1519  = (s_sbp_1519w + s_sbp_1519m ) / (s_ageg1517w + s_ageg1819w + s_ageg1517m + s_ageg1819m) ;
-m_sbp_2024  = (s_sbp_2024w + s_sbp_2024m ) / (s_ageg2024w + s_ageg2024m ) ;
+*m_sbp_1519  = (s_sbp_1519w + s_sbp_1519m ) / (s_ageg1517w + s_ageg1819w + s_ageg1517m + s_ageg1819m) ;
+*m_sbp_2024  = (s_sbp_2024w + s_sbp_2024m ) / (s_ageg2024w + s_ageg2024m ) ;
 m_sbp_2529  = (s_sbp_2529w + s_sbp_2529m ) / (s_ageg2529w + s_ageg2529m ) ;
 m_sbp_3034  = (s_sbp_3034w + s_sbp_3034m ) / (s_ageg3034w + s_ageg3034m ) ;
 m_sbp_3539  = (s_sbp_3539w + s_sbp_3539m ) / (s_ageg3539w + s_ageg3539m ) ;
@@ -799,12 +750,16 @@ m_sbp_7074  = (s_sbp_7074w + s_sbp_7074m ) / (s_ageg7074w + s_ageg7074m ) ;
 m_sbp_7579  = (s_sbp_7579w + s_sbp_7579m ) / (s_ageg7579w + s_ageg7579m ) ;
 m_sbp_ge80  = (s_sbp_ge80w + s_sbp_ge80m ) / (s_ageg8084w + s_ageg85plw + s_ageg8084m + s_ageg85plm) ;
 
-m_sbp_2544  = (s_sbp_2529w + s_sbp_2529m + s_sbp_3034w + s_sbp_3034m + s_sbp_3539w + s_sbp_3539m + s_sbp_4044w + s_sbp_4044m) / (s_ageg2529w + s_ageg2529m + s_ageg3034w + s_ageg3034m + s_ageg3539w + s_ageg3539m + s_ageg4044w + s_ageg4044m) ;
-m_sbp_4564  = (s_sbp_4549w + s_sbp_4549m + s_sbp_5054w + s_sbp_5054m + s_sbp_5559w + s_sbp_5559m + s_sbp_6064w + s_sbp_6064m) / (s_ageg4549w + s_ageg4549m + s_ageg5054w + s_ageg5054m + s_ageg5559w + s_ageg5559m + s_ageg6064w + s_ageg6064m) ;
-m_sbp_ge65  = (s_sbp_6569w + s_sbp_6569m + s_sbp_7074w + s_sbp_7074m + s_sbp_7579w + s_sbp_7579m + s_sbp_ge80w + s_sbp_ge80m) / (s_ageg6569w + s_ageg6569m + s_ageg7074w + s_ageg7074m + s_ageg7579w + s_ageg7579m + s_ageg8084w + s_ageg85plw + s_ageg8084m + s_ageg85plm) ;
+m_sbp_2544  = (s_sbp_2529w + s_sbp_2529m + s_sbp_3034w + s_sbp_3034m + s_sbp_3539w + s_sbp_3539m + s_sbp_4044w + s_sbp_4044m) / (pop2534 + pop4554) ;
+m_sbp_4564  = (s_sbp_4549w + s_sbp_4549m + s_sbp_5054w + s_sbp_5054m + s_sbp_5559w + s_sbp_5559m + s_sbp_6064w + s_sbp_6064m) / (pop4554 + pop5564) ;
+m_sbp_ge65  = (s_sbp_6569w + s_sbp_6569m + s_sbp_7074w + s_sbp_7074m + s_sbp_7579w + s_sbp_7579m + s_sbp_ge80w + s_sbp_ge80m) / (pop6574 + pop7584 + popge85) ;
+
+m_sbp_max_over_ge18 = s_sbp_max_over_ge18 / s_htn_over_dx_ge18;
+m_sbp_over_ge18 = s_sbp_over_ge18 / s_htn_over_dx_ge18;
+
 
 * CVD events;
-
+/*
 rate_ihd_one = (s_ihd_inc_one * 4 * 100) / s_alive;
 rate_ihd_one_4049m = (s_ihd_inc_one_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
 rate_ihd_one_5059m = (s_ihd_inc_one_5059m * 4 * 100) / (s_ageg5054m + s_ageg5559m) ;
@@ -880,7 +835,7 @@ rate_cva_one_modsev_5059w = (s_cva_inc_one_modsev_5059w * 4 * 100) / (s_ageg5054
 rate_cva_one_modsev_6069w = (s_cva_inc_one_modsev_6069w * 4 * 100) / (s_ageg6064w + s_ageg6569w) ;
 rate_cva_one_modsev_7079w = (s_cva_inc_one_modsev_7079w * 4 * 100) / (s_ageg7074w + s_ageg7579w) ;
 rate_cva_one_modsev_ge80w = (s_cva_inc_one_modsev_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
-
+*/
 rate_ihd_all_modsev = (s_ihd_inc_all_modsev * 4 * 100) / s_alive;
 rate_ihd_all_modsev_4049m = (s_ihd_inc_all_modsev_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
 rate_ihd_all_modsev_5059m = (s_ihd_inc_all_modsev_5059m * 4 * 100) / (s_ageg5054m + s_ageg5559m) ;
@@ -894,7 +849,6 @@ rate_ihd_all_modsev_7079w = (s_ihd_inc_all_modsev_7079w * 4 * 100) / (s_ageg7074
 rate_ihd_all_modsev_ge80w = (s_ihd_inc_all_modsev_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
 rate_ihd_all_modsev_4059 = ((s_ihd_inc_all_modsev_4049m + s_ihd_inc_all_modsev_5059m + s_ihd_inc_all_modsev_4049w + s_ihd_inc_all_modsev_5059w) * 4 * 100) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
 rate_ihd_all_modsev_6079 = ((s_ihd_inc_all_modsev_6069m + s_ihd_inc_all_modsev_7079m + s_ihd_inc_all_modsev_6069w + s_ihd_inc_all_modsev_7079w) * 4 * 100) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
-
 
 rate_cva_all_modsev = (s_cva_inc_all_modsev * 4 * 100) / s_alive;
 rate_cva_all_modsev_4049m = (s_cva_inc_all_modsev_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
@@ -912,32 +866,32 @@ rate_cva_all_modsev_6079 = ((s_cva_inc_all_modsev_6069m + s_cva_inc_all_modsev_7
 
 
 prev_ihd = (s_ihd_prev) / s_alive;
-prev_ihd_4049m = (s_ihd_prev_4049m) / (s_ageg4044m + s_ageg4549m) ;
-prev_ihd_5059m = (s_ihd_prev_5059m) / (s_ageg5054m + s_ageg5559m) ;
-prev_ihd_6069m = (s_ihd_prev_6069m) / (s_ageg6064m + s_ageg6569m) ;
-prev_ihd_7079m = (s_ihd_prev_7079m) / (s_ageg7074m + s_ageg7579m) ;
-prev_ihd_ge80m = (s_ihd_prev_ge80m) / (s_ageg8084m + s_ageg85plm) ;
-prev_ihd_4049w = (s_ihd_prev_4049w) / (s_ageg4044w + s_ageg4549w) ;
-prev_ihd_5059w = (s_ihd_prev_5059w) / (s_ageg5054w + s_ageg5559w) ;
-prev_ihd_6069w = (s_ihd_prev_6069w) / (s_ageg6064w + s_ageg6569w) ;
-prev_ihd_7079w = (s_ihd_prev_7079w) / (s_ageg7074w + s_ageg7579w) ;
-prev_ihd_ge80w = (s_ihd_prev_ge80w) / (s_ageg8084w + s_ageg85plw) ;
-prev_ihd_4059 = (s_ihd_prev_4049m + s_ihd_prev_5059m + s_ihd_prev_4049w + s_ihd_prev_5059w) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
-prev_ihd_6079 = (s_ihd_prev_6069m + s_ihd_prev_7079m + s_ihd_prev_6069w + s_ihd_prev_7079w) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
+prev_ihd_4049m = (s_ihd_prev_4049m * 100) / (s_ageg4044m + s_ageg4549m) ;
+prev_ihd_5059m = (s_ihd_prev_5059m * 100) / (s_ageg5054m + s_ageg5559m) ;
+prev_ihd_6069m = (s_ihd_prev_6069m * 100) / (s_ageg6064m + s_ageg6569m) ;
+prev_ihd_7079m = (s_ihd_prev_7079m * 100) / (s_ageg7074m + s_ageg7579m) ;
+prev_ihd_ge80m = (s_ihd_prev_ge80m * 100) / (s_ageg8084m + s_ageg85plm) ;
+prev_ihd_4049w = (s_ihd_prev_4049w * 100) / (s_ageg4044w + s_ageg4549w) ;
+prev_ihd_5059w = (s_ihd_prev_5059w * 100) / (s_ageg5054w + s_ageg5559w) ;
+prev_ihd_6069w = (s_ihd_prev_6069w * 100) / (s_ageg6064w + s_ageg6569w) ;
+prev_ihd_7079w = (s_ihd_prev_7079w * 100) / (s_ageg7074w + s_ageg7579w) ;
+prev_ihd_ge80w = (s_ihd_prev_ge80w * 100) / (s_ageg8084w + s_ageg85plw) ;
+prev_ihd_4059 = ((s_ihd_prev_4049m + s_ihd_prev_5059m + s_ihd_prev_4049w + s_ihd_prev_5059w) * 100) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
+prev_ihd_6079 = ((s_ihd_prev_6069m + s_ihd_prev_7079m + s_ihd_prev_6069w + s_ihd_prev_7079w) * 100) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
 
 prev_cva = (s_cva_prev) / s_alive;
-prev_cva_4049m = (s_cva_prev_4049m) / (s_ageg4044m + s_ageg4549m) ;
-prev_cva_5059m = (s_cva_prev_5059m) / (s_ageg5054m + s_ageg5559m) ;
-prev_cva_6069m = (s_cva_prev_6069m) / (s_ageg6064m + s_ageg6569m) ;
-prev_cva_7079m = (s_cva_prev_7079m) / (s_ageg7074m + s_ageg7579m) ;
-prev_cva_ge80m = (s_cva_prev_ge80m) / (s_ageg8084m + s_ageg85plm) ;
-prev_cva_4049w = (s_cva_prev_4049w) / (s_ageg4044w + s_ageg4549w) ;
-prev_cva_5059w = (s_cva_prev_5059w) / (s_ageg5054w + s_ageg5559w) ;
-prev_cva_6069w = (s_cva_prev_6069w) / (s_ageg6064w + s_ageg6569w) ;
-prev_cva_7079w = (s_cva_prev_7079w) / (s_ageg7074w + s_ageg7579w) ;
-prev_cva_ge80w = (s_cva_prev_ge80w) / (s_ageg8084w + s_ageg85plw) ;
-prev_cva_4059 = (s_cva_prev_4049m + s_cva_prev_5059m + s_cva_prev_4049w + s_cva_prev_5059w) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
-prev_cva_6079 = (s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva_prev_7079w) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
+prev_cva_4049m = (s_cva_prev_4049m * 100) / (s_ageg4044m + s_ageg4549m) ;
+prev_cva_5059m = (s_cva_prev_5059m * 100) / (s_ageg5054m + s_ageg5559m) ;
+prev_cva_6069m = (s_cva_prev_6069m * 100) / (s_ageg6064m + s_ageg6569m) ;
+prev_cva_7079m = (s_cva_prev_7079m * 100) / (s_ageg7074m + s_ageg7579m) ;
+prev_cva_ge80m = (s_cva_prev_ge80m * 100) / (s_ageg8084m + s_ageg85plm) ;
+prev_cva_4049w = (s_cva_prev_4049w * 100) / (s_ageg4044w + s_ageg4549w) ;
+prev_cva_5059w = (s_cva_prev_5059w * 100) / (s_ageg5054w + s_ageg5559w) ;
+prev_cva_6069w = (s_cva_prev_6069w * 100) / (s_ageg6064w + s_ageg6569w) ;
+prev_cva_7079w = (s_cva_prev_7079w * 100) / (s_ageg7074w + s_ageg7579w) ;
+prev_cva_ge80w = (s_cva_prev_ge80w * 100) / (s_ageg8084w + s_ageg85plw) ;
+prev_cva_4059 = ((s_cva_prev_4049m + s_cva_prev_5059m + s_cva_prev_4049w + s_cva_prev_5059w) * 100) / (s_ageg4044m + s_ageg4549m + s_ageg5054m + s_ageg5559m + s_ageg4044w + s_ageg4549w + s_ageg5054w + s_ageg5559w) ;
+prev_cva_6079 = ((s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva_prev_7079w) * 100) / (s_ageg6064m + s_ageg6569m + s_ageg7074m + s_ageg7579m + s_ageg6064w + s_ageg6569w + s_ageg7074w + s_ageg7579w) ;
  
 
 * p_ahd_re_enter_care_100;		p_ahd_re_enter_care_100 = s_ahd_re_enter_care_100 / s_re_enter_care;
@@ -997,6 +951,9 @@ prev_cva_6079 = (s_cva_prev_6069m + s_cva_prev_7079m + s_cva_prev_6069w + s_cva_
 			rate_dead_hivneg_anycause = (s_dead_hivneg_anycause * 4 * 100) / (s_alive - s_hivge15) ;
 			n_dead_hivpos_anycause = s_dead_hivpos_anycause * 4 * &sf ;
 			rate_dead_hivpos_anycause = (s_dead_hivpos_anycause * 4 * 100) / s_hivge15 ;
+			rate_dead_hivpos_cvd = (s_dead_hivpos_cvd * 4 * 100) / s_hivge15 ;
+			rate_dead_all_anycause = ((s_dead_hivneg_anycause + s_dead_hivpos_anycause) * 4 * 100) / (s_alive) ;
+			n_dead_all_anycause = (s_dead_hivneg_anycause + s_dead_hivpos_anycause) * 4 * &sf ;
 
 			rate_dead_cvd_3039m = (s_dead_cvd_3039m * 4 * 100) / (s_ageg3034m + s_ageg3539m) ;
 			rate_dead_cvd_4049m = (s_dead_cvd_4049m * 4 * 100) / (s_ageg4044m + s_ageg4549m) ;
@@ -1053,34 +1010,19 @@ death_rate  death_rate_hiv
 
 /* *HYPERTENSION */
 prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective
-pop1524 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85 
-p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
-p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
-p_dx_htn_true_1524 p_dx_htn_true_2534 p_dx_htn_true_3544 p_dx_htn_true_4554 p_dx_htn_true_5564 p_dx_htn_true_ge65
-p_dx_htn_over_1524 p_dx_htn_over_2534 p_dx_htn_over_3544 p_dx_htn_over_4554 p_dx_htn_over_5564 p_dx_htn_over_ge65
-p_diagnosed_hypert_1524 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 
-	p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
-p_on_anti_hypert_1524 p_on_anti_hypert_2534 p_on_anti_hypert_3544
-	p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
-p_hypert_control_1524 p_hypert_control_2534 p_hypert_control_3544
-	p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
-p_hypert_1549 p_hypert_1539 p_hypert_4049 p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  
-p_diagnosed_hypert_1549 p_diagnosed_hypert_1539 p_diagnosed_hypert_4049 p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  
-p_on_anti_hypert_1549 p_on_anti_hypert_1539 p_on_anti_hypert_4049 p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80
-p_hypert_1549m p_hypert_1539m p_hypert_4049m p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  
-p_diagnosed_hypert_1549m p_diagnosed_hypert_1539m p_diagnosed_hypert_4049m p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
-p_on_anti_hypert_1549m p_on_anti_hypert_1539m p_on_anti_hypert_4049m p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
-p_hypert_1549w p_hypert_1539w p_hypert_4049w p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  
-p_diagnosed_hypert_1549w p_diagnosed_hypert_1539w p_diagnosed_hypert_4049w p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
-p_on_anti_hypert_1549w p_on_anti_hypert_1539w p_on_anti_hypert_4049w p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
-p_hypert160_1549 p_hypert160_1539 p_hypert160_4049 p_hypert160_5059 p_hypert160_6069 p_hypert160_7079 p_hypert160_ge80
-p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549 
-p_on1drug_antihyp_1539 p_on2drug_antihyp_1539 p_on3drug_antihyp_1539 
-p_on1drug_antihyp_4049 p_on2drug_antihyp_4049 p_on3drug_antihyp_4049  
-p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 p_on3drug_antihyp_5059  
-p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  
-p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 p_on3drug_antihyp_7079  
-p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80 
+popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85 
+p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
+p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
+p_dx_htn_true_ge18 p_dx_htn_true_ge65
+p_dx_htn_over_ge18 p_dx_htn_over_ge65
+p_diagnosed_hypert_ge18 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
+p_on_anti_hypert_ge18 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
+p_hypert_control_ge18 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
+
+p_on1drug_antihyp_ge18 p_on2drug_antihyp_ge18 p_on3drug_antihyp_ge18 	
+p_on1drug_antihyp_2544 p_on2drug_antihyp_2544 p_on3drug_antihyp_2544 	
+p_on1drug_antihyp_4564 p_on2drug_antihyp_4564 p_on3drug_antihyp_4564 
+p_on1drug_antihyp_ge65 p_on2drug_antihyp_ge65 p_on3drug_antihyp_ge65 	
 
 p_hypert_2544 p_hypert_4564
 p_htn_true_2544 p_htn_true_4564
@@ -1088,32 +1030,43 @@ p_dx_htn_true_2544 p_dx_htn_true_4564
 p_dx_htn_over_2544 p_dx_htn_over_4564 
 p_diagnosed_hypert_2544 p_diagnosed_hypert_4564 
 p_on_anti_hypert_2544 p_on_anti_hypert_4564 
+p_ever_anti_hypert_ge18 p_ever_anti_hypert_2544 p_ever_anti_hypert_4564 p_ever_anti_hypert_ge65 
 p_hypert_control_2544 p_hypert_control_4564
-rate_ihd_all_4059
-rate_ihd_all_6079
-rate_cva_all_4059
-rate_cva_all_6079
-rate_ihd_all_modsev_4059
-rate_ihd_all_modsev_6079
-rate_cva_all_modsev_4059
-rate_cva_all_modsev_6079
-prev_ihd_4059
-prev_ihd_6079
-prev_cva_4059
-prev_cva_6079
-rate_dead_cvd_4059
-rate_dead_cvd_6079
 
-m_sbp_1519w m_sbp_2024w m_sbp_2529w m_sbp_3034w m_sbp_3539w m_sbp_4044w m_sbp_4549w m_sbp_5054w m_sbp_5559w m_sbp_6064w m_sbp_6569w m_sbp_7074w m_sbp_7579w m_sbp_ge80w  
-m_sbp_1519m m_sbp_2024m m_sbp_2529m m_sbp_3034m m_sbp_3539m m_sbp_4044m m_sbp_4549m m_sbp_5054m m_sbp_5559m	m_sbp_6064m m_sbp_6569m m_sbp_7074m m_sbp_7579m m_sbp_ge80m 
-m_sbp_1519  m_sbp_2024  m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_4549  m_sbp_5054  m_sbp_5559	m_sbp_6064  m_sbp_6569  m_sbp_7074  m_sbp_7579  m_sbp_ge80 
+p_hypertens160_ge18 p_hypertens160_2544 p_hypertens160_4564 p_hypertens160_ge65 
+p_htn_true160_ge18 p_htn_true160_2544 p_htn_true160_4564 p_htn_true160_ge65 
+p_dx_htn_true160_ge18 p_dx_htn_true160_2544 p_dx_htn_true160_4564 p_dx_htn_true160_ge65 
+p_on_anti_hypert160_ge18 p_on_anti_hypert160_2544 p_on_anti_hypert160_4564 p_on_anti_hypert160_ge65 
+p_hypert_control160_ge18 p_hypert_control160_2544 p_hypert_control160_4564 p_hypert_control160_ge65
+
+rate_ihd_all_modsev_4059 rate_ihd_all_modsev_6079
+rate_cva_all_modsev_4059 rate_cva_all_modsev_6079 
+prev_ihd_4059 prev_ihd_6079 
+prev_cva_4059 prev_cva_6079 
+rate_dead_cvd_4059 rate_dead_cvd_6079
+ 
+m_sbp_2529w m_sbp_3034w m_sbp_3539w m_sbp_4044w m_sbp_4549w m_sbp_5054w m_sbp_5559w m_sbp_6064w m_sbp_6569w m_sbp_7074w m_sbp_7579w m_sbp_ge80w  
+m_sbp_2529m m_sbp_3034m m_sbp_3539m m_sbp_4044m m_sbp_4549m m_sbp_5054m m_sbp_5559m	m_sbp_6064m m_sbp_6569m m_sbp_7074m m_sbp_7579m m_sbp_ge80m 
+m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_4549  m_sbp_5054  m_sbp_5559	m_sbp_6064  m_sbp_6569  m_sbp_7074  m_sbp_7579  m_sbp_ge80 
 m_sbp_2544 m_sbp_4564 m_sbp_ge65
+m_sbp_max_over_ge18 m_sbp_over_ge18 
 
-htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
-dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
-dhtn_cost_totdrughalf dhtn_cost_totdrugdoub dhtn_cost_tothalf dhtn_cost_totdoub
-tot_dyll_cvd tot_dyll
+rate_ihd_all_modsev 
+rate_ihd_all_modsev_4049m rate_ihd_all_modsev_5059m rate_ihd_all_modsev_6069m rate_ihd_all_modsev_7079m rate_ihd_all_modsev_ge80m
+rate_ihd_all_modsev_4049w rate_ihd_all_modsev_5059w rate_ihd_all_modsev_6069w rate_ihd_all_modsev_7079w rate_ihd_all_modsev_ge80w 
+rate_cva_all_modsev 
+rate_cva_all_modsev_4049m rate_cva_all_modsev_5059m rate_cva_all_modsev_6069m rate_cva_all_modsev_7079m rate_cva_all_modsev_ge80m
+rate_cva_all_modsev_4049w rate_cva_all_modsev_5059w rate_cva_all_modsev_6069w rate_cva_all_modsev_7079w rate_cva_all_modsev_ge80w 
 
+prev_ihd 
+prev_ihd_4049m prev_ihd_5059m prev_ihd_6069m prev_ihd_7079m prev_ihd_ge80m
+prev_ihd_4049w prev_ihd_5059w prev_ihd_6069w prev_ihd_7079w prev_ihd_ge80w 
+
+prev_cva 
+prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
+prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
+
+/*
 rate_ihd_one 
 rate_ihd_one_4049m rate_ihd_one_5059m rate_ihd_one_6069m rate_ihd_one_7079m rate_ihd_one_ge80m
 rate_ihd_one_4049w rate_ihd_one_5059w rate_ihd_one_6069w rate_ihd_one_7079w rate_ihd_one_ge80w 
@@ -1132,34 +1085,28 @@ rate_ihd_one_modsev_4049w rate_ihd_one_modsev_5059w rate_ihd_one_modsev_6069w ra
 rate_cva_one_modsev 
 rate_cva_one_modsev_4049m rate_cva_one_modsev_5059m rate_cva_one_modsev_6069m rate_cva_one_modsev_7079m rate_cva_one_modsev_ge80m
 rate_cva_one_modsev_4049w rate_cva_one_modsev_5059w rate_cva_one_modsev_6069w rate_cva_one_modsev_7079w rate_cva_one_modsev_ge80w 
-rate_ihd_all_modsev 
-rate_ihd_all_modsev_4049m rate_ihd_all_modsev_5059m rate_ihd_all_modsev_6069m rate_ihd_all_modsev_7079m rate_ihd_all_modsev_ge80m
-rate_ihd_all_modsev_4049w rate_ihd_all_modsev_5059w rate_ihd_all_modsev_6069w rate_ihd_all_modsev_7079w rate_ihd_all_modsev_ge80w 
-rate_cva_all_modsev 
-rate_cva_all_modsev_4049m rate_cva_all_modsev_5059m rate_cva_all_modsev_6069m rate_cva_all_modsev_7079m rate_cva_all_modsev_ge80m
-rate_cva_all_modsev_4049w rate_cva_all_modsev_5059w rate_cva_all_modsev_6069w rate_cva_all_modsev_7079w rate_cva_all_modsev_ge80w 
+*/
 
-prev_ihd 
-prev_ihd_4049m prev_ihd_5059m prev_ihd_6069m prev_ihd_7079m prev_ihd_ge80m
-prev_ihd_4049w prev_ihd_5059w prev_ihd_6069w prev_ihd_7079w prev_ihd_ge80w 
-
-prev_cva 
-prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
-prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
-
+htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
+dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
+dhtn_cost_totdrughalf dhtn_cost_totdrugdoub dhtn_cost_tothalf dhtn_cost_totdoub
 
 n_dead_hivpos_cause1  rate_dead_hivpos_cause1 n_dead_hivpos_tb  rate_dead_hivpos_tb n_dead_hivpos_cause4  rate_dead_hivpos_cause4 
 n_dead_hivpos_crypm  rate_dead_hivpos_crypm n_dead_hivpos_sbi  rate_dead_hivpos_sbi n_dead_hivpos_oth_adc  rate_dead_hivpos_oth_adc 
 n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_hivpos_cause3 	n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
-n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause p_age1549_hivneg p_age1549_hiv
+n_dead_hivneg_cause5  rate_dead_hivneg_cause5 rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause rate_dead_hivpos_cvd
+rate_dead_all_anycause n_dead_all_anycause
+p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w 
 n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
 
 sf_2023 p_hard_reach_w hard_reach_higher_in_men
 p_hard_reach_m inc_cat 
+
+
 
 ;
 
@@ -1186,18 +1133,18 @@ data y; set a.l_base;
 proc means noprint data=y; var &v; output out=y_15 mean= &v._15; by run option ; where 2014.5 <= cald < 2015.5; 
 proc means noprint data=y; var &v; output out=y_23 mean= &v._23; by run option ; where 2022.5 <= cald < 2023.5; 
 
-proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2042.5 <= cald < 2043.5; 
-proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2072.5 <= cald < 2073.5; 
+/* proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option ; where 2042.5 <= cald < 2043.5; 
+proc means noprint data=y; var &v; output out=y_73 mean= &v._73; by run option ; where 2072.5 <= cald < 2073.5; */
 proc means noprint data=y; var &v; output out=y_2343 mean= &v._2343; by run option ; where 2023.5 <= cald < 2043.5; 
 proc means noprint data=y; var &v; output out=y_2373 mean= &v._2373; by run option ; where 2023.5 <= cald < 2073.5; 
   
 																												
-proc sort data=y_43; by run option ; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; 
-proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ;  
+/* proc sort data=y_43; by run option ; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run option ; 
+proc sort data=y_73; by run option; proc transpose data=y_73 out=t_73 prefix=&v._73_; var &v._73; by run option ;  */
 proc sort data=y_2343; by run option; proc transpose data=y_2343 out=t_2343 prefix=&v._2343_; var &v._2343; by run option ;  
 proc sort data=y_2373; by run option; proc transpose data=y_2373 out=t_2373 prefix=&v._2373_; var &v._2373; by run option ;  
 
-data &v ; merge   y_15 y_23 y_43 y_73 y_2343 y_2373 ; by run option; 
+data &v ; merge   y_15 y_23  y_2343 y_2373 ; by run option; * REMOVED y_43 y_73 to shorten output;
 drop _NAME_ _TYPE_ _FREQ_;
 
 
@@ -1213,18 +1160,18 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dcost);	 		%var(v=ddaly);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
-%var(v=pop1524); %var(v=pop2534); %var(v=pop3544); %var(v=pop4554); %var(v=pop5564); %var(v=pop6574); %var(v=pop7584); %var(v=popge85);
+%var(v=popge18); %var(v=pop2534); %var(v=pop3544); %var(v=pop4554); %var(v=pop5564); %var(v=pop6574); %var(v=pop7584); %var(v=popge85);
 %var(v=death_rate_hiv);
 
 %var(v=prob_sbp_increase); %var(v=sbp_cal_eff); %var(v=rr_cvd_tx); %var(v=rr_cvd_tx_effective);
 
-%var(v=p_hypert_1524); %var(v=p_hypert_2534); %var(v=p_hypert_3544); %var(v=p_hypert_4554); %var(v=p_hypert_5564); %var(v=p_hypert_ge65); 
-%var(v=p_htn_true_1524); %var(v=p_htn_true_2534); %var(v=p_htn_true_3544); %var(v=p_htn_true_4554); %var(v=p_htn_true_5564); %var(v=p_htn_true_ge65); 
-%var(v=p_dx_htn_true_1524); %var(v=p_dx_htn_true_2534); %var(v=p_dx_htn_true_3544); %var(v=p_dx_htn_true_4554); %var(v=p_dx_htn_true_5564); %var(v=p_dx_htn_true_ge65); 
-%var(v=p_dx_htn_over_1524); %var(v=p_dx_htn_over_2534); %var(v=p_dx_htn_over_3544); %var(v=p_dx_htn_over_4554); %var(v=p_dx_htn_over_5564); %var(v=p_dx_htn_over_ge65); 
-%var(v=p_diagnosed_hypert_1524); %var(v=p_diagnosed_hypert_2534); %var(v=p_diagnosed_hypert_3544); %var(v=p_diagnosed_hypert_4554); %var(v=p_diagnosed_hypert_5564); %var(v=p_diagnosed_hypert_ge65); 
-%var(v=p_on_anti_hypert_1524); %var(v=p_on_anti_hypert_2534); %var(v=p_on_anti_hypert_3544); %var(v=p_on_anti_hypert_4554); %var(v=p_on_anti_hypert_5564); %var(v=p_on_anti_hypert_ge65); 
-%var(v=p_hypert_control_1524); %var(v=p_hypert_control_2534); %var(v=p_hypert_control_3544); %var(v=p_hypert_control_4554); %var(v=p_hypert_control_5564); %var(v=p_hypert_control_ge65); 
+%var(v=p_hypert_ge18); %var(v=p_hypert_2534); %var(v=p_hypert_3544); %var(v=p_hypert_4554); %var(v=p_hypert_5564); %var(v=p_hypert_ge65); 
+%var(v=p_htn_true_ge18); %var(v=p_htn_true_2534); %var(v=p_htn_true_3544); %var(v=p_htn_true_4554); %var(v=p_htn_true_5564); %var(v=p_htn_true_ge65); 
+%var(v=p_dx_htn_true_ge18); %var(v=p_dx_htn_true_ge65); 
+%var(v=p_dx_htn_over_ge18); %var(v=p_dx_htn_over_ge65); 
+%var(v=p_diagnosed_hypert_ge18); %var(v=p_diagnosed_hypert_2534); %var(v=p_diagnosed_hypert_3544); %var(v=p_diagnosed_hypert_4554); %var(v=p_diagnosed_hypert_5564); %var(v=p_diagnosed_hypert_ge65); 
+%var(v=p_on_anti_hypert_ge18); %var(v=p_on_anti_hypert_2534); %var(v=p_on_anti_hypert_3544); %var(v=p_on_anti_hypert_4554); %var(v=p_on_anti_hypert_5564); %var(v=p_on_anti_hypert_ge65); 
+%var(v=p_hypert_control_ge18); %var(v=p_hypert_control_2534); %var(v=p_hypert_control_3544); %var(v=p_hypert_control_4554); %var(v=p_hypert_control_5564); %var(v=p_hypert_control_ge65); 
 
 %var(v=p_hypert_2544); %var(v=p_hypert_4564);
 %var(v=p_htn_true_2544); %var(v=p_htn_true_4564);
@@ -1232,61 +1179,36 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_dx_htn_over_2544); %var(v=p_dx_htn_over_4564);
 %var(v=p_diagnosed_hypert_2544); %var(v=p_diagnosed_hypert_4564); 
 %var(v=p_on_anti_hypert_2544); %var(v=p_on_anti_hypert_4564); 
+%var(v=p_ever_anti_hypert_ge18); %var(v=p_ever_anti_hypert_2544); %var(v=p_ever_anti_hypert_4564); %var(v=p_ever_anti_hypert_ge65);
 %var(v=p_hypert_control_2544); %var(v=p_hypert_control_4564);
-%var(v=rate_ihd_all_4059);
-%var(v=rate_ihd_all_6079);
-%var(v=rate_cva_all_4059);
-%var(v=rate_cva_all_6079);
-%var(v=rate_ihd_all_modsev_4059);
-%var(v=rate_ihd_all_modsev_6079);
-%var(v=rate_cva_all_modsev_4059);
-%var(v=rate_cva_all_modsev_6079);
-%var(v=prev_ihd_4059);
-%var(v=prev_ihd_6079);
-%var(v=prev_cva_4059);
-%var(v=prev_cva_6079);
-%var(v=rate_dead_cvd_4059);
-%var(v=rate_dead_cvd_6079);
 
-%var(v=m_sbp_1519w); %var(v=m_sbp_2024w); %var(v=m_sbp_2529w); %var(v=m_sbp_3034w); %var(v=m_sbp_3539w); %var(v=m_sbp_4044w); %var(v=m_sbp_4549w); %var(v=m_sbp_5054w); %var(v=m_sbp_5559w); %var(v=m_sbp_6064w); %var(v=m_sbp_6569w); %var(v=m_sbp_7074w); %var(v=m_sbp_7579w); %var(v=m_sbp_ge80w);  
-%var(v=m_sbp_1519m); %var(v=m_sbp_2024m); %var(v=m_sbp_2529m); %var(v=m_sbp_3034m); %var(v=m_sbp_3539m); %var(v=m_sbp_4044m); %var(v=m_sbp_4549m); %var(v=m_sbp_5054m); %var(v=m_sbp_5559m); %var(v=m_sbp_6064m); %var(v=m_sbp_6569m); %var(v=m_sbp_7074m); %var(v=m_sbp_7579m); %var(v=m_sbp_ge80m); 
-%var(v=m_sbp_1519) ; %var(v=m_sbp_2024) ; %var(v=m_sbp_2529) ; %var(v=m_sbp_3034) ; %var(v=m_sbp_3539) ; %var(v=m_sbp_4044) ; %var(v=m_sbp_4549) ; %var(v=m_sbp_5054) ; %var(v=m_sbp_5559) ; %var(v=m_sbp_6064);  %var(v=m_sbp_6569);  %var(v=m_sbp_7074);  %var(v=m_sbp_7579);  %var(v=m_sbp_ge80); 
+%var(v=p_on1drug_antihyp_ge18); %var(v=p_on2drug_antihyp_ge18); %var(v=p_on3drug_antihyp_ge18); 	
+%var(v=p_on1drug_antihyp_2544); %var(v=p_on2drug_antihyp_2544); %var(v=p_on3drug_antihyp_2544); 	
+%var(v=p_on1drug_antihyp_4564); %var(v=p_on2drug_antihyp_4564); %var(v=p_on3drug_antihyp_4564); 
+%var(v=p_on1drug_antihyp_ge65); %var(v=p_on2drug_antihyp_ge65); %var(v=p_on3drug_antihyp_ge65); 	
+
+%var(v=p_hypertens160_ge18); %var(v=p_hypertens160_2544); %var(v=p_hypertens160_4564); %var(v=p_hypertens160_ge65); 
+%var(v=p_htn_true160_ge18); %var(v=p_htn_true160_2544); %var(v=p_htn_true160_4564); %var(v=p_htn_true160_ge65); 
+%var(v=p_dx_htn_true160_ge18); %var(v=p_dx_htn_true160_2544); %var(v=p_dx_htn_true160_4564); %var(v=p_dx_htn_true160_ge65); 
+%var(v=p_on_anti_hypert160_ge18); %var(v=p_on_anti_hypert160_2544); %var(v=p_on_anti_hypert160_4564); %var(v=p_on_anti_hypert160_ge65); 
+%var(v=p_hypert_control160_ge18); %var(v=p_hypert_control160_2544); %var(v=p_hypert_control160_4564); %var(v=p_hypert_control160_ge65);
+
+/*%var(v=rate_ihd_all_4059); %var(v=rate_ihd_all_6079);
+%var(v=rate_cva_all_4059); %var(v=rate_cva_all_6079); */
+%var(v=rate_ihd_all_modsev_4059); %var(v=rate_ihd_all_modsev_6079);
+%var(v=rate_cva_all_modsev_4059); %var(v=rate_cva_all_modsev_6079);
+%var(v=prev_ihd_4059); %var(v=prev_ihd_6079);
+%var(v=prev_cva_4059); %var(v=prev_cva_6079);
+%var(v=rate_dead_cvd_4059); %var(v=rate_dead_cvd_6079);
+
+%var(v=m_sbp_2529w); %var(v=m_sbp_3034w); %var(v=m_sbp_3539w); %var(v=m_sbp_4044w); %var(v=m_sbp_4549w); %var(v=m_sbp_5054w); %var(v=m_sbp_5559w); %var(v=m_sbp_6064w); %var(v=m_sbp_6569w); %var(v=m_sbp_7074w); %var(v=m_sbp_7579w); %var(v=m_sbp_ge80w);  
+%var(v=m_sbp_2529m); %var(v=m_sbp_3034m); %var(v=m_sbp_3539m); %var(v=m_sbp_4044m); %var(v=m_sbp_4549m); %var(v=m_sbp_5054m); %var(v=m_sbp_5559m); %var(v=m_sbp_6064m); %var(v=m_sbp_6569m); %var(v=m_sbp_7074m); %var(v=m_sbp_7579m); %var(v=m_sbp_ge80m); 
+%var(v=m_sbp_2529) ; %var(v=m_sbp_3034) ; %var(v=m_sbp_3539) ; %var(v=m_sbp_4044) ; %var(v=m_sbp_4549) ; %var(v=m_sbp_5054) ; %var(v=m_sbp_5559) ; %var(v=m_sbp_6064);  %var(v=m_sbp_6569);  %var(v=m_sbp_7074);  %var(v=m_sbp_7579);  %var(v=m_sbp_ge80); 
 %var(v=m_sbp_2544) ; %var(v=m_sbp_4564) ; %var(v=m_sbp_ge65) ;
+%var(v=m_sbp_max_over_ge18) ; %var(v=m_sbp_over_ge18) ; 
 
-%var(v=p_hypert_1549); %var(v=p_hypert_1539); %var(v=p_hypert_4049); 
-	%var(v=p_hypert_5059); %var(v=p_hypert_6069); %var(v=p_hypert_7079); %var(v=p_hypert_ge80);
-%var(v=p_diagnosed_hypert_1549); %var(v=p_diagnosed_hypert_1539); %var(v=p_diagnosed_hypert_4049); 
-	%var(v=p_diagnosed_hypert_5059); %var(v=p_diagnosed_hypert_6069); %var(v=p_diagnosed_hypert_7079); %var(v=p_diagnosed_hypert_ge80);  
-%var(v=p_on_anti_hypert_1549); %var(v=p_on_anti_hypert_1539); %var(v=p_on_anti_hypert_4049);
-	%var(v=p_on_anti_hypert_5059); %var(v=p_on_anti_hypert_6069); %var(v=p_on_anti_hypert_7079); %var(v=p_on_anti_hypert_ge80); 
-%var(v=p_hypert160_1549);  %var(v=p_hypert160_1539); %var(v=p_hypert160_4049);
-	%var(v=p_hypert160_5059);  %var(v=p_hypert160_6069);  %var(v=p_hypert160_7079);  %var(v=p_hypert160_ge80); 
-%var(v=p_on1drug_antihyp_1549);   %var(v=p_on2drug_antihyp_1549);   %var(v=p_on3drug_antihyp_1549);
-%var(v=p_on1drug_antihyp_1539);   %var(v=p_on2drug_antihyp_1539);   %var(v=p_on3drug_antihyp_1539);
-%var(v=p_on1drug_antihyp_4049);   %var(v=p_on2drug_antihyp_4049);   %var(v=p_on3drug_antihyp_4049); 
-%var(v=p_on1drug_antihyp_5059);   %var(v=p_on2drug_antihyp_5059); 	%var(v=p_on3drug_antihyp_5059);    
-%var(v=p_on1drug_antihyp_6069);    %var(v=p_on2drug_antihyp_6069);  %var(v=p_on3drug_antihyp_6069);   
-%var(v=p_on1drug_antihyp_7079);    %var(v=p_on2drug_antihyp_7079); 	%var(v=p_on3drug_antihyp_7079);    
-%var(v=p_on1drug_antihyp_ge80);    %var(v=p_on2drug_antihyp_ge80);    %var(v=p_on3drug_antihyp_ge80); 
-%var(v=p_hypert_1549m);  %var(v=p_hypert_1539m);  %var(v=p_hypert_4049m);  
-	%var(v=p_hypert_5059m); %var(v=p_hypert_6069m);  %var(v=p_hypert_7079m);  %var(v=p_hypert_ge80m);  
-%var(v=p_diagnosed_hypert_1549m); %var(v=p_diagnosed_hypert_1539m); %var(v=p_diagnosed_hypert_4049m);
-	%var(v=p_diagnosed_hypert_5059m);  %var(v=p_diagnosed_hypert_6069m);  %var(v=p_diagnosed_hypert_7079m);  %var(v=p_diagnosed_hypert_ge80m);  
-%var(v=p_on_anti_hypert_1549m); %var(v=p_on_anti_hypert_1539m); %var(v=p_on_anti_hypert_4049m);
-	%var(v=p_on_anti_hypert_5059m);  %var(v=p_on_anti_hypert_6069m);  %var(v=p_on_anti_hypert_7079m);  %var(v=p_on_anti_hypert_ge80m);
-%var(v=p_hypert_1549w);  %var(v=p_hypert_1539w); %var(v=p_hypert_4049w); 
-	%var(v=p_hypert_5059w); %var(v=p_hypert_6069w);  %var(v=p_hypert_7079w);  %var(v=p_hypert_ge80w);  
-%var(v=p_diagnosed_hypert_1549w); %var(v=p_diagnosed_hypert_1539w); %var(v=p_diagnosed_hypert_4049w);
-	%var(v=p_diagnosed_hypert_5059w);  %var(v=p_diagnosed_hypert_6069w);  %var(v=p_diagnosed_hypert_7079w);  %var(v=p_diagnosed_hypert_ge80w);  
-%var(v=p_on_anti_hypert_1549w); %var(v=p_on_anti_hypert_1539w); %var(v=p_on_anti_hypert_4049w); 
-	%var(v=p_on_anti_hypert_5059w);  %var(v=p_on_anti_hypert_6069w);  %var(v=p_on_anti_hypert_7079w); %var(v=p_on_anti_hypert_ge80w);
 
-%var(v=htn_cost_total); %var(v=htn_cost_scr); %var(v=htn_cost_drug); %var(v=htn_cost_clin); %var(v=htn_cost_cvd);
-%var(v=dhtn_cost_total); %var(v=dhtn_cost_scr); %var(v=dhtn_cost_drug); %var(v=dhtn_cost_clin); %var(v=dhtn_cost_cvd);
-%var(v=dhtn_cost_totdrughalf); %var(v=dhtn_cost_totdrugdoub); %var(v=dhtn_cost_tothalf); %var(v=dhtn_cost_totdoub);
-%var(v=tot_dyll_cvd); %var(v=tot_dyll);
-
-%var(v=rate_ihd_one); 
+/*%var(v=rate_ihd_one); 
 %var(v=rate_ihd_one_4049m); %var(v=rate_ihd_one_5059m); %var(v=rate_ihd_one_6069m); %var(v=rate_ihd_one_7079m); %var(v=rate_ihd_one_ge80m);
 %var(v=rate_ihd_one_4049w); %var(v=rate_ihd_one_5059w); %var(v=rate_ihd_one_6069w); %var(v=rate_ihd_one_7079w); %var(v=rate_ihd_one_ge80w); 
 %var(v=rate_cva_one); 
@@ -1304,6 +1226,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_cva_one_modsev); 
 %var(v=rate_cva_one_modsev_4049m); %var(v=rate_cva_one_modsev_5059m); %var(v=rate_cva_one_modsev_6069m); %var(v=rate_cva_one_modsev_7079m); %var(v=rate_cva_one_modsev_ge80m);
 %var(v=rate_cva_one_modsev_4049w); %var(v=rate_cva_one_modsev_5059w); %var(v=rate_cva_one_modsev_6069w); %var(v=rate_cva_one_modsev_7079w); %var(v=rate_cva_one_modsev_ge80w); 
+*/
 %var(v=rate_ihd_all_modsev); 
 %var(v=rate_ihd_all_modsev_4049m); %var(v=rate_ihd_all_modsev_5059m); %var(v=rate_ihd_all_modsev_6069m); %var(v=rate_ihd_all_modsev_7079m); %var(v=rate_ihd_all_modsev_ge80m);
 %var(v=rate_ihd_all_modsev_4049w); %var(v=rate_ihd_all_modsev_5059w); %var(v=rate_ihd_all_modsev_6069w); %var(v=rate_ihd_all_modsev_7079w); %var(v=rate_ihd_all_modsev_ge80w); 
@@ -1318,12 +1241,15 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=prev_cva_4049m); %var(v=prev_cva_5059m); %var(v=prev_cva_6069m); %var(v=prev_cva_7079m); %var(v=prev_cva_ge80m);
 %var(v=prev_cva_4049w); %var(v=prev_cva_5059w); %var(v=prev_cva_6069w); %var(v=prev_cva_7079w); %var(v=prev_cva_ge80w); 
 
+%var(v=htn_cost_total); %var(v=htn_cost_scr); %var(v=htn_cost_drug); %var(v=htn_cost_clin); %var(v=htn_cost_cvd);
+%var(v=dhtn_cost_total); %var(v=dhtn_cost_scr); %var(v=dhtn_cost_drug); %var(v=dhtn_cost_clin); %var(v=dhtn_cost_cvd);
+%var(v=dhtn_cost_totdrughalf); %var(v=dhtn_cost_totdrugdoub); %var(v=dhtn_cost_tothalf); %var(v=dhtn_cost_totdoub);
 
 %var(v=rate_dead_cvd); %var(v=n_dead_cvd );
 	%var(v=rate_dead_cvd_3039m); %var(v=rate_dead_cvd_4049m); %var(v=rate_dead_cvd_5059m); %var(v=rate_dead_cvd_6069m);
 	%var(v=rate_dead_cvd_7079m); %var(v=rate_dead_cvd_ge80m); %var(v=rate_dead_cvd_3039w); %var(v=rate_dead_cvd_4049w);
 	%var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
-	%var(v=rate_dead_hivneg_anycause); %var(v=rate_dead_hivpos_anycause);
+	%var(v=rate_dead_hivneg_anycause); %var(v=rate_dead_hivpos_anycause); %var(v=rate_dead_all_anycause); %var(v=n_dead_all_anycause);
 	%var(v=n_dead_hivpos_cvd ); %var(v=rate_dead_hivpos_cvd );
 	%var(v=n_dead_hivneg_cvd ); %var(v=rate_dead_hivneg_cvd);
 	%var(v=n_dead_allage ); %var(v=n_dead_hivneg_anycause ); %var(v=n_dead_hivpos_anycause );
@@ -1339,17 +1265,22 @@ prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 
 dcost			ddaly
 
 death_rate_hiv 
-pop1524 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
+popge18 pop2534 pop3544 pop4554 pop5564 pop6574 pop7584 popge85
 
 prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective
 
-p_hypert_1524 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
-p_htn_true_1524 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
-p_dx_htn_true_1524 p_dx_htn_true_2534 p_dx_htn_true_3544 p_dx_htn_true_4554 p_dx_htn_true_5564 p_dx_htn_true_ge65
-p_dx_htn_over_1524 p_dx_htn_over_2534 p_dx_htn_over_3544 p_dx_htn_over_4554 p_dx_htn_over_5564 p_dx_htn_over_ge65
-p_diagnosed_hypert_1524 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
-p_on_anti_hypert_1524 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
-p_hypert_control_1524 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
+p_hypert_ge18 p_hypert_2534 p_hypert_3544 p_hypert_4554 p_hypert_5564 p_hypert_ge65
+p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 p_htn_true_ge65
+p_dx_htn_true_ge18 p_dx_htn_true_ge65
+p_dx_htn_over_ge18 p_dx_htn_over_ge65
+p_diagnosed_hypert_ge18 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
+p_on_anti_hypert_ge18 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
+p_hypert_control_ge18 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
+
+p_on1drug_antihyp_ge18 p_on2drug_antihyp_ge18 p_on3drug_antihyp_ge18 	
+p_on1drug_antihyp_2544 p_on2drug_antihyp_2544 p_on3drug_antihyp_2544 	
+p_on1drug_antihyp_4564 p_on2drug_antihyp_4564 p_on3drug_antihyp_4564 
+p_on1drug_antihyp_ge65 p_on2drug_antihyp_ge65 p_on3drug_antihyp_ge65 	
 
 p_hypert_2544 p_hypert_4564
 p_htn_true_2544 p_htn_true_4564
@@ -1357,56 +1288,43 @@ p_dx_htn_true_2544 p_dx_htn_true_4564
 p_dx_htn_over_2544 p_dx_htn_over_4564 
 p_diagnosed_hypert_2544 p_diagnosed_hypert_4564 
 p_on_anti_hypert_2544 p_on_anti_hypert_4564 
+p_ever_anti_hypert_ge18 p_ever_anti_hypert_2544 p_ever_anti_hypert_4564 p_ever_anti_hypert_ge65 
 p_hypert_control_2544 p_hypert_control_4564
-rate_ihd_all_4059
-rate_ihd_all_6079
-rate_cva_all_4059
-rate_cva_all_6079
-rate_ihd_all_modsev_4059
-rate_ihd_all_modsev_6079
-rate_cva_all_modsev_4059
-rate_cva_all_modsev_6079
-prev_ihd_4059
-prev_ihd_6079
-prev_cva_4059
-prev_cva_6079
-rate_dead_cvd_4059
-rate_dead_cvd_6079
 
-p_hypert_1549 p_hypert_1539 p_hypert_4049 
-	p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  
-p_diagnosed_hypert_1549 p_diagnosed_hypert_1539 p_diagnosed_hypert_4049
-	p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  
-p_on_anti_hypert_1549 p_on_anti_hypert_1539 p_on_anti_hypert_4049 
-	p_on_anti_hypert_5059  p_on_anti_hypert_6069  p_on_anti_hypert_7079  p_on_anti_hypert_ge80  
-p_hypert_1549m  p_hypert_1539m  p_hypert_4049m  
-	p_hypert_5059m p_hypert_6069m  p_hypert_7079m  p_hypert_ge80m  
-p_diagnosed_hypert_1549m p_diagnosed_hypert_1539m p_diagnosed_hypert_4049m
-	p_diagnosed_hypert_5059m  p_diagnosed_hypert_6069m  p_diagnosed_hypert_7079m  p_diagnosed_hypert_ge80m  
-p_on_anti_hypert_1549m p_on_anti_hypert_1539m p_on_anti_hypert_4049m 
-	p_on_anti_hypert_5059m  p_on_anti_hypert_6069m  p_on_anti_hypert_7079m  p_on_anti_hypert_ge80m
-p_hypert_1549w  p_hypert_1539w p_hypert_4049w
-	p_hypert_5059w p_hypert_6069w  p_hypert_7079w  p_hypert_ge80w  
-p_diagnosed_hypert_1549w p_diagnosed_hypert_1539w p_diagnosed_hypert_4049w
-	p_diagnosed_hypert_5059w  p_diagnosed_hypert_6069w  p_diagnosed_hypert_7079w  p_diagnosed_hypert_ge80w  
-p_on_anti_hypert_1549w p_on_anti_hypert_1539w p_on_anti_hypert_4049w
-	p_on_anti_hypert_5059w  p_on_anti_hypert_6069w  p_on_anti_hypert_7079w  p_on_anti_hypert_ge80w
-p_hypert160_1549 p_hypert160_1539 p_hypert160_4049
-	p_hypert160_5059 p_hypert160_6069 p_hypert160_7079 p_hypert160_ge80
-p_on1drug_antihyp_1549 p_on2drug_antihyp_1549 p_on3drug_antihyp_1549
-p_on1drug_antihyp_1539 p_on2drug_antihyp_1539 p_on3drug_antihyp_1539
-p_on1drug_antihyp_4049 p_on2drug_antihyp_4049 p_on3drug_antihyp_4049 
-p_on1drug_antihyp_5059  p_on2drug_antihyp_5059 p_on3drug_antihyp_5059  
-p_on1drug_antihyp_6069  p_on2drug_antihyp_6069  p_on3drug_antihyp_6069  
-p_on1drug_antihyp_7079  p_on2drug_antihyp_7079 p_on3drug_antihyp_7079  
-p_on1drug_antihyp_ge80  p_on2drug_antihyp_ge80  p_on3drug_antihyp_ge80  
+p_hypertens160_ge18 p_hypertens160_2544 p_hypertens160_4564 p_hypertens160_ge65 
+p_htn_true160_ge18 p_htn_true160_2544 p_htn_true160_4564 p_htn_true160_ge65 
+p_dx_htn_true160_ge18 p_dx_htn_true160_2544 p_dx_htn_true160_4564 p_dx_htn_true160_ge65 
+p_on_anti_hypert160_ge18 p_on_anti_hypert160_2544 p_on_anti_hypert160_4564 p_on_anti_hypert160_ge65 
+p_hypert_control160_ge18 p_hypert_control160_2544 p_hypert_control160_4564 p_hypert_control160_ge65
 
-
-m_sbp_1519w m_sbp_2024w m_sbp_2529w m_sbp_3034w m_sbp_3539w m_sbp_4044w m_sbp_4549w m_sbp_5054w m_sbp_5559w m_sbp_6064w m_sbp_6569w m_sbp_7074w m_sbp_7579w m_sbp_ge80w  
-m_sbp_1519m m_sbp_2024m m_sbp_2529m m_sbp_3034m m_sbp_3539m m_sbp_4044m m_sbp_4549m m_sbp_5054m m_sbp_5559m	m_sbp_6064m m_sbp_6569m m_sbp_7074m m_sbp_7579m m_sbp_ge80m 
-m_sbp_1519  m_sbp_2024  m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_4549  m_sbp_5054  m_sbp_5559	m_sbp_6064  m_sbp_6569  m_sbp_7074  m_sbp_7579  m_sbp_ge80 
+rate_ihd_all_modsev_4059 rate_ihd_all_modsev_6079
+rate_cva_all_modsev_4059 rate_cva_all_modsev_6079 
+prev_ihd_4059 prev_ihd_6079 
+prev_cva_4059 prev_cva_6079 
+rate_dead_cvd_4059 rate_dead_cvd_6079
+ 
+m_sbp_2529w m_sbp_3034w m_sbp_3539w m_sbp_4044w m_sbp_4549w m_sbp_5054w m_sbp_5559w m_sbp_6064w m_sbp_6569w m_sbp_7074w m_sbp_7579w m_sbp_ge80w  
+m_sbp_2529m m_sbp_3034m m_sbp_3539m m_sbp_4044m m_sbp_4549m m_sbp_5054m m_sbp_5559m	m_sbp_6064m m_sbp_6569m m_sbp_7074m m_sbp_7579m m_sbp_ge80m 
+m_sbp_2529  m_sbp_3034  m_sbp_3539  m_sbp_4044  m_sbp_4549  m_sbp_5054  m_sbp_5559	m_sbp_6064  m_sbp_6569  m_sbp_7074  m_sbp_7579  m_sbp_ge80 
 m_sbp_2544 m_sbp_4564 m_sbp_ge65
+m_sbp_max_over_ge18 m_sbp_over_ge18 
 
+rate_ihd_all_modsev 
+rate_ihd_all_modsev_4049m rate_ihd_all_modsev_5059m rate_ihd_all_modsev_6069m rate_ihd_all_modsev_7079m rate_ihd_all_modsev_ge80m
+rate_ihd_all_modsev_4049w rate_ihd_all_modsev_5059w rate_ihd_all_modsev_6069w rate_ihd_all_modsev_7079w rate_ihd_all_modsev_ge80w 
+rate_cva_all_modsev 
+rate_cva_all_modsev_4049m rate_cva_all_modsev_5059m rate_cva_all_modsev_6069m rate_cva_all_modsev_7079m rate_cva_all_modsev_ge80m
+rate_cva_all_modsev_4049w rate_cva_all_modsev_5059w rate_cva_all_modsev_6069w rate_cva_all_modsev_7079w rate_cva_all_modsev_ge80w 
+
+prev_ihd 
+prev_ihd_4049m prev_ihd_5059m prev_ihd_6069m prev_ihd_7079m prev_ihd_ge80m
+prev_ihd_4049w prev_ihd_5059w prev_ihd_6069w prev_ihd_7079w prev_ihd_ge80w 
+
+prev_cva 
+prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
+prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
+
+/*
 rate_ihd_one 
 rate_ihd_one_4049m rate_ihd_one_5059m rate_ihd_one_6069m rate_ihd_one_7079m rate_ihd_one_ge80m
 rate_ihd_one_4049w rate_ihd_one_5059w rate_ihd_one_6069w rate_ihd_one_7079w rate_ihd_one_ge80w 
@@ -1425,31 +1343,19 @@ rate_ihd_one_modsev_4049w rate_ihd_one_modsev_5059w rate_ihd_one_modsev_6069w ra
 rate_cva_one_modsev 
 rate_cva_one_modsev_4049m rate_cva_one_modsev_5059m rate_cva_one_modsev_6069m rate_cva_one_modsev_7079m rate_cva_one_modsev_ge80m
 rate_cva_one_modsev_4049w rate_cva_one_modsev_5059w rate_cva_one_modsev_6069w rate_cva_one_modsev_7079w rate_cva_one_modsev_ge80w 
-rate_ihd_all_modsev 
-rate_ihd_all_modsev_4049m rate_ihd_all_modsev_5059m rate_ihd_all_modsev_6069m rate_ihd_all_modsev_7079m rate_ihd_all_modsev_ge80m
-rate_ihd_all_modsev_4049w rate_ihd_all_modsev_5059w rate_ihd_all_modsev_6069w rate_ihd_all_modsev_7079w rate_ihd_all_modsev_ge80w 
-rate_cva_all_modsev 
-rate_cva_all_modsev_4049m rate_cva_all_modsev_5059m rate_cva_all_modsev_6069m rate_cva_all_modsev_7079m rate_cva_all_modsev_ge80m
-rate_cva_all_modsev_4049w rate_cva_all_modsev_5059w rate_cva_all_modsev_6069w rate_cva_all_modsev_7079w rate_cva_all_modsev_ge80w 
-
-prev_ihd 
-prev_ihd_4049m prev_ihd_5059m prev_ihd_6069m prev_ihd_7079m prev_ihd_ge80m
-prev_ihd_4049w prev_ihd_5059w prev_ihd_6069w prev_ihd_7079w prev_ihd_ge80w 
-prev_cva 
-prev_cva_4049m prev_cva_5059m prev_cva_6069m prev_cva_7079m prev_cva_ge80m
-prev_cva_4049w prev_cva_5059w prev_cva_6069w prev_cva_7079w prev_cva_ge80w 
+*/
 
 rate_dead_cvd n_dead_cvd 
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w 
-rate_dead_hivneg_anycause rate_dead_hivpos_anycause
+rate_dead_hivneg_anycause rate_dead_hivpos_anycause rate_dead_hivpos_cvd
+rate_dead_all_anycause n_dead_all_anycause
 n_dead_hivpos_cvd  rate_dead_hivpos_cvd 
 n_dead_hivneg_cvd  rate_dead_hivneg_cvd
 
 htn_cost_total htn_cost_scr htn_cost_drug htn_cost_clin htn_cost_cvd
 dhtn_cost_total dhtn_cost_scr dhtn_cost_drug dhtn_cost_clin dhtn_cost_cvd
 dhtn_cost_totdrughalf dhtn_cost_totdrugdoub dhtn_cost_tothalf dhtn_cost_totdoub
-tot_dyll_cvd tot_dyll
 
 n_dead_allage n_dead_hivneg_anycause n_dead_hivpos_anycause
 
