@@ -3,7 +3,7 @@ libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis s
 
 data a; 
 set a.wide_fsw_19_04_23 ;
-if incidence1549_22 <0.1 then delete;
+if incidence1549_22 <0.03 then delete;
 run;
 
 data b;
@@ -230,17 +230,29 @@ _3=high impact sw program
 
 
 *dalys averted;
-diff_ddaly_swprog_high = ddaly_22_27_3 - ddaly_22_27_1;
+diff_ddaly_swprog_high = ddaly_22_72_3 - ddaly_22_72_1;
 
 *difference in total costs;
-diff_dcost_swprog_high = dcost_22_27_3 - dcost_22_27_1;
+diff_dcost_swprog_high = dcost_22_72_3 - dcost_22_72_1;
+
+***look at individual costs;
 
 *net dalys using $500;
-netdalys_no_swprog =  ddaly_22_27_1 + (dcost_22_27_1)/0.0005;
-netdalys_swprog_high =  ddaly_22_27_3 + (dcost_22_27_3)/0.0005;
+netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
+netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
 diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog;
+
+***cost of SW prog;
+maxcost_swprog_high= diff_netdalys_swprog_high*500;
+
+
+proc means n mean p50 p5 p95 lclm uclm;var maxcost_swprog_high;run;
+
+proc univariate;var maxcost_swprog_high;run;
+
+diff_netdalys_swprog_high cost_swprog_high;run;
 
 *sw prog cost-effective?;
 ce_swprog_high=0;if diff_netdalys_swprog_high gt 0 then ce_swprog_high=1;
@@ -248,7 +260,7 @@ ce_swprog_high=0;if diff_netdalys_swprog_high gt 0 then ce_swprog_high=1;
 *cost per daly averted - this will be maximum difference in cost if DALYS are not averted; 
 /*proc freq;table diff_dcost_swprog_high;run;*/
 
-cost_daly_avert_swprog_high=15.9*1000000;
+cost_daly_avert_swprog_high=*1000000;
 if diff_ddaly_swprog_high gt 0 then cost_daly_avert_swprog_high = (diff_dcost_swprog_high / diff_ddaly_swprog_high)*1000000;
 
 
