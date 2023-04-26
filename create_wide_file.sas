@@ -750,7 +750,7 @@ m_sbp_7074  = (s_sbp_7074w + s_sbp_7074m ) / (s_ageg7074w + s_ageg7074m ) ;
 m_sbp_7579  = (s_sbp_7579w + s_sbp_7579m ) / (s_ageg7579w + s_ageg7579m ) ;
 m_sbp_ge80  = (s_sbp_ge80w + s_sbp_ge80m ) / (s_ageg8084w + s_ageg85plw + s_ageg8084m + s_ageg85plm) ;
 
-m_sbp_2544  = (s_sbp_2529w + s_sbp_2529m + s_sbp_3034w + s_sbp_3034m + s_sbp_3539w + s_sbp_3539m + s_sbp_4044w + s_sbp_4044m) / (pop2534 + pop4554) ;
+m_sbp_2544  = (s_sbp_2529w + s_sbp_2529m + s_sbp_3034w + s_sbp_3034m + s_sbp_3539w + s_sbp_3539m + s_sbp_4044w + s_sbp_4044m) / (pop2534 + pop3544) ;
 m_sbp_4564  = (s_sbp_4549w + s_sbp_4549m + s_sbp_5054w + s_sbp_5054m + s_sbp_5559w + s_sbp_5559m + s_sbp_6064w + s_sbp_6064m) / (pop4554 + pop5564) ;
 m_sbp_ge65  = (s_sbp_6569w + s_sbp_6569m + s_sbp_7074w + s_sbp_7074m + s_sbp_7579w + s_sbp_7579m + s_sbp_ge80w + s_sbp_ge80m) / (pop6574 + pop7584 + popge85) ;
 
