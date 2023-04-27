@@ -93,15 +93,15 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 								act_dur_sw= s_act_dur_sw/ s_sw_1564;
 
 								if s_sw_1564 ne 0 then do;
-								p_actdur_0to3_   =s_actdur_sw_0to3/s_sw_1564;
-								p_actdur_3to5_   =s_actdur_sw_3to5/s_sw_1564;
-								p_actdur_6to9_   =s_actdur_sw_6to9/s_sw_1564;
-								p_actdur_10to19_ =s_actdur_sw_10to19/s_sw_1564;
+								p_actdur_sw_0to3_   =s_actdur_sw_0to3/s_sw_1564;
+								p_actdur_sw_3to5_   =s_actdur_sw_3to5/s_sw_1564;
+								p_actdur_sw_6to9_   =s_actdur_sw_6to9/s_sw_1564;
+								p_actdur_sw_10to19_ =s_actdur_sw_10to19/s_sw_1564;
 
-								p_totdur_0to3_   =s_totdur_sw_0to3/s_sw_1564;
-								p_totdur_3to5_   =s_totdur_sw_3to5/s_sw_1564;
-								p_totdur_6to9_   =s_totdur_sw_6to9/s_sw_1564;
-								p_totdur_10to19_ =s_totdur_sw_10to19/s_sw_1564;
+								p_totdur_sw_0to3_   =s_totdur_sw_0to3/s_sw_1564;
+								p_totdur_sw_3to5_   =s_totdur_sw_3to5/s_sw_1564;
+								p_totdur_sw_6to9_   =s_totdur_sw_6to9/s_sw_1564;
+								p_totdur_sw_10to19_ =s_totdur_sw_10to19/s_sw_1564;
 								end;
 
 * p_fsw_newp0;					if s_sw_1564>0 then p_fsw_newp0_ = s_sw_newp_cat1 /s_sw_1564;
@@ -129,180 +129,85 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 proc sort; by cald run ;run;
 
-
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 600   ;
-%let year_end = 2041.00 ;
+%let nfit = 160   ;
+%let year_end = 2050.00 ;
 run;
 proc sort;by cald option ;run;
 
 ***Two macros, one for each option. Gives medians ranges etc by option;
-data option_0;
+data c;
 set b;
-if option =1 then delete;
-
-***StART HERE:
 
 %let var =  
-dur0to3_sw_1_  dur3to5_sw_1_  dur6to9_sw_1_  dur10to19_sw_1_
-dur0to3_sw_nodis_1_  dur3to5_sw_nodis_1_  dur6to9_sw_nodis_1_  dur10to19_sw_nodis_1_
-dur0to3_sw_mild_1_  dur3to5_sw_mild_1_  dur6to9_sw_mild_1_  dur10to19_sw_mild_1_
+n_sw_1564_  n_sw_1549_  prop_w_1564_sw  prop_w_1549_sw  prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
+p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
+sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
+p_actdur_sw_0to3_  p_actdur_sw_3to5_  p_actdur_sw_6to9_  p_actdur_sw_10to19_
+p_totdur_sw_0to3_  p_totdur_sw_3to5_  p_totdur_sw_6to9_  p_totdur_sw_10to19_
+p_fsw_newp0_  av_sw_newp  p_newp_sw
 
-dur0to3_sw_2_  dur3to5_sw_2_  dur6to9_sw_2_  dur10to19_sw_2_
-dur0to3_sw_nodis_2_  dur3to5_sw_nodis_2_  dur6to9_sw_nodis_2_  dur10to19_sw_nodis_2_
-dur0to3_sw_mild_2_  dur3to5_sw_mild_2_  dur6to9_sw_mild_2_  dur10to19_sw_mild_2_
+p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
+prevalence_sw  incidence_sw p_sti_sw;
 
-n_sw_1564_1_  n_sw_1549_1_  prop_w_1564_sw_1_  prop_w_1549_sw_1_  prop_w_ever_sw_1_  p_sw_prog_vis_1_  prop_sw_hiv_1_  prop_sw_newp0_1_
-t_sw_newp_1_  n_tested_sw_1_  p_newp_sw_1_  prop_sw_onprep_1_  prevalence_sw_1_  incidence_sw_1_  p_diag_sw_1_  p_onart_diag_sw_1_
-p_onart_vl1000_sw_1_
-
-n_sw_1564_nodis_1_  n_sw_1549_nodis_1_  prop_w_1564_sw_nodis_1_  prop_w_1549_sw_nodis_1_  prop_w_ever_sw_nodis_1_  p_sw_prog_vis_nodis_1_  prop_sw_hiv_nodis_1_  prop_sw_newp0_nodis_1_
-t_sw_newp_nodis_1_  n_tested_sw_nodis_1_  p_newp_sw_nodis_1_  prop_sw_onprep_nodis_1_  prevalence_sw_nodis_1_  incidence_sw_nodis_1_  p_diag_sw_nodis_1_  p_onart_diag_sw_nodis_1_
-p_onart_vl1000_sw_nodis_1_
-
-n_sw_1564_mild_1_  n_sw_1549_mild_1_  prop_w_1564_sw_mild_1_  prop_w_1549_sw_mild_1_  prop_w_ever_sw_mild_1_  p_sw_prog_vis_mild_1_  prop_sw_hiv_mild_1_  prop_sw_newp0_mild_1_
-t_sw_newp_mild_1_  n_tested_sw_mild_1_  p_newp_sw_mild_1_  prop_sw_onprep_mild_1_  prevalence_sw_mild_1_  incidence_sw_mild_1_  p_diag_sw_mild_1_  p_onart_diag_sw_mild_1_
-p_onart_vl1000_sw_mild_1_
-
-
-n_sw_1564_2_  n_sw_1549_2_  prop_w_1564_sw_2_  prop_w_1549_sw_2_  prop_w_ever_sw_2_  p_sw_prog_vis_2_  prop_sw_hiv_2_  prop_sw_newp0_2_
-t_sw_newp_2_  n_tested_sw_2_  p_newp_sw_2_  prop_sw_onprep_2_  prevalence_sw_2_  incidence_sw_2_  p_diag_sw_2_  p_onart_diag_sw_2_
-p_onart_vl1000_sw_2_
-n_sw_1564_nodis_2_  n_sw_1549_nodis_2_  prop_w_1564_sw_nodis_2_  prop_w_1549_sw_nodis_2_  prop_w_ever_sw_nodis_2_  p_sw_prog_vis_nodis_2_  prop_sw_hiv_nodis_2_  prop_sw_newp0_nodis_2_
-t_sw_newp_nodis_2_  n_tested_sw_nodis_2_  p_newp_sw_nodis_2_  prop_sw_onprep_nodis_2_  prevalence_sw_nodis_2_  incidence_sw_nodis_2_  p_diag_sw_nodis_2_  p_onart_diag_sw_nodis_2_
-p_onart_vl1000_sw_nodis_2_
-n_sw_1564_mild_2_  n_sw_1549_mild_2_  prop_w_1564_sw_mild_2_  prop_w_1549_sw_mild_2_  prop_w_ever_sw_mild_2_  p_sw_prog_vis_mild_2_  prop_sw_hiv_mild_2_  prop_sw_newp0_mild_2_
-t_sw_newp_mild_2_  n_tested_sw_mild_2_  p_newp_sw_mild_2_  prop_sw_onprep_mild_2_  prevalence_sw_mild_2_  incidence_sw_mild_2_  p_diag_sw_mild_2_  p_onart_diag_sw_mild_2_
-p_onart_vl1000_sw_mild_2_
-
-incidence1549_1_  incidence1549w_1_  incidence1549m_1_  incidence1549_2_  incidence1549w_2_  incidence1549m_2_
-
-dur0to3_sw_1_  dur3to5_sw_1_  dur6to9_sw_1_  dur10to19_sw_1_
-dur0to3_sw_nodis_1_  dur3to5_sw_nodis_1_  dur6to9_sw_nodis_1_  dur10to19_sw_nodis_1_
-dur0to3_sw_mild_1_  dur3to5_sw_mild_1_  dur6to9_sw_mild_1_  dur10to19_sw_mild_1_
-
-dur0to3_sw_2_  dur3to5_sw_2_  dur6to9_sw_2_  dur10to19_sw_2_
-dur0to3_sw_nodis_2_  dur3to5_sw_nodis_2_  dur6to9_sw_nodis_2_  dur10to19_sw_nodis_2_
-dur0to3_sw_mild_2_  dur3to5_sw_mild_2_  dur6to9_sw_mild_2_  dur10to19_sw_mild_2_
-;
 ***transpose given name; *starts with %macro and ends with %mend;
-%macro option_0;
-%let p25_var = p25_&var_0;
-%let p75_var = p75_&var_0;
-%let p5_var = p5_&var_0;
-%let p95_var = p95_&var_0;
-%let p50_var = median_&var_0;
+%macro transpose;
+%let p25_var = p25_&var;
+%let p75_var = p75_&var;
+%let p5_var = p5_&var;
+%let p95_var = p95_&var;
+%let p50_var = median_&var;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=c out=a&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data g&count;set g&count;***creates one dataset per variable;
-p25_&varb._0  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+data a&count;set a&count;***creates one dataset per variable;
+p25_&varb  = PCTL(25,of &varb.1-&varb.&nfit);
+p75_&varb = PCTL(75,of &varb.1-&varb.&nfit);
+p5_&varb  = PCTL(5,of &varb.1-&varb.&nfit);
+p95_&varb = PCTL(95,of &varb.1-&varb.&nfit);
+p50_&varb = median(of &varb.1-&varb.&nfit);
 
-keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald p5_&varb p95_&varb p50_&varb p25_&varb p75_&varb;
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  gg&count;quit;run;
+      delete  aa&count;quit;run;
 %end;
 %mend;
 
 
-%option_0;
+%transpose;
 run;
 
-
-
-data option_1;
-set b;
-if option =0 then delete;
-
-%let var =  
-
-p_w_giv_birth_this_per	p_newp_ge1_ p_newp_ge5_  log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w 
-p_mcirc_1549m 		
-prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  prop_1564_onprep 	prevalence1549m prevalence1549w
-prevalence1549_  prevalence_vg1000_  incidence1549_ incidence1564_ 
-incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m
-p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
-mtct_prop 	p_diag  p_diag_m   p_diag_w		p_ai_no_arv_c_nnm 				p_artexp_diag
-p_onart_diag	p_onart_diag_w 	p_onart_diag_m 	p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
-p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w 
-p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
-n_onart ;
-
-
-***transpose given name; *starts with %macro and ends with %mend;
-%macro option_1;
-%let p25_var = p25_&var_1;
-%let p75_var = p75_&var_1;
-%let p5_var = p5_&var_1;
-%let p95_var = p95_&var_1;
-%let p50_var = median_&var_1;
-
-%let count = 0;
-%do %while (%qscan(&var, &count+1, %str( )) ne %str());
-%let count = %eval(&count + 1);
-%let varb = %scan(&var, &count, %str( ));
-      
-proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
-*In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
-p25_&varb._1  = PCTL(25,of &varb.1-&varb.&nfit);
-p75_&varb._1 = PCTL(75,of &varb.1-&varb.&nfit);
-p5_&varb._1  = PCTL(5,of &varb.1-&varb.&nfit);
-p95_&varb._1 = PCTL(95,of &varb.1-&varb.&nfit);
-p50_&varb._1 = median(of &varb.1-&varb.&nfit);
-
-keep cald option p5_&varb._1 p95_&varb._1 p50_&varb._1 p25_&varb._1 p75_&varb._1;
-run;
-
-      proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
-%end;
-%mend;
-
-
-%option_1;
-run;
-
-
-
-data d; * this is number of variables in %let var = above ;
-merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
-g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
-g51  g52 
-g53  g54  g55  g56  g57  g58  g59  g60 g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 /* g73 g74 g75  g76  g77  g78 
-g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
-g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
-g131 g132 g133 g134 g135 g136 g137 g138 g139 g140 g141 g142 g143 g144 g145 g146 g147 g148 g149 g150 g151 g152 g153 g154 g155 g156
-g157 g158 g159 g160 g161 g162 g163 g164 g165 g166 g167 g168 g169 g170 g171 g172 g173 g174 g175 g176 g177 g178 g179 g180 g181 g182
-g183 g184 g185 g186 g187 g188 g189 g190 g191 g192 g193 g194 g195 g196 g197 g198 g199 g200 g201 g202 g203 g204 g205 g206 g207 g208
-g209 g210 g211 g212 g213 g214 g215 g216 g217 g218 g219 g220 g221 g222 g223 g224 g225 g226 g227 g228 g229 g230 g231 g232 g233 g234
-g235 g236 g237 g238 g239 g240 g241 g242 g243 g244 g245 g246 g247 g248 g249 g250 g251 g252 
-
-h1   h2   h3   h4   h5   h6   h7   h8   h9   h10  h11  h12  h13  h14  h15  h16  h17  h18  h19  h20  h21  h22  h23  h24  h25  h26 
-h27  h28  h29  h30  h31  h32  h33  h34  h35  h36  h37  h38  h39  h40  h41  h42  h43  h44  h45  h46  h47  h48  h49  h50 
-h51  h52 h53   h54  h55  h56  h57  h58  h59  h60  h61  h62  h63  h64  h65  h66  h67  h68  h69  h70  h71  h72 h73
-*/
-;
+data d;
+merge b
+a1   a2   a3   a4   a5   a6   a7   a8   a9   a10  a11  a12  a13  a14  a15  a16  a17  a18  a19  a20  a21  a22  a23  a24  a25  a26 
+a27  a28  a29  a30  a31  a32  a33  a34  a35  a36  a37  a38  a39  a40  a41 /* a42  a43  a44  a45  a46  a47  a48  a49  a50  a51  a52 
+a53  a54  a55  a56  a57  a58  a59  a60  a61  a62  a63  a64  a65  a66  a67  a68  a69  a70  a71  a72  a73  a74  a75  a76  a77  a78 
+a79  a80  a81  a82  a83  a84  a85  a86  a87  a88  a89  a90  a91  a92  a93  a94  a95  a96  a97  a98  a99  a100 a101 a102 a103 a104
+a105 a106 a107 a108 a109 a110 a111 a112 a113 a114 a115 a116 a117 a118 a119 a120 a121 a122 a123 a124 a125 a126 a127 a128 a129 a130
+a131 a132 a133 a134 a135 a136 a137 a138 a139 a140 a141 a142 a143 a144 a145 a146 a147 a148 a149 a150 a151 a152 a153 a154 a155 a156
+a157 a158 a159 a160 a161 a162 a163 a164 a165 a166 a167 a168 a169 a170 a171 a172 a173 a174 a175 a176 a177 a178 a179 a180 a181 a182
+a183 a184 a185 a186 a187 a188 a189 a190 a191 a192 a193 a194 a195 a196 a197 a198 a199 a200 a201 a202 a203 a204 a205 a206 a207 a208
+a209 a210 a211 a212 a213 a214 a215 a216 a217 a218 a219 a220 a221 a222 a223 a224 a225 a226 a227 a228 a229 a230 a231 a232 a233 a234
+a235 a236 a237 a238 a239 a240 a241 a242 a243 a244 a245 a246 a247 a248 a249 a250 a251 a252*/;
 by cald;
-ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-* ods rtf file = 'C:\Loveleen\Synthesis model\Multiple enhancements\graphs_23_08_19.doc' startpage=never; 
+run;
 
-ods html ;
 
+data e;
+set d;
+%include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
+run;
+
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\19Apr2023.doc' startpage=never; 
 
 
 proc sgplot data=e; 
@@ -310,11 +215,11 @@ Title    height=1.5 justify=center "FSW Population (age 15-49)";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
 yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
-label p50_n_sw_1549_1_	                  = "model age 15-49 (median)";
+label p50_n_sw_1549_	                  = "model age 15-49 (median)";
 
 label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
-series  x=cald y=p50_n_sw_1549_1_  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_n_sw_1549_1_      upper=p95_n_sw_1549_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_sw_1549_  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sw_1549_      upper=p95_n_sw_1549_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 
 scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
 										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
@@ -326,13 +231,13 @@ title    height=1.5 justify=center "Proportion of women who are sex workers (age
 footnote1 height=0.9  "";
 xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
 yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
-label p50_prop_w_1549_sw_1_   = "model - median ";
+label p50_prop_w_1549_sw   = "model - median ";
 
 label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
 label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
 
-series  x=cald y=p50_prop_w_1549_sw_1_  / 	 lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_prop_w_1549_sw_1_ 	 upper=p95_prop_w_1549_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+series  x=cald y=p50_prop_w_1549_sw  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_w_1549_sw 	 upper=p95_prop_w_1549_sw / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 
 scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
 scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
