@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 92 all;
+* run 93 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
@@ -849,7 +849,7 @@ rr_sbp_inc_on_antihyp = 0.5;
 * probability of having symptoms if SBP >180;
 prob_symp_hypertension = 0.025; 
 * Probability of hypertension diagnosis for a given setting (low, med, high);
-%sample_uniform(rr_htn_diagnosis, 0.57 1 1.75);
+%sample_uniform(rr_htn_diagnosis, 0.67 1 1.5);
 * probabily of higher rate of diagnosis in women (greater health system exposure/health-seeking)
 	* References: 
 		Geldsetzer Lancet 2019 - RR for diagnosis in women 1.43 (1.36-1.50) in SSA using multivariate regression, 1.52 (1.45-1.60) with all countries having same weight)
@@ -944,9 +944,9 @@ cost_htn_screen_comm = .;
 cost_htn_visit1 = 0.010;
 cost_htn_visit2 = 0.020;
 cost_htn_visitInt = 0;
-cost_htn_drug1 = 0.0017;
-cost_htn_drug2 = 0.0017;
-cost_htn_drug3 = 0.0034;
+cost_htn_drug1 = 0.0015;
+cost_htn_drug2 = 0.0015;
+cost_htn_drug3 = 0.0030;
 cost_ihd_tx = 2.27;
 cost_cva_tx = 2.42;
 cost_ihd_tx_lowqual = cost_ihd_tx / 2;
@@ -1765,8 +1765,8 @@ cva_severity = 0; ihd_severity = 0;
 %sample(effect_anti_hyp_3, 10 20 30, 0.7 0.2 0.1);
 
 * define person-specific risk of sbp increase per period;
-%sample_uniform(sbp_rr, 0.67 1 1.5);
-* define person-specific risk of sbp increase per period during middle age (45-64);
+%sample_uniform(sbp_rr, 0.56 1 1.8);
+* define person-specific risk of sbp increase per period during middle age (40-64);
 %sample_uniform(sbp_rr_age, 1 1.5 2);
 
 u=rand('uniform');low_preg_risk=0;
@@ -2172,6 +2172,7 @@ visit_hypertension_tm1 = visit_hypertension;
 tested_bp_tm1 = tested_bp;
 sbp_m_tm1 = sbp_m;
 htn_lifestyle_counsel_tm1 = htn_lifestyle_counsel;
+deintensify_anti_hyp_tm1 = deintensify_anti_hyp_this_per;
 ihd_this_per = 0;
 cva_this_per = 0;
 ihd_this_per_modsev = 0;
@@ -2698,9 +2699,9 @@ who may be dead and hence have caldate{t} missing;
 		integration = 1;
 
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-		%sample_uniform(prob_intensify_1_2, 0.3 0.35 0.4); 
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.05);
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
 
 	end;
 
@@ -2712,7 +2713,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		%sample_uniform(prob_htn_link, 0.60 0.65 0.70);
 		* comm test interval;
-		comm_test_interval = 1;
+		comm_test_interval = 2;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
@@ -2763,9 +2764,9 @@ who may be dead and hence have caldate{t} missing;
 		integration = 1;
 
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-		%sample_uniform(prob_intensify_1_2, 0.3 0.35 0.4); 
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.05);
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0;
@@ -2780,7 +2781,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		%sample_uniform(prob_htn_link, 0.90 0.95 1);
 		* comm test interval;
-		comm_test_interval = 1;
+		comm_test_interval = 2;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
@@ -2831,9 +2832,9 @@ who may be dead and hence have caldate{t} missing;
 		integration = 1;
 
 		* for a person on 1 anti-hypertensive with current measured SBP >=140 probability of intensification to 2 drugs;
-		%sample_uniform(prob_intensify_1_2, 0.3 0.35 0.4); 
+		%sample_uniform(prob_intensify_1_2, 0.25 0.30 0.35); 
 		* for a person on 2 anti-hypertensives with current measured SBP >=140 probability of intensification to 3 drugs;
-		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.05);
+		%sample_uniform(prob_intensify_2_3, 0.02 0.03 0.04);
 
 		* cost of hypertension interventions;
 		cost_htn_link_voucher = 0.005;
@@ -2848,7 +2849,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		prob_htn_link = 1;
 		* comm test interval;
-		comm_test_interval = 1;
+		comm_test_interval = 2;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 18;
 
@@ -3401,7 +3402,7 @@ end;
 a_sbp=rand('uniform');  tested_bp = 0; sbp_m=.; visit_hypertension=0; *reset vars this period;
 
 select; * updated 7jan2022 to eliminate SBP-assocaited risk (duplicative to include individual risk and SBP-associated risk) ;
-	when (45 <= age < 65) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ; *change mid-age rise to 45+ (instead of 40-59); * 24APR24, change to age 45 to <65;
+	when (40 <= age < 65) a_sbp = a_sbp / (sbp_rr * sbp_rr_age) ;  * 27APR24, change to age 40 to <65;
 	otherwise a_sbp = a_sbp / sbp_rr ;
 end; 
 
@@ -3411,7 +3412,7 @@ if  a_sbp < prob_sbp_increase then do;
 	sbp = sbp + 1 ; 
 	if on_tx_htn >=1 then sbp_last_start_anti_hyp = sbp_last_start_anti_hyp + 1 ;
 end;
-if on_tx_htn = 0 then htn_visit_count =  0;
+if on_tx_htn = 0 and deintensify_anti_hyp_tm1 ne 1 then htn_visit_count =  0;
 
 * symptoms of hypertension ;
 symp_hypertension=0;
@@ -3433,10 +3434,6 @@ if test_sbp_comm =1 then do;
 	sbp_comm_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_comm_m = round(sbp_comm_m, 1);
 end;
 if sbp_comm_m >=140 then do;
-	select; 
-		when (symp_hty = 1 or prior_cvd_modsev = 1) a_htn_link = a_htn_link / 1.2;
-		otherwise a_htn_link = a_htn_link;
-	end;
 	if a_htn_link < prob_htn_link then tested_bp = 1;
 end;
 
@@ -3466,7 +3463,7 @@ if most_recent_sbp_m < 140 and on_tx_htn ge 1 and (caldate{t} - date_last_visit_
 	if htn_visit_count  = 4 and e < prob_visit_htn_v4 then visit_hypertension = 1;
 	if htn_visit_count >= 5 and e < prob_visit_htn_v5 then visit_hypertension = 1;
 end;
-if most_recent_sbp_m >= 140 and on_tx_htn ge 1 then do;
+if (most_recent_sbp_m >= 140 and on_tx_htn ge 1) or deintensify_anti_hyp_tm1 = 1 then do;
 	e=rand('uniform'); 
 	if htn_visit_count  = 1 and e < prob_visit_htn_v1 then visit_hypertension = 1;
 	if htn_visit_count  = 2 and e < prob_visit_htn_v2 then visit_hypertension = 1;
@@ -3479,7 +3476,7 @@ end;
 if visit_hypertension=1 then tested_bp=1;
 if tested_bp = 1 then do;
 	sbp_m = sbp + (measurement_error_var_sbp*rand('normal')); sbp_m = round(sbp_m, 1);
-	if sbp_m >= 140 then visit_hypertension = 1; *captures those who tested this period and had first-time HTN dx;
+	if sbp_m >= 140 then visit_hypertension = 1;
 	if sbp_m < 140 and on_tx_htn = 0 then last_bp_ge140 = 0;
 	if visit_hypertension=1 then date_last_visit_hypertension=caldate{t};
 end;
@@ -3535,19 +3532,20 @@ end;
 if intensify_anti_hyp_this_per_1_2 = 1 then sbp = sbp - effect_anti_hyp_2 ;
 if intensify_anti_hyp_this_per_2_3 = 1 then sbp = sbp - effect_anti_hyp_3 ;
 
+* de-intensification of antihypertensive therapy;
+deintensify_anti_hyp_this_per = 0;
+if visit_hypertension = 1 and sbp_m < 90 and on_tx_htn >=1 then do;
+	deintensify_anti_hyp_this_per = 1;
+	if on_tx_htn =1 then sbp = sbp + effect_anti_hyp_1 ;
+	if on_tx_htn =2 then sbp = sbp + effect_anti_hyp_2 ;
+	if on_tx_htn =3 then sbp = sbp + effect_anti_hyp_3 ;
+	on_tx_htn = on_tx_htn - 1;
+end;
+
 * duration of treatment;
 if on_tx_htn ge 1 and visit_hypertension = 1 then do;
 	htn_visit_count =  htn_visit_count + 1;
 end;
-
-* hypertension control;
-hypertension = 0; if sbp >= 140 or on_tx_htn ge 1 then hypertension = 1;
-hypertens160 = 0; if sbp >= 160 then hypertens160 = 1;
-hypertens180 = 0; if sbp >= 180 then hypertens180 = 1;
-
-htn_control = .; 
-if hypertension = 1 then htn_control = 0;
-if hypertension = 1 and sbp <  140 and on_tx_htn ge 1 then htn_control = 1;
 
 max_sbp = max(sbp, sbp_last_start_anti_hyp);
 if sbp_m ne . then most_recent_sbp_m = sbp_m;
@@ -3565,6 +3563,15 @@ end;
 
 htn_true160 = 0; if max_sbp >= 160 then htn_true160 = 1;
 htn_true_dx160 = 0; if dx_htn = 1 and htn_true160 = 1 then htn_true_dx160 = 1;
+
+
+* hypertension control;
+hypertension = 0; if sbp >= 140 or on_tx_htn ge 1 then hypertension = 1;
+hypertens160 = 0; if sbp >= 160 then hypertens160 = 1;
+
+htn_control = .; 
+if htn_true = 1 then htn_control = 0;
+if htn_true = 1 and sbp <  140 and on_tx_htn ge 1 then htn_true = 1;
 
 
 * hypertension cost this period;
@@ -16192,6 +16199,8 @@ if dead=1 and caldate&j = death then do;
 	if dcause=4 and 60 <= age < 70 and gender=2 then dead_cvd_6069w=1;
 	if dcause=4 and 70 <= age < 80 and gender=2 then dead_cvd_7079w=1;
 	if dcause=4 and 80 <= age      and gender=2 then dead_cvd_ge80w=1;
+	if dcause=4 and 18 <= age then dead_cvd_ge18 = 1;
+	if dcause=4 and htn_true = 1 and 18 <= age then dead_cvd_htn_ge18 = 1;
 end;
 
 
@@ -16690,10 +16699,12 @@ newp_sw = 0;  if sw = 1 then newp_sw = newp;
 hypertension_ge18 = 0; hypertension_1524 = 0; hypertension_2534 = 0; hypertension_3544 = 0; hypertension_4554 = 0; hypertension_5564 = 0; hypertension_ge65 = 0; 
 dx_htn_ge18 = 0; dx_htn_1524 = 0; dx_htn_2534 = 0; dx_htn_3544 = 0; dx_htn_4554 = 0; dx_htn_5564 = 0; dx_htn_ge65 = 0; 
 on_tx_htn_ge18 = 0; on_tx_htn_1524 = 0; on_tx_htn_2534 = 0; on_tx_htn_3544 = 0; on_tx_htn_4554 = 0; on_tx_htn_5564 = 0; on_tx_htn_ge65 = 0; 
+on_tx_htn_over_ge18 = 0; on_tx_htn_over_1524 = 0; on_tx_htn_over_2534 = 0; on_tx_htn_over_3544 = 0; on_tx_htn_over_4554 = 0; on_tx_htn_over_5564 = 0; on_tx_htn_over_ge65 = 0; 
 on1drug_antihyp_ge18 = 0; on1drug_antihyp_1524 = 0; on1drug_antihyp_2534 = 0; on1drug_antihyp_3544 = 0; on1drug_antihyp_4554 = 0; on1drug_antihyp_5564 = 0; on1drug_antihyp_ge65 = 0; 
 on2drug_antihyp_ge18 = 0; on2drug_antihyp_1524 = 0; on2drug_antihyp_2534 = 0; on2drug_antihyp_3544 = 0; on2drug_antihyp_4554 = 0; on2drug_antihyp_5564 = 0; on2drug_antihyp_ge65 = 0; 
 on3drug_antihyp_ge18 = 0; on3drug_antihyp_1524 = 0; on3drug_antihyp_2534 = 0; on3drug_antihyp_3544 = 0; on3drug_antihyp_4554 = 0; on3drug_antihyp_5564 = 0; on3drug_antihyp_ge65 = 0; 
 ever_tx_htn_ge18 = 0; ever_tx_htn_1524 = 0; ever_tx_htn_2534 = 0; ever_tx_htn_3544 = 0; ever_tx_htn_4554 = 0; ever_tx_htn_5564 = 0; ever_tx_htn_ge65 = 0; 
+ever_tx_htn_over_ge18 = 0; ever_tx_htn_over_1524 = 0; ever_tx_htn_over_2534 = 0; ever_tx_htn_over_3544 = 0; ever_tx_htn_over_4554 = 0; ever_tx_htn_over_5564 = 0; ever_tx_htn_over_ge65 = 0; 
 htn_control_ge18 = 0; htn_control_1524 = 0; htn_control_2534 = 0; htn_control_3544 = 0; htn_control_4554 = 0; htn_control_5564 = 0; htn_control_ge65 = 0; 
 htn_true_ge18 = 0; htn_true_1524 = 0; htn_true_2534 = 0; htn_true_3544 = 0; htn_true_4554 = 0; htn_true_5564 = 0; htn_true_ge65 = 0;
 normotensive_ge18 = 0; normotensive_1524 = 0; normotensive_2534 = 0; normotensive_3544 = 0; normotensive_4554 = 0; normotensive_5564 = 0; normotensive_ge65 = 0;
@@ -16711,36 +16722,10 @@ sbp_1519w = 0; sbp_2024w = 0; sbp_2529w = 0; sbp_3034w = 0; sbp_3539w = 0; sbp_4
 sbp_1519m = 0; sbp_2024m = 0; sbp_2529m = 0; sbp_3034m = 0; sbp_3539m = 0; sbp_4044m = 0; sbp_4549m = 0; sbp_5054m = 0; sbp_5559m = 0; sbp_6064m = 0; sbp_6569m = 0; sbp_7074m = 0; sbp_7579m = 0; sbp_ge80m = 0; 
 sbp_1519  = 0; sbp_2024  = 0; sbp_2529  = 0; sbp_3034  = 0; sbp_3539  = 0; sbp_4044  = 0; sbp_4549  = 0; sbp_5054  = 0; sbp_5559  = 0; sbp_6064  = 0; sbp_6569  = 0; sbp_7074  = 0; sbp_7579  = 0; sbp_ge80  = 0; 
 
-* CVD incidence - first events only;
-ihd_inc_one_1539=0; cva_inc_one_1539=0; ihd_inc_one_1539m=0; cva_inc_one_1539m=0; ihd_inc_one_1539w=0; cva_inc_one_1539w=0;
-ihd_inc_one_4049=0; cva_inc_one_4049=0; ihd_inc_one_4049m=0; cva_inc_one_4049m=0; ihd_inc_one_4049w=0; cva_inc_one_4049w=0; 
-ihd_inc_one_5059=0; cva_inc_one_5059=0; ihd_inc_one_5059m=0; cva_inc_one_5059m=0; ihd_inc_one_5059w=0; cva_inc_one_5059w=0; 
-ihd_inc_one_6069=0; cva_inc_one_6069=0; ihd_inc_one_6069m=0; cva_inc_one_6069m=0; ihd_inc_one_6069w=0; cva_inc_one_6069w=0;
-ihd_inc_one_7079=0; cva_inc_one_7079=0; ihd_inc_one_7079m=0; cva_inc_one_7079m=0; ihd_inc_one_7079w=0; cva_inc_one_7079w=0; 
-ihd_inc_one_ge80=0; cva_inc_one_ge80=0; ihd_inc_one_ge80m=0; cva_inc_one_ge80m=0; ihd_inc_one_ge80w=0; cva_inc_one_ge80w=0; 
-
-ihd_inc_one_modsev_1539 = 0; ihd_inc_one_modsev_1539m = 0; ihd_inc_one_modsev_1539w = 0;
-cva_inc_one_modsev_1539 = 0; cva_inc_one_modsev_1539m = 0; cva_inc_one_modsev_1539w = 0;
-ihd_inc_one_modsev_4049 = 0; ihd_inc_one_modsev_4049m = 0; ihd_inc_one_modsev_4049w = 0;
-cva_inc_one_modsev_4049 = 0; cva_inc_one_modsev_4049m = 0; cva_inc_one_modsev_4049w = 0;
-ihd_inc_one_modsev_5059 = 0; ihd_inc_one_modsev_5059m = 0; ihd_inc_one_modsev_5059w = 0;
-cva_inc_one_modsev_5059 = 0; cva_inc_one_modsev_5059m = 0; cva_inc_one_modsev_5059w = 0;
-ihd_inc_one_modsev_6069 = 0; ihd_inc_one_modsev_6069m = 0; ihd_inc_one_modsev_6069w = 0;
-cva_inc_one_modsev_6069 = 0; cva_inc_one_modsev_6069m = 0; cva_inc_one_modsev_6069w = 0;
-ihd_inc_one_modsev_7079 = 0; ihd_inc_one_modsev_7079m = 0; ihd_inc_one_modsev_7079w = 0;
-cva_inc_one_modsev_7079 = 0; cva_inc_one_modsev_7079m = 0; cva_inc_one_modsev_7079w = 0;
-ihd_inc_one_modsev_ge80 = 0; ihd_inc_one_modsev_ge80m = 0; ihd_inc_one_modsev_ge80w = 0;
-cva_inc_one_modsev_ge80 = 0; cva_inc_one_modsev_ge80m = 0; cva_inc_one_modsev_ge80w = 0;
-
-* CVD incidence - all events, both first and recurrent;
-ihd_inc_all_1539=0; cva_inc_all_1539=0; ihd_inc_all_1539m=0; cva_inc_all_1539m=0; ihd_inc_all_1539w=0; cva_inc_all_1539w=0;
-ihd_inc_all_4049=0; cva_inc_all_4049=0; ihd_inc_all_4049m=0; cva_inc_all_4049m=0; ihd_inc_all_4049w=0; cva_inc_all_4049w=0; 
-ihd_inc_all_5059=0; cva_inc_all_5059=0; ihd_inc_all_5059m=0; cva_inc_all_5059m=0; ihd_inc_all_5059w=0; cva_inc_all_5059w=0; 
-ihd_inc_all_6069=0; cva_inc_all_6069=0; ihd_inc_all_6069m=0; cva_inc_all_6069m=0; ihd_inc_all_6069w=0; cva_inc_all_6069w=0;
-ihd_inc_all_7079=0; cva_inc_all_7079=0; ihd_inc_all_7079m=0; cva_inc_all_7079m=0; ihd_inc_all_7079w=0; cva_inc_all_7079w=0; 
-ihd_inc_all_ge80=0; cva_inc_all_ge80=0; ihd_inc_all_ge80m=0; cva_inc_all_ge80m=0; ihd_inc_all_ge80w=0; cva_inc_all_ge80w=0; 
+* CVD incidence - all events, both first and recurrent; * in run 93, drop all first event and non-moderate/severe events (can go back and pick code from run 92 commit if needed);
 
 ihd_inc_all_modsev_ge18 = 0; cva_inc_all_modsev_ge18 = 0;
+ihd_inc_all_modsev_htn_ge18 = 0; cva_inc_all_modsev_htn_ge18 = 0; * cvd incidence only among those with hypertension;
 ihd_inc_all_modsev_1539 = 0; ihd_inc_all_modsev_1539m = 0; ihd_inc_all_modsev_1539w = 0;
 cva_inc_all_modsev_1539 = 0; cva_inc_all_modsev_1539m = 0; cva_inc_all_modsev_1539w = 0;
 ihd_inc_all_modsev_4049 = 0; ihd_inc_all_modsev_4049m = 0; ihd_inc_all_modsev_4049w = 0;
@@ -16764,30 +16749,10 @@ prior_ihd_ge80=0; prior_cva_ge80=0; prior_ihd_ge80m=0; prior_cva_ge80m=0; prior_
 
 if 15 <= age < 40 then do; 
 
-	if first_ihd=1 then ihd_inc_one_1539 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_1539m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_1539w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_1539 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_1539m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_1539w = 1; 
-
-	if first_cva= 1 then cva_inc_one_1539 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_1539m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_1539w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_1539 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_1539m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_1539w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_1539 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_1539m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_1539w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_1539 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_1539m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_1539w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_1539 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_1539m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_1539w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_1539 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_1539m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_1539w = 1;
@@ -16802,30 +16767,10 @@ end;
 
 if 40 <= age < 50 then do; 
 
-	if first_ihd=1 then ihd_inc_one_4049 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_4049m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_4049w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_4049 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_4049m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_4049w = 1; 
-
-	if first_cva= 1 then cva_inc_one_4049 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_4049m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_4049w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_4049 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_4049m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_4049w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_4049 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_4049m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_4049w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_4049 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_4049m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_4049w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_4049 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_4049m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_4049w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_4049 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_4049m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_4049w = 1;
@@ -16840,30 +16785,10 @@ end;
 
 if 50 <= age < 59 then do; 
 
-	if first_ihd=1 then ihd_inc_one_5059 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_5059m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_5059w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_5059 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_5059m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_5059w = 1; 
-
-	if first_cva= 1 then cva_inc_one_5059 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_5059m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_5059w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_5059 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_5059m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_5059w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_5059 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_5059m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_5059w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_5059 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_5059m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_5059w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_5059 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_5059m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_5059w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_5059 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_5059m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_5059w = 1;
@@ -16878,30 +16803,10 @@ end;
 
 if 60 <= age < 69 then do; 
 
-	if first_ihd=1 then ihd_inc_one_6069 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_6069m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_6069w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_6069 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_6069m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_6069w = 1; 
-
-	if first_cva= 1 then cva_inc_one_6069 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_6069m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_6069w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_6069 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_6069m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_6069w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_6069 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_6069m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_6069w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_6069 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_6069m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_6069w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_6069 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_6069m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_6069w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_6069 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_6069m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_6069w = 1;
@@ -16915,30 +16820,11 @@ if 60 <= age < 69 then do;
 end;
 
 if 70 <= age < 79 then do; 
-	if first_ihd=1 then ihd_inc_one_7079 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_7079m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_7079w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_7079 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_7079m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_7079w = 1; 
 
-	if first_cva= 1 then cva_inc_one_7079 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_7079m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_7079w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_7079 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_7079m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_7079w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_7079 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_7079m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_7079w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_7079 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_7079m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_7079w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_7079 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_7079m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_7079w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_7079 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_7079m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_7079w = 1;
@@ -16952,30 +16838,11 @@ if 70 <= age < 79 then do;
 end;
 
 if 80 <= age      then do; 
-	if first_ihd=1 then ihd_inc_one_ge80 = 1;
-	if first_ihd=1 and gender = 1 then ihd_inc_one_ge80m = 1;
-	if first_ihd=1 and gender = 2 then ihd_inc_one_ge80w = 1;
-	if first_ihd_modsev=1 then ihd_inc_one_modsev_ge80 = 1; 
-	if first_ihd_modsev=1 and gender = 1 then ihd_inc_one_modsev_ge80m = 1; 
-	if first_ihd_modsev=1 and gender = 2 then ihd_inc_one_modsev_ge80w = 1; 
 
-	if first_cva= 1 then cva_inc_one_ge80 = 1;
-	if first_cva= 1 and gender = 1 then cva_inc_one_ge80m = 1;
-	if first_cva= 1 and gender = 2 then cva_inc_one_ge80w = 1;
-	if first_cva_modsev=1 then cva_inc_one_modsev_ge80 = 1;
-	if first_cva_modsev=1 and gender = 1 then cva_inc_one_modsev_ge80m = 1;
-	if first_cva_modsev=1 and gender = 2 then cva_inc_one_modsev_ge80w = 1;
-
-	if ihd_this_per=1 then ihd_inc_all_ge80 = 1;
-	if ihd_this_per=1 and gender = 1 then ihd_inc_all_ge80m = 1;
-	if ihd_this_per=1 and gender = 2 then ihd_inc_all_ge80w = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_ge80 = 1; 
 	if ihd_this_per_modsev=1 and gender = 1 then ihd_inc_all_modsev_ge80m = 1; 
 	if ihd_this_per_modsev=1 and gender = 2 then ihd_inc_all_modsev_ge80w = 1; 
 
-	if cva_this_per= 1 then cva_inc_all_ge80 = 1;
-	if cva_this_per= 1 and gender = 1 then cva_inc_all_ge80m = 1;
-	if cva_this_per= 1 and gender = 2 then cva_inc_all_ge80w = 1;
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_ge80 = 1;
 	if cva_this_per_modsev=1 and gender = 1 then cva_inc_all_modsev_ge80m = 1;
 	if cva_this_per_modsev=1 and gender = 2 then cva_inc_all_modsev_ge80w = 1;
@@ -17000,16 +16867,24 @@ if 18 <= age then do;
 		if htn_control = 1 then htn_control160_ge18 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_ge18 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_ge18 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_ge18 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_ge18 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_ge18 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_ge18 = 1;
-	if htn_control = 1 then htn_control_ge18 = 1;
-	if htn_true = 1 then htn_true_ge18 = 1;
-	if normotensive = 1 then normotensive_ge18 = 1;
 	if htn_true_dx = 1 then htn_true_dx_ge18 = 1;
-	if htn_over_dx = 1 then htn_over_dx_ge18 = 1;
+	if htn_true = 1 then do;
+		htn_true_ge18 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_ge18 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_ge18 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_ge18 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_ge18 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_ge18 = 1;
+		if htn_control = 1 then htn_control_ge18 = 1;
+		if ihd_this_per_modsev=1 then ihd_inc_all_modsev_htn_ge18 = 1; 
+		if cva_this_per_modsev=1 then cva_inc_all_modsev_htn_ge18 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_ge18 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_ge18 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_ge18 = 1;
+	end;
+	if normotensive = 1 then normotensive_ge18 = 1;
 	sbp_max_over_ge18 = sbp_max_over; 
 	sbp_over_ge18 = sbp_over;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_ge18 = 1; 
@@ -17028,16 +16903,22 @@ if 25 <= age < 35 then do;
 		if htn_control = 1 then htn_control160_2534 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_2534 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_2534 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_2534 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_2534 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_2534 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_2534 = 1;
-	if htn_control = 1 then htn_control_2534 = 1;
-	if htn_true = 1 then htn_true_2534 = 1;
-	if normotensive = 1 then normotensive_2534 = 1;
 	if htn_true_dx = 1 then htn_true_dx_2534 = 1;
-	if htn_over_dx = 1 then htn_over_dx_2534 = 1;
+	if htn_true = 1 then do;
+		htn_true_2534 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_2534 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_2534 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_2534 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_2534 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_2534 = 1;
+		if htn_control = 1 then htn_control_2534 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_2534 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_2534 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_2534 = 1;
+	end;
+	if normotensive = 1 then normotensive_2534 = 1;
 end;
 
 if 35 <= age < 45 then do;
@@ -17050,16 +16931,22 @@ if 35 <= age < 45 then do;
 		if htn_control = 1 then htn_control160_3544 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_3544 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_3544 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_3544 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_3544 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_3544 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_3544 = 1;
-	if htn_control = 1 then htn_control_3544 = 1;
-	if htn_true = 1 then htn_true_3544 = 1;
-	if normotensive = 1 then normotensive_3544 = 1;
 	if htn_true_dx = 1 then htn_true_dx_3544 = 1;
-	if htn_over_dx = 1 then htn_over_dx_3544 = 1;
+	if htn_true = 1 then do;
+		htn_true_3544 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_3544 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_3544 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_3544 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_3544 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_3544 = 1;
+		if htn_control = 1 then htn_control_3544 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_3544 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_3544 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_3544 = 1;
+	end;
+	if normotensive = 1 then normotensive_3544 = 1;
 end;
 
 if 45 <= age < 55 then do;
@@ -17072,16 +16959,22 @@ if 45 <= age < 55 then do;
 		if htn_control = 1 then htn_control160_4554 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_4554 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_4554 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_4554 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_4554 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_4554 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_4554 = 1;
-	if htn_control = 1 then htn_control_4554 = 1;
-	if htn_true = 1 then htn_true_4554 = 1;
-	if normotensive = 1 then normotensive_4554 = 1;
 	if htn_true_dx = 1 then htn_true_dx_4554 = 1;
-	if htn_over_dx = 1 then htn_over_dx_4554 = 1;
+	if htn_true = 1 then do;
+		htn_true_4554 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_4554 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_4554 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_4554 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_4554 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_4554 = 1;
+		if htn_control = 1 then htn_control_4554 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_4554 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_4554 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_4554 = 1;
+	end;
+	if normotensive = 1 then normotensive_4554 = 1;
 end;
 
 if 55 <= age < 65 then do;
@@ -17094,16 +16987,22 @@ if 55 <= age < 65 then do;
 		if htn_control = 1 then htn_control160_5564 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_5564 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_5564 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_5564 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_5564 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_5564 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_5564 = 1;
-	if htn_control = 1 then htn_control_5564 = 1;
-	if htn_true = 1 then htn_true_5564 = 1;
-	if normotensive = 1 then normotensive_5564 = 1;
 	if htn_true_dx = 1 then htn_true_dx_5564 = 1;
-	if htn_over_dx = 1 then htn_over_dx_5564 = 1;
+	if htn_true = 1 then do;
+		htn_true_5564 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_5564 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_5564 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_5564 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_5564 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_5564 = 1;
+		if htn_control = 1 then htn_control_5564 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_5564 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_5564 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_5564 = 1;
+	end;
+	if normotensive = 1 then normotensive_5564 = 1;
 end	;
 
 if 65 <= age 	 then do;
@@ -17116,16 +17015,22 @@ if 65 <= age 	 then do;
 		if htn_control = 1 then htn_control160_ge65 = 1;
 	end;
 	if dx_htn = 1 then dx_htn_ge65 = 1;
-	if on_tx_htn ge 1 then on_tx_htn_ge65 = 1;
-	if on_tx_htn = 1 then on1drug_antihyp_ge65 = 1 ;
-	if on_tx_htn = 2 then on2drug_antihyp_ge65 = 1 ;
-	if on_tx_htn = 3 then on3drug_antihyp_ge65 = 1 ;
-	if ever_on_anti_hyp ge 1 then ever_tx_htn_ge65 = 1;
-	if htn_control = 1 then htn_control_ge65 = 1;
-	if htn_true = 1 then htn_true_ge65 = 1;
-	if normotensive = 1 then normotensive_ge65 = 1;
 	if htn_true_dx = 1 then htn_true_dx_ge65 = 1;
-	if htn_over_dx = 1 then htn_over_dx_ge65 = 1;
+	if htn_true = 1 then do;
+		htn_true_ge65 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_ge65 = 1;
+		if on_tx_htn = 1 then on1drug_antihyp_ge65 = 1 ;
+		if on_tx_htn = 2 then on2drug_antihyp_ge65 = 1 ;
+		if on_tx_htn = 3 then on3drug_antihyp_ge65 = 1 ;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_ge65 = 1;
+		if htn_control = 1 then htn_control_ge65 = 1;
+	end;
+	if htn_over_dx = 1 then do;
+		htn_over_dx_ge65 = 1;
+		if on_tx_htn ge 1 then on_tx_htn_over_ge65 = 1;
+		if ever_on_anti_hyp ge 1 then ever_tx_htn_over_ge65 = 1;
+	end;
+	if normotensive = 1 then normotensive_ge65 = 1;
 end;
 
 
@@ -17761,6 +17666,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on_tx_htn_4554 + on_tx_htn_4554 ; s_on_tx_htn_5564 + on_tx_htn_5564 ; s_on_tx_htn_ge65 + on_tx_htn_ge65 ;
 	s_ever_tx_htn_ge18 + ever_tx_htn_ge18 ; s_ever_tx_htn_2534 + ever_tx_htn_2534 ; s_ever_tx_htn_3544 + ever_tx_htn_3544 ;
 	s_ever_tx_htn_4554 + ever_tx_htn_4554 ; s_ever_tx_htn_5564 + ever_tx_htn_5564 ; s_ever_tx_htn_ge65 + ever_tx_htn_ge65 ;
+	s_on_tx_htn_over_ge18 + on_tx_htn_over_ge18 ; s_on_tx_htn_over_2534 + on_tx_htn_over_2534 ; s_on_tx_htn_over_3544 + on_tx_htn_over_3544 ;
+	s_on_tx_htn_over_4554 + on_tx_htn_over_4554 ; s_on_tx_htn_over_5564 + on_tx_htn_over_5564 ; s_on_tx_htn_over_ge65 + on_tx_htn_over_ge65 ;
+	s_ever_tx_htn_over_ge18 + ever_tx_htn_over_ge18 ; s_ever_tx_htn_over_2534 + ever_tx_htn_over_2534 ; s_ever_tx_htn_over_3544 + ever_tx_htn_over_3544 ;
+	s_ever_tx_htn_over_4554 + ever_tx_htn_over_4554 ; s_ever_tx_htn_over_5564 + ever_tx_htn_over_5564 ; s_ever_tx_htn_over_ge65 + ever_tx_htn_over_ge65 ;
 	s_htn_control_ge18 + htn_control_ge18 ; s_htn_control_2534 + htn_control_2534 ; s_htn_control_3544 + htn_control_3544 ;
 	s_htn_control_4554 + htn_control_4554 ; s_htn_control_5564 + htn_control_5564 ; s_htn_control_ge65 + htn_control_ge65 ;
 	s_htn_true_ge18 + htn_true_ge18 ; s_htn_true_2534 + htn_true_2534 ; s_htn_true_3544 + htn_true_3544 ;
@@ -17841,58 +17750,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_sbp_7579  + sbp_7579 ;   				
 	s_sbp_ge80  + sbp_ge80 ;	
 
-	s_ihd_inc_one + first_ihd ;
-	s_ihd_inc_all + ihd_this_per ;
-	s_cva_inc_one + first_cva ;
-	s_cva_inc_all + cva_this_per ;
-	s_ihd_inc_one_modsev + first_ihd_modsev ;
-	s_ihd_inc_all_modsev + ihd_this_per_modsev ;
-	s_cva_inc_one_modsev + first_cva_modsev ;
-	s_cva_inc_all_modsev + cva_this_per_modsev ;
-	s_ihd_prev + prior_ihd ;
-	s_cva_prev + prior_cva ;
-	
-	s_ihd_inc_one_1539 + ihd_inc_one_1539; s_ihd_inc_one_1539m + ihd_inc_one_1539m; s_ihd_inc_one_1539w + ihd_inc_one_1539w;
-	s_cva_inc_one_1539 + cva_inc_one_1539; s_cva_inc_one_1539m + cva_inc_one_1539m; s_cva_inc_one_1539w + cva_inc_one_1539w;
-	s_ihd_inc_one_4049 + ihd_inc_one_4049; s_ihd_inc_one_4049m + ihd_inc_one_4049m; s_ihd_inc_one_4049w + ihd_inc_one_4049w; 
-	s_cva_inc_one_4049 + cva_inc_one_4049; s_cva_inc_one_4049m + cva_inc_one_4049m; s_cva_inc_one_4049w + cva_inc_one_4049w;
-	s_ihd_inc_one_5059 + ihd_inc_one_5059; s_ihd_inc_one_5059m + ihd_inc_one_5059m; s_ihd_inc_one_5059w + ihd_inc_one_5059w;
-	s_cva_inc_one_5059 + cva_inc_one_5059; s_cva_inc_one_5059m + cva_inc_one_5059m; s_cva_inc_one_5059w + cva_inc_one_5059w;
-	s_ihd_inc_one_6069 + ihd_inc_one_6069; s_ihd_inc_one_6069m + ihd_inc_one_6069m; s_ihd_inc_one_6069w + ihd_inc_one_6069w;
-	s_cva_inc_one_6069 + cva_inc_one_6069; s_cva_inc_one_6069m + cva_inc_one_6069m; s_cva_inc_one_6069w + cva_inc_one_6069w;
-	s_ihd_inc_one_7079 + ihd_inc_one_7079; s_ihd_inc_one_7079m + ihd_inc_one_7079m; s_ihd_inc_one_7079w + ihd_inc_one_7079w; 
-	s_cva_inc_one_7079 + cva_inc_one_7079; s_cva_inc_one_7079m + cva_inc_one_7079m; s_cva_inc_one_7079w + cva_inc_one_7079w; 
-	s_ihd_inc_one_ge80 + ihd_inc_one_ge80; s_ihd_inc_one_ge80m + ihd_inc_one_ge80m; s_ihd_inc_one_ge80w + ihd_inc_one_ge80w;
-	s_cva_inc_one_ge80 + cva_inc_one_ge80; s_cva_inc_one_ge80m + cva_inc_one_ge80m; s_cva_inc_one_ge80w + cva_inc_one_ge80w;
-
-	s_ihd_inc_all_1539 + ihd_inc_all_1539; s_ihd_inc_all_1539m + ihd_inc_all_1539m; s_ihd_inc_all_1539w + ihd_inc_all_1539w;
-	s_cva_inc_all_1539 + cva_inc_all_1539; s_cva_inc_all_1539m + cva_inc_all_1539m; s_cva_inc_all_1539w + cva_inc_all_1539w;
-	s_ihd_inc_all_4049 + ihd_inc_all_4049; s_ihd_inc_all_4049m + ihd_inc_all_4049m; s_ihd_inc_all_4049w + ihd_inc_all_4049w; 
-	s_cva_inc_all_4049 + cva_inc_all_4049; s_cva_inc_all_4049m + cva_inc_all_4049m; s_cva_inc_all_4049w + cva_inc_all_4049w;
-	s_ihd_inc_all_5059 + ihd_inc_all_5059; s_ihd_inc_all_5059m + ihd_inc_all_5059m; s_ihd_inc_all_5059w + ihd_inc_all_5059w;
-	s_cva_inc_all_5059 + cva_inc_all_5059; s_cva_inc_all_5059m + cva_inc_all_5059m; s_cva_inc_all_5059w + cva_inc_all_5059w;
-	s_ihd_inc_all_6069 + ihd_inc_all_6069; s_ihd_inc_all_6069m + ihd_inc_all_6069m; s_ihd_inc_all_6069w + ihd_inc_all_6069w;
-	s_cva_inc_all_6069 + cva_inc_all_6069; s_cva_inc_all_6069m + cva_inc_all_6069m; s_cva_inc_all_6069w + cva_inc_all_6069w; 
-	s_ihd_inc_all_7079 + ihd_inc_all_7079; s_ihd_inc_all_7079m + ihd_inc_all_7079m; s_ihd_inc_all_7079w + ihd_inc_all_7079w; 
-	s_cva_inc_all_7079 + cva_inc_all_7079; s_cva_inc_all_7079m + cva_inc_all_7079m; s_cva_inc_all_7079w + cva_inc_all_7079w;
-	s_ihd_inc_all_ge80 + ihd_inc_all_ge80; s_ihd_inc_all_ge80m + ihd_inc_all_ge80m; s_ihd_inc_all_ge80w + ihd_inc_all_ge80w;
-	s_cva_inc_all_ge80 + cva_inc_all_ge80; s_cva_inc_all_ge80m + cva_inc_all_ge80m; s_cva_inc_all_ge80w + cva_inc_all_ge80w;
-	
-	s_ihd_inc_one_modsev_1539 + ihd_inc_one_modsev_1539 ; s_ihd_inc_one_modsev_1539m + ihd_inc_one_modsev_1539m ; s_ihd_inc_one_modsev_1539w + ihd_inc_one_modsev_1539w ;
-	s_cva_inc_one_modsev_1539 + cva_inc_one_modsev_1539 ; s_cva_inc_one_modsev_1539m + cva_inc_one_modsev_1539m ; s_cva_inc_one_modsev_1539w + cva_inc_one_modsev_1539w ;
-	s_ihd_inc_one_modsev_4049 + ihd_inc_one_modsev_4049 ; s_ihd_inc_one_modsev_4049m + ihd_inc_one_modsev_4049m ; s_ihd_inc_one_modsev_4049w + ihd_inc_one_modsev_4049w ;
-	s_cva_inc_one_modsev_4049 + cva_inc_one_modsev_4049 ; s_cva_inc_one_modsev_4049m + cva_inc_one_modsev_4049m ; s_cva_inc_one_modsev_4049w + cva_inc_one_modsev_4049w ;
-	s_ihd_inc_one_modsev_5059 + ihd_inc_one_modsev_5059 ; s_ihd_inc_one_modsev_5059m + ihd_inc_one_modsev_5059m ; s_ihd_inc_one_modsev_5059w + ihd_inc_one_modsev_5059w ;
-	s_cva_inc_one_modsev_5059 + cva_inc_one_modsev_5059 ; s_cva_inc_one_modsev_5059m + cva_inc_one_modsev_5059m ; s_cva_inc_one_modsev_5059w + cva_inc_one_modsev_5059w ;
-	s_ihd_inc_one_modsev_6069 + ihd_inc_one_modsev_6069 ; s_ihd_inc_one_modsev_6069m + ihd_inc_one_modsev_6069m ; s_ihd_inc_one_modsev_6069w + ihd_inc_one_modsev_6069w ;
-	s_cva_inc_one_modsev_6069 + cva_inc_one_modsev_6069 ; s_cva_inc_one_modsev_6069m + cva_inc_one_modsev_6069m ; s_cva_inc_one_modsev_6069w + cva_inc_one_modsev_6069w ;
-	s_ihd_inc_one_modsev_7079 + ihd_inc_one_modsev_7079 ; s_ihd_inc_one_modsev_7079m + ihd_inc_one_modsev_7079m ; s_ihd_inc_one_modsev_7079w + ihd_inc_one_modsev_7079w ;
-	s_cva_inc_one_modsev_7079 + cva_inc_one_modsev_7079 ; s_cva_inc_one_modsev_7079m + cva_inc_one_modsev_7079m ; s_cva_inc_one_modsev_7079w + cva_inc_one_modsev_7079w ;
-	s_ihd_inc_one_modsev_ge80 + ihd_inc_one_modsev_ge80 ; s_ihd_inc_one_modsev_ge80m + ihd_inc_one_modsev_ge80m ; s_ihd_inc_one_modsev_ge80w + ihd_inc_one_modsev_ge80w ;
-	s_cva_inc_one_modsev_ge80 + cva_inc_one_modsev_ge80 ; s_cva_inc_one_modsev_ge80m + cva_inc_one_modsev_ge80m ; s_cva_inc_one_modsev_ge80w + cva_inc_one_modsev_ge80w ;
-
 	s_ihd_inc_all_modsev_ge18 + ihd_inc_all_modsev_ge18 ;
 	s_cva_inc_all_modsev_ge18 + cva_inc_all_modsev_ge18 ;
+	s_ihd_inc_all_modsev_htn_ge18 + ihd_inc_all_modsev_htn_ge18 ;
+	s_cva_inc_all_modsev_htn_ge18 + cva_inc_all_modsev_htn_ge18 ;
 	s_ihd_inc_all_modsev_1539 + ihd_inc_all_modsev_1539 ; s_ihd_inc_all_modsev_1539m + ihd_inc_all_modsev_1539m ; s_ihd_inc_all_modsev_1539w + ihd_inc_all_modsev_1539w ;
 	s_cva_inc_all_modsev_1539 + cva_inc_all_modsev_1539 ; s_cva_inc_all_modsev_1539m + cva_inc_all_modsev_1539m ; s_cva_inc_all_modsev_1539w + cva_inc_all_modsev_1539w ;
 	s_ihd_inc_all_modsev_4049 + ihd_inc_all_modsev_4049 ; s_ihd_inc_all_modsev_4049m + ihd_inc_all_modsev_4049m ; s_ihd_inc_all_modsev_4049w + ihd_inc_all_modsev_4049w ;
@@ -17967,6 +17828,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead_hivneg_cause5 + dead_hivneg_cause5 ; s_dead_hivneg_tb + dead_hivneg_tb ;
 	s_dead_hivneg_anycause + dead_hivneg_anycause;  s_dead_hivpos_anycause + dead_hivpos_anycause;  
 	s_dead_allcause_1539 + dead_allcause_1539; s_dead_allcause_4059 + dead_allcause_4059;  s_dead_allcause_6079 + dead_allcause_6079;
+	s_dead_cvd_ge18 + dead_cvd_ge18 ;
+	s_dead_cvd_htn_ge18 + dead_cvd_htn_ge18 ;
 	s_dead_cvd_3039m + dead_cvd_3039m ; s_dead_cvd_4049m + dead_cvd_4049m ; s_dead_cvd_5059m + dead_cvd_5059m ;s_dead_cvd_6069m + dead_cvd_6069m ;
 	s_dead_cvd_7079m + dead_cvd_7079m ; s_dead_cvd_ge80m + dead_cvd_ge80m ;
 	s_dead_cvd_3039w + dead_cvd_3039w ; s_dead_cvd_4049w + dead_cvd_4049w ; s_dead_cvd_5059w + dead_cvd_5059w ;s_dead_cvd_6069w + dead_cvd_6069w ;
@@ -18361,6 +18224,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 /*
 proc freq; tables cald hiv ; where death=.; run;
+*/
+/*
+proc print; 
+var option caldate&j dead dcause sbp visit_hypertension htn_visit_count sbp_m deintensify_anti_hyp_this_per on_tx_htn sbp_last_start_anti_hyp visit_hypertension_tm1 deintensify_anti_hyp_tm1 previous_anti_hyp ever_on_anti_hyp htn_visit_count  ;
+where htn_over_dx = 1 and ever_on_anti_hyp = 1 ;  
+run;
 */
 /*
 proc print; 
@@ -19706,6 +19575,7 @@ s_ev_onart_gt6m_vlg1000_adead  s_ev_onart_gt6m_vl_m_g1000_dead  s_ev_onart_gt6m_
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -19805,10 +19675,12 @@ s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
 s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
  s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
  s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
  s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
 s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
 s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
 s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
 s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
@@ -19830,51 +19702,8 @@ s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_45
 s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
-	s_ihd_inc_one s_cva_inc_one
-	s_ihd_inc_all s_cva_inc_all 
-	s_ihd_inc_one_modsev s_cva_inc_one_modsev
-	s_ihd_inc_all_modsev s_cva_inc_all_modsev
-	s_ihd_prev s_cva_prev 
-
-	s_ihd_inc_one_1539 s_ihd_inc_one_1539m s_ihd_inc_one_1539w 
-	s_cva_inc_one_1539 s_cva_inc_one_1539m s_cva_inc_one_1539w 
-	s_ihd_inc_one_4049 s_ihd_inc_one_4049m s_ihd_inc_one_4049w 
-	s_cva_inc_one_4049 s_cva_inc_one_4049m s_cva_inc_one_4049w
-	s_ihd_inc_one_5059 s_ihd_inc_one_5059m s_ihd_inc_one_5059w 
-	s_cva_inc_one_5059 s_cva_inc_one_5059m s_cva_inc_one_5059w 
-	s_ihd_inc_one_6069 s_ihd_inc_one_6069m s_ihd_inc_one_6069w 
-	s_cva_inc_one_6069 s_cva_inc_one_6069m s_cva_inc_one_6069w 	
-	s_ihd_inc_one_7079 s_ihd_inc_one_7079m s_ihd_inc_one_7079w 
-	s_cva_inc_one_7079 s_cva_inc_one_7079m s_cva_inc_one_7079w 
-	s_ihd_inc_one_ge80 s_ihd_inc_one_ge80m s_ihd_inc_one_ge80w 
-	s_cva_inc_one_ge80 s_cva_inc_one_ge80m s_cva_inc_one_ge80w 
-
-	s_ihd_inc_all_1539 s_ihd_inc_all_1539m s_ihd_inc_all_1539w 
-	s_cva_inc_all_1539 s_cva_inc_all_1539m s_cva_inc_all_1539w 
-	s_ihd_inc_all_4049 s_ihd_inc_all_4049m s_ihd_inc_all_4049w 
-	s_cva_inc_all_4049 s_cva_inc_all_4049m s_cva_inc_all_4049w
-	s_ihd_inc_all_5059 s_ihd_inc_all_5059m s_ihd_inc_all_5059w 
-	s_cva_inc_all_5059 s_cva_inc_all_5059m s_cva_inc_all_5059w 
-	s_ihd_inc_all_6069 s_ihd_inc_all_6069m s_ihd_inc_all_6069w 
-	s_cva_inc_all_6069 s_cva_inc_all_6069m s_cva_inc_all_6069w 	
-	s_ihd_inc_all_7079 s_ihd_inc_all_7079m s_ihd_inc_all_7079w 
-	s_cva_inc_all_7079 s_cva_inc_all_7079m s_cva_inc_all_7079w 
-	s_ihd_inc_all_ge80 s_ihd_inc_all_ge80m s_ihd_inc_all_ge80w 
-	s_cva_inc_all_ge80 s_cva_inc_all_ge80m s_cva_inc_all_ge80w 
-
-	s_ihd_inc_one_modsev_1539 s_ihd_inc_one_modsev_1539m s_ihd_inc_one_modsev_1539w
-	s_cva_inc_one_modsev_1539 s_cva_inc_one_modsev_1539m s_cva_inc_one_modsev_1539w
-	s_ihd_inc_one_modsev_4049 s_ihd_inc_one_modsev_4049m s_ihd_inc_one_modsev_4049w 
-	s_cva_inc_one_modsev_4049 s_cva_inc_one_modsev_4049m s_cva_inc_one_modsev_4049w 
-	s_ihd_inc_one_modsev_5059 s_ihd_inc_one_modsev_5059m s_ihd_inc_one_modsev_5059w 
-	s_cva_inc_one_modsev_5059 s_cva_inc_one_modsev_5059m s_cva_inc_one_modsev_5059w 
-	s_ihd_inc_one_modsev_6069 s_ihd_inc_one_modsev_6069m s_ihd_inc_one_modsev_6069w 
-	s_cva_inc_one_modsev_6069 s_cva_inc_one_modsev_6069m s_cva_inc_one_modsev_6069w 
-	s_ihd_inc_one_modsev_7079 s_ihd_inc_one_modsev_7079m s_ihd_inc_one_modsev_7079w 
-	s_cva_inc_one_modsev_7079 s_cva_inc_one_modsev_7079m s_cva_inc_one_modsev_7079w 
-	s_ihd_inc_one_modsev_ge80 s_ihd_inc_one_modsev_ge80m s_ihd_inc_one_modsev_ge80w 
-	s_cva_inc_one_modsev_ge80 s_cva_inc_one_modsev_ge80m s_cva_inc_one_modsev_ge80w 
-
+	s_ihd_inc_all_modsev_ge18 s_cva_inc_all_modsev_ge18 
+	s_ihd_inc_all_modsev_htn_ge18 s_cva_inc_all_modsev_htn_ge18 
 	s_ihd_inc_all_modsev_1539 s_ihd_inc_all_modsev_1539m s_ihd_inc_all_modsev_1539w
 	s_cva_inc_all_modsev_1539 s_cva_inc_all_modsev_1539m s_cva_inc_all_modsev_1539w
 	s_ihd_inc_all_modsev_4049 s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
@@ -19888,6 +19717,7 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_inc_all_modsev_ge80 s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80 s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
 
+	s_ihd_prev_ge18 s_cva_prev_ge18 
 	s_ihd_prev_1539 s_ihd_prev_1539m s_ihd_prev_1539w 
 	s_cva_prev_1539 s_cva_prev_1539m s_cva_prev_1539w 
 	s_ihd_prev_4049 s_ihd_prev_4049m s_ihd_prev_4049w 
@@ -20721,6 +20551,7 @@ s_dead_hivneg_anycause  s_dead_hivpos_anycause
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb  s_dead_tb 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -20818,10 +20649,12 @@ s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
 s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
  s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
  s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
  s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
 s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
 s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
 s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
 s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
@@ -20843,51 +20676,8 @@ s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_45
 s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
-	s_ihd_inc_one s_cva_inc_one
-	s_ihd_inc_all s_cva_inc_all 
-	s_ihd_inc_one_modsev s_cva_inc_one_modsev
-	s_ihd_inc_all_modsev s_cva_inc_all_modsev
-	s_ihd_prev s_cva_prev 
-
-	s_ihd_inc_one_1539 s_ihd_inc_one_1539m s_ihd_inc_one_1539w 
-	s_cva_inc_one_1539 s_cva_inc_one_1539m s_cva_inc_one_1539w 
-	s_ihd_inc_one_4049 s_ihd_inc_one_4049m s_ihd_inc_one_4049w 
-	s_cva_inc_one_4049 s_cva_inc_one_4049m s_cva_inc_one_4049w
-	s_ihd_inc_one_5059 s_ihd_inc_one_5059m s_ihd_inc_one_5059w 
-	s_cva_inc_one_5059 s_cva_inc_one_5059m s_cva_inc_one_5059w 
-	s_ihd_inc_one_6069 s_ihd_inc_one_6069m s_ihd_inc_one_6069w 
-	s_cva_inc_one_6069 s_cva_inc_one_6069m s_cva_inc_one_6069w 	
-	s_ihd_inc_one_7079 s_ihd_inc_one_7079m s_ihd_inc_one_7079w 
-	s_cva_inc_one_7079 s_cva_inc_one_7079m s_cva_inc_one_7079w 
-	s_ihd_inc_one_ge80 s_ihd_inc_one_ge80m s_ihd_inc_one_ge80w 
-	s_cva_inc_one_ge80 s_cva_inc_one_ge80m s_cva_inc_one_ge80w 
-
-	s_ihd_inc_all_1539 s_ihd_inc_all_1539m s_ihd_inc_all_1539w 
-	s_cva_inc_all_1539 s_cva_inc_all_1539m s_cva_inc_all_1539w 
-	s_ihd_inc_all_4049 s_ihd_inc_all_4049m s_ihd_inc_all_4049w 
-	s_cva_inc_all_4049 s_cva_inc_all_4049m s_cva_inc_all_4049w
-	s_ihd_inc_all_5059 s_ihd_inc_all_5059m s_ihd_inc_all_5059w 
-	s_cva_inc_all_5059 s_cva_inc_all_5059m s_cva_inc_all_5059w 
-	s_ihd_inc_all_6069 s_ihd_inc_all_6069m s_ihd_inc_all_6069w 
-	s_cva_inc_all_6069 s_cva_inc_all_6069m s_cva_inc_all_6069w 	
-	s_ihd_inc_all_7079 s_ihd_inc_all_7079m s_ihd_inc_all_7079w 
-	s_cva_inc_all_7079 s_cva_inc_all_7079m s_cva_inc_all_7079w 
-	s_ihd_inc_all_ge80 s_ihd_inc_all_ge80m s_ihd_inc_all_ge80w 
-	s_cva_inc_all_ge80 s_cva_inc_all_ge80m s_cva_inc_all_ge80w 
-
-	s_ihd_inc_one_modsev_1539 s_ihd_inc_one_modsev_1539m s_ihd_inc_one_modsev_1539w
-	s_cva_inc_one_modsev_1539 s_cva_inc_one_modsev_1539m s_cva_inc_one_modsev_1539w
-	s_ihd_inc_one_modsev_4049 s_ihd_inc_one_modsev_4049m s_ihd_inc_one_modsev_4049w 
-	s_cva_inc_one_modsev_4049 s_cva_inc_one_modsev_4049m s_cva_inc_one_modsev_4049w 
-	s_ihd_inc_one_modsev_5059 s_ihd_inc_one_modsev_5059m s_ihd_inc_one_modsev_5059w 
-	s_cva_inc_one_modsev_5059 s_cva_inc_one_modsev_5059m s_cva_inc_one_modsev_5059w 
-	s_ihd_inc_one_modsev_6069 s_ihd_inc_one_modsev_6069m s_ihd_inc_one_modsev_6069w 
-	s_cva_inc_one_modsev_6069 s_cva_inc_one_modsev_6069m s_cva_inc_one_modsev_6069w 
-	s_ihd_inc_one_modsev_7079 s_ihd_inc_one_modsev_7079m s_ihd_inc_one_modsev_7079w 
-	s_cva_inc_one_modsev_7079 s_cva_inc_one_modsev_7079m s_cva_inc_one_modsev_7079w 
-	s_ihd_inc_one_modsev_ge80 s_ihd_inc_one_modsev_ge80m s_ihd_inc_one_modsev_ge80w 
-	s_cva_inc_one_modsev_ge80 s_cva_inc_one_modsev_ge80m s_cva_inc_one_modsev_ge80w 
-
+	s_ihd_inc_all_modsev_ge18 s_cva_inc_all_modsev_ge18 
+	s_ihd_inc_all_modsev_htn_ge18 s_cva_inc_all_modsev_htn_ge18 
 	s_ihd_inc_all_modsev_1539 s_ihd_inc_all_modsev_1539m s_ihd_inc_all_modsev_1539w
 	s_cva_inc_all_modsev_1539 s_cva_inc_all_modsev_1539m s_cva_inc_all_modsev_1539w
 	s_ihd_inc_all_modsev_4049 s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
@@ -20901,6 +20691,7 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_inc_all_modsev_ge80 s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80 s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
 
+	s_ihd_prev_ge18 s_cva_prev_ge18
 	s_ihd_prev_1539 s_ihd_prev_1539m s_ihd_prev_1539w 
 	s_cva_prev_1539 s_cva_prev_1539m s_cva_prev_1539w 
 	s_ihd_prev_4049 s_ihd_prev_4049m s_ihd_prev_4049w 
@@ -22770,6 +22561,7 @@ s_dead_hivneg_anycause  s_dead_hivpos_anycause
 s_dead_hivpos_cause1  s_dead_hivpos_tb  s_dead_hivpos_crypm s_dead_hivpos_sbi  s_dead_hivpos_oth_adc  s_dead_hivpos_cause2 
 s_dead_hivpos_cause3 	s_dead_hivpos_cause4  s_dead_hivpos_cvd s_dead_cvd  s_dead_hivneg_cause4  s_dead_hivneg_cause3 
 s_dead_hivneg_cause2   s_dead_hivneg_cvd  s_dead_hivneg_cause5  s_dead_hivneg_tb 
+s_dead_cvd_ge18 s_dead_cvd_htn_ge18
 s_dead_cvd_3039m s_dead_cvd_4049m s_dead_cvd_5059m s_dead_cvd_6069m s_dead_cvd_7079m  s_dead_cvd_ge80m  s_dead_cvd_3039w  s_dead_cvd_4049w
 s_dead_cvd_5059w s_dead_cvd_6069w s_dead_cvd_7079w  s_dead_cvd_ge80w s_death_hiv_inf_pre_year_interv  s_death_hiv_inf_post_year_interv
 
@@ -22867,10 +22659,12 @@ prob_sbp_increase sbp_cal_eff rr_cvd_tx rr_cvd_tx_effective
 s_hypertension_ge18 s_hypertension_2534 s_hypertension_3544 s_hypertension_4554 s_hypertension_5564 s_hypertension_ge65
 s_dx_htn_ge18 s_dx_htn_2534 s_dx_htn_3544 s_dx_htn_4554 s_dx_htn_5564 s_dx_htn_ge65
 s_on_tx_htn_ge18 s_on_tx_htn_2534 s_on_tx_htn_3544 s_on_tx_htn_4554 s_on_tx_htn_5564 s_on_tx_htn_ge65
+s_on_tx_htn_over_ge18 s_on_tx_htn_over_2534 s_on_tx_htn_over_3544 s_on_tx_htn_over_4554 s_on_tx_htn_over_5564 s_on_tx_htn_over_ge65
  s_on1drug_antihyp_ge18 s_on1drug_antihyp_2534 s_on1drug_antihyp_3544 s_on1drug_antihyp_4554 s_on1drug_antihyp_5564  s_on1drug_antihyp_ge65     
  s_on2drug_antihyp_ge18 s_on2drug_antihyp_2534 s_on2drug_antihyp_3544 s_on2drug_antihyp_4554 s_on2drug_antihyp_5564  s_on2drug_antihyp_ge65 
  s_on3drug_antihyp_ge18 s_on3drug_antihyp_2534 s_on3drug_antihyp_3544 s_on3drug_antihyp_4554 s_on3drug_antihyp_5564  s_on3drug_antihyp_ge65 
 s_ever_tx_htn_ge18 s_ever_tx_htn_2534 s_ever_tx_htn_3544 s_ever_tx_htn_4554 s_ever_tx_htn_5564 s_ever_tx_htn_ge65
+s_ever_tx_htn_over_ge18 s_ever_tx_htn_over_2534 s_ever_tx_htn_over_3544 s_ever_tx_htn_over_4554 s_ever_tx_htn_over_5564 s_ever_tx_htn_over_ge65
 s_htn_control_ge18 s_htn_control_2534 s_htn_control_3544 s_htn_control_4554 s_htn_control_5564 s_htn_control_ge65
 s_htn_true_ge18 s_htn_true_2534 s_htn_true_3544 s_htn_true_4554 s_htn_true_5564 s_htn_true_ge65
 s_normotensive_ge18 s_normotensive_2534 s_normotensive_3544 s_normotensive_4554 s_normotensive_5564 s_normotensive_ge65
@@ -22892,51 +22686,8 @@ s_sbp_1519  s_sbp_2024  s_sbp_2529  s_sbp_3034  s_sbp_3539  s_sbp_4044  s_sbp_45
 s_htn_cost_scr s_htn_cost_drug s_htn_cost_clin s_htn_cost_cvd
 s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 
-	s_ihd_inc_one s_cva_inc_one
-	s_ihd_inc_all s_cva_inc_all 
-	s_ihd_inc_one_modsev s_cva_inc_one_modsev
-	s_ihd_inc_all_modsev s_cva_inc_all_modsev
-	s_ihd_prev s_cva_prev 
-
-	s_ihd_inc_one_1539 s_ihd_inc_one_1539m s_ihd_inc_one_1539w 
-	s_cva_inc_one_1539 s_cva_inc_one_1539m s_cva_inc_one_1539w 
-	s_ihd_inc_one_4049 s_ihd_inc_one_4049m s_ihd_inc_one_4049w 
-	s_cva_inc_one_4049 s_cva_inc_one_4049m s_cva_inc_one_4049w
-	s_ihd_inc_one_5059 s_ihd_inc_one_5059m s_ihd_inc_one_5059w 
-	s_cva_inc_one_5059 s_cva_inc_one_5059m s_cva_inc_one_5059w 
-	s_ihd_inc_one_6069 s_ihd_inc_one_6069m s_ihd_inc_one_6069w 
-	s_cva_inc_one_6069 s_cva_inc_one_6069m s_cva_inc_one_6069w 	
-	s_ihd_inc_one_7079 s_ihd_inc_one_7079m s_ihd_inc_one_7079w 
-	s_cva_inc_one_7079 s_cva_inc_one_7079m s_cva_inc_one_7079w 
-	s_ihd_inc_one_ge80 s_ihd_inc_one_ge80m s_ihd_inc_one_ge80w 
-	s_cva_inc_one_ge80 s_cva_inc_one_ge80m s_cva_inc_one_ge80w 
-
-	s_ihd_inc_all_1539 s_ihd_inc_all_1539m s_ihd_inc_all_1539w 
-	s_cva_inc_all_1539 s_cva_inc_all_1539m s_cva_inc_all_1539w 
-	s_ihd_inc_all_4049 s_ihd_inc_all_4049m s_ihd_inc_all_4049w 
-	s_cva_inc_all_4049 s_cva_inc_all_4049m s_cva_inc_all_4049w
-	s_ihd_inc_all_5059 s_ihd_inc_all_5059m s_ihd_inc_all_5059w 
-	s_cva_inc_all_5059 s_cva_inc_all_5059m s_cva_inc_all_5059w 
-	s_ihd_inc_all_6069 s_ihd_inc_all_6069m s_ihd_inc_all_6069w 
-	s_cva_inc_all_6069 s_cva_inc_all_6069m s_cva_inc_all_6069w 	
-	s_ihd_inc_all_7079 s_ihd_inc_all_7079m s_ihd_inc_all_7079w 
-	s_cva_inc_all_7079 s_cva_inc_all_7079m s_cva_inc_all_7079w 
-	s_ihd_inc_all_ge80 s_ihd_inc_all_ge80m s_ihd_inc_all_ge80w 
-	s_cva_inc_all_ge80 s_cva_inc_all_ge80m s_cva_inc_all_ge80w 
-
-	s_ihd_inc_one_modsev_1539 s_ihd_inc_one_modsev_1539m s_ihd_inc_one_modsev_1539w
-	s_cva_inc_one_modsev_1539 s_cva_inc_one_modsev_1539m s_cva_inc_one_modsev_1539w
-	s_ihd_inc_one_modsev_4049 s_ihd_inc_one_modsev_4049m s_ihd_inc_one_modsev_4049w 
-	s_cva_inc_one_modsev_4049 s_cva_inc_one_modsev_4049m s_cva_inc_one_modsev_4049w 
-	s_ihd_inc_one_modsev_5059 s_ihd_inc_one_modsev_5059m s_ihd_inc_one_modsev_5059w 
-	s_cva_inc_one_modsev_5059 s_cva_inc_one_modsev_5059m s_cva_inc_one_modsev_5059w 
-	s_ihd_inc_one_modsev_6069 s_ihd_inc_one_modsev_6069m s_ihd_inc_one_modsev_6069w 
-	s_cva_inc_one_modsev_6069 s_cva_inc_one_modsev_6069m s_cva_inc_one_modsev_6069w 
-	s_ihd_inc_one_modsev_7079 s_ihd_inc_one_modsev_7079m s_ihd_inc_one_modsev_7079w 
-	s_cva_inc_one_modsev_7079 s_cva_inc_one_modsev_7079m s_cva_inc_one_modsev_7079w 
-	s_ihd_inc_one_modsev_ge80 s_ihd_inc_one_modsev_ge80m s_ihd_inc_one_modsev_ge80w 
-	s_cva_inc_one_modsev_ge80 s_cva_inc_one_modsev_ge80m s_cva_inc_one_modsev_ge80w 
-
+	s_ihd_inc_all_modsev_ge18 s_cva_inc_all_modsev_ge18 
+	s_ihd_inc_all_modsev_htn_ge18 s_cva_inc_all_modsev_htn_ge18 
 	s_ihd_inc_all_modsev_1539 s_ihd_inc_all_modsev_1539m s_ihd_inc_all_modsev_1539w
 	s_cva_inc_all_modsev_1539 s_cva_inc_all_modsev_1539m s_cva_inc_all_modsev_1539w
 	s_ihd_inc_all_modsev_4049 s_ihd_inc_all_modsev_4049m s_ihd_inc_all_modsev_4049w 
@@ -22950,6 +22701,7 @@ s_dhtn_cost_scr s_dhtn_cost_drug s_dhtn_cost_clin s_dhtn_cost_cvd
 	s_ihd_inc_all_modsev_ge80 s_ihd_inc_all_modsev_ge80m s_ihd_inc_all_modsev_ge80w 
 	s_cva_inc_all_modsev_ge80 s_cva_inc_all_modsev_ge80m s_cva_inc_all_modsev_ge80w 
 
+	s_ihd_prev_ge18 s_cva_prev_ge18 
 	s_ihd_prev_1539 s_ihd_prev_1539m s_ihd_prev_1539w 
 	s_cva_prev_1539 s_cva_prev_1539m s_cva_prev_1539w 
 	s_ihd_prev_4049 s_ihd_prev_4049m s_ihd_prev_4049w 
