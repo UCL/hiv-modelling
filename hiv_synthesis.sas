@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 100000  ; 
+%let population = 10000  ; 
 %let year_interv = 2022.5;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -170,7 +170,7 @@ newp_seed = 7;
 
 
 
-* PREGNANCY;
+* PREGNANCY AND BREASTFEEDING;
 
 * can_be_pregnant;			can_be_pregnant=0.95;
 * fold_preg1524;			fold_preg1524=2;
@@ -188,7 +188,13 @@ newp_seed = 7;
 * rate_birth_with_infected_child; 
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 
-
+* prob_stop_breastfeeding_yr1;		*JAS Apr2023;
+							prob_stop_breastfeeding_yr1 = 0.0273;	* 3-monthly probability of stopping breastfeeding in first year after birth;
+							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
+* prob_stop_breastfeeding_yr2;		*JAS Apr2023;
+							prob_stop_breastfeeding_yr2 = 0.1325;	* 3-monthly probability of stopping breastfeeding in second year after birth;
+							* see Excel worksheet "Breastfeeding probabilities" for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
+							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 
 
 * SEXUAL BEHAVIOUR;
@@ -760,7 +766,7 @@ end;
 * vr code needs more work before using ;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
 
-* date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
+* date_prep_vr_intro;			date_prep_vr_intro=2024; 		* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
 																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
 * dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
@@ -775,7 +781,7 @@ end;
 																* currently the same as for inj prep, values for oral PrEP are higher;
 								* dependent_on_time_step_length ;
 
-* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = 2 ; * this will change depending on assumed uptake;
+* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 – 0.1 ; * this will change depending on assumed uptake;
 
 
 
@@ -2069,7 +2075,6 @@ else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_or
 else 	eff_prob_prep_oral_b = prob_prep_oral_b;
 * lapr and dpv-vr - no change here as this is historic scale up of oral prep;
 
-
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
 else if . < date_prep_inj_intro <= caldate{t} < (date_prep_inj_intro + dur_prep_inj_scaleup) 
@@ -2089,16 +2094,17 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-* pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
+* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); 							* median 0.73 ;	
+					pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					
 end;													
 																															 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
-* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 					* median 0.5 ;	
+* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 			
 end;
 
 if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro) then do;
-* pref_prep_vr;					pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	* median 0.26 (women only);		
+* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
@@ -2119,17 +2125,17 @@ else highest_prep_pref=3;																		* 3=preference for vaginal ring;
 * willingness to take prep if offered;
 
 if caldate{t} ge date_prep_oral_intro then do;
-if  pref_prep_oral > prep_willingness_threshold  	then prep_oral_willing =1;
-q=rand('uniform');
-if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05  then prep_oral_willing =1; 
+	if  pref_prep_oral > prep_willingness_threshold  		then prep_oral_willing =1;
+	q=rand('uniform');
+	if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05 then prep_oral_willing =1; 
 end;
 
 if caldate{t} ge date_prep_inj_intro then do;
-prep_inj_willing = 0; if  pref_prep_inj  > prep_willingness_threshold  	then prep_inj_willing =1;
+	if  pref_prep_inj  > prep_willingness_threshold  	then prep_inj_willing =1;
 end;
 
 if caldate{t} ge date_prep_vr_intro then do;
-prep_vr_willing = 0; if  pref_prep_vr > prep_willingness_threshold  	then prep_vr_willing =1;
+	if  pref_prep_vr > prep_willingness_threshold  	then prep_vr_willing =1;
 end;
 
 if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then do; 
@@ -2544,29 +2550,19 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
+		*PrEP interventions;
 	*option 15: Oral TDF/FTC PrEP for AGWY;
-	if option = 16 then do;*Oral TDF/FTC PrEP for FSW;
-	end;
-	if option = 17 then do;*Oral TDF/FTC PrEP for sero-discordant couples;
-	end;
-	if option = 18 then do;*Oral TDF/FTC PrEP for pregnant and breastfeeding women;
-	end;
-	if option = 19 then do;*Dapivirine ring for AGYW;
-	end;
-	if option = 20 then do;*Dapivirine ring for FSW;
-	end;
-	if option = 21 then do;*Dapivirine ring for sero-discordant couples;
-	end;
-	if option = 22 then do;*Dapivirine ring for pregnant and breastfeeding women;
-	end;
-	if option = 23 then do;*Injectable PrEP for AGYW;
-	end;
-	if option = 24 then do;*Injectable PrEP for FSW;
-	end;
-	if option = 25 then do;*Injectable PrEP for Sero-discordant couples;
-	end;
-	if option = 26 then do;*Injectable PrEP for pregnant and breastfeeding women;
-	end;
+	*option 16: Oral TDF/FTC PrEP for FSW;
+	*option 17: Oral TDF/FTC PrEP for sero-discordant couples;
+	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women;
+	*option 19: Dapivirine ring PrEP for AGWY;
+	*option 20: Dapivirine ring PrEP for FSW;
+	*option 21: Dapivirine ring for sero-discordant couples;
+	*option 22: Dapivirine ring for pregnant and breastfeeding women;
+	*option 23: Injectable PrEP for AGWY;
+	*option 24: Injectable PrEP for FSW;
+	*option 25: Injectable PrEP for sero-discordant couples;
+	*option 26: Injectable PrEP for pregnant and breastfeeding women;
 
 	*Linkage, management, ART Interv;
 	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
@@ -3243,14 +3239,97 @@ if higher_future_prep_oral_cov=2 then do;
 	eff_prob_prep_any_restart_choice=0;	
 	prep_any_strategy = 0;	
 end;   
- 
-if option = 15 then do;*Essential + Oral TDF/FTC PrEP for AGWY;
+
+* MIHPSA Oral PrEP; *JAS Apr2023;
+if option = 15 then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
 		prep_any_strategy=3;
 		*Following values need to change;
 		eff_rate_test_startprep_any=rate_test_startprep_any;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 end;
+
+if option = 16 then do;		*Essential + Oral TDF/FTC PrEP for FSW; 
+		prep_any_strategy=2;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+end;
+
+if option = 17 then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
+		prep_any_strategy=15;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+end;
+
+if option = 18 then do;		*Essential + Oral TDF/FTC PrEP for pregnant and breastfeeding women;
+		prep_any_strategy=16;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+end;
+
+* MIHPSA dapivirine ring; 
+if option = 19 then do;		*Essential + dapivirine ring for AGWY;
+		prep_any_strategy=3;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_vr_b=prob_prep_vr_b;
+		eff_rate_choose_stop_prep_vr=rate_choose_stop_prep_vr;
+end;
+
+if option = 20 then do;		*Essential + dapivirine ring for FSW;
+		prep_any_strategy=2;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_vr_b=prob_prep_vr_b;
+		eff_rate_choose_stop_prep_vr=rate_choose_stop_prep_vr;
+end;
+
+if option = 21 then do;		*Essential + dapivirine ring for serodiscordant couples;
+		prep_any_strategy=15;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_vr_b=prob_prep_vr_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
+end;
+
+if option = 22 then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
+		prep_any_strategy=16;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_vr_b=prob_prep_vr_b;
+		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
+end;
+
+* MIHPSA injectable PrEP; 
+if option = 23 then do;*	Essential + injectable PrEP for AGWY;
+		prep_any_strategy=3;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_inj_b=prob_prep_inj_b;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+end;
+
+if option = 24 then do;		*Essential + injectable PrEP for FSW;
+		prep_any_strategy=2;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_inj_b=prob_prep_inj_b;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+end;
+
+if option = 25 then do;		*Essential + injectable PrEP for serodiscordant couples;
+		prep_any_strategy=15;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_inj_b=prob_prep_inj_b;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+end;
+
+if option = 26 then do;		*Essential + injectable PrEP for pregnant and breastfeeding women;
+		prep_any_strategy=16;	*New for MIHPSA;
+		eff_rate_test_startprep_any=rate_test_startprep_any;
+		eff_prob_prep_inj_b=prob_prep_inj_b;
+		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+end;
+
+
+
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 
 * SECTION 3B 
@@ -4430,9 +4509,31 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do
 	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and u lt 0.33 then do;tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
+*Pregnancy continuation and birth;
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
-birth=0;if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};birth=1;cum_children=cum_children+1;end;
-if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
+birth=0;	
+if caldate{t} =  dt_start_pregn+0.75 then do; 
+	dt_lastbirth=caldate{t};
+	birth=1;
+	cum_children=cum_children+1;
+end;
+if caldate{t} gt dt_start_pregn+0.75 then do; 
+	dt_start_pregn=.;anc=0;
+end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
+
+*Breastfeeding;		*JAS Apr2023;
+if caldate{t}=dt_lastbirth then breastfeeding=1;
+if breastfeeding=1 then do;
+	r=rand('uniform');
+	select; 
+		when (0 gt (caldate{t}-dt_lastbirth) le 1) 	if r lt prob_stop_breastfeeding_yr1 then breastfeeding=0; 
+		when (1 gt (caldate{t}-dt_lastbirth) le 2) 	if r lt prob_stop_breastfeeding_yr2 then breastfeeding=0; 
+		otherwise breastfeeding=0;
+	end;
+	if caldate{t} ge death then breastfeeding=.; 
+end;
+* 'breastfeeding' should reset to 1 for subsequent births;
+
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
@@ -4447,18 +4548,18 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	if prep_any_strategy=1 then do;
-		r = rand('Uniform');
+		r = rand('Uniform');			*FSW and/or AGYW;
 		if gender=2 and (sw=1 or 15<=age<25) and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=2 then do;
+	if prep_any_strategy=2 then do;		*FSW;
 		r = rand('Uniform');
 		if gender=2 and sw=1 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=3 then do;
+	if prep_any_strategy=3 then do;		*AGYW;
 		r = rand('Uniform');
 		if gender=2 and 15<=age<25 and 
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
@@ -4516,13 +4617,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
-    if prep_any_strategy=12 then do; 
-     	r = rand('Uniform');
+    if prep_any_strategy=12 then do; 	* Any condomless sex in past 9 months;
     	if newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 then prep_any_elig=1; 
     end;
 
-    if prep_any_strategy=13 then do; 
-     	r = rand('Uniform');
+    if prep_any_strategy=13 then do; 	* Any condomless sex in past 9 months - women only; 
     	if gender=2 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
     end;
 
@@ -4530,6 +4629,35 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
     	r = rand('Uniform');
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
       	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r < 0.05 or (r < 0.5 and epi=1)))) then prep_any_elig=1; 
+	end;
+
+	if prep_any_strategy=15 then do;	* New for MIHPSA - serodiscordant couples; *JAS Apr2023;
+
+		* All serodiscordant couples - check numbers against MIHPSA targets;
+		if (epdiag=1 and (epart ne 1 or epvls ne 1)) 	
+		then prep_any_elig=1; 
+
+		* OR ;
+		* Limited to a proportion based on age (not gender) and a random fraction in line with prep_any_strategy 4 above;
+    	r = rand('Uniform');
+      	if (epdiag=1 and (epart ne 1 or epvls ne 1) and 
+      	(15 <= age < 50 and (r < 0.05 or (r < 0.5 and epi=1)) ) ) 
+		then prep_any_elig=1; 
+
+	end;
+
+	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
+
+		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
+      	if gender=2 and (pregnant=1 or breastfeeding=1) then prep_any_elig=1; 
+
+		* OR ;
+		* Limited to a proportion based on a random fraction in line with prep_any_strategy 4 above;
+		r = rand('Uniform');
+      	if gender=2 and (pregnant=1 or breastfeeding=1) and
+      	(r < 0.05 or (r < 0.5 and epi=1)) 
+		then prep_any_elig=1; 
+
 	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
@@ -16939,7 +17067,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_pregnant_onart_vlg1000 + pregnant_onart_vlg1000 ; s_pregnant_onart + pregnant_onart ; s_pregnant_onart_vl_high + pregnant_onart_vl_high ;
 	s_pregnant_onart_vl_vhigh + pregnant_onart_vl_vhigh ; s_pregnant_onart_vl_vvhigh + pregnant_onart_vl_vvhigh ; 
 	s_birth_with_inf_child + birth_with_inf_child ; s_child_with_resistant_hiv + child_with_resistant_hiv ; s_give_birth_with_hiv + give_birth_with_hiv ;
-	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	  			 		   
+	s_onart_birth_with_inf_child_res + onart_birth_with_inf_child_res ; s_onart_birth_with_inf_child + onart_birth_with_inf_child ;	 
+	s_breastfeeding + breastfeeding ; 
 
 	/*circumcision*/
 
@@ -17107,6 +17236,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
+
+
+proc print; var caldate&j gender age pregnant breastfeeding
+;
+where age ge 15 and age le 50 and death=. ;
+run;
 
 
 /*
@@ -18524,6 +18659,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
+s_breastfeeding
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -19451,6 +19587,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child    
+s_breastfeeding
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
@@ -21222,6 +21359,7 @@ s_want_no_more_children   s_pregnant_ntd  s_pregnant_vlg1000  s_pregnant_o_dol  
 s_pregnant_onart_vl_vhigh s_pregnant_onart_vl_vvhigh  
 s_birth_with_inf_child  s_child_with_resistant_hiv  s_give_birth_with_hiv   s_onart_birth_with_inf_child_res 
 s_onart_birth_with_inf_child  
+s_breastfeeding
 
 /*circumcision*/
 s_mcirc  s_mcirc_1519m  s_mcirc_2024m  s_mcirc_2529m  s_mcirc_3034m  s_mcirc_3539m  s_mcirc_4044m  s_mcirc_4549m 
