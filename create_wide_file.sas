@@ -632,19 +632,19 @@ popge18 = s_ageg1819m + s_ageg2024m + s_ageg1819w + s_ageg2024w + pop2534 + pop3
 * p_dx_htn_true_4564 ;	p_dx_htn_true_4564 = (s_htn_true_dx_4554 + s_htn_true_dx_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
 * p_dx_htn_true_ge65 ;	p_dx_htn_true_ge65 = s_htn_true_dx_ge65 / s_htn_true_ge65 ;
 
-* p_on_anti_hypert_ge18 ;		p_on_anti_hypert_ge18 = s_on_tx_htn_ge18 / s_htn_true_ge18 ;
-* p_on_anti_hypert_2534 ;		p_on_anti_hypert_2534 = s_on_tx_htn_2534 / s_htn_true_2534 ;
-* p_on_anti_hypert_3544 ;		p_on_anti_hypert_3544 = s_on_tx_htn_3544 / s_htn_true_3544 ;
-* p_on_anti_hypert_4554 ;		p_on_anti_hypert_4554 = s_on_tx_htn_4554 / s_htn_true_4554 ;
-* p_on_anti_hypert_5564 ;		p_on_anti_hypert_5564 = s_on_tx_htn_5564 / s_htn_true_5564 ;
-* p_on_anti_hypert_2544 ;		p_on_anti_hypert_2544 = (s_on_tx_htn_2534 + s_on_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
-* p_on_anti_hypert_4564 ;		p_on_anti_hypert_4564 = (s_on_tx_htn_4554 + s_on_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
-* p_on_anti_hypert_ge65 ;		p_on_anti_hypert_ge65 = s_on_tx_htn_ge65 / s_htn_true_ge65 ;
+* p_on_tx_htn_ge18 ;		p_on_tx_htn_ge18 = s_on_tx_htn_ge18 / s_htn_true_ge18 ;
+* p_on_tx_htn_2534 ;		p_on_tx_htn_2534 = s_on_tx_htn_2534 / s_htn_true_2534 ;
+* p_on_tx_htn_3544 ;		p_on_tx_htn_3544 = s_on_tx_htn_3544 / s_htn_true_3544 ;
+* p_on_tx_htn_4554 ;		p_on_tx_htn_4554 = s_on_tx_htn_4554 / s_htn_true_4554 ;
+* p_on_tx_htn_5564 ;		p_on_tx_htn_5564 = s_on_tx_htn_5564 / s_htn_true_5564 ;
+* p_on_tx_htn_2544 ;		p_on_tx_htn_2544 = (s_on_tx_htn_2534 + s_on_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
+* p_on_tx_htn_4564 ;		p_on_tx_htn_4564 = (s_on_tx_htn_4554 + s_on_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
+* p_on_tx_htn_ge65 ;		p_on_tx_htn_ge65 = s_on_tx_htn_ge65 / s_htn_true_ge65 ;
 
-* p_ever_anti_hypert_ge18 ;		p_ever_anti_hypert_ge18 = s_ever_tx_htn_ge18 / s_htn_true_ge18 ;
-* p_ever_anti_hypert_2544 ;		p_ever_anti_hypert_2544 = (s_ever_tx_htn_2534 + s_ever_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
-* p_ever_anti_hypert_4564 ;		p_ever_anti_hypert_4564 = (s_ever_tx_htn_4554 + s_ever_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
-* p_ever_anti_hypert_ge65 ;		p_ever_anti_hypert_ge65 = s_ever_tx_htn_ge65 / s_htn_true_ge65 ;
+* p_ever_tx_htn_ge18 ;		p_ever_tx_htn_ge18 = s_ever_tx_htn_ge18 / s_htn_true_ge18 ;
+* p_ever_tx_htn_2544 ;		p_ever_tx_htn_2544 = (s_ever_tx_htn_2534 + s_ever_tx_htn_3544) / (s_htn_true_2534 + s_htn_true_3544) ;
+* p_ever_tx_htn_4564 ;		p_ever_tx_htn_4564 = (s_ever_tx_htn_4554 + s_ever_tx_htn_5564) / (s_htn_true_4554 + s_htn_true_5564) ;
+* p_ever_tx_htn_ge65 ;		p_ever_tx_htn_ge65 = s_ever_tx_htn_ge65 / s_htn_true_ge65 ;
 
 * p_on1drug_antihyp_ge18 ;		p_on1drug_antihyp_ge18 = s_on1drug_antihyp_ge18 / (s_on_tx_htn_ge18);
 * p_on2drug_antihyp_ge18 ;		p_on2drug_antihyp_ge18 = s_on2drug_antihyp_ge18 / (s_on_tx_htn_ge18);
@@ -674,15 +674,15 @@ popge18 = s_ageg1819m + s_ageg2024m + s_ageg1819w + s_ageg2024w + pop2534 + pop3
 * p_dx_htn_over_4564 ;	p_dx_htn_over_4564 = (s_htn_over_dx_4554 + s_htn_over_dx_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
 * p_dx_htn_over_ge65 ;	p_dx_htn_over_ge65 = s_htn_over_dx_ge65 / s_normotensive_ge65 ;
 
-* p_on_anti_hypert_over_ge18 ;		p_on_anti_hypert_over_ge18 = s_on_tx_htn_over_ge18 / s_normotensive_ge18 ;
-* p_on_anti_hypert_over_2544 ;		p_on_anti_hypert_over_2544 = (s_on_tx_htn_over_2534 + s_on_tx_htn_over_3544) / (s_normotensive_2534 + s_normotensive_3544) ;
-* p_on_anti_hypert_over_4564 ;		p_on_anti_hypert_over_4564 = (s_on_tx_htn_over_4554 + s_on_tx_htn_over_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
-* p_on_anti_hypert_over_ge65 ;		p_on_anti_hypert_over_ge65 = s_on_tx_htn_over_ge65 / s_normotensive_ge65 ;
+* p_on_tx_htn_over_ge18 ;		p_on_tx_htn_over_ge18 = s_on_tx_htn_over_ge18 / s_normotensive_ge18 ;
+* p_on_tx_htn_over_2544 ;		p_on_tx_htn_over_2544 = (s_on_tx_htn_over_2534 + s_on_tx_htn_over_3544) / (s_normotensive_2534 + s_normotensive_3544) ;
+* p_on_tx_htn_over_4564 ;		p_on_tx_htn_over_4564 = (s_on_tx_htn_over_4554 + s_on_tx_htn_over_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
+* p_on_tx_htn_over_ge65 ;		p_on_tx_htn_over_ge65 = s_on_tx_htn_over_ge65 / s_normotensive_ge65 ;
 
-* p_ever_anti_hypert_over_ge18 ;		p_ever_anti_hypert_over_ge18 = s_ever_tx_htn_over_ge18 / s_normotensive_ge18 ;
-* p_ever_anti_hypert_over_2544 ;		p_ever_anti_hypert_over_2544 = (s_ever_tx_htn_over_2534 + s_ever_tx_htn_over_3544) / (s_normotensive_2534 + s_normotensive_3544) ;
-* p_ever_anti_hypert_over_4564 ;		p_ever_anti_hypert_over_4564 = (s_ever_tx_htn_over_4554 + s_ever_tx_htn_over_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
-* p_ever_anti_hypert_over_ge65 ;		p_ever_anti_hypert_over_ge65 = s_ever_tx_htn_over_ge65 / s_normotensive_ge65 ;
+* p_ever_tx_htn_over_ge18 ;		p_ever_tx_htn_over_ge18 = s_ever_tx_htn_over_ge18 / s_normotensive_ge18 ;
+* p_ever_tx_htn_over_2544 ;		p_ever_tx_htn_over_2544 = (s_ever_tx_htn_over_2534 + s_ever_tx_htn_over_3544) / (s_normotensive_2534 + s_normotensive_3544) ;
+* p_ever_tx_htn_over_4564 ;		p_ever_tx_htn_over_4564 = (s_ever_tx_htn_over_4554 + s_ever_tx_htn_over_5564) / (s_normotensive_4554 + s_normotensive_5564) ;
+* p_ever_tx_htn_over_ge65 ;		p_ever_tx_htn_over_ge65 = s_ever_tx_htn_over_ge65 / s_normotensive_ge65 ;
 
 m_sbp_max_over_ge18 = s_sbp_max_over_ge18 / s_htn_over_dx_ge18;
 m_sbp_over_ge18 = s_sbp_over_ge18 / s_htn_over_dx_ge18;
@@ -704,10 +704,10 @@ m_sbp_over_ge18 = s_sbp_over_ge18 / s_htn_over_dx_ge18;
 * p_dx_htn_true160_4564 ;		p_dx_htn_true160_4564 = (s_htn_true_dx160_4554 + s_htn_true_dx160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
 * p_dx_htn_true160_ge65 ;		p_dx_htn_true160_ge65 = s_htn_true_dx160_ge65 / s_htn_true160_ge65 ;
 
-* p_on_anti_hypert160_ge18 ;	p_on_anti_hypert160_ge18 = s_on_tx_htn160_ge18 / s_htn_true160_ge18 ;
-* p_on_anti_hypert160_2544 ;	p_on_anti_hypert160_2544 = (s_on_tx_htn160_2534 + s_on_tx_htn160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
-* p_on_anti_hypert160_4564 ;	p_on_anti_hypert160_4564 = (s_on_tx_htn160_4554 + s_on_tx_htn160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
-* p_on_anti_hypert160_ge65 ;	p_on_anti_hypert160_ge65 = s_on_tx_htn160_ge65 / s_htn_true160_ge65 ;
+* p_on_tx_htn160_ge18 ;	p_on_tx_htn160_ge18 = s_on_tx_htn160_ge18 / s_htn_true160_ge18 ;
+* p_on_tx_htn160_2544 ;	p_on_tx_htn160_2544 = (s_on_tx_htn160_2534 + s_on_tx_htn160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
+* p_on_tx_htn160_4564 ;	p_on_tx_htn160_4564 = (s_on_tx_htn160_4554 + s_on_tx_htn160_5564) / (s_htn_true160_4554 + s_htn_true160_5564) ;
+* p_on_tx_htn160_ge65 ;	p_on_tx_htn160_ge65 = s_on_tx_htn160_ge65 / s_htn_true160_ge65 ;
 
 * p_hypert_control160_ge18 ;	p_hypert_control160_ge18 = s_htn_control160_ge18 / s_htn_true160_ge18 ;
 * p_hypert_control160_2544 ;	p_hypert_control160_2544 = (s_htn_control160_2534 + s_htn_control160_3544) / (s_htn_true160_2534 + s_htn_true160_3544) ;
@@ -1026,7 +1026,7 @@ p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 
 p_dx_htn_true_ge18 p_dx_htn_true_ge65
 p_dx_htn_over_ge18 p_dx_htn_over_ge65
 p_diagnosed_hypert_ge18 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
-p_on_anti_hypert_ge18 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
+p_on_tx_htn_ge18 p_on_tx_htn_2534 p_on_tx_htn_3544 p_on_tx_htn_4554 p_on_tx_htn_5564 p_on_tx_htn_ge65
 p_hypert_control_ge18 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
 
 p_on1drug_antihyp_ge18 p_on2drug_antihyp_ge18 p_on3drug_antihyp_ge18 	
@@ -1039,14 +1039,17 @@ p_htn_true_2544 p_htn_true_4564
 p_dx_htn_true_2544 p_dx_htn_true_4564
 p_dx_htn_over_2544 p_dx_htn_over_4564 
 p_diagnosed_hypert_2544 p_diagnosed_hypert_4564 
-p_on_anti_hypert_2544 p_on_anti_hypert_4564 
-p_ever_anti_hypert_ge18 p_ever_anti_hypert_2544 p_ever_anti_hypert_4564 p_ever_anti_hypert_ge65 
+p_on_tx_htn_2544 p_on_tx_htn_4564 
+p_ever_tx_htn_ge18 p_ever_tx_htn_2544 p_ever_tx_htn_4564 p_ever_tx_htn_ge65 
 p_hypert_control_2544 p_hypert_control_4564
+
+p_on_tx_htn_over_ge18 p_on_tx_htn_over_2544 p_on_tx_htn_over_4564 p_on_tx_htn_over_ge65
+p_ever_tx_htn_over_ge18 p_ever_tx_htn_over_2544 p_ever_tx_htn_over_4564 p_ever_tx_htn_over_ge65
 
 p_hypertens160_ge18 p_hypertens160_2544 p_hypertens160_4564 p_hypertens160_ge65 
 p_htn_true160_ge18 p_htn_true160_2544 p_htn_true160_4564 p_htn_true160_ge65 
 p_dx_htn_true160_ge18 p_dx_htn_true160_2544 p_dx_htn_true160_4564 p_dx_htn_true160_ge65 
-p_on_anti_hypert160_ge18 p_on_anti_hypert160_2544 p_on_anti_hypert160_4564 p_on_anti_hypert160_ge65 
+p_on_tx_htn160_ge18 p_on_tx_htn160_2544 p_on_tx_htn160_4564 p_on_tx_htn160_ge65 
 p_hypert_control160_ge18 p_hypert_control160_2544 p_hypert_control160_4564 p_hypert_control160_ge65
 
 rate_ihd_all_modsev_4059 rate_ihd_all_modsev_6079
@@ -1180,7 +1183,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_dx_htn_true_ge18); %var(v=p_dx_htn_true_ge65); 
 %var(v=p_dx_htn_over_ge18); %var(v=p_dx_htn_over_ge65); 
 %var(v=p_diagnosed_hypert_ge18); %var(v=p_diagnosed_hypert_2534); %var(v=p_diagnosed_hypert_3544); %var(v=p_diagnosed_hypert_4554); %var(v=p_diagnosed_hypert_5564); %var(v=p_diagnosed_hypert_ge65); 
-%var(v=p_on_anti_hypert_ge18); %var(v=p_on_anti_hypert_2534); %var(v=p_on_anti_hypert_3544); %var(v=p_on_anti_hypert_4554); %var(v=p_on_anti_hypert_5564); %var(v=p_on_anti_hypert_ge65); 
+%var(v=p_on_tx_htn_ge18); %var(v=p_on_tx_htn_2534); %var(v=p_on_tx_htn_3544); %var(v=p_on_tx_htn_4554); %var(v=p_on_tx_htn_5564); %var(v=p_on_tx_htn_ge65); 
 %var(v=p_hypert_control_ge18); %var(v=p_hypert_control_2534); %var(v=p_hypert_control_3544); %var(v=p_hypert_control_4554); %var(v=p_hypert_control_5564); %var(v=p_hypert_control_ge65); 
 
 %var(v=p_hypert_2544); %var(v=p_hypert_4564);
@@ -1188,19 +1191,22 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_dx_htn_true_2544); %var(v=p_dx_htn_true_4564);
 %var(v=p_dx_htn_over_2544); %var(v=p_dx_htn_over_4564);
 %var(v=p_diagnosed_hypert_2544); %var(v=p_diagnosed_hypert_4564); 
-%var(v=p_on_anti_hypert_2544); %var(v=p_on_anti_hypert_4564); 
-%var(v=p_ever_anti_hypert_ge18); %var(v=p_ever_anti_hypert_2544); %var(v=p_ever_anti_hypert_4564); %var(v=p_ever_anti_hypert_ge65);
+%var(v=p_on_tx_htn_2544); %var(v=p_on_tx_htn_4564); 
+%var(v=p_ever_tx_htn_ge18); %var(v=p_ever_tx_htn_2544); %var(v=p_ever_tx_htn_4564); %var(v=p_ever_tx_htn_ge65);
 %var(v=p_hypert_control_2544); %var(v=p_hypert_control_4564);
 
 %var(v=p_on1drug_antihyp_ge18); %var(v=p_on2drug_antihyp_ge18); %var(v=p_on3drug_antihyp_ge18); 	
 %var(v=p_on1drug_antihyp_2544); %var(v=p_on2drug_antihyp_2544); %var(v=p_on3drug_antihyp_2544); 	
 %var(v=p_on1drug_antihyp_4564); %var(v=p_on2drug_antihyp_4564); %var(v=p_on3drug_antihyp_4564); 
-%var(v=p_on1drug_antihyp_ge65); %var(v=p_on2drug_antihyp_ge65); %var(v=p_on3drug_antihyp_ge65); 	
+%var(v=p_on1drug_antihyp_ge65); %var(v=p_on2drug_antihyp_ge65); %var(v=p_on3drug_antihyp_ge65); 
+
+%var(v=p_on_tx_htn_over_ge18); %var(v=p_on_tx_htn_over_2544); %var(v=p_on_tx_htn_over_4564); %var(v=p_on_tx_htn_over_ge65);
+%var(v=p_ever_tx_htn_over_ge18); %var(v=p_ever_tx_htn_over_2544); %var(v=p_ever_tx_htn_over_4564); %var(v=p_ever_tx_htn_over_ge65);	
 
 %var(v=p_hypertens160_ge18); %var(v=p_hypertens160_2544); %var(v=p_hypertens160_4564); %var(v=p_hypertens160_ge65); 
 %var(v=p_htn_true160_ge18); %var(v=p_htn_true160_2544); %var(v=p_htn_true160_4564); %var(v=p_htn_true160_ge65); 
 %var(v=p_dx_htn_true160_ge18); %var(v=p_dx_htn_true160_2544); %var(v=p_dx_htn_true160_4564); %var(v=p_dx_htn_true160_ge65); 
-%var(v=p_on_anti_hypert160_ge18); %var(v=p_on_anti_hypert160_2544); %var(v=p_on_anti_hypert160_4564); %var(v=p_on_anti_hypert160_ge65); 
+%var(v=p_on_tx_htn160_ge18); %var(v=p_on_tx_htn160_2544); %var(v=p_on_tx_htn160_4564); %var(v=p_on_tx_htn160_ge65); 
 %var(v=p_hypert_control160_ge18); %var(v=p_hypert_control160_2544); %var(v=p_hypert_control160_4564); %var(v=p_hypert_control160_ge65);
 
 /*%var(v=rate_ihd_all_4059); %var(v=rate_ihd_all_6079);
@@ -1284,7 +1290,7 @@ p_htn_true_ge18 p_htn_true_2534 p_htn_true_3544 p_htn_true_4554 p_htn_true_5564 
 p_dx_htn_true_ge18 p_dx_htn_true_ge65
 p_dx_htn_over_ge18 p_dx_htn_over_ge65
 p_diagnosed_hypert_ge18 p_diagnosed_hypert_2534 p_diagnosed_hypert_3544 p_diagnosed_hypert_4554 p_diagnosed_hypert_5564 p_diagnosed_hypert_ge65
-p_on_anti_hypert_ge18 p_on_anti_hypert_2534 p_on_anti_hypert_3544 p_on_anti_hypert_4554 p_on_anti_hypert_5564 p_on_anti_hypert_ge65
+p_on_tx_htn_ge18 p_on_tx_htn_2534 p_on_tx_htn_3544 p_on_tx_htn_4554 p_on_tx_htn_5564 p_on_tx_htn_ge65
 p_hypert_control_ge18 p_hypert_control_2534 p_hypert_control_3544 p_hypert_control_4554 p_hypert_control_5564 p_hypert_control_ge65
 
 p_on1drug_antihyp_ge18 p_on2drug_antihyp_ge18 p_on3drug_antihyp_ge18 	
@@ -1297,14 +1303,17 @@ p_htn_true_2544 p_htn_true_4564
 p_dx_htn_true_2544 p_dx_htn_true_4564
 p_dx_htn_over_2544 p_dx_htn_over_4564 
 p_diagnosed_hypert_2544 p_diagnosed_hypert_4564 
-p_on_anti_hypert_2544 p_on_anti_hypert_4564 
-p_ever_anti_hypert_ge18 p_ever_anti_hypert_2544 p_ever_anti_hypert_4564 p_ever_anti_hypert_ge65 
+p_on_tx_htn_2544 p_on_tx_htn_4564 
+p_ever_tx_htn_ge18 p_ever_tx_htn_2544 p_ever_tx_htn_4564 p_ever_tx_htn_ge65 
 p_hypert_control_2544 p_hypert_control_4564
+
+p_on_tx_htn_over_ge18 p_on_tx_htn_over_2544 p_on_tx_htn_over_4564 p_on_tx_htn_over_ge65
+p_ever_tx_htn_over_ge18 p_ever_tx_htn_over_2544 p_ever_tx_htn_over_4564 p_ever_tx_htn_over_ge65
 
 p_hypertens160_ge18 p_hypertens160_2544 p_hypertens160_4564 p_hypertens160_ge65 
 p_htn_true160_ge18 p_htn_true160_2544 p_htn_true160_4564 p_htn_true160_ge65 
 p_dx_htn_true160_ge18 p_dx_htn_true160_2544 p_dx_htn_true160_4564 p_dx_htn_true160_ge65 
-p_on_anti_hypert160_ge18 p_on_anti_hypert160_2544 p_on_anti_hypert160_4564 p_on_anti_hypert160_ge65 
+p_on_tx_htn160_ge18 p_on_tx_htn160_2544 p_on_tx_htn160_4564 p_on_tx_htn160_ge65 
 p_hypert_control160_ge18 p_hypert_control160_2544 p_hypert_control160_4564 p_hypert_control160_ge65
 
 rate_ihd_all_modsev_4059 rate_ihd_all_modsev_6079

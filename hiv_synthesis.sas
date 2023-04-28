@@ -2713,7 +2713,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		%sample_uniform(prob_htn_link, 0.60 0.65 0.70);
 		* comm test interval;
-		comm_test_interval = 2;
+		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
@@ -2781,7 +2781,7 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		%sample_uniform(prob_htn_link, 0.90 0.95 1);
 		* comm test interval;
-		comm_test_interval = 2;
+		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
 		comm_test_age = 40;
 
@@ -2849,9 +2849,9 @@ who may be dead and hence have caldate{t} missing;
 		* prob link from community testing to clinic;
 		prob_htn_link = 1;
 		* comm test interval;
-		comm_test_interval = 2;
+		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 18;
+		comm_test_age = 40;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =100;
@@ -3571,7 +3571,7 @@ hypertens160 = 0; if sbp >= 160 then hypertens160 = 1;
 
 htn_control = .; 
 if htn_true = 1 then htn_control = 0;
-if htn_true = 1 and sbp <  140 and on_tx_htn ge 1 then htn_true = 1;
+if htn_true = 1 and sbp <  140 and on_tx_htn ge 1 then htn_control = 1;
 
 
 * hypertension cost this period;
