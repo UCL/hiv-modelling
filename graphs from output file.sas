@@ -555,7 +555,7 @@ p_onart_vl1000_   p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart_m 	p_onart_w
 p_onart_vl1000_w				p_onart_vl1000_m  logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart ;
 
-***transpose given name; *starts with %macro and ends with %mend;
+*starts with %macro and ends with %mend;
 %macro option_0;
 %let p25_var = p25_&var_0;
 %let p75_var = p75_&var_0;

@@ -29,6 +29,11 @@ run;
 data b;
 set a1;
 
+***ERROR IN AGE DEBUT CALCULATION;
+
+
+
+
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
@@ -85,6 +90,10 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
+
+proc print;var s_age_deb_sw2529_ s_sw_1564;run;
+
+proc freq;table 
 
 * sw_episodes;					sw_episodes = s_episodes_sw/s_ever_sw;
 * p_sw_gt1ep;					p_sw_gt1ep   = s_sw_gt1ep     / s_ever_sw;
@@ -244,26 +253,123 @@ scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       colo
 										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
 run;quit;
 
+
+
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Duration of sex work";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'Proportion'          labelattrs=(size=12)  valueattrs=(size=10);
-label p50_dur0to3_sw_1_	                  = "0 to 3 years (median)";
-label p50_dur3to5_sw_1_	                  = "3 to 5 years (median)";
-label p50_dur6to9_sw_1_	                  = "6 to 9 years (median)";
-label p50_dur10to19_sw_1_	              = "9+ years (median)";
-
-series  x=cald y=p50_dur0to3_sw_1_  /           lineattrs = (color=blue thickness = 2);
-band    x=cald lower=p5_dur0to3_sw_1_      upper=p95_dur0to3_sw_1_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "0 to 3y 90% range";
-series  x=cald y=p50_dur3to5_sw_1_  /           lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_dur3to5_sw_1_      upper=p95_dur3to5_sw_1_ / transparency=0.9 fillattrs = (color=green) legendlabel= "3 to 5y 90% range";
-series  x=cald y=p50_dur6to9_sw_1_  /           lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_dur6to9_sw_1_      upper=p95_dur6to9_sw_1_ / transparency=0.9 fillattrs = (color=red) legendlabel= "6 to 9y 90% range";
-series  x=cald y=p50_dur10to19_sw_1_  /           lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_dur10to19_sw_1_      upper=p95_dur10to19_sw_1_ / transparency=0.9 fillattrs = (color=orange) legendlabel= "9+ y 90% range";
+yaxis grid label  = 'Years'          labelattrs=(size=12)  values = (0 to 10 by 2) valueattrs=(size=10);
+label p50_tot_dur_sw	                  = "Total duration of SW (median)";
+label p50_act_dur_sw	                  = "Active duration of SW (median)";
+series  x=cald y=p50_tot_dur_sw  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_tot_dur_sw      upper=p95_tot_dur_sw / transparency=0.9 fillattrs = (color=blue) legendlabel= "Total duration range";
+series  x=cald y=p50_act_dur_sw  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_act_dur_sw      upper=p95_act_dur_sw / transparency=0.9 fillattrs = (color=green) legendlabel= "Active duration range";
 
 run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Total duration of sex work including inactive periods";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+label p50_p_totdur_sw_0to3_	                  = "<3 years (median)";
+label p50_p_totdur_sw_3to5_	                  = "3-5 years (median)";
+label p50_p_totdur_sw_6to9_	                  = "6-9 years (median)";
+label p50_p_totdur_sw_10to19_	              = "9+ years (median)";
+
+label o_p_dur_0to3y_rds						  = "<3 years Sapphire";
+label o_p_dur_3to5y_rds						  = "3-5 years Sapphire";
+label o_p_dur_6to9y_rds						  = "6-9 years Sapphire";
+label o_p_dur_10to19y_rds					  = "10-19 years Sapphire";
+label o_p_dur_0to3y_AMT						  = "<3 years Amethist";
+label o_p_dur_3to5y_AMT						  = "3-5 years Amethist";
+label o_p_dur_6to9y_AMT						  = "6-9 years Amethist";
+label o_p_dur_10to19y_AMT					  = "10-19 years Amethist";
+
+
+series  x=cald y=p50_p_totdur_sw_0to3_  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_totdur_sw_0to3_      upper=p95_p_totdur_sw_0to3_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "0 to 3y 90% range";
+series  x=cald y=p50_p_totdur_sw_3to5_  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_totdur_sw_3to5_      upper=p95_p_totdur_sw_3to5_ / transparency=0.9 fillattrs = (color=green) legendlabel= "3 to 5y 90% range";
+series  x=cald y=p50_p_totdur_sw_6to9_  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_totdur_sw_6to9_      upper=p95_p_totdur_sw_6to9_ / transparency=0.9 fillattrs = (color=red) legendlabel= "6 to 9y 90% range";
+series  x=cald y=p50_p_totdur_sw_10to19_  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_totdur_sw_10to19_      upper=p95_p_totdur_sw_10to19_ / transparency=0.9 fillattrs = (color=orange) legendlabel= "9+ y 90% range";
+
+scatter x=cald y=o_p_dur_0to3y_rds / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_dur_3to5y_rds / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_dur_6to9y_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_dur_10to19y_rds / markerattrs = (symbol=circle     color=orange size = 12);
+
+scatter x=cald y=o_p_dur_0to3y_AMT / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_dur_3to5y_AMT / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_dur_6to9y_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_dur_10to19y_AMT / markerattrs = (symbol=circle     color=orange size = 12);
+
+run;quit;
+
+***NOt working;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Age debut of sex workers";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+label p50_p_age_deb_sw1519_	              = "15-19 years (median)";
+label p50_p_age_deb_sw2024_	              = "20-24 years (median)";
+label p50_p_age_deb_sw2529_	              = "25-29 years (median)";
+label p50_p_age_deb_sw3039_	              = "30-39 years (median)";
+
+label o_p_fsw_agedeb1519_rds				  = "15-19 years Sapphire";
+label o_p_fsw_agedeb2024_rds				  = "20-24 years Sapphire";
+label o_p_fsw_agedeb2529_rds				  = "25-29 years Sapphire";
+label o_p_fsw_agedebge30_rds				  = "30-39 years Sapphire";
+label o_p_fsw_agedeb1519_AMT				  = "15-19 years Amethist";
+label o_p_fsw_agedeb2024_AMT				  = "20-24 years Amethist";
+label o_p_fsw_agedeb2529_AMT				  = "25-29 years Amethist";
+label o_p_fsw_agedebge30_AMT				  = "30-39 years Amethist";
+
+series  x=cald y=p50_p_age_deb_sw1519_  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_age_deb_sw1519_      upper=p95_p_age_deb_sw1519_ / transparency=0.9 fillattrs = (color=blue) legendlabel= "15-19y 90% range";
+series  x=cald y=p50_p_age_deb_sw2024_  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_age_deb_sw2024_      upper=p95_p_age_deb_sw2024_ / transparency=0.9 fillattrs = (color=green) legendlabel= "20-24yy 90% range";
+series  x=cald y=p50_p_age_deb_sw2529_  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_age_deb_sw2529_      upper=p95_p_age_deb_sw2529_ / transparency=0.9 fillattrs = (color=red) legendlabel= "25-29y 90% range";
+series  x=cald y=p50_p_age_deb_sw3039_  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_age_deb_sw3039_      upper=p95_p_age_deb_sw3039_ / transparency=0.9 fillattrs = (color=orange) legendlabel= "30-39y 90% range";
+
+scatter x=cald y=o_p_fsw_agedeb1519_rds / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_fsw_agedeb2024_rds / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_fsw_agedeb2529_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_fsw_agedebge30_rds / markerattrs = (symbol=circle     color=orange size = 12);
+
+scatter x=cald y=o_p_fsw_agedeb1519_AMT / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_fsw_agedeb2024_AMT / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_fsw_agedeb2529_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_fsw_agedebge30_AMT / markerattrs = (symbol=circle     color=orange size = 12);
+
+run;quit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 proc sgplot data=e; 
 title    height=1.5 justify=center "90-90-90 indicators amongst all sex workers (age 15-49)";
