@@ -1,10 +1,11 @@
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\fsw\";
+libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\FSW\";
 
 
 data a; 
-set a.wide_fsw_19_04_23 ;
-if incidence1549_22 <0.03 then delete;
+set a.wide_fsw_25_04_23 ;
+*if incidence1549_22 <0.03 then delete;
 run;
+
 
 data b;
 set a;
@@ -45,25 +46,28 @@ n_sw_1549__22		prop_w_1549_sw_22 		prop_w_ever_sw_22		act_dur_sw_22
 p_sw_age1519__22	p_sw_age2024__22		p_sw_age2529__22 		p_sw_age3039__22  p_fsw_newp0__22 prop_sw_onprep_22
 p_sti_sw_22
 incidence_sw_22		prevalence_sw_22
-p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22;
+p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22 p_sw_prog_vis_22;
 run;
 
-proc freq;table sw_art_disadv;run;
+proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
 
 ***table 3 - characteristics in 2030 by option;
 
 proc means n p50 p5 p95;var
 /*discontinuted*/
+p_sw_prog_vis_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
 incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
 
 /*current level*/
+p_sw_prog_vis_30_2
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
 
 /*high impact*/
+p_sw_prog_vis_30_3
 p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
 p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
 incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3
