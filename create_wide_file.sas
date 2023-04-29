@@ -1,17 +1,17 @@
 * options user="/folders/myfolders/";
 
 
-libname a "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe";
+libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\TLO_HMC Dropbox\Valentina Cambiano\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v5_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v6_out";
 
-data a.base_04_04_23;   set b.out:;
-proc freq data=a.base_04_04_23;table cald;run;
+data a.base_28_04_23;   set b.out:;
+proc freq data=a.base_28_04_23;table cald;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base_04_04_23;
+data g; set  a.base_28_04_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -336,15 +336,15 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_labdel;				n_tested_w_labdel = s_tested_labdel * &sf * 4; *VCFeb2023;
 * n_tested_pd;					n_tested_w_pd = s_tested_pd * &sf * 4;*VCFeb2023;
 
-* n_tested1st_anc;				*n_tested1st_anc = s_tested1st_anc * &sf * 4;
-* n_tested1st_labdel;			*n_tested1st_labdel = s_tested1st_labdel * &sf * 4;
-* n_tested1st_pd;				*n_tested1st_pd = s_tested1st_pd * &sf * 4;
+* n_tested1st_anc;				n_tested1st_anc = s_tested1st_anc * &sf * 4;*VCMar2023;
+* n_tested1st_labdel;			n_tested1st_labdel = s_tested1st_labdel * &sf * 4;*VCMar2023;
+* n_tested1st_pd;				n_tested1st_pd = s_tested1st_pd * &sf * 4;*VCMar2023;
 
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 * n_diag_anc;					n_diag_anc = s_diag_this_period_f_anc * &sf * 4;
-* n_diag_anc;					*n_diag_labdel = s_diag_this_period_labdel * &sf * 4;*VCMar2023;
-* n_diag_anc;					*n_diag_pd = s_diag_this_period_f_pd * &sf * 4;*VCMar2023;
+* n_diag_anc;					n_diag_labdel = s_diag_this_period_labdel * &sf * 4;*VCMar2023;
+* n_diag_anc;					n_diag_pd = s_diag_this_period_f_pd * &sf * 4;*VCMar2023;
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 
@@ -565,7 +565,7 @@ end;
 
 * n_cm;							n_cm = s_cm_this_per * 4 * &sf;
 * n_vm;							n_vm = s_vm_this_per * 4 * &sf;*VCFeb2023;
-* p_vm_ly_onart;				*p_vm_ly_onart = s_vm_ly /s_onart;*VCMar2023;
+* p_vm_ly_onart;				p_vm_ly_onart = s_vm_ly /s_onart;*VCMar2023;
 * n_pcp_p_80;					n_pcp_p_80_ = s_pcp_p_80 *&sf;
 
 * p_ai_no_arv_c_nnm;			if s_ai_naive_no_pmtct_ > 0 then p_ai_no_arv_c_nnm = s_ai_naive_no_pmtct_c_nnm_ / s_ai_naive_no_pmtct_;
@@ -952,7 +952,7 @@ n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
 s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
-p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm /*p_vm_ly_onart*/ n_pcp_p_80_ p_onart_cd4_l200
+p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p_80_ p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
 p_vmmc p_vmmc_1519m p_vmmc_2024m p_vmmc_2529m p_vmmc_3039m p_vmmc_4049m p_vmmc_5064m p_vmmc_1549m	
 n_new_vmmc1549m 
@@ -997,8 +997,8 @@ death_rate_artexp  death_rate_hiv death_rate_hiv_w death_rate_hiv_m death_rate_h
 n_new_inf1549m n_new_inf1549w n_new_inf1549 n_infection p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_anc 
-n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd /*n_tested1st_anc n_tested1st_labdel n_tested1st_pd*/
-p_anc n_diagnosed n_diag_anc /*n_diag_labdel  n_diag_pd*/ p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
+n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
+p_anc n_diagnosed n_diag_anc n_diag_labdel  n_diag_pd p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep n_prep_1524w n_start_rest_prep_oral n_start_rest_prep_oral n_prep_ever  n_covid  n_death_covid n_death n_death_hivrel /*p_death_hivrel_age_le64 */
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
@@ -1109,7 +1109,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_30_03_23; set y;  
+data a.l_base_28_04_23; set y;  
 
 
 *
@@ -1120,7 +1120,7 @@ data a.l_base_30_03_23; set y;
 ;
 
 
-data y; set a.l_base_30_03_23; 
+data y; set a.l_base_28_04_23; 
 
 
   options nomprint;
@@ -1208,7 +1208,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=r_prev_5559m_4549w );  %var(v=r_prev_6064m_4549w );  %var(v=r_prev_65plm_4549w );
 %var(v=incidence1549w);  %var(v=incidence1549m);  %var(v=incidence_sw); 
 %var(v=p_inf_vlsupp);  %var(v=p_inf_newp);  %var(v=p_inf_ep);  %var(v=p_inf_diag);  %var(v=p_inf_naive);   %var(v=p_inf_primary); 
-%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);%var(v=n_cm);%var(v=n_vm);/*%var(v=p_vm_ly_onart);*/%var(v=n_pcp_p_80_);
+%var(v=mtct_prop); %var(v=p_diag); %var(v=p_diag_m); %var(v=p_diag_w); %var(v=p_diag_sw);%var(v=n_cm);%var(v=n_vm);%var(v=p_vm_ly_onart);%var(v=n_pcp_p_80_);
 %var(v=p_diag_m1524); %var(v=p_diag_w1524);
 %var(v=p_ai_no_arv_c_nnm); %var(v=p_ai_no_arv_c_pim); %var(v=p_ai_no_arv_c_rt184m); %var(v=p_ai_no_arv_c_rt65m); %var(v=p_ai_no_arv_c_rttams); 
 %var(v=p_ai_no_arv_c_inm); 
@@ -1249,8 +1249,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_birth_with_inf_child);
 %var(v=n_tested); %var(v=n_tested_sw);%var(v=n_tested_anc);
 %var(v=n_tested_m_sympt); %var(v=n_tested_w_sympt); %var(v=n_tested_m_circ); %var(v=n_tested_w_non_anc); %var(v=n_tested_w_labdel); %var(v=n_tested_w_pd);
-/*%var(v=n_tested1st_anc); %var(v=n_tested1st_labdel); %var(v=n_tested1st_pd);*/
-%var(v=p_anc); %var(v=n_diagnosed); %var(v=n_diag_anc);/*%var(v=n_diag_labdel);  %var(v=n_diag_pd);*/ %var(v=test_prop_positive);
+%var(v=n_tested1st_anc); %var(v=n_tested1st_labdel); %var(v=n_tested1st_pd);
+%var(v=p_anc); %var(v=n_diagnosed); %var(v=n_diag_anc);%var(v=n_diag_labdel);  %var(v=n_diag_pd); %var(v=test_prop_positive);
 %var(v=p_vlg1000_onart_65m);   %var(v=p_vlg1000_onart_184m);   %var(v=p_elig_prep); %var(v=prop_elig_on_prep);   %var(v= n_hiv1_prep);
 %var(v=n_prep); %var(v=n_prep_1524w);%var(v=n_start_rest_prep_oral);%var(v= n_prep_ever); %var(v=n_covid); %var(v=n_death_covid);  %var(v=n_death);  %var(v=n_death_hivrel); 
 *%var(v=p_death_hivrel_age_le64);  %var(v=p_prep_ever); %var(v=p_hiv1_prep);  %var(v=incidence1524w);   %var(v=incidence1524m) ;
@@ -1326,7 +1326,7 @@ r_prev_1519m_4549w r_prev_2024m_4549w  r_prev_2529m_4549w r_prev_3034m_4549w r_p
 r_prev_5054m_4549w r_prev_5559m_4549w r_prev_6064m_4549w r_prev_65plm_4549w
 incidence1564 incidence1549w  incidence1549m incidence_sw
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive   p_inf_primary 
-mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw p_diag_m1524  p_diag_w1524 n_cm n_vm /*p_vm_ly_onart*/ n_pcp_p_80_
+mtct_prop  p_diag  p_diag_m  p_diag_w  p_diag_sw p_diag_m1524  p_diag_w1524 n_cm n_vm p_vm_ly_onart n_pcp_p_80_
 p_ai_no_arv_c_nnm  p_ai_no_arv_c_pim  p_ai_no_arv_c_rt184m  p_ai_no_arv_c_rt65m  p_ai_no_arv_c_rttams  p_ai_no_arv_c_inm 
 p_artexp_diag  p_onart_diag  p_onart_diag_w  p_onart_diag_m  p_onart_diag_sw   p_onart_diag_w1524_ p_onart_diag_1524_
 p_efa  p_taz  p_ten  p_zdv  p_dol  p_3tc  p_lpr  p_nev  
@@ -1361,8 +1361,8 @@ p_iime   p_pime   p_nnme     n_pregnant_ntd   n_preg_odabe;run;
 data   wide_outputs_b; merge 
 n_birth_with_inf_child
 n_tested n_tested_sw n_tested_anc n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd 
-/*n_tested1st_anc n_tested1st_labdel n_tested1st_pd*/
-p_anc n_diagnosed n_diag_anc /*n_diag_labdel n_diag_pd*/ test_prop_positive
+n_tested1st_anc n_tested1st_labdel n_tested1st_pd
+p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd test_prop_positive
 p_vlg1000_onart_65m   p_vlg1000_onart_184m   p_elig_prep prop_elig_on_prep  n_hiv1_prep
 n_prep n_prep_1524w n_start_rest_prep_oral n_prep_ever  n_covid  n_death_covid  n_death  n_death_hivrel 
 /*p_death_hivrel_age_le64*/  p_prep_ever p_hiv1_prep  incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
@@ -1477,8 +1477,8 @@ proc sort; by run;run;
 
 
 * To get one row per run;
- data a.w_base_30_03_23; set wide_outputs;run;
-  data a.w_base_30_03_23; 
+ data a.w_base_28_04_23; set wide_outputs;run;
+  data a.w_base_28_04_23; 
 * merge   wide_outputs  wide_par wide_par_after_int_option0  wide_par_after_int_option1  ; * this if you have parameter values changing after
   baseline that you need to track the values of;
   merge   wide_outputs  wide_par ;  
