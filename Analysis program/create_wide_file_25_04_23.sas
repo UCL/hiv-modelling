@@ -610,3 +610,103 @@ i27  i28  i29  i30  i31  i32  i33  i34  i35  i36  i37  i38  i39  i40  i41
 ;
 by cald;
 run;
+
+
+data e;
+set d;
+%include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
+run;
+
+ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
+ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "FSW Population (age 15-49)";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
+label p50_n_sw_1549__0	                  = "model age 15-49 (median)";
+
+label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
+series  x=cald y=p50_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sw_1549__0     upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
+										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+run;quit;
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
+label p50_prop_w_1549_sw_0   = "model - median ";
+
+label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >  1 TSP (age 18-49)";
+label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
+label o_p_fsw_ll_1549w_SA		 = "South Africa";
+label o_p_fsw_1549w_Cam			 = "Cameroon";
+label o_p_fsw_1549w_Ken			 ="Kenya (urban)";
+
+series  x=cald y=p50_prop_w_1549_sw_0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_w_1549_sw_0 	 upper=p95_prop_w_1549_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=green size = 12)
+										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
+scatter x=cald y=o_p_fsw_ll_1549w_SA / markerattrs = (symbol=circle       color=orange size =1)
+										 yerrorlower=o_p_fsw_ll_1549w_SA yerrorupper=o_p_fsw_ul_1549w_SA errorbarattrs= (color=orange thickness = 2);
+scatter x=cald y=o_p_fsw_1549w_Cam / markerattrs = (symbol=circle       color=red size =12)
+										 yerrorlower=o_p_fsw_ll_1549w_Cam yerrorupper=o_p_fsw_ul_1549w_Cam errorbarattrs= (color=red thickness = 2);
+scatter x=cald y=o_p_fsw_1549w_Ken / markerattrs = (symbol=circle       color=purple size =12)
+										 yerrorlower=o_p_fsw_ll_1549w_Ken yerrorupper=o_p_fsw_ul_1549w_Ken errorbarattrs= (color=purple thickness = 2);
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Age of sex workers";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+label p50_p_sw_age1519__0	              = "15-19 years (median)";
+label p50_p_sw_age2024__0	              = "20-24 years (median)";
+label p50_p_sw_age2529__0	              = "25-29 years (median)";
+label p50_p_sw_age3039__0	              = "30-39 years (median)";
+
+label o_p_1824_fsw_rds				  = "18-24 years Sapphire";
+label o_p_2529_fsw_rds				  = "25-29 years Sapphire";
+label o_p_3039_fsw_rds				  = "30-39 years Sapphire";
+ 
+label o_p_1824_fsw_AMT				  = "18-24 years Amethist";
+label o_p_2529_fsw_AMT				  = "25-29 years Amethist";
+label o_p_3039_fsw_AMT				  = "39-39 years Amethist";
+
+series  x=cald y=p50_p_sw_age1519__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sw_age1519__0      upper=p95_p_sw_age1519__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "15-19y 90% range";
+series  x=cald y=p50_p_sw_age2024__0  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_sw_age2024__0      upper=p95_p_sw_age2024__0 / transparency=0.9 fillattrs = (color=green) legendlabel= "20-24yy 90% range";
+series  x=cald y=p50_p_sw_age2529__0  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_sw_age2529__0      upper=p95_p_sw_age2529__0 / transparency=0.9 fillattrs = (color=red) legendlabel= "25-29y 90% range";
+series  x=cald y=p50_p_sw_age3039__0  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_sw_age3039__0      upper=p95_p_sw_age3039__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "30-39y 90% range";
+
+scatter x=cald y=o_p_1824_fsw_rds / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_rds / markerattrs = (symbol=circle       color=orange size = 12);
+
+scatter x=cald y=o_p_1824_fsw_AMT / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle       color=orange size = 12);
+run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners (including periods of inactive sex work)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_p_fsw_newp0__0 = "Model (median) ";
+
+series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+run;quit;
