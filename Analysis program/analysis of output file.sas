@@ -55,35 +55,22 @@ proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
 
 proc means n p50 p5 p95;var
 /*discontinuted*/
-p_sw_prog_vis_30_1
+p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
 incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
 
 /*current level*/
-p_sw_prog_vis_30_2
+p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
 p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
 p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
 incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
 
 /*high impact*/
-p_sw_prog_vis_30_3
+p_sw_prog_vis_30_3	p_tested_past_year_sw_30_3
 p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
 p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
-incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3
-
-;
-run;
-
-proc means n p50 p5 p95;var
-p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
-p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
-
-p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2		p_fsw_newp0__30_2	prop_sw_onprep_30_2
-p_sti_sw_30_2		incidence_sw_30_2	prevalence_sw_30_2
-incidence1549_30_2	prevalence1549_30_2		p_diag_30_2	  p_onart_diag_30_2   p_onart_vl1000_30_2
-;where sw_art_disadv=1;
+incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3;
 run;
 
 
@@ -240,6 +227,8 @@ diff_ddaly_swprog_high = ddaly_22_72_3 - ddaly_22_72_1;
 diff_dcost_swprog_high = dcost_22_72_3 - dcost_22_72_1;
 
 ***look at individual costs;
+diff_artcost_swprog_high = dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
+diff_testcost_swprog_high = dtest_cost_22_72_3 - dtest_cost_22_72_1;
 
 *net dalys using $500;
 netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
@@ -252,7 +241,16 @@ diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog;
 maxcost_swprog_high= diff_netdalys_swprog_high*500;
 
 
-proc means n mean p50 p5 p95 lclm uclm;var maxcost_swprog_high;run;
+proc means n mean p50 p5 p95 lclm uclm;
+var dcost_22_72_1 dcost_22_72_3 diff_dcost_swprog_high
+dart_cost_y_22_72_1 dart_cost_y_22_72_3 diff_artcost_swprog_high
+dtest_cost_22_72_1 dtest_cost_22_72_3 diff_testcost_swprog_high
+
+n_tested_sw_22_72_1  n_tested_sw_22_72_3
+;run;
+
+
+proc means n mean p50 p5 p95 lclm uclm;var netdalys_no_swprog netdalys_swprog_high diff_netdalys_swprog_high maxcost_swprog_high ;run;
 
 proc univariate;var maxcost_swprog_high;run;
 

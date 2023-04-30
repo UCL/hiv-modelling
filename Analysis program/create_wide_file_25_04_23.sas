@@ -132,8 +132,8 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_sw_program;
+		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj  /*+ 
+		dcost_sw_program*/;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -233,6 +233,8 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_sw_prog_vis;				if s_sw_1564 gt 0 then p_sw_prog_vis = s_sw_program_visit / s_sw_1564 ;
 
 * n_tested_sw;					n_tested_sw = s_tested_sw * sf_2023 * 4;
+* p_tested_past_year_sw;		if s_sw_1564 - s_diag_sw > 0 then p_tested_past_year_sw = s_tested_4p_sw /  (s_sw_1564 - s_diag_sw) ;
+
 * prop_sw_onprep; 				if (s_sw_1564 - s_hiv_sw) gt 0 then prop_sw_onprep = s_prep_any_sw/ (s_sw_1564 - s_hiv_sw) ;
 
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
@@ -263,13 +265,18 @@ p_actdur_0to3_  	 p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_
 p_totdur_0to3_  	 p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 p_sw_prog_vis		 n_tested_sw	    prop_sw_onprep		prevalence_sw	  	incidence_sw
 p_diag_sw			 p_onart_diag_sw	p_onart_vl1000_sw
-p_sti_sw
+p_sti_sw			 p_tested_past_year_sw
 
 /*Sampled parameters*/
 sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
 effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_trans_matrix
 
-dcost ddaly dcost_sw_program;
+/*Costs*/
+dcost ddaly dcost_sw_program
+dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dcot_cost 		 dtb_cost  dres_cost 
+dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
+dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 
+;
 
 proc sort data=y;by run option;run;
 
@@ -368,9 +375,16 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;
 %var(v=p_actdur_0to3_); %var(v=p_actdur_3to5_);     %var(v=p_actdur_6to9_);  	%var(v=p_actdur_10to19_); 
 %var(v=p_totdur_0to3_); %var(v=p_totdur_3to5_);     %var(v=p_totdur_6to9_);  	%var(v=p_totdur_10to19_); 
 
-%var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=prop_sw_onprep);	    %var(v=prevalence_sw);	  %var(v=incidence_sw);
+%var(v=p_sw_prog_vis);  %var(v=n_tested_sw);	    %var(v=p_tested_past_year_sw);
+%var(v=prop_sw_onprep);	%var(v=prevalence_sw);	    %var(v=incidence_sw);
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
 %var(v=dcost);			%var(v=ddaly);
+
+%var(v=dart_cost_y);	%var(v=dadc_cost);		%var(v=dcd4_cost);	%var(v=dvl_cost);  	 	%var(v=dvis_cost);			%var(v=dnon_tb_who3_cost);	
+%var(v=dcot_cost);		%var(v=dtb_cost);  		%var(v=dres_cost); 	%var(v=dtest_cost);		%var(v=d_t_adh_int_cost);  	%var(v=dswitchline_cost);
+%var(v=dcost_drug_level_test);	%var(v=dcost_circ); 		%var(v=dcost_condom_dn);		%var(v=dcost_avail_self_test); 	
+%var(v=dcost_prep_visit_oral);  	%var(v=dcost_prep_oral);  	%var(v=dcost_prep_visit_inj);  	%var(v=dcost_prep_inj); 
+
 run;
 
 data wide_outputs;merge
@@ -394,9 +408,16 @@ tot_dur_sw  	act_dur_sw
 p_actdur_0to3_  p_actdur_3to5_     p_actdur_6to9_  	p_actdur_10to19_ 
 p_totdur_0to3_  p_totdur_3to5_     p_totdur_6to9_  	p_totdur_10to19_ 
 
-p_sw_prog_vis   n_tested_sw	   	   prop_sw_onprep	prevalence_sw	  incidence_sw
+p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevalence_sw	  incidence_sw
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
-dcost			ddaly;
+dcost			ddaly
+
+dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost			dnon_tb_who3_cost	
+dcot_cost		dtb_cost  		dres_cost 		dtest_cost		d_t_adh_int_cost  	dswitchline_cost
+dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
+dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
+
+;
 
 proc sort; by run;run;
 
@@ -710,3 +731,17 @@ label p50_p_fsw_newp0__0 = "Model (median) ";
 series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers who visited a sex worker programme";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2023 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_p_sw_prog_vis_0 = "Model (median) ";
+
+series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+run;quit;
+
+proc contents;run;
+run;

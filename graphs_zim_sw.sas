@@ -86,12 +86,13 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_sw_age3039_;					p_sw_age3039_=s_sw_3039/s_sw_1564;
 								end;
 
+
 * p_age_deb_sw1519_;			p_age_deb_sw1519_ = s_age_deb_sw1519_ /s_sw_1564;
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
 
-proc print;var s_age_deb_sw2529_ s_sw_1564;run;
+proc freq;table p_age_deb_sw1519_;run;
 
 proc freq;table 
 
