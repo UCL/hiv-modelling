@@ -1,4 +1,10 @@
 
+
+* consider if need to revise inc1 in onc_cate code ; 
+
+
+
+
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
@@ -629,7 +635,7 @@ newp_seed = 7;
 
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14);  prep_any_strategy = 4;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -1217,7 +1223,7 @@ Age Group	Total (%)   % of 15-65 (47.2% are 15-65)
 ;
 
 
-* Running for 82 years - 1989 - 2071;  * AP 20-7-19 ;
+* Running for 85 years - 1989 - 2074;  * AP 20-7-19 ;
 * Using a moderate rate of population growth;
 
 ***LBM Jul19;
@@ -1275,7 +1281,7 @@ cum2=inc1+inc2; cum3=cum2+inc3;cum4=cum3+inc4;cum5=cum4+inc5;cum6=cum5+inc6;cum7
 cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12; 
 
 e=rand('uniform');
-if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
+if 0.0 <= e < inc1    then age=-70+rand('uniform')*15;   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1292,7 +1298,7 @@ if cum12 <= e          then age= 55+rand('uniform')*10;
 
 age =round(age ,.25);
 
-year_start=-69;
+year_start=-70;
 
 if age  >= year_start;
 
@@ -2475,16 +2481,94 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot >= &year_interv then do;
+if caldate_never_dot = &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
 if option = 0 then do; end;
 
-if option = 1 then 
-	
+if option = 1 then do;
+
+	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.5) ; 
+	eff_rate_lost = eff_rate_lost / 2     ; 
+	eff_prob_lost_art = eff_prob_lost_art / 2     ; 
+	eff_rate_int_choice = eff_rate_int_choice / 2     ; 
+ 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.5) ; 
+ 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.5) ; 
+
+end;
+
+if option = 2 then do;
+
+	* store values so can be re-assigned these values in next time step;
+	hard_reach_x = hard_reach;
+	eff_prob_prep_any_restart_choice_x = eff_prob_prep_any_restart_choice ;
+	prep_any_willing_x =  prep_any_willing  ;
+	prep_oral_willing_x =  prep_oral_willing ;
+	prep_inj_willing_x =  prep_inj_willing   ;
+	adhav_prep_oral_x =  adhav_prep_oral  ;
+	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
+	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
+
+	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+
+	qq=rand('uniform'); if hard_reach = 1 and  if qq < 0.9 then hard_reach =0; 
+
+	* define the chsnges in prep use for this one 3 month period;
+	eff_prob_prep_any_restart_choice=0.7;
+	prep_any_willing = 1; prep_oral_willing =1; prep_inj_willing =1; 
+	adhav_prep_oral = adhav ; 
+	eff_rate_test_startprep_any = 0.9; 
+	eff_prob_prep_oral_b = 0.8;
+
+end;
 
 
+if option = 3 then do;
+
+	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.5) ; 
+	eff_rate_lost = eff_rate_lost / 2     ; 
+	eff_prob_lost_art = eff_prob_lost_art / 2     ; 
+	eff_rate_int_choice = eff_rate_int_choice / 2     ; 
+ 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.5) ; 
+ 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.5) ; 
+
+	* store values so can be re-assigned these values in next time step;
+	hard_reach_x = hard_reach;
+	eff_prob_prep_any_restart_choice_x = eff_prob_prep_any_restart_choice ;
+	prep_any_willing_x =  prep_any_willing  ;
+	prep_oral_willing_x =  prep_oral_willing ;
+	prep_inj_willing_x =  prep_inj_willing   ;
+	adhav_prep_oral_x =  adhav_prep_oral  ;
+	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
+	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
+
+	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+
+	qq=rand('uniform'); if hard_reach = 1 and  if qq < 0.9 then hard_reach =0; 
+
+	* define the chsnges in prep use for this one 3 month period;
+	eff_prob_prep_any_restart_choice=0.7;
+	prep_any_willing = 1; prep_oral_willing =1; prep_inj_willing =1; 
+	adhav_prep_oral = adhav ; 
+	eff_rate_test_startprep_any = 0.9; 
+	eff_prob_prep_oral_b = 0.8;
+
+end;
+
+
+if caldate_never_dot = &year_interv + 0.25 and option in (2, 3) then do;
+
+	hard_reach = hard_reach_x;
+	eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice_x ;
+	prep_any_willing =  prep_any_willing_x  ;
+	prep_oral_willing =  prep_oral_willing_x ;
+	prep_inj_willing =  prep_inj_willing_x   ;
+	adhav_prep_oral =  adhav_prep_oral_x  ;
+	eff_rate_test_startprep_any =  eff_rate_test_startprep_any_x ; 
+	eff_prob_prep_oral_b =  eff_prob_prep_oral_b_x ;
+
+end;
 
 *  ======================================================================================================================================== ;
 
@@ -2757,6 +2841,8 @@ if caldate{t} >= &year_interv then do;
 	end;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end;
 end;
+
+if caldate{t} = &year_interv and intensive_3mth_test = 1  then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
@@ -19666,16 +19752,16 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=125,h=132,j=130,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);
+%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
+%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
 
 data a ;  set r1 ;
 
 
 data r1 ; set a ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=0);
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=0);
@@ -19885,10 +19971,6 @@ data r1 ; set a ;
 
 data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
@@ -20098,10 +20180,6 @@ data r1; set a      ;
 
 data r1; set a     ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
@@ -20310,10 +20388,6 @@ data r1; set a     ;
 
 data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
 %update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
