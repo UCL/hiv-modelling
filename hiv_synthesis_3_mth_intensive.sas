@@ -2502,7 +2502,7 @@ if option = 2 then do;
 
 	* store values so can be re-assigned these values in next time step;
 	hard_reach_x = hard_reach;
-	eff_prob_prep_any_restart_choice_x = eff_prob_prep_any_restart_choice ;
+	eff_prob_prep_any_rest_choice_x = eff_prob_prep_any_restart_choice ;
 	prep_any_willing_x =  prep_any_willing  ;
 	prep_oral_willing_x =  prep_oral_willing ;
 	prep_inj_willing_x =  prep_inj_willing   ;
@@ -2512,7 +2512,7 @@ if option = 2 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
-	qq=rand('uniform'); if hard_reach = 1 and  if qq < 0.9 then hard_reach =0; 
+	qq=rand('uniform'); if hard_reach = 1 and qq < 0.9 then hard_reach =0; 
 
 	* define the chsnges in prep use for this one 3 month period;
 	eff_prob_prep_any_restart_choice=0.7;
@@ -2535,7 +2535,7 @@ if option = 3 then do;
 
 	* store values so can be re-assigned these values in next time step;
 	hard_reach_x = hard_reach;
-	eff_prob_prep_any_restart_choice_x = eff_prob_prep_any_restart_choice ;
+	eff_prob_prep_any_rest_choice_x = eff_prob_prep_any_restart_choice ;
 	prep_any_willing_x =  prep_any_willing  ;
 	prep_oral_willing_x =  prep_oral_willing ;
 	prep_inj_willing_x =  prep_inj_willing   ;
@@ -2545,7 +2545,7 @@ if option = 3 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
-	qq=rand('uniform'); if hard_reach = 1 and  if qq < 0.9 then hard_reach =0; 
+	qq=rand('uniform'); if hard_reach = 1 and qq < 0.9 then hard_reach =0; 
 
 	* define the chsnges in prep use for this one 3 month period;
 	eff_prob_prep_any_restart_choice=0.7;
@@ -2556,11 +2556,13 @@ if option = 3 then do;
 
 end;
 
+end;
+
 
 if caldate_never_dot = &year_interv + 0.25 and option in (2, 3) then do;
 
 	hard_reach = hard_reach_x;
-	eff_prob_prep_any_restart_choice = eff_prob_prep_any_restart_choice_x ;
+	eff_prob_prep_any_restart_choice = eff_prob_prep_any_rest_choice_x ;
 	prep_any_willing =  prep_any_willing_x  ;
 	prep_oral_willing =  prep_oral_willing_x ;
 	prep_inj_willing =  prep_inj_willing_x   ;
