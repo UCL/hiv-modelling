@@ -1109,7 +1109,8 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_28_04_23; set y;  
+data a.l_base_28_04_23; set y;  run;
+
 
 
 *
@@ -1120,8 +1121,9 @@ data a.l_base_28_04_23; set y;
 ;
 
 
-data y; set a.l_base_28_04_23; 
+data y; set a.l_base_28_04_23; run;
 
+*** !!! can stop here to create graphs;
 
   options nomprint;
   option nospool;
