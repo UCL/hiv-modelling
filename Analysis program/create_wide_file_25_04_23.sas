@@ -10,6 +10,9 @@ by run cald option;run;
 
 proc freq;table cald;run;
 
+proc means n sum p50 p5 p95;var s_tested_sw s_tested_as_sw s_cost_test s_dtest_cost;where option=0 and cald>2023;run;
+proc means n sum p50 p5 p95;var s_tested_sw s_tested_as_sw s_cost_test s_dtest_cost;where option=2 and cald>2023;run;
+
 data sf;
 set a;
 
@@ -638,6 +641,13 @@ set d;
 %include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
 run;
 
+
+
+data a.fsw_25_04_23_graphs; set e;run;
+
+data e; set a.fsw_25_04_23_graphs;run;
+
+
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
 
@@ -743,5 +753,27 @@ series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=black thickness = 2
 band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
 run;quit;
 
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Number of tests";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2040 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Number' 		labelattrs=(size=12)   		values = (0 to 150000 by 50000) valueattrs=(size=10);
+
+label p50_n_tested_sw_0 = "No SW program ";
+label p50_n_tested_sw_1 = "Low impact SW program ";
+label p50_n_tested_sw_2 = "High impact SW program ";
+
+series  x=cald y=p50_n_tested_sw_0  / 	 lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_tested_sw_0	 upper=p95_n_tested_sw_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+
+series  x=cald y=p50_n_tested_sw_1  / 	 lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_tested_sw_1	 upper=p95_n_tested_sw_1 / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+
+series  x=cald y=p50_n_tested_sw_2  / 	 lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_tested_sw_2	 upper=p95_n_tested_sw_2 / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+
+run;quit;
+
+proc print;var p50_n_tested_sw_0 p50_n_tested_sw_1 p50_n_tested_sw_2;run;
 proc contents;run;
 run;

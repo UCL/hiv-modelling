@@ -235,7 +235,7 @@ netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
 netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
-diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog;
+diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog; *take absolute number;
 
 ***cost of SW prog;
 maxcost_swprog_high= diff_netdalys_swprog_high*500;
@@ -245,8 +245,24 @@ proc means n mean p50 p5 p95 lclm uclm;
 var dcost_22_72_1 dcost_22_72_3 diff_dcost_swprog_high
 dart_cost_y_22_72_1 dart_cost_y_22_72_3 diff_artcost_swprog_high
 dtest_cost_22_72_1 dtest_cost_22_72_3 diff_testcost_swprog_high
-
+ dcost_prep_oral_22_72_1  dcost_prep_oral_22_72_3
 n_tested_sw_22_72_1  n_tested_sw_22_72_3
+
+proc means n p50;VAR
+dart_cost_y_22_72_1
+dadc_cost_22_72_1 dcd4_cost_22_72_1 dvl_cost_22_72_1 dvis_cost_22_72_1 dnon_tb_who3_cost_22_72_1 dcot_cost_22_72_1
+dtb_cost_22_72_1 dres_cost_22_72_1 dtest_cost_22_72_1 d_t_adh_int_cost_22_72_1 
+dswitchline_cost_22_72_1 
+dcost_prep_visit_oral_22_72_1 dcost_prep_oral_22_72_1 
+dcost_prep_visit_inj_22_72_1 dcost_prep_inj_22_72_1
+prop_sw_onprep_22_72_1
+dart_cost_y_22_72_3
+dadc_cost_22_72_3 dcd4_cost_22_72_3 dvl_cost_22_72_3 dvis_cost_22_72_3 dnon_tb_who3_cost_22_72_3 dcot_cost_22_72_3
+dtb_cost_22_72_3 dres_cost_22_72_3 dtest_cost_22_72_3 d_t_adh_int_cost_22_72_3 
+dswitchline_cost_22_72_3 
+dcost_prep_visit_oral_22_72_3 dcost_prep_oral_22_72_3 
+dcost_prep_visit_inj_22_72_3 dcost_prep_inj_22_72_3
+prop_sw_onprep_22_72_3
 ;run;
 
 
