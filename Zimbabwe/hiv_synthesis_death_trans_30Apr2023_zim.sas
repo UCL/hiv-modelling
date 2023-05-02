@@ -12923,6 +12923,7 @@ if 3 le tot_dur_sw lt 6 then totdur_sw_3to5=1;
 if 6 le tot_dur_sw lt 10 then totdur_sw_6to9=1;
 if 10 le tot_dur_sw lt 20 then totdur_sw_10to19=1;
 if tot_dur_sw ge 20 then totdur_sw_ov20=1;
+end;
 
 if 0 lt tot_dur_eversw lt 3 then totdur_eversw_0to3=1;
 if 3 le tot_dur_eversw lt 6 then totdur_eversw_3to5=1;
@@ -12935,7 +12936,6 @@ if 20 le age_stop_sw lt 25 then age_stop_sw2024_=1;
 if 25 le age_stop_sw lt 30 then age_stop_sw2529_=1;
 if 30 le age_stop_sw lt 40 then age_stop_sw3039_=1;
 if       age_stop_sw ge 40 then age_stop_swov40_=1;
-end;
 
 
 
