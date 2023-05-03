@@ -9,6 +9,10 @@ proc sort;
 by run cald option;run;
 
 proc freq;table cald;run;
+
+
+
+
 /*
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=0 and cald>2023.5;run;
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
@@ -183,7 +187,14 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 * n_tested;						n_tested = s_tested * sf_2023 * 4;
 
-
+n_tested_m = s_tested_m * sf_2023 * 4;
+n_tested_m_sympt = s_tested_m_sympt * sf_2023 * 4;
+n_tested_m_circ = s_tested_m_circ * sf_2023 * 4;
+n_tested_f = s_tested_f * sf_2023 * 4;
+n_tested_f_anc = s_tested_f_anc * sf_2023 * 4;
+n_tested_f_sympt = s_tested_f_sympt * sf_2023 * 4;
+n_tested_f_non_anc = s_tested_f_non_anc * sf_2023 * 4;
+n_tested_at_return = s_tested_at_return * sf_2023 * 4;
 
 ***FSW;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
@@ -261,6 +272,14 @@ prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence154
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 n_tested
+n_tested_m
+n_tested_m_sympt
+n_tested_m_circ
+n_tested_f
+n_tested_f_anc
+n_tested_f_sympt
+n_tested_f_non_anc
+n_tested_at_return
 
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
@@ -292,8 +311,18 @@ proc sort data=y;by run option;run;
 
 proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
 
-proc means n p50 p5 p95;var n_tested dtest_cost n_tested_sw dtest_cost_sw;where option=0 and cald>2023.5;run;
-proc means n p50 p5 p95;var n_tested dcost_test n_tested_sw s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
+proc means n p50;var 
+n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
+n_tested_at_return; where option=0 and cald>2023.5;run;
+proc means n p50;var 
+n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
+n_tested_at_return; where option=2 and cald>2023.5;run;
+
+
+
+n_tested dtest_cost n_tested_sw dtest_cost_sw;where option=0 and cald>2023.5;run;
+
+proc means n p50 p5 p95;var n_tested dtest_cost n_tested_sw dtest_cost_sw;where option=2 and cald>2023.5;run;
 
 
 

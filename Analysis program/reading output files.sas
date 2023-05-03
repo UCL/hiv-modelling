@@ -1,12 +1,15 @@
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\
-output files\FSW\fsw_24_02_22_sti";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\fsw_02_05_23\";
+libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
+
 
 
 data b;
 set a.out:;
 run;
 
-data a.fsw_24_02_22_ch3_sti;
+
+
+data b.fsw_02_05_23;
 set b;
 run;
 
