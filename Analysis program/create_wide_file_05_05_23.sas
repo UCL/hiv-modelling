@@ -8,11 +8,11 @@ if run=. then delete;
 proc sort;
 by run cald option;run;
 
-proc freq;table cald;run;
+proc freq;table run;where cald=2020;run;
 
 
 
-
+proc freq;table effect_sw_prog_newp;run;
 /*
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=0 and cald>2023.5;run;
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
@@ -304,6 +304,7 @@ dcost ddaly dcost_sw_program
 dart_cost_y		dadc_cost  			dcd4_cost		  dvl_cost  dvis_cost	dnon_tb_who3_cost	dcot_cost 		 dtb_cost  dres_cost 
 dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_circ  		dcost_condom_dn  dcost_avail_self_test 		
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
+effect_sw_prog_newp
 ;
 
 proc sort data=y;by run option;run;
@@ -313,16 +314,15 @@ proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
 
 proc means n p50;var 
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return; where option=0 and cald>2023.5;run;
+n_tested_at_return; where option=0 and cald>2023;run;
 proc means n p50;var 
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return; where option=2 and cald>2023.5;run;
+n_tested_at_return; where option=2 and cald>2023  and effect_sw_prog_newp=0.05;run;
 
+proc freq;table run;
 
-
-n_tested dtest_cost n_tested_sw dtest_cost_sw;where option=0 and cald>2023.5;run;
-
-proc means n p50 p5 p95;var n_tested dtest_cost n_tested_sw dtest_cost_sw;where option=2 and cald>2023.5;run;
+proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=0 and cald>2023.5 ;run;
+proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>2023.5  and effect_sw_prog_newp=0.05;run;
 
 
 
