@@ -193,7 +193,7 @@ newp_seed = 7;
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 * prob_stop_breastfeeding_yr2;		*JAS Apr2023;
 							prob_stop_breastfeeding_yr2 = 0.1325;	* 3-monthly probability of stopping breastfeeding in second year after birth;
-							* see Excel worksheet "Breastfeeding probabilities" for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
+							* see Excel worksheet Breastfeeding probabilities for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 
 
@@ -1632,8 +1632,8 @@ if u>can_be_pregnant then low_preg_risk=1;
 prob_pregnancy_b = prob_pregnancy_base;
 if low_preg_risk=1 then prob_pregnancy_b=0; 
 
-*** 'eff' variables are defined for specific parameters which may change as a result of the code. Values of the original
-	parameters are stored and only 'eff_' variables are used throughout the code;
+*** eff variables are defined for specific parameters which may change as a result of the code. Values of the original
+	parameters are stored and only eff_ variables are used throughout the code;
 
 * lapr and dpv-vr - we might need to create new eff_ variables for lapr and dpv-vr parameters ;
 
@@ -2622,7 +2622,7 @@ if sw_program_visit=0 then do; e=rand('uniform');
 			end;
 		end;
 		if prep_any_willing=1 then eff_rate_test_startprep_any=1;
-		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update 'eff' section as well ;
+		eff_rate_choose_stop_prep_oral=0.05;	* lapr - add lines for inj and vr? inj stop rate is currently lower than this. would need to update eff section as well ;
 		eff_rate_choose_stop_prep_inj=0.05;
 		eff_rate_choose_stop_prep_vr=0.05;
 		eff_prob_prep_any_restart_choice=0.7;
@@ -4522,17 +4522,19 @@ if caldate{t} gt dt_start_pregn+0.75 then do;
 end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 *Breastfeeding;		*JAS Apr2023;
-if caldate{t}=dt_lastbirth then breastfeeding=1;
-if breastfeeding=1 then do;
-	r=rand('uniform');
+/*prob_stop_breastfeeding_yr1 = 0.0273;	prob_stop_breastfeeding_yr2 = 0.1325;	*/
+
+if caldate{t}=dt_lastbirth then do; gg=1; breastfeeding=1; end;
+if (caldate{t} gt dt_lastbirth) and breastfeeding=1 then do;
+	xx=rand('uniform');
 	select; 
-		when (0 gt (caldate{t}-dt_lastbirth) le 1) 	if r lt prob_stop_breastfeeding_yr1 then breastfeeding=0; 
-		when (1 gt (caldate{t}-dt_lastbirth) le 2) 	if r lt prob_stop_breastfeeding_yr2 then breastfeeding=0; 
-		otherwise breastfeeding=0;
+		when (0  < (caldate{t}-dt_lastbirth) < 1) 	do; gg=2; if xx < prob_stop_breastfeeding_yr1 then do; hh=1; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end; end;
+		when (1 =< (caldate{t}-dt_lastbirth) < 2) 	do; gg=3; if xx < prob_stop_breastfeeding_yr2 then do; hh=2; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end; end;
+		otherwise do; gg=4; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end;
 	end;
-	if caldate{t} ge death then breastfeeding=.; 
+	if death > . then breastfeeding=.; 
 end;
-* 'breastfeeding' should reset to 1 for subsequent births;
+* breastfeeding should reset to 1 for subsequent births;
 
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
@@ -17238,10 +17240,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print; var caldate&j gender age pregnant breastfeeding
+proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding gg hh xx prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death
+prep_any_elig
 ;
-where age ge 15 and age le 50 and death=. ;
+where serial_no<350 and age ge 15 and age le 50 ;
 run;
+
+/*proc freq; tables duration_breastfeeding; run;*/
+
 
 
 /*
