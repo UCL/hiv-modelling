@@ -77,7 +77,7 @@ logm55r = log(m55r+0.0001);
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 26  ;
+%let nfit = 155  ;
 %let year_end = 2027.75 ;
 run;
 /*proc freq data=b;table cald;run;*/
