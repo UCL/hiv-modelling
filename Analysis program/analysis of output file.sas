@@ -2,8 +2,8 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_25_04_23 ;
-*if incidence1549_22 <0.03 then delete;
+set a.wide_fsw_05_05_23 ;
+if incidence1549_22 <0.02 then delete;
 run;
 
 
@@ -219,26 +219,72 @@ _2=low impact sw program
 _3=high impact sw program
 */
 
-
+***No program vs. high impact;
 *dalys averted;
-diff_ddaly_swprog_high = ddaly_22_72_3 - ddaly_22_72_1;
+diff_ddaly_swprog_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
 
 *difference in total costs;
-diff_dcost_swprog_high = dcost_22_72_3 - dcost_22_72_1;
+diff_dcost_swprog_high_v_none = dcost_22_72_3 - dcost_22_72_1;
 
 ***look at individual costs;
-diff_artcost_swprog_high = dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
-diff_testcost_swprog_high = dtest_cost_22_72_3 - dtest_cost_22_72_1;
+diff_artcost_swprog_high_v_none= dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
+diff_testcost_swprog_high_v_none = dtest_cost_22_72_3 - dtest_cost_22_72_1;
 
 *net dalys using $500;
 netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
 netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
-diff_netdalys_swprog_high = netdalys_swprog_high - netdalys_no_swprog; *take absolute number;
+diff_netdalys_swprog_high_v_none = netdalys_swprog_high - netdalys_no_swprog; *take absolute number;
+
+***max cost of SW prog;
+maxcost_swprog_high_v_none= diff_netdalys_swprog_high_v_none * 500;
+
+
+***No program vs. low impact;
+*dalys averted;
+diff_ddaly_swprog_low_v_none = ddaly_22_72_2 - ddaly_22_72_1;
+
+*difference in total costs;
+diff_dcost_swprog_low_v_none = dcost_22_72_2 - dcost_22_72_1;
+
+***look at individual costs;
+diff_artcost_swprog_low_v_none = dart_cost_y_22_72_2 - dart_cost_y_22_72_1;
+diff_testcost_swprog_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
+
+*net dalys using $500;
+netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
+netdalys_swprog_low =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;*expect dalys to be lower here;
+
+*net dalys averted;
+diff_netdalys_swprog_low_v_none = netdalys_swprog_low - netdalys_no_swprog; *take absolute number;
 
 ***cost of SW prog;
-maxcost_swprog_high= diff_netdalys_swprog_high*500;
+maxcost_swprog_low_v_none= diff_netdalys_swprog_low_v_none * 500;
+
+
+
+***Low program vs. high impact;
+*dalys averted;
+diff_ddaly_swprog_high_v_low = ddaly_22_72_3 - ddaly_22_72_2;
+
+*difference in total costs;
+diff_dcost_swprog_high_v_low = dcost_22_72_3 - dcost_22_72_2;
+
+***look at individual costs;
+diff_artcost_swprog_high_v_low = dart_cost_y_22_72_3 - dart_cost_y_22_72_2;
+diff_testcost_swprog_high_v_low = dtest_cost_22_72_3 - dtest_cost_22_72_2;
+
+*net dalys using $500;
+netdalys_no_swprog =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;
+netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
+
+*net dalys averted;
+diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *take absolute number;
+
+***cost of SW prog;
+maxcost_swprog_high_v_= diff_netdalys_swprog_high_v_low*500;
+
 
 
 proc means n mean p50 p5 p95 lclm uclm;

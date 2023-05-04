@@ -402,7 +402,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_tested);	  %var(v=n_tested_w);	%var(v=n_tested_m);	
 
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
@@ -434,7 +434,7 @@ data wide_outputs;merge
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
 
 p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
-p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
+p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested	 n_tested_w  	n_tested_m	
 p_vg1000 		p_vl1000			prevalence_vg1000
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
@@ -483,18 +483,26 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_25_04_23;
+data a.wide_fsw_05_05_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
-run;
+
+***Use this to identify runs with implausible incidence and delete below;
+data a1;
+set a.wide_fsw_05_05_23;
+proc freq;table run;where incidence1549_22 <0.02;run;
 
 
 ***Graphs for AMETHIST presentation;
 data b;set y;
+if run in (19551048, 91209492, 138513405, 226496828, 249057554, 276068418, 408547376, 460121915, 533026231, 597223150, 657900229, 691910826, 789096000, 
+821745699, 828958562, 834955556, 953409076, 985359749) then delete;
+
+
 proc sort;by cald;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 870  ;
+%let nfit = 1380  ;
 proc sort;by cald option ;run;
 
 
@@ -683,9 +691,9 @@ run;
 
 
 
-data a.fsw_25_04_23_graphs; set e;run;
+data a.fsw_02_05_23_graphs; set e;run;
 
-data e; set a.fsw_25_04_23_graphs;run;
+data e; set a.fsw_02_05_23_graphs;run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
@@ -778,8 +786,8 @@ yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10)
 
 label p50_p_fsw_newp0__0 = "Model (median) ";
 
-series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 run;quit;
 
 proc sgplot data=e; 
@@ -789,8 +797,8 @@ yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10)
 
 label p50_p_sw_prog_vis_0 = "Model (median) ";
 
-series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
 run;quit;
 
 
