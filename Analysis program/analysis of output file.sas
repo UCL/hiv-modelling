@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_05_05_23 ;
+set a.wide_fsw_02_05_23 ;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -211,7 +211,6 @@ run;
 data costs;
 set a;
 
-
 ****Cost effectiveness;
 /*
 _1=no program
@@ -219,23 +218,49 @@ _2=low impact sw program
 _3=high impact sw program
 */
 
-***No program vs. high impact;
-*dalys averted;
-diff_ddaly_swprog_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
 
-*difference in total costs;
-diff_dcost_swprog_high_v_none = dcost_22_72_3 - dcost_22_72_1;
+*difference in costs;
+*high vs. none;
+diff_dcost_high_v_none = dcost_22_72_3 - dcost_22_72_1;
+diff_artcost_high_v_none= dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
+diff_testcost_high_v_none = dtest_cost_22_72_3 - dtest_cost_22_72_1;
+diff_testcost_sw_high_v_none = dtest_cost_sw_22_72_3 - dtest_cost_sw_22_72_1;
 
-***look at individual costs;
-diff_artcost_swprog_high_v_none= dart_cost_y_22_72_3 - dart_cost_y_22_72_1;
-diff_testcost_swprog_high_v_none = dtest_cost_22_72_3 - dtest_cost_22_72_1;
+*low vs. none;
+diff_dcost_low_v_none = dcost_22_72_2 - dcost_22_72_1;
+diff_artcost_low_v_none = dart_cost_y_22_72_2 - dart_cost_y_22_72_1;
+diff_testcost_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
+diff_testcost_sw_low_v_none = dtest_cost_sw_22_72_2 - dtest_cost_sw_22_72_1;
+
+*difference in dalys (dalys averted);
+diff_ddaly_high_v_none = ddaly_22_72_3 - ddaly_22_72_1;
+diff_ddaly_low_v_none = ddaly_22_72_2 - ddaly_22_72_1;
+
+***DALYs averted * CET - this gives max cost for SW prog to be CE
+   (multiplied by -1 since we want to cost the DALYs averted rather than the difference which is negative);
+dalys_avert_x_CET_high_v_none = (diff_ddaly_high_v_none * 0.0005)*-1;
+dalys_avert_x_CET_low_v_none = (diff_ddaly_low_v_none * 0.0005)*-1;
+
+***Max cost of a SW program - additional $m paid for averting DALYs + initial cost savings;
+maxcost_low_v_none= (diff_dcost_low_v_none)*-1 +  dalys_avert_x_CET_low_v_none;
+maxcost_high_v_none= (diff_dcost_high_v_none)*-1 +  dalys_avert_x_CET_high_v_none;
+
 
 *net dalys using $500;
 netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
+netdalys_swprog_low =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;*expect dalys to be lower here;
 netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
 diff_netdalys_swprog_high_v_none = netdalys_swprog_high - netdalys_no_swprog; *take absolute number;
+
+*net monetary benefit (Dalys * cost-effectivenss threshold) + costs;
+nmb_none = (ddaly_22_72_1*0.0005) + dcost_22_72_1;
+nmb_swprog_low= (ddaly_22_72_2*0.0005) + dcost_22_72_2;
+nmb_swprog_high = (ddaly_22_72_3*0.0005) + dcost_22_72_3;
+
+diff_nmb_swprog_high_v_none=nmb_swprog_high - nmb_none;
+diff_nmb_swprog_low_v_none=nmb_swprog_low - nmb_none;
 
 ***max cost of SW prog;
 maxcost_swprog_high_v_none= diff_netdalys_swprog_high_v_none * 500;
@@ -252,15 +277,15 @@ diff_dcost_swprog_low_v_none = dcost_22_72_2 - dcost_22_72_1;
 diff_artcost_swprog_low_v_none = dart_cost_y_22_72_2 - dart_cost_y_22_72_1;
 diff_testcost_swprog_low_v_none = dtest_cost_22_72_2 - dtest_cost_22_72_1;
 
-*net dalys using $500;
-netdalys_no_swprog =  ddaly_22_72_1 + (dcost_22_72_1)/0.0005;
-netdalys_swprog_low =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;*expect dalys to be lower here;
 
 *net dalys averted;
 diff_netdalys_swprog_low_v_none = netdalys_swprog_low - netdalys_no_swprog; *take absolute number;
 
 ***cost of SW prog;
 maxcost_swprog_low_v_none= diff_netdalys_swprog_low_v_none * 500;
+
+
+***(DALYs averted *500) - difference in costs;
 
 
 
@@ -275,24 +300,71 @@ diff_dcost_swprog_high_v_low = dcost_22_72_3 - dcost_22_72_2;
 diff_artcost_swprog_high_v_low = dart_cost_y_22_72_3 - dart_cost_y_22_72_2;
 diff_testcost_swprog_high_v_low = dtest_cost_22_72_3 - dtest_cost_22_72_2;
 
-*net dalys using $500;
-netdalys_no_swprog =  ddaly_22_72_2 + (dcost_22_72_2)/0.0005;
-netdalys_swprog_high =  ddaly_22_72_3 + (dcost_22_72_3)/0.0005;*expect dalys to be lower here;
-
 *net dalys averted;
 diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *take absolute number;
 
 ***cost of SW prog;
-maxcost_swprog_high_v_= diff_netdalys_swprog_high_v_low*500;
+maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
 
-
-
+***Absolute costs;
 proc means n mean p50 p5 p95 lclm uclm;
-var dcost_22_72_1 dcost_22_72_3 diff_dcost_swprog_high
-dart_cost_y_22_72_1 dart_cost_y_22_72_3 diff_artcost_swprog_high
-dtest_cost_22_72_1 dtest_cost_22_72_3 diff_testcost_swprog_high
- dcost_prep_oral_22_72_1  dcost_prep_oral_22_72_3
-n_tested_sw_22_72_1  n_tested_sw_22_72_3
+var dcost_22_72_1 dcost_22_72_2 dcost_22_72_3
+	dart_cost_y_22_72_1 dart_cost_y_22_72_2 dart_cost_y_22_72_3
+	dtest_cost_22_72_1 dtest_cost_22_72_2 dtest_cost_22_72_3
+	dtest_cost_sw_22_72_1 dtest_cost_sw_22_72_2 dtest_cost_sw_22_72_3
+;run;
+
+***Difference in costs - high vs. none;
+proc means n mean p50 p5 p95 lclm uclm;
+var diff_dcost_low_v_none diff_artcost_low_v_none diff_testcost_low_v_none diff_testcost_sw_low_v_none
+	diff_dcost_high_v_none diff_artcost_high_v_none diff_testcost_high_v_none diff_testcost_sw_high_v_none;
+run;
+
+***DALYs;
+proc means n mean p50 p5 p95 lclm uclm;
+var	ddaly_22_72_1 ddaly_22_72_2 ddaly_22_72_3
+	diff_ddaly_low_v_none diff_ddaly_high_v_none;
+run;
+
+***Additional we can spend taking into account DALYs averted using $500 threshold;
+proc means n mean p50 p5 p95 lclm uclm;
+var dalys_avert_x_CET_low_v_none dalys_avert_x_CET_high_v_none ;
+run;
+
+***Max we can spend for a SW prog to be CE;
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;
+run;
+
+***Cost per DALY using CET;
+
+***Net DALYs;
+proc means n mean p50 p5 p95 lclm uclm;
+var	netdalys_no_swprog netdalys_swprog_low netdalys_swprog_high
+	diff_netdalys_swprog_low_v_none diff_netdalys_swprog_high_v_none
+;run;
+
+***Net monetary benefit;
+proc means n mean p50 p5 p95 lclm uclm;
+var	nmb_none nmb_swprog_high nmb_swprog_low
+	diff_nmb_swprog_low_v_none diff_nmb_swprog_high_v_none
+;run;
+
+
+***max cost to spend on a SW program;
+proc means n mean p50 p5 p95 lclm uclm;
+var	maxcost_swprog_low_v_none maxcost_swprog_high_v_none;
+
+run;
+
+
+
+
+
+
+
+
+
 
 proc means n p50;VAR
 dart_cost_y_22_72_1

@@ -195,6 +195,7 @@ n_tested_f_anc = s_tested_f_anc * sf_2023 * 4;
 n_tested_f_sympt = s_tested_f_sympt * sf_2023 * 4;
 n_tested_f_non_anc = s_tested_f_non_anc * sf_2023 * 4;
 n_tested_at_return = s_tested_at_return * sf_2023 * 4;
+n_pregnant = s_pregnant * sf_2023 * 4;
 
 ***FSW;
 * n_sw_1549;					n_sw_1549_ = s_sw_1549 * sf_2023;
@@ -306,7 +307,7 @@ dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_cir
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 effect_sw_prog_newp
 
-s_tested s_tested_m s_tested_f
+s_tested s_tested_m s_tested_f n_pregnant
 ;
 
 proc sort data=y;by run option;run;
@@ -316,10 +317,10 @@ proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
 
 proc means n p50;var 
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return; where option=0 and cald>2023;run;
+n_tested_at_return n_pregnant; where option=0 and cald>2023;run;
 proc means n p50;var 
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
-n_tested_at_return; where option=2 and cald>2023  and effect_sw_prog_newp=0.05;run;
+n_tested_at_return n_pregnant; where option=2 and cald>2023  and effect_sw_prog_newp=0.20;run;
 
  
 
@@ -404,7 +405,7 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_tested);	  %var(v=n_tested_w);	%var(v=n_tested_m);	
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_tested);	  %var(v=n_tested_f);	%var(v=n_tested_m);	
 
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
@@ -425,10 +426,11 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;
 %var(v=p_diag_sw);		%var(v=p_onart_diag_sw);	%var(v=p_onart_vl1000_sw);	%var(v=p_sti_sw);
 %var(v=dcost);			%var(v=ddaly);
 
-%var(v=dart_cost_y);	%var(v=dadc_cost);		%var(v=dcd4_cost);	%var(v=dvl_cost);  	 	%var(v=dvis_cost);			%var(v=dnon_tb_who3_cost);	
-%var(v=dcot_cost);		%var(v=dtb_cost);  		%var(v=dres_cost); 	%var(v=dtest_cost);		%var(v=d_t_adh_int_cost);  	%var(v=dswitchline_cost);
-%var(v=dcost_drug_level_test);	%var(v=dcost_circ); 		%var(v=dcost_condom_dn);		%var(v=dcost_avail_self_test); 	
-%var(v=dcost_prep_visit_oral);  	%var(v=dcost_prep_oral);  	%var(v=dcost_prep_visit_inj);  	%var(v=dcost_prep_inj); 
+%var(v=dart_cost_y);	  %var(v=dadc_cost);		%var(v=dcd4_cost);		%var(v=dvl_cost);  	%var(v=dvis_cost);	
+%var(v=dnon_tb_who3_cost);%var(v=dcot_cost);		%var(v=dtb_cost);  		%var(v=dres_cost); 	%var(v=dtest_cost);
+%var(v=dtest_cost_sw)     %var(v=d_t_adh_int_cost); %var(v=dswitchline_cost); %var(v=dcost_drug_level_test);
+%var(v=dcost_circ); 	  %var(v=dcost_condom_dn);  %var(v=dcost_avail_self_test); 	%var(v=dcost_prep_visit_oral);  	
+%var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj); 
 
 run;
 
@@ -457,8 +459,8 @@ p_sw_prog_vis   n_tested_sw	   	   p_tested_past_year_sw  prop_sw_onprep	prevale
 p_diag_sw		p_onart_diag_sw	   p_onart_vl1000_sw	p_sti_sw
 dcost			ddaly
 
-dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost			dnon_tb_who3_cost	
-dcot_cost		dtb_cost  		dres_cost 		dtest_cost		d_t_adh_int_cost  	dswitchline_cost
+dart_cost_y		dadc_cost		dcd4_cost		dvl_cost  	 	dvis_cost		dnon_tb_who3_cost	
+dcot_cost		dtb_cost  		dres_cost 		dtest_cost		dtest_cost_sw	d_t_adh_int_cost  	dswitchline_cost
 dcost_drug_level_test			dcost_circ 		dcost_condom_dn	dcost_avail_self_test 	
 dcost_prep_visit_oral  			dcost_prep_oral dcost_prep_visit_inj  	dcost_prep_inj
 
@@ -485,7 +487,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_05_05_23;
+data a.wide_fsw_02_05_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
