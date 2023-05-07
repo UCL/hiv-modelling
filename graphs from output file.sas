@@ -22,6 +22,8 @@ incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
 
+%let single_var =  n_tested        ;
+
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
@@ -36,7 +38,7 @@ data option_0;
 set b;
 if option ne 0 then delete;
 
-%let var = n_tested    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -80,7 +82,7 @@ data option_1;
 set b;
 if option ne 1 then delete;
 
-%let var = n_tested     ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -127,7 +129,7 @@ data option_2;
 set b;
 if option ne 1 then delete;
 
-%let var = n_death_hiv  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
@@ -177,7 +179,7 @@ data option_3;
 set b;
 if option ne 1 then delete;
 
-%let var = n_death_hiv  ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
+%let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 run;
 
 
