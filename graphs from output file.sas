@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unif
 ods html close;
 
 data b;
-set a.intensive3_l
+set a.intensive3_l;
 
 
 n_k65m = p_k65m * n_hiv;
