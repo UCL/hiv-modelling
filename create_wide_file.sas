@@ -4,8 +4,8 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_out\";
 
 data a;
-set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; 
-if run=. then delete; 
+set b.out:; ***INSERT OUTPUT FILENAME; 
+
 
 proc sort;
 by run cald option;run;
