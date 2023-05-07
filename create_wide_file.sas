@@ -205,9 +205,11 @@ dcost ddaly
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
 
+
+data a.intensive3_l; set y;
+
 proc sort data=y;by run option;run;
 
-data a.intensive3_l;
 
 options nomprint;
 option nospool;
