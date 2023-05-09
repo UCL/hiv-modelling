@@ -35,7 +35,7 @@ proc sort;by cald option ;run;
 ***Two macros, one for each option. Gives medians ranges etc by option;
 data option_0;
 set b;
-if option ne 0 then delete;
+if option =  0 ;
 
 %let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
@@ -81,7 +81,7 @@ run;
 
 data option_1;
 set b;
-if option ne 1 then delete;
+if option =  1 ;
 
 %let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
@@ -122,7 +122,7 @@ run;
 %mend;
 
 
-%option_2;
+%option_1;
 run;
 
 
@@ -130,7 +130,7 @@ run;
 
 data option_2;
 set b;
-if option ne 2 then delete;
+if option =  2 ;
 
 %let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
@@ -180,7 +180,7 @@ run;
 
 data option_3;
 set b;
-if option ne 3 then delete;
+if option =  3 ;
 
 %let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
 
@@ -236,6 +236,9 @@ merge g1  h1 i1  j1  ;
 by cald;
 
 
+proc print; run;
+
+
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
@@ -245,7 +248,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
 
 label p50_n_tested_0 = "option 0";
 label p50_n_tested_1 = "option_1";
