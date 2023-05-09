@@ -6,7 +6,7 @@
 ***Program to produce graphs using averages across runs
 ***Use 'include' statment in analysis program to read the code below in;
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\intensive3\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
 
   proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\lapr\log1";
 
@@ -14,7 +14,6 @@ ods html close;
 
 data b;
 set a.intensive3_l;
-
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -28,7 +27,7 @@ p_onart_vl1000_ = p_onart_vl1000;
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 2000  ;
+%let nfit = 396   ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -53,6 +52,8 @@ if option ne 0 then delete;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
+
+proc print; var cald option n_tested ;
       
 proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
@@ -83,7 +84,7 @@ set b;
 if option ne 1 then delete;
 
 %let var = &single_var    ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-run;
+
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -99,7 +100,9 @@ run;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
-      
+
+proc print; var cald option n_tested ;
+
 proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
 data h&count;set h&count;***creates one dataset per variable;
@@ -127,10 +130,10 @@ run;
 
 data option_2;
 set b;
-if option ne 1 then delete;
+if option ne 2 then delete;
 
 %let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-run;
+
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -147,9 +150,9 @@ run;
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_2 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_2 out=i&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
+data i&count;set i&count;***creates one dataset per variable;
 p25_&varb._2  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._2 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._2  = PCTL(5,of &varb.1-&varb.&nfit);
@@ -161,7 +164,7 @@ keep cald option_ p5_&varb._2 p95_&varb._2 p50_&varb._2 p25_&varb._2 p75_&varb._
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
+      delete  ii&count;quit;run;
 %end;
 %mend;
 
@@ -177,10 +180,9 @@ run;
 
 data option_3;
 set b;
-if option ne 1 then delete;
+if option ne 3 then delete;
 
 %let var = &single_var   ; * p_ai_no_arv_e_inm ; * prevalence1549_ ; * incidence1549_ ;
-run;
 
 
 ***transpose given name; *starts with %macro and ends with %mend;
@@ -197,9 +199,9 @@ run;
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
       
-proc transpose data=option_3 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
+proc transpose data=option_3 out=j&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
-data h&count;set h&count;***creates one dataset per variable;
+data j&count;set j&count;***creates one dataset per variable;
 p25_&varb._3  = PCTL(25,of &varb.1-&varb.&nfit);
 p75_&varb._3 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._3  = PCTL(5,of &varb.1-&varb.&nfit);
@@ -211,7 +213,7 @@ keep cald option_ p5_&varb._3 p95_&varb._3 p50_&varb._3 p25_&varb._3 p75_&varb._
 run;
 
       proc datasets nodetails nowarn nolist; 
-      delete  hh&count;quit;run;
+      delete  jj&count;quit;run;
 %end;
 %mend;
 
@@ -230,7 +232,7 @@ run;
 
 
 data d; * this is number of variables in %let var = above ;
-merge g1   h1 ;
+merge g1  h1 i1  j1  ;
 by cald;
 
 
