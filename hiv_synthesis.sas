@@ -76,7 +76,7 @@ Note that the range does not have to start from 1; for example, integer ages
 between 18-49 can be sampled using %sample_uniform(my_var, 18:49);
 */
 %macro sample_uniform(name, v);
-	* First determine whether v is a range or not, by checking the presence of ':';
+	* First determine whether v is a range or not, by checking the presence of :;
 	%let split_ind=%index(&v, :);
 	%if &split_ind = 0 %then
 		%do; * values enumerated explicitly, count them and use them directly;
@@ -642,7 +642,7 @@ newp_seed = 7;
 * rate_test_onprep_any;			rate_test_onprep_any=1.00; 		* Rate of being tested for HIV whilst on oral PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
 								* dependent_on_time_step_length ;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
-* prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
+* prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
 
 * prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
@@ -690,7 +690,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * pop_wide_tld_prob_egfr;		pop_wide_tld_prob_egfr=0.0; 	* probability per 3 months of getting egfr test when pop_wide_tld_prep=1 when indicated (annually);
 								* dependent_on_time_step_length ;
-																* not applicable for lapr or dpv-vr; * not marked with '_oral' as tld prep is separate intervention ;
+																* not applicable for lapr or dpv-vr; * not marked with _oral as tld prep is separate intervention ;
 
 * rr_mort_tdf_prep;				%sample(rr_mort_tdf_prep, 1.005 1.01 1.03, 0.65 0.30 0.05);
 
@@ -710,13 +710,13 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 /** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
-																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
+																* lapr should this be defined for all (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
 																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
-																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer 'at-risk' 2) choose to stop while still at risk
+																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer at-risk 2) choose to stop while still at risk
 * prep_inj_effect_inm_partner;	%sample_uniform(prep_inj_effect_inm_partner, 0.0 0.25 0.5 );				
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
@@ -775,7 +775,7 @@ end;
 * annual_testing_prep_vr;		annual_testing_prep_vr=annual_testing_prep_oral;	
 																* frequency of HIV testing for people on DPV-VR PrEP same as oral PrEP; 
 /** add_prep_vr_uptake_sw;		add_prep_vr_uptake_sw=0; 		***this may be sampled at a later date;
-																* lapr should this be defined for 'all' (like pop prep uptake) or each modality individually? ;*/
+																* lapr should this be defined for all (like pop prep uptake) or each modality individually? ;*/
 
 * rate_choose_stop_prep_vr; 	%sample(rate_choose_stop_prep_vr, 0.05 0.15 0.30, 0.8 0.1 0.1); 
 																* currently the same as for inj prep, values for oral PrEP are higher;
@@ -1853,7 +1853,7 @@ adhav_prep_oral = adhav;
 
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	* lapr JAS Sept2021 ;
 * Will need to update distributions with data / expert opinion ;
-* Individuals' values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
+* Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
 pref_prep_oral = 0;
 pref_prep_inj = 0;
