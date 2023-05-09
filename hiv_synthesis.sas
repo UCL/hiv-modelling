@@ -4543,7 +4543,7 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
 
-* lapr and dpv-vr - changed name from 'prep_strategy' to 'prep_any_strategy' - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
+* lapr and dpv-vr - changed name from prep_strategy to prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
 
 if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  
@@ -5345,7 +5345,7 @@ between 0 and 1 rather than binary 0 or 1;
 
 not sure about this including this here - comment out for now
 
-*'Adherence' to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
+*Adherence to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
 ******************** Define adh_prep_inj here;
 adh_prep_inj=1;	********TEMP;
 if prep_inj=1 then do;
@@ -6315,7 +6315,7 @@ end;
 * prob of infection from existing infected partner ;
 /* Note that the presence/absence of resistance mutations in the infected partner is re-evaluated each time step, rather than tracking a specific partner through time. 
 This is a simplification, but transmission from partner to subject only occurs at one time step - at which point any mutations present will reflect the distribution 
-across the population. It would be complicated to track a specific partner's mutations as we do not explicitly model their drug regimen, acquisition of new mutations, or 
+across the population. It would be complicated to track a specific partners mutations as we do not explicitly model their drug regimen, acquisition of new mutations, or 
 change in majority/minority virus over time. * JAS Mar2021
 */
 
@@ -6775,7 +6775,7 @@ if 35 <= age_infection < 45 then age_infection_g=3;
 if 45 <= age_infection < 55 then age_infection_g=4;
 if 55 <= age_infection < 65 then age_infection_g=5;
 
-* lapr = added '_cab' variables to this section; * JAS Nov2021;
+* lapr = added _cab variables to this section; * JAS Nov2021;
 * current use of drugs;
 o_zdv = 0;
 o_3tc = 0;
@@ -17847,7 +17847,7 @@ end;
 
 
 * if infected by existing partner maybe this should be for np rather than newp;
-/*** LBM Aug19; Do lines commented with '*' need to be set to missing if they are set to 0 at start of each line below?;*/
+/*** LBM Aug19; Do lines commented with * need to be set to missing if they are set to 0 at start of each line below?;*/
 *s_prop_vlg1_rm=.;s_prop_vlg2_rm=.;s_prop_vlg3_rm=.;s_prop_vlg4_rm=.;s_prop_vlg5_rm=.;s_prop_vlg6_rm=.;
 *s_prop_vlg1_rm0_diag=.;s_prop_vlg2_rm0_diag=.;s_prop_vlg3_rm0_diag=.;s_prop_vlg4_rm0_diag=.;s_prop_vlg5_rm0_diag=.;s_prop_vlg6_rm0_diag=.;
 *s_prop_vlg1_rm1_diag=.;s_prop_vlg2_rm1_diag=.;s_prop_vlg3_rm1_diag=.;s_prop_vlg4_rm1_diag=.;s_prop_vlg5_rm1_diag=.;s_prop_vlg6_rm1_diag=.;
