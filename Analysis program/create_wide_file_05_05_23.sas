@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_02_05_23;  
+set a.fsw_07_05_23;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -312,6 +312,7 @@ s_tested s_tested_m s_tested_f n_pregnant
 
 proc sort data=y;by run option;run;
 
+proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=3 and cald=2030;run;
 
 proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
 
@@ -329,9 +330,9 @@ proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>202
 
 
 
-data a.fsw_02_05_23_short; set y;run;
+data a.fsw_07_05_23_short; set y;run;
 
-data y; set a.fsw_02_05_23_short;run;
+data y; set a.fsw_07_05_23_short;run;
 
 proc means n sum mean P50;var n_tested_sw dtest_cost ;where cald >2030 and cald<2040 and option=0;run;
 
@@ -382,22 +383,25 @@ proc means  noprint data=y; var &v; output out=y_15 mean= &v._15; by run; where 
 proc means  noprint data=y; var &v; output out=y_20 mean= &v._20; by run; where 2020.0 <= cald < 2021.0; 
 
 ***baseline outputs in 2022;
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
+proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2022.5 <= cald < 2023.5; 
 
 ***outputs in 2030 by option;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
 **Outputs for CE analyses, 5, 20 and 50 years by option;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
+proc means noprint data=y; var &v; output out=y_23_24 mean= &v._23_24; by run option ; where 2023.5 <= cald < 2024.50;
+
+proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2023.5 <= cald < 2028.50;
+proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2023.5 <= cald < 2043.50;
+proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2023.5 <= cald < 2073.50;
 
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
+proc sort data=y_23_24; by run; proc transpose data=y_23_24 out=t_23_24 prefix=&v._23_24_; var &v._23_24; by run;
 proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
 proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
 proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
 
-data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_22_27 t_22_42 t_22_72;  
+data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_23_24 t_22_27 t_22_42 t_22_72;  
 
 %mend var;
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
@@ -438,7 +442,7 @@ data wide_outputs;merge
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
 
 p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
-p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested	 n_tested_w  	n_tested_m	
+p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_tested	 n_tested_f  	n_tested_m	
 p_vg1000 		p_vl1000			prevalence_vg1000
 
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
@@ -487,26 +491,26 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_02_05_23;
+data a.wide_fsw_07_05_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
 ***Use this to identify runs with implausible incidence and delete below;
 data a1;
-set a.wide_fsw_05_05_23;
+set a.wide_fsw_07_05_23;
 proc freq;table run;where incidence1549_22 <0.02;run;
 
 
 ***Graphs for AMETHIST presentation;
 data b;set y;
-if run in (19551048, 91209492, 138513405, 226496828, 249057554, 276068418, 408547376, 460121915, 533026231, 597223150, 657900229, 691910826, 789096000, 
+*if run in (19551048, 91209492, 138513405, 226496828, 249057554, 276068418, 408547376, 460121915, 533026231, 597223150, 657900229, 691910826, 789096000, 
 821745699, 828958562, 834955556, 953409076, 985359749) then delete;
 
 
 proc sort;by cald;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1380  ;
+%let nfit = 480  ;
 proc sort;by cald option ;run;
 
 
@@ -695,9 +699,9 @@ run;
 
 
 
-data a.fsw_02_05_23_graphs; set e;run;
+data a.fsw_07_05_23_graphs; set e;run;
 
-data e; set a.fsw_02_05_23_graphs;run;
+data e; set a.fsw_07_05_23_graphs;run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;

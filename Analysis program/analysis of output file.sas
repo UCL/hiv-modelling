@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_02_05_23 ;
+set a.wide_fsw_07_05_23 ;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -305,6 +305,9 @@ diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *t
 
 ***cost of SW prog;
 maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
+
+proc means n mean p50 p5 p95 lclm uclm;var dcost_23_24_1 dcost_23_24_2 dcost_23_24_3;run;
+
 
 ***Absolute costs;
 proc means n mean p50 p5 p95 lclm uclm;
