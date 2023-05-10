@@ -1,7 +1,7 @@
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Zim\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 data a;
-set a.zim_22feb23;
+set a.zim_19apr23;
 if run=. then delete;
 
 if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -346,12 +346,14 @@ s_I_offart_SIlt6m7579w s_I_offart_SIgt6m7579w
 s_I_undiag8084w s_I_diag_naive8084w s_I_diag_startart8084w s_I_onart8084w s_I_offart8084w s_I_onart_lt6m8084w 
 s_I_onart_lt6m_nvs8084w s_I_onart_gt6m_nvs8084w s_I_onart_gt6m_vs8084w s_I_offart_1stI8084w s_I_offart_SI8084w 
 s_I_offart_SIlt6m8084w s_I_offart_SIgt6m8084w;
+
+
 run;
 
 
 proc freq;table  s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200  s_dead_Alt6_artcd4gt200  
-/*s_dead_I_Alt6_Rcd4lt200*/  s_dead_I_Alt6_Rcd4gt200  
+s_dead_I_Alt6_Rcd4lt200  s_dead_I_Alt6_Rcd4gt200  
 s_dead_A_vl1000  s_dead_A_vg1000  s_dead_Alt6_vl1000  s_dead_Alt6_vg1000  
 s_dead_Agt6_vl1000  s_dead_Agt6_vg1000  
 s_dead_int_lost  s_dead_1stint_lost  s_dead_subintlt6_lost  s_dead_subintgt6_lost  
@@ -713,6 +715,78 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=s_dead_Agt6_cd4gt2004044w);  %var(v=s_dead_Agt6_cd4gt2004549w);  %var(v=s_dead_Agt6_cd4gt2005054w);  %var(v=s_dead_Agt6_cd4gt2005559w);  %var(v=s_dead_Agt6_cd4gt2006064w);  
 %var(v=s_dead_Agt6_cd4gt2006569w);  %var(v=s_dead_Agt6_cd4gt2007074w);  %var(v=s_dead_Agt6_cd4gt2007579w);  %var(v=s_dead_Agt6_cd4gt2008084w);  ;
 
+
+%var(v=s_I_undiag); 		%var(v=s_I_diag_naive);  	%var(v=s_I_diag_startart); 	%var(v=s_I_onart);		%var(v=s_I_offart); 	%var(v=s_I_onart_lt6m);
+%var(v=s_I_onart_lt6m_nvs); %var(v=s_I_onart_gt6m_nvs);	%var(v=s_I_onart_gt6m_vs);  %var(v=s_I_offart_1stI);%var(v=s_I_offart_SI); 	%var(v=s_I_offart_SIlt6m);
+%var(v=s_I_offart_SIgt6m);
+
+%var(v=s_I_undiag_m);		 %var(v=s_I_diag_naive_m);	   %var(v=s_I_diag_startart_m);	%var(v=s_I_onart_m);	  %var(v=s_I_offart_m);	  %var(v=s_I_onart_lt6m_m);
+%var(v=s_I_onart_lt6m_nvs_m);%var(v=s_I_onart_gt6m_nvs_m); %var(v=s_I_onart_gt6m_vs_m);	%var(v=s_I_offart_1stI_m);%var(v=s_I_offart_SI_m);%var(v=s_I_offart_SIlt6m_m);
+%var(v=s_I_offart_SIgt6m_m); 
+
+%var(v=s_I_undiag_w); 		 %var(v=s_I_diag_naive_w); 	   %var(v=s_I_diag_startart_w); %var(v=s_I_onart_w);	  %var(v=s_I_offart_w);   %var(v=s_I_onart_lt6m_w); 
+%var(v=s_I_onart_lt6m_nvs_w);%var(v=s_I_onart_gt6m_nvs_w); %var(v=s_I_onart_gt6m_vs_w); %var(v=s_I_offart_1stI_w);%var(v=s_I_offart_SI_w);%var(v=s_I_offart_SIlt6m_w); 
+%var(v=s_I_offart_SIgt6m_w); 
+
+%var(v=s_I_undiag1519m); 		%var(v=s_I_diag_naive1519m);	 %var(v=s_I_diag_startart1519m); 	%var(v=s_I_onart1519m);	   		%var(v=s_I_offart1519m); 	
+%var(v=s_I_onart_lt6m1519m);    %var(v=s_I_onart_lt6m_nvs1519m); %var(v=s_I_onart_gt6m_nvs1519m);	%var(v=s_I_onart_gt6m_vs1519m); %var(v=s_I_offart_1stI1519m);
+%var(v=s_I_offart_SI1519m); 	%var(v=s_I_offart_SIlt6m1519m);  %var(v=s_I_offart_SIgt6m1519m); 
+
+%var(v=s_I_undiag2024m); 		%var(v=s_I_diag_naive2024m);	 %var(v=s_I_diag_startart2024m);	%var(v=s_I_onart2024m); 		%var(v=s_I_offart2024m);
+%var(v=s_I_onart_lt6m2024m); 	%var(v=s_I_onart_lt6m_nvs2024m); %var(v=s_I_onart_gt6m_nvs2024m);	%var(v=s_I_onart_gt6m_vs2024m); %var(v=s_I_offart_1stI2024m); 
+%var(v=s_I_offart_SI2024m); 	%var(v=s_I_offart_SIlt6m2024m);  %var(v=s_I_offart_SIgt6m2024m); 
+
+%var(v=s_I_undiag2529m);		%var(v=s_I_diag_naive2529m); 	 %var(v=s_I_diag_startart2529m); 	%var(v=s_I_onart2529m);			%var(v=s_I_offart2529m);
+%var(v=s_I_onart_lt6m2529m); 	%var(v=s_I_onart_lt6m_nvs2529m); %var(v=s_I_onart_gt6m_nvs2529m);   %var(v=s_I_onart_gt6m_vs2529m); %var(v=s_I_offart_1stI2529m); 
+%var(v=s_I_offart_SI2529m); 	%var(v=s_I_offart_SIlt6m2529m);  %var(v=s_I_offart_SIgt6m2529m); 
+
+%var(v=s_I_undiag3034m); 		%var(v=s_I_diag_naive3034m); 	 %var(v=s_I_diag_startart3034m); 	%var(v=s_I_onart3034m);			 %var(v=s_I_offart3034m); 
+%var(v=s_I_onart_lt6m3034m); 	%var(v=s_I_onart_lt6m_nvs3034m); %var(v=s_I_onart_gt6m_nvs3034m);   %var(v=s_I_onart_gt6m_vs3034m);  %var(v=s_I_offart_1stI3034m); 
+%var(v=s_I_offart_SI3034m); 	%var(v=s_I_offart_SIlt6m3034m);  %var(v=s_I_offart_SIgt6m3034m); 
+
+%var(v=s_I_undiag3539m); 		%var(v=s_I_diag_naive3539m);	 %var(v=s_I_diag_startart3539m); 	%var(v=s_I_onart3539m); 		 %var(v=s_I_offart3539m);
+%var(v=s_I_onart_lt6m3539m); 	%var(v=s_I_onart_lt6m_nvs3539m); %var(v=s_I_onart_gt6m_nvs3539m);   %var(v=s_I_onart_gt6m_vs3539m);  %var(v=s_I_offart_1stI3539m);
+%var(v=s_I_offart_SI3539m); 	%var(v=s_I_offart_SIlt6m3539m);  %var(v=s_I_offart_SIgt6m3539m); 
+
+%var(v=s_I_undiag4044m); 		%var(v=s_I_diag_naive4044m);	 %var(v=s_I_diag_startart4044m); 	%var(v=s_I_onart4044m); 		 %var(v=s_I_offart4044m);
+%var(v=s_I_onart_lt6m4044m); 	%var(v=s_I_onart_lt6m_nvs4044m); %var(v=s_I_onart_gt6m_nvs4044m);   %var(v=s_I_onart_gt6m_vs4044m);  %var(v=s_I_offart_1stI4044m);
+%var(v=s_I_offart_SI4044m); 	%var(v=s_I_offart_SIlt6m4044m);  %var(v=s_I_offart_SIgt6m4044m); 
+
+%var(v=s_I_undiag4549m); 		%var(v=s_I_diag_naive4549m);	 %var(v=s_I_diag_startart4549m); 	%var(v=s_I_onart4549m); 		 %var(v=s_I_offart4549m);
+%var(v=s_I_onart_lt6m4549m); 	%var(v=s_I_onart_lt6m_nvs4549m); %var(v=s_I_onart_gt6m_nvs4549m);   %var(v=s_I_onart_gt6m_vs4549m);  %var(v=s_I_offart_1stI4549m);
+%var(v=s_I_offart_SI4549m); 	%var(v=s_I_offart_SIlt6m4549m);  %var(v=s_I_offart_SIgt6m4549m); 
+
+%var(v=s_I_undiag5054m); 		%var(v=s_I_diag_naive5054m);	 %var(v=s_I_diag_startart5054m); 	%var(v=s_I_onart5054m); 		 %var(v=s_I_offart5054m);
+%var(v=s_I_onart_lt6m5054m); 	%var(v=s_I_onart_lt6m_nvs5054m); %var(v=s_I_onart_gt6m_nvs5054m);   %var(v=s_I_onart_gt6m_vs5054m);  %var(v=s_I_offart_1stI5054m);
+%var(v=s_I_offart_SI5054m); 	%var(v=s_I_offart_SIlt6m5054m);  %var(v=s_I_offart_SIgt6m5054m); 
+
+%var(v=s_I_undiag5559m); 		%var(v=s_I_diag_naive5559m);	 %var(v=s_I_diag_startart5559m); 	%var(v=s_I_onart5559m); 		 %var(v=s_I_offart5559m);
+%var(v=s_I_onart_lt6m5559m); 	%var(v=s_I_onart_lt6m_nvs5559m); %var(v=s_I_onart_gt6m_nvs5559m);   %var(v=s_I_onart_gt6m_vs5559m);  %var(v=s_I_offart_1stI5559m);
+%var(v=s_I_offart_SI5559m); 	%var(v=s_I_offart_SIlt6m5559m);  %var(v=s_I_offart_SIgt6m5559m); 
+
+%var(v=s_I_undiag6064m); 		%var(v=s_I_diag_naive6064m);	 %var(v=s_I_diag_startart6064m); 	%var(v=s_I_onart6064m); 		 %var(v=s_I_offart6064m);
+%var(v=s_I_onart_lt6m6064m); 	%var(v=s_I_onart_lt6m_nvs6064m); %var(v=s_I_onart_gt6m_nvs6064m);   %var(v=s_I_onart_gt6m_vs6064m);  %var(v=s_I_offart_1stI6064m);
+%var(v=s_I_offart_SI6064m); 	%var(v=s_I_offart_SIlt6m6064m);  %var(v=s_I_offart_SIgt6m6064m); 
+
+%var(v=s_I_undiag6569m); 		%var(v=s_I_diag_naive6569m);	 %var(v=s_I_diag_startart6569m); 	%var(v=s_I_onart6569m); 		 %var(v=s_I_offart6569m);
+%var(v=s_I_onart_lt6m6569m); 	%var(v=s_I_onart_lt6m_nvs6569m); %var(v=s_I_onart_gt6m_nvs6569m);   %var(v=s_I_onart_gt6m_vs6569m);  %var(v=s_I_offart_1stI6569m);
+%var(v=s_I_offart_SI6569m); 	%var(v=s_I_offart_SIlt6m6569m);  %var(v=s_I_offart_SIgt6m6569m); 
+
+%var(v=s_I_undiag7074m); 		%var(v=s_I_diag_naive7074m);	 %var(v=s_I_diag_startart7074m); 	%var(v=s_I_onart7074m); 		 %var(v=s_I_offart7074m);
+%var(v=s_I_onart_lt6m7074m); 	%var(v=s_I_onart_lt6m_nvs7074m); %var(v=s_I_onart_gt6m_nvs7074m);   %var(v=s_I_onart_gt6m_vs7074m);  %var(v=s_I_offart_1stI7074m);
+%var(v=s_I_offart_SI7074m); 	%var(v=s_I_offart_SIlt6m7074m);  %var(v=s_I_offart_SIgt6m7074m); 
+
+%var(v=s_I_undiag7579m); 		%var(v=s_I_diag_naive7579m);	 %var(v=s_I_diag_startart7579m); 	%var(v=s_I_onart7579m); 		 %var(v=s_I_offart7579m);
+%var(v=s_I_onart_lt6m7579m); 	%var(v=s_I_onart_lt6m_nvs7579m); %var(v=s_I_onart_gt6m_nvs7579m);   %var(v=s_I_onart_gt6m_vs7579m);  %var(v=s_I_offart_1stI7579m);
+%var(v=s_I_offart_SI7579m); 	%var(v=s_I_offart_SIlt6m7579m);  %var(v=s_I_offart_SIgt6m7579m); 
+
+%var(v=s_I_undiag8084m); 		%var(v=s_I_diag_naive8084m);	 %var(v=s_I_diag_startart8084m); 	%var(v=s_I_onart8084m); 		 %var(v=s_I_offart8084m);
+%var(v=s_I_onart_lt6m8084m); 	%var(v=s_I_onart_lt6m_nvs8084m); %var(v=s_I_onart_gt6m_nvs8084m);   %var(v=s_I_onart_gt6m_vs8084m);  %var(v=s_I_offart_1stI8084m);
+%var(v=s_I_offart_SI8084m); 	%var(v=s_I_offart_SIlt6m8084m);  %var(v=s_I_offart_SIgt6m8084m); 
+
+
+
+
 data   wide_outputs; merge 
 n_alive	  		 n_alive_m			n_alive_w		 prevalence1564 	prevalence1564m 	prevalence1564w	
 incidence1564 	 incidence1564_m 	incidence1564_w	 p_diag		 		p_diag_m		    p_diag_w
@@ -899,6 +973,76 @@ s_dead_Agt6_cd4gt2004044m  s_dead_Agt6_cd4gt2004549m  s_dead_Agt6_cd4gt2005054m 
 s_dead_Agt6_cd4gt2006569m  s_dead_Agt6_cd4gt2007074m  s_dead_Agt6_cd4gt2007579m  s_dead_Agt6_cd4gt2008084m  
 s_dead_Agt6_cd4gt2001519w  s_dead_Agt6_cd4gt2002024w  s_dead_Agt6_cd4gt2002529w  s_dead_Agt6_cd4gt2003034w  s_dead_Agt6_cd4gt2003539w  
 s_dead_Agt6_cd4gt2004044w  s_dead_Agt6_cd4gt2004549w  s_dead_Agt6_cd4gt2005054w  s_dead_Agt6_cd4gt2005559w  s_dead_Agt6_cd4gt2006064w  
-s_dead_Agt6_cd4gt2006569w  s_dead_Agt6_cd4gt2007074w  s_dead_Agt6_cd4gt2007579w  s_dead_Agt6_cd4gt2008084w  ;
+s_dead_Agt6_cd4gt2006569w  s_dead_Agt6_cd4gt2007074w  s_dead_Agt6_cd4gt2007579w  s_dead_Agt6_cd4gt2008084w  
+
+
+s_I_undiag 			s_I_diag_naive  	s_I_diag_startart 	s_I_onart			s_I_offart 			s_I_onart_lt6m		s_I_onart_lt6m_nvs 
+s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs  	s_I_offart_1stI		s_I_offart_SI 		s_I_offart_SIlt6m	s_I_offart_SIgt6m
+
+s_I_undiag_m			s_I_diag_naive_m	    s_I_diag_startart_m		s_I_onart_m	  		s_I_offart_m	  	s_I_onart_lt6m_m
+s_I_onart_lt6m_nvs_m	s_I_onart_gt6m_nvs_m	s_I_onart_gt6m_vs_m		s_I_offart_1stI_m	s_I_offart_SI_m		s_I_offart_SIlt6m_m		s_I_offart_SIgt6m_m 
+
+s_I_undiag_w			s_I_diag_naive_w	    s_I_diag_startart_w		s_I_onart_w	  		s_I_offart_w	  	s_I_onart_lt6m_w
+s_I_onart_lt6m_nvs_w	s_I_onart_gt6m_nvs_w	s_I_onart_gt6m_vs_w		s_I_offart_1stI_w	s_I_offart_SI_w		s_I_offart_SIlt6m_w		s_I_offart_SIgt6m_w 
+
+s_I_undiag1519m 			s_I_diag_naive1519m	 		s_I_diag_startart1519m 		s_I_onart1519m	   		s_I_offart1519m 	s_I_onart_lt6m1519m   
+s_I_onart_lt6m_nvs1519m 	s_I_onart_gt6m_nvs1519m		s_I_onart_gt6m_vs1519m 		s_I_offart_1stI1519m	s_I_offart_SI1519m 	s_I_offart_SIlt6m1519m 
+s_I_offart_SIgt6m1519m 
+
+s_I_undiag2024m 			s_I_diag_naive2024m	 		s_I_diag_startart2024m 		s_I_onart2024m	   		s_I_offart2024m 	s_I_onart_lt6m2024m   
+s_I_onart_lt6m_nvs2024m 	s_I_onart_gt6m_nvs2024m		s_I_onart_gt6m_vs2024m 		s_I_offart_1stI2024m	s_I_offart_SI2024m 	s_I_offart_SIlt6m2024m 
+s_I_offart_SIgt6m2024m 
+
+s_I_undiag2529m 			s_I_diag_naive2529m	 		s_I_diag_startart2529m 		s_I_onart2529m	   		s_I_offart2529m 	s_I_onart_lt6m2529m   
+s_I_onart_lt6m_nvs2529m 	s_I_onart_gt6m_nvs2529m		s_I_onart_gt6m_vs2529m 		s_I_offart_1stI2529m	s_I_offart_SI2529m 	s_I_offart_SIlt6m2529m 
+s_I_offart_SIgt6m2529m 
+
+s_I_undiag3034m 			s_I_diag_naive3034m	 		s_I_diag_startart3034m 		s_I_onart3034m	   		s_I_offart3034m 	s_I_onart_lt6m3034m   
+s_I_onart_lt6m_nvs3034m 	s_I_onart_gt6m_nvs3034m		s_I_onart_gt6m_vs3034m 		s_I_offart_1stI3034m	s_I_offart_SI3034m 	s_I_offart_SIlt6m3034m 
+s_I_offart_SIgt6m3034m 
+
+s_I_undiag3539m 			s_I_diag_naive3539m	 		s_I_diag_startart3539m 		s_I_onart3539m	   		s_I_offart3539m 	s_I_onart_lt6m3539m   
+s_I_onart_lt6m_nvs3539m 	s_I_onart_gt6m_nvs3539m		s_I_onart_gt6m_vs3539m 		s_I_offart_1stI3539m	s_I_offart_SI3539m 	s_I_offart_SIlt6m3539m 
+s_I_offart_SIgt6m3539m 
+
+s_I_undiag4044m 			s_I_diag_naive4044m	 		s_I_diag_startart4044m 		s_I_onart4044m	   		s_I_offart4044m 	s_I_onart_lt6m4044m   
+s_I_onart_lt6m_nvs4044m 	s_I_onart_gt6m_nvs4044m		s_I_onart_gt6m_vs4044m 		s_I_offart_1stI4044m	s_I_offart_SI4044m 	s_I_offart_SIlt6m4044m 
+s_I_offart_SIgt6m4044m 
+
+s_I_undiag4549m 			s_I_diag_naive4549m	 		s_I_diag_startart4549m 		s_I_onart4549m	   		s_I_offart4549m 	s_I_onart_lt6m4549m   
+s_I_onart_lt6m_nvs4549m 	s_I_onart_gt6m_nvs4549m		s_I_onart_gt6m_vs4549m 		s_I_offart_1stI4549m	s_I_offart_SI4549m 	s_I_offart_SIlt6m4549m 
+s_I_offart_SIgt6m4549m 
+
+s_I_undiag5054m 			s_I_diag_naive5054m	 		s_I_diag_startart5054m 		s_I_onart5054m	   		s_I_offart5054m 	s_I_onart_lt6m5054m   
+s_I_onart_lt6m_nvs5054m 	s_I_onart_gt6m_nvs5054m		s_I_onart_gt6m_vs5054m 		s_I_offart_1stI5054m	s_I_offart_SI5054m 	s_I_offart_SIlt6m5054m 
+s_I_offart_SIgt6m5054m 
+
+s_I_undiag5559m 			s_I_diag_naive5559m	 		s_I_diag_startart5559m 		s_I_onart5559m	   		s_I_offart5559m 	s_I_onart_lt6m5559m   
+s_I_onart_lt6m_nvs5559m 	s_I_onart_gt6m_nvs5559m		s_I_onart_gt6m_vs5559m 		s_I_offart_1stI5559m	s_I_offart_SI5559m 	s_I_offart_SIlt6m5559m 
+s_I_offart_SIgt6m5559m 
+
+s_I_undiag6064m 			s_I_diag_naive6064m	 		s_I_diag_startart6064m 		s_I_onart6064m	   		s_I_offart6064m 	s_I_onart_lt6m6064m   
+s_I_onart_lt6m_nvs6064m 	s_I_onart_gt6m_nvs6064m		s_I_onart_gt6m_vs6064m 		s_I_offart_1stI6064m	s_I_offart_SI6064m 	s_I_offart_SIlt6m6064m 
+s_I_offart_SIgt6m6064m 
+
+s_I_undiag6569m 			s_I_diag_naive6569m	 		s_I_diag_startart6569m 		s_I_onart6569m	   		s_I_offart6569m 	s_I_onart_lt6m6569m   
+s_I_onart_lt6m_nvs6569m 	s_I_onart_gt6m_nvs6569m		s_I_onart_gt6m_vs6569m 		s_I_offart_1stI6569m	s_I_offart_SI6569m 	s_I_offart_SIlt6m6569m 
+s_I_offart_SIgt6m6569m 
+
+s_I_undiag7074m 			s_I_diag_naive7074m	 		s_I_diag_startart7074m 		s_I_onart7074m	   		s_I_offart7074m 	s_I_onart_lt6m7074m   
+s_I_onart_lt6m_nvs7074m 	s_I_onart_gt6m_nvs7074m		s_I_onart_gt6m_vs7074m 		s_I_offart_1stI7074m	s_I_offart_SI7074m 	s_I_offart_SIlt6m7074m 
+s_I_offart_SIgt6m7074m 
+
+s_I_undiag7579m 			s_I_diag_naive7579m	 		s_I_diag_startart7579m 		s_I_onart7579m	   		s_I_offart7579m 	s_I_onart_lt6m7579m   
+s_I_onart_lt6m_nvs7579m 	s_I_onart_gt6m_nvs7579m		s_I_onart_gt6m_vs7579m 		s_I_offart_1stI7579m	s_I_offart_SI7579m 	s_I_offart_SIlt6m7579m 
+s_I_offart_SIgt6m7579m 
+
+s_I_undiag8084m 			s_I_diag_naive8084m	 		s_I_diag_startart8084m 		s_I_onart8084m	   		s_I_offart8084m 	s_I_onart_lt6m8084m   
+s_I_onart_lt6m_nvs8084m 	s_I_onart_gt6m_nvs8084m		s_I_onart_gt6m_vs8084m 		s_I_offart_1stI8084m	s_I_offart_SI8084m 	s_I_offart_SIlt6m8084m 
+s_I_offart_SIgt6m8084m ;
+
+
+
+
 
 proc sort; by run; run;
