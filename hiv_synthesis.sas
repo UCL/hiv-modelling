@@ -189,10 +189,10 @@ newp_seed = 7;
 							%sample(rate_birth_with_infected_child, 0.3 0.4 0.5 0.6, 0.05 0.25 0.6 0.1);
 
 * prob_stop_breastfeeding_yr1;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr1 = 0.0273;	* 3-monthly probability of stopping breastfeeding in first year after birth;
+							prob_stop_breastfeeding_yr1 = 0.02;*73;	* 3-monthly probability of stopping breastfeeding in first year after birth;
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 * prob_stop_breastfeeding_yr2;		*JAS Apr2023;
-							prob_stop_breastfeeding_yr2 = 0.1325;	* 3-monthly probability of stopping breastfeeding in second year after birth;
+							prob_stop_breastfeeding_yr2 = 0.132;*5;	* 3-monthly probability of stopping breastfeeding in second year after birth;
 							* see Excel worksheet Breastfeeding probabilities for calculations of probabilities (based on Neves et al 2021 and Zong et al 2021);
 							* dependent_on_time_step_length ; *ts1m - switch to 1-month probabilities;
 
@@ -4522,15 +4522,13 @@ if caldate{t} gt dt_start_pregn+0.75 then do;
 end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 *Breastfeeding;		*JAS Apr2023;
-/*prob_stop_breastfeeding_yr1 = 0.0273;	prob_stop_breastfeeding_yr2 = 0.1325;	*/
-
-if caldate{t}=dt_lastbirth then do; gg=1; breastfeeding=1; end;
+if caldate{t}=dt_lastbirth then do; breastfeeding=1; end;
 if (caldate{t} gt dt_lastbirth) and breastfeeding=1 then do;
 	xx=rand('uniform');
 	select; 
-		when (0  < (caldate{t}-dt_lastbirth) < 1) 	do; gg=2; if xx < prob_stop_breastfeeding_yr1 then do; hh=1; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end; end;
-		when (1 =< (caldate{t}-dt_lastbirth) < 2) 	do; gg=3; if xx < prob_stop_breastfeeding_yr2 then do; hh=2; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end; end;
-		otherwise do; gg=4; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end;
+		when (0  < (caldate{t}-dt_lastbirth) < 1) 	if xx < prob_stop_breastfeeding_yr1 then do; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end;
+		when (1 =< (caldate{t}-dt_lastbirth) < 2) 	if xx < prob_stop_breastfeeding_yr2 then do; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end;
+		otherwise do; breastfeeding=0; duration_breastfeeding=(caldate{t}-dt_lastbirth); end;
 	end;
 	if death > . then breastfeeding=.; 
 end;
@@ -17240,7 +17238,7 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding gg hh xx prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death
+proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding cum_children death
 prep_any_elig
 ;
 where serial_no<350 and age ge 15 and age le 50 ;
