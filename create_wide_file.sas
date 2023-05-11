@@ -205,6 +205,8 @@ s_hiv = s_hivge15 ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
+
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
@@ -212,7 +214,7 @@ keep run option cald p_onart
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
-dcost ddaly
+dcost ddaly   n_death_hiv
 
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
@@ -268,7 +270,7 @@ data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);
+%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 
@@ -281,7 +283,7 @@ p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
 p_vg1000 		p_vl1000			prevalence_vg1000
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly
+dcost			ddaly   n_death_hiv
 
 /*ADD IN PROJECT SPECIFIC OUTPUTS*/
 ;
@@ -356,6 +358,7 @@ s_onart_m50pl = s_onart_m5054_ + s_onart_m5559_ + s_onart_m6064_ + s_onart_m6569
 s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569_	+ s_onart_w7074_ + s_onart_w7579_ + s_onart_w8084_ + s_onart_w85pl_	;
 
 s_hiv = s_hivge15 ;
+
 
 
 * p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
