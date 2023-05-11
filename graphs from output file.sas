@@ -21,7 +21,7 @@ incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  n_tested        ;
+%let single_var =  p_onart         ;
 
 
 proc sort data=b; by cald run ;run;
@@ -53,7 +53,6 @@ if option =  0 ;
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
 
-proc print; var cald option n_tested ;
       
 proc transpose data=option_0 out=g&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
@@ -101,7 +100,6 @@ if option =  1 ;
 %let count = %eval(&count + 1);
 %let varb = %scan(&var, &count, %str( ));
 
-proc print; var cald option n_tested ;
 
 proc transpose data=option_1 out=h&count prefix=&varb;var &varb; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
@@ -242,12 +240,12 @@ proc print; run;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2025 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
 
 label p50_n_tested_0 = "option 0";
@@ -255,16 +253,45 @@ label p50_n_tested_1 = "option_1";
 label p50_n_tested_2 = "option_2";
 label p50_n_tested_3 = "option_3";
 
-series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_n_tested_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-series  x=cald y=p50_n_tested_2/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_tested_2 	upper=p95_n_tested_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-series  x=cald y=p50_n_tested_3/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_tested_3 	upper=p95_n_tested_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_tested_0 	upper=p95_n_tested_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_n_tested_1 	upper=p95_n_tested_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_n_tested_2 	upper=p95_n_tested_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_tested_3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_tested_3 	upper=p95_n_tested_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
+
+*/
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion on ART";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1   by 0.05 ) valueattrs=(size=10);
+
+label p50_p_onart_0 = "option 0";
+label p50_p_onart_1 = "option_1";
+label p50_p_onart_2 = "option_2";
+label p50_p_onart_3 = "option_3";
+
+  series  x=cald y=p50_p_onart_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_onart_0 	upper=p95_p_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_p_onart_1 	upper=p95_p_onart_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_p_onart_2 	upper=p95_p_onart_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_p_onart_3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_onart_3 	upper=p95_p_onart_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
 
 
 

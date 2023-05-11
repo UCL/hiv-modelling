@@ -168,6 +168,9 @@ s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 
+s_hiv = s_hivge15 ;
+
+
 * n_tested;						n_tested = s_tested * &sf * 4;
 * n_prep_any;					n_prep_any = s_prep_any * &sf;
 
@@ -180,6 +183,7 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 
+* p_onart;						p_onart = s_onart_iicu / s_hiv;
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
@@ -196,7 +200,8 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
-keep run option cald 
+
+keep run option cald p_onart
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
@@ -207,6 +212,10 @@ dcost ddaly
 
 
 data a.intensive3_l; set y;
+
+proc freq data=a.intensive3_l; tables p_onart; run; 
+
+
 
 proc sort data=y;by run option;run;
 
@@ -246,7 +255,7 @@ data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;
 %mend var;
 
 
-%var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
+%var(v=p_diag);	 		%var(v=p_diag_m);	%var(v=p_onart); 	%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
 %var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
 
@@ -260,8 +269,8 @@ run;
 
 
 ***MERGE THE DATASETS CREATED ABOVE INTO ONE DATASET;
-data wide_outputs;merge
-p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
+data wide_outputs;merge   p_onart
+p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
 p_vg1000 		p_vl1000			prevalence_vg1000
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
@@ -269,6 +278,7 @@ dcost			ddaly
 
 /*ADD IN PROJECT SPECIFIC OUTPUTS*/
 ;
+
 
 proc sort; by run;run;
 
