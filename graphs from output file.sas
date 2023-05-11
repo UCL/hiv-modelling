@@ -21,7 +21,7 @@ incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  p_onart         ;
+%let single_var =  prevalence1549_    ;
 
 
 proc sort data=b; by cald run ;run;
@@ -264,14 +264,13 @@ label p50_n_tested_3 = "option_3";
 
 run;quit;
 
-*/
 
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1   by 0.05 ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
 
 label p50_p_onart_0 = "option 0";
 label p50_p_onart_1 = "option_1";
@@ -288,6 +287,61 @@ label p50_p_onart_3 = "option_3";
   band    x=cald lower=p5_p_onart_3 	upper=p95_p_onart_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "incidence";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.6   by 0.05 ) valueattrs=(size=10);
+
+label p50_incidence1549__0 = "option 0";
+label p50_incidence1549__1 = "option_1";
+label p50_incidence1549__2 = "option_2";
+label p50_incidence1549__3 = "option_3";
+
+  series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_incidence1549__3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+*/
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prevalence";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.2   by 0.05 ) valueattrs=(size=10);
+
+label p50_prevalence1549__0 = "option 0";
+label p50_prevalence1549__1 = "option_1";
+label p50_prevalence1549__2 = "option_2";
+label p50_prevalence1549__3 = "option_3";
+
+  series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_prevalence1549__2 	upper=p95_prevalence1549__2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence1549__3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prevalence1549__3 	upper=p95_prevalence1549__3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+
+
+
+
+
+
 
 
 
