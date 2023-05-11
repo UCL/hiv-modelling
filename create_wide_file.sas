@@ -1123,7 +1123,7 @@ data a.l_base_28_04_23; set y;  run;
 
 data y; set a.l_base_28_04_23; run;
 
-*** !!! can stop here to create graphs;
+*** !!! can stop here, the following code is not needed to create graphs;
 
   options nomprint;
   option nospool;

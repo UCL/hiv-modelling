@@ -2183,13 +2183,34 @@ data f&o;set d;
 if option =&o;
 *note that 1991 would refer to the period 1990.5-1991.5;
 where cald in 
-(2023 2024 20 2026 2027 2028 2029 
-2030 2031 2032 2033 2034 20 2036 2037 2038 2039 
-2040 2041 2042 2043 2044 20 2046 2047 2048 2049
-20 21 22 23 24 25 26 27 28 29
-2060 2061 2062 2063 2064 20 2066 2067 2068 2069
+(              2023 2024 2025 2026 2027 2028 2029 
+2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 
+2040 2041 2042 2043 2044 2045 2046 2047 2048 2049
+2050 2051 2052 2053 2054 2055 2056 2057 2058 2059
+2060 2061 2062 2063 2064 2065 2066 2067 2068 2069
 2070 2071 2072 );
 
+*# of females 15+ years old who gave birth in the last year:
+ as we model only pregnancies for women 15+ and who lead to live births, I think we can use the annual number of births;
+rename p50_n_birth_&o            = NAlive_Fbirth1599_M;
+*Number of females 15+ years old who gave birth in the last year who were living with HIV;
+rename p50_n_give_birth_w_hiv_&o = NHIV_Fbirth1599_M;
+
+*Number of females 15+ years old who gave birth or breastfed in the last year;
+*!!!!!Need Jenney code;
+*rename NAlive_FbirthBF1599_M;
+*Number of females 15+ years old who gave birth or breastfed in the last year who were living with HIV;
+*!!!!!Need Jenney code;
+*rename NHIV_FbirthBF1599_M;
+*Number of females 15-24 years old who ever gave birth or pregnant in the last year aged 15-24 years old;
+rename NAlive_FpregEverBirth1524_M	
+rename NHIV_FpregEverBirth1524_M	Number of females 15-24 years old who ever gave birth or pregnant in the last year aged 15-24 years old living with HIV
+rename NAlive_A01_M	Number of children born in the last year
+rename NAlive_HIVPOSmum_A01_M	Number of children born in the last year from mums living with HIV
+rename NHIV_HIVPOSmum_A01_M	Number of children born in the last year from mums living with HIV, who are living with HIV
+
+keep cald
+p50_prevalence1549m_&o;
 %mend;
 %flow(o=1);
 %flow(o=15);
