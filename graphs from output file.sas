@@ -20,8 +20,9 @@ p_vl1000_ = p_vl1000;
 incidence1549_ = incidence1549;
 prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
+prevalence_vg1000_ = prevalence_vg1000;
 
-%let single_var =  prevalence1549_    ;
+%let single_var =  n_deaths           ;
 
 
 proc sort data=b; by cald run ;run;
@@ -312,7 +313,6 @@ label p50_incidence1549__3 = "option_3";
 
 run;quit;
 
-*/
 
 ods html;
 proc sgplot data=d; 
@@ -336,147 +336,29 @@ label p50_prevalence1549__3 = "option_3";
 
 run;quit;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 2 by 0.2) valueattrs=(size=10);
-
-label p50_incidence1549__0 = "no cab-la introduction (median) ";
-label p50_incidence1549__1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_incidence1549__1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-
-run;
-quit;
-
-
-
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 by 0.05) valueattrs=(size=10);
-
-label p50_prevalence1549__0 = "All no cab-la introduction (median) ";
-label p50_prevalence1549__1 = "All cab-la introduction (median) ";
-
-series  x=cald y=p50_prevalence1549__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_prevalence1549__0 	upper=p95_prevalence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_prevalence1549__1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_prevalence1549__1 	upper=p95_prevalence1549__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit; 
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of ART initiators, proportion with integrase inhibitor resistance";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1       by 0.1  ) valueattrs=(size=10);
-
-label p50_p_ai_no_arv_e_inm_0 = "no cab-la introduction (median) ";
-label p50_p_ai_no_arv_e_inm_1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_p_ai_no_arv_e_inm_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_ai_no_arv_e_inm_0 	upper=p95_p_ai_no_arv_e_inm_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_p_ai_no_arv_e_inm_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_ai_no_arv_e_inm_1 	upper=p95_p_ai_no_arv_e_inm_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of people on ART, proportion with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
-
-label p50_p_onart_vl1000__0 = "no cab-la introduction (median) ";
-label p50_p_onart_vl1000__1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_p_onart_vl1000__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000__0 	upper=p95_p_onart_vl1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_p_onart_vl1000__1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_onart_vl1000__1 	upper=p95_p_onart_vl1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of people on ART 12 months from start of ART, proportion with VL < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0   to 1 by 0.05) valueattrs=(size=10);
-
-label p50_p_vl1000_art_12m_onart_0 = "no cab-la introduction (median) ";
-label p50_p_vl1000_art_12m_onart_1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_p_vl1000_art_12m_onart_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_vl1000_art_12m_onart_0 	upper=p95_p_vl1000_art_12m_onart_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_p_vl1000_art_12m_onart_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_vl1000_art_12m_onart_1 	upper=p95_p_vl1000_art_12m_onart_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of AIDS deaths per year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 30000   by 10000 ) valueattrs=(size=10);
-
-label p50_n_death_hiv_0 = "no cab-la introduction (median) ";
-label p50_n_death_hiv_1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-
-
-
-
-ods html;
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of people on ART, proportion on atazanavir";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1993 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.1) valueattrs=(size=10);
-
-label p50_p_taz_0 = "no cab-la introduction (median) ";
-label p50_p_taz_1 = "cab-la introduction (median) ";
-
-series  x=cald y=p50_p_taz_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_p_taz_0 	upper=p95_p_taz_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-series  x=cald y=p50_p_taz_1/	lineattrs = (color=str thickness = 2);
-band    x=cald lower=p5_p_taz_1 	upper=p95_p_taz_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-
-run;quit;
-ods html close;
-
 */
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "prevalence_vg1000";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.05  by 0.01 ) valueattrs=(size=10);
+
+label p50_prevalence_vg1000__0 = "option 0";
+label p50_prevalence_vg1000__1 = "option_1";
+label p50_prevalence_vg1000__2 = "option_2";
+label p50_prevalence_vg1000__3 = "option_3";
+
+  series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__2 	upper=p95_prevalence_vg1000__2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__3 	upper=p95_prevalence_vg1000__3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
