@@ -14824,16 +14824,104 @@ end;
 
 
 *Discounted years lost at age 80 using Optima approach (all YLL counted at time of death);
-dyll_Optima80=0;
-if caldate&j =death and death ne . then do;
-	total_yll=80-agedeath;
-	
+total_yll80le=0;total_yllag=0;
+dyll_Optima80=0;dyll_GBD=0;
+
+if caldate&j = death and death ne . then do;
+	total_yll80le=80-agedeath;
+
 	i=0;
-	do until (i >= total_yll+0.25);
-		dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**i);
+	do until (i >= total_yll80le+0.25);
+		dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv+1)));
+	i=i+0.25;
+	end;
+
+	*Life expectancies are WestLevel26, as in Global burden of disease;
+	if 15 le agedeath lt 16 then do; if gender=2 then total_yllag=68.02; if gender=1 then total_yllag=65.41; end;
+	if 16 le agedeath lt 17 then do; if gender=2 then total_yllag=67.032;if gender=1 then total_yllag=64.416;end;
+	if 17 le agedeath lt 18 then do; if gender=2 then total_yllag=66.044;if gender=1 then total_yllag=63.422;end;
+	if 18 le agedeath lt 19 then do; if gender=2 then total_yllag=65.056;if gender=1 then total_yllag=62.428;end;
+	if 19 le agedeath lt 20 then do; if gender=2 then total_yllag=64.068;if gender=1 then total_yllag=61.434;end;
+	if 20 le agedeath lt 21 then do; if gender=2 then total_yllag=63.08; if gender=1 then total_yllag=60.44; end;
+	if 21 le agedeath lt 22 then do; if gender=2 then total_yllag=62.098;if gender=1 then total_yllag=59.446;end;
+	if 22 le agedeath lt 23 then do; if gender=2 then total_yllag=61.116;if gender=1 then total_yllag=58.452;end;
+	if 23 le agedeath lt 24 then do; if gender=2 then total_yllag=60.134;if gender=1 then total_yllag=57.458;end;
+	if 24 le agedeath lt 25 then do; if gender=2 then total_yllag=59.152;if gender=1 then total_yllag=56.464;end;
+	if 25 le agedeath lt 26 then do; if gender=2 then total_yllag=58.17; if gender=1 then total_yllag=55.47; end;
+	if 26 le agedeath lt 27 then do; if gender=2 then total_yllag=57.19; if gender=1 then total_yllag=54.478;end;
+	if 27 le agedeath lt 28 then do; if gender=2 then total_yllag=56.21; if gender=1 then total_yllag=53.486;end;
+	if 28 le agedeath lt 29 then do; if gender=2 then total_yllag=55.23; if gender=1 then total_yllag=52.494;end;
+	if 29 le agedeath lt 30 then do; if gender=2 then total_yllag=54.25; if gender=1 then total_yllag=51.502;end;
+	if 30 le agedeath lt 31 then do; if gender=2 then total_yllag=53.27; if gender=1 then total_yllag=50.51; end;
+	if 31 le agedeath lt 32 then do; if gender=2 then total_yllag=52.292;if gender=1 then total_yllag=49.52; end;
+	if 32 le agedeath lt 33 then do; if gender=2 then total_yllag=51.314;if gender=1 then total_yllag=48.53; end;
+	if 33 le agedeath lt 34 then do; if gender=2 then total_yllag=50.336;if gender=1 then total_yllag=47.54; end;
+	if 34 le agedeath lt 35 then do; if gender=2 then total_yllag=49.358;if gender=1 then total_yllag=46.55; end;
+	if 35 le agedeath lt 36 then do; if gender=2 then total_yllag=48.38; if gender=1 then total_yllag=45.56; end;
+	if 36 le agedeath lt 37 then do; if gender=2 then total_yllag=47.41; if gender=1 then total_yllag=44.576;end;
+	if 37 le agedeath lt 38 then do; if gender=2 then total_yllag=46.44; if gender=1 then total_yllag=43.592;end;
+	if 38 le agedeath lt 39 then do; if gender=2 then total_yllag=45.47; if gender=1 then total_yllag=42.608;end;
+	if 39 le agedeath lt 40 then do; if gender=2 then total_yllag=44.5;  if gender=1 then total_yllag=41.624;end;
+	if 40 le agedeath lt 41 then do; if gender=2 then total_yllag=43.53; if gender=1 then total_yllag=40.64; end;
+	if 41 le agedeath lt 42 then do; if gender=2 then total_yllag=42.568;if gender=1 then total_yllag=39.666;end;
+	if 42 le agedeath lt 43 then do; if gender=2 then total_yllag=41.606;if gender=1 then total_yllag=38.692;end;
+	if 43 le agedeath lt 44 then do; if gender=2 then total_yllag=40.644;if gender=1 then total_yllag=37.718;end;
+	if 44 le agedeath lt 45 then do; if gender=2 then total_yllag=39.682;if gender=1 then total_yllag=36.744;end;
+	if 45 le agedeath lt 46 then do; if gender=2 then total_yllag=38.72; if gender=1 then total_yllag=35.77; end;
+	if 46 le agedeath lt 47 then do; if gender=2 then total_yllag=37.774;if gender=1 then total_yllag=34.814;end;
+	if 47 le agedeath lt 48 then do; if gender=2 then total_yllag=36.828;if gender=1 then total_yllag=33.858;end;
+	if 48 le agedeath lt 49 then do; if gender=2 then total_yllag=35.882;if gender=1 then total_yllag=32.902;end;
+	if 49 le agedeath lt 50 then do; if gender=2 then total_yllag=34.936;if gender=1 then total_yllag=31.946;end;
+	if 50 le agedeath lt 51 then do; if gender=2 then total_yllag=33.99; if gender=1 then total_yllag=30.99;end;
+	if 51 le agedeath lt 52 then do; if gender=2 then total_yllag=33.066;if gender=1 then total_yllag=30.056;end;
+	if 52 le agedeath lt 53 then do; if gender=2 then total_yllag=32.142;if gender=1 then total_yllag=29.122;end;
+	if 53 le agedeath lt 54 then do; if gender=2 then total_yllag=31.218;if gender=1 then total_yllag=28.188;end;
+	if 54 le agedeath lt 55 then do; if gender=2 then total_yllag=30.294;if gender=1 then total_yllag=27.254;end;
+	if 55 le agedeath lt 56 then do; if gender=2 then total_yllag=29.37; if gender=1 then total_yllag=26.32; end;
+	if 56 le agedeath lt 57 then do; if gender=2 then total_yllag=28.462;if gender=1 then total_yllag=25.418;end;
+	if 57 le agedeath lt 58 then do; if gender=2 then total_yllag=27.554;if gender=1 then total_yllag=24.516;end;
+	if 58 le agedeath lt 59 then do; if gender=2 then total_yllag=26.646;if gender=1 then total_yllag=23.614;end;
+	if 59 le agedeath lt 60 then do; if gender=2 then total_yllag=25.738;if gender=1 then total_yllag=22.712;end;
+	if 60 le agedeath lt 61 then do; if gender=2 then total_yllag=24.83; if gender=1 then total_yllag=21.81;end;
+	if 61 le agedeath lt 62 then do; if gender=2 then total_yllag=23.952;if gender=1 then total_yllag=20.948;end;
+	if 62 le agedeath lt 63 then do; if gender=2 then total_yllag=23.074;if gender=1 then total_yllag=20.086;end;
+	if 63 le agedeath lt 64 then do; if gender=2 then total_yllag=22.196;if gender=1 then total_yllag=19.224;end;
+	if 64 le agedeath lt 65 then do; if gender=2 then total_yllag=21.318;if gender=1 then total_yllag=18.362;end;
+	if 65 le agedeath lt 66 then do; if gender=2 then total_yllag=20.44; if gender=1 then total_yllag=17.50; end;
+	if 66 le agedeath lt 67 then do; if gender=2 then total_yllag=19.592;if gender=1 then total_yllag=16.716;end;
+	if 67 le agedeath lt 68 then do; if gender=2 then total_yllag=18.744;if gender=1 then total_yllag=15.932;end;
+	if 68 le agedeath lt 69 then do; if gender=2 then total_yllag=17.896;if gender=1 then total_yllag=15.148;end;
+	if 69 le agedeath lt 70 then do; if gender=2 then total_yllag=17.048;if gender=1 then total_yllag=14.364;end;
+	if 70 le agedeath lt 71 then do; if gender=2 then total_yllag=16.20; if gender=1 then total_yllag=13.58; end;
+	if 71 le agedeath lt 72 then do; if gender=2 then total_yllag=15.416;if gender=1 then total_yllag=12.898;end;
+	if 72 le agedeath lt 73 then do; if gender=2 then total_yllag=14.632;if gender=1 then total_yllag=12.216;end;
+	if 73 le agedeath lt 74 then do; if gender=2 then total_yllag=13.848;if gender=1 then total_yllag=11.534;end;
+	if 74 le agedeath lt 75 then do; if gender=2 then total_yllag=13.064;if gender=1 then total_yllag=10.852;end;
+	if 75 le agedeath lt 76 then do; if gender=2 then total_yllag=12.28; if gender=1 then total_yllag=10.17; end;
+	if 76 le agedeath lt 77 then do; if gender=2 then total_yllag=11.604;if gender=1 then total_yllag= 9.626;end;
+	if 77 le agedeath lt 78 then do; if gender=2 then total_yllag=10.928;if gender=1 then total_yllag= 9.082;end;
+	if 78 le agedeath lt 79 then do; if gender=2 then total_yllag=10.252;if gender=1 then total_yllag= 8.538;end;
+	if 79 le agedeath lt 80 then do; if gender=2 then total_yllag= 9.576;if gender=1 then total_yllag= 7.994;end;
+	if 80 le agedeath lt 81 then do; if gender=2 then total_yllag= 8.90; if gender=1 then total_yllag= 7.45; end;
+	if 81 le agedeath lt 82 then do; if gender=2 then total_yllag= 8.345;if gender=1 then total_yllag= 7.000;end;
+	if 82 le agedeath lt 83 then do; if gender=2 then total_yllag= 7.825;if gender=1 then total_yllag= 6.578;end;
+	if 83 le agedeath lt 84 then do; if gender=2 then total_yllag= 7.337;if gender=1 then total_yllag= 6.181;end;
+	if 84 le agedeath lt 85 then do; if gender=2 then total_yllag= 6.879;if gender=1 then total_yllag= 5.808;end;
+	if 85 le agedeath lt 86 then do; if gender=2 then total_yllag= 6.450;if gender=1 then total_yllag= 5.457;end;
+	if 86 le agedeath lt 87 then do; if gender=2 then total_yllag= 6.048;if gender=1 then total_yllag= 5.128;end;
+	if 87 le agedeath lt 88 then do; if gender=2 then total_yllag= 5.671;if gender=1 then total_yllag= 4.819;end;
+	if 88 le agedeath lt 89 then do; if gender=2 then total_yllag= 5.317;if gender=1 then total_yllag= 4.528;end;
+	if 89 le agedeath lt 90 then do; if gender=2 then total_yllag= 4.986;if gender=1 then total_yllag= 4.255;end;
+	if 90 le agedeath lt 91 then do; if gender=2 then total_yllag= 4.675;if gender=1 then total_yllag= 3.998;end;
+	if 91 le agedeath lt 92 then do; if gender=2 then total_yllag= 4.383;if gender=1 then total_yllag= 3.757;end;
+
+	i=0;
+	do until (i >= total_yllag+0.25);
+		dyll_GBD = dyll_GBD + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv+1)));
 	i=i+0.25;
 	end;
 end;
+*if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
 
 
 _dcost = cost* discount;
@@ -17036,7 +17124,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dead_daly_oth_dol_adv_birth_e + dead_daly_oth_dol_adv_birth_e ;
 	s_dead_daly_ntd + dead_daly_ntd;
 	s_daly_mtct + daly_mtct ;
-	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
+	s_daly_non_aids_pre_death + daly_non_aids_pre_death ; 
+	s_total_yll80le + total_yll80le;
+	s_total_yllag + total_yllag; 
 
 	*discounted;
 	s_live_ddaly + live_ddaly ; 
@@ -17045,7 +17135,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_ddaly_mtct + ddaly_mtct ;
 	s_ddaly_non_aids_pre_death + ddaly_non_aids_pre_death ;     
 	
-	s_dyll_Optima80 + dyll_Optima80;
+	s_dyll_Optima80 + dyll_Optima80; s_dyll_GBD + dyll_GBD;
 
 	*undiscounted;
 	s_cost + cost; s_art_cost + art_cost;  s_onart_cost + onart_cost; s_cd4_cost + cd4_cost; s_vl_cost + vl_cost;  s_vis_cost + vis_cost; 
@@ -18409,9 +18499,10 @@ s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 	
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death 
+s_total_yll80le  s_total_yllag
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 
+s_dyll_Optima80 s_dyll_GBD
 s_ly  s_dly  s_qaly  s_dqaly      
 																																			   
 		
@@ -19340,9 +19431,10 @@ s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death    
+s_total_yll80le  s_total_yllag
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 
+s_dyll_Optima80 s_dyll_GBD
 
 s_ly  s_dly  s_qaly  s_dqaly   
 
@@ -21110,9 +21202,9 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-																		   
+s_total_yll80le  s_total_yllag													   
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 		 
+s_dyll_Optima80 s_dyll_GBD		 
 
 s_ly  s_dly  s_qaly  s_dqaly   
 
