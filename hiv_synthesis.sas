@@ -14830,11 +14830,6 @@ dyll_Optima80=0;dyll_GBD=0;
 if caldate&j = death and death ne . then do;
 	total_yll80le=80-agedeath;
 
-	i=0;
-	do until (i >= total_yll80le+0.25);
-		dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv+1)));
-	i=i+0.25;
-	end;
 
 	*Life expectancies are WestLevel26, as in Global burden of disease;
 	if 15 le agedeath lt 16 then do; if gender=2 then total_yllag=68.02; if gender=1 then total_yllag=65.41; end;
@@ -14915,13 +14910,20 @@ if caldate&j = death and death ne . then do;
 	if 90 le agedeath lt 91 then do; if gender=2 then total_yllag= 4.675;if gender=1 then total_yllag= 3.998;end;
 	if 91 le agedeath lt 92 then do; if gender=2 then total_yllag= 4.383;if gender=1 then total_yllag= 3.757;end;
 
-	i=0;
-	do until (i >= total_yllag+0.25);
-		dyll_GBD = dyll_GBD + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv+1)));
-	i=i+0.25;
+	if caldate&j ge &year_interv then do;
+	    i=0;
+		do until (i >= total_yll80le);
+			dyll_Optima80 = dyll_Optima80 + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv)));
+		i=i+0.25;
+		end;
+								  
+		i=0;
+		do until (i >= total_yllag);			
+			dyll_GBD = dyll_GBD + (0.25 *  (1/1.03)**(caldate_never_dot+i-(&year_interv)));
+		i=i+0.25;
+		end;
 	end;
 end;
-*if caldate_never_dot ge &year_interv+1 then discount = 1/(1.03**(caldate_never_dot-(&year_interv+1)));
 
 
 _dcost = cost* discount;
