@@ -277,6 +277,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * s_alive;						s_alive = s_alive_m + s_alive_w ;
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_birth / s_alive1564_w;
 * n_birth;						n_birth = s_birth * &sf * 4;
+* n_everpregn_w1524;			n_everpregn_w1524 = s_everpregn_w1524 * &sf;*May2023; 
+* n_everpregn_hiv_w1524;		n_everpregn_hiv_w1524 = s_everpregn_hiv_w1524 * &sf;*May2023; 
+
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
 * p_newp_ge1;					p_newp_ge1 = s_newp_ge1 / s_alive1564 ;
@@ -950,7 +953,7 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
+s_alive n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_everpregn_w1524 n_everpregn_hiv_w1524 p_newp_ge1 p_1524_newp_ge1 n_w1524_newp_ge1 p_newp_ge5 p_newp_ge1_age1549 gender_r_newp  av_newp_ge1  av_newp_ge1_non_sw
 p_newp_sw  n_tested_m  n_tested_w p_tested_past_year_1549m  p_tested_past_year_1549w n_pmtct
 p_diag_m1524 p_diag_w1524 p_diag_sw n_cm n_vm p_vm_ly_onart n_pcp_p_80_ p_onart_cd4_l200
 p_mcirc p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m p_mcirc_4044m p_mcirc_4549m p_mcirc_5064m p_mcirc_1549m
@@ -1182,7 +1185,8 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=n_hivneg_sdpartner); %var(v=n_hivneg_sdpartneroffart); %var(v=n_hivnegw_sdpartner); %var(v=n_hivnegw_sdpartneroffart);
 %var(v=n_not_on_art_cd4050);%var(v=n_not_on_art_cd450200);%var(v=n_not_on_art_cd4200350);%var(v=n_not_on_art_cd4350500);%var(v=n_not_on_art_cd4ge500);
 %var(v=n_asympt_Undiag);%var(v=n_asympt_diagoffart);%var(v=n_asympt_diagonart);%var(v=n_sympt_notaids);%var(v=n_sympt_aids);
-%var(v=n_birth); %var(v=n_give_birth_w_hiv); %var(v=p_w_giv_birth_this_per); %var(v=p_newp_ge1); %var(v=p_newp_ge5); 
+%var(v=n_birth); %var(v=n_give_birth_w_hiv); %var(v=p_w_giv_birth_this_per); 
+%var(v=n_everpregn_w1524);%var(v=n_everpregn_hiv_w1524);%var(v=p_newp_ge1); %var(v=p_newp_ge5); 
 %var(v=n_w1524_newp_ge1);%var(v=gender_r_newp); 
 %var(v=p_newp_sw); %var(v=prop_sw_newp0);  %var(v=p_newp_prep);
 %var(v=p_m_npge1_); %var(v=p_w_npge1_); %var(v=p_w1524_npge1_); %var(v=p_sw_npge1_);
@@ -1308,7 +1312,7 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050 n_not_on_art_cd450200 n_not_on_art_cd4200350 n_not_on_art_cd4350500 n_not_on_art_cd4ge500
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per  p_newp_ge1 p_newp_ge5  gender_r_newp
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_everpregn_w1524 n_everpregn_hiv_w1524 p_newp_ge1 p_newp_ge5  gender_r_newp
 p_newp_sw prop_sw_newp0  p_newp_prep  n_tested_m
 p_tested_past_year_1549m  p_tested_past_year_1549w  n_pmtct
 p_mcirc   p_mcirc_1519m p_mcirc_2024m p_mcirc_2529m p_mcirc_3034m p_mcirc_3539m 

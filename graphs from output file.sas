@@ -43,11 +43,8 @@ prevalence1549_ = prevalence1549;
 incidence1549_ = incidence1549;
 incidence1564_ = incidence1564;
 
-incidence1524w_ = incidence1524w; incidence1524m_ = incidence1524m;
-incidence2534w_ = incidence2534w; incidence2534m_ = incidence2534m;
-incidence3544w_ = incidence3544w; incidence3544m_ = incidence3544m;
-incidence4554w_ = incidence4554w; incidence4554m_ = incidence4554m;
-incidence5564w_ = incidence5564w; incidence5564m_ = incidence5564m;
+n_everpregn_w1524_ = n_everpregn_w1524;
+n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
 
 p_onart_vl1000_ = p_onart_vl1000;
 p_onart_vl1000_1524_ = p_onart_vl1000_1524;*VCFeb2023;
@@ -88,16 +85,16 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1	p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_birth_with_inf_child n_w1524_newp_ge1 n_everpregn_w1524_ n_everpregn_hiv_w1524_	p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	n_new_vmmc1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
 n_prep n_prep_1524w n_prep_ever
 n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
-prevalence1549_ prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1564_ 
-incidence1524w_ incidence1524m_ incidence2534w_ incidence2534m_ incidence3544w_ incidence3544m_ incidence4554w_ incidence4554m_ 
-incidence5564w_ incidence5564m_ n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
+prevalence1549_ prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1549m incidence1549w incidence1564_ 
+incidence1524w incidence1524m incidence2534w incidence2534m incidence3544w incidence3544m incidence4554w incidence4554m 
+incidence5564w incidence5564m incidence_sw n_tested n_tested_m n_tested_w n_tested_sw n_tested_anc 
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_tested1st_anc n_tested1st_labdel n_tested1st_pd
 p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
@@ -115,6 +112,16 @@ n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 ;
 run;
 
+/*
+proc transpose data=option_0 out=g0_1 prefix=&varb;var n_alive; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data g0_1;set g9_1;***creates one dataset per variable;
+p5_n_alive_0  = PCTL(5,of n_alive1-n_alive155);
+p95_n_alive_0 = PCTL(95,of n_alive1-n_alive155);
+p50_n_alive_0 = median(of n_alive1-n_alive155);
+keep cald p5_n_alive_0 p95_n_alive_0 p50_n_alive_0 ;
+run;
+*/
 *I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_(s);
@@ -1227,12 +1234,12 @@ label o_HIVincid_1549m_Zimphia = "ZIMPHIA Men 15-49";
 label o_HIVincid_1549w_Zimphia = "ZIMPHIA Women 15-49";
 series  x=cald y=p50_incidence1549m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence1549m_0 	upper=p95_incidence1549m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1549m__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1549m__1 	upper=p95_incidence1549m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1549m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1549m_1 	upper=p95_incidence1549m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1549w_0/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_incidence1549w_0 	upper=p95_incidence1549w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1549w__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1549w__1 	upper=p95_incidence1549w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1549w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1549w_1 	upper=p95_incidence1549w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter x=cald y=o_HIVincid_1549m_Zimphia / yerrorlower=o_HIVincid_1549m_ll_Zimphia yerrorupper=o_HIVincid_1549m_ul_Zimphia markerattrs = (color=blue) errorbarattrs = (color = blue);
 scatter x=cald y=o_HIVincid_1549w_Zimphia / yerrorlower=o_HIVincid_1549w_ll_Zimphia yerrorupper=o_HIVincid_1549w_ul_Zimphia markerattrs = (color=orange) errorbarattrs = (color = orange);
 run;
@@ -1254,12 +1261,12 @@ label o_HIVincid_1524w_Zimphia = "ZIMPHIA Women 15-24";
 
 series  x=cald y=p50_incidence1524m_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence1524m_0 	upper=p95_incidence1524m_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1524m__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1524m__1 	upper=p95_incidence1524m__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1524m_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1524m_1 	upper=p95_incidence1524m_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 series  x=cald y=p50_incidence1524w_0/	lineattrs = (color=orange thickness = 2);
 band    x=cald lower=p5_incidence1524w_0 	upper=p95_incidence1524w_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1524w__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1524w__1 	upper=p95_incidence1524w__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+*series  x=cald y=p50_incidence1524w_1/	lineattrs = (color=red thickness = 2);
+*band    x=cald lower=p5_incidence1524w_1 	upper=p95_incidence1524w_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 scatter x=cald y=o_HIVincid_1524m_Zimphia / yerrorlower=o_HIVincid_1524m_ll_Zimphia yerrorupper=o_HIVincid_1524m_ul_Zimphia markerattrs = (color=blue) errorbarattrs = (color = blue);
 scatter x=cald y=o_HIVincid_1524w_Zimphia / yerrorlower=o_HIVincid_1524w_ll_Zimphia yerrorupper=o_HIVincid_1524w_ul_Zimphia markerattrs = (color=orange) errorbarattrs = (color = orange);
 
@@ -2190,12 +2197,13 @@ where cald in
 2060 2061 2062 2063 2064 2065 2066 2067 2068 2069
 2070 2071 2072 );
 
+*** PREGNANCIES BIRTHS;
+
 *# of females 15+ years old who gave birth in the last year:
  as we model only pregnancies for women 15+ and who lead to live births, I think we can use the annual number of births;
 rename p50_n_birth_&o            = NAlive_Fbirth1599_M;
 *Number of females 15+ years old who gave birth in the last year who were living with HIV;
 rename p50_n_give_birth_w_hiv_&o = NHIV_Fbirth1599_M;
-
 *Number of females 15+ years old who gave birth or breastfed in the last year;
 *!!!!!Need Jenney code;
 *rename NAlive_FbirthBF1599_M;
@@ -2203,14 +2211,45 @@ rename p50_n_give_birth_w_hiv_&o = NHIV_Fbirth1599_M;
 *!!!!!Need Jenney code;
 *rename NHIV_FbirthBF1599_M;
 *Number of females 15-24 years old who ever gave birth or pregnant in the last year aged 15-24 years old;
-rename NAlive_FpregEverBirth1524_M	
-rename NHIV_FpregEverBirth1524_M	Number of females 15-24 years old who ever gave birth or pregnant in the last year aged 15-24 years old living with HIV
-rename NAlive_A01_M	Number of children born in the last year
-rename NAlive_HIVPOSmum_A01_M	Number of children born in the last year from mums living with HIV
-rename NHIV_HIVPOSmum_A01_M	Number of children born in the last year from mums living with HIV, who are living with HIV
+rename p50_n_everpregn_w1524__&o = NAlive_FpregEverBirth1524_M;	
+*Number of females 15-24 years old who ever gave birth or pregnant in the last year aged 15-24 years old living with HIV;
+rename p50_n_everpregn_hiv_w1524__&o = NHIV_FpregEverBirth1524_M;	
+*Number of children born in the last year;
+*Note: the same as # of females 15+ years old who gave birth in the last year. We assume no twins;
+*rename p50_n_birth_&o            = NAlive_A01_M;	
+*Number of children born in the last year from mums living with HIV;
+*rename p50_n_give_birth_w_hiv_&o = NAlive_HIVPOSmum_A01_M;
+*Number of children born in the last year from mums living with HIV, who are living with HIV;
+rename p50_n_birth_with_inf_child_&o = NHIV_HIVPOSmum_A01_M;
+
+*** HIV INCIDENCE;
+rename p50_incidence1549m_&o = HIVIncid_M1549_M;
+rename p5_incidence1549m_&o  = HIVIncid_M1549_95LL;
+rename p95_incidence1549m_&o = HIVIncid_M1549_95UL;
+rename p50_incidence1549w_&o = HIVIncid_F1549_M;
+rename p5_incidence1549w_&o  = HIVIncid_F1549_95LL;
+rename p95_incidence1549w_&o = HIVIncid_F1549_95UL;
+rename p50_incidence1549__&o  = HIVIncid_A1549_M;
+rename p5_incidence1549__&o   = HIVIncid_A1549_95LL;
+rename p95_incidence1549__&o  = HIVIncid_A1549_95UL;
+rename p50_incidence1524w_&o = HIVIncid_F1524_M;
+rename p5_incidence1524w_&o = HIVIncid_F1524_95LL;
+rename p95_incidence1524w_&o = HIVIncid_F1524_95UL;
+rename p50_incidence_sw_&o = HIVIncid_FSW1599_M;
+rename p5_incidence_sw_&o = HIVIncid_FSW1599_95LL;
+rename p95_incidence_sw_&o = HIVIncid_FSW1599_95UL;
+*arrivata qua;
+*HIV incidence in adults 15+ years old with an HIV positive partner;
+rename p50_ _&o = HIVIncid_SDCA1599_M;
+rename p50_ _&o = HIVIncid_SDCF1599_M;
+*HIV incidence in pregnant and breastfeeding females 15-49 years old;
+rename p50_ _&o = HIVIncid_pregbfF1549_M;
+
+
 
 keep cald
-p50_prevalence1549m_&o;
+p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
+;
 %mend;
 %flow(o=1);
 %flow(o=15);
