@@ -3,6 +3,9 @@
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_out\";
 
+ods html close;
+
+
 data a;
 set b.out:; ***INSERT OUTPUT FILENAME; 
 
@@ -222,9 +225,6 @@ dcost ddaly   n_death_hiv
 
 data a.intensive3_l; set y;
 
-proc freq data=a.intensive3_l; tables p_onart; run; 
-
-
 
 proc sort data=y;by run option;run;
 
@@ -239,25 +239,25 @@ option nospool;
 %macro var(v=);
 
 ***OUTPUTS IN SPECIFIC YEARS - AMEND TO E.G. PROJECT SPECIFIC BASELINE (NOTE THESE ARE NOT BY OPTION);
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2023.0 <= cald < 2024.0; 
 
 ***OUTPUTS IN SPECIFIC YEARS BY OPTION - THIS MAY NOT BE NEEDED IN ALL ANALYSES;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
 ***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
+proc means noprint data=y; var &v; output out=y_23_28 mean= &v._23_28; by run option ; where 2023.5 <= cald < 2028.50;
+proc means noprint data=y; var &v; output out=y_23_43 mean= &v._23_43; by run option ; where 2023.5 <= cald < 2043.50;
+proc means noprint data=y; var &v; output out=y_23_73 mean= &v._23_73; by run option ; where 2023.5 <= cald < 2073.50;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
+proc sort data=y_23; by run; proc transpose data=y_23 out=t_22 prefix=&v._23_; var &v._23; by run;
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
+proc sort data=y_23_28; by run; proc transpose data=y_23_28 out=t_23_28 prefix=&v._23_28_; var &v._23_28; by run;
+proc sort data=y_23_43; by run; proc transpose data=y_23_43 out=t_23_43 prefix=&v._23_43_; var &v._23_43; by run;
+proc sort data=y_23_73; by run; proc transpose data=y_23_73 out=t_23_73 prefix=&v._23_73_; var &v._23_73; by run;
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;  
+data &v ; merge  y_23 t_30 t_23_28 t_23_43 t_23_73;  
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -316,6 +316,18 @@ sw_trans_matrix;
 data a.wide_intensive3;
 merge   wide_outputs  wide_par ;  
 by run;run;
+
+
+
+
+
+
+
+proc means data=a.wide_intensive3;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
+dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4 
+
+ ;
+
 
 
 
