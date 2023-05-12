@@ -122,6 +122,7 @@ dcost_prep_visit_inj  = s_dcost_prep_visit_inj * &sf * 4 / 1000;
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
+dcost_avail_self_test = 0;
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -327,7 +328,7 @@ by run;run;
 
 
 
-proc means data=a.wide_outputs   ;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
+proc means data=a.wide_intensive3;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
 dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4  ;
 run;
 
