@@ -219,6 +219,10 @@ p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 dcost ddaly   n_death_hiv
 
+sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
+effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
+sw_trans_matrix
+
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
 
@@ -323,10 +327,11 @@ by run;run;
 
 
 
-proc means data=a.wide_intensive3;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
-dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4 
+proc means data=a.wide_outputs   ;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
+dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4  ;
+run;
 
- ;
+
 
 
 
