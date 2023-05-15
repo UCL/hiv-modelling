@@ -43,9 +43,6 @@ prevalence1549_ = prevalence1549;
 incidence1549_ = incidence1549;
 incidence1564_ = incidence1564;
 
-n_everpregn_w1524_ = n_everpregn_w1524;
-n_everpregn_hiv_w1524_ = n_everpregn_hiv_w1524;
-
 p_onart_vl1000_ = p_onart_vl1000;
 p_onart_vl1000_1524_ = p_onart_vl1000_1524;*VCFeb2023;
 p_vl1000_ = p_vl1000;
@@ -85,7 +82,7 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_birth_with_inf_child n_w1524_newp_ge1 n_everpregn_w1524_ n_everpregn_hiv_w1524_	p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1 p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	n_new_vmmc1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
@@ -210,7 +207,6 @@ by cald;
 run;
 
 data a.d;set d;run;
-*arrivata qua;
 data d;set a.d;run;
 proc freq data=d;table cald;run;
 
@@ -2184,21 +2180,94 @@ run;
 %stock(o=1);
 %stock(o=15);
 
+
+
+  options nomprint;
+  option nospool;
+
+
+
+  ***Macro var used to calculate means across each year and transpose to one line per run,
+  need to write manually all the years to merge;
+
+  /*
+proc sort data=b;by count_csim  cald ;run;
+data option_0;set b;if option=0;keep n_alive count_csim  cald ;run;
+proc means  noprint data=option_0; var n_alive; output out=y_2023 mean= alive_2023; by count_csim ; where 2022.5 <= cald < 2023.5; run;
+proc means  noprint data=option_0; var n_alive; output out=y_2024 mean= alive_2024; by count_csim ; where 2023.5 <= cald < 2024.5; run;
+
+data n_alive_0 ; merge y_2023 y_2024  ;  
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc transpose data=n_alive_0 out=l_n_alive_0 prefix=n_alive;id  count_csim;run;
+
+data l_n_alive_0;set l_n_alive_0;
+*cald_c= substr(_NAME_,length(_NAME_)-3,4);
+*cald= input(cald_c,4.);
+cald_d= input(substr(_NAME_,length(_NAME_)-3,4),4.);
+  run;
+
+data l_n_alive_0;set l_n_alive_0;***creates one dataset per variable;
+p5_n_alive_0  = PCTL(5,of n_alive1-n_alive155);
+p95_n_alive_0 = PCTL(95,of n_alive1-n_alive155);
+p50_n_alive_0 = median(of n_alive1-n_alive155);
+keep cald p5_n_alive_0 p95_n_alive_0 p50_n_alive_0;
+  run;
+  */
+%macro var_cy(s,v);
+data option_&s;set b;if option=&s;keep &v count_csim  cald ;
+proc sort data=option_&s;by count_csim  cald ;
+%let count = 2023;
+%do %while (&count le 2072);
+proc means  noprint data=option_&s; var &v; output out=y_&count mean=&v._&count; by count_csim ; where &count-0.5 <= cald < &count+0.5;
+%let count = %eval(&count + 1);
+%end;
+data &v ; merge y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072;  
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc datasets nodetails nowarn nolist;
+delete   y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072;quit;
+
+proc transpose data=&v out=l_&v._&s prefix=&v;id  count_csim;run;
+data l_&v._&s;set l_&v._&s;
+cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
+
+data l_&v._&s;set l_&v._&s;***creates one dataset per variable;
+p5_&v._&s  = PCTL(5,of &v.1-&v.&nfit);
+p95_&v._&s = PCTL(95,of &v.1-&v.&nfit);
+p50_&v._&s = median(of &v.1-&v.&nfit);
+keep cald p5_&v._&s p95_&v._&s p50_&v._&s;
+run;
+proc datasets nodetails nowarn nolist;delete &v;run;
+%mend var_cy;
+proc freq data=b;
+table n_birth  n_give_birth_w_hiv  /*n_everpregn_w1524_  n_everpregn_hiv_w1524_*/ n_birth_with_inf_child
+incidence1549m	incidence1549w  incidence1549_  incidence1524w  incidence_sw /*incidence_sd1564_ incidence_sd1564w*/
+n_new_inf1564m	n_new_inf1564w	n_new_inf1549m  n_new_inf1549w  n_new_inf1549
+n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w;run;
+
+*The following are commmenting out as not yest exported in current dataset;
+%var_cy(0,n_birth);%var_cy(0,n_give_birth_w_hiv);/*%var_cy(0,n_everpregn_w1524_);%var_cy(0,n_everpregn_hiv_w1524_);*/%var_cy(0,n_birth_with_inf_child);
+%var_cy(0,incidence1549m);%var_cy(0,incidence1549w);%var_cy(0,incidence1549_);%var_cy(0,incidence1524w);%var_cy(0,incidence_sw);
+/*%var_cy(0,incidence_sd1564_);%var_cy(0,incidence_sd1564w);*/
+%var_cy(0,n_new_inf1564m);%var_cy(0,n_new_inf1564w);%var_cy(0,n_new_inf1549m);%var_cy(0,n_new_inf1549w);%var_cy(0,n_new_inf1549);
+%var_cy(0,n_new_inf1524m);%var_cy(0,n_new_inf1524w);%var_cy(0,n_new_inf2549m);%var_cy(0,n_new_inf2549w);
+data   wide_allyears_0; merge 
+l_n_birth_0  l_n_give_birth_w_hiv_0  /*l_n_everpregn_w1524__0  l_n_everpregn_hiv_w1524__0*/ l_n_birth_with_inf_child_0
+l_incidence1549m_0	l_incidence1549w_0  l_incidence1549__0  l_incidence1524w_0  l_incidence_sw_0  l_incidence_sd1564__0  l_incidence_sd1564w_0
+l_n_new_inf1564m_0	l_n_new_inf1564w_0  l_n_new_inf1549m_0	l_n_new_inf1549w_0  l_n_new_inf1549_0
+l_n_new_inf1524m_0	l_n_new_inf1524w_0  l_n_new_inf2549m_0	l_n_new_inf2549w_0;
+run;
+
+
 *FLOW;
 %macro flow(o=);
-data f&o;set d;
-if option =&o;
+data wide_allyears_&o;
 *note that 1991 would refer to the period 1990.5-1991.5;
-where cald in 
-(              2023 2024 2025 2026 2027 2028 2029 
-2030 2031 2032 2033 2034 2035 2036 2037 2038 2039 
-2040 2041 2042 2043 2044 2045 2046 2047 2048 2049
-2050 2051 2052 2053 2054 2055 2056 2057 2058 2059
-2060 2061 2062 2063 2064 2065 2066 2067 2068 2069
-2070 2071 2072 );
 
 *** PREGNANCIES BIRTHS;
-
 *# of females 15+ years old who gave birth in the last year:
  as we model only pregnancies for women 15+ and who lead to live births, I think we can use the annual number of births;
 rename p50_n_birth_&o            = NAlive_Fbirth1599_M;
@@ -2222,6 +2291,7 @@ rename p50_n_everpregn_hiv_w1524__&o = NHIV_FpregEverBirth1524_M;
 *Number of children born in the last year from mums living with HIV, who are living with HIV;
 rename p50_n_birth_with_inf_child_&o = NHIV_HIVPOSmum_A01_M;
 
+
 *** HIV INCIDENCE;
 rename p50_incidence1549m_&o = HIVIncid_M1549_M;
 rename p5_incidence1549m_&o  = HIVIncid_M1549_95LL;
@@ -2235,20 +2305,69 @@ rename p95_incidence1549__&o  = HIVIncid_A1549_95UL;
 rename p50_incidence1524w_&o = HIVIncid_F1524_M;
 rename p5_incidence1524w_&o = HIVIncid_F1524_95LL;
 rename p95_incidence1524w_&o = HIVIncid_F1524_95UL;
-rename p50_incidence_sw_&o = HIVIncid_FSW1599_M;
-rename p5_incidence_sw_&o = HIVIncid_FSW1599_95LL;
-rename p95_incidence_sw_&o = HIVIncid_FSW1599_95UL;
-*arrivata qua;
+rename p50_incidence_sw_&o = HIVIncid_FSW1599_M;*in our model is 15-64;
+rename p5_incidence_sw_&o = HIVIncid_FSW1599_95LL;*in our model is 15-64;
+rename p95_incidence_sw_&o = HIVIncid_FSW1599_95UL;*in our model is 15-64;
 *HIV incidence in adults 15+ years old with an HIV positive partner;
-rename p50_ _&o = HIVIncid_SDCA1599_M;
-rename p50_ _&o = HIVIncid_SDCF1599_M;
+rename p50_incidence_sd1564__&o = HIVIncid_SDCA1599_M;*in our model is 15-64;
+rename p50_incidence_sd1564w_&o = HIVIncid_SDCF1599_M;*in our model is 15-64;
 *HIV incidence in pregnant and breastfeeding females 15-49 years old;
-rename p50_ _&o = HIVIncid_pregbfF1549_M;
+*rename p50_ _&o = HIVIncid_pregbfF1549_M;
+
+
+*** NEW HIV INFECTIONS;
+rename p50_n_new_inf1564m_&o = NHIVInf_M1599_M;
+rename p5_n_new_inf1564m_&o = NHIVInf_M1599_95LL;
+rename p95_n_new_inf1564m_&o = NHIVInf_M1599_95UL;
+rename p50_n_new_inf1564w_&o = NHIVInf_F1599_M;
+rename p5_n_new_inf1564w_&o = NHIVInf_F1599_95LL;
+rename p95_n_new_inf1564w_&o = NHIVInf_F1599_95UL;
+rename p50_n_new_inf1549m_&o = NHIVInf_M1549_M;
+rename p5_n_new_inf1549m_&o = NHIVInf_M1549_95LL;
+rename p95_n_new_inf1549m_&o = NHIVInf_M1549_95UL;
+rename p50_n_new_inf1549w_&o = NHIVInf_F1549_M;
+rename p5_n_new_inf1549w_&o = NHIVInf_F1549_95LL;
+rename p95_n_new_inf1549w_&o = NHIVInf_F1549_95UL;
+rename p50_n_new_inf1549_&o = NHIVInf_A1549_M;
+rename p5_n_new_inf1549_&o = NHIVInf_A1549_95LL;
+rename p95_n_new_inf1549_&o = NHIVInf_A1549_95UL;
+rename p50_n_new_inf1524m_&o = NHIVInf_M1524_M;
+rename p50_n_new_inf1524w_&o = NHIVInf_F1524_M;
+rename p50_n_new_inf2549m_&o = NHIVInf_M2549_M;
+rename p50_n_new_inf2549w_&o = NHIVInf_F2549_M;
+
+
+*** AIDS DEATHS;
+/*
+AIDSDeaths_M1599_M	AIDS deaths in males 15+ years old in the last year
+AIDSDeaths_M1599_95LL	
+AIDSDeaths_M1599_95UL	
+AIDSDeaths_F1599_M	AIDS deaths in females 15+ years old in the last year
+AIDSDeaths_F1599_95LL	
+AIDSDeaths_F1599_95UL	
+AIDSDeaths_A1599_M	AIDS deaths in adults 15+ years old in the last year
+AIDSDeaths_A1599_95LL	
+AIDSDeaths_A1599_95UL	*/
 
 
 
 keep cald
 p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
+
+p50_incidence1549m_&o  p5_incidence1549m_&o  p95_incidence1549m_&o 
+p50_incidence1549w_&o  p5_incidence1549w_&o  p95_incidence1549w_&o 
+p50_incidence1549__&o  p5_incidence1549__&o  p95_incidence1549__&o 
+p50_incidence1524w_&o  p5_incidence1524w_&o  p95_incidence1524w_&o 
+p50_incidence_sw_&o    p5_incidence_sw_&o    p95_incidence_sw_&o 
+p50_incidence_sd1564__&o p50_incidence_sd1564w_&o 
+
+p50_n_new_inf1564m_&o  p5_n_new_inf1564m_&o  p95_n_new_inf1564m_&o
+p50_n_new_inf1564w_&o  p5_n_new_inf1564w_&o  p95_n_new_inf1564w_&o
+p50_n_new_inf1549m_&o  p5_n_new_inf1549m_&o  p95_n_new_inf1549m_&o
+p50_n_new_inf1549w_&o  p5_n_new_inf1549w_&o  p95_n_new_inf1549w_&o
+p50_n_new_inf1549_&o   p5_n_new_inf1549_&o   p95_n_new_inf1549_&o
+p50_n_new_inf1524m_&o  p50_n_new_inf1524w_&o
+p50_n_new_inf2549m_&o  p50_n_new_inf2549w_&o
 ;
 %mend;
 %flow(o=1);
