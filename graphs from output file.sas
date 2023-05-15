@@ -77,6 +77,7 @@ run;
 /*proc freq data=b;table cald;run;*/
 proc sort;by cald option ;run;
 
+*INCLUDE ONLY STOCK VARIABLE AND VARIABLES THAT WE WANT TO GRAPH;
 %let var =  
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w n_sw_1599_	prev_sti_sw
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
@@ -2246,7 +2247,18 @@ proc freq data=b;
 table n_birth  n_give_birth_w_hiv  /*n_everpregn_w1524_  n_everpregn_hiv_w1524_*/ n_birth_with_inf_child
 incidence1549m	incidence1549w  incidence1549_  incidence1524w  incidence_sw /*incidence_sd1564_ incidence_sd1564w*/
 n_new_inf1564m	n_new_inf1564w	n_new_inf1549m  n_new_inf1549w  n_new_inf1549
-n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w;run;
+n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w
+/* AIDS DEATHS*/
+n_death_m  n_death_w
+/* YLL_80yLifeExpect_3Disc_A1599_M */
+
+n_tested_ancpd  n_test_anclabpd
+/* HIVST...*/
+n_tested_m_sympt  n_tested_w_sympt
+/*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
+n_tested_swprog  n_tested_sw  n_tested_m  n_tested_w  n_tested
+/*TOTHIVST_M1599_M...*/
+;run;
 
 *The following are commmenting out as not yest exported in current dataset;
 %var_cy(0,n_birth);%var_cy(0,n_give_birth_w_hiv);/*%var_cy(0,n_everpregn_w1524_);%var_cy(0,n_everpregn_hiv_w1524_);*/%var_cy(0,n_birth_with_inf_child);
@@ -2254,11 +2266,33 @@ n_new_inf1524m	n_new_inf1524w  n_new_inf2549m  n_new_inf2549w;run;
 /*%var_cy(0,incidence_sd1564_);%var_cy(0,incidence_sd1564w);*/
 %var_cy(0,n_new_inf1564m);%var_cy(0,n_new_inf1564w);%var_cy(0,n_new_inf1549m);%var_cy(0,n_new_inf1549w);%var_cy(0,n_new_inf1549);
 %var_cy(0,n_new_inf1524m);%var_cy(0,n_new_inf1524w);%var_cy(0,n_new_inf2549m);%var_cy(0,n_new_inf2549w);
+/* AIDS DEATHS*/
+%var_cy(0,n_death_m);%var_cy(0,n_death_w);
+/* YLL_80yLifeExpect_3Disc_A1599_M */
+
+%var_cy(0,n_tested_ancpd);%var_cy(0,n_test_anclabpd);
+/* HIVST...*/
+%var_cy(0,n_tested_m_sympt);%var_cy(0,n_tested_w_sympt);
+/*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
+%var_cy(0,n_tested_swprog);%var_cy(0,n_tested_sw);%var_cy(0,n_tested_m);%var_cy(0,n_tested_w);%var_cy(0,n_tested);
+/*TOTHIVST_M1599_M...*/
+;
 data   wide_allyears_0; merge 
 l_n_birth_0  l_n_give_birth_w_hiv_0  /*l_n_everpregn_w1524__0  l_n_everpregn_hiv_w1524__0*/ l_n_birth_with_inf_child_0
 l_incidence1549m_0	l_incidence1549w_0  l_incidence1549__0  l_incidence1524w_0  l_incidence_sw_0  l_incidence_sd1564__0  l_incidence_sd1564w_0
 l_n_new_inf1564m_0	l_n_new_inf1564w_0  l_n_new_inf1549m_0	l_n_new_inf1549w_0  l_n_new_inf1549_0
-l_n_new_inf1524m_0	l_n_new_inf1524w_0  l_n_new_inf2549m_0	l_n_new_inf2549w_0;
+l_n_new_inf1524m_0	l_n_new_inf1524w_0  l_n_new_inf2549m_0	l_n_new_inf2549w_0
+/* AIDS DEATHS*/
+l_n_death_m_0  l_n_death_w_0
+/* YLL_80yLifeExpect_3Disc_A1599_M */
+
+l_n_tested_ancpd_0  l_n_test_anclabpd_0
+/* HIVST...*/
+l_n_tested_m_sympt_0  l_n_tested_w_sympt_0
+/*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
+l_n_tested_swprog_0  l_n_tested_sw_0  l_n_tested_m_0  l_n_tested_w_0  l_n_tested_0
+/*TOTHIVST_M1599_M...*/
+;
 run;
 
 
@@ -2350,6 +2384,92 @@ AIDSDeaths_A1599_95LL
 AIDSDeaths_A1599_95UL	*/
 
 
+*** TOTAL DEATHS;
+rename P50_n_death_m_&o = TOTDeaths_M1599_M;
+rename P5_n_death_m_&o  = TOTDeaths_M1599_95LL;
+rename P95_n_death_m_&o = TOTDeaths_M1599_95UL;
+rename P50_n_death_w_&o = TOTDeaths_F1599_M;
+rename P5_n_death_w_&o  = TOTDeaths_F1599_95LL;
+rename P95_n_death_w_&o = TOTDeaths_F1599_95UL;
+
+** YLL_80yLifeExpect_3Disc_A1599_M;
+
+
+*** TESTING;
+rename P50_n_tested_ancpd_&o = Ntested_ANCPD_F1599_M; *This is set to 1 only at 1 point in time;
+rename P50_n_test_anclabpd_&o = Ntests_ANCPD_F1599_M;
+*rename P50_ _&o = NHIVST_PD_M1599_M;
+*rename P50_ _&o = NHIVST_PD_F1599_M;
+*rename P50_ _&o = NHIVST_SDNP_M1599_M;
+*rename P50_ _&o = NHIVST_SDNP_F1599_M;
+*rename P50_ _&o = NHIVST_SDPARTNER_M1599_M;
+*rename P50_ _&o = NHIVST_SDPARTNER_F1599_M;
+*Number of tests for HIV at facility, excluding ANC & PD, contacts testing for HIV at the facility and testing of FSW,
+among 15+ years old males with symptoms;
+rename P50_n_tested_m_sympt_&o = Ntests_FACSYMPT_M1599_M;
+rename P50_n_tested_w_sympt_&o = Ntests_FACSYMPT_F1599_M;
+*rename P50_ _&o = Ntests_FACNOSYMPT_M1599_M;
+*rename P50_ _&o = Ntests_FACNOSYMPT_F1599_M;
+*rename P50_ _&o = Ntests_IndexFAC_M1599_M;
+*rename P50_ _&o = Ntests_IndexFAC_F1599_M;
+*rename P50_ _&o = Ntests_RecInf_M1599_M;
+*rename P50_ _&o = Ntests_RecInf_F1599_M;
+*rename P50_ _&o = Ntests_COM_M1599_M;
+*rename P50_ _&o = Ntests_COM_F1599_M;
+*Number of FSW 15+ years old tested as part of a testing program for FSW;
+rename P50_n_tested_swprog_&o = Ntested_FSWprog_FSW1599_M;
+rename P50_n_tested_sw_&o = Ntests_FSW1599_M;
+rename P50_n_tested_m_&o = TOTTests_M1599_M;
+rename P5_n_tested_m_&o = TOTTests_M1599_95LL;
+rename P95_n_tested_m_&o = TOTTests_M1599_95UL;
+rename P50_n_tested_w_&o = TOTTests_F1599_M;
+rename P5_n_tested_w_&o = TOTTests_F1599_95LL;
+rename P95_n_tested_w_&o = TOTTests_F1599_95UL;
+rename P50_n_tested_&o = TOTTests_A1599_M;
+rename P5_n_tested_&o = TOTTests_A1599_95LL;
+rename P95_n_tested_&o = TOTTests_A1599_95UL;
+*rename P50_ _&o = TOTHIVST_M1599_M;
+*rename P5_ _&o = TOTHIVST_M1599_95LL;
+*rename P95_ _&o = TOTHIVST_M1599_95UL;
+*rename P50_ _&o = TOTHIVST_F1599_M;
+*rename P5_ _&o = TOTHIVST_F1599_95LL;
+*rename P95_ _&o = TOTHIVST_F1599_95UL;
+*rename P50_ _&o = TOTHIVST_A014_M;
+*rename P5_ _&o = TOTHIVST_A014_95LL;
+*rename P95_ _&o = TOTHIVST_A014_95UL;
+
+*** NUMBER OF POSITIVE TESTS;
+rename P50_ _&o = NPosTests_ANCPD_F1599_M;
+
+*rename P50_ _&o = NPosConfHIVST_PD_M1599_M;
+*rename P50_ _&o = NPosConfHIVST_PD_F1599_M;
+*rename P50_ _&o = NPosConfHIVST_SDNP_M1599_M;
+*rename P50_ _&o = NPosConfHIVST_SDNP_F1599_M;
+*rename P50_ _&o = NPosConfHIVST_SDPARTNER_M1599_M;
+*rename P50_ _&o = NPosConfHIVST_SDPARTNER_F1599_M;
+rename P50_ _&o = NPosTests_FAC_M1599_M;
+rename P50_ _&o = NPosTests_FAC_F1599_M;
+*rename P50_ _&o = NPosTests_IndexFAC_M1599_M;
+*rename P50_ _&o = NPosTests_IndexFAC_F1599_M;
+*rename P50_ _&o = NPosTests_RecInf_M1599_M;
+*rename P50_ _&o = NPosTests_RecInf_F1599_M;
+*rename P50_ _&o = NPosTests_COM_M1599_M;
+*rename P50_ _&o = NPosTests_COM_F1599_M;
+rename P50_ _&o = NPosTests_FSWprog_FSW1599_M;
+rename P50_ _&o = NPosTests_FSW1599_M;
+rename P50_ _&o = TOTPosTests_M1599_M;
+rename P5_ _&o = TOTPosTests_M1599_95LL;
+rename P95_ _&o = TOTPosTests_M1599_95UL;
+rename P50_ _&o = TOTPosTests_F1599_M;
+rename P5_ _&o = TOTPosTests_F1599_95LL;
+rename P95_ _&o = TOTPosTests_F1599_95UL;
+*rename P50_ _&o = TOTPosConfHIVST_M1599_M;
+*rename P5_ _&o = TOTPosConfHIVST_M1599_95LL;
+*rename P95_ _&o = TOTPosConfHIVST_M1599_95UL;
+*rename P50_ _&o = TOTPosConfHIVST_F1599_M;
+*rename P5_ _&o = TOTPosConfHIVST_F1599_95LL;
+*rename P95_ _&o = TOTPosConfHIVST_F1599_95UL;
+
 
 keep cald
 p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
@@ -2368,6 +2488,12 @@ p50_n_new_inf1549w_&o  p5_n_new_inf1549w_&o  p95_n_new_inf1549w_&o
 p50_n_new_inf1549_&o   p5_n_new_inf1549_&o   p95_n_new_inf1549_&o
 p50_n_new_inf1524m_&o  p50_n_new_inf1524w_&o
 p50_n_new_inf2549m_&o  p50_n_new_inf2549w_&o
+
+/**** AIDS DEATHS*/
+P50_n_death_m_&o  P5_n_death_m_&o  P95_n_death_m_&o 
+P50_n_death_w_&o  P5_n_death_w_&o  P95_n_death_w_&o 
+
+/** YLL_80yLifeExpect_3Disc_A1599_M*/
 ;
 %mend;
 %flow(o=1);
