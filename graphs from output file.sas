@@ -2190,8 +2190,8 @@ run;
 
   ***Macro var used to calculate means across each year and transpose to one line per run,
   need to write manually all the years to merge;
-
-  /*
+/*
+  
 proc sort data=b;by count_csim  cald ;run;
 data option_0;set b;if option=0;keep n_alive count_csim  cald ;run;
 proc means  noprint data=option_0; var n_alive; output out=y_2023 mean= alive_2023; by count_csim ; where 2022.5 <= cald < 2023.5; run;
@@ -2205,7 +2205,7 @@ data l_n_alive_0;set l_n_alive_0;
 *cald_c= substr(_NAME_,length(_NAME_)-3,4);
 *cald= input(cald_c,4.);
 cald_d= input(substr(_NAME_,length(_NAME_)-3,4),4.);
-  run;
+run;
 
 data l_n_alive_0;set l_n_alive_0;***creates one dataset per variable;
 p5_n_alive_0  = PCTL(5,of n_alive1-n_alive155);
