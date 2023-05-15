@@ -37,7 +37,7 @@
 								0.6    0.3   0.1);*Vale - 20220105;
 * date_test_rate_plateau;   date_test_rate_plateau = 2019 ;
 * fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
-							 %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5 0.75);
+							 %sample_uniform(fold_rate_decr_test_future, 0.00125 0.00165 0.0025 0.00375);
 
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;

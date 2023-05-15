@@ -357,7 +357,7 @@ newp_seed = 7;
 								2011.5 	2013.5 	2015.5 	2017.5 	2019.5, 
 								0.1 	0.1 	0.2 	0.3 	0.3);
 
-*% fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.25 0.33 0.5);
+*% fold_rate_decr_test_future; %sample_uniform(fold_rate_decr_test_future, 0.00125 0.00165 0.0025);
 
 							* dependent_on_time_step_length ;
 * incr_test_rate_sympt; 	%sample_uniform(incr_test_rate_sympt, 1.05 1.10 1.15 1.20 1.25);
@@ -2853,8 +2853,10 @@ if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 2 and gender=1 then do; rate_1sttest = rate_1sttest * 2.0; rate_reptest = rate_reptest * 2.0; end;
 	***Assuming testing rates are stable after 2022 by multiplying by fold_rate_decr_test_future;
 	if incr_test_year_i = 3 then do; 
-		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
-		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - ((caldate{t}-&year_interv)*an_lin_incr_test*fold_rate_decr_test_future);
+		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - 
+											((caldate{t}-&year_interv)*fold_rate_decr_test_future);
+		rate_reptest = 0.0000 + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test - 
+											((caldate{t}-&year_interv)*fold_rate_decr_test_future);
 		if gender=2 then do; rate_1sttest = rate_1sttest * rr_testing_female  ; rate_reptest = rate_reptest * rr_testing_female  ;   end;
 		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
@@ -14828,7 +14830,7 @@ total_yll80le=0;total_yllag=0;
 dyll_Optima80=0;dyll_GBD=0;
 
 if caldate&j = death and death ne . then do;
-	total_yll80le=80-agedeath;
+	total_yll80le=max(0,80-agedeath);
 
 
 	*Life expectancies are WestLevel26, as in Global burden of disease;
@@ -18660,7 +18662,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  fold_rate_decr_test_future
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
@@ -21358,7 +21360,7 @@ s_on3drug_antihyp_1549  s_on3drug_antihyp_5059 s_on3drug_antihyp_6069 s_on3drug_
 sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_mixing_matrix_w   p_rred_p  p_hsb_p  rred_initial newp_factor  fold_tr_newp
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
-fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
+fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  fold_rate_decr_test_future
 rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
