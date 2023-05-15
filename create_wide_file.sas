@@ -348,11 +348,21 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
+* n_diag_m;						n_diag_m = s_diag_this_period_m * &sf * 4;*VCMay2023;
+* n_diag_w;						n_diag_w = s_diag_this_period_w * &sf * 4;*VCMay2023;
 * n_diag_anc;					n_diag_anc = s_diag_this_period_f_anc * &sf * 4;
-* n_diag_anc;					n_diag_labdel = s_diag_this_period_labdel * &sf * 4;*VCMar2023;
-* n_diag_anc;					n_diag_pd = s_diag_this_period_f_pd * &sf * 4;*VCMar2023;
+* n_diag_labdel;				n_diag_labdel = s_diag_this_period_labdel * &sf * 4;*VCMar2023;
+* n_diag_pd;					n_diag_pd = s_diag_this_period_f_pd * &sf * 4;*VCMar2023;
+* n_diag_anclabpd;				n_diag_anclabpd = s_diag_thisper_anclabpd * &sf * 4;*VCMay2023;
+* n_diag_progsw; 				n_diag_progsw = s_diag_thisper_progsw * &sf * 4;*VCMay2023;
+* n_diag_sw; 					n_diag_sw = s_diag_thisper_sw * &sf * 4;*VCMay2023;
+
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
+* test_proppos_m;			 	if s_tested_m gt 0 then test_proppos_m = s_diag_this_period_m / s_tested_m;*VCMay2023;
+* test_proppos_w;				if s_tested_f gt 0 then test_proppos_w = s_diag_this_period_w / s_tested_f;*VCMay2023;
+* test_proppos_sw;				if s_tested_sw gt 0 then test_proppos_sw = s_diag_thisper_sw / s_tested_sw;*VCMay2023;
+* test_proppos_1524w; 			if s_tested_1524w gt 0 then test_proppos_1524w = s_diag_thisper_1524f /s_tested_1524w;*VCMay2023;
 
 * of people alive and within 1 year of infection, proportion diagnosed ;
 * prop_diag_infection_1yr;		prop_diag_infection_1yr = s_year_1_infection_diag / s_year_1_infection ;
@@ -880,7 +890,10 @@ end;
 			rate_dead_cvd_ge80w = (s_dead_cvd_ge80w * 4 * 100) / (s_ageg8084w + s_ageg85plw) ;
 
 
-* n_death_hivrel;				n_death_hivrel = s_death_hivrel_allage  * 4* &sf;
+* n_death_hivrel;				n_death_hivrel = s_death_hivrel  * 4* &sf;
+* n_death_hivrel_m;				n_death_hivrel_m = s_death_hivrel_m  * 4* &sf;
+* n_death_hivrel_w;				n_death_hivrel_w = (s_death_hivrel - s_death_hivrel_m) * 4* &sf;
+
 * n_death_covid;				n_death_covid = s_death_dcause3_allage  * 4* &sf;
 * n_death;						n_death = s_dead_allage  * 4 * &sf;
 * n_death_m;					n_death_m = s_deadm_all  * 4 * &sf;
@@ -1015,11 +1028,13 @@ p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
-p_anc n_diagnosed n_diag_anc n_diag_labdel  n_diag_pd p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
+p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw 
+p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
 prop_elig_on_prep n_hiv1_prep  n_prep n_prep_1524w n_start_rest_prep_oral n_start_rest_prep_oral n_prep_ever  n_covid  n_death_covid n_death 
-n_death_m n_death_w n_death_hivrel /*p_death_hivrel_age_le64 */
+n_death_m n_death_w n_death_hivrel n_death_hivrel_m n_death_hivrel_w /*p_death_hivrel_age_le64 */
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
-incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw incidence_sd1564_ incidence_sd1564w test_prop_positive  p_newp_prep  
+incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw incidence_sd1564_ incidence_sd1564w test_prop_positive 
+test_proppos_m  test_proppos_w  test_proppos_sw test_proppos_1524w p_newp_prep  
 p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  
 
 p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
@@ -1114,7 +1129,7 @@ prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 prevalence_hiv_preg prevalence1549preg prevalence1524preg n_onart_w n_onart_m n_onart_1524_ n_art_start_y p_diag_w p_diag_m p_onart_vl1000 
 /*n_death_hiv_m n_death_hiv_w*/ n_tested_m n_tested_w
-test_prop_positive   eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
+eff_rate_choose_stop_prep    sens_vct_test_type_3  prep_efficacy   p_ep
 p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 s_cost_prep s_cost_prep_visit
 dcost_80 ddaly_80
