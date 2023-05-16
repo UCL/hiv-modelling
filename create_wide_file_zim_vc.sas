@@ -459,6 +459,127 @@ s_I_offart_SIlt6m8084w s_I_offart_SIgt6m8084w
 ;run;
 
 
+
+proc sort data=y; by cald run ;run;
+data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit = 275  ;
+%let year_end = 2045 ;
+proc sort;by cald ;run;
+
+
+%let var =
+s_dead_undiag 
+s_dead_undiag_m  s_dead_undiag_w  
+s_dead_undiag1519m  s_dead_undiag2024m  s_dead_undiag2529m  s_dead_undiag3034m  s_dead_undiag3539m  
+s_dead_undiag4044m  s_dead_undiag4549m  s_dead_undiag5054m  s_dead_undiag5559m  s_dead_undiag6064m  
+s_dead_undiag6569m  s_dead_undiag7074m  s_dead_undiag7579m  s_dead_undiag8084m  
+s_dead_undiag1519w  s_dead_undiag2024w  s_dead_undiag2529w  s_dead_undiag3034w  s_dead_undiag3539w  
+s_dead_undiag4044w  s_dead_undiag4549w  s_dead_undiag5054w  s_dead_undiag5559w  s_dead_undiag6064w  
+s_dead_undiag6569w  s_dead_undiag7074w  s_dead_undiag7579w  s_dead_undiag8084w  ;
+run;
+
+
+
+  ***Macro var used to calculate means across each year and transpose to one line per run,
+  need to write manually all the years to merge;
+/*
+  
+proc sort data=y; by count_csim cald ;run;
+data one;set y;keep s_dead_undiag count_csim cald ;run;
+proc means  noprint data=one; var s_dead_undiag; output out=y_00 mean= s_dead_undiag_00; by count_csim ; where 2000 <= cald < 2001;run; 
+proc means  noprint data=one; var s_dead_undiag; output out=y_01 mean= s_dead_undiag_01; by count_csim ; where 2001 <= cald < 2002;run;
+
+data s_dead_undiag ; merge y_00 y_01  ;  
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc transpose data=s_dead_undiag out=l_s_dead_undiag prefix=s_dead_undiag; id count_csim;run;
+
+data l_s_dead_undiag;set l_s_dead_undiag;
+*cald_c= substr(_NAME_,length(_NAME_)-3,4);
+*cald= input(cald_c,4.);
+cald_d= input(substr(_NAME_,length(_NAME_)-3,4),4.);
+run;
+
+data l_s_dead_undiag;set l_s_dead_undiag;***creates one dataset per variable;
+p5_s_dead_undiag  = PCTL(5,of s_dead_undiag1-s_dead_undiag55);
+p95_s_dead_undiag = PCTL(95,of s_dead_undiag1-s_dead_undiag55);
+p50_s_dead_undiag = median(of s_dead_undiag1-s_dead_undiag55);
+keep cald p5_s_dead_undiag p95_s_dead_undiag p50_s_dead_undiag;
+  run;
+  */
+
+%macro var_death(v);
+data one;set y;keep &v count_csim cald;
+proc sort;by count_csim cald;
+%let count=2000;
+%do %while (&count le 2050);
+proc means noprint data = one; var&v; output out = y_&count mean=&v._&count; by count_csim ; where &count <= cald < &count+1;
+%let count = %eval(&count + 1);
+%end;
+
+data &v ;merge y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 /*y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072*/;  
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc datasets nodetails nowarn nolist;
+delete   y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 /*y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072*/;quit;
+
+proc transpose data=&v out=l_&v prefix=&v;id  count_csim;run;
+data l_&v;set l_&v;
+cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
+
+data l_&v_&s;set l_&v;
+p5_&v  = PCTL(5,of &v.1-&v.&nfit);
+p95_&v = PCTL(95,of &v.1-&v.&nfit);
+p50_&v = median(of &v.1-&v.&nfit);
+keep cald p5_&v p95_&v p50_&v;
+run;
+proc datasets nodetails nowarn nolist;delete &v;run;
+%mend var_death;
+run;
+
+
+
+
+%macro var_cy(s,v);
+data option_&s;set b;if option=&s;keep &v count_csim cald ;
+proc sort data=option_&s;by count_csim  cald ;
+%let count = 2023;
+%do %while (&count le 2072);
+proc means  noprint data=option_&s; var &v; output out=y_&count mean=&v._&count; by count_csim ; where &count-0.5 <= cald < &count+0.5;
+%let count = %eval(&count + 1);
+%end;
+data &v ; merge y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072;  
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc datasets nodetails nowarn nolist;
+delete   y_2023 y_2024 y_2025 y_2026 y_2027 y_2028 y_2029 y_2030 y_2031 y_2032 y_2033 y_2034 y_2035 y_2036 y_2037 y_2038 y_2039 y_2040 
+  y_2041 y_2042 y_2043 y_2044 y_2045 y_2046 y_2047 y_2048 y_2049 y_2050 y_2051 y_2052 y_2053 y_2054 y_2055 y_2056 y_2057 y_2058 y_2059 y_2060  
+  y_2061 y_2062 y_2063 y_2064 y_2065 y_2066 y_2067 y_2068 y_2069 y_2070 y_2071 y_2072;quit;
+
+proc transpose data=&v out=l_&v._&s prefix=&v;id  count_csim;run;
+data l_&v._&s;set l_&v._&s;
+cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
+
+data l_&v._&s;set l_&v._&s;***creates one dataset per variable;
+p5_&v._&s  = PCTL(5,of &v.1-&v.&nfit);
+p95_&v._&s = PCTL(95,of &v.1-&v.&nfit);
+p50_&v._&s = median(of &v.1-&v.&nfit);
+keep cald p5_&v._&s p95_&v._&s p50_&v._&s;
+run;
+proc datasets nodetails nowarn nolist;delete &v;run;
+%mend var_cy;
+
+
+
+
+
+
+
+
 data b; 
 set y;
   options nomprint;

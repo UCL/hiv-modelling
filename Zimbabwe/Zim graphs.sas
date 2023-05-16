@@ -1,8 +1,15 @@
-libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Deaths Zim\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
+
 
 data a;
-set a.Zim_03;
+set a.zim_19apr23;
+if run=. then delete;
+
+if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
+takes ages to run so cut down dataset;
 proc sort;by run;run;
+proc freq;table cald;run;
+
 
 data sf;
 set a;
