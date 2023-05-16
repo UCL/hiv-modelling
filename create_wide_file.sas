@@ -462,6 +462,15 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_init_prep_vr_sw;   			n_init_prep_vr_sw      = s_init_prep_vr_sw * 4 * &sf;   
 * n_init_prep_vr_sdc; 			n_init_prep_vr_sdc     = s_init_prep_vr_sdc * 4 * &sf; 
 
+* n_prep_oral_ly_1524w;			n_prep_oral_ly_1524w   = s_prep_oral_ly_1524w * &sf;     
+* n_prep_oral_ly_sw; 			n_prep_oral_ly_sw 	   = s_prep_oral_ly_sw * &sf;     
+* n_prep_oral_ly_sdc; 			n_prep_oral_ly_sdc 	   = s_prep_oral_ly_sdc * &sf;   
+* n_prep_inj_ly_1524w; 			n_prep_inj_ly_1524w    = s_prep_inj_ly_1524w * &sf;      
+* n_prep_inj_ly_sw;  			n_prep_inj_ly_sw  	   = s_prep_inj_ly_sw * &sf;      
+* n_prep_inj_ly_sdc;  			n_prep_inj_ly_sdc      = s_prep_inj_ly_sdc * &sf;    
+* n_prep_vr_ly_1524w;  			n_prep_vr_ly_1524w     = s_prep_vr_ly_1524w * &sf;       
+* n_prep_vr_ly_sw;    			n_prep_vr_ly_sw        = s_prep_vr_ly_sw * &sf;     
+* n_prep_vr_ly_sdc;   			n_prep_vr_ly_sdc       = s_prep_vr_ly_sdc * &sf;   
 
 * n_prep_oral_ever_1524w;		n_prep_oral_ever_1524w = s_prep_oral_ever_1524w * &sf;   
 * n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * &sf;   
@@ -1059,6 +1068,9 @@ p_prep_ever
 n_init_prep_oral_1524w  n_init_prep_oral_sw  n_init_prep_oral_sdc
 n_init_prep_inj_1524w   n_init_prep_inj_sw   n_init_prep_inj_sdc
 n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
+n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
+n_prep_inj_ly_1524w		n_prep_inj_ly_sw	n_prep_inj_ly_sdc
+n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc
 n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
 n_prep_inj_ever_1524w	n_prep_inj_ever_sw	 n_prep_inj_ever_sdc
 n_prep_vr_ever_1524w    n_prep_vr_ever_sw  	 n_prep_vr_ever_sdc

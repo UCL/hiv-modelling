@@ -2269,7 +2269,23 @@ test_proppos_1524w  test_proppos_sw
 
 /* DREAMS */
 
-;run;
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+n_new_vmmc1549m
+n_init_prep_oral_1524w n_prep_oral_ly_1524w n_prep_oral_ever_1524w 
+n_init_prep_oral_sw    n_prep_oral_ly_sw 	n_prep_oral_ever_sw 
+n_init_prep_oral_sdc   n_prep_oral_ly_sdc 	n_prep_oral_ever_sdc
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+n_init_prep_vr_1524w  n_prep_vr_ly_1524w	n_prep_vr_ever_1524w 
+n_init_prep_vr_sw 	  n_prep_vr_ly_sw 		n_prep_vr_ever_sw
+n_init_prep_vr_sdc    n_prep_vr_ly_sdc	 	n_prep_vr_ever_sdc
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+n_init_prep_inj_1524w  n_prep_inj_ly_1524w	n_prep_inj_ever_1524w
+n_init_prep_inj_sw     n_prep_inj_ly_sw		n_prep_inj_ever_sw 
+n_init_prep_inj_sdc    n_prep_inj_ly_sdc 	n_prep_inj_ever_sdc
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
+;
+run;
 
 *The following are commmenting out as not yest exported in current dataset;
 %var_cy(0,n_birth);%var_cy(0,n_give_birth_w_hiv);/*%var_cy(0,n_everpregn_w1524_);%var_cy(0,n_everpregn_hiv_w1524_);*/%var_cy(0,n_birth_with_inf_child);
@@ -2297,6 +2313,22 @@ test_proppos_1524w  test_proppos_sw
 %var_cy(0,test_proppos_1524w);%var_cy(0,test_proppos_sw);
 
 /* DREAMS */
+
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+%var_cy(0,n_new_vmmc1549m);
+%var_cy(0,n_init_prep_oral_1524w);%var_cy(0,n_prep_oral_ly_1524w);%var_cy(0,n_prep_oral_ever_1524w);
+%var_cy(0,n_init_prep_oral_sw);%var_cy(0,n_prep_oral_ly_sw);%var_cy(0,n_prep_oral_ever_sw);
+%var_cy(0,n_init_prep_oral_sdc);%var_cy(0,n_prep_oral_ly_sdc);%var_cy(0,n_prep_oral_ever_sdc);
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+%var_cy(0,n_init_prep_vr_1524w);%var_cy(0,n_prep_vr_ly_1524w);%var_cy(0,n_prep_vr_ever_1524w);
+%var_cy(0,n_init_prep_vr_sw);%var_cy(0,n_prep_vr_ly_sw);%var_cy(0,n_prep_vr_ever_sw);
+%var_cy(0,n_init_prep_vr_sdc);%var_cy(0,n_prep_vr_ly_sdc);%var_cy(0,n_prep_vr_ever_sdc);
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+%var_cy(0,n_init_prep_inj_1524w);%var_cy(0,n_prep_inj_ly_1524w);%var_cy(0,n_prep_inj_ever_1524w);
+%var_cy(0,n_init_prep_inj_sw);%var_cy(0,n_prep_inj_ly_sw);%var_cy(0,n_prep_inj_ever_sw);
+);%var_cy(0,n_init_prep_inj_sdc);%var_cy(0,n_prep_inj_ly_sdc);%var_cy(0,n_prep_inj_ever_sdc);
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
 ;
 data   wide_allyears_0; merge 
 l_n_birth_0  l_n_give_birth_w_hiv_0  /*l_n_everpregn_w1524__0  l_n_everpregn_hiv_w1524__0*/ l_n_birth_with_inf_child_0
@@ -2325,6 +2357,22 @@ l_test_prop_positive_0	l_test_prop_positive_0  l_test_prop_positive_0
 l_test_proppos_1524w_0   l_test_proppos_sw_0 
 
 /* DREAMS */
+
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+l_n_new_vmmc1549m_0
+l_n_init_prep_oral_1524w_0 l_n_prep_oral_ly_1524w_0   l_n_prep_oral_ever_1524w_0 
+l_n_init_prep_oral_sw_0    l_n_prep_oral_ly_sw_0 		l_n_prep_oral_ever_sw_0 
+l_n_init_prep_oral_sdc_0   l_n_prep_oral_ly_sdc_0 	l_n_prep_oral_ever_sdc_0
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+l_n_init_prep_vr_1524w_0   l_n_prep_vr_ly_1524w_0		l_n_prep_vr_ever_1524w_0 
+l_n_init_prep_vr_sw_0 	  l_n_prep_vr_ly_sw_0 		l_n_prep_vr_ever_sw_0
+l_n_init_prep_vr_sdc_0     l_n_prep_vr_ly_sdc_0	 	l_n_prep_vr_ever_sdc_0
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+l_n_init_prep_inj_1524w_0  l_n_prep_inj_ly_1524w_0	l_n_prep_inj_ever_1524w_0
+l_n_init_prep_inj_sw_0     l_n_prep_inj_ly_sw_0		l_n_prep_inj_ever_sw_0 
+l_n_init_prep_inj_sdc_0    l_n_prep_inj_ly_sdc_0 		l_n_prep_inj_ever_sdc_0
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/	
 ;
 run;
 
@@ -2533,61 +2581,46 @@ rename P50_ _&o = NFSWprogEver_FSW1599_M;
 *rename P50_ _&o = NCUPP_A1599_M;
 *Number of condoms distributed among adults 15+ years old;
 *rename P50_ _&o = NCondoms_A1599_M;
-rename P50_n_new_vmmc1549m_&o = NVMMC_M1549_Mp;
-*Jenny will provide the following;
+rename P50_n_new_vmmc1549m_&o = NVMMC_M1549_M;
 
-/*n_init_prep_oral_1524w  n_init_prep_oral_sw  n_init_prep_oral_sdc
-n_init_prep_inj_1524w   n_init_prep_inj_sw   n_init_prep_inj_sdc
-n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
-n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
-n_prep_inj_ever_1524w	n_prep_inj_ever_sw	 n_prep_inj_ever_sdc
-n_prep_vr_ever_1524w    n_prep_vr_ever_sw  	 n_prep_vr_ever_sdc*/
+rename P50_n_init_prep_oral_1524w_&o = NTDFPrEPinit_F1524_M;
+rename P50_n_prep_oral_ly_1524w_&o = NTDFPrEP_F1524_M;
+rename P50_n_prep_oral_ever_1524w_&o = NTDFPrEPEver_F1524_M;
+rename P50_n_init_prep_oral_sw_&o = NTDFPrEPinit_FSW1599_M;
+rename P50_n_prep_oral_ly_sw_&o = NTDFPrEP_FSW1599_M;
+rename P50_n_prep_oral_ever_sw_&o = NTDFPrEPEver_FSW1599_M;
+rename P50_n_init_prep_oral_sdc_&o = NTDFPrEPinit_SDCA1599_M;
+rename P50_n_prep_oral_ly_sdc_&o = NTDFPrEP_SDCA1599_M;
+rename P50_n_prep_oral_ever_sdc_&o = NTDFPrEPEver_SDCA1599_M;
+*rename P50_ _&o = NTDFPrEPinit_pregbfF1549_M;
+*rename P50_ _&o = NTDFPrEP_pregbfF1549_M;
+*rename P50_ _&o = NTDFPrEPEver_pregbfF1549_M;
 
-rename P50_ _&o = NTDFPrEPinit_F1524_M;
-rename P50_ _&o = NTDFPrEP_F1524_M;
-rename P50_ _&o = NTDFPrEPEver_F1524_M;
-rename P50_ _&o = NTDFPrEPinit_FSW1599_M;
-rename P50_ _&o = NTDFPrEP_FSW1599_M;
-rename P50_ _&o = NTDFPrEPEver_FSW1599_M;
-rename P50_ _&o = NTDFPrEPinit_SDCA1599_M;
-rename P50_ _&o = NTDFPrEP_SDCA1599_M;
-rename P50_ _&o = NTDFPrEPEver_SDCA1599_M;
-rename P50_ _&o = NTDFPrEPinit_MSM1599_M;
-rename P50_ _&o = NTDFPrEP_MSM1599_M;
-rename P50_ _&o = NTDFPrEPEver_MSM1599_M;
-rename P50_ _&o = NTDFPrEPinit_pregbfF1549_M;
-rename P50_ _&o = NTDFPrEP_pregbfF1549_M;
-rename P50_ _&o = NTDFPrEPEver_pregbfF1549_M;
-
-*rename P50_ _&o = NDPVPrEPinit_F1524_M;
-*rename P50_ _&o = NDPVPrEP_F1524_M;
-*rename P50_ _&o = NDPVPrEPEver_F1524_M;
-*rename P50_ _&o = NDPVPrEPinit_FSW1599_M;
-*rename P50_ _&o = NDPVPrEP_FSW1599_M;
-*rename P50_ _&o = NDPVPrEPEver_FSW1599_M;
-*rename P50_ _&o = NDPVPrEPinit_SDCF1599_M;
-*rename P50_ _&o = NDPVPrEP_SDCF1599_M;
-*rename P50_ _&o = NDPVPrEPEver_SDCF1599_M;
+rename P50_n_init_prep_vr_1524w_&o = NDPVPrEPinit_F1524_M;
+rename P50_n_prep_vr_ly_1524w_&o = NDPVPrEP_F1524_M;
+rename P50_n_prep_vr_ever_1524w_&o = NDPVPrEPEver_F1524_M;
+rename P50_n_init_prep_vr_sw_&o = NDPVPrEPinit_FSW1599_M;
+rename P50_n_prep_vr_ly_sw_&o = NDPVPrEP_FSW1599_M;
+rename P50_n_prep_vr_ever_sw_&o = NDPVPrEPEver_FSW1599_M;
+rename P50_n_init_prep_vr_sdc_&o = NDPVPrEPinit_SDCF1599_M;
+rename P50_n_prep_vr_ly_sdc_&o = NDPVPrEP_SDCF1599_M;
+rename P50_n_prep_vr_ever_sdc_&o = NDPVPrEPEver_SDCF1599_M;
 *rename P50_ _&o = NDPVPrEPinit_pregbfF1549_M;
 *rename P50_ _&o = NDPVPrEP_pregbfF1549_M;
 *rename P50_ _&o = NDPVPrEPEver_pregbfF1549_M;
 
-*rename P50_ _&o = NCABPrEPinit_F1524_M;
-*rename P50_ _&o = NCABPrEP_F1524_M;
-*rename P50_ _&o = NCABPrEPEver_F1524_M;
-*rename P50_ _&o = NCABPrEPinit_FSW1599_M;
-*rename P50_ _&o = NCABPrEP_FSW1599_M;
-*rename P50_ _&o = NCABPrEPEver_FSW1599_M;
-*rename P50_ _&o = NCABPrEPinit_SDCA1599_M;
-*rename P50_ _&o = NCABPrEP_SDCA1599_M;
-*rename P50_ _&o = NCABPrEPEver_SDCA1599_M;
-*rename P50_ _&o = NCABPrEPinit_MSM1599_M;
-*rename P50_ _&o = NCABPrEP_MSM1599_M;
-*rename P50_ _&o = NCABPrEPEver_MSM1599_M;
+rename P50_n_init_prep_inj_1524w_&o = NCABPrEPinit_F1524_M;
+rename P50_n_prep_inj_ly_1524w_&o = NCABPrEP_F1524_M;
+rename P50_n_prep_inj_ever_1524w_&o = NCABPrEPEver_F1524_M;
+rename P50_n_init_prep_inj_sw_&o = NCABPrEPinit_FSW1599_M;
+rename P50_n_prep_inj_ly_sw_&o = NCABPrEP_FSW1599_M;
+rename P50_n_prep_inj_ever_sw_&o = NCABPrEPEver_FSW1599_M;
+rename P50_n_init_prep_inj_sdc_&o = NCABPrEPinit_SDCA1599_M;
+rename P50_n_prep_inj_ly_sdc_&o = NCABPrEP_SDCA1599_M;
+rename P50_n_prep_inj_ever_sdc_&o = NCABPrEPEver_SDCA1599_M;
 *rename P50_ _&o = NCABPrEPinit_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEP_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEPEver_pregbfF1549_M;
-
 
 keep cald
 p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
@@ -2639,6 +2672,22 @@ P50_test_prop_positive_&o	P5_test_prop_positive_&o  P95_test_prop_positive_&o
 P50_test_proppos_1524w_&o   P50_test_proppos_sw_&o 
 
 /* DREAMS */
+
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+P50_n_new_vmmc1549m_&o
+P50_n_init_prep_oral_1524w_&o P50_n_prep_oral_ly_1524w_&o   P50_n_prep_oral_ever_1524w_&o 
+P50_n_init_prep_oral_sw_&o    P50_n_prep_oral_ly_sw_&o 		P50_n_prep_oral_ever_sw_&o 
+P50_n_init_prep_oral_sdc_&o   P50_n_prep_oral_ly_sdc_&o 	P50_n_prep_oral_ever_sdc_&o
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+P50_n_init_prep_vr_1524w_&o   P50_n_prep_vr_ly_1524w_&o		P50_n_prep_vr_ever_1524w_&o 
+P50_n_init_prep_vr_sw_&o 	  P50_n_prep_vr_ly_sw_&o 		P50_n_prep_vr_ever_sw_&o
+P50_n_init_prep_vr_sdc_&o     P50_n_prep_vr_ly_sdc_&o	 	P50_n_prep_vr_ever_sdc_&o
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+P50_n_init_prep_inj_1524w_&o  P50_n_prep_inj_ly_1524w_&o	P50_n_prep_inj_ever_1524w_&o
+P50_n_init_prep_inj_sw_&o     P50_n_prep_inj_ly_sw_&o		P50_n_prep_inj_ever_sw_&o 
+P50_n_init_prep_inj_sdc_&o    P50_n_prep_inj_ly_sdc_&o 		P50_n_prep_inj_ever_sdc_&o
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
 ;
 %mend;
 %flow(o=1);
