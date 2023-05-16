@@ -22,7 +22,7 @@ prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
 prevalence_vg1000_ = prevalence_vg1000;
 
-%let single_var =  n_death_hiv        ;
+%let single_var =  n_prep_any    ;
 
 
 proc sort data=b; by cald run ;run;
@@ -246,7 +246,7 @@ ods html ;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2025 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
 
 label p50_n_tested_0 = "option 0";
@@ -292,8 +292,6 @@ label p50_p_onart_3 = "option_3";
 run;quit;
 
 ods html close;
-
-
 
 
 ods html;
@@ -374,33 +372,85 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_death_hiv";
+Title    height=1.5 justify=center "n_prep_any";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 50000  by 5000 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 10000 ) valueattrs=(size=10);
 
-label p50_n_death_hiv_0 = "option 0";
-label p50_n_death_hiv_1 = "option_1";
-label p50_n_death_hiv_2 = "option_2";
-label p50_n_death_hiv_3 = "option_3";
+label p50_n_prep_any_0 = "option 0";
+label p50_n_prep_any_1 = "option_1";
+label p50_n_prep_any_2 = "option_2";
+label p50_n_prep_any_3 = "option_3";
 
-  series  x=cald y=p50_n_death_hiv_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_0 	upper=p95_n_death_hiv_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_1/	lineattrs = (color=yellow thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_1 	upper=p95_n_death_hiv_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_2/	lineattrs = (color=blue thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_2 	upper=p95_n_death_hiv_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
-  series  x=cald y=p50_n_death_hiv_3/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_death_hiv_3 	upper=p95_n_death_hiv_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
 
+/*
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "n_prep_any";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 100000 ) valueattrs=(size=10);
+
+label p50_n_prep_any_0 = "option 0";
+label p50_n_prep_any_1 = "option_1";
+label p50_n_prep_any_2 = "option_2";
+label p50_n_prep_any_3 = "option_3";
+
+  series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
+
+
+
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "Proportion diagnosed";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+
+label p50_p_diag_0 = "option 0";
+label p50_p_diag_1 = "option_1";
+label p50_p_diag_2 = "option_2";
+label p50_p_diag_3 = "option_3";
+
+  series  x=cald y=p50_p_diag_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_diag_0 	upper=p95_p_diag_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_1/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_p_diag_1 	upper=p95_p_diag_1  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_2/	lineattrs = (color=blue thickness = 4);
+  band    x=cald lower=p5_p_diag_2 	upper=p95_p_diag_2  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+  series  x=cald y=p50_p_diag_3/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_diag_3 	upper=p95_p_diag_3  / transparency=0.9 fillattrs = (color=str) legendlabel= "90% range";
+
+run;quit;
+
+ods html close;
 
 */

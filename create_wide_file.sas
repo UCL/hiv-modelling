@@ -320,16 +320,42 @@ sw_trans_matrix;
 ***SAVE DATASET READY FOR ANALYSIS;
 data a.wide_intensive3;
 merge   wide_outputs  wide_par ;  
-by run;run;
+by run;
 
 
 
+d_ddaly_23_73_2_1 = ddaly_23_73_2 - ddaly_23_73_1 ;  
+d_ddaly_23_73_3_1 = ddaly_23_73_3 - ddaly_23_73_1 ;  
+d_ddaly_23_73_4_1 = ddaly_23_73_4 - ddaly_23_73_1 ;  
 
+d_dcost_23_73_2_1 = dcost_23_73_2 - dcost_23_73_1 ;  
+d_dcost_23_73_3_1 = dcost_23_73_3 - dcost_23_73_1 ;  
+d_dcost_23_73_4_1 = dcost_23_73_4 - dcost_23_73_1 ;  
+
+
+netddaly_23_73_1 = ddaly_23_73_1 + (dcost_23_73_1 / 0.0005); 
+netddaly_23_73_2 = ddaly_23_73_2 + (dcost_23_73_2 / 0.0005); 
+netddaly_23_73_3 = ddaly_23_73_3 + (dcost_23_73_3 / 0.0005); 
+netddaly_23_73_4 = ddaly_23_73_4 + (dcost_23_73_4 / 0.0005); 
 
 
 
 proc means data=a.wide_intensive3;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 
-dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4  ;
+dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4
+
+d_ddaly_23_73_2_1 
+d_ddaly_23_73_3_1 
+d_ddaly_23_73_4_1 
+d_dcost_23_73_2_1 
+d_dcost_23_73_3_1 
+d_dcost_23_73_4_1 
+
+netddaly_23_73_1 netddaly_23_73_2 netddaly_23_73_3 netddaly_23_73_4 
+
+incidence1549_23_28_1 incidence1549_23_28_2 incidence1549_23_28_3 incidence1549_23_28_4 
+
+
+  ;
 run;
 
 
