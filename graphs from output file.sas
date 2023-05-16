@@ -2533,54 +2533,60 @@ rename P50_ _&o = NFSWprogEver_FSW1599_M;
 *rename P50_ _&o = NCUPP_A1599_M;
 *Number of condoms distributed among adults 15+ years old;
 *rename P50_ _&o = NCondoms_A1599_M;
-*arrivata qua;
-rename P50_ _&o = NVMMC_M1549_M
-rename P50_ _&o = NTDFPrEPinit_F1524_M
-rename P50_ _&o = NTDFPrEP_F1524_M
-rename P50_ _&o = NTDFPrEPEver_F1524_M
-rename P50_ _&o = NTDFPrEPinit_FSW1599_M
-rename P50_ _&o = NTDFPrEP_FSW1599_M
-rename P50_ _&o = NTDFPrEPEver_FSW1599_M
-rename P50_ _&o = NTDFPrEPinit_SDCA1599_M
-rename P50_ _&o = NTDFPrEP_SDCA1599_M
-rename P50_ _&o = NTDFPrEPEver_SDCA1599_M
-rename P50_ _&o = NTDFPrEPinit_MSM1599_M
-rename P50_ _&o = NTDFPrEP_MSM1599_M
-rename P50_ _&o = NTDFPrEPEver_MSM1599_M
-rename P50_ _&o = NTDFPrEPinit_pregbfF1549_M
-rename P50_ _&o = NTDFPrEP_pregbfF1549_M
-rename P50_ _&o = NTDFPrEPEver_pregbfF1549_M
-rename P50_ _&o = NDPVPrEPinit_F1524_M
-rename P50_ _&o = NDPVPrEP_F1524_M
-rename P50_ _&o = NDPVPrEPEver_F1524_M
-rename P50_ _&o = NDPVPrEPinit_FSW1599_M
-rename P50_ _&o = NDPVPrEP_FSW1599_M
-rename P50_ _&o = NDPVPrEPEver_FSW1599_M
-rename P50_ _&o = NDPVPrEPinit_SDCF1599_M
-rename P50_ _&o = NDPVPrEP_SDCF1599_M
-rename P50_ _&o = NDPVPrEPEver_SDCF1599_M
-rename P50_ _&o = NDPVPrEPinit_pregbfF1549_M
-rename P50_ _&o = NDPVPrEP_pregbfF1549_M
-rename P50_ _&o = NDPVPrEPEver_pregbfF1549_M
-rename P50_ _&o = NCABPrEPinit_F1524_M
-rename P50_ _&o = NCABPrEP_F1524_M
-rename P50_ _&o = NCABPrEPEver_F1524_M
-rename P50_ _&o = NCABPrEPinit_FSW1599_M
-rename P50_ _&o = NCABPrEP_FSW1599_M
-rename P50_ _&o = NCABPrEPEver_FSW1599_M
-rename P50_ _&o = NCABPrEPinit_SDCA1599_M
-rename P50_ _&o = NCABPrEP_SDCA1599_M
-rename P50_ _&o = NCABPrEPEver_SDCA1599_M
-rename P50_ _&o = NCABPrEPinit_MSM1599_M
-rename P50_ _&o = NCABPrEP_MSM1599_M
-rename P50_ _&o = NCABPrEPEver_MSM1599_M
-rename P50_ _&o = NCABPrEPinit_pregbfF1549_M
-rename P50_ _&o = NCABPrEP_pregbfF1549_M
-rename P50_ _&o = NCABPrEPEver_pregbfF1549_M
-rename P50_ _&o = NPEPocc_A1599_M
-rename P50_ _&o = NPEPoccEver_A1599_M
-rename P50_ _&o = NPEPgbv_F1599_M
-rename P50_ _&o = NPEPgbvEver_F1599_M
+rename P50_n_new_vmmc1549m_&o = NVMMC_M1549_Mp;
+*Jenny will provide the following;
+
+/*n_init_prep_oral_1524w  n_init_prep_oral_sw  n_init_prep_oral_sdc
+n_init_prep_inj_1524w   n_init_prep_inj_sw   n_init_prep_inj_sdc
+n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
+n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
+n_prep_inj_ever_1524w	n_prep_inj_ever_sw	 n_prep_inj_ever_sdc
+n_prep_vr_ever_1524w    n_prep_vr_ever_sw  	 n_prep_vr_ever_sdc*/
+
+rename P50_ _&o = NTDFPrEPinit_F1524_M;
+rename P50_ _&o = NTDFPrEP_F1524_M;
+rename P50_ _&o = NTDFPrEPEver_F1524_M;
+rename P50_ _&o = NTDFPrEPinit_FSW1599_M;
+rename P50_ _&o = NTDFPrEP_FSW1599_M;
+rename P50_ _&o = NTDFPrEPEver_FSW1599_M;
+rename P50_ _&o = NTDFPrEPinit_SDCA1599_M;
+rename P50_ _&o = NTDFPrEP_SDCA1599_M;
+rename P50_ _&o = NTDFPrEPEver_SDCA1599_M;
+rename P50_ _&o = NTDFPrEPinit_MSM1599_M;
+rename P50_ _&o = NTDFPrEP_MSM1599_M;
+rename P50_ _&o = NTDFPrEPEver_MSM1599_M;
+rename P50_ _&o = NTDFPrEPinit_pregbfF1549_M;
+rename P50_ _&o = NTDFPrEP_pregbfF1549_M;
+rename P50_ _&o = NTDFPrEPEver_pregbfF1549_M;
+
+*rename P50_ _&o = NDPVPrEPinit_F1524_M;
+*rename P50_ _&o = NDPVPrEP_F1524_M;
+*rename P50_ _&o = NDPVPrEPEver_F1524_M;
+*rename P50_ _&o = NDPVPrEPinit_FSW1599_M;
+*rename P50_ _&o = NDPVPrEP_FSW1599_M;
+*rename P50_ _&o = NDPVPrEPEver_FSW1599_M;
+*rename P50_ _&o = NDPVPrEPinit_SDCF1599_M;
+*rename P50_ _&o = NDPVPrEP_SDCF1599_M;
+*rename P50_ _&o = NDPVPrEPEver_SDCF1599_M;
+*rename P50_ _&o = NDPVPrEPinit_pregbfF1549_M;
+*rename P50_ _&o = NDPVPrEP_pregbfF1549_M;
+*rename P50_ _&o = NDPVPrEPEver_pregbfF1549_M;
+
+*rename P50_ _&o = NCABPrEPinit_F1524_M;
+*rename P50_ _&o = NCABPrEP_F1524_M;
+*rename P50_ _&o = NCABPrEPEver_F1524_M;
+*rename P50_ _&o = NCABPrEPinit_FSW1599_M;
+*rename P50_ _&o = NCABPrEP_FSW1599_M;
+*rename P50_ _&o = NCABPrEPEver_FSW1599_M;
+*rename P50_ _&o = NCABPrEPinit_SDCA1599_M;
+*rename P50_ _&o = NCABPrEP_SDCA1599_M;
+*rename P50_ _&o = NCABPrEPEver_SDCA1599_M;
+*rename P50_ _&o = NCABPrEPinit_MSM1599_M;
+*rename P50_ _&o = NCABPrEP_MSM1599_M;
+*rename P50_ _&o = NCABPrEPEver_MSM1599_M;
+*rename P50_ _&o = NCABPrEPinit_pregbfF1549_M;
+*rename P50_ _&o = NCABPrEP_pregbfF1549_M;
+*rename P50_ _&o = NCABPrEPEver_pregbfF1549_M;
 
 
 keep cald
