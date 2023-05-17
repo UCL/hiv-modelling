@@ -214,7 +214,7 @@ proc freq data=d;table cald;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230517.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230517_173sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -1900,7 +1900,7 @@ ods rtf close;run;
 *Output about cotrimaxazole (s_pcp_p_adc s_pcp_p_crypm s_pcp_p_dead s_pcp_p_sbi s_pcp_p_tb s_pcp_p_who3 );
 *Output about VL measured (vl_cost_inc reset to 0);
 
-
+*Partire da qua;
 
 *VCFeb2023;
 *Output to be exported to fill in the file "Output template MIHPSAZimP2";
