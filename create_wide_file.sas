@@ -3,15 +3,15 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v6_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v7_out";
 
-data a.base_28_04_23;   set b.out:;
-proc freq data=a.base_28_04_23;table cald;run;
+data a.base_17_05_23;   set b.out:;
+proc freq data=a.base_17_05_23;table cald;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
 
-data g; set  a.base_28_04_23;
+data g; set  a.base_17_05_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1185,7 +1185,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_28_04_23; set y;  run;
+data a.l_base_17_05_23; set y;  run;
 
 
 *
@@ -1196,7 +1196,7 @@ data a.l_base_28_04_23; set y;  run;
 ;
 
 
-data y; set a.l_base_28_04_23; run;
+data y; set a.l_base_17_05_23; run;
 
 *** !!! can stop here, the following code is not needed to create graphs;
 *
