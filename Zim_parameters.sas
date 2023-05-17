@@ -4,6 +4,9 @@
 
 
 * POPULATION GROWTH AND DEMOGRAPHY;
+caldate1=1984;
+caldate_never_dot=1984;
+startyr = 1991 + 0.25;
 
 * inc_cat; 					 inc_cat = 1 ;  
 
@@ -39,6 +42,8 @@
 * fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
 							 %sample_uniform(fold_rate_decr_test_future, 0.00125 0.00165 0.0025 0.00375);
 
+* rate_testanc_inc; 		*%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	*Mar2023;
+							%sample(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10, 0.15 0.15 0.3 0.2 0.2);
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 *Vale - 20211026: all the changes in the section "NATURAL PROGRESSION...." are taken from SA;
