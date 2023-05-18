@@ -4411,10 +4411,11 @@ if anc=1 then do;
 end;
 
 tested_pd=0;
-if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
+if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and u lt 1 then do;tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2) and u lt 0.95 then do;
+		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
@@ -4816,7 +4817,8 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 						when (highest_prep_pref = 3) 	 
 							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;	*VR PrEP preferred and is available;
 								prep_any=1;		continuous_prep_any_use=0.25;	
-								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 
+								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};
+								prep_vr_start_date=caldate{t};  
 							end; 
 							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
@@ -4836,6 +4838,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *VR PrEP preferred but not available - start oral PrEP if willing;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
+								prep_oral_start_date=caldate{t};
 							end;
 						otherwise xxx=1;
 					end; 
@@ -11067,7 +11070,8 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
 
-	if caldate{t} ge 2015 and onart=1 and d < 0.8 then pcp_p   =1;
+	pcp_p   =0;if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
+
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
 
