@@ -870,7 +870,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
- %include "/home/rmjllvca/Zim_parameters_05.sas";
+* %include "/home/rmjlvca/Zim_parameters_05.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_03.sas";
 
 
@@ -1486,8 +1486,8 @@ if sw=1 then do;
 	ever_sw=1;
 
 	u=rand('uniform');
-	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
-	age_deb_sw= age - (1989-date_start_sw);
+	date_start_sw = (caldate1-5)+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
+	age_deb_sw= age - (caldate1-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
@@ -2489,7 +2489,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 30 31 32 33 34 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2555,8 +2555,8 @@ who may be dead and hence have caldate{t} missing;
 	*option 26: Injectable PrEP for pregnant and breastfeeding women;
 	
 	*Linkage, management, ART Interv;
-	if option = 30 then do;*CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available;
-	end;
+	*The option "CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available" has been removed,
+	as cotrimoxazole is part of the essential;
 	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
 		absence_cd4_year_i = 0; crag_cd4_l200=1;											  
 	end;
@@ -4414,7 +4414,7 @@ tested_pd=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2) and u lt 0.95 then do;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt 0.95 then do;
 		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
@@ -15067,7 +15067,7 @@ if gender=2 and diag_this_period=1 and tested_pd=1 then diag_this_period_f_pd=1;
 if gender=1 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_m_sympt=1;
 if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sympt=1;
 if gender=2 and diag_this_period=1 and tested_anc = 1 or tested_labdel=1 or tested_pd=1 then diag_thisper_anclabpd=1;
-if gender=2 and diag_this_period=1 and tested_anc=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
+if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then diag_thisper_progsw=1;
 if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
 if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
@@ -15086,7 +15086,7 @@ tested_f_sw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 a
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_sw=1;
 tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1;
 *The following aaplies only at 1 point in time as I wasnt to know the number of women tested;
-tested_ancpd=0; if dt_lastbirth=cald-0.25 and (tested_pd=1 or 
+tested_ancpd=0; if dt_lastbirth=caldate&j-0.25 and (tested_pd=1 or 
                    (dt_last_test ne . and dt_lastbirth ne . and dt_lastbirth-0.75 lt dt_last_test le dt_lastbirth)) then tested_ancpd=1;
 test_anclabpd=0;if gender=2 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_anclabpd=1;
 tested_1524w=0; if gender=2 and tested=1 and 15 <= age < 25 then tested_1524w=1;
@@ -18621,7 +18621,7 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel  s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
 s_dead_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
