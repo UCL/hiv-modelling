@@ -30,10 +30,6 @@ by run ;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
 s_primary1564w = s_primary1549w + s_primary5054w + s_primary5559w + s_primary6064w;
 
-s_hiv1584 = s_hiv1564 + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w;
-s_hiv1584m = s_hiv1564m + s_hiv6569m + s_hiv7074m + s_hiv7579m + s_hiv8084m;
-s_hiv1584w = s_hiv1564w + s_hiv6569w + s_hiv7074w + s_hiv7579w + s_hiv8084w;
-
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
@@ -42,7 +38,35 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf;
 * n_alive1564_w;				n_alive1564_w = s_alive1564_w * &sf;
 
-* n_hiv1584_;					n_hiv1584_ = s_hiv1584 * &sf;
+* n_hiv1519m;					n_hiv1519m = s_hiv1519m * &sf;
+* n_hiv1519w;					n_hiv1519w = s_hiv1519w * &sf;
+* n_hiv2024m;					n_hiv2024m = s_hiv2024m * &sf;
+* n_hiv2024w;					n_hiv2024w = s_hiv2024w * &sf;
+* n_hiv2529m;					n_hiv2529m = s_hiv2529m * &sf;
+* n_hiv2529w;					n_hiv2529w = s_hiv2529w * &sf;
+* n_hiv3034m;					n_hiv3034m = s_hiv3034m * &sf;
+* n_hiv3034w;					n_hiv3034w = s_hiv3034w * &sf;
+* n_hiv3539m;					n_hiv3539m = s_hiv3539m * &sf;
+* n_hiv3539w;					n_hiv3539w = s_hiv3539w * &sf;
+* n_hiv4044m;					n_hiv4044m = s_hiv4044m * &sf;
+* n_hiv4044w;					n_hiv4044w = s_hiv4044w * &sf;
+* n_hiv4549m;					n_hiv4549m = s_hiv4549m * &sf;
+* n_hiv4549w;					n_hiv4549w = s_hiv4549w * &sf;
+* n_hiv5054m;					n_hiv5054m = s_hiv5054m * &sf;
+* n_hiv5054w;					n_hiv5054w = s_hiv5054w * &sf;
+* n_hiv5559m;					n_hiv5559m = s_hiv5559m * &sf;
+* n_hiv5559w;					n_hiv5559w = s_hiv5559w * &sf;
+* n_hiv6064m;					n_hiv6064m = s_hiv6064m * &sf;
+* n_hiv6064w;					n_hiv6064w = s_hiv6064w * &sf;
+* n_hiv6569m;					n_hiv6569m = s_hiv6569m * &sf;
+* n_hiv6569w;					n_hiv6569w = s_hiv6569w * &sf;
+* n_hiv7074m;					n_hiv7074m = s_hiv7074m * &sf;
+* n_hiv7074w;					n_hiv7074w = s_hiv7074w * &sf;
+* n_hiv7579m;					n_hiv7579m = s_hiv7579m * &sf;
+* n_hiv7579w;					n_hiv7579w = s_hiv7579w * &sf;
+* n_hiv8084m;					n_hiv8084m = s_hiv8084m * &sf;
+* n_hiv8084w;					n_hiv8084w = s_hiv8084w * &sf;
+
 
 * prevalence1564;				prevalence1564_ = (s_hiv1564w  + s_hiv1564m ) / (s_alive1564_w + s_alive1564_m);
 * prevalence1564m;				prevalence1564m = s_hiv1564m  / s_alive1564_m ;
@@ -64,11 +88,41 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 
+***This is currently all 15+;
 * n_hiv_death;					n_hiv_death = s_hiv_death * 4 * &sf;
 * n_hiv_death_m;				n_hiv_death_m = s_hiv_death_m * 4 * &sf;
 * n_hiv_death_w;				n_hiv_death_w = s_hiv_death_w * 4 * &sf;
 
- 
+/* currently not outputted
+* n_hiv_death1519m;				n_hiv_death1519m = s_hiv_death1519m * &sf;
+* n_hiv_death1519w;				n_hiv_death1519w = s_hiv_death1519w * &sf;
+* n_hiv_death2024m;				n_hiv_death2024m = s_hiv_death2024m * &sf;
+* n_hiv_death2024w;				n_hiv_death2024w = s_hiv_death2024w * &sf;
+* n_hiv_death2529m;				n_hiv_death2529m = s_hiv_death2529m * &sf;
+* n_hiv_death2529w;				n_hiv_death2529w = s_hiv_death2529w * &sf;
+* n_hiv_death3034m;				n_hiv_death3034m = s_hiv_death3034m * &sf;
+* n_hiv_death3034w;				n_hiv_death3034w = s_hiv_death3034w * &sf;
+* n_hiv_death3539m;				n_hiv_death3539m = s_hiv_death3539m * &sf;
+* n_hiv_death3539w;				n_hiv_death3539w = s_hiv_death3539w * &sf;
+* n_hiv_death4044m;				n_hiv_death4044m = s_hiv_death4044m * &sf;
+* n_hiv_death4044w;				n_hiv_death4044w = s_hiv_death4044w * &sf;
+* n_hiv_death4549m;				n_hiv_death4549m = s_hiv_death4549m * &sf;
+* n_hiv_death4549w;				n_hiv_death4549w = s_hiv_death4549w * &sf;
+* n_hiv_death5054m;				n_hiv_death5054m = s_hiv_death5054m * &sf;
+* n_hiv_death5054w;				n_hiv_death5054w = s_hiv_death5054w * &sf;
+* n_hiv_death5559m;				n_hiv_death5559m = s_hiv_death5559m * &sf;
+* n_hiv_death5559w;				n_hiv_death5559w = s_hiv_death5559w * &sf;
+* n_hiv_death6064m;				n_hiv_death6064m = s_hiv_death6064m * &sf;
+* n_hiv_death6064w;				n_hiv_death6064w = s_hiv_death6064w * &sf;
+* n_hiv_death6569m;				n_hiv_death6569m = s_hiv_death6569m * &sf;
+* n_hiv_death6569w;				n_hiv_death6569w = s_hiv_death6569w * &sf;
+* n_hiv_death7074m;				n_hiv_death7074m = s_hiv_death7074m * &sf;
+* n_hiv_death7074w;				n_hiv_death7074w = s_hiv_death7074w * &sf;
+* n_hiv_death7579m;				n_hiv_death7579m = s_hiv_death7579m * &sf;
+* n_hiv_death7579w;				n_hiv_death7579w = s_hiv_death7579w * &sf;
+* n_hiv_death8084m;				n_hiv_death8084m = s_hiv_death8084m * &sf;
+* n_hiv_death8084w;				n_hiv_death8084w = s_hiv_death8084w * &sf;
+*/
 ***Rename so variables do not end in a number as this breaks the macro;
 
 s_dead_Alt6_artcd4lt200_ 	= s_dead_Alt6_artcd4lt200;
@@ -154,7 +208,9 @@ keep cald	run
 n_alive1564_	n_alive1564_m		n_alive1564_w		prevalence1564_		prevalence1564m		prevalence1564w	
 incidence1564_	incidence1564_m		incidence1564_w		p_diag				p_diag_m			p_diag_w
 p_onart_diag	p_onart_diag_m		p_onart_diag_w		p_onart_vl1000_		p_onart_vl1000_m	p_onart_vl1000_w
-n_hiv1584_		n_hiv_death_m		n_hiv_death_w		n_hiv_death
+n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m n_hiv6569m  n_hiv7074m  n_hiv7579m  n_hiv8084m  
+n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
+n_hiv_death_m		n_hiv_death_w		n_hiv_death
 
 /*Deaths*/
 s_dead_undiag  s_dead_diag_not_linked  
@@ -627,7 +683,19 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_alive1564_);	   %var_d(n_alive1564_m);		%var_d(n_alive1564_w);		 %var_d(prevalence1564_); %var_d(prevalence1564m); %var_d(prevalence1564w);	
 %var_d(incidence1564_);%var_d(incidence1564_m); %var_d(incidence1564_w); %var_d(p_diag);		  %var_d(p_diag_m);		  %var_d(p_diag_w);
 %var_d(p_onart_diag);  %var_d(p_onart_diag_m);	%var_d(p_onart_diag_w);  %var_d(p_onart_vl1000_); %var_d(p_onart_vl1000_m);%var_d(p_onart_vl1000_w);
-%var_d(n_hiv1584_); %var_d(n_hiv_death_m); %var_d(n_hiv_death_w); %var_d(n_hiv_death);
+
+%var_d(n_hiv1519m);  %var_d(n_hiv2024m);  %var_d(n_hiv2529m);  %var_d(n_hiv3034m);  %var_d(n_hiv3539m);  %var_d(n_hiv4044m);  %var_d(n_hiv4549m);  %var_d(n_hiv5054m); 
+%var_d(n_hiv5559m);  %var_d(n_hiv6064m);  %var_d(n_hiv6569m);  %var_d(n_hiv7074m);  %var_d(n_hiv7579m);  %var_d(n_hiv8084m);  
+%var_d(n_hiv1519w);  %var_d(n_hiv2024w);  %var_d(n_hiv2529w);  %var_d(n_hiv3034w);  %var_d(n_hiv3539w);  %var_d(n_hiv4044w);  %var_d(n_hiv4549w);  %var_d(n_hiv5054w);  
+%var_d(n_hiv5559w);  %var_d(n_hiv6064w);  %var_d(n_hiv6569w);  %var_d(n_hiv7074w);  %var_d(n_hiv7579w);  %var_d(n_hiv8084w); 
+
+%var_d(n_hiv_death_m); %var_d(n_hiv_death_w); %var_d(n_hiv_death);
+/* These were not outputted but should be in the next round;
+%var_d(n_hiv_death1519m);  %var_d(n_hiv_death2024m);  %var_d(n_hiv_death2529m);  %var_d(n_hiv_death3034m);  %var_d(n_hiv_death3539m);  %var_d(n_hiv_death4044m);  %var_d(n_hiv_death4549m); 
+%var_d(n_hiv_death5054m);  %var_d(n_hiv_death5559m);  %var_d(n_hiv_death6064m);  %var_d(n_hiv_death6569m);  %var_d(n_hiv_death7074m);  %var_d(n_hiv_death7579m);  %var_d(n_hiv_death8084m);  
+%var_d(n_hiv_death1519w);  %var_d(n_hiv_death2024w);  %var_d(n_hiv_death2529w);  %var_d(n_hiv_death3034w);  %var_d(n_hiv_death3539w);  %var_d(n_hiv_death4044w);  %var_d(n_hiv_death4549w); 
+%var_d(n_hiv_death5054w);  %var_d(n_hiv_death5559w);  %var_d(n_hiv_death6064w);  %var_d(n_hiv_death6569w);  %var_d(n_hiv_death7074w);  %var_d(n_hiv_death7579w);  %var_d(n_hiv_death8084w); 
+*/
 
 %var_d(s_dead_undiag); 		    %var_d(s_dead_diag_not_linked);   %var_d(s_dead_Alt6_artcd4lt200_); %var_d(s_dead_Alt6_artcd4gt200_);
 %var_d(s_dead_I_Alt6_Rcd4lt200_); %var_d(s_dead_I_Alt6_Rcd4gt200_); 
@@ -947,8 +1015,17 @@ l_incidence1564_m	l_incidence1564_w	l_incidence1564_	 l_p_diag_m		  		l_p_diag_w
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
 
-data deaths1519;
+proc export
+data=wide_base 
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Deaths\trial"
+dbms=xlsx replace;
+sheet="base";
+putnames=no
+startrow=2;
+run;
 
+data deaths1519;
+l_n_hiv1519_ 
 
 
 
