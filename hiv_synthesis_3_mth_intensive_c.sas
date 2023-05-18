@@ -17,6 +17,7 @@
 
 * hypothesis: high levels of testing become cost effective when art retention is very high ;
 
+* why do we not get p_onart closer to 1 with all interventions together;
 
 
 
@@ -2509,13 +2510,16 @@ if option = 0 then do; end;
 
 if option = 1 then do;  * increase p_onart ;
 
-	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.8) ; 
-	eff_rate_lost = eff_rate_lost / 5     ; 
-	eff_prob_lost_art = eff_prob_lost_art / 5     ; 
-	eff_rate_int_choice = eff_rate_int_choice / 5     ; 
- 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.8) ; 
- 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.8) ; 
-	eff_prob_loss_at_diag = 0.02 ;
+		eff_rate_int_choice = eff_rate_int_choice * 1.25;
+		eff_prob_loss_at_diag = 0.02 ;             
+		eff_prob_lossdiag_non_tb_who3e = 0.02; 
+		eff_prob_lossdiag_adctb = 0.01 ;
+		eff_prob_lost_art = 0.05 ;
+		eff_rate_lost = 0.02 ;
+		eff_rate_restart = 0.95 ;
+		eff_rate_return = 0.60 ; 
+		eff_pr_art_init =  0.9 ;  
+		eff_prob_return_adc = 0.95;
 
 end;
 
@@ -2555,13 +2559,16 @@ end;
 
 if option = 4 then do;  * increase in p_onart and intensive 3 month increase in testing ;
 
-	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.8) ; 
-	eff_rate_lost = eff_rate_lost / 5     ; 
-	eff_prob_lost_art = eff_prob_lost_art / 5     ; 
-	eff_rate_int_choice = eff_rate_int_choice / 5     ; 
- 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.8) ; 
- 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.8) ; 
-	eff_prob_loss_at_diag = 0.02 ;
+		eff_rate_int_choice = eff_rate_int_choice * 1.25;
+		eff_prob_loss_at_diag = 0.02 ;             
+		eff_prob_lossdiag_non_tb_who3e = 0.02; 
+		eff_prob_lossdiag_adctb = 0.01 ;
+		eff_prob_lost_art = 0.05 ;
+		eff_rate_lost = 0.02 ;
+		eff_rate_restart = 0.95 ;
+		eff_rate_return = 0.60 ; 
+		eff_pr_art_init =  0.9 ;  
+		eff_prob_return_adc = 0.95;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
@@ -2570,13 +2577,16 @@ end;
 
 if option = 5 then do;  * all interventions ;
 
-	eff_rate_restart = eff_rate_restart + ((1 - eff_rate_restart) * 0.8) ; 
-	eff_rate_lost = eff_rate_lost / 5     ; 
-	eff_prob_lost_art = eff_prob_lost_art / 5     ; 
-	eff_rate_int_choice = eff_rate_int_choice / 5     ; 
- 	eff_prob_return_adc = eff_prob_return_adc + ((1 - eff_prob_return_adc) * 0.8) ; 
- 	eff_rate_return = eff_rate_return + ((1 - eff_rate_return) * 0.8) ; 
-	eff_prob_loss_at_diag = 0.02 ;
+		eff_rate_int_choice = eff_rate_int_choice * 1.25;
+		eff_prob_loss_at_diag = 0.02 ;             
+		eff_prob_lossdiag_non_tb_who3e = 0.02; 
+		eff_prob_lossdiag_adctb = 0.01 ;
+		eff_prob_lost_art = 0.05 ;
+		eff_rate_lost = 0.02 ;
+		eff_rate_restart = 0.95 ;
+		eff_rate_return = 0.60 ; 
+		eff_pr_art_init =  0.9 ;  
+		eff_prob_return_adc = 0.95;
 
 	* store values so can be re-assigned these values in next time step;
 	hard_reach_x = hard_reach;
@@ -2889,7 +2899,7 @@ if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end;
 end;
 
-if caldate{t} = &year_interv and intensive_3mth_test = 1  then do; rate_1sttest = rate_1sttest * 10.0; rate_reptest = rate_reptest * 10.0; end;
+if caldate{t} = &year_interv and intensive_3mth_test = 1  then do; rate_1sttest = rate_1sttest * 100.0; rate_reptest = rate_reptest * 100.0; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 
