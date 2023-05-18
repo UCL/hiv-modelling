@@ -6,7 +6,18 @@ libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified pr
 libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v7_out";
 
 data a.base_17_05_23;   set b.out:;
-proc freq data=a.base_17_05_23;table cald;run;
+
+proc contents data=a.base_17_05_23;run;
+proc freq data=a.base_17_05_23;
+table 
+s_not_on_art_cd4ge500 
+s_not_on_art_cd4350500  
+s_not_on_art_cd4200350  
+s_not_on_art_cd4l200 
+s_not_on_art_cd4l50 ;run;
+
+
+;run;
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_09_03_23;run;*/
 
@@ -313,11 +324,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 
-* n_sw_1599;					n_sw_1599 = s_sw * &sf; *VCFeb2023;
 * n_sw_1564;					n_sw_1564 = s_sw_1564 * &sf;
 * n_sw_1549;					n_sw_1549 = s_sw_1549 * &sf;
 * p_newp_sw;					if s_w_newp gt 0 then p_newp_sw = s_sw_newp / s_w_newp ;
-* prev_sti_sw;					prev_sti_sw = s_sti_sw / s_sw; *VCFeb2023;
+* prev_sti_sw;					prev_sti_sw = s_sti_sw / s_sw_1564; *VCFeb2023;
 
 * rate_susc_np_1549_m;			*rate_susc_np_1549_m = s_susc_newp_1549_m / (s_alive1549_m - s_hiv1549m);
 * rate_susc_np_1549_w;			*rate_susc_np_1549_w = s_susc_newp_1549_w / (s_alive1549_w - s_hiv1549w);
@@ -1046,7 +1056,7 @@ dcost_clin_care dcost_non_aids_pre_death  dcost_child_hiv  dzdv_cost   dten_cost
 defa_cost   ddol_cost
 m15r m25r m35r m45r m55r w15r w25r w35r w45r w55r r_efa_hiv 
 p_dol_2vg1000_dolr1_adh0 p_dol_2vg1000_dolr1_adh1 p_dol_2vg1000_dolr0_adh0 p_dol_2vg1000_dolr0_adh1 p_onart_cd4_l500  p_startedline2  prop_art_or_prep
-n_sw_1599 n_sw_1564 n_sw_1549 prev_sti_sw prop_sw_onprep  p_vl1000_art_12m  p_vl1000_art_12m_onart
+n_sw_1564 n_sw_1549 prev_sti_sw prop_sw_onprep  p_vl1000_art_12m  p_vl1000_art_12m_onart
 p_o_zdv_tox p_o_3tc_tox p_o_ten_tox p_o_taz_tox p_o_lpr_tox p_o_efa_tox p_o_nev_tox p_o_dol_tox p_o_zdv_adh_hi p_o_3tc_adh_hi p_o_ten_adh_hi
 p_o_taz_adh_hi p_o_lpr_adh_hi p_o_efa_adh_hi p_o_nev_adh_hi p_o_dol_adh_hi
  p_o_tle_tox  p_o_tld_tox  p_o_zla_tox  p_o_zld_tox   p_o_tle_adh_hi  p_o_tld_adh_hi  p_o_zla_adh_hi  p_o_zld_adh_hi  p_adh_hi  
@@ -1198,6 +1208,14 @@ data a.l_base_17_05_23; set y;  run;
 
 data y; set a.l_base_17_05_23; run;
 
+proc freq data=a.l_base_17_05_23;
+table 
+n_not_on_art_cd4ge500 
+n_not_on_art_cd4350500  
+n_not_on_art_cd4200350  
+n_not_on_art_cd450200
+n_not_on_art_cd4050  
+;run;
 *** !!! can stop here, the following code is not needed to create graphs;
 *
 
@@ -1309,7 +1327,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=m15r);  %var(v=m25r);  %var(v=m35r);  %var(v=m45r);  %var(v=m55r);  %var(v=w15r);  %var(v=w25r);  %var(v=w35r);  %var(v=w45r);  %var(v=w55r)
 %var(v=r_efa_hiv); %var(v=p_onart_cd4_l200);
 %var(v=p_dol_2vg1000_dolr1_adh0); %var(v=p_dol_2vg1000_dolr1_adh1); %var(v=p_dol_2vg1000_dolr0_adh0); %var(v=p_dol_2vg1000_dolr0_adh1);
-%var(v=p_onart_cd4_l500);   %var(v=p_startedline2);  %var(v=prop_art_or_prep);  %var(v=n_sw_1599); %var(v=n_sw_1564); %var(v=n_sw_1549); %var(v=prev_sti_sw);   %var(v=prop_sw_onprep);
+%var(v=p_onart_cd4_l500);   %var(v=p_startedline2);  %var(v=prop_art_or_prep);  %var(v=n_sw_1564); %var(v=n_sw_1549); %var(v=prev_sti_sw);   %var(v=prop_sw_onprep);
 %var(v=p_o_zdv_tox);   %var(v=p_o_3tc_tox);   %var(v=p_o_ten_tox);   %var(v=p_o_taz_tox);   %var(v=p_o_lpr_tox);   %var(v=p_o_efa_tox);   
 %var(v=p_o_nev_tox);  %var(v=p_o_dol_tox);   %var(v=p_o_zdv_adh_hi);   %var(v=p_o_3tc_adh_hi);   %var(v=p_o_ten_adh_hi);  
 %var(v=p_o_taz_adh_hi);   %var(v=p_o_lpr_adh_hi);   %var(v=p_o_efa_adh_hi);   %var(v=p_o_nev_adh_hi);   %var(v=p_o_dol_adh_hi);  
@@ -1422,7 +1440,7 @@ dnev_cost  dlpr_cost  ddar_cost  dtaz_cost  defa_cost  ddol_cost
 m15r  m25r  m35r  m45r  m55r  w15r  w25r  w35r  w45r  w55r
 r_efa_hiv  p_onart_cd4_l200
 p_dol_2vg1000_dolr1_adh0  p_dol_2vg1000_dolr1_adh1  p_dol_2vg1000_dolr0_adh0  p_dol_2vg1000_dolr0_adh1
-p_onart_cd4_l500  p_startedline2  prop_art_or_prep  n_sw_1599 n_sw_1564 n_sw_1549 prev_sti_sw prop_sw_onprep   
+p_onart_cd4_l500  p_startedline2  prop_art_or_prep  n_sw_1564 n_sw_1549 prev_sti_sw prop_sw_onprep   
 p_o_zdv_tox  p_o_3tc_tox   p_o_ten_tox   p_o_taz_tox   p_o_lpr_tox   p_o_efa_tox   
 p_o_nev_tox  p_o_dol_tox   p_o_zdv_adh_hi   p_o_3tc_adh_hi   p_o_ten_adh_hi  
 p_o_taz_adh_hi   p_o_lpr_adh_hi   p_o_efa_adh_hi   p_o_nev_adh_hi   p_o_dol_adh_hi  
