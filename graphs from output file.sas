@@ -31,12 +31,12 @@ ods html close;
 
 
 * NB: note lines below, because variable names cannot end with a number;
-n_sw_1564 = n_sw_1564_;*VCFeb2023;
-n_not_on_art_cd4050 = n_not_on_art_cd4050_;*VCFeb2023;
-n_not_on_art_cd450200 = n_not_on_art_cd450200_;*VCFeb2023;
-n_not_on_art_cd4200350 = n_not_on_art_cd4200350_;*VCFeb2023;
-n_not_on_art_cd4350500 = n_not_on_art_cd4350500_;*VCFeb2023;
-n_not_on_art_cd4ge500  = n_not_on_art_cd4ge500_;*VCFeb2023;
+n_sw_1564_ = n_sw_1564;*VCFeb2023;
+n_not_on_art_cd4050_ = n_not_on_art_cd4050;*VCFeb2023;
+n_not_on_art_cd450200_ = n_not_on_art_cd450200;*VCFeb2023;
+n_not_on_art_cd4200350_ = n_not_on_art_cd4200350;*VCFeb2023;
+n_not_on_art_cd4350500_ = n_not_on_art_cd4350500;*VCFeb2023;
+n_not_on_art_cd4ge500_  = n_not_on_art_cd4ge500;*VCFeb2023;
 
 log_gender_r_newp  = log(gender_r_newp);
 prevalence1549_ = prevalence1549;
@@ -68,6 +68,10 @@ logm35r = log(m35r+0.0001);
 logm45r = log(m45r+0.0001);
 logm55r = log(m55r+0.0001);
 
+p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
+
+
+
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
@@ -83,7 +87,7 @@ n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_25
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
 n_not_on_art_cd4050_ n_not_on_art_cd450200_ n_not_on_art_cd4200350_ n_not_on_art_cd4350500_ n_not_on_art_cd4ge500_ 
 n_asympt_Undiag n_asympt_diagoffart n_asympt_diagonart n_sympt_notaids n_sympt_aids
-n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1 p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
+n_birth n_give_birth_w_hiv p_w_giv_birth_this_per n_w1524_newp_ge1_ p_newp_ge1_ p_newp_ge5_ p_ep p_m_npge1_ p_w_npge1_ p_w1524_npge1_ p_sw_npge1_
 log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	n_new_vmmc1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
@@ -104,7 +108,7 @@ p_ai_no_arv_c_nnm 				p_artexp_diag
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_  
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
 p_onart_vl1000_   p_onart_vl1000_1524_ p_vl1000_ 	p_vg1000_ 		p_onart_vl1000_all	p_onart p_onart_m 	p_onart_w  p_onart_w1524_ p_onart_1524_ p_onart_sw
-p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_onart_artexp_w1524evpreg
+p_onart_artexp 	p_onart_artexp_m 	p_onart_artexp_w 	p_onart_artexp_1524_ 	p_onart_artexp_sw 	p_on_artexp_w1524evpreg
 p_onart_vl1000_w				p_onart_vl1000_m  p_onart_vl1000_w1524evpr logm15r logm25r logm35r logm45r logm55r logw15r logw25r logw35r logw45r logw55r 
 n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 ;
@@ -206,9 +210,9 @@ by cald;
 
 %include "C:\Users\ValentinaCambiano\OneDrive - University College London\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
-/*
+
 data a.d;set d;run;
-data d;set a.d;run;*/
+/*/data d;set a.d;run;*/
 proc freq data=d;table cald;run;
 
 ***Graphs comparing observed data to outputs;
@@ -331,15 +335,15 @@ proc sgplot data=d;
 Title    height=1.5 justify=center "Number of AGYW at elevated risk - n_w1524_newp_ge1";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
-label p50_n_w1524_newp_ge1_0  = "Baseline (median) - 15+";
-label p50_n_w1524_newp_ge1_1  = "Essential (median) - 15+  ";
-label p50_n_w1524_newp_ge1_15 = "Oral PrEP AGYW (median) - 15+ ";
-series  x=cald y=p50_n_w1524_newp_ge1_0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_w1524_newp_ge1_0 	upper=p95_n_w1524_newp_ge1_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_w1524_newp_ge1_1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_w1524_newp_ge1_1 	upper=p95_n_w1524_newp_ge1_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_w1524_newp_ge1_15/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_w1524_newp_ge1_15 	upper=p95_n_w1524_newp_ge1_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+label p50_n_w1524_newp_ge1__0  = "Baseline (median) - 15+";
+label p50_n_w1524_newp_ge1__1  = "Essential (median) - 15+  ";
+label p50_n_w1524_newp_ge1__15 = "Oral PrEP AGYW (median) - 15+ ";
+series  x=cald y=p50_n_w1524_newp_ge1__0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_w1524_newp_ge1__0 	upper=p95_n_w1524_newp_ge1__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_w1524_newp_ge1__1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_w1524_newp_ge1__1 	upper=p95_n_w1524_newp_ge1__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_w1524_newp_ge1__15/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_w1524_newp_ge1__15 	upper=p95_n_w1524_newp_ge1__15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 
 run;quit;
 
@@ -2070,7 +2074,7 @@ rename p50_p_onart_artexp_&o = P_onART_ExpA1599_M;
 rename p5_p_onart_artexp_&o = P_onART_ExpA1599_95LL;
 rename p95_p_onart_artexp_&o = P_onART_ExpA1599_95UL;
 rename p50_p_onart_artexp_sw_&o = P_onART_ExpFSW1599_M;
-rename p50_p_onart_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M;
+rename p50_p_on_artexp_w1524evpreg_&o = P_onART_ExpFpregEverBirth1524_M;
 rename p50_p_onart_vl1000__&o = P_VLS_onARTA1599_M;
 rename p5_p_onart_vl1000__&o = P_VLS_onARTA1599_95LL;
 rename p95_p_onart_vl1000__&o = P_VLS_onARTA1599_95UL;
@@ -2168,7 +2172,7 @@ p50_p_onart_artexp_w_&o			p5_p_onart_artexp_w_&o		p95_p_onart_artexp_w_&o
 p50_p_onart_artexp_1524__&o		p5_p_onart_artexp_1524__&o	p95_p_onart_artexp_1524__&o
 p50_p_onart_artexp_&o			p5_p_onart_artexp_&o		p95_p_onart_artexp_&o
 p50_p_onart_artexp_sw_&o
-p50_p_onart_artexp_w1524evpreg_&o
+p50_p_on_artexp_w1524evpreg_&o
 
 p50_p_onart_vl1000__&o			p5_p_onart_vl1000__&o		p95_p_onart_vl1000__&o
 p50_p_onart_vl1000_1524__&o		p5_p_onart_vl1000_1524__&o	p95_p_onart_vl1000_1524__&o
@@ -2287,6 +2291,8 @@ n_init_prep_inj_sdc    n_prep_inj_ly_sdc 	n_prep_inj_ever_sdc
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
 ;
 run;
+*All Missing for n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
+ All 0       for n_tested_ancpd    n_diag_progsw;
 
 *The following are commmenting out as not yest exported in current dataset;
 %var_cy(0,n_birth);%var_cy(0,n_give_birth_w_hiv);/*%var_cy(0,n_everpregn_w1524_);%var_cy(0,n_everpregn_hiv_w1524_);*/%var_cy(0,n_birth_with_inf_child);

@@ -7,19 +7,18 @@ libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified pr
 
 data a.base_17_05_23;   set b.out:;
 
-proc contents data=a.base_17_05_23;run;
-proc freq data=a.base_17_05_23;
-table 
-s_not_on_art_cd4ge500 
-s_not_on_art_cd4350500  
-s_not_on_art_cd4200350  
-s_not_on_art_cd4l200 
-s_not_on_art_cd4l50 ;run;
-
-
-;run;
 /* show the contents of the input SAS file */
-/*proc contents data=a.base_09_03_23;run;*/
+/*proc contents data=a.base_17_05_23;run;*/
+ods html close;
+ods listing;
+/*
+proc freq data=a.base_17_05_23;
+table s_hiv_sw s_sw_1564 s_sw_1564
+s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
+s_tested_ancpd  s_diag_thisper_progsw;run;*/
+*Need to add s_death_hivrel_m;
+
+
 
 
 data g; set  a.base_17_05_23;
@@ -318,7 +317,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * p_m_npge1_; 					p_m_npge1_ = s_m_npge1 / s_alive1564_m; *VCFeb2023;
 * p_w_npge1_; 					p_w_npge1_ = s_w_npge1 / s_alive1564_w; *VCFeb2023;
 * p_w1524_npge1_;		 		p_w1524_npge1_ = s_w1524_npge1 / (s_ageg1519w + s_ageg2024w); *VCFeb2023;
-* p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 / s_sw; *VCFeb2023;
+* p_sw_npge1_;					p_sw_npge1_ = s_sw_npge1 / s_sw_1564; *VCFeb2023;
 * p_npge2_l4p_1549m ;			p_npge2_l4p_1549m = s_npge2_l4p_1549m / s_alive1549_m ;
 * p_npge2_l4p_1549w ;			p_npge2_l4p_1549w = s_npge2_l4p_1549w / s_alive1549_w ;
 
@@ -359,7 +358,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * n_diagnosed;					n_diagnosed = s_diag_this_period * &sf * 4;
 * n_diag_m;						n_diag_m = s_diag_this_period_m * &sf * 4;*VCMay2023;
-* n_diag_w;						n_diag_w = s_diag_this_period_w * &sf * 4;*VCMay2023;
+* n_diag_w;						n_diag_w = s_diag_this_period_f * &sf * 4;*VCMay2023;
 * n_diag_anc;					n_diag_anc = s_diag_this_period_f_anc * &sf * 4;
 * n_diag_labdel;				n_diag_labdel = s_diag_this_period_labdel * &sf * 4;*VCMar2023;
 * n_diag_pd;					n_diag_pd = s_diag_this_period_f_pd * &sf * 4;*VCMar2023;
@@ -370,7 +369,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * test_proppos_m;			 	if s_tested_m gt 0 then test_proppos_m = s_diag_this_period_m / s_tested_m;*VCMay2023;
-* test_proppos_w;				if s_tested_f gt 0 then test_proppos_w = s_diag_this_period_w / s_tested_f;*VCMay2023;
+* test_proppos_w;				if s_tested_f gt 0 then test_proppos_w = s_diag_this_period_f / s_tested_f;*VCMay2023;
 * test_proppos_sw;				if s_tested_sw gt 0 then test_proppos_sw = s_diag_thisper_sw / s_tested_sw;*VCMay2023;
 * test_proppos_1524w; 			if s_tested_1524w gt 0 then test_proppos_1524w = s_diag_thisper_1524f /s_tested_1524w;*VCMay2023;
 
@@ -567,7 +566,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prevalence1524w;				prevalence1524w =  s_hiv1524w  / (s_ageg1519w + s_ageg2024w) ;
 * prevalence1524m;				prevalence1524m =  s_hiv1524m  / (s_ageg1519m + s_ageg2024m) ;
 
-* prevalence_sw;				prevalence_sw     = s_hiv_sw / s_sw; *VCFeb2023;
+* prevalence_sw;				prevalence_sw     = s_hiv_sw / s_sw_1564; *VCFeb2023;
 
 * r_prev_1519w_4549w;			r_prev_1519w_4549w = prevalence1519w / prevalence4549w ;
 * r_prev_2024w_4549w;			r_prev_2024w_4549w = prevalence2024w / prevalence4549w ;
@@ -621,7 +620,7 @@ end;
 * p_diag_m1524;					if s_hiv1524m > 0 then p_diag_m1524 = (s_diag_m1519_+s_diag_m2024_)/(s_hiv1524m);
 * p_diag_w1524;					if s_hiv1524w > 0 then p_diag_w1524 = (s_diag_w1519_+s_diag_w2024_)/(s_hiv1524w);
 
-* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw = s_diag_sw / s_sw; *VCFeb2023;
+* p_diag_sw;					if s_sw_1564 > 0 then p_diag_sw = s_diag_sw / s_sw_1564; *VCFeb2023;
 
 * n_cm;							n_cm = s_cm_this_per * 4 * &sf;
 * n_vm;							n_vm = s_vm_this_per * 4 * &sf;*VCFeb2023;
@@ -1196,8 +1195,16 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_17_05_23; set y;  run;
-
-
+/*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;*/
+proc freq data=a.l_base_17_05_23;table 
+n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
+n_tested_ancpd    n_diag_progsw;
+run;
+/*
+proc freq data=a.base_17_05_23;
+table s_hiv_sw s_sw_1564 s_sw_1564
+s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
+s_tested_ancpd  s_diag_thisper_progsw;run;*/
 *
 
 28332103
