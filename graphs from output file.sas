@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_17_05_23;
+set a.l_base_19_05_23;
 
 
 p_onart_vl1000_all = .;
@@ -75,8 +75,8 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 173  ;*out of 2000;
-%let year_end = 2032.75 ;
+%let nfit = 114  ;*out of 2000;
+%let year_end = 2027.75 ;
 run;
 /*proc freq data=b;table cald;run;*/
 proc sort;by cald option ;run;
@@ -218,7 +218,7 @@ proc freq data=d;table cald;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230517_173sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230519_114sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;

@@ -3,9 +3,9 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v7_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v8_out";
 
-data a.base_17_05_23;   set b.out:;
+data a.base_19_05_23;   set b.out:;
 
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_17_05_23;run;*/
@@ -21,7 +21,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_17_05_23;
+data g; set  a.base_19_05_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1194,7 +1194,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_17_05_23; set y;  run;
+data a.l_base_19_05_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;*/
 proc freq data=a.l_base_17_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
@@ -1213,16 +1213,6 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 ;
 
 
-data y; set a.l_base_17_05_23; run;
-
-proc freq data=a.l_base_17_05_23;
-table 
-n_not_on_art_cd4ge500 
-n_not_on_art_cd4350500  
-n_not_on_art_cd4200350  
-n_not_on_art_cd450200
-n_not_on_art_cd4050  
-;run;
 *** !!! can stop here, the following code is not needed to create graphs;
 *
 
