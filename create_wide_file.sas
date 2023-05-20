@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_b_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_d_out\";
 
 ods html close;
 
@@ -228,7 +228,7 @@ sw_trans_matrix
 ;
 
 
-data a.intensive3_b_l; set y;
+data a.intensive3_d_l; set y;
 
 
 proc sort data=y;by run option;run;
@@ -318,7 +318,7 @@ sw_trans_matrix;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_b;
+data a.wide_intensive3_d;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -345,7 +345,7 @@ netddaly_23_73_6 = ddaly_23_73_6 + (dcost_23_73_6 / 0.0005);
 
 
 
-proc means data=a.wide_intensive3_b;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 ddaly_23_73_5 ddaly_23_73_6 
+proc means data=a.wide_intensive3_d;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 ddaly_23_73_5 ddaly_23_73_6 
 dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4 dcost_23_73_5 dcost_23_73_6
 
 d_ddaly_23_73_2_1 

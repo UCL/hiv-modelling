@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_b_l;
+set a.intensive3_d_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -22,7 +22,7 @@ prevalence1549_ = prevalence1549;
 p_onart_vl1000_ = p_onart_vl1000;
 prevalence_vg1000_ = prevalence_vg1000;
 
-%let single_var =  p_onart_diag    ;
+%let single_var =  incidence1549_   ;
 
 
 proc sort data=b; by cald run ;run;
@@ -370,7 +370,6 @@ run;quit;
 ods html close;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on ART";
@@ -402,12 +401,12 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2071 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.6   by 0.05 ) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "option 0";
@@ -425,7 +424,7 @@ label p50_incidence1549__5 = "option_5";
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
   series  x=cald y=p50_incidence1549__3/	lineattrs = (color=yellow thickness = 4);
   band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=blue w thickness = 4);
+  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=blue   thickness = 4);
   band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
   series  x=cald y=p50_incidence1549__5/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_incidence1549__5 	upper=p95_incidence1549__5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
@@ -434,8 +433,7 @@ run;quit;
 
 ods html close;
 
-
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -537,7 +535,7 @@ ods html close;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
 
 label p50_p_diag_0 = "option 0";
@@ -565,7 +563,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -598,3 +596,4 @@ run;quit;
 
 ods html close;
 
+*/
