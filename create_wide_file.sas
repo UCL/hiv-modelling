@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_d_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_h_out\";
 
 ods html close;
 
@@ -194,6 +194,10 @@ s_hiv = s_hivge15 ;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 
+* p_adhav_hi_onart;				p_adhav_hi_onart = s_adhav_hi_onart / s_onart ;
+
+* p_dol;						p_dol = s_dol / s_onart;
+* p_efa;						p_efa = s_efa / s_onart;
 * p_onart;						p_onart = s_onart_iicu / s_hiv;
 * p_onart_vl1000;				if s_onart_gt6m_iicu   > 0 then p_onart_vl1000 = s_vl1000_art_gt6m_iicu / s_onart_gt6m_iicu; 
 * p_onart_vl1000_m;				if s_onart_gt6m_iicu_m   > 0 then p_onart_vl1000_m = s_vl1000_art_gt6m_iicu_m / s_onart_gt6m_iicu_m ; 
@@ -214,11 +218,11 @@ s_hiv = s_hivge15 ;
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
-keep run option cald p_onart
+keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
-dcost ddaly   n_death_hiv
+dcost ddaly   n_death_hiv  p_onart_vl1000
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
@@ -228,7 +232,7 @@ sw_trans_matrix
 ;
 
 
-data a.intensive3_d_l; set y;
+data a.intensive3_h_l; set y;
 
 
 proc sort data=y;by run option;run;
@@ -275,7 +279,7 @@ data &v ; merge  y_23 t_30 t_23_28 t_23_43 t_23_73;
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);
+%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 
@@ -318,7 +322,7 @@ sw_trans_matrix;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_d;
+data a.wide_intensive3_h;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -345,7 +349,7 @@ netddaly_23_73_6 = ddaly_23_73_6 + (dcost_23_73_6 / 0.0005);
 
 
 
-proc means data=a.wide_intensive3_d;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 ddaly_23_73_5 ddaly_23_73_6 
+proc means data=a.wide_intensive3_h;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 ddaly_23_73_5 ddaly_23_73_6 
 dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4 dcost_23_73_5 dcost_23_73_6
 
 d_ddaly_23_73_2_1 
