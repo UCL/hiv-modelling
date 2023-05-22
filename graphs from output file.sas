@@ -103,7 +103,7 @@ p_anc n_diagnosed n_diag_anc n_diag_labdel n_diag_pd
 test_prop_positive
 p_inf_vlsupp  p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary
 mtct_prop 	p_diag  p_diag_m   p_diag_w			p_diag_m1524_ 		p_diag_w1524_	p_diag_sw	
-n_cm n_vm p_vm_ly_onart n_pcp_p_80_
+n_cm n_vm p_vm_ly_onart n_pcp_p
 p_ai_no_arv_c_nnm 				p_artexp_diag  
 p_onart_diag	p_onart_diag_w 	p_onart_diag_m p_onart_diag_sw	p_onart_diag_w1524_ p_onart_diag_1524_  
 p_efa 	p_taz		p_ten 	p_zdv	p_dol	p_3tc 	p_lpr 	p_nev 
@@ -1883,19 +1883,19 @@ run;quit;
 */
 
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_pcp_p_80_ ";
+Title    height=1.5 justify=center "n_pcp_p";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2500000 by 250000) valueattrs=(size=10);
-label p50_n_pcp_p_80__0 = "Option 0  (median)";
-label p50_n_pcp_p_80__1 = "Option 1  (median)";
-label p50_n_pcp_p_80__15 = "Option 15 (median)";
+label p50_n_pcp_p_0 = "Option 0  (median)";
+label p50_n_pcp_p_1 = "Option 1  (median)";
+label p50_n_pcp_p_15 = "Option 15 (median)";
 label o_s_all_onart_NAC = "on ART - NAC";
-series  x=cald y=p50_n_pcp_p_80__0/	lineattrs = (color=black thickness = 2);
-band    x=cald lower=p5_n_pcp_p_80__0 	upper=p95_n_pcp_p_80__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_pcp_p_80__1/	lineattrs = (color=red thickness = 2);
-band    x=cald lower=p5_n_pcp_p_80__1 	upper=p95_n_pcp_p_80__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
-series  x=cald y=p50_n_pcp_p_80__15/	lineattrs = (color=green thickness = 2);
-band    x=cald lower=p5_n_pcp_p_80__15 	upper=p95_n_pcp_p_80__15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_pcp_p_0/	lineattrs = (color=black thickness = 2);
+band    x=cald lower=p5_n_pcp_p_0 	upper=p95_n_pcp_p_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_pcp_p_1/	lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_n_pcp_p_1 	upper=p95_n_pcp_p_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+series  x=cald y=p50_n_pcp_p_15/	lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_n_pcp_p_15 	upper=p95_n_pcp_p_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black size = 10);
 run;quit;
 
@@ -2628,6 +2628,54 @@ rename P50_n_prep_inj_ever_sdc_&o = NCABPrEPEver_SDCA1599_M;
 *rename P50_ _&o = NCABPrEPinit_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEP_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEPEver_pregbfF1549_M;
+
+NPMTCT_FbirthHIV1599_M
+NARTinit_A1599_M
+NARTreinit_A1599_M
+NTreatFail_A1599_M
+N_A1599_CD4_M
+NCD4_A1599_M
+NMCD4lt350_A1599_M
+NMCD4lt200_A1599_M
+N_CTX_A1599_M
+N_CTX_A014_M
+NAHD_A1599_M
+NIdentAHD_A1599_M
+NScreenCM_A1599AHD_M
+NScreenCM_A014_M
+NScreenTB_A1599AHD_M
+NScreenTB_A014_M
+NPrevTreatCrypt_A1599_M
+NPrevTreatCrypt_A014_M
+NTreatCrypt_A1599_M
+NTreatCrypt_A014_M
+NTreatTB_A1599_M
+NTreatTB_A014_M
+NAIDS_A1599_M
+NTreatAIDS_A1599_M
+NVLtested_A1599_M
+NVLtested_A014_M
+NVL_A1599_M
+NVL_A014_M
+N_A1599_POCCD4_M
+NPOCCD4_A1599_M
+N_A1599_POCVL_M
+N_A014_POCVL_M
+NPOCVL_A1599_M
+NPOCVL_A014_M
+NCRF_A1599_M
+NCATS_HIVPOSA1524_M
+NCATS_HIVNEGA1524_M
+NERC_HIVPOSA1524_M
+NERC_HIVNEGA1524_M
+NYMM_HIVPOSFpregEverBirth1524_M
+NMVLgt1000_A1599_M
+NMVLgt1000Ever_A1599_M
+N_ADHCVIR_MVLgt1000EverA1599_M
+N_ADHCADO_A1524_M
+
+
+
 
 keep cald
 p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
