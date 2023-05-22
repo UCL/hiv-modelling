@@ -347,7 +347,9 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	
+* rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
+* prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.0 0.95 1.00);
+* prob_test_postdel;	prob_test_postdel=0.95;
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
@@ -870,6 +872,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
+* %include "/home/rmjlvca/Zim_parameters_05.sas";
+ *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_03.sas";
 
 
 * ===================== ;
@@ -1090,7 +1094,7 @@ prob_prep_any_restart_choice   = 1 - (1 - prob_prep_any_restart_choice  )**(1/3)
 pop_wide_tld_prob_egfr = 1 - (1 - pop_wide_tld_prob_egfr  )**(1/3) ;
 base_rate_sw   = 1 - (1 - base_rate_sw   )**(1/3) ;
 base_rate_stop_sexwork   = 1 - (1 - base_rate_stop_sexwork   )**(1/3) ;
-rate_testanc_inc  = 1 - (1 - rate_testanc_inc  )**(1/3) ;
+rate_anc_inc  = 1 - (1 - rate_anc_inc  )**(1/3) ;
 incr_test_rate_sympt   = 1 - (1 - incr_test_rate_sympt   )**(1/3) ;
 prob_lost_art   = 1 - (1 - prob_lost_art   )**(1/3) ;
 rate_res_ten     = 1 - (1 - rate_res_ten  )**(1/3) ;
@@ -1484,8 +1488,8 @@ if sw=1 then do;
 	ever_sw=1;
 
 	u=rand('uniform');
-	date_start_sw = 1984+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
-	age_deb_sw= age - (1989-date_start_sw);
+	date_start_sw = (caldate1-5)+(rand('uniform')*5);date_start_sw=round(date_start_sw, 0.25);
+	age_deb_sw= age - (caldate1-date_start_sw);
 end;
 
 ***LBM 27Apr2020 - crude estimate of episodes of sw in 1989 added here. Refine by basing on duration of sw;
@@ -2054,10 +2058,10 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
 	* lapr - this used in downstream analyses for oral prep so dont need equivalent here;
 
-prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
-prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
-prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;  
-prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
+prep_any_tm3=	prep_any_tm2;  prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
+prep_oral_tm3=	prep_oral_tm2; prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
+prep_inj_tm3=	prep_inj_tm2;  prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;  
+prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 	* lapr and dpv-vr;
 
 * Oral prep scale-up over 4 years;
@@ -2211,13 +2215,13 @@ vm_format=1  plasma  lab
 vm_format=2  whb     lab 
 vm_format=3  plasma  poc 
 vm_format=4  whb     poc 
-;
+; 
 		art_monitoring_strategy = 150; 
 		vm_format=2; ***measuring vl using whole blood dbs;   
 		vl_threshold=1000;
 		time_of_first_vm = 0.5;
 		min_time_repeat_vm = 0.25;	
-	if poc_vl_monitoring_i = 1 then do; vm_format=4;  end;
+	if poc_vl_monitoring_i = 1 then do; vm_format=4;  end;													   
 end;
 
 if caldate{t} ge 2016.5 and cd4_monitoring=1 then art_monitoring_strategy = 8;  
@@ -2300,9 +2304,6 @@ decr_hard_reach_year_i = 0;
 *decrease in probability of being lost at diagnosis; 
 decr_prob_loss_at_diag_year_i = 0;
 
-*absence PCP;
-absence_pcp_year_i = 0; 
-
 *absence CD4;
 absence_cd4_year_i = 0;
 
@@ -2340,7 +2341,7 @@ decr_rate_int_choice_year_i = 0 ;
 incr_prob_vl_meas_done_year_i = 0;  
 
 * poc viral load monitoring;
-poc_vl_monitoring_i = 0 ;
+poc_vl_monitoring_i = 0 ;										 
 
 *ART monitoring drug levels;
 art_mon_drug_levels_year_i = 0;
@@ -2486,11 +2487,11 @@ who may be dead and hence have caldate{t} missing;
 	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
 	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
 	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
-	*Option 30,31,32,33, 34 are essential + Linkage, management, ART Interv;			 *Andrew;	
+	*Option 30,31,32,33,34 are essential + Linkage, management, ART Interv;			 *Andrew;	
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 35 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; 
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2505,7 +2506,7 @@ who may be dead and hence have caldate{t} missing;
 		higher_future_prep_oral_cov=2;*No PrEP;
 
 		*Linkage, management, ART Interv;
-		absence_pcp_year_i = 1;						
+		*PCP is part of the essential scenario;
 		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;
 		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
 		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;
@@ -2536,51 +2537,39 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 11 then do;*Social and behavioral change communication (SBCC);
 	end;
-	if option = 12 then do;*Condom use promotion and provision;
+	if option = 12 then do;*Increase in Condom use promotion and provision;
 	end;
 	if option = 13 then do;*General population men’s health clinics (for men from the general population);
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
 	*option 15: Oral TDF/FTC PrEP for AGWY;
-	if option = 16 then do;*Oral TDF/FTC PrEP for FSW;
-	end;
-	if option = 17 then do;*Oral TDF/FTC PrEP for sero-discordant couples;
-	end;
-	if option = 18 then do;*Oral TDF/FTC PrEP for pregnant and breastfeeding women;
-	end;
-	if option = 19 then do;*Dapivirine ring for AGYW;
-	end;
-	if option = 20 then do;*Dapivirine ring for FSW;
-	end;
-	if option = 21 then do;*Dapivirine ring for sero-discordant couples;
-	end;
-	if option = 22 then do;*Dapivirine ring for pregnant and breastfeeding women;
-	end;
-	if option = 23 then do;*Injectable PrEP for AGYW;
-	end;
-	if option = 24 then do;*Injectable PrEP for FSW;
-	end;
-	if option = 25 then do;*Injectable PrEP for Sero-discordant couples;
-	end;
-	if option = 26 then do;*Injectable PrEP for pregnant and breastfeeding women;
-	end;
-
+	*option 16: Oral TDF/FTC PrEP for FSW;
+	*option 17: Oral TDF/FTC PrEP for sero-discordant couples;
+	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women;
+	*option 19: Dapivirine ring for AGYW;
+	*option 20: Dapivirine ring for FSW;
+	*option 21: Dapivirine ring for sero-discordant couples;
+	*option 22: Dapivirine ring for pregnant and breastfeeding women;
+	*option 23: Injectable PrEP for AGYW;
+	*option 24: Injectable PrEP for FSW;
+	*option 25: Injectable PrEP for Sero-discordant couples;
+	*option 26: Injectable PrEP for pregnant and breastfeeding women;
+	
 	*Linkage, management, ART Interv;
+	*The option "CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available" has been removed,
+	as cotrimoxazole is part of the essential;
 	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;
-	absence_cd4_year_i = 0; crag_cd4_l200=1;	
+		absence_cd4_year_i = 0; crag_cd4_l200=1;											  
 	end;
-	if option = 32 then do;*CD4  at initiation and re-initiation + TBLAM when CD4 is <200 or clical stage 3 o 4;
-	absence_cd4_year_i = 0; tblam_cd4_l200=1;
+	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;
+		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
 	end;
 	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
-	absence_vl_year_i = 0;
+	absence_vl_year_i = 0;					   
 	end;
 	if option = 34 then do; * poc vl monitoring ;
 	absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;
-	end;
-	if option = 35 then do; * pcp prophylaxis for all ;
-	absence_pcp_year_i = 0;
 	end;
 
 	*Structural interventions and social enablers;
@@ -2859,10 +2848,12 @@ if caldate{t} >= &year_interv then do;
 		if . lt rate_1sttest lt rate_1sttest_2011 then rate_1sttest = rate_1sttest_2011;
 		if . lt rate_reptest lt rate_reptest_2011 then rate_reptest = rate_reptest_2011;
 	end;
-	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end;
+	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end; 
 end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
+***Zim specific; 
+/*if 2020.5 le caldate{t} lt 2021.5 then do; rate_1sttest=rate_1sttest*0.5;rate_reptest=rate_reptest*0.5;end;*/
 
 
 * ts1m;
@@ -2873,7 +2864,7 @@ if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest =
 * RATE OF ATTENDING AN ANC FOR PREGNANT WOMEN; 
 
 if gender=2 then do;
-	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_testanc_inc; * dependent_on_time_step_length ;
+	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_anc_inc; * dependent_on_time_step_length ;
 	if                            caldate{t} =  2014.75 then prob_anc_2015 = prob_anc;
 	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015;
 	if prob_anc gt 0.975   then prob_anc=0.975;  
@@ -2959,8 +2950,10 @@ if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*o
     end;
 end;
 
-
+***Zim specific; 
+/*if 2020.5 le caldate{t} lt 2021.5 then prob_circ = prob_circ*0.5;*/
 if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_circ = 0;
+
 
 if prob_circ ne . then prob_circ = min(prob_circ,1);
 
@@ -3193,8 +3186,8 @@ if 1995 < caldate{t} <= 2000 then rred_rc = ych_risk_beh_newp**(caldate{t}-1995)
 if 2000 < caldate{t} <= 2010 then rred_rc = ych_risk_beh_newp**(2000-1995); 
 if 2010 < caldate{t} <= 2021 then rred_rc = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(caldate{t}-2010));
 if        caldate{t}  = 2011 then rred_rc2011_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2011-2010));
-if        caldate{t}  = 2021 then rred_rc2021_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));
-if 2021 < caldate{t}         then rred_rc = rred_rc2021_;
+if        caldate{t}  = 2021 then rred_rc2021_ = (ych_risk_beh_newp**(2000-1995))*(ych2_risk_beh_newp**(2021-2010));																												
+if 2021 < caldate{t}         then rred_rc = rred_rc2021_;														 
 
 *In 2021
 %sample(ych_risk_beh_newp, 0.5 0.6 0.7 0.8 0.9 1.0, 0.05 0.15 0.30 0.35 0.10 0.05)
@@ -4410,11 +4403,13 @@ if anc=1 then do;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
-		u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) or caldate{t} = dt_start_pregn+0.75 then do;
+		 u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) 
+		 	or (caldate{t} = dt_start_pregn+0.5  and u lt prob_test_2ndtrim)
+			or (caldate{t} = dt_start_pregn+0.75 and u lt 0.1 ) then do;
 			tested=1; dt_last_test=caldate{t};np_lasttest=0;  
-			if caldate{t} = dt_start_pregn+0.25 then tested_anc=1;
+			if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
 			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
-		end; 
+		end;
 	end;
 	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
@@ -4422,14 +4417,15 @@ if anc=1 then do;
 end;
 
 tested_pd=0;
-if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 and tested_tm1=1 then do; * dependent_on_time_step_length ;
+if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and u lt 0.33 then do;tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt prob_test_postdel then do;
+		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
-birth=0;if                   caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};birth=1;cum_children=cum_children+1;end;
+birth=0;if           caldate{t} =  dt_start_pregn+0.75 then do; dt_lastbirth=caldate{t};birth=1;cum_children=cum_children+1;end;
 if                   caldate{t} gt dt_start_pregn+0.75 then do; dt_start_pregn=.;anc=0;end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
@@ -4814,7 +4810,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							prep_oral_start_date=caldate{t};
 						end; 
 						when (highest_prep_pref = 2) 	
-							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do;	*Inj PrEP preferred and is available;
+							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do; *Inj PrEP preferred and is available;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
 								prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
@@ -4825,9 +4821,10 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								prep_oral_start_date=caldate{t}; 
 							end;
 						when (highest_prep_pref = 3) 	 
-							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do; 	*VR PrEP preferred and is available;
+							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;	*VR PrEP preferred and is available;
 								prep_any=1;		continuous_prep_any_use=0.25;	
-								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t}; 
+								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};
+								prep_vr_start_date=caldate{t};  
 							end; 
 							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
@@ -4844,9 +4841,10 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
-							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;	*VR PrEP preferred but not available - start oral PrEP if willing;
+							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *VR PrEP preferred but not available - start oral PrEP if willing;
 								prep_any=1;		continuous_prep_any_use=0.25;	
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
+								prep_oral_start_date=caldate{t};
 							end;
 						otherwise xxx=1;
 					end; 
@@ -7106,8 +7104,8 @@ if t ge 2 then do;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
-			lost=0; cd4diag=cd4; 
+			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; lost=0; cd4diag=cd4; 
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
 			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
@@ -7159,7 +7157,8 @@ if t ge 2 then do;
 		sens_primary=0.86;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; visit=1; lost=0;
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -7210,7 +7209,8 @@ if t ge 2 then do;
 		sens_primary=sens_primary_testtype3; 
 		eff_sens_primary = sens_primary; if (prep_inj_tm1=1 and prep_inj=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_inj_primary ;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1;  visit=1; lost=0;
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;	
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -7978,7 +7978,7 @@ res_test=.;
 		if sw=1 then prointer= min(1,prointer * eff_sw_higher_int);
 	* new for pop_wide_tld;
 		if pop_wide_tld = 1 then prointer = prointer * rr_interrupt_pop_wide_tld;
-		if art_monitoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;
+		if art_monitoring_strategy=150 and vm_format in (3,4) then prointer = prointer * red_int_risk_poc_vl;																									   
 		*The rate of interruption also reduces with time on ART, decreasing after 2 years.  
 		Evidence suggests that rates of discontinuation does decrease over time ((Kranzer 2010 Tassie 2010 Wandeler 2012) 
 		although the point at which the risk lowers might be somewhat earlier than 2 years;  
@@ -8735,7 +8735,7 @@ if sw=1 then adh = (rel_sw_lower_adh * adh);***lower adh for SW if they have dis
 
 if sw=1 and sw_program_visit=1 then adh = adh + ((1-adh)*effect_sw_prog_adh);
 
-if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);
+if art_monitoring_strategy = 150 and vm_format in (3,4) then adh = adh + ((1-adh)*incr_adh_poc_vl);																							   
 
 
 * high risk of resistance with nnrtis even if v low adherence;
@@ -9808,7 +9808,7 @@ if t ge 2 then cd4=cd4_tm1+cc_tm1;
 		if 3 < vl <= 4 then u=u*2;
 		if 4 < vl <= 5 then u=u*1;
 		if 5 < vl then u=u/2;
-		if . < caldate{t}-yrart <= 0.25 and onart=1 then u = u * 10 ; *  despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
+		if . < caldate{t}-yrart <= 0.25 and onart=1 and adh >= 0.8 then u = u * 10 ; * despite pregnancy now lasting 9 months it was felt we might not fully capture fully the VL benefit of people who starting ART 3 months before birth ; 
 		if u < rate_birth_with_infected_child then do; * apr 2019;
 			birth_with_inf_child=1; if caldate{t} ge 2018.75 then ever_birth_with_inf_child = 1;
 			if c_rt184m_tm1=1 or c_rttams_tm1=1  or c_rt65m_tm1=1 or c_rt103m_tm1=1 or c_rt181m_tm1=1 or c_rt190m_tm1=1
@@ -10568,7 +10568,7 @@ end;
 *VL measurement to inform possible switching in regimen;
 if ((reg_option in (103 116)) or (reg_option = 104 and art_monitoring_strategy ne 1500)) and artline=2 and o_dol=1 and p_taz=1 and f_dol_tm1 ne 1 and restart ne 1 and restart_tm1 ne 1 and t ge 2 and absence_vl_year_i ne 1 then do; 
 	if (time_since_last_vm >= 0.75) and (caldate&j - date_conf_vl_measure_done >= 1 or date_conf_vl_measure_done=.) 
-and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.) 
+and (caldate{t} - date_transition_from_pi >= 0.5 or date_transition_from_pi =.)
 then do; 
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
@@ -11070,15 +11070,18 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	d=rand('uniform');
 
 	pcp_p_tm1=pcp_p;
+	
+	pcp_p   =0;
 
 	if hiv_monitoring_strategy=2 then do;
-		if visit=1 and . < cm    < 350 and d lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
+		if visit=1 and . < cm    < 350 and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 	end;
 
 	r=rand('uniform');
-	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
+	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 
-	if caldate{t} ge 2015 and visit=1 and d < 0.8 and absence_pcp_year_i ne 1 then pcp_p   =1;
+	if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
+
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
 
@@ -11791,6 +11794,7 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 	
 	vl_cost_inc=0;
 	vm_this_per=0;if vm ne . then vm_this_per =1;
+	vm_ly=0;      if caldate{t}-1 lt date_latest_vm le caldate{t} and date_latest_vm ne . then vm_ly =1;
 
 	res_cost=0; if res_test=1 then res_cost=res_cost_a;
 
@@ -13773,6 +13777,9 @@ hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
 
+primaryepi1_w=0;if gender=2 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_w=1;
+primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;
+
 hiv0epart1_w=0; if gender=2 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_w=1;
 hiv0epart1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and epart  =1 then hiv0epart1_m=1;
 
@@ -14321,7 +14328,7 @@ prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then prep_adh5080=1;
 prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
 
 *To calculate proportion of people on PrEP;
-onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
+onprep_1549=0; onprep_m=0; onprep_w=0; onprep_sw=0; onprep_1524=0; onprep_1524w=0;onprep_w1524_newpge1_=0;onprep_inj_m=0; onprep_inj_w=0; onprep_oral_m=0; onprep_oral_w=0; 
 onprep_vr_w=0;
 if prep_any=1 then do;
 	if (15<=age<49) then onprep_1549=1;
@@ -14334,7 +14341,67 @@ if prep_any=1 then do;
 	if gender=2 and prep_oral=1 then onprep_oral_w=1;
 	if sw=1 then onprep_sw=1;
 	if (15<=age<25) then onprep_1524=1;
-	if gender=2 and (15<=age<25) then onprep_1524w=1;
+	if gender=2 and 15 le age lt 25 then onprep_1524w=1;
+	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
+end;
+
+*To calculate number initiated for the first time on different types of PrEP;
+init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;
+if caldate&j = prep_oral_start_date then do;
+	if gender=2 and 15 le age lt 25 then init_prep_oral_1524w=1;
+	if gender=2 and sw=1 			then init_prep_oral_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_oral_sdc=1;
+end;
+init_prep_inj_1524w=0;init_prep_inj_sw=0;init_prep_inj_sdc=0;
+if caldate&j = prep_inj_start_date then do;
+	if gender=2 and 15 le age lt 25 then init_prep_inj_1524w=1;
+	if gender=2 and sw=1 			then init_prep_inj_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_inj_sdc=1;
+end;
+init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_sdc=0;
+if caldate&j = prep_vr_start_date then do;
+	if gender=2 and 15 le age lt 25 then init_prep_vr_1524w=1;
+	if gender=2 and sw=1 			then init_prep_vr_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_vr_sdc=1;
+end;
+* To calculate number who used PrEP in the last year;
+prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;
+if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_oral_ly_1524w=1;
+	if gender=2 and sw=1 			then prep_oral_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_oral_ly_sdc=1;
+end;
+prep_inj_ly_1524w=0;prep_inj_ly_sw=0;prep_inj_ly_sdc=0;
+if prep_inj_tm3=1 or prep_inj_tm2=1 or prep_inj_tm1=1 or prep_inj=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_inj_ly_1524w=1;
+	if gender=2 and sw=1 			then prep_inj_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_inj_ly_sdc=1;
+end;
+prep_vr_ly_1524w=0;prep_vr_ly_sw=0;prep_vr_ly_sdc=0;
+if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_vr_ly_1524w=1;
+	if gender=2 and sw=1 			then prep_vr_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_vr_ly_sdc=1;
+end;
+
+* To calculate number ever initiated on oral PrEP;
+prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;
+if prep_oral_ever=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_oral_ever_1524w=1;
+	if gender=2 and sw=1 			then prep_oral_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_oral_ever_sdc=1;
+end;
+prep_inj_ever_1524w=0;prep_inj_ever_sw=0;prep_inj_ever_sdc=0;
+if prep_inj_ever=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_inj_ever_1524w=1;
+	if gender=2 and sw=1 			then prep_inj_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_inj_ever_sdc=1;
+end;
+prep_vr_ever_1524w=0;prep_vr_ever_sw=0;prep_vr_ever_sdc=0;
+if prep_vr_ever=1 then do;
+	if gender=2 and 15 le age lt 25 then prep_vr_ever_1524w=1;
+	if gender=2 and sw=1 			then prep_vr_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_vr_ever_sdc=1;
 end;
 
 
@@ -14544,7 +14611,6 @@ hiv_w4549_anc=0;hiv_w50pl_anc=0;
 w1549_anc=0;	   w1524_anc=0;
 hiv_pregn_w1549_=0; hiv_pregn_w1524_=0;
 if gender=2 and pregnant=1 then do;
-
 	if 15 le age lt 50 then do; pregnant_w1549=1; hiv_pregn_w1549_=1; if anc=1 then do; w1549_anc=1;tested_w1549_anc=tested; hiv_w1549_anc=hiv;end;end;
 	if 15 le age lt 25 then do; pregnant_w1524=1; hiv_pregn_w1524_=1; if anc=1 then do; w1524_anc=1;tested_w1524_anc=tested; hiv_w1524_anc=hiv;end;end;
 	if 15 le age lt 20 then do; pregnant_w1519=1; 				   if anc=1 then do; 			 tested_w1519_anc=tested; hiv_w1519_anc=hiv;end;end;
@@ -14559,6 +14625,10 @@ end;
 
 hiv_pregnant=0; if pregnant=1 and hiv=1 then hiv_pregnant=1;
 hiv_anc=0;      if anc=1      and hiv=1 then hiv_anc=1;
+
+*Number of females 15-24 years old who ever gave birth or pregnant in the last year: it is ok as we only model pregnancies leading to live births;
+everpregn_w1524    =0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1)           then everpregn_w1524=1;
+everpregn_hiv_w1524=0;if gender=2 and 15 le age lt 25 and (dt_lastbirth ne . or pregnant=1) and hiv=1 then everpregn_hiv_w1524=1;
 
 pmtct=0;if pregnant=1 and (on_sd_nvp=1 or on_dual_nvp=1 or . lt time0 le caldate&j) then pmtct=1;
 
@@ -14605,7 +14675,8 @@ dead_all=dead;
 if gender=1  then deadm_all=dead;
 if gender=2  then deadw_all=dead;
 
-death_hivrel=0; if caldate&j = death > . and dcause=1 then death_hivrel=dead;
+death_hivrel=0;   if caldate&j = death > . and dcause=1 then death_hivrel=dead;
+death_hivrel_m=0; if caldate&j = death > . and dcause=1 and gender=1 then death_hivrel_m=dead;
 
 death_dcause3 = 0; if caldate&j = death > . and dcause=3 then death_dcause3 = dead ;
 
@@ -14993,15 +15064,23 @@ _dcost_vl_not_done = cost_vl_not_done * discount;
 
 *** Diagnosed this period;
 diag_this_period=.;diag_this_period_m=.;diag_this_period_f=.;diag_this_period_f_anc=.;diag_this_period_f_non_anc=.;
+diag_this_period_f_labdel=.;diag_this_period_f_pd=.;
 diag_this_period_m_sympt=.;diag_this_period_f_sympt=.;
-
+diag_thisper_anclabpd=.;diag_thisper_progsw=.;diag_thisper_sw=.;diag_thisper_1524f=.;
 if date1pos = caldate&j > . then diag_this_period=1;
 if gender=1 and diag_this_period=1 then diag_this_period_m=1;
 if gender=2 and diag_this_period=1 then diag_this_period_f=1;
 if gender=2 and diag_this_period=1 and tested_anc=1 then diag_this_period_f_anc=1;
 if gender=2 and diag_this_period=1 and tested_anc ne 1 then diag_this_period_f_non_anc=1;
+if gender=2 and diag_this_period=1 and tested_labdel=1 then diag_this_period_f_labdel=1;
+if gender=2 and diag_this_period=1 and tested_pd=1 then diag_this_period_f_pd=1;
 if gender=1 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_m_sympt=1;
 if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sympt=1;
+if gender=2 and diag_this_period=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then diag_thisper_anclabpd=1;
+if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
+(elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then diag_thisper_progsw=1;
+if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
+if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
 
 ***Reason for HIV test;
 tested_m=0; if gender=1 and tested=1 then tested_m=1;
@@ -15013,9 +15092,14 @@ tested_f=0; if gender=2 and tested=1 then tested_f=1;
 tested_f_anc=0; if gender=2 and tested=1 and tested_anc = 1 then tested_f_anc=1;
 tested_f_sympt=0; if gender=2 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
 and tested_anc ne 1 then tested_f_sympt=1;
-tested_f_sw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 and
-(elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_sw=1;
+tested_f_progsw=0; if gender=2 and tested=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
+(elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then tested_f_progsw=1;
 tested_f_non_anc=0; if gender=2 and tested=1 and tested_anc ne 1 then tested_f_non_anc=1;
+*The following aaplies only at 1 point in time as I wasnt to know the number of women tested;
+tested_ancpd=0; if dt_lastbirth=caldate&j-0.25 and (tested_pd=1 or 
+                   (dt_last_test ne . and dt_lastbirth ne . and dt_lastbirth-0.75 lt dt_last_test le dt_lastbirth)) then tested_ancpd=1;
+test_anclabpd=0;if gender=2 and tested=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then test_anclabpd=1;
+tested_1524w=0; if gender=2 and tested=1 and 15 <= age < 25 then tested_1524w=1;
 
 * tested_at_return is when a previously diagnosed person returns to care - these can be added when summing positive tests;
 tested_at_return=0; if return = 1 then tested_at_return=1;
@@ -15172,7 +15256,10 @@ who3_art_init=0; if caldate&j = yrart > . and . < timewho3_ <= yrart then who3_a
 dead_art_1p = .; if caldate&j=yrart and yrart=death then dead_art_1p = 1;
 
 *** First test this period;
-firsttest=0; if caldate&j=date1test > . then firsttest=1;
+firsttest=0; 	if caldate&j=date1test > . then firsttest=1;
+firsttest_anc=0;if caldate&j=date1test > . and gender=2 and tested_anc=1 then firsttest_anc=1;
+firsttest_labdel=0;if caldate&j=date1test > . and gender=2 and tested_labdel=1 then firsttest_labdel=1;
+firsttest_pd=0;    if caldate&j=date1test > . and gender=2 and tested_pd=1 then firsttest_pd=1;
 
 *** Naive by gender;
 if naive=1 and gender=1 then naive_m=1;
@@ -15181,7 +15268,7 @@ if naive=1 and gender=2 then naive_w=1;
 m_npge1=0; if gender=1 and np ge 1 then m_npge1=1;
 w_npge1=0; if gender=2 and np ge 1 then w_npge1=1;
 w1524_npge1=0; if gender=2 and 15 <= age < 25 and np ge 1 then w1524_npge1=1;
-sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1; 
+sw_npge1=0; if sw=1 and np ge 1 then sw_npge1=1;
 
 *** Number of partners >2 / >10;
 npge2=0; if np ge 2 then npge2=1;
@@ -16329,7 +16416,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_newp_hiv + newp_hiv ; s_newp_ge1_hiv_diag + newp_ge1_hiv_diag ; s_epdiag + epdiag ; s_diag_epun + diag_epun ; s_epart + epart ;
 	s_epvls + epvls ; s_hiv1epi0_w + hiv1epi0_w ; s_hiv0epi1_w + hiv0epi1_w ; s_hiv1epi0_m + hiv1epi0_m ; s_hiv0epi1_m + hiv0epi1_m ;
-	s_hiv1epi1_m + hiv1epi1_m ; s_hiv1epi1_w + hiv1epi1_w ; s_hiv0epart1_w + hiv0epart1_w; s_hiv0epart1_m + hiv0epart1_m;
+	s_hiv1epi1_m + hiv1epi1_m ; s_hiv1epi1_w + hiv1epi1_w ;s_primaryepi1_w + primaryepi1_w; s_primaryepi1_m + primaryepi1_m;
+	s_hiv0epart1_w + hiv0epart1_w; s_hiv0epart1_m + hiv0epart1_m;
 	s_hiv0epprim + hiv0epprim ; s_ever_ep_hiv + ever_ep_hiv ; s_ever_ep_diag + ever_ep_diag ;
 	s_ever_newp_hiv + ever_newp_hiv ; s_ever_newp_diag + ever_newp_diag ; s_infected_newp_m + infected_newp_m ; s_infected_newp_w + infected_newp_w ;
     s_infected_ep_m + infected_ep_m ; s_infected_ep_w + infected_ep_w ;
@@ -16480,7 +16568,17 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onprep_1549 + onprep_1549 ; s_onprep_m + onprep_m ; s_onprep_w + onprep_w ; s_onprep_sw + onprep_sw ; s_onprep_1524 + onprep_1524 ;
 	s_onprep_inj_m + onprep_inj_m; s_onprep_inj_w + onprep_inj_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
 	s_onprep_vr_w + onprep_vr_w;
-	s_onprep_1524w + onprep_1524w ; s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
+	s_onprep_1524w + onprep_1524w ; s_onprep_w1524_newpge1_ + onprep_w1524_newpge1_; 
+	s_init_prep_oral_1524w + init_prep_oral_1524w; s_init_prep_oral_sw + init_prep_oral_sw; s_init_prep_oral_sdc + init_prep_oral_sdc;
+	s_init_prep_inj_1524w + init_prep_inj_1524w; s_init_prep_inj_sw + init_prep_inj_sw; s_init_prep_inj_sdc + init_prep_inj_sdc;
+	s_init_prep_vr_1524w + init_prep_vr_1524w; s_init_prep_vr_sw + init_prep_vr_sw; s_init_prep_vr_sdc + init_prep_vr_sdc;
+	s_prep_oral_ly_1524w + prep_oral_ly_1524w; s_prep_oral_ly_sw + prep_oral_ly_sw; s_prep_oral_ly_sdc + prep_oral_ly_sdc;
+	s_prep_inj_ly_1524w + prep_inj_ly_1524w; s_prep_inj_ly_sw + prep_inj_ly_sw; s_prep_inj_ly_sdc + prep_inj_ly_sdc;
+	s_prep_vr_ly_1524w + prep_vr_ly_1524w; s_prep_vr_ly_sw + prep_vr_ly_sw; s_prep_vr_ly_sdc + prep_vr_ly_sdc;
+	s_prep_oral_ever_1524w + prep_oral_ever_1524w; s_prep_oral_ever_sw + prep_oral_ever_sw; s_prep_oral_ever_sdc + prep_oral_ever_sdc;
+	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc;
+	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc;
+	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
     s_prepinfect_prep_r + prepinfect_prep_r ; s_prepinfect_prep_r_p + prepinfect_prep_r_p ; s_infected_prep_no_r + infected_prep_no_r ;
@@ -16562,8 +16660,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	
 	/*testing and diagnosis*/
 
-	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; s_tested_f_anc + tested_f_anc ;
-	s_ever_tested_m + ever_tested_m ; s_ever_tested_w + ever_tested_w ; s_firsttest + firsttest ; s_tested1549_ + tested1549_ ;
+	s_tested + tested ; s_tested_m + tested_m ; s_tested_f + tested_f ; s_tested_f_non_anc + tested_f_non_anc ; 
+	s_tested_ancpd + tested_ancpd ; s_test_anclabpd + test_anclabpd ; s_tested_1524w + tested_1524w; s_tested_f_anc + tested_f_anc ;
+	s_ever_tested_m + ever_tested_m ; s_ever_tested_w + ever_tested_w ; s_firsttest + firsttest ; 
+	s_firsttest_anc + firsttest_anc ; s_firsttest_labdel + firsttest_labdel ; s_firsttest_pd + firsttest_pd ;s_tested1549_ + tested1549_ ;
 	s_tested1549m + tested1549m ; s_tested1549w + tested1549w ; s_tested_4p_m1549_ + tested_4p_m1549_ ; s_tested_4p_m1519_ + tested_4p_m1519_ ;
     s_tested_4p_m2024_ + tested_4p_m2024_ ; s_tested_4p_m2529_ + tested_4p_m2529_ ; s_tested_4p_m3039_ + tested_4p_m3039_ ; 
 	s_tested_4p_m4049_ + tested_4p_m4049_ ; s_tested_4p_m5064_ + tested_4p_m5064_ ; s_tested_4p_w1549_ + tested_4p_w1549_ ; 
@@ -16582,7 +16682,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_elig_test_who4 + elig_test_who4 ; s_elig_test_non_tb_who3 + elig_test_non_tb_who3 ; s_elig_test_tb + elig_test_tb ; s_elig_test_who4_tested + elig_test_who4_tested ;
     s_elig_test_tb_tested + elig_test_tb_tested ; s_elig_test_non_tb_who3_tested + elig_test_non_tb_who3_tested ; s_com_test + com_test ; 
 	s_tested_anc_prevdiag + tested_anc_prevdiag ; s_tested_anc + tested_anc ; s_tested_labdel + tested_labdel ; s_tested_pd + tested_pd ;s_tested_as_sw + tested_as_sw ; s_tested_m_sympt + tested_m_sympt ;    
-	s_tested_f_sympt + tested_f_sympt ; s_tested_f_sw + tested_f_sw ; s_tested_m_circ + tested_m_circ ; s_rate_1sttest + rate_1sttest ;
+	s_tested_f_sympt + tested_f_sympt ; s_tested_f_progsw + tested_f_progsw ; s_tested_m_circ + tested_m_circ ; s_rate_1sttest + rate_1sttest ;
     s_rate_reptest + rate_reptest ; s_newp_lasttest_tested_this_per + newp_lasttest_tested_this_per ; s_acc_test + acc_test ; 
 	s_acc_test_1524_ + acc_test_1524_ ; s_acc_test_2549_ + acc_test_2549_ ; s_acc_test_5064_ + acc_test_5064_ ; s_acc_test_sw + acc_test_sw ;     
     s_diag + registd ;  s_diag_m1549_ + diag_m1549_ ; s_diag_w1549_ + diag_w1549_ ; 
@@ -16592,8 +16692,10 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
     s_diag_w4044_ + diag_w4044_ ; s_diag_w4549_ + diag_w4549_ ; s_diag_w5054_ + diag_w5054_ ; s_diag_w5559_ + diag_w5559_ ; s_diag_w6064_ + diag_w6064_ ; 
 	s_diag_sw + diag_sw ; s_nn_tdr_diag + nn_tdr_diag ; s_diag_this_period + diag_this_period ; s_diag_this_period_m + diag_this_period_m ;
 	s_diag_this_period_f + diag_this_period_f ; s_diag_this_period_f_non_anc + diag_this_period_f_non_anc ; 
-	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
-	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
+	s_diag_this_period_f_anc + diag_this_period_f_anc ; s_diag_this_period_f_labdel + diag_this_period_f_labdel ;s_diag_this_period_f_pd + diag_this_period_f_pd ;s_diag_this_period_m_sympt + diag_this_period_m_sympt ; 
+	s_diag_this_period_f_sympt + diag_this_period_f_sympt ; s_diag_thisper_anclabpd + diag_thisper_anclabpd; s_diag_thisper_progsw + diag_thisper_progsw;
+	s_diag_thisper_sw + diag_thisper_sw; s_diag_thisper_1524f + diag_thisper_1524f;
+	s_sympt_diag + sympt_diag ; s_sympt_diag_ever + sympt_diag_ever ; s_diag_m + diag_m ;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
@@ -16788,7 +16890,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_dead6569m_all + dead6569m_all;  s_dead7074m_all + dead7074m_all; s_dead7579m_all + dead7579m_all;  s_dead8084m_all + dead8084m_all;
 	s_dead85plm_all + dead85plm_all; 
 
-	s_death_hivrel + death_hivrel ;	s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
+	s_death_hivrel + death_hivrel ;	s_death_hivrel_m + death_hivrel_m ; s_dead_rdcause2 + dead_rdcause2 ; s_dead_onart_rdcause2 + dead_onart_rdcause2 ; s_dead_ + dead_ ;
 	s_death_hiv + death_hiv ;s_death_hiv_m + death_hiv_m ;s_death_hiv_w + death_hiv_w ; 
 	s_dead_diag + dead_diag ; s_dead_naive + dead_naive ; s_dead_onart + dead_onart ; s_dead_line1_lf0 + dead_line1_lf0 ;
     s_dead_line1_lf1 + dead_line1_lf1 ; s_dead_line2_lf1 + dead_line2_lf1 ; s_dead_line2_lf2 + dead_line2_lf2 ; s_dead_artexp + dead_artexp ;
@@ -16961,7 +17063,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc_naive + adc_naive ; s_adc_line1_lf0 + adc_line1_lf0 ; s_adc_line1_lf1 + adc_line1_lf1 ; s_adc_line2_lf1 + adc_line2_lf1 ;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per;
-	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
+	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_vm_ly + vm_ly; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p + pcp_p ; s_sbi_proph + sbi_proph ;
 	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
  	s_vl_g1 + vl_g1 ;  s_vl_g2 + vl_g2 ;  s_vl_g3 + vl_g3 ;  s_vl_g4 + vl_g4 ;  s_vl_g5 + vl_g5 ;  
@@ -16969,12 +17071,12 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g1_tb +cd4_g1_tb ; s_cd4_g2_tb +cd4_g2_tb ; s_cd4_g3_tb +cd4_g3_tb ; s_cd4_g4_tb +cd4_g4_tb ; s_cd4_g5_tb +cd4_g5_tb ; s_cd4_g6_tb +cd4_g6_tb ;  
 	s_vl_g1_tb +vl_g1_tb ; s_vl_g2_tb +vl_g2_tb ; s_vl_g3_tb +vl_g3_tb ; s_vl_g4_tb +vl_g4_tb ; s_vl_g5_tb +vl_g5_tb ; 
 	s_age_g1_tb +age_g1_tb ; s_age_g2_tb +age_g2_tb ; s_age_g3_tb +age_g3_tb ; s_age_g4_tb +age_g4_tb ; s_age_g5_tb +age_g5_tb ; 
-	s_onart_tb + onart_tb; s_pcp_p_tb + pcp_p_tb; s_tb_80 + tb;  s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
-	s_onart_80 + onart;   s_pcp_p_80 + pcp_p;   s_tb_proph_tb + tb_proph_tb ;
+	s_onart_tb + onart_tb; s_pcp_p_tb + pcp_p_tb; s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
+	s_tb_proph_tb + tb_proph_tb ;
 	s_cd4_g1_who3 +cd4_g1_who3 ; s_cd4_g2_who3 +cd4_g2_who3 ; s_cd4_g3_who3 +cd4_g3_who3 ; s_cd4_g4_who3 +cd4_g4_who3 ; s_cd4_g5_who3 +cd4_g5_who3 ; 
 	s_cd4_g6_who3 +cd4_g6_who3 ;  s_vl_g1_who3 +vl_g1_who3 ; s_vl_g2_who3 +vl_g2_who3 ; s_vl_g3_who3 +vl_g3_who3 ; s_vl_g4_who3 +vl_g4_who3 ; 
 	s_vl_g5_who3 +vl_g5_who3 ; s_age_g1_who3 +age_g1_who3 ; s_age_g2_who3 +age_g2_who3 ; s_age_g3_who3 +age_g3_who3 ; s_age_g4_who3 +age_g4_who3 ; 
-	s_age_g5_who3 +age_g5_who3 ;  s_onart_who3 + onart_who3 ;  s_pcp_p_who3 +  pcp_p_who3 ;  s_who3_event_80 + who3_event ;     
+	s_age_g5_who3 +age_g5_who3 ;  s_onart_who3 + onart_who3 ;  s_pcp_p_who3 +  pcp_p_who3 ;  s_who3_event + who3_event ;     
 	s_cd4_g1_adc +cd4_g1_adc ; s_cd4_g2_adc +cd4_g2_adc ; s_cd4_g3_adc +cd4_g3_adc ; s_cd4_g4_adc +cd4_g4_adc ; s_cd4_g5_adc +cd4_g5_adc ; 
 	s_cd4_g6_adc +cd4_g6_adc ;  s_vl_g1_adc +vl_g1_adc ; s_vl_g2_adc +vl_g2_adc ; s_vl_g3_adc +vl_g3_adc ; s_vl_g4_adc +vl_g4_adc ; 
 	s_vl_g5_adc +vl_g5_adc ; s_age_g1_adc +age_g1_adc ; s_age_g2_adc +age_g2_adc ; s_age_g3_adc +age_g3_adc ; s_age_g4_adc +age_g4_adc ; 
@@ -16992,9 +17094,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g1_dead +cd4_g1_dead ; s_cd4_g2_dead +cd4_g2_dead ; s_cd4_g3_dead +cd4_g3_dead ; s_cd4_g4_dead +cd4_g4_dead ; s_cd4_g5_dead +cd4_g5_dead ; s_cd4_g6_dead +cd4_g6_dead ;  
 	s_vl_g1_dead +vl_g1_dead ; s_vl_g2_dead +vl_g2_dead ; s_vl_g3_dead +vl_g3_dead ; s_vl_g4_dead +vl_g4_dead ; s_vl_g5_dead +vl_g5_dead ; 
 	s_age_g1_dead +age_g1_dead ; s_age_g2_dead +age_g2_dead ; s_age_g3_dead +age_g3_dead ; s_age_g4_dead +age_g4_dead ; s_age_g5_dead +age_g5_dead ;
-	s_onart_dead_80 + onart_dead ;  s_pcp_p_dead + pcp_p_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
+	s_onart_dead + onart_dead ;  s_pcp_p_dead + pcp_p_dead ;  s_tb_proph_dead + tb_proph_dead ;  s_crypm_proph_dead + crypm_proph_dead ; 
 	s_sbi_proph_dead + sbi_proph_dead ;    s_who3_event_dead  +  who3_event_dead ;    s_adc_dead +   adc_dead ;  s_crypm_dead + crypm_dead ;  
-	s_sbi_dead +  sbi_dead ;     	s_dead_80 + dead;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
+	s_sbi_dead +  sbi_dead ;  s_in_care_time_of_adc_tb + in_care_time_of_adc_tb; 
 	s_dead_tb + dead_tb;  s_dead_crypm + dead_crypm ;  s_dead_sbi + dead_sbi ;  s_dead_oth_adc +  dead_oth_adc;
 	s_tcur3m_cd4t0l100 + tcur3m_cd4t0l100 ; s_who3_tcur3m_cd4t0l100 + who3_tcur3m_cd4t0l100 ; s_adc_tcur3m_cd4t0l100 + adc_tcur3m_cd4t0l100 ; 
 	s_tb_tcur3m_cd4t0l100 + tb_tcur3m_cd4t0l100 ; s_crypm_tcur3m_cd4t0l100 + crypm_tcur3m_cd4t0l100 ; s_sbi_tcur3m_cd4t0l100 + sbi_tcur3m_cd4t0l100 ; 
@@ -17016,7 +17118,9 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_on_dual_nvp + on_dual_nvp ; s_ever_sd_nvp + ever_sd_nvp ; s_ever_dual_nvp + ever_dual_nvp ; s_pregnant_w1549 + pregnant_w1549 ; 
 	s_pregnant_w1524 + pregnant_w1524 ; s_pregnant_w1519 + pregnant_w1519 ; s_pregnant_w2024 + pregnant_w2024 ; s_pregnant_w2529 + pregnant_w2529 ;
 	s_pregnant_w3034 + pregnant_w3034 ; s_pregnant_w3539 + pregnant_w3539 ; s_pregnant_w4044 + pregnant_w4044 ; s_pregnant_w4549 + pregnant_w4549 ;
-    s_pregnant_w50pl + pregnant_w50pl ; s_tested_w1549_anc + tested_w1549_anc ; s_tested_w1524_anc + tested_w1524_anc ; s_tested_w1519_anc + tested_w1519_anc ;       
+    s_pregnant_w50pl + pregnant_w50pl ;
+	s_everpregn_w1524 + everpregn_w1524; s_everpregn_hiv_w1524 + everpregn_hiv_w1524;
+	s_tested_w1549_anc + tested_w1549_anc ; s_tested_w1524_anc + tested_w1524_anc ; s_tested_w1519_anc + tested_w1519_anc ;       
     s_tested_w2024_anc + tested_w2024_anc ; s_tested_w2529_anc + tested_w2529_anc ; s_tested_w3034_anc + tested_w3034_anc ;       
     s_tested_w3539_anc + tested_w3539_anc ; s_tested_w4044_anc + tested_w4044_anc ; s_tested_w4549_anc + tested_w4549_anc ;  
     s_tested_w50pl_anc + tested_w50pl_anc; s_hiv_w1549_anc + hiv_w1549_anc ; s_hiv_w1524_anc + hiv_w1524_anc ; s_hiv_w1519_anc + hiv_w1519_anc ;                        
@@ -17126,9 +17230,9 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dead_daly_oth_dol_adv_birth_e + dead_daly_oth_dol_adv_birth_e ;
 	s_dead_daly_ntd + dead_daly_ntd;
 	s_daly_mtct + daly_mtct ;
-	s_daly_non_aids_pre_death + daly_non_aids_pre_death ; 
+	s_daly_non_aids_pre_death + daly_non_aids_pre_death ;     
 	s_total_yll80le + total_yll80le;
-	s_total_yllag + total_yllag; 
+	s_total_yllag + total_yllag;						 
 
 	*discounted;
 	s_live_ddaly + live_ddaly ; 
@@ -17175,8 +17279,6 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_non_aids_pre_death + _dcost_non_aids_pre_death ;  s_dcost_drug_level_test + _dcost_drug_level_test ; 
  	s_dcost_child_hiv + _dcost_child_hiv ; s_dcost_child_hiv_mo_art + _dcost_child_hiv_mo_art ;
 	s_dcost_hypert_vis + _dcost_hypert_vis; s_dcost_hypert_drug + _dcost_hypert_drug;  
-	 	
-	s_death_hivrel_80 + death_hivrel ;   s_diag80 + registd ; 
 
 end;
 
@@ -18151,7 +18253,8 @@ s_newp_this_per   s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg  s_newp_this
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w s_hiv0epart1_w s_hiv0epart1_m
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w 
+s_primaryepi1_w  s_primaryepi1_m  s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -18247,7 +18350,17 @@ s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_pre
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
+s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc  
+s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
+s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
+s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
+s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
+s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_elig_prep_any_sw  
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
 s_elig_prep_any_w_1524 	s_elig_prep_any_w_2534 	s_elig_prep_any_w_3544 
@@ -18256,7 +18369,7 @@ s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary		s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
-s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
 s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
@@ -18276,8 +18389,8 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_152
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
-s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
+s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 			
@@ -18311,8 +18424,8 @@ s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_
 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
-s_tested1549_		s_tested1549m       s_tested1549w
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
 s_tested_4p_sw	s_tested_sw
@@ -18325,7 +18438,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc 	s_tested_labdel s_tested_pd
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_sw  s_tested_m_circ  
+s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -18336,9 +18449,9 @@ s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_dia
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
 
-s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc 
-s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
-s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
+s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc s_diag_this_period_f_labdel s_diag_this_period_f_pd
+s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f
+s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
@@ -18356,8 +18469,6 @@ s_vg1000 s_vg1000_1549 s_vg1000_m  s_vg1000_w s_vg1000_w_1524  s_vg1000_m_1524 s
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
-
-s_vl1000_art_gt6m_iicu_15pl  s_onart_gt6m_iicu_15pl s_vl1000_art_gt6m_iicu_m_15pl s_onart_gt6m_iicu_m_15pl s_vl1000_art_gt6m_iicu_w_15pl s_onart_gt6m_iicu_w_15pl 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -18438,7 +18549,7 @@ s_onartvisit0 s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
-s_diag80  s_diagnosed_dead 
+s_diagnosed_dead 
 s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
 s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
 s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
@@ -18483,7 +18594,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit s_cost_avail_self_test
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -18501,11 +18612,10 @@ s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 	
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death 
-s_total_yll80le  s_total_yllag
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_total_yll80le  s_total_yllag							  
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD
-s_ly  s_dly  s_qaly  s_dqaly      
+s_dyll_Optima80 s_dyll_GBD       
 																																			   
 		
 /*visits*/
@@ -18519,7 +18629,7 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel  s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
 s_dead_   s_death_hiv  s_death_hiv_m  s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -18574,14 +18684,14 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly  s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_onart_80 s_pcp_p_80 s_pcp_p_80  s_tb_80  s_tblam_measured_this_per_tb    
+s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_tblam_measured_this_per_tb    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_pcp_p_who3       s_who3_event  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
 s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
 s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
@@ -18589,23 +18699,22 @@ s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
 s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
 s_tcur6m_cd4t0l100  s_who3_tcur6m_cd4t0l100  s_adc_tcur6m_cd4t0l100 s_tb_tcur6m_cd4t0l100  s_crypm_tcur6m_cd4t0l100  s_sbi_tcur6m_cd4t0l100 	
 s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_cd4t0l200  s_crypm_tcur3m_cd4t0l200  s_sbi_tcur3m_cd4t0l200  
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
-s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
-
-s_dead_80  s_death_hivrel_80 
+s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care 
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc s_birth s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant 	
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
-s_pregnant_w3539    s_pregnant_w4044    s_pregnant_w4549    s_pregnant_w50pl 
+s_pregnant_w3539    s_pregnant_w4044    s_pregnant_w4549    s_pregnant_w50pl
+s_everpregn_w1524   s_everpregn_hiv_w1524 
 s_tested_w1549_anc  s_tested_w1524_anc  s_tested_w1519_anc  s_tested_w2024_anc  s_tested_w2529_anc  s_tested_w3034_anc
 s_tested_w3539_anc  s_tested_w4044_anc  s_tested_w4549_anc  s_tested_w50pl_anc 
 s_hiv_w1549_anc 	s_hiv_w1524_anc 	s_hiv_w1519_anc 	s_hiv_w2024_anc 	s_hiv_w2529_anc 	s_hiv_w3034_anc
@@ -18622,7 +18731,7 @@ s_mcirc_50plm  	s_mcirc_5054m  s_mcirc_5559m  s_mcirc_6064m  s_mcirc_6569m 	s_mc
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  
-s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  
 
 s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
@@ -18661,9 +18770,9 @@ sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
+rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -18709,11 +18818,11 @@ discount
 /*year_i interventions*/
 /* NB: everyone in the data set must have the same value for these parameters for them to be included (since we take the value for the last person) */
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i 	 absence_pcp_year_i  absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	 absence_cd4_year_i  absence_vl_year_i 	decr_rate_lost_year_i  		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i
+incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i  poc_vl_monitoring_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
-inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
+inc_p_prep_any_restart_choi_yr_i        
  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
 initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
@@ -18812,8 +18921,14 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
+***Zim specific;
 
+/*
+if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;*/
 
+/*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -19087,7 +19202,8 @@ s_s_m_newp  s_s_w_newp
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  s_hiv0epart1_w s_hiv0epart1_m
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w  
+s_primaryepi1_w  s_primaryepi1_m  s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -19180,7 +19296,17 @@ s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_pre
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
+s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc 
+s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
+s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
+s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
+s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
+s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_elig_prep_any_sw  
 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
@@ -19190,7 +19316,7 @@ s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
-s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
 s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
@@ -19210,8 +19336,8 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_152
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
-s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
+s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 			 
@@ -19243,8 +19369,8 @@ s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
-s_tested1549_		s_tested1549m       s_tested1549w
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
 s_tested_4p_sw		s_tested_sw
@@ -19257,7 +19383,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc  s_tested_labdel s_tested_pd		
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_sw  s_tested_m_circ  
+s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -19268,9 +19394,9 @@ s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_dia
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  s_diag_sw 
 s_nn_tdr_diag
 
-s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc 
-s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
-s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_diag_w_15pl s_diag_m_15pl s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
+s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
+s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
+s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w  s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
@@ -19288,8 +19414,6 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
-
-s_vl1000_art_gt6m_iicu_15pl  s_onart_gt6m_iicu_15pl s_vl1000_art_gt6m_iicu_m_15pl s_onart_gt6m_iicu_m_15pl s_vl1000_art_gt6m_iicu_w_15pl s_onart_gt6m_iicu_w_15pl 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -19369,7 +19493,7 @@ s_onartvisit0 s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
-s_diag80  s_diagnosed_dead 
+s_diagnosed_dead 
 s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
 s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
 s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
@@ -19413,7 +19537,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit   s_cost_avail_self_test
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -19433,12 +19557,10 @@ s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death    
-s_total_yll80le  s_total_yllag
+s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
+s_total_yll80le  s_total_yllag						  
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD
-
-s_ly  s_dly  s_qaly  s_dqaly   
+s_dyll_Optima80 s_dyll_GBD  
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -19451,7 +19573,7 @@ s_dead s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
 s_dead_   s_death_hiv s_death_hiv_m s_death_hiv_w s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -19502,14 +19624,14 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80    
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb     
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_pcp_p_who3       s_who3_event  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
 s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
 s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
@@ -19517,7 +19639,7 @@ s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
 s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi     s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead    s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
@@ -19526,14 +19648,14 @@ s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
-s_dead_80  s_death_hivrel_80 
 
 /*Pregnancy and children*/
-s_pregnant 	s_anc s_birth  s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
+s_pregnant 	s_anc s_birth s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
 s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc   s_pmtct
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
 s_pregnant_w3539    s_pregnant_w4044    s_pregnant_w4549    s_pregnant_w50pl 
+s_everpregn_w1524   s_everpregn_hiv_w1524 
 s_tested_w1549_anc  s_tested_w1524_anc  s_tested_w1519_anc  s_tested_w2024_anc  s_tested_w2529_anc  s_tested_w3034_anc
 s_tested_w3539_anc  s_tested_w4044_anc  s_tested_w4549_anc  s_tested_w50pl_anc 
 s_hiv_w1549_anc 	s_hiv_w1524_anc 	s_hiv_w1519_anc 	s_hiv_w2024_anc 	s_hiv_w2529_anc 	s_hiv_w3034_anc
@@ -19551,7 +19673,7 @@ s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  
-s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  
 
 s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
@@ -20102,7 +20224,7 @@ data r1; set a      ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);													  
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
@@ -20858,7 +20980,8 @@ s_newp_this_per  s_newp_sw  s_newp_hivneg   s_newp_this_per_hivneg    s_newp_thi
 /*status of partner*/
 s_eph0_m  s_eph0_w  s_nip   s_epi
 s_newp_hiv  s_newp_ge1_hiv_diag  s_epdiag   s_diag_epun  s_eponart  s_epvls
-s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w s_hiv0epart1_w s_hiv0epart1_m
+s_hiv1epi0_w  s_hiv0epi1_w  s_hiv1epi0_m  s_hiv0epi1_m  s_hiv1epi1_m  s_hiv1epi1_w
+s_primaryepi1_w  s_primaryepi1_m  s_hiv0epart1_w s_hiv0epart1_m
 s_hiv0epprim
 s_ever_ep_hiv  s_ever_ep_diag  s_ever_newp_hiv  s_ever_newp_diag
 s_infected_newp_m  s_infected_newp_w  s_infected_ep_m  s_infected_ep_w
@@ -20953,7 +21076,17 @@ s_acq_rt65m_3_prep  s_acq_rt184m_3_prep   s_acq_rtm_3_prep     s_acq_rt65m_6_pre
 s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_prep  s_acq_rt184m_12_prep  s_acq_rtm_12_prep  
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
-s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w  s_elig_prep_any_sw  
+s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
+s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc 
+s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
+s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
+s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
+s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
+s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_elig_prep_any_sw  
 
 s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
@@ -20963,7 +21096,7 @@ s_prep_oral_w_1524 		s_prep_inj_w_1524 		s_prep_vr_w_1524
 
 s_inf_prep_any_source_prep_r 	s_prepinfect_prep_r     			s_prepinfect_prep_r_p   			s_infected_prep_no_r    		s_infected_prep_r  
 s_started_prep_any_in_primary	s_started_prep_oral_in_primary  	s_started_prep_inj_in_primary		s_started_prep_vr_in_primary
-s_tot_yrs_prep_oral  		   	s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
+s_onprep_3_i_prep_no_r  			s_onprep_6_i_prep_no_r  			s_onprep_9_i_prep_no_r 
 s_onprep_12_i_prep_no_r 	   	s_onprep_18_i_prep_no_r 			s_prepinfect_rm_p      				s_prepinfect_m184m_p    		s_prepinfect_k65m_p 
 s_prepinfect_tam_p 			   	s_prepinfect_rtm  	   				s_prepinfect_k65m	   				s_prepinfect_m184m  	   		s_prepinfect_tam  
 s_prep_any_willing  		   	s_stop_prep_oral_choice				s_stop_prep_any_choice      		s_started_prep_hiv_test_sens  
@@ -20983,8 +21116,8 @@ s_newp_this_per_age1524w_onprep  s_newp_this_per_age1524w  s_prep_any_ever_w_152
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
 s_prob_prep_any_restart_choice
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
-s_prep_inj_past_year s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
-s_prep_vr_past_year s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
+s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
+s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
 s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 s_pop_wide_tld_as_art			   
@@ -21014,8 +21147,8 @@ s_prep_elig_onprep_vr
 s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
-s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
-s_tested1549_		s_tested1549m       s_tested1549w
+s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
+s_firsttest_anc 	s_firsttest_labdel 	s_firsttest_pd 		 s_tested1549_		s_tested1549m       s_tested1549w
 s_tested_4p_m1549_ 	s_tested_4p_m1519_ 	s_tested_4p_m2024_ s_tested_4p_m2529_  s_tested_4p_m3039_  s_tested_4p_m4049_  s_tested_4p_m5064_
 s_tested_4p_w1549_ 	s_tested_4p_w1519_ 	s_tested_4p_w2024_ s_tested_4p_w2529_  s_tested_4p_w3039_  s_tested_4p_w4049_  s_tested_4p_w5064_ 
 s_tested_4p_sw		s_tested_sw
@@ -21028,7 +21161,7 @@ s_ever_tested_sw
 
 s_elig_test_who4  s_elig_test_non_tb_who3  s_elig_test_tb  s_elig_test_who4_tested  s_elig_test_tb_tested  s_elig_test_non_tb_who3_tested  
 s_com_test  s_tested_anc_prevdiag  s_tested_anc 	s_tested_labdel s_tested_pd	
-s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_sw  s_tested_m_circ  
+s_tested_as_sw  s_tested_m_sympt  s_tested_f_sympt  s_tested_f_progsw  s_tested_m_circ  
 s_rate_1sttest   s_rate_reptest  s_newp_lasttest_tested_this_per
 s_acc_test  s_acc_test_1524_  s_acc_test_2549_  s_acc_test_5064_  s_acc_test_sw  
 
@@ -21039,9 +21172,9 @@ s_diag_w1549_  s_diag_w1519_  s_diag_w2024_  s_diag_w2529_  s_diag_w3034_  s_dia
 s_diag_w5054_  s_diag_w5559_  s_diag_w6064_  
 s_nn_tdr_diag
 
-s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc 
-s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  
-s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w s_diag_w_15pl s_diag_m_15pl s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
+s_diag_this_period  s_diag_this_period_m  s_diag_this_period_f  s_diag_this_period_f_non_anc  s_diag_this_period_f_anc  s_diag_this_period_f_labdel s_diag_this_period_f_pd
+s_diag_this_period_m_sympt  s_diag_this_period_f_sympt  s_diag_thisper_anclabpd  s_diag_thisper_progsw  s_diag_thisper_sw  s_diag_thisper_1524f 
+s_sympt_diag  s_sympt_diag_ever  s_diag_m  s_diag_w s_epdiag_m  s_epdiag_w	 s_epi_m  s_epi_w
 s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
@@ -21058,8 +21191,6 @@ s_vg1000  s_vg1000_1549  s_vg1000_m  s_vg1000_w  s_vg1000_w_1524  s_vg1000_m_152
 s_vl1000	s_vl1000_art	 s_onart_iicu    s_vl1000_art_iicu    s_onart_gt6m    s_vl1000_art_gt6m    s_onart_gt6m_iicu    s_vl1000_art_gt6m_iicu
 s_vl1000_m  s_vl1000_art_m   s_onart_iicu_m  s_vl1000_art_iicu_m  s_onart_gt6m_m  s_vl1000_art_gt6m_m  s_onart_gt6m_iicu_m  s_vl1000_art_gt6m_iicu_m  
 s_vl1000_w  s_vl1000_art_w   s_onart_iicu_w  s_vl1000_art_iicu_w  s_onart_gt6m_w  s_vl1000_art_gt6m_w  s_onart_gt6m_iicu_w  s_vl1000_art_gt6m_iicu_w  
-
-s_vl1000_art_gt6m_iicu_15pl  s_onart_gt6m_iicu_15pl s_vl1000_art_gt6m_iicu_m_15pl s_onart_gt6m_iicu_m_15pl s_vl1000_art_gt6m_iicu_w_15pl s_onart_gt6m_iicu_w_15pl 
 
 s_vl1000_art_1524_  s_onart_iicu_1524_  s_vl1000_art_iicu_1524_  s_onart_gt6m_1524_  s_vl1000_art_gt6m_1524_  s_onart_gt6m_iicu_1524_  s_vl1000_art_gt6m_iicu_1524_
 s_vl1000_art_2549_  s_onart_iicu_2549_  s_vl1000_art_iicu_2549_  s_onart_gt6m_2549_  s_vl1000_art_gt6m_2549_  s_onart_gt6m_iicu_2549_  s_vl1000_art_gt6m_iicu_2549_
@@ -21139,7 +21270,7 @@ s_onartvisit0  s_onartvisit0_vl1000
 
 /* note s_ variables below are for up to age 80 */
 
-s_diag80  s_diagnosed_dead 
+s_diagnosed_dead 
 s_art_3m_bcd4_lt100  s_art_3m_bcd4_lt100_adead s_art_6m_bcd4_lt100 	s_art_6m_bcd4_lt100_adead  s_art_9m_bcd4_lt100 
 s_art_9m_bcd4_lt100_adead s_art_12m_bcd4_lt100 s_art_12m_bcd4_lt100_adead s_art_15m_bcd4_lt100 s_art_15m_bcd4_lt100_adead s_art_18m_bcd4_lt100 
 s_art_18m_bcd4_lt100_adead s_art_21m_bcd4_lt100 s_art_21m_bcd4_lt100_adead s_art_24m_bcd4_lt100  s_art_24m_bcd4_lt100_adead s_art_27m_bcd4_lt100  
@@ -21183,7 +21314,7 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 /*costs and dalys (default to age 80) */
 s_cost  	  s_art_cost	s_onart_cost  s_cd4_cost  s_vl_cost      s_vis_cost  	    s_full_vis_cost    s_adc_cost  
 s_non_tb_who3_cost  		s_cot_cost    s_tb_cost   s_cost_test    s_res_cost  		s_cost_circ  	   s_cost_condom_dn 
-s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_oral   s_cost_prep_visit   s_cost_avail_self_test
+s_cost_sw_program  			s_t_adh_int_cost   		  s_cost_test_m  s_cost_test_f 		s_cost_prep_visit   s_cost_avail_self_test
 s_cost_prep_visit_oral s_cost_prep_visit_inj s_cost_prep_visit_vr 
 s_cost_prep_ac_adh			s_cost_test_m_sympt 	  s_cost_test_f_sympt				s_cost_test_m_circ s_cost_test_f_anc 
 s_cost_test_f_sw 			s_cost_test_f_non_anc     s_pi_cost   	 s_cost_switch_line s_cost_art_init    s_art_1_cost  
@@ -21204,11 +21335,9 @@ s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dco
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_total_yll80le  s_total_yllag													   
+s_total_yll80le  s_total_yllag																			   
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD		 
-
-s_ly  s_dly  s_qaly  s_dqaly   
+s_dyll_Optima80 s_dyll_GBD	 		 
 
 /*visits*/
 s_visit  s_lost  s_linked_to_care  s_linked_to_care_this_period
@@ -21221,7 +21350,7 @@ s_dead  s_dead_all	   s_deadm_all    s_deadw_all
 s_dead1519m_all  s_dead2024m_all  s_dead2529m_all  s_dead3034m_all  s_dead3539m_all s_dead4044m_all  s_dead4549m_all s_dead5054m_all s_dead5559m_all s_dead6064m_all
 s_dead1519w_all  s_dead2024w_all  s_dead2529w_all  s_dead3034w_all  s_dead3539w_all s_dead4044w_all  s_dead4549w_all s_dead5054w_all s_dead5559w_all s_dead6064w_all
 s_dead6569w_all  s_dead7074w_all  s_dead7579w_all s_dead8084w_all	s_dead85plw_all s_dead6569m_all  s_dead7074m_all  s_dead7579m_all s_dead8084m_all 	s_dead85plm_all 
-s_death_hivrel  s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
+s_death_hivrel s_death_hivrel_m s_dead_rdcause2  s_dead_onart_rdcause2  s_death_dcause3
 s_death_hiv_age_1524 s_death_hiv_age_2534 s_death_hiv_age_3544 	s_death_hiv_age_4554  s_death_hiv_age_5564 
 s_dead_  s_death_hiv  s_death_hiv_m s_death_hiv_w  s_dead_diag  s_dead_naive  s_dead_onart  s_dead_line1_lf0  s_dead_line1_lf1  s_dead_line2_lf1  s_dead_line2_lf2
 s_dead_artexp  s_dead_artexpoff  s_dead_nn  s_dead_pir  s_dead_adc  s_dead_line1  s_dead_line2  s_dead_art_1p 
@@ -21273,14 +21402,14 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
-s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
+s_pcp_p_who3       s_who3_event  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
 s_vl_g2_adc   s_vl_g3_adc   s_vl_g4_adc  s_vl_g5_adc  s_age_g1_adc   s_age_g2_adc    s_age_g3_adc   s_age_g4_adc s_age_g5_adc  s_pcp_p_adc
 s_cd4_g1_crypm   s_cd4_g2_crypm   s_cd4_g3_crypm   s_cd4_g4_crypm   s_cd4_g5_crypm   s_cd4_g6_crypm  s_vl_g1_crypm   s_vl_g2_crypm  s_vl_g3_crypm    
 s_vl_g4_crypm   s_vl_g5_crypm  s_age_g1_crypm  s_age_g2_crypm   s_age_g3_crypm    s_age_g4_crypm  s_age_g5_crypm   s_onart_crypm     s_pcp_p_crypm   
@@ -21288,7 +21417,7 @@ s_crag_measured_this_per_crypm    s_crypm_proph_crypm   s_cd4_g1_sbi   s_cd4_g2_
 s_cd4_g6_sbi   s_vl_g1_sbi  s_vl_g2_sbi    s_vl_g3_sbi   s_vl_g4_sbi s_vl_g5_sbi    s_age_g1_sbi   s_age_g2_sbi   s_age_g3_sbi   s_age_g4_sbi   
 s_age_g5_sbi    s_onart_sbi   s_pcp_p_sbi    s_sbi_proph_sbi    s_sbi  s_cd4_g1_dead  s_cd4_g2_dead   s_cd4_g3_dead s_cd4_g4_dead   
 s_cd4_g5_dead   s_cd4_g6_dead   s_vl_g1_dead   s_vl_g2_dead   s_vl_g3_dead   s_vl_g4_dead   s_vl_g5_dead  s_age_g1_dead  s_age_g2_dead   s_age_g3_dead   
-s_age_g4_dead  s_age_g5_dead  s_onart_dead_80    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
+s_age_g4_dead  s_age_g5_dead  s_onart_dead    s_pcp_p_dead   s_tb_proph_dead    s_crypm_proph_dead  s_sbi_proph_dead   sbi_proph_dead  
 s_who3_event_dead  s_adc_dead     s_crypm_dead  s_sbi_dead     s_in_care_time_of_adc_tb
 s_dead_tb s_dead_crypm s_dead_sbi s_dead_oth_adc 
 s_tcur3m_cd4t0l100  s_who3_tcur3m_cd4t0l100  s_adc_tcur3m_cd4t0l100 s_tb_tcur3m_cd4t0l100  s_crypm_tcur3m_cd4t0l100  s_sbi_tcur3m_cd4t0l100  
@@ -21297,7 +21426,6 @@ s_tcur3m_cd4t0l200  s_who3_tcur3m_cd4t0l200  s_adc_tcur3m_cd4t0l200 s_tb_tcur3m_
 s_tcur6m_cd4t0l200  s_who3_tcur6m_cd4t0l200  s_adc_tcur6m_cd4t0l200 s_tb_tcur6m_cd4t0l200  s_crypm_tcur6m_cd4t0l200  s_sbi_tcur6m_cd4t0l200 
 s_ahd_enter_care_100 s_ahd_enter_care_200 s_enter_care
 
-s_dead_80  s_death_hivrel_80
 
 /*Pregnancy and children*/
 s_pregnant 	s_anc s_birth s_w1549_birthanc  s_w1524_birthanc  s_hiv_w1549_birthanc  s_hiv_w1524_birthanc  s_hiv_pregnant
@@ -21305,6 +21433,7 @@ s_pregnant_not_diagnosed_pos  s_hiv_pregn_w1549_  s_hiv_pregn_w1524_  s_hiv_anc 
 s_on_sd_nvp  s_on_dual_nvp  s_ever_sd_nvp s_ever_dual_nvp
 s_pregnant_w1549    s_pregnant_w1524    s_pregnant_w1519    s_pregnant_w2024    s_pregnant_w2529    s_pregnant_w3034
 s_pregnant_w3539    s_pregnant_w4044    s_pregnant_w4549    s_pregnant_w50pl 
+s_everpregn_w1524   s_everpregn_hiv_w1524 
 s_tested_w1549_anc  s_tested_w1524_anc  s_tested_w1519_anc  s_tested_w2024_anc  s_tested_w2529_anc  s_tested_w3034_anc
 s_tested_w3539_anc  s_tested_w4044_anc  s_tested_w4549_anc  s_tested_w50pl_anc 
 s_hiv_w1549_anc 	s_hiv_w1524_anc 	s_hiv_w1519_anc 	s_hiv_w2024_anc 	s_hiv_w2529_anc 	s_hiv_w3034_anc
@@ -21322,7 +21451,7 @@ s_mcirc_50plm
 s_vmmc s_vmmc1519m  s_vmmc2024m  s_vmmc2529m  s_vmmc3034m  s_vmmc3539m  s_vmmc4044m  s_vmmc4549m  s_vmmc50plm
 s_new_mcirc  s_new_mcirc_1519m  s_new_mcirc_2024m  s_new_mcirc_2529m  s_new_mcirc_3034m  s_new_mcirc_3539m  
 s_new_mcirc_4044m  s_new_mcirc_4549m  
-s_new_vmmc s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
+s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  
 
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
@@ -21359,9 +21488,9 @@ sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
+rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
-rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
+rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
 poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
@@ -21407,11 +21536,11 @@ discount
 
 /*year_i interventions*/
 condom_incr_year_i    			  incr_test_year_i             decr_hard_reach_year_i  incr_adh_year_i 
-decr_prob_loss_at_diag_year_i  absence_pcp_year_i	  absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
+decr_prob_loss_at_diag_year_i 	   absence_cd4_year_i  absence_vl_year_i	 decr_rate_lost_year_i 		    decr_rate_lost_art_year_i    incr_rate_return_year_i     
 incr_rate_restart_year_i          incr_rate_init_year_i          decr_rate_int_choice_year_i  incr_prob_vl_meas_done_year_i 
-incr_pr_switch_line_year_i    	 prep_improvements       	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i
+incr_pr_switch_line_year_i    	 incr_adh_prep_oral_yr_i poc_vl_monitoring_i 
 inc_r_test_startprep_any_yr_i   incr_r_test_restartprep_any_yr_i decr_r_choose_stopprep_oral_yr_i 
-inc_p_prep_any_restart_choi_yr_i       prep_any_strategy_year_i 
+inc_p_prep_any_restart_choi_yr_i 
 	  circ_inc_rate_year_i 		     incr_test_targeting_year_i   
 initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
