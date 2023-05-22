@@ -347,7 +347,9 @@ newp_seed = 7;
 * np_lasttest;				np_lasttest=0;  
 * newp_lasttest;			newp_lasttest=0; 
 
-* rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	
+* rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
+* prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.0 0.95 1.00);
+* prob_test_postdel;	prob_test_postdel=0.95;
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
@@ -1092,7 +1094,7 @@ prob_prep_any_restart_choice   = 1 - (1 - prob_prep_any_restart_choice  )**(1/3)
 pop_wide_tld_prob_egfr = 1 - (1 - pop_wide_tld_prob_egfr  )**(1/3) ;
 base_rate_sw   = 1 - (1 - base_rate_sw   )**(1/3) ;
 base_rate_stop_sexwork   = 1 - (1 - base_rate_stop_sexwork   )**(1/3) ;
-rate_testanc_inc  = 1 - (1 - rate_testanc_inc  )**(1/3) ;
+rate_anc_inc  = 1 - (1 - rate_anc_inc  )**(1/3) ;
 incr_test_rate_sympt   = 1 - (1 - incr_test_rate_sympt   )**(1/3) ;
 prob_lost_art   = 1 - (1 - prob_lost_art   )**(1/3) ;
 rate_res_ten     = 1 - (1 - rate_res_ten  )**(1/3) ;
@@ -2860,7 +2862,7 @@ if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest =
 * RATE OF ATTENDING AN ANC FOR PREGNANT WOMEN; 
 
 if gender=2 then do;
-	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_testanc_inc; * dependent_on_time_step_length ;
+	if      date_start_testing le caldate{t} lt 2015    then prob_anc      = max(prob_anc, 0.1)+rate_anc_inc; * dependent_on_time_step_length ;
 	if                            caldate{t} =  2014.75 then prob_anc_2015 = prob_anc;
 	if                      	  caldate{t} ge 2015    then prob_anc      = prob_anc_2015;
 	if prob_anc gt 0.975   then prob_anc=0.975;  
@@ -4398,7 +4400,7 @@ if anc=1 then do;
 	if 15 le age lt 25 then do;w1524_birthanc=1;hiv_w1524_birthanc=hiv;end;
     if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do; 
 		 u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) 
-		 	or caldate{t} = dt_start_pregn+0.5 
+		 	or (caldate{t} = dt_start_pregn+0.5  and u lt prob_test_2ndtrim)
 			or (caldate{t} = dt_start_pregn+0.75 and u lt 0.1 ) then do;
 			tested=1; dt_last_test=caldate{t};np_lasttest=0;  
 			if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
@@ -4414,7 +4416,7 @@ tested_pd=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt 0.95 then do;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt prob_test_postdel then do;
 		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
 end;
 
@@ -11064,15 +11066,17 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	d=rand('uniform');
 
 	pcp_p_tm1=pcp_p;
+	
+	pcp_p   =0;
 
 	if hiv_monitoring_strategy=2 then do;
-		if visit=1 and . < cm    < 350 and d lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
+		if visit=1 and . < cm    < 350 and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 	end;
 
 	r=rand('uniform');
-	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and caldate{t}>=1996 then pcp_p   =1;
+	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 
-	pcp_p   =0;if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
+	if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
 
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
@@ -15068,7 +15072,7 @@ if gender=2 and diag_this_period=1 and tested_labdel=1 then diag_this_period_f_l
 if gender=2 and diag_this_period=1 and tested_pd=1 then diag_this_period_f_pd=1;
 if gender=1 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_m_sympt=1;
 if gender=2 and diag_this_period=1 and sympt_diag = 1 then diag_this_period_f_sympt=1;
-if gender=2 and diag_this_period=1 and tested_anc = 1 or tested_labdel=1 or tested_pd=1 then diag_thisper_anclabpd=1;
+if gender=2 and diag_this_period=1 and (tested_anc = 1 or tested_labdel=1 or tested_pd=1) then diag_thisper_anclabpd=1;
 if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and tested_labdel ne 1 and tested_pd ne 1 and 
 (elig_test_who4_tested ne 1 and elig_test_non_tb_who3_tested ne 1 and elig_test_tb_tested ne 1 and tested_symptoms_not_hiv ne 1) then diag_thisper_progsw=1;
 if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
@@ -17055,7 +17059,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_adc_naive + adc_naive ; s_adc_line1_lf0 + adc_line1_lf0 ; s_adc_line1_lf1 + adc_line1_lf1 ; s_adc_line2_lf1 + adc_line2_lf1 ;
 	s_adc_line2_lf2 + adc_line2_lf2 ; s_adc_artexpoff + adc_artexpoff ;
 	s_crag_measured_this_per + crag_measured_this_per ; s_tblam_measured_this_per + tblam_measured_this_per;
-	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_vm_ly + vm_ly; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p_80 + pcp_p ; s_sbi_proph + sbi_proph ;
+	s_cm_this_per + cm_this_per ; s_vm_this_per + vm_this_per; s_vm_ly + vm_ly; s_crypm_proph + crypm_proph ; s_tb_proph +  tb_proph ;  s_pcp_p + pcp_p ; s_sbi_proph + sbi_proph ;
 	s_crypm + crypm; s_sbi + sbi ;  s_crypm_diag_e + crypm_diag_e ; s_tb_diag_e + tb_diag_e ; s_sbi_diag_e + sbi_diag_e ;
 	s_cd4_g1 + cd4_g1 ; s_cd4_g2 + cd4_g2 ; s_cd4_g3 + cd4_g3 ; s_cd4_g4 + cd4_g4 ; s_cd4_g5 + cd4_g5 ; s_cd4_g6 + cd4_g6 ; 
  	s_vl_g1 + vl_g1 ;  s_vl_g2 + vl_g2 ;  s_vl_g3 + vl_g3 ;  s_vl_g4 + vl_g4 ;  s_vl_g5 + vl_g5 ;  
@@ -17063,8 +17067,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cd4_g1_tb +cd4_g1_tb ; s_cd4_g2_tb +cd4_g2_tb ; s_cd4_g3_tb +cd4_g3_tb ; s_cd4_g4_tb +cd4_g4_tb ; s_cd4_g5_tb +cd4_g5_tb ; s_cd4_g6_tb +cd4_g6_tb ;  
 	s_vl_g1_tb +vl_g1_tb ; s_vl_g2_tb +vl_g2_tb ; s_vl_g3_tb +vl_g3_tb ; s_vl_g4_tb +vl_g4_tb ; s_vl_g5_tb +vl_g5_tb ; 
 	s_age_g1_tb +age_g1_tb ; s_age_g2_tb +age_g2_tb ; s_age_g3_tb +age_g3_tb ; s_age_g4_tb +age_g4_tb ; s_age_g5_tb +age_g5_tb ; 
-	s_onart_tb + onart_tb; s_pcp_p_tb + pcp_p_tb; s_tb_80 + tb;  s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
-	s_onart_80 + onart;   s_pcp_p_80 + pcp_p;   s_tb_proph_tb + tb_proph_tb ;
+	s_onart_tb + onart_tb; s_pcp_p_tb + pcp_p_tb; s_tblam_measured_this_per_tb + tblam_measured_this_per_tb ;
+	s_tb_proph_tb + tb_proph_tb ;
 	s_cd4_g1_who3 +cd4_g1_who3 ; s_cd4_g2_who3 +cd4_g2_who3 ; s_cd4_g3_who3 +cd4_g3_who3 ; s_cd4_g4_who3 +cd4_g4_who3 ; s_cd4_g5_who3 +cd4_g5_who3 ; 
 	s_cd4_g6_who3 +cd4_g6_who3 ;  s_vl_g1_who3 +vl_g1_who3 ; s_vl_g2_who3 +vl_g2_who3 ; s_vl_g3_who3 +vl_g3_who3 ; s_vl_g4_who3 +vl_g4_who3 ; 
 	s_vl_g5_who3 +vl_g5_who3 ; s_age_g1_who3 +age_g1_who3 ; s_age_g2_who3 +age_g2_who3 ; s_age_g3_who3 +age_g3_who3 ; s_age_g4_who3 +age_g4_who3 ; 
@@ -18678,11 +18682,11 @@ s_adc_line2_lf2  s_adc_artexpoff
 
 /* outputs for advanced hiv disease */ 
 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly  s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly  s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_onart_80 s_pcp_p_80 s_pcp_p_80  s_tb_80  s_tblam_measured_this_per_tb    
+s_onart_tb   s_pcp_p_tb   s_tb_proph_tb  s_tblam_measured_this_per_tb    
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -18766,7 +18770,7 @@ sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
+rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -19620,11 +19624,11 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80    
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb     
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -21399,11 +21403,11 @@ s_adc  s_non_tb_who3_ev  s_who4_  s_tb  s_adc_diagnosed  s_onart_adc  s_adc_naiv
 s_adc_line2_lf2  s_adc_artexpoff 
 
 /* outputs for advanced hiv disease */ 
-s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p_80  s_sbi_proph  s_crypm sbi 
+s_crag_measured_this_per  s_tblam_measured_this_per  s_cm_this_per  s_vm_this_per s_vm_ly s_crypm_proph    s_tb_proph    s_pcp_p  s_sbi_proph  s_crypm sbi 
 s_crypm_diag_e    s_tb_diag_e   s_sbi_diag_e  s_cd4_g1    s_cd4_g2   s_cd4_g3    s_cd4_g4   s_cd4_g5    s_cd4_g6   s_vl_g1    s_vl_g2    s_vl_g3     
 s_vl_g4     s_vl_g5   s_age_g1    s_age_g2  s_age_g3   s_age_g4     s_age_g5   s_cd4_g1_tb   s_cd4_g2_tb  s_cd4_g3_tb   s_cd4_g4_tb   s_cd4_g5_tb  
 s_cd4_g6_tb  s_vl_g1_tb   s_vl_g2_tb    s_vl_g3_tb   s_vl_g4_tb  s_vl_g5_tb  s_age_g1_tb   s_age_g2_tb   s_age_g3_tb  s_age_g4_tb  s_age_g5_tb    
-s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  s_onart_80 s_pcp_p_80  s_tb_80  
+s_onart_tb   s_pcp_p_tb   s_tblam_measured_this_per_tb  s_tb_proph_tb  
 s_cd4_g1_who3   s_cd4_g2_who3   s_cd4_g3_who3   s_cd4_g4_who3  s_cd4_g5_who3  s_cd4_g6_who3    s_vl_g1_who3  s_vl_g2_who3   
 s_vl_g3_who3   s_vl_g4_who3   s_vl_g5_who3    s_age_g1_who3    s_age_g2_who3   s_age_g3_who3    s_age_g4_who3  s_age_g5_who3    s_onart_who3     
 s_pcp_p_who3       s_who3_event_80  s_cd4_g1_adc    s_cd4_g2_adc     s_cd4_g3_adc   s_cd4_g4_adc   s_cd4_g5_adc  s_cd4_g6_adc    s_vl_g1_adc   
@@ -21486,7 +21490,7 @@ sex_beh_trans_matrix_m  sex_beh_trans_matrix_w  sex_age_mixing_matrix_m sex_age_
 eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_beh_newp  ych_risk_beh_ep prop_redattr_sbcc
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
-rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
+rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  

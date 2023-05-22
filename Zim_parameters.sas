@@ -42,8 +42,10 @@ startyr = 1991 + 0.25;
 * fold_rate_decr_test_future;*%sample_uniform(fold_rate_decr_test_future, 0.1 0.2 0.33);
 							 %sample_uniform(fold_rate_decr_test_future, 0.00125 0.00165 0.0025 0.00375);
 
-* rate_testanc_inc; 		*%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	*Mar2023;
-							%sample(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10, 0.15 0.15 0.3 0.2 0.2);
+* rate_anc_inc; 		*%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);	*Mar2023;
+							%sample(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10, 0.15 0.15 0.3 0.2 0.2);
+* prob_test_2ndtrim;		%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.0 0.95 1.00);
+* prob_test_postdel;		prob_test_postdel=0.95;
 
 * NATURAL PROGRESSION AND RISK OF HIV RELATED CONDITIONS;
 *Vale - 20211026: all the changes in the section "NATURAL PROGRESSION...." are taken from SA;

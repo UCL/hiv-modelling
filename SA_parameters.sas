@@ -40,7 +40,7 @@ newp_seed = 10 ;
 
 * an_lin_incr_test;   		an_lin_incr_test = 0.017 ;
 
-* rate_testanc_inc; 		rate_testanc_inc =0.05;
+* rate_anc_inc; 		rate_anc_inc =0.05;
 
 * date_test_rate_plateau;   date_test_rate_plateau= 2020.5;
 
