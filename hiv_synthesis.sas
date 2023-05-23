@@ -2818,7 +2818,10 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	*This is intended for people who did not have HIV 3 months ago;																																																
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
 		e=rand('uniform'); 
-		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+		if e < test_rate_tb then do;
+			tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+		end;
 	end;
 end;	
 
@@ -2982,8 +2985,8 @@ and age < 50 then do;
 
 	if u_circ lt prob_circ then do;
 		if t ge 2 and tested_tm1 ne 1 then do;
-			 tested=1;tested_circ=1;dt_last_test=caldate{t};np_lasttest=0;
-			 if ever_tested ne 1 then do;date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t};end;
+			tested=1; tested_circ=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 		end;
 		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
 	end;
@@ -4172,8 +4175,8 @@ if s < rate_non_hiv_symptoms then do;u=rand('uniform');
 	if . < date_start_testing <= caldate{t} and tested ne 1 and registd_tm1 ne 1
 	and (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) 
 	and u < (test_rate_non_tb_who3+test_rate_who4)/2 then do; 
-	tested_symptoms_not_hiv =1; tested=1; 
-	if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			tested=1; tested_symptoms_not_hiv=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
 end;
 end;
@@ -4398,6 +4401,7 @@ tested_labdel=0;
 if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
+
 if anc=1 then do;
 	***LBM Aug19;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
@@ -4406,12 +4410,12 @@ if anc=1 then do;
 		 u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) 
 		 	or (caldate{t} = dt_start_pregn+0.5  and u lt prob_test_2ndtrim)
 			or (caldate{t} = dt_start_pregn+0.75 and u lt 0.1 ) then do;
-			tested=1; dt_last_test=caldate{t};np_lasttest=0;  
-			if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
-			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
-		end;
+				tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+				np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;  
+				if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
+				if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
+			end;
 	end;
-	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
     u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
 end;
@@ -4421,7 +4425,9 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
 	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt prob_test_postdel then do;
-		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+		tested=1; tested_pd=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
 end;
 
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
@@ -4541,8 +4547,8 @@ if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
-		tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
-		np_lasttest=0; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0; tested_as_sw=1;
+		tested=1; tested_as_sw=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
 
 
