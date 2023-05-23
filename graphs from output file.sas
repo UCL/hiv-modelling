@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_h_l;
+set a.intensive3_l_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -24,7 +24,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  n_tested       ;
+%let single_var =  prevalence_vg1000_           ;
 
 
 proc sort data=b; by cald run ;run;
@@ -339,12 +339,12 @@ proc print; run;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods html ;
 
-
+/*
 
 ods html;
 proc sgplot data=d nolegend; 
 Title    height=1.5 justify=center "Number of people tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2073 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
 
 label p50_n_tested_0 = "option 0";
@@ -371,8 +371,6 @@ run;quit;
 
 ods html close;
 
-
-/*
 
 ods html;
 proc sgplot data=d; 
@@ -410,8 +408,8 @@ ods html close;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.8 to 1   by 0.01 ) valueattrs=(size=10);
 
 label p50_p_vl1000__0 = "option 0";
 label p50_p_vl1000__1 = "option_1";
@@ -472,11 +470,10 @@ run;quit;
 ods html close;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2071 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2030 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.6   by 0.05 ) valueattrs=(size=10);
 
 label p50_incidence1549__0 = "option 0";
@@ -535,45 +532,44 @@ run;quit;
 
 ods html close;
 
-
-
+*/
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.05  by 0.01 ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.03  by 0.005 ) valueattrs=(size=10);
 
-label p50_prevalencevg1000__0 = "option 0";
-label p50_prevalencevg1000__1 = "option_1";
-label p50_prevalencevg1000__2 = "option_2";
-label p50_prevalencevg1000__3 = "option_3";
-label p50_prevalencevg1000__4 = "option_4";
-label p50_prevalencevg1000__5 = "option_5";
+label p50_prevalence_vg1000__0 = "option 0";
+label p50_prevalence_vg1000__1 = "option_1";
+label p50_prevalence_vg1000__2 = "option_2";
+label p50_prevalence_vg1000__3 = "option_3";
+label p50_prevalence_vg1000__4 = "option_4";
+label p50_prevalence_vg1000__5 = "option_5";
 
-  series  x=cald y=p50_prevalencevg1000__0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__0 	upper=p95_prevalencevg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_prevalencevg1000__1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__1 	upper=p95_prevalencevg1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_prevalencevg1000__2/	lineattrs = (color=red    thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__2 	upper=p95_prevalencevg1000__2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-  series  x=cald y=p50_prevalencevg1000__3/	lineattrs = (color=yellow thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__3 	upper=p95_prevalencevg1000__3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_prevalencevg1000__4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__4 	upper=p95_prevalencevg1000__4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_prevalencevg1000__5/	lineattrs = (color=orange thickness = 4);
-  band    x=cald lower=p5_prevalencevg1000__5 	upper=p95_prevalencevg1000__5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__0 	upper=p95_prevalence_vg1000__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__1 	upper=p95_prevalence_vg1000__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__2/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__2 	upper=p95_prevalence_vg1000__2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__3/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__3 	upper=p95_prevalence_vg1000__3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__4/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__4 	upper=p95_prevalence_vg1000__4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_prevalence_vg1000__5/	lineattrs = (color=orange thickness = 4);
+  band    x=cald lower=p5_prevalence_vg1000__5 	upper=p95_prevalence_vg1000__5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_prep_any";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 10000 ) valueattrs=(size=10);
 
 label p50_n_prep_any_0 = "option 0";
@@ -606,7 +602,7 @@ ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion diagnosed";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.8 to 1   by 0.01 ) valueattrs=(size=10);
 
 label p50_p_diag_0 = "option 0";
 label p50_p_diag_1 = "option_1";
@@ -633,7 +629,7 @@ run;quit;
 
 ods html close;
 
-
+  
 
 ods html;
 proc sgplot data=d; 
@@ -671,8 +667,8 @@ ods html close;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of those on ART, proportion with vl < 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.5 to 1   by 0.05 ) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.9 to 1   by 0.01 ) valueattrs=(size=10);
 
 label p50_p_onart_vl1000__0 = "option 0";
 label p50_p_onart_vl1000__1 = "option_1";
@@ -699,7 +695,7 @@ run;quit;
 
 ods html close;
 
-
 */
+
 
 

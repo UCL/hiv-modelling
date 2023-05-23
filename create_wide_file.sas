@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_h_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_l_out\";
 
 ods html close;
 
@@ -60,7 +60,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 ly = s_ly * &sf;  *life years;
 dly = s_dly * &sf; *discounted life years;
 
-s_ddaly = s_dead_ddaly + s_live_ddaly;
+s_ddaly = s_dead_ddaly + s_live_ddaly ;
 
 ***Scaling up to annual discounted DALYs in the whole population;
 ddaly = s_ddaly * &sf * 4;
@@ -227,12 +227,13 @@ dcost ddaly   n_death_hiv  p_onart_vl1000
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
 sw_trans_matrix
+rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
 
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
 
 
-data a.intensive3_h_l; set y;
+data a.intensive3_l_l; set y;
 
 
 proc sort data=y;by run option;run;
@@ -254,19 +255,21 @@ proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
 ***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_23_28 mean= &v._23_28; by run option ; where 2023.5 <= cald < 2028.50;
-proc means noprint data=y; var &v; output out=y_23_43 mean= &v._23_43; by run option ; where 2023.5 <= cald < 2043.50;
-proc means noprint data=y; var &v; output out=y_23_73 mean= &v._23_73; by run option ; where 2023.5 <= cald < 2073.50;
+proc means noprint data=y; var &v; output out=y_24_28 mean= &v._24_28; by run option ; where 2024.0 <= cald < 2028.50;
+proc means noprint data=y; var &v; output out=y_24_30 mean= &v._24_30; by run option ; where 2024.0 <= cald < 2030.50;
+proc means noprint data=y; var &v; output out=y_24_43 mean= &v._24_43; by run option ; where 2024.0 <= cald < 2043.50;
+proc means noprint data=y; var &v; output out=y_24_73 mean= &v._24_73; by run option ; where 2024.0 <= cald < 2073.50;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_23; by run; proc transpose data=y_23 out=t_22 prefix=&v._23_; var &v._23; by run;
+proc sort data=y_23; by run; proc transpose data=y_23 out=t_22 prefix=&v._24_; var &v._23; by run;
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_23_28; by run; proc transpose data=y_23_28 out=t_23_28 prefix=&v._23_28_; var &v._23_28; by run;
-proc sort data=y_23_43; by run; proc transpose data=y_23_43 out=t_23_43 prefix=&v._23_43_; var &v._23_43; by run;
-proc sort data=y_23_73; by run; proc transpose data=y_23_73 out=t_23_73 prefix=&v._23_73_; var &v._23_73; by run;
+proc sort data=y_24_28; by run; proc transpose data=y_24_28 out=t_24_28 prefix=&v._24_28_; var &v._24_28; by run;
+proc sort data=y_24_30; by run; proc transpose data=y_24_30 out=t_24_30 prefix=&v._24_30_; var &v._24_30; by run;
+proc sort data=y_24_43; by run; proc transpose data=y_24_43 out=t_24_43 prefix=&v._24_43_; var &v._24_43; by run;
+proc sort data=y_24_73; by run; proc transpose data=y_24_73 out=t_24_73 prefix=&v._24_73_; var &v._24_73; by run;
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_23 t_30 t_23_28 t_23_43 t_23_73;  
+data &v ; merge  y_23 t_30 t_24_28 t_24_30 t_24_43 t_24_73;  
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -311,74 +314,70 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 /*ADD PROJECT SPECIFIC PARAMETERS OF INTEREST*/
 %par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
 %par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);
+%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);  	%par(p=rate_exp_set_lower_p_vl1000); 	%par(p=tr_rate_undetec_vl);
 run;
 
 
 data wide_par; merge 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix;
+sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl ;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_h;
+data a.wide_intensive3_l;
 merge   wide_outputs  wide_par ;  
 by run;
 
+d_ddaly_24_73_2_1 = ddaly_24_73_2 - ddaly_24_73_1 ;  
+d_ddaly_24_73_3_1 = ddaly_24_73_3 - ddaly_24_73_1 ;  
+d_ddaly_24_73_4_1 = ddaly_24_73_4 - ddaly_24_73_1 ;  
+d_ddaly_24_73_5_1 = ddaly_24_73_5 - ddaly_24_73_1 ;  
+d_ddaly_24_73_6_1 = ddaly_24_73_6 - ddaly_24_73_1 ;  
 
+d_dcost_24_73_2_1 = dcost_24_73_2 - dcost_24_73_1 ;  
+d_dcost_24_73_3_1 = dcost_24_73_3 - dcost_24_73_1 ;  
+d_dcost_24_73_4_1 = dcost_24_73_4 - dcost_24_73_1 ;  
+d_dcost_24_73_5_1 = dcost_24_73_5 - dcost_24_73_1 ;  
+d_dcost_24_73_6_1 = dcost_24_73_6 - dcost_24_73_1 ;  
 
-d_ddaly_23_73_2_1 = ddaly_23_73_2 - ddaly_23_73_1 ;  
-d_ddaly_23_73_3_1 = ddaly_23_73_3 - ddaly_23_73_1 ;  
-d_ddaly_23_73_4_1 = ddaly_23_73_4 - ddaly_23_73_1 ;  
-d_ddaly_23_73_5_1 = ddaly_23_73_5 - ddaly_23_73_1 ;  
-d_ddaly_23_73_6_1 = ddaly_23_73_6 - ddaly_23_73_1 ;  
+netddaly_24_73_1 = ddaly_24_73_1 + (dcost_24_73_1 / 0.0005); 
+netddaly_24_73_2 = ddaly_24_73_2 + (dcost_24_73_2 / 0.0005); 
+netddaly_24_73_3 = ddaly_24_73_3 + (dcost_24_73_3 / 0.0005); 
+netddaly_24_73_4 = ddaly_24_73_4 + (dcost_24_73_4 / 0.0005); 
+netddaly_24_73_5 = ddaly_24_73_5 + (dcost_24_73_5 / 0.0005); 
+netddaly_24_73_6 = ddaly_24_73_6 + (dcost_24_73_6 / 0.0005); 
 
-d_dcost_23_73_2_1 = dcost_23_73_2 - dcost_23_73_1 ;  
-d_dcost_23_73_3_1 = dcost_23_73_3 - dcost_23_73_1 ;  
-d_dcost_23_73_4_1 = dcost_23_73_4 - dcost_23_73_1 ;  
-d_dcost_23_73_5_1 = dcost_23_73_5 - dcost_23_73_1 ;  
-d_dcost_23_73_6_1 = dcost_23_73_6 - dcost_23_73_1 ;  
+r_incidence_24_28 = incidence1549_24_28_5 / incidence1549_24_28_1;
 
-netddaly_23_73_1 = ddaly_23_73_1 + (dcost_23_73_1 / 0.0005); 
-netddaly_23_73_2 = ddaly_23_73_2 + (dcost_23_73_2 / 0.0005); 
-netddaly_23_73_3 = ddaly_23_73_3 + (dcost_23_73_3 / 0.0005); 
-netddaly_23_73_4 = ddaly_23_73_4 + (dcost_23_73_4 / 0.0005); 
-netddaly_23_73_5 = ddaly_23_73_5 + (dcost_23_73_5 / 0.0005); 
-netddaly_23_73_6 = ddaly_23_73_6 + (dcost_23_73_6 / 0.0005); 
+proc means data=a.wide_intensive3_l;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
+dcost_24_73_1 dcost_24_73_2 dcost_24_73_3 dcost_24_73_4 dcost_24_73_5 dcost_24_73_6
 
+d_ddaly_24_73_2_1 
+d_ddaly_24_73_3_1 
+d_ddaly_24_73_4_1 
+d_ddaly_24_73_5_1 
+d_ddaly_24_73_6_1 
 
+d_dcost_24_73_2_1 
+d_dcost_24_73_3_1 
+d_dcost_24_73_4_1 
+d_dcost_24_73_5_1 
+d_dcost_24_73_6_1 
 
-proc means data=a.wide_intensive3_h;  var ddaly_23_73_1 ddaly_23_73_2 ddaly_23_73_3 ddaly_23_73_4 ddaly_23_73_5 ddaly_23_73_6 
-dcost_23_73_1 dcost_23_73_2 dcost_23_73_3 dcost_23_73_4 dcost_23_73_5 dcost_23_73_6
+netddaly_24_73_1 netddaly_24_73_2 netddaly_24_73_3 netddaly_24_73_4  netddaly_24_73_5  netddaly_24_73_6 
 
-d_ddaly_23_73_2_1 
-d_ddaly_23_73_3_1 
-d_ddaly_23_73_4_1 
-d_ddaly_23_73_5_1 
-d_ddaly_23_73_6_1 
+incidence1549_24_73_1 incidence1549_24_73_2 incidence1549_24_73_3 incidence1549_24_73_4  incidence1549_24_73_5  incidence1549_24_73_6 
 
-d_dcost_23_73_2_1 
-d_dcost_23_73_3_1 
-d_dcost_23_73_4_1 
-d_dcost_23_73_5_1 
-d_dcost_23_73_6_1 
-
-netddaly_23_73_1 netddaly_23_73_2 netddaly_23_73_3 netddaly_23_73_4  netddaly_23_73_5  netddaly_23_73_6 
-
-incidence1549_23_28_1 incidence1549_23_28_2 incidence1549_23_28_3 incidence1549_23_28_4  incidence1549_23_28_5  incidence1549_23_28_6 
-
-
+incidence1549_24_30_1 incidence1549_24_30_2 incidence1549_24_30_3 incidence1549_24_30_4  incidence1549_24_30_5  incidence1549_24_30_6 
   ;
 run;
 
 
-
-
-
-
-
 /*
+
+proc glm; model r_incidence_23_28 = rate_exp_set_lower_p_vl1000   tr_rate_undetec_vl ; run;
+
 
 * ================================================================================= ;
 
