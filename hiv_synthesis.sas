@@ -4638,7 +4638,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
 								tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0
+								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
 								tested=1; testfor_prep_any=1; testfor_prep_inj=1; 
@@ -17342,7 +17342,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
-
 
 /*
 
