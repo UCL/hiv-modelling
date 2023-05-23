@@ -215,6 +215,12 @@ s_hiv = s_hivge15 ;
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
 
+* p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
+* p_inf_ep ;					p_inf_ep = s_inf_ep   / s_primary;
+* p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
+* p_inf_naive ; 				p_inf_naive = s_inf_naive / s_primary;
+* p_inf_primary ;				p_inf_primary = s_inf_primary / s_primary;
+
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
@@ -223,6 +229,7 @@ prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence154
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 dcost ddaly   n_death_hiv  p_onart_vl1000
+p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary 
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti

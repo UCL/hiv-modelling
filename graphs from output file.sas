@@ -24,8 +24,9 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  prevalence_vg1000_           ;
+%let single_var =  prevalence_vg1000_   ;
 
+* p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary  ;
 
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
@@ -566,6 +567,7 @@ ods html close;
 
 /*
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_prep_any";
@@ -695,7 +697,36 @@ run;quit;
 
 ods html close;
 
+
+ods html;
+proc sgplot data=d; 
+Title    height=1.5 justify=center "p inf ep";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 1   by 0.1  ) valueattrs=(size=10);
+
+label p50_p_inf_ep_0 = "option 0";
+label p50_p_inf_ep_1 = "option_1";
+label p50_p_inf_ep_2 = "option_2";
+label p50_p_inf_ep_3 = "option_3";
+label p50_p_inf_ep_4 = "option_4";
+label p50_p_inf_ep_5 = "option_5";
+
+  series  x=cald y=p50_p_inf_ep_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_0 	upper=p95_p_inf_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_ep_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_ep_2/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_2 	upper=p95_p_inf_ep_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_ep_3/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_3 	upper=p95_p_inf_ep_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_ep_4/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_4 	upper=p95_p_inf_ep_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_ep_5/	lineattrs = (color=orange thickness = 4);
+  band    x=cald lower=p5_p_inf_ep_5 	upper=p95_p_inf_ep_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+
+
+run;quit;
+
+ods html close;
+
 */
-
-
-
