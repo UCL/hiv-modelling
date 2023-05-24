@@ -4530,6 +4530,7 @@ if caldate{t} gt dt_start_pregn+0.75 then do;
 end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 *Breastfeeding;		*JAS Apr2023;
+prob_stop_breastfeeding_yr1=0.1; prob_stop_breastfeeding_yr2=0.5;
 if caldate{t}=dt_lastbirth then do; breastfeeding=1; end;
 if (caldate{t} gt dt_lastbirth) and breastfeeding=1 then do;
 	xx=rand('uniform');
@@ -17445,13 +17446,13 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding cum_children death
+proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death
 prep_any_elig
 ;
-where serial_no<350 and age ge 15 and age le 50 ;
+where serial_no<600 and gender=2 and age ge 15 and age le 50 ;
 run;
 
-/*proc freq; tables duration_breastfeeding; run;*/
+/*proc freq; tables breastfeeding duration_breastfeeding; run;*/
 
 
 
