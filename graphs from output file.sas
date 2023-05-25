@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_19_05_23;
+set a.l_base_25_05_23;
 
 
 p_onart_vl1000_all = .;
@@ -75,8 +75,8 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 114  ;*out of 2000;
-%let year_end = 2027.75 ;
+%let nfit = 165  ;*out of 2000;
+%let year_end = 2071.75 ;
 run;
 /*proc freq data=b;table cald;run;*/
 proc sort;by cald option ;run;
@@ -92,6 +92,11 @@ log_gender_r_newp  p_tested_past_year_1549m p_tested_past_year_1549w n_pmtct
 p_mcirc_1549m	n_new_vmmc1549m 		
 prop_w_1549_sw	prop_w_ever_sw 	prop_sw_hiv 	prop_w_1524_onprep  p_w1524newpge1_onprep prop_1564_onprep 	
 n_prep n_prep_1524w n_prep_ever
+n_init_prep_oral_1524w	n_init_prep_oral_sw		n_init_prep_oral_sdc	
+/*n_init_prep_inj_1524w	n_init_prep_inj_sw		n_init_prep_inj_sdc		
+n_init_prep_vr_1524w	n_init_prep_vr_sw		n_init_prep_vr_sdc*/
+/*n_contprep_oral_1524w	n_contprep_oral_sw	n_contprep_oral_sdc	n_contprep_inj_1524w	n_contprep_inj_sw
+n_contprep_inj_sdc		n_contprep_vr_1524w n_contprep_vr_sw	n_contprep_vr_sdc*/
 n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 prevalence1549m prevalence1549w
 prevalence1549_ prevalence_sw prevalence_hiv_preg prevalence1549preg prevalence1524preg prevalence_vg1000_  incidence1549_ incidence1549m incidence1549w incidence1564_ 
@@ -218,14 +223,14 @@ proc freq data=d;table cald;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230519_114sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230525_165sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive 15+";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 25000000 by  5000000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_0 = "Baseline (median) - 15+ ";
 label p50_n_alive_1 = "Essential (median) - 15+ ";
 label p50_n_alive_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -401,7 +406,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of live births";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 900000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1200000 by 200000) valueattrs=(size=10);*900000 if stopping in 2023;
 label p50_n_birth_0 = "Option 0 (median) ";
 label p50_n_birth_1 = "Option 1 (median) ";
 label p50_n_birth_15 = "Option 15 (median) ";
@@ -419,7 +424,7 @@ quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number women living with HIV giving birth";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 250000 by 50000) valueattrs=(size=10);*200000 if stopping in 2023;
 label p50_n_give_birth_w_hiv_0 = "Option 0 (median) ";
 label p50_n_give_birth_w_hiv_1 = "Option 1 (median) ";
 label p50_n_give_birth_w_hiv_15 = "Option 15 (median) ";
@@ -644,7 +649,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2500000 by 250000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  4000000 by 500000) valueattrs=(size=10);*2500000 if stopping in 2023;
 label p50_n_tested_w_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_1  = "Essential (median) - 15+  ";
 label p50_n_tested_w_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -678,7 +683,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  5000000 by 500000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_0  = "Baseline (median) - 15+";
 label p50_n_tested_1  = "Essential (median) - 15+  ";
 label p50_n_tested_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -695,7 +700,7 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1500000 by 100000) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1800000 by 200000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_m_0  = "Baseline (median) - 15+";
 label p50_n_tested_m_1  = "Essential (median) - 15+  ";
 label p50_n_tested_m_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -950,13 +955,13 @@ band    x=cald lower=p5_n_prep_15 	upper=p95_n_prep_15  / transparency=0.9 filla
 run;quit;
 *target_prepinit_1524w;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Number of women aged 15-24 on PrEP";
+Title    height=1.5 justify=center "Number of women aged 15-24 on PrEP (n_prep_1524w)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 25000 ) valueattrs=(size=10);
 label p50_n_prep_1524w_0 = "Option 0 (median) ";
 label p50_n_prep_1524w_1 = "Option 1  (median) ";
 label p50_n_prep_1524w_15 = "Option 15  (median) ";
-label target_prep_1524w_lq = "Target PrEP AGYW";
+label target_prep_1524w_lq = "Target (PrEP_CT)";
 series  x=cald y=p50_n_prep_1524w_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_prep_1524w_0 	upper=p95_n_prep_1524w_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 series  x=cald y=p50_n_prep_1524w_1/	lineattrs = (color=red thickness = 2);

@@ -3,16 +3,16 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v8_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v9_out";
 
-data a.base_19_05_23;   set b.out:;
+data a.base_25_05_23;   set b.out:;
 
 /* show the contents of the input SAS file */
 /*proc contents data=a.base_17_05_23;run;*/
 ods html close;
 ods listing;
-/*
-proc freq data=a.base_17_05_23;
+
+proc freq data=a.base_25_05_23;
 table s_hiv_sw s_sw_1564 s_sw_1564
 s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
 s_tested_ancpd  s_diag_thisper_progsw;run;*/
@@ -21,7 +21,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_19_05_23;
+data g; set  a.base_25_05_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -480,6 +480,19 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_prep_vr_ly_1524w;  			n_prep_vr_ly_1524w     = s_prep_vr_ly_1524w * &sf;       
 * n_prep_vr_ly_sw;    			n_prep_vr_ly_sw        = s_prep_vr_ly_sw * &sf;     
 * n_prep_vr_ly_sdc;   			n_prep_vr_ly_sdc       = s_prep_vr_ly_sdc * &sf;   
+
+*PrEP_CT: Number of clients actively taking the indicated PrEP method(s) 
+         (excluding newly enrolled) during the last quarter of the date range displayed.
+			We are using the average across quarters;
+* n_contprep_oral_1524w; 		n_contprep_oral_1524w = (s_prep_oral_w_1524 - s_init_prep_oral_1524w) * &sf;
+* n_contprep_oral_sw; 			n_contprep_oral_sw    = (s_prep_oral_sw - s_init_prep_oral_sw) * &sf; 
+* n_contprep_oral_sdc; 			n_contprep_oral_sdc   = (s_prep_oral_sdc - s_init_prep_oral_sdc) * &sf; 
+* n_contprep_inj_1524w; 		n_contprep_inj_1524w  = (s_prep_inj_w_1524 - s_init_prep_inj_1524w) * &sf;   
+* n_contprep_inj_sw; 			n_contprep_inj_sw     = (s_prep_inj_sw - s_init_prep_inj_sw) * &sf; 
+* n_contprep_inj_sdc; 			n_contprep_inj_sdc    = (s_prep_inj_sdc - s_init_prep_inj_sdc) * &sf; 
+* n_contprep_vr_1524w;    		n_contprep_vr_1524w   = (s_prep_vr_w_1524 - s_init_prep_vr_1524w) * &sf;    
+* n_contprep_vr_sw;   			n_contprep_vr_sw      = (s_prep_vr_sw - s_init_prep_vr_sw) * &sf;   
+* n_contprep_vr_sdc; 			n_contprep_vr_sdc     = (s_prep_vr_sdc - s_init_prep_vr_sdc) * &sf;
 
 * n_prep_oral_ever_1524w;		n_prep_oral_ever_1524w = s_prep_oral_ever_1524w * &sf;   
 * n_prep_oral_ever_sw;  		n_prep_oral_ever_sw    = s_prep_oral_ever_sw * &sf;   
@@ -1080,6 +1093,8 @@ n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
 n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
 n_prep_inj_ly_1524w		n_prep_inj_ly_sw	n_prep_inj_ly_sdc
 n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc
+n_contprep_oral_1524w	n_contprep_oral_sw	n_contprep_oral_sdc	n_contprep_inj_1524w	n_contprep_inj_sw
+n_contprep_inj_sdc		n_contprep_vr_1524w n_contprep_vr_sw	n_contprep_vr_sdc
 n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
 n_prep_inj_ever_1524w	n_prep_inj_ever_sw	 n_prep_inj_ever_sdc
 n_prep_vr_ever_1524w    n_prep_vr_ever_sw  	 n_prep_vr_ever_sdc
@@ -1194,12 +1209,12 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_19_05_23; set y;  run;
-/*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;*/
-proc freq data=a.l_base_17_05_23;table 
+data a.l_base_25_05_23; set y;  run;
+/*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
+proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
 n_tested_ancpd    n_diag_progsw;
-run;
+run;*/
 /*
 proc freq data=a.base_17_05_23;
 table s_hiv_sw s_sw_1564 s_sw_1564
