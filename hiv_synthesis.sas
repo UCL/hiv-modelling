@@ -2818,7 +2818,11 @@ if date_start_testing lt caldate{t} le 2015  then do;
 	*This is intended for people who did not have HIV 3 months ago;																																																
 	if caldate{t} - date_last_non_hiv_tb = 0.25 and tested ne 1 then do;   * ts1m - dependent on time step ;
 		e=rand('uniform'); 
-		if e < test_rate_tb then do;  tested=1; if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; end;
+		if e < test_rate_tb then do;
+			tested=1; 
+			if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+		end;
 	end;
 end;	
 
@@ -2982,8 +2986,9 @@ and age < 50 then do;
 
 	if u_circ lt prob_circ then do;
 		if t ge 2 and tested_tm1 ne 1 then do;
-			 tested=1;tested_circ=1;dt_last_test=caldate{t};np_lasttest=0;
-			 if ever_tested ne 1 then do;date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t};end;
+			tested=1; tested_circ=1; 
+			if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 		end;
 		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
 	end;
@@ -4172,8 +4177,9 @@ if s < rate_non_hiv_symptoms then do;u=rand('uniform');
 	if . < date_start_testing <= caldate{t} and tested ne 1 and registd_tm1 ne 1
 	and (testing_disrup_covid ne 1 or covid_disrup_affected ne 1) 
 	and u < (test_rate_non_tb_who3+test_rate_who4)/2 then do; 
-	tested_symptoms_not_hiv =1; tested=1; 
-	if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			tested=1; tested_symptoms_not_hiv=1; 
+			if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
 end;
 end;
@@ -4398,6 +4404,7 @@ tested_labdel=0;
 if caldate{t} = dt_start_pregn then do;  * dependent_on_time_step_length ;
 	if a < prob_anc then anc=1;
 end;
+
 if anc=1 then do;
 	***LBM Aug19;
 	if 15 le age lt 50 then do;w1549_birthanc=1;hiv_w1549_birthanc=hiv;end;
@@ -4406,12 +4413,13 @@ if anc=1 then do;
 		 u=rand('uniform');if (caldate{t} = dt_start_pregn+0.25 and u lt 0.5 ) 
 		 	or (caldate{t} = dt_start_pregn+0.5  and u lt prob_test_2ndtrim)
 			or (caldate{t} = dt_start_pregn+0.75 and u lt 0.1 ) then do;
-			tested=1; dt_last_test=caldate{t};np_lasttest=0;  
-			if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
-			if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;
-		end;
+				tested=1; 
+				if caldate{t} = dt_start_pregn+0.25 or caldate{t} = dt_start_pregn+0.5 then tested_anc=1;
+				if caldate{t} = dt_start_pregn+0.75 then tested_labdel=1;				
+				if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+				np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;  
+			end;
 	end;
-	if ever_tested ne 1 then do; ever_tested=1; date1test=caldate{t}; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
     u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
 end;
@@ -4421,7 +4429,10 @@ if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
 	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt prob_test_postdel then do;
-		tested_pd=1;tested=1;ever_tested=1; dt_last_test=caldate{t};np_lasttest=0; end;
+		tested=1; tested_pd=1; 
+		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+	end;
 end;
 
 if dt_start_pregn le caldate{t} lt dt_start_pregn+0.75 then pregnant=1;
@@ -4541,8 +4552,9 @@ if registd ne 1 and caldate{t} ge (date_start_testing+5.5) and tested ne 1
 and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 	if t ge 2 and sw_test_6mthly=1 and sw=1 and (caldate{t}-dt_last_test >= 0.5 or dt_last_test=.) then do;
-		tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
-		np_lasttest=0; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0; tested_as_sw=1;
+		tested=1; tested_as_sw=1; 
+		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 	end;
 
 
@@ -4554,33 +4566,36 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
  		if . < np_lasttest <= 0 then unitest = unitest * eff_test_targeting;  if no_test_if_np0 = 1 and . < np_lasttest <= 0 then unitest = 1;
 		if newp_lasttest ge 1 then unitest=unitest/eff_test_targeting;  * targeting of testing - aug15;
 
-		if      ever_tested ne 1  then do; 
+		if ever_tested ne 1  then do; 
 			if unitest < rate_1sttest then do;
 				newp_lasttest=0;
-				tested=1; if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
-				np_lasttest=0; newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0;
+				tested=1; 
+				date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+				np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 			end;
-
 		end;
 
-		if ever_tested  = 1  then do;
+		if ever_tested = 1  then do;
 
 			if eff_max_freq_testing=1 then do;  
-					if caldate{t}-dt_last_test >= 1.0 and unitest < rate_reptest then do;	
- 					tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
-					np_lasttest=0;newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
+				if caldate{t}-dt_last_test >= 1.0 and unitest < rate_reptest then do;	
+					tested=1; 
+					dt_last_test=caldate{t}; 
+					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 				end;
 			end;
 			if eff_max_freq_testing=2 then do;*every 6 months;  
 				if caldate{t}-dt_last_test >= 0.5 and unitest < rate_reptest then do;
-					tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};
-					np_lasttest=0;newp_lasttest_tested_this_per = newp_lasttest; newp_lasttest=0; 
+					tested=1; 
+					dt_last_test=caldate{t}; 
+					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 				end;
 			end;
 			if eff_max_freq_testing=4 then do;*every 3 months;  
 				if caldate{t}-dt_last_test >= 0.25 and unitest < rate_reptest then do;
-					tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;dt_last_test=caldate{t};    
-					np_lasttest=0;newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
+					tested=1; 
+					dt_last_test=caldate{t}; 
+					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 				end;
 			end;
 		end;
@@ -4610,8 +4625,9 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					* Only oral PrEP available;
 					when (caldate(t) ge date_prep_oral_intro and (. < caldate(t) < date_prep_inj_intro  or date_prep_inj_intro=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
-							tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-							testfor_prep_oral=1;
+							tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
+							if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+							np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 						end;
 					end;
 
@@ -4620,23 +4636,27 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
-								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_oral=1;
+								tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
+								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj PrEP;
-								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_inj=1; 
+								tested=1; testfor_prep_any=1; testfor_prep_inj=1; 
+								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 							end;
 							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
 								*(1) prefer oral prep to inj and willing;
 								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_oral=1;
+									tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
+									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(2) prefer inj prep to oral and willing;
 								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_inj=1; 
+									tested=1; testfor_prep_any=1; testfor_prep_inj=1; 
+									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
@@ -4649,23 +4669,27 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 						select;
 							when (highest_prep_pref = 1)	do;		*Preference for oral PrEP;
-								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_oral=1;
+								tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
+								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 							end;
-							when (highest_prep_pref = 3)	do;		*Preference for vr PrEP but not available;
-								tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-								testfor_prep_vr=1;
+							when (highest_prep_pref = 3)	do;		*Preference for vr PrEP;
+								tested=1; testfor_prep_any=1; testfor_prep_vr=1; 
+								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj but not available;
 								*(1) prefer oral prep to vr and willing;
 								if pref_prep_oral > pref_prep_vr > . and prep_oral_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_oral=1;
+									tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
+									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(2) prefer vr prep to oral and willing;
 								else if pref_prep_vr > pref_prep_oral > . and prep_vr_willing=1 then do;
-									tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
-									testfor_prep_vr=1;  
+									tested=1; testfor_prep_any=1; testfor_prep_vr=1; 
+									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(3) otherwise not willing to take either oral or vr PrEP -> variables not updated;
 							end;
@@ -4675,12 +4699,14 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 					* All PrEP types available;
 					when (caldate{t} ge date_prep_vr_intro > .) do;											
-						tested=1;	ever_tested=1;	testfor_prep_any=1;	dt_last_test=caldate{t};	np_lasttest=0;
+						tested=1; testfor_prep_any=1;
 						select;
 							when (highest_prep_pref = 1)	testfor_prep_oral=1; 
-							when (highest_prep_pref = 2) do;	testfor_prep_inj=1;  end;
+							when (highest_prep_pref = 2) 	testfor_prep_inj=1;
 							when (highest_prep_pref = 3) 	testfor_prep_vr=1; 
 						end;
+						if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 					end;
 
 					otherwise xxx=1;
@@ -4695,28 +4721,44 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			* Oral PrEP ;
 			if prep_oral_tm1=1 then do;  * dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_oral then do;
-					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+					a=rand('uniform'); if a < rate_test_onprep_any then do; 
+						tested=1; 
+						dt_last_test=caldate{t}; 
+						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+					end; 
 				end;
 			end;
 
 			* Injectable PrEP ;	* lapr - double check equivalence with code above and update oral prep code if works ;
 			else if prep_inj_tm1 =1 then do;  * dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_inj then do;
-					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+					a=rand('uniform'); if a < rate_test_onprep_any then do; 
+						tested=1; 
+						dt_last_test=caldate{t}; 
+						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+					end; 
 				end;
 			end; 
 
 			* Vaginal ring PrEP ;
 			else if prep_vr_tm1 =1 then do;  * dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_vr then do;
-					a=rand('uniform'); if a < rate_test_onprep_any then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0; end; 
+					a=rand('uniform'); if a < rate_test_onprep_any then do; 
+						tested=1; 
+						dt_last_test=caldate{t}; 
+						np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+					end; 
 				end;
 			end;
 
 
 			*Re-initiation of PrEP;
 			else if prep_any_tm1 ne 1 then do; * dependent_on_time_step_length;		*lapr - do we need to add testing to restart specific method here?;
-				a=rand('uniform'); if stop_prep_any_choice ne 1 then do; tested=1; dt_last_test=caldate{t}; np_lasttest=0;end;
+				a=rand('uniform'); if stop_prep_any_choice ne 1 then do; 
+					tested=1; 
+					dt_last_test=caldate{t}; 
+					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+				end;
 			end; * jul17;
 		end;
 
@@ -7580,9 +7622,10 @@ elig_test_who4=0;elig_test_non_tb_who3=0;elig_test_tb=0;elig_test_who4_tested=0;
 
 		if (adc_tm1=1 or (tb_tm2 =0 and tb_tm1 =1) or non_tb_who3_ev_tm1 =1) then do;
 			unitest=rand('uniform');if unitest<rate_test and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) then do;
-				tested=1;if ever_tested ne 1 then date1test=caldate{t};ever_tested=1;sympt_diag=1;
-				sympt_diag_ever=1;dt_last_test=caldate{t};np_lasttest=0;
-				newp_lasttest_tested_this_per = newp_lasttest;newp_lasttest=0;
+				tested=1;
+				if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
+				np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+				sympt_diag=1; sympt_diag_ever=1;
 				if adc_tm1=1 then elig_test_who4_tested=1; if adc_tm1=0 and tb_tm2=0 and tb_tm1 =1 then elig_test_tb_tested=1;
 				if non_tb_who3_ev_tm1 =1 and adc_tm1=0 and tb_tm1 =0 then elig_test_non_tb_who3_tested=1;
 			end;
@@ -17299,7 +17342,6 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 * procs;
-
 
 /*
 
