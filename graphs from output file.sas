@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_l_l;
+set a.intensive3_n_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -24,7 +24,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  prevalence_vg1000_   ;
+%let single_var =  p_inf_primary                 ;
 
 * p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary  ;
 
@@ -343,9 +343,9 @@ ods html ;
 /*
 
 ods html;
-proc sgplot data=d nolegend; 
+proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of people tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 10000000   by 1000000 ) valueattrs=(size=10);
 
 label p50_n_tested_0 = "option 0";
@@ -371,6 +371,7 @@ label p50_n_tested_5 = "option_5";
 run;quit;
 
 ods html close;
+
 
 
 ods html;
@@ -403,7 +404,6 @@ label p50_p_onart_5 = "option_5";
 run;quit;
 
 ods html close;
-
 
 
 ods html;
@@ -474,27 +474,27 @@ ods html close;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2030 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2020 to 2040 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.6   by 0.05 ) valueattrs=(size=10);
 
-label p50_incidence1549__0 = "option 0";
-label p50_incidence1549__1 = "option_1";
-label p50_incidence1549__2 = "option_2";
-label p50_incidence1549__3 = "option_3";
-label p50_incidence1549__4 = "option_4";
-label p50_incidence1549__5 = "option_5";
+label mean_incidence1549__0 = "option 0";
+label mean_incidence1549__1 = "option_1";
+label mean_incidence1549__2 = "option_2";
+label mean_incidence1549__3 = "option_3";
+label mean_incidence1549__4 = "option_4";
+label mean_incidence1549__5 = "option_5";
 
-  series  x=cald y=p50_incidence1549__0/	lineattrs = (color=black thickness = 4);
+  series  x=cald y=mean_incidence1549__0/	lineattrs = (color=black thickness = 4);
   band    x=cald lower=p5_incidence1549__0 	upper=p95_incidence1549__0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__1/	lineattrs = (color=green thickness = 4);
+  series  x=cald y=mean_incidence1549__1/	lineattrs = (color=green thickness = 4);
   band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__2/	lineattrs = (color=red    thickness = 4);
+  series  x=cald y=mean_incidence1549__2/	lineattrs = (color=red    thickness = 4);
   band    x=cald lower=p5_incidence1549__2 	upper=p95_incidence1549__2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__3/	lineattrs = (color=yellow thickness = 4);
+  series  x=cald y=mean_incidence1549__3/	lineattrs = (color=yellow thickness = 4);
   band    x=cald lower=p5_incidence1549__3 	upper=p95_incidence1549__3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__4/	lineattrs = (color=blue   thickness = 4);
+  series  x=cald y=mean_incidence1549__4/	lineattrs = (color=blue   thickness = 4);
   band    x=cald lower=p5_incidence1549__4 	upper=p95_incidence1549__4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_incidence1549__5/	lineattrs = (color=orange thickness = 4);
+  series  x=cald y=mean_incidence1549__5/	lineattrs = (color=orange thickness = 4);
   band    x=cald lower=p5_incidence1549__5 	upper=p95_incidence1549__5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
@@ -533,12 +533,12 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2040 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.03  by 0.005 ) valueattrs=(size=10);
 
 label p50_prevalence_vg1000__0 = "option 0";
@@ -565,13 +565,12 @@ run;quit;
 
 ods html close;
 
-/*
 
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_prep_any";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 10000 ) valueattrs=(size=10);
 
 label p50_n_prep_any_0 = "option 0";
@@ -603,7 +602,7 @@ ods html close;
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0.8 to 1   by 0.01 ) valueattrs=(size=10);
 
 label p50_p_diag_0 = "option 0";
@@ -631,7 +630,7 @@ run;quit;
 
 ods html close;
 
-  
+
 
 ods html;
 proc sgplot data=d; 
@@ -697,36 +696,36 @@ run;quit;
 
 ods html close;
 
+*/
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p inf ep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2030 by 1)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "p inf primary";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 1   by 0.1  ) valueattrs=(size=10);
 
-label p50_p_inf_ep_0 = "option 0";
-label p50_p_inf_ep_1 = "option_1";
-label p50_p_inf_ep_2 = "option_2";
-label p50_p_inf_ep_3 = "option_3";
-label p50_p_inf_ep_4 = "option_4";
-label p50_p_inf_ep_5 = "option_5";
+label p50_p_inf_primary_0 = "option 0";
+label p50_p_inf_primary_1 = "option_1";
+label p50_p_inf_primary_2 = "option_2";
+label p50_p_inf_primary_3 = "option_3";
+label p50_p_inf_primary_4 = "option_4";
+label p50_p_inf_primary_5 = "option_5";
 
-  series  x=cald y=p50_p_inf_ep_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_0 	upper=p95_p_inf_ep_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_ep_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_1 	upper=p95_p_inf_ep_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_ep_2/	lineattrs = (color=red    thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_2 	upper=p95_p_inf_ep_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_ep_3/	lineattrs = (color=yellow thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_3 	upper=p95_p_inf_ep_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_ep_4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_4 	upper=p95_p_inf_ep_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_ep_5/	lineattrs = (color=orange thickness = 4);
-  band    x=cald lower=p5_p_inf_ep_5 	upper=p95_p_inf_ep_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_0 	upper=p95_p_inf_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_2/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_2 	upper=p95_p_inf_primary_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_3/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_3 	upper=p95_p_inf_primary_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_4/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_4 	upper=p95_p_inf_primary_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_5/	lineattrs = (color=orange thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_5 	upper=p95_p_inf_primary_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 
 run;quit;
 
 ods html close;
 
-*/

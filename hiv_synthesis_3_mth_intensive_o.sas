@@ -2504,13 +2504,17 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 option = &s;
 
 if caldate_never_dot = &year_interv or  caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
-or  caldate_never_dot = &year_interv + 5 then do;
+or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
+or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 
+or  caldate_never_dot = &year_interv + 18  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 28
+or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43
+then do;
 
 tr_rate_undetec_vl=0;
 exp_setting_lower_p_vl1000 = 0; 
 external_exp_factor = 1;
 rate_exp_set_lower_p_vl1000 = 0;
-
+eff_test_targeting = 5;
 
 * this is over one year because we want first to improve onart and vls in those with hiv diagnosed and then have the intensive 3 months of etsting / prep / pep;
 
@@ -2539,7 +2543,12 @@ end;
 
 if option = 2 then do;   * intensive 3 month increase in testing ;
 
-	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 or caldate_never_dot = &year_interv + 5 then do;
+	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
+	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
+	or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 
+	or  caldate_never_dot = &year_interv + 18  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 28
+ 	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43
+then do;
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 	end;
 
@@ -2558,7 +2567,10 @@ if option = 3 then do; * intensive 3 month increase in testing + prep / pep;
 	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
 	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
 
-	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 or caldate_never_dot = &year_interv + 5 then do;
+	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
+	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
+	or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 or  caldate_never_dot = &year_interv + 18  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 28
+ 	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
@@ -2593,7 +2605,11 @@ if option = 4 then do;  * increase in p_onart and intensive 3 month increase in 
 		eff_prob_return_adc = 1   ;
 		adhav=0.9;
 
-	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 or caldate_never_dot = &year_interv + 5 then do;
+	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
+	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
+	or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 or  caldate_never_dot = &year_interv + 18  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 28
+ 	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43
+	then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
@@ -2628,7 +2644,10 @@ if option = 5 then do;  * all interventions ;
 	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
 	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
 
-	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 or caldate_never_dot = &year_interv + 5 then do;
+	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
+	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
+	or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 or  caldate_never_dot = &year_interv + 18  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 28
+ 	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 
@@ -2649,9 +2668,14 @@ end;
 
 
 if (caldate_never_dot = &year_interv + 1.25 or caldate_never_dot = &year_interv + 3.25 
-or caldate_never_dot = &year_interv + 5.25) and option in (3, 5) then do;
+or caldate_never_dot = &year_interv + 5.25 or caldate_never_dot = &year_interv + 7.25  
+or caldate_never_dot = &year_interv + 9.25  or caldate_never_dot = &year_interv + 11.25 
+or caldate_never_dot = &year_interv + 13.25 or caldate_never_dot = &year_interv + 18.25
+or caldate_never_dot = &year_interv + 23.25  or caldate_never_dot = &year_interv + 28.25
+or caldate_never_dot = &year_interv + 33.25  or caldate_never_dot = &year_interv + 38.25
+or caldate_never_dot = &year_interv + 43.25)
+and option in (3, 5) then do;
 
-	intensive_3mth_test = 0 ;
 	hard_reach = hard_reach_x;
 	eff_prob_prep_any_restart_choice = eff_prob_prep_any_rest_choice_x ;
 	prep_any_willing =  prep_any_willing_x  ;
@@ -2664,7 +2688,13 @@ or caldate_never_dot = &year_interv + 5.25) and option in (3, 5) then do;
 end;
 
 if (caldate_never_dot = &year_interv + 1.25 or caldate_never_dot = &year_interv + 3.25 
-or caldate_never_dot = &year_interv + 5.25) and option in (2, 3, 4, 5) then do;
+or caldate_never_dot = &year_interv + 5.25 or caldate_never_dot = &year_interv + 7.25  
+or caldate_never_dot = &year_interv + 9.25  or caldate_never_dot = &year_interv + 11.25 
+or caldate_never_dot = &year_interv + 13.25 or caldate_never_dot = &year_interv + 18.25
+or caldate_never_dot = &year_interv + 23.25  or caldate_never_dot = &year_interv + 28.25
+or caldate_never_dot = &year_interv + 33.25  or caldate_never_dot = &year_interv + 38.25
+or caldate_never_dot = &year_interv + 43.25)
+and option in (2, 3, 4, 5) then do;
 
 	intensive_3mth_test = 0 ;
 
