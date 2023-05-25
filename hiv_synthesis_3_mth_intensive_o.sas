@@ -2550,6 +2550,7 @@ if option = 2 then do;   * intensive 3 month increase in testing ;
  	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43
 then do;
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+	intensive_3mth_test_factor=10;
 	end;
 
 end;
@@ -2573,6 +2574,7 @@ if option = 3 then do; * intensive 3 month increase in testing + prep / pep;
  	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+	intensive_3mth_test_factor=10;
 
 	qq=rand('uniform'); if hard_reach = 1 and qq < 0.9 then hard_reach =0; 
 
@@ -2612,6 +2614,7 @@ if option = 4 then do;  * increase in p_onart and intensive 3 month increase in 
 	then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+	intensive_3mth_test_factor=10;
 
 	end;
 
@@ -2650,6 +2653,7 @@ if option = 5 then do;  * all interventions ;
  	or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 38  or  caldate_never_dot = &year_interv + 43 then do;
 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
+	intensive_3mth_test_factor=10;
 
 	qq=rand('uniform'); if hard_reach = 1 and qq < 0.9 then hard_reach =0; 
 
@@ -2973,7 +2977,7 @@ if caldate{t} >= &year_interv then do;
 	if incr_test_year_i = 4              then do; rate_1sttest = 0;					 rate_reptest = 0; end;
 end;
 
-if intensive_3mth_test = 1 then do; rate_1sttest = rate_1sttest * 100.0; rate_reptest = rate_reptest * 100.0; end;
+if intensive_3mth_test = 1 then do; rate_1sttest = rate_1sttest * intensive_3mth_test_factor ; rate_reptest = rate_reptest * intensive_3mth_test_factor; end;
 
 if testing_disrup_covid =1 and covid_disrup_affected = 1 then do; rate_1sttest = 0 ; rate_reptest = 0; end;
 

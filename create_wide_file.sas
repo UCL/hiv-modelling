@@ -60,7 +60,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 ly = s_ly * &sf;  *life years;
 dly = s_dly * &sf; *discounted life years;
 
-s_ddaly = s_dead_ddaly + (s_live_ddaly * 1  );
+s_ddaly = s_dead_ddaly + (s_live_ddaly * 1.0 );
 
 ***Scaling up to annual discounted DALYs in the whole population;
 ddaly = s_ddaly * &sf * 4;
@@ -183,6 +183,7 @@ s_hiv = s_hivge15 ;
 
 
 * n_tested;						n_tested = s_tested * &sf * 4;
+* test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * n_prep_any;					n_prep_any = s_prep_any * &sf;
 
 ***general population- key outputs;
@@ -229,7 +230,7 @@ prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence154
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
 dcost ddaly   n_death_hiv  p_onart_vl1000
-p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary 
+p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
