@@ -783,7 +783,7 @@ end;
 																* currently the same as for inj prep, values for oral PrEP are higher;
 								* dependent_on_time_step_length ;
 
-* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 – 0.1 ; * this will change depending on assumed uptake;
+* pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; * this will change depending on assumed uptake;
 
 
 
