@@ -195,24 +195,7 @@ s_primary1519_ =  s_primary1519m + s_primary1519w;
 */
 
 
-***Rename so variables do not end in a number and are less than <32 char as this breaks the macro;
-
-s_dead_Alt6_artcd4lt200_ 	= s_dead_Alt6_artcd4lt200;
-s_dead_Alt6_artcd4gt200_ 	= s_dead_Alt6_artcd4gt200;
-s_dead_I_Alt6_Rcd4lt200_ 	= s_dead_I_Alt6_Rcd4lt200;
-s_dead_I_Alt6_Rcd4gt200_ 	= s_dead_I_Alt6_Rcd4gt200;
-s_dead_A_vl1000_ 			= s_dead_A_vl1000;
-s_dead_A_vg1000_ 			= s_dead_A_vg1000;
-s_dead_Alt6_vl1000_ 		= s_dead_Alt6_vl1000;
-s_dead_Alt6_vg1000_ 		= s_dead_Alt6_vg1000;
-s_dead_Agt6_vl1000_ 		= s_dead_Agt6_vl1000;
-s_dead_Agt6_vg1000_ 		= s_dead_Agt6_vg1000; 
-s_dead_A_cd4lt200_ 			= s_dead_A_cd4lt200;
-s_dead_A_cd4gt200_ 			= s_dead_A_cd4gt200;  
-s_dead_Alt6_cd4lt200_ 		= s_dead_Alt6_cd4lt200;
-s_dead_Alt6_cd4gt200_ 		= s_dead_Alt6_cd4gt200;
-s_dead_Agt6_cd4lt200_ 		= s_dead_Agt6_cd4lt200;
-s_dead_Agt6_cd4gt200_ 		= s_dead_Agt6_cd4gt200;
+***Rename so variables are less than <32 char as the macro will add on characters;
 
 s_dead_Alt6_Acd4lt2001519m = s_dead_Alt6_artcd4lt2001519m; s_dead_Alt6_Acd4lt2002024m = s_dead_Alt6_artcd4lt2002024m;
 s_dead_Alt6_Acd4lt2002529m = s_dead_Alt6_artcd4lt2002529m; s_dead_Alt6_Acd4lt2003034m = s_dead_Alt6_artcd4lt2003034m;
@@ -561,26 +544,26 @@ s_I_offart_SIgt6m7579_ = s_I_offart_SIgt6m7579m + s_I_offart_SIgt6m7579w; s_I_of
 
 n_dead_undiag				= s_dead_undiag * sf_2022;
 n_dead_diag_not_linked 		= s_dead_diag_not_linked * sf_2022;
-n_dead_Alt6_Acd4lt200 		= s_dead_Alt6_artcd4lt200 * sf_2022;
-n_dead_Alt6_Acd4gt200 		= s_dead_Alt6_artcd4gt200 * sf_2022;
-n_d_I_Alt6_Rcd4lt200 		= s_dead_I_Alt6_Rcd4lt200 * sf_2022;
-n_d_I_Alt6_Rcd4gt200 		= s_dead_I_Alt6_Rcd4gt200 * sf_2022;
-n_dead_A_vl1000 			= s_dead_A_vl1000 * sf_2022;
-n_dead_A_vg1000 			= s_dead_A_vg1000 * sf_2022;
-n_dead_Alt6_vl1000 			= s_dead_Alt6_vl1000 * sf_2022;
-n_dead_Alt6_vg1000 			= s_dead_Alt6_vg1000 * sf_2022;
-n_dead_Agt6_vl1000 			= s_dead_Agt6_vl1000 * sf_2022;
-n_dead_Agt6_vg1000 			= s_dead_Agt6_vg1000 * sf_2022;
+n_dead_Alt6_Acd4lt200_ 		= s_dead_Alt6_artcd4lt200 * sf_2022;
+n_dead_Alt6_Acd4gt200_ 		= s_dead_Alt6_artcd4gt200 * sf_2022;
+n_d_I_Alt6_Rcd4lt200_ 		= s_dead_I_Alt6_Rcd4lt200 * sf_2022;
+n_d_I_Alt6_Rcd4gt200_ 		= s_dead_I_Alt6_Rcd4gt200 * sf_2022;
+n_dead_A_vl1000_ 			= s_dead_A_vl1000 * sf_2022;
+n_dead_A_vg1000_ 			= s_dead_A_vg1000 * sf_2022;
+n_dead_Alt6_vl1000_ 		= s_dead_Alt6_vl1000 * sf_2022;
+n_dead_Alt6_vg1000_ 		= s_dead_Alt6_vg1000 * sf_2022;
+n_dead_Agt6_vl1000_ 		= s_dead_Agt6_vl1000 * sf_2022;
+n_dead_Agt6_vg1000_ 		= s_dead_Agt6_vg1000 * sf_2022;
 n_dead_int_lost 			= s_dead_int_lost * sf_2022;
-n_dead_1stint_lost 			= s_dead_1stint_lost * sf_2022;
+n_dead_1stint_lost	 		= s_dead_1stint_lost * sf_2022;
 n_dead_subintlt6_lost 		= s_dead_subintlt6_lost * sf_2022;
 n_dead_subintgt6_lost 		= s_dead_subintgt6_lost * sf_2022;
-n_dead_A_cd4lt200 			= s_dead_A_cd4lt200 * sf_2022;
-n_dead_A_cd4gt200 			= s_dead_A_cd4gt200 * sf_2022;
-n_dead_Alt6_cd4lt200 		= s_dead_Alt6_cd4lt200 * sf_2022;
-n_dead_Alt6_cd4gt200 		= s_dead_Alt6_cd4gt200 * sf_2022;
-n_dead_Agt6_cd4lt200 		= s_dead_Agt6_cd4lt200 * sf_2022;
-n_dead_Agt6_cd4gt200 		= s_dead_Agt6_cd4gt200 * sf_2022;
+n_dead_A_cd4lt200_ 			= s_dead_A_cd4lt200 * sf_2022;
+n_dead_A_cd4gt200_ 			= s_dead_A_cd4gt200 * sf_2022;
+n_dead_Alt6_cd4lt200_ 		= s_dead_Alt6_cd4lt200 * sf_2022;
+n_dead_Alt6_cd4gt200_ 		= s_dead_Alt6_cd4gt200 * sf_2022;
+n_dead_Agt6_cd4lt200_ 		= s_dead_Agt6_cd4lt200 * sf_2022;
+n_dead_Agt6_cd4gt200_ 		= s_dead_Agt6_cd4gt200 * sf_2022;
 
 n_dead_undiag_m				= s_dead_undiag_m * sf_2022;
 n_dead_diag_not_linked_m 	= s_dead_diag_not_linked_m * sf_2022;
@@ -817,15 +800,15 @@ n_hiv_death_m		n_hiv_death_w		n_hiv_death
 
 /*Deaths*/
 n_dead_undiag  n_dead_diag_not_linked  
-n_dead_Alt6_artcd4lt200_  n_dead_Alt6_artcd4gt200_  
-n_dead_I_Alt6_Rcd4lt200_  n_dead_I_Alt6_Rcd4gt200_  
+n_dead_Alt6_Acd4lt200_  n_dead_Alt6_Acd4gt200_  
+n_d_I_Alt6_Rcd4lt200_  n_d_I_Alt6_Rcd4gt200_  
 n_dead_A_vl1000_  n_dead_A_vg1000_  n_dead_Alt6_vl1000_  n_dead_Alt6_vg1000_  
 n_dead_Agt6_vl1000_  n_dead_Agt6_vg1000_  
 n_dead_int_lost  n_dead_1stint_lost  n_dead_subintlt6_lost  n_dead_subintgt6_lost  
 n_dead_A_cd4lt200_  n_dead_A_cd4gt200_  
 n_dead_Alt6_cd4lt200_  n_dead_Alt6_cd4gt200_  n_dead_Agt6_cd4lt200_  n_dead_Agt6_cd4gt200_  
 
-n_dead_undiag_m  n_dead_undiag_w  
+n_dead_undiag_m 	n_dead_undiag_w  
 n_dead_undiag1519_  n_dead_undiag2024_  n_dead_undiag2529_  n_dead_undiag3034_  n_dead_undiag3539_  
 n_dead_undiag4044_  n_dead_undiag4549_  n_dead_undiag5054_  n_dead_undiag5559_  n_dead_undiag6064_  
 n_dead_undiag6569_  n_dead_undiag7074_  n_dead_undiag7579_  n_dead_undiag8084_  
@@ -836,7 +819,7 @@ n_dead_undiag1519w  n_dead_undiag2024w  n_dead_undiag2529w  n_dead_undiag3034w  
 n_dead_undiag4044w  n_dead_undiag4549w  n_dead_undiag5054w  n_dead_undiag5559w  n_dead_undiag6064w  
 n_dead_undiag6569w  n_dead_undiag7074w  n_dead_undiag7579w  n_dead_undiag8084w  
 
-n_dead_diag_not_linked_m  n_dead_diag_not_linked_w  
+n_dead_diag_not_linked_m  	 n_dead_diag_not_linked_w  
 n_dead_diag_not_linked1519_  n_dead_diag_not_linked2024_  n_dead_diag_not_linked2529_  n_dead_diag_not_linked3034_  n_dead_diag_not_linked3539_  
 n_dead_diag_not_linked4044_  n_dead_diag_not_linked4549_  n_dead_diag_not_linked5054_  n_dead_diag_not_linked5559_  n_dead_diag_not_linked6064_  
 n_dead_diag_not_linked6569_  n_dead_diag_not_linked7074_  n_dead_diag_not_linked7579_  n_dead_diag_not_linked8084_  
@@ -847,7 +830,7 @@ n_dead_diag_not_linked1519w  n_dead_diag_not_linked2024w  n_dead_diag_not_linked
 n_dead_diag_not_linked4044w  n_dead_diag_not_linked4549w  n_dead_diag_not_linked5054w  n_dead_diag_not_linked5559w  n_dead_diag_not_linked6064w  
 n_dead_diag_not_linked6569w  n_dead_diag_not_linked7074w  n_dead_diag_not_linked7579w  n_dead_diag_not_linked8084w  
 
-n_dead_Alt6_artcd4lt200_m  n_dead_Alt6_artcd4lt200_w  
+n_dead_Alt6_Acd4lt200_m  	n_dead_Alt6_Acd4lt200_w  
 n_dead_Alt6_Acd4lt2001519_  n_dead_Alt6_Acd4lt2002024_  n_dead_Alt6_Acd4lt2002529_  n_dead_Alt6_Acd4lt2003034_  n_dead_Alt6_Acd4lt2003539_  
 n_dead_Alt6_Acd4lt2004044_  n_dead_Alt6_Acd4lt2004549_  n_dead_Alt6_Acd4lt2005054_  n_dead_Alt6_Acd4lt2005559_  n_dead_Alt6_Acd4lt2006064_  
 n_dead_Alt6_Acd4lt2006569_  n_dead_Alt6_Acd4lt2007074_  n_dead_Alt6_Acd4lt2007579_  n_dead_Alt6_Acd4lt2008084_  
@@ -858,7 +841,7 @@ n_dead_Alt6_Acd4lt2001519w  n_dead_Alt6_Acd4lt2002024w  n_dead_Alt6_Acd4lt200252
 n_dead_Alt6_Acd4lt2004044w  n_dead_Alt6_Acd4lt2004549w  n_dead_Alt6_Acd4lt2005054w  n_dead_Alt6_Acd4lt2005559w  n_dead_Alt6_Acd4lt2006064w  
 n_dead_Alt6_Acd4lt2006569w  n_dead_Alt6_Acd4lt2007074w  n_dead_Alt6_Acd4lt2007579w  n_dead_Alt6_Acd4lt2008084w  
 
-n_dead_Alt6_artcd4gt200_m  n_dead_Alt6_artcd4gt200_w  
+n_dead_Alt6_Acd4gt200_m  	n_dead_Alt6_Acd4gt200_w  
 n_dead_Alt6_Acd4gt2001519_  n_dead_Alt6_Acd4gt2002024_  n_dead_Alt6_Acd4gt2002529_  n_dead_Alt6_Acd4gt2003034_  n_dead_Alt6_Acd4gt2003539_  
 n_dead_Alt6_Acd4gt2004044_  n_dead_Alt6_Acd4gt2004549_  n_dead_Alt6_Acd4gt2005054_  n_dead_Alt6_Acd4gt2005559_  n_dead_Alt6_Acd4gt2006064_  
 n_dead_Alt6_Acd4gt2006569_  n_dead_Alt6_Acd4gt2007074_  n_dead_Alt6_Acd4gt2007579_  n_dead_Alt6_Acd4gt2008084_  
@@ -869,7 +852,7 @@ n_dead_Alt6_Acd4gt2001519w  n_dead_Alt6_Acd4gt2002024w  n_dead_Alt6_Acd4gt200252
 n_dead_Alt6_Acd4gt2004044w  n_dead_Alt6_Acd4gt2004549w  n_dead_Alt6_Acd4gt2005054w  n_dead_Alt6_Acd4gt2005559w  n_dead_Alt6_Acd4gt2006064w  
 n_dead_Alt6_Acd4gt2006569w  n_dead_Alt6_Acd4gt2007074w  n_dead_Alt6_Acd4gt2007579w  n_dead_Alt6_Acd4gt2008084w  
 
-n_dead_I_Alt6_Rcd4lt200_m  n_dead_I_Alt6_Rcd4lt200_w  
+n_d_I_Alt6_Rcd4lt200_m     n_d_I_Alt6_Rcd4lt200_w  
 n_d_I_Alt6_Rcd4lt2001519_  n_d_I_Alt6_Rcd4lt2002024_  n_d_I_Alt6_Rcd4lt2002529_  n_d_I_Alt6_Rcd4lt2003034_  n_d_I_Alt6_Rcd4lt2003539_  
 n_d_I_Alt6_Rcd4lt2004044_  n_d_I_Alt6_Rcd4lt2004549_  n_d_I_Alt6_Rcd4lt2005054_  n_d_I_Alt6_Rcd4lt2005559_   n_d_I_Alt6_Rcd4lt2006064_  
 n_d_I_Alt6_Rcd4lt2006569_  n_d_I_Alt6_Rcd4lt2007074_  n_d_I_Alt6_Rcd4lt2007579_  n_d_I_Alt6_Rcd4lt2008084_  
@@ -880,7 +863,7 @@ n_d_I_Alt6_Rcd4lt2001519w  n_d_I_Alt6_Rcd4lt2002024w  n_d_I_Alt6_Rcd4lt2002529w 
 n_d_I_Alt6_Rcd4lt2004044w  n_d_I_Alt6_Rcd4lt2004549w  n_d_I_Alt6_Rcd4lt2005054w  n_d_I_Alt6_Rcd4lt2005559w   n_d_I_Alt6_Rcd4lt2006064w  
 n_d_I_Alt6_Rcd4lt2006569w  n_d_I_Alt6_Rcd4lt2007074w  n_d_I_Alt6_Rcd4lt2007579w  n_d_I_Alt6_Rcd4lt2008084w  
 
-n_dead_I_Alt6_Rcd4gt200_m  n_dead_I_Alt6_Rcd4gt200_w  
+n_d_I_Alt6_Rcd4gt200_m	   n_d_I_Alt6_Rcd4gt200_w  
 n_d_I_Alt6_Rcd4lt2001519_  n_d_I_Alt6_Rcd4lt2002024_  n_d_I_Alt6_Rcd4lt2002529_  n_d_I_Alt6_Rcd4lt2003034_  n_d_I_Alt6_Rcd4lt2003539_  
 n_d_I_Alt6_Rcd4lt2004044_  n_d_I_Alt6_Rcd4lt2004549_  n_d_I_Alt6_Rcd4lt2005054_  n_d_I_Alt6_Rcd4lt2005559_   n_d_I_Alt6_Rcd4lt2006064_  
 n_d_I_Alt6_Rcd4lt2006569_  n_d_I_Alt6_Rcd4lt2007074_  n_d_I_Alt6_Rcd4lt2007579_  n_d_I_Alt6_Rcd4lt2008084_  
@@ -1082,10 +1065,10 @@ n_I_undiag 			n_I_diag_naive  	n_I_diag_startart  	n_I_onart		n_I_offart 		   n_
 n_I_onart_gt6m_nvs	n_I_onart_gt6m_vs   n_I_offart_1stI 	n_I_offart_SI 	n_I_offart_SIlt6m  n_I_offart_SIgt6m 
 
 
-n_I_undiag_m n_I_diag_naive_m n_I_diag_startart_m n_I_onart_m n_I_offart_m n_I_onart_lt6m_m n_I_onart_lt6m_nvn_m 
-n_I_onart_gt6m_nvn_m n_I_onart_gt6m_vn_m n_I_offart_1stI_m n_I_offart_SI_m n_I_offart_SIlt6m_m n_I_offart_SIgt6m_m 
-n_I_undiag_w n_I_diag_naive_w n_I_diag_startart_w n_I_onart_w n_I_offart_w n_I_onart_lt6m_w n_I_onart_lt6m_nvn_w 
-n_I_onart_gt6m_nvn_w n_I_onart_gt6m_vn_w n_I_offart_1stI_w n_I_offart_SI_w n_I_offart_SIlt6m_w n_I_offart_SIgt6m_w 
+n_I_undiag_m n_I_diag_naive_m n_I_diag_startart_m n_I_onart_m n_I_offart_m n_I_onart_lt6m_m n_I_onart_lt6m_nvs_m 
+n_I_onart_gt6m_nvs_m n_I_onart_gt6m_vs_m n_I_offart_1stI_m n_I_offart_SI_m n_I_offart_SIlt6m_m n_I_offart_SIgt6m_m 
+n_I_undiag_w n_I_diag_naive_w n_I_diag_startart_w n_I_onart_w n_I_offart_w n_I_onart_lt6m_w n_I_onart_lt6m_nvs_w 
+n_I_onart_gt6m_nvs_w n_I_onart_gt6m_vs_w n_I_offart_1stI_w n_I_offart_SI_w n_I_offart_SIlt6m_w n_I_offart_SIgt6m_w 
 
 
 n_I_undiag1519_ n_I_diag_naive1519_ n_I_diag_startart1519_ n_I_onart1519_ n_I_offart1519_ n_I_onart_lt6m1519_ 
@@ -1218,22 +1201,18 @@ n_I_undiag8084w n_I_diag_naive8084w n_I_diag_startart8084w n_I_onart8084w n_I_of
 n_I_onart_lt6m_nvs8084w n_I_onart_gt6m_nvs8084w n_I_onart_gt6m_vs8084w n_I_offart_1stI8084w n_I_offart_SI8084w 
 n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 
-s_primary s_inf_ep s_inf_newp;
+/*these are lept just to check the orignal outputs add up correctly;*/
+s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_offart1519m s_I_onart_lt6m1519m 
+s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
+s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
+
+
+;
 
 run;
 
-
+***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
-set y;
-
-
-proc print;var s_I_undiag1519m  ss_I_undiag1519m  sf_2022;where cald=2010;run; 
-
-
-
-proc print;var cald s_primary s_inf_ep s_inf_newp;run; 
-
-data qq;
 set y;
 
 keep 
@@ -1248,9 +1227,9 @@ if cald ge 2017 then delete;
 run;
 
 proc export 
-data=qq      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check.xlsx";
-
+data=y1      dbms=xlsx  
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check.xlsx"
+replace;
 run;
 
 
@@ -1370,32 +1349,8 @@ proc means max data=y;var count_csim cald;run; ***number of runs - this is manua
 proc sort;by cald ;run;
 
 
-  ***Macro var used to calculate means across each year and transpose to one line per run,
-  need to write manually all the years to merge;
-/*
-  
-proc sort data=y; by count_csim cald ;run;
-data one;set y;keep s_dead_undiag count_csim cald ;run;
-proc means  noprint data=one; var s_dead_undiag; output out=y_00 mean= s_dead_undiag_00; by count_csim ; where 2000 <= cald < 2001;run; 
-proc means  noprint data=one; var s_dead_undiag; output out=y_01 mean= s_dead_undiag_01; by count_csim ; where 2001 <= cald < 2002;run;
-
-data s_dead_undiag ; merge y_00 y_01  ;  
-drop _NAME_ _TYPE_ _FREQ_;run;
-proc transpose data=s_dead_undiag out=l_s_dead_undiag prefix=s_dead_undiag; id count_csim;run;
-
-data l_s_dead_undiag;set l_s_dead_undiag;
-*cald_c= substr(_NAME_,length(_NAME_)-3,4);
-*cald= input(cald_c,4.);
-cald_d= input(substr(_NAME_,length(_NAME_)-3,4),4.);
-run;
-
-data l_s_dead_undiag;set l_s_dead_undiag;***creates one dataset per variable;
-p5_s_dead_undiag  = PCTL(5,of s_dead_undiag1-s_dead_undiag55);
-p95_s_dead_undiag = PCTL(95,of s_dead_undiag1-s_dead_undiag55);
-p50_s_dead_undiag = median(of s_dead_undiag1-s_dead_undiag55);
-keep cald p5_s_dead_undiag p95_s_dead_undiag p50_s_dead_undiag;
-  run;
-  */
+  ***Macro var used to calculate means across each year and transpose to one line per run;
+ 
 %macro var_d(v);
 data one;set y;keep &v count_csim cald;
 proc sort;by count_csim cald;
@@ -1454,435 +1409,435 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_hiv_death5054w);  %var_d(n_hiv_death5559w);  %var_d(n_hiv_death6064w);  %var_d(n_hiv_death6569w);  %var_d(n_hiv_death7074w);  %var_d(n_hiv_death7579w);  %var_d(n_hiv_death8084w); 
 */
 
-%var_d(s_dead_undiag); 		    %var_d(s_dead_diag_not_linked);   %var_d(s_dead_Alt6_artcd4lt200_); %var_d(s_dead_Alt6_artcd4gt200_);
-%var_d(s_dead_I_Alt6_Rcd4lt200_); %var_d(s_dead_I_Alt6_Rcd4gt200_); 
-%var_d(s_dead_A_vl1000_); 	    %var_d(s_dead_A_vg1000_);		  %var_d(s_dead_Alt6_vl1000_); 		%var_d(s_dead_Alt6_vg1000_);  
-%var_d(s_dead_Agt6_vl1000_);	%var_d(s_dead_Agt6_vg1000_);	  %var_d(s_dead_int_lost);			%var_d(s_dead_1stint_lost); 
-%var_d(s_dead_subintlt6_lost);  %var_d(s_dead_subintgt6_lost);    %var_d(s_dead_A_cd4lt200_);       %var_d(s_dead_A_cd4gt200_);  
-%var_d(s_dead_Alt6_cd4lt200_);  %var_d(s_dead_Alt6_cd4gt200_); 	  %var_d(s_dead_Agt6_cd4lt200_);  	%var_d(s_dead_Agt6_cd4gt200_);  
+%var_d(n_dead_undiag); 		    %var_d(n_dead_diag_not_linked);   %var_d(n_dead_Alt6_artcd4lt200_); %var_d(n_dead_Alt6_artcd4gt200_);
+%var_d(n_dead_I_Alt6_Rcd4lt200_); %var_d(n_dead_I_Alt6_Rcd4gt200_); 
+%var_d(n_dead_A_vl1000_); 	    %var_d(n_dead_A_vg1000_);		  %var_d(n_dead_Alt6_vl1000_); 		%var_d(n_dead_Alt6_vg1000_);  
+%var_d(n_dead_Agt6_vl1000_);	%var_d(n_dead_Agt6_vg1000_);	  %var_d(n_dead_int_lost);			%var_d(n_dead_1stint_lost); 
+%var_d(n_dead_subintlt6_lost);  %var_d(n_dead_subintgt6_lost);    %var_d(n_dead_A_cd4lt200_);       %var_d(n_dead_A_cd4gt200_);  
+%var_d(n_dead_Alt6_cd4lt200_);  %var_d(n_dead_Alt6_cd4gt200_); 	  %var_d(n_dead_Agt6_cd4lt200_);  	%var_d(n_dead_Agt6_cd4gt200_);  
 
-%var_d(s_dead_undiag_m); 	 %var_d(s_dead_undiag_w);  
-%var_d(s_dead_undiag1519_);  %var_d(s_dead_undiag2024_);  %var_d(s_dead_undiag2529_);  %var_d(s_dead_undiag3034_);  %var_d(s_dead_undiag3539_);  
-%var_d(s_dead_undiag4044_);  %var_d(s_dead_undiag4549_);  %var_d(s_dead_undiag5054_);  %var_d(s_dead_undiag5559_);  %var_d(s_dead_undiag6064_);  
-%var_d(s_dead_undiag6569_);  %var_d(s_dead_undiag7074_);  %var_d(s_dead_undiag7579_);  %var_d(s_dead_undiag8084_);  
-%var_d(s_dead_undiag1519m);  %var_d(s_dead_undiag2024m);  %var_d(s_dead_undiag2529m);  %var_d(s_dead_undiag3034m);  %var_d(s_dead_undiag3539m);  
-%var_d(s_dead_undiag4044m);  %var_d(s_dead_undiag4549m);  %var_d(s_dead_undiag5054m);  %var_d(s_dead_undiag5559m);  %var_d(s_dead_undiag6064m);  
-%var_d(s_dead_undiag6569m);  %var_d(s_dead_undiag7074m);  %var_d(s_dead_undiag7579m);  %var_d(s_dead_undiag8084m);  
-%var_d(s_dead_undiag1519w);  %var_d(s_dead_undiag2024w);  %var_d(s_dead_undiag2529w);  %var_d(s_dead_undiag3034w);  %var_d(s_dead_undiag3539w);  
-%var_d(s_dead_undiag4044w);  %var_d(s_dead_undiag4549w);  %var_d(s_dead_undiag5054w);  %var_d(s_dead_undiag5559w);  %var_d(s_dead_undiag6064w);  
-%var_d(s_dead_undiag6569w);  %var_d(s_dead_undiag7074w);  %var_d(s_dead_undiag7579w);  %var_d(s_dead_undiag8084w);  
+%var_d(n_dead_undiag_m); 	 %var_d(n_dead_undiag_w);  
+%var_d(n_dead_undiag1519_);  %var_d(n_dead_undiag2024_);  %var_d(n_dead_undiag2529_);  %var_d(n_dead_undiag3034_);  %var_d(n_dead_undiag3539_);  
+%var_d(n_dead_undiag4044_);  %var_d(n_dead_undiag4549_);  %var_d(n_dead_undiag5054_);  %var_d(n_dead_undiag5559_);  %var_d(n_dead_undiag6064_);  
+%var_d(n_dead_undiag6569_);  %var_d(n_dead_undiag7074_);  %var_d(n_dead_undiag7579_);  %var_d(n_dead_undiag8084_);  
+%var_d(n_dead_undiag1519m);  %var_d(n_dead_undiag2024m);  %var_d(n_dead_undiag2529m);  %var_d(n_dead_undiag3034m);  %var_d(n_dead_undiag3539m);  
+%var_d(n_dead_undiag4044m);  %var_d(n_dead_undiag4549m);  %var_d(n_dead_undiag5054m);  %var_d(n_dead_undiag5559m);  %var_d(n_dead_undiag6064m);  
+%var_d(n_dead_undiag6569m);  %var_d(n_dead_undiag7074m);  %var_d(n_dead_undiag7579m);  %var_d(n_dead_undiag8084m);  
+%var_d(n_dead_undiag1519w);  %var_d(n_dead_undiag2024w);  %var_d(n_dead_undiag2529w);  %var_d(n_dead_undiag3034w);  %var_d(n_dead_undiag3539w);  
+%var_d(n_dead_undiag4044w);  %var_d(n_dead_undiag4549w);  %var_d(n_dead_undiag5054w);  %var_d(n_dead_undiag5559w);  %var_d(n_dead_undiag6064w);  
+%var_d(n_dead_undiag6569w);  %var_d(n_dead_undiag7074w);  %var_d(n_dead_undiag7579w);  %var_d(n_dead_undiag8084w);  
 
-%var_d(s_dead_diag_not_linked_m);  	  %var_d(s_dead_diag_not_linked_w);  
-%var_d(s_dead_diag_not_linked1519_);  %var_d(s_dead_diag_not_linked2024_);  %var_d(s_dead_diag_not_linked2529_);  %var_d(s_dead_diag_not_linked3034_);  %var_d(s_dead_diag_not_linked3539_);  
-%var_d(s_dead_diag_not_linked4044_);  %var_d(s_dead_diag_not_linked4549_);  %var_d(s_dead_diag_not_linked5054_);  %var_d(s_dead_diag_not_linked5559_);  %var_d(s_dead_diag_not_linked6064_);  
-%var_d(s_dead_diag_not_linked6569_);  %var_d(s_dead_diag_not_linked7074_);  %var_d(s_dead_diag_not_linked7579_);  %var_d(s_dead_diag_not_linked8084_);  
-%var_d(s_dead_diag_not_linked1519m);  %var_d(s_dead_diag_not_linked2024m);  %var_d(s_dead_diag_not_linked2529m);  %var_d(s_dead_diag_not_linked3034m);  %var_d(s_dead_diag_not_linked3539m);  
-%var_d(s_dead_diag_not_linked4044m);  %var_d(s_dead_diag_not_linked4549m);  %var_d(s_dead_diag_not_linked5054m);  %var_d(s_dead_diag_not_linked5559m);  %var_d(s_dead_diag_not_linked6064m);  
-%var_d(s_dead_diag_not_linked6569m);  %var_d(s_dead_diag_not_linked7074m);  %var_d(s_dead_diag_not_linked7579m);  %var_d(s_dead_diag_not_linked8084m);  
-%var_d(s_dead_diag_not_linked1519w);  %var_d(s_dead_diag_not_linked2024w);  %var_d(s_dead_diag_not_linked2529w);  %var_d(s_dead_diag_not_linked3034w);  %var_d(s_dead_diag_not_linked3539w);  
-%var_d(s_dead_diag_not_linked4044w);  %var_d(s_dead_diag_not_linked4549w);  %var_d(s_dead_diag_not_linked5054w);  %var_d(s_dead_diag_not_linked5559w);  %var_d(s_dead_diag_not_linked6064w);  
-%var_d(s_dead_diag_not_linked6569w);  %var_d(s_dead_diag_not_linked7074w);  %var_d(s_dead_diag_not_linked7579w);  %var_d(s_dead_diag_not_linked8084w);  
+%var_d(n_dead_diag_not_linked_m);  	  %var_d(n_dead_diag_not_linked_w);  
+%var_d(n_dead_diag_not_linked1519_);  %var_d(n_dead_diag_not_linked2024_);  %var_d(n_dead_diag_not_linked2529_);  %var_d(n_dead_diag_not_linked3034_);  %var_d(n_dead_diag_not_linked3539_);  
+%var_d(n_dead_diag_not_linked4044_);  %var_d(n_dead_diag_not_linked4549_);  %var_d(n_dead_diag_not_linked5054_);  %var_d(n_dead_diag_not_linked5559_);  %var_d(n_dead_diag_not_linked6064_);  
+%var_d(n_dead_diag_not_linked6569_);  %var_d(n_dead_diag_not_linked7074_);  %var_d(n_dead_diag_not_linked7579_);  %var_d(n_dead_diag_not_linked8084_);  
+%var_d(n_dead_diag_not_linked1519m);  %var_d(n_dead_diag_not_linked2024m);  %var_d(n_dead_diag_not_linked2529m);  %var_d(n_dead_diag_not_linked3034m);  %var_d(n_dead_diag_not_linked3539m);  
+%var_d(n_dead_diag_not_linked4044m);  %var_d(n_dead_diag_not_linked4549m);  %var_d(n_dead_diag_not_linked5054m);  %var_d(n_dead_diag_not_linked5559m);  %var_d(n_dead_diag_not_linked6064m);  
+%var_d(n_dead_diag_not_linked6569m);  %var_d(n_dead_diag_not_linked7074m);  %var_d(n_dead_diag_not_linked7579m);  %var_d(n_dead_diag_not_linked8084m);  
+%var_d(n_dead_diag_not_linked1519w);  %var_d(n_dead_diag_not_linked2024w);  %var_d(n_dead_diag_not_linked2529w);  %var_d(n_dead_diag_not_linked3034w);  %var_d(n_dead_diag_not_linked3539w);  
+%var_d(n_dead_diag_not_linked4044w);  %var_d(n_dead_diag_not_linked4549w);  %var_d(n_dead_diag_not_linked5054w);  %var_d(n_dead_diag_not_linked5559w);  %var_d(n_dead_diag_not_linked6064w);  
+%var_d(n_dead_diag_not_linked6569w);  %var_d(n_dead_diag_not_linked7074w);  %var_d(n_dead_diag_not_linked7579w);  %var_d(n_dead_diag_not_linked8084w);  
 
-%var_d(s_dead_Alt6_artcd4lt200_m);     %var_d(s_dead_Alt6_artcd4lt200_w);  
-%var_d(s_dead_Alt6_Acd4lt2001519_);  %var_d(s_dead_Alt6_Acd4lt2002024_);  %var_d(s_dead_Alt6_Acd4lt2002529_);  %var_d(s_dead_Alt6_Acd4lt2003034_);  %var_d(s_dead_Alt6_Acd4lt2003539_);  
-%var_d(s_dead_Alt6_Acd4lt2004044_);  %var_d(s_dead_Alt6_Acd4lt2004549_);  %var_d(s_dead_Alt6_Acd4lt2005054_);  %var_d(s_dead_Alt6_Acd4lt2005559_);  %var_d(s_dead_Alt6_Acd4lt2006064_);  
-%var_d(s_dead_Alt6_Acd4lt2006569_);  %var_d(s_dead_Alt6_Acd4lt2007074_);  %var_d(s_dead_Alt6_Acd4lt2007579_);  %var_d(s_dead_Alt6_Acd4lt2008084_);  
-%var_d(s_dead_Alt6_Acd4lt2001519m);  %var_d(s_dead_Alt6_Acd4lt2002024m);  %var_d(s_dead_Alt6_Acd4lt2002529m);  %var_d(s_dead_Alt6_Acd4lt2003034m);  %var_d(s_dead_Alt6_Acd4lt2003539m);  
-%var_d(s_dead_Alt6_Acd4lt2004044m);  %var_d(s_dead_Alt6_Acd4lt2004549m);  %var_d(s_dead_Alt6_Acd4lt2005054m);  %var_d(s_dead_Alt6_Acd4lt2005559m);  %var_d(s_dead_Alt6_Acd4lt2006064m);  
-%var_d(s_dead_Alt6_Acd4lt2006569m);  %var_d(s_dead_Alt6_Acd4lt2007074m);  %var_d(s_dead_Alt6_Acd4lt2007579m);  %var_d(s_dead_Alt6_Acd4lt2008084m);  
-%var_d(s_dead_Alt6_Acd4lt2001519w);  %var_d(s_dead_Alt6_Acd4lt2002024w);  %var_d(s_dead_Alt6_Acd4lt2002529w);  %var_d(s_dead_Alt6_Acd4lt2003034w);  %var_d(s_dead_Alt6_Acd4lt2003539w);  
-%var_d(s_dead_Alt6_Acd4lt2004044w);  %var_d(s_dead_Alt6_Acd4lt2004549w);  %var_d(s_dead_Alt6_Acd4lt2005054w);  %var_d(s_dead_Alt6_Acd4lt2005559w);  %var_d(s_dead_Alt6_Acd4lt2006064w);  
-%var_d(s_dead_Alt6_Acd4lt2006569w);  %var_d(s_dead_Alt6_Acd4lt2007074w);  %var_d(s_dead_Alt6_Acd4lt2007579w);  %var_d(s_dead_Alt6_Acd4lt2008084w);  
+%var_d(n_dead_Alt6_artcd4lt200_m);     %var_d(n_dead_Alt6_artcd4lt200_w);  
+%var_d(n_dead_Alt6_Acd4lt2001519_);  %var_d(n_dead_Alt6_Acd4lt2002024_);  %var_d(n_dead_Alt6_Acd4lt2002529_);  %var_d(n_dead_Alt6_Acd4lt2003034_);  %var_d(n_dead_Alt6_Acd4lt2003539_);  
+%var_d(n_dead_Alt6_Acd4lt2004044_);  %var_d(n_dead_Alt6_Acd4lt2004549_);  %var_d(n_dead_Alt6_Acd4lt2005054_);  %var_d(n_dead_Alt6_Acd4lt2005559_);  %var_d(n_dead_Alt6_Acd4lt2006064_);  
+%var_d(n_dead_Alt6_Acd4lt2006569_);  %var_d(n_dead_Alt6_Acd4lt2007074_);  %var_d(n_dead_Alt6_Acd4lt2007579_);  %var_d(n_dead_Alt6_Acd4lt2008084_);  
+%var_d(n_dead_Alt6_Acd4lt2001519m);  %var_d(n_dead_Alt6_Acd4lt2002024m);  %var_d(n_dead_Alt6_Acd4lt2002529m);  %var_d(n_dead_Alt6_Acd4lt2003034m);  %var_d(n_dead_Alt6_Acd4lt2003539m);  
+%var_d(n_dead_Alt6_Acd4lt2004044m);  %var_d(n_dead_Alt6_Acd4lt2004549m);  %var_d(n_dead_Alt6_Acd4lt2005054m);  %var_d(n_dead_Alt6_Acd4lt2005559m);  %var_d(n_dead_Alt6_Acd4lt2006064m);  
+%var_d(n_dead_Alt6_Acd4lt2006569m);  %var_d(n_dead_Alt6_Acd4lt2007074m);  %var_d(n_dead_Alt6_Acd4lt2007579m);  %var_d(n_dead_Alt6_Acd4lt2008084m);  
+%var_d(n_dead_Alt6_Acd4lt2001519w);  %var_d(n_dead_Alt6_Acd4lt2002024w);  %var_d(n_dead_Alt6_Acd4lt2002529w);  %var_d(n_dead_Alt6_Acd4lt2003034w);  %var_d(n_dead_Alt6_Acd4lt2003539w);  
+%var_d(n_dead_Alt6_Acd4lt2004044w);  %var_d(n_dead_Alt6_Acd4lt2004549w);  %var_d(n_dead_Alt6_Acd4lt2005054w);  %var_d(n_dead_Alt6_Acd4lt2005559w);  %var_d(n_dead_Alt6_Acd4lt2006064w);  
+%var_d(n_dead_Alt6_Acd4lt2006569w);  %var_d(n_dead_Alt6_Acd4lt2007074w);  %var_d(n_dead_Alt6_Acd4lt2007579w);  %var_d(n_dead_Alt6_Acd4lt2008084w);  
 
-%var_d(s_dead_Alt6_artcd4gt200_m);     %var_d(s_dead_Alt6_artcd4gt200_w);  
-%var_d(s_dead_Alt6_Acd4gt2001519_);  %var_d(s_dead_Alt6_Acd4gt2002024_);  %var_d(s_dead_Alt6_Acd4gt2002529_);  %var_d(s_dead_Alt6_Acd4gt2003034_);  %var_d(s_dead_Alt6_Acd4gt2003539_);  
-%var_d(s_dead_Alt6_Acd4gt2004044_);  %var_d(s_dead_Alt6_Acd4gt2004549_);  %var_d(s_dead_Alt6_Acd4gt2005054_);  %var_d(s_dead_Alt6_Acd4gt2005559_);  %var_d(s_dead_Alt6_Acd4gt2006064_);  
-%var_d(s_dead_Alt6_Acd4gt2006569_);  %var_d(s_dead_Alt6_Acd4gt2007074_);  %var_d(s_dead_Alt6_Acd4gt2007579_);  %var_d(s_dead_Alt6_Acd4gt2008084_);  
-%var_d(s_dead_Alt6_Acd4gt2001519m);  %var_d(s_dead_Alt6_Acd4gt2002024m);  %var_d(s_dead_Alt6_Acd4gt2002529m);  %var_d(s_dead_Alt6_Acd4gt2003034m);  %var_d(s_dead_Alt6_Acd4gt2003539m);  
-%var_d(s_dead_Alt6_Acd4gt2004044m);  %var_d(s_dead_Alt6_Acd4gt2004549m);  %var_d(s_dead_Alt6_Acd4gt2005054m);  %var_d(s_dead_Alt6_Acd4gt2005559m);  %var_d(s_dead_Alt6_Acd4gt2006064m);  
-%var_d(s_dead_Alt6_Acd4gt2006569m);  %var_d(s_dead_Alt6_Acd4gt2007074m);  %var_d(s_dead_Alt6_Acd4gt2007579m);  %var_d(s_dead_Alt6_Acd4gt2008084m);  
-%var_d(s_dead_Alt6_Acd4gt2001519w);  %var_d(s_dead_Alt6_Acd4gt2002024w);  %var_d(s_dead_Alt6_Acd4gt2002529w);  %var_d(s_dead_Alt6_Acd4gt2003034w);  %var_d(s_dead_Alt6_Acd4gt2003539w);  
-%var_d(s_dead_Alt6_Acd4gt2004044w);  %var_d(s_dead_Alt6_Acd4gt2004549w);  %var_d(s_dead_Alt6_Acd4gt2005054w);  %var_d(s_dead_Alt6_Acd4gt2005559w);  %var_d(s_dead_Alt6_Acd4gt2006064w);  
-%var_d(s_dead_Alt6_Acd4gt2006569w);  %var_d(s_dead_Alt6_Acd4gt2007074w);  %var_d(s_dead_Alt6_Acd4gt2007579w);  %var_d(s_dead_Alt6_Acd4gt2008084w);  
+%var_d(n_dead_Alt6_artcd4gt200_m);     %var_d(n_dead_Alt6_artcd4gt200_w);  
+%var_d(n_dead_Alt6_Acd4gt2001519_);  %var_d(n_dead_Alt6_Acd4gt2002024_);  %var_d(n_dead_Alt6_Acd4gt2002529_);  %var_d(n_dead_Alt6_Acd4gt2003034_);  %var_d(n_dead_Alt6_Acd4gt2003539_);  
+%var_d(n_dead_Alt6_Acd4gt2004044_);  %var_d(n_dead_Alt6_Acd4gt2004549_);  %var_d(n_dead_Alt6_Acd4gt2005054_);  %var_d(n_dead_Alt6_Acd4gt2005559_);  %var_d(n_dead_Alt6_Acd4gt2006064_);  
+%var_d(n_dead_Alt6_Acd4gt2006569_);  %var_d(n_dead_Alt6_Acd4gt2007074_);  %var_d(n_dead_Alt6_Acd4gt2007579_);  %var_d(n_dead_Alt6_Acd4gt2008084_);  
+%var_d(n_dead_Alt6_Acd4gt2001519m);  %var_d(n_dead_Alt6_Acd4gt2002024m);  %var_d(n_dead_Alt6_Acd4gt2002529m);  %var_d(n_dead_Alt6_Acd4gt2003034m);  %var_d(n_dead_Alt6_Acd4gt2003539m);  
+%var_d(n_dead_Alt6_Acd4gt2004044m);  %var_d(n_dead_Alt6_Acd4gt2004549m);  %var_d(n_dead_Alt6_Acd4gt2005054m);  %var_d(n_dead_Alt6_Acd4gt2005559m);  %var_d(n_dead_Alt6_Acd4gt2006064m);  
+%var_d(n_dead_Alt6_Acd4gt2006569m);  %var_d(n_dead_Alt6_Acd4gt2007074m);  %var_d(n_dead_Alt6_Acd4gt2007579m);  %var_d(n_dead_Alt6_Acd4gt2008084m);  
+%var_d(n_dead_Alt6_Acd4gt2001519w);  %var_d(n_dead_Alt6_Acd4gt2002024w);  %var_d(n_dead_Alt6_Acd4gt2002529w);  %var_d(n_dead_Alt6_Acd4gt2003034w);  %var_d(n_dead_Alt6_Acd4gt2003539w);  
+%var_d(n_dead_Alt6_Acd4gt2004044w);  %var_d(n_dead_Alt6_Acd4gt2004549w);  %var_d(n_dead_Alt6_Acd4gt2005054w);  %var_d(n_dead_Alt6_Acd4gt2005559w);  %var_d(n_dead_Alt6_Acd4gt2006064w);  
+%var_d(n_dead_Alt6_Acd4gt2006569w);  %var_d(n_dead_Alt6_Acd4gt2007074w);  %var_d(n_dead_Alt6_Acd4gt2007579w);  %var_d(n_dead_Alt6_Acd4gt2008084w);  
 
-%var_d(s_dead_I_Alt6_Rcd4lt200_m);  %var_d(s_dead_I_Alt6_Rcd4lt200_w);  
-%var_d(s_d_I_Alt6_Rcd4lt2001519_);  %var_d(s_d_I_Alt6_Rcd4lt2002024_);  %var_d(s_d_I_Alt6_Rcd4lt2002529_);  %var_d(s_d_I_Alt6_Rcd4lt2003034_);  %var_d(s_d_I_Alt6_Rcd4lt2003539_);  
-%var_d(s_d_I_Alt6_Rcd4lt2004044_);  %var_d(s_d_I_Alt6_Rcd4lt2004549_);  %var_d(s_d_I_Alt6_Rcd4lt2005054_);  %var_d(s_d_I_Alt6_Rcd4lt2005559_);   %var_d(s_d_I_Alt6_Rcd4lt2006064_);  
-%var_d(s_d_I_Alt6_Rcd4lt2006569_);  %var_d(s_d_I_Alt6_Rcd4lt2007074_);  %var_d(s_d_I_Alt6_Rcd4lt2007579_);  %var_d(s_d_I_Alt6_Rcd4lt2008084_);  
-%var_d(s_d_I_Alt6_Rcd4lt2001519m);  %var_d(s_d_I_Alt6_Rcd4lt2002024m);  %var_d(s_d_I_Alt6_Rcd4lt2002529m);  %var_d(s_d_I_Alt6_Rcd4lt2003034m);  %var_d(s_d_I_Alt6_Rcd4lt2003539m);  
-%var_d(s_d_I_Alt6_Rcd4lt2004044m);  %var_d(s_d_I_Alt6_Rcd4lt2004549m);  %var_d(s_d_I_Alt6_Rcd4lt2005054m);  %var_d(s_d_I_Alt6_Rcd4lt2005559m);   %var_d(s_d_I_Alt6_Rcd4lt2006064m);  
-%var_d(s_d_I_Alt6_Rcd4lt2006569m);  %var_d(s_d_I_Alt6_Rcd4lt2007074m);  %var_d(s_d_I_Alt6_Rcd4lt2007579m);  %var_d(s_d_I_Alt6_Rcd4lt2008084m);  
-%var_d(s_d_I_Alt6_Rcd4lt2001519w);  %var_d(s_d_I_Alt6_Rcd4lt2002024w);  %var_d(s_d_I_Alt6_Rcd4lt2002529w);  %var_d(s_d_I_Alt6_Rcd4lt2003034w);  %var_d(s_d_I_Alt6_Rcd4lt2003539w);  
-%var_d(s_d_I_Alt6_Rcd4lt2004044w);  %var_d(s_d_I_Alt6_Rcd4lt2004549w);  %var_d(s_d_I_Alt6_Rcd4lt2005054w);  %var_d(s_d_I_Alt6_Rcd4lt2005559w);   %var_d(s_d_I_Alt6_Rcd4lt2006064w);  
-%var_d(s_d_I_Alt6_Rcd4lt2006569w);  %var_d(s_d_I_Alt6_Rcd4lt2007074w);  %var_d(s_d_I_Alt6_Rcd4lt2007579w);  %var_d(s_d_I_Alt6_Rcd4lt2008084w);  
+%var_d(n_dead_I_Alt6_Rcd4lt200_m);  %var_d(n_dead_I_Alt6_Rcd4lt200_w);  
+%var_d(n_d_I_Alt6_Rcd4lt2001519_);  %var_d(n_d_I_Alt6_Rcd4lt2002024_);  %var_d(n_d_I_Alt6_Rcd4lt2002529_);  %var_d(n_d_I_Alt6_Rcd4lt2003034_);  %var_d(n_d_I_Alt6_Rcd4lt2003539_);  
+%var_d(n_d_I_Alt6_Rcd4lt2004044_);  %var_d(n_d_I_Alt6_Rcd4lt2004549_);  %var_d(n_d_I_Alt6_Rcd4lt2005054_);  %var_d(n_d_I_Alt6_Rcd4lt2005559_);   %var_d(n_d_I_Alt6_Rcd4lt2006064_);  
+%var_d(n_d_I_Alt6_Rcd4lt2006569_);  %var_d(n_d_I_Alt6_Rcd4lt2007074_);  %var_d(n_d_I_Alt6_Rcd4lt2007579_);  %var_d(n_d_I_Alt6_Rcd4lt2008084_);  
+%var_d(n_d_I_Alt6_Rcd4lt2001519m);  %var_d(n_d_I_Alt6_Rcd4lt2002024m);  %var_d(n_d_I_Alt6_Rcd4lt2002529m);  %var_d(n_d_I_Alt6_Rcd4lt2003034m);  %var_d(n_d_I_Alt6_Rcd4lt2003539m);  
+%var_d(n_d_I_Alt6_Rcd4lt2004044m);  %var_d(n_d_I_Alt6_Rcd4lt2004549m);  %var_d(n_d_I_Alt6_Rcd4lt2005054m);  %var_d(n_d_I_Alt6_Rcd4lt2005559m);   %var_d(n_d_I_Alt6_Rcd4lt2006064m);  
+%var_d(n_d_I_Alt6_Rcd4lt2006569m);  %var_d(n_d_I_Alt6_Rcd4lt2007074m);  %var_d(n_d_I_Alt6_Rcd4lt2007579m);  %var_d(n_d_I_Alt6_Rcd4lt2008084m);  
+%var_d(n_d_I_Alt6_Rcd4lt2001519w);  %var_d(n_d_I_Alt6_Rcd4lt2002024w);  %var_d(n_d_I_Alt6_Rcd4lt2002529w);  %var_d(n_d_I_Alt6_Rcd4lt2003034w);  %var_d(n_d_I_Alt6_Rcd4lt2003539w);  
+%var_d(n_d_I_Alt6_Rcd4lt2004044w);  %var_d(n_d_I_Alt6_Rcd4lt2004549w);  %var_d(n_d_I_Alt6_Rcd4lt2005054w);  %var_d(n_d_I_Alt6_Rcd4lt2005559w);   %var_d(n_d_I_Alt6_Rcd4lt2006064w);  
+%var_d(n_d_I_Alt6_Rcd4lt2006569w);  %var_d(n_d_I_Alt6_Rcd4lt2007074w);  %var_d(n_d_I_Alt6_Rcd4lt2007579w);  %var_d(n_d_I_Alt6_Rcd4lt2008084w);  
 
-%var_d(s_dead_I_Alt6_Rcd4gt200_m);  %var_d(s_dead_I_Alt6_Rcd4gt200_w);  
-%var_d(s_d_I_Alt6_Rcd4gt2001519_);  %var_d(s_d_I_Alt6_Rcd4gt2002024_);  %var_d(s_d_I_Alt6_Rcd4gt2002529_);  %var_d(s_d_I_Alt6_Rcd4gt2003034_);  %var_d(s_d_I_Alt6_Rcd4gt2003539_);  
-%var_d(s_d_I_Alt6_Rcd4gt2004044_);  %var_d(s_d_I_Alt6_Rcd4gt2004549_);  %var_d(s_d_I_Alt6_Rcd4gt2005054_);  %var_d(s_d_I_Alt6_Rcd4gt2005559_);   %var_d(s_d_I_Alt6_Rcd4gt2006064_);  
-%var_d(s_d_I_Alt6_Rcd4gt2006569_);  %var_d(s_d_I_Alt6_Rcd4gt2007074_);  %var_d(s_d_I_Alt6_Rcd4gt2007579_);  %var_d(s_d_I_Alt6_Rcd4gt2008084_);  
-%var_d(s_d_I_Alt6_Rcd4gt2001519m);  %var_d(s_d_I_Alt6_Rcd4gt2002024m);  %var_d(s_d_I_Alt6_Rcd4gt2002529m);  %var_d(s_d_I_Alt6_Rcd4gt2003034m);  %var_d(s_d_I_Alt6_Rcd4gt2003539m);  
-%var_d(s_d_I_Alt6_Rcd4gt2004044m);  %var_d(s_d_I_Alt6_Rcd4gt2004549m);  %var_d(s_d_I_Alt6_Rcd4gt2005054m);  %var_d(s_d_I_Alt6_Rcd4gt2005559m);   %var_d(s_d_I_Alt6_Rcd4gt2006064m);  
-%var_d(s_d_I_Alt6_Rcd4gt2006569m);  %var_d(s_d_I_Alt6_Rcd4gt2007074m);  %var_d(s_d_I_Alt6_Rcd4gt2007579m);  %var_d(s_d_I_Alt6_Rcd4gt2008084m);  
-%var_d(s_d_I_Alt6_Rcd4gt2001519w);  %var_d(s_d_I_Alt6_Rcd4gt2002024w);  %var_d(s_d_I_Alt6_Rcd4gt2002529w);  %var_d(s_d_I_Alt6_Rcd4gt2003034w);  %var_d(s_d_I_Alt6_Rcd4gt2003539w);  
-%var_d(s_d_I_Alt6_Rcd4gt2004044w);  %var_d(s_d_I_Alt6_Rcd4gt2004549w);  %var_d(s_d_I_Alt6_Rcd4gt2005054w);  %var_d(s_d_I_Alt6_Rcd4gt2005559w);   %var_d(s_d_I_Alt6_Rcd4gt2006064w);  
-%var_d(s_d_I_Alt6_Rcd4gt2006569w);  %var_d(s_d_I_Alt6_Rcd4gt2007074w);  %var_d(s_d_I_Alt6_Rcd4gt2007579w);  %var_d(s_d_I_Alt6_Rcd4gt2008084w);  
+%var_d(n_dead_I_Alt6_Rcd4gt200_m);  %var_d(n_dead_I_Alt6_Rcd4gt200_w);  
+%var_d(n_d_I_Alt6_Rcd4gt2001519_);  %var_d(n_d_I_Alt6_Rcd4gt2002024_);  %var_d(n_d_I_Alt6_Rcd4gt2002529_);  %var_d(n_d_I_Alt6_Rcd4gt2003034_);  %var_d(n_d_I_Alt6_Rcd4gt2003539_);  
+%var_d(n_d_I_Alt6_Rcd4gt2004044_);  %var_d(n_d_I_Alt6_Rcd4gt2004549_);  %var_d(n_d_I_Alt6_Rcd4gt2005054_);  %var_d(n_d_I_Alt6_Rcd4gt2005559_);   %var_d(n_d_I_Alt6_Rcd4gt2006064_);  
+%var_d(n_d_I_Alt6_Rcd4gt2006569_);  %var_d(n_d_I_Alt6_Rcd4gt2007074_);  %var_d(n_d_I_Alt6_Rcd4gt2007579_);  %var_d(n_d_I_Alt6_Rcd4gt2008084_);  
+%var_d(n_d_I_Alt6_Rcd4gt2001519m);  %var_d(n_d_I_Alt6_Rcd4gt2002024m);  %var_d(n_d_I_Alt6_Rcd4gt2002529m);  %var_d(n_d_I_Alt6_Rcd4gt2003034m);  %var_d(n_d_I_Alt6_Rcd4gt2003539m);  
+%var_d(n_d_I_Alt6_Rcd4gt2004044m);  %var_d(n_d_I_Alt6_Rcd4gt2004549m);  %var_d(n_d_I_Alt6_Rcd4gt2005054m);  %var_d(n_d_I_Alt6_Rcd4gt2005559m);   %var_d(n_d_I_Alt6_Rcd4gt2006064m);  
+%var_d(n_d_I_Alt6_Rcd4gt2006569m);  %var_d(n_d_I_Alt6_Rcd4gt2007074m);  %var_d(n_d_I_Alt6_Rcd4gt2007579m);  %var_d(n_d_I_Alt6_Rcd4gt2008084m);  
+%var_d(n_d_I_Alt6_Rcd4gt2001519w);  %var_d(n_d_I_Alt6_Rcd4gt2002024w);  %var_d(n_d_I_Alt6_Rcd4gt2002529w);  %var_d(n_d_I_Alt6_Rcd4gt2003034w);  %var_d(n_d_I_Alt6_Rcd4gt2003539w);  
+%var_d(n_d_I_Alt6_Rcd4gt2004044w);  %var_d(n_d_I_Alt6_Rcd4gt2004549w);  %var_d(n_d_I_Alt6_Rcd4gt2005054w);  %var_d(n_d_I_Alt6_Rcd4gt2005559w);   %var_d(n_d_I_Alt6_Rcd4gt2006064w);  
+%var_d(n_d_I_Alt6_Rcd4gt2006569w);  %var_d(n_d_I_Alt6_Rcd4gt2007074w);  %var_d(n_d_I_Alt6_Rcd4gt2007579w);  %var_d(n_d_I_Alt6_Rcd4gt2008084w);  
 
-%var_d(s_dead_A_vl1000_m);     %var_d(s_dead_A_vl1000_w);  
-%var_d(s_dead_A_vl10001519_);  %var_d(s_dead_A_vl10002024_);  %var_d(s_dead_A_vl10002529_);  %var_d(s_dead_A_vl10003034_);  %var_d(s_dead_A_vl10003539_);  
-%var_d(s_dead_A_vl10004044_);  %var_d(s_dead_A_vl10004549_);  %var_d(s_dead_A_vl10005054_);  %var_d(s_dead_A_vl10005559_);  %var_d(s_dead_A_vl10006064_);  
-%var_d(s_dead_A_vl10006569_);  %var_d(s_dead_A_vl10007074_);  %var_d(s_dead_A_vl10007579_);   %var_d(s_dead_A_vl10008084_);  
-%var_d(s_dead_A_vl10001519m);  %var_d(s_dead_A_vl10002024m);  %var_d(s_dead_A_vl10002529m);  %var_d(s_dead_A_vl10003034m);  %var_d(s_dead_A_vl10003539m);  
-%var_d(s_dead_A_vl10004044m);  %var_d(s_dead_A_vl10004549m);  %var_d(s_dead_A_vl10005054m);  %var_d(s_dead_A_vl10005559m);  %var_d(s_dead_A_vl10006064m);  
-%var_d(s_dead_A_vl10006569m);  %var_d(s_dead_A_vl10007074m);  %var_d(s_dead_A_vl10007579m);   %var_d(s_dead_A_vl10008084m);  
-%var_d(s_dead_A_vl10001519w);  %var_d(s_dead_A_vl10002024w);  %var_d(s_dead_A_vl10002529w);  %var_d(s_dead_A_vl10003034w);  %var_d(s_dead_A_vl10003539w);  
-%var_d(s_dead_A_vl10004044w);  %var_d(s_dead_A_vl10004549w);  %var_d(s_dead_A_vl10005054w);  %var_d(s_dead_A_vl10005559w);  %var_d(s_dead_A_vl10006064w);  
-%var_d(s_dead_A_vl10006569w);  %var_d(s_dead_A_vl10007074w);  %var_d(s_dead_A_vl10007579w);   %var_d(s_dead_A_vl10008084w);  
+%var_d(n_dead_A_vl1000_m);     %var_d(n_dead_A_vl1000_w);  
+%var_d(n_dead_A_vl10001519_);  %var_d(n_dead_A_vl10002024_);  %var_d(n_dead_A_vl10002529_);  %var_d(n_dead_A_vl10003034_);  %var_d(n_dead_A_vl10003539_);  
+%var_d(n_dead_A_vl10004044_);  %var_d(n_dead_A_vl10004549_);  %var_d(n_dead_A_vl10005054_);  %var_d(n_dead_A_vl10005559_);  %var_d(n_dead_A_vl10006064_);  
+%var_d(n_dead_A_vl10006569_);  %var_d(n_dead_A_vl10007074_);  %var_d(n_dead_A_vl10007579_);   %var_d(n_dead_A_vl10008084_);  
+%var_d(n_dead_A_vl10001519m);  %var_d(n_dead_A_vl10002024m);  %var_d(n_dead_A_vl10002529m);  %var_d(n_dead_A_vl10003034m);  %var_d(n_dead_A_vl10003539m);  
+%var_d(n_dead_A_vl10004044m);  %var_d(n_dead_A_vl10004549m);  %var_d(n_dead_A_vl10005054m);  %var_d(n_dead_A_vl10005559m);  %var_d(n_dead_A_vl10006064m);  
+%var_d(n_dead_A_vl10006569m);  %var_d(n_dead_A_vl10007074m);  %var_d(n_dead_A_vl10007579m);   %var_d(n_dead_A_vl10008084m);  
+%var_d(n_dead_A_vl10001519w);  %var_d(n_dead_A_vl10002024w);  %var_d(n_dead_A_vl10002529w);  %var_d(n_dead_A_vl10003034w);  %var_d(n_dead_A_vl10003539w);  
+%var_d(n_dead_A_vl10004044w);  %var_d(n_dead_A_vl10004549w);  %var_d(n_dead_A_vl10005054w);  %var_d(n_dead_A_vl10005559w);  %var_d(n_dead_A_vl10006064w);  
+%var_d(n_dead_A_vl10006569w);  %var_d(n_dead_A_vl10007074w);  %var_d(n_dead_A_vl10007579w);   %var_d(n_dead_A_vl10008084w);  
 
-%var_d(s_dead_A_vg1000_m); 	   %var_d(s_dead_A_vg1000_w);  
-%var_d(s_dead_A_vg10001519_);  %var_d(s_dead_A_vg10002024_);  %var_d(s_dead_A_vg10002529_);  %var_d(s_dead_A_vg10003034_);  %var_d(s_dead_A_vg10003539_);  
-%var_d(s_dead_A_vg10004044_);  %var_d(s_dead_A_vg10004549_);  %var_d(s_dead_A_vg10005054_);  %var_d(s_dead_A_vg10005559_);  %var_d(s_dead_A_vg10006064_);  
-%var_d(s_dead_A_vg10006569_);  %var_d(s_dead_A_vg10007074_);  %var_d(s_dead_A_vg10007579_);   %var_d(s_dead_A_vg10008084_);  
-%var_d(s_dead_A_vg10001519m);  %var_d(s_dead_A_vg10002024m);  %var_d(s_dead_A_vg10002529m);  %var_d(s_dead_A_vg10003034m);  %var_d(s_dead_A_vg10003539m);  
-%var_d(s_dead_A_vg10004044m);  %var_d(s_dead_A_vg10004549m);  %var_d(s_dead_A_vg10005054m);  %var_d(s_dead_A_vg10005559m);  %var_d(s_dead_A_vg10006064m);  
-%var_d(s_dead_A_vg10006569m);  %var_d(s_dead_A_vg10007074m);  %var_d(s_dead_A_vg10007579m);   %var_d(s_dead_A_vg10008084m);  
-%var_d(s_dead_A_vg10001519w);  %var_d(s_dead_A_vg10002024w);  %var_d(s_dead_A_vg10002529w);  %var_d(s_dead_A_vg10003034w);  %var_d(s_dead_A_vg10003539w);  
-%var_d(s_dead_A_vg10004044w);  %var_d(s_dead_A_vg10004549w);  %var_d(s_dead_A_vg10005054w);  %var_d(s_dead_A_vg10005559w);  %var_d(s_dead_A_vg10006064w);  
-%var_d(s_dead_A_vg10006569w);  %var_d(s_dead_A_vg10007074w);  %var_d(s_dead_A_vg10007579w);   %var_d(s_dead_A_vg10008084w);  
+%var_d(n_dead_A_vg1000_m); 	   %var_d(n_dead_A_vg1000_w);  
+%var_d(n_dead_A_vg10001519_);  %var_d(n_dead_A_vg10002024_);  %var_d(n_dead_A_vg10002529_);  %var_d(n_dead_A_vg10003034_);  %var_d(n_dead_A_vg10003539_);  
+%var_d(n_dead_A_vg10004044_);  %var_d(n_dead_A_vg10004549_);  %var_d(n_dead_A_vg10005054_);  %var_d(n_dead_A_vg10005559_);  %var_d(n_dead_A_vg10006064_);  
+%var_d(n_dead_A_vg10006569_);  %var_d(n_dead_A_vg10007074_);  %var_d(n_dead_A_vg10007579_);   %var_d(n_dead_A_vg10008084_);  
+%var_d(n_dead_A_vg10001519m);  %var_d(n_dead_A_vg10002024m);  %var_d(n_dead_A_vg10002529m);  %var_d(n_dead_A_vg10003034m);  %var_d(n_dead_A_vg10003539m);  
+%var_d(n_dead_A_vg10004044m);  %var_d(n_dead_A_vg10004549m);  %var_d(n_dead_A_vg10005054m);  %var_d(n_dead_A_vg10005559m);  %var_d(n_dead_A_vg10006064m);  
+%var_d(n_dead_A_vg10006569m);  %var_d(n_dead_A_vg10007074m);  %var_d(n_dead_A_vg10007579m);   %var_d(n_dead_A_vg10008084m);  
+%var_d(n_dead_A_vg10001519w);  %var_d(n_dead_A_vg10002024w);  %var_d(n_dead_A_vg10002529w);  %var_d(n_dead_A_vg10003034w);  %var_d(n_dead_A_vg10003539w);  
+%var_d(n_dead_A_vg10004044w);  %var_d(n_dead_A_vg10004549w);  %var_d(n_dead_A_vg10005054w);  %var_d(n_dead_A_vg10005559w);  %var_d(n_dead_A_vg10006064w);  
+%var_d(n_dead_A_vg10006569w);  %var_d(n_dead_A_vg10007074w);  %var_d(n_dead_A_vg10007579w);   %var_d(n_dead_A_vg10008084w);  
 
-%var_d(s_dead_Alt6_vl1000_m); 	  %var_d(s_dead_Alt6_vl1000_w);  
-%var_d(s_dead_Alt6_vl10001519_);  %var_d(s_dead_Alt6_vl10002024_);  %var_d(s_dead_Alt6_vl10002529_);  %var_d(s_dead_Alt6_vl10003034_);  %var_d(s_dead_Alt6_vl10003539_);  
-%var_d(s_dead_Alt6_vl10004044_);  %var_d(s_dead_Alt6_vl10004549_);  %var_d(s_dead_Alt6_vl10005054_);  %var_d(s_dead_Alt6_vl10005559_);  %var_d(s_dead_Alt6_vl10006064_);  
-%var_d(s_dead_Alt6_vl10006569_);  %var_d(s_dead_Alt6_vl10007074_);  %var_d(s_dead_Alt6_vl10007579_);   %var_d(s_dead_Alt6_vl10008084_);  
-%var_d(s_dead_Alt6_vl10001519m);  %var_d(s_dead_Alt6_vl10002024m);  %var_d(s_dead_Alt6_vl10002529m);  %var_d(s_dead_Alt6_vl10003034m);  %var_d(s_dead_Alt6_vl10003539m);  
-%var_d(s_dead_Alt6_vl10004044m);  %var_d(s_dead_Alt6_vl10004549m);  %var_d(s_dead_Alt6_vl10005054m);  %var_d(s_dead_Alt6_vl10005559m);  %var_d(s_dead_Alt6_vl10006064m);  
-%var_d(s_dead_Alt6_vl10006569m);  %var_d(s_dead_Alt6_vl10007074m);  %var_d(s_dead_Alt6_vl10007579m);   %var_d(s_dead_Alt6_vl10008084m);  
-%var_d(s_dead_Alt6_vl10001519w);  %var_d(s_dead_Alt6_vl10002024w);  %var_d(s_dead_Alt6_vl10002529w);  %var_d(s_dead_Alt6_vl10003034w);  %var_d(s_dead_Alt6_vl10003539w);  
-%var_d(s_dead_Alt6_vl10004044w);  %var_d(s_dead_Alt6_vl10004549w);  %var_d(s_dead_Alt6_vl10005054w);  %var_d(s_dead_Alt6_vl10005559w);  %var_d(s_dead_Alt6_vl10006064w);  
-%var_d(s_dead_Alt6_vl10006569w);  %var_d(s_dead_Alt6_vl10007074w);  %var_d(s_dead_Alt6_vl10007579w);   %var_d(s_dead_Alt6_vl10008084w);  
+%var_d(n_dead_Alt6_vl1000_m); 	  %var_d(n_dead_Alt6_vl1000_w);  
+%var_d(n_dead_Alt6_vl10001519_);  %var_d(n_dead_Alt6_vl10002024_);  %var_d(n_dead_Alt6_vl10002529_);  %var_d(n_dead_Alt6_vl10003034_);  %var_d(n_dead_Alt6_vl10003539_);  
+%var_d(n_dead_Alt6_vl10004044_);  %var_d(n_dead_Alt6_vl10004549_);  %var_d(n_dead_Alt6_vl10005054_);  %var_d(n_dead_Alt6_vl10005559_);  %var_d(n_dead_Alt6_vl10006064_);  
+%var_d(n_dead_Alt6_vl10006569_);  %var_d(n_dead_Alt6_vl10007074_);  %var_d(n_dead_Alt6_vl10007579_);   %var_d(n_dead_Alt6_vl10008084_);  
+%var_d(n_dead_Alt6_vl10001519m);  %var_d(n_dead_Alt6_vl10002024m);  %var_d(n_dead_Alt6_vl10002529m);  %var_d(n_dead_Alt6_vl10003034m);  %var_d(n_dead_Alt6_vl10003539m);  
+%var_d(n_dead_Alt6_vl10004044m);  %var_d(n_dead_Alt6_vl10004549m);  %var_d(n_dead_Alt6_vl10005054m);  %var_d(n_dead_Alt6_vl10005559m);  %var_d(n_dead_Alt6_vl10006064m);  
+%var_d(n_dead_Alt6_vl10006569m);  %var_d(n_dead_Alt6_vl10007074m);  %var_d(n_dead_Alt6_vl10007579m);   %var_d(n_dead_Alt6_vl10008084m);  
+%var_d(n_dead_Alt6_vl10001519w);  %var_d(n_dead_Alt6_vl10002024w);  %var_d(n_dead_Alt6_vl10002529w);  %var_d(n_dead_Alt6_vl10003034w);  %var_d(n_dead_Alt6_vl10003539w);  
+%var_d(n_dead_Alt6_vl10004044w);  %var_d(n_dead_Alt6_vl10004549w);  %var_d(n_dead_Alt6_vl10005054w);  %var_d(n_dead_Alt6_vl10005559w);  %var_d(n_dead_Alt6_vl10006064w);  
+%var_d(n_dead_Alt6_vl10006569w);  %var_d(n_dead_Alt6_vl10007074w);  %var_d(n_dead_Alt6_vl10007579w);   %var_d(n_dead_Alt6_vl10008084w);  
 
-%var_d(s_dead_Alt6_vg1000_m);  	  %var_d(s_dead_Alt6_vg1000_w);  
-%var_d(s_dead_Alt6_vg10001519_);  %var_d(s_dead_Alt6_vg10002024_);  %var_d(s_dead_Alt6_vg10002529_);  %var_d(s_dead_Alt6_vg10003034_);  %var_d(s_dead_Alt6_vg10003539_);  
-%var_d(s_dead_Alt6_vg10004044_);  %var_d(s_dead_Alt6_vg10004549_);  %var_d(s_dead_Alt6_vg10005054_);  %var_d(s_dead_Alt6_vg10005559_);  %var_d(s_dead_Alt6_vg10006064_);  
-%var_d(s_dead_Alt6_vg10006569_);  %var_d(s_dead_Alt6_vg10007074_);  %var_d(s_dead_Alt6_vg10007579_);   %var_d(s_dead_Alt6_vg10008084_);  
-%var_d(s_dead_Alt6_vg10001519m);  %var_d(s_dead_Alt6_vg10002024m);  %var_d(s_dead_Alt6_vg10002529m);  %var_d(s_dead_Alt6_vg10003034m);  %var_d(s_dead_Alt6_vg10003539m);  
-%var_d(s_dead_Alt6_vg10004044m);  %var_d(s_dead_Alt6_vg10004549m);  %var_d(s_dead_Alt6_vg10005054m);  %var_d(s_dead_Alt6_vg10005559m);  %var_d(s_dead_Alt6_vg10006064m);  
-%var_d(s_dead_Alt6_vg10006569m);  %var_d(s_dead_Alt6_vg10007074m);  %var_d(s_dead_Alt6_vg10007579m);   %var_d(s_dead_Alt6_vg10008084m);  
-%var_d(s_dead_Alt6_vg10001519w);  %var_d(s_dead_Alt6_vg10002024w);  %var_d(s_dead_Alt6_vg10002529w);  %var_d(s_dead_Alt6_vg10003034w);  %var_d(s_dead_Alt6_vg10003539w);  
-%var_d(s_dead_Alt6_vg10004044w);  %var_d(s_dead_Alt6_vg10004549w);  %var_d(s_dead_Alt6_vg10005054w);  %var_d(s_dead_Alt6_vg10005559w);  %var_d(s_dead_Alt6_vg10006064w);  
-%var_d(s_dead_Alt6_vg10006569w);  %var_d(s_dead_Alt6_vg10007074w);  %var_d(s_dead_Alt6_vg10007579w);   %var_d(s_dead_Alt6_vg10008084w);  
+%var_d(n_dead_Alt6_vg1000_m);  	  %var_d(n_dead_Alt6_vg1000_w);  
+%var_d(n_dead_Alt6_vg10001519_);  %var_d(n_dead_Alt6_vg10002024_);  %var_d(n_dead_Alt6_vg10002529_);  %var_d(n_dead_Alt6_vg10003034_);  %var_d(n_dead_Alt6_vg10003539_);  
+%var_d(n_dead_Alt6_vg10004044_);  %var_d(n_dead_Alt6_vg10004549_);  %var_d(n_dead_Alt6_vg10005054_);  %var_d(n_dead_Alt6_vg10005559_);  %var_d(n_dead_Alt6_vg10006064_);  
+%var_d(n_dead_Alt6_vg10006569_);  %var_d(n_dead_Alt6_vg10007074_);  %var_d(n_dead_Alt6_vg10007579_);   %var_d(n_dead_Alt6_vg10008084_);  
+%var_d(n_dead_Alt6_vg10001519m);  %var_d(n_dead_Alt6_vg10002024m);  %var_d(n_dead_Alt6_vg10002529m);  %var_d(n_dead_Alt6_vg10003034m);  %var_d(n_dead_Alt6_vg10003539m);  
+%var_d(n_dead_Alt6_vg10004044m);  %var_d(n_dead_Alt6_vg10004549m);  %var_d(n_dead_Alt6_vg10005054m);  %var_d(n_dead_Alt6_vg10005559m);  %var_d(n_dead_Alt6_vg10006064m);  
+%var_d(n_dead_Alt6_vg10006569m);  %var_d(n_dead_Alt6_vg10007074m);  %var_d(n_dead_Alt6_vg10007579m);   %var_d(n_dead_Alt6_vg10008084m);  
+%var_d(n_dead_Alt6_vg10001519w);  %var_d(n_dead_Alt6_vg10002024w);  %var_d(n_dead_Alt6_vg10002529w);  %var_d(n_dead_Alt6_vg10003034w);  %var_d(n_dead_Alt6_vg10003539w);  
+%var_d(n_dead_Alt6_vg10004044w);  %var_d(n_dead_Alt6_vg10004549w);  %var_d(n_dead_Alt6_vg10005054w);  %var_d(n_dead_Alt6_vg10005559w);  %var_d(n_dead_Alt6_vg10006064w);  
+%var_d(n_dead_Alt6_vg10006569w);  %var_d(n_dead_Alt6_vg10007074w);  %var_d(n_dead_Alt6_vg10007579w);   %var_d(n_dead_Alt6_vg10008084w);  
 
-%var_d(s_dead_Agt6_vl1000_m);  	  %var_d(s_dead_Agt6_vl1000_w);  
-%var_d(s_dead_Agt6_vl10001519_);  %var_d(s_dead_Agt6_vl10002024_);  %var_d(s_dead_Agt6_vl10002529_);  %var_d(s_dead_Agt6_vl10003034_);  %var_d(s_dead_Agt6_vl10003539_);  
-%var_d(s_dead_Agt6_vl10004044_);  %var_d(s_dead_Agt6_vl10004549_);  %var_d(s_dead_Agt6_vl10005054_);  %var_d(s_dead_Agt6_vl10005559_);  %var_d(s_dead_Agt6_vl10006064_);  
-%var_d(s_dead_Agt6_vl10006569_);  %var_d(s_dead_Agt6_vl10007074_);  %var_d(s_dead_Agt6_vl10007579_);   %var_d(s_dead_Agt6_vl10008084_);  
-%var_d(s_dead_Agt6_vl10001519m);  %var_d(s_dead_Agt6_vl10002024m);  %var_d(s_dead_Agt6_vl10002529m);  %var_d(s_dead_Agt6_vl10003034m);  %var_d(s_dead_Agt6_vl10003539m);  
-%var_d(s_dead_Agt6_vl10004044m);  %var_d(s_dead_Agt6_vl10004549m);  %var_d(s_dead_Agt6_vl10005054m);  %var_d(s_dead_Agt6_vl10005559m);  %var_d(s_dead_Agt6_vl10006064m);  
-%var_d(s_dead_Agt6_vl10006569m);  %var_d(s_dead_Agt6_vl10007074m);  %var_d(s_dead_Agt6_vl10007579m);   %var_d(s_dead_Agt6_vl10008084m);  
-%var_d(s_dead_Agt6_vl10001519w);  %var_d(s_dead_Agt6_vl10002024w);  %var_d(s_dead_Agt6_vl10002529w);  %var_d(s_dead_Agt6_vl10003034w);  %var_d(s_dead_Agt6_vl10003539w);  
-%var_d(s_dead_Agt6_vl10004044w);  %var_d(s_dead_Agt6_vl10004549w);  %var_d(s_dead_Agt6_vl10005054w);  %var_d(s_dead_Agt6_vl10005559w);  %var_d(s_dead_Agt6_vl10006064w);  
-%var_d(s_dead_Agt6_vl10006569w);  %var_d(s_dead_Agt6_vl10007074w);  %var_d(s_dead_Agt6_vl10007579w);   %var_d(s_dead_Agt6_vl10008084w);  
+%var_d(n_dead_Agt6_vl1000_m);  	  %var_d(n_dead_Agt6_vl1000_w);  
+%var_d(n_dead_Agt6_vl10001519_);  %var_d(n_dead_Agt6_vl10002024_);  %var_d(n_dead_Agt6_vl10002529_);  %var_d(n_dead_Agt6_vl10003034_);  %var_d(n_dead_Agt6_vl10003539_);  
+%var_d(n_dead_Agt6_vl10004044_);  %var_d(n_dead_Agt6_vl10004549_);  %var_d(n_dead_Agt6_vl10005054_);  %var_d(n_dead_Agt6_vl10005559_);  %var_d(n_dead_Agt6_vl10006064_);  
+%var_d(n_dead_Agt6_vl10006569_);  %var_d(n_dead_Agt6_vl10007074_);  %var_d(n_dead_Agt6_vl10007579_);   %var_d(n_dead_Agt6_vl10008084_);  
+%var_d(n_dead_Agt6_vl10001519m);  %var_d(n_dead_Agt6_vl10002024m);  %var_d(n_dead_Agt6_vl10002529m);  %var_d(n_dead_Agt6_vl10003034m);  %var_d(n_dead_Agt6_vl10003539m);  
+%var_d(n_dead_Agt6_vl10004044m);  %var_d(n_dead_Agt6_vl10004549m);  %var_d(n_dead_Agt6_vl10005054m);  %var_d(n_dead_Agt6_vl10005559m);  %var_d(n_dead_Agt6_vl10006064m);  
+%var_d(n_dead_Agt6_vl10006569m);  %var_d(n_dead_Agt6_vl10007074m);  %var_d(n_dead_Agt6_vl10007579m);   %var_d(n_dead_Agt6_vl10008084m);  
+%var_d(n_dead_Agt6_vl10001519w);  %var_d(n_dead_Agt6_vl10002024w);  %var_d(n_dead_Agt6_vl10002529w);  %var_d(n_dead_Agt6_vl10003034w);  %var_d(n_dead_Agt6_vl10003539w);  
+%var_d(n_dead_Agt6_vl10004044w);  %var_d(n_dead_Agt6_vl10004549w);  %var_d(n_dead_Agt6_vl10005054w);  %var_d(n_dead_Agt6_vl10005559w);  %var_d(n_dead_Agt6_vl10006064w);  
+%var_d(n_dead_Agt6_vl10006569w);  %var_d(n_dead_Agt6_vl10007074w);  %var_d(n_dead_Agt6_vl10007579w);   %var_d(n_dead_Agt6_vl10008084w);  
 
-%var_d(s_dead_Agt6_vg1000_m);  	  %var_d(s_dead_Agt6_vg1000_w);  
-%var_d(s_dead_Agt6_vg10001519_);  %var_d(s_dead_Agt6_vg10002024_);  %var_d(s_dead_Agt6_vg10002529_);  %var_d(s_dead_Agt6_vg10003034_);  %var_d(s_dead_Agt6_vg10003539_);  
-%var_d(s_dead_Agt6_vg10004044_);  %var_d(s_dead_Agt6_vg10004549_);  %var_d(s_dead_Agt6_vg10005054_);  %var_d(s_dead_Agt6_vg10005559_);  %var_d(s_dead_Agt6_vg10006064_);  
-%var_d(s_dead_Agt6_vg10006569_);  %var_d(s_dead_Agt6_vg10007074_);  %var_d(s_dead_Agt6_vg10007579_);   %var_d(s_dead_Agt6_vg10008084_);  
-%var_d(s_dead_Agt6_vg10001519m);  %var_d(s_dead_Agt6_vg10002024m);  %var_d(s_dead_Agt6_vg10002529m);  %var_d(s_dead_Agt6_vg10003034m);  %var_d(s_dead_Agt6_vg10003539m);  
-%var_d(s_dead_Agt6_vg10004044m);  %var_d(s_dead_Agt6_vg10004549m);  %var_d(s_dead_Agt6_vg10005054m);  %var_d(s_dead_Agt6_vg10005559m);  %var_d(s_dead_Agt6_vg10006064m);  
-%var_d(s_dead_Agt6_vg10006569m);  %var_d(s_dead_Agt6_vg10007074m);  %var_d(s_dead_Agt6_vg10007579m);   %var_d(s_dead_Agt6_vg10008084m);  
-%var_d(s_dead_Agt6_vg10001519w);  %var_d(s_dead_Agt6_vg10002024w);  %var_d(s_dead_Agt6_vg10002529w);  %var_d(s_dead_Agt6_vg10003034w);  %var_d(s_dead_Agt6_vg10003539w);  
-%var_d(s_dead_Agt6_vg10004044w);  %var_d(s_dead_Agt6_vg10004549w);  %var_d(s_dead_Agt6_vg10005054w);  %var_d(s_dead_Agt6_vg10005559w);  %var_d(s_dead_Agt6_vg10006064w);  
-%var_d(s_dead_Agt6_vg10006569w);  %var_d(s_dead_Agt6_vg10007074w);  %var_d(s_dead_Agt6_vg10007579w);   %var_d(s_dead_Agt6_vg10008084w);  
+%var_d(n_dead_Agt6_vg1000_m);  	  %var_d(n_dead_Agt6_vg1000_w);  
+%var_d(n_dead_Agt6_vg10001519_);  %var_d(n_dead_Agt6_vg10002024_);  %var_d(n_dead_Agt6_vg10002529_);  %var_d(n_dead_Agt6_vg10003034_);  %var_d(n_dead_Agt6_vg10003539_);  
+%var_d(n_dead_Agt6_vg10004044_);  %var_d(n_dead_Agt6_vg10004549_);  %var_d(n_dead_Agt6_vg10005054_);  %var_d(n_dead_Agt6_vg10005559_);  %var_d(n_dead_Agt6_vg10006064_);  
+%var_d(n_dead_Agt6_vg10006569_);  %var_d(n_dead_Agt6_vg10007074_);  %var_d(n_dead_Agt6_vg10007579_);   %var_d(n_dead_Agt6_vg10008084_);  
+%var_d(n_dead_Agt6_vg10001519m);  %var_d(n_dead_Agt6_vg10002024m);  %var_d(n_dead_Agt6_vg10002529m);  %var_d(n_dead_Agt6_vg10003034m);  %var_d(n_dead_Agt6_vg10003539m);  
+%var_d(n_dead_Agt6_vg10004044m);  %var_d(n_dead_Agt6_vg10004549m);  %var_d(n_dead_Agt6_vg10005054m);  %var_d(n_dead_Agt6_vg10005559m);  %var_d(n_dead_Agt6_vg10006064m);  
+%var_d(n_dead_Agt6_vg10006569m);  %var_d(n_dead_Agt6_vg10007074m);  %var_d(n_dead_Agt6_vg10007579m);   %var_d(n_dead_Agt6_vg10008084m);  
+%var_d(n_dead_Agt6_vg10001519w);  %var_d(n_dead_Agt6_vg10002024w);  %var_d(n_dead_Agt6_vg10002529w);  %var_d(n_dead_Agt6_vg10003034w);  %var_d(n_dead_Agt6_vg10003539w);  
+%var_d(n_dead_Agt6_vg10004044w);  %var_d(n_dead_Agt6_vg10004549w);  %var_d(n_dead_Agt6_vg10005054w);  %var_d(n_dead_Agt6_vg10005559w);  %var_d(n_dead_Agt6_vg10006064w);  
+%var_d(n_dead_Agt6_vg10006569w);  %var_d(n_dead_Agt6_vg10007074w);  %var_d(n_dead_Agt6_vg10007579w);   %var_d(n_dead_Agt6_vg10008084w);  
 
-%var_d(s_dead_int_lost_m);     %var_d(s_dead_int_lost_w);  
-%var_d(s_dead_int_lost1519_);  %var_d(s_dead_int_lost2024_);  %var_d(s_dead_int_lost2529_);  %var_d(s_dead_int_lost3034_);  %var_d(s_dead_int_lost3539_);  
-%var_d(s_dead_int_lost4044_);  %var_d(s_dead_int_lost4549_);  %var_d(s_dead_int_lost5054_);  %var_d(s_dead_int_lost5559_);  %var_d(s_dead_int_lost6064_);  
-%var_d(s_dead_int_lost6569_);  %var_d(s_dead_int_lost7074_);  %var_d(s_dead_int_lost7579_);  %var_d(s_dead_int_lost8084_);  
-%var_d(s_dead_int_lost1519m);  %var_d(s_dead_int_lost2024m);  %var_d(s_dead_int_lost2529m);  %var_d(s_dead_int_lost3034m);  %var_d(s_dead_int_lost3539m);  
-%var_d(s_dead_int_lost4044m);  %var_d(s_dead_int_lost4549m);  %var_d(s_dead_int_lost5054m);  %var_d(s_dead_int_lost5559m);  %var_d(s_dead_int_lost6064m);  
-%var_d(s_dead_int_lost6569m);  %var_d(s_dead_int_lost7074m);  %var_d(s_dead_int_lost7579m);  %var_d(s_dead_int_lost8084m);  
-%var_d(s_dead_int_lost1519w);  %var_d(s_dead_int_lost2024w);  %var_d(s_dead_int_lost2529w);  %var_d(s_dead_int_lost3034w);  %var_d(s_dead_int_lost3539w);  
-%var_d(s_dead_int_lost4044w);  %var_d(s_dead_int_lost4549w);  %var_d(s_dead_int_lost5054w);  %var_d(s_dead_int_lost5559w);  %var_d(s_dead_int_lost6064w);  
-%var_d(s_dead_int_lost6569w);  %var_d(s_dead_int_lost7074w);  %var_d(s_dead_int_lost7579w);  %var_d(s_dead_int_lost8084w);  
+%var_d(n_dead_int_lost_m);     %var_d(n_dead_int_lost_w);  
+%var_d(n_dead_int_lost1519_);  %var_d(n_dead_int_lost2024_);  %var_d(n_dead_int_lost2529_);  %var_d(n_dead_int_lost3034_);  %var_d(n_dead_int_lost3539_);  
+%var_d(n_dead_int_lost4044_);  %var_d(n_dead_int_lost4549_);  %var_d(n_dead_int_lost5054_);  %var_d(n_dead_int_lost5559_);  %var_d(n_dead_int_lost6064_);  
+%var_d(n_dead_int_lost6569_);  %var_d(n_dead_int_lost7074_);  %var_d(n_dead_int_lost7579_);  %var_d(n_dead_int_lost8084_);  
+%var_d(n_dead_int_lost1519m);  %var_d(n_dead_int_lost2024m);  %var_d(n_dead_int_lost2529m);  %var_d(n_dead_int_lost3034m);  %var_d(n_dead_int_lost3539m);  
+%var_d(n_dead_int_lost4044m);  %var_d(n_dead_int_lost4549m);  %var_d(n_dead_int_lost5054m);  %var_d(n_dead_int_lost5559m);  %var_d(n_dead_int_lost6064m);  
+%var_d(n_dead_int_lost6569m);  %var_d(n_dead_int_lost7074m);  %var_d(n_dead_int_lost7579m);  %var_d(n_dead_int_lost8084m);  
+%var_d(n_dead_int_lost1519w);  %var_d(n_dead_int_lost2024w);  %var_d(n_dead_int_lost2529w);  %var_d(n_dead_int_lost3034w);  %var_d(n_dead_int_lost3539w);  
+%var_d(n_dead_int_lost4044w);  %var_d(n_dead_int_lost4549w);  %var_d(n_dead_int_lost5054w);  %var_d(n_dead_int_lost5559w);  %var_d(n_dead_int_lost6064w);  
+%var_d(n_dead_int_lost6569w);  %var_d(n_dead_int_lost7074w);  %var_d(n_dead_int_lost7579w);  %var_d(n_dead_int_lost8084w);  
 
-%var_d(s_dead_1stint_lost_m);  	  %var_d(s_dead_1stint_lost_w);  
-%var_d(s_dead_1stint_lost1519_);  %var_d(s_dead_1stint_lost2024_);  %var_d(s_dead_1stint_lost2529_);  %var_d(s_dead_1stint_lost3034_);  %var_d(s_dead_1stint_lost3539_);  
-%var_d(s_dead_1stint_lost4044_);  %var_d(s_dead_1stint_lost4549_);  %var_d(s_dead_1stint_lost5054_);  %var_d(s_dead_1stint_lost5559_);  %var_d(s_dead_1stint_lost6064_);  
-%var_d(s_dead_1stint_lost6569_);  %var_d(s_dead_1stint_lost7074_);  %var_d(s_dead_1stint_lost7579_);  %var_d(s_dead_1stint_lost8084_);  
-%var_d(s_dead_1stint_lost1519m);  %var_d(s_dead_1stint_lost2024m);  %var_d(s_dead_1stint_lost2529m);  %var_d(s_dead_1stint_lost3034m);  %var_d(s_dead_1stint_lost3539m);  
-%var_d(s_dead_1stint_lost4044m);  %var_d(s_dead_1stint_lost4549m);  %var_d(s_dead_1stint_lost5054m);  %var_d(s_dead_1stint_lost5559m);  %var_d(s_dead_1stint_lost6064m);  
-%var_d(s_dead_1stint_lost6569m);  %var_d(s_dead_1stint_lost7074m);  %var_d(s_dead_1stint_lost7579m);  %var_d(s_dead_1stint_lost8084m);  
-%var_d(s_dead_1stint_lost1519w);  %var_d(s_dead_1stint_lost2024w);  %var_d(s_dead_1stint_lost2529w);  %var_d(s_dead_1stint_lost3034w);  %var_d(s_dead_1stint_lost3539w);  
-%var_d(s_dead_1stint_lost4044w);  %var_d(s_dead_1stint_lost4549w);  %var_d(s_dead_1stint_lost5054w);  %var_d(s_dead_1stint_lost5559w);  %var_d(s_dead_1stint_lost6064w);  
-%var_d(s_dead_1stint_lost6569w);  %var_d(s_dead_1stint_lost7074w);  %var_d(s_dead_1stint_lost7579w);  %var_d(s_dead_1stint_lost8084w);  
+%var_d(n_dead_1stint_lost_m);  	  %var_d(n_dead_1stint_lost_w);  
+%var_d(n_dead_1stint_lost1519_);  %var_d(n_dead_1stint_lost2024_);  %var_d(n_dead_1stint_lost2529_);  %var_d(n_dead_1stint_lost3034_);  %var_d(n_dead_1stint_lost3539_);  
+%var_d(n_dead_1stint_lost4044_);  %var_d(n_dead_1stint_lost4549_);  %var_d(n_dead_1stint_lost5054_);  %var_d(n_dead_1stint_lost5559_);  %var_d(n_dead_1stint_lost6064_);  
+%var_d(n_dead_1stint_lost6569_);  %var_d(n_dead_1stint_lost7074_);  %var_d(n_dead_1stint_lost7579_);  %var_d(n_dead_1stint_lost8084_);  
+%var_d(n_dead_1stint_lost1519m);  %var_d(n_dead_1stint_lost2024m);  %var_d(n_dead_1stint_lost2529m);  %var_d(n_dead_1stint_lost3034m);  %var_d(n_dead_1stint_lost3539m);  
+%var_d(n_dead_1stint_lost4044m);  %var_d(n_dead_1stint_lost4549m);  %var_d(n_dead_1stint_lost5054m);  %var_d(n_dead_1stint_lost5559m);  %var_d(n_dead_1stint_lost6064m);  
+%var_d(n_dead_1stint_lost6569m);  %var_d(n_dead_1stint_lost7074m);  %var_d(n_dead_1stint_lost7579m);  %var_d(n_dead_1stint_lost8084m);  
+%var_d(n_dead_1stint_lost1519w);  %var_d(n_dead_1stint_lost2024w);  %var_d(n_dead_1stint_lost2529w);  %var_d(n_dead_1stint_lost3034w);  %var_d(n_dead_1stint_lost3539w);  
+%var_d(n_dead_1stint_lost4044w);  %var_d(n_dead_1stint_lost4549w);  %var_d(n_dead_1stint_lost5054w);  %var_d(n_dead_1stint_lost5559w);  %var_d(n_dead_1stint_lost6064w);  
+%var_d(n_dead_1stint_lost6569w);  %var_d(n_dead_1stint_lost7074w);  %var_d(n_dead_1stint_lost7579w);  %var_d(n_dead_1stint_lost8084w);  
 
-%var_d(s_dead_subintlt6_lost_m);  	 %var_d(s_dead_subintlt6_lost_w);  
-%var_d(s_dead_subintlt6_lost1519_);  %var_d(s_dead_subintlt6_lost2024_);  %var_d(s_dead_subintlt6_lost2529_);  %var_d(s_dead_subintlt6_lost3034_);  %var_d(s_dead_subintlt6_lost3539_);  
-%var_d(s_dead_subintlt6_lost4044_);  %var_d(s_dead_subintlt6_lost4549_);  %var_d(s_dead_subintlt6_lost5054_);  %var_d(s_dead_subintlt6_lost5559_);  %var_d(s_dead_subintlt6_lost6064_);  
-%var_d(s_dead_subintlt6_lost6569_);  %var_d(s_dead_subintlt6_lost7074_);  %var_d(s_dead_subintlt6_lost7579_);  %var_d(s_dead_subintlt6_lost8084_);  
-%var_d(s_dead_subintlt6_lost1519m);  %var_d(s_dead_subintlt6_lost2024m);  %var_d(s_dead_subintlt6_lost2529m);  %var_d(s_dead_subintlt6_lost3034m);  %var_d(s_dead_subintlt6_lost3539m);  
-%var_d(s_dead_subintlt6_lost4044m);  %var_d(s_dead_subintlt6_lost4549m);  %var_d(s_dead_subintlt6_lost5054m);  %var_d(s_dead_subintlt6_lost5559m);  %var_d(s_dead_subintlt6_lost6064m);  
-%var_d(s_dead_subintlt6_lost6569m);  %var_d(s_dead_subintlt6_lost7074m);  %var_d(s_dead_subintlt6_lost7579m);  %var_d(s_dead_subintlt6_lost8084m);  
-%var_d(s_dead_subintlt6_lost1519w);  %var_d(s_dead_subintlt6_lost2024w);  %var_d(s_dead_subintlt6_lost2529w);  %var_d(s_dead_subintlt6_lost3034w);  %var_d(s_dead_subintlt6_lost3539w);  
-%var_d(s_dead_subintlt6_lost4044w);  %var_d(s_dead_subintlt6_lost4549w);  %var_d(s_dead_subintlt6_lost5054w);  %var_d(s_dead_subintlt6_lost5559w);  %var_d(s_dead_subintlt6_lost6064w);  
-%var_d(s_dead_subintlt6_lost6569w);  %var_d(s_dead_subintlt6_lost7074w);  %var_d(s_dead_subintlt6_lost7579w);  %var_d(s_dead_subintlt6_lost8084w);  
+%var_d(n_dead_subintlt6_lost_m);  	 %var_d(n_dead_subintlt6_lost_w);  
+%var_d(n_dead_subintlt6_lost1519_);  %var_d(n_dead_subintlt6_lost2024_);  %var_d(n_dead_subintlt6_lost2529_);  %var_d(n_dead_subintlt6_lost3034_);  %var_d(n_dead_subintlt6_lost3539_);  
+%var_d(n_dead_subintlt6_lost4044_);  %var_d(n_dead_subintlt6_lost4549_);  %var_d(n_dead_subintlt6_lost5054_);  %var_d(n_dead_subintlt6_lost5559_);  %var_d(n_dead_subintlt6_lost6064_);  
+%var_d(n_dead_subintlt6_lost6569_);  %var_d(n_dead_subintlt6_lost7074_);  %var_d(n_dead_subintlt6_lost7579_);  %var_d(n_dead_subintlt6_lost8084_);  
+%var_d(n_dead_subintlt6_lost1519m);  %var_d(n_dead_subintlt6_lost2024m);  %var_d(n_dead_subintlt6_lost2529m);  %var_d(n_dead_subintlt6_lost3034m);  %var_d(n_dead_subintlt6_lost3539m);  
+%var_d(n_dead_subintlt6_lost4044m);  %var_d(n_dead_subintlt6_lost4549m);  %var_d(n_dead_subintlt6_lost5054m);  %var_d(n_dead_subintlt6_lost5559m);  %var_d(n_dead_subintlt6_lost6064m);  
+%var_d(n_dead_subintlt6_lost6569m);  %var_d(n_dead_subintlt6_lost7074m);  %var_d(n_dead_subintlt6_lost7579m);  %var_d(n_dead_subintlt6_lost8084m);  
+%var_d(n_dead_subintlt6_lost1519w);  %var_d(n_dead_subintlt6_lost2024w);  %var_d(n_dead_subintlt6_lost2529w);  %var_d(n_dead_subintlt6_lost3034w);  %var_d(n_dead_subintlt6_lost3539w);  
+%var_d(n_dead_subintlt6_lost4044w);  %var_d(n_dead_subintlt6_lost4549w);  %var_d(n_dead_subintlt6_lost5054w);  %var_d(n_dead_subintlt6_lost5559w);  %var_d(n_dead_subintlt6_lost6064w);  
+%var_d(n_dead_subintlt6_lost6569w);  %var_d(n_dead_subintlt6_lost7074w);  %var_d(n_dead_subintlt6_lost7579w);  %var_d(n_dead_subintlt6_lost8084w);  
 
-%var_d(s_dead_subintgt6_lost_m);  	 %var_d(s_dead_subintgt6_lost_w);  
-%var_d(s_dead_subintgt6_lost1519_);  %var_d(s_dead_subintgt6_lost2024_);  %var_d(s_dead_subintgt6_lost2529_);  %var_d(s_dead_subintgt6_lost3034_);  %var_d(s_dead_subintgt6_lost3539_);  
-%var_d(s_dead_subintgt6_lost4044_);  %var_d(s_dead_subintgt6_lost4549_);  %var_d(s_dead_subintgt6_lost5054_);  %var_d(s_dead_subintgt6_lost5559_);  %var_d(s_dead_subintgt6_lost6064_);  
-%var_d(s_dead_subintgt6_lost6569_);  %var_d(s_dead_subintgt6_lost7074_);  %var_d(s_dead_subintgt6_lost7579_);  %var_d(s_dead_subintgt6_lost8084_);  
-%var_d(s_dead_subintgt6_lost1519m);  %var_d(s_dead_subintgt6_lost2024m);  %var_d(s_dead_subintgt6_lost2529m);  %var_d(s_dead_subintgt6_lost3034m);  %var_d(s_dead_subintgt6_lost3539m);  
-%var_d(s_dead_subintgt6_lost4044m);  %var_d(s_dead_subintgt6_lost4549m);  %var_d(s_dead_subintgt6_lost5054m);  %var_d(s_dead_subintgt6_lost5559m);  %var_d(s_dead_subintgt6_lost6064m);  
-%var_d(s_dead_subintgt6_lost6569m);  %var_d(s_dead_subintgt6_lost7074m);  %var_d(s_dead_subintgt6_lost7579m);  %var_d(s_dead_subintgt6_lost8084m);  
-%var_d(s_dead_subintgt6_lost1519w);  %var_d(s_dead_subintgt6_lost2024w);  %var_d(s_dead_subintgt6_lost2529w);  %var_d(s_dead_subintgt6_lost3034w);  %var_d(s_dead_subintgt6_lost3539w);  
-%var_d(s_dead_subintgt6_lost4044w);  %var_d(s_dead_subintgt6_lost4549w);  %var_d(s_dead_subintgt6_lost5054w);  %var_d(s_dead_subintgt6_lost5559w);  %var_d(s_dead_subintgt6_lost6064w);  
-%var_d(s_dead_subintgt6_lost6569w);  %var_d(s_dead_subintgt6_lost7074w);  %var_d(s_dead_subintgt6_lost7579w);  %var_d(s_dead_subintgt6_lost8084w);  
+%var_d(n_dead_subintgt6_lost_m);  	 %var_d(n_dead_subintgt6_lost_w);  
+%var_d(n_dead_subintgt6_lost1519_);  %var_d(n_dead_subintgt6_lost2024_);  %var_d(n_dead_subintgt6_lost2529_);  %var_d(n_dead_subintgt6_lost3034_);  %var_d(n_dead_subintgt6_lost3539_);  
+%var_d(n_dead_subintgt6_lost4044_);  %var_d(n_dead_subintgt6_lost4549_);  %var_d(n_dead_subintgt6_lost5054_);  %var_d(n_dead_subintgt6_lost5559_);  %var_d(n_dead_subintgt6_lost6064_);  
+%var_d(n_dead_subintgt6_lost6569_);  %var_d(n_dead_subintgt6_lost7074_);  %var_d(n_dead_subintgt6_lost7579_);  %var_d(n_dead_subintgt6_lost8084_);  
+%var_d(n_dead_subintgt6_lost1519m);  %var_d(n_dead_subintgt6_lost2024m);  %var_d(n_dead_subintgt6_lost2529m);  %var_d(n_dead_subintgt6_lost3034m);  %var_d(n_dead_subintgt6_lost3539m);  
+%var_d(n_dead_subintgt6_lost4044m);  %var_d(n_dead_subintgt6_lost4549m);  %var_d(n_dead_subintgt6_lost5054m);  %var_d(n_dead_subintgt6_lost5559m);  %var_d(n_dead_subintgt6_lost6064m);  
+%var_d(n_dead_subintgt6_lost6569m);  %var_d(n_dead_subintgt6_lost7074m);  %var_d(n_dead_subintgt6_lost7579m);  %var_d(n_dead_subintgt6_lost8084m);  
+%var_d(n_dead_subintgt6_lost1519w);  %var_d(n_dead_subintgt6_lost2024w);  %var_d(n_dead_subintgt6_lost2529w);  %var_d(n_dead_subintgt6_lost3034w);  %var_d(n_dead_subintgt6_lost3539w);  
+%var_d(n_dead_subintgt6_lost4044w);  %var_d(n_dead_subintgt6_lost4549w);  %var_d(n_dead_subintgt6_lost5054w);  %var_d(n_dead_subintgt6_lost5559w);  %var_d(n_dead_subintgt6_lost6064w);  
+%var_d(n_dead_subintgt6_lost6569w);  %var_d(n_dead_subintgt6_lost7074w);  %var_d(n_dead_subintgt6_lost7579w);  %var_d(n_dead_subintgt6_lost8084w);  
 
-%var_d(s_dead_A_cd4lt200_m);  	 %var_d(s_dead_A_cd4lt200_w);  
-%var_d(s_dead_A_cd4lt2001519_);  %var_d(s_dead_A_cd4lt2002024_);  %var_d(s_dead_A_cd4lt2002529_);  %var_d(s_dead_A_cd4lt2003034_);  %var_d(s_dead_A_cd4lt2003539_);  
-%var_d(s_dead_A_cd4lt2004044_);  %var_d(s_dead_A_cd4lt2004549_);  %var_d(s_dead_A_cd4lt2005054_);  %var_d(s_dead_A_cd4lt2005559_);  %var_d(s_dead_A_cd4lt2006064_);  
-%var_d(s_dead_A_cd4lt2006569_);  %var_d(s_dead_A_cd4lt2007074_);  %var_d(s_dead_A_cd4lt2007579_);  %var_d(s_dead_A_cd4lt2008084_);  
-%var_d(s_dead_A_cd4lt2001519m);  %var_d(s_dead_A_cd4lt2002024m);  %var_d(s_dead_A_cd4lt2002529m);  %var_d(s_dead_A_cd4lt2003034m);  %var_d(s_dead_A_cd4lt2003539m);  
-%var_d(s_dead_A_cd4lt2004044m);  %var_d(s_dead_A_cd4lt2004549m);  %var_d(s_dead_A_cd4lt2005054m);  %var_d(s_dead_A_cd4lt2005559m);  %var_d(s_dead_A_cd4lt2006064m);  
-%var_d(s_dead_A_cd4lt2006569m);  %var_d(s_dead_A_cd4lt2007074m);  %var_d(s_dead_A_cd4lt2007579m);  %var_d(s_dead_A_cd4lt2008084m);  
-%var_d(s_dead_A_cd4lt2001519w);  %var_d(s_dead_A_cd4lt2002024w);  %var_d(s_dead_A_cd4lt2002529w);  %var_d(s_dead_A_cd4lt2003034w);  %var_d(s_dead_A_cd4lt2003539w);  
-%var_d(s_dead_A_cd4lt2004044w);  %var_d(s_dead_A_cd4lt2004549w);  %var_d(s_dead_A_cd4lt2005054w);  %var_d(s_dead_A_cd4lt2005559w);  %var_d(s_dead_A_cd4lt2006064w);  
-%var_d(s_dead_A_cd4lt2006569w);  %var_d(s_dead_A_cd4lt2007074w);  %var_d(s_dead_A_cd4lt2007579w);  %var_d(s_dead_A_cd4lt2008084w);  
+%var_d(n_dead_A_cd4lt200_m);  	 %var_d(n_dead_A_cd4lt200_w);  
+%var_d(n_dead_A_cd4lt2001519_);  %var_d(n_dead_A_cd4lt2002024_);  %var_d(n_dead_A_cd4lt2002529_);  %var_d(n_dead_A_cd4lt2003034_);  %var_d(n_dead_A_cd4lt2003539_);  
+%var_d(n_dead_A_cd4lt2004044_);  %var_d(n_dead_A_cd4lt2004549_);  %var_d(n_dead_A_cd4lt2005054_);  %var_d(n_dead_A_cd4lt2005559_);  %var_d(n_dead_A_cd4lt2006064_);  
+%var_d(n_dead_A_cd4lt2006569_);  %var_d(n_dead_A_cd4lt2007074_);  %var_d(n_dead_A_cd4lt2007579_);  %var_d(n_dead_A_cd4lt2008084_);  
+%var_d(n_dead_A_cd4lt2001519m);  %var_d(n_dead_A_cd4lt2002024m);  %var_d(n_dead_A_cd4lt2002529m);  %var_d(n_dead_A_cd4lt2003034m);  %var_d(n_dead_A_cd4lt2003539m);  
+%var_d(n_dead_A_cd4lt2004044m);  %var_d(n_dead_A_cd4lt2004549m);  %var_d(n_dead_A_cd4lt2005054m);  %var_d(n_dead_A_cd4lt2005559m);  %var_d(n_dead_A_cd4lt2006064m);  
+%var_d(n_dead_A_cd4lt2006569m);  %var_d(n_dead_A_cd4lt2007074m);  %var_d(n_dead_A_cd4lt2007579m);  %var_d(n_dead_A_cd4lt2008084m);  
+%var_d(n_dead_A_cd4lt2001519w);  %var_d(n_dead_A_cd4lt2002024w);  %var_d(n_dead_A_cd4lt2002529w);  %var_d(n_dead_A_cd4lt2003034w);  %var_d(n_dead_A_cd4lt2003539w);  
+%var_d(n_dead_A_cd4lt2004044w);  %var_d(n_dead_A_cd4lt2004549w);  %var_d(n_dead_A_cd4lt2005054w);  %var_d(n_dead_A_cd4lt2005559w);  %var_d(n_dead_A_cd4lt2006064w);  
+%var_d(n_dead_A_cd4lt2006569w);  %var_d(n_dead_A_cd4lt2007074w);  %var_d(n_dead_A_cd4lt2007579w);  %var_d(n_dead_A_cd4lt2008084w);  
 
-%var_d(s_dead_A_cd4gt200_m);  	 %var_d(s_dead_A_cd4gt200_w);  
-%var_d(s_dead_A_cd4gt2001519_);  %var_d(s_dead_A_cd4gt2002024_);  %var_d(s_dead_A_cd4gt2002529_);  %var_d(s_dead_A_cd4gt2003034_);  %var_d(s_dead_A_cd4gt2003539_);  
-%var_d(s_dead_A_cd4gt2004044_);  %var_d(s_dead_A_cd4gt2004549_);  %var_d(s_dead_A_cd4gt2005054_);  %var_d(s_dead_A_cd4gt2005559_);  %var_d(s_dead_A_cd4gt2006064_);  
-%var_d(s_dead_A_cd4gt2006569_);  %var_d(s_dead_A_cd4gt2007074_);  %var_d(s_dead_A_cd4gt2007579_);  %var_d(s_dead_A_cd4gt2008084_);  
-%var_d(s_dead_A_cd4gt2001519m);  %var_d(s_dead_A_cd4gt2002024m);  %var_d(s_dead_A_cd4gt2002529m);  %var_d(s_dead_A_cd4gt2003034m);  %var_d(s_dead_A_cd4gt2003539m);  
-%var_d(s_dead_A_cd4gt2004044m);  %var_d(s_dead_A_cd4gt2004549m);  %var_d(s_dead_A_cd4gt2005054m);  %var_d(s_dead_A_cd4gt2005559m);  %var_d(s_dead_A_cd4gt2006064m);  
-%var_d(s_dead_A_cd4gt2006569m);  %var_d(s_dead_A_cd4gt2007074m);  %var_d(s_dead_A_cd4gt2007579m);  %var_d(s_dead_A_cd4gt2008084m);  
-%var_d(s_dead_A_cd4gt2001519w);  %var_d(s_dead_A_cd4gt2002024w);  %var_d(s_dead_A_cd4gt2002529w);  %var_d(s_dead_A_cd4gt2003034w);  %var_d(s_dead_A_cd4gt2003539w);  
-%var_d(s_dead_A_cd4gt2004044w);  %var_d(s_dead_A_cd4gt2004549w);  %var_d(s_dead_A_cd4gt2005054w);  %var_d(s_dead_A_cd4gt2005559w);  %var_d(s_dead_A_cd4gt2006064w);  
-%var_d(s_dead_A_cd4gt2006569w);  %var_d(s_dead_A_cd4gt2007074w);  %var_d(s_dead_A_cd4gt2007579w);  %var_d(s_dead_A_cd4gt2008084w);  
+%var_d(n_dead_A_cd4gt200_m);  	 %var_d(n_dead_A_cd4gt200_w);  
+%var_d(n_dead_A_cd4gt2001519_);  %var_d(n_dead_A_cd4gt2002024_);  %var_d(n_dead_A_cd4gt2002529_);  %var_d(n_dead_A_cd4gt2003034_);  %var_d(n_dead_A_cd4gt2003539_);  
+%var_d(n_dead_A_cd4gt2004044_);  %var_d(n_dead_A_cd4gt2004549_);  %var_d(n_dead_A_cd4gt2005054_);  %var_d(n_dead_A_cd4gt2005559_);  %var_d(n_dead_A_cd4gt2006064_);  
+%var_d(n_dead_A_cd4gt2006569_);  %var_d(n_dead_A_cd4gt2007074_);  %var_d(n_dead_A_cd4gt2007579_);  %var_d(n_dead_A_cd4gt2008084_);  
+%var_d(n_dead_A_cd4gt2001519m);  %var_d(n_dead_A_cd4gt2002024m);  %var_d(n_dead_A_cd4gt2002529m);  %var_d(n_dead_A_cd4gt2003034m);  %var_d(n_dead_A_cd4gt2003539m);  
+%var_d(n_dead_A_cd4gt2004044m);  %var_d(n_dead_A_cd4gt2004549m);  %var_d(n_dead_A_cd4gt2005054m);  %var_d(n_dead_A_cd4gt2005559m);  %var_d(n_dead_A_cd4gt2006064m);  
+%var_d(n_dead_A_cd4gt2006569m);  %var_d(n_dead_A_cd4gt2007074m);  %var_d(n_dead_A_cd4gt2007579m);  %var_d(n_dead_A_cd4gt2008084m);  
+%var_d(n_dead_A_cd4gt2001519w);  %var_d(n_dead_A_cd4gt2002024w);  %var_d(n_dead_A_cd4gt2002529w);  %var_d(n_dead_A_cd4gt2003034w);  %var_d(n_dead_A_cd4gt2003539w);  
+%var_d(n_dead_A_cd4gt2004044w);  %var_d(n_dead_A_cd4gt2004549w);  %var_d(n_dead_A_cd4gt2005054w);  %var_d(n_dead_A_cd4gt2005559w);  %var_d(n_dead_A_cd4gt2006064w);  
+%var_d(n_dead_A_cd4gt2006569w);  %var_d(n_dead_A_cd4gt2007074w);  %var_d(n_dead_A_cd4gt2007579w);  %var_d(n_dead_A_cd4gt2008084w);  
 
-%var_d(s_dead_Alt6_cd4lt200_m);  	%var_d(s_dead_Alt6_cd4lt200_w);  
-%var_d(s_dead_Alt6_cd4lt2001519_);  %var_d(s_dead_Alt6_cd4lt2002024_);  %var_d(s_dead_Alt6_cd4lt2002529_);  %var_d(s_dead_Alt6_cd4lt2003034_);  %var_d(s_dead_Alt6_cd4lt2003539_);  
-%var_d(s_dead_Alt6_cd4lt2004044_);  %var_d(s_dead_Alt6_cd4lt2004549_);  %var_d(s_dead_Alt6_cd4lt2005054_);  %var_d(s_dead_Alt6_cd4lt2005559_);  %var_d(s_dead_Alt6_cd4lt2006064_);  
-%var_d(s_dead_Alt6_cd4lt2006569_);  %var_d(s_dead_Alt6_cd4lt2007074_);  %var_d(s_dead_Alt6_cd4lt2007579_);  %var_d(s_dead_Alt6_cd4lt2008084_);  
-%var_d(s_dead_Alt6_cd4lt2001519m);  %var_d(s_dead_Alt6_cd4lt2002024m);  %var_d(s_dead_Alt6_cd4lt2002529m);  %var_d(s_dead_Alt6_cd4lt2003034m);  %var_d(s_dead_Alt6_cd4lt2003539m);  
-%var_d(s_dead_Alt6_cd4lt2004044m);  %var_d(s_dead_Alt6_cd4lt2004549m);  %var_d(s_dead_Alt6_cd4lt2005054m);  %var_d(s_dead_Alt6_cd4lt2005559m);  %var_d(s_dead_Alt6_cd4lt2006064m);  
-%var_d(s_dead_Alt6_cd4lt2006569m);  %var_d(s_dead_Alt6_cd4lt2007074m);  %var_d(s_dead_Alt6_cd4lt2007579m);  %var_d(s_dead_Alt6_cd4lt2008084m);  
-%var_d(s_dead_Alt6_cd4lt2001519w);  %var_d(s_dead_Alt6_cd4lt2002024w);  %var_d(s_dead_Alt6_cd4lt2002529w);  %var_d(s_dead_Alt6_cd4lt2003034w);  %var_d(s_dead_Alt6_cd4lt2003539w);  
-%var_d(s_dead_Alt6_cd4lt2004044w);  %var_d(s_dead_Alt6_cd4lt2004549w);  %var_d(s_dead_Alt6_cd4lt2005054w);  %var_d(s_dead_Alt6_cd4lt2005559w);  %var_d(s_dead_Alt6_cd4lt2006064w);  
-%var_d(s_dead_Alt6_cd4lt2006569w);  %var_d(s_dead_Alt6_cd4lt2007074w);  %var_d(s_dead_Alt6_cd4lt2007579w);  %var_d(s_dead_Alt6_cd4lt2008084w);  
+%var_d(n_dead_Alt6_cd4lt200_m);  	%var_d(n_dead_Alt6_cd4lt200_w);  
+%var_d(n_dead_Alt6_cd4lt2001519_);  %var_d(n_dead_Alt6_cd4lt2002024_);  %var_d(n_dead_Alt6_cd4lt2002529_);  %var_d(n_dead_Alt6_cd4lt2003034_);  %var_d(n_dead_Alt6_cd4lt2003539_);  
+%var_d(n_dead_Alt6_cd4lt2004044_);  %var_d(n_dead_Alt6_cd4lt2004549_);  %var_d(n_dead_Alt6_cd4lt2005054_);  %var_d(n_dead_Alt6_cd4lt2005559_);  %var_d(n_dead_Alt6_cd4lt2006064_);  
+%var_d(n_dead_Alt6_cd4lt2006569_);  %var_d(n_dead_Alt6_cd4lt2007074_);  %var_d(n_dead_Alt6_cd4lt2007579_);  %var_d(n_dead_Alt6_cd4lt2008084_);  
+%var_d(n_dead_Alt6_cd4lt2001519m);  %var_d(n_dead_Alt6_cd4lt2002024m);  %var_d(n_dead_Alt6_cd4lt2002529m);  %var_d(n_dead_Alt6_cd4lt2003034m);  %var_d(n_dead_Alt6_cd4lt2003539m);  
+%var_d(n_dead_Alt6_cd4lt2004044m);  %var_d(n_dead_Alt6_cd4lt2004549m);  %var_d(n_dead_Alt6_cd4lt2005054m);  %var_d(n_dead_Alt6_cd4lt2005559m);  %var_d(n_dead_Alt6_cd4lt2006064m);  
+%var_d(n_dead_Alt6_cd4lt2006569m);  %var_d(n_dead_Alt6_cd4lt2007074m);  %var_d(n_dead_Alt6_cd4lt2007579m);  %var_d(n_dead_Alt6_cd4lt2008084m);  
+%var_d(n_dead_Alt6_cd4lt2001519w);  %var_d(n_dead_Alt6_cd4lt2002024w);  %var_d(n_dead_Alt6_cd4lt2002529w);  %var_d(n_dead_Alt6_cd4lt2003034w);  %var_d(n_dead_Alt6_cd4lt2003539w);  
+%var_d(n_dead_Alt6_cd4lt2004044w);  %var_d(n_dead_Alt6_cd4lt2004549w);  %var_d(n_dead_Alt6_cd4lt2005054w);  %var_d(n_dead_Alt6_cd4lt2005559w);  %var_d(n_dead_Alt6_cd4lt2006064w);  
+%var_d(n_dead_Alt6_cd4lt2006569w);  %var_d(n_dead_Alt6_cd4lt2007074w);  %var_d(n_dead_Alt6_cd4lt2007579w);  %var_d(n_dead_Alt6_cd4lt2008084w);  
 
-%var_d(s_dead_Alt6_cd4gt200_m);  	%var_d(s_dead_Alt6_cd4gt200_w);  
-%var_d(s_dead_Alt6_cd4gt2001519_);  %var_d(s_dead_Alt6_cd4gt2002024_);  %var_d(s_dead_Alt6_cd4gt2002529_);  %var_d(s_dead_Alt6_cd4gt2003034_);  %var_d(s_dead_Alt6_cd4gt2003539_);  
-%var_d(s_dead_Alt6_cd4gt2004044_);  %var_d(s_dead_Alt6_cd4gt2004549_);  %var_d(s_dead_Alt6_cd4gt2005054_);  %var_d(s_dead_Alt6_cd4gt2005559_);  %var_d(s_dead_Alt6_cd4gt2006064_);  
-%var_d(s_dead_Alt6_cd4gt2006569_);  %var_d(s_dead_Alt6_cd4gt2007074_);  %var_d(s_dead_Alt6_cd4gt2007579_);  %var_d(s_dead_Alt6_cd4gt2008084_);  
-%var_d(s_dead_Alt6_cd4gt2001519m);  %var_d(s_dead_Alt6_cd4gt2002024m);  %var_d(s_dead_Alt6_cd4gt2002529m);  %var_d(s_dead_Alt6_cd4gt2003034m);  %var_d(s_dead_Alt6_cd4gt2003539m);  
-%var_d(s_dead_Alt6_cd4gt2004044m);  %var_d(s_dead_Alt6_cd4gt2004549m);  %var_d(s_dead_Alt6_cd4gt2005054m);  %var_d(s_dead_Alt6_cd4gt2005559m);  %var_d(s_dead_Alt6_cd4gt2006064m);  
-%var_d(s_dead_Alt6_cd4gt2006569m);  %var_d(s_dead_Alt6_cd4gt2007074m);  %var_d(s_dead_Alt6_cd4gt2007579m);  %var_d(s_dead_Alt6_cd4gt2008084m);  
-%var_d(s_dead_Alt6_cd4gt2001519w);  %var_d(s_dead_Alt6_cd4gt2002024w);  %var_d(s_dead_Alt6_cd4gt2002529w);  %var_d(s_dead_Alt6_cd4gt2003034w);  %var_d(s_dead_Alt6_cd4gt2003539w);  
-%var_d(s_dead_Alt6_cd4gt2004044w);  %var_d(s_dead_Alt6_cd4gt2004549w);  %var_d(s_dead_Alt6_cd4gt2005054w);  %var_d(s_dead_Alt6_cd4gt2005559w);  %var_d(s_dead_Alt6_cd4gt2006064w);  
-%var_d(s_dead_Alt6_cd4gt2006569w);  %var_d(s_dead_Alt6_cd4gt2007074w);  %var_d(s_dead_Alt6_cd4gt2007579w);  %var_d(s_dead_Alt6_cd4gt2008084w);  
+%var_d(n_dead_Alt6_cd4gt200_m);  	%var_d(n_dead_Alt6_cd4gt200_w);  
+%var_d(n_dead_Alt6_cd4gt2001519_);  %var_d(n_dead_Alt6_cd4gt2002024_);  %var_d(n_dead_Alt6_cd4gt2002529_);  %var_d(n_dead_Alt6_cd4gt2003034_);  %var_d(n_dead_Alt6_cd4gt2003539_);  
+%var_d(n_dead_Alt6_cd4gt2004044_);  %var_d(n_dead_Alt6_cd4gt2004549_);  %var_d(n_dead_Alt6_cd4gt2005054_);  %var_d(n_dead_Alt6_cd4gt2005559_);  %var_d(n_dead_Alt6_cd4gt2006064_);  
+%var_d(n_dead_Alt6_cd4gt2006569_);  %var_d(n_dead_Alt6_cd4gt2007074_);  %var_d(n_dead_Alt6_cd4gt2007579_);  %var_d(n_dead_Alt6_cd4gt2008084_);  
+%var_d(n_dead_Alt6_cd4gt2001519m);  %var_d(n_dead_Alt6_cd4gt2002024m);  %var_d(n_dead_Alt6_cd4gt2002529m);  %var_d(n_dead_Alt6_cd4gt2003034m);  %var_d(n_dead_Alt6_cd4gt2003539m);  
+%var_d(n_dead_Alt6_cd4gt2004044m);  %var_d(n_dead_Alt6_cd4gt2004549m);  %var_d(n_dead_Alt6_cd4gt2005054m);  %var_d(n_dead_Alt6_cd4gt2005559m);  %var_d(n_dead_Alt6_cd4gt2006064m);  
+%var_d(n_dead_Alt6_cd4gt2006569m);  %var_d(n_dead_Alt6_cd4gt2007074m);  %var_d(n_dead_Alt6_cd4gt2007579m);  %var_d(n_dead_Alt6_cd4gt2008084m);  
+%var_d(n_dead_Alt6_cd4gt2001519w);  %var_d(n_dead_Alt6_cd4gt2002024w);  %var_d(n_dead_Alt6_cd4gt2002529w);  %var_d(n_dead_Alt6_cd4gt2003034w);  %var_d(n_dead_Alt6_cd4gt2003539w);  
+%var_d(n_dead_Alt6_cd4gt2004044w);  %var_d(n_dead_Alt6_cd4gt2004549w);  %var_d(n_dead_Alt6_cd4gt2005054w);  %var_d(n_dead_Alt6_cd4gt2005559w);  %var_d(n_dead_Alt6_cd4gt2006064w);  
+%var_d(n_dead_Alt6_cd4gt2006569w);  %var_d(n_dead_Alt6_cd4gt2007074w);  %var_d(n_dead_Alt6_cd4gt2007579w);  %var_d(n_dead_Alt6_cd4gt2008084w);  
 
-%var_d(s_dead_Agt6_cd4lt200_m); 	%var_d(s_dead_Agt6_cd4lt200_w);  
-%var_d(s_dead_Agt6_cd4lt2001519_);  %var_d(s_dead_Agt6_cd4lt2002024_);  %var_d(s_dead_Agt6_cd4lt2002529_);  %var_d(s_dead_Agt6_cd4lt2003034_);  %var_d(s_dead_Agt6_cd4lt2003539_);  
-%var_d(s_dead_Agt6_cd4lt2004044_);  %var_d(s_dead_Agt6_cd4lt2004549_);  %var_d(s_dead_Agt6_cd4lt2005054_);  %var_d(s_dead_Agt6_cd4lt2005559_);  %var_d(s_dead_Agt6_cd4lt2006064_);  
-%var_d(s_dead_Agt6_cd4lt2006569_);  %var_d(s_dead_Agt6_cd4lt2007074_);  %var_d(s_dead_Agt6_cd4lt2007579_);  %var_d(s_dead_Agt6_cd4lt2008084_);  
-%var_d(s_dead_Agt6_cd4lt2001519m);  %var_d(s_dead_Agt6_cd4lt2002024m);  %var_d(s_dead_Agt6_cd4lt2002529m);  %var_d(s_dead_Agt6_cd4lt2003034m);  %var_d(s_dead_Agt6_cd4lt2003539m);  
-%var_d(s_dead_Agt6_cd4lt2004044m);  %var_d(s_dead_Agt6_cd4lt2004549m);  %var_d(s_dead_Agt6_cd4lt2005054m);  %var_d(s_dead_Agt6_cd4lt2005559m);  %var_d(s_dead_Agt6_cd4lt2006064m);  
-%var_d(s_dead_Agt6_cd4lt2006569m);  %var_d(s_dead_Agt6_cd4lt2007074m);  %var_d(s_dead_Agt6_cd4lt2007579m);  %var_d(s_dead_Agt6_cd4lt2008084m);  
-%var_d(s_dead_Agt6_cd4lt2001519w);  %var_d(s_dead_Agt6_cd4lt2002024w);  %var_d(s_dead_Agt6_cd4lt2002529w);  %var_d(s_dead_Agt6_cd4lt2003034w);  %var_d(s_dead_Agt6_cd4lt2003539w);  
-%var_d(s_dead_Agt6_cd4lt2004044w);  %var_d(s_dead_Agt6_cd4lt2004549w);  %var_d(s_dead_Agt6_cd4lt2005054w);  %var_d(s_dead_Agt6_cd4lt2005559w);  %var_d(s_dead_Agt6_cd4lt2006064w);  
-%var_d(s_dead_Agt6_cd4lt2006569w);  %var_d(s_dead_Agt6_cd4lt2007074w);  %var_d(s_dead_Agt6_cd4lt2007579w);  %var_d(s_dead_Agt6_cd4lt2008084w);  
+%var_d(n_dead_Agt6_cd4lt200_m); 	%var_d(n_dead_Agt6_cd4lt200_w);  
+%var_d(n_dead_Agt6_cd4lt2001519_);  %var_d(n_dead_Agt6_cd4lt2002024_);  %var_d(n_dead_Agt6_cd4lt2002529_);  %var_d(n_dead_Agt6_cd4lt2003034_);  %var_d(n_dead_Agt6_cd4lt2003539_);  
+%var_d(n_dead_Agt6_cd4lt2004044_);  %var_d(n_dead_Agt6_cd4lt2004549_);  %var_d(n_dead_Agt6_cd4lt2005054_);  %var_d(n_dead_Agt6_cd4lt2005559_);  %var_d(n_dead_Agt6_cd4lt2006064_);  
+%var_d(n_dead_Agt6_cd4lt2006569_);  %var_d(n_dead_Agt6_cd4lt2007074_);  %var_d(n_dead_Agt6_cd4lt2007579_);  %var_d(n_dead_Agt6_cd4lt2008084_);  
+%var_d(n_dead_Agt6_cd4lt2001519m);  %var_d(n_dead_Agt6_cd4lt2002024m);  %var_d(n_dead_Agt6_cd4lt2002529m);  %var_d(n_dead_Agt6_cd4lt2003034m);  %var_d(n_dead_Agt6_cd4lt2003539m);  
+%var_d(n_dead_Agt6_cd4lt2004044m);  %var_d(n_dead_Agt6_cd4lt2004549m);  %var_d(n_dead_Agt6_cd4lt2005054m);  %var_d(n_dead_Agt6_cd4lt2005559m);  %var_d(n_dead_Agt6_cd4lt2006064m);  
+%var_d(n_dead_Agt6_cd4lt2006569m);  %var_d(n_dead_Agt6_cd4lt2007074m);  %var_d(n_dead_Agt6_cd4lt2007579m);  %var_d(n_dead_Agt6_cd4lt2008084m);  
+%var_d(n_dead_Agt6_cd4lt2001519w);  %var_d(n_dead_Agt6_cd4lt2002024w);  %var_d(n_dead_Agt6_cd4lt2002529w);  %var_d(n_dead_Agt6_cd4lt2003034w);  %var_d(n_dead_Agt6_cd4lt2003539w);  
+%var_d(n_dead_Agt6_cd4lt2004044w);  %var_d(n_dead_Agt6_cd4lt2004549w);  %var_d(n_dead_Agt6_cd4lt2005054w);  %var_d(n_dead_Agt6_cd4lt2005559w);  %var_d(n_dead_Agt6_cd4lt2006064w);  
+%var_d(n_dead_Agt6_cd4lt2006569w);  %var_d(n_dead_Agt6_cd4lt2007074w);  %var_d(n_dead_Agt6_cd4lt2007579w);  %var_d(n_dead_Agt6_cd4lt2008084w);  
 
-%var_d(s_dead_Agt6_cd4gt200_m); 	%var_d(s_dead_Agt6_cd4gt200_w);  
-%var_d(s_dead_Agt6_cd4gt2001519_);  %var_d(s_dead_Agt6_cd4gt2002024_);  %var_d(s_dead_Agt6_cd4gt2002529_);  %var_d(s_dead_Agt6_cd4gt2003034_);  %var_d(s_dead_Agt6_cd4gt2003539_);  
-%var_d(s_dead_Agt6_cd4gt2004044_);  %var_d(s_dead_Agt6_cd4gt2004549_);  %var_d(s_dead_Agt6_cd4gt2005054_);  %var_d(s_dead_Agt6_cd4gt2005559_);  %var_d(s_dead_Agt6_cd4gt2006064_);  
-%var_d(s_dead_Agt6_cd4gt2006569_);  %var_d(s_dead_Agt6_cd4gt2007074_);  %var_d(s_dead_Agt6_cd4gt2007579_);  %var_d(s_dead_Agt6_cd4gt2008084_);  
-%var_d(s_dead_Agt6_cd4gt2001519m);  %var_d(s_dead_Agt6_cd4gt2002024m);  %var_d(s_dead_Agt6_cd4gt2002529m);  %var_d(s_dead_Agt6_cd4gt2003034m);  %var_d(s_dead_Agt6_cd4gt2003539m);  
-%var_d(s_dead_Agt6_cd4gt2004044m);  %var_d(s_dead_Agt6_cd4gt2004549m);  %var_d(s_dead_Agt6_cd4gt2005054m);  %var_d(s_dead_Agt6_cd4gt2005559m);  %var_d(s_dead_Agt6_cd4gt2006064m);  
-%var_d(s_dead_Agt6_cd4gt2006569m);  %var_d(s_dead_Agt6_cd4gt2007074m);  %var_d(s_dead_Agt6_cd4gt2007579m);  %var_d(s_dead_Agt6_cd4gt2008084m);  
-%var_d(s_dead_Agt6_cd4gt2001519w);  %var_d(s_dead_Agt6_cd4gt2002024w);  %var_d(s_dead_Agt6_cd4gt2002529w);  %var_d(s_dead_Agt6_cd4gt2003034w);  %var_d(s_dead_Agt6_cd4gt2003539w);  
-%var_d(s_dead_Agt6_cd4gt2004044w);  %var_d(s_dead_Agt6_cd4gt2004549w);  %var_d(s_dead_Agt6_cd4gt2005054w);  %var_d(s_dead_Agt6_cd4gt2005559w);  %var_d(s_dead_Agt6_cd4gt2006064w);  
-%var_d(s_dead_Agt6_cd4gt2006569w);  %var_d(s_dead_Agt6_cd4gt2007074w);  %var_d(s_dead_Agt6_cd4gt2007579w);  %var_d(s_dead_Agt6_cd4gt2008084w);  ;
+%var_d(n_dead_Agt6_cd4gt200_m); 	%var_d(n_dead_Agt6_cd4gt200_w);  
+%var_d(n_dead_Agt6_cd4gt2001519_);  %var_d(n_dead_Agt6_cd4gt2002024_);  %var_d(n_dead_Agt6_cd4gt2002529_);  %var_d(n_dead_Agt6_cd4gt2003034_);  %var_d(n_dead_Agt6_cd4gt2003539_);  
+%var_d(n_dead_Agt6_cd4gt2004044_);  %var_d(n_dead_Agt6_cd4gt2004549_);  %var_d(n_dead_Agt6_cd4gt2005054_);  %var_d(n_dead_Agt6_cd4gt2005559_);  %var_d(n_dead_Agt6_cd4gt2006064_);  
+%var_d(n_dead_Agt6_cd4gt2006569_);  %var_d(n_dead_Agt6_cd4gt2007074_);  %var_d(n_dead_Agt6_cd4gt2007579_);  %var_d(n_dead_Agt6_cd4gt2008084_);  
+%var_d(n_dead_Agt6_cd4gt2001519m);  %var_d(n_dead_Agt6_cd4gt2002024m);  %var_d(n_dead_Agt6_cd4gt2002529m);  %var_d(n_dead_Agt6_cd4gt2003034m);  %var_d(n_dead_Agt6_cd4gt2003539m);  
+%var_d(n_dead_Agt6_cd4gt2004044m);  %var_d(n_dead_Agt6_cd4gt2004549m);  %var_d(n_dead_Agt6_cd4gt2005054m);  %var_d(n_dead_Agt6_cd4gt2005559m);  %var_d(n_dead_Agt6_cd4gt2006064m);  
+%var_d(n_dead_Agt6_cd4gt2006569m);  %var_d(n_dead_Agt6_cd4gt2007074m);  %var_d(n_dead_Agt6_cd4gt2007579m);  %var_d(n_dead_Agt6_cd4gt2008084m);  
+%var_d(n_dead_Agt6_cd4gt2001519w);  %var_d(n_dead_Agt6_cd4gt2002024w);  %var_d(n_dead_Agt6_cd4gt2002529w);  %var_d(n_dead_Agt6_cd4gt2003034w);  %var_d(n_dead_Agt6_cd4gt2003539w);  
+%var_d(n_dead_Agt6_cd4gt2004044w);  %var_d(n_dead_Agt6_cd4gt2004549w);  %var_d(n_dead_Agt6_cd4gt2005054w);  %var_d(n_dead_Agt6_cd4gt2005559w);  %var_d(n_dead_Agt6_cd4gt2006064w);  
+%var_d(n_dead_Agt6_cd4gt2006569w);  %var_d(n_dead_Agt6_cd4gt2007074w);  %var_d(n_dead_Agt6_cd4gt2007579w);  %var_d(n_dead_Agt6_cd4gt2008084w);  ;
 
 ***transmissions;
-%var_d(s_I_undiag); 		%var_d(s_I_diag_naive);  	%var_d(s_I_diag_startart); 	%var_d(s_I_onart);		%var_d(s_I_offart); 	%var_d(s_I_onart_lt6m);
-%var_d(s_I_onart_lt6m_nvs); %var_d(s_I_onart_gt6m_nvs);	%var_d(s_I_onart_gt6m_vs);  %var_d(s_I_offart_1stI);%var_d(s_I_offart_SI); 	%var_d(s_I_offart_SIlt6m);
-%var_d(s_I_offart_SIgt6m);
+%var_d(n_I_undiag); 		%var_d(n_I_diag_naive);  	%var_d(n_I_diag_startart); 	%var_d(n_I_onart);		%var_d(n_I_offart); 	%var_d(n_I_onart_lt6m);
+%var_d(n_I_onart_lt6m_nvs); %var_d(n_I_onart_gt6m_nvs);	%var_d(n_I_onart_gt6m_vs);  %var_d(n_I_offart_1stI);%var_d(n_I_offart_SI); 	%var_d(n_I_offart_SIlt6m);
+%var_d(n_I_offart_SIgt6m);
 
-%var_d(s_I_undiag_m);		 %var_d(s_I_diag_naive_m);	   %var_d(s_I_diag_startart_m);	%var_d(s_I_onart_m);	  %var_d(s_I_offart_m);	  %var_d(s_I_onart_lt6m_m);
-%var_d(s_I_onart_lt6m_nvs_m);%var_d(s_I_onart_gt6m_nvs_m); %var_d(s_I_onart_gt6m_vs_m);	%var_d(s_I_offart_1stI_m);%var_d(s_I_offart_SI_m);%var_d(s_I_offart_SIlt6m_m);
-%var_d(s_I_offart_SIgt6m_m); 
+%var_d(n_I_undiag_m);		 %var_d(n_I_diag_naive_m);	   %var_d(n_I_diag_startart_m);	%var_d(n_I_onart_m);	  %var_d(n_I_offart_m);	  %var_d(n_I_onart_lt6m_m);
+%var_d(n_I_onart_lt6m_nvn_m);%var_d(n_I_onart_gt6m_nvn_m); %var_d(n_I_onart_gt6m_vn_m);	%var_d(n_I_offart_1stI_m);%var_d(n_I_offart_SI_m);%var_d(n_I_offart_SIlt6m_m);
+%var_d(n_I_offart_SIgt6m_m); 
 
-%var_d(s_I_undiag_w); 		 %var_d(s_I_diag_naive_w); 	   %var_d(s_I_diag_startart_w); %var_d(s_I_onart_w);	  %var_d(s_I_offart_w);   %var_d(s_I_onart_lt6m_w); 
-%var_d(s_I_onart_lt6m_nvs_w);%var_d(s_I_onart_gt6m_nvs_w); %var_d(s_I_onart_gt6m_vs_w); %var_d(s_I_offart_1stI_w);%var_d(s_I_offart_SI_w);%var_d(s_I_offart_SIlt6m_w); 
-%var_d(s_I_offart_SIgt6m_w); 
+%var_d(n_I_undiag_w); 		 %var_d(n_I_diag_naive_w); 	   %var_d(n_I_diag_startart_w); %var_d(n_I_onart_w);	  %var_d(n_I_offart_w);   %var_d(n_I_onart_lt6m_w); 
+%var_d(n_I_onart_lt6m_nvn_w);%var_d(n_I_onart_gt6m_nvn_w); %var_d(n_I_onart_gt6m_vn_w); %var_d(n_I_offart_1stI_w);%var_d(n_I_offart_SI_w);%var_d(n_I_offart_SIlt6m_w); 
+%var_d(n_I_offart_SIgt6m_w); 
 
-%var_d(s_I_undiag1519_); 		%var_d(s_I_diag_naive1519_);	 %var_d(s_I_diag_startart1519_); 	%var_d(s_I_onart1519_);	   		%var_d(s_I_offart1519_); 	
-%var_d(s_I_onart_lt6m1519_);    %var_d(s_I_onart_lt6m_nvs1519_); %var_d(s_I_onart_gt6m_nvs1519_);	%var_d(s_I_onart_gt6m_vs1519_); %var_d(s_I_offart_1stI1519_);
-%var_d(s_I_offart_SI1519_); 	%var_d(s_I_offart_SIlt6m1519_);  %var_d(s_I_offart_SIgt6m1519_); 
+%var_d(n_I_undiag1519_); 		%var_d(n_I_diag_naive1519_);	 %var_d(n_I_diag_startart1519_); 	%var_d(n_I_onart1519_);	   		%var_d(n_I_offart1519_); 	
+%var_d(n_I_onart_lt6m1519_);    %var_d(n_I_onart_lt6m_nvs1519_); %var_d(n_I_onart_gt6m_nvs1519_);	%var_d(n_I_onart_gt6m_vs1519_); %var_d(n_I_offart_1stI1519_);
+%var_d(n_I_offart_SI1519_); 	%var_d(n_I_offart_SIlt6m1519_);  %var_d(n_I_offart_SIgt6m1519_); 
 
-%var_d(s_I_undiag2024_); 		%var_d(s_I_diag_naive2024_);	 %var_d(s_I_diag_startart2024_);	%var_d(s_I_onart2024_); 		%var_d(s_I_offart2024_);
-%var_d(s_I_onart_lt6m2024_); 	%var_d(s_I_onart_lt6m_nvs2024_); %var_d(s_I_onart_gt6m_nvs2024_);	%var_d(s_I_onart_gt6m_vs2024_); %var_d(s_I_offart_1stI2024_); 
-%var_d(s_I_offart_SI2024_); 	%var_d(s_I_offart_SIlt6m2024_);  %var_d(s_I_offart_SIgt6m2024_); 
+%var_d(n_I_undiag2024_); 		%var_d(n_I_diag_naive2024_);	 %var_d(n_I_diag_startart2024_);	%var_d(n_I_onart2024_); 		%var_d(n_I_offart2024_);
+%var_d(n_I_onart_lt6m2024_); 	%var_d(n_I_onart_lt6m_nvs2024_); %var_d(n_I_onart_gt6m_nvs2024_);	%var_d(n_I_onart_gt6m_vs2024_); %var_d(n_I_offart_1stI2024_); 
+%var_d(n_I_offart_SI2024_); 	%var_d(n_I_offart_SIlt6m2024_);  %var_d(n_I_offart_SIgt6m2024_); 
 
-%var_d(s_I_undiag2529_);		%var_d(s_I_diag_naive2529_); 	 %var_d(s_I_diag_startart2529_); 	%var_d(s_I_onart2529_);			%var_d(s_I_offart2529_);
-%var_d(s_I_onart_lt6m2529_); 	%var_d(s_I_onart_lt6m_nvs2529_); %var_d(s_I_onart_gt6m_nvs2529_);   %var_d(s_I_onart_gt6m_vs2529_); %var_d(s_I_offart_1stI2529_); 
-%var_d(s_I_offart_SI2529_); 	%var_d(s_I_offart_SIlt6m2529_);  %var_d(s_I_offart_SIgt6m2529_); 
+%var_d(n_I_undiag2529_);		%var_d(n_I_diag_naive2529_); 	 %var_d(n_I_diag_startart2529_); 	%var_d(n_I_onart2529_);			%var_d(n_I_offart2529_);
+%var_d(n_I_onart_lt6m2529_); 	%var_d(n_I_onart_lt6m_nvs2529_); %var_d(n_I_onart_gt6m_nvs2529_);   %var_d(n_I_onart_gt6m_vs2529_); %var_d(n_I_offart_1stI2529_); 
+%var_d(n_I_offart_SI2529_); 	%var_d(n_I_offart_SIlt6m2529_);  %var_d(n_I_offart_SIgt6m2529_); 
 
-%var_d(s_I_undiag3034_); 		%var_d(s_I_diag_naive3034_); 	 %var_d(s_I_diag_startart3034_); 	%var_d(s_I_onart3034_);			 %var_d(s_I_offart3034_); 
-%var_d(s_I_onart_lt6m3034_); 	%var_d(s_I_onart_lt6m_nvs3034_); %var_d(s_I_onart_gt6m_nvs3034_);   %var_d(s_I_onart_gt6m_vs3034_);  %var_d(s_I_offart_1stI3034_); 
-%var_d(s_I_offart_SI3034_); 	%var_d(s_I_offart_SIlt6m3034_);  %var_d(s_I_offart_SIgt6m3034_); 
+%var_d(n_I_undiag3034_); 		%var_d(n_I_diag_naive3034_); 	 %var_d(n_I_diag_startart3034_); 	%var_d(n_I_onart3034_);			 %var_d(n_I_offart3034_); 
+%var_d(n_I_onart_lt6m3034_); 	%var_d(n_I_onart_lt6m_nvs3034_); %var_d(n_I_onart_gt6m_nvs3034_);   %var_d(n_I_onart_gt6m_vs3034_);  %var_d(n_I_offart_1stI3034_); 
+%var_d(n_I_offart_SI3034_); 	%var_d(n_I_offart_SIlt6m3034_);  %var_d(n_I_offart_SIgt6m3034_); 
 
-%var_d(s_I_undiag3539_); 		%var_d(s_I_diag_naive3539_);	 %var_d(s_I_diag_startart3539_); 	%var_d(s_I_onart3539_); 		 %var_d(s_I_offart3539_);
-%var_d(s_I_onart_lt6m3539_); 	%var_d(s_I_onart_lt6m_nvs3539_); %var_d(s_I_onart_gt6m_nvs3539_);   %var_d(s_I_onart_gt6m_vs3539_);  %var_d(s_I_offart_1stI3539_);
-%var_d(s_I_offart_SI3539_); 	%var_d(s_I_offart_SIlt6m3539_);  %var_d(s_I_offart_SIgt6m3539_); 
+%var_d(n_I_undiag3539_); 		%var_d(n_I_diag_naive3539_);	 %var_d(n_I_diag_startart3539_); 	%var_d(n_I_onart3539_); 		 %var_d(n_I_offart3539_);
+%var_d(n_I_onart_lt6m3539_); 	%var_d(n_I_onart_lt6m_nvs3539_); %var_d(n_I_onart_gt6m_nvs3539_);   %var_d(n_I_onart_gt6m_vs3539_);  %var_d(n_I_offart_1stI3539_);
+%var_d(n_I_offart_SI3539_); 	%var_d(n_I_offart_SIlt6m3539_);  %var_d(n_I_offart_SIgt6m3539_); 
 
-%var_d(s_I_undiag4044_); 		%var_d(s_I_diag_naive4044_);	 %var_d(s_I_diag_startart4044_); 	%var_d(s_I_onart4044_); 		 %var_d(s_I_offart4044_);
-%var_d(s_I_onart_lt6m4044_); 	%var_d(s_I_onart_lt6m_nvs4044_); %var_d(s_I_onart_gt6m_nvs4044_);   %var_d(s_I_onart_gt6m_vs4044_);  %var_d(s_I_offart_1stI4044_);
-%var_d(s_I_offart_SI4044_); 	%var_d(s_I_offart_SIlt6m4044_);  %var_d(s_I_offart_SIgt6m4044_); 
+%var_d(n_I_undiag4044_); 		%var_d(n_I_diag_naive4044_);	 %var_d(n_I_diag_startart4044_); 	%var_d(n_I_onart4044_); 		 %var_d(n_I_offart4044_);
+%var_d(n_I_onart_lt6m4044_); 	%var_d(n_I_onart_lt6m_nvs4044_); %var_d(n_I_onart_gt6m_nvs4044_);   %var_d(n_I_onart_gt6m_vs4044_);  %var_d(n_I_offart_1stI4044_);
+%var_d(n_I_offart_SI4044_); 	%var_d(n_I_offart_SIlt6m4044_);  %var_d(n_I_offart_SIgt6m4044_); 
 
-%var_d(s_I_undiag4549_); 		%var_d(s_I_diag_naive4549_);	 %var_d(s_I_diag_startart4549_); 	%var_d(s_I_onart4549_); 		 %var_d(s_I_offart4549_);
-%var_d(s_I_onart_lt6m4549_); 	%var_d(s_I_onart_lt6m_nvs4549_); %var_d(s_I_onart_gt6m_nvs4549_);   %var_d(s_I_onart_gt6m_vs4549_);  %var_d(s_I_offart_1stI4549_);
-%var_d(s_I_offart_SI4549_); 	%var_d(s_I_offart_SIlt6m4549_);  %var_d(s_I_offart_SIgt6m4549_); 
+%var_d(n_I_undiag4549_); 		%var_d(n_I_diag_naive4549_);	 %var_d(n_I_diag_startart4549_); 	%var_d(n_I_onart4549_); 		 %var_d(n_I_offart4549_);
+%var_d(n_I_onart_lt6m4549_); 	%var_d(n_I_onart_lt6m_nvs4549_); %var_d(n_I_onart_gt6m_nvs4549_);   %var_d(n_I_onart_gt6m_vs4549_);  %var_d(n_I_offart_1stI4549_);
+%var_d(n_I_offart_SI4549_); 	%var_d(n_I_offart_SIlt6m4549_);  %var_d(n_I_offart_SIgt6m4549_); 
 
-%var_d(s_I_undiag5054_); 		%var_d(s_I_diag_naive5054_);	 %var_d(s_I_diag_startart5054_); 	%var_d(s_I_onart5054_); 		 %var_d(s_I_offart5054_);
-%var_d(s_I_onart_lt6m5054_); 	%var_d(s_I_onart_lt6m_nvs5054_); %var_d(s_I_onart_gt6m_nvs5054_);   %var_d(s_I_onart_gt6m_vs5054_);  %var_d(s_I_offart_1stI5054_);
-%var_d(s_I_offart_SI5054_); 	%var_d(s_I_offart_SIlt6m5054_);  %var_d(s_I_offart_SIgt6m5054_); 
+%var_d(n_I_undiag5054_); 		%var_d(n_I_diag_naive5054_);	 %var_d(n_I_diag_startart5054_); 	%var_d(n_I_onart5054_); 		 %var_d(n_I_offart5054_);
+%var_d(n_I_onart_lt6m5054_); 	%var_d(n_I_onart_lt6m_nvs5054_); %var_d(n_I_onart_gt6m_nvs5054_);   %var_d(n_I_onart_gt6m_vs5054_);  %var_d(n_I_offart_1stI5054_);
+%var_d(n_I_offart_SI5054_); 	%var_d(n_I_offart_SIlt6m5054_);  %var_d(n_I_offart_SIgt6m5054_); 
 
-%var_d(s_I_undiag5559_); 		%var_d(s_I_diag_naive5559_);	 %var_d(s_I_diag_startart5559_); 	%var_d(s_I_onart5559_); 		 %var_d(s_I_offart5559_);
-%var_d(s_I_onart_lt6m5559_); 	%var_d(s_I_onart_lt6m_nvs5559_); %var_d(s_I_onart_gt6m_nvs5559_);   %var_d(s_I_onart_gt6m_vs5559_);  %var_d(s_I_offart_1stI5559_);
-%var_d(s_I_offart_SI5559_); 	%var_d(s_I_offart_SIlt6m5559_);  %var_d(s_I_offart_SIgt6m5559_); 
+%var_d(n_I_undiag5559_); 		%var_d(n_I_diag_naive5559_);	 %var_d(n_I_diag_startart5559_); 	%var_d(n_I_onart5559_); 		 %var_d(n_I_offart5559_);
+%var_d(n_I_onart_lt6m5559_); 	%var_d(n_I_onart_lt6m_nvs5559_); %var_d(n_I_onart_gt6m_nvs5559_);   %var_d(n_I_onart_gt6m_vs5559_);  %var_d(n_I_offart_1stI5559_);
+%var_d(n_I_offart_SI5559_); 	%var_d(n_I_offart_SIlt6m5559_);  %var_d(n_I_offart_SIgt6m5559_); 
 
-%var_d(s_I_undiag6064_); 		%var_d(s_I_diag_naive6064_);	 %var_d(s_I_diag_startart6064_); 	%var_d(s_I_onart6064_); 		 %var_d(s_I_offart6064_);
-%var_d(s_I_onart_lt6m6064_); 	%var_d(s_I_onart_lt6m_nvs6064_); %var_d(s_I_onart_gt6m_nvs6064_);   %var_d(s_I_onart_gt6m_vs6064_);  %var_d(s_I_offart_1stI6064_);
-%var_d(s_I_offart_SI6064_); 	%var_d(s_I_offart_SIlt6m6064_);  %var_d(s_I_offart_SIgt6m6064_); 
+%var_d(n_I_undiag6064_); 		%var_d(n_I_diag_naive6064_);	 %var_d(n_I_diag_startart6064_); 	%var_d(n_I_onart6064_); 		 %var_d(n_I_offart6064_);
+%var_d(n_I_onart_lt6m6064_); 	%var_d(n_I_onart_lt6m_nvs6064_); %var_d(n_I_onart_gt6m_nvs6064_);   %var_d(n_I_onart_gt6m_vs6064_);  %var_d(n_I_offart_1stI6064_);
+%var_d(n_I_offart_SI6064_); 	%var_d(n_I_offart_SIlt6m6064_);  %var_d(n_I_offart_SIgt6m6064_); 
 
-%var_d(s_I_undiag6569_); 		%var_d(s_I_diag_naive6569_);	 %var_d(s_I_diag_startart6569_); 	%var_d(s_I_onart6569_); 		 %var_d(s_I_offart6569_);
-%var_d(s_I_onart_lt6m6569_); 	%var_d(s_I_onart_lt6m_nvs6569_); %var_d(s_I_onart_gt6m_nvs6569_);   %var_d(s_I_onart_gt6m_vs6569_);  %var_d(s_I_offart_1stI6569_);
-%var_d(s_I_offart_SI6569_); 	%var_d(s_I_offart_SIlt6m6569_);  %var_d(s_I_offart_SIgt6m6569_); 
+%var_d(n_I_undiag6569_); 		%var_d(n_I_diag_naive6569_);	 %var_d(n_I_diag_startart6569_); 	%var_d(n_I_onart6569_); 		 %var_d(n_I_offart6569_);
+%var_d(n_I_onart_lt6m6569_); 	%var_d(n_I_onart_lt6m_nvs6569_); %var_d(n_I_onart_gt6m_nvs6569_);   %var_d(n_I_onart_gt6m_vs6569_);  %var_d(n_I_offart_1stI6569_);
+%var_d(n_I_offart_SI6569_); 	%var_d(n_I_offart_SIlt6m6569_);  %var_d(n_I_offart_SIgt6m6569_); 
 
-%var_d(s_I_undiag7074_); 		%var_d(s_I_diag_naive7074_);	 %var_d(s_I_diag_startart7074_); 	%var_d(s_I_onart7074_); 		 %var_d(s_I_offart7074_);
-%var_d(s_I_onart_lt6m7074_); 	%var_d(s_I_onart_lt6m_nvs7074_); %var_d(s_I_onart_gt6m_nvs7074_);   %var_d(s_I_onart_gt6m_vs7074_);  %var_d(s_I_offart_1stI7074_);
-%var_d(s_I_offart_SI7074_); 	%var_d(s_I_offart_SIlt6m7074_);  %var_d(s_I_offart_SIgt6m7074_); 
+%var_d(n_I_undiag7074_); 		%var_d(n_I_diag_naive7074_);	 %var_d(n_I_diag_startart7074_); 	%var_d(n_I_onart7074_); 		 %var_d(n_I_offart7074_);
+%var_d(n_I_onart_lt6m7074_); 	%var_d(n_I_onart_lt6m_nvs7074_); %var_d(n_I_onart_gt6m_nvs7074_);   %var_d(n_I_onart_gt6m_vs7074_);  %var_d(n_I_offart_1stI7074_);
+%var_d(n_I_offart_SI7074_); 	%var_d(n_I_offart_SIlt6m7074_);  %var_d(n_I_offart_SIgt6m7074_); 
 
-%var_d(s_I_undiag7579_); 		%var_d(s_I_diag_naive7579_);	 %var_d(s_I_diag_startart7579_); 	%var_d(s_I_onart7579_); 		 %var_d(s_I_offart7579_);
-%var_d(s_I_onart_lt6m7579_); 	%var_d(s_I_onart_lt6m_nvs7579_); %var_d(s_I_onart_gt6m_nvs7579_);   %var_d(s_I_onart_gt6m_vs7579_);  %var_d(s_I_offart_1stI7579_);
-%var_d(s_I_offart_SI7579_); 	%var_d(s_I_offart_SIlt6m7579_);  %var_d(s_I_offart_SIgt6m7579_); 
+%var_d(n_I_undiag7579_); 		%var_d(n_I_diag_naive7579_);	 %var_d(n_I_diag_startart7579_); 	%var_d(n_I_onart7579_); 		 %var_d(n_I_offart7579_);
+%var_d(n_I_onart_lt6m7579_); 	%var_d(n_I_onart_lt6m_nvs7579_); %var_d(n_I_onart_gt6m_nvs7579_);   %var_d(n_I_onart_gt6m_vs7579_);  %var_d(n_I_offart_1stI7579_);
+%var_d(n_I_offart_SI7579_); 	%var_d(n_I_offart_SIlt6m7579_);  %var_d(n_I_offart_SIgt6m7579_); 
 
-%var_d(s_I_undiag8084_); 		%var_d(s_I_diag_naive8084_);	 %var_d(s_I_diag_startart8084_); 	%var_d(s_I_onart8084_); 		 %var_d(s_I_offart8084_);
-%var_d(s_I_onart_lt6m8084_); 	%var_d(s_I_onart_lt6m_nvs8084_); %var_d(s_I_onart_gt6m_nvs8084_);   %var_d(s_I_onart_gt6m_vs8084_);  %var_d(s_I_offart_1stI8084_);
-%var_d(s_I_offart_SI8084_); 	%var_d(s_I_offart_SIlt6m8084_);  %var_d(s_I_offart_SIgt6m8084_); 
+%var_d(n_I_undiag8084_); 		%var_d(n_I_diag_naive8084_);	 %var_d(n_I_diag_startart8084_); 	%var_d(n_I_onart8084_); 		 %var_d(n_I_offart8084_);
+%var_d(n_I_onart_lt6m8084_); 	%var_d(n_I_onart_lt6m_nvs8084_); %var_d(n_I_onart_gt6m_nvs8084_);   %var_d(n_I_onart_gt6m_vs8084_);  %var_d(n_I_offart_1stI8084_);
+%var_d(n_I_offart_SI8084_); 	%var_d(n_I_offart_SIlt6m8084_);  %var_d(n_I_offart_SIgt6m8084_); 
 
-%var_d(s_I_undiag1519m); 		%var_d(s_I_diag_naive1519m);	 %var_d(s_I_diag_startart1519m); 	%var_d(s_I_onart1519m);	   		%var_d(s_I_offart1519m); 	
-%var_d(s_I_onart_lt6m1519m);    %var_d(s_I_onart_lt6m_nvs1519m); %var_d(s_I_onart_gt6m_nvs1519m);	%var_d(s_I_onart_gt6m_vs1519m); %var_d(s_I_offart_1stI1519m);
-%var_d(s_I_offart_SI1519m); 	%var_d(s_I_offart_SIlt6m1519m);  %var_d(s_I_offart_SIgt6m1519m); 
+%var_d(n_I_undiag1519m); 		%var_d(n_I_diag_naive1519m);	 %var_d(n_I_diag_startart1519m); 	%var_d(n_I_onart1519m);	   		%var_d(n_I_offart1519m); 	
+%var_d(n_I_onart_lt6m1519m);    %var_d(n_I_onart_lt6m_nvs1519m); %var_d(n_I_onart_gt6m_nvs1519m);	%var_d(n_I_onart_gt6m_vs1519m); %var_d(n_I_offart_1stI1519m);
+%var_d(n_I_offart_SI1519m); 	%var_d(n_I_offart_SIlt6m1519m);  %var_d(n_I_offart_SIgt6m1519m); 
 
-%var_d(s_I_undiag2024m); 		%var_d(s_I_diag_naive2024m);	 %var_d(s_I_diag_startart2024m);	%var_d(s_I_onart2024m); 		%var_d(s_I_offart2024m);
-%var_d(s_I_onart_lt6m2024m); 	%var_d(s_I_onart_lt6m_nvs2024m); %var_d(s_I_onart_gt6m_nvs2024m);	%var_d(s_I_onart_gt6m_vs2024m); %var_d(s_I_offart_1stI2024m); 
-%var_d(s_I_offart_SI2024m); 	%var_d(s_I_offart_SIlt6m2024m);  %var_d(s_I_offart_SIgt6m2024m); 
+%var_d(n_I_undiag2024m); 		%var_d(n_I_diag_naive2024m);	 %var_d(n_I_diag_startart2024m);	%var_d(n_I_onart2024m); 		%var_d(n_I_offart2024m);
+%var_d(n_I_onart_lt6m2024m); 	%var_d(n_I_onart_lt6m_nvs2024m); %var_d(n_I_onart_gt6m_nvs2024m);	%var_d(n_I_onart_gt6m_vs2024m); %var_d(n_I_offart_1stI2024m); 
+%var_d(n_I_offart_SI2024m); 	%var_d(n_I_offart_SIlt6m2024m);  %var_d(n_I_offart_SIgt6m2024m); 
 
-%var_d(s_I_undiag2529m);		%var_d(s_I_diag_naive2529m); 	 %var_d(s_I_diag_startart2529m); 	%var_d(s_I_onart2529m);			%var_d(s_I_offart2529m);
-%var_d(s_I_onart_lt6m2529m); 	%var_d(s_I_onart_lt6m_nvs2529m); %var_d(s_I_onart_gt6m_nvs2529m);   %var_d(s_I_onart_gt6m_vs2529m); %var_d(s_I_offart_1stI2529m); 
-%var_d(s_I_offart_SI2529m); 	%var_d(s_I_offart_SIlt6m2529m);  %var_d(s_I_offart_SIgt6m2529m); 
+%var_d(n_I_undiag2529m);		%var_d(n_I_diag_naive2529m); 	 %var_d(n_I_diag_startart2529m); 	%var_d(n_I_onart2529m);			%var_d(n_I_offart2529m);
+%var_d(n_I_onart_lt6m2529m); 	%var_d(n_I_onart_lt6m_nvs2529m); %var_d(n_I_onart_gt6m_nvs2529m);   %var_d(n_I_onart_gt6m_vs2529m); %var_d(n_I_offart_1stI2529m); 
+%var_d(n_I_offart_SI2529m); 	%var_d(n_I_offart_SIlt6m2529m);  %var_d(n_I_offart_SIgt6m2529m); 
 
-%var_d(s_I_undiag3034m); 		%var_d(s_I_diag_naive3034m); 	 %var_d(s_I_diag_startart3034m); 	%var_d(s_I_onart3034m);			 %var_d(s_I_offart3034m); 
-%var_d(s_I_onart_lt6m3034m); 	%var_d(s_I_onart_lt6m_nvs3034m); %var_d(s_I_onart_gt6m_nvs3034m);   %var_d(s_I_onart_gt6m_vs3034m);  %var_d(s_I_offart_1stI3034m); 
-%var_d(s_I_offart_SI3034m); 	%var_d(s_I_offart_SIlt6m3034m);  %var_d(s_I_offart_SIgt6m3034m); 
+%var_d(n_I_undiag3034m); 		%var_d(n_I_diag_naive3034m); 	 %var_d(n_I_diag_startart3034m); 	%var_d(n_I_onart3034m);			 %var_d(n_I_offart3034m); 
+%var_d(n_I_onart_lt6m3034m); 	%var_d(n_I_onart_lt6m_nvs3034m); %var_d(n_I_onart_gt6m_nvs3034m);   %var_d(n_I_onart_gt6m_vs3034m);  %var_d(n_I_offart_1stI3034m); 
+%var_d(n_I_offart_SI3034m); 	%var_d(n_I_offart_SIlt6m3034m);  %var_d(n_I_offart_SIgt6m3034m); 
 
-%var_d(s_I_undiag3539m); 		%var_d(s_I_diag_naive3539m);	 %var_d(s_I_diag_startart3539m); 	%var_d(s_I_onart3539m); 		 %var_d(s_I_offart3539m);
-%var_d(s_I_onart_lt6m3539m); 	%var_d(s_I_onart_lt6m_nvs3539m); %var_d(s_I_onart_gt6m_nvs3539m);   %var_d(s_I_onart_gt6m_vs3539m);  %var_d(s_I_offart_1stI3539m);
-%var_d(s_I_offart_SI3539m); 	%var_d(s_I_offart_SIlt6m3539m);  %var_d(s_I_offart_SIgt6m3539m); 
+%var_d(n_I_undiag3539m); 		%var_d(n_I_diag_naive3539m);	 %var_d(n_I_diag_startart3539m); 	%var_d(n_I_onart3539m); 		 %var_d(n_I_offart3539m);
+%var_d(n_I_onart_lt6m3539m); 	%var_d(n_I_onart_lt6m_nvs3539m); %var_d(n_I_onart_gt6m_nvs3539m);   %var_d(n_I_onart_gt6m_vs3539m);  %var_d(n_I_offart_1stI3539m);
+%var_d(n_I_offart_SI3539m); 	%var_d(n_I_offart_SIlt6m3539m);  %var_d(n_I_offart_SIgt6m3539m); 
 
-%var_d(s_I_undiag4044m); 		%var_d(s_I_diag_naive4044m);	 %var_d(s_I_diag_startart4044m); 	%var_d(s_I_onart4044m); 		 %var_d(s_I_offart4044m);
-%var_d(s_I_onart_lt6m4044m); 	%var_d(s_I_onart_lt6m_nvs4044m); %var_d(s_I_onart_gt6m_nvs4044m);   %var_d(s_I_onart_gt6m_vs4044m);  %var_d(s_I_offart_1stI4044m);
-%var_d(s_I_offart_SI4044m); 	%var_d(s_I_offart_SIlt6m4044m);  %var_d(s_I_offart_SIgt6m4044m); 
+%var_d(n_I_undiag4044m); 		%var_d(n_I_diag_naive4044m);	 %var_d(n_I_diag_startart4044m); 	%var_d(n_I_onart4044m); 		 %var_d(n_I_offart4044m);
+%var_d(n_I_onart_lt6m4044m); 	%var_d(n_I_onart_lt6m_nvs4044m); %var_d(n_I_onart_gt6m_nvs4044m);   %var_d(n_I_onart_gt6m_vs4044m);  %var_d(n_I_offart_1stI4044m);
+%var_d(n_I_offart_SI4044m); 	%var_d(n_I_offart_SIlt6m4044m);  %var_d(n_I_offart_SIgt6m4044m); 
 
-%var_d(s_I_undiag4549m); 		%var_d(s_I_diag_naive4549m);	 %var_d(s_I_diag_startart4549m); 	%var_d(s_I_onart4549m); 		 %var_d(s_I_offart4549m);
-%var_d(s_I_onart_lt6m4549m); 	%var_d(s_I_onart_lt6m_nvs4549m); %var_d(s_I_onart_gt6m_nvs4549m);   %var_d(s_I_onart_gt6m_vs4549m);  %var_d(s_I_offart_1stI4549m);
-%var_d(s_I_offart_SI4549m); 	%var_d(s_I_offart_SIlt6m4549m);  %var_d(s_I_offart_SIgt6m4549m); 
+%var_d(n_I_undiag4549m); 		%var_d(n_I_diag_naive4549m);	 %var_d(n_I_diag_startart4549m); 	%var_d(n_I_onart4549m); 		 %var_d(n_I_offart4549m);
+%var_d(n_I_onart_lt6m4549m); 	%var_d(n_I_onart_lt6m_nvs4549m); %var_d(n_I_onart_gt6m_nvs4549m);   %var_d(n_I_onart_gt6m_vs4549m);  %var_d(n_I_offart_1stI4549m);
+%var_d(n_I_offart_SI4549m); 	%var_d(n_I_offart_SIlt6m4549m);  %var_d(n_I_offart_SIgt6m4549m); 
 
-%var_d(s_I_undiag5054m); 		%var_d(s_I_diag_naive5054m);	 %var_d(s_I_diag_startart5054m); 	%var_d(s_I_onart5054m); 		 %var_d(s_I_offart5054m);
-%var_d(s_I_onart_lt6m5054m); 	%var_d(s_I_onart_lt6m_nvs5054m); %var_d(s_I_onart_gt6m_nvs5054m);   %var_d(s_I_onart_gt6m_vs5054m);  %var_d(s_I_offart_1stI5054m);
-%var_d(s_I_offart_SI5054m); 	%var_d(s_I_offart_SIlt6m5054m);  %var_d(s_I_offart_SIgt6m5054m); 
+%var_d(n_I_undiag5054m); 		%var_d(n_I_diag_naive5054m);	 %var_d(n_I_diag_startart5054m); 	%var_d(n_I_onart5054m); 		 %var_d(n_I_offart5054m);
+%var_d(n_I_onart_lt6m5054m); 	%var_d(n_I_onart_lt6m_nvs5054m); %var_d(n_I_onart_gt6m_nvs5054m);   %var_d(n_I_onart_gt6m_vs5054m);  %var_d(n_I_offart_1stI5054m);
+%var_d(n_I_offart_SI5054m); 	%var_d(n_I_offart_SIlt6m5054m);  %var_d(n_I_offart_SIgt6m5054m); 
 
-%var_d(s_I_undiag5559m); 		%var_d(s_I_diag_naive5559m);	 %var_d(s_I_diag_startart5559m); 	%var_d(s_I_onart5559m); 		 %var_d(s_I_offart5559m);
-%var_d(s_I_onart_lt6m5559m); 	%var_d(s_I_onart_lt6m_nvs5559m); %var_d(s_I_onart_gt6m_nvs5559m);   %var_d(s_I_onart_gt6m_vs5559m);  %var_d(s_I_offart_1stI5559m);
-%var_d(s_I_offart_SI5559m); 	%var_d(s_I_offart_SIlt6m5559m);  %var_d(s_I_offart_SIgt6m5559m); 
+%var_d(n_I_undiag5559m); 		%var_d(n_I_diag_naive5559m);	 %var_d(n_I_diag_startart5559m); 	%var_d(n_I_onart5559m); 		 %var_d(n_I_offart5559m);
+%var_d(n_I_onart_lt6m5559m); 	%var_d(n_I_onart_lt6m_nvs5559m); %var_d(n_I_onart_gt6m_nvs5559m);   %var_d(n_I_onart_gt6m_vs5559m);  %var_d(n_I_offart_1stI5559m);
+%var_d(n_I_offart_SI5559m); 	%var_d(n_I_offart_SIlt6m5559m);  %var_d(n_I_offart_SIgt6m5559m); 
 
-%var_d(s_I_undiag6064m); 		%var_d(s_I_diag_naive6064m);	 %var_d(s_I_diag_startart6064m); 	%var_d(s_I_onart6064m); 		 %var_d(s_I_offart6064m);
-%var_d(s_I_onart_lt6m6064m); 	%var_d(s_I_onart_lt6m_nvs6064m); %var_d(s_I_onart_gt6m_nvs6064m);   %var_d(s_I_onart_gt6m_vs6064m);  %var_d(s_I_offart_1stI6064m);
-%var_d(s_I_offart_SI6064m); 	%var_d(s_I_offart_SIlt6m6064m);  %var_d(s_I_offart_SIgt6m6064m); 
+%var_d(n_I_undiag6064m); 		%var_d(n_I_diag_naive6064m);	 %var_d(n_I_diag_startart6064m); 	%var_d(n_I_onart6064m); 		 %var_d(n_I_offart6064m);
+%var_d(n_I_onart_lt6m6064m); 	%var_d(n_I_onart_lt6m_nvs6064m); %var_d(n_I_onart_gt6m_nvs6064m);   %var_d(n_I_onart_gt6m_vs6064m);  %var_d(n_I_offart_1stI6064m);
+%var_d(n_I_offart_SI6064m); 	%var_d(n_I_offart_SIlt6m6064m);  %var_d(n_I_offart_SIgt6m6064m); 
 
-%var_d(s_I_undiag6569m); 		%var_d(s_I_diag_naive6569m);	 %var_d(s_I_diag_startart6569m); 	%var_d(s_I_onart6569m); 		 %var_d(s_I_offart6569m);
-%var_d(s_I_onart_lt6m6569m); 	%var_d(s_I_onart_lt6m_nvs6569m); %var_d(s_I_onart_gt6m_nvs6569m);   %var_d(s_I_onart_gt6m_vs6569m);  %var_d(s_I_offart_1stI6569m);
-%var_d(s_I_offart_SI6569m); 	%var_d(s_I_offart_SIlt6m6569m);  %var_d(s_I_offart_SIgt6m6569m); 
+%var_d(n_I_undiag6569m); 		%var_d(n_I_diag_naive6569m);	 %var_d(n_I_diag_startart6569m); 	%var_d(n_I_onart6569m); 		 %var_d(n_I_offart6569m);
+%var_d(n_I_onart_lt6m6569m); 	%var_d(n_I_onart_lt6m_nvs6569m); %var_d(n_I_onart_gt6m_nvs6569m);   %var_d(n_I_onart_gt6m_vs6569m);  %var_d(n_I_offart_1stI6569m);
+%var_d(n_I_offart_SI6569m); 	%var_d(n_I_offart_SIlt6m6569m);  %var_d(n_I_offart_SIgt6m6569m); 
 
-%var_d(s_I_undiag7074m); 		%var_d(s_I_diag_naive7074m);	 %var_d(s_I_diag_startart7074m); 	%var_d(s_I_onart7074m); 		 %var_d(s_I_offart7074m);
-%var_d(s_I_onart_lt6m7074m); 	%var_d(s_I_onart_lt6m_nvs7074m); %var_d(s_I_onart_gt6m_nvs7074m);   %var_d(s_I_onart_gt6m_vs7074m);  %var_d(s_I_offart_1stI7074m);
-%var_d(s_I_offart_SI7074m); 	%var_d(s_I_offart_SIlt6m7074m);  %var_d(s_I_offart_SIgt6m7074m); 
+%var_d(n_I_undiag7074m); 		%var_d(n_I_diag_naive7074m);	 %var_d(n_I_diag_startart7074m); 	%var_d(n_I_onart7074m); 		 %var_d(n_I_offart7074m);
+%var_d(n_I_onart_lt6m7074m); 	%var_d(n_I_onart_lt6m_nvs7074m); %var_d(n_I_onart_gt6m_nvs7074m);   %var_d(n_I_onart_gt6m_vs7074m);  %var_d(n_I_offart_1stI7074m);
+%var_d(n_I_offart_SI7074m); 	%var_d(n_I_offart_SIlt6m7074m);  %var_d(n_I_offart_SIgt6m7074m); 
 
-%var_d(s_I_undiag7579m); 		%var_d(s_I_diag_naive7579m);	 %var_d(s_I_diag_startart7579m); 	%var_d(s_I_onart7579m); 		 %var_d(s_I_offart7579m);
-%var_d(s_I_onart_lt6m7579m); 	%var_d(s_I_onart_lt6m_nvs7579m); %var_d(s_I_onart_gt6m_nvs7579m);   %var_d(s_I_onart_gt6m_vs7579m);  %var_d(s_I_offart_1stI7579m);
-%var_d(s_I_offart_SI7579m); 	%var_d(s_I_offart_SIlt6m7579m);  %var_d(s_I_offart_SIgt6m7579m); 
+%var_d(n_I_undiag7579m); 		%var_d(n_I_diag_naive7579m);	 %var_d(n_I_diag_startart7579m); 	%var_d(n_I_onart7579m); 		 %var_d(n_I_offart7579m);
+%var_d(n_I_onart_lt6m7579m); 	%var_d(n_I_onart_lt6m_nvs7579m); %var_d(n_I_onart_gt6m_nvs7579m);   %var_d(n_I_onart_gt6m_vs7579m);  %var_d(n_I_offart_1stI7579m);
+%var_d(n_I_offart_SI7579m); 	%var_d(n_I_offart_SIlt6m7579m);  %var_d(n_I_offart_SIgt6m7579m); 
 
-%var_d(s_I_undiag8084m); 		%var_d(s_I_diag_naive8084m);	 %var_d(s_I_diag_startart8084m); 	%var_d(s_I_onart8084m); 		 %var_d(s_I_offart8084m);
-%var_d(s_I_onart_lt6m8084m); 	%var_d(s_I_onart_lt6m_nvs8084m); %var_d(s_I_onart_gt6m_nvs8084m);   %var_d(s_I_onart_gt6m_vs8084m);  %var_d(s_I_offart_1stI8084m);
-%var_d(s_I_offart_SI8084m); 	%var_d(s_I_offart_SIlt6m8084m);  %var_d(s_I_offart_SIgt6m8084m); 
+%var_d(n_I_undiag8084m); 		%var_d(n_I_diag_naive8084m);	 %var_d(n_I_diag_startart8084m); 	%var_d(n_I_onart8084m); 		 %var_d(n_I_offart8084m);
+%var_d(n_I_onart_lt6m8084m); 	%var_d(n_I_onart_lt6m_nvs8084m); %var_d(n_I_onart_gt6m_nvs8084m);   %var_d(n_I_onart_gt6m_vs8084m);  %var_d(n_I_offart_1stI8084m);
+%var_d(n_I_offart_SI8084m); 	%var_d(n_I_offart_SIlt6m8084m);  %var_d(n_I_offart_SIgt6m8084m); 
 
-%var_d(s_I_undiag1519w); 		%var_d(s_I_diag_naive1519w);	 %var_d(s_I_diag_startart1519w); 	%var_d(s_I_onart1519w);	   		%var_d(s_I_offart1519w); 	
-%var_d(s_I_onart_lt6m1519w);    %var_d(s_I_onart_lt6m_nvs1519w); %var_d(s_I_onart_gt6m_nvs1519w);	%var_d(s_I_onart_gt6m_vs1519w); %var_d(s_I_offart_1stI1519w);
-%var_d(s_I_offart_SI1519w); 	%var_d(s_I_offart_SIlt6m1519w);  %var_d(s_I_offart_SIgt6m1519w); 
+%var_d(n_I_undiag1519w); 		%var_d(n_I_diag_naive1519w);	 %var_d(n_I_diag_startart1519w); 	%var_d(n_I_onart1519w);	   		%var_d(n_I_offart1519w); 	
+%var_d(n_I_onart_lt6m1519w);    %var_d(n_I_onart_lt6m_nvs1519w); %var_d(n_I_onart_gt6m_nvs1519w);	%var_d(n_I_onart_gt6m_vs1519w); %var_d(n_I_offart_1stI1519w);
+%var_d(n_I_offart_SI1519w); 	%var_d(n_I_offart_SIlt6m1519w);  %var_d(n_I_offart_SIgt6m1519w); 
 
-%var_d(s_I_undiag2024w); 		%var_d(s_I_diag_naive2024w);	 %var_d(s_I_diag_startart2024w);	%var_d(s_I_onart2024w); 		%var_d(s_I_offart2024w);
-%var_d(s_I_onart_lt6m2024w); 	%var_d(s_I_onart_lt6m_nvs2024w); %var_d(s_I_onart_gt6m_nvs2024w);	%var_d(s_I_onart_gt6m_vs2024w); %var_d(s_I_offart_1stI2024w); 
-%var_d(s_I_offart_SI2024w); 	%var_d(s_I_offart_SIlt6m2024w);  %var_d(s_I_offart_SIgt6m2024w); 
+%var_d(n_I_undiag2024w); 		%var_d(n_I_diag_naive2024w);	 %var_d(n_I_diag_startart2024w);	%var_d(n_I_onart2024w); 		%var_d(n_I_offart2024w);
+%var_d(n_I_onart_lt6m2024w); 	%var_d(n_I_onart_lt6m_nvs2024w); %var_d(n_I_onart_gt6m_nvs2024w);	%var_d(n_I_onart_gt6m_vs2024w); %var_d(n_I_offart_1stI2024w); 
+%var_d(n_I_offart_SI2024w); 	%var_d(n_I_offart_SIlt6m2024w);  %var_d(n_I_offart_SIgt6m2024w); 
 
-%var_d(s_I_undiag2529w);		%var_d(s_I_diag_naive2529w); 	 %var_d(s_I_diag_startart2529w); 	%var_d(s_I_onart2529w);			%var_d(s_I_offart2529w);
-%var_d(s_I_onart_lt6m2529w); 	%var_d(s_I_onart_lt6m_nvs2529w); %var_d(s_I_onart_gt6m_nvs2529w);   %var_d(s_I_onart_gt6m_vs2529w); %var_d(s_I_offart_1stI2529w); 
-%var_d(s_I_offart_SI2529w); 	%var_d(s_I_offart_SIlt6m2529w);  %var_d(s_I_offart_SIgt6m2529w); 
+%var_d(n_I_undiag2529w);		%var_d(n_I_diag_naive2529w); 	 %var_d(n_I_diag_startart2529w); 	%var_d(n_I_onart2529w);			%var_d(n_I_offart2529w);
+%var_d(n_I_onart_lt6m2529w); 	%var_d(n_I_onart_lt6m_nvs2529w); %var_d(n_I_onart_gt6m_nvs2529w);   %var_d(n_I_onart_gt6m_vs2529w); %var_d(n_I_offart_1stI2529w); 
+%var_d(n_I_offart_SI2529w); 	%var_d(n_I_offart_SIlt6m2529w);  %var_d(n_I_offart_SIgt6m2529w); 
 
-%var_d(s_I_undiag3034w); 		%var_d(s_I_diag_naive3034w); 	 %var_d(s_I_diag_startart3034w); 	%var_d(s_I_onart3034w);			 %var_d(s_I_offart3034w); 
-%var_d(s_I_onart_lt6m3034w); 	%var_d(s_I_onart_lt6m_nvs3034w); %var_d(s_I_onart_gt6m_nvs3034w);   %var_d(s_I_onart_gt6m_vs3034w);  %var_d(s_I_offart_1stI3034w); 
-%var_d(s_I_offart_SI3034w); 	%var_d(s_I_offart_SIlt6m3034w);  %var_d(s_I_offart_SIgt6m3034w); 
+%var_d(n_I_undiag3034w); 		%var_d(n_I_diag_naive3034w); 	 %var_d(n_I_diag_startart3034w); 	%var_d(n_I_onart3034w);			 %var_d(n_I_offart3034w); 
+%var_d(n_I_onart_lt6m3034w); 	%var_d(n_I_onart_lt6m_nvs3034w); %var_d(n_I_onart_gt6m_nvs3034w);   %var_d(n_I_onart_gt6m_vs3034w);  %var_d(n_I_offart_1stI3034w); 
+%var_d(n_I_offart_SI3034w); 	%var_d(n_I_offart_SIlt6m3034w);  %var_d(n_I_offart_SIgt6m3034w); 
 
-%var_d(s_I_undiag3539w); 		%var_d(s_I_diag_naive3539w);	 %var_d(s_I_diag_startart3539w); 	%var_d(s_I_onart3539w); 		 %var_d(s_I_offart3539w);
-%var_d(s_I_onart_lt6m3539w); 	%var_d(s_I_onart_lt6m_nvs3539w); %var_d(s_I_onart_gt6m_nvs3539w);   %var_d(s_I_onart_gt6m_vs3539w);  %var_d(s_I_offart_1stI3539w);
-%var_d(s_I_offart_SI3539w); 	%var_d(s_I_offart_SIlt6m3539w);  %var_d(s_I_offart_SIgt6m3539w); 
+%var_d(n_I_undiag3539w); 		%var_d(n_I_diag_naive3539w);	 %var_d(n_I_diag_startart3539w); 	%var_d(n_I_onart3539w); 		 %var_d(n_I_offart3539w);
+%var_d(n_I_onart_lt6m3539w); 	%var_d(n_I_onart_lt6m_nvs3539w); %var_d(n_I_onart_gt6m_nvs3539w);   %var_d(n_I_onart_gt6m_vs3539w);  %var_d(n_I_offart_1stI3539w);
+%var_d(n_I_offart_SI3539w); 	%var_d(n_I_offart_SIlt6m3539w);  %var_d(n_I_offart_SIgt6m3539w); 
 
-%var_d(s_I_undiag4044w); 		%var_d(s_I_diag_naive4044w);	 %var_d(s_I_diag_startart4044w); 	%var_d(s_I_onart4044w); 		 %var_d(s_I_offart4044w);
-%var_d(s_I_onart_lt6m4044w); 	%var_d(s_I_onart_lt6m_nvs4044w); %var_d(s_I_onart_gt6m_nvs4044w);   %var_d(s_I_onart_gt6m_vs4044w);  %var_d(s_I_offart_1stI4044w);
-%var_d(s_I_offart_SI4044w); 	%var_d(s_I_offart_SIlt6m4044w);  %var_d(s_I_offart_SIgt6m4044w); 
+%var_d(n_I_undiag4044w); 		%var_d(n_I_diag_naive4044w);	 %var_d(n_I_diag_startart4044w); 	%var_d(n_I_onart4044w); 		 %var_d(n_I_offart4044w);
+%var_d(n_I_onart_lt6m4044w); 	%var_d(n_I_onart_lt6m_nvs4044w); %var_d(n_I_onart_gt6m_nvs4044w);   %var_d(n_I_onart_gt6m_vs4044w);  %var_d(n_I_offart_1stI4044w);
+%var_d(n_I_offart_SI4044w); 	%var_d(n_I_offart_SIlt6m4044w);  %var_d(n_I_offart_SIgt6m4044w); 
 
-%var_d(s_I_undiag4549w); 		%var_d(s_I_diag_naive4549w);	 %var_d(s_I_diag_startart4549w); 	%var_d(s_I_onart4549w); 		 %var_d(s_I_offart4549w);
-%var_d(s_I_onart_lt6m4549w); 	%var_d(s_I_onart_lt6m_nvs4549w); %var_d(s_I_onart_gt6m_nvs4549w);   %var_d(s_I_onart_gt6m_vs4549w);  %var_d(s_I_offart_1stI4549w);
-%var_d(s_I_offart_SI4549w); 	%var_d(s_I_offart_SIlt6m4549w);  %var_d(s_I_offart_SIgt6m4549w); 
+%var_d(n_I_undiag4549w); 		%var_d(n_I_diag_naive4549w);	 %var_d(n_I_diag_startart4549w); 	%var_d(n_I_onart4549w); 		 %var_d(n_I_offart4549w);
+%var_d(n_I_onart_lt6m4549w); 	%var_d(n_I_onart_lt6m_nvs4549w); %var_d(n_I_onart_gt6m_nvs4549w);   %var_d(n_I_onart_gt6m_vs4549w);  %var_d(n_I_offart_1stI4549w);
+%var_d(n_I_offart_SI4549w); 	%var_d(n_I_offart_SIlt6m4549w);  %var_d(n_I_offart_SIgt6m4549w); 
 
-%var_d(s_I_undiag5054w); 		%var_d(s_I_diag_naive5054w);	 %var_d(s_I_diag_startart5054w); 	%var_d(s_I_onart5054w); 		 %var_d(s_I_offart5054w);
-%var_d(s_I_onart_lt6m5054w); 	%var_d(s_I_onart_lt6m_nvs5054w); %var_d(s_I_onart_gt6m_nvs5054w);   %var_d(s_I_onart_gt6m_vs5054w);  %var_d(s_I_offart_1stI5054w);
-%var_d(s_I_offart_SI5054w); 	%var_d(s_I_offart_SIlt6m5054w);  %var_d(s_I_offart_SIgt6m5054w); 
+%var_d(n_I_undiag5054w); 		%var_d(n_I_diag_naive5054w);	 %var_d(n_I_diag_startart5054w); 	%var_d(n_I_onart5054w); 		 %var_d(n_I_offart5054w);
+%var_d(n_I_onart_lt6m5054w); 	%var_d(n_I_onart_lt6m_nvs5054w); %var_d(n_I_onart_gt6m_nvs5054w);   %var_d(n_I_onart_gt6m_vs5054w);  %var_d(n_I_offart_1stI5054w);
+%var_d(n_I_offart_SI5054w); 	%var_d(n_I_offart_SIlt6m5054w);  %var_d(n_I_offart_SIgt6m5054w); 
 
-%var_d(s_I_undiag5559w); 		%var_d(s_I_diag_naive5559w);	 %var_d(s_I_diag_startart5559w); 	%var_d(s_I_onart5559w); 		 %var_d(s_I_offart5559w);
-%var_d(s_I_onart_lt6m5559w); 	%var_d(s_I_onart_lt6m_nvs5559w); %var_d(s_I_onart_gt6m_nvs5559w);   %var_d(s_I_onart_gt6m_vs5559w);  %var_d(s_I_offart_1stI5559w);
-%var_d(s_I_offart_SI5559w); 	%var_d(s_I_offart_SIlt6m5559w);  %var_d(s_I_offart_SIgt6m5559w); 
+%var_d(n_I_undiag5559w); 		%var_d(n_I_diag_naive5559w);	 %var_d(n_I_diag_startart5559w); 	%var_d(n_I_onart5559w); 		 %var_d(n_I_offart5559w);
+%var_d(n_I_onart_lt6m5559w); 	%var_d(n_I_onart_lt6m_nvs5559w); %var_d(n_I_onart_gt6m_nvs5559w);   %var_d(n_I_onart_gt6m_vs5559w);  %var_d(n_I_offart_1stI5559w);
+%var_d(n_I_offart_SI5559w); 	%var_d(n_I_offart_SIlt6m5559w);  %var_d(n_I_offart_SIgt6m5559w); 
 
-%var_d(s_I_undiag6064w); 		%var_d(s_I_diag_naive6064w);	 %var_d(s_I_diag_startart6064w); 	%var_d(s_I_onart6064w); 		 %var_d(s_I_offart6064w);
-%var_d(s_I_onart_lt6m6064w); 	%var_d(s_I_onart_lt6m_nvs6064w); %var_d(s_I_onart_gt6m_nvs6064w);   %var_d(s_I_onart_gt6m_vs6064w);  %var_d(s_I_offart_1stI6064w);
-%var_d(s_I_offart_SI6064w); 	%var_d(s_I_offart_SIlt6m6064w);  %var_d(s_I_offart_SIgt6m6064w); 
+%var_d(n_I_undiag6064w); 		%var_d(n_I_diag_naive6064w);	 %var_d(n_I_diag_startart6064w); 	%var_d(n_I_onart6064w); 		 %var_d(n_I_offart6064w);
+%var_d(n_I_onart_lt6m6064w); 	%var_d(n_I_onart_lt6m_nvs6064w); %var_d(n_I_onart_gt6m_nvs6064w);   %var_d(n_I_onart_gt6m_vs6064w);  %var_d(n_I_offart_1stI6064w);
+%var_d(n_I_offart_SI6064w); 	%var_d(n_I_offart_SIlt6m6064w);  %var_d(n_I_offart_SIgt6m6064w); 
 
-%var_d(s_I_undiag6569w); 		%var_d(s_I_diag_naive6569w);	 %var_d(s_I_diag_startart6569w); 	%var_d(s_I_onart6569w); 		 %var_d(s_I_offart6569w);
-%var_d(s_I_onart_lt6m6569w); 	%var_d(s_I_onart_lt6m_nvs6569w); %var_d(s_I_onart_gt6m_nvs6569w);   %var_d(s_I_onart_gt6m_vs6569w);  %var_d(s_I_offart_1stI6569w);
-%var_d(s_I_offart_SI6569w); 	%var_d(s_I_offart_SIlt6m6569w);  %var_d(s_I_offart_SIgt6m6569w); 
+%var_d(n_I_undiag6569w); 		%var_d(n_I_diag_naive6569w);	 %var_d(n_I_diag_startart6569w); 	%var_d(n_I_onart6569w); 		 %var_d(n_I_offart6569w);
+%var_d(n_I_onart_lt6m6569w); 	%var_d(n_I_onart_lt6m_nvs6569w); %var_d(n_I_onart_gt6m_nvs6569w);   %var_d(n_I_onart_gt6m_vs6569w);  %var_d(n_I_offart_1stI6569w);
+%var_d(n_I_offart_SI6569w); 	%var_d(n_I_offart_SIlt6m6569w);  %var_d(n_I_offart_SIgt6m6569w); 
 
-%var_d(s_I_undiag7074w); 		%var_d(s_I_diag_naive7074w);	 %var_d(s_I_diag_startart7074w); 	%var_d(s_I_onart7074w); 		 %var_d(s_I_offart7074w);
-%var_d(s_I_onart_lt6m7074w); 	%var_d(s_I_onart_lt6m_nvs7074w); %var_d(s_I_onart_gt6m_nvs7074w);   %var_d(s_I_onart_gt6m_vs7074w);  %var_d(s_I_offart_1stI7074w);
-%var_d(s_I_offart_SI7074w); 	%var_d(s_I_offart_SIlt6m7074w);  %var_d(s_I_offart_SIgt6m7074w); 
+%var_d(n_I_undiag7074w); 		%var_d(n_I_diag_naive7074w);	 %var_d(n_I_diag_startart7074w); 	%var_d(n_I_onart7074w); 		 %var_d(n_I_offart7074w);
+%var_d(n_I_onart_lt6m7074w); 	%var_d(n_I_onart_lt6m_nvs7074w); %var_d(n_I_onart_gt6m_nvs7074w);   %var_d(n_I_onart_gt6m_vs7074w);  %var_d(n_I_offart_1stI7074w);
+%var_d(n_I_offart_SI7074w); 	%var_d(n_I_offart_SIlt6m7074w);  %var_d(n_I_offart_SIgt6m7074w); 
 
-%var_d(s_I_undiag7579w); 		%var_d(s_I_diag_naive7579w);	 %var_d(s_I_diag_startart7579w); 	%var_d(s_I_onart7579w); 		 %var_d(s_I_offart7579w);
-%var_d(s_I_onart_lt6m7579w); 	%var_d(s_I_onart_lt6m_nvs7579w); %var_d(s_I_onart_gt6m_nvs7579w);   %var_d(s_I_onart_gt6m_vs7579w);  %var_d(s_I_offart_1stI7579w);
-%var_d(s_I_offart_SI7579w); 	%var_d(s_I_offart_SIlt6m7579w);  %var_d(s_I_offart_SIgt6m7579w); 
+%var_d(n_I_undiag7579w); 		%var_d(n_I_diag_naive7579w);	 %var_d(n_I_diag_startart7579w); 	%var_d(n_I_onart7579w); 		 %var_d(n_I_offart7579w);
+%var_d(n_I_onart_lt6m7579w); 	%var_d(n_I_onart_lt6m_nvs7579w); %var_d(n_I_onart_gt6m_nvs7579w);   %var_d(n_I_onart_gt6m_vs7579w);  %var_d(n_I_offart_1stI7579w);
+%var_d(n_I_offart_SI7579w); 	%var_d(n_I_offart_SIlt6m7579w);  %var_d(n_I_offart_SIgt6m7579w); 
 
-%var_d(s_I_undiag8084w); 		%var_d(s_I_diag_naive8084w);	 %var_d(s_I_diag_startart8084w); 	%var_d(s_I_onart8084w); 		 %var_d(s_I_offart8084w);
-%var_d(s_I_onart_lt6m8084w); 	%var_d(s_I_onart_lt6m_nvs8084w); %var_d(s_I_onart_gt6m_nvs8084w);   %var_d(s_I_onart_gt6m_vs8084w);  %var_d(s_I_offart_1stI8084w);
-%var_d(s_I_offart_SI8084w); 	%var_d(s_I_offart_SIlt6m8084w);  %var_d(s_I_offart_SIgt6m8084w); 
+%var_d(n_I_undiag8084w); 		%var_d(n_I_diag_naive8084w);	 %var_d(n_I_diag_startart8084w); 	%var_d(n_I_onart8084w); 		 %var_d(n_I_offart8084w);
+%var_d(n_I_onart_lt6m8084w); 	%var_d(n_I_onart_lt6m_nvs8084w); %var_d(n_I_onart_gt6m_nvs8084w);   %var_d(n_I_onart_gt6m_vs8084w);  %var_d(n_I_offart_1stI8084w);
+%var_d(n_I_offart_SI8084w); 	%var_d(n_I_offart_SIlt6m8084w);  %var_d(n_I_offart_SIgt6m8084w); 
 
 run;
 
@@ -1904,28 +1859,28 @@ data a.deaths&age;
 merge 
 
 l_n_hiv&age	 l_n_hiv&mage	 	l_n_hiv&wage 	/*n_hiv_death1519	n_hiv_death&mage	n_hiv_death&wage*/
-l_s_dead_undiag&age				l_s_dead_undiag&mage				l_s_dead_undiag&wage	
-l_s_dead_diag_not_linked&age	l_s_dead_diag_not_linked&mage		l_s_dead_diag_not_linked&wage
-l_s_dead_Alt6_Acd4lt200&age 	l_s_dead_Alt6_Acd4lt200&mage 		l_s_dead_Alt6_Acd4lt200&wage
-l_s_dead_Alt6_Acd4gt200&age		l_s_dead_Alt6_Acd4gt200&mage		l_s_dead_Alt6_Acd4gt200&wage
-l_s_d_I_Alt6_Rcd4lt200&age		l_s_d_I_Alt6_Rcd4lt200&mage 		l_s_d_I_Alt6_Rcd4lt200&wage 
-l_s_d_I_Alt6_Rcd4gt200&age		l_s_d_I_Alt6_Rcd4gt200&mage 		l_s_d_I_Alt6_Rcd4gt200&wage 
-l_s_dead_A_vl1000&age			l_s_dead_A_vl1000&mage				l_s_dead_A_vl1000&wage
-l_s_dead_A_vg1000&age			l_s_dead_A_vg1000&mage				l_s_dead_A_vg1000&wage
-l_s_dead_Alt6_vl1000&age		l_s_dead_Alt6_vl1000&mage			l_s_dead_Alt6_vl1000&wage
-l_s_dead_Alt6_vg1000&age		l_s_dead_Alt6_vg1000&mage			l_s_dead_Alt6_vg1000&wage
-l_s_dead_Agt6_vl1000&age		l_s_dead_Agt6_vl1000&mage			l_s_dead_Agt6_vl1000&wage
-l_s_dead_Agt6_vg1000&age		l_s_dead_Agt6_vg1000&mage			l_s_dead_Agt6_vg1000&wage
-l_s_dead_int_lost&age			l_s_dead_int_lost&mage				l_s_dead_int_lost&wage	
-l_s_dead_1stint_lost&age		l_s_dead_1stint_lost&mage			l_s_dead_1stint_lost&wage
-l_s_dead_subintlt6_lost&age		l_s_dead_subintlt6_lost&mage		l_s_dead_subintlt6_lost&wage
-l_s_dead_subintgt6_lost&age		l_s_dead_subintgt6_lost&mage		l_s_dead_subintgt6_lost&wage
-l_s_dead_A_cd4lt200&age			l_s_dead_A_cd4lt200&mage			l_s_dead_A_cd4lt200&wage
-l_s_dead_A_cd4gt200&age			l_s_dead_A_cd4gt200&mage			l_s_dead_A_cd4gt200&wage
-l_s_dead_Alt6_cd4lt200&age		l_s_dead_Alt6_cd4lt200&mage			l_s_dead_Alt6_cd4lt200&wage
-l_s_dead_Alt6_cd4gt200&age		l_s_dead_Alt6_cd4gt200&mage			l_s_dead_Alt6_cd4gt200&wage
-l_s_dead_Agt6_cd4lt200&age		l_s_dead_Agt6_cd4lt200&mage 		l_s_dead_Agt6_cd4lt200&wage
-l_s_dead_Agt6_cd4gt200&age		l_s_dead_Agt6_cd4gt200&mage 		l_s_dead_Agt6_cd4gt200&wage;
+l_n_dead_undiag&age				l_n_dead_undiag&mage				l_n_dead_undiag&wage	
+l_n_dead_diag_not_linked&age	l_n_dead_diag_not_linked&mage		l_n_dead_diag_not_linked&wage
+l_n_dead_Alt6_Acd4lt200&age 	l_n_dead_Alt6_Acd4lt200&mage 		l_n_dead_Alt6_Acd4lt200&wage
+l_n_dead_Alt6_Acd4gt200&age		l_n_dead_Alt6_Acd4gt200&mage		l_n_dead_Alt6_Acd4gt200&wage
+l_n_d_I_Alt6_Rcd4lt200&age		l_n_d_I_Alt6_Rcd4lt200&mage 		l_n_d_I_Alt6_Rcd4lt200&wage 
+l_n_d_I_Alt6_Rcd4gt200&age		l_n_d_I_Alt6_Rcd4gt200&mage 		l_n_d_I_Alt6_Rcd4gt200&wage 
+l_n_dead_A_vl1000&age			l_n_dead_A_vl1000&mage				l_n_dead_A_vl1000&wage
+l_n_dead_A_vg1000&age			l_n_dead_A_vg1000&mage				l_n_dead_A_vg1000&wage
+l_n_dead_Alt6_vl1000&age		l_n_dead_Alt6_vl1000&mage			l_n_dead_Alt6_vl1000&wage
+l_n_dead_Alt6_vg1000&age		l_n_dead_Alt6_vg1000&mage			l_n_dead_Alt6_vg1000&wage
+l_n_dead_Agt6_vl1000&age		l_n_dead_Agt6_vl1000&mage			l_n_dead_Agt6_vl1000&wage
+l_n_dead_Agt6_vg1000&age		l_n_dead_Agt6_vg1000&mage			l_n_dead_Agt6_vg1000&wage
+l_n_dead_int_lost&age			l_n_dead_int_lost&mage				l_n_dead_int_lost&wage	
+l_n_dead_1stint_lost&age		l_n_dead_1stint_lost&mage			l_n_dead_1stint_lost&wage
+l_n_dead_subintlt6_lost&age		l_n_dead_subintlt6_lost&mage		l_n_dead_subintlt6_lost&wage
+l_n_dead_subintgt6_lost&age		l_n_dead_subintgt6_lost&mage		l_n_dead_subintgt6_lost&wage
+l_n_dead_A_cd4lt200&age			l_n_dead_A_cd4lt200&mage			l_n_dead_A_cd4lt200&wage
+l_n_dead_A_cd4gt200&age			l_n_dead_A_cd4gt200&mage			l_n_dead_A_cd4gt200&wage
+l_n_dead_Alt6_cd4lt200&age		l_n_dead_Alt6_cd4lt200&mage			l_n_dead_Alt6_cd4lt200&wage
+l_n_dead_Alt6_cd4gt200&age		l_n_dead_Alt6_cd4gt200&mage			l_n_dead_Alt6_cd4gt200&wage
+l_n_dead_Agt6_cd4lt200&age		l_n_dead_Agt6_cd4lt200&mage 		l_n_dead_Agt6_cd4lt200&wage
+l_n_dead_Agt6_cd4gt200&age		l_n_dead_Agt6_cd4gt200&mage 		l_n_dead_Agt6_cd4gt200&wage;
 %mend;
 
 %agecat_d(1519_,1519m,1519w); %agecat_d(2024_,2024m,2024w); %agecat_d(2529_,2529m,2529w); %agecat_d(3034_,3034m,3034w);
@@ -1971,18 +1926,18 @@ data a.trans&age;
 merge 
 
 l_n_hiv&age	 l_n_hiv&mage	l_n_hiv&wage 	/*n_inf&age	n_inf&mage	n_inf&wage*/
-l_s_I_undiag&age			l_s_I_undiag&mage			l_s_I_undiag&wage
-l_s_I_diag_naive&age		l_s_I_diag_naive&mage		l_s_I_diag_naive&wage
-l_s_I_diag_startart&age		l_s_I_diag_startart&mage	l_s_I_diag_startart&wage
-l_s_I_onart&age				l_s_I_onart&mage			l_s_I_onart&wage
-l_s_I_onart_lt6m&age		l_s_I_onart_lt6m&mage		l_s_I_onart_lt6m&wage
-l_s_I_onart_lt6m_nvs&age	l_s_I_onart_lt6m_nvs&mage	l_s_I_onart_lt6m_nvs&wage
-l_s_I_onart_gt6m_nvs&age	l_s_I_onart_gt6m_nvs&mage	l_s_I_onart_gt6m_nvs&wage
-l_s_I_onart_gt6m_vs&age		l_s_I_onart_gt6m_vs&mage	l_s_I_onart_gt6m_vs&wage
-l_s_I_offart_1stI&age		l_s_I_offart_1stI&mage		l_s_I_offart_1stI&wage
-l_s_I_offart_SI&age			l_s_I_offart_SI&mage		l_s_I_offart_SI&wage
-l_s_I_offart_SIlt6m&age		l_s_I_offart_SIlt6m&mage	l_s_I_offart_SIlt6m&wage
-l_s_I_offart_SIgt6m&age		l_s_I_offart_SIgt6m&mage	l_s_I_offart_SIgt6m&wage
+l_n_I_undiag&age			l_n_I_undiag&mage			l_n_I_undiag&wage
+l_n_I_diag_naive&age		l_n_I_diag_naive&mage		l_n_I_diag_naive&wage
+l_n_I_diag_startart&age		l_n_I_diag_startart&mage	l_n_I_diag_startart&wage
+l_n_I_onart&age				l_n_I_onart&mage			l_n_I_onart&wage
+l_n_I_onart_lt6m&age		l_n_I_onart_lt6m&mage		l_n_I_onart_lt6m&wage
+l_n_I_onart_lt6m_nvs&age	l_n_I_onart_lt6m_nvs&mage	l_n_I_onart_lt6m_nvs&wage
+l_n_I_onart_gt6m_nvs&age	l_n_I_onart_gt6m_nvs&mage	l_n_I_onart_gt6m_nvs&wage
+l_n_I_onart_gt6m_vs&age		l_n_I_onart_gt6m_vs&mage	l_n_I_onart_gt6m_vs&wage
+l_n_I_offart_1stI&age		l_n_I_offart_1stI&mage		l_n_I_offart_1stI&wage
+l_n_I_offart_SI&age			l_n_I_offart_SI&mage		l_n_I_offart_SI&wage
+l_n_I_offart_SIlt6m&age		l_n_I_offart_SIlt6m&mage	l_n_I_offart_SIlt6m&wage
+l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 
 %mend;
 
