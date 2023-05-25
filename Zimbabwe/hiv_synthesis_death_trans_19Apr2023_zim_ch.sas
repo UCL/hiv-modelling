@@ -142,7 +142,7 @@ _u57 = rand('uniform'); _u58 = rand('uniform'); _u59 = rand('uniform'); _u60 = r
 
 
 * start of epidemic;
-startyr = 1991 + 0.25;
+startyr = 1984;
 * ts1m;
 /*
 startyr = 1989 + 1/12;
@@ -6350,7 +6350,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
+if caldate{t}=startyr and newp >= 0 and d < 1  and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -19552,6 +19552,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
+proc print;var cald age primary infection s_primary s_I_undiag1519m  s_I_diag_naive1519m	 s_I_diag_startart1519m 	s_I_onart1519m	   		s_I_offart1519m 	
+s_I_onart_lt6m1519m    s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m	s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m
+s_I_offart_SI1519m 	s_I_offart_SIlt6m1519m  s_I_offart_SIgt6m1519m ;where gender=1 and age gt 15 and age lt 20;run;
 
 
 * procs;
