@@ -12634,6 +12634,10 @@ primary4549m=0; if gender=1 and primary=1 and 45 <= age < 50 then primary4549m=1
 primary5054m=0; if gender=1 and primary=1 and 50 <= age < 55 then primary5054m=1;
 primary5559m=0; if gender=1 and primary=1 and 55 <= age < 60 then primary5559m=1;
 primary6064m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary6064m=1;
+primary6569m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary6569m=1;
+primary7074m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary7074m=1;
+primary7579m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary7579m=1;
+primary8084m=0; if gender=1 and primary=1 and 60 <= age < 65 then primary8084m=1;
 
 primary1549m=0; if gender=1 and primary=1 and 15 <= age < 50 then primary1549m=1;
 
@@ -12647,10 +12651,28 @@ primary4549w=0; if gender=2 and primary=1 and 45 <= age < 50 then primary4549w=1
 primary5054w=0; if gender=2 and primary=1 and 50 <= age < 55 then primary5054w=1;
 primary5559w=0; if gender=2 and primary=1 and 55 <= age < 60 then primary5559w=1;
 primary6064w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary6064w=1;
+primary6569w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary6569w=1;
+primary7074w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary7074w=1;
+primary7579w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary7579w=1;
+primary8084w=0; if gender=2 and primary=1 and 60 <= age < 65 then primary8084w=1;
 
 primary1549w=0; if gender=2 and primary=1 and 15 <= age < 50 then primary1549w=1;
 
 primary1549=0; if primary=1 and 15 <= age < 50 then primary1549=1;
+primary1519_=0; if primary=1 and 15 <= age < 20 then primary1519_=1;
+primary2024_=0; if primary=1 and 20 <= age < 25 then primary2024_=1;
+primary2529_=0; if primary=1 and 25 <= age < 30 then primary2529_=1;
+primary3034_=0; if primary=1 and 30 <= age < 35 then primary3034_=1;
+primary3539_=0; if primary=1 and 35 <= age < 40 then primary3539_=1;
+primary4044_=0; if primary=1 and 40 <= age < 45 then primary4044_=1;
+primary4549_=0; if primary=1 and 45 <= age < 50 then primary4549_=1;
+primary5054_=0; if primary=1 and 50 <= age < 55 then primary5054_=1;
+primary5559_=0; if primary=1 and 55 <= age < 60 then primary5559_=1;
+primary6064_=0; if primary=1 and 60 <= age < 65 then primary6064_=1;
+primary6569_=0; if primary=1 and 60 <= age < 65 then primary6569_=1;
+primary7074_=0; if primary=1 and 60 <= age < 65 then primary7074_=1;
+primary7579_=0; if primary=1 and 60 <= age < 65 then primary7579_=1;
+primary8084_=0; if primary=1 and 60 <= age < 65 then primary8084_=1;
 
 
 primary1524m_ep=0; if gender=1 and primary=1 and 15 <= age < 25 and ep=1 then primary1524m_ep=1;
@@ -17972,14 +17994,21 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_primary + primary ; s_primary1549 + primary1549 ; s_primary1549m + primary1549m ; s_primary1549w + primary1549w ;
 	s_infected_primary + infected_primary; s_inf_primary + inf_primary ; 
 
+	s_primary1519_ + primary1519_ ; s_primary2024_ + primary2024_ ; s_primary2529_ + primary2529_ ; s_primary3034_ + primary3034_ ; 
+	s_primary3539_ + primary3539_ ; s_primary4044_ + primary4044_ ; s_primary4549_ + primary4549_ ; s_primary5054_ + primary5054_ ;
+	s_primary5559_ + primary5559_ ; s_primary6064_ + primary6064_ ;	s_primary6569_ + primary6569_ ; s_primary7074_ + primary7074_ ;			
+	s_primary7579_ + primary7579_ ; s_primary8084_ + primary8084_ ;
+
 	s_primary1519m + primary1519m ; s_primary2024m + primary2024m ; s_primary2529m + primary2529m ; s_primary3034m + primary3034m ; 
 	s_primary3539m + primary3539m ; s_primary4044m + primary4044m ; s_primary4549m + primary4549m ; s_primary5054m + primary5054m ;
-	s_primary5559m + primary5559m ; s_primary6064m + primary6064m ;			
+	s_primary5559m + primary5559m ; s_primary6064m + primary6064m ;	s_primary6569m + primary6569m ; s_primary7074m + primary7074m ;			
+	s_primary7579m + primary7579m ; s_primary8084m + primary8084m ;
 			
 	s_primary1519w + primary1519w ; s_primary2024w + primary2024w ; s_primary2529w + primary2529w ; s_primary3034w + primary3034w ; 
 	s_primary3539w + primary3539w ; s_primary4044w + primary4044w ; s_primary4549w + primary4549w ; s_primary5054w + primary5054w ;
-	s_primary5559w + primary5559w ; s_primary6064w + primary6064w ;			
-			
+	s_primary5559w + primary5559w ; s_primary6064w + primary6064w ; s_primary6569w + primary6569w ; s_primary7074w + primary7074w ;			
+	s_primary7579w + primary7579w ;s_primary8084w + primary8084w ;
+	
 	s_primary_ep_m + primary_ep_m ; s_primary_ep_w + primary_ep_w ;  
 
 	s_primary1524m_ep + primary1524m_ep ; s_primary2534m_ep + primary2534m_ep ; s_primary3544m_ep + primary3544m_ep ; s_primary4554m_ep + primary4554m_ep;
@@ -20644,10 +20673,14 @@ s_infection_pre_year_interv  s_infection_post_year_interv
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+
+s_primary1519_	s_primary2024_	s_primary2529_	s_primary3034_	s_primary3539_	s_primary4044_	s_primary4549_
+s_primary5054_	s_primary5559_	s_primary6064_  s_primary6569_	s_primary7074_	s_primary7579_  s_primary8084_
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
-s_primary5054m	s_primary5559m	s_primary6064m
+s_primary5054m	s_primary5559m	s_primary6064m  s_primary6569m	s_primary7074m	s_primary7579m  s_primary8084m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
-s_primary5054w	s_primary5559w	s_primary6064w
+s_primary5054w	s_primary5559w	s_primary6064w  s_primary6569w	s_primary7074w	s_primary7579w  s_primary8084w
+
 s_primary_ep_m  s_primary_ep_w  
 s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_primary5564m_ep
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
@@ -22125,10 +22158,13 @@ s_infection_pre_year_interv  s_infection_post_year_interv
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+s_primary1519_	s_primary2024_	s_primary2529_	s_primary3034_	s_primary3539_	s_primary4044_	s_primary4549_
+s_primary5054_	s_primary5559_	s_primary6064_  s_primary6569_	s_primary7074_	s_primary7579_  s_primary8084_
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
-s_primary5054m	s_primary5559m	s_primary6064m
+s_primary5054m	s_primary5559m	s_primary6064m  s_primary6569m	s_primary7074m	s_primary7579m  s_primary8084m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
-s_primary5054w	s_primary5559w	s_primary6064w
+s_primary5054w	s_primary5559w	s_primary6064w  s_primary6569w	s_primary7074w	s_primary7579w  s_primary8084w
+
 s_primary_ep_m  s_primary_ep_w  
 s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_primary5564m_ep
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
@@ -27651,10 +27687,14 @@ s_infection_pre_year_interv  s_infection_post_year_interv
 
 /*primary infection*/
 s_primary  		s_primary1549   s_primary1549m  s_primary1549w  s_infected_primary 	s_inf_primary
+
+s_primary1519_	s_primary2024_	s_primary2529_	s_primary3034_	s_primary3539_	s_primary4044_	s_primary4549_
+s_primary5054_	s_primary5559_	s_primary6064_  s_primary6569_	s_primary7074_	s_primary7579_  s_primary8084_
 s_primary1519m	s_primary2024m	s_primary2529m	s_primary3034m	s_primary3539m	s_primary4044m	s_primary4549m
-s_primary5054m	s_primary5559m	s_primary6064m
+s_primary5054m	s_primary5559m	s_primary6064m  s_primary6569m	s_primary7074m	s_primary7579m  s_primary8084m
 s_primary1519w	s_primary2024w	s_primary2529w	s_primary3034w	s_primary3539w	s_primary4044w	s_primary4549w
-s_primary5054w	s_primary5559w	s_primary6064w
+s_primary5054w	s_primary5559w	s_primary6064w  s_primary6569w	s_primary7074w	s_primary7579w  s_primary8084w
+
 s_primary_ep_m  s_primary_ep_w  
 s_primary1524m_ep  s_primary2534m_ep  s_primary3544m_ep  s_primary4554m_ep  s_primary5564m_ep
 s_primary1524w_ep  s_primary2534w_ep  s_primary3544w_ep  s_primary4554w_ep  s_primary5564w_ep
