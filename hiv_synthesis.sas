@@ -4530,7 +4530,6 @@ if caldate{t} gt dt_start_pregn+0.75 then do;
 end;*anc needs to be to 1 at dt_start_pregn+0.75 otherwise testing at birth does not happen;
 
 *Breastfeeding;		*JAS Apr2023;
-prob_stop_breastfeeding_yr1=0.1; prob_stop_breastfeeding_yr2=0.5;
 if caldate{t}=dt_lastbirth then do; breastfeeding=1; end;
 if (caldate{t} gt dt_lastbirth) and breastfeeding=1 then do;
 	xx=rand('uniform');
