@@ -1,13 +1,14 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_n_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_p_out\";
 
 ods html close;
 
 
 data a;
 set b.out:; ***INSERT OUTPUT FILENAME; 
+
 
 
 proc sort;
@@ -181,10 +182,14 @@ s_hivge15 = s_hivge15m + s_hivge15w ;
 
 s_hiv = s_hivge15 ;
 
+* n_undiag;						n_undiag = (s_hiv - s_diag) * &sf ;
+* n_hiv;						n_hiv = s_hiv * &sf ;
+* p_mcirc;						p_mcirc = s_mcirc / s_alive_m ;
 
 * n_tested;						n_tested = s_tested * &sf * 4;
 * test_prop_positive;			if s_tested gt 0 then test_prop_positive = s_diag_this_period / s_tested;
 * n_prep_any;					n_prep_any = s_prep_any * &sf;
+* n_prep_inj;					n_prep_inj = s_prep_inj * &sf;
 
 ***general population- key outputs;
 * p_diag;						if s_hiv1564  > 0 then p_diag = s_diag_1564_ / s_hiv1564 ; 
@@ -196,6 +201,8 @@ s_hiv = s_hivge15 ;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
 
 * p_adhav_hi_onart;				p_adhav_hi_onart = s_adhav_hi_onart / s_onart ;
+
+* n_alive;						n_alive = (s_alive_m + s_alive_w) * &sf ;
 
 * p_dol;						p_dol = s_dol / s_onart;
 * p_efa;						p_efa = s_efa / s_onart;
@@ -227,6 +234,20 @@ s_hiv = s_hivge15 ;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
 
 
+* prop_m_vlg1; 					prop_m_vlg1 = s_prop_m_vlg1 ;
+* prop_m_vlg2; 					prop_m_vlg2 = s_prop_m_vlg2 ;
+* prop_m_vlg3; 					prop_m_vlg3 = s_prop_m_vlg3 ;
+* prop_m_vlg4; 					prop_m_vlg4 = s_prop_m_vlg4 ;
+* prop_m_vlg5; 					prop_m_vlg5 = s_prop_m_vlg5 ;
+* prop_m_vlg6; 					prop_m_vlg6 = s_prop_m_vlg6 ;
+
+* prop_w_vlg1; 					prop_w_vlg1 = s_prop_w_vlg1 ;
+* prop_w_vlg2; 					prop_w_vlg2 = s_prop_w_vlg2 ;
+* prop_w_vlg3; 					prop_w_vlg3 = s_prop_w_vlg3 ;
+* prop_w_vlg4; 					prop_w_vlg4 = s_prop_w_vlg4 ;
+* prop_w_vlg5; 					prop_w_vlg5 = s_prop_w_vlg5 ;
+* prop_w_vlg6; 					prop_w_vlg6 = s_prop_w_vlg6 ;
+
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
@@ -234,8 +255,10 @@ keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
-dcost ddaly   n_death_hiv  p_onart_vl1000
-p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
+dcost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  
+p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw  n_prep_inj
+prop_m_vlg1  prop_m_vlg2  prop_m_vlg3  prop_m_vlg4  prop_m_vlg5 prop_m_vlg6 
+prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
@@ -246,7 +269,8 @@ rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
 ;
 
 
-data a.intensive3_n_l; set y;
+data a.intensive3_p_l; set y;
+
 
 
 proc sort data=y;by run option;run;
@@ -290,8 +314,8 @@ data &v ; merge  y_23 t_30 t_24_28 t_24_30 t_24_43 t_24_73;
 
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	%var(v=p_onart); 	%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
-%var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
+%var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);  %var(v=n_hiv);
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_undiag); %var(v=p_mcirc);
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
@@ -340,7 +364,7 @@ sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl ;
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_n;
+data a.wide_intensive3_p;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -365,7 +389,15 @@ netddaly_24_73_6 = ddaly_24_73_6 + (dcost_24_73_6 / 0.0005);
 
 r_incidence_24_28 = incidence1549_24_28_5 / incidence1549_24_28_1;
 
-proc means data=a.wide_intensive3_n;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
+testing_ce = 0; if netddaly_24_73_5 < netddaly_24_73_2 then testing_ce = 1;
+testing_ce_x = 1 - testing_ce ;
+
+p_diag_23_r = round(p_diag_23, 0.05);
+p_onart_23_r = round(p_onart_23, 0.05);
+
+
+
+proc means data=a.wide_intensive3_p;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
 dcost_24_73_1 dcost_24_73_2 dcost_24_73_3 dcost_24_73_4 dcost_24_73_5 dcost_24_73_6
 
 d_ddaly_24_73_2_1 
@@ -387,6 +419,23 @@ incidence1549_24_73_1 incidence1549_24_73_2 incidence1549_24_73_3 incidence1549_
 incidence1549_24_30_1 incidence1549_24_30_2 incidence1549_24_30_3 incidence1549_24_30_4  incidence1549_24_30_5  incidence1549_24_30_6 
   ;
 run;
+
+
+
+proc logistic; model testing_ce_x = p_diag_23 ; run;
+
+proc freq; tables p_diag_23_r * testing_ce ;  run;
+
+proc logistic; model testing_ce_x = p_onart_23 ; run;
+
+proc freq; tables p_onart_23_r * testing_ce ;  run;
+
+
+
+
+
+
+
 
 
 /*
@@ -436,7 +485,7 @@ s_hiv = s_hivge15 ;
 * p_age1549_hiv ; 				p_age1549_hiv = (s_hiv1549m + s_hiv1549w) / s_hivge15 ;
 * p_age1549_hivneg ;			p_age1549_hivneg = ((s_alive1549_w + s_alive1549_m) - (s_hiv1549m + s_hiv1549w)) / ((s_alive_m + s_alive_w) - s_hivge15);
 
-* s_alive;						s_alive = s_alive_m + s_alive_w ;
+
 * p_w_giv_birth_this_per;		p_w_giv_birth_this_per = s_pregnant / s_alive1564_w;
 * gender_r_newp;				gender_r_newp = s_m_newp / s_w_newp; log_gender_r_newp  = log(gender_r_newp);
 
@@ -605,5 +654,30 @@ s_hiv_cab = s_hiv_cab_3m + s_hiv_cab_6m + s_hiv_cab_9m + s_hiv_cab_ge12m;
 
 * p_prep_adhg80 ;				if s_prep_oral gt 0 then p_prep_adhg80 = s_prep_adhg80 / s_prep_oral ;
 
+* prop_m_vlg1; 					prop_m_vlg1 = s_prop_m_vlg1 / (s_prop_m_vlg1 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+* prop_m_vlg2; 					prop_m_vlg2 = s_prop_m_vlg2 / (s_prop_m_vlg2 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+* prop_m_vlg3; 					prop_m_vlg3 = s_prop_m_vlg3 / (s_prop_m_vlg3 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+* prop_m_vlg4; 					prop_m_vlg4 = s_prop_m_vlg4 / (s_prop_m_vlg4 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+* prop_m_vlg5; 					prop_m_vlg5 = s_prop_m_vlg5 / (s_prop_m_vlg5 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+* prop_m_vlg6; 					prop_m_vlg6 = s_prop_m_vlg6 / (s_prop_m_vlg6 + s_prop_m_vlg2 + s_prop_m_vlg3 + s_prop_m_vlg4 
+								+ s_prop_m_vlg5 + s_prop_m_vlg6);
+
+* prop_w_vlg1; 					prop_w_vlg1 = s_prop_w_vlg1 / (s_prop_w_vlg1 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
+* prop_w_vlg2; 					prop_w_vlg2 = s_prop_w_vlg2 / (s_prop_w_vlg2 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
+* prop_w_vlg3; 					prop_w_vlg3 = s_prop_w_vlg3 / (s_prop_w_vlg3 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
+* prop_w_vlg4; 					prop_w_vlg4 = s_prop_w_vlg4 / (s_prop_w_vlg4 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
+* prop_w_vlg5; 					prop_w_vlg5 = s_prop_w_vlg5 / (s_prop_w_vlg5 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
+* prop_w_vlg6; 					prop_w_vlg6 = s_prop_w_vlg6 / (s_prop_w_vlg6 + s_prop_w_vlg2 + s_prop_w_vlg3 + s_prop_w_vlg4 
+								+ s_prop_w_vlg5 + s_prop_w_vlg6);
 
 */
