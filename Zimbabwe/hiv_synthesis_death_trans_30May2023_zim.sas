@@ -7096,7 +7096,7 @@ infected_diagnosed=.;
 I_undiag=0;I_diag_naive=0;I_diag_startart=0;I_onart=0;I_offart=0;I_onart_lt6m=0;I_onart_lt6m_nvs=0;I_onart_gt6m_nvs=0;I_onart_gt6m_vs=0; 
 I_offart_1stI=0;I_offart_SI=0;I_offart_SIlt6m=0;I_offart_SIgt6m=0;
 
-if infected_ep=1 and caldatet{t}=infection then do;
+if infected_ep=1 and caldate{t}=infection then do;
 	
 	infected_diagnosed=0; if epdiag_tm1=1 then infected_diagnosed=1; 
 
