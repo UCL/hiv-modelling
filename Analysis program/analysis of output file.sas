@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_07_05_23 ;
+set a.wide_fsw_08_05_23 ;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -211,6 +211,13 @@ run;
 data costs;
 set a;
 
+if 0< incidence1549_22 <= 0.1 then incidence=1;
+if 0.1< incidence1549_22 <=0.3 then incidence=2;
+if 0.3< incidence1549_22 <= 0.5 then incidence=3;
+if 0.5< incidence1549_22 <= 1 then incidence=4;
+if 1< incidence1549_22 then incidence =5;
+
+
 ****Cost effectiveness;
 /*
 _1=no program
@@ -336,8 +343,25 @@ run;
 
 ***Max we can spend for a SW prog to be CE;
 proc means n mean p50 p5 p95 lclm uclm;
-var maxcost_low_v_none maxcost_high_v_none;
-run;
+var maxcost_low_v_none maxcost_high_v_none;run;
+
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;where incidence=1;run;
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;where incidence=2;run;
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;where incidence=3;run;
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;where incidence=4;run;
+proc means n mean p50 p5 p95 lclm uclm;
+var maxcost_low_v_none maxcost_high_v_none;where incidence=5;run;
+
+
+
+
+
+
+
 
 ***Cost per DALY using CET;
 
@@ -357,7 +381,6 @@ var	nmb_none nmb_swprog_high nmb_swprog_low
 ***max cost to spend on a SW program;
 proc means n mean p50 p5 p95 lclm uclm;
 var	maxcost_swprog_low_v_none maxcost_swprog_high_v_none;
-
 run;
 
 
