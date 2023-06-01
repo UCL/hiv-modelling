@@ -12,7 +12,7 @@ proc freq;table run;where cald=2020;run;
 
 
 
-proc freq;table effect_sw_prog_newp;run;
+proc freq data=a;table effect_sw_prog_newp;where option =1;run;
 /*
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=0 and cald>2023.5;run;
 proc means n p50 p5 p95;var s_tested_sw s_tested  s_cost_test s_dtest_cost s_cost_test_f_sw;where option=2 and cald>2023.5;run;
