@@ -1,8 +1,8 @@
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\Zim_30may23";
 
 
 data a;
-set a.zim_19apr23;
+set a.zim_30may23;
 if run=. then delete;
 
 if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
