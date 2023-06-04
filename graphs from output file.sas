@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_p_l;
+set a.intensive3_r_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -24,7 +24,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  prop_w_vlg1            ;
+%let single_var =  p_inf_primary                 ;
 
 * p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary  test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw 
 n_undiag p_mcirc 
@@ -36,7 +36,7 @@ prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
 proc sort data=b; by cald run ;run;
 data b;set b; count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b; var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 1782  ;
+%let nfit = 600   ;
 %let year_end = 2070.00 ;
 run;
 proc sort;by cald option ;run;
@@ -379,7 +379,6 @@ ods html close;
 
 
 
-
 ods html;
 proc sgplot data=d ; 
 Title    height=1.5 justify=center "Number of people tested";
@@ -444,7 +443,6 @@ run;quit;
 ods html close;
 
 
-
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion with vl < 1000";
@@ -475,7 +473,6 @@ label p50_p_vl1000__5 = "option_5";
 run;quit;
 
 ods html close;
-
 
 
 ods html;
@@ -510,6 +507,7 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
@@ -539,6 +537,7 @@ label mean_incidence1549__5 = "option_5";
 run;quit;
 
 ods html close;
+
 
 
 ods html;
@@ -572,6 +571,7 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000";
@@ -603,35 +603,37 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_prep_inj";
+Title    height=1.5 justify=center "n_prep_any";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 500000  by 10000 ) valueattrs=(size=10);
 
-label p50_n_prep_inj_0 = "option 0";
-label p50_n_prep_inj_1 = "option_1";
-label p50_n_prep_inj_2 = "option_2";
-label p50_n_prep_inj_3 = "option_3";
-label p50_n_prep_inj_4 = "option_4";
-label p50_n_prep_inj_5 = "option_5";
+label p50_n_prep_any_0 = "option 0";
+label p50_n_prep_any_1 = "option_1";
+label p50_n_prep_any_2 = "option_2";
+label p50_n_prep_any_3 = "option_3";
+label p50_n_prep_any_4 = "option_4";
+label p50_n_prep_any_5 = "option_5";
 
-  series  x=cald y=p50_n_prep_inj_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_0 	upper=p95_n_prep_inj_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_1 	upper=p95_n_prep_inj_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_2/	lineattrs = (color=red    thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_2 	upper=p95_n_prep_inj_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_3/	lineattrs = (color=yellow thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_3 	upper=p95_n_prep_inj_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_4 	upper=p95_n_prep_inj_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_n_prep_inj_5/	lineattrs = (color=orange thickness = 4);
-  band    x=cald lower=p5_n_prep_inj_5 	upper=p95_n_prep_inj_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_n_prep_any_0 	upper=p95_n_prep_any_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_n_prep_any_1 	upper=p95_n_prep_any_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_2/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_n_prep_any_2 	upper=p95_n_prep_any_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_3/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_n_prep_any_3 	upper=p95_n_prep_any_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_4/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_n_prep_any_4 	upper=p95_n_prep_any_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_n_prep_any_5/	lineattrs = (color=orange thickness = 4);
+  band    x=cald lower=p5_n_prep_any_5 	upper=p95_n_prep_any_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 run;quit;
 
 ods html close;
+
 
 
 ods html;
@@ -763,41 +765,41 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 
 ods html;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "p inf naive";
+Title    height=1.5 justify=center "p inf primary";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2022 to 2070 by 1)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0   to 1   by 0.1  ) valueattrs=(size=10);
 
-label p50_p_inf_naive_0 = "option 0";
-label p50_p_inf_naive_1 = "option_1";
-label p50_p_inf_naive_2 = "option_2";
-label p50_p_inf_naive_3 = "option_3";
-label p50_p_inf_naive_4 = "option_4";
-label p50_p_inf_naive_5 = "option_5";
+label p50_p_inf_primary_0 = "option 0";
+label p50_p_inf_primary_1 = "option_1";
+label p50_p_inf_primary_2 = "option_2";
+label p50_p_inf_primary_3 = "option_3";
+label p50_p_inf_primary_4 = "option_4";
+label p50_p_inf_primary_5 = "option_5";
 
-  series  x=cald y=p50_p_inf_naive_0/	lineattrs = (color=black thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_0 	upper=p95_p_inf_naive_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_naive_1/	lineattrs = (color=green thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_1 	upper=p95_p_inf_naive_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_naive_2/	lineattrs = (color=red    thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_2 	upper=p95_p_inf_naive_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_naive_3/	lineattrs = (color=yellow thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_3 	upper=p95_p_inf_naive_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_naive_4/	lineattrs = (color=blue   thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_4 	upper=p95_p_inf_naive_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
-  series  x=cald y=p50_p_inf_naive_5/	lineattrs = (color=orange thickness = 4);
-  band    x=cald lower=p5_p_inf_naive_5 	upper=p95_p_inf_naive_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_0/	lineattrs = (color=black thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_0 	upper=p95_p_inf_primary_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_1/	lineattrs = (color=green thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_1 	upper=p95_p_inf_primary_1  / transparency=0.9 fillattrs = (color=green) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_2/	lineattrs = (color=red    thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_2 	upper=p95_p_inf_primary_2  / transparency=0.9 fillattrs = (color=red) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_3/	lineattrs = (color=yellow thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_3 	upper=p95_p_inf_primary_3  / transparency=0.9 fillattrs = (color=yellow) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_4/	lineattrs = (color=blue   thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_4 	upper=p95_p_inf_primary_4  / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+  series  x=cald y=p50_p_inf_primary_5/	lineattrs = (color=orange thickness = 4);
+  band    x=cald lower=p5_p_inf_primary_5 	upper=p95_p_inf_primary_5  / transparency=0.9 fillattrs = (color=orange) legendlabel= "90% range";
 
 
 run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -959,10 +961,6 @@ run;quit;
 ods html close;
 
 
-*/
-
-
-
 
 ods html;
 proc sgplot data=d; 
@@ -994,3 +992,5 @@ label p50_prop_w_vlg1_5 = "option_5";
 run;quit;
 
 ods html close;
+
+*/

@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_p_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_s_out\";
 
 ods html close;
 
@@ -61,7 +61,7 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 ly = s_ly * &sf;  *life years;
 dly = s_dly * &sf; *discounted life years;
 
-s_ddaly = s_dead_ddaly + (s_live_ddaly * 1.0 );
+s_ddaly = s_dead_ddaly + (s_live_ddaly * 2.5 );
 
 ***Scaling up to annual discounted DALYs in the whole population;
 ddaly = s_ddaly * &sf * 4;
@@ -137,6 +137,19 @@ dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000;
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
+
+
+
+* ##############################;
+
+
+* added for intensive3 because testing could be 4 times the 3.70 default facility cost if going into communities to reach people;
+
+dtest_cost = dtest_cost * 4;
+
+
+* ##############################;
+
 
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
@@ -222,6 +235,8 @@ s_hiv = s_hivge15 ;
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
+* n_dead_all;					n_dead_all = s_dead_all * 4 * &sf;
+
 
 * p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
 * p_inf_ep ;					p_inf_ep = s_inf_ep   / s_primary;
@@ -259,6 +274,12 @@ dcost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv
 p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw  n_prep_inj
 prop_m_vlg1  prop_m_vlg2  prop_m_vlg3  prop_m_vlg4  prop_m_vlg5 prop_m_vlg6 
 prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
+n_dead_all
+dart_cost
+ dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
+		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
+		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
+		dcost_sw_program
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
@@ -269,7 +290,10 @@ rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
 ;
 
 
-data a.intensive3_p_l; set y;
+
+
+
+data a.intensive3_s_l; set y;
 
 
 
@@ -315,11 +339,18 @@ data &v ; merge  y_23 t_30 t_24_28 t_24_30 t_24_43 t_24_73;
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	%var(v=p_onart); 	%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);  %var(v=n_hiv);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_undiag); %var(v=p_mcirc);
-
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_undiag); %var(v=p_mcirc);  %var(v=n_prep_any);
+%var(v=p_mcirc);
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   
+%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   %var(v=n_dead_all);
+
+ %var(v=dart_cost);  %var(v=dadc_cost);  %var(v=dcd4_cost);  %var(v=dvl_cost);  %var(v=dvis_cost);  %var(v=dnon_tb_who3_cost);  %var(v=dcot_cost);  %var(v=dtb_cost);
+  %var(v=dres_cost); 
+		%var(v=dtest_cost);  %var(v=d_t_adh_int_cost);  %var(v=dswitchline_cost);  %var(v=dcost_drug_level_test);  %var(v=dcost_circ);  
+%var(v=dcost_condom_dn); 
+		 %var(v=dcost_avail_self_test);  %var(v=dcost_prep_visit_oral);  %var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj);  
+		%var(v=dcost_sw_program);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 
@@ -330,10 +361,13 @@ run;
 data wide_outputs;merge   p_onart
 p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
-p_vg1000 		p_vl1000			prevalence_vg1000
+p_vg1000 		p_vl1000			prevalence_vg1000  p_mcirc
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly   n_death_hiv
-
+dcost			ddaly   n_death_hiv  n_prep_any   n_dead_all
+dart_cost  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
+		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
+		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
+		dcost_sw_program
 /*ADD IN PROJECT SPECIFIC OUTPUTS*/
 ;
 
@@ -364,7 +398,7 @@ sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl ;
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_p;
+data a.wide_intensive3_s;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -397,7 +431,7 @@ p_onart_23_r = round(p_onart_23, 0.05);
 
 
 
-proc means data=a.wide_intensive3_p;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
+proc means mean median data=a.wide_intensive3_s;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
 dcost_24_73_1 dcost_24_73_2 dcost_24_73_3 dcost_24_73_4 dcost_24_73_5 dcost_24_73_6
 
 d_ddaly_24_73_2_1 
@@ -405,6 +439,36 @@ d_ddaly_24_73_3_1
 d_ddaly_24_73_4_1 
 d_ddaly_24_73_5_1 
 d_ddaly_24_73_6_1 
+
+n_death_hiv_24_30_1
+n_death_hiv_24_30_2
+n_death_hiv_24_30_3
+n_death_hiv_24_30_4
+n_death_hiv_24_30_5
+n_death_hiv_24_30_6
+
+n_dead_all_24_30_1
+n_dead_all_24_30_2
+n_dead_all_24_30_3
+n_dead_all_24_30_4
+n_dead_all_24_30_5
+n_dead_all_24_30_6
+
+n_prep_any_24_30_1
+n_prep_any_24_30_2
+n_prep_any_24_30_3
+n_prep_any_24_30_4
+n_prep_any_24_30_5
+n_prep_any_24_30_6
+
+p_mcirc_24_30_1
+
+p_vl1000_24_30_1
+p_vl1000_24_30_2
+p_vl1000_24_30_3
+p_vl1000_24_30_4
+p_vl1000_24_30_5
+p_vl1000_24_30_6
 
 d_dcost_24_73_2_1 
 d_dcost_24_73_3_1 
@@ -417,7 +481,32 @@ netddaly_24_73_1 netddaly_24_73_2 netddaly_24_73_3 netddaly_24_73_4  netddaly_24
 incidence1549_24_73_1 incidence1549_24_73_2 incidence1549_24_73_3 incidence1549_24_73_4  incidence1549_24_73_5  incidence1549_24_73_6 
 
 incidence1549_24_30_1 incidence1549_24_30_2 incidence1549_24_30_3 incidence1549_24_30_4  incidence1549_24_30_5  incidence1549_24_30_6 
-  ;
+ 
+dart_cost_24_73_1 dadc_cost_24_73_1  dcd4_cost_24_73_1  dvl_cost_24_73_1  dvis_cost_24_73_1  dnon_tb_who3_cost_24_73_1  dcot_cost_24_73_1  dtb_cost_24_73_1
+dres_cost_24_73_1 dtest_cost_24_73_1  d_t_adh_int_cost_24_73_1  dswitchline_cost_24_73_1  dcost_drug_level_test_24_73_1  dcost_circ_24_73_1  
+dcost_condom_dn_24_73_1  dcost_avail_self_test_24_73_1  dcost_prep_visit_oral_24_73_1  dcost_prep_oral_24_73_1  dcost_prep_visit_inj_24_73_1  
+dcost_prep_inj_24_73_1  dcost_sw_program_24_73_1
+
+dart_cost_24_73_2 dadc_cost_24_73_2  dcd4_cost_24_73_2  dvl_cost_24_73_2  dvis_cost_24_73_2  dnon_tb_who3_cost_24_73_2  dcot_cost_24_73_2  dtb_cost_24_73_2
+dres_cost_24_73_2 dtest_cost_24_73_2  d_t_adh_int_cost_24_73_2  dswitchline_cost_24_73_2  dcost_drug_level_test_24_73_2  dcost_circ_24_73_2  
+dcost_condom_dn_24_73_2  dcost_avail_self_test_24_73_2  dcost_prep_visit_oral_24_73_2  dcost_prep_oral_24_73_2  dcost_prep_visit_inj_24_73_2  
+dcost_prep_inj_24_73_2  dcost_sw_program_24_73_2
+
+dart_cost_24_73_3 dadc_cost_24_73_3  dcd4_cost_24_73_3  dvl_cost_24_73_3  dvis_cost_24_73_3  dnon_tb_who3_cost_24_73_3  dcot_cost_24_73_3  dtb_cost_24_73_3
+dres_cost_24_73_3 dtest_cost_24_73_3  d_t_adh_int_cost_24_73_3  dswitchline_cost_24_73_3  dcost_drug_level_test_24_73_3  dcost_circ_24_73_3  
+dcost_condom_dn_24_73_3  dcost_avail_self_test_24_73_3  dcost_prep_visit_oral_24_73_3  dcost_prep_oral_24_73_3  dcost_prep_visit_inj_24_73_3  
+dcost_prep_inj_24_73_3  dcost_sw_program_24_73_3
+
+dart_cost_24_73_4 dadc_cost_24_73_4  dcd4_cost_24_73_4  dvl_cost_24_73_4  dvis_cost_24_73_4  dnon_tb_who3_cost_24_73_4  dcot_cost_24_73_4  dtb_cost_24_73_4
+dres_cost_24_73_4 dtest_cost_24_73_4  d_t_adh_int_cost_24_73_4  dswitchline_cost_24_73_4  dcost_drug_level_test_24_73_4  dcost_circ_24_73_4  
+dcost_condom_dn_24_73_4  dcost_avail_self_test_24_73_4  dcost_prep_visit_oral_24_73_4  dcost_prep_oral_24_73_4  dcost_prep_visit_inj_24_73_4  
+dcost_prep_inj_24_73_4  dcost_sw_program_24_73_4
+
+dart_cost_24_73_5 dadc_cost_24_73_5  dcd4_cost_24_73_5  dvl_cost_24_73_5  dvis_cost_24_73_5  dnon_tb_who3_cost_24_73_5  dcot_cost_24_73_5  dtb_cost_24_73_5
+dres_cost_24_73_5 dtest_cost_24_73_5  d_t_adh_int_cost_24_73_5  dswitchline_cost_24_73_5  dcost_drug_level_test_24_73_5  dcost_circ_24_73_5  
+dcost_condom_dn_24_73_5  dcost_avail_self_test_24_73_5  dcost_prep_visit_oral_24_73_5  dcost_prep_oral_24_73_5  dcost_prep_visit_inj_24_73_5  
+dcost_prep_inj_24_73_5  dcost_sw_program_24_73_5
+ ;
 run;
 
 
