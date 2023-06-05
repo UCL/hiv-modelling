@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_s_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_t_out\";
 
 ods html close;
 
@@ -293,7 +293,7 @@ rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
 
 
 
-data a.intensive3_s_l; set y;
+data a.intensive3_t_l; set y;
 
 
 
@@ -398,7 +398,7 @@ sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl ;
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_s;
+data a.wide_intensive3_t;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -431,7 +431,7 @@ p_onart_23_r = round(p_onart_23, 0.05);
 
 
 
-proc means mean median data=a.wide_intensive3_s;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
+proc means mean median data=a.wide_intensive3_t;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
 dcost_24_73_1 dcost_24_73_2 dcost_24_73_3 dcost_24_73_4 dcost_24_73_5 dcost_24_73_6
 
 d_ddaly_24_73_2_1 

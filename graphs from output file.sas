@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_r_l;
+set a.intensive3_t_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
