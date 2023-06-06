@@ -593,7 +593,7 @@ newp_seed = 7;
 								end;
 
 ***lower impact of a sw_program compared to core since this is from 2010;
-* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp, 0.02 0.05 0.07);
+* effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.10 0.20 0.30);
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.30);
@@ -601,7 +601,7 @@ newp_seed = 7;
 * effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
 * effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.25);
 
-* effect_sw_prog_newp2;      %sample_uniform(effect_sw_prog_newp2, 0.05 0.07 0.10);
+* effect_sw_prog_newp2;      %sample_uniform(effect_sw_prog_newp2, 0.10 0.15 0.20);
 * effect_sw_prog_6mtest2;    %sample_uniform(effect_sw_prog_6mtest2, 0.25 0.50 0.75);
 * effect_sw_prog_int2;       %sample_uniform(effect_sw_prog_int2, 0.05 0.10 0.15);
 * effect_sw_prog_adh2;       %sample_uniform(effect_sw_prog_adh2, 0.25 0.5 0.75);
