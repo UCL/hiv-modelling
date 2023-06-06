@@ -38,6 +38,7 @@ s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 
 s_primary1519_ =  s_primary1519m + s_primary1519w;
+s_primary3539_ =  s_primary3539m + s_primary3539w;
 
 
 
@@ -785,6 +786,7 @@ n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv454
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
 
 s_primary1519_ s_primary1519m s_primary1519w
+s_primary3539_ s_primary3539m s_primary3539w
 
 /*
 n_hiv_death1519_  n_hiv_death2024_  n_hiv_death2529_  n_hiv_death3034_  n_hiv_death3539_  n_hiv_death4044_  n_hiv_death4549_  n_hiv_death5054_  n_hiv_death5559_  n_hiv_death6064_ n_hiv_death6569_  n_hiv_death7074_  n_hiv_death7579_  n_hiv_death8084_  
@@ -1206,6 +1208,9 @@ s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_of
 s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
 s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
 
+s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
+s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
+s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m 
 
 ;
 
@@ -1216,10 +1221,10 @@ data y1;
 set y;
 
 keep 
-cald s_primary1519_ s_primary1519m s_primary1519w
-s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_offart1519m s_I_onart_lt6m1519m 
-s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
-s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
+cald s_primary3539_ s_primary3539m s_primary3539w
+s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
+s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
+s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m 
 ;
 
 if cald lt 2010 then delete;
@@ -1228,7 +1233,7 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check1.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check2.xlsx"
 replace;
 run;
 
