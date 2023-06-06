@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
-%let population = 500  ; 
+%let population = 100000  ; 
 %let year_interv = 2023;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -6350,7 +6350,7 @@ end;
 * INTRODUCE HIV INTO POPULATION ;
 
 d=rand('uniform');
-if caldate{t}=startyr and newp >= 0 and d < 1   and infection=.  then do; 
+if caldate{t}=startyr and newp >= newp_seed and d < 0.8   and infection=.  then do; 
 		hiv=1; infected_primary=1;infected_diagnosed=0; infected_newp=1; age_source_inf=99;
 		infected_ep=0;infection=caldate{t}; primary   =1;
 		tam=0;   k103m=0; y181m=0; g190m=0; m184m=0; q151m=0; k65m=0;  p32m=0; p33m=0; p46m=0; p47m=0;  p50lm=0; 
@@ -7201,7 +7201,6 @@ if infected_ep=1 then do;
 	I_undiag_ep = 1-infected_diagnosed;
  	
 	if infected_diagnosed=1 then do;
-
 		infected_naive=1;
 		if epart_tm1=1 then do;
 			infected_naive=0;
@@ -19662,8 +19661,7 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
-proc print;var caldate&j primary infected_newp infected_ep i_undiag_newp I_diag_naive_newp I_diag_startart_newp
-i_undiag_ep I_diag_naive_ep I_diag_startart_ep infected_diagnosed infected_naive epart_tm1 epdiag_tm1;where primary=1;run;
+
 
 * procs;
 
@@ -21832,14 +21830,14 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 ;
 
 ***Zim specific;
-/*
+
 if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
 if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
 if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 
 
 if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;
-*/
+
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
