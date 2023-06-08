@@ -7246,7 +7246,7 @@ if infected_ep=1 then do;
 		end;
 
 		*partner off ART, 1st interruption/SI;
-		if I_offart=1 then do;
+		if I_offart_ep=1 then do;
 			u=rand('uniform');
      		if u <   t_p_offart_1stI then I_offart_1stI_ep = 1;
 			if u >=  t_p_offart_1stI then I_offart_SI_ep = 1;*this is currently unrelated to i_offart_vlg1_rm0_np;

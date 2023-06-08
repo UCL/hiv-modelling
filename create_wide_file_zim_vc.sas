@@ -1,13 +1,13 @@
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\Zim_01jun23";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 
 data a;
-set a.zim_01jun23;
+set a.out_803920;
 if run=. then delete;
 
-if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
+*if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
 takes ages to run so cut down dataset;
-if run ne  896923088 then delete;
+*if run ne  896923088 then delete;
 
 proc sort;by run;run;
 proc freq;table cald run;run;
@@ -1233,7 +1233,7 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check2.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check35.xlsx"
 replace;
 run;
 
