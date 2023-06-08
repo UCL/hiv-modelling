@@ -1,6 +1,6 @@
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run 93 all;
+* run 94 all;
 * Matt local machine input;
 libname a 'C:\Users\sf124046\Box\1.sapphire_modelling\synthesis\test';
 %let tmpfilename = out;
@@ -941,8 +941,8 @@ rr_mort_cva_tx = 0.6;
 * cost of hypertension care (in thousands);
 cost_htn_link_voucher = .;
 cost_htn_screen_comm = .;
-cost_htn_visit1 = 0.010;
-cost_htn_visit2 = 0.020;
+cost_htn_visit1 = 0.005;
+cost_htn_visit2 = 0.010;
 cost_htn_visitInt = 0;
 cost_htn_drug1 = 0.0015;
 cost_htn_drug2 = 0.0015;
