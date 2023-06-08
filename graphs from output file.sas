@@ -13,7 +13,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 ods html close;
 
 data b;
-set a.intensive3_t_l;
+set a.intensive3_u_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -24,7 +24,7 @@ prevalence_vg1000_ = prevalence_vg1000;
 p_vl1000_ = p_vl1000;
 p_onart_vl1000_ = p_onart_vl1000;
 
-%let single_var =  p_inf_primary                 ;
+%let single_var =  n_tested                      ;
 
 * p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary  test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw 
 n_undiag p_mcirc 
@@ -377,7 +377,7 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d ; 
@@ -409,7 +409,7 @@ run;quit;
 
 ods html close;
 
-
+/*
 
 ods html;
 proc sgplot data=d; 
@@ -765,7 +765,6 @@ run;quit;
 
 ods html close;
 
-*/
 
 
 ods html;
@@ -799,7 +798,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 

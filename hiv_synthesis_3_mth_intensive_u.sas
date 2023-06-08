@@ -1,27 +1,6 @@
 
 
 
-* deal explicitly with reaching-the-person costs vs hiv test cost and cost of other interventions such as bp measurement and referral;
-
-
-
-
-* consider if need to revise inc1 in inc_cat code ; 
-
-* / * reduce ongoing and future prep use ? ; * discuss with group ;
-
-* / ok with background rate of testing going forward ? ;
-
-* / increase effect on art retention and initiation ;
-
-* / add another option consider increased testing for one period without the increased prep / pep ;
-
-* / need to cost art retention intervention ; * no, leave this to be taken into account at the end, as for testing and prep/pep campaign cost;
-
-* hypothesis: high levels of testing become cost effective when art retention is very high ;
-
-* why do we not get p_onart closer to 1 with all interventions together;
-
 
 
 * libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
@@ -374,7 +353,7 @@ newp_seed = 7;
 * newp_lasttest;			newp_lasttest=0; 
 
 * rate_testanc_inc; 		%sample_uniform(rate_testanc_inc, 0.005 0.01 0.03 0.05 0.10);	
-* test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
+* test_targeting;   		%sample(test_targeting, 1 1.25 1.5 2, 0.25 0.25 0.25 0.25);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
 * an_lin_incr_test;   		%sample(an_lin_incr_test, 
 								0.0001	0.0005 	0.0030 	0.0100 	0.0200 	0.0300 , 
@@ -390,6 +369,8 @@ newp_seed = 7;
 							* dependent_on_time_step_length ;
 
 * rr_testing_female;		rr_testing_female=1.5;
+
+
 
 * LINKAGE, RETENTION, MONITORING, LOSS, RETURN, INTERRUPTION OF ART AND RESTARTING, ART;
 
@@ -664,10 +645,10 @@ newp_seed = 7;
 																* lapr JAS - Changed from rate_test_onprep_oral. Applies to all PrEP types but could split out. Consider again whether we want to keep this ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is 'willing' to take a particular type of PrEP;
 
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.33 0.67); * does prep use depend on the prevalence of vl > 1000 in population;
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.1  0.90); * does prep use depend on the prevalence of vl > 1000 in population;
 * prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
-* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75); * intensive3; rate_test_startprep_any = 0.25 ;
+* rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.25 0.5  0.75); * intensive3; rate_test_startprep_any = 0.20 ;
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
 * rate_test_restartprep_any;   * removed;
@@ -693,7 +674,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
-								* intensive3 ; prob_prep_oral_b = 0.1;
+								* intensive3 ; prob_prep_oral_b = 0.05;
 								
 
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -899,6 +880,18 @@ non_hiv_tb_risk = 0.0005;
 non_hiv_tb_death_risk = 0.3 ;  
 non_hiv_tb_prob_diag_e = 0.5 ; 
 
+
+* intensive 3 month intervention effect;
+
+* intensive3_all_cause_d;	%sample_uniform(intensive3_all_cause_d, 0.95 0.96 0.97 0.98 0.99 1.0);  
+
+tr_rate_undetec_vl=0;
+exp_setting_lower_p_vl1000 = 0; 
+external_exp_factor = 1;
+rate_exp_set_lower_p_vl1000 = 0;
+lower_future_art_cov=0;
+
+
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
 
@@ -1000,6 +993,8 @@ cost_test_c=0.0037; *HCW-testing general pop, hiv negative - changed 30dec2016 -
 cost_test_d=0.02521; *HCW-testing positive (community based);
 cost_test_e=0.0245; *HCW-testing negative (community based);
 cost_test_g=0.022; *vl test to diagnose;
+cost_comm_outreach=0.030; * cost of community outreach in context of periodic intensive 3 month outreach - this incorporates cost of any follow up
+treatment costs in those identified as needing it;
 cost_t_adh_int = 0.010;  
 art_init_cost = 0.010; *Cost of ART initiation - Mar2017;
 cost_switch_line_a = 0.020 ;
@@ -2506,24 +2501,9 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 
 option = &s;
 
-if caldate_never_dot = &year_interv or  caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
-or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
-or  caldate_never_dot = &year_interv + 11  or  caldate_never_dot = &year_interv + 13 
-or  caldate_never_dot = &year_interv + 15  or  caldate_never_dot = &year_interv + 17  or  caldate_never_dot = &year_interv + 19
-or  caldate_never_dot = &year_interv + 21  or  caldate_never_dot = &year_interv + 23  or  caldate_never_dot = &year_interv + 25
-or  caldate_never_dot = &year_interv + 27  or  caldate_never_dot = &year_interv + 29  or  caldate_never_dot = &year_interv + 31
-or  caldate_never_dot = &year_interv + 33  or  caldate_never_dot = &year_interv + 35  or  caldate_never_dot = &year_interv + 37
-or  caldate_never_dot = &year_interv + 39  or  caldate_never_dot = &year_interv + 41  or  caldate_never_dot = &year_interv + 43
-or  caldate_never_dot = &year_interv + 45  or  caldate_never_dot = &year_interv + 47  or  caldate_never_dot = &year_interv + 49
-then do;
-
-tr_rate_undetec_vl=0;
-exp_setting_lower_p_vl1000 = 0; 
-external_exp_factor = 1;
-rate_exp_set_lower_p_vl1000 = 0;
-eff_test_targeting = 5;
-lower_future_art_cov=0;
 effect_intensive3_all_cause_d = 1;
+
+q=rand('uniform');
 
 * this is over one year because we want first to improve onart and vls in those with hiv diagnosed and then have the intensive 3 months of etsting / prep / pep;
 
@@ -2569,8 +2549,9 @@ then do;
 	intensive_3mth_test_factor=20;
 	rr_testing_female=1;
 	hard_reach=0;
-	effect_intensive3_all_cause_d = 0.97;
-	end;
+end;
+
+	effect_intensive3_all_cause_d = intensive3_all_cause_d;
 
 end;
 
@@ -2579,13 +2560,6 @@ if option = 3 then do; * intensive 3 month increase in testing + prep / pep;
 
 	* store values so can be re-assigned these values in next time step;
 	hard_reach_x = hard_reach;
-	eff_prob_prep_any_rest_choice_x = eff_prob_prep_any_restart_choice ;
-	prep_any_willing_x =  prep_any_willing  ;
-	prep_oral_willing_x =  prep_oral_willing ;
-	prep_inj_willing_x =  prep_inj_willing   ;
-	adhav_prep_oral_x =  adhav_prep_oral  ;
-	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
-	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
 
 	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
 	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
@@ -2601,10 +2575,12 @@ then do;
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 	intensive_3mth_test_factor=20;
 	rr_testing_female=1;
-	effect_intensive3_all_cause_d = 0.97;
 	hard_reach =0; 
 
-	* define the chsnges in prep use for this one 3 month period;
+	* define the chsnges in prep use ;
+
+	if q < 0.03 then do;
+
 	eff_prob_prep_any_restart_choice=0.7;
 	prep_any_willing = 1; prep_oral_willing =1; prep_inj_willing =1; 
 	adhav_prep_oral = adhav ; 
@@ -2612,6 +2588,10 @@ then do;
 	eff_prob_prep_oral_b = 0.8;
 	
 	end;
+
+end;
+
+	effect_intensive3_all_cause_d = intensive3_all_cause_d;
 
 end;
 
@@ -2651,9 +2631,11 @@ or  caldate_never_dot = &year_interv + 45  or  caldate_never_dot = &year_interv 
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 	intensive_3mth_test_factor=20;
 	rr_testing_female=1;
-	effect_intensive3_all_cause_d = 0.97;
 	hard_reach=0;
+
 	end;
+
+	effect_intensive3_all_cause_d = intensive3_all_cause_d;
 
 end;
 
@@ -2676,13 +2658,6 @@ if option = 5 then do;  * all interventions ;
 
 	* store values so can be re-assigned these values in next time step;
 	hard_reach_x = hard_reach;
-	eff_prob_prep_any_rest_choice_x = eff_prob_prep_any_restart_choice ;
-	prep_any_willing_x =  prep_any_willing  ;
-	prep_oral_willing_x =  prep_oral_willing ;
-	prep_inj_willing_x =  prep_inj_willing   ;
-	adhav_prep_oral_x =  adhav_prep_oral  ;
-	eff_rate_test_startprep_any_x =  eff_rate_test_startprep_any ; 
-	eff_prob_prep_oral_b_x =  eff_prob_prep_oral_b ;
 
 	if caldate_never_dot = &year_interv + 1 or  caldate_never_dot = &year_interv + 3 
 	or  caldate_never_dot = &year_interv + 5 or  caldate_never_dot = &year_interv + 7 or  caldate_never_dot = &year_interv + 9 
@@ -2698,47 +2673,26 @@ then do;
 	intensive_3mth_test = 1 ;* if plan two tests over 3 months then could be higher sensitivity for people in primary infection, but perhaps best to be conservative and not include this ;
 	intensive_3mth_test_factor=20;
 	rr_testing_female=1;
-	effect_intensive3_all_cause_d = 0.97;
+	effect_intensive3_all_cause_d = intensive3_all_cause_d;
 	hard_reach =0; 
 
-	* define the chsnges in prep use for this one 3 month period;
+	if q < 0.03 then do;
+
 	eff_prob_prep_any_restart_choice=0.7;
 	prep_any_willing = 1; prep_oral_willing =1; prep_inj_willing =1; 
 	adhav_prep_oral = adhav ; 
 	eff_rate_test_startprep_any = 0.9; 
 	eff_prob_prep_oral_b = 0.8;
+	
+	end;
 
 	end;
 
-end;
+	effect_intensive3_all_cause_d = intensive3_all_cause_d;
 
 end;
 
 
-if (caldate_never_dot = &year_interv + 1.25 or caldate_never_dot = &year_interv + 3.25 
-or caldate_never_dot = &year_interv + 5.25 or caldate_never_dot = &year_interv + 7.25  
-or caldate_never_dot = &year_interv + 9.25  or caldate_never_dot = &year_interv + 11.25 
-or caldate_never_dot = &year_interv + 13.25 or caldate_never_dot = &year_interv + 15.25
-or caldate_never_dot = &year_interv + 17.25  or caldate_never_dot = &year_interv + 19.25
-or caldate_never_dot = &year_interv + 21.25  or caldate_never_dot = &year_interv + 23.25
-or caldate_never_dot = &year_interv + 25.25  or caldate_never_dot = &year_interv + 27.25
-or caldate_never_dot = &year_interv + 29.25  or caldate_never_dot = &year_interv + 31.25
-or caldate_never_dot = &year_interv + 33.25  or caldate_never_dot = &year_interv + 35.25
-or caldate_never_dot = &year_interv + 37.25  or caldate_never_dot = &year_interv + 39.25
-or caldate_never_dot = &year_interv + 41.25  or caldate_never_dot = &year_interv + 43.25
-or caldate_never_dot = &year_interv + 45.25  or caldate_never_dot = &year_interv + 47.25
-or caldate_never_dot = &year_interv + 49.25  )
-and option in (3, 5) then do;
-
-	eff_prob_prep_any_restart_choice = eff_prob_prep_any_rest_choice_x ;
-	prep_any_willing =  prep_any_willing_x  ;
-	prep_oral_willing =  prep_oral_willing_x ;
-	prep_inj_willing =  prep_inj_willing_x   ;
-	adhav_prep_oral =  adhav_prep_oral_x  ;
-	eff_rate_test_startprep_any =  eff_rate_test_startprep_any_x ; 
-	eff_prob_prep_oral_b =  eff_prob_prep_oral_b_x ;
-
-end;
 
 if (caldate_never_dot = &year_interv + 1.25 or caldate_never_dot = &year_interv + 3.25 
 or caldate_never_dot = &year_interv + 5.25 or caldate_never_dot = &year_interv + 7.25  
@@ -12045,11 +11999,14 @@ cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
 cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hypert ; 
 cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
- 
+
+cost_community_outreach=0;
+if intensive_3mth_test = 1 then cost_community_outreach = cost_comm_outreach;
+
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
 +max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) 
-+ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
-
++ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program)
++ max(0,cost_community_outreach);
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
 + max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
@@ -12075,7 +12032,7 @@ cost_test_f_non_anc=0; if gender=2 and tested_anc ne 1 then cost_test_f_non_anc=
 
 if dead   =. then do; cost=0; cost_onart=0; art_cost=0;adc_cost=0;cd4_cost=0;vl_cost=0;vis_cost=0;non_tb_who3_cost=0;cot_cost=0;tb_cost=0;
 res_cost=0;t_adh_int_cost =0; cost_test=0; cost_prep_oral=0; cost_prep_inj =0; cost_prep_vr = 0;
- cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0;
+ cost_circ=0;cost_switch_line=0 ; cost_condom_dn=0;cost_sw_program=0; cost_community_outreach=0;
  cost_prep_visit=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0; cost_prep_visit_vr=0;cost_avail_self_test=0;end;
 
 * this below is cost of care of hiv infected child and should hold even after mothers death - estimate $30 per 3 months for total care incl art;
@@ -15029,6 +14986,7 @@ _dnon_tb_who3_cost = non_tb_who3_cost*discount ;
 _dcot_cost = cot_cost*discount ;
 _dtb_cost = tb_cost*discount ;
 _dtest_cost = cost_test*discount ;
+_dcost_community_outreach = cost_community_outreach*discount;
 _dtest_cost_type1 = cost_test_type1*discount ;
 _dtest_cost_m = cost_test_m*discount ;
 _dtest_cost_f = cost_test_f*discount ;
@@ -17253,6 +17211,7 @@ if 15 <= age < 80 and (death = . or caldate&j = death ) then do;
 	s_dcost_prep_visit + _dcost_prep_visit ; s_dcost_prep_visit_oral + _dcost_prep_visit_oral; s_dcost_avail_self_test + dcost_avail_self_test;
 	s_dcost_prep_visit_inj + _dcost_prep_visit_inj; s_dcost_prep_visit_vr + _dcost_prep_visit_vr; s_dcost_prep_ac_adh + _dcost_prep_ac_adh ;          
 	s_dcost_test_m_sympt + _dcost_test_m_sympt ; s_dcost_test_f_sympt + _dcost_test_f_sympt ; s_dcost_test_m_circ + _dcost_test_m_circ ;
+	s_dcost_community_outreach + _dcost_community_outreach;
 																																		  
 	s_dcost_test_f_anc + _dcost_test_f_anc ;  s_dcost_test_f_sw + _dcost_test_f_sw ; s_dcost_test_f_non_anc + _dcost_test_f_non_anc ; 
 	s_dpi_cost + _dpi_cost ; s_dcost_switch_line + _dcost_switch_line ; s_dcost_art_init + _dcost_art_init ;               
@@ -18586,7 +18545,7 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug   s_dcost_community_outreach 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
 s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
@@ -18751,7 +18710,7 @@ rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
-poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  intensive3_all_cause_d
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
@@ -19516,7 +19475,7 @@ s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_d
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
 s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
-s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
+s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug   s_dcost_community_outreach 
 
 s_dead_daly	   s_dead_ddaly   
 s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
@@ -21684,7 +21643,7 @@ s_dcost_prep_visit  s_dcost_prep_visit_oral s_dcost_prep_visit_inj s_dcost_prep_
 s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		 s_dcost_test_f_sympt  		  		s_dcost_test_m_circ s_dcost_test_f_anc 
 s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	 s_dpi_cost     s_dcost_switch_line s_dcost_art_init    s_dart_1_cost
 s_dart_2_cost s_dart_3_cost s_dcost_vl_not_done     s_dcost_zdv    s_dcost_ten 		s_dcost_3tc  		s_dcost_nev  
-s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   
+s_dcost_lpr   s_dcost_dar 	s_dcost_taz s_dcost_efa s_dcost_dol 	s_dcost_non_aids_pre_death  			s_dcost_drug_level_test   s_dcost_community_outreach 
 s_dcost_child_hiv       	s_dcost_child_hiv_mo_art 	 s_dcost_hypert_vis 				s_dcost_hypert_drug  
 
 s_dead_daly	   s_dead_ddaly   
@@ -21848,7 +21807,7 @@ rate_testanc_inc  incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx
 pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice rate_ch_art_init_str_4 rate_ch_art_init_str_9   red_int_risk_poc_vl
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  reg_option_104  ind_effect_art_hiv_disease_death incr_adh_poc_vl
 res_trans_factor_nn res_trans_factor_ii rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
-poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  
+poorer_cd4rise_fail_ii  rate_res_ten  fold_change_mut_risk  adh_effect_of_meas_alert  pr_switch_line  intensive3_all_cause_d
 prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_eff_adh_nnrti  altered_adh_sec_line_pop  prob_return_adc  
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate  circ_inc_15_19  circ_red_20_30  circ_red_30_50

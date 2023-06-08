@@ -1,7 +1,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_t_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\intensive3\intensive3_u_out\";
 
 ods html close;
 
@@ -61,7 +61,15 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 ly = s_ly * &sf;  *life years;
 dly = s_dly * &sf; *discounted life years;
 
-s_ddaly = s_dead_ddaly + (s_live_ddaly * 2.5 );
+
+
+* ##############################;
+
+s_ddaly = s_dead_ddaly + (s_live_ddaly * 1.5 );
+
+* ##############################;
+
+
 
 ***Scaling up to annual discounted DALYs in the whole population;
 ddaly = s_ddaly * &sf * 4;
@@ -124,6 +132,7 @@ dcost_prep_visit_oral  = s_dcost_prep_visit_oral * &sf * 4 / 1000;
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * &sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * &sf * 4 / 1000; 
 dcost_avail_self_test = 0;
+dcost_community_outreach = s_dcost_community_outreach * &sf * 4 / 1000 ;
 
 dfullvis_cost = s_dfull_vis_cost * &sf * 4 / 1000;
 dcost_circ = s_dcost_circ * &sf * 4 / 1000; 
@@ -140,22 +149,11 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 
 
 
-* ##############################;
-
-
-* added for intensive3 because testing could be 4 times the 3.70 default facility cost if going into communities to reach people;
-
-dtest_cost = dtest_cost * 4;
-
-
-* ##############################;
-
-
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_sw_program;
+		dcost_sw_program + dcost_community_outreach;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -279,12 +277,12 @@ dart_cost
  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
 		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
 		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
-		dcost_sw_program
+		dcost_sw_program dcost_community_outreach
 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
 sw_trans_matrix
-rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
+rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl intensive3_all_cause_d
 
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
@@ -293,7 +291,7 @@ rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl
 
 
 
-data a.intensive3_t_l; set y;
+data a.intensive3_u_l; set y;
 
 
 
@@ -350,7 +348,7 @@ data &v ; merge  y_23 t_30 t_24_28 t_24_30 t_24_43 t_24_73;
 		%var(v=dtest_cost);  %var(v=d_t_adh_int_cost);  %var(v=dswitchline_cost);  %var(v=dcost_drug_level_test);  %var(v=dcost_circ);  
 %var(v=dcost_condom_dn); 
 		 %var(v=dcost_avail_self_test);  %var(v=dcost_prep_visit_oral);  %var(v=dcost_prep_oral);  %var(v=dcost_prep_visit_inj);  %var(v=dcost_prep_inj);  
-		%var(v=dcost_sw_program);
+		%var(v=dcost_sw_program); %var(v=dcost_community_outreach);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 
@@ -367,7 +365,7 @@ dcost			ddaly   n_death_hiv  n_prep_any   n_dead_all
 dart_cost  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
 		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
 		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
-		dcost_sw_program
+		dcost_sw_program  dcost_community_outreach
 /*ADD IN PROJECT SPECIFIC OUTPUTS*/
 ;
 
@@ -385,20 +383,21 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 /*ADD PROJECT SPECIFIC PARAMETERS OF INTEREST*/
 %par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
 %par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);  	%par(p=rate_exp_set_lower_p_vl1000); 	%par(p=tr_rate_undetec_vl);
+%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);  	%par(p=rate_exp_set_lower_p_vl1000); 	%par(p=tr_rate_undetec_vl)
+%par(p=intensive3_all_cause_d);
 run;
 
 
 data wide_par; merge 
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl ;
+sw_trans_matrix rate_exp_set_lower_p_vl1000 tr_rate_undetec_vl intensive3_all_cause_d ;
 ;proc sort; by run;run;
 
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_intensive3_t;
+data a.wide_intensive3_u;
 merge   wide_outputs  wide_par ;  
 by run;
 
@@ -431,7 +430,7 @@ p_onart_23_r = round(p_onart_23, 0.05);
 
 
 
-proc means mean median data=a.wide_intensive3_t;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
+proc means mean median data=a.wide_intensive3_u;  var ddaly_24_73_1 ddaly_24_73_2 ddaly_24_73_3 ddaly_24_73_4 ddaly_24_73_5 ddaly_24_73_6 
 dcost_24_73_1 dcost_24_73_2 dcost_24_73_3 dcost_24_73_4 dcost_24_73_5 dcost_24_73_6
 
 d_ddaly_24_73_2_1 
@@ -462,6 +461,13 @@ n_prep_any_24_30_5
 n_prep_any_24_30_6
 
 p_mcirc_24_30_1
+
+dcost_community_outreach_24_30_1
+dcost_community_outreach_24_30_2
+dcost_community_outreach_24_30_3
+dcost_community_outreach_24_30_4
+dcost_community_outreach_24_30_5
+dcost_community_outreach_24_30_6
 
 p_vl1000_24_30_1
 p_vl1000_24_30_2
@@ -511,6 +517,9 @@ run;
 
 
 
+
+/*
+
 proc logistic; model testing_ce_x = p_diag_23 ; run;
 
 proc freq; tables p_diag_23_r * testing_ce ;  run;
@@ -519,7 +528,7 @@ proc logistic; model testing_ce_x = p_onart_23 ; run;
 
 proc freq; tables p_onart_23_r * testing_ce ;  run;
 
-
+*/
 
 
 
