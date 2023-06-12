@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.out_803920;
+set a.zim_06jun23;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -38,8 +38,10 @@ s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_
 s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 
 s_primary1519_ =  s_primary1519m + s_primary1519w;
+s_primary2024_ =  s_primary2024m + s_primary2024w;
+s_primary2529_ =  s_primary2529m + s_primary2529w;
+s_primary3034_ =  s_primary3034m + s_primary3034w;
 s_primary3539_ =  s_primary3539m + s_primary3539w;
-
 
 
 * n_alive1564_;					n_alive1564_  = s_alive1564 * &sf;
@@ -785,7 +787,11 @@ n_hiv1519_  n_hiv2024_  n_hiv2529_  n_hiv3034_  n_hiv3539_  n_hiv4044_  n_hiv454
 n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m n_hiv6569m  n_hiv7074m  n_hiv7579m  n_hiv8084m  
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
 
+s_primary
 s_primary1519_ s_primary1519m s_primary1519w
+s_primary2024_ s_primary2024m s_primary2024w
+s_primary2529_ s_primary2529m s_primary2529w
+s_primary3034_ s_primary3034m s_primary3034w
 s_primary3539_ s_primary3539m s_primary3539w
 
 /*
@@ -1204,9 +1210,25 @@ n_I_onart_lt6m_nvs8084w n_I_onart_gt6m_nvs8084w n_I_onart_gt6m_vs8084w n_I_offar
 n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 
 /*these are lept just to check the orignal outputs add up correctly;*/
+s_I_undiag s_I_diag_naive s_I_diag_startart s_I_onart s_I_offart s_I_onart_lt6m 
+s_I_onart_lt6m_nvs s_I_onart_gt6m_nvs s_I_onart_gt6m_vs s_I_offart_1stI s_I_offart_SI 
+s_I_offart_SIlt6m s_I_offart_SIgt6m 
+
 s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_offart1519m s_I_onart_lt6m1519m 
 s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
 s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
+
+s_I_undiag2024m s_I_diag_naive2024m s_I_diag_startart2024m s_I_onart2024m s_I_offart2024m s_I_onart_lt6m2024m 
+s_I_onart_lt6m_nvs2024m s_I_onart_gt6m_nvs2024m s_I_onart_gt6m_vs2024m s_I_offart_1stI2024m s_I_offart_SI2024m 
+s_I_offart_SIlt6m2024m s_I_offart_SIgt6m2024m 
+
+s_I_undiag2529m s_I_diag_naive2529m s_I_diag_startart2529m s_I_onart2529m s_I_offart2529m s_I_onart_lt6m2529m 
+s_I_onart_lt6m_nvs2529m s_I_onart_gt6m_nvs2529m s_I_onart_gt6m_vs2529m s_I_offart_1stI2529m s_I_offart_SI2529m 
+s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m 
+
+s_I_undiag3034m s_I_diag_naive3034m s_I_diag_startart3034m s_I_onart3034m s_I_offart3034m s_I_onart_lt6m3034m 
+s_I_onart_lt6m_nvs3034m s_I_onart_gt6m_nvs3034m s_I_onart_gt6m_vs3034m s_I_offart_1stI3034m s_I_offart_SI3034m 
+s_I_offart_SIlt6m3034m s_I_offart_SIgt6m3034m 
 
 s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
 s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
@@ -1216,15 +1238,52 @@ s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m
 
 run;
 
+
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
 set y;
 
+if run ne 14979311 then delete;
 keep 
+
+cald s_primary3034_ s_primary3034m s_primary3034w
+s_I_undiag3034m s_I_diag_naive3034m s_I_diag_startart3034m s_I_onart3034m s_I_offart3034m s_I_onart_lt6m3034m 
+s_I_onart_lt6m_nvs3034m s_I_onart_gt6m_nvs3034m s_I_onart_gt6m_vs3034m s_I_offart_1stI3034m s_I_offart_SI3034m 
+s_I_offart_SIlt6m3034m s_I_offart_SIgt6m3034m 
+
+/*
 cald s_primary3539_ s_primary3539m s_primary3539w
 s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
 s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
 s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m 
+
+
+cald s_primary 
+s_I_undiag s_I_diag_naive s_I_diag_startart s_I_onart s_I_offart s_I_onart_lt6m 
+s_I_onart_lt6m_nvs s_I_onart_gt6m_nvs s_I_onart_gt6m_vs s_I_offart_1stI s_I_offart_SI 
+s_I_offart_SIlt6m s_I_offart_SIgt6m 
+
+
+cald s_primary1519_ s_primary1519m s_primary1519w
+s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_offart1519m s_I_onart_lt6m1519m 
+s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
+s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
+
+cald s_primary3034_ s_primary3034m s_primary3034w
+s_I_undiag3034m s_I_diag_naive3034m s_I_diag_startart3034m s_I_onart3034m s_I_offart3034m s_I_onart_lt6m3034m 
+s_I_onart_lt6m_nvs3034m s_I_onart_gt6m_nvs3034m s_I_onart_gt6m_vs3034m s_I_offart_1stI3034m s_I_offart_SI3034m 
+s_I_offart_SIlt6m3034m s_I_offart_SIgt6m3034m 
+
+cald s_primary2024_ s_primary2024m s_primary2024w
+s_I_undiag2024m s_I_diag_naive2024m s_I_diag_startart2024m s_I_onart2024m s_I_offart2024m s_I_onart_lt6m2024m 
+s_I_onart_lt6m_nvs2024m s_I_onart_gt6m_nvs2024m s_I_onart_gt6m_vs2024m s_I_offart_1stI2024m s_I_offart_SI2024m 
+s_I_offart_SIlt6m2024m s_I_offart_SIgt6m2024m 
+
+cald s_primary2529_ s_primary2529m s_primary2529w
+s_I_undiag2529m s_I_diag_naive2529m s_I_diag_startart2529m s_I_onart2529m s_I_offart2529m s_I_onart_lt6m2529m 
+s_I_onart_lt6m_nvs2529m s_I_onart_gt6m_nvs2529m s_I_onart_gt6m_vs2529m s_I_offart_1stI2529m s_I_offart_SI2529m 
+s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m 
+*/
 ;
 
 if cald lt 2010 then delete;
@@ -1233,10 +1292,10 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\check35.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\3034.xlsx"
 replace;
 run;
-
+*/
 
 proc freq;table  s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200_  s_dead_Alt6_artcd4gt200_  

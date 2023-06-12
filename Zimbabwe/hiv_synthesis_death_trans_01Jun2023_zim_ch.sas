@@ -7310,7 +7310,7 @@ if gender=1 then do;
 	if 35 <= age < 40 then do;
 	I_undiag3539m=I_undiag; I_diag_naive3539m=I_diag_naive; I_diag_startart3539m=I_diag_startart; I_onart3539m=I_onart;
 	I_offart3539m=I_offart; I_onart_lt6m3539m=I_onart_lt6m; I_onart_lt6m_nvs3539m=I_onart_lt6m_nvs; 
-	I_onart_gt6m_nvs3539m=I_onart_gt6m_nvs; I_onart_gt6m_vs3539m=I_onart_gt6m_vs; I_offart_1stI3539m=I_onart_gt6m_vs;
+	I_onart_gt6m_nvs3539m=I_onart_gt6m_nvs; I_onart_gt6m_vs3539m=I_onart_gt6m_vs; I_offart_1stI3539m=I_offart_1stI;
 	I_offart_SI3539m=I_offart_SI; I_offart_SIlt6m3539m=I_offart_SIlt6m; I_offart_SIgt6m3539m=I_offart_SIgt6m; 
 	end;
 	if 40 <= age < 45 then do;
@@ -7402,7 +7402,7 @@ if gender=2 then do;
 	if 35 <= age < 40 then do;
 	I_undiag3539w=I_undiag; I_diag_naive3539w=I_diag_naive; I_diag_startart3539w=I_diag_startart; I_onart3539w=I_onart;
 	I_offart3539w=I_offart; I_onart_lt6m3539w=I_onart_lt6m; I_onart_lt6m_nvs3539w=I_onart_lt6m_nvs; 
-	I_onart_gt6m_nvs3539w=I_onart_gt6m_nvs; I_onart_gt6m_vs3539w=I_onart_gt6m_vs; I_offart_1stI3539w=I_onart_gt6m_vs;
+	I_onart_gt6m_nvs3539w=I_onart_gt6m_nvs; I_onart_gt6m_vs3539w=I_onart_gt6m_vs; I_offart_1stI3539w=I_offart_1stI;
 	I_offart_SI3539w=I_offart_SI; I_offart_SIlt6m3539w=I_offart_SIlt6m; I_offart_SIgt6m3539w=I_offart_SIgt6m; 
 	end;
 	if 40 <= age < 45 then do;
@@ -19662,8 +19662,9 @@ if dcause=4 and caldate&j=death then cvd_death=1;
 hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
-proc print;var caldate&j primary infected_newp infected_ep i_undiag_newp I_diag_naive_newp I_diag_startart_newp
-i_undiag_ep I_diag_naive_ep I_diag_startart_ep infected_diagnosed infected_naive epart_tm1 epdiag_tm1;where primary=1;run;
+proc print;var caldate&j primary infected_newp infected_ep  I_offart_newp I_offart_ep I_offart 
+s_I_offart_1stI_newp s_I_offart_SI_newp s_I_offart_1stI_ep s_I_offart_SI_ep s_I_offart_1stI s_I_offart_SI
+;where primary=1 and I_offart=1 and 30<=age<35;run;
 
 * procs;
 
