@@ -9,7 +9,7 @@ if run=. then delete;
 takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald;run;
-
+proc freq;table s_sw_program_visit;where cald>2015;run;
 
 data sf;
 set a;
@@ -139,7 +139,7 @@ p_sw_age1519_	  	p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_
 p_age_deb_sw1519_	p_age_deb_sw2024_	p_age_deb_sw2529_  	p_age_deb_sw3039_
 
 sw_episodes      p_sw_gt1ep
-p_fsw_newp0_  	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_p_fsw_newpov130_
+p_fsw_newp0_  	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
 av_sw_newp	 	 p_newp_sw
 
 tot_dur_sw     act_dur_sw  	 
@@ -192,8 +192,8 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1  /* g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24 g25
-g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48  g49 g50 
+g1  g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24 g25
+g26  g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45 /* g46  g47  g48  g49 g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71  g72  g73  g74 g75
 g76  g77  g78  g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100    g101 g102 
 g103 g104 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -212,9 +212,13 @@ h103 h104 */
 by cald;
 
 
+data e;
+set d;
 ***Observed data;
-%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Sep2021.sas";
+*%include "C:\Users\lovel\Documents\GitHub\hiv-modelling\Zimbabwe\Observed data_Zimbabwe_Sep2021.sas";
+%include '"C:\Loveleen\Synthesis model\Zim\Calibration\Observed data_Zimbabwe_LBMMay2017.sas"'; by cald;
 run;
+
 
 ***Graphs comparing observed data to outputs;
 
@@ -223,7 +227,23 @@ ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Zim_19Apr.doc' startpage=never; 
 
 
-proc sgplot data=d; 
+proc sgplot data=e; 
+Title    height=1.5 justify=center "FSW Population (age 15-49)";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2030 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Number'              labelattrs=(size=12)  values = (0 to 130000)  valueattrs=(size=10);
+label p50_n_sw_1549__0	                  = "model age 15-49 (median)";
+
+label o_pop_fsw_1549w_Fearnon			  = "All FSW age 15-49 - Fearon";
+series  x=cald y=p50_n_sw_1549__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_n_sw_1549__0     upper=p95_n_sw_1549__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+scatter x=cald y=o_pop_fsw_1549w_Fearnon / markerattrs = (symbol=circle color=black size = 12)
+										   yerrorlower=o_pop_fsw_ll_1549w_Fearnon yerrorupper=o_pop_fsw_ul_1549w_Fearnon errorbarattrs= (color=black thickness = 2);
+run;quit;
+
+
+proc sgplot data=e; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
@@ -248,28 +268,117 @@ scatter  x=cald y=o_p_ever_fsw_1ts_1849w_nbcs /	markerattrs = (color=green);
 run;quit;
 
 
-proc sgplot data=d; 
-Title    height=1.5 justify=center "Of FSW, proportion with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
-label p50_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
-label p50_prop_sw_hiv_1 = "FSW with HIV 15-64 op 1 (median) ";
+
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of women who are sex workers (age 15-49)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) 		valueattrs=(size=10);
+label p50_prop_w_1549_sw_0   = "Current FSW 15-49 (median) ";
+label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 (median) ";
+
+label o_p_fsw_1849_Zim_garpr = "GARPR - current FSW 18-49";
+label o_p_fsw_1849_Bulaw_garpr = "GARPR - current FSW 18-49 - Bulaw";
+label o_p_fsw_1849_Harare_garpr = "GARPR - current FSW 18-49 - Harare";
+label o_p_ever_fsw_1ts_1849w_nbcs = "NBCS - Ever transactional sex 18-49";
+label o_p_fsw_ab1ts6m_1849w_nbcs = "NBCP: >1 transactional sex partner (age 18-49)";
+label o_p_fsw_1549w_Fearnon		 = "Fearon 15-49";
+
+series  x=cald y=p50_prop_w_1549_sw_0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prop_w_1549_sw_0 	 upper=p95_prop_w_1549_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+
+scatter x=cald y=o_p_fsw_ab1ts6m_1849w_nbcs / markerattrs = (symbol=circle       color=blue size = 12);
+scatter x=cald y=o_p_fsw_1549w_Fearnon / markerattrs = (symbol=circle       color=yellow size = 12)
+										 yerrorlower=o_p_fsw_ll_1549w_Fearnon yerrorupper=o_p_fsw_ul_1549w_Fearnon errorbarattrs= (color=green thickness = 2);
+scatter  x=cald y=o_p_fsw_1849_Zim_garpr /	markerattrs = (color=orange);
+scatter  x=cald y=o_p_fsw_1849_Bulaw_garpr /	markerattrs = (color=red);
+scatter  x=cald y=o_p_fsw_1849_Harare_garpr /	markerattrs = (color=pink);
+scatter  x=cald y=o_p_ever_fsw_1ts_1849w_nbcs /	markerattrs = (color=green);
+
+run;quit;
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "Age of sex workers";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2025 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'Proportion'          labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
+label p50_p_sw_age1519__0	              = "15-19 years (median)";
+label p50_p_sw_age2024__0	              = "20-24 years (median)";
+label p50_p_sw_age2529__0	              = "25-29 years (median)";
+label p50_p_sw_age3039__0	              = "30-39 years (median)";
+
+label o_p_1824_fsw_rds				  = "18-24 years Sapphire";
+label o_p_2529_fsw_rds				  = "25-29 years Sapphire";
+label o_p_3039_fsw_rds				  = "30-39 years Sapphire";
+ 
+label o_p_1824_fsw_AMT				  = "18-24 years Amethist";
+label o_p_2529_fsw_AMT				  = "25-29 years Amethist";
+label o_p_3039_fsw_AMT				  = "39-39 years Amethist";
+
+series  x=cald y=p50_p_sw_age1519__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sw_age1519__0      upper=p95_p_sw_age1519__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "15-19y 90% range";
+series  x=cald y=p50_p_sw_age2024__0  /           lineattrs = (color=green thickness = 2);
+band    x=cald lower=p5_p_sw_age2024__0      upper=p95_p_sw_age2024__0 / transparency=0.9 fillattrs = (color=green) legendlabel= "20-24yy 90% range";
+series  x=cald y=p50_p_sw_age2529__0  /           lineattrs = (color=red thickness = 2);
+band    x=cald lower=p5_p_sw_age2529__0      upper=p95_p_sw_age2529__0 / transparency=0.9 fillattrs = (color=red) legendlabel= "25-29y 90% range";
+series  x=cald y=p50_p_sw_age3039__0  /           lineattrs = (color=orange thickness = 2);
+band    x=cald lower=p5_p_sw_age3039__0      upper=p95_p_sw_age3039__0 / transparency=0.9 fillattrs = (color=orange) legendlabel= "30-39y 90% range";
+
+scatter x=cald y=o_p_1824_fsw_rds / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_rds / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_rds / markerattrs = (symbol=circle       color=orange size = 12);
+
+scatter x=cald y=o_p_1824_fsw_AMT / markerattrs = (symbol=circle       color=green size = 12);
+scatter x=cald y=o_p_2529_fsw_AMT / markerattrs = (symbol=circle       color=red size = 12);
+scatter x=cald y=o_p_3039_fsw_AMT / markerattrs = (symbol=circle       color=orange size = 12);
+run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers with 0 condomless partners (including periods of inactive sex work)";
+footnote1 height=0.9  "";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2025 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)   		valueattrs=(size=10);
+
+label p50_p_fsw_newp0__0 = "Model (median) ";
+
+series  x=cald y=p50_p_fsw_newp0__0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_fsw_newp0__0	 upper=p95_p_fsw_newp0__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+run;quit;
+
+proc sgplot data=e; 
+title    height=1.5 justify=center "Proportion of sex workers who visited a sex worker programme";
+xaxis label 		= 'Year'			labelattrs=(size=12)  values = (2010 to 2023 by 2) 		valueattrs=(size=10); 
+yaxis grid label 	= 'Proportion' 		labelattrs=(size=12)  values=(0 to 0.2)		valueattrs=(size=10);
+
+label p50_p_sw_prog_vis_0 = "Model (median) ";
+
+series  x=cald y=p50_p_sw_prog_vis_0  / 	 lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_sw_prog_vis_0	 upper=p95_p_sw_prog_vis_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "90% range";
+run;quit;
+
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "HIV prevalence amongst sex workers (age 15-64)";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Prevalence'		labelattrs=(size=12)   valueattrs=(size=10);
+label p50_prevalence_sw_0 = "Median";
+
 label o_prev_fsw_dw = "David Wilson";
 label o_prev_fsw_rdshm = "RDS Hwange and Mutare";
 label o_prev_fsw_rdsvf = "RDS Victoria Falls";
 label o_prev_fsw_tested_swvp = "Sisters with a Voice";
 label o_prev_fsw_rds = "RDS baseline SAPPH-IRe";
-series  x=cald y=p50_prop_sw_hiv_0/	lineattrs = (color=orange thickness = 2);
-band    x=cald lower=p5_prop_sw_hiv_0 	upper=p95_prop_sw_hiv_0  / transparency=0.9 fillattrs = (color=orange) legendlabel= "Model 90% range";
-*series  x=cald y=p50_prop_sw_hiv_1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_prop_sw_hiv_1 	upper=p95_prop_sw_hiv_1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_prevalence_sw_0/	lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_prevalence_sw_0 	upper=p95_prevalence_sw_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
 scatter x=cald y=o_prev_fsw_dw /  yerrorlower=o_prev_fsw_ll_dw yerrorupper=o_prev_fsw_ul_dw markerattrs = (color=black) ERRORBARATTRS = (color = black) ;
 scatter x=cald y=o_prev_fsw_rdshm / markerattrs = (color=blue) ;
 scatter x=cald y=o_prev_fsw_rdsvf / markerattrs = (color=red) ;
 scatter x=cald y=o_prev_fsw_tested_swvp / markerattrs = (color=green) ;
-scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_prev_fsw_ul_rds markerattrs = (color=orange) ERRORBARATTRS = (color = orange) ;
-run;quit;
+scatter x=cald y=o_prev_fsw_rds /  yerrorlower=o_prev_fsw_ll_rds yerrorupper=o_prev_fsw_ul_rds markerattrs = (color=orange) ERRORBARATTRS = (color = orange);
 
+run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence amongst sex workers (age 15-64)";
@@ -280,8 +389,6 @@ label p50_incidence_sw_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-*series  x=cald y=p50_incidence1549__1/	lineattrs = (color=red thickness = 2);
-*band    x=cald lower=p5_incidence1549__1 	upper=p95_incidence1549__1  / transparency=0.9 fillattrs = (color=red) legendlabel= "Model 90% range";
 run;
 quit;
 
