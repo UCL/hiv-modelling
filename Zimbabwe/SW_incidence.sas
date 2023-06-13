@@ -383,12 +383,11 @@ run;quit;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence amongst sex workers (age 15-64)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2000 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Incidence pPer 100 person years'		labelattrs=(size=12)  values = (0 to 25) valueattrs=(size=10);
+yaxis grid label	= 'Incidence pPer 100 person years'		labelattrs=(size=12)  values = (0 to 60 by 5) valueattrs=(size=10);
 label p50_incidence_sw_0 = "Median incidence";
 label p50_incidence_sw_1 = "Option 1  (median) ";
 
 series  x=cald y=p50_incidence_sw_0/	lineattrs = (color=blue thickness = 2);
 band    x=cald lower=p5_incidence_sw_0 	upper=p95_incidence_sw_0  / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
-run;
-quit;
+run;quit;
 
