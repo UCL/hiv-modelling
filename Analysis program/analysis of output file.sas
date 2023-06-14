@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_03_06_23 ;
+set a.wide_fsw_05_06_23 ;
 if incidence1549_22 <0.02 then delete;
 run;
 
@@ -10,20 +10,41 @@ run;
 data b;
 set a;
 
-***Within run differences for table 4;
-d_p_fsw_newp0__30 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
-d_prop_sw_onprep_30 = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
-d_p_sti_sw_30 = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
-d_incidence_sw_30 = incidence_sw_30_2 - incidence_sw_30_1;
-d_prevalence_sw_30 = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
-d_p_diag_sw_30 = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
-d_p_onart_diag_sw_30 = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
-d_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
-d_incidence1549_30 = incidence1549_30_2 - incidence1549_30_1;
-d_prevalence1549_30 = (prevalence1549_30_2 - prevalence1549_30_1)*100;
-d_p_diag_30 = (p_diag_30_2 - p_diag_30_1)*100;
-d_p_onart_diag_30 = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
-d_p_onart_vl1000_30 = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
+
+***Within run differences for table 3;
+d_low_p_sw_prog_vis_30 = (p_sw_prog_vis_30_2 - p_sw_prog_vis_30_1)*100;
+d_low_p_tested_past_year_sw_30 = (p_tested_past_year_sw_30_2 - p_tested_past_year_sw_30_1)*100;
+
+d_low_p_fsw_newp0__30 = (p_fsw_newp0__30_2 - p_fsw_newp0__30_1)*100;
+d_low_prop_sw_onprep_30 = (prop_sw_onprep_30_2 - prop_sw_onprep_30_1)*100;
+d_low_p_sti_sw_30 = (p_sti_sw_30_2 - p_sti_sw_30_1)*100;
+d_low_incidence_sw_30 = incidence_sw_30_2 - incidence_sw_30_1;
+d_low_prevalence_sw_30 = (prevalence_sw_30_2 - prevalence_sw_30_1)*100;
+d_low_p_diag_sw_30 = (p_diag_sw_30_2 - p_diag_sw_30_1)*100;
+d_low_p_onart_diag_sw_30 = (p_onart_diag_sw_30_2 - p_onart_diag_sw_30_1)*100;
+d_low_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_2 - p_onart_vl1000_sw_30_1)*100;
+d_low_incidence1549_30 = incidence1549_30_2 - incidence1549_30_1;
+d_low_prevalence1549_30 = (prevalence1549_30_2 - prevalence1549_30_1)*100;
+d_low_p_diag_30 = (p_diag_30_2 - p_diag_30_1)*100;
+d_low_p_onart_diag_30 = (p_onart_diag_30_2 - p_onart_diag_30_1)*100;
+d_low_p_onart_vl1000_30 = (p_onart_vl1000_30_2 - p_onart_vl1000_30_1)*100;
+
+d_high_p_sw_prog_vis_30 = (p_sw_prog_vis_30_3 - p_sw_prog_vis_30_1)*100;
+d_high_p_tested_past_year_sw_30 = (p_tested_past_year_sw_30_3 - p_tested_past_year_sw_30_1)*100;
+
+d_high_p_fsw_newp0__30 = (p_fsw_newp0__30_3 - p_fsw_newp0__30_1)*100;
+d_high_prop_sw_onprep_30 = (prop_sw_onprep_30_3 - prop_sw_onprep_30_1)*100;
+d_high_p_sti_sw_30 = (p_sti_sw_30_3 - p_sti_sw_30_1)*100;
+d_high_incidence_sw_30 = incidence_sw_30_3 - incidence_sw_30_1;
+d_high_prevalence_sw_30 = (prevalence_sw_30_3 - prevalence_sw_30_1)*100;
+d_high_p_diag_sw_30 = (p_diag_sw_30_3 - p_diag_sw_30_1)*100;
+d_high_p_onart_diag_sw_30 = (p_onart_diag_sw_30_3 - p_onart_diag_sw_30_1)*100;
+d_high_p_onart_vl1000_sw_30 = (p_onart_vl1000_sw_30_3 - p_onart_vl1000_sw_30_1)*100;
+d_high_incidence1549_30 = incidence1549_30_3 - incidence1549_30_1;
+d_high_prevalence1549_30 = (prevalence1549_30_3 - prevalence1549_30_1)*100;
+d_high_p_diag_30 = (p_diag_30_3 - p_diag_30_1)*100;
+d_high_p_onart_diag_30 = (p_onart_diag_30_3 - p_onart_diag_30_1)*100;
+d_high_p_onart_vl1000_30 = (p_onart_vl1000_30_3 - p_onart_vl1000_30_1)*100;
 
 
 ***table 1;
@@ -53,7 +74,7 @@ proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
 
 ***table 3 - characteristics in 2030 by option;
 
-proc means n p50 p5 p95;var
+proc means n p50 p5 p95  mean lclm uclm;var
 /*discontinuted*/
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
@@ -71,6 +92,19 @@ p_sw_prog_vis_30_3	p_tested_past_year_sw_30_3
 p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	prop_sw_onprep_30_3
 p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
 incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3;
+run;
+
+***Differences between options to calculate 95% CI;
+proc means n p50 p5 p95  mean lclm uclm;
+var d_low_p_sw_prog_vis_30  d_low_p_tested_past_year_sw_30  d_low_p_diag_sw_30  	 d_low_p_onart_diag_sw_30	
+d_low_p_onart_vl1000_sw_30	d_low_p_fsw_newp0__30			d_low_prop_sw_onprep_30  d_low_p_sti_sw_30
+d_low_incidence_sw_30		d_low_prevalence_sw_30		  	d_low_incidence1549_30	 d_low_prevalence1549_30
+d_low_p_diag_30	  			d_low_p_onart_diag_30  		  	d_low_p_onart_vl1000_30
+
+d_high_p_sw_prog_vis_30  	d_high_p_tested_past_year_sw_30  d_high_p_diag_sw_30  		d_high_p_onart_diag_sw_30	
+d_high_p_onart_vl1000_sw_30	d_high_p_fsw_newp0__30		   	 d_high_prop_sw_onprep_30   d_high_p_sti_sw_30
+d_high_incidence_sw_30		d_high_prevalence_sw_30	       	 d_high_incidence1549_30	d_high_prevalence1549_30
+d_high_p_diag_30	  		d_high_p_onart_diag_30  		 d_high_p_onart_vl1000_30;
 run;
 
 
@@ -313,6 +347,7 @@ diff_netdalys_swprog_high_v_low = netdalys_swprog_high - netdalys_swprog_low; *t
 ***cost of SW prog;
 maxcost_swprog_high_v_low= diff_netdalys_swprog_high_v_low*500;
 
+***Over 1 year;
 proc means n mean p50 p5 p95 lclm uclm;var dcost_23_24_1 dcost_23_24_2 dcost_23_24_3;run;
 
 
