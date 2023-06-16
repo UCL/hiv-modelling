@@ -3,15 +3,19 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v9_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v10_end2022_out";
 
-data a.base_25_05_23;   set b.out:;
+data a.base_26_05_23;   set b.out:;
 
 /* show the contents of the input SAS file */
-/*proc contents data=a.base_17_05_23;run;*/
+proc contents data=a.base_26_05_23;run;
+proc sort data=a.base_26_05_23; by run; run;
+proc print data=a.base_26_05_23; var run; where cald=2022.75;run;
+
+proc freq data=a.base_26_05_23; table run;run;
 ods html close;
 ods listing;
-
+/*
 proc freq data=a.base_25_05_23;
 table s_hiv_sw s_sw_1564 s_sw_1564
 s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
@@ -21,11 +25,12 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_25_05_23;
+data g; set  a.base_26_05_23;
 
 proc sort data=g; 
 by run cald option;run;
-*8 out of 100;
+
+*104 out of 850;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -341,7 +346,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_swprog;				n_tested_swprog = s_tested_f_sw * &sf * 4;
 * n_tested;						n_tested = s_tested * &sf * 4;
 * n_tested_anc;					n_tested_anc = s_tested_anc * &sf * 4;
-* p_anc;						p_anc = s_anc /(s_pregnant+s_birth);
+* p_anc;						p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
+																	 birth=1    at dt_start_pregn+0.75
+																	 anc=1      at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5, dt_start_pregn+0.75;
 * n_tested_m_sympt;				n_tested_m_sympt = s_tested_m_sympt * &sf * 4;*VCFeb2023;
 * n_tested_w_sympt;				n_tested_w_sympt = s_tested_f_sympt * &sf * 4;*VCFeb2023;
 * n_tested_m_circ; 				n_tested_m_circ = s_tested_m_circ  * &sf * 4;*VCFeb2023;
@@ -1209,7 +1216,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_25_05_23; set y;  run;
+data a.l_base_26_05_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
