@@ -9,7 +9,7 @@
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 	
 %let population = 100000  ; 
-%let year_interv = 2023;
+%let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -4439,7 +4439,7 @@ if anc=1 then do;
 			end;
 	end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-    u=rand('uniform'); if registd=1 and tested ne 1 and caldate{t} = dt_start_pregn+0.25 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
+    u=rand('uniform'); if registd=1 and tested ne 1 and caldate{t} = dt_start_pregn+0.25 and u<0.7 then do;tested_anc_prevdiag=1; end;
 end;
 
 tested_pd=0;
