@@ -340,12 +340,13 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * mean_num_tests_ly_m1549_;		*mean_num_tests_ly_m1549_ = s_tested_ly_m1549_ / (s_alive1549_m  - s_hiv1549m) ;
 * mean_num_tests_ly_w1549_;		*mean_num_tests_ly_w1549_ = s_tested_ly_w1549_ / (s_alive1549_w  - s_hiv1549w) ;
 
+*s_tested_anc_prevdiag which is testing of women attending ANC on first trimester, previously diagnosed with HIV who do not disclose;
 * n_tested_m;					n_tested_m = s_tested_m * &sf * 4;
-* n_tested_w;					n_tested_w = s_tested_f * &sf * 4;
+* n_tested_w;					n_tested_w = (s_tested_f + s_tested_anc_prevdiag )* &sf * 4;
 * n_tested_sw;					n_tested_sw = s_tested_sw * &sf * 4;
 * n_tested_swprog;				n_tested_swprog = s_tested_f_sw * &sf * 4;
-* n_tested;						n_tested = s_tested * &sf * 4;
-* n_tested_anc;					n_tested_anc = s_tested_anc * &sf * 4;
+* n_tested;						n_tested = (s_tested + s_tested_anc_prevdiag)* &sf * 4;
+* n_tested_anc;					n_tested_anc = (s_tested_anc + s_tested_anc_prevdiag) * &sf * 4;
 * p_anc;						p_anc = s_anc /(s_pregnant+s_birth);*pregnant=1 at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5
 																	 birth=1    at dt_start_pregn+0.75
 																	 anc=1      at dt_start_pregn, dt_start_pregn+0.25, dt_start_pregn+0.5, dt_start_pregn+0.75;
@@ -355,8 +356,9 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_tested_w_non_anc; 			n_tested_w_non_anc = s_tested_f_non_anc * &sf * 4; *VCFeb2023;
 * n_tested_labdel;				n_tested_w_labdel = s_tested_labdel * &sf * 4; *VCFeb2023;
 * n_tested_pd;					n_tested_w_pd = s_tested_pd * &sf * 4;*VCFeb2023;
-* n_tested_ancpd;				n_tested_ancpd = s_tested_ancpd * &sf * 4;*VCMay2023;
-* n_test_anclabpd;				n_test_anclabpd = s_test_anclabpd * &sf * 4;*VCMay2023;
+* n_tested_ancpd;				n_tested_ancpd = (s_tested_ancpd + s_tested_anc_prevdiag) * &sf * 4;*VCMay2023;
+* n_test_anclabpd;				n_test_anclabpd = (s_test_anclabpd + s_tested_anc_prevdiag)* &sf * 4;*VCMay2023;
+* n_tested_anc_prevdiag;		n_tested_anc_prevdiag = s_tested_anc_prevdiag * &sf * 4;*VCJune2023;
 
 * n_tested1st_anc;				n_tested1st_anc = s_tested1st_anc * &sf * 4;*VCMar2023;
 * n_tested1st_labdel;			n_tested1st_labdel = s_tested1st_labdel * &sf * 4;*VCMar2023;
@@ -1088,6 +1090,7 @@ n_new_inf1549m n_new_inf1549w n_new_inf1549 n_new_inf1564m n_new_inf1564w n_infe
 p_iime   p_pime   p_nnme  n_pregnant_ntd  n_preg_odabe
 ddaly_non_aids_pre_death ddaly_ac_ntd_mtct ddaly_ac_ntd_mtct_odabe ddaly_ntd_mtct_napd ddaly_ntd_mtct_odab_napd ddaly  ddaly_all 
 n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested n_tested_sw n_tested_swprog n_tested_anc n_tested_ancpd n_test_anclabpd
+n_tested_anc_prevdiag
 n_tested_m_sympt n_tested_w_sympt n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd n_tested1st_anc n_tested1st_labdel n_tested1st_pd
 p_anc n_diagnosed n_diag_m n_diag_w n_diag_anc n_diag_labdel  n_diag_pd  n_diag_anclabpd  n_diag_progsw  n_diag_sw 
 p_vlg1000_onart_65m  p_vlg1000_onart_184m  p_elig_prep
