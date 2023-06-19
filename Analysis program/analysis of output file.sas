@@ -3,9 +3,12 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 data a; 
 set a.wide_fsw_05_06_23 ;
-if incidence1549_22 <0.02 then delete;
+if incidence_sw_22 <0.1 then delete;
 run;
 
+proc freq;table s_prep_any_willing;where cald=2024 and option=0;run;
+
+proc freq;table incidence1549_22;run;
 
 data b;
 set a;

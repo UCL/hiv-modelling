@@ -3,7 +3,7 @@
 libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_05_06_23_;  
+set a.fsw_15_06_23_;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -312,6 +312,7 @@ s_tested s_tested_m s_tested_f n_pregnant
 
 proc sort data=y;by run option;run;
 
+
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
 proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
@@ -322,18 +323,17 @@ n_tested_at_return n_pregnant; where option=0 and cald>2023;run;
 proc means n p50;var 
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
 n_tested_at_return n_pregnant; where option=2 and cald>2023;run;
-
  
 
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=0 and cald>2023.5 ;run;
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>2023.5  and effect_sw_prog_newp=0.05;run;
 
 
+/*
+data a.fsw_15_06_23_short; set y;run;
 
-data a.fsw_05_06_23_short; set y;run;
-
-data y; set a.fsw_05_06_23_short;run;
-
+data y; set a.fsw_15_06_23_short;run;
+*/
 proc means n sum mean P50;var n_tested_sw dtest_cost ;where cald >2030 and cald<2040 and option=0;run;
 
 proc means n sum mean P50;var n_tested_sw dtest_cost;where cald >2030 and cald<2040 and option=2;run;
@@ -491,7 +491,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_05_06_23;
+data a.wide_fsw_15_06_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
