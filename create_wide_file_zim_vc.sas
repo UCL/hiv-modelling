@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 
 data a;
-set a.zim_06jun23;
+set a.zim_06jun23a;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -1243,14 +1243,12 @@ run;
 data y1;
 set y;
 
-if run ne 14979311 then delete;
+if run ne 989218009 then delete;
 keep 
-
-cald s_primary3034_ s_primary3034m s_primary3034w
-s_I_undiag3034m s_I_diag_naive3034m s_I_diag_startart3034m s_I_onart3034m s_I_offart3034m s_I_onart_lt6m3034m 
-s_I_onart_lt6m_nvs3034m s_I_onart_gt6m_nvs3034m s_I_onart_gt6m_vs3034m s_I_offart_1stI3034m s_I_offart_SI3034m 
-s_I_offart_SIlt6m3034m s_I_offart_SIgt6m3034m 
-
+cald s_primary 
+s_I_undiag s_I_diag_naive s_I_diag_startart s_I_onart s_I_offart s_I_onart_lt6m 
+s_I_onart_lt6m_nvs s_I_onart_gt6m_nvs s_I_onart_gt6m_vs s_I_offart_1stI s_I_offart_SI 
+s_I_offart_SIlt6m s_I_offart_SIgt6m 
 /*
 cald s_primary3539_ s_primary3539m s_primary3539w
 s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
@@ -1292,10 +1290,10 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\3034.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\all.xlsx"
 replace;
 run;
-*/
+
 
 proc freq;table  s_dead_undiag  s_dead_diag_not_linked  
 s_dead_Alt6_artcd4lt200_  s_dead_Alt6_artcd4gt200_  
@@ -1408,7 +1406,7 @@ s_I_offart_SIlt6m8084w s_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 5  ;
+%let nfit = 127  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
