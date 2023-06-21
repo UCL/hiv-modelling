@@ -3,9 +3,9 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v11_end2022_out";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v12_end2022_out";
 
-data a.base_16_06_23;   set b.out:;
+data a.base_20_06_23;   set b.out:;
 
 /* show the contents of the input SAS file */
 /*
@@ -25,7 +25,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_16_06_23;
+data g; set  a.base_20_06_23;
 
 proc sort data=g; 
 by run cald option;run;
