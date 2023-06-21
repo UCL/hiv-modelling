@@ -1,4 +1,4 @@
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\fsw_05_06_23_\";
+libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\FSW_nodisadv\";
 libname b "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 
@@ -9,7 +9,7 @@ run;
 
 
 
-data b.fsw_05_06_23_;
+data b.fsw_15_06_23_nodisadv;
 set b;
 run;
 
