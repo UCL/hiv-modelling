@@ -1219,7 +1219,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_16_06_23; set y;  run;
+data a.l_base_20_06_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
