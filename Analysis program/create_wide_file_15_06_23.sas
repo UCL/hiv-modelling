@@ -319,7 +319,8 @@ proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=0;run;
 proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=1;run;
 proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=2;run;
 
-
+proc means n sum p50;var p_diag_sw;where cald=2030 and option=2;run;
+proc means n sum p50;var p_diag;where cald=2030 and option=2;run;
 
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
