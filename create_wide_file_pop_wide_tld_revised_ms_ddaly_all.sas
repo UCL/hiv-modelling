@@ -110,7 +110,7 @@ data i9i; set b.out99:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modell
 
 
 
-data pwt_rev_a  ;  set  
+data a.pwt_rev_a  ;  set  
 i1a i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
 i4a i4b i4c i4d i4e i4f i4g i4h i4i i5a i5b i5c i5d i5e i5f i5g i5h i5i  i6a i6b i6c i6d i6e i6f i6g i6h i6i  
 i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i 
@@ -128,10 +128,10 @@ proc freq; tables run; where cald = 2022; run;
 * =========================================================================================================================================;
 
 
- libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\"; 
+* libname a libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\"; 
 
 
-proc sort data = pwt_rev_a ; 
+proc sort ; 
 by run cald option;
 run;
 
@@ -139,7 +139,7 @@ run;
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set pwt_rev_a   ;
+set a.pwt_rev_a   ;
 
 if cald=2023.75;
 s_alive = s_alive_m + s_alive_w ;
@@ -172,7 +172,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 %let sf=sf_2024;
 
 data a.pwt_rev_b; 
-merge pwt_rev_a   sf;
+merge a.pwt_rev_a   sf;
 by run ;
 
 
@@ -255,6 +255,17 @@ ddaly_ntd_mtct_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + ddaly_non_aids_pre_d
 ddaly_ntd_mtct_odab_napd = ddaly + dead_ddaly_ntd + ddaly_mtct + dead_ddaly_odabe + ddaly_non_aids_pre_death;
 
 ddaly_all = ddaly_ntd_mtct_odab_napd;
+
+
+
+
+
+
+ddaly = ddaly_all;
+
+
+
+
 
 
 
@@ -1317,7 +1328,7 @@ proc freq; tables run; where cald = 2022; run;
 
 
 
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+* libname a "libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
 %let sf=sf_2024;
@@ -1341,7 +1352,7 @@ proc freq data=a.pwt_rev_c ; tables run; where cald = 2022; run;
 
 
 
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+* libname a "libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
 %let sf=sf_2024;
@@ -1454,7 +1465,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=p_onart_vl1000_w); %var(v=p_onart_vl1000_m); * %var(v= p_onart_vl1000_1524); * %var(v=p_onart_vl1000_sw);
 * %var(v=prev_vg1000_newp_m); * %var(v=prev_vg1000_newp_w);  %var(v= p_startedline2) ;
 * %var(v=p_tle);  * %var(v=p_tld);  * %var(v=p_zld);  * %var(v=p_zla);  * %var(v=p_otherreg);  * %var(v=p_drug_level_test); %var(v=p_linefail_ge1);
-* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);  %var(v=cost);    %var(v= dart_cost_y);
+* %var(v=aids_death_rate);    %var(v=death_rate_onart);     %var(v=dcost);    %var(v= dart_cost_y);
   %var(v=dadc_cost);     %var(v=dcd4_cost);     %var(v=dvl_cost);     %var(v=dvis_cost);      %var(v=dcot_cost);     %var(v=dtb_cost);   
   %var(v=dres_cost);    %var(v=dtest_cost);     %var(v=d_t_adh_int_cost);     %var(v=dswitchline_cost);    %var(v=dtaz_cost);     %var(v=dcost_drug_level_test);
   %var(v=dclin_cost );  %var(v=dnon_tb_who3_cost); %var(v=dcost_avail_self_test); 
@@ -1554,7 +1565,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 
 
 data     wide_outputs; merge 
-s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost cost  dart_cost_y n_onart
+s_alive p_w_giv_birth_this_per p_newp_ge1 p_newp_ge5   gender_r_newp p_newp_sw prop_sw_newp0  p_newp_prep  dcost  dart_cost_y n_onart
 dcost_prep_visit dres_cost     dtest_cost    d_t_adh_int_cost    dswitchline_cost   dtaz_cost   dclin_cost  dcost_circ dcost_condom_dn 
 dcost_prep_visit_oral dcost_prep_visit_inj   dcost_prep  dcost_clin_care  dcost_non_aids_pre_death  dcost_child_hiv  dnon_tb_who3_cost
 dadc_cost       dcd4_cost       dvl_cost       dvis_cost        dcot_cost   dcost_avail_self_test    dtb_cost    n_hiv
@@ -1908,7 +1919,6 @@ d_n_cd4_lt200_50y_2_1 = n_cd4_lt200_50y_2 - n_cd4_lt200_50y_1 ;
 d_n_death_hiv_50y_2_1 = n_death_hiv_50y_2 - n_death_hiv_50y_1 ;
 d_ddaly_50y_2_1 = ddaly_50y_2 - ddaly_50y_1 ;
 d_dcost_50y_2_1 =  dcost_50y_2 - dcost_50y_1 ; 
-d_cost_5y_2_1 =   cost_5y_2 -  cost_5y_1 ; 
 netdaly_averted_2_1 = netdaly500_2 - netdaly500_1;
 
 
@@ -1937,11 +1947,6 @@ if 0.2 <= incidence1549_22 < 0.4 then incidence1549_22_g=2;
 if 0.4 <= incidence1549_22 < 0.6 then incidence1549_22_g=3;
 if 0.6 <= incidence1549_22 < 0.8 then incidence1549_22_g=4;
 if 0.8 <= incidence1549_22       then incidence1549_22_g=5;
-
-if prevalence1549_22 < 0.08 then prevalence1549_22_g = 1;
-if 0.08 <= prevalence1549_22 < 0.12 then prevalence1549_22_g = 2;
-if 0.12 <= prevalence1549_22        then prevalence1549_22_g = 3;
-
 
 * if d_p_onart_5y_2_1 < 0.08;
 * if d_p_elig_hivneg_onprep_5y_2_1 < 0.35;
@@ -2082,7 +2087,6 @@ ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
 dcost_50y_1   dcost_50y_2  d_dcost_50y_2_1
 netdaly500_1 netdaly500_2  netdaly_averted_2_1
 netdaly300_averted_2_1
-cost_5y_1   cost_5y_2  d_cost_5y_2_1
 ;
 run;
 
@@ -2183,7 +2187,7 @@ run;
 proc freq  data=  j ; tables 
 (prob_prep_pop_wide_tld inc_oral_prep_pref_pop_wide_tld prop_pep pep_efficacy pop_wide_prep_adh_effect rr_interrupt_pop_wide_tld rr_return_pop_wide_tld
 pop_wide_tld_selective_hiv prob_tld_hiv_concern prob_test_pop_wide_tld_prep    prob_onartvis0_0_to_1    prob_onartvis0_1_to_0 artvis0_lower_adh 
-death_r_iris_pop_wide_tld low_prep_inj_uptake prep_dependent_prev_vg1000_g prep_oral_efficacy adh_pattern prevalence1549_22_g)
+death_r_iris_pop_wide_tld low_prep_inj_uptake prep_dependent_prev_vg1000_g prep_oral_efficacy adh_pattern)
 * (deaths_averted dalys_averted pop_wide_tld_ce )
 / nofreq nocol nopercent;
 run;
