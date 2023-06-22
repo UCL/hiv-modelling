@@ -29,7 +29,8 @@ data g; set  a.base_from2023_21_06_23;
 
 proc sort data=g; 
 by run cald option;run;
-
+proc freq;table cald*option;run;
+proc freq data=g;run;
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
