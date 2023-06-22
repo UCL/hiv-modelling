@@ -34,6 +34,9 @@ data y;
 merge a sf;
 by run ;
 
+*if run in (972898928, 975089766, 989218009) then ch=1;
+*if ch ne 1 then delete;
+
 ***these are used for checking the raw data so not scaled up;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
 s_primary1564w = s_primary1549w + s_primary5054w + s_primary5559w + s_primary6064w;
@@ -1245,13 +1248,27 @@ run;
 data y1;
 set y;
 
+*if run ne 972898928 then delete;
+*if run ne  975089766 then delete;
 if run ne 989218009 then delete;
-keep 
-cald s_primary 
-s_I_undiag s_I_diag_naive s_I_diag_startart s_I_onart s_I_offart s_I_onart_lt6m 
-s_I_onart_lt6m_nvs s_I_onart_gt6m_nvs s_I_onart_gt6m_vs s_I_offart_1stI s_I_offart_SI 
-s_I_offart_SIlt6m s_I_offart_SIgt6m 
-/*
+
+keep
+cald n_inf1519_ n_inf1519m n_inf1519w 
+
+n_I_undiag1519_ n_I_diag_naive1519_ n_I_diag_startart1519_ n_I_onart1519_ n_I_offart1519_ n_I_onart_lt6m1519_ 
+n_I_onart_lt6m_nvs1519_ n_I_onart_gt6m_nvs1519_ n_I_onart_gt6m_vs1519_ n_I_offart_1stI1519_ n_I_offart_SI1519_ 
+n_I_offart_SIlt6m1519_ n_I_offart_SIgt6m1519_ 
+
+n_I_undiag1519m n_I_diag_naive1519m n_I_diag_startart1519m n_I_onart1519m n_I_offart1519m n_I_onart_lt6m1519m 
+n_I_onart_lt6m_nvs1519m n_I_onart_gt6m_nvs1519m n_I_onart_gt6m_vs1519m n_I_offart_1stI1519m n_I_offart_SI1519m 
+n_I_offart_SIlt6m1519m n_I_offart_SIgt6m1519m 
+
+n_I_undiag1519w n_I_diag_naive1519w n_I_diag_startart1519w n_I_onart1519w n_I_offart1519w n_I_onart_lt6m1519w 
+n_I_onart_lt6m_nvs1519w n_I_onart_gt6m_nvs1519w n_I_onart_gt6m_vs1519w n_I_offart_1stI1519w n_I_offart_SI1519w 
+n_I_offart_SIlt6m1519w n_I_offart_SIgt6m1519w 
+
+
+*******
 cald s_primary3539_ s_primary3539m s_primary3539w
 s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
 s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
@@ -1283,7 +1300,7 @@ cald s_primary2529_ s_primary2529m s_primary2529w
 s_I_undiag2529m s_I_diag_naive2529m s_I_diag_startart2529m s_I_onart2529m s_I_offart2529m s_I_onart_lt6m2529m 
 s_I_onart_lt6m_nvs2529m s_I_onart_gt6m_nvs2529m s_I_onart_gt6m_vs2529m s_I_offart_1stI2529m s_I_offart_SI2529m 
 s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m 
-
+********
 ;
 
 if cald lt 2010 then delete;
@@ -1292,7 +1309,7 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\all.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\009.xlsx"
 replace;
 run;
 */
@@ -1404,11 +1421,10 @@ n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w
 ;run;
 
 
-
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 127  ;
+%let nfit = 127;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -1420,6 +1436,7 @@ data one;set y;keep &v count_csim cald;
 proc sort;by count_csim cald;
 %let count=2000;
 %do %while (&count le 2050);
+***line below calculates means over calendar period;
 proc means noprint data = one; var &v; output out = y_&count mean=&v._&count; by count_csim ; where &count <= cald < &count+1;
 %let count = %eval(&count + 1);
 %end;
@@ -1446,8 +1463,8 @@ cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
 
 data l_&v;set l_&v;
 *p5_&v  = PCTL(5,of &v.1-&v.&nfit);
-*p95_&v = PCTL(95,of &v.1-&v.&nfit);
-p50_&v = median(of &v.1-&v.&nfit);
+*p95_&v = PCTL(95,of &v.1-&v.&nfit); ***mean of means over 4 calendar periods;
+p50_&v = mean(of &v.1-&v.&nfit);
 keep cald /*p5_&v p95_&v*/ p50_&v;
 run;
 proc datasets nodetails nowarn nolist;delete &v;run;
@@ -1735,11 +1752,11 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_I_offart_SIgt6m);
 
 %var_d(n_I_undiag_m);		 %var_d(n_I_diag_naive_m);	   %var_d(n_I_diag_startart_m);	%var_d(n_I_onart_m);	  %var_d(n_I_offart_m);	  %var_d(n_I_onart_lt6m_m);
-%var_d(n_I_onart_lt6m_nvn_m);%var_d(n_I_onart_gt6m_nvn_m); %var_d(n_I_onart_gt6m_vn_m);	%var_d(n_I_offart_1stI_m);%var_d(n_I_offart_SI_m);%var_d(n_I_offart_SIlt6m_m);
+%var_d(n_I_onart_lt6m_nvs_m);%var_d(n_I_onart_gt6m_nvs_m); %var_d(n_I_onart_gt6m_vs_m);	%var_d(n_I_offart_1stI_m);%var_d(n_I_offart_SI_m);%var_d(n_I_offart_SIlt6m_m);
 %var_d(n_I_offart_SIgt6m_m); 
 
 %var_d(n_I_undiag_w); 		 %var_d(n_I_diag_naive_w); 	   %var_d(n_I_diag_startart_w); %var_d(n_I_onart_w);	  %var_d(n_I_offart_w);   %var_d(n_I_onart_lt6m_w); 
-%var_d(n_I_onart_lt6m_nvn_w);%var_d(n_I_onart_gt6m_nvn_w); %var_d(n_I_onart_gt6m_vn_w); %var_d(n_I_offart_1stI_w);%var_d(n_I_offart_SI_w);%var_d(n_I_offart_SIlt6m_w); 
+%var_d(n_I_onart_lt6m_nvs_w);%var_d(n_I_onart_gt6m_nvs_w); %var_d(n_I_onart_gt6m_vs_w); %var_d(n_I_offart_1stI_w);%var_d(n_I_offart_SI_w);%var_d(n_I_offart_SIlt6m_w); 
 %var_d(n_I_offart_SIgt6m_w); 
 
 %var_d(n_I_undiag1519_); 		%var_d(n_I_diag_naive1519_);	 %var_d(n_I_diag_startart1519_); 	%var_d(n_I_onart1519_);	   		%var_d(n_I_offart1519_); 	
@@ -2001,6 +2018,7 @@ l_n_I_undiag&age			l_n_I_undiag&mage			l_n_I_undiag&wage
 l_n_I_diag_naive&age		l_n_I_diag_naive&mage		l_n_I_diag_naive&wage
 l_n_I_diag_startart&age		l_n_I_diag_startart&mage	l_n_I_diag_startart&wage
 l_n_I_onart&age				l_n_I_onart&mage			l_n_I_onart&wage
+l_n_I_offart&age			l_n_I_offart&mage			l_n_I_offart&wage
 l_n_I_onart_lt6m&age		l_n_I_onart_lt6m&mage		l_n_I_onart_lt6m&wage
 l_n_I_onart_lt6m_nvs&age	l_n_I_onart_lt6m_nvs&mage	l_n_I_onart_lt6m_nvs&wage
 l_n_I_onart_gt6m_nvs&age	l_n_I_onart_gt6m_nvs&mage	l_n_I_onart_gt6m_nvs&wage
@@ -2022,7 +2040,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Transmissions_HIVSynthesis.xlsx"
+ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Transmissions1519_HIVSynthesis.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
