@@ -2022,14 +2022,14 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans Template_HIVSynthesis.xlsx"
+ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Transmissions_HIVSynthesis.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
 **This macro avoids having to write out these lines for each age band;
 %macro out(age);
 ods excel options(sheet_name="trans&age" start_at='A3');
-proc print data=a.deaths&age noobs;run;
+proc print data=a.trans&age noobs;run;
 %mend;
 
 %out(1519_); %out(2024_); %out(2529_); %out(3034_); %out(3539_); %out(4044_); %out(4549_); %out(5054_); %out(5559_);
