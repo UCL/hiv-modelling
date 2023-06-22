@@ -11,7 +11,7 @@ takes ages to run so cut down dataset;
 
 proc sort;by run;run;
 proc freq;table cald run;run;
-
+proc freq;table s_dead_undiag;run;
 
 data sf;
 set a;
@@ -544,7 +544,6 @@ s_I_offart_SIgt6m4549_ = s_I_offart_SIgt6m4549m + s_I_offart_SIgt6m4549w; s_I_of
 s_I_offart_SIgt6m5559_ = s_I_offart_SIgt6m5559m + s_I_offart_SIgt6m5559w; s_I_offart_SIgt6m6064_ = s_I_offart_SIgt6m6064m + s_I_offart_SIgt6m6064w;
 s_I_offart_SIgt6m6569_ = s_I_offart_SIgt6m6569m + s_I_offart_SIgt6m6569w; s_I_offart_SIgt6m7074_ = s_I_offart_SIgt6m7074m + s_I_offart_SIgt6m7074w;
 s_I_offart_SIgt6m7579_ = s_I_offart_SIgt6m7579m + s_I_offart_SIgt6m7579w; s_I_offart_SIgt6m8084_ = s_I_offart_SIgt6m8084m + s_I_offart_SIgt6m8084w;
-
 
 
 n_dead_undiag				= s_dead_undiag * sf_2022;
@@ -1241,7 +1240,7 @@ s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m
 
 run;
 
-
+/*
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
 set y;
@@ -1284,7 +1283,7 @@ cald s_primary2529_ s_primary2529m s_primary2529w
 s_I_undiag2529m s_I_diag_naive2529m s_I_diag_startart2529m s_I_onart2529m s_I_offart2529m s_I_onart_lt6m2529m 
 s_I_onart_lt6m_nvs2529m s_I_onart_gt6m_nvs2529m s_I_onart_gt6m_vs2529m s_I_offart_1stI2529m s_I_offart_SI2529m 
 s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m 
-*/
+
 ;
 
 if cald lt 2010 then delete;
@@ -1296,112 +1295,112 @@ data=y1      dbms=xlsx
 outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\all.xlsx"
 replace;
 run;
+*/
 
-
-proc freq;table  s_dead_undiag  s_dead_diag_not_linked  
-s_dead_Alt6_artcd4lt200_  s_dead_Alt6_artcd4gt200_  
-s_dead_I_Alt6_Rcd4lt200_  s_dead_I_Alt6_Rcd4gt200_  
-s_dead_A_vl1000_  s_dead_A_vg1000_  s_dead_Alt6_vl1000_  s_dead_Alt6_vg1000_  
-s_dead_Agt6_vl1000_  s_dead_Agt6_vg1000_  
-s_dead_int_lost  s_dead_1stint_lost  s_dead_subintlt6_lost  s_dead_subintgt6_lost  
-s_dead_A_cd4lt200_  s_dead_A_cd4gt200_  
-s_dead_Alt6_cd4lt200_  s_dead_Alt6_cd4gt200_  s_dead_Agt6_cd4lt200_  s_dead_Agt6_cd4gt200_  ;run;
+proc freq;table  n_dead_undiag  n_dead_diag_not_linked  
+n_dead_Alt6_Acd4lt200_  n_dead_Alt6_Acd4gt200_  
+n_d_I_Alt6_Rcd4lt200_  n_d_I_Alt6_Rcd4gt200_  
+n_dead_A_vl1000_  n_dead_A_vg1000_  n_dead_Alt6_vl1000_  n_dead_Alt6_vg1000_  
+n_dead_Agt6_vl1000_  n_dead_Agt6_vg1000_  
+n_dead_int_lost  n_dead_1stint_lost  n_dead_subintlt6_lost  n_dead_subintgt6_lost  
+n_dead_A_cd4lt200_  n_dead_A_cd4gt200_  
+n_dead_Alt6_cd4lt200_  n_dead_Alt6_cd4gt200_  n_dead_Agt6_cd4lt200_  n_dead_Agt6_cd4gt200_  ;run;
 
 proc freq;table 
 s_I_undiag 			s_I_diag_naive  	s_I_diag_startart  	s_I_onart		s_I_offart 		   s_I_onart_lt6m 	 s_I_onart_lt6m_nvs 
 s_I_onart_gt6m_nvs	s_I_onart_gt6m_vs   s_I_offart_1stI 	s_I_offart_SI 	s_I_offart_SIlt6m  s_I_offart_SIgt6m;run;
 
 proc freq;table
-s_I_undiag_m s_I_diag_naive_m s_I_diag_startart_m s_I_onart_m s_I_offart_m s_I_onart_lt6m_m s_I_onart_lt6m_nvs_m 
-s_I_onart_gt6m_nvs_m s_I_onart_gt6m_vs_m s_I_offart_1stI_m s_I_offart_SI_m s_I_offart_SIlt6m_m s_I_offart_SIgt6m_m 
-s_I_undiag_w s_I_diag_naive_w s_I_diag_startart_w s_I_onart_w s_I_offart_w s_I_onart_lt6m_w s_I_onart_lt6m_nvs_w 
-s_I_onart_gt6m_nvs_w s_I_onart_gt6m_vs_w s_I_offart_1stI_w s_I_offart_SI_w s_I_offart_SIlt6m_w s_I_offart_SIgt6m_w 
+n_I_undiag_m n_I_diag_naive_m n_I_diag_startart_m n_I_onart_m n_I_offart_m n_I_onart_lt6m_m n_I_onart_lt6m_nvs_m 
+n_I_onart_gt6m_nvs_m n_I_onart_gt6m_vs_m n_I_offart_1stI_m n_I_offart_SI_m n_I_offart_SIlt6m_m n_I_offart_SIgt6m_m 
+n_I_undiag_w n_I_diag_naive_w n_I_diag_startart_w n_I_onart_w n_I_offart_w n_I_onart_lt6m_w n_I_onart_lt6m_nvs_w 
+n_I_onart_gt6m_nvs_w n_I_onart_gt6m_vs_w n_I_offart_1stI_w n_I_offart_SI_w n_I_offart_SIlt6m_w n_I_offart_SIgt6m_w 
 
-s_I_undiag1519m s_I_diag_naive1519m s_I_diag_startart1519m s_I_onart1519m s_I_offart1519m s_I_onart_lt6m1519m 
-s_I_onart_lt6m_nvs1519m s_I_onart_gt6m_nvs1519m s_I_onart_gt6m_vs1519m s_I_offart_1stI1519m s_I_offart_SI1519m 
-s_I_offart_SIlt6m1519m s_I_offart_SIgt6m1519m 
-s_I_undiag2024m s_I_diag_naive2024m s_I_diag_startart2024m s_I_onart2024m s_I_offart2024m s_I_onart_lt6m2024m 
-s_I_onart_lt6m_nvs2024m s_I_onart_gt6m_nvs2024m s_I_onart_gt6m_vs2024m s_I_offart_1stI2024m s_I_offart_SI2024m 
-s_I_offart_SIlt6m2024m s_I_offart_SIgt6m2024m 
-s_I_undiag2529m s_I_diag_naive2529m s_I_diag_startart2529m s_I_onart2529m s_I_offart2529m s_I_onart_lt6m2529m 
-s_I_onart_lt6m_nvs2529m s_I_onart_gt6m_nvs2529m s_I_onart_gt6m_vs2529m s_I_offart_1stI2529m s_I_offart_SI2529m 
-s_I_offart_SIlt6m2529m s_I_offart_SIgt6m2529m 
-s_I_undiag3034m s_I_diag_naive3034m s_I_diag_startart3034m s_I_onart3034m s_I_offart3034m s_I_onart_lt6m3034m 
-s_I_onart_lt6m_nvs3034m s_I_onart_gt6m_nvs3034m s_I_onart_gt6m_vs3034m s_I_offart_1stI3034m s_I_offart_SI3034m 
-s_I_offart_SIlt6m3034m s_I_offart_SIgt6m3034m 
-s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
-s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
-s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m 
-s_I_undiag4044m s_I_diag_naive4044m s_I_diag_startart4044m s_I_onart4044m s_I_offart4044m s_I_onart_lt6m4044m 
-s_I_onart_lt6m_nvs4044m s_I_onart_gt6m_nvs4044m s_I_onart_gt6m_vs4044m s_I_offart_1stI4044m s_I_offart_SI4044m 
-s_I_offart_SIlt6m4044m s_I_offart_SIgt6m4044m 
-s_I_undiag4549m s_I_diag_naive4549m s_I_diag_startart4549m s_I_onart4549m s_I_offart4549m s_I_onart_lt6m4549m 
-s_I_onart_lt6m_nvs4549m s_I_onart_gt6m_nvs4549m s_I_onart_gt6m_vs4549m s_I_offart_1stI4549m s_I_offart_SI4549m 
-s_I_offart_SIlt6m4549m s_I_offart_SIgt6m4549m 
-s_I_undiag5054m s_I_diag_naive5054m s_I_diag_startart5054m s_I_onart5054m s_I_offart5054m s_I_onart_lt6m5054m 
-s_I_onart_lt6m_nvs5054m s_I_onart_gt6m_nvs5054m s_I_onart_gt6m_vs5054m s_I_offart_1stI5054m s_I_offart_SI5054m 
-s_I_offart_SIlt6m5054m s_I_offart_SIgt6m5054m 
-s_I_undiag5559m s_I_diag_naive5559m s_I_diag_startart5559m s_I_onart5559m s_I_offart5559m s_I_onart_lt6m5559m 
-s_I_onart_lt6m_nvs5559m s_I_onart_gt6m_nvs5559m s_I_onart_gt6m_vs5559m s_I_offart_1stI5559m s_I_offart_SI5559m 
-s_I_offart_SIlt6m5559m s_I_offart_SIgt6m5559m 
-s_I_undiag6064m s_I_diag_naive6064m s_I_diag_startart6064m s_I_onart6064m s_I_offart6064m s_I_onart_lt6m6064m 
-s_I_onart_lt6m_nvs6064m s_I_onart_gt6m_nvs6064m s_I_onart_gt6m_vs6064m s_I_offart_1stI6064m s_I_offart_SI6064m 
-s_I_offart_SIlt6m6064m s_I_offart_SIgt6m6064m 
-s_I_undiag6569m s_I_diag_naive6569m s_I_diag_startart6569m s_I_onart6569m s_I_offart6569m s_I_onart_lt6m6569m 
-s_I_onart_lt6m_nvs6569m s_I_onart_gt6m_nvs6569m s_I_onart_gt6m_vs6569m s_I_offart_1stI6569m s_I_offart_SI6569m 
-s_I_offart_SIlt6m6569m s_I_offart_SIgt6m6569m 
-s_I_undiag7074m s_I_diag_naive7074m s_I_diag_startart7074m s_I_onart7074m s_I_offart7074m s_I_onart_lt6m7074m 
-s_I_onart_lt6m_nvs7074m s_I_onart_gt6m_nvs7074m s_I_onart_gt6m_vs7074m s_I_offart_1stI7074m s_I_offart_SI7074m 
-s_I_offart_SIlt6m7074m s_I_offart_SIgt6m7074m 
-s_I_undiag7579m s_I_diag_naive7579m s_I_diag_startart7579m s_I_onart7579m s_I_offart7579m s_I_onart_lt6m7579m 
-s_I_onart_lt6m_nvs7579m s_I_onart_gt6m_nvs7579m s_I_onart_gt6m_vs7579m s_I_offart_1stI7579m s_I_offart_SI7579m 
-s_I_offart_SIlt6m7579m s_I_offart_SIgt6m7579m 
-s_I_undiag8084m s_I_diag_naive8084m s_I_diag_startart8084m s_I_onart8084m s_I_offart8084m s_I_onart_lt6m8084m 
-s_I_onart_lt6m_nvs8084m s_I_onart_gt6m_nvs8084m s_I_onart_gt6m_vs8084m s_I_offart_1stI8084m s_I_offart_SI8084m 
-s_I_offart_SIlt6m8084m s_I_offart_SIgt6m8084m 
+n_I_undiag1519m n_I_diag_naive1519m n_I_diag_startart1519m n_I_onart1519m n_I_offart1519m n_I_onart_lt6m1519m 
+n_I_onart_lt6m_nvs1519m n_I_onart_gt6m_nvs1519m n_I_onart_gt6m_vs1519m n_I_offart_1stI1519m n_I_offart_SI1519m 
+n_I_offart_SIlt6m1519m n_I_offart_SIgt6m1519m 
+n_I_undiag2024m n_I_diag_naive2024m n_I_diag_startart2024m n_I_onart2024m n_I_offart2024m n_I_onart_lt6m2024m 
+n_I_onart_lt6m_nvs2024m n_I_onart_gt6m_nvs2024m n_I_onart_gt6m_vs2024m n_I_offart_1stI2024m n_I_offart_SI2024m 
+n_I_offart_SIlt6m2024m n_I_offart_SIgt6m2024m 
+n_I_undiag2529m n_I_diag_naive2529m n_I_diag_startart2529m n_I_onart2529m n_I_offart2529m n_I_onart_lt6m2529m 
+n_I_onart_lt6m_nvs2529m n_I_onart_gt6m_nvs2529m n_I_onart_gt6m_vs2529m n_I_offart_1stI2529m n_I_offart_SI2529m 
+n_I_offart_SIlt6m2529m n_I_offart_SIgt6m2529m 
+n_I_undiag3034m n_I_diag_naive3034m n_I_diag_startart3034m n_I_onart3034m n_I_offart3034m n_I_onart_lt6m3034m 
+n_I_onart_lt6m_nvs3034m n_I_onart_gt6m_nvs3034m n_I_onart_gt6m_vs3034m n_I_offart_1stI3034m n_I_offart_SI3034m 
+n_I_offart_SIlt6m3034m n_I_offart_SIgt6m3034m 
+n_I_undiag3539m n_I_diag_naive3539m n_I_diag_startart3539m n_I_onart3539m n_I_offart3539m n_I_onart_lt6m3539m 
+n_I_onart_lt6m_nvs3539m n_I_onart_gt6m_nvs3539m n_I_onart_gt6m_vs3539m n_I_offart_1stI3539m n_I_offart_SI3539m 
+n_I_offart_SIlt6m3539m n_I_offart_SIgt6m3539m 
+n_I_undiag4044m n_I_diag_naive4044m n_I_diag_startart4044m n_I_onart4044m n_I_offart4044m n_I_onart_lt6m4044m 
+n_I_onart_lt6m_nvs4044m n_I_onart_gt6m_nvs4044m n_I_onart_gt6m_vs4044m n_I_offart_1stI4044m n_I_offart_SI4044m 
+n_I_offart_SIlt6m4044m n_I_offart_SIgt6m4044m 
+n_I_undiag4549m n_I_diag_naive4549m n_I_diag_startart4549m n_I_onart4549m n_I_offart4549m n_I_onart_lt6m4549m 
+n_I_onart_lt6m_nvs4549m n_I_onart_gt6m_nvs4549m n_I_onart_gt6m_vs4549m n_I_offart_1stI4549m n_I_offart_SI4549m 
+n_I_offart_SIlt6m4549m n_I_offart_SIgt6m4549m 
+n_I_undiag5054m n_I_diag_naive5054m n_I_diag_startart5054m n_I_onart5054m n_I_offart5054m n_I_onart_lt6m5054m 
+n_I_onart_lt6m_nvs5054m n_I_onart_gt6m_nvs5054m n_I_onart_gt6m_vs5054m n_I_offart_1stI5054m n_I_offart_SI5054m 
+n_I_offart_SIlt6m5054m n_I_offart_SIgt6m5054m 
+n_I_undiag5559m n_I_diag_naive5559m n_I_diag_startart5559m n_I_onart5559m n_I_offart5559m n_I_onart_lt6m5559m 
+n_I_onart_lt6m_nvs5559m n_I_onart_gt6m_nvs5559m n_I_onart_gt6m_vs5559m n_I_offart_1stI5559m n_I_offart_SI5559m 
+n_I_offart_SIlt6m5559m n_I_offart_SIgt6m5559m 
+n_I_undiag6064m n_I_diag_naive6064m n_I_diag_startart6064m n_I_onart6064m n_I_offart6064m n_I_onart_lt6m6064m 
+n_I_onart_lt6m_nvs6064m n_I_onart_gt6m_nvs6064m n_I_onart_gt6m_vs6064m n_I_offart_1stI6064m n_I_offart_SI6064m 
+n_I_offart_SIlt6m6064m n_I_offart_SIgt6m6064m 
+n_I_undiag6569m n_I_diag_naive6569m n_I_diag_startart6569m n_I_onart6569m n_I_offart6569m n_I_onart_lt6m6569m 
+n_I_onart_lt6m_nvs6569m n_I_onart_gt6m_nvs6569m n_I_onart_gt6m_vs6569m n_I_offart_1stI6569m n_I_offart_SI6569m 
+n_I_offart_SIlt6m6569m n_I_offart_SIgt6m6569m 
+n_I_undiag7074m n_I_diag_naive7074m n_I_diag_startart7074m n_I_onart7074m n_I_offart7074m n_I_onart_lt6m7074m 
+n_I_onart_lt6m_nvs7074m n_I_onart_gt6m_nvs7074m n_I_onart_gt6m_vs7074m n_I_offart_1stI7074m n_I_offart_SI7074m 
+n_I_offart_SIlt6m7074m n_I_offart_SIgt6m7074m 
+n_I_undiag7579m n_I_diag_naive7579m n_I_diag_startart7579m n_I_onart7579m n_I_offart7579m n_I_onart_lt6m7579m 
+n_I_onart_lt6m_nvs7579m n_I_onart_gt6m_nvs7579m n_I_onart_gt6m_vs7579m n_I_offart_1stI7579m n_I_offart_SI7579m 
+n_I_offart_SIlt6m7579m n_I_offart_SIgt6m7579m 
+n_I_undiag8084m n_I_diag_naive8084m n_I_diag_startart8084m n_I_onart8084m n_I_offart8084m n_I_onart_lt6m8084m 
+n_I_onart_lt6m_nvs8084m n_I_onart_gt6m_nvs8084m n_I_onart_gt6m_vs8084m n_I_offart_1stI8084m n_I_offart_SI8084m 
+n_I_offart_SIlt6m8084m n_I_offart_SIgt6m8084m 
 
-s_I_undiag1519w s_I_diag_naive1519w s_I_diag_startart1519w s_I_onart1519w s_I_offart1519w s_I_onart_lt6m1519w 
-s_I_onart_lt6m_nvs1519w s_I_onart_gt6m_nvs1519w s_I_onart_gt6m_vs1519w s_I_offart_1stI1519w s_I_offart_SI1519w 
-s_I_offart_SIlt6m1519w s_I_offart_SIgt6m1519w 
-s_I_undiag2024w s_I_diag_naive2024w s_I_diag_startart2024w s_I_onart2024w s_I_offart2024w s_I_onart_lt6m2024w 
-s_I_onart_lt6m_nvs2024w s_I_onart_gt6m_nvs2024w s_I_onart_gt6m_vs2024w s_I_offart_1stI2024w s_I_offart_SI2024w 
-s_I_offart_SIlt6m2024w s_I_offart_SIgt6m2024w 
-s_I_undiag2529w s_I_diag_naive2529w s_I_diag_startart2529w s_I_onart2529w s_I_offart2529w s_I_onart_lt6m2529w 
-s_I_onart_lt6m_nvs2529w s_I_onart_gt6m_nvs2529w s_I_onart_gt6m_vs2529w s_I_offart_1stI2529w s_I_offart_SI2529w 
-s_I_offart_SIlt6m2529w s_I_offart_SIgt6m2529w 
-s_I_undiag3034w s_I_diag_naive3034w s_I_diag_startart3034w s_I_onart3034w s_I_offart3034w s_I_onart_lt6m3034w 
-s_I_onart_lt6m_nvs3034w s_I_onart_gt6m_nvs3034w s_I_onart_gt6m_vs3034w s_I_offart_1stI3034w s_I_offart_SI3034w 
-s_I_offart_SIlt6m3034w s_I_offart_SIgt6m3034w 
-s_I_undiag3539w s_I_diag_naive3539w s_I_diag_startart3539w s_I_onart3539w s_I_offart3539w s_I_onart_lt6m3539w 
-s_I_onart_lt6m_nvs3539w s_I_onart_gt6m_nvs3539w s_I_onart_gt6m_vs3539w s_I_offart_1stI3539w s_I_offart_SI3539w 
-s_I_offart_SIlt6m3539w s_I_offart_SIgt6m3539w 
-s_I_undiag4044w s_I_diag_naive4044w s_I_diag_startart4044w s_I_onart4044w s_I_offart4044w s_I_onart_lt6m4044w 
-s_I_onart_lt6m_nvs4044w s_I_onart_gt6m_nvs4044w s_I_onart_gt6m_vs4044w s_I_offart_1stI4044w s_I_offart_SI4044w 
-s_I_offart_SIlt6m4044w s_I_offart_SIgt6m4044w 
-s_I_undiag4549w s_I_diag_naive4549w s_I_diag_startart4549w s_I_onart4549w s_I_offart4549w s_I_onart_lt6m4549w 
-s_I_onart_lt6m_nvs4549w s_I_onart_gt6m_nvs4549w s_I_onart_gt6m_vs4549w s_I_offart_1stI4549w s_I_offart_SI4549w 
-s_I_offart_SIlt6m4549w s_I_offart_SIgt6m4549w 
-s_I_undiag5054w s_I_diag_naive5054w s_I_diag_startart5054w s_I_onart5054w s_I_offart5054w s_I_onart_lt6m5054w 
-s_I_onart_lt6m_nvs5054w s_I_onart_gt6m_nvs5054w s_I_onart_gt6m_vs5054w s_I_offart_1stI5054w s_I_offart_SI5054w 
-s_I_offart_SIlt6m5054w s_I_offart_SIgt6m5054w 
-s_I_undiag5559w s_I_diag_naive5559w s_I_diag_startart5559w s_I_onart5559w s_I_offart5559w s_I_onart_lt6m5559w 
-s_I_onart_lt6m_nvs5559w s_I_onart_gt6m_nvs5559w s_I_onart_gt6m_vs5559w s_I_offart_1stI5559w s_I_offart_SI5559w 
-s_I_offart_SIlt6m5559w s_I_offart_SIgt6m5559w 
-s_I_undiag6064w s_I_diag_naive6064w s_I_diag_startart6064w s_I_onart6064w s_I_offart6064w s_I_onart_lt6m6064w 
-s_I_onart_lt6m_nvs6064w s_I_onart_gt6m_nvs6064w s_I_onart_gt6m_vs6064w s_I_offart_1stI6064w s_I_offart_SI6064w 
-s_I_offart_SIlt6m6064w s_I_offart_SIgt6m6064w 
-s_I_undiag6569w s_I_diag_naive6569w s_I_diag_startart6569w s_I_onart6569w s_I_offart6569w s_I_onart_lt6m6569w 
-s_I_onart_lt6m_nvs6569w s_I_onart_gt6m_nvs6569w s_I_onart_gt6m_vs6569w s_I_offart_1stI6569w s_I_offart_SI6569w 
-s_I_offart_SIlt6m6569w s_I_offart_SIgt6m6569w 
-s_I_undiag7074w s_I_diag_naive7074w s_I_diag_startart7074w s_I_onart7074w s_I_offart7074w s_I_onart_lt6m7074w 
-s_I_onart_lt6m_nvs7074w s_I_onart_gt6m_nvs7074w s_I_onart_gt6m_vs7074w s_I_offart_1stI7074w s_I_offart_SI7074w 
-s_I_offart_SIlt6m7074w s_I_offart_SIgt6m7074w 
-s_I_undiag7579w s_I_diag_naive7579w s_I_diag_startart7579w s_I_onart7579w s_I_offart7579w s_I_onart_lt6m7579w 
-s_I_onart_lt6m_nvs7579w s_I_onart_gt6m_nvs7579w s_I_onart_gt6m_vs7579w s_I_offart_1stI7579w s_I_offart_SI7579w 
-s_I_offart_SIlt6m7579w s_I_offart_SIgt6m7579w 
-s_I_undiag8084w s_I_diag_naive8084w s_I_diag_startart8084w s_I_onart8084w s_I_offart8084w s_I_onart_lt6m8084w 
-s_I_onart_lt6m_nvs8084w s_I_onart_gt6m_nvs8084w s_I_onart_gt6m_vs8084w s_I_offart_1stI8084w s_I_offart_SI8084w 
-s_I_offart_SIlt6m8084w s_I_offart_SIgt6m8084w 
+n_I_undiag1519w n_I_diag_naive1519w n_I_diag_startart1519w n_I_onart1519w n_I_offart1519w n_I_onart_lt6m1519w 
+n_I_onart_lt6m_nvs1519w n_I_onart_gt6m_nvs1519w n_I_onart_gt6m_vs1519w n_I_offart_1stI1519w n_I_offart_SI1519w 
+n_I_offart_SIlt6m1519w n_I_offart_SIgt6m1519w 
+n_I_undiag2024w n_I_diag_naive2024w n_I_diag_startart2024w n_I_onart2024w n_I_offart2024w n_I_onart_lt6m2024w 
+n_I_onart_lt6m_nvs2024w n_I_onart_gt6m_nvs2024w n_I_onart_gt6m_vs2024w n_I_offart_1stI2024w n_I_offart_SI2024w 
+n_I_offart_SIlt6m2024w n_I_offart_SIgt6m2024w 
+n_I_undiag2529w n_I_diag_naive2529w n_I_diag_startart2529w n_I_onart2529w n_I_offart2529w n_I_onart_lt6m2529w 
+n_I_onart_lt6m_nvs2529w n_I_onart_gt6m_nvs2529w n_I_onart_gt6m_vs2529w n_I_offart_1stI2529w n_I_offart_SI2529w 
+n_I_offart_SIlt6m2529w n_I_offart_SIgt6m2529w 
+n_I_undiag3034w n_I_diag_naive3034w n_I_diag_startart3034w n_I_onart3034w n_I_offart3034w n_I_onart_lt6m3034w 
+n_I_onart_lt6m_nvs3034w n_I_onart_gt6m_nvs3034w n_I_onart_gt6m_vs3034w n_I_offart_1stI3034w n_I_offart_SI3034w 
+n_I_offart_SIlt6m3034w n_I_offart_SIgt6m3034w 
+n_I_undiag3539w n_I_diag_naive3539w n_I_diag_startart3539w n_I_onart3539w n_I_offart3539w n_I_onart_lt6m3539w 
+n_I_onart_lt6m_nvs3539w n_I_onart_gt6m_nvs3539w n_I_onart_gt6m_vs3539w n_I_offart_1stI3539w n_I_offart_SI3539w 
+n_I_offart_SIlt6m3539w n_I_offart_SIgt6m3539w 
+n_I_undiag4044w n_I_diag_naive4044w n_I_diag_startart4044w n_I_onart4044w n_I_offart4044w n_I_onart_lt6m4044w 
+n_I_onart_lt6m_nvs4044w n_I_onart_gt6m_nvs4044w n_I_onart_gt6m_vs4044w n_I_offart_1stI4044w n_I_offart_SI4044w 
+n_I_offart_SIlt6m4044w n_I_offart_SIgt6m4044w 
+n_I_undiag4549w n_I_diag_naive4549w n_I_diag_startart4549w n_I_onart4549w n_I_offart4549w n_I_onart_lt6m4549w 
+n_I_onart_lt6m_nvs4549w n_I_onart_gt6m_nvs4549w n_I_onart_gt6m_vs4549w n_I_offart_1stI4549w n_I_offart_SI4549w 
+n_I_offart_SIlt6m4549w n_I_offart_SIgt6m4549w 
+n_I_undiag5054w n_I_diag_naive5054w n_I_diag_startart5054w n_I_onart5054w n_I_offart5054w n_I_onart_lt6m5054w 
+n_I_onart_lt6m_nvs5054w n_I_onart_gt6m_nvs5054w n_I_onart_gt6m_vs5054w n_I_offart_1stI5054w n_I_offart_SI5054w 
+n_I_offart_SIlt6m5054w n_I_offart_SIgt6m5054w 
+n_I_undiag5559w n_I_diag_naive5559w n_I_diag_startart5559w n_I_onart5559w n_I_offart5559w n_I_onart_lt6m5559w 
+n_I_onart_lt6m_nvs5559w n_I_onart_gt6m_nvs5559w n_I_onart_gt6m_vs5559w n_I_offart_1stI5559w n_I_offart_SI5559w 
+n_I_offart_SIlt6m5559w n_I_offart_SIgt6m5559w 
+n_I_undiag6064w n_I_diag_naive6064w n_I_diag_startart6064w n_I_onart6064w n_I_offart6064w n_I_onart_lt6m6064w 
+n_I_onart_lt6m_nvs6064w n_I_onart_gt6m_nvs6064w n_I_onart_gt6m_vs6064w n_I_offart_1stI6064w n_I_offart_SI6064w 
+n_I_offart_SIlt6m6064w n_I_offart_SIgt6m6064w 
+n_I_undiag6569w n_I_diag_naive6569w n_I_diag_startart6569w n_I_onart6569w n_I_offart6569w n_I_onart_lt6m6569w 
+n_I_onart_lt6m_nvs6569w n_I_onart_gt6m_nvs6569w n_I_onart_gt6m_vs6569w n_I_offart_1stI6569w n_I_offart_SI6569w 
+n_I_offart_SIlt6m6569w n_I_offart_SIgt6m6569w 
+n_I_undiag7074w n_I_diag_naive7074w n_I_diag_startart7074w n_I_onart7074w n_I_offart7074w n_I_onart_lt6m7074w 
+n_I_onart_lt6m_nvs7074w n_I_onart_gt6m_nvs7074w n_I_onart_gt6m_vs7074w n_I_offart_1stI7074w n_I_offart_SI7074w 
+n_I_offart_SIlt6m7074w n_I_offart_SIgt6m7074w 
+n_I_undiag7579w n_I_diag_naive7579w n_I_diag_startart7579w n_I_onart7579w n_I_offart7579w n_I_onart_lt6m7579w 
+n_I_onart_lt6m_nvs7579w n_I_onart_gt6m_nvs7579w n_I_onart_gt6m_vs7579w n_I_offart_1stI7579w n_I_offart_SI7579w 
+n_I_offart_SIlt6m7579w n_I_offart_SIgt6m7579w 
+n_I_undiag8084w n_I_diag_naive8084w n_I_diag_startart8084w n_I_onart8084w n_I_offart8084w n_I_onart_lt6m8084w 
+n_I_onart_lt6m_nvs8084w n_I_onart_gt6m_nvs8084w n_I_onart_gt6m_vs8084w n_I_offart_1stI8084w n_I_offart_SI8084w 
+n_I_offart_SIlt6m8084w n_I_offart_SIgt6m8084w 
 ;run;
 
 
@@ -1724,6 +1723,13 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_dead_Agt6_cd4gt2006569w);  %var_d(n_dead_Agt6_cd4gt2007074w);  %var_d(n_dead_Agt6_cd4gt2007579w);  %var_d(n_dead_Agt6_cd4gt2008084w);  ;
 
 ***transmissions;
+%var_d(n_inf1519_);  %var_d(n_inf2024_);  %var_d(n_inf2529_);  %var_d(n_inf3034_);  %var_d(n_inf3539_);  %var_d(n_inf4044_);  %var_d(n_inf4549_);  %var_d(n_inf5054_); 
+%var_d(n_inf5559_);  %var_d(n_inf6064_);  %var_d(n_inf6569_);  %var_d(n_inf7074_);  %var_d(n_inf7579_);  %var_d(n_inf8084_);  
+%var_d(n_inf1519m);  %var_d(n_inf2024m);  %var_d(n_inf2529m);  %var_d(n_inf3034m);  %var_d(n_inf3539m);  %var_d(n_inf4044m);  %var_d(n_inf4549m);  %var_d(n_inf5054m); 
+%var_d(n_inf5559m);  %var_d(n_inf6064m);  %var_d(n_inf6569m);  %var_d(n_inf7074m);  %var_d(n_inf7579m);  %var_d(n_inf8084m);  
+%var_d(n_inf1519w);  %var_d(n_inf2024w);  %var_d(n_inf2529w);  %var_d(n_inf3034w);  %var_d(n_inf3539w);  %var_d(n_inf4044w);  %var_d(n_inf4549w);  %var_d(n_inf5054w);  
+%var_d(n_inf5559w);  %var_d(n_inf6064w);  %var_d(n_inf6569w);  %var_d(n_inf7074w);  %var_d(n_inf7579w);  %var_d(n_inf8084w); 
+
 %var_d(n_I_undiag); 		%var_d(n_I_diag_naive);  	%var_d(n_I_diag_startart); 	%var_d(n_I_onart);		%var_d(n_I_offart); 	%var_d(n_I_onart_lt6m);
 %var_d(n_I_onart_lt6m_nvs); %var_d(n_I_onart_gt6m_nvs);	%var_d(n_I_onart_gt6m_vs);  %var_d(n_I_offart_1stI);%var_d(n_I_offart_SI); 	%var_d(n_I_offart_SIlt6m);
 %var_d(n_I_offart_SIgt6m);
@@ -1990,7 +1996,7 @@ data a.trans&age;
 
 merge 
 
-l_n_hiv&age	 l_n_hiv&mage	l_n_hiv&wage 	/*n_inf&age	n_inf&mage	n_inf&wage*/
+l_n_hiv&age	 l_n_hiv&mage	l_n_hiv&wage 	l_n_inf&age	l_n_inf&mage	l_n_inf&wage
 l_n_I_undiag&age			l_n_I_undiag&mage			l_n_I_undiag&wage
 l_n_I_diag_naive&age		l_n_I_diag_naive&mage		l_n_I_diag_naive&wage
 l_n_I_diag_startart&age		l_n_I_diag_startart&mage	l_n_I_diag_startart&wage
