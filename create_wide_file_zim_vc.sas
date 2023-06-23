@@ -49,6 +49,15 @@ s_primary2024_ =  s_primary2024m + s_primary2024w;
 s_primary2529_ =  s_primary2529m + s_primary2529w;
 s_primary3034_ =  s_primary3034m + s_primary3034w;
 s_primary3539_ =  s_primary3539m + s_primary3539w;
+s_primary4044_ =  s_primary4044m + s_primary4044w;
+s_primary4549_ =  s_primary4549m + s_primary4549w;
+s_primary5054_ =  s_primary5054m + s_primary5054w;
+s_primary5559_ =  s_primary5559m + s_primary5559w;
+s_primary6064_ =  s_primary6064m + s_primary6064w;
+s_primary6569_ =  s_primary6569m + s_primary6569w;
+s_primary7074_ =  s_primary7074m + s_primary7074w;
+s_primary7579_ =  s_primary7579m + s_primary7579w;
+s_primary8084_ =  s_primary8084m + s_primary8084w;
 
 ***This is for the actual spreadsheet;
 * n_alive1564_;					n_alive1564_  = s_alive1564 * &sf;
@@ -807,7 +816,6 @@ n_inf1519_  n_inf2024_  n_inf2529_  n_inf3034_  n_inf3539_  n_inf4044_  n_inf454
 n_inf1519m  n_inf2024m  n_inf2529m  n_inf3034m  n_inf3539m  n_inf4044m  n_inf4549m  n_inf5054m  n_inf5559m  n_inf6064m n_inf6569m  n_inf7074m  n_inf7579m  n_inf8084m  
 n_inf1519w  n_inf2024w  n_inf2529w  n_inf3034w  n_inf3539w  n_inf4044w  n_inf4549w  n_inf5054w  n_inf5559w  n_inf6064w  n_inf6569w  n_inf7074w  n_inf7579w  n_inf8084w 
 
-
 n_hiv_death_m		n_hiv_death_w		n_hiv_death
 
 /*Deaths*/
@@ -1242,7 +1250,7 @@ s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m
 
 run;
 
-/*
+
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
 set y;
@@ -1252,20 +1260,20 @@ set y;
 if run ne 989218009 then delete;
 
 keep
-cald n_inf1519_ n_inf1519m n_inf1519w 
+cald n_inf7579_ n_inf7579m n_inf7579w 
 
-n_I_undiag1519_ n_I_diag_naive1519_ n_I_diag_startart1519_ n_I_onart1519_ n_I_offart1519_ n_I_onart_lt6m1519_ 
-n_I_onart_lt6m_nvs1519_ n_I_onart_gt6m_nvs1519_ n_I_onart_gt6m_vs1519_ n_I_offart_1stI1519_ n_I_offart_SI1519_ 
-n_I_offart_SIlt6m1519_ n_I_offart_SIgt6m1519_ 
+n_I_undiag7579_ n_I_diag_naive7579_ n_I_diag_startart7579_ n_I_onart7579_ n_I_offart7579_ n_I_onart_lt6m7579_ 
+n_I_onart_lt6m_nvs7579_ n_I_onart_gt6m_nvs7579_ n_I_onart_gt6m_vs7579_ n_I_offart_1stI7579_ n_I_offart_SI7579_ 
+n_I_offart_SIlt6m7579_ n_I_offart_SIgt6m7579_ 
 
-n_I_undiag1519m n_I_diag_naive1519m n_I_diag_startart1519m n_I_onart1519m n_I_offart1519m n_I_onart_lt6m1519m 
-n_I_onart_lt6m_nvs1519m n_I_onart_gt6m_nvs1519m n_I_onart_gt6m_vs1519m n_I_offart_1stI1519m n_I_offart_SI1519m 
-n_I_offart_SIlt6m1519m n_I_offart_SIgt6m1519m 
+n_I_undiag7579m n_I_diag_naive7579m n_I_diag_startart7579m n_I_onart7579m n_I_offart7579m n_I_onart_lt6m7579m 
+n_I_onart_lt6m_nvs7579m n_I_onart_gt6m_nvs7579m n_I_onart_gt6m_vs7579m n_I_offart_1stI7579m n_I_offart_SI7579m 
+n_I_offart_SIlt6m7579m n_I_offart_SIgt6m7579m 
 
-n_I_undiag1519w n_I_diag_naive1519w n_I_diag_startart1519w n_I_onart1519w n_I_offart1519w n_I_onart_lt6m1519w 
-n_I_onart_lt6m_nvs1519w n_I_onart_gt6m_nvs1519w n_I_onart_gt6m_vs1519w n_I_offart_1stI1519w n_I_offart_SI1519w 
-n_I_offart_SIlt6m1519w n_I_offart_SIgt6m1519w 
-
+n_I_undiag7579w n_I_diag_naive7579w n_I_diag_startart7579w n_I_onart7579w n_I_offart7579w n_I_onart_lt6m7579w 
+n_I_onart_lt6m_nvs7579w n_I_onart_gt6m_nvs7579w n_I_onart_gt6m_vs7579w n_I_offart_1stI7579w n_I_offart_SI7579w 
+n_I_offart_SIlt6m7579w n_I_offart_SIgt6m7579w 
+;
 
 *******
 cald s_primary3539_ s_primary3539m s_primary3539w
@@ -1308,7 +1316,7 @@ run;
 
 proc export 
 data=y1      dbms=xlsx  
-outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\009.xlsx"
+outfile="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\009_7579.xlsx"
 replace;
 run;
 */
