@@ -11,7 +11,6 @@ takes ages to run so cut down dataset;
 
 proc sort;by run;run;
 proc freq;table cald run;run;
-proc freq;table s_dead_undiag;run;
 
 data sf;
 set a;
