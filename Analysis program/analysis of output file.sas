@@ -2,7 +2,7 @@ libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\ou
 
 
 data a; 
-set a.wide_fsw_05_06_23 ;
+set a.wide_fsw_22_06_23 ;
 if incidence_sw_22 <0.1 then delete;
 run;
 

@@ -312,7 +312,7 @@ s_tested s_tested_m s_tested_f n_pregnant
 
 proc sort data=y;by run option;run;
 
-proc freq;table option;run;
+proc freq data=y;table effect_sw_prog_lossdiag;where cald=2023;run;
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=0;run;
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=1;run;
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=2;run;
@@ -321,8 +321,26 @@ proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=0;run;
 proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=1;run;
 proc means n sum p50;var p_onart_diag_w;where cald=2030 and option=2;run;
 
-proc means n sum p50;var p_diag_sw;where cald=2030 and option=2;run;
-proc means n sum p50;var p_diag;where cald=2030 and option=2;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2023 and effect_sw_prog_lossdiag=0.10;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2023 and effect_sw_prog_lossdiag=0.30;run;
+
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2030 and option=1 and effect_sw_prog_lossdiag=0.10;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2030 and option=1 and effect_sw_prog_lossdiag=0.30;run;
+
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2030 and option=2 and effect_sw_prog_lossdiag=0.05;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_lossdiag;where cald=2030 and option=2 and effect_sw_prog_lossdiag=0.15;run;
+
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_int;where cald=2023 and effect_sw_prog_int=0.10;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_int;where cald=2023 and effect_sw_prog_int=0.30;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_int;where cald=2030 and option=2 and effect_sw_prog_int=0.005;run;
+proc means data=y n sum p50;var p_onart_diag_sw effect_sw_prog_int;where cald=2030 and option=2 and effect_sw_prog_int=0.05;run;
+
+proc genmod data=y; class  effect_sw_prog_lossdiag;model p_onart_diag_sw= effect_sw_prog_lossdiag;where option=2 and cald=2030;run;
+
+
+
+
+
 
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
@@ -502,7 +520,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_15_06_23;
+data a.wide_fsw_22_06_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
