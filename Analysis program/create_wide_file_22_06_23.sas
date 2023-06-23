@@ -313,6 +313,9 @@ s_tested s_tested_m s_tested_f n_pregnant
 proc sort data=y;by run option;run;
 
 proc freq data=y;table effect_sw_prog_lossdiag;where cald=2023;run;
+
+proc means n sum p50;var p_onart_diag_sw;where cald=2023run;
+
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=0;run;
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=1;run;
 proc means n sum p50;var p_onart_diag_sw;where cald=2030 and option=2;run;
