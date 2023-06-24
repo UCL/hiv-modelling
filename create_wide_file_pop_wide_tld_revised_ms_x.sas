@@ -1347,7 +1347,7 @@ proc freq data=a.pwt_rev_x_c ; tables run; where cald = 2022; run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 
-data    a.l_pwt_rev       ; set a.pwt_rev_x_c;  
+data    a.l_pwt_rev_x     ; set a.pwt_rev_x_c;  
 
 proc freq; tables run; where cald = 2020;
 
@@ -1370,7 +1370,7 @@ run;
   libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-data y ; set a.l_pwt_rev        ; 
+data y ; set a.l_pwt_rev_x      ; 
 
   options nomprint;
   option nospool;
@@ -1769,7 +1769,7 @@ proc freq; tables run;
 
 * To get one row per run;
 
-  data  a.w_pwt_rev           ; 
+  data  a.w_pwt_rev_x         ; 
   merge   wide_outputs           wide_par     ;
   by run;
 
@@ -1781,12 +1781,12 @@ proc freq; tables run;
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
 
 
-data x ; set a.w_pwt_rev      ;
+data x ; set a.w_pwt_rev_x    ;
 
 
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.27 ;
 
-if run <= 986191225 ;
+* if run <= 986191225 ;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -1971,7 +1971,7 @@ var	prevalence1549m_22 prevalence1549w_22  prevalence1524m_22 prevalence1524w_22
 incidence1549m_22	p_diag_m_22   p_diag_w_22 p_ai_no_arv_c_nnm_22   p_ai_no_arv_c_rt184m_22  p_ai_no_arv_c_rt65m_22   prop_w_1549_sw_22    
 p_onart_diag_w_22 	p_onart_diag_m_22   p_vl1000_22	p_onart_vl1000_w_22	p_onart_vl1000_m_22 p_onart_cd4_l500_22  
 p_startedline2_22  prop_sw_hiv_22  prop_1564_onprep_22   prop_sw_onprep_22 p_newp_sw_22  n_tested_22   p_newp_sw_22 
-death_rate_hiv_22  p_adh_hi_22
+death_rate_hiv_22  p_adh_hi_22  sf_2024;
 ;
 run;
 ods html close;
@@ -2159,7 +2159,7 @@ proc freq; tables d_prevalence_vg1000_3y_2_1_g * dalys_averted; run;
 
 proc   logistic  ; 
 class d_p_elig_hivneg_onprep_3y_2_1_g  d_prop_prep_inj_3y_2_1_g   d_prevalence_vg1000_3y_2_1_g  p_onartvisit0_3y_2_g;
-model deaths_averted_x   = d_p_elig_hivneg_onprep_3y_2_1_g  d_prop_prep_inj_3y_2_1_g   d_prevalence_vg1000_3y_2_1_g  p_onartvisit0_3y_2_g  ;
+model deaths_averted_x   = incidence1549_22   ;
 run;
 
 proc logistic  ; 
@@ -2196,6 +2196,9 @@ proc freq data = j; tables deaths_averted dalys_averted pop_wide_tld_ce ;
 * where artvis0_lower_adh = 1;
 * where d_p_elig_hivneg_onprep_3y_2_1 <  0.07; 
  run; 
+
+
+
 
 
 proc   logistic data=  j        ; 
