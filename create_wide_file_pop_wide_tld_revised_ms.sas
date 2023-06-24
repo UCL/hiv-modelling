@@ -2062,7 +2062,7 @@ run;
 
 
 * table 1;
-proc means data=  x n mean p5 p95 ;
+proc means data=  x n mean stderr p5 p95 ;
   var 
 d_n_cd4_lt200_50y_2_1   n_cd4_lt200_50y_2   n_cd4_lt200_50y_1 
 n_death_hiv_50y_1 n_death_hiv_50y_2 d_n_death_hiv_50y_2_1
