@@ -8,14 +8,13 @@
 
 
 
-
 * options user="/folders/myfolders/";
 
 
  proc printto ; 
 
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_revision_out_x\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_revision_x_out\";
 
 
 data i1a; set b.out11:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
