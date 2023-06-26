@@ -1002,6 +1002,11 @@ series  x=cald y=p50_n_prep_15/	lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_n_prep_15 	upper=p95_n_prep_15  / transparency=0.9 fillattrs = (color=green) legendlabel= "Model 90% range";
 run;quit;
 *target_prepinit_1524w;
+*ARRIVATA;
+*New graph;
+n_init_prep_oral_1524w 
+
+
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of women aged 15-24 on PrEP (n_prep_1524w)";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
