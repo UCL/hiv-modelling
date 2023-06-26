@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_from2023_16_06_23;
+set a.l_base_from2023_25_06_23;
 
 
 p_onart_vl1000_all = .;
@@ -74,13 +74,16 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 
 proc sort data=b; by option cald run ;run;
 data b;set b; if cald ne .;run;*8 records deleted;
-proc freq data=b;table option;run;
+proc freq data=b;table option cald;run;
 
 proc freq data=b;table cald*option/norow nocol noperc;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 110  ;*out of 850;
-%let year_end = 2022.75;*2071.75 ;
+proc print data=b;var run option count_csim cald;run; 
+*This 8 means that it is starting from 8 datasets;
+%let nfit = 8  ;*Each starting from a different dataset, I think it is overwriting them,;
+%let year_start = 2023;
+%let year_end = 2072.75;
 run;
 /*proc freq data=b;table cald;run;*/
 proc sort;by cald option ;run;
@@ -123,6 +126,22 @@ n_onart 		n_onart_m	n_onart_w n_onart_1524_ n_art_start_y
 ;
 run;
 
+/*
+*June 2023;
+*Create means across simulations starting from the same dataset;
+data option_0;set b;keep cald run option count_csim n_alive;if option=0;run;
+proc transpose data=option_0 out=a0_1 prefix=n_alive;var n_alive; by cald; id count_csim;run;
+data a0_1;set a0_1;***creates one dataset per variable;
+m_n_alive_0  = mean(of n_alive1-n_alive8);
+keep cald m_n_alive_0;
+run;
+run;
+%macro mean_samedat(s);
+data option_&s;set b;
+if option=&s;
+%end;
+%mend;
+*/
 /*
 proc transpose data=option_0 out=g0_1 prefix=&varb;var n_alive; by cald; id count_csim;run;
 *In order to easily join with from 2012 av_&varb.1,etc...;
@@ -220,20 +239,20 @@ by cald;
 %include "C:\Users\ValentinaCambiano\OneDrive - University College London\Documents\GitHub\hiv-modelling\Observed data_Zimbabwe.sas";
 run;
 
-data a.d;set d;run;
+data a.d_from2023;set d;run;
 /*/data d;set a.d;run;*/
 proc freq data=d;table cald;run;
 
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V0_20230620_110sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V13_20230625_from2023_8sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_alive 15+";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 25000000 by  5000000) valueattrs=(size=10);*20000000 is stoping in 2023;
 label p50_n_alive_0 = "Baseline (median) - 15+ ";
 label p50_n_alive_1 = "Essential (median) - 15+ ";
@@ -260,7 +279,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Population 15+ by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 20000000 by  5000000) valueattrs=(size=10);
 label p50_n_alive_m_0 = "Option 0 (median) - Males 15+ ";
 label p50_n_alive_w_0 = "Option 0 (median) - Females 15+ ";
@@ -281,7 +300,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women giving birth this period";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
 label p50_p_w_giv_birth_this_per_0 = "Option 0 (median) ";
 label p50_p_w_giv_birth_this_per_1 = "Option 1 (median) ";
@@ -299,8 +318,8 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.3 /*0.2*/ by 0.05) valueattrs=(size=10);
 label p50_p_newp_ge1__0  = "Baseline (median) - 15+";
 label p50_p_newp_ge1__1  = "Essential (median) - 15+  ";
 label p50_p_newp_ge1__15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -317,7 +336,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_1524_newp_ge1_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_p_1524_newp_ge1__0 = "Option 0 (median) - Both";
 label p50_p_1524_newp_ge1__1 = "Option 1 (median) ";
@@ -342,7 +361,7 @@ run;quit;
 *"Number of AGYW at elevated risk" n_w1524_newp_ge1; 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of AGYW at elevated risk - n_w1524_newp_ge1";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_w1524_newp_ge1__0  = "Baseline (median) - 15+";
 label p50_n_w1524_newp_ge1__1  = "Essential (median) - 15+  ";
@@ -359,7 +378,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_newp_ge5_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
 label p50_p_newp_ge5__0  = "Baseline (median) - 15+";
 label p50_p_newp_ge5__1  = "Essential (median) - 15+  ";
@@ -376,7 +395,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "log_gender_r_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'log_gender_r_newp'		labelattrs=(size=12)  values = (-5 to 5 by 1) valueattrs=(size=10);
 
 label p50_log_gender_r_newp_0  = "Baseline (median) - 15+";
@@ -393,7 +412,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_ep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_ep_0  = "Baseline (median) - 15+";
 label p50_p_ep_1  = "Essential (median) - 15+  ";
@@ -426,7 +445,7 @@ where cald in (2016.5 2022.5);run;
 *tested_anc=1 if tested at dt_start_pregn+0.25 or dt_start_pregn+0.5;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of live births";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1200000 by 200000) valueattrs=(size=10);*900000 if stopping in 2023;
 label p50_n_birth_0 = "Option 0 (median) ";
 label p50_n_birth_1 = "Option 1 (median) ";
@@ -444,7 +463,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number women living with HIV giving birth";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 250000 by 50000) valueattrs=(size=10);*200000 if stopping in 2023;
 label p50_n_give_birth_w_hiv_0 = "Option 0 (median) ";
 label p50_n_give_birth_w_hiv_1 = "Option 1 (median) ";
@@ -462,7 +481,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of pregnant women attending ANC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_anc_0  = "Baseline (median) - 15+";
 label p50_p_anc_1  = "Essential (median) - 15+  ";
@@ -482,7 +501,7 @@ run;quit;
 *Number attending ANC;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_anc";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1200000 by 200000) valueattrs=(size=10);
 label p50_n_tested_anc_0  = "Baseline (median) - 15+";
 label p50_n_tested_anc_1  = "Essential (median) - 15+  ";
@@ -503,7 +522,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "# Women tested for the first time in ANC";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  700000 by 100000) valueattrs=(size=10);
 label p50_n_tested1st_anc_0  = "Baseline (median) - 15+";
 label p50_n_tested1st_anc_1  = "Essential (median) - 15+  ";
@@ -520,7 +539,7 @@ run;quit;
 */
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses in ANC and during labour and delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  40000 by 5000) valueattrs=(size=10);
 label p50_n_diag_anc_0  = "Baseline (median) - 15+";
 label p50_n_diag_anc_1  = "Essential (median) - 15+  ";
@@ -543,8 +562,8 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_labdel";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  100000 by 25000) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  300000 by 50000) valueattrs=(size=10);
 label p50_n_tested_w_labdel_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_labdel_1  = "Essential (median) - 15+  ";
 label p50_n_tested_w_labdel_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -561,7 +580,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "# Women tested for the first time in Labour and Delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  700000 by 100000) valueattrs=(size=10);
 label p50_n_tested1st_labdel_0  = "Baseline (median) - 15+";
 label p50_n_tested1st_labdel_1  = "Essential (median) - 15+  ";
@@ -578,7 +597,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses during labour and delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000 by 250) valueattrs=(size=10);
 label p50_n_diag_labdel_0  = "Baseline (median) - 15+";
 label p50_n_diag_labdel_1  = "Essential (median) - 15+  ";
@@ -595,8 +614,8 @@ run;quit;*/
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_pd";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  200000 by 25000) valueattrs=(size=10);
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  300000 by 50000) valueattrs=(size=10);
 label p50_n_tested_w_pd_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_pd_1  = "Essential (median) - 15+  ";
 label p50_n_tested_w_pd_15 = "Oral PrEP AGYW (median) - 15+ ";
@@ -612,7 +631,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "# Women tested for the first time post-delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  700000 by 100000) valueattrs=(size=10);
 label p50_n_tested1st_pd_0  = "Baseline (median) - 15+";
 label p50_n_tested1st_pd_1  = "Essential (median) - 15+  ";
@@ -629,7 +648,7 @@ run;quit;*/
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "New diagnoses in post-delivery";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  2000 by 250) valueattrs=(size=10);
 label p50_n_diag_pd_0  = "Baseline (median) - 15+";
 label p50_n_diag_pd_1  = "Essential (median) - 15+  ";
@@ -645,7 +664,7 @@ scatter x=cald y=o_n_newdiag_postdel / markerattrs = (symbol=square color=orange
 run;quit;*/
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_sw";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  100000 by 20000) valueattrs=(size=10);
 label p50_n_tested_sw_0  = "Baseline (median) - 15+";
 label p50_n_tested_sw_1  = "Essential (median) - 15+  ";
@@ -662,7 +681,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_sympt";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000 by 100000) valueattrs=(size=10);
 label p50_n_tested_w_sympt_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_sympt_1  = "Essential (median) - 15+  ";
@@ -677,7 +696,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  4000000 by 500000) valueattrs=(size=10);*2500000 if stopping in 2023;
 label p50_n_tested_w_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_1  = "Essential (median) - 15+  ";
@@ -692,7 +711,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549w_0  = "Baseline (median) - 15+";
 label p50_p_tested_past_year_1549w_1  = "Essential (median) - 15+  ";
@@ -711,7 +730,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  8000000 by 1000000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_0  = "Baseline (median) - 15+";
 label p50_n_tested_1  = "Essential (median) - 15+  ";
@@ -728,7 +747,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1800000 by 200000) valueattrs=(size=10);*5000000 if stopping in 2023;
 label p50_n_tested_m_0  = "Baseline (median) - 15+";
 label p50_n_tested_m_1  = "Essential (median) - 15+  ";
@@ -743,7 +762,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m_sympt";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1500000 by 100000) valueattrs=(size=10);
 label p50_n_tested_m_sympt_0  = "Baseline (median) - 15+";
 label p50_n_tested_m_sympt_1  = "Essential (median) - 15+  ";
@@ -758,7 +777,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_m_circ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_tested_m_circ_0  = "Baseline (median) - 15+";
 label p50_n_tested_m_circ_1  = "Essential (median) - 15+  ";
@@ -773,7 +792,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_tested_past_year_1549m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_tested_past_year_1549m_0  = "Baseline (median) - 15+";
 label p50_p_tested_past_year_1549m_1  = "Essential (median) - 15+  ";
@@ -794,7 +813,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_tested_w_non_anc";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1000000 by 100000) valueattrs=(size=10);
 label p50_n_tested_w_non_anc_0  = "Baseline (median) - 15+";
 label p50_n_tested_w_non_anc_1  = "Essential (median) - 15+  ";
@@ -816,7 +835,7 @@ run;quit;
 *test_prop_positive;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Positivity rate";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.8 by 0.2) valueattrs=(size=10);
 label p50_test_prop_positive_0  = "Baseline (median)";
 label p50_test_prop_positive_1  = "Essential (median)";
@@ -837,7 +856,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of new diagnoses with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 
 label p50_n_diagnosed_0 = "Baseline (median)";
@@ -860,8 +879,8 @@ run;quit;
 
 *!!!!!Note that the observed data are 15+;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised (Data 15+)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+Title    height=1.5 justify=center "Proportion of men age 15-49 circumcised";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_p_mcirc_1549m_0 = "Option 0 (median)";
 label p50_p_mcirc_1549m_1 = "Option 1 (median)";
@@ -882,7 +901,7 @@ run;quit;
  
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual # new circumcisions";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  400000 by 50000) valueattrs=(size=10);
 label p50_n_new_vmmc1549m_0 = "Option 0 (median) ";
 label p50_n_new_vmmc1549m_1 = "Option 1 (median) ";
@@ -901,7 +920,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of current female sex workers (FSW)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_1549_sw_0 = "Option 0 (median) ";
 label p50_prop_w_1549_sw_1 = "Option 1 (median) ";
@@ -924,7 +943,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of female sex workers (FSW)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.15 by 0.025) valueattrs=(size=10);
 label p50_prop_w_ever_sw_0 = "Ever FSW 15-64 op 0 (median) ";
 label p50_prop_w_ever_sw_1 = "Ever FSW 15-64 op 0 (median) ";
@@ -942,7 +961,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of FSW, proportion with HIV";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 label p50_prop_sw_hiv_0 = "FSW with HIV 15-64 op 0 (median) ";
 label p50_prop_sw_hiv_1 = "FSW with HIV 15-64 op 1 (median) ";
@@ -969,7 +988,7 @@ run;quit;
 proc freq data=d;table p95_n_prep_0;run;*/
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 350000   by 50000 ) valueattrs=(size=10);
 label p50_n_prep_0 = "Option 0 (median) ";
 label p50_n_prep_1 = "Option 1  (median) ";
@@ -985,7 +1004,7 @@ run;quit;
 *target_prepinit_1524w;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of women aged 15-24 on PrEP (n_prep_1524w)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 100000   by 25000 ) valueattrs=(size=10);
 label p50_n_prep_1524w_0 = "Option 0 (median) ";
 label p50_n_prep_1524w_1 = "Option 1  (median) ";
@@ -1003,7 +1022,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of people ever on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000   by 25000 ) valueattrs=(size=10);
 label p50_n_prep_ever_0 = "Option 0 (median) ";
 label p50_n_prep_ever_1 = "Option 1  (median) ";
@@ -1020,7 +1039,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.1   by 0.01 ) valueattrs=(size=10);
 label p50_prop_w_1524_onprep_0 = "Option 0 (median) ";
 label p50_prop_w_1524_onprep_1 = "Option 1  (median) ";
@@ -1036,7 +1055,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women aged 15-24 on PrEP among those with at least 1 newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1   by 0.1 ) valueattrs=(size=10);
 label p50_p_w1524newpge1_onprep_0 = "Option 0 (median) ";
 label p50_p_w1524newpge1_onprep_1 = "Option 1  (median) ";
@@ -1052,7 +1071,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people aged 15-64 on PrEP";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05   by 0.01 ) valueattrs=(size=10);
 label p50_prop_1564_onprep_0 = "Option 0 (median) ";
 label p50_prop_1564_onprep_1 = "Option 1  (median) ";
@@ -1068,7 +1087,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549__0 = "All Option 0 (median) ";
 label p50_prevalence1549__1 = "All Option 1  (median) ";
@@ -1086,7 +1105,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence Men 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549m_0 = "Option 0 (median) ";
 label p50_prevalence1549m_1 = "Option 1 (median) ";
@@ -1105,7 +1124,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence Women 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.35 by 0.05) valueattrs=(size=10);
 label p50_prevalence1549w_0 = "Option 0 (median) ";
 label p50_prevalence1549w_1 = "Option 1 (median) ";
@@ -1126,7 +1145,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence among pregnant women";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
 label p50_prevalence_hiv_preg_1 = "All Option 1 (median) ";
@@ -1144,7 +1163,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence 15-24 - by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence1524m_0 = "Option 0 (median) - Males 15-24";
 label p50_prevalence1524w_0 = "Option 0 (median) - Females 15-24";
@@ -1166,7 +1185,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence 25-49 - by gender";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence2549m_0 = "Option 0 (median) - Males 25-49";
 label p50_prevalence2549w_0 = "Option 0 (median) - Females 25-49";
@@ -1184,7 +1203,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prevalence among pregnant women - by age";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.05) valueattrs=(size=10);
 label p50_prevalence_hiv_preg_0 = "All Option 0 (median) ";
 label o_prev1549w_Z_anc = "CAL - ZIMPHIA or DHS";
@@ -1219,7 +1238,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-49)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549__0 = "Option 0 (median) ";
 label p50_incidence1549__1 = "Option 1  (median) ";
@@ -1241,7 +1260,7 @@ quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence (age 15-64)";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1564__0 = "Option 0 (median) ";
 label p50_incidence1564__1 = "Option 1  (median) ";
@@ -1258,7 +1277,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-49";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1549m_0 = "Option 0 (median) - Men";
 label p50_incidence1549m_1 = "Option 1  (median) - Men";
@@ -1284,7 +1303,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 15-24";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence1524m_0 = "Option 0 (median) - Men";
 label p50_incidence1524m_1 = "Option 1  (median) - Men";
@@ -1310,7 +1329,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 2534";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence2534m_0 = "Option 0 (median) - Men";
 label p50_incidence2534m_1 = "Option 1  (median) - Men";
@@ -1334,7 +1353,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 3544";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence3544m_0 = "Option 0 (median) - Men";
 label p50_incidence3544m_1 = "Option 1  (median) - Men";
@@ -1358,7 +1377,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 4554";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence4554m_0 = "Option 0 (median) - Men";
 label p50_incidence4554m_1 = "Option 1  (median) - Men";
@@ -1379,7 +1398,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Incidence age 5564";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'rate per 100 person years'		labelattrs=(size=12)  values = (0 to 7 by 1) valueattrs=(size=10);
 label p50_incidence5564m_0 = "Option 0 (median) - Men";
 label p50_incidence5564m_1 = "Option 1  (median) - Men";
@@ -1399,7 +1418,7 @@ quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_ep";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_ep_0 = "Option 0 (median) ";
 label p50_p_inf_ep_1 = "Option 1  (median) ";
@@ -1412,7 +1431,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_newp";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_newp_0 = "Option 0 (median) ";
 label p50_p_inf_newp_1 = "Option 1  (median) ";
@@ -1425,7 +1444,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Prop infections coming from people VL suppressed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_vlsupp_0 = "Option 0 (median) ";
 label p50_p_inf_vlsupp_1 = "Option 1  (median) ";
@@ -1438,7 +1457,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_primary";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_primary_0 = "Option 0 (median) ";
 label p50_p_inf_primary_1 = "Option 1  (median) ";
@@ -1452,7 +1471,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_naive";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_naive_0 = "Option 0 (median) ";
 label p50_p_inf_naive_1 = "Option 1  (median) ";
@@ -1465,7 +1484,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "p_inf_diag";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_inf_diag_0 = "Option 0 (median) ";
 label p50_p_inf_diag_1 = "Option 1  (median) ";
@@ -1479,7 +1498,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Of women giving birth with HIV, proportion of children infected";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 label p50_mtct_prop_0 = "Option 0 (median) ";
 label p50_mtct_prop_1 = "Option 1  (median) ";
@@ -1494,7 +1513,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of men with hiv 15+, proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_m_0 = "Option 0 (median)";
 label p50_p_diag_m_1 = "Option 1  (median)";
@@ -1516,7 +1535,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "of women with hiv, proportion diagnosed";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_diag_w_0 = "Option 0 (median) _ 15+";
 label p50_p_diag_w_1 = "Option 1  (median) ";
@@ -1538,7 +1557,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of naive art initiators with NNRTI mutation";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.5 by 0.05) valueattrs=(size=10);
 
 label p50_p_ai_no_arv_c_nnm_0 = "Option 0 (median) ";
@@ -1552,7 +1571,7 @@ run;quit;
 */
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed people who are ART experienced";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.2) valueattrs=(size=10);
 
 label p50_p_artexp_diag_0 = "Option 0 (median) ";
@@ -1570,7 +1589,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_diag_m_0 = "Option 0  (median)";
 label p50_p_onart_diag_m_1 = "Option 1  (median)";
@@ -1591,7 +1610,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of diagnosed women on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_diag_w_0  = "Option 0  (median) ";
 label p50_p_onart_diag_w_1  = "Option 1  (median) ";
@@ -1610,7 +1629,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of 1st ART initiations";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by  50000) valueattrs=(size=10);
 
 *label p50_n_all_ai_y_0 = "Option 0 (median) - all";
@@ -1633,7 +1652,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_onart_0 = "Option 0  (median)";
 label p50_n_onart_1 = "Option 1  (median)";
@@ -1654,7 +1673,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of pregnant women receiving PMCTCT";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 250000 by 50000) valueattrs=(size=10);
 label p50_n_pmtct_0 = "Option 0  (median)";
 label p50_n_pmtct_1 = "Option 1  (median)";
@@ -1673,7 +1692,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of people on ART for >6 months with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000__0 = "Option 0  (median)";
 label p50_p_onart_vl1000__1 = "Option 1  (median)";
@@ -1692,7 +1711,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of men on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000_m_0  = "Option 0 (median) ";
 label p50_p_onart_vl1000_m_1  = "Option 1  (median) ";
@@ -1707,7 +1726,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of women on ART >6 months with VL <1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_vl1000_w_0 = "Option 0 (median) ";
 label p50_p_onart_vl1000_w_1 = "Option 1  (median) ";
@@ -1722,7 +1741,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL<1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vl1000__0 = "Option 0 (median)";
 label p50_p_vl1000__1 = "Option 1  (median)";
@@ -1744,7 +1763,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of HIV positive people with VL > 1000";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vg1000__0 = "Option 0 (median)";
 label p50_p_vg1000__1 = "Option 1  (median)";
@@ -1759,7 +1778,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all hiv positive men on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_m_0 = "Option 0 (median)";
 label p50_p_onart_m_1 = "Option 1  (median)";
@@ -1774,7 +1793,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion of all hiv positive women on ART";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_onart_w_0 = "Option 0 (median)";
 label p50_p_onart_w_1 = "Option 1  (median)";
@@ -1789,7 +1808,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "prevalence_vg1000_";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.6 by 0.1) valueattrs=(size=10);
 label p50_prevalence_vg1000__0 = "Option 0 (median) ";
 label p50_prevalence_vg1000__1 = "Option 1  (median) ";
@@ -1804,7 +1823,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Rate of death ";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Rate (per 100 person-years)'		labelattrs=(size=12)  values = (0 to 10 by 1) valueattrs=(size=10);
 label p50_rate_dead_allage_0 = "Option 0 (median) - 15+ both";
 label p50_rate_dead_allage_1 = "Option 1  (median) ";
@@ -1831,7 +1850,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_w";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_death_2059_w_0 = "Option 0 (median) - Women 20-59";
 label p50_n_death_hiv_w_0 = "Option 0  (median) - women with HIV";
@@ -1846,7 +1865,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_death_2059_m";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 200000 by 50000) valueattrs=(size=10);
 label p50_n_death_2059_m_0 = "Option 0 (median) - Men 20-59";
 label p50_n_death_HIV_m_0 = "Option 1  (median) - Men with HIV";
@@ -1863,7 +1882,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of CD4 measurements";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_cm_0 = "Option 0  (median)";
 label p50_n_cm_1 = "Option 1  (median)";
@@ -1881,7 +1900,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Annual number of VL measurements";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2000000 by 250000) valueattrs=(size=10);
 label p50_n_vm_0 = "Option 0  (median)";
 label p50_n_vm_1 = "Option 1  (median)";
@@ -1900,7 +1919,7 @@ run;quit;
 /*
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on ART with VL measurement in the last year";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 1 by 0.1) valueattrs=(size=10);
 label p50_p_vm_ly_onart_0 = "Option 0  (median)";
 label p50_p_vm_ly_onart_1 = "Option 1  (median)";
@@ -1918,7 +1937,7 @@ run;quit;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "n_pcp_p";
-xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (&year_start to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 2500000 by 250000) valueattrs=(size=10);
 label p50_n_pcp_p_0 = "Option 0  (median)";
 label p50_n_pcp_p_1 = "Option 1  (median)";

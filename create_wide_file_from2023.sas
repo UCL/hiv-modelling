@@ -5,13 +5,29 @@ libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified pr
 *libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
 libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_from2023_out";
 data a.base_from2023_25_06_23;   set b.out:;
+*8 dataset had dataset id with 8 characters,
+ the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
+ as it was trucnating dataset_id;
+*Each dataset contains one simulation, so I think it was overwriting it;
+run;
 
 /* show the contents of the input SAS file */
 /*
 proc contents data=a.base_16_06_23;run;
-proc sort data=a.base_16_06_23; by run; run;
-proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
-proc freq data=a.base_from2023_25_06_23; table run cald;run;
+proc sort data=a.base_16_06_23; by run; run;*/
+proc freq data=a.base_from2023_25_06_23; table mc_int;where cald=2023.75;run;
+proc freq data=a.base_from2023_25_06_23; table run;where cald=2023.75;run;
+proc freq data=a.base_from2023_25_06_23; table run*option; where cald=2023.75;run;*8 simulations by 3 options = 24;
+proc freq data=a.base_from2023_25_06_23; table run cald option;run;
+
+libname c "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
+
+*Looking whether mc_int is stored in the dataset saved at the end of 2022;
+proc freq data=c.zim_end2022_21249542;
+table /*mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015*/
+circ_red_20_30 circ_red_30_50*/;run;
+proc freq data=c.zim_end2022_21249542;table hard_reach;where gender=1;run;
+
 ods html close;
 ods listing;
 /*
@@ -35,7 +51,7 @@ proc freq data=g;run;*/
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
 
-set g ;
+set a.base_22_06_23 ;*This is the file up to end 2022;
 /*
 if cald=2021.5;
 s_alive = s_alive_m + s_alive_w ;
@@ -1219,7 +1235,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_from2023_16_06_23; set y;  run;
+data a.l_base_from2023_25_06_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
