@@ -2,17 +2,16 @@
 
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
-
-libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-
-data a.base_from2023_21_06_23;   set b.out:;
+*libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_from2023_out";
+data a.base_from2023_25_06_23;   set b.out:;
 
 /* show the contents of the input SAS file */
 /*
 proc contents data=a.base_16_06_23;run;
 proc sort data=a.base_16_06_23; by run; run;
-proc print data=a.base_16_06_23; var run; where cald=2022.75;run;
-proc freq data=a.base_16_06_23; table run;run;*/
+proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
+proc freq data=a.base_from2023_25_06_23; table run cald;run;
 ods html close;
 ods listing;
 /*
@@ -25,12 +24,13 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_from2023_21_06_23;
+data g; set  a.base_from2023_25_06_23;
 
 proc sort data=g; 
 by run cald option;run;
-proc freq;table cald*option;run;
-proc freq data=g;run;
+/*
+proc freq;table cald*option/norow nocol nopercent;run;
+proc freq data=g;run;*/
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
