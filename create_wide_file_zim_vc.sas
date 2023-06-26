@@ -12,6 +12,8 @@ takes ages to run so cut down dataset;
 proc sort;by run;run;
 proc freq;table cald run;run;
 
+proc freq;table s_I_undiag6569m;run;
+
 data sf;
 set a;
  
@@ -33,8 +35,12 @@ data y;
 merge a sf;
 by run ;
 
-*if run in (972898928, 975089766, 989218009) then ch=1;
-*if ch ne 1 then delete;
+
+
+if run ne  989218009 then delete;
+
+
+
 
 ***these are used for checking the raw data so not scaled up;
 s_primary1564m = s_primary1549m + s_primary5054m + s_primary5559m + s_primary6064m;
@@ -805,6 +811,15 @@ s_primary2024_ s_primary2024m s_primary2024w
 s_primary2529_ s_primary2529m s_primary2529w
 s_primary3034_ s_primary3034m s_primary3034w
 s_primary3539_ s_primary3539m s_primary3539w
+s_primary4044_ s_primary4044m s_primary4044w
+s_primary4549_ s_primary4549m s_primary4549w
+s_primary5054_ s_primary5054m s_primary5054w
+s_primary5559_ s_primary5559m s_primary5559w
+s_primary6064_ s_primary6064m s_primary6064w
+s_primary6569_ s_primary6569m s_primary6569w
+s_primary7074_ s_primary7074m s_primary7074w
+s_primary7579_ s_primary7579m s_primary7579w
+s_primary8084_ s_primary8084m s_primary8084w
 
 
 /*n_hiv_death1519_  n_hiv_death2024_  n_hiv_death2529_  n_hiv_death3034_  n_hiv_death3539_  n_hiv_death4044_ n_hiv_death4549_ 
@@ -1246,20 +1261,33 @@ s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_of
 s_I_onart_lt6m_nvs3539m s_I_onart_gt6m_nvs3539m s_I_onart_gt6m_vs3539m s_I_offart_1stI3539m s_I_offart_SI3539m 
 s_I_offart_SIlt6m3539m s_I_offart_SIgt6m3539m 
 
+s_I_undiag7579m s_I_undiag7579w s_I_undiag7579_ s_I_diag_naive7579m s_I_diag_startart7579m s_I_onart7579m s_I_offart7579m s_I_onart_lt6m7579m 
+s_I_onart_lt6m_nvs7579m s_I_onart_gt6m_nvs7579m s_I_onart_gt6m_vs7579m s_I_offart_1stI7579m s_I_offart_SI7579m 
+s_I_offart_SIlt6m7579m s_I_offart_SIgt6m7579m s_I_diag_naive7579_ s_I_diag_startart7579_
+
 ;
 
 run;
-
 
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
 set y;
 
+proc print;var cald s_primary7579_  s_I_undiag7579_ s_I_undiag7579m s_I_undiag7579w  s_I_diag_naive7579_ s_I_diag_startart7579_;
+where cald ge 2010;run;
+
 *if run ne 972898928 then delete;
 *if run ne  975089766 then delete;
-if run ne 989218009 then delete;
+*if run ne 989218009 then delete;
 
 keep
+cald s_primary7579_ s_primary7579m s_primary7579w
+s_I_undiag7579m s_I_diag_naive7579m s_I_diag_startart7579m s_I_onart7579m s_I_offart7579m s_I_onart_lt6m7579m 
+s_I_onart_lt6m_nvs7579m s_I_onart_gt6m_nvs7579m s_I_onart_gt6m_vs7579m s_I_offart_1stI7579m s_I_offart_SI7579m 
+s_I_offart_SIlt6m7579m s_I_offart_SIgt6m7579m; 
+
+
+/*
 cald n_inf7579_ n_inf7579m n_inf7579w 
 
 n_I_undiag7579_ n_I_diag_naive7579_ n_I_diag_startart7579_ n_I_onart7579_ n_I_offart7579_ n_I_onart_lt6m7579_ 
@@ -1274,7 +1302,7 @@ n_I_undiag7579w n_I_diag_naive7579w n_I_diag_startart7579w n_I_onart7579w n_I_of
 n_I_onart_lt6m_nvs7579w n_I_onart_gt6m_nvs7579w n_I_onart_gt6m_vs7579w n_I_offart_1stI7579w n_I_offart_SI7579w 
 n_I_offart_SIlt6m7579w n_I_offart_SIgt6m7579w 
 ;
-
+*/
 *******
 cald s_primary3539_ s_primary3539m s_primary3539w
 s_I_undiag3539m s_I_diag_naive3539m s_I_diag_startart3539m s_I_onart3539m s_I_offart3539m s_I_onart_lt6m3539m 
