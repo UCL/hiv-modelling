@@ -19,7 +19,7 @@ libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 
 data i1a; set b.out:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 
-/*
+  
 data i1b; set b.out12:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i1c; set b.out13:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i1d; set b.out14:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
@@ -108,13 +108,13 @@ data i9f; set b.out96:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modell
 data i9g; set b.out97:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i9h; set b.out98:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i9i; set b.out99:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-*/
+
 
 
 data pwt_rev_y1r_a  ;  set  
-i1a /* i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
+i1a    i1b i1c i1d i1e i1f i1g i1h i1i i2a i2b i2c i2d i2e i2f i2g i2h i2i  i3a i3b i3c i3d i3e i3f i3g i3h i3i  
 i4a i4b i4c i4d i4e i4f i4g i4h i4i i5a i5b i5c i5d i5e i5f i5g i5h i5i  i6a i6b i6c i6d i6e i6f i6g i6h i6i  
-i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i */
+i7a i7b i7c i7d i7e i7f i7g i7h i7i i8a i8b i8c i8d i8e i8f i8g i8h i8i  i9a i9b i9c i9d i9e i9f i9g i9h i9i 
 ;
 
 proc freq; tables run; where cald = 2022; run;
