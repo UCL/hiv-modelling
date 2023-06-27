@@ -17,9 +17,7 @@ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output
 libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_revision_y1r_out\";
 
 
-data i1a; set b.out:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-
-  
+data i1a; set b.out11:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas"; 
 data i1b; set b.out12:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i1c; set b.out13:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
 data i1d; set b.out14:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
