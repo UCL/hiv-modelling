@@ -3,8 +3,8 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_from2023_out";
-data a.base_from2023_25_06_23;   set b.out:;
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jun26_from2023_out";
+data a.base_from2023_26_06_23;   set b.out:;
 *8 dataset had dataset id with 8 characters,
  the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
  as it was trucnating dataset_id;
@@ -14,19 +14,30 @@ run;
 /* show the contents of the input SAS file */
 /*
 proc contents data=a.base_16_06_23;run;
-proc sort data=a.base_16_06_23; by run; run;*/
-proc freq data=a.base_from2023_25_06_23; table mc_int;where cald=2023.75;run;
-proc freq data=a.base_from2023_25_06_23; table run;where cald=2023.75;run;
-proc freq data=a.base_from2023_25_06_23; table run*option; where cald=2023.75;run;*8 simulations by 3 options = 24;
-proc freq data=a.base_from2023_25_06_23; table run cald option;run;
+proc sort data=a.base_16_06_23; by run; run;
+proc freq data=a.base_from2023_26_06_23; table run option;where cald=2023.75;run;
+proc freq data=a.base_from2023_26_06_23; table run*option/norow nocol nopercent; where cald=2023.75;run;*63 simulations (out of 100) by 3 options = 189;
+proc freq data=a.base_from2023_26_06_23; table run cald option;run;
+*/
 
 libname c "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
 
 *Looking whether mc_int is stored in the dataset saved at the end of 2022;
+
 proc freq data=c.zim_end2022_21249542;
-table /*mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015*/
-circ_red_20_30 circ_red_30_50*/;run;
-proc freq data=c.zim_end2022_21249542;table hard_reach;where gender=1;run;
+table /*mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015
+circ_red_20_30 circ_red_30_50 
+dur_prep_oral_scaleup
+date_prep_oral_intro
+date_prep_inj_intro date_prep_vr_intro
+rate_test_startprep_any  
+prob_prep_oral_b
+pref_prep_oral_beta_s1  
+rate_choose_stop_prep_oral */ 
+
+prep_willingness_threshold
+;run;
+proc freq data=c.zim_end2022_21249542;table hard_reach;where gender=1;run;*/
 
 ods html close;
 ods listing;
@@ -40,7 +51,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_from2023_25_06_23;
+data g; set  a.base_from2023_26_06_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -469,7 +480,6 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 
 * n_prep;						n_prep = s_prep_any * &sf;
-* n_prep_1524w;					n_prep_1524w = s_onprep_1524w * &sf;
 * n_hiv1_prep;					n_hiv1_prep = s_hiv1_prep * &sf;
 * p_hiv1_prep;					if s_prep_any gt 0 then p_hiv1_prep = s_hiv1_prep / s_prep_any ;
 
@@ -481,9 +491,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_elig_prep_w_1524 ;			n_elig_prep_w_1524  =  s_elig_prep_w_1524  * &sf;
 * n_elig_prep_w_2534 ;			n_elig_prep_w_2534  =  s_elig_prep_w_2534  * &sf;
 * n_elig_prep_w_3544 ;			n_elig_prep_w_3544  = s_elig_prep_w_3544  * &sf;
-* n_prep_w_1524  ;				n_prep_w_1524   =    s_prep_w_1524       * &sf;
-* n_prep_w_2534  ;				n_prep_w_2534   =  s_prep_w_2534       * &sf;
-* n_prep_w_3544  ;				n_prep_w_3544   = s_prep_w_3544  * &sf;
+
+*Currently on PrEP: Number of clients actively taking PrEP during the last month of the date range displayed;
+*Note we can't do the last month so we will do the last 3 months;
+* n_prep_1524w;					n_prep_1524w = s_onprep_1524w * &sf;
 
 *Number initiated for the first time on PrEP;
 * n_init_prep_oral_1524w;  		n_init_prep_oral_1524w = s_init_prep_oral_1524w * 4 * &sf; 
@@ -1235,7 +1246,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_from2023_25_06_23; set y;  run;
+data a.l_base_from2023_26_06_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w

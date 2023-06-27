@@ -2922,18 +2922,23 @@ if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 This is presented as a range due to difficulty in tracking precise numbers and possible double reporting, I used the midlle number in the range;
 if cald=2022.25   then o_n_prep_ever=72500;
 
+*PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
+if cald=2023.75 then target_prepinit_1524w =37144;
+if cald=2024.75 then target_prepinit_1524w =41639;
+if cald=2025.75 then target_prepinit_1524w =44303;
+if cald=2026.75 then target_prepinit_1524w =45084;
+
 *** PrEP_CT: Number of clients actively taking the indicated PrEP method(s) (excluding newly enrolled) during the last quarter of the date range displayed;
 if cald=2023.75 then target_prep_1524w_lq = 11594;
 if cald=2024.75 then target_prep_1524w_lq = 22544;
 if cald=2025.75 then target_prep_1524w_lq = 33436;
 if cald=2026.75 then target_prep_1524w_lq = 42431;
 
-*PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
-if cald=2023.75 then target_prepinit_1524w =37144;
-if cald=2024.75 then target_prepinit_1524w =41639;
-if cald=2025.75 then target_prepinit_1524w =44303;
-if cald=2026.75 then target_prepinit_1524w =45084;
- 		 
+*Currently on PrEP;
+if cald=2023.75 then target_curr_prep_1524w =15292;
+if cald=2024.75 then target_curr_prep_1524w =26125;
+if cald=2025.75 then target_curr_prep_1524w =35484;
+if cald=2026.75 then target_curr_prep_1524w =43443;
 
 
 
