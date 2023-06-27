@@ -1786,7 +1786,7 @@ data x ; set a.w_pwt_rev_y1r    ;
 
   if incidence1549_22 >= 0.15  and prevalence1549_22 <  0.27 ;
 
-* if run <= 986191225 ;
+  if run <=  988590331 ;
 
 
 * checked that this the same as dcost_50y_1 etc so over-writing so can change individual costs;
@@ -2061,9 +2061,11 @@ run;
 
 
 * table 1;
+ods html;
 proc means data=  x n mean p5 p95 ;
   var 
 d_n_cd4_lt200_50y_2_1   n_cd4_lt200_50y_2   n_cd4_lt200_50y_1 
+n_death_hiv_20y_1 n_death_hiv_20y_2 d_n_death_hiv_20y_2_1
 n_death_hiv_50y_1 n_death_hiv_50y_2 d_n_death_hiv_50y_2_1
 n_dead_hivpos_cause1_50y_1 n_dead_hivpos_cause1_50y_2
 ddaly_50y_1 ddaly_50y_2 d_ddaly_50y_2_1
@@ -2084,6 +2086,7 @@ netdaly300_averted_2_1
 cost_5y_1   cost_5y_2  d_cost_5y_2_1
 ;
 run;
+ods html close;
 
 
 * table 2;
@@ -2175,7 +2178,9 @@ proc corr spearman; var d_p_elig_hivneg_onprep_3y_2_1  d_prop_prep_inj_3y_2_1   
 proc freq ; tables  d_prevalence_vg1000_3y_2_1_g *  pop_wide_tld_ce; 
 run;
 
-proc freq data=j; tables  d_n_death_hiv_50y_2_1  d_ddaly_50y_2_1 pop_wide_tld_ce  d_dcost_50y_2_1  cost_saving r_incidence1549_50y_2_1; 
+proc freq data=j; tables  d_n_death_hiv_50y_2_1  
+d_n_death_hiv_20y_2_1
+d_ddaly_50y_2_1 pop_wide_tld_ce  d_dcost_50y_2_1  cost_saving r_incidence1549_50y_2_1; 
 run;
 
 
@@ -2194,7 +2199,7 @@ run;
 
 proc freq data = j; tables deaths_averted dalys_averted pop_wide_tld_ce ;
 * where artvis0_lower_adh = 1;
-* where d_p_elig_hivneg_onprep_3y_2_1 <  0.07; 
+* where d_p_elig_hivneg_onprep_3y_2_1 >= 0.07; 
  run; 
 
 
