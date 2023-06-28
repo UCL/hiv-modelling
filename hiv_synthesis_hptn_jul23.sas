@@ -1,15 +1,5 @@
 
 
-* easier to just have prep_any_strategy = 4;
-* get out the proportion with a prep indication amongst those who did not have a prep indication 3 months ago, and vice versa ;
-* break down of prep eligibility and proportion of eligible on prep for age < 25 and age >= 25 (and by gender ?);
-* hiv incidence by prep eligibility (with prep efficacy 0) by gender ;
-* check on why av_prep_oral_eff_non_res_v is above 1 in 0.05% of 3 month periods;
-* correct code for diagnosis in primary infection
-
-
-
-
 
 * libname a 'C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\My SAS Files\outcome model\misc\';   
 * libname a 'C:\Loveleen\Synthesis model\';  
@@ -629,6 +619,7 @@ newp_seed = 7;
 * These parameters apply to all forms of PrEP: oral, injectable (CAB-LA) and the vaginal ring (DPV-VR)
  
 * prep_any_strategy;			%sample(prep_any_strategy, 4 5 6 7 8 9 10 11, 0.93 0.01 0.01 0.01 0.01 0.01 0.01 0.01 );* Moved from within code Oct21 JAS ;						
+								prep_any_strategy = 4; * june23;
 
 * prob_prep_any_restart;		*removed ;
 * prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up; * lapr same for all prep? ;
@@ -6785,19 +6776,19 @@ naive=1;
 
 * test type;
 
-*1= PCR (RNA VL) tests - assume window period of 10 days; * (sens_primary_ts1m = 0.67 as 10 days is 0.33 of 1 month);
+*1= PCR (RNA VL) tests - assume window period of 10 days; 
 *3= 3rd gen (Ab) tests / community-based POC tests / rapid tests ; 
 *4= 4th gen (Ag/Ab) tests - assume window period of 1 month;
 
 if t ge 2 then do; 
 
 	if hivtest_type=4 then do;
-		sens_primary=0.65;
+		sens_primary=0.75;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
 		u=rand('uniform');
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; 
-			if date_1st_hiv_care_visit=. then date_1st_hiv_care_visit=caldate{t}; lost=0; cd4diag=cd4; 
+			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; lost=0; cd4diag=cd4; 
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
 			if pop_wide_tld_prep ne 1 then onart=0;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
@@ -6818,6 +6809,7 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;	
 					end;
@@ -6829,6 +6821,7 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
 					end;
@@ -6847,7 +6840,8 @@ if t ge 2 then do;
 		sens_primary=0.86;
 		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; visit=1; lost=0;
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -6866,6 +6860,7 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
 					end;
@@ -6877,6 +6872,7 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in148m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
 					end;
@@ -6886,16 +6882,18 @@ if t ge 2 then do;
 				prep_any=0;		prep_vr =0; 	dt_prep_vr_s=.;
 				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
 			end;
-		cost_test = cost_test_g; cost_test_type1=cost_test_g;
+		* testing costs 1.5 times when on cab-la due to 6 tests per year;
+		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
 		end;
 	end;
 	if hivtest_type=3 and (prep_inj ne 1 or hivtest_type_1_init_prep_inj ne 1) 
 	then do;
 		u=rand('uniform');
-		sens_primary=sens_primary_testtype3;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype3_prep_inj_primary ;
+		sens_primary=sens_primary_testtype3; 
+		eff_sens_primary = sens_primary; if (prep_inj_tm1=1 and prep_inj=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_inj_primary ;
 		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; * lapr - query should visit=1 here as above? and extra lines following ;
+			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1;  visit=1; lost=0;
+			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;	
 			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
 				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
@@ -6914,6 +6912,7 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
 					end;
@@ -6925,18 +6924,22 @@ if t ge 2 then do;
 						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
 						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
 						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
 						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
 					end;
 				end;
 			end;
 			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_any=0;		prep_vr =0; 	dt_prep_vr_s=.;
-				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
+				prep_any=0;	prep_vr  =0;  continuous_prep_vr_use=0;continuous_prep_any_use=0;
+				diagprim_prep_vr  =1;
+				if caldate{t} = dt_prep_vr_s then do; prep_any_ever=.; dt_prep_vr_s=.; prep_vr_ever=.; prep_primary_prevented=1; end;
+				if caldate{t} = dt_prep_vr_rs or caldate{t} = dt_prep_vr_c then do; dt_prep_vr_rs=.;dt_prep_vr_c =.;prep_primary_prevented=1;  end;
 			end;
 		end;
 	end;
 end;
+
 
 if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
 if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
