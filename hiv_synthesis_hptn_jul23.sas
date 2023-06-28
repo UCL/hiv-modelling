@@ -13724,8 +13724,8 @@ primary_prep_not_elig = 0; if prep_any_elig ne 1 and primary=1 then primary_prep
 primary_prep_elig_w = 0; if gender=2 and prep_any_elig = 1 and primary=1 then primary_prep_elig_w = 1;
 primary_prep_not_elig_w = 0; if gender=2 and prep_any_elig ne 1 and primary=1 then primary_prep_not_elig_w = 1;
 
-primary_prep_elig_m = 0; if gender=1 and prep_any_elig = 1 and primary=1 then primary_prep_elig_w = 1;
-primary_prep_not_elig_m = 0; if gender=1 and prep_any_elig ne 1 and primary=1 then primary_prep_not_elig_w = 1;
+primary_prep_elig_m = 0; if gender=1 and prep_any_elig = 1 and primary=1 then primary_prep_elig_m = 1;
+primary_prep_not_elig_m = 0; if gender=1 and prep_any_elig ne 1 and primary=1 then primary_prep_not_elig_m = 1;
 
 
 
