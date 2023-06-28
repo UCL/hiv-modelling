@@ -4791,6 +4791,14 @@ cost_test=0;
 
 
 * PREP INITIATION AND CONTINUATION;
+/* 
+	PrEP start and restart dates are given by:
+		prep_any_first_start_date		first ever PrEP start date (previously dt_prep_xxx_s)
+		prep_any_restart_date			date of PrEP restart following decision to stop PrEP (to count number of prep re-initiation) (previously dt_prep_xxx_rs)
+		prep_any_continuation_date		date of PrEP restart following pause due to ineligibility (previously dt_prep_xxx_c)
+		prep_any_current_start_date 	start date of current PrEP course, whether that is first ever PrEP or restarting following a break due to ineligibility or choice
+		(plus equivalent variables for _oral_, _inj_ and _vr_ for all variables)
+*/
 
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
 (or without been diagnosed with) hiv;
@@ -4823,13 +4831,12 @@ if prep_oral_disrup_covid ne 1 and ever_prep_oral_covid_disrup=1 then do;
 end;
 
 
+********** STARTING PREP *********** ;
 
 *Jul2016 f_prep;
 if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 then do;
 
 	unisensprep=rand('uniform');
-
-********** starting Prep *********** ;
 
 	* lapr37;
 	eff_sens_vct = sens_vct;  
@@ -4843,10 +4850,10 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	* eff_sens_vct changed from sens_vct for lapr37;
 
 	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
-	*STARTING PREP FOR THE FIRST TIME EVER;
+	* starting PrEP for the first time ever;
 	 
 			if prep_any_willing=1 and hard_reach ne 1 then do; 
-				* HAS TESTED EXPLICITLY TO START PREP;
+				* person has testesd explicitly to start PrEP;
 				if testfor_prep_oral = 1  		then do;	
 					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 					prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	dt_prep_oral_s=caldate{t};		
@@ -4861,7 +4868,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					prep_vr=1; 		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	prep_vr_first_start_date=caldate{t};	prep_vr_current_start_date=caldate{t};		dt_prep_vr_s=caldate{t};;
 				end; 
 
-				* HAS NOT TESTED EXPLICITLY TO START PREP BUT IS WILLING;
+				* person has not tested explicitly to start PrEP but is willing;
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
@@ -4918,7 +4925,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 
 
 
-********* continuing or re-starting PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
+********* CONTINUING, SWITCHING OR RESTARTING PREP *************;
 
 	eff_sens_vct = sens_vct; * note that eff_sens_vct does not apply 
 	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
@@ -4935,8 +4942,9 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		end;
 	end;
 
- 	if prep_any_ever=1 and min(dt_prep_oral_s, dt_prep_inj_s, dt_prep_vr_s) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
-	* ever used PrEP but has not started this period, and uninfected or tested but undetected;
+ 	if prep_any_ever=1 and min(prep_oral_first_start_date, prep_inj_first_start_date, prep_vr_first_start_date) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+	* person has used PrEP before but has not started this period, and is uninfected or tested but undetected;
+
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; 		* dependent_on_time_step_length;
 			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_oral then do;
@@ -4948,14 +4956,14 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
 						prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};
 						if prep_inj_ever ne 1 then do; 
-							prep_inj_first_start_date=caldate{t};	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
+							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1; 	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
 						end;
 						switch_prep_from_oral = 1;	 switch_prep_to_inj=1; 
 					end;	
 					if highest_prep_pref = 3 then do;						* switch to VR PrEP;
 						prep_vr =1;		continuous_prep_vr_use = 0.25;		prep_vr_current_start_date=caldate{t}; 
 						if prep_vr_ever ne 1 then do; 
-							prep_vr_first_start_date=caldate{t};	start_prep_vr_unl_prim_hiv_det=caldate{t};	dt_prep_vr_s=caldate{t}; 					
+							prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;		start_prep_vr_unl_prim_hiv_det=caldate{t};		dt_prep_vr_s=caldate{t}; 					
 						end;
 						switch_prep_from_oral = 1;	 switch_prep_to_vr =1; 
 					end;	
@@ -4976,14 +4984,14 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if highest_prep_pref = 1 then do;						* switch to oral PrEP;
 						prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t}; 
 						if prep_oral_ever ne 1 then do;
-							prep_oral_first_start_date=caldate{t};	dt_prep_oral_s=caldate{t};
+							prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;	dt_prep_oral_s=caldate{t};
 						end;
 						switch_prep_from_inj = 1;	 switch_prep_to_oral=1;
 					end; 
 					if highest_prep_pref = 3 then do;						* switch to VR PrEP;
 						prep_vr=1;		continuous_prep_vr_use =  0.25;		prep_vr_current_start_date=caldate{t}; 
 						if prep_vr_ever ne 1 then do;
-							prep_vr_first_start_date=caldate{t};	dt_prep_vr_s=caldate{t};
+							prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;		dt_prep_vr_s=caldate{t};
 						end;
 						switch_prep_from_inj = 1;	 switch_prep_to_vr=1;
 					end; 
@@ -5004,14 +5012,14 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if highest_prep_pref = 1 then do;						* switch to oral PrEP;
 						prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t}; 
 						if prep_oral_ever ne 1 then do;
-							prep_oral_first_start_date=caldate{t};	dt_prep_oral_s=caldate{t};
+							prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;	dt_prep_oral_s=caldate{t};
 						end;
 						switch_prep_from_vr = 1;	 switch_prep_to_oral=1;
 					end;
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
 						prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};
 						if prep_inj_ever ne 1 then do; 
-							prep_inj_first_start_date=caldate{t};	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
+							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
 						end;
 						switch_prep_from_inj = 1;	 switch_prep_to_inj=1; 
 					end; 					
@@ -5024,13 +5032,13 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		end;
 
 		else if prep_any_tm1 ne 1 then do;
-			*if people discontinued even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is
-			given by eff_prob_prep_any_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
-			stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
+			*if people chose to discontinue even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is given by eff_prob_prep_any_restart_choice. 
+			if they discontinued because they were no longer eligible (no partners in a period and also	stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
 			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
+			* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
 
 			if tested=1 then do; * dependent_on_time_step_length;
-				if stop_prep_any_choice=1 then do;
+				if stop_prep_any_choice=1 then do;				* person previously chose to discontinue PrEP;
 					r=rand('uniform'); 
 					if r < eff_prob_prep_any_restart_choice then do;
 						select;			* lapr - check last_prep_used ;
@@ -5053,8 +5061,8 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					end;
 				end;
 
-				else if stop_prep_any_choice ne 1  then do;	* remember that this is all in a loop with prep_any_elig=1;
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
+				else if stop_prep_any_choice ne 1  then do;		* person discontinued PrEP because they were ineligible;
+																* remember that this is all in a loop with prep_any_elig=1;
 					r=rand('uniform'); 
 						select;			* lapr - check last_prep_used ;
 							when (last_prep_used=1) do; 
