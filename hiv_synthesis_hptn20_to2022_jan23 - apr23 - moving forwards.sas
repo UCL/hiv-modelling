@@ -5,7 +5,7 @@
 * break down of prep eligibility and proportion of eligible on prep for age < 25 and age >= 25 (and by gender ?);
 * hiv incidence by prep eligibility (with prep efficacy 0) by gender ;
 * check on why av_prep_oral_eff_non_res_v is above 1 in 0.05% of 3 month periods;
-
+* correct code for diagnosis in primary infection
 
 
 
