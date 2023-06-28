@@ -2557,7 +2557,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 12 then do;*Increase in Condom use promotion and provision;
 	end;
-	if option = 13 then do;*General population men�s health clinics (for men from the general population);
+	if option = 13 then do;*General population mens health clinics (for men from the general population);
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
@@ -2583,7 +2583,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;
 		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
 	end;
-	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,�);
+	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,);
 	absence_vl_year_i = 0;					   
 	end;
 	if option = 34 then do; * poc vl monitoring ;
@@ -21735,8 +21735,8 @@ start_rest_prep_inj_prim_cabr	Cab-la was initiated or reinitiated in this period
 
 HIV infection while on cab-la (or past 3 months)
 
-o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period � did not have insti resistance as of the last period
-o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period � did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period, did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period, did not have insti resistance as of the last period
 infected_on_prep_inj 			Has hiv and is on cab-la or was on cab-la in last period
 prep_o_cab_off_3m_prim  		Is in primary infection - is on cab-la or stopped this period
 
@@ -21745,13 +21745,13 @@ HIV infection during cab-la tail
 emerge_inm_res_cab_tail			Has hiv and is currently in cab-la tail and insti resistance emerged in this period
 emerge_inm_res_cab_tail_pr		In primary infection and currently in cab-la tail and insti resistance emerged in this period
 cur_in_prep_inj_tail_hiv		Has hiv and is currently in cab-la tail
-cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail � did not have insti resistance as of the last period
+cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail, did not have insti resistance as of the last period
 cur_in_prep_inj_tail_prim 		In primary infection and is currently in cab-la tail
 
 Non-specific 
 
 em_inm_res_o_cab_off_3m			Has hiv and is on cab-la was on cab-la last period and insti resistance emerged in this period due to cab-la 
-em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (�npr�) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (npr) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
 cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
