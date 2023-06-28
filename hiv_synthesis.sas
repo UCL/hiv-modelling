@@ -4793,11 +4793,12 @@ cost_test=0;
 * PREP INITIATION AND CONTINUATION;
 /* 
 	PrEP start and restart dates are given by:
-		prep_any_first_start_date		first ever PrEP start date (previously dt_prep_xxx_s)
-		prep_any_restart_date			date of PrEP restart following decision to stop PrEP (to count number of prep re-initiation) (previously dt_prep_xxx_rs)
-		prep_any_continuation_date		date of PrEP restart following pause due to ineligibility (previously dt_prep_xxx_c)
-		prep_any_current_start_date 	start date of current PrEP course, whether that is first ever PrEP or restarting following a break due to ineligibility or choice
-		(plus equivalent variables for _oral_, _inj_ and _vr_ for all variables)
+		prep_xxx_first_start_date		first ever PrEP start date (previously dt_prep_xxx_s)
+		prep_xxx_restart_date			date of PrEP restart following decision to stop PrEP (to count number of prep re-initiation) (previously dt_prep_xxx_rs)
+		prep_xxx_continuation_date		date of PrEP restart following pause due to ineligibility (previously dt_prep_xxx_c)
+		prep_xxx_current_start_date 	start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
+										
+		(equivalent variables for _any_, _oral_, _inj_ and _vr_ for all variables)
 */
 
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
@@ -4954,18 +4955,18 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 						prep_oral=1;	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;						
 					end;	
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
-						prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};
+						switch_prep_from_oral=1;	 switch_prep_to_inj=1;	continuous_prep_oral_use=0;
+						prep_inj=1;		continuous_prep_inj_use=0.25;		prep_inj_current_start_date=caldate{t};
 						if prep_inj_ever ne 1 then do; 
 							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1; 	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
 						end;
-						switch_prep_from_oral = 1;	 switch_prep_to_inj=1; 
 					end;	
 					if highest_prep_pref = 3 then do;						* switch to VR PrEP;
-						prep_vr =1;		continuous_prep_vr_use = 0.25;		prep_vr_current_start_date=caldate{t}; 
+						switch_prep_from_oral=1;	switch_prep_to_vr=1;	continuous_prep_oral_use=0;	
+						prep_vr=1;		continuous_prep_vr_use=0.25;		prep_vr_current_start_date=caldate{t}; 
 						if prep_vr_ever ne 1 then do; 
-							prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;		start_prep_vr_unl_prim_hiv_det=caldate{t};		dt_prep_vr_s=caldate{t}; 					
+							prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;		start_prep_vr_unl_prim_hiv_det=caldate{t};	dt_prep_vr_s=caldate{t}; 					
 						end;
-						switch_prep_from_oral = 1;	 switch_prep_to_vr =1; 
 					end;	
 				end;
 				else do; 	* choose to stop PrEP despite newp>1;
@@ -4982,18 +4983,18 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 						prep_inj=1;		continuous_prep_inj_use = continuous_prep_inj_use + 0.25; 					
 					end;	
 					if highest_prep_pref = 1 then do;						* switch to oral PrEP;
+						switch_prep_from_inj=1;	 	switch_prep_to_oral=1;	continuous_prep_inj_use=0;
 						prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t}; 
 						if prep_oral_ever ne 1 then do;
 							prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;	dt_prep_oral_s=caldate{t};
 						end;
-						switch_prep_from_inj = 1;	 switch_prep_to_oral=1;
 					end; 
 					if highest_prep_pref = 3 then do;						* switch to VR PrEP;
+						switch_prep_from_inj=1;	 	switch_prep_to_vr=1;	continuous_prep_inj_use=0;
 						prep_vr=1;		continuous_prep_vr_use =  0.25;		prep_vr_current_start_date=caldate{t}; 
 						if prep_vr_ever ne 1 then do;
 							prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;		dt_prep_vr_s=caldate{t};
 						end;
-						switch_prep_from_inj = 1;	 switch_prep_to_vr=1;
 					end; 
 				end;
 				else do; 	* choose to stop PrEP despite newp>1;
@@ -5010,18 +5011,18 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 						prep_vr=1;		continuous_prep_vr_use = continuous_prep_vr_use + 0.25; 					
 					end;
 					if highest_prep_pref = 1 then do;						* switch to oral PrEP;
+						switch_prep_from_vr = 1;	switch_prep_to_oral=1;	continuous_prep_vr_use=0;
 						prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t}; 
 						if prep_oral_ever ne 1 then do;
 							prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;	dt_prep_oral_s=caldate{t};
 						end;
-						switch_prep_from_vr = 1;	 switch_prep_to_oral=1;
 					end;
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
+						switch_prep_from_inj = 1;	 switch_prep_to_inj=1;	continuous_prep_vr_use=0;
 						prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};
 						if prep_inj_ever ne 1 then do; 
 							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;	start_prep_inj_unl_prim_hiv_det=caldate{t};	dt_prep_inj_s=caldate{t}; 
 						end;
-						switch_prep_from_inj = 1;	 switch_prep_to_inj=1; 
 					end; 					
 				end;
 				else do; 	* choose to stop PrEP despite newp>1;
