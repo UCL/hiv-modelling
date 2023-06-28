@@ -7,9 +7,9 @@
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-	
-%let population = 10000  ; 
-%let year_interv = 2022.5;
+
+%let population = 10000  ;
+%let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
@@ -348,7 +348,7 @@ newp_seed = 7;
 * newp_lasttest;			newp_lasttest=0; 
 
 * rate_anc_inc; 		%sample_uniform(rate_anc_inc, 0.005 0.01 0.03 0.05 0.10);
-* prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.75 0.8 0.85 0.9 0.95 1.00);
+* prob_test_2ndtrim;	%sample_uniform(prob_test_2ndtrim, 0.7 0.8 0.9 1.00);
 * prob_test_postdel;	prob_test_postdel=0.95;
 * test_targeting;   		%sample(test_targeting, 1 1.25 1.5, 0.2 0.6 0.2);
 * max_freq_testing;   		%sample(max_freq_testing, 1 2, 0.8 0.2);
@@ -872,7 +872,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_05.sas";
+* %include "/home/rmjlvca/Zim_parameters_06.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_03.sas";
 
 
@@ -1241,6 +1241,24 @@ inc12=0.016;
 inc13=0.012;
 end;
 
+* In hptn sa this is indicated as inc_cat = 3) ;
+* Running for 87 years - 1984 - 2071;  * AP 20-7-19 ;
+* Using a moderate rate of population growth;
+if inc_cat=1 and caldate1=1984  then do;
+inc1=0.1750; *more in this category as covers 19 years;
+inc2=0.1100;
+inc3=0.1000;
+inc4=0.0960;
+inc5=0.0900;
+inc6=0.0860;
+inc7=0.0790;
+inc8=0.070;
+inc9 =0.060;
+inc10=0.050;
+inc11=0.038;
+inc12=0.026;
+inc13=0.020;
+end;							 	
 
 if inc_cat=2 then do;
 inc1=0.1500; *-65 to -55;
@@ -1280,6 +1298,7 @@ cum9=cum8+inc9;cum10=cum9+inc10; cum11=cum10+inc11; cum12=cum11+inc12;
 
 e=rand('uniform');
 if 0.0 <= e < inc1    then age=-69+rand('uniform')*14;   
+if caldate1=1984 then do;if 0.0 <= e < inc1    then age=-74+rand('uniform')*19;end;																				   
 if inc1 <= e < cum2   then age=-55+rand('uniform')*10;  
 if cum2 <= e < cum3   then age=-45+rand('uniform')*10;  
 if cum3 <= e < cum4   then age=-35+rand('uniform')*10;  
@@ -1297,6 +1316,7 @@ if cum12 <= e          then age= 55+rand('uniform')*10;
 age =round(age ,.25);
 
 year_start=-69;
+if caldate1=1984 then year_start=-74;									 
 
 if age  >= year_start;
 
@@ -1919,8 +1939,6 @@ if covid_disrup_extent = 1   then do; w=rand('uniform'); if w <= 1.0 then covid_
 
 option=.;
 
-dataset_id=trim(left(round(rand('uniform')*1000000)));
-call symput('dataset_id',dataset_id);
 
 * this is a random uniform number for each person;
 _p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
@@ -2539,7 +2557,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 12 then do;*Increase in Condom use promotion and provision;
 	end;
-	if option = 13 then do;*General population men’s health clinics (for men from the general population);
+	if option = 13 then do;*General population menï¿½s health clinics (for men from the general population);
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
@@ -2565,7 +2583,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;
 		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
 	end;
-	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
+	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,ï¿½);
 	absence_vl_year_i = 0;					   
 	end;
 	if option = 34 then do; * poc vl monitoring ;
@@ -3244,7 +3262,7 @@ if option = 15 then do;*Essential + Oral TDF/FTC PrEP for AGWY;
 		prep_any_strategy=3;
 		*Following values need to change;
 		eff_rate_test_startprep_any=rate_test_startprep_any;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
+		eff_prob_prep_oral_b=prob_prep_oral_b*2;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 end;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -4421,14 +4439,14 @@ if anc=1 then do;
 			end;
 	end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-    u=rand('uniform'); if registd=1 and tested ne 1 and u<0.7 then do; * tested=1;tested_anc_prevdiag=1; end;
+    u=rand('uniform'); if registd=1 and tested ne 1 and caldate{t} = dt_start_pregn+0.25 and u<0.7 then do;tested_anc_prevdiag=1; end;
 end;
 
 tested_pd=0;
 if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-0.25 then do; * dependent_on_time_step_length ;
 * ts1m ; * replace line above with:  
 * if t ge 2 and gender=2 and dt_lastbirth=caldate{t}-(1/12) and tested_tm1=1 then do; 
-	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1) and u lt prob_test_postdel then do;
+	u=rand('uniform');if registd ne 1 and ( (testing_disrup_covid ne 1 or covid_disrup_affected ne 1)) and (tested_tm1=1 or tested_tm2=1 or tested_tm3=1) and u lt prob_test_postdel then do;
 		tested=1; tested_pd=1; 
 		if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 		np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -21717,8 +21735,8 @@ start_rest_prep_inj_prim_cabr	Cab-la was initiated or reinitiated in this period
 
 HIV infection while on cab-la (or past 3 months)
 
-o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
-o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period ï¿½ did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period ï¿½ did not have insti resistance as of the last period
 infected_on_prep_inj 			Has hiv and is on cab-la or was on cab-la in last period
 prep_o_cab_off_3m_prim  		Is in primary infection - is on cab-la or stopped this period
 
@@ -21727,13 +21745,13 @@ HIV infection during cab-la tail
 emerge_inm_res_cab_tail			Has hiv and is currently in cab-la tail and insti resistance emerged in this period
 emerge_inm_res_cab_tail_pr		In primary infection and currently in cab-la tail and insti resistance emerged in this period
 cur_in_prep_inj_tail_hiv		Has hiv and is currently in cab-la tail
-cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail – did not have insti resistance as of the last period
+cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail ï¿½ did not have insti resistance as of the last period
 cur_in_prep_inj_tail_prim 		In primary infection and is currently in cab-la tail
 
 Non-specific 
 
 em_inm_res_o_cab_off_3m			Has hiv and is on cab-la was on cab-la last period and insti resistance emerged in this period due to cab-la 
-em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (ï¿½nprï¿½) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
 cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
