@@ -24,6 +24,7 @@ libname c "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified pr
 
 *Looking whether mc_int is stored in the dataset saved at the end of 2022;
 
+
 proc freq data=c.zim_end2022_21249542;
 table /*mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015
 circ_red_20_30 circ_red_30_50 
@@ -33,10 +34,11 @@ date_prep_inj_intro date_prep_vr_intro
 rate_test_startprep_any  
 prob_prep_oral_b
 pref_prep_oral_beta_s1  
-rate_choose_stop_prep_oral */ 
-
+rate_choose_stop_prep_oral 
 prep_willingness_threshold
-;run;
+annual_testing_prep_oral*/
+rate_test_onprep_any
+;run;/*
 proc freq data=c.zim_end2022_21249542;table hard_reach;where gender=1;run;*/
 
 ods html close;
@@ -78,6 +80,8 @@ sf = (16320000 * 0.581) / s_alive;
 
 keep run sf;
 proc sort; by run;
+
+proc means data=sf;var sf;run;
 *With the following command we can change only here instead of in all the lines below,
 in the keep statement, macro par and merge we are still using the variable sf_2019;
 %let sf=sf;
