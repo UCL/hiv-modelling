@@ -8,104 +8,104 @@
 
 
 
-* options user="/folders/myfolders/";
+* options user="/folders/myfolders/" ;
 
 
  proc printto ; 
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_revision_y1r_out\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\pop_wide_tld_revision_y1r_out\" ;
 
 
-data i1a; set b.out11:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas"; 
-data i1b; set b.out12:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1c; set b.out13:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1d; set b.out14:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1e; set b.out15:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1f; set b.out16:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1g; set b.out17:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1h; set b.out18:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i1i; set b.out19:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i1a; set b.out11:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ; 
+data i1b; set b.out12:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1c; set b.out13:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1d; set b.out14:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1e; set b.out15:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1f; set b.out16:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1g; set b.out17:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1h; set b.out18:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i1i; set b.out19:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i2a; set b.out21:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2b; set b.out22:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2c; set b.out23:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2d; set b.out24:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2e; set b.out25:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2f; set b.out26:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2g; set b.out27:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2h; set b.out28:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i2i; set b.out29:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i2a; set b.out21:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2b; set b.out22:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2c; set b.out23:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2d; set b.out24:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2e; set b.out25:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2f; set b.out26:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2g; set b.out27:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2h; set b.out28:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i2i; set b.out29:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i3a; set b.out31:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3b; set b.out32:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3c; set b.out33:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3d; set b.out34:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3e; set b.out35:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3f; set b.out36:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3g; set b.out37:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3h; set b.out38:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i3i; set b.out39:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i3a; set b.out31:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3b; set b.out32:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3c; set b.out33:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3d; set b.out34:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3e; set b.out35:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3f; set b.out36:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3g; set b.out37:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3h; set b.out38:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i3i; set b.out39:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i4a; set b.out41:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4b; set b.out42:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4c; set b.out43:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4d; set b.out44:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4e; set b.out45:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4f; set b.out46:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4g; set b.out47:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4h; set b.out48:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i4i; set b.out49:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i4a; set b.out41:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4b; set b.out42:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4c; set b.out43:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4d; set b.out44:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4e; set b.out45:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4f; set b.out46:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4g; set b.out47:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4h; set b.out48:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i4i; set b.out49:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i5a; set b.out51:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5b; set b.out52:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5c; set b.out53:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5d; set b.out54:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5e; set b.out55:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5f; set b.out56:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5g; set b.out57:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5h; set b.out58:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i5i; set b.out59:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i5a; set b.out51:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5b; set b.out52:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5c; set b.out53:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5d; set b.out54:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5e; set b.out55:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5f; set b.out56:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5g; set b.out57:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5h; set b.out58:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i5i; set b.out59:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i6a; set b.out61:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6b; set b.out62:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6c; set b.out63:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6d; set b.out64:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6e; set b.out65:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6f; set b.out66:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6g; set b.out67:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6h; set b.out68:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i6i; set b.out69:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i6a; set b.out61:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6b; set b.out62:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6c; set b.out63:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6d; set b.out64:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6e; set b.out65:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6f; set b.out66:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6g; set b.out67:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6h; set b.out68:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i6i; set b.out69:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i7a; set b.out71:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7b; set b.out72:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7c; set b.out73:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7d; set b.out74:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7e; set b.out75:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7f; set b.out76:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7g; set b.out77:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7h; set b.out78:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i7i; set b.out79:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i7a; set b.out71:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7b; set b.out72:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7c; set b.out73:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7d; set b.out74:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7e; set b.out75:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7f; set b.out76:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7g; set b.out77:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7h; set b.out78:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i7i; set b.out79:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i8a; set b.out81:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8b; set b.out82:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8c; set b.out83:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8d; set b.out84:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8e; set b.out85:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8f; set b.out86:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8g; set b.out87:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8h; set b.out88:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i8i; set b.out89:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i8a; set b.out81:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8b; set b.out82:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8c; set b.out83:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8d; set b.out84:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8e; set b.out85:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8f; set b.out86:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8g; set b.out87:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8h; set b.out88:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i8i; set b.out89:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
-data i9a; set b.out91:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9b; set b.out92:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9c; set b.out93:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9d; set b.out94:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9e; set b.out95:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9f; set b.out96:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9g; set b.out97:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9h; set b.out98:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
-data i9i; set b.out99:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas";
+data i9a; set b.out91:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9b; set b.out92:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9c; set b.out93:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9d; set b.out94:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9e; set b.out95:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9f; set b.out96:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9g; set b.out97:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9h; set b.out98:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
+data i9i; set b.out99:; %include "C:\Users\w3sth\Dropbox (UCL)\GitHub\hiv-modelling\keep_statement.sas" ;
 
 
 
@@ -127,7 +127,7 @@ proc freq; tables run; where cald = 2022; run;
 * =========================================================================================================================================;
 
 
- libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\"; 
+ libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ; 
 
 
 proc sort data = pwt_rev_y1r_a ; 
@@ -166,7 +166,7 @@ in the keep statement, macro par and merge we are still using the variable sf_20
 * =========================================================================================================================================;
 
 
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
 
 %let sf=sf_2024;
 
@@ -1316,7 +1316,7 @@ proc freq; tables run; where cald = 2022; run;
 
 
 
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
 
 
 %let sf=sf_2024;
@@ -1340,7 +1340,7 @@ proc freq data=a.pwt_rev_y1r_c ; tables run; where cald = 2022; run;
 
 
 
-* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+* libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
 
 
 %let sf=sf_2024;
@@ -1367,7 +1367,7 @@ run;
 
 
 
-  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+  libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
 
 
 data y ; set a.l_pwt_rev_y1r      ; 
@@ -1778,7 +1778,7 @@ proc freq; tables run;
 
 * ########################################################################################################################### ;
 
-libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\pop_wide_tld\" ;
 
 
 data x ; set a.w_pwt_rev_y1r    ;
