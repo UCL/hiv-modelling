@@ -1,12 +1,12 @@
 #!/bin/bash -l
 #$ -S /bin/bash
-#$ -l h_rt=04:00:00
+#$ -l h_rt=36:00:00
 #$ -pe smp 4
 #$ -t 1
 #$ -A HIVSynthMod
 #$ -l mem=6G
 #$ -j y
-#$ -N output
+#$ -N create_wide_myriad_pt1
 #$ -wd /home/sejj463/Scratch/combined_data_out
 #$ -o /dev/null
 #$ -e /dev/null
