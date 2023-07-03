@@ -1268,7 +1268,7 @@ s_I_offart_SIlt6m7579m s_I_offart_SIgt6m7579m s_I_diag_naive7579_ s_I_diag_start
 ;
 
 run;
-
+/*
 ***Use this datastep to output just one run to check that the totals etc. add up;
 data y1;
 set y;
