@@ -37,7 +37,7 @@ by run ;
 
 
 
-if run ne  989218009 then delete;
+*if run ne  989218009 then delete;
 
 
 
@@ -1273,9 +1273,6 @@ run;
 data y1;
 set y;
 
-proc print;var cald s_primary7579_  s_I_undiag7579_ s_I_undiag7579m s_I_undiag7579w  s_I_diag_naive7579_ s_I_diag_startart7579_;
-where cald ge 2010;run;
-
 *if run ne 972898928 then delete;
 *if run ne  975089766 then delete;
 *if run ne 989218009 then delete;
@@ -2075,7 +2072,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Transmissions1519_HIVSynthesis.xlsx"
+ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Transmissions_HIVSynthesis.xlsx"
 options(sheet_name='base' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
