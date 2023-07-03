@@ -7237,14 +7237,14 @@ if t ge 2 then do;
 			end;
 			if prep_vr=1 then do;									* stop VR PrEP use if positive HIV test;
 				* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_any=0;		prep_vr =0; 
-				if caldate{t} = prep_vr_first_start_date then do;  prep_any_ever=.; prep_vr_ever=.; prep_vr_first_start_date=.; prep_primary_prevented=1; end; 
-
-				if caldate{t} = prep_oral_first_start_date then do; prep_any_ever=.; prep_oral_first_start_date=.; prep_oral_ever=.; prep_primary_prevented=1; end;
-				if caldate{t} = prep_oral_restart_date then do; prep_oral_restart_date=.; prep_oral_restart_date_choice=.; prep_oral_restart_date_eligible =.; prep_primary_prevented=1;  end;
-
-
-
+				prep_any=0;		prep_vr =0; 	continuous_prep_vr_use=0; 		continuous_prep_any_use=0;
+				if caldate{t} = prep_vr_first_start_date then do;  
+					prep_vr_ever=.; prep_vr_first_start_date=.; prep_primary_prevented=1; 
+					if prep_oral_ever ne 1 and prep_inj_ever ne 1 then prep_any_ever=.; 
+				end; 
+				if caldate{t} = prep_vr_restart_date then do;
+					prep_vr_restart_date=.; prep_vr_restart_date_choice=.; prep_vr_restart_date_eligible =.; prep_primary_prevented=1;  
+				end;
 			end;
 		end;
 	end;
