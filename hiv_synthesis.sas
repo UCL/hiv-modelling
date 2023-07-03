@@ -3281,7 +3281,7 @@ if age    < 15 then do; hiv=.; goto xx55; end;
 
 * UPDATED RISK BEHAVIOUR ;
 
-if t ge 2 and 15 <= age      and death=. then do; * do loop ends at xx22;
+if t ge 2 and 15 <= age <65 and death=. then do; * do loop ends at xx22;
 
 mr_epi_tm1=mr_epi;
 epi_tm1=epi; epi=.; 
