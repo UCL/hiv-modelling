@@ -3041,6 +3041,7 @@ if t ge 2 and caldate{t} < 2072.5 and death =.  then do;
 cost=0;cost_test=0;
 
 adc_tm1=adc; adc=0;
+who3_event_tm1=who3_event; who3_event=0;
 
 visit_prep_oral=.;	
 visit_prep_inj=.;	* lapr ;
