@@ -1,9 +1,14 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
-*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\vl_monitoring\dalys_averted_per_vl_out\";
+
+
+data a.vl_23; set a.out:;  
+
+
 
 data a;
-set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; 
+set a.vl_23; ***INSERT OUTPUT FILENAME; 
 if run=. then delete; 
 
 proc sort;
@@ -191,13 +196,17 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* n_vl;							n_vl = s_vm_this_per * &sf ;
+* n_death_hiv;					n_death_hiv = s_death_hiv * &sf ;
+
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 keep run option cald 
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
-dcost ddaly
+dcost ddaly  n_vl  n_death_hiv 
+rate_int_choice  
 
 /*ADD PROJECT SPECIFIC OUTPUTS HERE*/;
 ;
@@ -220,19 +229,21 @@ proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
 
 ***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
+proc means noprint data=y; var &v; output out=y_24_27 mean= &v._24_27; by run option ; where 2024.0 <= cald < 2027.00;
+proc means noprint data=y; var &v; output out=y_24_29 mean= &v._24_29; by run option ; where 2024.0 <= cald < 2029.00;
+proc means noprint data=y; var &v; output out=y_24_44 mean= &v._24_44; by run option ; where 2024.0 <= cald < 2044.00;
+proc means noprint data=y; var &v; output out=y_24_74 mean= &v._24_74; by run option ; where 2024.0 <= cald < 2074.00;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
 proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
+proc sort data=y_24_27; by run; proc transpose data=y_24_27 out=t_24_27 prefix=&v._24_27_; var &v._24_27; by run;
+proc sort data=y_24_29; by run; proc transpose data=y_24_29 out=t_24_29 prefix=&v._24_29_; var &v._24_29; by run;
+proc sort data=y_24_44; by run; proc transpose data=y_24_44 out=t_24_44 prefix=&v._24_44_; var &v._24_44; by run;
+proc sort data=y_24_74; by run; proc transpose data=y_24_74 out=t_24_74 prefix=&v._24_74_; var &v._24_74; by run;
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;  
+data &v ; merge  y_22 t_30 t_24_27 t_24_29 t_24_44 t_24_74;  
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -241,11 +252,11 @@ data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	 		%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);
-%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);
+%var(v=p_vg1000); 		%var(v=p_vl1000);			%var(v=prevalence_vg1000);  %var(v=n_vl);
 
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);
+%var(v=dcost);	 		%var(v=ddaly);  %var(v=n_death_hiv);
 
 */ADD IN PROJECT SPECIFIC OUTPUTS/*;
 
@@ -256,9 +267,9 @@ run;
 data wide_outputs;merge
 p_diag	 		p_diag_m	 		p_diag_w   			p_onart_diag  	p_onart_diag_w
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m
-p_vg1000 		p_vl1000			prevalence_vg1000
+p_vg1000 		p_vl1000			prevalence_vg1000  n_vl
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly
+dcost			ddaly  n_death_hiv
 
 /*ADD IN PROJECT SPECIFIC OUTPUTS*/
 ;
@@ -268,26 +279,46 @@ proc sort; by run;run;
 
 ***Macro par used to add in values of all sampled parameters - values before intervention;
 %macro par(p=);
-proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2022.5; run;
+proc means noprint data=y; var &p ; output out=y_ mean= &p; by run ; where cald = 2024.5; run;
 data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 
 %mend par; 
 
 /*ADD PROJECT SPECIFIC PARAMETERS OF INTEREST*/
-%par(p=sw_art_disadv);		%par(p=sw_program);			%par(p=effect_sw_prog_newp);	%par(p=effect_sw_prog_6mtest);	
-%par(p=effect_sw_prog_int);	%par(p=effect_sw_prog_adh);	%par(p=effect_sw_prog_lossdiag);%par(p=effect_sw_prog_prep_any);
-%par(p=effect_sw_prog_pers_sti); %par(p=sw_trans_matrix);
+%par(p=rate_int_choice);
 run;
 
 
 data wide_par; merge 
-sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
-effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
-sw_trans_matrix;
+rate_int_choice ;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_XXX;
+data a.wide_vl_23;
 merge   wide_outputs  wide_par ;  
-by run;run;
+by run; run;
+
+
+data f; set a.wide_vl_23;
+
+d_n_vl_24_27_2_1 = n_vl_24_27_2 - n_vl_24_27_1 ;
+d_n_death_hiv_24_27_2_1 = n_death_hiv_24_27_2 - n_death_hiv_24_27_1 ;
+d_n_death_hiv_24_29_2_1 = n_death_hiv_24_29_2 - n_death_hiv_24_29_1 ;
+d_n_death_hiv_24_44_2_1 = n_death_hiv_24_44_2 - n_death_hiv_24_44_1 ;
+d_ddaly_24_27_2_1 = ddaly_24_27_2 - ddaly_24_27_1 ;
+d_ddaly_24_29_2_1 = ddaly_24_29_2 - ddaly_24_29_1 ;
+d_ddaly_24_44_2_1 = ddaly_24_44_2 - ddaly_24_44_1 ;
+
+
+proc means mean stderr ; var n_vl_24_27_1  n_vl_24_27_2  n_vl_24_44_1  n_vl_24_44_2  ddaly_24_27_1  
+ddaly_24_27_2  ddaly_24_44_1  ddaly_24_44_2  d_ddaly_24_27_2_1   d_ddaly_24_29_2_1     d_ddaly_24_44_2_1    
+d_n_death_hiv_24_27_2_1  d_n_death_hiv_24_29_2_1  d_n_death_hiv_24_44_2_1 ; 
+run; 
+
+
+
+
+
+
+
 
