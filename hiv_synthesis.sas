@@ -7193,7 +7193,7 @@ if t ge 2 then do;
 	*PCR (RNA VL);
 	if hivtest_type=1
 		or (prep_inj=1 and (prep_inj_restart_date = caldate{t} or prep_inj_first_start_date = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
-		or (prep_inj=1 and hivtest_type_1_prep_inj=1) 
+		or (prep_inj=1 and hivtest_type_1_prep_inj=1)
 		then do;
 			sens_primary=0.86;
 			eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
@@ -7224,7 +7224,7 @@ if t ge 2 then do;
 			if caldate{t} = prep_oral_first_start_date then do; 
 				prep_oral_ever=.; prep_oral_first_start_date=.; 
 				if prep_inj_ever ne 1 and prep_vr_ever ne 1 then prep_any_ever=.; 
-				prep_primary_prevented=1; 		* QUERY THIS LINE should prep_primary_prevented be above this caldate{t} if loop? JAS Jul2023;
+				prep_primary_prevented=1; 		* QUERY THIS LINE does prep_primary_prevented need to be in time period in which PrEP use starts? JAS Jul2023;
 			end;
 			if caldate{t} = prep_oral_restart_date then do; 
 				prep_oral_restart_date=.; 
@@ -7244,8 +7244,8 @@ if t ge 2 then do;
 					prep_inj_ever=.; prep_inj_first_start_date=.; 
 					if prep_oral_ever ne 1 and prep_vr_ever ne 1 then prep_any_ever=.; 
 					prep_inj_init_prim = 0; 	
-					prep_o_cab_off_3m_prim=0; 	* QUERY THIS LINE do we need this in prep_inj_restart_date bit below as well? JAS Jul2023;
 					prep_inj_init_prim_res=0;
+					prep_o_cab_off_3m_prim=0; 	* QUERY THIS LINE do we need this in prep_inj_restart_date bit below as well? JAS Jul2023;
 				end;
 				if caldate{t} = prep_inj_restart_date then do;  
 					prep_inj_restart_date=.; 
@@ -7281,19 +7281,19 @@ if t ge 2 then do;
 	end;
 end;
 
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
 if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
+if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
 if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
 
 if prep_inj_tm1=1 and prep_inj=1 then infected_on_prep_inj=1;
 if prep_vr_tm1=1 and prep_vr =1 then infected_on_prep_vr =1;
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period of risk;
-start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral_hiv = 1;
-start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_hiv = 1;
-start_restart_prep_inj_prim = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_prim = 1;
-start_restart_prep_vr_hiv = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr_hiv = 1;
-start_restart_prep_vr_prim = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr_prim = 1;
+start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
+start_restart_prep_inj_hiv = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_hiv = 1;
+start_restart_prep_inj_prim = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_prim = 1;
+start_restart_prep_vr_hiv = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_hiv = 1;
+start_restart_prep_vr_prim = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_prim = 1;
 
 start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_hiv_cabr = 1;
 start_rest_prep_inj_prim_cabr = 0; if start_restart_prep_inj_prim = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_prim_cabr = 1;
@@ -7408,7 +7408,7 @@ visit_tm1=visit;
 	end;
 
 
-	if prep_oral=1 and (prep_oral_first_start_date = caldate{t} or dt_prep_oral_rs = caldate{t} or dt_prep_oral_c = caldate{t}) then do; 
+	if prep_oral=1 and (prep_oral_first_start_date = caldate{t} or prep_oral_restart_date = caldate{t}) then do; 
 		o_3tc=1; o_ten=1; p_3tc=1; p_ten=1;  tcur=0; cd4_tcur0 = cd4; 
 	end;	
 
@@ -7431,10 +7431,10 @@ visit_tm1=visit;
 	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
 	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
 
-* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
-	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs then start_restart_prep_oral_hiv = 1;
-	start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs  then start_restart_prep_inj_hiv = 1;
-
+* note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;		* QUERY THESE LINES repeat of 7291 above? JAS Jul2023;
+	start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
+	start_restart_prep_inj_hiv = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_hiv = 1;
+	start_restart_prep_vr_hiv = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_hiv = 1;
 
 * dependent_on_time_step_length ;
 	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
