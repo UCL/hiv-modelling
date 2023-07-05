@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ;
+%let population = 100000  ;
 %let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -17342,6 +17342,15 @@ where serial_no<150 and age>15 and age <65 ;
 run;
 
 proc freq; tables prep_oral_first_start_date prep_oral_current_start_date prep_inj_current_start_date prep_vr_current_start_date; run;
+
+proc freq; tables prep_any prep_oral prep_inj prep_vr prep_any_ever prep_oral_ever prep_inj_ever prep_vr_ever 
+prep_any_last_stop_date prep_any_restart_date prep_any_restart_date_eligible prep_any_restart_date_choice 
+prep_oral_switch_date prep_inj_switch_date prep_vr_switch_date; 
+where age ge 15 and age lt 65 and death = .; run;
+
+proc means; var prep_oral prep_inj prep_vr;
+where age ge 15 and death = .; run;
+
 
 
 /*
