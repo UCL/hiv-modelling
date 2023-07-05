@@ -4799,7 +4799,7 @@ cost_test=0;
 */
 
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
-(or without been diagnosed with) hiv;
+(or without been diagnosed with) hiv; *date of stopping prep is now given by prep_xxx_last_stop_date JAS Jul2023;
 
 if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusive ;
 	if prep_any_elig=0 then stop_prep_any_elig=1;
@@ -5171,10 +5171,12 @@ if prep_inj=0 then continuous_prep_inj_use=0;
 if prep_vr=0 then continuous_prep_vr_use=0;	
 if prep_any=0 then continuous_prep_any_use=0;
 
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
+if prep_any=0 and prep_any_tm1=1 then prep_any_last_stop_date=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then prep_oral_last_stop_date=caldate{t}; 
+if prep_inj=0 and prep_inj_tm1=1 then prep_inj_last_stop_date=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then prep_vr_last_stop_date=caldate{t}; 
 
+if prep_any = 1 then prep_any_ever=1;
 if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
 if prep_vr = 1 then prep_vr_ever=1;
@@ -5337,7 +5339,7 @@ tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 
 
 currently_in_prep_inj_tail=0;
-if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
+if  0.25 <= caldate{t}-prep_inj_last_stop_date <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
 pep_not_prep = 0; 
 if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and  pop_wide_tld_as_art ne 1
@@ -6835,7 +6837,7 @@ o_cab, nactive, adh_dl etc ;
 * these variables can also be 1 after primary infection;
 em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab=0; emerge_inm_res_cab_tail=0;
 
-if prep_inj=1 or caldate{t} = date_last_stop_prep_inj then do;
+if prep_inj=1 or caldate{t} = prep_inj_last_stop_date then do;
 
 	prep_o_cab_off_3m_prim=1; if reg_option_107_after_cab=1 then reg_option=107;
 
@@ -6869,7 +6871,7 @@ if (prep_inj_reinit_prim_res=1 or prep_inj_init_prim_res=1) and hivtest_type_1_i
 	c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 end;
 
-if currently_in_prep_inj_tail = 1 and prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
+if currently_in_prep_inj_tail = 1 and prep_inj ne 1 and caldate{t}-prep_inj_last_stop_date ne 0 then do;
 
  aa3=rand('uniform'); if e_in118m  ne 1 and aa3 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in118m = 1;e_in118m = 1; end;
  aa4=rand('uniform'); if e_in140m  ne 1 and aa4 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in140m = 1;e_in140m = 1; end;
@@ -7228,7 +7230,7 @@ if t ge 2 then do;
 			* this below all reversed as cab now known not to have started as primary infection was detected;
 			prep_any=0;		prep_inj=0;		continuous_prep_inj_use=0; 		continuous_prep_any_use=0; 
 			o_cab=0; tcur=.; nactive=.; 
-			if prep_inj_tm1=1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 		* QUERY diagprim_prep_inj if prep_inj_tm1 - not used for oral PrEP above JAS Jul2023;
+			if prep_inj_tm1=1 then do; diagprim_prep_inj=1; prep_inj_last_stop_date=caldate{t}; end; 		* QUERY diagprim_prep_inj if prep_inj_tm1 - not used for oral PrEP above JAS Jul2023;
 			if caldate{t} = (prep_inj_first_start_date) or (caldate{t} = prep_inj_restart_date) then do;
 				prep_primary_prevented=1; 
 				if caldate{t} = prep_inj_first_start_date then do;  
@@ -7272,11 +7274,12 @@ if t ge 2 then do;
 	end;
 end;
 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
+if prep_any=0 and prep_any_tm1=1 then prep_any_last_stop_date=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then prep_oral_last_stop_date=caldate{t}; 	* QUERY why these variables are defined in multiple places (line 5174) JAS Jul2023;
+if prep_inj=0 and prep_inj_tm1=1 then prep_inj_last_stop_date=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then prep_vr_last_stop_date=caldate{t}; 
 
-if prep_oral_tm1=1 and prep_oral=1 then infected_on_prep_oral=1;
+if prep_oral_tm1=1 and prep_oral=1 then infected_on_prep_oral=1;		* QUERY why does it require _tm1=1 as well? JAS Jul2023;
 if prep_inj_tm1=1 and prep_inj=1 then infected_on_prep_inj=1;
 if prep_vr_tm1=1 and prep_vr =1 then infected_on_prep_vr =1;
 
@@ -7573,7 +7576,7 @@ non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
 if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and onart ne 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; onart=0; artline=.; end; 
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; onart=0; artline=.; end; 	* QUERY add tss_dol=0? JAS Jul2023;
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; toffart=0;  tss_cab=0; end;		
 * lapr and dpv-vr - reset toffart only when not switching to another systemic PrEP type; * JAS Nov2021;
@@ -10906,7 +10909,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * cab;
       if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;   
 	
-	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-date_last_stop_prep_inj = 0 then cab_res_o_cab = 1; 
+	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_inj_last_stop_date = 0 then cab_res_o_cab = 1; 
 	if currently_in_prep_inj_tail = 1 then cab_res_tail = 1; end; 
 
 * if in prep_inj tail and infected with hiv;
@@ -14237,7 +14240,7 @@ end;
 
 *Time from first to last use of oral prep;
 years_since_start_prep=0; 
-if prep_oral_ever=1 then years_since_start_prep=date_last_stop_prep_oral-prep_oral_first_start_date;
+if prep_oral_ever=1 then years_since_start_prep=prep_oral_last_stop_date-prep_oral_first_start_date;
 
 
 *Number of HIV tests in the previous year for people currently on PrEP;
@@ -14257,7 +14260,7 @@ if prep_oral_restart_date_eligible=caldate&j then prep_continue_np_ge1=1;
 if (infected_prep_inj=1 or infected_prep_oral=1 or infected_prep_vr=1) and pop_wide_tld ne 1 then do;
 	time_from_infection=caldate&j-infection;
 * dependent_on_time_step_length ;
-	time_stop_prep= max(date_last_stop_prep_oral, date_last_stop_prep_inj, date_last_stop_prep_vr) + 0.25 - infection;
+	time_stop_prep= max(prep_oral_last_stop_date, prep_inj_last_stop_date, prep_vr_last_stop_date) + 0.25 - infection;
 * ts1m;
 
 
@@ -17332,7 +17335,8 @@ proc print; var caldate&j prep_any
 prep_oral	prep_oral_current_start_date	prep_oral_first_start_date 	 prep_oral_restart_date_choice		prep_oral_restart_date_eligible	prep_oral_switch_date
 prep_inj	prep_inj_current_start_date		prep_inj_first_start_date 	 prep_inj_restart_date_choice		prep_inj_restart_date_eligible	prep_inj_switch_date
 prep_vr		prep_vr_current_start_date		prep_vr_first_start_date 	 prep_vr_restart_date_choice		prep_vr_restart_date_eligible	prep_vr_switch_date
-pref_prep_oral pref_prep_inj pref_prep_vr highest_prep_pref last_prep_used
+pref_prep_oral 	pref_prep_inj 	pref_prep_vr 	highest_prep_pref 	last_prep_used
+prep_any_last_stop_date 	prep_oral_last_stop_date 	prep_inj_last_stop_date 	prep_vr_last_stop_date
 ;
 where serial_no<150 and age>15 and age <65 ;
 run;
@@ -17402,7 +17406,7 @@ proc print;
 var 
 caldate&j infection prep_any_strategy prep_any_elig prep_oral_ever prep_inj_ever prep_any_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
 prep_oral prep_o_cab_off_3m_prim reg_option onart o_dol o_taz 
-date_last_stop_prep_inj stop_prep_any_choice
+prep_inj_last_stop_date stop_prep_any_choice
 diagprim_prep_inj  prep_primary_prevented  diagprim_prep_oral  o_cab   r_cab r_3tc r_ten  primary     start_prep_inj_unl_prim_hiv_det
 o_cab_or_o_cab_tm1_no_r   prep_o_cab_off_3m_prim  em_inm_res_o_cab_off_3m_npr 
 em_inm_res_o_cab_off_3m_pr emerge_inm_res_cab_tail_pr
@@ -17557,7 +17561,7 @@ run;
 
 proc print; var caldate&j o_cab nactive
 prep_any_strategy prep_any_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_first_start_date 
-date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
+prep_inj_last_stop_date eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
 stop_prep_inj_choice  continuous_prep_inj_use  dt_prep_oral_rs
 hiv infection tested prep_falseneg sens_vct eff_sens_vct primary hivtest_type dt_last_test annual_testing_prep_inj
 registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl vl r_cab cab_res_o_cab cab_res_tail cab_res_primary 
