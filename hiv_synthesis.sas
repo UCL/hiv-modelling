@@ -5225,7 +5225,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 					if r < prob_prep_any_visit_counsel then do; visit_prep_inj=3; end; *drug pick-up and counselling;
 				end;
 			end;
-			when (prep_vr=1) do;		* QUERY lapr and dpv-vr - add drug pick-up only option here? JAS Jul2023;
+			when (prep_vr=1) do;
 				if tested=1 then do;
 					visit_prep_vr=2; 	
 					if r < prob_prep_any_visit_counsel then do;  visit_prep_vr=3; end; *drug pick-up and counselling;
