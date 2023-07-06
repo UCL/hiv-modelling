@@ -5018,7 +5018,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 						end;
 					end; 					
 				end;
-				else do; 	* choose to stop PrEP despite newp>1;
+				else do; 	* choose to stop PrEP despite newp>=1;
 					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
 					stop_prep_vr_choice=1;		continuous_prep_vr_use=0; 
 				end;
@@ -5047,7 +5047,7 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								prep_inj=1; 	continuous_prep_inj_use=0.25; 	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_choice=caldate{t};	stop_prep_inj_choice=0; 	
 							end; 					
 							when (last_prep_used=3)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_current_start_date=caldate{t};	prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
+								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_vr=1; 		continuous_prep_vr_use=0.25;	prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_choice=caldate{t}; 	stop_prep_vr_choice=0; 		
 							end; 	
 							otherwise xxx=1;	
@@ -5061,16 +5061,16 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					r=rand('uniform'); 
 						select;
 							when (last_prep_used=1) do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_oral=1;	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_oral=1;	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=2) do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_inj=1;		continuous_prep_inj_use=0.25;	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_inj=1;		continuous_prep_inj_use = continuous_prep_inj_use + 0.25;	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=3)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_vr=1;		continuous_prep_vr_use=0.25;	prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_vr=1;		continuous_prep_vr_use = continuous_prep_vr_use + 0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
 							end;
 							otherwise xxx=1;	
 						end;
@@ -5105,7 +5105,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 			then do ;		
 * ts1m ; 
 				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then pop_wide_tld_as_art = 1;
-				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_first_start_date=caldate{t};	* QUERY check I have added "current_start_date" bit JAS Jul2023;
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_first_start_date=caldate{t};
 				prep_oral=1;	prep_oral_ever=1; 	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_first_start_date=caldate{t};
 			end;
 	end;
@@ -5113,7 +5113,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 	x_stop_tld = eff_rate_choose_stop_prep_oral;
 	if (ever_newp = 1 ) and prep_any_elig ne 1 then x_stop_tld = eff_rate_int_choice; 
 
-	if prep_oral_ever = 1 and prep_oral_first_start_date ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	* QUERY add oral prep restart dates? JAS Jul2023; 
+	if prep_oral_ever = 1 and prep_oral_current_start_date ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;
     * everyone continues risk informed prep (which is not the same as currently being on prep) unless the prob of stopping comes up;
 			r=rand('uniform');	
 								
@@ -5124,14 +5124,13 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 				end;
 				if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
 					pop_wide_tld_prep=0;	
-					stop_prep_any_choice=1;  	continuous_prep_any_use = 0;	* QUERY check I have added "continuous_prep_any_use = 0" bit JAS Jul2023;
+					stop_prep_any_choice=1;  	continuous_prep_any_use = 0;
 					stop_prep_oral_choice=1; 	continuous_prep_oral_use = 0;
 				end; 
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
 				if r < eff_prob_prep_any_restart_choice and prep_any_elig =1 then do;  * dependent_on_time_step_length; 
-
 					pop_wide_tld_prep=1; 
 					prep_any=1;		continuous_prep_any_use=0.25; 	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_choice=caldate{t}; 	stop_prep_any_choice=0;
 					prep_oral=1; 	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_choice=caldate{t}; 	stop_prep_oral_choice=0;
