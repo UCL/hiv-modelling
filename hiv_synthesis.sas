@@ -4766,7 +4766,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 			*Re-initiation of PrEP;
 			else if prep_any_tm1 ne 1 then do;	* dependent_on_time_step_length;
-				if stop_prep_any_choice ne 1 then do; 	* QUERY THIS LINE do we want everyone eligible to test? JAS Jul2023;
+				if stop_prep_any_choice ne 1 then do;
 					tested=1; 
 					dt_last_test=caldate{t}; 
 					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -4858,7 +4858,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 				else if	testfor_prep_inj = 1  	then do;	
 					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 					prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};			
-					start_prep_inj_unl_prim_hiv_det=caldate{t};		*QUERY should start_prep_inj_unl_prim_hiv_det be recorded at every inj start or just the first one? Its not outputted so could delete? JAS Jul2023;
 				end; 
 				else if	testfor_prep_vr = 1  	then do;	
 					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
@@ -4877,7 +4876,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do; *Inj PrEP preferred and is available;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};	
-								start_prep_inj_unl_prim_hiv_det=caldate{t};
 							end; 
 							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
@@ -4898,7 +4896,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 and r < eff_prob_prep_inj_b then do;
 									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 									prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};	
-									start_prep_inj_unl_prim_hiv_det=caldate{t};
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
@@ -4953,7 +4950,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
 						switch_prep_from_oral=1;	switch_prep_to_inj=1;	continuous_prep_oral_use=0;
 						prep_inj=1;		continuous_prep_inj_use=0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_switch_date=caldate{t};
-						start_prep_inj_unl_prim_hiv_det=caldate{t};	
 						if prep_inj_ever ne 1 then do; 
 							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;
 						end;
@@ -5017,7 +5013,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
 						switch_prep_from_vr = 1;	 switch_prep_to_inj=1;	continuous_prep_vr_use=0;
 						prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_switch_date=caldate{t};
-						start_prep_inj_unl_prim_hiv_det=caldate{t};	
 						if prep_inj_ever ne 1 then do; 
 							prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;
 						end;
@@ -5050,7 +5045,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							when (last_prep_used=2)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_inj=1; 	continuous_prep_inj_use=0.25; 	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_choice=caldate{t};	stop_prep_inj_choice=0; 	
-								start_prep_inj_unl_prim_hiv_det=caldate{t};
 							end; 					
 							when (last_prep_used=3)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_current_start_date=caldate{t};	prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
@@ -5073,7 +5067,6 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 							when (last_prep_used=2) do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
 								prep_inj=1;		continuous_prep_inj_use=0.25;	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
-								start_prep_inj_unl_prim_hiv_det=caldate{t};
 							end;
 							when (last_prep_used=3)	do; 
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
