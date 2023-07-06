@@ -2105,7 +2105,7 @@ if low_prep_inj_uptake = 1 then date_prep_inj_intro = .;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
-end;													* QUERY do we want to reassign pref_prep_xxx every time step? initially we thought this would be a lifelong preference; *JAS Jul2023;
+end;
 																															 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
