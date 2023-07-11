@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000  ; 
+%let population = 100000  ; 
 %let year_interv = 2024;
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -4783,7 +4783,6 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 end;
 
 
-cost_test=0; 
 
 
 * PREP INITIATION AND CONTINUATION;
@@ -5149,7 +5148,6 @@ if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_p
 if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and prep_inj_current_start_date = caldate{t} then do; 	* lapr - updated start date condition to current inj-prep start date JAS Jul2023;
 	cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; 
 end;		
-
 if tested=1 and hivtest_type_1_prep_inj=1 and prep_inj = 1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
 
 if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_any variable indicates if a person is on any prep;
@@ -7596,7 +7594,7 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_inj_primary;  
 			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
-		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+			cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
 		end;
 	end;
 
@@ -17295,33 +17293,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-proc print; var caldate&j prep_any 
-prep_oral	prep_oral_current_start_date	prep_oral_first_start_date 	 prep_oral_restart_date_choice		prep_oral_restart_date_eligible	prep_oral_switch_date
-prep_inj	prep_inj_current_start_date		prep_inj_first_start_date 	 prep_inj_restart_date_choice		prep_inj_restart_date_eligible	prep_inj_switch_date
-prep_vr		prep_vr_current_start_date		prep_vr_first_start_date 	 prep_vr_restart_date_choice		prep_vr_restart_date_eligible	prep_vr_switch_date
-pref_prep_oral 	pref_prep_inj 	pref_prep_vr 	highest_prep_pref 	last_prep_used
-prep_any_last_stop_date 	prep_oral_last_stop_date 	prep_inj_last_stop_date 	prep_vr_last_stop_date
-;
-where serial_no<150 and age>15 and age <65 ;
-run;
-
-proc freq; tables prep_oral_first_start_date prep_oral_current_start_date prep_inj_current_start_date prep_vr_current_start_date; run;
-
-proc freq; tables prep_any prep_oral prep_inj prep_vr prep_any_ever prep_oral_ever prep_inj_ever prep_vr_ever 
-prep_any_last_stop_date prep_any_restart_date prep_any_restart_date_eligible prep_any_restart_date_choice 
-prep_oral_switch_date prep_inj_switch_date prep_vr_switch_date; 
-where age ge 15 and age lt 65 and death = .; run;
-
-proc means; var prep_oral prep_inj prep_vr;
-where age ge 15 and death = .; run;
-
-
 
 /*
 
-
 proc freq; tables cald hiv ; where death=.; run;
 
+*/
 
 /*
 
