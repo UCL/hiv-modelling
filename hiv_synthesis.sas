@@ -5022,8 +5022,8 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		else if prep_any_tm1 ne 1 then do;
 			* if people chose to discontinue even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is given by eff_prob_prep_any_restart_choice; 
 			* if they discontinued because they were no longer eligible (no partners in a period and also stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
-			* prep_xxx_restart_date				date of PrEP restart following stopping or pausing PrEP for any reason (to count number of prep re-initiations) (previously dt_prep_xxx_rs) [NOT IN OUTPUTS];
-			* prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP;
+			* prep_xxx_restart_date				date of PrEP restart following stopping or pausing PrEP for any reason (to count number of prep re-initiations);
+			* prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP (previously dt_prep_xxx_rs);
 			* prep_xxx_restart_date_eligible	date of PrEP restart following pause due to ineligibility (np=0) (previously dt_prep_xxx_c);
 
 
@@ -6518,7 +6518,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep_oral    ne 1 then do;	* lapr - consider changes needed for insti resistance ;
+		if prep_oral    ne 1 then do;	* lapr - consider if changes needed for insti resistance ;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
@@ -6807,7 +6807,7 @@ if prep_inj=1 or caldate{t} = prep_inj_last_stop_date then do;
 end;
 
 if caldate{t} = prep_inj_first_start_date then prep_inj_init_prim = 1;
-if caldate{t} = prep_inj_restart_date_choice or caldate{t} = prep_inj_restart_date_eligible then prep_inj_reinit_prim = 1;
+if caldate{t} = prep_inj_restart_date then prep_inj_reinit_prim = 1;
 
 if prep_inj_init_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_init_prim_res=1;
 if prep_inj_reinit_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_reinit_prim_res=1;
