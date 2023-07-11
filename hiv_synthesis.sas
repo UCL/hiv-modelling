@@ -5056,16 +5056,16 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					r=rand('uniform'); 
 						select;
 							when (last_prep_used=1) do; 
-								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_oral=1;	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_oral=1;	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=2) do; 
-								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_inj=1;		continuous_prep_inj_use = continuous_prep_inj_use + 0.25;	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=3)	do; 
-								prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_vr=1;		continuous_prep_vr_use = continuous_prep_vr_use + 0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_vr=1;		continuous_prep_vr_use = 0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
 							end;
 							otherwise xxx=1;	
 						end;
@@ -5133,8 +5133,8 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 			end; 
 			else if stop_prep_oral_choice ne 1 and prep_any_elig =1 then do; 
 					pop_wide_tld_prep=1; 
-					prep_any=1; 	continuous_prep_any_use = continuous_prep_any_use + 0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_eligible=caldate{t};
-					prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25; prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_eligible=caldate{t}; 
+					prep_any=1; 	continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_eligible=caldate{t};
+					prep_oral=1; 	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_eligible=caldate{t}; 
 				* prep_xxx_restart_date_eligible is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
 	end;
@@ -5272,39 +5272,12 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
 
-/*
-
-not sure about this including this here - comment out for now
-
-*Adherence to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
-******************** Define adh_prep_inj here;
-adh_prep_inj=1;	********TEMP;
-if prep_inj=1 then do;
-  adh_prep_inj = .; 
-* 	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
-	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
-
-
-	if o_cla ne 1 and tss_cla ge 1/12 and 
-	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-	then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-		if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
-	end;
-end;
-
-*/
-
-
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_any and other individual types if needed;
-if prep_oral   =1 then do; 
-	if prep_oral_first_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;
-	if caldate{t} gt prep_oral_first_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
-	* ts1m ; * change this line to: 
+if prep_oral=1 then do; 
+	if prep_oral_first_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;	* this variable gives the total py on PrEP;	* dependent_on_time_step_length ;  
+	if caldate{t} gt prep_oral_first_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; 
+	* ts1m ; * change this line to
 	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
-	;
 
 	prep_oral_effect_non_res_v = adh* prep_oral_efficacy ;
 	if t ge 4 and prep_oral_tm1 =1 and continuous_prep_oral_use >= 1 then prep_oral_past_year=1;
@@ -5323,7 +5296,6 @@ end;
 
 tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 
-
 currently_in_prep_inj_tail=0;
 if  0.25 <= caldate{t}-prep_inj_last_stop_date <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
@@ -5332,16 +5304,13 @@ if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and  pop_wide_tld_
 then do;  a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
 * those taking tld as prep/pep and not because they think they might have hiv;
 
+
+
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
 *  - men ; 
 
-
-
-
 age_newp=.;
-
-								   
-
+						   
 /*
 w15m15 =0.865*s_m_1524_newp; w15m25=0.47*s_m_2534_newp; w15m35=0.30*s_m_3544_newp; w15m45=0.43*s_m_4554_newp; w15m55=0.18*s_m_5564_newp;
 w25m15 =0.11 *s_m_1524_newp; w25m25=0.43*s_m_2534_newp; w25m35=0.50*s_m_3544_newp; w25m45=0.30*s_m_4554_newp; w25m55=0.18*s_m_5564_newp;
