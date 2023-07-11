@@ -2124,7 +2124,8 @@ if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
-* QUERY note that Vale is updating this bit - could add 0 option if all pref values are below threshold? JAS Jul2023;
+* QUERY note that Vale is updating this bit - or I will in next PR - could add 0 option if all pref values are below threshold? JAS Jul2023;
+* QUERY also double check prep_xxx_willling variables re threshold and for FSW JAS Jul2023;
 if 		pref_prep_oral>pref_prep_inj > . and pref_prep_oral>pref_prep_vr > . then highest_prep_pref=1;	* 1=preference for oral PrEP;
 else if pref_prep_inj>pref_prep_oral > . and pref_prep_inj>pref_prep_vr > . then highest_prep_pref=2;	* 2=preference for injectable PrEP;
 else highest_prep_pref=3;																		* 3=preference for vaginal ring;			
@@ -7420,12 +7421,12 @@ visit_tm1=visit;
 	if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
 	if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
 
-	if prep_o_cab_off_3m_prim=1 then do; if reg_option_107_after_cab=1 then reg_option=107; end;*so this is changed in the period after infection in a person infected on cab-la;
+	if prep_o_cab_off_3m_prim=1 then do; if reg_option_107_after_cab=1 then reg_option=107; end;	*so this is changed in the period after infection in a person infected on cab-la;
 
-	cab_res_primary=0;  prep_o_cab_off_3m_prim=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; 			* QUERY check what these variables are doing JAS Jul2023;
-	prep_inj_init_prim = 0; prep_inj_reinit_prim=0; prep_inj_init_prim_res=0;prep_inj_reinit_prim_res=0; prep_primary_prevented=0;
-	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
-	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
+	cab_res_primary=0;  			prep_o_cab_off_3m_prim=0;		prep_inj_at_infection=0;			diagprim_prep_inj=0;			cab_res_prep_inj_primary=0;
+	prep_inj_init_prim = 0; 		prep_inj_reinit_prim=0; 		prep_inj_init_prim_res=0;			prep_inj_reinit_prim_res=0; 	prep_primary_prevented=0;
+	em_inm_res_o_cab_off_3m_pr=0;	emerge_inm_res_cab_tail_pr=0;	cur_in_prep_inj_tail_prim=0;		infected_inm_this_per=0;
+	cab_res_emerge_primary=0;		start_restart_prep_inj_prim =0;	start_rest_prep_inj_hiv_cabr = 0;	start_rest_prep_inj_prim_cabr = 0; 
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
 	start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
@@ -7574,7 +7575,7 @@ non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
 if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and onart ne 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; tss_dol=0; toffart=0; onart=0; artline=.; end; 	* QUERY add tss_dol=0? JAS Jul2023;
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; tss_dol=0; toffart=0; onart=0; artline=.; end;
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; toffart=0;  tss_cab=0; end;		
 * lapr and dpv-vr - reset toffart only when not switching to another systemic PrEP type; * JAS Nov2021;
@@ -7681,7 +7682,7 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 	if o_cab_tm1 = 1 and o_cab = 0 then do; tss_cab = 0; toffart = 0;mr_cab=1; end;
 
-	if  prep_vr = 1 and registd=1 and registd_tm1=0  then prep_vr = 0; 	* QUERY - check this line JAS Jul2023;
+	if  prep_vr = 1 and registd=1 and registd_tm1=0  then prep_vr = 0;
 
 
 * Loss to follow-up while off ART;
