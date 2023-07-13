@@ -1996,6 +1996,7 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 
 %macro update_r1(da1=,da2=,e=,f=,g=,h=,a=,b=,i=,k=,l=,x=,j=,s=);
 
+option = &s;			
 * options mprint;
 
 
@@ -2079,6 +2080,10 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
+if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 31 32 33 34 40) then do; 
+	*ESSENTIAL;
+		date_prep_inj_intro=2100;
+end;
 
 * Oral PrEP effectiveness against non-resistant virus;
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
