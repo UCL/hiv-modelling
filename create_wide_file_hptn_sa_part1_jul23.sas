@@ -1589,6 +1589,7 @@ proc sort; by run;run;
 
 * To get one row per run;
 
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\lapr\hptn_jul23";
 
   data   a.w_hptn_jul23 ;
   merge   wide_outputs_hptn_jul23  wide_par_l_hptn_jul23 wide_bl_l_hptn_jul23  ;  
