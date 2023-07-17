@@ -1,8 +1,7 @@
-libname a "C:\Users\lovel\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
-
+libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 data a;
-set a.out_803920;
+set a.zim_06jun23;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -40,7 +39,9 @@ s_diag_w1564_ = s_diag_w1549_  + s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_
 s_primary1519_ =  s_primary1519m + s_primary1519w;
 s_primary3539_ =  s_primary3539m + s_primary3539w;
 
-
+n_primary1564m = s_primary1564m * &sf;
+n_primary1564w = s_primary1564w * &sf;
+n_primary1564_ = n_primary1564m + n_primary1564w;
 
 * n_alive1564_;					n_alive1564_  = s_alive1564 * &sf;
 * n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf;
@@ -785,6 +786,7 @@ n_hiv1519_  n_hiv2024_  n_hiv2529_  n_hiv3034_  n_hiv3539_  n_hiv4044_  n_hiv454
 n_hiv1519m  n_hiv2024m  n_hiv2529m  n_hiv3034m  n_hiv3539m  n_hiv4044m  n_hiv4549m  n_hiv5054m  n_hiv5559m  n_hiv6064m n_hiv6569m  n_hiv7074m  n_hiv7579m  n_hiv8084m  
 n_hiv1519w  n_hiv2024w  n_hiv2529w  n_hiv3034w  n_hiv3539w  n_hiv4044w  n_hiv4549w  n_hiv5054w  n_hiv5559w  n_hiv6064w  n_hiv6569w  n_hiv7074w  n_hiv7579w  n_hiv8084w 
 
+n_primary1564_ n_primary1564m n_primary1564w
 s_primary1519_ s_primary1519m s_primary1519w
 s_primary3539_ s_primary3539m s_primary3539w
 
@@ -1349,7 +1351,7 @@ s_I_offart_SIlt6m8084w s_I_offart_SIgt6m8084w
 proc sort data=y; by cald run ;run;
 data y;set y;count_csim+1;by  cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=y;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 5  ;
+%let nfit = 127  ;
 %let year_end = 2045 ;
 proc sort;by cald ;run;
 
@@ -1394,7 +1396,7 @@ run;
 proc datasets nodetails nowarn nolist;delete &v;run;
 %mend var_d;
 
-
+%var_d(n_primary1564_);%var_d(n_primary1564m);%var_d(n_primary1564w);
 %var_d(n_alive1564_);	   %var_d(n_alive1564_m);		%var_d(n_alive1564_w);		 %var_d(prevalence1564_); %var_d(prevalence1564m); %var_d(prevalence1564w);	
 %var_d(incidence1564_);%var_d(incidence1564_m); %var_d(incidence1564_w); %var_d(p_diag);		  %var_d(p_diag_m);		  %var_d(p_diag_w);
 %var_d(p_onart_diag);  %var_d(p_onart_diag_m);	%var_d(p_onart_diag_w);  %var_d(p_onart_vl1000_); %var_d(p_onart_vl1000_m);%var_d(p_onart_vl1000_w);
@@ -1919,7 +1921,7 @@ ods excel close;
 data a.wide_base;
 merge 
 l_n_alive1564_m		l_n_alive1564_w		l_n_alive1564_  	 l_prevalence1564m 		l_prevalence1564w	l_prevalence1564_   
-l_incidence1564_m	l_incidence1564_w	l_incidence1564_	 l_p_diag_m		  		l_p_diag_w		    l_p_diag
+l_n_primary1564m	l_n_primary1564w	l_n_primary1564_	 	l_p_diag_m		  		l_p_diag_w		    l_p_diag
 l_p_onart_diag_m	l_p_onart_diag_w  	l_p_onart_diag  	 l_p_onart_vl1000_m 	l_p_onart_vl1000_w  l_p_onart_vl1000_ 	 
 ;run;
 
@@ -1956,8 +1958,8 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans Template_HIVSynthesis.xlsx"
-options(sheet_name='base' start_at='A2');
+ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans Template_HIVSynthesis2.xlsx"
+options(sheet_name='base1' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
 **This macro avoids having to write out these lines for each age band;
