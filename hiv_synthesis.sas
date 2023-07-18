@@ -2120,12 +2120,23 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
-if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
-* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); 							* median 0.73 ;	
-					pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					
-end;													
-																															 
-if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
+*It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
+						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;	
+	* QUERY is this to calibrate oral PrEP to Zim baseline (no MIHPSA)? JAS Jul2023;
+if caldate{t} = &year_interv and option=15 then pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3; 
+	* QUERY add other oral PrEP options for MIHPSA phase 3 (options 15-18)? Will we need *3 as in line above? JAS Jul2023;
+
+if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
+or (caldate{t} = &year_interv)then do;
+* pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);	
+																
+end;	
+
+* QUERY will need to adjust pref_prep_inj to match target update for MIHPSA JAS Jul2023; 
+if caldate{t} = &year_interv and option=15 then pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3; 
+
+if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) 
+or (caldate{t} = &year_interv)then do;
 					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
 * pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 			
 end;
