@@ -7,7 +7,7 @@
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
-	
+
 %let population = 100000  ; 
 %let year_interv = 2024;
 
@@ -947,12 +947,11 @@ cost_child_hiv_mo_art_a = 0.030;
 prep_oral_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 prep_inj_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 prep_vr_drug_cost = (0.050 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
-	* lapr and dpv-vr - will need to update for cab and dpv;
+	* lapr and dpv-vr - may need to update for cab and dpv in future;
 prep_tld_drug_cost = (0.054 * 1.2) / 4 ; * cost per 3 months; * 1.2 is supply chain cost;
 cost_prep_oral_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
-cost_prep_inj_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - 1.5 times oral prep due to 6 visits per year;
-cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals;
-	* lapr and dpv-vr - use same value for now, will need update lapr and dpv-vr costs;
+cost_prep_inj_clinic = 0.015; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - lapr is 1.5 times oral prep due to 6 visits per year;
+cost_prep_vr_clinic = 0.010; 	*Clinic/Programme costs relating to PrEP use in HIV-negative individuals - same as oral PrEP for now, may need to update in future;
 cost_prep_any_clinic_couns = 0.010; *Further clinic costs relating to adherence counselling;
 av_cost_self_test_avail = 0.001; * this is under pop wide tld with self test kits available - we dont know how frequently they will be used - we 
 									dont explicitly model self tests use, it only helps status informed tld use - cost ;
@@ -1651,8 +1650,6 @@ if low_preg_risk=1 then prob_pregnancy_b=0;
 *** eff variables are defined for specific parameters which may change as a result of the code. Values of the original
 	parameters are stored and only eff_ variables are used throughout the code;
 
-* lapr and dpv-vr - we might need to create new eff_ variables for lapr and dpv-vr parameters ;
-
 * define effective max_freq_testing;
 eff_max_freq_testing = max_freq_testing;
 
@@ -1898,12 +1895,12 @@ hiv=0;
 nip=0;
 pcp_p  = 0;
 
-prep_any = 0;			* lapr and dpv-vr - separated PrEP variables ;
+prep_any = 0;			
 prep_oral = 0;
 prep_inj = 0;
 prep_vr = 0;
 
-tot_yrs_prep_any = 0;	* lapr and dpv-vr - separated PrEP variables ;
+tot_yrs_prep_any = 0;	
 tot_yrs_prep_oral = 0;
 tot_yrs_prep_inj = 0;
 tot_yrs_prep_vr = 0;
@@ -2074,21 +2071,18 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 * Oral PrEP effectiveness against non-resistant virus;
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
-	* lapr - this used in downstream analyses for oral prep so dont need equivalent here;
 
 prep_any_tm3=	prep_any_tm2;  prep_any_tm2=	prep_any_tm1; 	prep_any_tm1=	prep_any;
 prep_oral_tm3=	prep_oral_tm2; prep_oral_tm2=	prep_oral_tm1; 	prep_oral_tm1=	prep_oral;
 prep_inj_tm3=	prep_inj_tm2;  prep_inj_tm2=	prep_inj_tm1; 	prep_inj_tm1=	prep_inj;  
-prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=	prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
-	* lapr and dpv-vr;
+prep_vr_tm3=	prep_vr_tm2;   prep_vr_tm2=		prep_vr_tm1; 	prep_vr_tm1=	prep_vr;
 
 * Oral prep scale-up over 4 years;
 if caldate{t} < date_prep_oral_intro then eff_prob_prep_oral_b = 0;
 else if date_prep_oral_intro <= caldate{t} < (date_prep_oral_intro + dur_prep_oral_scaleup) 
 		then eff_prob_prep_oral_b = 0.05 +  (  (prob_prep_oral_b-0.05) * ( 1 -    (date_prep_oral_intro + dur_prep_oral_scaleup - caldate{t}) / dur_prep_oral_scaleup  )   );
 else 	eff_prob_prep_oral_b = prob_prep_oral_b;
-* lapr and dpv-vr - no change here as this is historic scale up of oral prep;
-
+* lapr and dpv-vr - no change here as this is historic scale up of oral prep; *0.05 gives a low probability of oral PrEP uptake at start of scale-up;
 
 * Injectable CAB-LA prep scale-up; * lapr JAS Sep2021;
 if 		. < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then eff_prob_prep_inj_b = 0;
@@ -2110,7 +2104,7 @@ if low_prep_inj_uptake = 1 then date_prep_inj_intro = .;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 * pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5); 					* median 0.73 ;	
-end;													
+end;
 																															 
 if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
@@ -2130,9 +2124,11 @@ if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
+* QUERY note that Vale is updating this bit - or I will in next PR - could add 0 option if all pref values are below threshold? JAS Jul2023;
+* QUERY also double check prep_xxx_willling variables re threshold and for FSW JAS Jul2023;
 if 		pref_prep_oral>pref_prep_inj > . and pref_prep_oral>pref_prep_vr > . then highest_prep_pref=1;	* 1=preference for oral PrEP;
 else if pref_prep_inj>pref_prep_oral > . and pref_prep_inj>pref_prep_vr > . then highest_prep_pref=2;	* 2=preference for injectable PrEP;
-else highest_prep_pref=3;																		* 3=preference for vaginal ring;
+else highest_prep_pref=3;																		* 3=preference for vaginal ring;			
 * lapr - encode no preference between types? / no type acceptable? ;
 
 
@@ -2557,7 +2553,7 @@ who may be dead and hence have caldate{t} missing;
 	end;
 	if option = 12 then do;*Increase in Condom use promotion and provision;
 	end;
-	if option = 13 then do;*General population men’s health clinics (for men from the general population);
+	if option = 13 then do;*General population mens health clinics (for men from the general population);
 	end;
 	if option = 14 then do;*VMMC in 15-49 years old;
 	end;
@@ -2583,7 +2579,7 @@ who may be dead and hence have caldate{t} missing;
 	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;
 		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  
 	end;
-	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,…);
+	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,);
 	absence_vl_year_i = 0;					   
 	end;
 	if option = 34 then do; * poc vl monitoring ;
@@ -2848,7 +2844,6 @@ end;
 
 tested_anc=.;
 
-* lapr - also excluded inj and vr ; * JAS Sep2021 ;
 if t ge 2 and date_start_testing <= caldate{t} then do; 
 
 		rate_1sttest = initial_rate_1sttest + (min(caldate{t},date_test_rate_plateau)-(date_start_testing+5.5))*an_lin_incr_test;
@@ -3041,6 +3036,7 @@ if t ge 2 and caldate{t} < 2072.5 and death =.  then do;
 cost=0;cost_test=0;
 
 adc_tm1=adc; adc=0;
+who3_event_tm1=who3_event; who3_event=0;
 
 visit_prep_oral=.;	
 visit_prep_inj=.;	* lapr ;
@@ -4665,13 +4661,13 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							end;
 							when (highest_prep_pref = 3)	do;		*Preference for DPV ring but not available;
 								*(1) prefer oral prep to inj and willing;
-								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 then do;
+								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 then do;
 									tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(2) prefer inj prep to oral and willing;
-								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 then do;
+								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 then do;
 									tested=1; testfor_prep_any=1; testfor_prep_inj=1; 
 									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -4698,13 +4694,13 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							end;
 							when (highest_prep_pref = 2)	do;		*Preference for inj but not available;
 								*(1) prefer oral prep to vr and willing;
-								if pref_prep_oral > pref_prep_vr > . and prep_oral_willing=1 then do;
+								if pref_prep_oral > pref_prep_vr and prep_oral_willing=1 then do;
 									tested=1; testfor_prep_any=1; testfor_prep_oral=1; 
 									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 								end; 
 								*(2) prefer vr prep to oral and willing;
-								else if pref_prep_vr > pref_prep_oral > . and prep_vr_willing=1 then do;
+								else if pref_prep_vr > pref_prep_oral and prep_vr_willing=1 then do;
 									tested=1; testfor_prep_any=1; testfor_prep_vr=1; 
 									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -4733,11 +4729,11 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			end; 
 		end;
 
-		*Routine testing while on PREP;		* lapr and dpv-vr - I dont see this changing - what about VL / NAAT testing for WHO analysis;
+		*Routine testing while on PREP;
 		else if prep_any_ever=1 and prep_any_elig=1 then do;
 
 			* Oral PrEP ;
-			if prep_oral_tm1=1 then do;  * dependent_on_time_step_length;
+			if prep_oral_tm1=1 then do;  	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_oral then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
 						tested=1; 
@@ -4747,8 +4743,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				end;
 			end;
 
-			* Injectable PrEP ;	* lapr - double check equivalence with code above and update oral prep code if works ;
-			else if prep_inj_tm1 =1 then do;  * dependent_on_time_step_length;
+			* Injectable PrEP ;
+			else if prep_inj_tm1=1 then do;	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_inj then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
 						tested=1; 
@@ -4759,7 +4755,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 			end; 
 
 			* Vaginal ring PrEP ;
-			else if prep_vr_tm1 =1 then do;  * dependent_on_time_step_length;
+			else if prep_vr_tm1=1 then do;	* dependent_on_time_step_length;
 				if caldate{t}-dt_last_test >= annual_testing_prep_vr then do;
 					a=rand('uniform'); if a < rate_test_onprep_any then do; 
 						tested=1; 
@@ -4771,8 +4767,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 
 			*Re-initiation of PrEP;
-			else if prep_any_tm1 ne 1 then do; * dependent_on_time_step_length;		*lapr - do we need to add testing to restart specific method here?;
-				a=rand('uniform'); if stop_prep_any_choice ne 1 then do; 
+			else if prep_any_tm1 ne 1 then do;	* dependent_on_time_step_length;
+				if stop_prep_any_choice ne 1 then do;
 					tested=1; 
 					dt_last_test=caldate{t}; 
 					np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
@@ -4787,13 +4783,23 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 end;
 
 
-cost_test=0; 
 
 
 * PREP INITIATION AND CONTINUATION;
+/* 
+	PrEP start and restart dates are given by:
+		prep_xxx_current_start_date 		start date of current PrEP course, whether that is first ever PrEP, switching from a different PrEP option, or restarting following a break due to ineligibility or choice
+		prep_xxx_first_start_date			first ever PrEP start date (previously dt_prep_xxx_s)
+		prep_xxx_restart_date				date of PrEP restart following stopping or pausing PrEP for any reason (to count number of prep re-initiations) (previously dt_prep_xxx_rs)
+		prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP
+		prep_xxx_restart_date_eligible		date of PrEP restart following pause due to ineligibility (np=0) (previously dt_prep_xxx_c)
+		prep_xxx_switch_date				date of switch to this PrEP method from another method
+										
+		(equivalent variables for _any_, _oral_, _inj_ and _vr_ for all variables)
+*/
 
 * Note that date of stop of prep (date_prep_e) only given a value for people who stop tl prep or people on tld prep who stop without having
-(or without been diagnosed with) hiv;
+(or without been diagnosed with) hiv; *date of stopping prep is now given by prep_xxx_last_stop_date JAS Jul2023;
 
 if prep_any_tm1=1 then do;		* lapr - relies on prep types being mutually exclusive ;
 	if prep_any_elig=0 then stop_prep_any_elig=1;
@@ -4823,13 +4829,12 @@ if prep_oral_disrup_covid ne 1 and ever_prep_oral_covid_disrup=1 then do;
 end;
 
 
+********** STARTING PREP *********** ;
 
 *Jul2016 f_prep;
 if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) and registd ne 1 and prep_any_elig=1 then do;
 
 	unisensprep=rand('uniform');
-
-********** starting Prep *********** ;
 
 	* lapr37;
 	eff_sens_vct = sens_vct;  
@@ -4841,70 +4846,63 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 	* eff_sens_vct changed from sens_vct for lapr37;
-	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;
+
+	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	* starting PrEP for the first time ever;
 	 
 			if prep_any_willing=1 and hard_reach ne 1 then do; 
-			*********** lapr and dpv-vr - we will need to add switching between prep methods; ******************* ;
+				* person has testesd explicitly to start PrEP;
 				if testfor_prep_oral = 1  		then do;	
-					prep_any=1;		continuous_prep_any_use=0.25;		
-					prep_oral=1; 	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};		
-					prep_oral_start_date=caldate{t};
+					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+					prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
 				end; 
 				else if	testfor_prep_inj = 1  	then do;	
-					prep_any=1;		continuous_prep_any_use=0.25;	
-					prep_inj=1; 	prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t}; 		
-					prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+					prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};			
 				end; 
 				else if	testfor_prep_vr = 1  	then do;	
-					prep_any=1;		continuous_prep_any_use=0.25;	
-					prep_vr=1; 		prep_vr_ever=1; 	continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};		
-					prep_vr_start_date=caldate{t};
+					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+					prep_vr=1; 		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	prep_vr_first_start_date=caldate{t};	prep_vr_current_start_date=caldate{t};
 				end; 
 
+				* person has not tested explicitly to start PrEP but is willing;
 				else if (testfor_prep_oral ne 1 and testfor_prep_inj ne 1 and testfor_prep_vr ne 1) then do;
 					r=rand('uniform'); 
 					select;
 						when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do; 	*Oral PrEP preferred and is available from start of PrEP rollout;
-							prep_any=1;		continuous_prep_any_use=0.25;		
-							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
-							prep_oral_start_date=caldate{t};
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
 						end; 
 						when (highest_prep_pref = 2) 	
 							if caldate{t} ge date_prep_inj_intro > . and r < eff_prob_prep_inj_b then do; *Inj PrEP preferred and is available;
-								prep_any=1;		continuous_prep_any_use=0.25;	
-								prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
-								prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+								prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};	
 							end; 
 							else if caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
-								prep_any=1;		continuous_prep_any_use=0.25;		
-								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};	
-								prep_oral_start_date=caldate{t}; 
+								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
 							end;
 						when (highest_prep_pref = 3) 	 
 							if caldate{t} ge date_prep_vr_intro > . and r < eff_prob_prep_vr_b then do;	*VR PrEP preferred and is available;
-								prep_any=1;		continuous_prep_any_use=0.25;	
-								prep_vr=1;		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	dt_prep_vr_s=caldate{t};
-								prep_vr_start_date=caldate{t};  
+								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+								prep_vr=1; 		prep_vr_ever=1;		continuous_prep_vr_use=0.25;	prep_vr_first_start_date=caldate{t};	prep_vr_current_start_date=caldate{t};
 							end; 
 							else if caldate{t} ge date_prep_inj_intro > . and (. < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=.) then do;				*VR PrEP preferred but not available - choose between oral and inj PrEP if willing;
 								*(1) Prefer oral PrEP to inj and willing;
-								if pref_prep_oral > pref_prep_inj > . and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
-									prep_any=1;		continuous_prep_any_use=0.25;	
-									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
-									prep_oral_start_date=caldate{t};
+								if pref_prep_oral > pref_prep_inj and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
+									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
 								end; 
 								*(2) Prefer inj PrEP to oral and willing;
-								else if pref_prep_inj > pref_prep_oral > . and prep_inj_willing=1 and r < eff_prob_prep_inj_b then do;
-									prep_any=1;		continuous_prep_any_use=0.25;	
-									prep_inj=1;		prep_inj_ever=1;	continuous_prep_inj_use=0.25;	dt_prep_inj_s=caldate{t};
-									prep_inj_start_date=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t};
+								else if pref_prep_inj > pref_prep_oral and prep_inj_willing=1 and r < eff_prob_prep_inj_b then do;
+									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+									prep_inj=1;		prep_inj_ever=1; 	continuous_prep_inj_use=0.25;	prep_inj_first_start_date=caldate{t};	prep_inj_current_start_date=caldate{t};	
 								end; 
 								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 							end;
 							else if . < caldate{t} < date_prep_inj_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *VR PrEP preferred but not available - start oral PrEP if willing;
-								prep_any=1;		continuous_prep_any_use=0.25;	
-								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_s=caldate{t};
-								prep_oral_start_date=caldate{t};
+								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
 							end;
 						otherwise xxx=1;
 					end; 
@@ -4914,19 +4912,19 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 
 
 	started_prep_hiv_test_sens=0;
-	if (prep_oral=1 or prep_inj=1 or prep_vr=1) and dt_prep_any_s = caldate{t} and hiv=1 then do; 
-		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;end;
+	if (prep_oral=1 or prep_inj=1 or prep_vr=1) and prep_any_current_start_date = caldate{t} and hiv=1 then do; 
+		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;	end;
 	end;
 
 
 
 
-********* continuing or re-starting PrEP *************;		* lapr and dpv-vr - also add switching between prep options **************************;
+********* CONTINUING, SWITCHING OR RESTARTING PREP *************;
 
 	eff_sens_vct = sens_vct; * note that eff_sens_vct does not apply 
 	for a person in primary infection so a person in primary infection will have a high value of eff_sens_vct in this period but will not be regist=1; 
 
-	if prep_inj_tm1 = 1 and hiv=1 then do;
+	if prep_inj_tm1 = 1 and hiv=1 then do;		* selecting test sensitivity for people who become infected whilst using injectable PrEP;
 		if hivtest_type_1_init_prep_inj ne 1 then do; * lapr37;
 			if 0.25 <= caldate{t} - infection < 0.5 then eff_sens_vct=sens_ttype3_prep_inj_inf3m;
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype3_prep_inj_infge6m; 
@@ -4938,103 +4936,113 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 		end;
 	end;
 
- 	if prep_any_ever=1 and min(dt_prep_oral_s, dt_prep_inj_s, dt_prep_vr_s) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+ 	if prep_any_ever=1 and max(prep_oral_current_start_date, prep_inj_current_start_date, prep_vr_current_start_date) ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+	* person has used PrEP before but has not started use this period, and is uninfected or tested but undetected;
+
 		r=rand('uniform'); 
-		if prep_oral_tm1 = 1 then do; * dependent_on_time_step_length;
-		tmp_prep=1;
-			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_oral then do;
-				if r < (1-eff_rate_choose_stop_prep_oral) then do; 
-					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	 
-					if highest_prep_pref = 1 then do;
+		if prep_oral_tm1 = 1 then do; 		* dependent_on_time_step_length;
+			if r < (1-eff_rate_choose_stop_prep_oral) then do; 			* continue to use PrEP;
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	 
+				if highest_prep_pref = 1 then do;						* continue with oral PrEP;
 					prep_oral=1;	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;						
-					end;	
-					if highest_prep_pref = 2 then do;
-					prep_inj=1;	continuous_prep_inj_use = 0.25; 
-					if prep_inj_ever ne 1 then do; dt_prep_inj_s=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t}; end;
-					switch_prep_from_oral = 1;	 switch_prep_to_inj=1; 
-					end;	
-					if highest_prep_pref = 3 then do;
-					prep_vr =1;	continuous_prep_vr_use = 0.25; 
-					if prep_vr_ever ne 1 then do; dt_prep_vr_s=caldate{t}; start_prep_vr_unl_prim_hiv_det=caldate{t}; end;
-					switch_prep_from_oral = 1;	 switch_prep_to_vr =1; 
-					end;	
-				end;
-				else do; 	* variable for people who discontinued despite newp>1;
-					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
-					stop_prep_oral_choice=1; 	continuous_prep_oral_use=0;
-				end;  
+				end;	
+				if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
+					switch_prep_from_oral=1;	switch_prep_to_inj=1;	continuous_prep_oral_use=0;
+					prep_inj=1;		continuous_prep_inj_use=0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_switch_date=caldate{t};
+					if prep_inj_ever ne 1 then do; 
+						prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;
+					end;
+				end;	
+				if highest_prep_pref = 3 then do;						* switch to VR PrEP;
+					switch_prep_from_oral=1;	switch_prep_to_vr=1;	continuous_prep_oral_use=0;	
+					prep_vr=1;		continuous_prep_vr_use=0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_switch_date=caldate{t};
+					if prep_vr_ever ne 1 then do; 
+						prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;	
+					end;
+				end;	
 			end;
+			else do; 	* choose to stop PrEP despite newp>1;
+				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+				stop_prep_oral_choice=1; 	continuous_prep_oral_use=0;
+			end;  
 		end;
-		else if prep_inj_tm1 = 1 then do; * dependent_on_time_step_length;
-			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_inj then do;
-				if r < (1-eff_rate_choose_stop_prep_inj) then do; 
-					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
-					if highest_prep_pref = 2 then do;
-					prep_inj=1;	continuous_prep_inj_use = continuous_prep_inj_use + 0.25; 					
-					end;	
-					if highest_prep_pref = 1 then do;
-					prep_oral=1;	continuous_prep_oral_use =  0.25; 
-					if prep_oral_ever ne 1 then dt_prep_oral_s=caldate{t};
-					switch_prep_from_inj = 1;	 switch_prep_to_oral=1;
-					end; 
-					if highest_prep_pref = 3 then do;
-					prep_vr=1;	continuous_prep_vr_use =  0.25; 
-					if prep_vr_ever ne 1 then dt_prep_vr_s=caldate{t};
-					switch_prep_from_inj = 1;	 switch_prep_to_vr=1;
-					end; 
-				end;
-				else do; 	* variable for people who discontinued despite newp>1;
-					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
-					stop_prep_inj_choice=1;		continuous_prep_inj_use=0; 
+		else if prep_inj_tm1 = 1 then do; 	* dependent_on_time_step_length;
+			if r < (1-eff_rate_choose_stop_prep_inj) then do; 			* continue to use PrEP; 
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
+				if highest_prep_pref = 2 then do;						* continue with inj PrEP;
+					prep_inj=1;		continuous_prep_inj_use = continuous_prep_inj_use + 0.25; 					
+				end;	
+				if highest_prep_pref = 1 then do;						* switch to oral PrEP;
+					switch_prep_from_inj=1;	 	switch_prep_to_oral=1;	continuous_prep_inj_use=0;
+					prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_switch_date=caldate{t};
+					if prep_oral_ever ne 1 then do;
+						prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;
+					end;
+				end; 
+				if highest_prep_pref = 3 then do;						* switch to VR PrEP;
+					switch_prep_from_inj=1;	 	switch_prep_to_vr=1;	continuous_prep_inj_use=0;
+					prep_vr=1;		continuous_prep_vr_use =  0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_switch_date=caldate{t};
+					if prep_vr_ever ne 1 then do;
+						prep_vr_first_start_date=caldate{t};	prep_vr_ever=1;
+					end;
 				end; 
 			end;
+			else do; 	* choose to stop PrEP despite newp>1;
+				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+				stop_prep_inj_choice=1;		continuous_prep_inj_use=0; 
+			end; 
 		end;
-		else if prep_vr_tm1 = 1 then do; * dependent_on_time_step_length; * note vr code needs attention to bring consistent with inj and oral code;
-			if 0 <= (caldate{t}-dt_last_test) <= annual_testing_prep_vr then do;
-				if r < (1-eff_rate_choose_stop_prep_vr) then do; 
-					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;		
-					prep_vr=1; 		continuous_prep_vr_use = continuous_prep_vr_use + 0.25;
-					if highest_prep_pref = 1 then do;
-					prep_oral=1;	continuous_prep_oral_use =  0.25; 
-					if prep_oral_ever ne 1 then dt_prep_oral_s=caldate{t};
-					switch_prep_from_vr  = 1;	 switch_prep_to_oral=1;
+		else if prep_vr_tm1 = 1 then do; 	* dependent_on_time_step_length;
+			if r < (1-eff_rate_choose_stop_prep_vr) then do; 			* continue to use PrEP; 
+				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
+				if highest_prep_pref = 3 then do;						* continue with VR PrEP;
+					prep_vr=1;		continuous_prep_vr_use = continuous_prep_vr_use + 0.25; 					
+				end;
+				if highest_prep_pref = 1 then do;						* switch to oral PrEP;
+					switch_prep_from_vr = 1;	switch_prep_to_oral=1;	continuous_prep_vr_use=0;
+					prep_oral=1;	continuous_prep_oral_use =  0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_switch_date=caldate{t};
+					if prep_oral_ever ne 1 then do;
+						prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;
 					end;
-					if highest_prep_pref = 2 then do;
-					prep_inj=1;	continuous_prep_inj_use = 0.25; 
-					if prep_inj_ever ne 1 then do; dt_prep_inj_s=caldate{t}; start_prep_inj_unl_prim_hiv_det=caldate{t}; end;
-					switch_prep_from_vr   = 1;	 switch_prep_to_inj=1; 
-					end; 					
 				end;
-				else do; 	* variable for people who discontinued despite newp>1;
-					stop_prep_any_choice=1; 	continuous_prep_any_use=0;
-					stop_prep_vr_choice=1;		continuous_prep_vr_use=0; 
-				end;
+				if highest_prep_pref = 2 then do;						* switch to injectable PrEP;
+					switch_prep_from_vr = 1;	 switch_prep_to_inj=1;	continuous_prep_vr_use=0;
+					prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_switch_date=caldate{t};
+					if prep_inj_ever ne 1 then do; 
+						prep_inj_first_start_date=caldate{t};	prep_inj_ever=1;
+					end;
+				end; 					
+			end;
+			else do; 	* choose to stop PrEP despite newp>=1;
+				stop_prep_any_choice=1; 	continuous_prep_any_use=0;
+				stop_prep_vr_choice=1;		continuous_prep_vr_use=0; 
 			end;
 		end;
 
 		else if prep_any_tm1 ne 1 then do;
-			*if people discontinued even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is
-			given by eff_prob_prep_any_restart_choice. if they discontinued because they were no longer eligible (no partners in a period and also
-			stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
-			*dt_prep_rs = date of prep restart (to count number of prep re-initiations);
+			* if people chose to discontinue even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is given by eff_prob_prep_any_restart_choice; 
+			* if they discontinued because they were no longer eligible (no partners in a period and also stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
+			* prep_xxx_restart_date				date of PrEP restart following stopping or pausing PrEP for any reason (to count number of prep re-initiations);
+			* prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP (previously dt_prep_xxx_rs);
+			* prep_xxx_restart_date_eligible	date of PrEP restart following pause due to ineligibility (np=0) (previously dt_prep_xxx_c);
+
 
 			if tested=1 then do; * dependent_on_time_step_length;
-				if stop_prep_any_choice=1 then do;
+				if stop_prep_any_choice=1 then do;				* person previously chose to discontinue PrEP;
 					r=rand('uniform'); 
 					if r < eff_prob_prep_any_restart_choice then do;
-						select;			* lapr - check last_prep_used ;
+						select;			
 							when (last_prep_used=1)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
-								prep_oral=1;	continuous_prep_oral_use=0.25;	dt_prep_oral_rs=caldate{t};	stop_prep_oral_choice=0;	
+								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
+								prep_oral=1;	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_choice=caldate{t};	stop_prep_oral_choice=0;	
 							end; 					
 							when (last_prep_used=2)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
-								prep_inj=1; 	continuous_prep_inj_use=0.25; 	dt_prep_inj_rs=caldate{t};	stop_prep_inj_choice=0; 	
-								start_prep_inj_unl_prim_hiv_det=caldate{t};
+								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
+								prep_inj=1; 	continuous_prep_inj_use=0.25; 	prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_choice=caldate{t};	stop_prep_inj_choice=0; 	
 							end; 					
 							when (last_prep_used=3)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;	dt_prep_any_rs=caldate{t};	stop_prep_any_choice=0; 
-								prep_vr=1; 		continuous_prep_vr_use=0.25;	dt_prep_vr_rs=caldate{t}; 	stop_prep_vr_choice=0; 		
+								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
+								prep_vr=1; 		continuous_prep_vr_use=0.25;	prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_choice=caldate{t}; 	stop_prep_vr_choice=0; 		
 							end; 	
 							otherwise xxx=1;	
 						end;
@@ -5042,26 +5050,21 @@ if t ge 4 and caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_
 					end;
 				end;
 
-				else if stop_prep_any_choice ne 1  then do;	* remember that this is all in a loop with prep_any_elig=1;
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1;
-						tmp_prep=7;
+				else if stop_prep_any_choice ne 1  then do;		* person discontinued PrEP because they were ineligible;
+																* remember that this is all in a loop with prep_any_elig=1;
 					r=rand('uniform'); 
-						select;			* lapr - check last_prep_used ;
+						select;
 							when (last_prep_used=1) do; 
-								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};  
-								prep_oral=1;	continuous_prep_oral_use=0.25; 	dt_prep_oral_c=caldate{t}; 
-								dt_prep_oral_rs=caldate{t}; 
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_oral=1;	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=2) do; 
-								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};
-								prep_inj=1;		continuous_prep_inj_use=0.25;		dt_prep_inj_c=caldate{t};  
-								dt_prep_inj_rs=caldate{t}; 
-								start_prep_inj_unl_prim_hiv_det=caldate{t};
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_inj=1;		continuous_prep_inj_use = 0.25;		prep_inj_current_start_date=caldate{t};		prep_inj_restart_date=caldate{t};	prep_inj_restart_date_eligible=caldate{t};
 							end;
 							when (last_prep_used=3)	do; 
-								prep_any=1;		continuous_prep_any_use=0.25;  dt_prep_any_c=caldate{t};  dt_prep_any_rs=caldate{t};
-								prep_vr=1;		continuous_prep_vr_use=0.25; dt_prep_vr_c=caldate{t}; 
-								dt_prep_vr_rs=caldate{t}; 
+								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+								prep_vr=1;		continuous_prep_vr_use = 0.25;		prep_vr_current_start_date=caldate{t};		prep_vr_restart_date=caldate{t};	prep_vr_restart_date_eligible=caldate{t};
 							end;
 							otherwise xxx=1;	
 						end;
@@ -5096,43 +5099,42 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 			then do ;		
 * ts1m ; 
 				pop_wide_tld_prep=1;  if prep_any_elig ne 1 then pop_wide_tld_as_art = 1;
-				prep_any=1;		prep_oral_start_date=caldate{t};	
-				prep_oral=1; 	prep_oral_ever=1; 	dt_prep_oral_s=caldate{t}; 	continuous_prep_oral_use=0.25; continuous_prep_any_use=0.25;
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_first_start_date=caldate{t};
+				prep_oral=1;	prep_oral_ever=1; 	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_first_start_date=caldate{t};
 			end;
 	end;
 
 	x_stop_tld = eff_rate_choose_stop_prep_oral;
 	if (ever_newp = 1 ) and prep_any_elig ne 1 then x_stop_tld = eff_rate_int_choice; 
 
-	if prep_oral_ever = 1 and dt_prep_oral_s ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;	
+	if prep_oral_ever = 1 and prep_oral_current_start_date ne caldate{t} and prep_inj=0 and prep_vr=0 then do;   * dependent_on_time_step_length;
     * everyone continues risk informed prep (which is not the same as currently being on prep) unless the prob of stopping comes up;
 			r=rand('uniform');	
 								
-					if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; * assume dont re-start pop_wide_tld_as_art if stop;
+				if r < (1-x_stop_tld) and (prep_any_elig =1 or pop_wide_tld_as_art = 1 ) then do; * assume dont re-start pop_wide_tld_as_art if stop;
 					pop_wide_tld_prep=1; 				
 					prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;
 					prep_oral=1; 	continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
 				end;
 				if r >= (1-x_stop_tld) or (prep_any_elig ne 1 and pop_wide_tld_as_art ne 1) then do; 
 					pop_wide_tld_prep=0;	
-					stop_prep_any_choice=1;  
-					stop_prep_oral_choice=1; 
+					stop_prep_any_choice=1;  	continuous_prep_any_use = 0;
+					stop_prep_oral_choice=1; 	continuous_prep_oral_use = 0;
 				end; 
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
 				if r < eff_prob_prep_any_restart_choice and prep_any_elig =1 then do;  * dependent_on_time_step_length; 
-
 					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_rs=caldate{t}; 	stop_prep_any_choice=0;  continuous_prep_any_use=0.25;
-					prep_oral=1; 		dt_prep_oral_rs=caldate{t}; stop_prep_oral_choice=0; continuous_prep_oral_use=0.25; 
+					prep_any=1;		continuous_prep_any_use=0.25; 	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_choice=caldate{t}; 	stop_prep_any_choice=0;
+					prep_oral=1; 	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_choice=caldate{t}; 	stop_prep_oral_choice=0;
 				end;
 			end; 
 			else if stop_prep_oral_choice ne 1 and prep_any_elig =1 then do; 
 					pop_wide_tld_prep=1; 
-					prep_any=1; 		dt_prep_any_c=caldate{t};  continuous_prep_any_use = continuous_prep_any_use + 0.25;
-					prep_oral=1; 	 	dt_prep_oral_c=caldate{t}; continuous_prep_oral_use = continuous_prep_oral_use + 0.25;
-				* dt_prep_c is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
+					prep_any=1; 	continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_eligible=caldate{t};
+					prep_oral=1; 	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_eligible=caldate{t}; 
+				* prep_xxx_restart_date_eligible is prep continuation in the sense that they are now continuing prep again now they have np >= 1; 
 			end;
 	end;
 	
@@ -5141,12 +5143,11 @@ end;
 
 if pop_wide_tld_prep ne 1 then pop_wide_tld_as_art = 0; 
 
-
 if pop_wide_tld_prep=1 then do; if date_start_tld_prep = . then date_start_tld_prep = caldate{t}; end;
 
-if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and (dt_prep_inj_s = caldate{t} or dt_prep_inj_rs = caldate{t})
-then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
-
+if tested=1 and (hivtest_type_1_prep_inj=1 or hivtest_type_1_init_prep_inj=1) and prep_inj_current_start_date = caldate{t} then do; 	* lapr - updated start date condition to current inj-prep start date JAS Jul2023;
+	cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; 
+end;		
 if tested=1 and hivtest_type_1_prep_inj=1 and prep_inj = 1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test; end;
 
 if prep_oral=0 then continuous_prep_oral_use=0;	* lapr and dpv-vr - new prep_any variable indicates if a person is on any prep;
@@ -5154,18 +5155,20 @@ if prep_inj=0 then continuous_prep_inj_use=0;
 if prep_vr=0 then continuous_prep_vr_use=0;	
 if prep_any=0 then continuous_prep_any_use=0;
 
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
+if prep_any=0 and prep_any_tm1=1 then prep_any_last_stop_date=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then prep_oral_last_stop_date=caldate{t}; 
+if prep_inj=0 and prep_inj_tm1=1 then prep_inj_last_stop_date=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then prep_vr_last_stop_date=caldate{t}; 
 
+if prep_any = 1 then prep_any_ever=1;
 if prep_inj = 1 then prep_inj_ever=1;
 if prep_oral = 1 then prep_oral_ever=1;
 if prep_vr = 1 then prep_vr_ever=1;
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
-start_restart_prep_oral = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral = 1;
-start_restart_prep_inj = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj = 1;
-start_restart_prep_vr  = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr  = 1;
+start_restart_prep_oral = 0;	if caldate{t} = prep_oral_first_start_date or	caldate{t} = prep_oral_restart_date_choice 	then start_restart_prep_oral = 1;
+start_restart_prep_inj = 0; 	if caldate{t} = prep_inj_first_start_date or 	caldate{t} = prep_inj_restart_date_choice 	then start_restart_prep_inj = 1;
+start_restart_prep_vr = 0; 		if caldate{t} = prep_vr_first_start_date or 	caldate{t} = prep_vr_restart_date_choice 	then start_restart_prep_vr  = 1;
 
 * these variables are intending to capture people who are currently taking PEP/PrEP in any three month period in which they have risk 
 (ie are prep eligible);
@@ -5176,7 +5179,7 @@ on_risk_informed_prep_inj  = 0;
 if prep_inj_ever=1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_inj_choice ne 1 then on_risk_informed_prep_inj  = 1;
 
 on_risk_informed_prep_vr   = 0; 
-if prep_oral_vr =1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_vr_choice ne 1 then on_risk_informed_prep_vr  = 1;
+if prep_vr_ever =1 and (hard_reach ne 1 or pop_wide_tld=1) and registd ne 1 and stop_prep_vr_choice ne 1 then on_risk_informed_prep_vr  = 1;
 
 
 * prep_falseneg var - Mar2017 f_prep;
@@ -5226,7 +5229,7 @@ if caldate{t} ge min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_int
 	end;
 end;
 
-if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - dt_prep_oral_s > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
+if pop_wide_tld_prep=1 and ((tld_last_egfr=. and caldate{t} - prep_oral_first_start_date > 1) or (caldate{t} - tld_last_egfr > 1)) then do;
 r=rand('uniform'); if r < pop_wide_tld_prob_egfr then do; visit_prep_any=2; visit_prep_oral=2; end; * note this is for egfr only not an hiv test;
 end;
 
@@ -5267,39 +5270,12 @@ end;
 between 0 and 1 rather than binary 0 or 1; 
 * assume for now that oral prep is tenofovir/ftc;
 
-/*
-
-not sure about this including this here - comment out for now
-
-*Adherence to injectable PrEP - related to drug levels; * lapr JAS Nov2021;
-******************** Define adh_prep_inj here;
-adh_prep_inj=1;	********TEMP;
-if prep_inj=1 then do;
-  adh_prep_inj = .; 
-* 	if (onart{t}=1 or toffart{t}=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then current_adh_dl = adh{t}; 
-	if (onart=1 or toffart=0 or (p_cla = 1 and . < tss_cla <= cla_time_to_lower_threshold)) then adh_prep_inj = adh; 
-
-
-	if o_cla ne 1 and tss_cla ge 1/12 and 
-	(o_zdv ne 1 and o_3tc ne 1 and o_ten ne 1 and o_nev ne 1 and o_efa ne 1 and o_lpr ne 1 and o_taz ne 1 and o_dar ne 1 and o_dol ne 1)
-	then do; current_adh_dl = .; current_adh_dl_tm1 = .;
-		if tss_cla = 1/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 2/12 then do ; current_adh_dl = 0.9; current_adh_dl_tm1 = 0.9 ; end;
-		if tss_cla = 3/12 then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.9 ; end;
-		if 3/12 <= tss_cla <= cla_time_to_lower_threshold then do ; current_adh_dl = 0.65; current_adh_dl_tm1 = 0.65 ; end;
-	end;
-end;
-
-*/
-
-
 prep_oral_past_year=.; 	* lapr and dpv-vr - replicate for prep_any and other individual types if needed;
-if prep_oral   =1 then do; 
-	if prep_oral_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;
-	if caldate{t} gt prep_oral_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; * dependent_on_time_step_length ;  
-	* ts1m ; * change this line to: 
+if prep_oral=1 then do; 
+	if prep_oral_first_start_date = caldate{t} > . then tot_yrs_prep_oral = 0.25;	* this variable gives the total py on PrEP;	* dependent_on_time_step_length ;  
+	if caldate{t} gt prep_oral_first_start_date > . then tot_yrs_prep_oral = tot_yrs_prep_oral+0.25; 
+	* ts1m ; * change this line to
 	tot_yrs_prep_oral = tot_yrs_prep_oral + (1/12);
-	;
 
 	prep_oral_effect_non_res_v = adh* prep_oral_efficacy ;
 	if t ge 4 and prep_oral_tm1 =1 and continuous_prep_oral_use >= 1 then prep_oral_past_year=1;
@@ -5307,36 +5283,32 @@ if prep_oral   =1 then do;
 end;
 
 if prep_inj=1 then do;
-	if prep_inj_start_date = caldate{t} > . then tot_yrs_prep_inj = 0.25 ;
-	if caldate{t} >= prep_inj_start_date > . then tot_yrs_prep_inj  = tot_yrs_prep_inj+0.25;
+	if prep_inj_first_start_date = caldate{t} > . then tot_yrs_prep_inj = 0.25 ;
+	if caldate{t} > prep_inj_first_start_date > . then tot_yrs_prep_inj  = tot_yrs_prep_inj+0.25;
 end;
 
 if prep_vr =1 then do;
-	if prep_vr_start_date = caldate{t} > . then tot_yrs_prep_vr  = 0.25 ;
-	if caldate{t} >= prep_vr_start_date > . then tot_yrs_prep_vr   = tot_yrs_prep_vr +0.25;
+	if prep_vr_first_start_date = caldate{t} > . then tot_yrs_prep_vr  = 0.25 ;
+	if caldate{t} > prep_vr_first_start_date > . then tot_yrs_prep_vr   = tot_yrs_prep_vr +0.25;
 end;
 
 tot_yrs_prep_any = tot_yrs_prep_inj + tot_yrs_prep_oral + tot_yrs_prep_vr;
 
-
 currently_in_prep_inj_tail=0;
-if  0.25 <= caldate{t}-date_last_stop_prep_inj <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
+if  0.25 <= caldate{t}-prep_inj_last_stop_date <= cab_time_to_lower_threshold then currently_in_prep_inj_tail=1;
 
 pep_not_prep = 0; 
 if pop_wide_tld_prep = 1 and prep_any_elig=1 and registd ne 1 and  pop_wide_tld_as_art ne 1
 then do;  a=rand('uniform');  if a < prop_pep then pep_not_prep = 1;   end;
 * those taking tld as prep/pep and not because they think they might have hiv;
 
+
+
 * RISK OF NEW INFECTED PARTNER PER NEW PARTNER; 
 *  - men ; 
 
-
-
-
 age_newp=.;
-
-								   
-
+						   
 /*
 w15m15 =0.865*s_m_1524_newp; w15m25=0.47*s_m_2534_newp; w15m35=0.30*s_m_3544_newp; w15m45=0.43*s_m_4554_newp; w15m55=0.18*s_m_5564_newp;
 w25m15 =0.11 *s_m_1524_newp; w25m25=0.43*s_m_2534_newp; w25m35=0.50*s_m_3544_newp; w25m45=0.30*s_m_4554_newp; w25m55=0.18*s_m_5564_newp;
@@ -6546,7 +6518,7 @@ if hiv=1 then do;
 	need to consider higher levels of res_trans_factor (i.e sampling from 0.8-2 rather that a fixed value of 0.6 
 	and therefore lower prob of mutations being transmitted and surviving) than before to compensate;
 	
-		if prep_oral    ne 1 then do;	* lapr (and dpv-vr?) - consider changes needed for insti resistance ;
+		if prep_oral    ne 1 then do;	* lapr - consider if changes needed for insti resistance ;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
 			if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
@@ -6594,7 +6566,7 @@ com_test=.;
 if tested=1 and hiv ne 1 and cost_test <= 0 then do;
 	cost_test= cost_test_c;
 	if prep_inj = 1 then cost_test= cost_test_c * 1.5;
-	u=rand('uniform'); if u lt 0.1365 and prep_oral ne 1 then com_test=1;	* lapr and dpv-vr - here and elsewhere may need to change this to any_prep ne 1;
+	u=rand('uniform'); if u lt 0.1365 and prep_any ne 1 then com_test=1;	* lapr and dpv-vr - updated condition to prep_any JAS Jul2023;
 	if com_test=1 then cost_test= cost_test_e;
 	*Specificity of VCT: we simply assume that they will have a cost of a positive test, as treated as positive if the result is false positive;
 	unispec=rand('uniform');
@@ -6818,7 +6790,7 @@ o_cab, nactive, adh_dl etc ;
 * these variables can also be 1 after primary infection;
 em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab=0; emerge_inm_res_cab_tail=0;
 
-if prep_inj=1 or caldate{t} = date_last_stop_prep_inj then do;
+if prep_inj=1 or caldate{t} = prep_inj_last_stop_date then do;
 
 	prep_o_cab_off_3m_prim=1; if reg_option_107_after_cab=1 then reg_option=107;
 
@@ -6834,8 +6806,8 @@ if prep_inj=1 or caldate{t} = date_last_stop_prep_inj then do;
 * em_inm_res_o_cab_off_3m_pr - emergence of integrase mutation DURING PRIMARY INFECTION while on cab-la or stopped past 3m;
 end;
 
-if caldate{t} = dt_prep_inj_s  then prep_inj_init_prim = 1;
-if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then prep_inj_reinit_prim = 1;
+if caldate{t} = prep_inj_first_start_date then prep_inj_init_prim = 1;
+if caldate{t} = prep_inj_restart_date then prep_inj_reinit_prim = 1;
 
 if prep_inj_init_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_init_prim_res=1;
 if prep_inj_reinit_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_inj_reinit_prim_res=1;
@@ -6852,7 +6824,7 @@ if (prep_inj_reinit_prim_res=1 or prep_inj_init_prim_res=1) and hivtest_type_1_i
 	c_in263m=max(0,in263m);e_in263m=max(0,in263m);
 end;
 
-if currently_in_prep_inj_tail = 1 and prep_inj ne 1 and caldate{t}-date_last_stop_prep_inj ne 0 then do;
+if currently_in_prep_inj_tail = 1 and prep_inj ne 1 and caldate{t}-prep_inj_last_stop_date ne 0 then do;
 
  aa3=rand('uniform'); if e_in118m  ne 1 and aa3 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in118m = 1;e_in118m = 1; end;
  aa4=rand('uniform'); if e_in140m  ne 1 and aa4 < pr_inm_inj_prep_primary*rel_pr_inm_inj_prep_tail_primary then do; c_in140m = 1;e_in140m = 1; end;
@@ -7147,8 +7119,6 @@ naive=1;
 
 *allow for diagnosis in primary infection, i.e. caldate{t}=infection;
 * can get diagnosed during primary infection and hence (re-)initiation of prep (if it happened above in this time step) is reversed ;
-* dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
-
 
 
 * test type;
@@ -7159,177 +7129,136 @@ naive=1;
 
 if t ge 2 then do; 
 
-	if hivtest_type=4 then do;
-		sens_primary=0.75;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; * if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
-		u=rand('uniform');
-		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1 ; visit=1; lost=0; cd4diag=cd4; 
-			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
-			if pop_wide_tld_prep ne 1 then onart=0;
-			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
-				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
-				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
-				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
-			end;
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
-				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
-				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
-				if caldate{t} = dt_prep_inj_s then do;  
-					prep_any_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;
-					cab_res_emerge_primary=0;
-					prep_primary_prevented=1; prep_inj_init_prim = 0;continuous_prep_inj_use=0; continuous_prep_any_use=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
-					prep_o_cab_off_3m_prim=0; prep_inj_init_prim_res=0;
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;	
-					end;
+	* LBM Jul23;
+	e_eff_prob_loss_at_diag = eff_prob_loss_at_diag ;
+	if sw=1 then e_eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
+
+	*4th gen (Ag/Ab);
+	if hivtest_type=4 then do; 		
+			sens_primary=0.75;
+			eff_sens_primary = sens_primary; 
+			if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = 0; 	* if prep_inj_tm1 ne 1 then it may be that prep_inj not yet started ;
+		end;
+
+	*PCR (RNA VL);
+	if hivtest_type=1
+		or (prep_inj=1 and (prep_inj_restart_date = caldate{t} or prep_inj_first_start_date = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
+		or (prep_inj=1 and hivtest_type_1_prep_inj=1)
+		then do;
+			sens_primary=0.86;
+			eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
+		end;
+
+	*3rd gen (Ab);
+	if hivtest_type=3
+		and (prep_inj ne 1 or hivtest_type_1_init_prep_inj ne 1) 
+		then do;
+			sens_primary=sens_primary_testtype3; 
+			eff_sens_primary = sens_primary; if (prep_inj_tm1=1 and prep_inj=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_inj_primary ;
+		end;
+
+	u=rand('uniform');
+
+	if primary=1 and tested=1 and u lt eff_sens_primary then do;
+		registd=1; date1pos=caldate{t}; diagprim=1; visit=1; lost=0; cd4diag=cd4;
+		if pop_wide_tld_prep ne 1 then onart=0;
+		z=rand('uniform');	if z < eff_prob_loss_at_diag then do; visit=0; lost=1;	end;
+		
+		if prep_oral=1 and pop_wide_tld_prep ne 1 then do;		* stop oral PrEP use if positive HIV test;
+			prep_any=0; 	prep_oral=0; 	continuous_prep_oral_use=0; 	continuous_prep_any_use=0;
+			o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;	
+			if caldate{t} = prep_oral_current_start_date then do;
+				prep_oral_current_start_date=.;
+				prep_primary_prevented=1;
+				if caldate{t} = prep_oral_first_start_date then do; 
+					prep_oral_ever=.; prep_oral_first_start_date=.; 
+					if prep_inj_ever ne 1 and prep_vr_ever ne 1 then prep_any_ever=.; 
 				end;
-				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
-					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0; cab_res_emerge_primary=0; o_cab_or_o_cab_tm1_no_r_prim=0;	
-					prep_primary_prevented=1; prep_inj_reinit_prim = 0;  prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;	
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
-					end;
+				if caldate{t} = prep_oral_restart_date then do; 
+					prep_oral_restart_date=.; 
+					if caldate{t} = prep_oral_restart_date_choice then prep_oral_restart_date_choice=.; 
+					if caldate{t} = prep_oral_restart_date_eligible then prep_oral_restart_date_eligible =.; 
 				end;
-			end;
-			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_any=0;		prep_vr =0; 		dt_prep_vr_s=.;
-				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
+				if caldate{t} = prep_oral_switch_date then prep_oral_switch_date=.;
 			end;
 		end;
-	end;
-	if hivtest_type=1 
-	or (prep_inj=1 and (dt_prep_inj_rs = caldate{t} or dt_prep_inj_s = caldate{t}) and hivtest_type_1_init_prep_inj=1) 
-	or (prep_inj=1 and hivtest_type_1_prep_inj=1) then do;
-		u=rand('uniform');
-		sens_primary=0.86;
-		eff_sens_primary = sens_primary; if prep_inj_tm1=1 and prep_inj=1 then eff_sens_primary = sens_ttype1_prep_inj_primary;
-		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1; visit=1; lost=0;
-			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;
-			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
-				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
-				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
-				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
-			end;
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
-				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
-				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
-				if caldate{t} = dt_prep_inj_s then do;  
-					prep_any_ever=.; 	dt_prep_inj_s=.;prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
-					prep_primary_prevented=1;prep_inj_init_prim = 0;continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					prep_o_cab_off_3m_prim=0;prep_inj_init_prim_res=0;
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
-					end;
+		if prep_inj=1 then do;									* stop inj PrEP use if positive HIV test;
+			* this below all reversed as cab now known not to have started as primary infection was detected;
+			prep_any=0;		prep_inj=0;		continuous_prep_inj_use=0; 		continuous_prep_any_use=0; 
+			o_cab=0; tcur=.; nactive=.; 
+			if prep_inj_tm1=1 then do; diagprim_prep_inj=1; prep_inj_last_stop_date=caldate{t}; end; 		
+				* note that diagprim_prep_inj is dependent on prep_inj_tm1=1 not just current use as for oral and vr PrEP;
+			if caldate{t} = prep_inj_current_start_date then do;
+				prep_inj_current_start_date=.;
+				prep_primary_prevented=1; 
+				if caldate{t} = prep_inj_first_start_date then do;  
+					prep_inj_ever=.; prep_inj_first_start_date=.; 
+					if prep_oral_ever ne 1 and prep_vr_ever ne 1 then prep_any_ever=.; 
+					prep_inj_init_prim = 0; 	
+					prep_inj_init_prim_res=0;
+					prep_o_cab_off_3m_prim=0;
 				end;
-				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
-					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
-					prep_primary_prevented=1;prep_inj_reinit_prim = 0; prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					if em_inm_res_o_cab_off_3m=1  then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in148m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
-					end;
+				if caldate{t} = prep_inj_restart_date then do;  
+					prep_inj_restart_date=.; 
+					if caldate{t} = prep_inj_restart_date_choice then prep_inj_restart_date_choice=.; 
+					if caldate{t} = prep_inj_restart_date_eligible then prep_inj_restart_date_eligible=.; 
+					prep_inj_reinit_prim = 0;  
+					prep_inj_reinit_prim_res=0; 
+					prep_o_cab_off_3m_prim=0;
+				end;
+				if caldate{t} = prep_inj_switch_date then prep_inj_switch_date=.;
+				o_cab_or_o_cab_tm1=0;	o_cab_or_o_cab_tm1_no_r=0;	o_cab_or_o_cab_tm1_no_r_prim=0;
+				cab_res_primary=0;	cab_res_emerge_primary=0; 
+				if em_inm_res_o_cab_off_3m=1 then do; 
+					c_in118m=max(0,in118m);e_in118m=max(0,in118m);
+					c_in140m=max(0,in140m);e_in140m=max(0,in140m);
+					c_in148m=max(0,in148m);e_in148m=max(0,in148m);
+					c_in155m=max(0,in155m);e_in155m=max(0,in155m);
+					c_in263m=max(0,in263m);e_in263m=max(0,in263m);
+					r_cab=0;	em_inm_res_o_cab_off_3m=0;	em_inm_res_o_cab_off_3m_pr=0;	em_inm_res_o_cab=0;	
 				end;
 			end;
-			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_any=0;		prep_vr =0; 	dt_prep_vr_s=.;
-				if caldate{t} = dt_prep_vr_s then do;  prep_any_ever=.; prep_vr_ever=.; end; 
-			end;
-		* testing costs 1.5 times when on cab-la due to 6 tests per year;
-		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+			* testing costs 1.5 times when on cab-la due to 6 tests per year;
+			if hivtest_type=1 then do; cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;	end;
 		end;
-	end;
-	if hivtest_type=3 and (prep_inj ne 1 or hivtest_type_1_init_prep_inj ne 1) 
-	then do;
-		u=rand('uniform');
-		sens_primary=sens_primary_testtype3; 
-		eff_sens_primary = sens_primary; if (prep_inj_tm1=1 and prep_inj=1) or (pop_wide_tld_prep=1) then eff_sens_primary = sens_ttype3_prep_inj_primary ;
-		if primary=1 and tested=1 and u lt eff_sens_primary then do;
-			registd=1; date1pos=caldate{t}; diagprim=1;	o111=1;  visit=1; lost=0;
-			z=rand('uniform'); if z < eff_prob_loss_at_diag then do; visit=0; lost=1;   end;	
-			if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
-				prep_any=0;	prep_oral=0;  continuous_prep_oral_use=0;continuous_prep_any_use=0;
-				o_3tc=0; o_ten=0; tcur=.; nactive=.; diagprim_prep_oral=1;
-				if caldate{t} = dt_prep_oral_s then do; prep_any_ever=.; dt_prep_oral_s=.; prep_oral_ever=.; prep_primary_prevented=1; end;
-				if caldate{t} = dt_prep_oral_rs or caldate{t} = dt_prep_oral_c then do; dt_prep_oral_rs=.;dt_prep_oral_c =.;prep_primary_prevented=1;  end;
-			end;
-			if prep_inj=1 then do;		* lapr and dpv-vr - added code here to indicate that cabotegravir monotherapy has stopped; *JAS Nov2021;
-				* this below all reversed as cab now known not to have started  as primary infection was detected;
-				prep_any=0;		prep_inj=0; 	 o_cab=0; tcur=.; nactive=.; 
-				if prep_inj_tm1 =1 then do; diagprim_prep_inj=1; date_last_stop_prep_inj=caldate{t}; end; 
-				if caldate{t} = dt_prep_inj_s then do;  
-					prep_any_ever=.; 	dt_prep_inj_s=.; prep_inj_ever=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
-					prep_primary_prevented=1;prep_inj_init_prim = 0;continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					prep_o_cab_off_3m_prim=0; prep_inj_init_prim_res=0;
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0;em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
-					end;
+		if prep_vr=1 then do;									* stop VR PrEP use if positive HIV test;
+			prep_any=0;		prep_vr =0; 	continuous_prep_vr_use=0; 		continuous_prep_any_use=0;	diagprim_prep_vr=1;
+			if caldate{t} = prep_vr_current_start_date then do;  
+				prep_vr_current_start_date=.;
+				prep_primary_prevented=1; 
+				if caldate{t} = prep_vr_first_start_date then do;  
+					prep_vr_ever=.; prep_vr_first_start_date=.; 
+					if prep_oral_ever ne 1 and prep_inj_ever ne 1 then prep_any_ever=.; 
+				end; 
+				if caldate{t} = prep_vr_restart_date then do;
+					prep_vr_restart_date=.;
+					if caldate{t} = prep_vr_restart_date_choice then prep_vr_restart_date_choice=.; 
+					if caldate{t} = prep_vr_restart_date_eligible then prep_vr_restart_date_eligible =.;
 				end;
-				if caldate{t} = dt_prep_inj_rs or caldate{t} = dt_prep_inj_c then do;  
-					dt_prep_inj_rs=.; dt_prep_inj_c=.; o_cab_or_o_cab_tm1=0; o_cab_or_o_cab_tm1_no_r=0; cab_res_primary=0;cab_res_emerge_primary=0;
-					prep_primary_prevented=1;prep_inj_reinit_prim = 0; prep_inj_reinit_prim_res=0; continuous_prep_inj_use=0;continuous_prep_any_use=0;o_cab_or_o_cab_tm1_no_r_prim=0;		
-					if em_inm_res_o_cab_off_3m=1 then do; 
-						c_in118m=max(0,in118m);e_in118m=max(0,in118m);
-						c_in140m=max(0,in140m);e_in140m=max(0,in140m);
-						c_in148m=max(0,in148m);e_in148m=max(0,in148m);
-						c_in155m=max(0,in155m);e_in155m=max(0,in155m);
-						c_in263m=max(0,in263m);e_in263m=max(0,in263m);
-						r_cab=0; em_inm_res_o_cab_off_3m=0; em_inm_res_o_cab_off_3m_pr=0;em_inm_res_o_cab=0;
-					end;
-				end;
-			end;
-			if prep_vr=1 then do;		* lapr and dpv-vr - added code here to indicate that VR prep has stopped; *JAS Nov2021;
-				prep_any=0;	prep_vr  =0;  continuous_prep_vr_use=0;continuous_prep_any_use=0;
-				diagprim_prep_vr  =1;
-				if caldate{t} = dt_prep_vr_s then do; prep_any_ever=.; dt_prep_vr_s=.; prep_vr_ever=.; prep_primary_prevented=1; end;
-				if caldate{t} = dt_prep_vr_rs or caldate{t} = dt_prep_vr_c then do; dt_prep_vr_rs=.;dt_prep_vr_c =.;prep_primary_prevented=1;  end;
+				if caldate{t} = prep_vr_switch_date then prep_vr_switch_date=.; 
 			end;
 		end;
 	end;
 end;
 
-if prep_inj=0 and prep_inj_tm1=1 then date_last_stop_prep_inj=caldate{t}; 
-if prep_oral=0 and prep_oral_tm1=1 then date_last_stop_prep_oral=caldate{t}; 
-if prep_vr=0 and prep_vr_tm1=1 then date_last_stop_prep_vr=caldate{t}; 
+* note that these variables are defined before PrEP section above and updated here;
+if prep_any=0 and prep_any_tm1=1 then prep_any_last_stop_date=caldate{t}; 
+if prep_oral=0 and prep_oral_tm1=1 then prep_oral_last_stop_date=caldate{t};
+if prep_inj=0 and prep_inj_tm1=1 then prep_inj_last_stop_date=caldate{t}; 
+if prep_vr=0 and prep_vr_tm1=1 then prep_vr_last_stop_date=caldate{t}; 
 
+* this variable captures breakthrough infections so requires two periods of PrEP use - person cannot have just started PrEP this period; 
+if prep_any_tm1=1 and prep_any=1 then infected_on_prep_any=1;
+if prep_oral_tm1=1 and prep_oral=1 then infected_on_prep_oral=1;
 if prep_inj_tm1=1 and prep_inj=1 then infected_on_prep_inj=1;
 if prep_vr_tm1=1 and prep_vr =1 then infected_on_prep_vr =1;
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period of risk;
-start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs  then start_restart_prep_oral_hiv = 1;
-start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_hiv = 1;
-start_restart_prep_inj_prim = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs then start_restart_prep_inj_prim = 1;
-start_restart_prep_vr_hiv = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr_hiv = 1;
-start_restart_prep_vr_prim = 0; if caldate{t} = dt_prep_vr_s or caldate{t} = dt_prep_vr_rs then start_restart_prep_vr_prim = 1;
+start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
+start_restart_prep_inj_hiv = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_hiv = 1;
+start_restart_prep_inj_prim = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_prim = 1;
+start_restart_prep_vr_hiv = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_hiv = 1;
+start_restart_prep_vr_prim = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_prim = 1;
 
 start_rest_prep_inj_hiv_cabr = 0; if start_restart_prep_inj_hiv = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_hiv_cabr = 1;
 start_rest_prep_inj_prim_cabr = 0; if start_restart_prep_inj_prim = 1 and cab_res_emerge_primary = 1 then start_rest_prep_inj_prim_cabr = 1;
@@ -7444,11 +7373,11 @@ visit_tm1=visit;
 	end;
 
 
-	if prep_oral=1 and (prep_oral_start_date = caldate{t} or dt_prep_oral_rs = caldate{t} or dt_prep_oral_c = caldate{t}) then do; 
+	if prep_oral=1 and prep_oral_current_start_date = caldate{t} then do;
 		o_3tc=1; o_ten=1; p_3tc=1; p_ten=1;  tcur=0; cd4_tcur0 = cd4; 
 	end;	
 
-	if prep_inj=1  and (prep_inj_start_date = caldate{t} or dt_prep_inj_rs = caldate{t} or dt_prep_inj_c = caldate{t}) then do; 
+	if prep_inj=1  and prep_inj_current_start_date = caldate{t} then do;
 		o_cab=1; p_cab=1; tcur=0; cd4_tcur0 = cd4; 
 	end;
 
@@ -7460,17 +7389,17 @@ visit_tm1=visit;
 	if prep_inj=1 or prep_inj_tm1=1 then o_cab_or_o_cab_tm1=1;
 	if o_cab_or_o_cab_tm1=1 and r_cab <= 0 then o_cab_or_o_cab_tm1_no_r=1;  
 
-	if prep_o_cab_off_3m_prim=1 then do; if reg_option_107_after_cab=1 then reg_option=107; end;*so this is changed in the period after infection in a person infected on cab-la;
+	if prep_o_cab_off_3m_prim=1 then do; if reg_option_107_after_cab=1 then reg_option=107; end;	*so this is changed in the period after infection in a person infected on cab-la;
 
-	cab_res_primary=0;  prep_o_cab_off_3m_prim=0; prep_inj_at_infection=0;diagprim_prep_inj=0;cab_res_prep_inj_primary=0; 
-	prep_inj_init_prim = 0; prep_inj_reinit_prim=0; prep_inj_init_prim_res=0;prep_inj_reinit_prim_res=0; prep_primary_prevented=0;
-	em_inm_res_o_cab_off_3m_pr=0; emerge_inm_res_cab_tail_pr=0;cur_in_prep_inj_tail_prim=0;infected_inm_this_per=0;
-	cab_res_emerge_primary=0; start_restart_prep_inj_prim =0;start_rest_prep_inj_hiv_cabr = 0; start_rest_prep_inj_prim_cabr = 0; 
+	cab_res_primary=0;  			prep_o_cab_off_3m_prim=0;		prep_inj_at_infection=0;			diagprim_prep_inj=0;			cab_res_prep_inj_primary=0;
+	prep_inj_init_prim = 0; 		prep_inj_reinit_prim=0; 		prep_inj_init_prim_res=0;			prep_inj_reinit_prim_res=0; 	prep_primary_prevented=0;
+	em_inm_res_o_cab_off_3m_pr=0;	emerge_inm_res_cab_tail_pr=0;	cur_in_prep_inj_tail_prim=0;		infected_inm_this_per=0;
+	cab_res_emerge_primary=0;		start_restart_prep_inj_prim =0;	start_rest_prep_inj_hiv_cabr = 0;	start_rest_prep_inj_prim_cabr = 0; 
 
 * note that restart means restarting after stopping due to choice, not continuation of risk informed prep becuase there is a new period pf risk;
-	start_restart_prep_oral_hiv = 0; if caldate{t} = dt_prep_oral_s or caldate{t} = dt_prep_oral_rs then start_restart_prep_oral_hiv = 1;
-	start_restart_prep_inj_hiv = 0; if caldate{t} = dt_prep_inj_s or caldate{t} = dt_prep_inj_rs  then start_restart_prep_inj_hiv = 1;
-
+	start_restart_prep_oral_hiv = 0; if caldate{t} = prep_oral_first_start_date or caldate{t} = prep_oral_restart_date_choice then start_restart_prep_oral_hiv = 1;
+	start_restart_prep_inj_hiv = 0; if caldate{t} = prep_inj_first_start_date or caldate{t} = prep_inj_restart_date_choice then start_restart_prep_inj_hiv = 1;
+	start_restart_prep_vr_hiv = 0; if caldate{t} = prep_vr_first_start_date or caldate{t} = prep_vr_restart_date_choice then start_restart_prep_vr_hiv = 1;
 
 * dependent_on_time_step_length ;
 	mr_zdv_tm1=mr_zdv; if tss_zdv ge 0 and o_zdv_tm1=0 then tss_zdv = tss_zdv+0.25;
@@ -7502,16 +7431,13 @@ visit_tm1=visit;
 	c_dia =0;
 	c_neph = 0;
 	
-	if toffart_tm1 ge 0 and onart_tm1 ne 1 then do;
+	if toffart_tm1 ge 0 and onart_tm1 ne 1 and naive ne 1 then do;
 		toffart=toffart_tm1+0.25;   
 
  * ts1m:
 		toffart=toffart_tm1+ (1/12);   
-
-		if prep_oral    ne 1 then do;	* lapr and dpv-vr  - any changes needed ?;
-			if interrupt_supply_tm1 =1 then interrupt_supply   =1;
-			if interrupt_choice_tm1 =1 then interrupt_choice   =1;
-		end;
+		if interrupt_supply_tm1 =1 then interrupt_supply   =1;
+		if interrupt_choice_tm1 =1 then interrupt_choice   =1;
 	end;
 
 	e_rttams_tm2=e_rttams_tm1; 	e_rttams_tm1=e_rttams; 
@@ -7617,7 +7543,7 @@ non_tb_who3_ev_tm1 = non_tb_who3_ev ;
 
 
 if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and onart ne 1 and pop_wide_tld ne 1 then do; o_ten=0; o_3tc=0; tss_3tc=0; tss_ten=0; toffart=0; end;
-if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; toffart=0; onart=0; artline=.; end; 
+if t ge 2 and prep_oral = 0 and prep_oral_tm1 = 1 and pop_wide_tld = 1 then do; o_ten=0; o_3tc=0; o_dol=0;  tss_3tc=0; tss_ten=0; tss_dol=0; toffart=0; onart=0; artline=.; end;
 * note we assume that if pop_wide_tld = 1 then all use of prep is tld not tl ;
 if t ge 2 and prep_inj = 0 and prep_inj_tm1 = 1 then do; o_cab=0; toffart=0;  tss_cab=0; end;		
 * lapr and dpv-vr - reset toffart only when not switching to another systemic PrEP type; * JAS Nov2021;
@@ -7669,7 +7595,7 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 			if . < caldate{t} - infection  < 0.25 then eff_sens_vct=sens_ttype1_prep_inj_primary;  
 			if caldate{t} - infection = 0.25 then eff_sens_vct=sens_ttype1_prep_inj_inf3m;  
 			if 0.5 <= caldate{t} - infection  then eff_sens_vct=sens_ttype1_prep_inj_infge6m; 
-		cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
+			cost_test = cost_test_g * 1.5; cost_test_type1=cost_test;
 		end;
 	end;
 
@@ -7691,7 +7617,7 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 			* some lost straight after diagnosis (unless already on tld);
 			d=rand('uniform');  * AP 22-7-19   ;
 			if      adc_tm1 ne 1 and non_tb_who3_ev_tm1  ne 1 and ((caldate{t} - date_most_recent_tb) > 0.5 or (caldate{t} - date_most_recent_tb)=.)  
-			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;	  * lapr and dpv-vr - not sure this part needs any changes;
+			and onart_tm1  ne 1 and pop_wide_tld_prep ne 1 then do;	  
 					if d < e_eff_prob_loss_at_diag      then do; visit=0; lost   =1; end;
 					if higher_newp_less_engagement = 1 and t ge 2 and newp_tm1 > 1 then do; 
 					if d < e_eff_prob_loss_at_diag*1.5      then do; visit=0; lost   =1; end; * mar19;
@@ -7713,17 +7639,18 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 
 
 * AP 21-7-19; * dont stop if have been taking tld prep ;
-	* lapr and dpv-vr - needs code adding for o_cab - also distinguish between infected_cab and infected_dpv?;
 	if (infected_prep_oral=1 or prep_oral = 1) and registd=1 and registd_tm1=0 and pop_wide_tld ne 1 then do; 
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; mr_3tc=1; mr_ten=1; toffart=0;
 	end;
 
-
+	* lapr and dpv-vr;
 	if  prep_inj = 1 and registd=1 and registd_tm1=0  then do; 
 		prep_inj = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
 	end;
 
 	if o_cab_tm1 = 1 and o_cab = 0 then do; tss_cab = 0; toffart = 0;mr_cab=1; end;
+
+	if  prep_vr = 1 and registd=1 and registd_tm1=0  then prep_vr = 0;
 
 
 * Loss to follow-up while off ART;
@@ -10949,7 +10876,7 @@ if nnrti_res_no_effect = 1 then r_efa=0.0;
 * cab;
       if (e_in118m=1 or e_in140m=1 or e_in148m=1   or e_in155m=1 or e_in263m=1) then r_cab=res_level_dol_cab_mut;   
 	
-	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-date_last_stop_prep_inj = 0 then cab_res_o_cab = 1; 
+	if r_cab=res_level_dol_cab_mut and r_cab_tm1 <= 0 then do;  if o_cab=1 or caldate{t}-prep_inj_last_stop_date = 0 then cab_res_o_cab = 1; 
 	if currently_in_prep_inj_tail = 1 then cab_res_tail = 1; end; 
 
 * if in prep_inj tail and infected with hiv;
@@ -11867,7 +11794,8 @@ cost_non_aids_pre_death = 0;  if death=caldate{t} and rdcause = 2 then cost_non_
 
 
 * f_prep - Cost of oral PrEP - tests costed separately - from kzn mar19;
-cost_prep_oral=0;cost_prep_inj =0; cost_prep_visit=0;cost_prep_ac_adh=0;cost_prep_visit_oral=0;cost_prep_visit_inj=0;cost_prep_visit_vr=0;
+cost_prep_oral=0; cost_prep_inj=0; cost_prep_vr=0;
+cost_prep_visit=0; cost_prep_ac_adh=0; cost_prep_visit_oral=0; cost_prep_visit_inj=0; cost_prep_visit_vr=0;
 cost_avail_self_test=0;
 if prep_oral=1 and pop_wide_tld_prep ne 1 then do;
 	cost_ten=0;	cost_3tc=0;
@@ -11886,7 +11814,6 @@ if prep_inj =1 then do;
 end;
 if prep_vr  =1 then do;
 	cost_prep_vr   = prep_vr_drug_cost ;  
-	if visit_prep_vr   = 1 then cost_prep_visit = cost_prep_vr_clinic / 2; * drug pick-up only - mar18 ; 
 	if visit_prep_vr   = 2 then cost_prep_visit = cost_prep_vr_clinic; 
 	if visit_prep_vr   = 3 then cost_prep_visit = cost_prep_vr_clinic+cost_prep_any_clinic_couns;
 	cost_prep_visit_vr  =cost_prep_visit;
@@ -11937,8 +11864,8 @@ cost_hypert_vis = 0; if visit_hypertension=1 then cost_hypert_vis = cost_vis_hyp
 cost_hypert_drug = 0; if on_anti_hypertensive ge 1 then cost_hypert_drug = on_anti_hypertensive * cost_antihyp ; 
  
 cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
-+max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) 
-+ max(0, cost_prep_vr ) + max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
++max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_inj) + max(0, cost_prep_vr )
++ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program);
 
 
 cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
@@ -14092,11 +14019,11 @@ onart_cd4_g500=0;  if (onart=1 or int_clinic_not_aw=1) and cd4 >= 500 then onart
 
 **** PrEP ************************************************************************************************************************;
 
-prep_oral_w=0; if gender=2 and prep_oral=1 then prep_oral_w=1;
-prep_inj_w=0; if gender=2 and prep_inj=1 then prep_inj_w=1;
-prep_vr_w=0; if gender=2 and prep_vr =1 then prep_vr_w=1;
-prep_oral_m=0; if gender=1 and prep_oral=1 then prep_oral_m=1;
-prep_inj_m=0; if gender=1 and prep_inj=1 then prep_inj_m=1;
+prep_oral_w=0; 	if gender=2 and prep_oral=1 then prep_oral_w=1;
+prep_inj_w=0; 	if gender=2 and prep_inj=1 	then prep_inj_w=1;
+prep_vr_w=0; 	if gender=2 and prep_vr =1 	then prep_vr_w=1;
+prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
+prep_inj_m=0; 	if gender=1 and prep_inj=1 	then prep_inj_m=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
 
@@ -14148,34 +14075,36 @@ prep_vr_sw = 0 ; 	if prep_vr   =1 and sw=1 then prep_vr_sw = 1 ;
 
 *At start of PrEP;	* lapr - any prep - JAS Nov2021;
 prep_any_start=0; age_prepstart=.; ep_prepstart=.; newp_prepstart=.;
-if min(dt_prep_oral_s, dt_prep_inj_s, dt_prep_vr_s)= caldate&j then do;
+if min(prep_oral_first_start_date, prep_inj_first_start_date, prep_vr_first_start_date)= caldate&j then do;
 	prep_any_start=1;
 	age_prepstart=age;
 	ep_prepstart=ep;
 	newp_prepstart=newp;
 end;
 
-prep_oral_start=0; if dt_prep_oral_s = caldate&j then prep_oral_start=1;
-prep_inj_start=0; if dt_prep_inj_s = caldate&j then prep_inj_start=1;
-prep_vr_start=0; if dt_prep_vr_s = caldate&j then prep_vr_start=1;
+prep_any_start=0; if prep_any_first_start_date = caldate&j then prep_any_start=1;
+prep_oral_start=0; if prep_oral_first_start_date = caldate&j then prep_oral_start=1;
+prep_inj_start=0; if prep_inj_first_start_date = caldate&j then prep_inj_start=1;
+prep_vr_start=0; if prep_vr_first_start_date = caldate&j then prep_vr_start=1;
 
-prep_oral_restart=0; if dt_prep_oral_rs = caldate&j  then prep_oral_restart=1;
-prep_inj_restart=0; if dt_prep_inj_rs = caldate&j  then prep_inj_restart=1;
-prep_vr_restart=0; if dt_prep_vr_rs = caldate&j  then prep_vr_restart=1;
+prep_any_restart=0; if prep_any_restart_date_choice = caldate&j then prep_any_restart=1;	* This is restarting after stopping by choice;
+prep_oral_restart=0; if prep_oral_restart_date_choice = caldate&j  then prep_oral_restart=1;
+prep_inj_restart=0; if prep_inj_restart_date_choice = caldate&j  then prep_inj_restart=1;
+prep_vr_restart=0; if prep_vr_restart_date_choice = caldate&j  then prep_vr_restart=1;
 
-*People accidentally started PrEP due to window period;  	
-started_prep_any_in_primary =0; 	if hiv=1 and min(dt_prep_oral_s, dt_prep_inj_s, dt_prep_vr_s)= caldate&j 	and primary = 1 then do; started_prep_any_in_primary =1; 	started_prep_any_in_primary_e =1; end;
-started_prep_oral_in_primary =0; 	if hiv=1 and dt_prep_oral_s=caldate&j 	and primary = 1 then do; started_prep_oral_in_primary =1; 	started_prep_oral_in_primary_e =1; end;
-started_prep_inj_in_primary =0; 	if hiv=1 and dt_prep_inj_s=caldate&j 	and primary = 1 then do; started_prep_inj_in_primary =1; 	started_prep_inj_in_primary_e =1; end;
-started_prep_vr_in_primary =0; 		if hiv=1 and dt_prep_vr_s=caldate&j 	and primary = 1 then do; started_prep_vr_in_primary =1; 	started_prep_vr_in_primary_e =1; end;
+*People accidentally started PrEP due to window period - applies to first ever PrEP initiation or re-initiation following a break;  	
+started_prep_oral_in_primary =0; 	if hiv=1 and (prep_oral_first_start_date=caldate&j or prep_oral_restart_date=caldate&j)	and primary = 1 then do; started_prep_oral_in_primary =1; 	started_prep_oral_in_primary_e =1; end;
+started_prep_inj_in_primary =0; 	if hiv=1 and (prep_inj_first_start_date=caldate&j or prep_inj_restart_date=caldate&j)	and primary = 1 then do; started_prep_inj_in_primary =1; 	started_prep_inj_in_primary_e =1; end;
+started_prep_vr_in_primary =0; 		if hiv=1 and (prep_vr_first_start_date=caldate&j or prep_vr_restart_date=caldate&j)		and primary = 1 then do; started_prep_vr_in_primary =1; 	started_prep_vr_in_primary_e =1; end;
+started_prep_any_in_primary =0; 	if (started_prep_oral_in_primary=1 or started_prep_inj_in_primary=1 or started_prep_vr_in_primary=1) then do; 
+	started_prep_any_in_primary =1;	started_prep_any_in_primary_e =1; 
+end;		
 
-
-
-started_prep_any_hiv =0; 	if hiv=1 and (caldate&j = dt_prep_oral_s or caldate&j = dt_prep_oral_rs or dt_prep_inj_s= caldate&j  or 
-caldate&j = dt_prep_inj_rs or dt_prep_vr_s= caldate&j  or  caldate&j = dt_prep_vr_rs) then started_prep_any_hiv =1; 	
-
-started_prep_inj_hiv =0; 	if hiv=1 and (dt_prep_inj_s= caldate&j  or caldate&j = dt_prep_inj_rs) then started_prep_inj_hiv =1; 	
-started_prep_vr_hiv =0; 	if hiv=1 and (dt_prep_vr_s= caldate&j  or caldate&j = dt_prep_vr_rs) then started_prep_vr_hiv =1; 	
+* This includes starting PrEP for any reason - for the first time, after a break or switching from another method;
+started_prep_oral_hiv =0; 	if hiv=1 and prep_oral_current_start_date= caldate&j then started_prep_oral_hiv =1;
+started_prep_inj_hiv =0; 	if hiv=1 and prep_inj_current_start_date= caldate&j then started_prep_inj_hiv =1; 	
+started_prep_vr_hiv =0; 	if hiv=1 and prep_vr_current_start_date= caldate&j then started_prep_vr_hiv =1; 	
+started_prep_any_hiv =0; 	if started_prep_oral_hiv=1 or started_prep_inj_hiv=1 or started_prep_vr_hiv=1 then started_prep_any_hiv=1;
 
 pop_wide_tld_hiv=0; if  pop_wide_tld_prep = 1 and hiv=1 then pop_wide_tld_hiv=1; 
 pop_wide_tld_prep_elig=0; if pop_wide_tld_prep = 1 and hiv ne 1 and prep_any_elig=1 then pop_wide_tld_prep_elig=1;
@@ -14254,7 +14183,7 @@ hiv1_prep_inj =0; 	   if hiv=1 and prep_inj  =1 then do; hiv1_prep_inj =1; ever_
 hiv1_prep_vr  =0; 	   if hiv=1 and prep_vr   =1 then do; hiv1_prep_vr  =1; ever_hiv1_prep_vr  =1; 	end;
 
 
-
+	* Note that several outputs below are specific to oral PrEP and could be replicated for lapr and dpv-vr if needed;
 if ever_hiv1_prep_oral=1 then do; 
 cur_res_efa_ever_hiv1_prep =0 ; if cur_res_efa = 1 then cur_res_efa_ever_hiv1_prep =1;
 cur_res_dol_ever_hiv1_prep =0 ; if cur_res_dol = 1 then cur_res_dol_ever_hiv1_prep =1;
@@ -14274,7 +14203,7 @@ end;
 
 *Time from first to last use of oral prep;
 years_since_start_prep=0; 
-if prep_oral_ever=1 then years_since_start_prep=date_last_stop_prep_oral-dt_prep_oral_s;
+if prep_oral_ever=1 then years_since_start_prep=prep_oral_last_stop_date-prep_oral_first_start_date;
 
 
 *Number of HIV tests in the previous year for people currently on PrEP;
@@ -14286,15 +14215,15 @@ if caldate&j > 1990 and prep_oral=1 and (. < caldate&j-dt_last_test < 1) then n_
 *Discontinutation (through choice) and re-initiation of oral PrEP;
 preprestart=0; 
 if stop_prep_oral_choice=1 then ever_stopped_prep_oral_choice=1;
-if dt_prep_oral_rs=caldate&j then preprestart=1;
-if dt_prep_oral_c=caldate&j then prep_continue_np_ge1=1;
+if prep_oral_restart_date_choice=caldate&j then preprestart=1;
+if prep_oral_restart_date_eligible=caldate&j then prep_continue_np_ge1=1;
 
 
-* Time from infection whilst on oral or inj PrEP and whether they are still on PrEP after 3, 6, 9, 12, 18 months - only applies when pop_wide_tld not in place;
+* Time from infection whilst on oral, inj or vr PrEP and whether they are still on PrEP after 3, 6, 9, 12, 18 months - only applies when pop_wide_tld not in place;
 if (infected_prep_inj=1 or infected_prep_oral=1 or infected_prep_vr=1) and pop_wide_tld ne 1 then do;
 	time_from_infection=caldate&j-infection;
 * dependent_on_time_step_length ;
-	time_stop_prep= max(date_last_stop_prep_oral, date_last_stop_prep_inj, date_last_stop_prep_vr) + 0.25 - infection;
+	time_stop_prep= max(prep_oral_last_stop_date, prep_inj_last_stop_date, prep_vr_last_stop_date) + 0.25 - infection;
 * ts1m;
 
 
@@ -14306,8 +14235,8 @@ if (infected_prep_inj=1 or infected_prep_oral=1 or infected_prep_vr=1) and pop_w
 end;
 
 if o_cab ne 1 then time_hiv_cab=0;
-if hiv=1 and o_cab=1 and (primary=1 or dt_prep_inj_s = caldate&j) then time_hiv_cab=0.25;
-if hiv=1 and o_cab=1 and (primary ne 1 and dt_prep_inj_s ne caldate&j) then time_hiv_cab=time_hiv_cab+0.25;
+if hiv=1 and o_cab=1 and (primary=1 or prep_inj_first_start_date = caldate&j) then time_hiv_cab=0.25;
+if hiv=1 and o_cab=1 and (primary ne 1 and prep_inj_first_start_date ne caldate&j) then time_hiv_cab=time_hiv_cab+0.25;
 
 
 hiv_cab_3m=0; hiv_cab_6m=0; hiv_cab_9m=0; hiv_cab_ge12m=0;
@@ -14374,7 +14303,7 @@ if infected_prep_any=1 and prim_r_prep ne 1  then do;			* lapr - any PrEP;
 
 end;
 
-*Adherence to PrEP at time of infection;
+*Adherence to oral PrEP at time of infection;
 if caldate&j = infection > . then do;
 
 
@@ -14383,7 +14312,7 @@ inf_prep_adhg80 =0;	if prep_oral=1 and        adh gt 0.8	then inf_prep_adhg80 =p
 inf_prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then inf_prep_adh5080=primary;
 inf_prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then inf_prep_adhl50 =primary;
 end;
-*Adherence to PrEP;
+*Adherence to oral PrEP;
 prep_adhg80 =0;	if prep_oral=1 and        adh gt 0.8	then prep_adhg80 =1;
 prep_adh5080=0;	if prep_oral=1 and 0.5 lt adh le 0.8	then prep_adh5080=1;
 prep_adhl50 =0;	if prep_oral=1 and  .  lt adh le 0.5	then prep_adhl50 =1;
@@ -14408,19 +14337,19 @@ end;
 
 *To calculate number initiated for the first time on different types of PrEP;
 init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;
-if caldate&j = prep_oral_start_date then do;
+if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 then init_prep_oral_1524w=1;
 	if gender=2 and sw=1 			then init_prep_oral_sw=1;
 	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_oral_sdc=1;
 end;
 init_prep_inj_1524w=0;init_prep_inj_sw=0;init_prep_inj_sdc=0;
-if caldate&j = prep_inj_start_date then do;
+if caldate&j = prep_inj_first_start_date then do;
 	if gender=2 and 15 le age lt 25 then init_prep_inj_1524w=1;
 	if gender=2 and sw=1 			then init_prep_inj_sw=1;
 	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_inj_sdc=1;
 end;
 init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_sdc=0;
-if caldate&j = prep_vr_start_date then do;
+if caldate&j = prep_vr_first_start_date then do;
 	if gender=2 and 15 le age lt 25 then init_prep_vr_1524w=1;
 	if gender=2 and sw=1 			then init_prep_vr_sw=1;
 	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_vr_sdc=1;
@@ -14491,7 +14420,7 @@ if prep_elig_onprep = 1 and prep_inj=1 then prep_elig_onprep_inj=1;
 prep_elig_onprep_vr=0;
 if prep_elig_onprep = 1 and prep_vr=1 then prep_elig_onprep_vr=1;
 
-					
+	* Outputs for oral PrEP;					
 if ev_infected_prep_no_r=1 and caldate&j-infection = 0.25 and prep_oral=1 then do;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_65=0; if c_rt65m = 1 then prep_3m_after_inf_no_r_65=1;
 prep_3m_after_inf_no_r=1; prep_3m_after_inf_no_r_184=0; if c_rt184m = 1 then prep_3m_after_inf_no_r_184=1;
@@ -14516,7 +14445,10 @@ end;
 
 
 * so can calculate proportion of newp with person on prep;
-newp_prep = 0; if prep_oral=1 then newp_prep=newp;
+newp_prep_any = 0; 	if prep_any=1 then newp_prep_any=newp;
+newp_prep_oral = 0;	if prep_oral=1 then newp_prep_oral=newp;
+newp_prep_inj = 0; 	if prep_inj=1 then newp_prep_inj=newp;
+newp_prep_vr = 0; 	if prep_vr=1 then newp_prep_vr=newp;
 
 prep_any_elig_past_year=0;prep_any_elig_past_3year=0;prep_any_elig_past_5year=0;
 if 0 <= caldate&j - date_most_recent_prep_any_elig < 1 then prep_any_elig_past_year=1;
@@ -16398,7 +16330,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_i_v1_np + i_v1_np ; s_i_v2_np + i_v2_np ; s_i_v3_np + i_v3_np ; s_i_v4_np + i_v4_np ; s_i_v5_np + i_v5_np ; s_i_v6_np + i_v6_np ; 
 
-	s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim + diagprim ;s_diagprim_prep_vr  + diagprim_prep_vr  ; s_diagprim + diagprim ;
+	s_diagprim + diagprim ; s_diagprim_prep_oral + diagprim_prep_oral ; s_diagprim_prep_inj + diagprim_prep_inj ; s_diagprim_prep_vr  + diagprim_prep_vr  ;
 
 	/*Number ep and newp*/
 
@@ -16676,7 +16608,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_tot_yrs_prep_vr_gt_5 + tot_yrs_prep_vr_gt_5 ; s_tot_yrs_prep_vr_gt_10 + tot_yrs_prep_vr_gt_10 ; s_tot_yrs_prep_vr_gt_20 + tot_yrs_prep_vr_gt_20 ;
 	s_pop_wide_tld_prep + pop_wide_tld_prep ;  s_tld_notest_notprepelig_pos + tld_notest_notprepelig_pos;   s_tld_notest_notprepelig_neg + tld_notest_notprepelig_neg; 
 	s_prep_any_elig_past_year + prep_any_elig_past_year ; s_prep_any_elig_past_3year + prep_any_elig_past_3year ; s_prep_any_elig_past_5year + prep_any_elig_past_5year ;
-	s_newp_prep + newp_prep ;  s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_oral_ge1yr + continuous_prep_oral_ge1yr;
+	s_newp_prep_any + newp_prep_any ; s_newp_prep_oral + newp_prep_oral ; s_newp_prep_inj + newp_prep_inj ; s_newp_prep_vr + newp_prep_vr ;     
+	s_prop_elig_years_onprep_ayear_i + prop_elig_years_onprep_ayear_i ;  s_continuous_prep_oral_ge1yr + continuous_prep_oral_ge1yr;
 	s_newp_this_per_hivneg_m  +  newp_this_per_hivneg_m ; s_newp_this_per_hivneg_w +  newp_this_per_hivneg_w ;   
 	s_newp_this_per_hivneg_age1524w + newp_this_per_hivneg_age1524w  ;  s_newp_this_per_hivneg_sw +  newp_this_per_hivneg_sw ;  
 	s_newp_this_per_hivneg_m_prep + newp_this_per_hivneg_m_prep ;   s_newp_this_per_hivneg_w_prep +  newp_this_per_hivneg_w_prep  ;
@@ -16704,7 +16637,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_cur_in_prep_inj_tail_prim + cur_in_prep_inj_tail_prim ; 
 	s_start_restart_prep_oral_hiv + start_restart_prep_oral_hiv; s_start_restart_prep_inj_hiv + start_restart_prep_inj_hiv;
 	s_start_restart_prep_vr_hiv + start_restart_prep_vr_hiv;
-	s_start_rest_prep_inj_hiv_cabr + start_rest_prep_inj_hiv_cabr;   s_infected_on_prep_inj + infected_on_prep_inj;s_infected_on_prep_vr + infected_on_prep_vr;
+	s_start_rest_prep_inj_hiv_cabr + start_rest_prep_inj_hiv_cabr;   s_infected_on_prep_oral + infected_on_prep_oral;	s_infected_on_prep_inj + infected_on_prep_inj;	s_infected_on_prep_vr + infected_on_prep_vr;
 	s_start_restart_prep_oral + start_restart_prep_oral; s_start_restart_prep_inj + start_restart_prep_inj;s_start_restart_prep_vr + start_restart_prep_vr;
 	s_start_restart_prep_inj_prim + start_restart_prep_inj_prim; s_start_rest_prep_inj_prim_cabr + start_rest_prep_inj_prim_cabr;
 	s_start_restart_prep_vr_prim + start_restart_prep_vr_prim;
@@ -17361,11 +17294,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-/*
 
+/*
 
 proc freq; tables cald hiv ; where death=.; run;
 
+*/
 
 /*
 
@@ -17423,7 +17357,7 @@ proc print;
 var 
 caldate&j infection prep_any_strategy prep_any_elig prep_oral_ever prep_inj_ever prep_any_ever dt_prep_oral_s  dt_prep_inj_s  prep_inj_tm1   prep_inj
 prep_oral prep_o_cab_off_3m_prim reg_option onart o_dol o_taz 
-date_last_stop_prep_inj stop_prep_any_choice
+prep_inj_last_stop_date stop_prep_any_choice
 diagprim_prep_inj  prep_primary_prevented  diagprim_prep_oral  o_cab   r_cab r_3tc r_ten  primary     start_prep_inj_unl_prim_hiv_det
 o_cab_or_o_cab_tm1_no_r   prep_o_cab_off_3m_prim  em_inm_res_o_cab_off_3m_npr 
 em_inm_res_o_cab_off_3m_pr emerge_inm_res_cab_tail_pr
@@ -17577,8 +17511,8 @@ run;
 * prep inj tetsing and cab resistance ;
 
 proc print; var caldate&j o_cab nactive
-prep_any_strategy prep_any_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_start_date 
-date_last_stop_prep_inj eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
+prep_any_strategy prep_any_elig testfor_prep_inj prep_inj_tm1 prep_inj tot_yrs_prep_inj prep_inj_first_start_date 
+prep_inj_last_stop_date eff_rate_choose_stop_prep_inj infected_prep_inj infected_prep_inj_tail onprep_3 onprep_6 onprep_9 onprep_18 
 stop_prep_inj_choice  continuous_prep_inj_use  dt_prep_oral_rs
 hiv infection tested prep_falseneg sens_vct eff_sens_vct primary hivtest_type dt_last_test annual_testing_prep_inj
 registd o_cab tss_cab cab_time_to_lower_threshold adh adh_dl vl r_cab cab_res_o_cab cab_res_tail cab_res_primary 
@@ -17599,7 +17533,7 @@ prep_any_elig prep_oral_willing prep_inj_willing 	testfor_prep_oral testfor_prep
 	prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever 
 	last_prep_used stop_prep_oral_choice stop_prep_inj_choice stop_prep_vr_choice stop_prep_any_choice
 	stop_prep_oral_elig stop_prep_inj_elig stop_prep_vr_elig stop_prep_any_elig
-	 dt_prep_any_rs dt_prep_any_c tmp_prep dt_last_test;
+	 prep_any_restart_date dt_prep_any_c tmp_prep dt_last_test;
 where age ge 15 and prep_inj_ever = 1 and (death=. or dead=1);
 run; 
 
@@ -17610,7 +17544,7 @@ run;
 proc means; var prep_oral prep_inj prep_vr prep_any prep_oral_ever prep_inj_ever prep_vr_ever prep_any_ever;
 where age ge 15 and death = . and caldate&j=1995; run;
 
-proc univariate; var dt_prep_any_rs ; where caldate&j=2021.75; run;
+proc univariate; var prep_any_restart_date ; where caldate&j=2021.75; run;
 
 proc freq; tables tmp_prep  ; where caldate&j=2021.75; run;
 
@@ -18271,7 +18205,7 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
+s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
@@ -18452,7 +18386,8 @@ s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_to
 s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	 s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_inj s_newp_prep_vr 
+s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 			
 s_pop_wide_tld_as_art
 
@@ -18472,8 +18407,9 @@ s_switch_prep_from_oral  s_switch_prep_from_inj s_switch_prep_from_vr s_switch_p
  s_hiv1_prep_any s_hiv1_prep_inj s_hiv1_prep_vr  s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim s_prep_vr_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim  s_prep_vr_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim 
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj s_on_risk_informed_prep_oral
-s_infected_on_prep_vr  s_on_risk_informed_prep_inj s_on_risk_informed_prep_vr
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr 
+s_infected_on_prep_oral s_infected_on_prep_inj s_infected_on_prep_vr  
+s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep_vr
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_inj_prim  s_start_rest_prep_inj_prim_cabr
 s_start_restart_prep_vr s_start_restart_prep_vr_prim 
 
@@ -19220,7 +19156,7 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-s_diagprim_prep_inj s_diagprim_prep_vr  s_diagprim
+s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
@@ -19399,7 +19335,8 @@ s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_to
 s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_inj s_newp_prep_vr 
+s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 			 
 s_pop_wide_tld_as_art	
 
@@ -19419,7 +19356,8 @@ s_switch_prep_from_oral  s_switch_prep_from_inj  s_switch_prep_from_vr s_switch_
 s_hiv1_prep_any s_hiv1_prep_inj s_hiv1_prep_vr s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_vr_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim s_prep_vr_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr  
+s_infected_on_prep_oral s_infected_on_prep_inj s_infected_on_prep_vr  
 s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep_vr
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_vr s_start_restart_prep_inj_prim s_start_restart_prep_vr_prim 
 s_start_rest_prep_inj_prim_cabr
@@ -20996,7 +20934,7 @@ s_i_naive_vlg1_rm0_np  s_i_naive_vlg2_rm0_np  s_i_naive_vlg3_rm0_np  s_i_naive_v
 s_i_naive_vlg1_rm1_np  s_i_naive_vlg2_rm1_np  s_i_naive_vlg3_rm1_np  s_i_naive_vlg4_rm1_np  s_i_naive_vlg5_rm1_np  s_i_naive_vlg6_rm1_np
 s_i_v1_np  s_i_v2_np   s_i_v3_np  s_i_v4_np   s_i_v5_np  s_i_v6_np 
 
-s_diagprim_prep_inj s_diagprim_prep_vr s_diagprim
+s_diagprim s_diagprim_prep_oral s_diagprim_prep_inj s_diagprim_prep_vr 
 
 /*Number ep and newp*/
 s_np  s_newp  s_newp_ge1  s_newp_ge5  s_newp_ge10  s_newp_ge50  s_ep  s_ep_m  s_ep_w  
@@ -21179,7 +21117,8 @@ s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_to
 s_tot_yrs_prep_inj_gt_5  s_tot_yrs_prep_inj_gt_10   s_tot_yrs_prep_inj_gt_20
 s_tot_yrs_prep_vr_gt_5  s_tot_yrs_prep_vr_gt_10   s_tot_yrs_prep_vr_gt_20
 s_pop_wide_tld_prep	  s_tld_notest_notprepelig_pos s_tld_notest_notprepelig_neg							
-s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep  s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
+s_prep_any_elig_past_year s_prep_any_elig_past_3year  s_prep_any_elig_past_5year s_newp_prep_any s_newp_prep_oral s_newp_prep_inj s_newp_prep_vr 
+s_prop_elig_years_onprep_ayear_i  s_continuous_prep_oral_ge1yr
 s_pop_wide_tld_as_art			   
 s_newp_this_per_hivneg_m   s_newp_this_per_hivneg_w   s_newp_this_per_hivneg_age1524w   s_newp_this_per_hivneg_sw  
 s_newp_this_per_hivneg_m_prep   s_newp_this_per_hivneg_w_prep  s_newp_tp_hivneg_age1524w_prep   s_newp_this_per_hivneg_sw_prep  s_pep_not_prep
@@ -21197,14 +21136,15 @@ s_switch_prep_from_oral  s_switch_prep_from_inj  s_switch_prep_from_vr s_switch_
 s_hiv1_prep_any s_hiv1_prep_inj s_hiv1_prep_vr s_cur_in_prep_inj_tail_hiv
 s_cur_in_prep_inj_tail_no_r  s_prep_o_cab_off_3m_prim  s_prep_primary_prevented  s_prep_inj_init_prim  s_prep_vr_init_prim  s_prep_inj_init_prim_res
 s_prep_inj_reinit_prim s_prep_vr_reinit_prim  s_prep_inj_reinit_prim_res  s_cur_in_prep_inj_tail_prim  
-s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr  s_infected_on_prep_inj  
+s_start_restart_prep_oral_hiv s_start_restart_prep_inj_hiv s_start_restart_prep_vr_hiv s_start_rest_prep_inj_hiv_cabr  
+s_infected_on_prep_oral s_infected_on_prep_inj s_infected_on_prep_vr  
 s_on_risk_informed_prep_oral s_on_risk_informed_prep_inj s_on_risk_informed_prep_vr
 s_start_restart_prep_oral s_start_restart_prep_inj s_start_restart_prep_vr s_start_restart_prep_inj_prim s_start_restart_prep_vr_prim 
 s_start_rest_prep_inj_prim_cabr
 
 s_all_prep_criteria  s_all_prep_criteria_hivneg  s_prep_elig_hivneg s_prep_elig_hivneg_onprep   s_prep_elig_onprep s_prep_elig_onprep_inj
 s_prep_elig_onprep_vr
-s_started_prep_inj_hiv s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
+s_prep_oral_restart_date_choice s_started_prep_vr_hiv s_started_prep_any_hiv  s_pop_wide_tld_hiv   s_pop_wide_tld_prep_elig  s_pop_wide_tld_neg_prep_inelig 
 
 /*testing and diagnosis*/
 s_tested  s_tested_m  s_tested_f  s_tested_f_non_anc  s_tested_ancpd s_test_anclabpd s_tested_1524w s_tested_f_anc  s_ever_tested_m  s_ever_tested_w  s_firsttest
@@ -21724,8 +21664,8 @@ start_rest_prep_inj_prim_cabr	Cab-la was initiated or reinitiated in this period
 
 HIV infection while on cab-la (or past 3 months)
 
-o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
-o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period – did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r			Has hiv and is on cab-la or was on cab-la in last period, did not have insti resistance as of the last period
+o_cab_or_o_cab_tm1_no_r_prim	Is currently in primary infection and is on cab-la or was on cab-la in last period, did not have insti resistance as of the last period
 infected_on_prep_inj 			Has hiv and is on cab-la or was on cab-la in last period
 prep_o_cab_off_3m_prim  		Is in primary infection - is on cab-la or stopped this period
 
@@ -21734,13 +21674,13 @@ HIV infection during cab-la tail
 emerge_inm_res_cab_tail			Has hiv and is currently in cab-la tail and insti resistance emerged in this period
 emerge_inm_res_cab_tail_pr		In primary infection and currently in cab-la tail and insti resistance emerged in this period
 cur_in_prep_inj_tail_hiv		Has hiv and is currently in cab-la tail
-cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail – did not have insti resistance as of the last period
+cur_in_prep_inj_tail_no_r		Has hiv and is currently in cab-la tail, did not have insti resistance as of the last period
 cur_in_prep_inj_tail_prim 		In primary infection and is currently in cab-la tail
 
 Non-specific 
 
 em_inm_res_o_cab_off_3m			Has hiv and is on cab-la was on cab-la last period and insti resistance emerged in this period due to cab-la 
-em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (‘npr’) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
+em_inm_res_o_cab_off_3m_npr		Has hiv and is beyond primary infection (npr) and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 em_inm_res_o_cab_off_3m_pr		Has hiv and is in primary infection and is on cab-la or was on cab-la last period and insti resistance emerged in this period due to cab-la
 cab_res_prep_inj_primary		Is in primary infection and is on cab-la or on cab-la last period and has insti resistance (from cab-la or transmitted) 
 cab_res_primary					Is in primary infection and has insti resistance (from cab-la or transmitted)
