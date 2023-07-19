@@ -2080,7 +2080,7 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * Oral PREP introduction in fsw/agyw 2018; 
 if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 31 32 33 34 40) then do; 
 	*ESSENTIAL;
-		date_prep_inj_intro=2100;
+		date_prep_inj_intro=2100;	* QUERY do we need inj here at all? VR?;
 end;
 
 * Oral PrEP effectiveness against non-resistant virus;
