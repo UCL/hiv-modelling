@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_from2023_26_06_23;
+set a.l_base_from2023_03_07_23;
 
 
 p_onart_vl1000_all = .;
@@ -74,13 +74,16 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 
 proc sort data=b; by option cald run ;run;
 data b;set b; if cald ne .;run;*100 records deleted;
-proc freq data=b;table option cald run;run;
+proc freq data=b;table option cald run run_forward_id;run;
 /*proc freq data=b;table cald*option/norow nocol noperc;run;*/
+
+*run_forward_id has not been saved;
+
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
 
 *63 simulations, for now each starting from a different dataset;
-%let nfit = 63  ;
+%let nfit = 100  ;
 %let year_start = 2023;
 %let year_end = 2072.75;
 run;
@@ -245,7 +248,7 @@ data a.d_from2023;set d;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V13_20230626_from2023_63sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V13_20230703_from2023_100sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
@@ -1993,10 +1996,14 @@ ods rtf close;run;
 
 *Partire da qua;
 
+
+/***********************************************************************************************/
+/************************              STOCK                        ****************************/
+/***********************************************************************************************/
 *VCFeb2023;
 *Output to be exported to fill in the file "Output template MIHPSAZimP2";
-*STOCK;
-data d;set a.d;run;
+
+data d;set a.d_from2023;run;
 proc contents data=d;run;
 %macro stock(o=);
 *Note: we do export 90% range even if they are name 95% LL and UL
@@ -2171,8 +2178,8 @@ rename p95_p_onart_vl1000_1524__&o = P_VLS_onARTA1524_95UL;
 rename p50_p_onart_vl1000_w1524evpr_&o = P_VLS_onARTpregEverBirthF1524_M;
 *% of adults 15+ years living with HIV who are on ART and who have ever been viremic (measured VL>1000) who are virally suppressed (if possible, at a threshold of <1000)
 *rename _&o = P_VLS_onARTMVLgt1000EverA1599_M;
-
-keep cald
+year= floor(cald);
+keep year
 p50_prevalence1549m_&o 		p5_prevalence1549m_&o		p95_prevalence1549m_&o
 p50_prevalence1549w_&o		p5_prevalence1549w_&o 		p95_prevalence1549w_&o
 p50_prevalence1549__&o		p5_prevalence1549__&o		p95_prevalence1549__&o
@@ -2267,17 +2274,26 @@ p50_p_onart_vl1000_w1524evpr_&o
 /*_&o = P_VLS_onARTMVLgt1000EverA1599_M_&o;*/
 ;
 run;
-
 %mend;
 %stock(o=0);
 %stock(o=1);
 %stock(o=15);
 
-
-
+PROC export data=s0 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="Base_STOCK";  RUN;
+PROC export data=s1 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="Ess_STOCK";  RUN;
+PROC export data=s15 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="TDFPrEP_F1524_STOCK";  RUN;
 options nomprint;
 option nospool;
 
+
+
+
+/***********************************************************************************************/
+/************************              FLOW                        ****************************/
+/***********************************************************************************************/
 
 
   ***Macro var used to calculate means across each year and transpose to one line per run,
@@ -2378,6 +2394,14 @@ n_init_prep_inj_sdc    n_prep_inj_ly_sdc 	n_prep_inj_ever_sdc
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
 ;
 run;
+
+data b;set b;
+rename n_new_inf1549=n_new_inf1549_;
+run;
+
+
+
+
 *All Missing for n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
  All 0       for n_tested_ancpd    n_diag_progsw;
 
@@ -2385,7 +2409,7 @@ run;
 %var_cy(0,n_birth);%var_cy(0,n_give_birth_w_hiv);/*%var_cy(0,n_everpregn_w1524_);%var_cy(0,n_everpregn_hiv_w1524_);*/%var_cy(0,n_birth_with_inf_child);
 %var_cy(0,incidence1549m);%var_cy(0,incidence1549w);%var_cy(0,incidence1549_);%var_cy(0,incidence1524w);%var_cy(0,incidence_sw);
 /*%var_cy(0,incidence_sd1564_);%var_cy(0,incidence_sd1564w);*/
-%var_cy(0,n_new_inf1564m);%var_cy(0,n_new_inf1564w);%var_cy(0,n_new_inf1549m);%var_cy(0,n_new_inf1549w);%var_cy(0,n_new_inf1549);
+%var_cy(0,n_new_inf1564m);%var_cy(0,n_new_inf1564w);%var_cy(0,n_new_inf1549m);%var_cy(0,n_new_inf1549w);%var_cy(0,n_new_inf1549_);
 %var_cy(0,n_new_inf1524m);%var_cy(0,n_new_inf1524w);%var_cy(0,n_new_inf2549m);%var_cy(0,n_new_inf2549w);
 %var_cy(0,n_death_hivrel_m);%var_cy(0,n_death_hivrel_w);%var_cy(0,n_death_hivrel);
 %var_cy(0,n_death_m);%var_cy(0,n_death_w);
@@ -2424,56 +2448,157 @@ run;
 );%var_cy(0,n_init_prep_inj_sdc);%var_cy(0,n_prep_inj_ly_sdc);%var_cy(0,n_prep_inj_ever_sdc);
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
 ;
-data   wide_allyears_0; merge 
-l_n_birth_0  l_n_give_birth_w_hiv_0  /*l_n_everpregn_w1524__0  l_n_everpregn_hiv_w1524__0*/ l_n_birth_with_inf_child_0
-l_incidence1549m_0	l_incidence1549w_0  l_incidence1549__0  l_incidence1524w_0  l_incidence_sw_0  l_incidence_sd1564__0  l_incidence_sd1564w_0
-l_n_new_inf1564m_0	l_n_new_inf1564w_0  l_n_new_inf1549m_0	l_n_new_inf1549w_0  l_n_new_inf1549_0
-l_n_new_inf1524m_0	l_n_new_inf1524w_0  l_n_new_inf2549m_0	l_n_new_inf2549w_0
-l_n_death_hivrel_m_0	l_n_death_hivrel_w_0	l_n_death_hivrel_0
-l_n_death_m_0  l_n_death_w_0
+
+
+
+*The following are commmenting out as not yest exported in current dataset;
+%var_cy(1,n_birth);%var_cy(1,n_give_birth_w_hiv);/*%var_cy(1,n_everpregn_w1524_);%var_cy(1,n_everpregn_hiv_w1524_);*/%var_cy(1,n_birth_with_inf_child);
+%var_cy(1,incidence1549m);%var_cy(1,incidence1549w);%var_cy(1,incidence1549_);%var_cy(1,incidence1524w);%var_cy(1,incidence_sw);
+/*%var_cy(1,incidence_sd1564_);%var_cy(1,incidence_sd1564w);*/
+%var_cy(1,n_new_inf1564m);%var_cy(1,n_new_inf1564w);%var_cy(1,n_new_inf1549m);%var_cy(1,n_new_inf1549w);%var_cy(1,n_new_inf1549_);
+%var_cy(1,n_new_inf1524m);%var_cy(1,n_new_inf1524w);%var_cy(1,n_new_inf2549m);%var_cy(1,n_new_inf2549w);
+%var_cy(1,n_death_hivrel_m);%var_cy(1,n_death_hivrel_w);%var_cy(1,n_death_hivrel);
+%var_cy(1,n_death_m);%var_cy(1,n_death_w);
 /* YLL_80yLifeExpect_3Disc_A1599_M */
 
-l_n_tested_ancpd_0  l_n_test_anclabpd_0
+%var_cy(1,n_tested_ancpd);%var_cy(1,n_test_anclabpd);
 /* HIVST...*/
-l_n_tested_m_sympt_0  l_n_tested_w_sympt_0
+%var_cy(1,n_tested_m_sympt);%var_cy(1,n_tested_w_sympt);
 /*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
-l_n_tested_swprog_0  l_n_tested_sw_0  l_n_tested_m_0  l_n_tested_w_0  l_n_tested_0
+%var_cy(1,n_tested_swprog);%var_cy(1,n_tested_sw);%var_cy(1,n_tested_m);%var_cy(1,n_tested_w);%var_cy(1,n_tested);
 /*TOTHIVST_M1599_M...*/
 
-l_n_diag_anclabpd_0
+%var_cy(1,n_diag_anclabpd);
 /*NPosConfHIVST_PD_M1599_M.... NPosTests_FAC_M1599_M... NPosTests_IndexFAC_M1599_M...NPosTests_RecInf_M1599_M ... NPosTests_COM_M1599_M*/
-l_n_diag_progsw_0  l_n_diag_m_0  l_n_diag_w_0
+%var_cy(1,n_diag_progsw);%var_cy(1,n_diag_m);%var_cy(1,n_diag_w);
 /* TOTPosConfHIVST_M1599_M..*/
 
-l_test_proppos_m_0  l_test_proppos_m_0  l_test_proppos_m_0 
-l_test_proppos_w_0  l_test_proppos_w_0  l_test_proppos_w_0
-l_test_prop_positive_0	l_test_prop_positive_0  l_test_prop_positive_0
-l_test_proppos_1524w_0   l_test_proppos_sw_0 
+%var_cy(1,test_proppos_m);%var_cy(1,test_proppos_w);%var_cy(1,test_prop_positive);
+%var_cy(1,test_proppos_1524w);%var_cy(1,test_proppos_sw);
 
 /* DREAMS */
 
 /*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
 /*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
-l_n_new_vmmc1549m_0
-l_n_init_prep_oral_1524w_0 l_n_prep_oral_ly_1524w_0   l_n_prep_oral_ever_1524w_0 
-l_n_init_prep_oral_sw_0    l_n_prep_oral_ly_sw_0 		l_n_prep_oral_ever_sw_0 
-l_n_init_prep_oral_sdc_0   l_n_prep_oral_ly_sdc_0 	l_n_prep_oral_ever_sdc_0
+%var_cy(1,n_new_vmmc1549m);
+%var_cy(1,n_init_prep_oral_1524w);%var_cy(1,n_prep_oral_ly_1524w);%var_cy(1,n_prep_oral_ever_1524w);
+%var_cy(1,n_init_prep_oral_sw);%var_cy(1,n_prep_oral_ly_sw);%var_cy(1,n_prep_oral_ever_sw);
+%var_cy(1,n_init_prep_oral_sdc);%var_cy(1,n_prep_oral_ly_sdc);%var_cy(1,n_prep_oral_ever_sdc);
 /*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
-l_n_init_prep_vr_1524w_0   l_n_prep_vr_ly_1524w_0		l_n_prep_vr_ever_1524w_0 
-l_n_init_prep_vr_sw_0 	  l_n_prep_vr_ly_sw_0 		l_n_prep_vr_ever_sw_0
-l_n_init_prep_vr_sdc_0     l_n_prep_vr_ly_sdc_0	 	l_n_prep_vr_ever_sdc_0
+%var_cy(1,n_init_prep_vr_1524w);%var_cy(1,n_prep_vr_ly_1524w);%var_cy(1,n_prep_vr_ever_1524w);
+%var_cy(1,n_init_prep_vr_sw);%var_cy(1,n_prep_vr_ly_sw);%var_cy(1,n_prep_vr_ever_sw);
+%var_cy(1,n_init_prep_vr_sdc);%var_cy(1,n_prep_vr_ly_sdc);%var_cy(1,n_prep_vr_ever_sdc);
 /*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
-l_n_init_prep_inj_1524w_0  l_n_prep_inj_ly_1524w_0	l_n_prep_inj_ever_1524w_0
-l_n_init_prep_inj_sw_0     l_n_prep_inj_ly_sw_0		l_n_prep_inj_ever_sw_0 
-l_n_init_prep_inj_sdc_0    l_n_prep_inj_ly_sdc_0 		l_n_prep_inj_ever_sdc_0
+%var_cy(1,n_init_prep_inj_1524w);%var_cy(1,n_prep_inj_ly_1524w);%var_cy(1,n_prep_inj_ever_1524w);
+%var_cy(1,n_init_prep_inj_sw);%var_cy(1,n_prep_inj_ly_sw);%var_cy(1,n_prep_inj_ever_sw);
+);%var_cy(1,n_init_prep_inj_sdc);%var_cy(1,n_prep_inj_ly_sdc);%var_cy(1,n_prep_inj_ever_sdc);
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
+;
+
+
+
+
+*The following are commmenting out as not yest exported in current dataset;
+%var_cy(15,n_birth);%var_cy(15,n_give_birth_w_hiv);/*%var_cy(15,n_everpregn_w1524_);%var_cy(15,n_everpregn_hiv_w1524_);*/%var_cy(15,n_birth_with_inf_child);
+%var_cy(15,incidence1549m);%var_cy(15,incidence1549w);%var_cy(15,incidence1549_);%var_cy(15,incidence1524w);%var_cy(15,incidence_sw);
+/*%var_cy(15,incidence_sd1564_);%var_cy(15,incidence_sd1564w);*/
+%var_cy(15,n_new_inf1564m);%var_cy(15,n_new_inf1564w);%var_cy(15,n_new_inf1549m);%var_cy(15,n_new_inf1549w);%var_cy(15,n_new_inf1549_);
+%var_cy(15,n_new_inf1524m);%var_cy(15,n_new_inf1524w);%var_cy(15,n_new_inf2549m);%var_cy(15,n_new_inf2549w);
+%var_cy(15,n_death_hivrel_m);%var_cy(15,n_death_hivrel_w);%var_cy(15,n_death_hivrel);
+%var_cy(15,n_death_m);%var_cy(15,n_death_w);
+/* YLL_80yLifeExpect_3Disc_A1599_M */
+
+%var_cy(15,n_tested_ancpd);%var_cy(15,n_test_anclabpd);
+/* HIVST...*/
+%var_cy(15,n_tested_m_sympt);%var_cy(15,n_tested_w_sympt);
+/*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
+%var_cy(15,n_tested_swprog);%var_cy(15,n_tested_sw);%var_cy(15,n_tested_m);%var_cy(15,n_tested_w);%var_cy(15,n_tested);
+/*TOTHIVST_M1599_M...*/
+
+%var_cy(15,n_diag_anclabpd);
+/*NPosConfHIVST_PD_M1599_M.... NPosTests_FAC_M1599_M... NPosTests_IndexFAC_M1599_M...NPosTests_RecInf_M1599_M ... NPosTests_COM_M1599_M*/
+%var_cy(15,n_diag_progsw);%var_cy(15,n_diag_m);%var_cy(15,n_diag_w);
+/* TOTPosConfHIVST_M1599_M..*/
+
+%var_cy(15,test_proppos_m);%var_cy(15,test_proppos_w);%var_cy(15,test_prop_positive);
+%var_cy(15,test_proppos_1524w);%var_cy(15,test_proppos_sw);
+
+/* DREAMS */
+
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+%var_cy(15,n_new_vmmc1549m);
+%var_cy(15,n_init_prep_oral_1524w);%var_cy(15,n_prep_oral_ly_1524w);%var_cy(15,n_prep_oral_ever_1524w);
+%var_cy(15,n_init_prep_oral_sw);%var_cy(15,n_prep_oral_ly_sw);%var_cy(15,n_prep_oral_ever_sw);
+%var_cy(15,n_init_prep_oral_sdc);%var_cy(15,n_prep_oral_ly_sdc);%var_cy(15,n_prep_oral_ever_sdc);
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+%var_cy(15,n_init_prep_vr_1524w);%var_cy(15,n_prep_vr_ly_1524w);%var_cy(15,n_prep_vr_ever_1524w);
+%var_cy(15,n_init_prep_vr_sw);%var_cy(15,n_prep_vr_ly_sw);%var_cy(15,n_prep_vr_ever_sw);
+%var_cy(15,n_init_prep_vr_sdc);%var_cy(15,n_prep_vr_ly_sdc);%var_cy(15,n_prep_vr_ever_sdc);
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+%var_cy(15,n_init_prep_inj_1524w);%var_cy(15,n_prep_inj_ly_1524w);%var_cy(15,n_prep_inj_ever_1524w);
+%var_cy(15,n_init_prep_inj_sw);%var_cy(15,n_prep_inj_ly_sw);%var_cy(15,n_prep_inj_ever_sw);
+);%var_cy(15,n_init_prep_inj_sdc);%var_cy(15,n_prep_inj_ly_sdc);%var_cy(15,n_prep_inj_ever_sdc);
+/*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
+;
+
+
+
+
+%macro wide(s);
+data   wide_allyears_&s; merge 
+l_n_birth_&s  l_n_give_birth_w_hiv_&s  /*l_n_everpregn_w1524__&s  l_n_everpregn_hiv_w1524__&s*/ l_n_birth_with_inf_child_&s
+l_incidence1549m_&s	l_incidence1549w_&s  l_incidence1549__&s  l_incidence1524w_&s  l_incidence_sw_&s  /*l_incidence_sd1564__&s  l_incidence_sd1564w_&s*/
+l_n_new_inf1564m_&s	l_n_new_inf1564w_&s  l_n_new_inf1549m_&s	l_n_new_inf1549w_&s  l_n_new_inf1549__&s
+l_n_new_inf1524m_&s	l_n_new_inf1524w_&s  l_n_new_inf2549m_&s	l_n_new_inf2549w_&s
+l_n_death_hivrel_m_&s	l_n_death_hivrel_w_&s	l_n_death_hivrel_&s
+l_n_death_m_&s  l_n_death_w_&s
+/* YLL_80yLifeExpect_3Disc_A1599_M */
+
+l_n_tested_ancpd_&s  l_n_test_anclabpd_&s
+/* HIVST...*/
+l_n_tested_m_sympt_&s  l_n_tested_w_sympt_&s
+/*Ntests_FACNOSYMPT_M1599_M... Ntests_IndexFAC_M1599_M...Ntests_RecInf_M1599_M ... Ntests_COM_M1599_M*/
+l_n_tested_swprog_&s  l_n_tested_sw_&s  l_n_tested_m_&s  l_n_tested_w_&s  l_n_tested_&s
+/*TOTHIVST_M1599_M...*/
+
+l_n_diag_anclabpd_&s
+/*NPosConfHIVST_PD_M1599_M.... NPosTests_FAC_M1599_M... NPosTests_IndexFAC_M1599_M...NPosTests_RecInf_M1599_M ... NPosTests_COM_M1599_M*/
+l_n_diag_progsw_&s  l_n_diag_m_&s  l_n_diag_w_&s
+/* TOTPosConfHIVST_M1599_M..*/
+
+l_test_proppos_m_&s  l_test_proppos_m_&s  l_test_proppos_m_&s 
+l_test_proppos_w_&s  l_test_proppos_w_&s  l_test_proppos_w_&s
+l_test_prop_positive_&s	l_test_prop_positive_&s  l_test_prop_positive_&s
+l_test_proppos_1524w_&s   l_test_proppos_sw_&s 
+
+/* DREAMS */
+
+/*NFSWprog_FSW1599_M... NFSWprogEver_FSW1599_M*/
+/*NSBCC_A1599_M ...NCUPP_A1599_M ... NCondoms_A1599_M*/
+l_n_new_vmmc1549m_&s
+l_n_init_prep_oral_1524w_&s l_n_prep_oral_ly_1524w_&s   l_n_prep_oral_ever_1524w_&s 
+l_n_init_prep_oral_sw_&s    l_n_prep_oral_ly_sw_&s 		l_n_prep_oral_ever_sw_&s 
+l_n_init_prep_oral_sdc_&s   l_n_prep_oral_ly_sdc_&s 	l_n_prep_oral_ever_sdc_&s
+/*NTDFPrEPinit_pregbfF1549_M    NTDFPrEP_pregbfF1549_M  NTDFPrEPEver_pregbfF1549_M*/
+l_n_init_prep_vr_1524w_&s   l_n_prep_vr_ly_1524w_&s		l_n_prep_vr_ever_1524w_&s 
+l_n_init_prep_vr_sw_&s 	  l_n_prep_vr_ly_sw_&s 		l_n_prep_vr_ever_sw_&s
+l_n_init_prep_vr_sdc_&s     l_n_prep_vr_ly_sdc_&s	 	l_n_prep_vr_ever_sdc_&s
+/*NDPVPrEPinit_pregbfF1549_M    NDPVPrEP_pregbfF1549_M  NDPVPrEPEver_pregbfF1549_M*/
+l_n_init_prep_inj_1524w_&s  l_n_prep_inj_ly_1524w_&s	l_n_prep_inj_ever_1524w_&s
+l_n_init_prep_inj_sw_&s     l_n_prep_inj_ly_sw_&s		l_n_prep_inj_ever_sw_&s 
+l_n_init_prep_inj_sdc_&s    l_n_prep_inj_ly_sdc_&s 		l_n_prep_inj_ever_sdc_&s
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/	
 ;
 run;
-
+%mend;
+%wide(0);
+%wide(1);
+%wide(15);
 
 *FLOW;
 %macro flow(o=);
-data wide_allyears_&o;
+data wide_allyears_&o; set wide_allyears_&o;
 *note that 1991 would refer to the period 1990.5-1991.5;
 
 *** PREGNANCIES BIRTHS;
@@ -2667,8 +2792,8 @@ rename P50_test_proppos_sw_&o = PosRate_FSW1599_M;
 
 
 *** PREVENTION;
-rename P50_ _&o = NFSWprog_FSW1599_M;
-rename P50_ _&o = NFSWprogEver_FSW1599_M;
+*rename P50_ _&o = NFSWprog_FSW1599_M;
+*rename P50_ _&o = NFSWprogEver_FSW1599_M;
 *Number of adults 15+ years old recipient of SBCC intervention;
 *rename P50_ _&o = NSBCC_A1599_M;
 *Number of adults 15+ years old recipient of condoms;
@@ -2715,7 +2840,7 @@ rename P50_n_prep_inj_ever_sdc_&o = NCABPrEPEver_SDCA1599_M;
 *rename P50_ _&o = NCABPrEPinit_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEP_pregbfF1549_M;
 *rename P50_ _&o = NCABPrEPEver_pregbfF1549_M;
-
+/*
 NPMTCT_FbirthHIV1599_M
 NARTinit_A1599_M
 NARTreinit_A1599_M
@@ -2760,19 +2885,20 @@ NMVLgt1000_A1599_M
 NMVLgt1000Ever_A1599_M
 N_ADHCVIR_MVLgt1000EverA1599_M
 N_ADHCADO_A1524_M
+*/
 
-
+rename cald=year;
 
 
 keep cald
-p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o  p50_n_birth_with_inf_child_&o
+p50_n_birth_&o  p50_n_give_birth_w_hiv_&o  /*p50_n_everpregn_w1524_&o  p50_n_everpregn_hiv_w1524_&o*/  p50_n_birth_with_inf_child_&o
 
 p50_incidence1549m_&o  p5_incidence1549m_&o  p95_incidence1549m_&o 
 p50_incidence1549w_&o  p5_incidence1549w_&o  p95_incidence1549w_&o 
 p50_incidence1549__&o  p5_incidence1549__&o  p95_incidence1549__&o 
 p50_incidence1524w_&o  p5_incidence1524w_&o  p95_incidence1524w_&o 
 p50_incidence_sw_&o    p5_incidence_sw_&o    p95_incidence_sw_&o 
-p50_incidence_sd1564__&o p50_incidence_sd1564w_&o 
+/*p50_incidence_sd1564__&o p50_incidence_sd1564w_&o */
 
 p50_n_new_inf1564m_&o  p5_n_new_inf1564m_&o  p95_n_new_inf1564m_&o
 p50_n_new_inf1564w_&o  p5_n_new_inf1564w_&o  p95_n_new_inf1564w_&o
@@ -2803,7 +2929,7 @@ P50_n_tested_&o    P5_n_tested_&o    P95_n_tested_&o
 
 P50_n_diag_anclabpd_&o 
 /*NPosConfHIVST_PD_M1599_M.... NPosTests_FAC_M1599_M... NPosTests_IndexFAC_M1599_M...NPosTests_RecInf_M1599_M ... NPosTests_COM_M1599_M*/
-P50_n_diag_progsw_&o  P50_n_diag_sw_&o 
+P50_n_diag_progsw_&o  /*P50_n_diag_sw_&o */
 P50_n_diag_m_&o  P5_n_diag_m_&o  P95_n_diag_m_&o 
 P50_n_diag_w_&o  P5_n_diag_w_&o  P95_n_diag_w_&o 
 /* TOTPosConfHIVST_M1599_M..*/
@@ -2830,9 +2956,17 @@ P50_n_init_prep_inj_1524w_&o  P50_n_prep_inj_ly_1524w_&o	P50_n_prep_inj_ever_152
 P50_n_init_prep_inj_sw_&o     P50_n_prep_inj_ly_sw_&o		P50_n_prep_inj_ever_sw_&o 
 P50_n_init_prep_inj_sdc_&o    P50_n_prep_inj_ly_sdc_&o 		P50_n_prep_inj_ever_sdc_&o
 /*NCABPrEPinit_pregbfF1549_M    NCABPrEP_pregbfF1549_M	NCABPrEPEver_pregbfF1549_M*/		
-;
+;run;
 %mend;
+%flow(o=0);
 %flow(o=1);
 %flow(o=15);
+
+PROC export data=wide_allyears_0 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="Base_FLOW";  RUN;
+PROC export data=wide_allyears_1 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="Ess_FLOW";  RUN;
+PROC export data=wide_allyears_15 outFILE= "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Comparison\Results\OralPREPAGYW_20230704\Original_20230703\Synthesis\MIHPSAZimP2_SYNTHESIS" dbms=xlsx REPLACE;
+sheet="TDFPrEP_F1524_FLOW";  RUN;
 
 	

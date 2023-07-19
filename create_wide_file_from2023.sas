@@ -3,8 +3,8 @@
 
 libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jun26_from2023_out";
-data a.base_from2023_26_06_23;   set b.out:;
+libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jul03_from2023_out";
+data a.base_from2023_03_07_23;   set b.out:;
 *8 dataset had dataset id with 8 characters,
  the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
  as it was trucnating dataset_id;
@@ -12,21 +12,21 @@ data a.base_from2023_26_06_23;   set b.out:;
 run;
 
 /* show the contents of the input SAS file */
-/*
-proc contents data=a.base_16_06_23;run;
+
+proc contents data=a.base_from2023_03_07_23;run;
 proc sort data=a.base_16_06_23; by run; run;
-proc freq data=a.base_from2023_26_06_23; table run option;where cald=2023.75;run;
-proc freq data=a.base_from2023_26_06_23; table run*option/norow nocol nopercent; where cald=2023.75;run;*63 simulations (out of 100) by 3 options = 189;
-proc freq data=a.base_from2023_26_06_23; table run cald option;run;
+proc freq data=a.base_from2023_03_07_23; table run option run_forward_id;where cald=2023.75;run;
+proc freq data=a.base_from2023_03_07_23; table run*option/norow nocol nopercent; where cald=2023.75;run;*63 simulations (out of 100) by 3 options = 189;
+proc freq data=a.base_from2023_03_07_23; table run cald option;run;
 */
 
 libname c "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
 
 *Looking whether mc_int is stored in the dataset saved at the end of 2022;
 
-
+/*
 proc freq data=c.zim_end2022_21249542;
-table /*mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015
+table mc_int circ_inc_rate rel_incr_circ_post_2013 rel_incr_circ_post_2015
 circ_red_20_30 circ_red_30_50 
 dur_prep_oral_scaleup
 date_prep_oral_intro
@@ -36,24 +36,24 @@ prob_prep_oral_b
 pref_prep_oral_beta_s1  
 rate_choose_stop_prep_oral 
 prep_willingness_threshold
-annual_testing_prep_oral*/
+annual_testing_prep_oral
 rate_test_onprep_any
-;run;/*
+;run;
 proc freq data=c.zim_end2022_21249542;table hard_reach;where gender=1;run;*/
 
 ods html close;
 ods listing;
 /*
-proc freq data=a.base_25_05_23;
-table s_hiv_sw s_sw_1564 s_sw_1564
+proc freq data=a.base_from2023_03_07_23;
+table run_forward_id /* s_hiv_sw s_sw_1564 s_sw_1564
 s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
-s_tested_ancpd  s_diag_thisper_progsw;run;*/
+s_tested_ancpd  s_diag_thisper_progsw*/;run;*/
 *Need to add s_death_hivrel_m;
 
 
 
 
-data g; set  a.base_from2023_26_06_23;
+data g; set  a.base_from2023_03_07_23;
 
 proc sort data=g; 
 by run cald option;run;
@@ -1067,7 +1067,7 @@ n_new_inf1524w = (s_primary1519w + s_primary2024w) * &sf * 4;
 n_new_inf2549m = (s_primary1549m - s_primary1519m - s_primary2024m) * &sf * 4;
 n_new_inf2549w = (s_primary1549w - s_primary1519w - s_primary2024w) * &sf * 4;
 
-keep run option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
+keep run run_forward_id option cald cost dataset  p_m_newp_ge1_age1549 p_w_newp_ge1_age1549 
 n_hiv n_hivge15m n_hivge15w n_hiv1524m n_hiv1524w n_hiv2549m n_hiv2549w n_hiv_sw
 n_alive n_alive_m n_alive_w n_alive_1524m n_alive_1524w n_alive_2549m n_alive_2549w
 n_hivneg_sdpartner n_hivneg_sdpartneroffart n_hivnegw_sdpartner n_hivnegw_sdpartneroffart
@@ -1250,7 +1250,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_from2023_26_06_23; set y;  run;
+data a.l_base_from2023_03_07_23; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
