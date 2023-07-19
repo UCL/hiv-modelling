@@ -8,7 +8,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000  ; 
+%let population = 10000  ; 
 
 %let year_interv = 2024;
 
@@ -2080,7 +2080,8 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 * Oral PREP introduction in fsw/agyw 2018; 
 if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 31 32 33 34 40) then do; 
 	*ESSENTIAL;
-		date_prep_inj_intro=2100;	* QUERY do we need inj here at all? VR?;
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;		* QUERY do we need these here at all? JAS Jul2023; *MIHPSA;
 end;
 
 * Oral PrEP effectiveness against non-resistant virus;
@@ -2117,27 +2118,23 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 
 
 *It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
-						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;
-	* QUERY is this to calibrate oral PrEP to Zim baseline (no MIHPSA)? JAS Jul2023;
+						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present;
 if caldate{t} = &year_interv and option=15 then pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3; 
-	* QUERY add other oral PrEP options for MIHPSA phase 3 (options 15-18)? Will we need *3 as in line above? What about other PrEP modalities? JAS Jul2023;
+if caldate{t} = &year_interv and option=19 then pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 	* MIHPSA: match inj PrEP uptake in AGYW (option 19) to oral PrEP target (option 15);
+if caldate{t} = &year_interv and option=23 then pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: match vr PrEP uptake in AGYW (option 23) to oral PrEP target (option 15);
+	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul2023;
 
-if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) 
-or (caldate{t} = &year_interv)then do;
-* pref_prep_oral;				* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);	
-																
+if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) or (caldate{t} = &year_interv) then do;
+	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
-* QUERY will need to adjust pref_prep_inj to match target update for MIHPSA JAS Jul2023; 
-if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) 
-or (caldate{t} = &year_interv) then do;
-					if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
-* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5); 			
+if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) or (caldate{t} = &year_interv) then do;
+	if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
+	* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
 end;
 
-if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) 
-or (caldate{t} = &year_interv) then do;
-* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
+if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) or (caldate{t} = &year_interv) then do;
+	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
@@ -19084,11 +19081,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-***Zim specific;
-
-if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
-if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
-if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
+/****Zim specific;*/
+/**/
+/*if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;*/
+/*if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;*/
+/*if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;*/
 
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
