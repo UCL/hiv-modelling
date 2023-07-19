@@ -4693,32 +4693,17 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;
 
 		* QUERY check numbers in strategies 15 and 16 below against MIHPSA targets;
 	if prep_any_strategy=15 then do;	* New for MIHPSA - serodiscordant couples; *JAS Apr2023;
-
-		* All serodiscordant couples - check numbers against MIHPSA targets;
-		if (epdiag=1 and (epart ne 1 or epvls ne 1)) 	
-		then prep_any_elig=1; 
-
-		* OR ;
-		* Limited to a proportion based on age (not gender) and a random fraction in line with prep_any_strategy 4 above;
+		* Limited to a proportion based on age (not gender) and a random fraction;
     	r = rand('Uniform');
-      	if (epdiag=1 and (epart ne 1 or epvls ne 1) and 
-      	(15 <= age < 50 and (r < 0.05 or (r < 0.5 and epi=1)) ) ) 
+      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.05 or (r < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 
-
 	end;
 
 	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
-
+		* QUERY discuss whether there should be a component of sexual behaviour in prep eligibility for pregnant and breastfeeding women;
 		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
-      	if gender=2 and (pregnant=1 or breastfeeding=1) then prep_any_elig=1; 
-
-		* OR ;
-		* Limited to a proportion based on a random fraction in line with prep_any_strategy 4 above;
-		r = rand('Uniform');
-      	if gender=2 and (pregnant=1 or breastfeeding=1) and
-      	(r < 0.05 or (r < 0.5 and epi=1)) 
-		then prep_any_elig=1; 
-
+      	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
