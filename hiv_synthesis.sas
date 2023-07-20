@@ -1997,6 +1997,9 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 option = &s;			
 * options mprint;
 
+option = 15;	* MIHPSA: oral PrEP for AGYW;
+option = 19;	* MIHPSA: VR PrEP for AGYW;
+option = 23;	* MIHPSA: inj PrEP for AGYW;
 
 
 * primary - currently in primary infection;
@@ -2078,11 +2081,12 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 
 * Oral PREP introduction in fsw/agyw 2018; 
-if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 31 32 33 34 40) then do; 
-	*ESSENTIAL;
-		date_prep_inj_intro=2100;
-		date_prep_vr_intro=2100;		* QUERY do we need these here at all? JAS Jul2023; *MIHPSA;
-end;
+
+/*if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 31 32 33 34 40) then do; */
+/*	*ESSENTIAL;*/
+/*		date_prep_inj_intro=2100;*/
+/*		date_prep_vr_intro=2100;		* QUERY note have moved this code to option 15-26 section so can delete here JAS Jul2023; *MIHPSA;*/
+/*end;*/
 
 * Oral PrEP effectiveness against non-resistant virus;
 prep_oral_effect_non_res_v = .;  * we only want this defined for people currently on oral prep so set to . at start of loop;
@@ -2120,8 +2124,8 @@ if low_prep_inj_uptake = 1 then date_prep_inj_intro = .;
 *It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
 						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present;
 if caldate{t} = &year_interv and option=15 then pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3; 
-if caldate{t} = &year_interv and option=19 then pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 	* MIHPSA: match inj PrEP uptake in AGYW (option 19) to oral PrEP target (option 15);
-if caldate{t} = &year_interv and option=23 then pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: match vr PrEP uptake in AGYW (option 23) to oral PrEP target (option 15);
+if caldate{t} = &year_interv and option=19 then pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 	* MIHPSA: can adjust this to match inj PrEP uptake in AGYW (option 19) to oral PrEP target (option 15);
+if caldate{t} = &year_interv and option=23 then pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match vr PrEP uptake in AGYW (option 23) to oral PrEP target (option 15);
 	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul2023;
 
 if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) or (caldate{t} = &year_interv) then do;
@@ -2157,17 +2161,17 @@ else if pref_prep_vr > pref_prep_oral and pref_prep_vr > pref_prep_inj then high
 * willingness to take prep if offered;
 
 if caldate{t} ge date_prep_oral_intro then do;
-	if  pref_prep_oral > prep_willingness_threshold  		then prep_oral_willing =1;
+	if  pref_prep_oral > prep_willingness_threshold	then prep_oral_willing =1;
 	q=rand('uniform');
 	if pop_wide_tld=1 and prep_oral_willing =0 and q < 0.05 then prep_oral_willing =1; 
 end;
 
 if caldate{t} ge date_prep_inj_intro then do;
-	if  pref_prep_inj  > prep_willingness_threshold  	then prep_inj_willing =1;
+	if  pref_prep_inj  > prep_willingness_threshold	then prep_inj_willing =1;
 end;
 
 if caldate{t} ge date_prep_vr_intro then do;
-	if  pref_prep_vr > prep_willingness_threshold  	then prep_vr_willing =1;
+	if  pref_prep_vr > prep_willingness_threshold	then prep_vr_willing =1;
 end;
 
 if prep_dependent_prev_vg1000=1 and . < prev_vg1000_1549 < prep_vlg1000_threshold then do; 
@@ -3284,96 +3288,120 @@ if option = 15 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC
 		eff_prob_prep_oral_b=0.95;*prob_prep_oral_b*2;
 		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 16 then do;		*Essential + Oral TDF/FTC PrEP for FSW; 
+if option = 16 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for FSW; 
 		prep_any_strategy=2;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 17 then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
+if option = 17 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
 		prep_any_strategy=15;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 18 then do;		*Essential + Oral TDF/FTC PrEP for pregnant and breastfeeding women;
+if option = 18 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for pregnant and breastfeeding women;
 		prep_any_strategy=16;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_oral_b=prob_prep_oral_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_inj_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
 * MIHPSA dapivirine ring; 
-if option = 19 then do;		*Essential + dapivirine ring for AGWY;
+if option = 19 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for AGWY;
 		prep_any_strategy=3;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_vr_b=prob_prep_vr_b;
-		eff_rate_choose_stop_prep_vr=rate_choose_stop_prep_vr;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
 end;
 
-if option = 20 then do;		*Essential + dapivirine ring for FSW;
+if option = 20 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for FSW;
 		prep_any_strategy=2;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_vr_b=prob_prep_vr_b;
 		eff_rate_choose_stop_prep_vr=rate_choose_stop_prep_vr;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
 end;
 
-if option = 21 then do;		*Essential + dapivirine ring for serodiscordant couples;
+if option = 21 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for serodiscordant couples;
 		prep_any_strategy=15;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_vr_b=prob_prep_vr_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
 end;
 
-if option = 22 then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
+if option = 22 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
 		prep_any_strategy=16;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_vr_b=prob_prep_vr_b;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_inj_intro=2100;
 end;
 
 * MIHPSA injectable PrEP; 
-if option = 23 then do;*	Essential + injectable PrEP for AGWY;
+if option = 23 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for AGWY;
 		prep_any_strategy=3;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_inj_b=prob_prep_inj_b;
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
-		eff_prob_prep_any_restart_choice=0.25;	
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
+		eff_prob_prep_any_restart_choice=0.25;		
+		date_prep_oral_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 24 then do;		*Essential + injectable PrEP for FSW;
+if option = 24 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for FSW;
 		prep_any_strategy=2;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_inj_b=prob_prep_inj_b;
 		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 25 then do;		*Essential + injectable PrEP for serodiscordant couples;
+if option = 25 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for serodiscordant couples;
 		prep_any_strategy=15;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_inj_b=prob_prep_inj_b;
 		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
-if option = 26 then do;		*Essential + injectable PrEP for pregnant and breastfeeding women;
+if option = 26 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for pregnant and breastfeeding women;
 		prep_any_strategy=16;	*New for MIHPSA;
 		eff_rate_test_startprep_any=rate_test_startprep_any;
 		eff_prob_prep_inj_b=prob_prep_inj_b;
 		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
 		eff_prob_prep_any_restart_choice=0.25;	
+		date_prep_oral_intro=2100;
+		date_prep_vr_intro=2100;
 end;
 
 
@@ -4601,7 +4629,7 @@ prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and differ
 * lapr and dpv-vr - changed name from prep_strategy to prep_any_strategy - will apply to all types of PrEP and pref_prep_xx decides which is taken (if all are available) ;
 
 
-if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_oral_intro > . then do;  
+if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_prep_inj_intro, date_prep_vr_intro) > . then do;  
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
 	if prep_any_strategy=1 then do;
@@ -17447,13 +17475,31 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 * procs;
 
-proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death
-prep_any_elig
-;
-where serial_no<600 and gender=2 and age ge 15 and age le 50 ;
-run;
+proc print; var caldate&j age gender newp ep 
+	option prep_any_strategy prep_any_elig highest_prep_pref
+	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever 
+	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever 
+	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever
+	last_prep_used;
+where serial_no<150 and age ge 15 and death=.;
+run; 
 
-/*proc freq; tables breastfeeding duration_breastfeeding; run;*/
+/*proc freq; tables prep_oral prep_inj prep_vr; run;*/
+/*proc freq; tables prep_oral_ever prep_inj_ever prep_vr_ever; run;*/
+/*proc freq; tables highest_prep_pref; run;*/
+/*proc freq; tables prep_oral_last_stop_date; run;*/
+/*proc freq; tables prep_any_elig; run;*/
+/*proc freq; tables prep_oral_willing prep_inj_willing prep_vr_willing; run;*/
+
+
+
+/*proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death*/
+/*prep_any_elig*/
+/*;*/
+/*where serial_no<600 and gender=2 and age ge 15 and age le 50 ;*/
+/*run;*/
+/**/
+/*/*proc freq; tables breastfeeding duration_breastfeeding; run;*/*/
 
 
 /*
