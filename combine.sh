@@ -17,7 +17,7 @@ for file in `echo $addinfiles | tr ':' ' '`
 do 
  cp $file . 
 done
-sas $sas_infile -sysparm "$SASOUTPUTDIR"
-tar cvzf $HOME/Scratch/combined_data_out/sv_$JOB_ID.tgz $TMPDIR
+sas $SASINPUT/combine.sas -sysparm "$SASOUTPUTDIR"
+tar cvzf $HOME/Scratch/combined_data_out/sv_combine_$JOB_ID.tgz $TMPDIR
 
 
