@@ -19511,15 +19511,15 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
-s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc 
-s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
-s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
-s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
-s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
-s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
-s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
-s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
-s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_init_prep_oral_1524w  s_init_prep_oral_sw	s_init_prep_oral_sdc	s_init_prep_oral_plw
+s_init_prep_inj_1524w   s_init_prep_inj_sw  s_init_prep_inj_sdc		s_init_prep_inj_plw
+s_init_prep_vr_1524w    s_init_prep_vr_sw   s_init_prep_vr_sdc 		s_init_prep_vr_plw
+s_prep_oral_ly_1524w  	s_prep_oral_ly_sw  	s_prep_oral_ly_sdc		s_prep_oral_ly_plw
+s_prep_inj_ly_1524w   	s_prep_inj_ly_sw   	s_prep_inj_ly_sdc 		s_prep_inj_ly_plw
+s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw  
 
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
@@ -21294,15 +21294,15 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
-s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc 
-s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
-s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
-s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
-s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
-s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
-s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
-s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
-s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_init_prep_oral_1524w  s_init_prep_oral_sw	s_init_prep_oral_sdc	s_init_prep_oral_plw
+s_init_prep_inj_1524w   s_init_prep_inj_sw  s_init_prep_inj_sdc		s_init_prep_inj_plw
+s_init_prep_vr_1524w    s_init_prep_vr_sw   s_init_prep_vr_sdc 		s_init_prep_vr_plw
+s_prep_oral_ly_1524w  	s_prep_oral_ly_sw  	s_prep_oral_ly_sdc		s_prep_oral_ly_plw
+s_prep_inj_ly_1524w   	s_prep_inj_ly_sw   	s_prep_inj_ly_sdc 		s_prep_inj_ly_plw
+s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw  
 
 s_onprep_inj_m s_onprep_inj_w  s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
