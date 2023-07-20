@@ -1997,9 +1997,9 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 option = &s;			
 * options mprint;
 
-option = 15;	* MIHPSA: oral PrEP for AGYW;
+/*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
 option = 19;	* MIHPSA: VR PrEP for AGYW;
-option = 23;	* MIHPSA: inj PrEP for AGYW;
+/*option = 23;	* MIHPSA: inj PrEP for AGYW;*/
 
 
 * primary - currently in primary infection;
@@ -14515,63 +14515,72 @@ if prep_any=1 then do;
 	if gender=2 and 15 le age lt 25 and newp >= 1 then onprep_w1524_newpge1_=1;
 end;
 
-*To calculate number initiated for the first time on different types of PrEP;
-init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;
+*To calculate number initiated for the first time on different types of PrEP;	* QUERY check if we need this to be _current_start_date rather than _first_start_date for MIHPSA targets? JAS Jul2023;
+init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_lbw;
 if caldate&j = prep_oral_first_start_date then do;
-	if gender=2 and 15 le age lt 25 then init_prep_oral_1524w=1;
-	if gender=2 and sw=1 			then init_prep_oral_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_oral_sdc=1;
+	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
+	if gender=2 and sw=1 				then init_prep_oral_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_oral_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then init_prep_oral_lbw=1;
 end;
-init_prep_inj_1524w=0;init_prep_inj_sw=0;init_prep_inj_sdc=0;
+init_prep_inj_1524w=0;init_prep_inj_sw=0;init_prep_inj_sdc=0;init_prep_inj_plw=0;
 if caldate&j = prep_inj_first_start_date then do;
-	if gender=2 and 15 le age lt 25 then init_prep_inj_1524w=1;
-	if gender=2 and sw=1 			then init_prep_inj_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_inj_sdc=1;
+	if gender=2 and 15 le age lt 25 	then init_prep_inj_1524w=1;
+	if gender=2 and sw=1 				then init_prep_inj_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_inj_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then init_prep_inj_plw=1;
 end;
-init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_sdc=0;
+init_prep_vr_1524w=0;init_prep_vr_sw=0;init_prep_vr_sdc=0;init_prep_vr_plw=0;
 if caldate&j = prep_vr_first_start_date then do;
-	if gender=2 and 15 le age lt 25 then init_prep_vr_1524w=1;
-	if gender=2 and sw=1 			then init_prep_vr_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then init_prep_vr_sdc=1;
-end;
-* To calculate number who used PrEP in the last year;
-prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;
-if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_oral_ly_1524w=1;
-	if gender=2 and sw=1 			then prep_oral_ly_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_oral_ly_sdc=1;
-end;
-prep_inj_ly_1524w=0;prep_inj_ly_sw=0;prep_inj_ly_sdc=0;
-if prep_inj_tm3=1 or prep_inj_tm2=1 or prep_inj_tm1=1 or prep_inj=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_inj_ly_1524w=1;
-	if gender=2 and sw=1 			then prep_inj_ly_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_inj_ly_sdc=1;
-end;
-prep_vr_ly_1524w=0;prep_vr_ly_sw=0;prep_vr_ly_sdc=0;
-if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_vr_ly_1524w=1;
-	if gender=2 and sw=1 			then prep_vr_ly_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_vr_ly_sdc=1;
+	if gender=2 and 15 le age lt 25 	then init_prep_vr_1524w=1;
+	if gender=2 and sw=1 				then init_prep_vr_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_vr_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then init_prep_vr_plw=1;
 end;
 
+* To calculate number who used PrEP in the last year;
+prep_oral_ly_1524w=0;prep_oral_ly_sw=0;prep_oral_ly_sdc=0;prep_oral_ly_plw=0;
+if prep_oral_tm3=1 or prep_oral_tm2=1 or prep_oral_tm1=1 or prep_oral=1 then do;
+	if gender=2 and 15 le age lt 25 	then prep_oral_ly_1524w=1;
+	if gender=2 and sw=1 				then prep_oral_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_oral_ly_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_oral_ly_plw=1;
+end;
+prep_inj_ly_1524w=0;prep_inj_ly_sw=0;prep_inj_ly_sdc=0;prep_inj_ly_plw=0;
+if prep_inj_tm3=1 or prep_inj_tm2=1 or prep_inj_tm1=1 or prep_inj=1 then do;
+	if gender=2 and 15 le age lt 25 	then prep_inj_ly_1524w=1;
+	if gender=2 and sw=1 				then prep_inj_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_inj_ly_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_inj_ly_plw=1;
+end;
+prep_vr_ly_1524w=0;prep_vr_ly_sw=0;prep_vr_ly_sdc=0;prep_vr_ly_plw=0;
+if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
+	if gender=2 and 15 le age lt 25 	then prep_vr_ly_1524w=1;
+	if gender=2 and sw=1 				then prep_vr_ly_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_vr_ly_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_vr_ly_plw=1;
+
 * To calculate number ever initiated on oral PrEP;
-prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;
+prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
 if prep_oral_ever=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_oral_ever_1524w=1;
-	if gender=2 and sw=1 			then prep_oral_ever_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_oral_ever_sdc=1;
+	if gender=2 and 15 le age lt 25 	then prep_oral_ever_1524w=1;
+	if gender=2 and sw=1 				then prep_oral_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_oral_ever_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_oral_ever_plw=1;
 end;
-prep_inj_ever_1524w=0;prep_inj_ever_sw=0;prep_inj_ever_sdc=0;
+prep_inj_ever_1524w=0;prep_inj_ever_sw=0;prep_inj_ever_sdc=0;prep_inj_ever_plw=0;
 if prep_inj_ever=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_inj_ever_1524w=1;
-	if gender=2 and sw=1 			then prep_inj_ever_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_inj_ever_sdc=1;
+	if gender=2 and 15 le age lt 25 	then prep_inj_ever_1524w=1;
+	if gender=2 and sw=1 				then prep_inj_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_inj_ever_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_inj_ever_plw=1;
 end;
-prep_vr_ever_1524w=0;prep_vr_ever_sw=0;prep_vr_ever_sdc=0;
+prep_vr_ever_1524w=0;prep_vr_ever_sw=0;prep_vr_ever_sdc=0;prep_vr_ever_plw=0;
 if prep_vr_ever=1 then do;
-	if gender=2 and 15 le age lt 25 then prep_vr_ever_1524w=1;
-	if gender=2 and sw=1 			then prep_vr_ever_sw=1;
-	if hiv0epi1_w=1 or hiv0epi1_m=1 then prep_vr_ever_sdc=1;
+	if gender=2 and 15 le age lt 25 	then prep_vr_ever_1524w=1;
+	if gender=2 and sw=1 				then prep_vr_ever_sw=1;
+	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_vr_ever_sdc=1;
+	if pregnant=1 or breastfeeding=1 	then prep_vr_ever_plw=1;
 end;
 
 
@@ -16742,15 +16751,15 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_onprep_inj_m + onprep_inj_m; s_onprep_inj_w + onprep_inj_w; s_onprep_oral_m + onprep_oral_m; s_onprep_oral_w + onprep_oral_w; 
 	s_onprep_vr_w + onprep_vr_w;
 	s_onprep_1524w + onprep_1524w ; s_onprep_w1524_newpge1_ + onprep_w1524_newpge1_; 
-	s_init_prep_oral_1524w + init_prep_oral_1524w; s_init_prep_oral_sw + init_prep_oral_sw; s_init_prep_oral_sdc + init_prep_oral_sdc;
-	s_init_prep_inj_1524w + init_prep_inj_1524w; s_init_prep_inj_sw + init_prep_inj_sw; s_init_prep_inj_sdc + init_prep_inj_sdc;
-	s_init_prep_vr_1524w + init_prep_vr_1524w; s_init_prep_vr_sw + init_prep_vr_sw; s_init_prep_vr_sdc + init_prep_vr_sdc;
-	s_prep_oral_ly_1524w + prep_oral_ly_1524w; s_prep_oral_ly_sw + prep_oral_ly_sw; s_prep_oral_ly_sdc + prep_oral_ly_sdc;
-	s_prep_inj_ly_1524w + prep_inj_ly_1524w; s_prep_inj_ly_sw + prep_inj_ly_sw; s_prep_inj_ly_sdc + prep_inj_ly_sdc;
-	s_prep_vr_ly_1524w + prep_vr_ly_1524w; s_prep_vr_ly_sw + prep_vr_ly_sw; s_prep_vr_ly_sdc + prep_vr_ly_sdc;
-	s_prep_oral_ever_1524w + prep_oral_ever_1524w; s_prep_oral_ever_sw + prep_oral_ever_sw; s_prep_oral_ever_sdc + prep_oral_ever_sdc;
-	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc;
-	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc;
+	s_init_prep_oral_1524w + init_prep_oral_1524w; s_init_prep_oral_sw + init_prep_oral_sw; s_init_prep_oral_sdc + init_prep_oral_sdc; s_init_prep_oral_plw + init_prep_oral_plw;
+	s_init_prep_inj_1524w + init_prep_inj_1524w; s_init_prep_inj_sw + init_prep_inj_sw; s_init_prep_inj_sdc + init_prep_inj_sdc; s_init_prep_inj_plw + init_prep_inj_plw;
+	s_init_prep_vr_1524w + init_prep_vr_1524w; s_init_prep_vr_sw + init_prep_vr_sw; s_init_prep_vr_sdc + init_prep_vr_sdc; s_init_prep_vr_plw + init_prep_vr_plw;
+	s_prep_oral_ly_1524w + prep_oral_ly_1524w; s_prep_oral_ly_sw + prep_oral_ly_sw; s_prep_oral_ly_sdc + prep_oral_ly_sdc; s_prep_oral_ly_plw + prep_oral_ly_plw;
+	s_prep_inj_ly_1524w + prep_inj_ly_1524w; s_prep_inj_ly_sw + prep_inj_ly_sw; s_prep_inj_ly_sdc + prep_inj_ly_sdc; s_prep_inj_ly_plw + prep_inj_ly_plw;
+	s_prep_vr_ly_1524w + prep_vr_ly_1524w; s_prep_vr_ly_sw + prep_vr_ly_sw; s_prep_vr_ly_sdc + prep_vr_ly_sdc; s_prep_vr_ly_plw + prep_vr_ly_plw;
+	s_prep_oral_ever_1524w + prep_oral_ever_1524w; s_prep_oral_ever_sw + prep_oral_ever_sw; s_prep_oral_ever_sdc + prep_oral_ever_sdc; s_prep_oral_ever_plw + prep_oral_ever_plw;
+	s_prep_inj_ever_1524w + prep_inj_ever_1524w; s_prep_inj_ever_sw + prep_inj_ever_sw; s_prep_inj_ever_sdc + prep_inj_ever_sdc; s_prep_inj_ever_plw + prep_inj_ever_plw;
+	s_prep_vr_ever_1524w + prep_vr_ever_1524w; s_prep_vr_ever_sw + prep_vr_ever_sw; s_prep_vr_ever_sdc + prep_vr_ever_sdc; s_prep_vr_ever_plw + prep_vr_ever_plw;
 	s_elig_prep_any_sw + elig_prep_any_sw ; s_elig_prep_any_w_1549 + elig_prep_any_w_1549;  s_prep_any_w_1549 + prep_any_w_1549;
 	s_elig_prep_any_w_1524 + elig_prep_any_w_1524 ; s_elig_prep_any_w_2534 + elig_prep_any_w_2534 ; s_elig_prep_any_w_3544 + elig_prep_any_w_3544 ;
     s_prep_any_w_2534 + prep_any_w_2534 ; s_prep_any_w_3544 + prep_any_w_3544 ; s_inf_prep_any_source_prep_r + inf_prep_any_source_prep_r ;
@@ -18554,15 +18563,15 @@ s_acq_rt65m_9_prep  s_acq_rt184m_9_prep   s_acq_rtm_9_prep     s_acq_rt65m_12_pr
 s_acq_rt65m_18_prep s_acq_rt184m_18_prep  s_acq_rtm_18_prep
 s_inf_prep_adhg80   s_inf_prep_adh5080    s_inf_prep_adhl50  s_prep_adhg80  s_prep_adh5080  s_prep_adhl50 
 s_onprep_1549 s_onprep_m s_onprep_w s_onprep_sw s_onprep_1524 s_onprep_1524w s_onprep_w1524_newpge1_ 
-s_init_prep_oral_1524w  s_init_prep_oral_sw  s_init_prep_oral_sdc  
-s_init_prep_inj_1524w   s_init_prep_inj_sw   s_init_prep_inj_sdc 
-s_init_prep_vr_1524w    s_init_prep_vr_sw    s_init_prep_vr_sdc 
-s_prep_oral_ly_1524w  s_prep_oral_ly_sw  s_prep_oral_ly_sdc
-s_prep_inj_ly_1524w   s_prep_inj_ly_sw   s_prep_inj_ly_sdc 
-s_prep_vr_ly_1524w    s_prep_vr_ly_sw    s_prep_vr_ly_sdc 
-s_prep_oral_ever_1524w  s_prep_oral_ever_sw  s_prep_oral_ever_sdc
-s_prep_inj_ever_1524w   s_prep_inj_ever_sw   s_prep_inj_ever_sdc 
-s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	 s_prep_vr_ever_sdc
+s_init_prep_oral_1524w  s_init_prep_oral_sw	s_init_prep_oral_sdc	s_init_prep_oral_plw
+s_init_prep_inj_1524w   s_init_prep_inj_sw  s_init_prep_inj_sdc		s_init_prep_inj_plw
+s_init_prep_vr_1524w    s_init_prep_vr_sw   s_init_prep_vr_sdc 		s_init_prep_vr_plw
+s_prep_oral_ly_1524w  	s_prep_oral_ly_sw  	s_prep_oral_ly_sdc		s_prep_oral_ly_plw
+s_prep_inj_ly_1524w   	s_prep_inj_ly_sw   	s_prep_inj_ly_sdc 		s_prep_inj_ly_plw
+s_prep_vr_ly_1524w    	s_prep_vr_ly_sw    	s_prep_vr_ly_sdc 		s_prep_vr_ly_plw
+s_prep_oral_ever_1524w  s_prep_oral_ever_sw s_prep_oral_ever_sdc	s_prep_oral_ever_plw
+s_prep_inj_ever_1524w   s_prep_inj_ever_sw  s_prep_inj_ever_sdc		s_prep_inj_ever_plw 
+s_prep_vr_ever_1524w    s_prep_vr_ever_sw 	s_prep_vr_ever_sdc		s_prep_vr_ever_plw
 s_elig_prep_any_sw  
 s_onprep_inj_m s_onprep_inj_w s_onprep_vr_w s_onprep_oral_m  s_onprep_oral_w s_elig_prep_any_w_1549 	s_prep_any_w_1549 
 
