@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_21_07_23;  
+set a.fsw_24_07_23;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -328,11 +328,16 @@ proc freq;table effect_sw_prog_lossdiag;where option=2 and cald>2023;run;
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=0 and cald>2023.5 ;run;
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>2023.5  and effect_sw_prog_newp=0.05;run;
 
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.05 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.3 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.5 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.7 and cald=2030;run;
+
+
 proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.1 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.15 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.2 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.3 and cald=2030;run;
 
-
+proc freq;table effect_sw_prog_lossdiag;where option=2;run;
 
 data a.fsw_21_07_23_short; set y;run;
 
@@ -495,7 +500,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_21_07_23;
+data a.wide_fsw_24_07_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
