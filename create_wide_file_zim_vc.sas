@@ -1676,11 +1676,11 @@ proc datasets nodetails nowarn nolist;delete &v;run;
 %var_d(n_I_offart_SIgt6m);
 
 %var_d(n_I_undiag_m);		 %var_d(n_I_diag_naive_m);	   %var_d(n_I_diag_startart_m);	%var_d(n_I_onart_m);	  %var_d(n_I_offart_m);	  %var_d(n_I_onart_lt6m_m);
-%var_d(n_I_onart_lt6m_nvn_m);%var_d(n_I_onart_gt6m_nvn_m); %var_d(n_I_onart_gt6m_vn_m);	%var_d(n_I_offart_1stI_m);%var_d(n_I_offart_SI_m);%var_d(n_I_offart_SIlt6m_m);
+%var_d(n_I_onart_lt6m_nvs_m);%var_d(n_I_onart_gt6m_nvs_m); %var_d(n_I_onart_gt6m_vs_m);	%var_d(n_I_offart_1stI_m);%var_d(n_I_offart_SI_m);%var_d(n_I_offart_SIlt6m_m);
 %var_d(n_I_offart_SIgt6m_m); 
 
 %var_d(n_I_undiag_w); 		 %var_d(n_I_diag_naive_w); 	   %var_d(n_I_diag_startart_w); %var_d(n_I_onart_w);	  %var_d(n_I_offart_w);   %var_d(n_I_onart_lt6m_w); 
-%var_d(n_I_onart_lt6m_nvn_w);%var_d(n_I_onart_gt6m_nvn_w); %var_d(n_I_onart_gt6m_vn_w); %var_d(n_I_offart_1stI_w);%var_d(n_I_offart_SI_w);%var_d(n_I_offart_SIlt6m_w); 
+%var_d(n_I_onart_lt6m_nvs_w);%var_d(n_I_onart_gt6m_nvs_w); %var_d(n_I_onart_gt6m_vs_w); %var_d(n_I_offart_1stI_w);%var_d(n_I_offart_SI_w);%var_d(n_I_offart_SIlt6m_w); 
 %var_d(n_I_offart_SIgt6m_w); 
 
 %var_d(n_I_undiag1519_); 		%var_d(n_I_diag_naive1519_);	 %var_d(n_I_diag_startart1519_); 	%var_d(n_I_onart1519_);	   		%var_d(n_I_offart1519_); 	
@@ -1937,7 +1937,7 @@ data a.trans&age;
 
 merge 
 
-l_n_hiv&age	 l_n_hiv&mage	l_n_hiv&wage 	/*n_inf&age	n_inf&mage	n_inf&wage*/
+l_n_hiv&age	 l_n_hiv&mage	l_n_hiv&wage 	l_n_inf&age	l_n_inf&mage	l_n_inf&wage
 l_n_I_undiag&age			l_n_I_undiag&mage			l_n_I_undiag&wage
 l_n_I_diag_naive&age		l_n_I_diag_naive&mage		l_n_I_diag_naive&wage
 l_n_I_diag_startart&age		l_n_I_diag_startart&mage	l_n_I_diag_startart&wage
