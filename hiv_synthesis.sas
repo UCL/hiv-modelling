@@ -14516,7 +14516,7 @@ if prep_any=1 then do;
 end;
 
 *To calculate number initiated for the first time on different types of PrEP;	* QUERY check if we need this to be _current_start_date rather than _first_start_date for MIHPSA targets? JAS Jul2023;
-init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_lbw;
+init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_lbw=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
 	if gender=2 and sw=1 				then init_prep_oral_sw=1;
@@ -14559,6 +14559,7 @@ if prep_vr_tm3=1 or prep_vr_tm2=1 or prep_vr_tm1=1 or prep_vr=1 then do;
 	if gender=2 and sw=1 				then prep_vr_ly_sw=1;
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then prep_vr_ly_sdc=1;
 	if pregnant=1 or breastfeeding=1 	then prep_vr_ly_plw=1;
+end;
 
 * To calculate number ever initiated on oral PrEP;
 prep_oral_ever_1524w=0;prep_oral_ever_sw=0;prep_oral_ever_sdc=0;prep_oral_ever_plw=0;
