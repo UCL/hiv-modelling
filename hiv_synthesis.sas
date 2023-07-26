@@ -17509,10 +17509,10 @@ run;
 /*where serial_no<600 and gender=2 and age ge 15 and age le 50 ;*/
 /*run;*/
 /**/
-/*/*proc freq; tables breastfeeding duration_breastfeeding; run;*/*/
+/*proc freq; tables breastfeeding duration_breastfeeding; run;*/
 
 
-/*
+
 
 /*
 
