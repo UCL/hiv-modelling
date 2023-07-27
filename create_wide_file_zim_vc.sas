@@ -1,7 +1,7 @@
 libname a "C:\Users\loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\Deaths Zim\";
 
 data a;
-set a.zim_06jun23;
+set a.zim_06jun23a;
 if run=. then delete;
 
 *if option ne 0 then delete; *Error in main code where other options were coded in the update statements. Could keep all of them but 
@@ -43,9 +43,11 @@ n_primary1564m = s_primary1564m * &sf * 4;
 n_primary1564w = s_primary1564w * &sf * 4;
 n_primary1564_ = n_primary1564m + n_primary1564w;
 
-* n_alive1564_;					n_alive1564_  = s_alive1564 * &sf * 4;
-* n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf * 4;
-* n_alive1564_w;				n_alive1564_w = s_alive1564_w * &sf * 4;
+* n_alive1564_;					n_alive1564_  = s_alive1564 * &sf ;
+* n_alive1564_m;				n_alive1564_m = s_alive1564_m * &sf ;
+* n_alive1564_w;				n_alive1564_w = s_alive1564_w * &sf ;
+
+***remove *4;
 
 * n_hiv1519_;					n_hiv1519_= (s_hiv1519m + s_hiv1519w) * &sf * 4;
 * n_hiv2024_;					n_hiv2024_= (s_hiv2024m + s_hiv2024w) * &sf * 4;
