@@ -1,8 +1,8 @@
-libname a "C:\Users\lovel\Dropbox (TLO_HMC)\hiv synthesis ssa unified program\output files\FSW\";
 
+libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a; 
-set a.wide_fsw_24_07_23 ;
+set a.wide_fsw_24_07_23a ;
 if incidence1549_22 <0.02 then delete;
 run;
 
