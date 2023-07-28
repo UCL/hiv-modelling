@@ -2715,7 +2715,7 @@ who may be dead and hence have caldate{t} missing;
 		* comm test interval;
 		comm_test_interval = 1;
 		* comm test age (e.g. all adults vs targeted to >=40);
-		comm_test_age = 40;
+		comm_test_age = 50;
 
 		*relative risk of BP testing at HIV visit if out of hypertension care;
 		rr_test_sbp_hiv =10;

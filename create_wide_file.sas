@@ -147,27 +147,29 @@ dcost_child_hiv  = s_dcost_child_hiv * &sf * 4 / 1000;
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 * HYPERTENSION COSTS;
-htn_cost_scr = s_htn_cost_scr * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_drug = s_htn_cost_drug * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_clin = s_htn_cost_clin * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * &sf; *standardized to population of 10,000,000;
+htn_cost_scr = s_htn_cost_scr * 4 / 1000 * &sf; 
+htn_cost_drug = s_htn_cost_drug * 4 / 1000 * &sf; 
+htn_cost_clin = s_htn_cost_clin * 4 / 1000 * &sf; 
+htn_cost_cvd = s_htn_cost_cvd * 4 / 1000 * &sf; 
 htn_cost_total = (htn_cost_scr + htn_cost_drug + htn_cost_clin + htn_cost_cvd) ; 
 
-dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; *standardized to population of 10,000,000;
-dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * &sf; *standardized to population of 10,000,000;
+dhtn_cost_scr = s_dhtn_cost_scr * 4 / 1000 * &sf; 
+dhtn_cost_drug = s_dhtn_cost_drug * 4 / 1000 * &sf; 
+dhtn_cost_clin = s_dhtn_cost_clin * 4 / 1000 * &sf; 
+dhtn_cost_cvd = s_dhtn_cost_cvd * 4 / 1000 * &sf; 
 dhtn_cost_total = (dhtn_cost_scr + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
 
 dhtn_cost_tothalf = dhtn_cost_total / 2 ;
-dhtn_cost_totdrughalf = (dhtn_cost_scr + (s_dhtn_cost_drug / 2) + dhtn_cost_clin + dhtn_cost_cvd) ; 
-dhtn_cost_totclinhalf = (dhtn_cost_scr + s_dhtn_cost_drug + (dhtn_cost_clin / 2) + dhtn_cost_cvd) ; 
-dhtn_cost_totscrnhalf = ((dhtn_cost_scr / 2) + s_dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
+dhtn_cost_totdrughalf = (dhtn_cost_scr + (dhtn_cost_drug / 2) + dhtn_cost_clin + dhtn_cost_cvd) ; 
+dhtn_cost_totclinhalf = (dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin / 2) + dhtn_cost_cvd) ; 
+dhtn_cost_totscrnhalf = ((dhtn_cost_scr / 2) + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
 
-dhtn_cost_totdrugdoub = (dhtn_cost_scr + (s_dhtn_cost_drug * 2) + dhtn_cost_clin + dhtn_cost_cvd) ; 
-dhtn_cost_totclindoub = (dhtn_cost_scr + s_dhtn_cost_drug + (dhtn_cost_clin * 2) + dhtn_cost_cvd) ; 
-dhtn_cost_totscrndoub = ((dhtn_cost_scr * 2) + s_dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
+dhtn_cost_totdrugdoub = (dhtn_cost_scr + (dhtn_cost_drug * 2) + dhtn_cost_clin + dhtn_cost_cvd) ; 
+dhtn_cost_totclindoub = (dhtn_cost_scr + dhtn_cost_drug + (dhtn_cost_clin * 2) + dhtn_cost_cvd) ; 
+dhtn_cost_totscrndoub = ((dhtn_cost_scr * 2) + dhtn_cost_drug + dhtn_cost_clin + dhtn_cost_cvd) ; 
 dhtn_cost_totdoub = dhtn_cost_total * 2 ;
+
+dhtn_cost_total_imp = (dhtn_cost_scr * 1.09) + (dhtn_cost_drug * 1.09) + (dhtn_cost_clin * 1.09) + dhtn_cost_cvd ; 
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
@@ -1085,6 +1087,7 @@ dhtn_cost_totdrughalf dhtn_cost_totdrugdoub
 dhtn_cost_totclinhalf dhtn_cost_totclindoub 
 dhtn_cost_totscrnhalf dhtn_cost_totscrndoub 
 dhtn_cost_tothalf dhtn_cost_totdoub
+dhtn_cost_total_imp
 
 n_dead_hivpos_cvd rate_dead_hivpos_cvd n_dead_hivpos_anycause rate_dead_hivpos_anycause
 n_dead_hivneg_cvd rate_dead_hivneg_cvd n_dead_hivneg_anycause rate_dead_hivneg_anycause 
@@ -1246,6 +1249,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=dhtn_cost_totclinhalf); %var(v=dhtn_cost_totclindoub); 
 %var(v=dhtn_cost_totscrnhalf); %var(v=dhtn_cost_totscrndoub); 
 %var(v=dhtn_cost_tothalf); %var(v=dhtn_cost_totdoub);
+%var(v=dhtn_cost_total_imp);
 
 %var(v=rate_dead_hivpos_cvd); %var(v=rate_dead_hivpos_anycause);
 %var(v=rate_dead_hivneg_cvd); %var(v=rate_dead_hivneg_anycause);
@@ -1371,7 +1375,7 @@ dhtn_cost_totdrughalf dhtn_cost_totdrugdoub
 dhtn_cost_totclinhalf dhtn_cost_totclindoub 
 dhtn_cost_totscrnhalf dhtn_cost_totscrndoub 
 dhtn_cost_tothalf dhtn_cost_totdoub
-
+dhtn_cost_total_imp
 
 ;
 
