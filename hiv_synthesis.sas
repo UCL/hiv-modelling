@@ -1998,7 +1998,10 @@ option = &s;
 * options mprint;
 
 /*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
-option = 19;	* MIHPSA: VR PrEP for AGYW;
+/*option = 16;	* MIHPSA: oral PrEP for FSW;*/
+option = 17;	* MIHPSA: oral PrEP for SDC;
+/*option = 18;	* MIHPSA: oral PrEP for PLW;*/
+/*option = 19;	* MIHPSA: VR PrEP for AGYW;*/
 /*option = 23;	* MIHPSA: inj PrEP for AGYW;*/
 
 
@@ -2181,15 +2184,24 @@ who may be dead and hence have caldate{t} missing;
 	
 	if option in (15 16 17 18) then do;
 		date_prep_oral_intro=&year_interv;
-		if caldate{t}=&year_interv then pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
+		if caldate{t}=&year_interv then do;
+			pref_prep_oral_beta_s1=pref_prep_oral_beta_s1*3;		* From Vales code, this is to match oral PrEP uptake to Zim target MIHPSA JAS Jul23;
+			pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);
+		end;
 	end;
 	if option in (19 20 21 22) then do;
 		date_prep_vr_intro=&year_interv;
-		if caldate{t}=&year_interv then pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
+		if caldate{t}=&year_interv then do;
+			pref_prep_vr_beta_s1=pref_prep_oral_beta_s1*3;			* MIHPSA: can adjust this to match vr PrEP uptake to oral PrEP target JAS Jul23;
+			pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5);	* women only;
+		end;
 	end;
 	if option in (23 24 25 26) then do;
 		date_prep_inj_intro=&year_interv;
-		if caldate{t}=&year_interv then pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
+		if caldate{t}=&year_interv then do;
+			pref_prep_inj_beta_s1=pref_prep_oral_beta_s1*3; 		* MIHPSA: can adjust this to match inj PrEP uptake to oral PrEP target JAS Jul23;
+			pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
+		end;
 	end;
 	* QUERY may need to scale pref_prep_xxx_beta_s1 differently for other PrEP options JAS Jul23;
 
@@ -2267,16 +2279,16 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present; 
 * QUERY is the intention to re-sample every time step? does this code fit best here? JAS Jul23;
 
-if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) or (caldate{t} = &year_interv and option in (15 16 17 18)) then do;
+if (caldate{t} = date_prep_oral_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_oral_intro > .) then do;
 	* pref_prep_oral;	* pref_prep_oral=rand('beta',5,2); pref_prep_oral=rand('beta',pref_prep_oral_beta_s1,5);			
 end;	
 
-if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) or (caldate{t} = &year_interv and option in (19 20 21 22)) then do;
+if (caldate{t} = date_prep_inj_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_inj_intro > .) then do;
 	if pop_wide_tld = 1 then pref_prep_inj_beta_s1 = pref_prep_inj_beta_s1 - 0.7 ; 
 	* pref_prep_inj;  	pref_prep_inj=rand('beta',pref_prep_inj_beta_s1,5);
 end;
 
-if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) or (caldate{t} = &year_interv and option in (23 24 25 26)) then do;
+if (caldate{t} = date_prep_vr_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_vr_intro > .) then do;
 	* pref_prep_vr;		pref_prep_vr=.; if gender=2 then pref_prep_vr=rand('beta',pref_prep_vr_beta_s1,5); 	*women only;		
 end;
 
@@ -2643,150 +2655,7 @@ if caldate{t} ge 2021 and reg_option_104=1 then reg_option = 104;
 * if caldate{t} ge 2022.75 and reg_option_107_after_cab = 1 then reg_option = 107;
 * reg_option 107 is used for people who seroconverted on prep_inj / cab ;
 
-* QUERY I have moved this section upwards to come before the prep willingness and preference section JAS Jul23;
-/** ==========================================================================================================================================;*/
-/**/
-/**/
-/** OPTIONS TO IMPLEMENT FROM year_i onwards;*/
-/**/
-/** code in this section can differ from unified program due to specifying exactly what interventions / changes are running; */
-/** I suggest that we just leave this shell in the core program as we are not running beyond year_i ;*/
-/**/
-/** INTERVENTIONS / CHANGES in year_interv ;*/
-/**/
-/*if caldate_never_dot >= &year_interv then do;*/
-/** we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000*/
-/*who may be dead and hence have caldate{t} missing;*/
-/**/
-/* 	*Option 0 is continuation at current rates;*/
-/* 	*Option 1 is essential scenario for Zimbabwe;*/
-/*	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;*/
-/*	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Vale;*/
-/*	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;*/
-/*	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;*/
-/*	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;*/
-/*	*Option 30,31,32,33,34 are essential + Linkage, management, ART Interv;			 *Andrew;	*/
-/*	*Option 40			   is  essential + DREAMS;									 *Vale;*/
-/**/
-/**/
-/*	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; */
-/*	*ESSENTIAL;*/
-/*		*Testing;*/
-/*		incr_test_year_i = 4;*No testing in the general population;*/
-/*		sw_program = 0;		 *No SW program;*/
-/*		*Note: at the moment the other testing modalities to be swicthed off are not modelled;*/
-/**/
-/*		*Prevention;*/
-/*		*Condom promotion and provision: currently not in essential scenario but under discussion;*/
-/*		*SBCC: not explicitly modelled, but the switch off is;*/
-/*		condom_incr_year_i=2;    *Switchs off SBCC;*/
-/*		circ_inc_rate_year_i = 2;*No VMMC;*/
-/**/
-/*		*More PrEP variables are switched off later on;*/
-/*		prep_any_strategy=0;*/
-/*		date_prep_oral_intro=2100;*/
-/*		date_prep_inj_intro=2100;*/
-/*		date_prep_vr_intro=2100;*/
-/**/
-/*		*Linkage, management, ART Interv;*/
-/*		*PCP is part of the essential scenario;*/
-/*		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;*/
-/*		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;*/
-/*		crag_cd4_l200=0;*Switch off for screening for Cryptococcal disease;*/
-/*		tblam_cd4_l200=0;*/
-/*		*VL monitoring is switched off as clinical monitoring is assumed;*/
-/*		*POC CD4: not modelled yet?;*/
-/*		*POC VL: not modelled yet?;*/
-/**/
-/*		*DREAMS: ok to assume that is has not been included so far?;*/
-/*	end;*/
-/* */
-/*	*TESTING;*/
-/*	if option = 2 then do; *Self-test kits distributed (Primary distribution);*/
-/*	end;*/
-/*	if option = 3  then do; *Self-test kits distributed (Secondary distribution, excluding for partners) [S2];*/
-/*	end;*/
-/*	if option = 4 then do; *Self-test kits distributed (Secondary distribution, for sexual partners) [S3];*/
-/*	end;*/
-/*	if option = 5 then do; *Clients tested for HIV at facility, excluding ANC & PD, infant testing, contacts testing for HIV at the facility and testing of FSW ;*/
-/*	end;*/
-/*	if option = 6 then do; *Contacts tested for HIV at the facility [B11];*/
-/*	end;*/
-/*	if option = 7 then do; *Testing program for FSW;*/
-/*	end;*/
-/**/
-/*	*PREVENTION;*/
-/*	if option = 10 then do;*HIV P&T program targeting FSWf;*/
-/*	end;*/
-/*	if option = 11 then do;*Social and behavioral change communication (SBCC);*/
-/*	end;*/
-/*	if option = 12 then do;*Increase in Condom use promotion and provision;*/
-/*	end;*/
-/*	if option = 13 then do;*General population mens health clinics (for men from the general population);*/
-/*	end;*/
-/*	if option = 14 then do;*VMMC in 15-49 years old;*/
-/*	end;*/
-/**/
-/*	*PrEP interventions;*/
-/*	*option 15: Oral TDF/FTC PrEP for AGWY;*/
-/*	*option 16: Oral TDF/FTC PrEP for FSW;*/
-/*	*option 17: Oral TDF/FTC PrEP for sero-discordant couples;*/
-/*	*option 18: Oral TDF/FTC PrEP for pregnant and breastfeeding women;*/
-/*	if option in (15 16 17 18) then do;*/
-/*		date_prep_oral_intro=&year_interv;*/
-/*		if option = 15 then	prep_any_strategy=3;*/
-/*		if option = 16 then	prep_any_strategy=2;*/
-/*		if option = 17 then	prep_any_strategy=15;*/
-/*		if option = 18 then	prep_any_strategy=16;*/
-/*	end;*/
-/*	*option 19: Dapivirine ring for AGYW;*/
-/*	*option 20: Dapivirine ring for FSW;*/
-/*	*option 21: Dapivirine ring for sero-discordant couples;*/
-/*	*option 22: Dapivirine ring for pregnant and breastfeeding women;*/
-/*	if option in (19 20 21 22) then do;*/
-/*		date_prep_vr_intro=&year_interv;*/
-/*		if option = 19 then	prep_any_strategy=3;*/
-/*		if option = 20 then	prep_any_strategy=2;*/
-/*		if option = 21 then	prep_any_strategy=15;*/
-/*		if option = 22 then	prep_any_strategy=16;*/
-/*	end;*/
-/*	*option 23: Injectable PrEP for AGYW;*/
-/*	*option 24: Injectable PrEP for FSW;*/
-/*	*option 25: Injectable PrEP for Sero-discordant couples;*/
-/*	*option 26: Injectable PrEP for pregnant and breastfeeding women;*/
-/*	if option in (23 24 25 26) then do;*/
-/*		date_prep_inj_intro=&year_interv;*/
-/*		if option = 23 then	prep_any_strategy=3;*/
-/*		if option = 24 then	prep_any_strategy=2;*/
-/*		if option = 25 then	prep_any_strategy=15;*/
-/*		if option = 26 then	prep_any_strategy=16;*/
-/*	end;*/
-/*	*/
-/*	*Linkage, management, ART Interv;*/
-/*	*The option "CD4 at initiation, re-initiation and treatment failure to identify AHD and cotrimoxazole in people with CD4 less than 350 or to everyone if no CD4 available" has been removed,*/
-/*	as cotrimoxazole is part of the essential;*/
-/*	if option = 31 then do;*CD4 at initiation and re-initiation + Screening for Cryptococcal disease when CD4 is <200 cells/ml. if positive in blood and negative in cerebral spinal fluid (CSF) they give preventive treatment (fluconozale), if positive on both they are treated;*/
-/*		absence_cd4_year_i = 0; crag_cd4_l200=1;											  */
-/*	end;*/
-/*	if option = 32 then do;*CD4 at initiation and re-initiation+ TBLAM when CD4 is <200 or clical stage 3 o 4;*/
-/*		absence_cd4_year_i = 0; tblam_cd4_l200=1;										  */
-/*	end;*/
-/*	if option = 33 then do;*VL monitoring (6m,1y,2y,3y,etc);*/
-/*	absence_vl_year_i = 0;					   */
-/*	end;*/
-/*	if option = 34 then do; * poc vl monitoring ;*/
-/*	absence_vl_year_i = 0; poc_vl_monitoring_i = 1 ;*/
-/*	end;*/
-/**/
-/*	*Structural interventions and social enablers;*/
-/*	if option = 40 then do;*DREAMS;*/
-/*	end;*/
-/*	*/
-/*end;*/
-/**/
-/**/
-/**  ======================================================================================================================================== ;*/
-
+* QUERY I have moved the MIHPSA options section upwards to come before the prep willingness and preference section JAS Jul23;
 
 
 
@@ -3238,11 +3107,11 @@ ageg_ep=.;
 end;
 
 
-age =age +0.25;  * dependent_on_time_step_length ;
+age =age +0.25;  * dependent_on_time_step_length ;	* QUERY why is age updated here and not at start of time step? JAS Jul23;
 * ts1m ; * change this line to: 
 age =age  + (1/12);
 ;
-
+agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
 if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
@@ -3433,7 +3302,7 @@ if caldate{t} >= &year_interv and condom_incr_year_i = 2 then
 ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc);
 
 
-* MIHPSA PrEP options that cannot go in main options section;
+* MIHPSA PrEP options that cannot go in main options section; * QUERY because they have to come after the testing section? JAS Jul23;
 *In the essential scenario no one is on PrEP;
 if caldate{t} >= &year_interv then do;
 	eff_rate_test_startprep_any=0;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
@@ -3444,10 +3313,9 @@ if caldate{t} >= &year_interv then do;
 	eff_rate_choose_stop_prep_inj=1;
 	eff_rate_choose_stop_prep_vr=1;
 	eff_prob_prep_any_restart_choice=0;	
-/*	prep_any_strategy = 0;	*/
 end;   
 
-* MIHPSA Oral PrEP; *JAS Apr2023;
+* MIHPSA Oral PrEP; *JAS Apr2023;	* QUERY can this be >= &year_interv? at the moment, no one is on PrEP in year 2024 JAS Jul23;
 if option = 15 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
 		*Following values need to change;
 		eff_rate_test_startprep_any=0.95;*rate_test_startprep_any;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
@@ -4749,6 +4617,7 @@ if (caldate{t} gt dt_lastbirth) and breastfeeding=1 then do;
 	if death > . then breastfeeding=.; 
 end;
 * breastfeeding should reset to 1 for subsequent births;
+plw=0; if pregnant=1 or breastfeeding=1 then plw=1;		* MIHPSA JAS Jul23;
 
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
@@ -4850,6 +4719,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* QUERY check numbers in strategies 15 and 16 below against MIHPSA targets;
 	if prep_any_strategy=15 then do;	* New for MIHPSA - serodiscordant couples; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
+		* QUERY do we want random element to change every time step? JAS Jul23;
     	r = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.05 or (r < 0.5 and epi=1)) ) 
@@ -14075,6 +13945,7 @@ hiv1epi1_w=0; if gender=2 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi
 hiv0epi1_m=0; if gender=1 and hiv=0 and 15 <= age < 65 and  epi  =1 then hiv0epi1_m=1; 
 hiv1epi0_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =0 then hiv1epi0_m=1; 
 hiv1epi1_m=0; if gender=1 and hiv=1 and 15 <= age < 65 and  epi  =1 then hiv1epi1_m=1; 
+sdc=0;	if hiv0epi1_w=1 or hiv0epi1_m=1 then sdc=1;		* MIHPSA JAS Jul23;
 
 primaryepi1_w=0;if gender=2 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_w=1;
 primaryepi1_m=0;if gender=1 and primary=1 and 15 <= age < 65 and epi=1 then primaryepi1_m=1;
@@ -14337,6 +14208,8 @@ prep_oral_m=0; 	if gender=1 and prep_oral=1 then prep_oral_m=1;
 prep_inj_m=0; 	if gender=1 and prep_inj=1 	then prep_inj_m=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
+
+if prep_oral=1 and death >. then prep_oral_ever_death=1;	* QUERY MIHPSA check JAS Jul23;
 
 *Resistance in people infected on prep;
 
@@ -14647,12 +14520,12 @@ if prep_any=1 then do;
 end;
 
 *To calculate number initiated for the first time on different types of PrEP;
-init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_lbw=0;
+init_prep_oral_1524w=0;init_prep_oral_sw=0;init_prep_oral_sdc=0;init_prep_oral_plw=0;
 if caldate&j = prep_oral_first_start_date then do;
 	if gender=2 and 15 le age lt 25 	then init_prep_oral_1524w=1;
 	if gender=2 and sw=1 				then init_prep_oral_sw=1;
 	if hiv0epi1_w=1 or hiv0epi1_m=1 	then init_prep_oral_sdc=1;
-	if pregnant=1 or breastfeeding=1 	then init_prep_oral_lbw=1;
+	if pregnant=1 or breastfeeding=1 	then init_prep_oral_plw=1;
 end;
 init_prep_inj_1524w=0;init_prep_inj_sw=0;init_prep_inj_sdc=0;init_prep_inj_plw=0;
 if caldate&j = prep_inj_first_start_date then do;
@@ -17625,17 +17498,17 @@ proc print; var caldate&j age gender newp ep
 where serial_no<150 and age ge 15 and death=.;
 run; 
 
-proc print; var caldate&j serial_no age gender dead death prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
 	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;
 where prep_oral=1;
 run; 
 
-proc print; var caldate&j serial_no age gender dead death prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
 	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;
 where prep_vr=1;
 run; 
 
-proc print; var caldate&j serial_no age gender dead death prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
 	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;
 where prep_inj=1;
 run; 
@@ -17646,7 +17519,7 @@ proc freq; tables highest_prep_pref; run;
 /*proc freq; tables prep_oral_last_stop_date; run;*/
 proc freq; tables prep_any_elig; run;
 proc freq; tables prep_oral_willing prep_inj_willing prep_vr_willing; run;
-
+proc freq; tables prep_oral_ever_death; run;
 
 
 /*proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death*/
