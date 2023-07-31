@@ -706,7 +706,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
 * date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
-* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=2;			* Assume 2 years to scale up injectable prep; * lapr;	* QUERY changed to 2 years for MIHPSA from 5 years for CAB-LA analysis JAS Jul23;
+* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 2 years to scale up injectable prep; * lapr;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
 
@@ -2081,6 +2081,8 @@ if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.
 if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
+* QUERY move age line to here JAS Jul23;
+
 
 
 * ==========================================================================================================================================;
@@ -2100,7 +2102,7 @@ who may be dead and hence have caldate{t} missing;
  	*Option 0 is continuation at current rates;
  	*Option 1 is essential scenario for Zimbabwe;
 	*Option 2,3,4,5,6,7    are essential + 1 testing strategy;						 *Vale;
-	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Vale;
+	*Option 10,11,12,13,14 are essential + different prevention strategies;			 *Jenny;
 	*Option 15,16,17,18    are essential + Oral TDF/FTC PrEP for different sub-pops; *Jenny;
 	*Option 19,20,21,22    are essential + Dapivirine ring   for different sub-pops; *Jenny;
 	*Option 23,24,25,26    are essential + Injectable PrEP   for different sub-pops; *Jenny;
@@ -2127,7 +2129,7 @@ who may be dead and hence have caldate{t} missing;
 		date_prep_inj_intro=2100;
 		date_prep_vr_intro=2100;
 
-		*Linkage, management, ART Interv;
+		*Linkage, management, ART Interv;	* QUERY double check can move these to here; *JAS Jul23;
 		*PCP is part of the essential scenario;
 		absence_cd4_year_i = 1;*If CD4 and VL are both not available clinical monitoring is assumed;
 		absence_vl_year_i = 1; *If VL is not available, but CD4 is, still clinical monitoring is assumed, CD4 is measured at first visit when naive and then every 6 months;
@@ -2273,8 +2275,6 @@ else 	eff_prob_prep_vr_b = prob_prep_vr_b;
 * PrEP preference between different modalities (oral, injectable, vaginal ring) based on beta distribution ;	
 * Individuals values for each PrEP type are currently independent of one another - we may want to correlate preferences for different types in future ;
 
-/*if low_prep_inj_uptake = 1 then date_prep_inj_intro = .; 	* QUERY low_prep_inj_uptake is not defined JAS Jul23;*/
-
 *It is Zim specific : %sample_uniform(pref_prep_oral_beta_s1, 0.6 0.7 0.8 0.9 1.0 1.1) - 
 						with this distribution between 0.185 to 0.365 have prep_oral_willing=1;		* To calibrate to Zim oral PrEP uptake 2018-present; 
 * QUERY is the intention to re-sample every time step? does this code fit best here? JAS Jul23;
@@ -2297,7 +2297,7 @@ if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
 
 * delay in roll-out of prep_inj in men as no direct data in msw yet;
-/*if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;					* QUERY do we want to keep this in MIHPSA code? JAS Jul23;*/
+/*if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;					* commented out for now but we may need to use this code in future analyses JAS Jul23;*/
 
 * highest_prep_pref;
 * does not show people who are not willing to take any option;
@@ -2957,6 +2957,8 @@ end;
 
 * MALE CIRCUMCISION ;
   
+	* QUERY change age_tm1 to age throughout JAS Jul23 new PR;
+
 if t ge 2 then do;
 
 * not * dependent_on_time_step_length ;
@@ -3039,12 +3041,12 @@ if prob_circ ne . then prob_circ = min(prob_circ,1);
 ***Circumcision at birth;
 new_mcirc=0; 
 u=rand('uniform');
-if t ge 2 and age_tm1 = 0.25 and gender=1 then do;
+if t ge 2 and age = 0.25 and gender=1 then do;
 		if vmmc_disrup_covid =1 and covid_disrup_affected = 1 then prob_birth_circ = 0;	
 		if u < prob_birth_circ then do;
 			mcirc=1;     
 			birth_circ=1;
-			new_mcirc=1; age_circ=age_tm1;
+			new_mcirc=1; age_circ=age;
 			date_mcirc=caldate{t};
 		end;
 end;
@@ -3088,11 +3090,12 @@ hivneg_uncirc_3539 =0; if 35 <= age < 40 and mcirc ne 1 and hiv ne 1 then hivneg
 hivneg_uncirc_4044 =0; if 40 <= age < 45 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4044 = 1;
 hivneg_uncirc_4549 =0; if 45 <= age < 50 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4549 = 1;
 end;
+* QUERY remove outputs then delete this section JAS Jul23;
 
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
 
-if t ge 2 and caldate{t} < 2072.5 and death =.  then do;
+if t ge 2 and death =.  then do;	* removed caldate{t} < 2072.5 clause JAS Jul23;
 
 cost=0;cost_test=0;
 
@@ -3107,7 +3110,7 @@ ageg_ep=.;
 end;
 
 
-age =age +0.25;  * dependent_on_time_step_length ;	* QUERY why is age updated here and not at start of time step? JAS Jul23;
+age =age +0.25;  * dependent_on_time_step_length ;	* QUERY why is age updated here and not at start of time step? move upwards JAS Jul23;
 * ts1m ; * change this line to: 
 age =age  + (1/12);
 ;
@@ -4719,11 +4722,11 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* QUERY check numbers in strategies 15 and 16 below against MIHPSA targets;
 	if prep_any_strategy=15 then do;	* New for MIHPSA - serodiscordant couples; *JAS Apr2023;
 		* Limited to a proportion based on age (not gender) and a random fraction;
-		* QUERY do we want random element to change every time step? JAS Jul23;
+		* QUERY do we want random element to change every time step? think about how to code JAS Jul23;
     	r = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
-      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.05 or (r < 0.5 and epi=1)) ) 
-		then prep_any_elig=1; 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) 
+		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
 	end;
 
 	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
@@ -17498,17 +17501,17 @@ proc print; var caldate&j age gender newp ep
 where serial_no<150 and age ge 15 and death=.;
 run; 
 
-proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
 	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;
 where prep_oral=1;
 run; 
 
-proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
 	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;
 where prep_vr=1;
 run; 
 
-proc print; var caldate&j serial_no age gender death agyw sw sdc prep_any_elig plw prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
 	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;
 where prep_inj=1;
 run; 
@@ -20448,7 +20451,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
-
+ * QUERY 356 is end of 2072 for Zim (starts 1984) comment out s=1-4 JAS Jul23;
 data r1; set a      ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
