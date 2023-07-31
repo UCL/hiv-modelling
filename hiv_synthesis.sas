@@ -2067,7 +2067,7 @@ if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then c
 
 age=age+0.25;  * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
-age =age  + (1/12);
+age=age + (1/12);
 ;
 
 
