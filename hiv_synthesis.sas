@@ -2081,8 +2081,12 @@ if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.
 if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
-* QUERY move age line to here JAS Jul23;
 
+age =age +0.25;  * dependent_on_time_step_length ;
+* ts1m ; * change this line to: 
+age =age  + (1/12);
+;
+agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
 * ==========================================================================================================================================;
@@ -2956,8 +2960,6 @@ end;
 
 
 * MALE CIRCUMCISION ;
-  
-	* QUERY change age_tm1 to age throughout JAS Jul23 new PR;
 
 if t ge 2 then do;
 
@@ -3090,7 +3092,6 @@ hivneg_uncirc_3539 =0; if 35 <= age < 40 and mcirc ne 1 and hiv ne 1 then hivneg
 hivneg_uncirc_4044 =0; if 40 <= age < 45 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4044 = 1;
 hivneg_uncirc_4549 =0; if 45 <= age < 50 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4549 = 1;
 end;
-* QUERY remove outputs then delete this section JAS Jul23;
 
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
@@ -3108,13 +3109,6 @@ visit_prep_vr=.;	* dpv-vr ;
 ageg_ep=.;
 
 end;
-
-
-age =age +0.25;  * dependent_on_time_step_length ;	* QUERY why is age updated here and not at start of time step? move upwards JAS Jul23;
-* ts1m ; * change this line to: 
-age =age  + (1/12);
-;
-agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
 if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
@@ -4727,6 +4721,14 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
       	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
+
+
+		r_prep_tm1=r_prep;	* keep;
+		prep_any_elig_tm1=prep_any_elig;	* keep;
+		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1 else r_prep = rand('Uniform');
+      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
+		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
 	end;
 
 	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
@@ -4734,6 +4736,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
+
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
@@ -12236,13 +12239,13 @@ end;
 
 if tested=1 then ever_tested=1;
 
-if  caldate_never_dot > death > . then do; * update_24_4_21;	* QUERY caldate or caldate_never_dot? caldate is missing for people who died last time step so this section is missed JAS Jul23;
+if  caldate_never_dot > death > . then do; * update_24_4_21;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
 	date_last_non_hiv_tb =.; non_hiv_tb =.; non_hiv_tb_death =.;
 	non_hiv_tb_risk=.;  non_hiv_tb_diag_e=.;  non_hiv_tb_diag_e=.;  cur_non_hiv_tb_death_risk=.; 
-	cd4=.;cc=.;vc=.;vl=.;age=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
+	cd4=.;cc=.;vc=.;vl=.;adc=.;adh=.;who4_=.;nod   =.;tcur=.;non_tb_who3_=.;
 	onart   =.;visit=.;nactive=.;registd=.;
 	tested=.;
 	naive=.;artline=.;linefail=.;						 
@@ -14212,7 +14215,6 @@ prep_inj_m=0; 	if gender=1 and prep_inj=1 	then prep_inj_m=1;
 
 prep_any_ever=0; if prep_oral_ever=1 or prep_inj_ever=1 or prep_vr_ever=1 then prep_any_ever=1;
 
-if prep_oral=1 and death >. then prep_oral_ever_death=1;	* QUERY MIHPSA check JAS Jul23;
 
 *Resistance in people infected on prep;
 
@@ -20277,7 +20279,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);	* QUERY - end 2030? JAS Jul23;
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);	* QUERY - end 2030? JAS Jul23;  * QUERY 356 is end of 2072 for Zim (starts 1984) comment out s=1-4 JAS Jul23;
 /*
 %update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
