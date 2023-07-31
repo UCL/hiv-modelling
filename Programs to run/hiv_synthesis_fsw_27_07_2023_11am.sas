@@ -15124,6 +15124,16 @@ if gender=2 and diag_this_period=1 and tested_as_sw=1 and tested_anc ne 1 and te
 if gender=2 and diag_this_period=1 and sw=1 then diag_thisper_sw=1;
 if gender=2 and diag_this_period=1 and 15 <= age < 25 then diag_thisper_1524f=1;
 
+
+**Of those diag, linked to care;
+linked_diag=0;linked_diag_sw=0;linked_diag_w=0;linked_diag_m=0;
+if registd=1 and caldate&j=date1pos and visit=1 then do; 
+	linked_diag=1;
+	if sw=1 then linked_diag_sw=1;
+	if gender=1 then linked_diag_w=1;
+	if gender=2 then linked_diag_m=1; 
+end;
+
 ***Reason for HIV test;
 tested_m=0; if gender=1 and tested=1 then tested_m=1;
 tested_m_sympt=0; if gender=1 and tested=1 and (elig_test_who4_tested=1 or elig_test_non_tb_who3_tested=1 or elig_test_tb_tested=1 or tested_symptoms_not_hiv=1)
@@ -16741,6 +16751,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_diag_w + diag_w ; s_epdiag_m + epdiag_m ; s_epdiag_w + epdiag_w ; s_epi_m  + epi_m  ; s_epi_w + epi_w ; s_diag_ep + diag_ep ;
  	s_diag_age1564 + diag_age1564; s_diag_m_age1564 + diag_m_age1564; s_diag_w_age1564 + diag_w_age1564 ;  
 	s_hard_reach + hard_reach;  s_tested_at_return + tested_at_return;  s_test_not_costed + test_not_costed;
+	s_linked_diag + linked_diag; s_linked_diag_sw + linked_diag_sw; s_linked_diag_w + linked_diag_w;s_linked_diag_m + linked_diag_m;
 
 	/*VL and CD4*/
 
@@ -18499,6 +18510,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
+s_linked_diag  	s_linked_diag_sw  s_linked_diag_w	s_linked_diag_m 
 
 
 /*VL and CD4*/
@@ -19444,7 +19456,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
-
+s_linked_diag  	s_linked_diag_sw  s_linked_diag_w	s_linked_diag_m 
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6
@@ -20976,6 +20988,7 @@ s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_yea
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
 s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
+s_linked_diag  	s_linked_diag_sw  s_linked_diag_w	s_linked_diag_m 
 
 /*VL and CD4*/
 s_vlg1  s_vlg2  s_vlg3  s_vlg4  s_vlg5  s_vlg6

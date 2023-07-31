@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_24_07_23;  
+set a.fsw_24_07_23a;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -500,7 +500,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_24_07_23;
+data a.wide_fsw_24_07_23a;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
