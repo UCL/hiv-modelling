@@ -2926,7 +2926,7 @@ if 20 le age lt 30 then do;
 if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_red_20_30;
 end;
 
-if 30 le age le 50 then do;
+if 30 le age lt 50 then do;
 if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
