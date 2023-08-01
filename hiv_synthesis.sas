@@ -1314,10 +1314,10 @@ if cum12 <= e          then age= 55+rand('uniform')*10;
 
 age =round(age ,.25);
 
-year_start=-69;
-if caldate1=1984 then year_start=-74;									 
+lowest_age_at_start=-69;
+if caldate1=1984 then lowest_age_at_start=-74;									 
 
-if age  >= year_start;
+if age  >= lowest_age_at_start;
 
 hiv =0;
 
@@ -19746,7 +19746,7 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 
 data r&da2; set r&da2; 
 
-/*if age  >= year_start;*/		* commented out to prevent dead people being removed from overall dataset when age=. JAS Aug23;
+/*if age  >= lowest_age_at_start;*/		* commented out to prevent dead people being removed from overall dataset when age=. JAS Aug23;
 
 
 /*
