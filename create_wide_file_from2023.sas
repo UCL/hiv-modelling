@@ -1,9 +1,9 @@
 * options user="/folders/myfolders/";
 
 
-libname a "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
+libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-libname b "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jul03_from2023_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jul03_from2023_out";
 data a.base_from2023_03_07_23;   set b.out:;
 *8 dataset had dataset id with 8 characters,
  the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
@@ -12,7 +12,7 @@ data a.base_from2023_03_07_23;   set b.out:;
 run;
 
 /* show the contents of the input SAS file */
-
+/*
 proc contents data=a.base_from2023_03_07_23;run;
 proc sort data=a.base_16_06_23; by run; run;
 proc freq data=a.base_from2023_03_07_23; table run option run_forward_id;where cald=2023.75;run;
@@ -20,7 +20,7 @@ proc freq data=a.base_from2023_03_07_23; table run*option/norow nocol nopercent;
 proc freq data=a.base_from2023_03_07_23; table run cald option;run;
 */
 
-libname c "C:\Users\ValentinaCambiano\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
+libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
 
 *Looking whether mc_int is stored in the dataset saved at the end of 2022;
 
@@ -45,9 +45,9 @@ ods html close;
 ods listing;
 /*
 proc freq data=a.base_from2023_03_07_23;
-table run_forward_id /* s_hiv_sw s_sw_1564 s_sw_1564
+table run_forward_id  s_hiv_sw s_sw_1564 s_sw_1564
 s_death_hivrel_m  s_death_hivrel  s_diag_this_period_f  s_tested_f
-s_tested_ancpd  s_diag_thisper_progsw*/;run;*/
+s_tested_ancpd  s_diag_thisper_progsw;run;*/
 *Need to add s_death_hivrel_m;
 
 
@@ -520,6 +520,17 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * n_prep_vr_ly_1524w;  			n_prep_vr_ly_1524w     = s_prep_vr_ly_1524w * &sf;       
 * n_prep_vr_ly_sw;    			n_prep_vr_ly_sw        = s_prep_vr_ly_sw * &sf;     
 * n_prep_vr_ly_sdc;   			n_prep_vr_ly_sdc       = s_prep_vr_ly_sdc * &sf;   
+
+* n_prep_oral_1524w; 		n_prep_oral_1524w = s_prep_oral_w_1524 * &sf;
+* n_prep_oral_sw; 			n_prep_oral_sw    = s_prep_oral_sw * &sf; 
+* n_prep_oral_sdc; 			n_prep_oral_sdc   = s_prep_oral_sdc * &sf; 
+* n_prep_inj_1524w; 		n_prep_inj_1524w  = s_prep_inj_w_1524 * &sf;   
+* n_prep_inj_sw; 			n_prep_inj_sw     = s_prep_inj_sw * &sf; 
+* n_prep_inj_sdc; 			n_prep_inj_sdc    = s_prep_inj_sdc * &sf; 
+* n_prep_vr_1524w;    		n_prep_vr_1524w   = s_prep_vr_w_1524 * &sf;    
+* n_prep_vr_sw;   			n_prep_vr_sw      = s_prep_vr_sw * &sf;   
+* n_prep_vr_sdc; 			n_prep_vr_sdc     = s_prep_vr_sdc * &sf;
+
 
 *PrEP_CT: Number of clients actively taking the indicated PrEP method(s) 
          (excluding newly enrolled) during the last quarter of the date range displayed.
@@ -1001,6 +1012,10 @@ end;
 * n_death_2059_w;				n_death_2059_w = 	(s_dead2024w_all+ s_dead2529w_all+ s_dead3034w_all+ s_dead3539w_all+
 													s_dead4044w_all+ s_dead4549w_all+ s_dead5054w_all+ s_dead5559w_all) * 4 * &sf ;
 													
+*future YLL (assuming age and gender specific life expectancy), all incurred at the calendar year of death (for adults aged 15+ years old); 
+* n_total_yllag;				n_total_yllag = s_total_yllag * &sf;
+* n_dyll_GBD;					n_dyll_GBD = s_dyll_GBD * &sf;
+
 * n_cd4_lt200;					n_cd4_lt200 = (s_cd4_g1 + s_cd4_g2 + s_cd4_g3) * &sf; 
 * n_cd4_lt50;					n_cd4_lt50 = s_cd4_g1 * &sf; 
 * n_hiv;						n_hiv = s_hivge15 * &sf;
@@ -1131,9 +1146,12 @@ p_prep_ever
 n_init_prep_oral_1524w  n_init_prep_oral_sw  n_init_prep_oral_sdc
 n_init_prep_inj_1524w   n_init_prep_inj_sw   n_init_prep_inj_sdc
 n_init_prep_vr_1524w    n_init_prep_vr_sw    n_init_prep_vr_sdc
-n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
+/*n_prep_oral_ly_1524w	n_prep_oral_ly_sw	n_prep_oral_ly_sdc
 n_prep_inj_ly_1524w		n_prep_inj_ly_sw	n_prep_inj_ly_sdc
-n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc
+n_prep_vr_ly_1524w		n_prep_vr_ly_sw		n_prep_vr_ly_sdc*/
+n_prep_oral_1524w 		n_prep_oral_sw		n_prep_oral_sdc
+n_prep_inj_1524w		n_prep_inj_sw		n_prep_inj_sdc
+n_prep_vr_1524w			n_prep_vr_sw		n_prep_vr_sdc
 n_contprep_oral_1524w	n_contprep_oral_sw	n_contprep_oral_sdc	n_contprep_inj_1524w	n_contprep_inj_sw
 n_contprep_inj_sdc		n_contprep_vr_1524w n_contprep_vr_sw	n_contprep_vr_sdc
 n_prep_oral_ever_1524w	n_prep_oral_ever_sw  n_prep_oral_ever_sdc
@@ -1167,6 +1185,9 @@ n_dead_hivpos_cause2  rate_dead_hivpos_cause2 	n_dead_hivpos_cause3  rate_dead_h
 n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_hivneg_cvd n_dead_hivneg_tb  rate_dead_hivneg_tb
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4  rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
+n_total_yllag 	n_dyll_GBD
+
+
 /*n_death_hiv_m n_death_hiv_w*/ n_cd4_lt50 n_cd4_lt200
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
@@ -1442,6 +1463,7 @@ drop _NAME_ _TYPE_ _FREQ_;
 %var(v=rate_dead_cvd_4049w); %var(v=rate_dead_cvd_5059w); %var(v=rate_dead_cvd_6069w); %var(v=rate_dead_cvd_7079w); %var(v=rate_dead_cvd_ge80w); 
 %var(v=n_death_hivpos_anycause); %var(v= n_death_2059_m);  %var(v=n_death_2059_w);
 *%var(v=n_death_hiv_m); *%var(v=n_death_hiv_w); 
+%var(v=n_total_yllag); 	%var(v=n_dyll_GBD);
 %var(v=p_age1549_hivneg );  %var(v=p_age1549_hiv ); %var(v=p_onart_m_age50pl ); %var(v=p_onart_w_age50pl ); %var(v=n_onart);
 %var(v=prevalence_hiv_preg);%var(v=prevalence1549preg);%var(v=prevalence1524preg); %var(v=n_onart_w); %var(v=n_onart_m);%var(v=n_onart_1524_);%var(v=n_art_start_y);
 %var(v=p_diag_w); %var(v=p_diag_m); 
@@ -1539,6 +1561,8 @@ n_dead_cvd  rate_dead_cvd 	n_dead_tb  rate_dead_tb n_dead_hivneg_cvd  rate_dead_
 n_dead_hivneg_cause2 rate_dead_hivneg_cause2 n_dead_hivneg_cause3  rate_dead_hivneg_cause3 	n_dead_hivneg_cause4 n_cd4_lt50 n_cd4_lt200 
 rate_dead_hivneg_cause4 
 n_dead_hivneg_cause5  rate_dead_hivneg_cause5 /*rate_dead_allage rate_dead_hivneg_anycause rate_dead_hivpos_anycause*/ n_death_2059_m n_death_2059_w
+n_total_yllag 	n_dyll_GBD
+
 p_age1549_hivneg p_age1549_hiv
 rate_dead_cvd_3039m	rate_dead_cvd_4049m rate_dead_cvd_5059m rate_dead_cvd_6069m rate_dead_cvd_7079m rate_dead_cvd_ge80m rate_dead_cvd_3039w 
 rate_dead_cvd_4049w rate_dead_cvd_5059w rate_dead_cvd_6069w rate_dead_cvd_7079w rate_dead_cvd_ge80w n_death_hivpos_anycause
