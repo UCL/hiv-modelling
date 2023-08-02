@@ -658,7 +658,7 @@ newp_seed = 7;
 								* dependent_on_time_step_length ;
 								* lapr and dpv-vr - this might be the same for lapr and dpv-vr - we will have to consider people switching between prep modalities;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
-																* lapr should this be defined for all prep (like pop prep uptake) or for each modality individually? ;
+																* lapr this could be defined for all prep types or for each modality individually ;
 
 
 * ORAL PREP ;
@@ -705,21 +705,19 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
-* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep; * lapr;
+* date_prep_inj_intro;			date_prep_inj_intro=2100;		* Introduction of injectable PrEP ;
+* dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
-																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
+																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
 
 * annual_testing_prep_inj;		annual_testing_prep_inj=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* REF HIV MC joint project - this takes into account delayed or skipped injections ;
-/** add_prep_inj_uptake_sw;		add_prep_inj_uptake_sw=0; 		*not currently used in program below  ;
-																* lapr should this be defined for all (like pop prep uptake) or each modality individually? ;*/
 
 * prep_inj_efficacy;			%sample(prep_inj_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* CAB-LA PrEP effectiveness - they have given a range 84-98% - discrete vs continuous? ;
 * rate_choose_stop_prep_inj; 	%sample(rate_choose_stop_prep_inj, 0.05 0.15 0.30, 0.8 0.1 0.1);
 								* dependent_on_time_step_length ;
-																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_lapr / rate_choose_stop_dpv or one indicating the relative rate compared with oral prep;
-																* lapr - 8.4% discontinuation per year = 2.083% per 3 months - what other processes can stop inj prep use? 1) no longer at-risk 2) choose to stop while still at risk
+																* lapr and dpv-vr - we could either have a parameter rate_choose_stop_prep_inj/vr or one indicating the relative rate compared with oral prep;
+																* lapr - 8.4% discontinuation per year = 2.083% per 3 months in ;
 * prep_inj_effect_inm_partner;	%sample_uniform(prep_inj_effect_inm_partner, 0.0 0.25 0.5 );				
 
 * cab_time_to_lower_threshold_g; 	%sample_uniform(cab_time_to_lower_threshold_g, 1 2); 
@@ -769,7 +767,7 @@ end;
 * vr code needs more work before using ;
 * lapr - note that only women can use DPV ring - make sure this is coded in uptake step;
 
-* date_prep_vr_intro;			date_prep_vr_intro=2024; 		* Introduction of DPV-VR PrEP ;
+* date_prep_vr_intro;			date_prep_vr_intro=2100; 		* Introduction of DPV-VR PrEP ;
 * prep_vr_efficacy;				prep_vr_efficacy=0.31; 			* DPV-VR PrEP effectiveness with 100% adherence (assuming always 100% adherence in first month) ; 
 																* REF The Ring Study Nel NEJM 2016 - but does this represent effectiveness rather than efficacy? - also see follow-up DREAM OLE Nel Lancet 2021 - higher protection ;
 * dur_prep_vr_scaleup;			dur_prep_vr_scaleup=2;			* Assume 2 years to scale up DPV ring; * lapr;
@@ -777,11 +775,8 @@ end;
 																* since we have different preference for oral and inj and vr, dont think we need separate values of this for oral and vr and inj 
 * annual_testing_prep_vr;		annual_testing_prep_vr=annual_testing_prep_oral;	
 																* frequency of HIV testing for people on DPV-VR PrEP same as oral PrEP; 
-/** add_prep_vr_uptake_sw;		add_prep_vr_uptake_sw=0; 		***this may be sampled at a later date;
-																* lapr should this be defined for all (like pop prep uptake) or each modality individually? ;*/
-
 * rate_choose_stop_prep_vr; 	%sample(rate_choose_stop_prep_vr, 0.05 0.15 0.30, 0.8 0.1 0.1); 
-																* currently the same as for inj prep, values for oral PrEP are higher;
+																* currently sampling from the same distribution as for inj prep, values for oral PrEP are higher;
 								* dependent_on_time_step_length ;
 
 * pref_prep_vr_beta_s1;			pref_prep_vr_beta_s1 = pref_prep_oral_beta_s1 - 0.1 ; * this will change depending on assumed uptake;
@@ -2114,7 +2109,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; 
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; 	* QUERY  do we need to add option 0 here for essential? JAS Aug23;
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -2304,7 +2299,7 @@ if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr
 /*if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;					* commented out for now but we may need to use this code in future analyses JAS Jul23;*/
 
 * highest_prep_pref;
-* does not show people who are not willing to take any option;
+* does not show people who are not willing to take any PrEP type;
 * QUERY note that Vale is updating this bit - or I will in next PR - could add 0 option if all pref values are below threshold? JAS Jul23;
 * QUERY also double check prep_xxx_willling variables re threshold and for FSW JAS Jul23;
 if 		pref_prep_oral > pref_prep_inj and pref_prep_oral > pref_prep_vr then highest_prep_pref=1;	* 1=preference for oral PrEP;
@@ -3313,90 +3308,90 @@ if caldate{t} >= &year_interv then do;
 end;   
 
 * MIHPSA Oral PrEP; *JAS Apr2023;	* QUERY can this be >= &year_interv? at the moment, no one is on PrEP in year 2024 JAS Jul23;
-if option = 15 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
+if option = 15 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
 		*Following values need to change;
-		eff_rate_test_startprep_any=0.95;*rate_test_startprep_any;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
-		eff_prob_prep_oral_b=0.95;*prob_prep_oral_b*2;
+		eff_rate_test_startprep_any=0.95;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_prob_prep_oral_b=0.95;
 		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 16 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for FSW;
+if option = 16 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for FSW;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_oral_b=0.95;
 		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 17 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
+if option = 17 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_oral_b=0.95;
 		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 18 and caldate{t} > &year_interv then do;		*Essential + Oral TDF/FTC PrEP for pregnant and breastfeeding women;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_oral_b=prob_prep_oral_b;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+if option = 18 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for pregnant and breastfeeding women;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_oral_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
 * MIHPSA dapivirine ring; 
-if option = 19 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for AGWY;
+if option = 19 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for AGWY;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_vr_b=0.95;
 		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 20 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for FSW;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_vr_b=prob_prep_vr_b;
-		eff_rate_choose_stop_prep_vr=rate_choose_stop_prep_vr;
+if option = 20 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for FSW;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_vr=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 21 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for serodiscordant couples;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_vr_b=prob_prep_vr_b;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
+if option = 21 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for serodiscordant couples;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 22 and caldate{t} > &year_interv then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_vr_b=prob_prep_vr_b;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_vr;
+if option = 22 and caldate{t} >= &year_interv then do;		*Essential + dapivirine ring for pregnant and breastfeeding women;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_vr_b=0.95;
+		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
 * MIHPSA injectable PrEP; 
-if option = 23 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for AGWY;
+if option = 23 and caldate{t} >= &year_interv then do;		*Essential + injectable PrEP for AGWY;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_inj_b=0.95;
 		eff_rate_choose_stop_prep_inj=0.001;
 		eff_prob_prep_any_restart_choice=0.25;		
 end;
 
-if option = 24 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for FSW;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_inj_b=prob_prep_inj_b;
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+if option = 24 and caldate{t} >= &year_interv then do;		*Essential + injectable PrEP for FSW;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 25 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for serodiscordant couples;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_inj_b=prob_prep_inj_b;
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+if option = 25 and caldate{t} >= &year_interv then do;		*Essential + injectable PrEP for serodiscordant couples;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
-if option = 26 and caldate{t} > &year_interv then do;		*Essential + injectable PrEP for pregnant and breastfeeding women;
-		eff_rate_test_startprep_any=rate_test_startprep_any;
-		eff_prob_prep_inj_b=prob_prep_inj_b;
-		eff_rate_choose_stop_prep_inj=rate_choose_stop_prep_inj;
+if option = 26 and caldate{t} >= &year_interv then do;		*Essential + injectable PrEP for pregnant and breastfeeding women;
+		eff_rate_test_startprep_any=0.95;
+		eff_prob_prep_inj_b=0.95;
+		eff_rate_choose_stop_prep_inj=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
@@ -19038,7 +19033,7 @@ prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_e
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  switch_for_tox 
 rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_inc_15_19 circ_red_20_30  circ_red_30_50
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat   base_rate_sw 
-prob_prep_any_restart_choice 	 add_prep_any_uptake_sw   cd4_monitoring   base_rate_stop_sexwork    rred_a_p higher_newp_with_lower_adhav
+prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child   incr_mort_risk_dol_weightg 
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  dol_higher_potency  prop_bmi_ge23 pr_res_dol cab_time_to_lower_threshold_g
 ntd_risk_dol oth_dol_adv_birth_e_risk  ntd_risk_dol  double_rate_gas_tox_taz  zdv_potency_p75
@@ -19048,7 +19043,7 @@ effect_sw_prog_6mtest effect_sw_prog_int  effect_sw_prog_pers_sti  effect_sw_pro
 sw_art_disadv  zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
 prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
-rate_test_startprep_any  prob_prep_any_restart_choice add_prep_any_uptake_sw rel_prep_oral_adh_younger
+rate_test_startprep_any  prob_prep_any_restart_choice rel_prep_oral_adh_younger
 
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy  prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female
@@ -19086,7 +19081,7 @@ inc_p_prep_any_restart_choi_yr_i
 initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i  single_vl_switch_efa_year_i
 
-add_prep_any_uptake_sw e_decr_hard_reach_year_i  
+e_decr_hard_reach_year_i  
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
@@ -21781,7 +21776,7 @@ sw_art_disadv
 zero_3tc_activity_m184  zero_tdf_activity_k65r lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init 
 prep_any_strategy  prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000 prep_vlg1000_threshold rr_mort_tdf_prep
-prob_prep_any_restart_choice add_prep_any_uptake_sw rel_prep_oral_adh_younger
+prob_prep_any_restart_choice rel_prep_oral_adh_younger
 prep_oral_efficacy higher_future_prep_oral_cov prob_prep_inj_b prob_prep_vr_b prep_inj_efficacy   prop_pep  pep_efficacy 
 rate_choose_stop_prep_inj prep_inj_effect_inm_partner pref_prep_inj_beta_s1 incr_res_risk_cab_inf_3m rr_testing_female prob_prep_pop_wide_tld
 inc_oral_prep_pref_pop_wide_tld pop_wide_tld prob_test_pop_wide_tld_prep pop_wide_tld_selective_hiv  res_level_dol_cab_mut super_inf_res  
@@ -21818,7 +21813,7 @@ inc_p_prep_any_restart_choi_yr_i
 initial_pr_switch_line       initial_prob_vl_meas_done  reg_option_switch_year_i 
 art_mon_drug_levels_year_i   ten_is_taf_year_i  	pop_wide_tld_year_i single_vl_switch_efa_year_i
 
-add_prep_any_uptake_sw e_decr_hard_reach_year_i 
+e_decr_hard_reach_year_i 
 
 vmmc_disrup_covid condom_disrup_covid prep_oral_disrup_covid swprog_disrup_covid testing_disrup_covid art_tld_disrup_covid art_tld_eod_disrup_covid
 art_init_disrup_covid vl_adh_switch_disrup_covid cotrim_disrup_covid no_art_disrup_covid inc_death_rate_aids_disrup_covid art_low_adh_disrup_covid
