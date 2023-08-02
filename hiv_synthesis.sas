@@ -4614,6 +4614,7 @@ plw=0; if pregnant=1 or breastfeeding=1 then plw=1;		* MIHPSA JAS Jul23;
 
 * PREP ELIGIBILITY (to start and continue on any type of PrEP);
 
+prep_any_elig_tm1=prep_any_elig;
 prep_any_elig=0;  * dec17 - note change to requirement for newp ge 2, and different eligibility for new users than previous users;
 
 * note this code below changed from kzn_prep program as only need newp ge 1 for sw to be eligible;
@@ -4713,18 +4714,20 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* Limited to a proportion based on age (not gender) and a random fraction;
 		* QUERY do we want random element to change every time step? think about how to code JAS Jul23;
 
-    	r = rand('Uniform');
-      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
-      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.001 or (r < 0.5 and epi=1)) ) 
-		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
-
-/*		r_prep_tm1=r_prep;	* keep;*/
-/*		prep_any_elig_tm1=prep_any_elig;	* keep;*/
-/*		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; */
-/*		else r_prep = rand('Uniform');*/
+/*    	r = rand('Uniform');*/
 /*      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or */
-/*      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) */
+/*      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) */
 /*		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;*/
+/*		* QUERY note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;*/
+
+		r_prep_tm1=r_prep;	* keep;
+		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
+		else r_prep = rand('Uniform');
+      	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (/*r_prep < 0.01 or */(r_prep < 0.5 and epi=1)) ) 
+		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
+		* QUERY note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
+
 	end;
 
 	if prep_any_strategy=16 then do;	* New for MIHPSA - pregnant and breastfeeding women *JAS Apr2023;
@@ -17515,18 +17518,18 @@ run;
 /*	last_prep_used;*/
 /*where serial_no<150 and age ge 15 and death=.;*/
 /*run; */
-/**/
-proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
+
+proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
 	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;
 where prep_oral=1;
 run; 
 
-proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
+proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
 	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;
 where prep_vr=1;
 run; 
 
-proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
+proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
 	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;
 where prep_inj=1;
 run; 
@@ -17534,8 +17537,9 @@ run;
 proc freq; tables 
 prep_oral prep_inj prep_vr
 prep_oral_ever prep_inj_ever prep_vr_ever
-highest_prep_pref prep_any_elig
-prep_oral_willing prep_inj_willing prep_vr_willing; 
+highest_prep_pref prep_oral_willing prep_inj_willing prep_vr_willing
+prep_any_elig agyw sw sdc plw
+; 
 run;
 
 /*proc freq; tables prep_oral prep_inj prep_vr; run;*/
