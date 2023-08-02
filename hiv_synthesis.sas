@@ -4715,7 +4715,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 
     	r = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
-      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.01 or (r < 0.5 and epi=1)) ) 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r < 0.001 or (r < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
 
 /*		r_prep_tm1=r_prep;	* keep;*/
@@ -17492,12 +17492,12 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 
 
 proc print; var
-caldate&j age gender hiv death newp ep epi option sdc prep_any_strategy prep_any_elig
+caldate&j option age gender hiv death newp ep epi sdc prep_any_strategy prep_any_elig
 	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever 
 	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever 
 	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever
 ;
-where serial_no<250 and age ge 15 and death=.;
+where serial_no<150 and age ge 15 and death=.;
 run;
 
 
@@ -17516,28 +17516,32 @@ run;
 /*where serial_no<150 and age ge 15 and death=.;*/
 /*run; */
 /**/
-/*proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible*/
-/*	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;*/
-/*where prep_oral=1;*/
-/*run; */
-/**/
-/*proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible*/
-/*	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;*/
-/*where prep_vr=1;*/
-/*run; */
-/**/
-/*proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible*/
-/*	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;*/
-/*where prep_inj=1;*/
-/*run; */
-/**/
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
+	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;
+where prep_oral=1;
+run; 
+
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
+	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;
+where prep_vr=1;
+run; 
+
+proc print; var caldate&j serial_no age gender death agyw sw sdc plw prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
+	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;
+where prep_inj=1;
+run; 
+
+proc freq; tables 
+prep_oral prep_inj prep_vr
+prep_oral_ever prep_inj_ever prep_vr_ever
+highest_prep_pref prep_any_elig
+prep_oral_willing prep_inj_willing prep_vr_willing; 
+run;
+
 /*proc freq; tables prep_oral prep_inj prep_vr; run;*/
 /*proc freq; tables prep_oral_ever prep_inj_ever prep_vr_ever; run;*/
-/*proc freq; tables highest_prep_pref; run;*/
-/*proc freq; tables prep_oral_last_stop_date; run;*/
-/*proc freq; tables prep_any_elig; run;*/
+/*proc freq; tables highest_prep_pref prep_any_elig; run;*/
 /*proc freq; tables prep_oral_willing prep_inj_willing prep_vr_willing; run;*/
-/*proc freq; tables prep_oral_ever_death; run;*/
 
 
 
