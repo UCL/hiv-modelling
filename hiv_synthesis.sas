@@ -2109,7 +2109,7 @@ who may be dead and hence have caldate{t} missing;
 	*Option 40			   is  essential + DREAMS;									 *Vale;
 
 
-	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do; 	* QUERY  do we need to add option 0 here for essential? JAS Aug23;
+	if option in (1 2 3 4 5 6 7 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 31 32 33 34 40) then do;
 	*ESSENTIAL;
 		*Testing;
 		incr_test_year_i = 4;*No testing in the general population;
@@ -3326,7 +3326,7 @@ end;
 if option = 17 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for serodiscordant couples;
 		eff_rate_test_startprep_any=0.95;
 		eff_prob_prep_oral_b=0.95;
-		eff_rate_choose_stop_prep_oral=rate_choose_stop_prep_oral;
+		eff_rate_choose_stop_prep_oral=0.001;
 		eff_prob_prep_any_restart_choice=0.25;	
 end;
 
@@ -17519,20 +17519,24 @@ run;
 /*where serial_no<150 and age ge 15 and death=.;*/
 /*run; */
 
-proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
-	prep_oral_last_stop_date prep_inj prep_vr last_prep_used highest_prep_pref;
-where prep_oral=1;
+
+proc print; var caldate&j serial_no age gender hiv registd epi_tm1 epi epdiag_tm1 epdiag epart_tm1 epart epvls_tm1 epvls death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig 
+	prep_oral prep_oral_current_start_date prep_oral_first_start_date prep_oral_restart_date prep_oral_restart_date_choice prep_oral_restart_date_eligible
+	prep_oral_last_stop_date last_prep_used highest_prep_pref;
+where prep_any_elig=1;
 run; 
 
-proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible
-	prep_vr_last_stop_date prep_oral prep_inj last_prep_used highest_prep_pref;
-where prep_vr=1;
-run; 
-
-proc print; var caldate&j serial_no age gender hiv epi death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible
-	prep_inj_last_stop_date prep_oral prep_vr last_prep_used highest_prep_pref;
-where prep_inj=1;
-run; 
+/*proc print; var caldate&j serial_no age gender hiv registd epi_tm1 epi epdiag_tm1 epdiag epart_tm1 epart epvls_tm1 epvls death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig */
+/*	prep_vr prep_vr_current_start_date prep_vr_first_start_date prep_vr_restart_date prep_vr_restart_date_choice prep_vr_restart_date_eligible*/
+/*	prep_vr_last_stop_date last_prep_used highest_prep_pref;*/
+/*where prep_any_elig=1;*/
+/*run; */
+/**/
+/*proc print; var caldate&j serial_no age gender hiv registd epi_tm1 epi epdiag_tm1 epdiag epart_tm1 epart epvls_tm1 epvls death agyw sw sdc plw r_prep_tm1 r_prep prep_any_elig_tm1 prep_any_elig */
+/*	prep_inj prep_inj_current_start_date prep_inj_first_start_date prep_inj_restart_date prep_inj_restart_date_choice prep_inj_restart_date_eligible*/
+/*	prep_inj_last_stop_date last_prep_used highest_prep_pref;*/
+/*where prep_any_elig=1;*/
+/*run; */
 
 proc freq; tables 
 prep_oral prep_inj prep_vr
