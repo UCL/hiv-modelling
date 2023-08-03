@@ -3,8 +3,8 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 *libname b "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Check\20230621";
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_Jul03_from2023_out";
-data a.base_from2023_03_07_23;   set b.out:;
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v14_2023Jul31_from2023_out";
+data a.base_from2023_31_07_23;   set b.out:;
 *8 dataset had dataset id with 8 characters,
  the other 92 had datset id with 9 characters so the issue is that these others datasets are empty, 
  as it was trucnating dataset_id;
@@ -12,12 +12,16 @@ data a.base_from2023_03_07_23;   set b.out:;
 run;
 
 /* show the contents of the input SAS file */
-/*
-proc contents data=a.base_from2023_03_07_23;run;
-proc sort data=a.base_16_06_23; by run; run;
-proc freq data=a.base_from2023_03_07_23; table run option run_forward_id;where cald=2023.75;run;
-proc freq data=a.base_from2023_03_07_23; table run*option/norow nocol nopercent; where cald=2023.75;run;*63 simulations (out of 100) by 3 options = 189;
-proc freq data=a.base_from2023_03_07_23; table run cald option;run;
+
+proc contents data=a.base_from2023_31_07_23;run;
+proc sort data=a.base_31_08_23; by run; run;
+proc freq data=a.base_from2023_31_07_23; table run option run_forward_id;where cald=2023.75;run;
+*100 simulations have cald 2023
+ 86 ...2023.25
+ 85 ...2027.25
+ options 15 16 18 19 20 22 23 24 26;
+proc freq data=a.base_from2023_31_07_23; table run*option/norow nocol nopercent; where cald=2023.75;run;
+proc freq data=a.base_from2023_31_07_23; table run cald option;run;
 */
 
 libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
