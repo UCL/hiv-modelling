@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a;
-set a.fsw_24_07_23a;  
+set a.fsw_27_07_23;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -267,6 +267,8 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 
 *sti;							p_sti_sw = s_sti_sw/s_sw_1564;
 
+* linked_diag_sw;				if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
+
 
 keep run option cald 
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
@@ -307,7 +309,7 @@ dtest_cost		d_t_adh_int_cost  	dswitchline_cost  dcost_drug_level_test dcost_cir
 dcost_prep_visit_oral  				dcost_prep_oral   dcost_prep_visit_inj  dcost_prep_inj 		dtest_cost_sw
 effect_sw_prog_newp
 
-s_tested s_tested_m s_tested_f n_pregnant
+s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 ;
 
 proc sort data=y;by run option;run;
