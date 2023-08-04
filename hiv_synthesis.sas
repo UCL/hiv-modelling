@@ -4724,7 +4724,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 		else r_prep = rand('Uniform');
       	if (epdiag=1 and (epart ne 1 or epvls ne 1)) or 
-      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (/*r_prep < 0.01 or */(r_prep < 0.5 and epi=1)) ) 
+      	(ep=1 and epdiag ne 1 and 15 <= age < 50 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)) ) 
 		then prep_any_elig=1; 	* QUERY changed from 5pc to 1pc of eps who may not have hiv JAS Jul23;
 		* QUERY note under this definition there is no age restriction on eligibility for those with an infected partner who is not on ART or virally suppressed JAS Aug23;
 
@@ -4735,7 +4735,6 @@ if t ge 2 and (registd ne 1) and caldate{t} >= min(date_prep_oral_intro, date_pr
 		* All pregnant and breastfeeding women - check numbers against MIHPSA targets;
       	if gender=2 and (pregnant=1 or breastfeeding=1) and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
 	end;
-
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
@@ -17546,11 +17545,12 @@ prep_any_elig agyw sw sdc plw
 ; 
 run;
 
+proc freq; tables epi hiv; where age >= 15 and age < 65; run;
+
 /*proc freq; tables prep_oral prep_inj prep_vr; run;*/
 /*proc freq; tables prep_oral_ever prep_inj_ever prep_vr_ever; run;*/
 /*proc freq; tables highest_prep_pref prep_any_elig; run;*/
 /*proc freq; tables prep_oral_willing prep_inj_willing prep_vr_willing; run;*/
-
 
 
 /*proc print; var caldate&j gender age dt_lastbirth pregnant breastfeeding duration_breastfeeding prob_stop_breastfeeding_yr1 prob_stop_breastfeeding_yr2 cum_children death*/
