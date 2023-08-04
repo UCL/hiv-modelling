@@ -16,13 +16,28 @@ run;
 proc contents data=a.base_from2023_31_07_23;run;
 proc sort data=a.base_31_08_23; by run; run;
 proc freq data=a.base_from2023_31_07_23; table run option run_forward_id;where cald=2023.75;run;
+proc freq data=a.base_from2023_31_07_23; table run*option/norow nocol nopercent; where cald=2023.75;run;
+proc freq data=a.base_from2023_31_07_23; table run cald option;run;
 *100 simulations have cald 2023
  86 ...2023.25
  85 ...2027.25
  options 15 16 18 19 20 22 23 24 26;
-proc freq data=a.base_from2023_31_07_23; table run*option/norow nocol nopercent; where cald=2023.75;run;
-proc freq data=a.base_from2023_31_07_23; table run cald option;run;
-*/
+*What is the issue?;
+proc freq data=a.base_from2023_31_07_23; table run*cald/norow nocol nopercent;run;
+*Some simulations:
+- 61 runs to 2072.75, these start from 5 datasets (120429293, 185837231, 256404265, 697983456, 735829406 )
+- 8 runs to 2027 and then tailor off with 1 going up to 2048.5 (695031602)
+- 8 runs to 2027 and 7 to the end (771163822)
+- 5 runs to 2065.25 and 4 to the end (883606185)
+- 15 runs to 2040, 2 to 2065.25 (944518379)
+- 14 run only in 2023 and then stop, these start from TOT datasets (223676891,545935016);
+proc freq data=a.base_from2023_31_07_23; table option*cald/norow nocol nopercent;run;
+
+data a.base_from2023_31_07_23; set a.base_from2023_31_07_23; 
+if run in ("120429293" "185837231" "256404265" "697983456" "735829406" );
+run;
+proc freq data=a.base_from2023_31_07_23; table cald;run;
+*50 simulations that make sense;
 
 libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
 
@@ -57,7 +72,7 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_from2023_03_07_23;
+data g; set  a.base_from2023_31_07_23;
 
 proc sort data=g; 
 by run cald option;run;
