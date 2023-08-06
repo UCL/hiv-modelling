@@ -13156,7 +13156,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
-dead_=.;dead_diag=.;
+dead_=.;dead_diag=.; vg1000_np=.;
 
 if hiv =1 then do;
 
@@ -13189,6 +13189,8 @@ if hiv =1 then do;
 	end;
 
 	if 15 <= age < 50 then do; vg1000_1549=0; if vg1000=1 then vg1000_1549=1;   end;
+
+	if np ge 1 and vg1000=1 then vg1000_np=1;
 
 	if gender = 2 then do;
 	vl1000_w=vl1000;
@@ -16628,6 +16630,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_not_on_art_cd4350500 + not_on_art_cd4350500;
 	s_asympt_Undiag + asympt_Undiag; s_asympt_diagoffart + asympt_diagoffart; s_asympt_diagonart + asympt_diagonart;
 	s_sympt_notaids + sympt_notaids; s_sympt_aids + sympt_aids;
+	s_vg1000_np + vg1000_np;
 
 	/*ART*/
 
@@ -18346,7 +18349,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -19290,7 +19293,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -20853,7 +20856,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
 
 /*VL and CD4*/

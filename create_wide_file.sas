@@ -2,7 +2,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_3o_out\";
 
 ods html close;
 
@@ -213,6 +213,8 @@ s_hiv = s_hivge15 ;
 
 * p_adhav_hi_onart;				p_adhav_hi_onart = s_adhav_hi_onart / s_onart ;
 
+* p_newp_ge1_age1549;			p_newp_ge1_age1549 = (s_w1549_newp_ge1 + s_m1549_newp_ge1) / (s_alive1549_w + s_alive1549_m) ;
+
 * n_alive;						n_alive = (s_alive_m + s_alive_w) * &sf ;
 
 * p_dol;						p_dol = s_dol / s_onart;
@@ -223,6 +225,7 @@ s_hiv = s_hivge15 ;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_vg1000, p_vl1000;			if s_hiv1564  > 0 then p_vg1000 = s_vg1000 / s_hiv1564 ;  p_vl1000 = 1- p_vg1000 ;
 * n_vg1000          ;			n_vg1000 = s_vg1000 * &sf ;
+* n_vg1000_np ;					n_vg1000_np = s_vg1000_np * &sf ;
 * prevalence_vg1000;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000 = s_vg1000 / (s_alive1549_w + s_alive1549_m);
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
@@ -238,7 +241,6 @@ s_hiv = s_hivge15 ;
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
 * n_dead_all;					n_dead_all = s_dead_all * 4 * &sf;
 
-
 * p_inf_newp ;					p_inf_newp = s_inf_newp / s_primary;
 * p_inf_ep ;					p_inf_ep = s_inf_ep   / s_primary;
 * p_inf_diag ;					p_inf_diag = s_inf_diag   / s_primary;
@@ -248,7 +250,6 @@ s_hiv = s_hivge15 ;
 * p_diag_sw;					if s_hiv_sw > 0 then p_diag_sw = s_diag_sw / s_hiv_sw; 
 * p_onart_diag_sw;				if s_diag_sw > 0 then p_onart_diag_sw = s_onart_sw / s_diag_sw;
 * p_onart_vl1000_sw;			if s_onart_gt6m_iicu_sw > 0 then p_onart_vl1000_sw = s_vl1000_art_gt6m_iicu_sw / s_onart_gt6m_iicu_sw ;
-
 
 * prop_m_vlg1; 					prop_m_vlg1 = s_prop_m_vlg1 ;
 * prop_m_vlg2; 					prop_m_vlg2 = s_prop_m_vlg2 ;
@@ -264,18 +265,20 @@ s_hiv = s_hivge15 ;
 * prop_w_vlg5; 					prop_w_vlg5 = s_prop_w_vlg5 ;
 * prop_w_vlg6; 					prop_w_vlg6 = s_prop_w_vlg6 ;
 
+* prop_w_1549_sw;				if s_alive1549_w gt 0 then prop_w_1549_sw = s_sw_1549 / s_alive1549_w ;
+
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
-keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa
+keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa  n_undiag
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000  n_vg1000
-dcost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  prop_inf_w_sw
+dcost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  prop_inf_w_sw  n_vg1000_np
 p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw  n_prep_inj
 prop_m_vlg1  prop_m_vlg2  prop_m_vlg3  prop_m_vlg4  prop_m_vlg5 prop_m_vlg6 
 prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
-n_dead_all
+n_dead_all  prop_w_1549_sw p_newp_ge1_age1549
 dart_cost
  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
 		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
@@ -317,7 +320,7 @@ sw_art_disadv
 
 
 
-data a.future_inc_l; set y;
+data a.future_inc_3o_l; set y;
 
 
 
@@ -365,12 +368,12 @@ data &v ; merge  y_23 t_30 t_43 t_24_28 t_24_30 t_24_43 t_24_73;
 
 %var(v=p_diag);	 		%var(v=p_diag_m);	%var(v=p_onart); 	%var(v=p_diag_w);   		%var(v=p_onart_diag);   %var(v=p_onart_diag_w);
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);  %var(v=n_hiv);  %var(v=prop_inf_w_sw);
-%var(v=p_vg1000); 		%var(v=p_vl1000);	%var(v=n_vg1000);  %var(v=p_inf_naive);
+%var(v=p_vg1000); 		%var(v=p_vl1000);	%var(v=n_vg1000);  %var(v=p_inf_naive);  %var(v=n_undiag); %var(v=p_inf_diag); %var(v=p_inf_primary);
 		%var(v=prevalence_vg1000);  %var(v=n_undiag); %var(v=p_mcirc);  %var(v=n_prep_any);
-%var(v=p_mcirc);
+%var(v=p_mcirc);  %var(v= prop_w_1549_sw );  %var(v=n_vg1000_np);
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   %var(v=n_dead_all);
+%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   %var(v=n_dead_all);  %var(v=p_newp_ge1_age1549);
 
  %var(v=dart_cost);  %var(v=dadc_cost);  %var(v=dcd4_cost);  %var(v=dvl_cost);  %var(v=dvis_cost);  %var(v=dnon_tb_who3_cost);  %var(v=dcot_cost);  %var(v=dtb_cost);
   %var(v=dres_cost); 
@@ -386,11 +389,11 @@ run;
 
 ***MERGE THE DATASETS CREATED ABOVE INTO ONE DATASET;
 data wide_outputs;merge   p_onart
-p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w
-p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_vg1000
-p_vg1000 		p_vl1000			prevalence_vg1000  p_mcirc  p_inf_naive
+p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w  n_undiag
+p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_vg1000 p_newp_ge1_age1549
+p_vg1000 		p_vl1000			prevalence_vg1000  p_mcirc  p_inf_naive   prop_w_1549_sw  n_vg1000_np
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
-dcost			ddaly   n_death_hiv  n_prep_any   n_dead_all  prop_inf_w_sw
+dcost			ddaly   n_death_hiv  n_prep_any   n_dead_all  prop_inf_w_sw  p_inf_diag p_inf_primary 
 dart_cost  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
 		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
 		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
@@ -481,30 +484,20 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_future_inc;
+data a.wide_future_inc_3o;
 merge   wide_outputs  wide_par ;  
 by run;
 
 d_ddaly_24_73_2_1 = ddaly_24_73_2 - ddaly_24_73_1 ;  
 d_ddaly_24_73_3_1 = ddaly_24_73_3 - ddaly_24_73_1 ;  
-d_ddaly_24_73_4_1 = ddaly_24_73_4 - ddaly_24_73_1 ;  
-d_ddaly_24_73_5_1 = ddaly_24_73_5 - ddaly_24_73_1 ;  
-d_ddaly_24_73_6_1 = ddaly_24_73_6 - ddaly_24_73_1 ;  
 
 d_dcost_24_73_2_1 = dcost_24_73_2 - dcost_24_73_1 ;  
 d_dcost_24_73_3_1 = dcost_24_73_3 - dcost_24_73_1 ;  
-d_dcost_24_73_4_1 = dcost_24_73_4 - dcost_24_73_1 ;  
-d_dcost_24_73_5_1 = dcost_24_73_5 - dcost_24_73_1 ;  
-d_dcost_24_73_6_1 = dcost_24_73_6 - dcost_24_73_1 ;  
+ 
 
 netddaly_24_73_1 = ddaly_24_73_1 + (dcost_24_73_1 / 0.0005); 
 netddaly_24_73_2 = ddaly_24_73_2 + (dcost_24_73_2 / 0.0005); 
 netddaly_24_73_3 = ddaly_24_73_3 + (dcost_24_73_3 / 0.0005); 
-netddaly_24_73_4 = ddaly_24_73_4 + (dcost_24_73_4 / 0.0005); 
-netddaly_24_73_5 = ddaly_24_73_5 + (dcost_24_73_5 / 0.0005); 
-netddaly_24_73_6 = ddaly_24_73_6 + (dcost_24_73_6 / 0.0005); 
-
-r_incidence_24_28 = incidence1549_24_28_5 / incidence1549_24_28_1;
 
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
@@ -578,4 +571,22 @@ sw_art_disadv
 
 / solution;
 run;
+
+
+
+
+
+
+proc glm ; 
+
+* model r_incidence_23_43 = ;
+  model incidence1549_43_1 = 
+
+
+prop_w_1549_sw_23  incidence1549_23
+
+/ solution;
+run;
+
+
 

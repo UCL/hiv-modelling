@@ -467,9 +467,9 @@ newp_seed = 7;
 							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.02 	0.05 	0.15 	0.35 	0.50, 
+								0.02 	0.05 	0.15 	0.25 , 
 
-								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
+								0.60 	0.30	0.05	0.05	); 
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
@@ -666,7 +666,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
-* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.1  0.3 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
+* prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.02 0.05  0.1 ); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* lapr and dpv-vr - define prob_lapr_b and prob_dpv_b which may be different to prob_prep_oral_b - we may need to 
 																redefine prep_any_willing so that it has more than two categories according to which prep forumations the person is willing to take;
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -697,7 +697,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2024;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep; * lapr;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj 
@@ -2500,11 +2500,13 @@ if option=1 then do;
 test_targeting=1000; eff_test_targeting=1000; no_hard_reach_test=1;
 end;
 
-
-if option=2 then do; 
-base_rate_stop_sexwork=1; rate_stop_sexwork=1;prob_becoming_sw=0; base_rate_sw=0;
+if option=2 then do;
+increase_adherence=1;
 end;
 
+if option = 3 then do;
+test_targeting=1000; eff_test_targeting=1000; no_hard_reach_test=1;increase_adherence=1;
+end;
 
 end;
 
@@ -8637,6 +8639,10 @@ if artvis0_lower_adh = 1 and onartvisit0 = 1 and _p1 < 0.5  then adh = adh - ran
 if pop_wide_tld_prep=1 and registd ne 1 and pop_wide_tld_as_art ne 1 and pep_not_prep=1 then adh=0;
 
 
+* for option 2;
+if increase_adherence=1 then adh=0.9;
+
+
 * REDUCED CD4 RISE FOR FASTER CD4 RISERS AFTER LONGER ON ART;
 
 	pt_cd4_rise_art=patient_cd4_rise_art;
@@ -13156,7 +13162,7 @@ diag_epun=0;if registd=1 and ep=1 and epdiag ne 1 then diag_epun=ep;
 vl50=.; vg50=.; vl200=.; vg200=.; vl1000= .; vg1000=.; vg1000_m=.; vg1000_w=.; vg1000_m_1524=.;vg1000_w_1524=.;vg1000_w_1524=.;vg1000_1549=.;
 ever_ep_hiv=.;ever_ep_diag=.;ever_newp_hiv=.;ever_newp_diag=.;
 ever_sw_hiv=.;ever_sw_diag=.;
-dead_=.;dead_diag=.;
+dead_=.;dead_diag=.; vg1000_np=.;
 
 if hiv =1 then do;
 
@@ -13189,6 +13195,8 @@ if hiv =1 then do;
 	end;
 
 	if 15 <= age < 50 then do; vg1000_1549=0; if vg1000=1 then vg1000_1549=1;   end;
+
+	if np ge 1 and vg1000=1 then vg1000_np=1;
 
 	if gender = 2 then do;
 	vl1000_w=vl1000;
@@ -16628,6 +16636,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_not_on_art_cd4350500 + not_on_art_cd4350500;
 	s_asympt_Undiag + asympt_Undiag; s_asympt_diagoffart + asympt_diagoffart; s_asympt_diagonart + asympt_diagonart;
 	s_sympt_notaids + sympt_notaids; s_sympt_aids + sympt_aids;
+	s_vg1000_np + vg1000_np;
 
 	/*ART*/
 
@@ -18346,7 +18355,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500  
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564  s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -19290,7 +19299,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350 s_not_on_art_cd4350500 s_not_on_art_cd4ge500
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564   s_hard_reach s_tested_at_return   s_test_not_costed
 
 
@@ -20511,6 +20520,216 @@ data r1; set a;
 
 
 
+data r1; set a;
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
+
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=153,h=160,j=160,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=157,h=164,j=161,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=157,h=164,j=162,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=157,h=164,j=163,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=157,h=164,j=164,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=165,h=172,j=172,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=169,h=176,j=173,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=169,h=176,j=174,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=169,h=176,j=175,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=169,h=176,j=176,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=173,h=180,j=177,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=173,h=180,j=178,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=173,h=180,j=179,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=173,h=180,j=180,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=177,h=184,j=181,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=177,h=184,j=182,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=177,h=184,j=183,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=177,h=184,j=184,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=181,h=188,j=185,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=181,h=188,j=186,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=181,h=188,j=187,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=181,h=188,j=188,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=185,h=192,j=189,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=185,h=192,j=190,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=185,h=192,j=191,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=185,h=192,j=192,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=189,h=196,j=193,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=189,h=196,j=194,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=189,h=196,j=195,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=189,h=196,j=196,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=193,h=200,j=197,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=193,h=200,j=198,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=193,h=200,j=199,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=193,h=200,j=200,s=3);   
+%update_r1(da1=1,da2=2,e=5,f=6,g=197,h=204,j=201,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=197,h=204,j=202,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=197,h=204,j=203,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=197,h=204,j=204,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=201,h=208,j=205,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=201,h=208,j=206,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=201,h=208,j=207,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=201,h=208,j=208,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=205,h=212,j=209,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=205,h=212,j=210,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=205,h=212,j=211,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=205,h=212,j=212,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=209,h=216,j=213,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=209,h=216,j=214,s=3);
+
+%update_r1(da1=1,da2=2,e=7,f=8,g=209,h=216,j=215,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=209,h=216,j=216,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=213,h=220,j=217,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=213,h=220,j=218,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=213,h=220,j=219,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=213,h=220,j=220,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=217,h=224,j=221,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=217,h=224,j=222,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=217,h=224,j=223,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=217,h=224,j=224,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=221,h=228,j=225,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=221,h=228,j=226,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=221,h=228,j=227,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=221,h=228,j=228,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=225,h=232,j=229,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=225,h=232,j=230,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=225,h=232,j=231,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=225,h=232,j=232,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=229,h=236,j=233,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=229,h=236,j=234,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=229,h=236,j=235,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=229,h=236,j=236,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=233,h=240,j=237,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=233,h=240,j=238,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=233,h=240,j=239,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=233,h=240,j=240,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=237,h=244,j=241,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=237,h=244,j=242,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=237,h=244,j=243,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=237,h=244,j=244,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=241,h=248,j=245,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=241,h=248,j=246,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=241,h=248,j=247,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=241,h=248,j=248,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=245,h=252,j=249,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=245,h=252,j=250,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=245,h=252,j=251,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=245,h=252,j=252,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=249,h=256,j=253,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=249,h=256,j=254,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=249,h=256,j=255,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=249,h=256,j=256,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=253,h=260,j=257,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=253,h=260,j=258,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=253,h=260,j=259,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=253,h=260,j=260,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=257,h=264,j=261,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=257,h=264,j=262,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=257,h=264,j=263,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=257,h=264,j=264,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=261,h=268,j=265,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=261,h=268,j=266,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=261,h=268,j=267,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=261,h=268,j=268,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=265,h=272,j=269,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=265,h=272,j=270,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=265,h=272,j=271,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=265,h=272,j=272,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=269,h=276,j=273,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=269,h=276,j=274,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=269,h=276,j=275,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=269,h=276,j=276,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=273,h=280,j=277,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=273,h=280,j=278,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=273,h=280,j=279,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=273,h=280,j=280,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=277,h=284,j=281,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=277,h=284,j=282,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=277,h=284,j=283,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=277,h=284,j=284,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=281,h=288,j=285,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=281,h=288,j=286,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=281,h=288,j=287,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=281,h=288,j=288,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=285,h=292,j=289,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=285,h=292,j=290,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=285,h=292,j=291,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=285,h=292,j=292,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=289,h=296,j=293,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=289,h=296,j=294,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=289,h=296,j=295,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=289,h=296,j=296,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=293,h=300,j=297,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=293,h=300,j=298,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=293,h=300,j=299,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=293,h=300,j=300,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=297,h=304,j=301,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=297,h=304,j=302,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=297,h=304,j=303,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=297,h=304,j=304,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=301,h=308,j=305,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=301,h=308,j=306,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=301,h=308,j=307,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=301,h=308,j=308,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=305,h=312,j=309,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=305,h=312,j=310,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=305,h=312,j=311,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=305,h=312,j=312,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=309,h=316,j=313,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=309,h=316,j=314,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=309,h=316,j=315,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=309,h=316,j=316,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=313,h=320,j=317,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=313,h=320,j=318,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=313,h=320,j=319,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=313,h=320,j=320,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=317,h=324,j=321,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=317,h=324,j=322,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=317,h=324,j=323,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=317,h=324,j=324,s=3);
+%update_r1(da1=1,da2=2,e=5,f=6,g=321,h=328,j=325,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=321,h=328,j=326,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=321,h=328,j=327,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=321,h=328,j=328,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=325,h=332,j=329,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=325,h=332,j=330,s=3);
+%update_r1(da1=1,da2=2,e=7,f=8,g=325,h=332,j=331,s=3);
+%update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
+
+%update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+
+
+
+
+
+
+
 
 
 * ts1m:  need more update statements ;
@@ -20853,7 +21072,7 @@ s_diag_ep
 s_year_1_infection  s_year_2_infection  s_year_3_infection  s_year_4_infection  s_year_5_infection  
 s_year_1_infection_diag  s_year_2_infection_diag  s_year_3_infection_diag  s_year_4_infection_diag  s_year_5_infection_diag  
 s_not_on_art_cd4l50 s_not_on_art_cd4l200  s_not_on_art_cd4200350  s_not_on_art_cd4350500  s_not_on_art_cd4ge500
-s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids 
+s_asympt_Undiag s_asympt_diagoffart s_asympt_diagonart s_sympt_notaids s_sympt_aids s_vg1000_np
 s_diag_age1564  s_diag_m_age1564  s_diag_w_age1564    s_hard_reach s_tested_at_return  s_test_not_costed
 
 /*VL and CD4*/
