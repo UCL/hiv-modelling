@@ -153,7 +153,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_sw_program + dcost_community_outreach;
+		dcost_sw_program ;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -162,6 +162,7 @@ dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + d
 cost_clin_care = dcost_clin_care / discount;
 
 cost = dcost / discount;
+
 
 * ================================================================================= ;
 * ================================================================================= ;
@@ -210,6 +211,8 @@ s_hiv = s_hivge15 ;
 * p_onart_diag;					if s_diag > 0 then p_onart_diag = s_onart_iicu / s_diag;
 * p_onart_diag_m;				if s_diag_m > 0 then p_onart_diag_m = s_onart_m / s_diag_m;
 * p_onart_diag_w;				if s_diag_w > 0 then p_onart_diag_w = s_onart_w / s_diag_w;
+
+* n_onart;						n_onart = s_onart_iicu * &sf ;
 
 * p_adhav_hi_onart;				p_adhav_hi_onart = s_adhav_hi_onart / s_onart ;
 
@@ -270,16 +273,16 @@ s_hiv = s_hivge15 ;
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
-keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa  n_undiag
+keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa  n_undiag  n_onart
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000  n_vg1000
-dcost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  prop_inf_w_sw  n_vg1000_np
+dcost cost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  prop_inf_w_sw  n_vg1000_np
 p_inf_newp  p_inf_ep  p_inf_diag  p_inf_naive  p_inf_primary test_prop_positive p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw  n_prep_inj
 prop_m_vlg1  prop_m_vlg2  prop_m_vlg3  prop_m_vlg4  prop_m_vlg5 prop_m_vlg6 
 prop_w_vlg1  prop_w_vlg2  prop_w_vlg3  prop_w_vlg4  prop_w_vlg5 prop_w_vlg6
 n_dead_all  prop_w_1549_sw p_newp_ge1_age1549
-dart_cost
+dart_cost  
  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
 		dtest_cost  d_t_adh_int_cost  dswitchline_cost  dcost_drug_level_test  dcost_circ  dcost_condom_dn 
 		 dcost_avail_self_test  dcost_prep_visit_oral  dcost_prep_oral  dcost_prep_visit_inj  dcost_prep_inj  
@@ -370,11 +373,10 @@ data &v ; merge  y_23 t_30 t_43 t_24_28 t_24_30 t_24_43 t_24_73;
 %var(v=p_onart_diag_m); %var(v=p_onart_vl1000);		%var(v=p_onart_vl1000_w);   %var(v=p_onart_vl1000_m);  %var(v=n_hiv);  %var(v=prop_inf_w_sw);
 %var(v=p_vg1000); 		%var(v=p_vl1000);	%var(v=n_vg1000);  %var(v=p_inf_naive);  %var(v=n_undiag); %var(v=p_inf_diag); %var(v=p_inf_primary);
 		%var(v=prevalence_vg1000);  %var(v=n_undiag); %var(v=p_mcirc);  %var(v=n_prep_any);
-%var(v=p_mcirc);  %var(v= prop_w_1549_sw );  %var(v=n_vg1000_np);
+%var(v=p_mcirc);  %var(v= prop_w_1549_sw );  %var(v=n_vg1000_np);  %var(v=n_onart);
 %var(v=prevalence1549m);%var(v=prevalence1549w); 	%var(v=prevalence1549); 	
 %var(v=incidence1549); 	%var(v=incidence1549w); 	%var(v=incidence1549m);
-%var(v=dcost);	 		%var(v=ddaly);   %var(v=n_death_hiv);   %var(v=n_dead_all);  %var(v=p_newp_ge1_age1549);
-
+%var(v=dcost);	%var(v=cost); 		%var(v=ddaly);   %var(v=n_death_hiv);   %var(v=n_dead_all);  %var(v=p_newp_ge1_age1549);
  %var(v=dart_cost);  %var(v=dadc_cost);  %var(v=dcd4_cost);  %var(v=dvl_cost);  %var(v=dvis_cost);  %var(v=dnon_tb_who3_cost);  %var(v=dcot_cost);  %var(v=dtb_cost);
   %var(v=dres_cost); 
 		%var(v=dtest_cost);  %var(v=d_t_adh_int_cost);  %var(v=dswitchline_cost);  %var(v=dcost_drug_level_test);  %var(v=dcost_circ);  
@@ -389,9 +391,9 @@ run;
 
 ***MERGE THE DATASETS CREATED ABOVE INTO ONE DATASET;
 data wide_outputs;merge   p_onart
-p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w  n_undiag
+p_diag	 		p_diag_m	 	p_onart	p_diag_w   			p_onart_diag  	p_onart_diag_w  n_undiag  n_onart
 p_onart_diag_m 	p_onart_vl1000		p_onart_vl1000_w   	p_onart_vl1000_m  n_vg1000 p_newp_ge1_age1549
-p_vg1000 		p_vl1000			prevalence_vg1000  p_mcirc  p_inf_naive   prop_w_1549_sw  n_vg1000_np
+p_vg1000 		p_vl1000  cost			prevalence_vg1000  p_mcirc  p_inf_naive   prop_w_1549_sw  n_vg1000_np
 prevalence1549m	prevalence1549w 	prevalence1549 		incidence1549 	incidence1549w 	incidence1549m
 dcost			ddaly   n_death_hiv  n_prep_any   n_dead_all  prop_inf_w_sw  p_inf_diag p_inf_primary 
 dart_cost  dadc_cost  dcd4_cost  dvl_cost  dvis_cost  dnon_tb_who3_cost  dcot_cost  dtb_cost  dres_cost 
