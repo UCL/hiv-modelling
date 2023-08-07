@@ -13,7 +13,7 @@ proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthes
 ods html close;
 
 data b;
-set a.future_inc_3o_l;
+set a.future_inc_a_l;
 
 
 n_k65m = p_k65m * n_hiv;

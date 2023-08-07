@@ -2,7 +2,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_3o_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_a_out\";
 
 ods html close;
 
@@ -320,7 +320,7 @@ sw_art_disadv
 
 
 
-data a.future_inc_3o_l; set y;
+data a.future_inc_a_l; set y;
 
 
 
@@ -484,39 +484,11 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_future_inc_3o;
+data a.wide_future_inc_a;
 merge   wide_outputs  wide_par ;  
 by run;
 
-d_ddaly_24_73_2_1 = ddaly_24_73_2 - ddaly_24_73_1 ;  
-d_ddaly_24_73_3_1 = ddaly_24_73_3 - ddaly_24_73_1 ;  
-
-d_dcost_24_73_2_1 = dcost_24_73_2 - dcost_24_73_1 ;  
-d_dcost_24_73_3_1 = dcost_24_73_3 - dcost_24_73_1 ;  
- 
-
-netddaly_24_73_1 = ddaly_24_73_1 + (dcost_24_73_1 / 0.0005); 
-netddaly_24_73_2 = ddaly_24_73_2 + (dcost_24_73_2 / 0.0005); 
-netddaly_24_73_3 = ddaly_24_73_3 + (dcost_24_73_3 / 0.0005); 
-
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
-
-
-testing_ce = 0; if netddaly_24_73_5 < netddaly_24_73_2 then testing_ce = 1;
-testing_ce_x = 1 - testing_ce ;
-
-p_diag_23_r = round(p_diag_23, 0.05);
-p_onart_23_r = round(p_onart_23, 0.05);
-
-
-
-proc freq; tables incidence1549_43_1 incidence1549_23 r_incidence_23_43
- ;
-run;
-
-
-
-
 
 
 
@@ -579,9 +551,7 @@ run;
 
 proc glm ; 
 
-* model r_incidence_23_43 = ;
-  model incidence1549_43_1 = 
-
+  model r_incidence_23_43 =
 
 prop_w_1549_sw_23  incidence1549_23
 
