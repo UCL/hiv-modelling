@@ -37,6 +37,7 @@ data a.base_from2023_31_07_23; set a.base_from2023_31_07_23;
 if run in ("120429293" "185837231" "256404265" "697983456" "735829406" );
 run;
 proc freq data=a.base_from2023_31_07_23; table cald;run;
+proc freq data=a.base_from2023_31_07_23; table run_forward_id;where cald=2072.75;run;
 *50 simulations that make sense;
 
 libname c "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v13_end2022_out";
