@@ -13,7 +13,7 @@ proc printto ; * log="C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthes
 ods html close;
 
 data b;
-set a.future_inc_a_l;
+set a.future_inc_b_l;
 
 n_k65m = p_k65m * n_hiv;
 p_vl1000_ = p_vl1000;
@@ -26,7 +26,10 @@ p_onart_vl1000_ = p_onart_vl1000;
 n_vg1000_ = n_vg1000;
 p_newp_ge1_age1549_=p_newp_ge1_age1549;
 
-%let single_var =  p_mcirc                       ;
+%let single_var = incidence1549_                  ;
+
+if prep_dependent_prev_vg1000 = 0; 
+
 
 * if adh_pattern = 2 ;
 
@@ -305,6 +308,7 @@ run;quit;
 ods html close;
 
 
+
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Proportion on ART";
@@ -389,13 +393,13 @@ run;quit;
 
 ods html close;
 
-
+*/
 
 ods html;
 proc sgplot data=d; 
 Title    height=1.5 justify=center "incidence";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (2010 to 2070 by 1)	 	 valueattrs=(size=10); 
-yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.5   by 0.05 ) valueattrs=(size=10);
+yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to 0.8   by 0.05 ) valueattrs=(size=10);
 
 label mean_incidence1549__0 = "option 0";
 label mean_incidence1549__1 = "option_1";
@@ -415,7 +419,7 @@ run;quit;
 
 ods html close;
 
-
+/*
  
 ods html;
 proc sgplot data=d; 
@@ -787,7 +791,7 @@ run;quit;
 
 ods html close;
 
-*/
+
 
 ods html;
 proc sgplot data=d; 
@@ -813,7 +817,7 @@ run;quit;
 
 ods html close;
 
-/*
+
 
 ods html;
 proc sgplot data=d; 
