@@ -2,7 +2,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_a_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_b_out\";
 
 ods html close;
 
@@ -323,7 +323,7 @@ sw_art_disadv
 
 
 
-data a.future_inc_a_l; set y;
+data a.future_inc_b_l; set y;
 
 
 
@@ -486,7 +486,7 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_future_inc_a;
+data a.wide_future_inc_b;
 merge   wide_outputs  wide_par ;  
 by run;
 
