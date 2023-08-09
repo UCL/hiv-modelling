@@ -3,17 +3,17 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v14_2023Jul26_toend2022_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v15_uptoend2042_2023Aug08_out";
 
-data a.base_26_07_2023;   set b.out:;
+data a.base_08_08_2023;   set b.out:;
 
 /* show the contents of the input SAS file */
 /*
 proc contents data=a.base_16_06_23;run;
 proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
-proc freq data=a.base_26_07_2023; table run;run;
-proc freq data=a.base_26_07_2023; table cald;run;*11 simulations;
+proc freq data=a.base_08_08_2023; table run;run;
+proc freq data=a.base_08_08_2023; table cald;run;*15 simulations;
 ods html close;
 ods listing;
 /*
@@ -26,11 +26,11 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_26_07_2023;
+data g; set  a.base_08_08_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*11 out of 100;
+*15 out of 100;
 *100 out of 860;
 *87 out of 850;
 *104 out of 850;
@@ -1222,7 +1222,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_26_07_2023; set y;  run;
+data a.l_base_08_08_2023; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
