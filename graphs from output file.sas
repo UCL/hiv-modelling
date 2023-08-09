@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_08_08_2023;
+set a.l_base_09_08_2023;
 
 
 p_onart_vl1000_all = .;
@@ -75,7 +75,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 15  ;*out of 100;*out of 860;
+%let nfit = 12  ;*out of 100;*out of 860;
 %let year_end = 2042.75;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -131,12 +131,7 @@ run;
 */
 *I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
-*By mistake I run option 17 instead of 0;
 proc freq data=b;table option;run;
-*Thew following is temporary to avoid having to run a lot of code;
-data b;set b;
-if option=17 then option=0;
-run;
 
 %macro option_(s);
 data option_&s;set b;
@@ -232,7 +227,7 @@ proc freq data=d;table cald;run;
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
 ods graphics / reset imagefmt=jpeg height=4in width=6in; run;
-ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V14_20230808_15sim.doc' startpage=never; 
+ods rtf file = 'C:\Users\Valentina\OneDrive - University College London\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\Findings\V14_20230809_12sim.doc' startpage=never; 
 
 *1 - essential;
 *15 - PrEP in AGYW;
