@@ -75,7 +75,7 @@ p_on_artexp_w1524evpreg = p_onart_artexp_w1524evpreg;
 proc sort data=b; by option cald run ;run;
 data b;set b;count_csim+1;by option cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim cald;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 12  ;*out of 100;*out of 860;
+%let nfit = 116  ;*out of 100;*out of 860;
 %let year_end = 2042.75;
 run;
 /*proc freq data=b;table cald;run;*/
@@ -921,7 +921,7 @@ scatter  x=cald y=m_HIVIncid_Zim_GARPR/	markerattrs = (color=green);
 scatter x=cald y=o_HIVincid_1549_Zimphia / yerrorlower=o_HIVincid_1549_ll_Zimphia yerrorupper=o_HIVincid_1549_ul_Zimphia markerattrs = (color=black size = 10) errorbarattrs = (color = black);
 run;
 quit;
-
+proc print data=d;var cald p50_incidence1549__0; where cald in (2022.5 2040.5);run;
 
 /*
 proc sgplot data=d; 
@@ -1223,6 +1223,7 @@ scatter x=cald y=o_s_all_onart_NAC / markerattrs = (symbol=square color=black si
 scatter x=cald y=o_s_onart_adults_garpr / markerattrs = (symbol=square color=black size = 10);
 run;quit;
 
+proc print data=d;var cald p50_n_onart_0; where cald in (2022.5 2040.5);run;
 
 proc sgplot data=d; 
 Title    height=1.5 justify=center "Number of pregnant women receiving PMCTCT";

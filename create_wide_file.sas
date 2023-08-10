@@ -13,7 +13,7 @@ proc contents data=a.base_16_06_23;run;
 proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 proc freq data=a.base_09_08_2023; table run;run;
-proc freq data=a.base_09_08_2023; table cald;run;*12 simulations;
+proc freq data=a.base_09_08_2023; table cald;run;*116 simulations;
 ods html close;
 ods listing;
 /*
@@ -30,7 +30,7 @@ data g; set  a.base_09_08_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*15 out of 100;
+*116 out of 1000;
 *100 out of 860;
 *87 out of 850;
 *104 out of 850;
