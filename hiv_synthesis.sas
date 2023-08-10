@@ -872,8 +872,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_06.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_03.sas";
+* %include "/home/rmjlvca/Zim_parameters_07.sas";
+ *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
 
 
 * ===================== ;
@@ -1240,23 +1240,25 @@ inc12=0.016;
 inc13=0.012;
 end;
 
-* In hptn sa this is indicated as inc_cat = 3) ;
-* Running for 87 years - 1984 - 2071;  * AP 20-7-19 ;
-* Using a moderate rate of population growth;
+*Vale 20230808;
+*This is used for Zimbabwe;
+											 
 if inc_cat=1 and caldate1=1984  then do;
-inc1=0.1750; *more in this category as covers 19 years;
-inc2=0.1100;
-inc3=0.1000;
-inc4=0.0960;
-inc5=0.0900;
-inc6=0.0860;
-inc7=0.0790;
-inc8=0.070;
-inc9 =0.060;
-inc10=0.050;
-inc11=0.038;
-inc12=0.026;
-inc13=0.020;
+*Inc1 is obtained as 0.18 (inc1 for inc_Cat)/14*19=0.2443;
+*1.0643 = 1 + (0.2443-0.18);
+inc1=0.2443/1.0643;*19 years instead of 14, so a total of 139 years;
+inc2=0.1650/1.0643;
+inc3=0.1440/1.0643;
+inc4=0.1140/1.0643;
+inc5=0.0900/1.0643;
+inc6=0.0800/1.0643;
+inc7=0.0680/1.0643;
+inc8=0.0470/1.0643;
+inc9 =0.036/1.0643;
+inc10=0.027/1.0643;
+inc11=0.021/1.0643;
+inc12=0.016/1.0643;
+inc13=0.012/1.0643;
 end;							 	
 
 if inc_cat=2 then do;
@@ -11062,13 +11064,13 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	pcp_p   =0;
 
 	if hiv_monitoring_strategy=2 then do;
-		if visit=1 and . < cm    < 350 and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
+		if visit=1 and (. < cm < 350 or . < cm_tm1 < 350) and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 	end;
 
 	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 
-	if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
+	if onart=1 then pcp_p   =1;
 
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
