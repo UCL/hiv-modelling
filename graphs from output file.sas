@@ -129,6 +129,38 @@ p50_n_alive_0 = median(of n_alive1-n_alive155);
 keep cald p5_n_alive_0 p95_n_alive_0 p50_n_alive_0 ;
 run;
 */
+
+*Calculate average p_newp_ge1_ p_newp_ge5_;
+/*
+data option_0;set b;
+if option=0;
+proc transpose data=option_0 out=g0_a prefix=p_newp_ge1_;var p_newp_ge1_; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data g0_a;set g0_a;***creates one dataset per variable;
+av_p_newp_ge1_0 = mean(of p_newp_ge1_1-p_newp_ge1_&nfit);run;
+ods listing;
+proc sgplot data=g0_a; 
+Title    height=1.5 justify=center "p_newp_ge1_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.2 by 0.05) valueattrs=(size=10);
+label av_p_newp_ge1_0  = "Baseline (median) - 15+";
+series  x=cald y=av_p_newp_ge1_0/	lineattrs = (color=black thickness = 2);
+run;quit;
+proc transpose data=option_0 out=g0_b prefix=p_newp_ge5_;var p_newp_ge5_; by cald; id count_csim;run;
+*In order to easily join with from 2012 av_&varb.1,etc...;
+data g0_b;set g0_b;***creates one dataset per variable;
+av_p_newp_ge5_0 = mean(of p_newp_ge5_1-p_newp_ge5_&nfit);run;
+ods listing;
+proc sgplot data=g0_b; 
+Title    height=1.5 justify=center "p_newp_ge5_";
+xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
+yaxis grid label	= 'Proportion'		labelattrs=(size=12)  values = (0 to 0.05 by 0.01) valueattrs=(size=10);
+label av_p_newp_ge5_0  = "Baseline (median) - 15+";
+series  x=cald y=av_p_newp_ge5_0/	lineattrs = (color=black thickness = 2);
+run;quit;
+*/
+
+
 *I created one single macro;
 ***transpose given name; *starts with %macro and ends with %mend;
 proc freq data=b;table option;run;
@@ -166,8 +198,8 @@ run;
 
 
 %option_(0);
-%option_(1);
-%option_(15);
+*%option_(1);
+*%option_(15);
 run;
 
 
@@ -405,18 +437,17 @@ scatter x=cald y=o_p_testedanc_1549_zdhs / markerattrs = (symbol=square color=or
 scatter x=cald y=o_p_TESTEDorAW_anc_MoH / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
-*Number attending ANC;
 proc sgplot data=d; 
-Title    height=1.5 justify=center "n_tested_anc";
+Title    height=1.5 justify=center "Annual number of tests conducted in ANC";
 xaxis label			= 'Year'		labelattrs=(size=12)  values = (1990 to &year_end by 2)	 	 valueattrs=(size=10); 
 yaxis grid label	= 'Number'		labelattrs=(size=12)  values = (0 to  1200000 by 200000) valueattrs=(size=10);
 label p50_n_tested_anc_0  = "Baseline (median) - 15+";
 label o_n_tests_anc = "Number of women tested in ANC";*It includes the following;
-label o_n_firsttested_anc = "Number of women tested for the first time in ANC";
+*label o_n_firsttested_anc = "Number of women tested for the first time in ANC";
 series  x=cald y=p50_n_tested_anc_0/	lineattrs = (color=black thickness = 2);
 band    x=cald lower=p5_n_tested_anc_0 	upper=p95_n_tested_anc_0  / transparency=0.9 fillattrs = (color=black) legendlabel= "Model 90% range";
 *scatter x=cald y=o_n_tests_anc / markerattrs = (symbol=square color=orange size = 10); *This is higher than the number of live births;
-scatter x=cald y=o_n_firsttested_anc / markerattrs = (symbol=square color=blue size = 10);
+*scatter x=cald y=o_n_firsttested_anc / markerattrs = (symbol=square color=blue size = 10);
 run;quit;
 
 *# of women who were tested for the first time in ANC: o_n_firsttested_an";
