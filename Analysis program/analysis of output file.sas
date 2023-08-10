@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\";
 
 data a; 
-set a.wide_fsw_24_07_23a ;
+set a.wide_fsw_07_08_23;
 if incidence1549_22 <0.02 then delete;
 run;
 

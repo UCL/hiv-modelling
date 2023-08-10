@@ -592,7 +592,7 @@ newp_seed = 7;
 * date_sw_prog_intro;		date_sw_prog_intro=2010;***Change from 2015 in core to 2010 for FSW project;
 * sw_program;               %sample(sw_program, 0 1, 0.8 0.2);sw_program=1;***For FSW project;
 					            if sw_program = 1  then do; 
-								%sample_uniform(rate_engage_sw_program, 1); ***lower rates of engagement initially;
+								%sample_uniform(rate_engage_sw_program, 0.01 0.03 0.05 0.10); ***lower rates of engagement initially;
 								%sample_uniform(rate_disengage_sw_program, 0.02 0.05 0.10);
 								end;
 
@@ -1100,7 +1100,7 @@ initial_rate_1sttest  = 1 - (1 - initial_rate_1sttest )**(1/3) ;
 test_rate_who4   = 1 - (1 - test_rate_who4  )**(1/3) ;
 test_rate_tb  = 1 - (1 - test_rate_tb  )**(1/3) ;
 test_rate_non_tb_who3   = 1 - (1 - test_rate_non_tb_who3  )**(1/3) ;
-rate_lost   = 1 - (1 - rate_lost  )**(1/3) ;= 1 - (1 - rate_return )**(1/3) ;
+rate_lost   = 1 - (1 - rate_lost  )**(1/3) ;
 rate_restart   = 1 - (1 - rate_restart   )**(1/3) ;
 pr_art_init  = 1 - (1 - pr_art_init  )**(1/3) ;
 pr_switch_line   = 1 - (1 - pr_switch_line   )**(1/3) ;
@@ -2532,7 +2532,7 @@ who may be dead and hence have caldate{t} missing;
 
 	if option = 2  then do; *SW program has higher impact;
 		eff_sw_program=1;sw_program=1;
-		%sample_uniform(rate_engage_sw_program, 1); 
+		%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
 		%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
 
 		effect_sw_prog_newp 	= effect_sw_prog_newp2;
@@ -7122,7 +7122,8 @@ naive=1;
 * dpv-vr - as above but tail will be shorter (possibly 0 or 1 month? - check);
 
 
-
+*LBM Jul23;
+if sw=1 then eff_prob_loss_at_diag = min(1, eff_prob_loss_at_diag * eff_sw_higher_prob_loss_at_diag) ;
 
 
 * test type;
