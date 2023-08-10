@@ -467,9 +467,9 @@ newp_seed = 7;
 							* AP 19-7-19 - most of these changes to parameters sampled are from trying to get a range of setting scenarios that reflect sub saharan africa;  
 * reduced higher values as middle 90 not consistent with phias with those values ; 
 * prob_loss_at_diag;  		%sample(prob_loss_at_diag, 
-								0.1 0.3, 
+								0.02 	0.05 	0.15 	0.35 	0.50, 
 
-								0.50 0.5	); * change sep22 for pop_wide_tld;
+								0.60 	0.30	0.05	0.04	0.01	); * change sep22 for pop_wide_tld;
 
 
 * prob_lossdiag_adctb;  	prob_lossdiag_adctb = round(rand('beta',5,95),0.01);
