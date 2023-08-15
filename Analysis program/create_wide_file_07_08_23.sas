@@ -301,6 +301,7 @@ p_sti_sw			 p_tested_past_year_sw
 /*Sampled parameters*/
 sw_art_disadv	sw_program	effect_sw_prog_newp		effect_sw_prog_6mtest	effect_sw_prog_int	effect_sw_prog_adh
 effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti		sw_trans_matrix
+sw_higher_int sw_higher_prob_loss_at_diag
 
 /*Costs*/
 dcost ddaly dcost_sw_program
@@ -314,6 +315,7 @@ s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 
 proc sort data=y;by run option;run;
 
+
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
 proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
@@ -325,9 +327,9 @@ proc means n p50;var
 n_tested  n_tested_m  n_tested_m_sympt  n_tested_m_circ  n_tested_f  n_tested_sw n_tested_f_anc  n_tested_f_sympt  n_tested_f_non_anc
 n_tested_at_return n_pregnant; where option=2 and cald>2023;run;
 
-proc freq;table effect_sw_prog_lossdiag;where option=1 and cald>2023;run;
+proc freq;table effect_sw_prog_lossdiag;where option=2 and cald=2030;run;
 
-proc print;var cald option effect_sw_prog_lossdiag;where run =3650842;run;
+proc print;var cald option effect_sw_prog_lossdiag p_onart_diag_sw;where run =346254;run;
 
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=0 and cald>2023.5 ;run;
 proc means n p50 p5 p95;var dtest_cost dtest_cost_sw;where option=2 and cald>2023.5  and effect_sw_prog_newp=0.05;run;
@@ -336,10 +338,9 @@ proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lo
 proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.5 and cald=2030;run;
 proc means n p50 p5 p95;var p_onart_diag_sw;where option=1 and effect_sw_prog_lossdiag=0.7 and cald=2030;run;
 
-
 proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.1 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.2 and cald=2030;run;
-proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.3 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.25 and cald=2030;run;
+proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.35 and cald=2030;run;
 
 proc freq;table effect_sw_prog_lossdiag;where option=2;run;
 
