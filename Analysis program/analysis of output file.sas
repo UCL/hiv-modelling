@@ -49,6 +49,11 @@ incidence_sw_22		prevalence_sw_22
 p_diag_sw_22		p_onart_diag_sw_22		p_onart_vl1000_sw_22 p_sw_prog_vis_22;
 run;
 
+
+proc means n p50 p5 p95;var
+p_diag_w_22		p_onart_diag_w_22		p_onart_vl1000_w_22 ;
+run;
+
 proc freq;table p_sw_prog_vis_1 p_sw_prog_vis_2 p_sw_prog_vis_3;run;
 
 ***table 3 - characteristics in 2030 by option;
@@ -72,6 +77,12 @@ p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3		p_fsw_newp0__30_3	p
 p_sti_sw_30_3		incidence_sw_30_3	prevalence_sw_30_3
 incidence1549_30_3	prevalence1549_30_3		p_diag_30_3	  p_onart_diag_30_3   p_onart_vl1000_30_3;
 run;
+
+proc means n p50 p5 p95;var
+p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1
+p_diag_sw_30_2		p_onart_diag_sw_30_2	p_onart_vl1000_sw_30_2
+p_diag_sw_30_3		p_onart_diag_sw_30_3	p_onart_vl1000_sw_30_3;run;
+
 
 
 *First part of table 4 - impact of SW program irrespective of disadvantage (below this is split into specific aspects);

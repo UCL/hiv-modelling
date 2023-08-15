@@ -315,7 +315,7 @@ s_tested s_tested_m s_tested_f n_pregnant p_linked_diag_sw
 
 proc sort data=y;by run option;run;
 
-
+proc freq;table sw_higher_int;run;
 proc means n sum p50;var p_fsw_newp0_;where option=0 and sw_trans_matrix=1 and cald=2030;run;
 
 proc freq;table dcost_sw_program;where option=0 and cald=2024;run;
