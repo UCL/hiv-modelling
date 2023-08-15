@@ -1,13 +1,22 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
+libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
 
-data a;
-set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; 
-if run=. then delete; 
+data a.testing_age_updating_01_08_2023; set a.out:;
+
+
+/*data a;*/
+/*set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; */
+/*if run=. then delete; */
 
 proc sort;
 by run cald option;run;
+
+proc freq data=a.testing_age_updating_23_08_01; table run;run;
+proc freq data=a.testing_age_updating_23_08_01; table cald;run;*116 simulations;
+ods html close;
+ods listing;
 
 
 ***THIS DATASTEP CALCUATES THE SCALE FACTOR;
