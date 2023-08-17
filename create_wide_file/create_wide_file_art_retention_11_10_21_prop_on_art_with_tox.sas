@@ -762,6 +762,13 @@ end;
 * death_rate_hiv_ge15_all;		if s_alive > 0 then death_rate_hiv_ge15_all = (4 * 100 *	s_death_hivrel_allage) / s_alive ;
 
 
+* p_hiv_not_onart;				p_hiv_not_onart = (s_hivge15 - s_onart) / s_hivge15;
+
+* p_not_onart_adc;				p_not_onart_adc  = 	(s_adc - s_onart_adc) / (s_hivge15 - s_onart) ;
+* p_not_onart_adc_x;			p_not_onart_adc_x  = 	max(s_adc, s_onart_adc) / (s_hivge15 - s_onart) ;
+
+
+
 * n deaths and death rate by cause and hiv status - age 15+ ;
 
 			n_dead_hivpos_cause1 = s_dead_hivpos_cause1 * 4 * &sf; 
@@ -881,8 +888,13 @@ n_infection  = s_primary     * &sf * 4;
 
 
 
-proc univariate; var p_c_tox; where 2020 <= cald < 2022 ;
+proc univariate; var p_c_tox  p_not_onart_adc  p_hiv_not_onart p_not_onart_adc_x; where 2020 <= cald < 2022 ;
 run;
+
+proc print; var s_adc  s_onart_adc s_hivge15  s_onart ; 
+where cald = 2020;
+run;
+
 
 
 
