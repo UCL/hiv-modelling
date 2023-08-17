@@ -273,6 +273,15 @@ s_hiv = s_hivge15 ;
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
+proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2018 <= cald < 2019; run;
+proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2020 <= cald < 2021; run;
+proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2022 <= cald < 2023; run;
+
+
+
+
+
+
 keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa  n_undiag  n_onart
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
@@ -496,7 +505,7 @@ r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 proc contents data=a.wide_future_inc_b; run; 
 
 proc univariate data=a.wide_future_inc_b;
-var p_diag_w_23; 
+var p_diag_w_23 p_diag_m_23; 
 run;
 
 
