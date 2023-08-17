@@ -493,6 +493,17 @@ by run;
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
 
+proc contents data=a.wide_future_inc_b; run; 
+
+proc univariate data=a.wide_future_inc_b;
+var p_diag_w_23; 
+run;
+
+
+
+
+
+
 
 proc glm ; 
 class 
