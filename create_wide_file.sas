@@ -1249,6 +1249,44 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 ;
 
-
+*Exploring why p_newp_ge1 is declining oevr time;
 proc contents data=a.l_base_10_08_2023; run;
+proc sort data =a.l_base_10_08_2023;by run;run;
+proc means data=a.l_base_10_08_2023;var p_newp_ge1;by run;where 2022 le cald lt 2023;
+output out=p_newp_ge1_2022_ mean=p_newp_ge1_2022_ /autoname;run;
+proc means data=a.l_base_10_08_2023;var p_newp_ge1;by run;where 2040 le cald lt 2041;
+output out=p_newp_ge1_2040_ mean=p_newp_ge1_2040_ /autoname;run;
 
+proc means data=a.l_base_10_08_2023;var p_newp_ge5;by run;where 2022 le cald lt 2023;
+output out=p_newp_ge5_2022_ mean=p_newp_ge5_2022_ /autoname;run;
+proc means data=a.l_base_10_08_2023;var p_newp_ge5;by run;where 2040 le cald lt 2041;
+output out=p_newp_ge5_2040_ mean=p_newp_ge5_2040_ /autoname;run;
+data sb_parameters;set a.l_base_10_08_2023;
+keep run 
+ych_risk_beh_newp  ych_risk_beh_ep 
+p_rred_p
+p_hsb_p
+newp_factor
+ych2_risk_beh_newp;
+where cald=2022;
+run;
+
+data sexbehaviour;merge sb_parameters p_newp_ge1_2022_ p_newp_ge1_2040_ p_newp_ge5_2022_ p_newp_ge5_2040_;
+by run;run;
+data sexbehaviour;set sexbehaviour;
+diff_p_newp_ge1_2040_2022_ = p_newp_ge1_2040_ - p_newp_ge1_2022_;
+diff_p_newp_ge5_2040_2022_ = p_newp_ge5_2040_ - p_newp_ge5_2022_;
+ratio_p_newp_ge1_2040_2022_ = p_newp_ge1_2040_ / p_newp_ge1_2022_;
+ratio_p_newp_ge5_2040_2022_ = p_newp_ge5_2040_ / p_newp_ge5_2022_;
+run;
+proc univariate data=sexbehaviour;
+      var diff_p_newp_ge1_2040_2022_  diff_p_newp_ge5_2040_2022_
+		  ratio_p_newp_ge1_2040_2022_ ratio_p_newp_ge5_2040_2022_;
+      histogram;
+   run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ych_risk_beh_newp  ych_risk_beh_ep 
+p_rred_p  p_hsb_p	newp_factor	ych2_risk_beh_newp;  run;
+proc reg;model diff_p_newp_ge5_2040_2022_ = ych_risk_beh_newp  ych_risk_beh_ep 
+p_rred_p  p_hsb_p	newp_factor	ych2_risk_beh_newp;  run;
+proc sort;by newp_factor;run;
+proc means;var  diff_p_newp_ge1_2040_2022_;by newp_factor;run;

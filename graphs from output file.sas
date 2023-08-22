@@ -255,6 +255,7 @@ run;
 data a.d;set d;run;
 /*/data d;set a.d;run;*/
 proc freq data=d;table cald;run;
+proc contents data=a.d;run;
 
 ***Graphs comparing observed data to outputs;
 *Taken from Zim graphs in branch Death cascade;
