@@ -1250,6 +1250,5 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 ;
 
 
-*** !!! can stop here, the following code is not needed to create graphs;
-*
+proc contents data=a.l_base_10_08_2023; run;
 
