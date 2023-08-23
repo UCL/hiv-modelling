@@ -1261,16 +1261,34 @@ proc means data=a.l_base_10_08_2023;var p_newp_ge5;by run;where 2022 le cald lt 
 output out=p_newp_ge5_2022_ mean=p_newp_ge5_2022_ /autoname;run;
 proc means data=a.l_base_10_08_2023;var p_newp_ge5;by run;where 2040 le cald lt 2041;
 output out=p_newp_ge5_2040_ mean=p_newp_ge5_2040_ /autoname;run;
+
+proc freq data=a.l_base_10_08_2023;table condom_incr_year_i;run;
+*prop_redattr_sbcc (not exported) is used only if condom_incr_year_i=2;
+
 data sb_parameters;set a.l_base_10_08_2023;
 keep run 
-ych_risk_beh_newp  ych_risk_beh_ep 
-p_rred_p
-p_hsb_p
-newp_factor
-ych2_risk_beh_newp;
+/*Parameters sampled specific for Zimbabwe*/
+ych_risk_beh_newp  ych_risk_beh_ep  p_rred_p  p_hsb_p  newp_factor  ych2_risk_beh_newp
+/*Parameters sampled in core*/
+
+ch_risk_diag
+ch_risk_diag_newp
+
+eprate
+exp_setting_lower_p_vl1000 
+external_exp_factor 
+rate_exp_set_lower_p_vl1000
+sex_beh_trans_matrix_m
+sex_beh_trans_matrix_w
+sex_age_mixing_matrix_m
+sex_age_mixing_matrix_w
+rred_a_p
+conc_ep
+higher_newp_with_lower_adhav;
+
 where cald=2022;
 run;
-
+proc freq;run;
 data sexbehaviour;merge sb_parameters p_newp_ge1_2022_ p_newp_ge1_2040_ p_newp_ge5_2022_ p_newp_ge5_2040_;
 by run;run;
 data sexbehaviour;set sexbehaviour;
@@ -1284,9 +1302,44 @@ proc univariate data=sexbehaviour;
 		  ratio_p_newp_ge1_2040_2022_ ratio_p_newp_ge5_2040_2022_;
       histogram;
    run;
-proc reg;model diff_p_newp_ge1_2040_2022_ = ych_risk_beh_newp  ych_risk_beh_ep 
-p_rred_p  p_hsb_p	newp_factor	ych2_risk_beh_newp;  run;
-proc reg;model diff_p_newp_ge5_2040_2022_ = ych_risk_beh_newp  ych_risk_beh_ep 
-p_rred_p  p_hsb_p	newp_factor	ych2_risk_beh_newp;  run;
+ods html close;
+ods listing;
+*Unadjusted analyses for parameters sampled specifcly for Zimbabwe;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ych_risk_beh_newp;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ych_risk_beh_ep ;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = p_rred_p;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = p_hsb_p;run;	
+proc reg;model diff_p_newp_ge1_2040_2022_ = newp_factor;run;	*Significant;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ych2_risk_beh_newp;run;
+*Unadjusted analyses for parameters sampled in core;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ch_risk_diag;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = ch_risk_diag_newp;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = eprate;run;*Significant;
+proc reg;model diff_p_newp_ge1_2040_2022_ = exp_setting_lower_p_vl1000;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = external_exp_factor;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = rate_exp_set_lower_p_vl1000;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = sex_beh_trans_matrix_m;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = sex_beh_trans_matrix_w;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = sex_age_mixing_matrix_m;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = sex_age_mixing_matrix_w;run;*Significant;
+proc reg;model diff_p_newp_ge1_2040_2022_ = rred_a_p;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = conc_ep;run;
+proc reg;model diff_p_newp_ge1_2040_2022_ = higher_newp_with_lower_adhav;run;
+
+
+
 proc sort;by newp_factor;run;
 proc means;var  diff_p_newp_ge1_2040_2022_;by newp_factor;run;
+
+proc sort;by  eprate;run;*0.05 0.06 .. 0.17 0.018;
+data sexbehaviour;set sexbehaviour;
+if 0.05 le eprate lt 0.10 then eprate_g=0;
+if 0.09 le eprate lt 0.15 then eprate_g=1;
+if 0.15 le eprate lt 0.19 then eprate_g=2;
+run;
+
+proc sort;by  eprate_g;run;
+proc means;var  diff_p_newp_ge1_2040_2022_;by eprate_g;run;
+
+proc sort;by  sex_age_mixing_matrix_w;run;
+proc means;var  diff_p_newp_ge1_2040_2022_;by sex_age_mixing_matrix_w;run;
