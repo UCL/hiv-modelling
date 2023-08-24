@@ -1,0 +1,157 @@
+---
+title: "Results"
+author: "Matt Hickey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+
+options(tinytex.verbose = TRUE)
+options(scipen = 999)
+
+knitr::opts_chunk$set(echo = FALSE, message = F, fig.height=8, fig.width=12)
+
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
+
+fx_pctmean_range <- function(data) {
+  mean_val <- round(mean(data, na.rm = TRUE) * 100, 0)
+  lower_val <- round(quantile(data, q = 0.05, na.rm = TRUE) * 100, 0)
+  upper_val <- round(quantile(data, q = 0.95, na.rm = TRUE) * 100, 0)
+  result <- paste0(mean_val, "% (", lower_val, "% to ", upper_val, "%)")
+  return(result)
+}
+
+
+fx_mean_range <- function(data, digits = 2) {
+  mean_val <- round(mean(data, na.rm = TRUE), digits)
+  lower_val <- round(quantile(data, 0.05, na.rm = TRUE), digits)
+  upper_val <- round(quantile(data, 0.95, na.rm = TRUE), digits)
+  result <- paste0(mean_val, " (", lower_val, " to ", upper_val, ")")
+  return(result)
+}
+
+setwd("/Users/sf124046/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration")
+
+load("SynthesisHTN_ug.RData")
+
+y <- "2373"
+country <- c("Uganda")
+
+```
+
+## Demographics
+
+Based on `r nrow(df_sas_wide)/3` model runs
+
+```{r}
+# 948.4
+pop_ug <- df_sas %>% 
+  filter(var %in% c("popsize", "pop"), source == "SOC") %>% 
+  mutate(value = value * 1) %>% 
+  group_by(age, year) %>% 
+  summarize(mean_val = mean(value, na.rm = T), q05 = quantile(value, 0.05, q = 0.05, na.rm = T), q95 = quantile(value, 0.95, q=0.95, na.rm = T)) %>% 
+  mutate(population = paste0(round(mean_val,0), " (", round(q05,0), " to ", round(q95,0), ")"))
+
+write_csv(pop_ug, "pop_ug.csv")
+pop_ug %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+```
+
+
+## Table 1. Characteristics of Hypertension at baseline (year = 2023)
+
+```{r table1}
+
+df_htn %>% filter(year == "23", source == "SOC", age == "18+") %>% group_by(age) %>% summarize(htn_median = paste0(pct(median(htn)), " (", round(100*quantile(htn, 0.05, q = 0.05),0), " to ", pct(quantile(htn, 0.95, q=0.95)), ")")) %>% 
+  kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE) 
+
+df_dx %>% filter(year == "23", source == "SOC", age == "18+") %>% group_by(age) %>% 
+  summarize(dx_median = paste0(pct(median(dx)), " (", round(100*quantile(dx, 0.05, q = 0.05),0), " to ", pct(quantile(dx, 0.95, q=0.95)), ")")) %>% 
+  kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+df_tx_current %>% filter(year == "23", source == "SOC", age == "18+") %>% group_by(age) %>% 
+  summarize(tx_median = paste0(pct(median(tx)), " (", round(100*quantile(tx, 0.05, q = 0.05),0), " to ", pct(quantile(tx, 0.95, q=0.95)), ")")) %>% 
+  kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+df_ctrl %>% filter(year == "23", source == "SOC", age == "18+") %>% group_by(age) %>% 
+  summarize(control_median = paste0(pct(median(control)), " (", round(100*quantile(control, 0.05, q = 0.05),0), " to ", pct(quantile(control, 0.95, q=0.95)), ")")) %>% 
+  kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+df_cvd_death %>%  filter(year == "23", source == "SOC", age == "18+") %>% group_by(age) %>% summarize(cvd_mortality = paste0(round(mean(cvd_death_rate),2), " (", round(quantile(cvd_death_rate, 0.05, q = 0.05),2), " to ", round(quantile(cvd_death_rate, 0.95, q=0.95),2), ")")) %>% 
+  kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+df_sas %>% filter(year == "15", var == "prevalence") %>% group_by(age) %>% summarize(hiv_mean = paste0(pct(median(value)), " (", round(100*quantile(value, 0.05, q = 0.05),0), " to ", pct(quantile(value, 0.95, q=0.95)), ")")) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+```
+
+## Table 3
+
+``` {r table3}
+
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
+
+t3vars_m0 <- c("m_sbp", "m_sbp_max_over", "m_sbp_over")
+t3vars_pct <- c("p_htn_true", "p_hypert160", "p_dx_htn_true", "p_dx_htn_over", "p_on_tx_htn", "p_ever_tx_htn", "p_on_tx_htn_over", "p_hypert_control")
+t3vars_m2 <- c("rate_ihd_modsev", "rate_ihd_modsev_htn", "rate_ihd_modsev_rr", "rate_ihd_modsev_htn_rr",
+               "rate_cva_modsev", "rate_cva_modsev_htn", "rate_cva_modsev_rr", "rate_cva_modsev_htn_rr", 
+               "rate_dead_cvd", "rate_dead_cvd_rr", 
+               "rate_dead_hivpos_cvd", "rate_dead_hivpos_cvd_rr",
+               "rate_dead_all_anycause", "rate_dead_all_anycause_rr", 
+               "rate_dead_hivpos_anycause", "rate_dead_hivpos_anycause_rr")
+t3vars_ncvd <- c("n_ihd", "n_ihd_diff", 
+                 "n_cva", "n_cva_diff",
+                 "n_dead_cvd", "n_dead_cvd_diff", "n_dead_all_anycause")
+t3vars_m1 <- c("ddaly_averted", "dhtn_cost_scr", "dhtn_cost_clin", "dhtn_cost_drug", "dhtn_cost_cvd", "dhtn_cost_total")
+
+t3vars <- c(t3vars_m0, t3vars_pct, t3vars_m2, t3vars_ncvd, t3vars_m1)
+t3age <- c("All", "18+", "45-64")
+
+x1 <- df_sas %>% filter(year == y, var %in% t3vars, age %in% t3age) %>% 
+  group_by(var, age, source) %>%
+  summarize(mean_val = mean(value, na.rm = T),
+            q05 = quantile(value, 0.05, q = 0.05, na.rm = T), 
+            q95 = quantile(value, 0.95, q=0.95, na.rm = T)) %>%  
+  ungroup() %>% filter(!is.na(mean_val)) %>% 
+  mutate(mean_value = ifelse(var %in% t3vars_m0, paste0(round(mean_val,0), " (", round(q05,0), " to ", round(q95,0), ")"),
+                      ifelse(var %in% t3vars_pct, paste0(pct(mean_val), " (", pct(q05), " to ", pct(q95), ")"), 
+                      ifelse(var %in% t3vars_m2, paste0(round(mean_val,2), " (", round(q05,2), " to ", round(q95,2), ")"),
+                      ifelse(var %in% t3vars_ncvd, paste0(round(mean_val,0), " (", round(q05,0), " to ", round(q95,0), ")"),    
+                      ifelse(var %in% t3vars_m1, paste0(round(mean_val,1), " (", round(q05,1), " to ", round(q95,1), ")"), NA)))))) %>% 
+  arrange(match(var, t3vars), match(age, t3age)) %>% 
+  select(var, age, source, mean_value) %>% 
+  pivot_wider(names_from = source, values_from = mean_value)
+
+x2 <- df_netdaly %>% filter(year == y, cost_cat == "total htn") %>% 
+  group_by(source) %>%
+  summarize(inc_cost = paste0(round(mean(cost_inc, na.rm = T),1), 
+                                     " (", round(quantile(cost_inc, 0.05, q = 0.05, na.rm = T),1), " to ", 
+                                     round(quantile(cost_inc, 0.95, q=0.95, na.rm = T),1), ")"),
+            netdaly_averted = paste0(round(mean(netdaly_averted, na.rm = T),1), 
+                                     " (", round(quantile(netdaly_averted, 0.05, q = 0.05, na.rm = T),1), " to ", 
+                                     round(quantile(netdaly_averted, 0.95, q=0.95, na.rm = T),1), ")"),
+            cf_any = pct(mean(cf_netdaly_any, na.rm = T)),
+            cf_all = pct(mean(cf_netdaly_all, na.rm = T))) %>%  
+  ungroup() %>% 
+  select(source, inc_cost, netdaly_averted, cf_any, cf_all) %>% 
+  mutate(age = "All") %>% 
+  pivot_longer(cols = c(inc_cost, netdaly_averted, cf_any, cf_all), names_to = "var") %>% 
+  pivot_wider(names_from = source, values_from = value)
+
+
+x <- rbind(x1, x2)
+write_csv(x, paste0("./results/",country, "_htn_", y, ".csv"))
+x %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+
+```

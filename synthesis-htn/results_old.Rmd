@@ -23,6 +23,14 @@ pct <- function(x) {
   return(y)
 }
 
+calculate_mean_range <- function(data) {
+  mean_val <- mean(data, na.rm = TRUE)
+  lower_val <- round(100 * quantile(data, 0.05, na.rm = TRUE), 0)
+  upper_val <- pct(quantile(data, 0.95, na.rm = TRUE))
+  result <- paste0(pct(mean_val), " (", lower_val, " to ", upper_val, ")")
+  return(result)
+}
+
 load("SynthesisHTN.RData")
 
 ```

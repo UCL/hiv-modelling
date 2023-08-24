@@ -7,283 +7,125 @@ library(kableExtra)
 
 setwd("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration")
 ihme_file <- "IHME-GBD_2019_DATA-ae7f35c6-1.csv"
+pop_factor <- 1
+pct <- function(x) {
+  y <- paste0(round((x*100),0),"%")
+  return(y)
+}
 
 # Import Synthesis output
-df_sas <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_87.sas7bdat")
-df_sas <- df_sas %>% mutate(source = ifelse(option ==1, "SOC",
-                                     ifelse(option ==2, "PCC",
+df_sas_wide <- read_sas("~/Library/CloudStorage/Box-Box/1.sapphire_modelling/synthesis/w_base_97b.sas7bdat")
+df_sas_wide <- df_sas_wide %>% mutate(source = ifelse(option ==1, "SOC",
+                                     ifelse(option ==2, "CCC",
                                      ifelse(option ==3, "CHW",
-                                     ifelse(option ==4, "CHW_link", NA)))))
+                                     ifelse(option ==4, "CHW_link", 
+                                     ifelse(option ==5, "perfect", NA)))))) %>% 
+  filter(source == "SOC" | source == "CCC" | source == "CHW")
 
-df_sas <- rename(df_sas, country = run) 
-sourcenames <- c("GBD 2015", "Geldsetzer", "SOC", "PCC", "CHW", "CHW_link")
-df_sas$source <- as.factor(df_sas$source)
-df_sas$source <- factor(df_sas$source, levels = sourcenames)
-df_sas <- df_sas %>% select(country, source, ends_with("_15"), ends_with("_23"), ends_with("_43"), ends_with("_73"), ends_with("_2343"), ends_with("_2373")) %>% 
-  rename(setting_sbp_inc = prob_sbp_increase_43,
-         setting_sbp_cal = sbp_cal_eff_43,
-         setting_cvd_tx = rr_cvd_tx_43,
-         setting_cvd_tx_eff = rr_cvd_tx_effective_43) %>% 
+df_sas_wide <- rename(df_sas_wide, country = run) 
+sourcenames <- c("GBD 2015", "Geldsetzer", "SEARCH (Kenya/Uganda)", "NIDS (South Africa)", "SOC", "CCC", "CHW", "CHW_link", "perfect")
+df_sas_wide$source <- as.factor(df_sas_wide$source)
+df_sas_wide$source <- factor(df_sas_wide$source, levels = sourcenames)
+df_sas_wide <- df_sas_wide %>% 
+  select(country, source, ends_with("_15"), ends_with("_23"), ends_with("_2343"), ends_with("_2373")) %>% 
+  select(-c(starts_with("p_diag_"), starts_with("p_onart_"), starts_with("p_vg1000"), starts_with("p_vl1000"), starts_with("prevalence_vg1000"), starts_with("prevalence1549m"), starts_with("prevalence1549w"), starts_with("incidence1549"))) %>% 
+  rename(setting_sbp_inc = prob_sbp_increase_2343,
+         setting_sbp_cal = sbp_cal_eff_2343,
+         setting_cvd_tx = rr_cvd_tx_2343,
+         setting_cvd_tx_eff = rr_cvd_tx_effective_2343) %>% 
   select(-c(starts_with("prob_sbp_increase_"), starts_with("sbp_cal_eff_"), starts_with("rr_cvd_tx_"), starts_with("rr_cvd_tx_effective_")))
 
-key_params <- read_csv("key_model_parameters_10jan2022.csv")
+# select setting level variables at baseline
+df_scenario_chars <- df_sas_wide %>% 
+  filter(source == "SOC") %>%
+  select(country, m_sbp_4564_23, p_htn_true_4564_23, p_diagnosed_hypert_4564_23, p_on_tx_htn_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4059_23, starts_with("setting"), prevalence1549_23)
+
+# replace _year with .year to facilitate pivot long
+    names <- colnames(df_sas_wide)
+  
+    # Define a function to replace underscore with dot
+    replace_fn <- function(x) {
+      x <- gsub("_(?=[0-9]{2,4}$)", ".", x, perl = TRUE)
+      return(x)
+    }
+    # Split the input string by space
+    words <- strsplit(names, "\\s+")
+    # Apply the function to each word
+    output_names <- lapply(words, replace_fn)
+    # Join the words back into a string
+    names2 <- sapply(output_names, paste, collapse = " ")
+    # assign modified colnames to sas dataframe
+    colnames(df_sas_wide) <- names2
+    
+#####===subset data for country profiles===#####
+# uganda  <- df_sas_wide %>% filter(p_hypert_ge18.15 < 0.32,
+#                                   p_diagnosed_hypert_ge18.15 < 0.26,
+#                                   prevalence1549.15 < 0.15) %>% select(country)
+# ug <- left_join(uganda, df_sas_wide, by = "country")
+# df_sas_wide <- ug
+#####======================================#####
+
+# pivot to long dataset
+df_sas <- pivot_longer(df_sas_wide, 
+                   cols = matches("\\.[0-9]{2}$|\\.[0-9]{4}$"),
+                   names_to = c("var", "year"), 
+                   names_sep = "\\.",
+                   values_to = "value") %>% 
+  filter(!((year == "15" | year == "23") & (source == "CCC" | source == "CHW" | source == "CHW_link" | source == "perfect"))) %>% 
+  filter(!is.na(value))
+
+# Scale population size based on country profile
+df_sas <- df_sas %>% 
+  mutate(value = ifelse(grepl("^n_", var) | grepl("^ddaly", var) | grepl("^dhtn_cost", var) | grepl("^htn_cost", var), value * pop_factor, value))
+
 df_ncdrisc <- read.csv("ncd_risc.csv", header=TRUE)
 p_source <- c("country", "source")
 
-# Synthesis hypertension prevalence
-p_hypert <- c("p_hypert_1524", "p_hypert_2534", "p_hypert_3544", "p_hypert_4554", "p_hypert_5564", "p_hypert_2544", "p_hypert_4564",  "p_hypert_ge65")
-df_sas_htn <- df_sas %>% select("country", "source", starts_with(p_hypert))
-df_sas_htn_long <- df_sas_htn %>% 
-  pivot_longer(cols=3:ncol(df_sas_htn), names_to = "name", values_to = "htn") %>% 
-  separate(col = name, into = c("a", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-           age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, htn, year) %>% 
-  filter(!is.na(htn))
+# remove extra variables & objects
+df_sas <- df_sas %>% select(-c(starts_with("setting"))) 
+rm(words, output_names, names, names2)
 
-# Synthesis severe hypertension prevalence
-df_sas_sevhtn <- df_sas %>% select("country", "source", starts_with("p_hypert160"))
-df_sas_sevhtn_long <- df_sas_sevhtn %>% 
-  pivot_longer(cols=3:ncol(df_sas_sevhtn), names_to = "name", values_to = "sevhtn") %>% 
-  separate(col = name, into = c("a", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, sevhtn, year) %>% 
-  filter(!is.na(sevhtn))
+# sex and age vars
+df_sas <- df_sas %>%
+  mutate(sex = ifelse(grepl("\\d+m$|_m$", var), "Male",
+                      ifelse(grepl("\\d+w$|_w$", var), "Female", "All")))
 
-# Synthesis hypertension TRUE prevalence (true SBP ≥140)
-df_sas_htn_true <- df_sas %>% select("country", "source", starts_with("p_htn_true"))
-df_sas_htn_true <- df_sas_htn_true %>% 
-  pivot_longer(cols=3:ncol(df_sas_htn_true), names_to = "name", values_to = "htn_true") %>% 
-  separate(col = name, into = c("a", "b", "c", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, htn_true, year) %>% 
-  filter(!is.na(htn_true))
+df_sas <- df_sas %>%
+  mutate(age = ifelse(grepl(".*?([0-9]{4}|ge[0-9]{2})(?=m|w|$)", var, perl = TRUE), 
+                      gsub(".*?([0-9]{4}|ge[0-9]{2})(?=m|w|$)", "\\1", var, perl = TRUE), 
+                      "All"),
+         age = gsub("m$", "", age),
+         age = gsub("w$", "", age),
+         age = gsub("ge18", "18+", age),
+         age = gsub("ge65", "65+", age),
+         age = gsub("ge80", "80+", age),
+         age = gsub("ge85", "85+", age),
+         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"))
 
-# Synthesis diagnosis
-p_diagn <- c("country", "source", "p_diagnosed_hypert_1524", "p_diagnosed_hypert_2534", "p_diagnosed_hypert_3544", "p_diagnosed_hypert_4554", "p_diagnosed_hypert_5564", "p_diagnosed_hypert_2544", "p_diagnosed_hypert_4564", "p_diagnosed_hypert_ge65")
-df_sas_dx <- df_sas %>% select("country", "source", starts_with(p_diagn))
-df_sas_dx_long <- df_sas_dx %>% 
-  pivot_longer(cols=3:ncol(df_sas_htn), names_to = "name", values_to = "dx") %>% 
-  separate(col = name, into = c("a", "b", "c", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, dx, year) %>% 
-  filter(!is.na(dx))
+# Var cleanup
+df_sas <- df_sas %>% 
+  mutate(var = gsub("(_)?[0-9]{4}(m|w)?|(_)?ge[0-9]{2}(m|w)?", "", var))
+df_sas <- df_sas %>% 
+  filter(!(var %in% c("rate_ihd_one", "rate_cva_one", "rate_ihd_one_modsev", "rate_cva_one_modsev", "death_rate_hiv", 
+                      "tot_dyll_cvd", "tot_dyll", "n_dead_allage", "n_dead_hivneg_anycause", "n_dead_hivpos_anycause",
+                      "rate_ihd_all", "rate_cva_all", "dcost")))
+vars <- df_sas %>% select(var) %>% distinct
 
-# # Synthesis TRUE diagnosis
-df_sas_dx_true <- df_sas %>% select(all_of(p_source), starts_with("p_dx_htn_true"))
-df_dx_true <- df_sas_dx_true %>% 
-  pivot_longer(cols=3:ncol(df_sas_dx_true), names_to = "name", values_to = "dx_true") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, dx_true, year) %>% 
-  filter(!is.na(dx_true))
+  # # Fix prevalence - updated 21Apr2023 - this is now corrected in create_wide file
+  # df_sas <- df_sas %>% 
+  #   mutate(value = ifelse(grepl("^prev_", var), value * 100, value))
 
-# Synthesis OVER diagnosis
-df_sas_dx_over <- df_sas %>% select(all_of(p_source), starts_with("p_dx_htn_over"))
-df_dx_over <- df_sas_dx_over %>% pivot_longer(cols=3:ncol(df_sas_dx_over), names_to = "name", values_to = "dx_over") %>% 
-    separate(col = name, into = c("a", "b", "c", "d", "age", "year"), sep = "_", fill = "right") %>% 
-    mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-           age = str_replace(age,"ge65","65+")) %>% 
-    select(country, source, age, dx_over, year) %>% 
-    filter(!is.na(dx_over))
-  
-# Synthesis current treatment
-p_tx <- c("p_on_anti_hypert_1524", "p_on_anti_hypert_2534", "p_on_anti_hypert_3544", "p_on_anti_hypert_4554", "p_on_anti_hypert_5564", "p_on_anti_hypert_2544", "p_on_anti_hypert_4564", "p_on_anti_hypert_ge65")
-df_sas_tx <- df_sas %>% select("country", "source", starts_with(p_tx))
-df_sas_tx_long <- pivot_longer(df_sas_tx, cols=3:ncol(df_sas_tx), names_to = "name", values_to = "tx") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, tx, year) %>% 
-  filter(!is.na(tx))
-
-# Synthesis ever treatment
-p_tx_ever <- c("p_ever_anti_hypert_1524", "p_ever_anti_hypert_2534", "p_ever_anti_hypert_3544", "p_ever_anti_hypert_4554", "p_ever_anti_hypert_5564", "p_ever_anti_hypert_2544", "p_ever_anti_hypert_4564", "p_ever_anti_hypert_ge65")
-df_sas_tx_ever <- df_sas %>% select("country", "source", starts_with(p_tx_ever))
-df_sas_tx_ever_long <- pivot_longer(df_sas_tx_ever, cols=3:ncol(df_sas_tx_ever), names_to = "name", values_to = "tx_ever") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, tx_ever, year) %>% 
-  filter(!is.na(tx_ever))
-
-# Synthesis hypertension control
-p_ctrl <- c("p_hypert_control_1524", "p_hypert_control_2534", "p_hypert_control_3544", "p_hypert_control_4554", "p_hypert_control_5564", "p_hypert_control_2544", "p_hypert_control_4564", "p_hypert_control_ge65")
-df_sas_ctrl <- df_sas %>% select("country", "source", starts_with(p_ctrl))
-df_sas_ctrl_long <- pivot_longer(df_sas_ctrl, cols=3:ncol(df_sas_ctrl), names_to = "name", values_to = "control") %>% 
-  separate(col = name, into = c("a", "b", "c", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+")) %>% 
-  select(country, source, age, control, year) %>% 
-  filter(!is.na(control))
-
-# Synthesis mortality
-df_cvd_dead_r <- df_sas %>% select("country", "source", starts_with("rate_dead_cvd"))
-df_cvd_dead_r_long <- pivot_longer(df_cvd_dead_r, cols=3:ncol(df_cvd_dead_r), names_to = "name", values_to = "cvd_death_rate") %>%  
-  separate(col = name, into = c("a", "b", "c", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(year = ifelse(is.na(year), age, year),
-         age = ifelse(year == age, "All", age),
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         sex = ifelse(str_detect(age, "m"), "Male", 
-               ifelse(str_detect(age, "w"), "Female", 
-               ifelse(str_detect(age, "All"), "All", NA))),
-         age = str_remove_all(age, "w"),
-         age = str_remove_all(age, "m"),
-         age = str_replace(age,"ge80","80+"),
-         region = source) %>% 
-  select(country, source, region, age, sex, cvd_death_rate, year) %>% 
-  filter(!is.na(cvd_death_rate))
-
-df_cvd_dead_n <- df_sas %>% select("country", "source", starts_with("n_dead_cvd"))
-df_cvd_dead_n_long <- pivot_longer(df_cvd_dead_n, cols=3:ncol(df_cvd_dead_n), names_to = "name", values_to = "cvd_death_n")  %>% 
-  separate(col = name, into = c("a", "b", "c", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, cvd_death_n, year) %>% 
-  filter(!is.na(cvd_death_n))
-
-df_deadr_all <- df_sas %>% select("country", "source", starts_with("rate_dead_all_anycause"))
-df_deadr_all_long <- pivot_longer(df_deadr_all, cols=3:ncol(df_deadr_all), names_to = "name", values_to = "death_rate") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, death_rate, year) %>% 
-  filter(!is.na(death_rate))
-
-df_deadr_hivneg <- df_sas %>% select("country", "source", starts_with("rate_dead_hivneg_anycause"))
-df_deadr_hivneg_long <- pivot_longer(df_deadr_hivneg, cols=3:ncol(df_deadr_hivneg), names_to = "name", values_to = "death_rate") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, death_rate, year) %>% 
-  filter(!is.na(death_rate))
-
-df_deadn_hivneg <- df_sas %>% select("country", "source", starts_with("n_dead_hivneg_anycause"))
-df_deadn_hivneg_long <- pivot_longer(df_deadn_hivneg, cols=3:ncol(df_deadn_hivneg), names_to = "name", values_to = "n_dead") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, n_dead, year) %>% 
-  filter(!is.na(n_dead))
-
-df_deadr_hivpos <- df_sas %>% select("country", "source", starts_with("rate_dead_hivpos_anycause"))
-df_deadr_hivpos_long <- pivot_longer(df_deadr_hivpos, cols=3:ncol(df_deadr_hivpos), names_to = "name", values_to = "death_rate") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, death_rate, year) %>% 
-  filter(!is.na(death_rate))
-
-df_deadcvdr_hivpos <- df_sas %>% select("country", "source", starts_with("rate_dead_hivpos_cvd"))
-df_deadcvdr_hivpos_long <- pivot_longer(df_deadcvdr_hivpos, cols=3:ncol(df_deadcvdr_hivpos), names_to = "name", values_to = "cvd_death_rate") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, cvd_death_rate, year) %>% 
-  filter(!is.na(cvd_death_rate))
-
-df_deadn_hivpos <- df_sas %>% select("country", "source", starts_with("n_dead_hivpos_anycause"))
-df_deadn_hivpos_long <- pivot_longer(df_deadn_hivpos, cols=3:ncol(df_deadn_hivpos), names_to = "name", values_to = "n_dead") %>% 
-  separate(col = name, into = c("a", "b", "c", "d", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, n_dead, year) %>% 
-  filter(!is.na(n_dead))
-
-df_dyll <- df_sas %>% select("country", "source", starts_with("tot_dyll")) %>% 
-  rename(tot_dyll_all_15 = tot_dyll_15, tot_dyll_all_23 = tot_dyll_23, tot_dyll_all_43 = tot_dyll_43, tot_dyll_all_73 = tot_dyll_73, tot_dyll_all_2343 = tot_dyll_2343, tot_dyll_all_2373 = tot_dyll_2373)
-df_dyll_long <- pivot_longer(df_dyll, cols=3:ncol(df_dyll), names_to = "name", values_to = "dyll") %>% 
-  separate(col = name, into = c("a", "b", "type", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, dyll, type, year) %>% 
-  mutate(dyll = dyll / 1000) %>% 
-  filter(!is.na(dyll))
-
-df_ddaly <- df_sas %>% select("country", "source", starts_with("ddaly"))
-df_ddaly_long <- pivot_longer(df_ddaly, cols=3:ncol(df_ddaly), names_to = "name", values_to = "ddaly") %>% 
-  separate(col = name, into = c("a", "year"), sep = "_", fill = "right") %>% 
-  select(country, source, ddaly, year) %>% 
-  mutate(ddaly = ddaly / 1000) %>% 
-  filter(!is.na(ddaly))
-
-# Synthesis mean SBP
-m_sbp_w <- c("country", "source", "m_sbp_1519w", "m_sbp_2024w", "m_sbp_2529w", "m_sbp_3034w", "m_sbp_3539w", "m_sbp_4044w", "m_sbp_4549w", "m_sbp_5054w", "m_sbp_5559w", "m_sbp_6064w", "m_sbp_6569w", "m_sbp_7074w", "m_sbp_7579w", "m_sbp_ge80w")
-m_sbp_m <- c("country", "source", "m_sbp_1519m", "m_sbp_2024m", "m_sbp_2529m", "m_sbp_3034m", "m_sbp_3539m", "m_sbp_4044m", "m_sbp_4549m", "m_sbp_5054m", "m_sbp_5559m", "m_sbp_6064m", "m_sbp_6569m", "m_sbp_7074m", "m_sbp_7579m", "m_sbp_ge80m")
-m_sbp_all <- c("country", "source", "m_sbp_1519_", "m_sbp_2024_", "m_sbp_2529_", "m_sbp_3034_", "m_sbp_3539_", "m_sbp_4044_", "m_sbp_4549_", "m_sbp_5054_", "m_sbp_5559_", "m_sbp_6064_", "m_sbp_6569_", "m_sbp_7074_", "m_sbp_7579_", "m_sbp_ge80_", "m_sbp_2544_", "m_sbp_4564_", "m_sbp_ge65_")
-df_sas_sbp <- df_sas %>% select(starts_with(m_sbp_all))
-df_sas_sbp_w <- df_sas %>% select(starts_with(m_sbp_w))
-df_sas_sbp_m <- df_sas %>% select(starts_with(m_sbp_m))
-
-# Mean SBP Women
-df_sas_sbp_w_long <- pivot_longer(df_sas_sbp_w, cols=3:ncol(df_sas_sbp_w), names_to = "name", values_to = "sbp") %>% 
-  separate(col = name, into = c("a", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(gender = "Women",
-         age = str_remove_all(age, "w"),
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge80","80+")) %>% 
-  select(country, source, age, gender, sbp, year) %>% 
-  filter(!is.na(sbp))
-
-# Mean SBP men
-cols <- ncol(df_sas_sbp_m)
-df_sas_sbp_m_long <- pivot_longer(df_sas_sbp_m, cols=3:cols, names_to = "name", values_to = "sbp") %>% 
-  separate(col = name, into = c("a", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(gender = "Men",
-         age = str_remove_all(age, "m"),
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge80","80+")) %>% 
-  select(country, source, age, gender, sbp, year) %>% 
-  filter(!is.na(sbp))
-
-# Mean SBP All
-cols <- ncol(df_sas_sbp)
-df_sas_sbp_long <- pivot_longer(df_sas_sbp, cols=3:cols, names_to = "name", values_to = "sbp") %>% 
-  separate(col = name, into = c("a", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(gender = "All",
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         age = str_replace(age,"ge65","65+"), 
-         age = str_replace(age,"ge80","80+")) %>% 
-  select(country, source, age, gender, sbp, year) %>% 
-  filter(!is.na(sbp))
-
-# CVD events
-df_sas_cvd <- df_sas %>% select("country", "source", starts_with(c("rate_ihd", "rate_cva")))
-cols <- ncol(df_sas_cvd)
-df_sas_cvd_long <- pivot_longer(df_sas_cvd, cols=3:cols, names_to = "name", values_to = "value") %>% 
-  separate(col = name, into = c("a", "cause", "type", "b", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(year = ifelse(is.na(year), age, year),
-         year = ifelse(is.na(year), b, year),
-         age = ifelse(is.na(age), "All", age),
-         age = ifelse(age == year & b == "modsev", "All", age),
-         age = ifelse(year == age, b, age),
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         sex = ifelse(str_detect(age, "m"), "Male", 
-                      ifelse(str_detect(age, "w"), "Female", 
-                             ifelse(str_detect(age, "All"), "All", NA))),
-         age = str_remove_all(age, "w"),
-         age = str_remove_all(age, "m"),
-         age = str_replace(age,"ge80","80+"),
-         cause = ifelse(cause == "ihd", "Ischemic heart disease", cause),
-         cause = ifelse(cause == "cva", "Stroke", cause),
-         region = source,
-         measure = "Incidence",
-         b = ifelse(b == "modsev", "modsev", "all")) %>% 
-  rename(sev = b) %>% 
-  select(measure, country, source, region, sex, age, cause, type, sev, value, year) %>% 
-  filter(!is.na(value))
-
-df_sas_cvd_prev <- df_sas %>% select("country", "source", starts_with(c("prev_ihd_", "prev_cva_")))
-cols <- ncol(df_sas_cvd_prev)
-df_sas_cvd_p_long <- pivot_longer(df_sas_cvd_prev, cols=3:cols, names_to = "name", values_to = "value") %>% 
-  separate(col = name, into = c("a", "cause", "age", "year"), sep = "_", fill = "right") %>% 
-  mutate(year = ifelse(is.na(year), age, year),
-         age = ifelse(year == age, "All", age),
-         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
-         sex = ifelse(str_detect(age, "m"), "Male", 
-                      ifelse(str_detect(age, "w"), "Female", 
-                             ifelse(str_detect(age, "All"), "All", NA))),
-         age = str_remove_all(age, "w"),
-         age = str_remove_all(age, "m"),
-         age = str_replace(age,"ge80","80+"),
-         cause = ifelse(cause == "ihd", "Ischemic heart disease", cause),
-         cause = ifelse(cause == "cva", "Stroke", cause),
-         region = source,
-         measure = "Prevalence",
-         value = value * 100,
-         sev = "all",
-         type = NA) %>% 
-  select(measure, country, source, region, sex, age, cause, value, year, sev, type) %>% 
-  filter(!is.na(value))
-
+# pivot wider - NOTE: in future can consider pivitoing into a wider tidy dataframe, but this does not work well because of the very large number of age categories which have missing data for most variables
+# df_sas <- df_sas_long %>% 
+#   pivot_wider(id_cols = c(country, source, year, sex, age),
+#               names_from = var,
+#               values_from = value)
+# 
+# vars_cascade <- c("p_hypert", "p_hypertens160", "p_htn_true", "p_dx_htn_true", "p_dx_htn_over", "p_diagnosed_hypert", "p_on_tx_htn", "p_ever_tx_htn", "p_hypert_control",
+#                   "p_on1drug_antihyp", "p_on2drug_antihyp", "p_on3drug_antihyp")
+# df_sas_cascade <- df_sas %>% 
+#   select(country, source, year, sex, age, all_of(vars_cascade)) %>% 
+#   filter(!rowSums(is.na(.[, vars_cascade])) == length(vars_cascade))
 
 ### EXTERNAL DATA ###
 # Import Geldsetzer Lancet 2019 country data on treatemnt/control (not age-stratified)
@@ -295,13 +137,14 @@ df_ssa_txctrl <- df_ssa_txctrl %>%
          source = "Geldsetzer",
          year = "15",
          age = "All")
-df_ssa_tx <- df_ssa_txctrl %>% select(country, age, source, tx, year)
-df_ssa_ctrl <- df_ssa_txctrl %>% select(country, age, source, control, year)
+ssa_tx <- df_ssa_txctrl %>% select(country, age, source, tx, year)
+ssa_ctrl <- df_ssa_txctrl %>% select(country, age, source, control, year)
+
 
 # Import Geldsetzer Lancet 2019 country age-stratified data and select SSA countries
-df_data <- read.delim(file = "geldsetzer_country_data.txt", sep = "", header = FALSE)
-df_data <- df_data[c("V1", "V2", "V3", "V6")]
-df_data = df_data %>% rename(country = V1, age = V2, htn = V3, htn_undx = V6) %>% 
+ssa_data <- read.delim(file = "geldsetzer_country_data.txt", sep = "", header = FALSE)
+ssa_data <- ssa_data[c("V1", "V2", "V3", "V6")]
+ssa_data <- ssa_data %>% rename(country = V1, age = V2, htn = V3, htn_undx = V6) %>% 
   mutate(dx = (1 -  htn_undx / htn),
          htn = htn/100,
          country = as.character(country),
@@ -316,43 +159,46 @@ df_data = df_data %>% rename(country = V1, age = V2, htn = V3, htn_undx = V6) %>
          year = "15") %>% 
   select(country, age, htn, dx, source, year)
 
-df_country <- data.frame(country = as.character(c("Benin", "BurkinaFaso", "Ghana", "Kenya", "Lesotho", "Liberia", "Mozamb.", "Namibia", "SouthAfrica", "Swaziland", "Tanzania", "Timor-Leste", "Togo", "Uganda", "Zanzibar")))
-df_ssa <- inner_join(df_country, df_data, by="country")
-df_ssa_htn <-  df_ssa %>% select(country, age, htn, source, year)
-df_ssa_dx  <-  df_ssa %>% select(country, age, dx, source, year)
+ssa_country_geld <- data.frame(country = as.character(c("Benin", "BurkinaFaso", "Ghana", "Kenya", "Lesotho", "Liberia", "Mozamb.", "Namibia", "SouthAfrica", "Swaziland", "Tanzania", "Timor-Leste", "Togo", "Uganda", "Zanzibar")))
+ssa_htndx <- inner_join(ssa_country_geld, ssa_data, by="country")
+ssa_htn <-  ssa_htndx %>% select(country, age, htn, source, year)
+ssa_dx  <-  ssa_htndx %>% select(country, age, dx, source, year)
+rm(ssa_data, ssa_country_geld)
 
 # # Import Forouzanfar JAMA 2017 SBP country data country data and select SSA countries
 data_sbp <- read_excel("IHME_GBD_2015_SBP_110_115_MM_HG_HYPERTENSION_1990_2015_ETABLE_2_Y2017M01D10.XLSX", sheet="raw")
-df_data_sbp <- as.data.frame(data_sbp)
-df_data_sbp <- df_data_sbp[c("location_name", "age_name", "val_1_2015", "val_2_2015")]
-df_data_sbp <- df_data_sbp %>% filter(age_name != "Age-standardized")
-countries_ssa <- read.delim(file = "countries_ssa.txt", sep = ";", header = FALSE)
-countries_ssa <- countries_ssa[['V1']]
-df_ssa_sbp <- df_data_sbp %>% subset(location_name %in% countries_ssa)
-df_ssa_sbp %>% count(location_name)
-df_ssa_sbp <- df_ssa_sbp %>% 
+data_sbp <- as.data.frame(data_sbp)
+data_sbp <- data_sbp[c("location_name", "age_name", "val_1_2015", "val_2_2015")]
+data_sbp <- data_sbp %>% filter(age_name != "Age-standardized")
+ssa_country_foro <- read.delim(file = "countries_ssa.txt", sep = ";", header = FALSE)
+ssa_country_foro <- ssa_country_foro[['V1']]
+ssa_sbp <- data_sbp %>% subset(location_name %in% ssa_country_foro)
+ssa_sbp %>% count(location_name)
+ssa_sbp <- ssa_sbp %>% 
   rename(country = location_name, age = age_name) %>% 
   mutate(source = "GBD 2015",
          year = "15",
-         sbp_men = as.numeric(word(df_ssa_sbp$val_1_2015,1,sep = "\u000D")),
-         sbp_women = as.numeric(word(df_ssa_sbp$val_2_2015,1,sep = "\u000D")),
+         sbp_men = as.numeric(word(ssa_sbp$val_1_2015,1,sep = "\u000D")),
+         sbp_women = as.numeric(word(ssa_sbp$val_2_2015,1,sep = "\u000D")),
          age = str_remove_all(age, " years"))
 
-df_ssa_sbp_m = df_ssa_sbp %>% select(country, age, sbp_men, source, year) %>% 
-  mutate(gender = "Men") %>% 
+ssa_sbp_m = ssa_sbp %>% select(country, age, sbp_men, source, year) %>% 
+  mutate(sex = "Male") %>% 
   rename(sbp = sbp_men)
-df_ssa_sbp_w = df_ssa_sbp %>% select(country, age, sbp_women, source, year) %>% 
-  mutate(gender = "Women") %>% 
+ssa_sbp_w = ssa_sbp %>% select(country, age, sbp_women, source, year) %>% 
+  mutate(sex = "Female") %>% 
   rename(sbp = sbp_women)
+ssa_sbp <- rbind(ssa_sbp_m, ssa_sbp_w)
+rm(data_sbp)
 
 # IHME 2019 GBD data on mortality
-df_ihme <- read_csv(ihme_file) 
+ihme <- read_csv(ihme_file) 
 ssa_central <- c("Angola", "Central African Republic", "Congo", "Democratic Republic of the Congo", "Equatorial Guinea", "Gabon")
 ssa_eastern <- c("Burundi", "Comoros", "Djibouti", "Eritrea", "Ethiopia", "Kenya", "Madagascar", "Malawi", "Mozambique", "Rwanda", "Somalia", "South Sudan", "Uganda", "United Republic of Tanzania", "Zambia")
 ssa_southern <- c("Botswana", "Eswatini", "Lesotho", "Namibia", "South Africa", "Zimbabwe")
 ssa_western <- c("Benin", "Burkina Faso", "Cabo Verde", "Cameroon", "Chad", "Côte d'Ivoire", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Liberia", "Mali", "Mauritania", "Niger", "Nigeria", "Sao Tome and Principe", "Senegal", "Sierra Leone", "Togo")
 ssa_all <- c(ssa_western, ssa_eastern, ssa_southern, ssa_central)
-df_ihme_country <- df_ihme %>% 
+ihme_country <- ihme %>% 
   filter(location %in% ssa_all) %>% 
   mutate(region = ifelse(location %in% ssa_central, "Central SSA",
                          ifelse(location %in% ssa_eastern, "Eastern SSA",
@@ -362,13 +208,13 @@ df_ihme_country <- df_ihme %>%
          age = str_remove(age, " years"),
          age = str_remove(age, "-"))
 
-df_ihme_country %>% group_by(region, location) %>% count() %>% print(n=50)
-df_ihme_country <- df_ihme_country %>% 
+ihme_country %>% group_by(region, location) %>% count() %>% print(n=50)
+ihme_country <- ihme_country %>% 
   mutate(val = ifelse(val ==0, NA, val),
          upper = ifelse(upper ==0, NA, upper),
          lower = ifelse(lower ==0, NA, lower))
 
-df_ihme_cvdeath <- df_ihme_country %>% 
+ihme_cvdeath <- ihme_country %>% 
   filter(measure == "Deaths", cause == "Cardiovascular diseases") %>% 
   select(location, region, sex, age, val, year, measure, cause) %>% 
   pivot_wider(names_from = age, values_from = val) %>% 
@@ -382,17 +228,23 @@ df_ihme_cvdeath <- df_ihme_country %>%
   pivot_longer(cols = c('yr20+', yr3039, yr4049, yr5059, yr6069, yr7079),
                names_to = "age") %>% 
   mutate(age = str_remove(age, "yr"),
+         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
          value = value / 1000,
          source = "SSA") %>% 
   rename(country = location,
          cvd_death_rate = value)
 
-df_ihme_sas_cvd_death <- rbind(df_cvd_dead_r_long, df_ihme_cvdeath) %>% 
+df_cvd_death <- df_sas %>% 
+  filter(var == "rate_dead_cvd") %>% 
+  select(-var) %>% 
+  mutate(region = source) %>% 
+  rename(cvd_death_rate = value) %>% 
+  rbind(ihme_cvdeath) %>% 
   filter(year == "2019" | year == "15") %>% 
   filter(age != "80+") %>% 
   filter(source %in% c("SOC", "SSA"))
 
-df_ihme_cvevent <- df_ihme_country %>% 
+ihme_cvevent <- ihme_country %>% 
   filter(cause != "Cardiovascular diseases") %>% 
   select(location, region, sex, age, val, year, measure, cause) %>% 
   pivot_wider(names_from = age, values_from = val) %>% 
@@ -406,284 +258,365 @@ df_ihme_cvevent <- df_ihme_country %>%
   pivot_longer(cols = c('yr20+', yr3039, yr4049, yr5059, yr6069, yr7079, 'yr80+'),
                names_to = "age") %>% 
   mutate(age = str_remove(age, "yr"),
+         age = str_replace(age,"(\\d{2})(\\d{2})$","\\1-\\2"),
          value = value / 1000,
          source = "SSA") %>% 
-  rename(country = location) %>% 
-  mutate(type = "all",
-         sev = "all")
+  rename(country = location)
 
-df_ihme_sas_cvd_inc <- rbind(df_sas_cvd_long, df_ihme_cvevent) %>% 
-  filter(measure == "Incidence")  %>% 
-  filter(age %in% c("4049", "5059", "6069", "7079", "80+"))
+df_cvd_inc <- df_sas %>% 
+  filter(var == "rate_ihd_modsev" | var == "rate_cva_modsev",
+         source == "SOC") %>% 
+  mutate(region = source,
+         measure = "Incidence",
+         var = if_else(str_detect(var, "ihd"), "Ischemic heart disease",
+                       if_else(str_detect(var, "cva"), "Stroke", var))) %>% 
+  rename(cause = var) %>% 
+  rbind(ihme_cvevent) %>% 
+  filter(measure == "Incidence",
+         cause %in% c("Stroke", "Ischemic heart disease"),
+         year == "2019" | year == "15",
+         age %in% c("18+", "20+", "40-49", "50-59", "60-69", "70-79", "80+"))
 
-df_ihme_sas_cvd_prev <- rbind(df_sas_cvd_p_long, df_ihme_cvevent) %>% 
-  filter(measure == "Prevalence")  %>% 
-  filter(age %in% c("4049", "5059", "6069", "7079", "80+"))
+df_cvd_prev <- df_sas %>% 
+  filter(grepl("^prev_", var),
+         source == "SOC") %>% 
+  mutate(region = source,
+         measure = "Prevalence",
+         var = if_else(str_detect(var, "ihd"), "Ischemic heart disease",
+                       if_else(str_detect(var, "cva"), "Stroke", var))) %>% 
+  rename(cause = var) %>% 
+  rbind(ihme_cvevent) %>% 
+  filter(measure == "Prevalence",
+         cause %in% c("Stroke", "Ischemic heart disease"),
+         year == "2019" | year == "15",
+         age %in% c("18+", "20+", "40-49", "50-59", "60-69", "70-79", "80+"))
 
+ihme_objects <- ls(pattern = "^ihme")
+rm(list = ihme_objects, ihme_objects)
 
+# SEARCH and NIDS South Africa Data for severe hypertension (SBP ≥160)
+## NIDS Wave 4 (2015) and SEARCH 1.0 baseline (2013)
 
-# Append Synthesis data to STEPS data from Geldsetzer for hypertension prevalence (htn) and diagnosis (dx)
-df_htn <- rbind(df_ssa_htn, df_sas_htn_long)
+sevhtn_search <- read_csv("search_severeHTN.csv") %>% 
+  rename(country = Community,
+         age = age_cat) %>% 
+  mutate(source = "SEARCH (Kenya/Uganda)",
+         year = "15")
+sevhtn_nids <- read_csv("NIDS_severeHTN.csv") %>% 
+  rename(age = age_cat) %>% 
+  mutate(source = "NIDS (South Africa)",
+         year = "15",
+         country = "South Africa")
+
+# Append Synthesis data to STEPS data from Geldsetzer for hypertension cascade
+df_htn <- df_sas %>% 
+  filter(var == "p_htn_true",
+         source == "SOC",
+         sex == "All") %>% 
+  rename(htn = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(ssa_htn)
 df_htn <- df_htn %>% 
   mutate(age = as.factor(age),
          source = factor(source, levels = sourcenames))
 
-df_dx <- rbind(df_ssa_dx, df_sas_dx_long)
+df_sevhtn <- df_sas %>% 
+  filter(var =="p_hypertens160",
+         source == "SOC",
+         sex == "All") %>% 
+  rename(sevhtn = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(sevhtn_search) %>% 
+  rbind(sevhtn_nids)
+df_sevhtn <- df_sevhtn %>% 
+  mutate(age = as.factor(age),
+         source = factor(source, levels = sourcenames))
+
+sevhtn_objects <- ls(pattern = "^sevhtn")
+rm(list = sevhtn_objects, sevhtn_objects)
+
+df_dx <- df_sas %>% 
+  filter(var == "p_diagnosed_hypert",
+         source == "SOC",
+         sex == "All") %>%  
+  rename(dx = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(ssa_dx)
 df_dx <- df_dx %>% 
   mutate(age = as.factor(age),
          source = factor(source, levels = sourcenames))
 
-df_tx <- rbind(df_ssa_tx, df_sas_tx_long)
-df_tx <- df_tx %>% 
+df_tx_current <- df_sas %>% 
+  filter(var == "p_on_tx_htn",
+         source == "SOC",
+         sex == "All") %>%  
+  rename(tx = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(ssa_tx)
+df_tx_current <- df_tx_current %>% 
   mutate(age = as.factor(age),
          source = factor(source, levels = sourcenames))
 
-df_ctrl <- rbind(df_ssa_ctrl, df_sas_ctrl_long)
+df_tx_ever <- df_sas %>% 
+  filter(var == "p_ever_tx_htn",
+         source == "SOC",
+         sex == "All") %>%  
+  rename(tx = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(ssa_tx)
+df_tx_ever <- df_tx_ever %>% 
+  mutate(age = as.factor(age),
+         source = factor(source, levels = sourcenames))
+
+df_ctrl <- df_sas %>% 
+  filter(var == "p_hypert_control",
+         source == "SOC",
+         sex == "All") %>%  
+  rename(control = value) %>% 
+  select(-c(var, sex)) %>% 
+  rbind(ssa_ctrl)
 df_ctrl <- df_ctrl %>% 
   mutate(age = as.factor(age),
          source = factor(source, levels = sourcenames))
 
-df_sbp_m <- rbind(df_ssa_sbp_m, df_sas_sbp_m_long)
-df_sbp_m <- df_sbp_m %>% 
+df_sbp <- df_sas %>% 
+  filter(var == "m_sbp",
+         source == "SOC",
+         !(age %in% c("15-19", "20-24", "25-44", "45-64", "65+"))) %>% 
+  rename(sbp = value) %>% 
+  select(-c(var)) %>%
+  rbind(ssa_sbp)
+df_sbp <- df_sbp %>% 
   mutate(age = as.factor(age),
          source = factor(source, levels = sourcenames))
 
-df_sbp_w <- rbind(df_ssa_sbp_w, df_sas_sbp_w_long)
-df_sbp_w <- df_sbp_w %>% 
-  mutate(age = as.factor(age),
-       source = factor(source, levels = sourcenames))
+ssa_objects <- ls(pattern = "^ssa")
+rm(list = ssa_objects, ssa_objects)
 
-# CVD risk reduction
-df_cvdevent_rr <- df_sas_cvd_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, age, sex, year, cause, type, sev),
+
+# Add factor variables to df_sas
+df_sas <- df_sas %>% 
+  mutate(source = factor(source, levels = sourcenames))
+
+# CVD event and mortality risk reduction
+df_cvdmort_rr <- df_sas %>% 
+  filter(grepl("^rate_", var),
+         year == "2343" | year == "2373",
+         sex == "All") %>% 
+  pivot_wider(id_cols = c(country, age, sex, year, var),
               names_from = c(source),
               values_from = value) %>% 
-  mutate(PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-  select(country, age, sex, year,cause, type, sev, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "cvd_event_rr") %>% 
+  mutate(CCC.rr = CCC / SOC,
+         CHW.rr = CHW / SOC) %>%
+  select(country, age, sex, year, var, CCC.rr, CHW.rr) %>% 
+  pivot_longer(cols = c(CCC.rr, CHW.rr),
+               values_to = "value") %>% 
   separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
+  mutate(source = factor(source, levels = sourcenames),
+         var = paste0(var, "_", measure)) %>% 
+  select(-measure)
+  # bind RR measures to df_sas
+  df_sas <- rbind(df_sas, df_cvdmort_rr)
 
-# Mortality
-df_cvd_summ <- df_cvd_dead_r_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, age, sex, year),
+df_cvdevent_n <- df_sas %>% 
+    filter(var %in% c("n_ihd", "n_cva", "n_cvd"),
+           year == "2343" | year == "2373") %>% 
+    pivot_wider(id_cols = c(country, age, sex, year, var),
+                names_from = c(source),
+                values_from = value) %>% 
+    mutate(CCC.diff = SOC - CCC,
+           CHW.diff = SOC - CHW) %>% 
+    select(country, age, sex, year, var, CCC.diff, CHW.diff) %>% 
+    pivot_longer(cols = c(CCC.diff, CHW.diff),
+                 values_to = "value") %>% 
+    separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
+    mutate(source = factor(source, levels = sourcenames),
+           var = paste0(var, "_", measure)) %>% 
+    select(-measure)  
+
+df_cvdmort_n <- df_sas %>% 
+  filter(var == "n_dead_cvd",
+         year == "2343" | year == "2373") %>%
+  pivot_wider(id_cols = c(country, age, sex, year, var),
               names_from = c(source),
-              values_from = cvd_death_rate) %>% 
-  mutate(PCC.abs = PCC - SOC,
-         CHW.abs = CHW - SOC,
-         CHW_link.abs = CHW_link - SOC,
-         PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-select(country, age, sex, year, PCC.abs, CHW.abs, CHW_link.abs, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.abs, CHW.abs, CHW_link.abs, PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "cvd_risk_reduction") %>% 
+              values_from = value) %>% 
+  mutate(CCC.diff = SOC - CCC,
+         CHW.diff = SOC - CHW) %>% 
+  select(country, age, sex, year, var, CCC.diff, CHW.diff) %>% 
+  pivot_longer(cols = c(CCC.diff, CHW.diff),
+               values_to = "value") %>% 
   separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
+  mutate(source = factor(source, levels = sourcenames),
+         var = paste0(var, "_", measure)) %>% 
+  select(-measure)
+# bind death difference measures to df_sas
+df_sas <- rbind(df_sas, df_cvdevent_n, df_cvdmort_n)
 
-df_acmort_hivpos <- df_deadr_hivpos_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, year),
-              names_from = c(source),
-              values_from = death_rate) %>% 
-  mutate(PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-  select(country, year, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "mortality_rr") %>% 
-  separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
-
-df_cvdmort_hivpos <- df_deadcvdr_hivpos_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, year),
-              names_from = c(source),
-              values_from = cvd_death_rate) %>% 
-  mutate(PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-  select(country, year, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "cvd_mortality_rr") %>% 
-  separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
-
-df_acmort_hivneg <- df_deadr_hivneg_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, year),
-              names_from = c(source),
-              values_from = death_rate) %>% 
-  mutate(PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-  select(country, year, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "mortality_rr") %>% 
-  separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
-
-df_acmort_all <- df_deadr_all_long %>% 
-  filter(year == "2343" | year == "2373") %>% 
-  pivot_wider(id_cols = c(country, year),
-              names_from = c(source),
-              values_from = death_rate) %>% 
-  mutate(PCC.rr = PCC / SOC,
-         CHW.rr = CHW / SOC,
-         CHW_link.rr = CHW_link / SOC) %>%
-  select(country, year, PCC.rr, CHW.rr, CHW_link.rr) %>% 
-  pivot_longer(cols = c(PCC.rr, CHW.rr, CHW_link.rr),
-               values_to = "mortality_rr") %>% 
-  separate_wider_delim(cols = name, delim = ".", names = c("source", "measure")) %>% 
-  mutate(source = factor(source, levels = sourcenames))
-
-df_dyll_all <- df_dyll_long %>%
-  filter(year == "2373") %>%
-  pivot_wider(        id_cols = c(country, type),
-                      names_from = c(source, year),
-                      values_from = dyll) %>%
-  mutate(PCC = PCC_2373 - SOC_2373,
-         CHW = CHW_2373 - SOC_2373,
-         CHW_link = CHW_link_2373 - SOC_2373) %>%
-  select(country, type, PCC, CHW, CHW_link)
-df_dyll_summ <- df_dyll_all %>%
-  pivot_longer(cols = c(PCC, CHW, CHW_link),
-               values_to = "dyll_reduction") %>%
-  rename(source = name) %>%
-  mutate(source = factor(source, levels = sourcenames))
-
-df_ddaly_all <- df_ddaly_long %>%
-  filter(year != "15" & year != "22") %>% 
-  pivot_wider(        id_cols = c(country, year),
+# DALYs averted
+df_ddaly_avert <- df_sas %>% 
+  filter(var == "ddaly",
+         year == "2343" | year == "2373") %>% 
+  mutate(value = value / 1000) %>% 
+  pivot_wider(        id_cols = c(country, year, var, age, sex),
                       names_from = c(source),
-                      values_from = ddaly) %>%
-  mutate(PCC_avert = PCC - SOC,
-         CHW_avert = CHW - SOC,
-         CHW_link_avert = CHW_link - SOC) %>%
-  select(country, year, PCC_avert, CHW_avert, CHW_link_avert) %>% 
-  mutate(PCC = PCC_avert,
-         CHW = CHW_avert,
-         CHW_link = CHW_link_avert) %>% 
-  select(country, year, PCC, CHW, CHW_link)
-df_ddaly_summ <- df_ddaly_all %>%
-  pivot_longer(cols = c(PCC, CHW, CHW_link),
-               values_to = "ddaly_reduction") %>%
+                      values_from = value) %>% 
+  mutate(CCC = SOC - CCC,
+         CHW = SOC - CHW,
+         
+         SOC = 0) %>%
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "value") %>%
   rename(source = name) %>%
-  mutate(source = factor(source, levels = sourcenames))
-
+  mutate(source = factor(source, levels = sourcenames),
+         var = "ddaly_averted")
+  # bind to df_sas
+  df_sas <- rbind(df_sas, df_ddaly_avert)
+  df_ddaly_avert <- df_ddaly_avert %>% 
+    rename(ddaly_averted = value) %>% 
+    select(-c(var, age, sex))
+  
 # Cost
-df_cost <- df_sas %>% select("country", "source", starts_with("htn_cost_"))
-cols <- ncol(df_cost)
-df_cost_long <- df_cost %>%
-  pivot_longer(cols=3:cols, names_to = "name", values_to = "cost") %>%
-  separate(col = name, into = c("a", "b", "cost_cat", "year"), sep = "_", fill = "right") %>%
-  mutate(cost_cat = ifelse(a == "cost", "Total cost", cost_cat),
-         cost_cat = ifelse(cost_cat == "total", "total htn", cost_cat),
-         year = ifelse(a == "cost", b, year)) %>%
-  select(country, source, cost_cat, cost, year) %>%
-  mutate(cost_cat = ifelse(cost_cat == "total", "total htn", cost_cat)) %>%
-  filter(!is.na(cost)) %>% 
-  filter(year == 2373 | year == 2373)
-
-df_dcost <- df_sas %>% select("country", "source", starts_with("dhtn_cost_"), starts_with("dcost_"))
-cols <- ncol(df_dcost)
-df_dcost_long <- df_dcost %>%
-  pivot_longer(cols=3:cols, names_to = "name", values_to = "dcost") %>% 
-  separate(col = name, into = c("a", "b", "dcost_cat", "year"), sep = "_", fill = "right") %>%
-  mutate(dcost_cat = ifelse(a == "dcost", "total cost", dcost_cat),
-         dcost_cat = ifelse(dcost_cat == "total", "total htn", dcost_cat),
-         dcost_cat = ifelse(dcost_cat == "totdrughalf", "total (half drug cost)", dcost_cat),
-         dcost_cat = ifelse(dcost_cat == "totdrugdoub", "total (double drug cost)", dcost_cat),
-         dcost_cat = ifelse(dcost_cat == "tothalf", "total htn (50%)", dcost_cat),
-         dcost_cat = ifelse(dcost_cat == "totdoub", "total htn (200%)", dcost_cat),
-         year = ifelse(a == "dcost", b, year)) %>%
-  select(country, source, dcost_cat, dcost, year) %>%
-  mutate(dcost_cat = ifelse(dcost_cat == "total", "total htn", dcost_cat),
-         dcost_cat = factor(dcost_cat,
-                            levels = c("scr", "clin", "drug", "cvd", "total htn", "total cost", "total (half drug cost)", "total (double drug cost)", "total htn (50%)", "total htn (200%)"),
-                            labels = c("scr", "clin", "drug", "cvd", "total htn", "total cost", "total (half drug cost)", "total (double drug cost)", "total htn (50%)", "total htn (200%)"))) %>%
-  filter(!is.na(dcost)) %>% 
-  filter(year == 2343 | year == 2373)
-
-# ICER
-df_dcost_icer <- df_dcost_long %>%
-  filter(dcost_cat %in% c("total htn", "total (half drug cost)", "total (double drug cost)", "total htn (50%)", "total htn (200%)")) %>%
-  select(country, source, dcost_cat, dcost, year) %>%
-  pivot_wider(id_cols = c(country, year, dcost_cat),
+df_dcost_inc <- df_sas %>% filter(grepl("^dhtn_cost_tot", var)) %>%
+  filter(year == 2343 | year == 2373) %>% 
+  pivot_wider(id_cols = c(country, year, var, age, sex),
               names_from = c(source),
-              values_from = dcost) %>% 
-  mutate(PCC = PCC - SOC,
+              values_from = value) %>% 
+  mutate(CCC = CCC - SOC,
          CHW = CHW - SOC,
-         CHW_link = CHW_link - SOC,
          SOC = 0) %>% 
-  pivot_longer(cols = c(PCC, CHW, CHW_link),
-               values_to = "cost") %>%
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "value") %>%
   rename(source = name) %>%
-  mutate(source = factor(source, levels = sourcenames))
+  mutate(source = factor(source, levels = sourcenames),
+         var = paste0(var, "_inc"))
+  # bind to df_sas
+  df_sas <- rbind(df_sas, df_dcost_inc)
 
-df_icer <- left_join(df_ddaly_summ, df_dcost_icer, by = c("country", "source", "year")) %>%
-  filter(year %in% c("2343", "2373")) %>% 
-  rename(ddaly_averted = ddaly_reduction) %>%
-  mutate(ddaly_averted = ddaly_averted *-1,
-         icer = (cost*1000000) / (ddaly_averted*1000),
-         netdaly_averted = ddaly_averted - ((cost*1000)/500),
-         cf_netdaly = ifelse(netdaly_averted >=0 & ddaly_averted >=0, 1, 0))
+df_netdaly <- df_sas %>% 
+  filter(grepl("^dhtn_cost_tot", var) & grepl("_inc$", var),
+         year %in% c("2343", "2373")) %>% 
+  rename(cost_inc = value,
+         cost_cat = var) %>% 
+  select(-c(age, sex)) %>% 
+  right_join(df_ddaly_avert, by = join_by(country, source, year)) %>% 
+  mutate(netdaly_averted = ddaly_averted - ((cost_inc*1000)/500),
+         netdaly_1 = ddaly_averted - ((cost_inc*1000)/1),
+         netdaly_10 = ddaly_averted - ((cost_inc*1000)/10),
+         netdaly_50 = ddaly_averted - ((cost_inc*1000)/50),
+         netdaly_100 = ddaly_averted - ((cost_inc*1000)/100),
+         netdaly_150 = ddaly_averted - ((cost_inc*1000)/150),
+         netdaly_200 = ddaly_averted - ((cost_inc*1000)/200),
+         netdaly_250 = ddaly_averted - ((cost_inc*1000)/250),
+         netdaly_300 = ddaly_averted - ((cost_inc*1000)/300),
+         netdaly_350 = ddaly_averted - ((cost_inc*1000)/350),
+         netdaly_400 = ddaly_averted - ((cost_inc*1000)/400),
+         netdaly_450 = ddaly_averted - ((cost_inc*1000)/450),
+         netdaly_500 = ddaly_averted - ((cost_inc*1000)/500),
+         netdaly_600 = ddaly_averted - ((cost_inc*1000)/600),
+         netdaly_800 = ddaly_averted - ((cost_inc*1000)/800),
+         netdaly_1000 = ddaly_averted - ((cost_inc*1000)/1000),
+         cf_netdaly_any = ifelse(netdaly_averted >=0 & ddaly_averted >=0, 1, 0),
+         cf_netdaly_any = ifelse(source == "SOC", NA, cf_netdaly_any),
+         cost_cat = factor(cost_cat, 
+                           levels = c("dhtn_cost_tothalf_inc", 
+                                      "dhtn_cost_totdrughalf_inc", "dhtn_cost_totclinhalf_inc", "dhtn_cost_totscrnhalf_inc", 
+                                      "dhtn_cost_total_inc", 
+                                      "dhtn_cost_totscrndoub_inc", "dhtn_cost_totclindoub_inc", "dhtn_cost_totdrugdoub_inc", 
+                                      "dhtn_cost_totdoub_inc"),
+                           ordered = TRUE,
+                           labels= c("total htn (50%)", 
+                                     "total (50% drug cost)", "total (50% clinic cost)", "total (50% screening cost)", 
+                                     "total htn", 
+                                     "total (200% screening cost)", "total (200% clinic cost)", "total (200% drug cost)", 
+                                     "total htn (200%)")))
 
-df_icer_wide <- df_icer %>% 
-  pivot_wider(id_cols = c(country, year, dcost_cat),
+df_netdaly_all<- df_netdaly %>% 
+  pivot_wider(id_cols = c(country, year, cost_cat),
               names_from = c(source),
               values_from = netdaly_averted) %>% 
   mutate(SOC = 0,
-         cf = ifelse(SOC > PCC & SOC > CHW & SOC > CHW_link, "SOC",
-              ifelse(PCC > SOC & PCC > CHW & PCC > CHW_link, "PCC",
-              ifelse(CHW > SOC & CHW > PCC & CHW > CHW_link, "CHW",
-              ifelse(CHW_link > SOC & CHW_link > PCC & CHW_link > CHW, "CHW_link", NA)))),
+         cf = ifelse(SOC > CCC & SOC > CHW, "SOC",
+              ifelse(CCC > SOC & CCC > CHW, "CCC",
+              ifelse(CHW > SOC & CHW > CCC, "CHW", NA))),
          SOC = ifelse(cf == "SOC", 1, 0),
-         PCC = ifelse(cf == "PCC", 1, 0),
-         CHW = ifelse(cf == "CHW", 1, 0),
-         CHW_link = ifelse(cf == "CHW_link", 1, 0)) %>% 
-  pivot_longer(cols = c(SOC, PCC, CHW, CHW_link),
-               values_to = "cost_effective") %>% 
-  rename(source = name)
+         CCC = ifelse(cf == "CCC", 1, 0),
+         CHW = ifelse(cf == "CHW", 1, 0)) %>% 
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "cf_netdaly_all",
+               names_to = "source") %>% 
+  select(-cf) %>% 
+  mutate(source = factor(source, levels = sourcenames))
 
-df_icer_summ <- df_icer %>%
-  filter(dcost_cat == "total htn") %>% 
-  group_by(source) %>%
-  summarize(dcost_mean = round(mean(cost),1), 
-            dcost_q05 = round(quantile(cost,0.05),1),
-            dcost_q95 = round(quantile(cost,0.95),1),
-            ddaly_mean = round(mean(ddaly_averted),1),
-            ddaly_q05 = round(quantile(ddaly_averted,0.05),1),
-            ddaly_q95 = round(quantile(ddaly_averted,0.95),1),
-            netddaly_mean = round(mean(netdaly_averted),1),
-            netddaly_q05 = round(quantile(netdaly_averted,0.05),1),
-            netddaly_q95 = round(quantile(netdaly_averted,0.95),1)) %>%
-  rbind(as.data.frame(list(
-    source = "SOC",
-    dcost_mean = 0, 
-    dcost_q05 = 0,
-    dcost_q95 = 0,
-    ddaly_mean = 0,
-    ddaly_q05 = 0,
-    ddaly_q95 = 0,
-    netddaly_mean = 0,
-    netddaly_q05 = 0,
-    netddaly_q95 = 0))) %>%
-  mutate(source = factor(source, levels = sourcenames)) %>% 
-  arrange(source)
+df_netdaly_graph<- df_netdaly %>% 
+  select(-c(cost_inc, ddaly_averted, netdaly_averted, cf_netdaly_any)) %>% 
+  pivot_longer(cols = starts_with("netdaly"),
+               names_to = c("netdaly", "ce_threshold"), 
+               names_sep = "\\_",
+               values_to = "netdaly_averted") %>% 
+  pivot_wider(id_cols = c(country, year, cost_cat, ce_threshold),
+              names_from = c(source),
+              values_from = netdaly_averted) %>% 
+  mutate(ce_threshold = as.numeric(ce_threshold),
+         SOC = 0,
+         cf = ifelse(SOC > CCC & SOC > CHW, "SOC",
+                     ifelse(CCC > SOC & CCC > CHW, "CCC",
+                            ifelse(CHW > SOC & CHW > CCC, "CHW",NA))),
+         SOC = ifelse(cf == "SOC", 1, 0),
+         CCC = ifelse(cf == "CCC", 1, 0),
+         CHW = ifelse(cf == "CHW", 1, 0)) %>% 
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "cf_netdaly_all",
+               names_to = "source") %>% 
+  select(-c(cf)) %>% 
+  mutate(source = factor(source, levels = sourcenames))
+
+df_netdaly_graph_summ <- df_netdaly_graph %>% 
+  filter(year == "2373", cost_cat == "total htn") %>% 
+  group_by(source, ce_threshold) %>% 
+  summarize(prop = mean(cf_netdaly_all),
+            pct = pct(prop)) 
+
+df_netdaly <- left_join(df_netdaly, df_netdaly_all, by = c("country", "source", "cost_cat", "year"))
+rm(df_netdaly_all, df_ddaly_avert, df_dcost_inc)
 
 # Setting scenario characteristics
-df_sas %>% select(country, source, p_hypert_4564_15, p_hypert_4564_23)
-df_scenario_chars <- df_sas %>% 
-  filter(source == "SOC") %>%
-  select(country, m_sbp_4564_23, p_hypert_4564_23, p_diagnosed_hypert_4564_23, p_on_anti_hypert_4564_23, p_hypert_control_4564_23, rate_dead_cvd_4059_23, starts_with("setting"), prevalence1549_23)
-df_netdaly_params <- merge(df_icer, df_scenario_chars, by="country")
-df_cf_params <- merge(df_icer_wide, df_scenario_chars, by="country")
+df_netdaly <- left_join(df_netdaly, df_scenario_chars, by="country")
+vars <- df_sas %>% select(var) %>% distinct
 
-save.image("SynthesisHTN.RData")
+# cost-effectiveness frontier
+plot_icer <- df_netdaly %>% filter(year == "2373") %>% 
+  group_by(source, cost_cat) %>% 
+  summarize(mean_ddaly = mean(ddaly_averted),
+            mean_cost = mean(cost_inc)) %>% 
+  mutate(icer = round((mean_cost * 1000) / mean_ddaly))
+plot_icer_cost <- plot_icer %>% 
+  pivot_wider(id_cols = c(cost_cat),
+              names_from = c(source),
+              values_from = c(mean_cost)) %>% 
+  mutate(CHW = CHW - CCC) %>% 
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "inc_cost",
+               names_to = "source")
+plot_icer_ddaly <- plot_icer %>% 
+  pivot_wider(id_cols = c(cost_cat),
+              names_from = c(source),
+              values_from = c(mean_ddaly)) %>% 
+  mutate(CHW = CHW - CCC) %>% 
+  pivot_longer(cols = c(SOC, CCC, CHW),
+               values_to = "inc_ddaly",
+               names_to = "source")
+plot_icer <- left_join(plot_icer, plot_icer_cost, by = c("cost_cat", "source")) %>% 
+  left_join(plot_icer_ddaly, by = c("cost_cat", "source")) %>% 
+  mutate(icer2 = round((inc_cost * 1000) / inc_ddaly))
+
+plot_icer %>% filter(source !="SOC")
+
+
+
+
+save.image("SynthesisHTN_ug.RData")
+
+
+
+
 

@@ -1,0 +1,97 @@
+---
+title: "results - only SOC and policy"
+author: "Matt Hickey"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r table6}
+# 
+# z <- df_netdaly_params %>% 
+#   group_by(source, cost_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Drug cost") %>% 
+#   rename(prop = cost_cat)
+# 
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, hiv_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "HIV prevalence among age 15-49")  %>% 
+#   rename(prop = hiv_cat) %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, setting_cvd_tx_eff) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Proportion of acute CVD events receiving effective emergency care")  %>% 
+#   rename(prop = setting_cvd_tx_eff)  %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, setting_cvd_tx) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Proportion of acute CVD events receiving emergency care")  %>% 
+#   rename(prop = setting_cvd_tx)  %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, setting_sbp_cal) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "SBP rise per decade after 2015",
+#          setting_sbp_cal = paste0(setting_sbp_cal*40, " mmHg"))  %>% 
+#   rename(prop = setting_sbp_cal)  %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, cvd_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "CVD mortality rate among all adults")  %>% 
+#   rename(prop = cvd_cat)  %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, ctrl_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Hypertension control among adults aged 45-64")  %>% 
+#   rename(prop = ctrl_cat) %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, tx_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Hypertension treatment among adults aged 45-64")  %>% 
+#   rename(prop = tx_cat) %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, dx_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any))) %>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Hypertension diagnosis among adults aged 45-64")  %>% 
+#   rename(prop = dx_cat) %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, htn_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any)))%>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Hypertension prevalence among adults aged 45-64") %>% 
+#   rename(prop = htn_cat) %>% 
+#   rbind(z)
+# z <- df_netdaly_paramsbase %>% 
+#   group_by(source, sbp_cat) %>% 
+#   summarize(prop = pct(mean(cf_netdaly_any)))%>% 
+#   pivot_wider(names_from = source, values_from = prop) %>% 
+#   mutate(parameter = "Mean SBP among adults aged 45-64") %>% 
+#   rename(prop = sbp_cat) %>% 
+#   rbind(z)
+# 
+# 
+# z <- z %>% select(parameter, prop, PHC, CHW, CHW_link, perfect)
+# write_csv(z, paste0("./results/", "params_", y, ".csv"))
+# z %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
+```
+
+<!-- Using a cost-effectiveness threshold of $500 USD/DALY averted and considering only each new policy and standard of care over the next 50 years, we estimate that implementation of patient-centered integrated hypertension care within clinics will be cost-effective in `r x %>% filter(var == "cf_any") %>% select(PHC)` of setting-scenarios and that the addition of community-wide hypertension screening by community health workers will be cost-effective in `r x %>% filter(var == "cf_any") %>% select(CHW)` of setting scenarios without transport vouchers and `r x %>% filter(var == "cf_any") %>% select(CHW_link)` of setting-scenarios with the addition of transport vouchers to incentivize linkage to care. -->
+
+<!-- Table 6 shows variability in cost-effectiveness of each policy across baseline setting-scenario characteristics (in 2023). Community-wide screening approaches were more cost-effective in settings with higher hypertension prevalence, lower awareness of hypertension diagnosis, higher cardiovascular disease mortality rates, and greater proportions of individuals with acute cardiovascular events seeking emergency medical services. As expected, there was no trend in cost-effectiveness by HIV prevalence for any of the three policies. In sensitivity analysis, we evaluated several cost scenarios. Community screening approaches were most sensitive to cost and were cost-effective in nearly all setting-scenarios under the assumption that all costs were 50% of base assumptions. CHW hypertension screening with and without transport vouchers was cost-effective in `r z %>% filter(parameter == "Drug cost" & prop == "total (half drug cost)") %>% select(CHW)` and `r z %>% filter(parameter == "Drug cost" & prop == "total (half drug cost)") %>% select(CHW_link)` setting-scenarios where hypertension drugs were assumed to be available at generic cost (50% of base assumption).  -->

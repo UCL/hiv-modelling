@@ -3,10 +3,7 @@ title: "SEARCH Hypertension Modelling with HIV Synthesis"
 author: "Matt Hickey"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  html_document:
-    reference_docx: mynew_template.docx
-    toc: true
-    toc_depth: 2
+  word_document:
 always_allow_html: true
 
 ---
@@ -30,39 +27,13 @@ pct <- function(x) {
   return(y)
 }
 
-
 load("SynthesisHTN.RData")
 
 ```
 
 
-*See separate 'htn model parameters' document for detailed description of model setting-level parameters and individual-level variables*
 
-# Model Overview
-## Goals
-1. Within HIV Synthesis, model at individual level systolic blood pressure (SBP), hypertension diagnosis & treatment, and relationship with cardiovascular disease/death - focusing on myocardial infarction and stroke
-2. Model the effect of clinic and community-based hypertension interventions on DALYs, cost, and cost-effectiveness, using data from the SEARCH study in Kenya & Uganda
-
-## HTN-HIV Model Schema
-
-![](/Users/sf124046/Library/CloudStorage/Box-Box/1.sapphire_modelling/calibration/cvd_model.png)
-
-
-## Questions
-* **What is the effect and cost-effectiveness of different approaches to hypertension screening and management (treatment + care delivery)?**
-  * Community-based screening by community health workers (CHWs) + patient centered care +/- linkage incentive (SEARCH HTN Linkage study)
-  * Clinic-based patient-centered care alone (SEARCH)
-  * Current standard hypertension care
-
-## Outcomes
-Over 20 and 50 years: 
-
-* Mortality
-* DALYs
-* Cost 
-* Cost per DALY (cost-effectiveness)
-
-# 4. Comparison of model output in 2015 to data from the literature
+# Comparison of model output in 2015 to data from the literature
 Based on `r nrow(df_sas_wide)/3` model runs
 
 ## Definitions
@@ -71,10 +42,6 @@ GBD = Global Burden of Disease data
 
 ## Data Sources
 Hypertension prevalence, diagnosis, treatment, and control using STEPS survey data from 15 countries in sub-Saharan Africa (2005-2015; Geldsetzer Lancet 2019)
-```{r country_years}
-country_years <- read_excel("geldsetzer_country_years.xlsx")
-country_years %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-```
 
 Systolic blood pressure for men and women based on 2015 Global Burden of Disease survey data as published in Forouzanfar MH, Liu P, Roth GA, et al. Global Burden of Hypertension and Systolic Blood Pressure of at Least 110 to 115 mm Hg, 1990-2015. JAMA. 2017;317(2):165-182. doi:10.1001/jama.2016.19043
 
@@ -97,13 +64,6 @@ df_sbp %>% filter(sex == "Female", source %in% c("GBD 2015", "SOC"), year == "15
 #ggsave(paste0("05sbp_w_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
 ```
 
-### Other literature on SBP increase with age in women
-NCD Risk Factor Collaboration (NCD-RisC). Contributions of mean and shape of blood pressure distribution to worldwide trends and variations in raised blood pressure: a pooled analysis of 1018 population-based measurement studies with 88.6 million participants. International Journal of Epidemiology, Volume 47, Issue 3, June 2018, Pages 872–883i.
-```{r ncd_risc_women}
-
-df_ncdrisc %>% select(age, sbp_women) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
-```
-
 ```{r graph_sbp_m}
  df_sbp %>% filter(sex == "Male", source %in% c("GBD 2015", "SOC"), year == "15") %>% 
     ggplot(aes(age,sbp, color=source)) +
@@ -120,13 +80,6 @@ df_ncdrisc %>% select(age, sbp_women) %>% kable(booktabs = T) %>% kable_styling(
 
   
   #ggsave(paste0("06sbp_m_", Sys.Date(),".pdf"), path = "plots/", width = 10.65, height = 7.68, units = "in")
-```
-
-### Other literature on SBP increase with age in men
-NCD Risk Factor Collaboration (NCD-RisC). Contributions of mean and shape of blood pressure distribution to worldwide trends and variations in raised blood pressure: a pooled analysis of 1018 population-based measurement studies with 88.6 million participants. International Journal of Epidemiology, Volume 47, Issue 3, June 2018, Pages 872–883i.
-```{r ncd_risc_men}
-
-df_ncdrisc %>% select(age, sbp_men) %>% kable(booktabs = T) %>% kable_styling(font_size = 12, bootstrap_options = c("striped", "hover", "condensed"), position = "center", full_width = FALSE)
 ```
 
 ## Hypertension Prevalence
@@ -187,7 +140,7 @@ df_tx_current %>% filter(age %in% c("25-34", "35-44", "45-54", "55-64", "65+", "
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion currently on treatment", title = "Hypertension treatment", subtitle = "in 2015") +
+    labs(x = "Age", y = "Proportion currently on treatment", title = "Current hypertension treatment", subtitle = "in 2015") +
     theme(plot.title = element_text(size = 18, face = "bold"),
       legend.position = "bottom")
 
@@ -213,7 +166,7 @@ Defined as ever taking antihypertensive medications.
     geom_boxplot() +
     theme_minimal(base_size = 14) +
     coord_cartesian(ylim = c(0,NA)) +
-    labs(x = "Age", y = "Proportion ever on treatment", title = "Hypertension treatment", subtitle = "in 2015") +
+    labs(x = "Age", y = "Proportion ever on treatment", title = "Ever on hypertension treatment", subtitle = "in 2015") +
     theme(plot.title = element_text(size = 18, face = "bold"),
       legend.position = "bottom")
 
@@ -302,9 +255,9 @@ df_cvd_prev %>% filter(sex == "Male", cause == "Ischemic heart disease") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Ischemic Heart Disease in 2015 (Synthesis)",
+    labs(title = "Prevalence of Ischemic Heart Disease per 100 person-years in 2015 (Synthesis)",
          subtitle = "Men",
-         y = "Prevalent ischemic heart disease (%)", x = "Age") +
+         y = "Prevalent ischemic heart disease per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -316,9 +269,9 @@ df_cvd_prev %>% filter(sex == "Female", cause == "Ischemic heart disease") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Ischemic Heart Disease in 2015 (Synthesis)",
+    labs(title = "Prevalence of Ischemic Heart Disease per 100 person-years in 2015 (Synthesis)",
          subtitle = "Women",
-         y = "Prevalent ischemic heart disease (%)", x = "Age") +
+         y = "Prevalent ischemic heart disease per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -375,9 +328,9 @@ df_cvd_prev %>% filter(sex == "Male", cause == "Stroke") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Stroke in 2019 (GBD) 2015 (Synthesis)",
+    labs(title = "Prevalence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
          subtitle = "Men",
-         y = "Prevalent stroke (%)", x = "Age") +
+         y = "Prevalent stroke per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -389,9 +342,9 @@ df_cvd_prev %>% filter(sex == "Female") %>%
   ggplot(aes(x = age, y = value, color = region)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
-    labs(title = "Prevalence of Stroke in 2019 (GBD) 2015 (Synthesis)",
+    labs(title = "Prevalence of Stroke per 100 person-years in 2019 (GBD) 2015 (Synthesis)",
          subtitle = "Women",
-         y = "Prevalent stroke (%)", x = "Age") +
+         y = "Prevalent stroke per 100 person-years", x = "Age") +
     theme(
       plot.title = element_text(size = 18, face = "bold"),
       axis.title.y = element_text(size = 16),
@@ -459,13 +412,6 @@ x %>% kable(booktabs = T, align = "lcccccc") %>% kable_styling(font_size = 12, b
 
 # Intervention Scenarios (2023 - 2073)
 **Hypertension care cascade for intervention packages compared to standard of care**  
-
-## Modelling Scenarios
-
-|  | Standard care | Patient-centered care | Patient-centered care + CHW screening | Patient-centered care + CHW screening + linkage voucher |
-|:------------:|:------------:|:------------:|:------------:|:------------:|
-| Community-based Screening | none | none | CHW screening for adults >=40 <br /> annually | CHW screening for adults >=40 + linkage transport voucher <br /> annually |
-| Treatment | standard clinic care <br /> outpatient department | streamlined services, integrated with HIV | streamlined services, integrated with HIV | streamlined services, integrated with HIV |
 
 
 ## Prevalence
@@ -649,7 +595,7 @@ df_sas %>% filter(var == "m_sbp", year == "2373", sex == "Male") %>%
 
 #### Incident Ischemic Heart Disease Events (moderate/severe events only)
 ```{r}
-df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Male") %>% 
+df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Male", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
@@ -663,7 +609,7 @@ df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Male") %>%
       legend.position = "bottom"
     )
 
-df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Female") %>% 
+df_sas %>% filter(var == "rate_ihd_modsev", year == "2373", sex == "Female", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
@@ -699,7 +645,7 @@ df_sas %>% filter(var == "n_ihd_diff", year == "2373", sex == "All") %>% group_b
 
 #### Incident Stroke (moderate/severe events only)
 ```{r}
-df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Male") %>% 
+df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Male", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
@@ -713,7 +659,7 @@ df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Male") %>%
       legend.position = "bottom"
     )
 
-df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Female") %>% 
+df_sas %>% filter(var == "rate_cva_modsev", year == "2373", sex == "Female", age != "All") %>% 
   ggplot(aes(x = age, y = value, color = source)) +
   geom_boxplot() +
   theme_minimal(base_size = 14) +
@@ -867,21 +813,6 @@ df_sas %>% filter(var == "rate_dead_hivpos_anycause", year == "2373", sex == "Al
 ```
 
 
-## DALYs Averted
-```{r daly}
-df_netdaly %>% filter(year == "2373", cost_cat == "total htn", source != "SOC") %>% 
-  ggplot(aes(y = ddaly_averted, color=source)) +
-    geom_boxplot() +
-    theme_minimal(base_size = 14) +
-    labs(title = "Average annual DALYs averted (2023 to 2073)",
-         y = "Discounted DALYs averted (in thousands)") +
-    theme(
-      plot.title = element_text(size = 18, face = "bold"),
-      axis.title.y = element_text(size = 16),
-      axis.title.x = element_text(size = 16),
-      legend.position = "bottom"
-    )
-```
 
 
 ## Cost
@@ -923,113 +854,11 @@ df_sas %>% filter(year == "2373", var %in% c("dhtn_cost_scr", "dhtn_cost_clin", 
 
 ```
 
-## DALYs Averted
-```{r daly_averted}
-df_netdaly %>% filter(year == "2373", cost_cat == "total htn", source != "SOC") %>% 
-  ggplot(aes(y = netdaly_averted, color=source)) +
-    geom_boxplot() +
-    theme_minimal(base_size = 14) +
-    labs(title = "Average annual net DALYs averted (2023 to 2073)",
-         subtitle = "Accounting for cost with cost-effectiveness threshold of $500 USD/DALY averted",
-         y = "Discounted DALYs (in thousands)", 
-         caption = "calculated by summing total mean annual DALYs averted and subtracting mean annual cost / cost effectiveness threshold of $500 USD") +
-    theme(
-      plot.title = element_text(size = 18, face = "bold"),
-      axis.title.y = element_text(size = 16),
-      axis.title.x = element_text(size = 16),
-      legend.position = "bottom"
-    )
-
-df_netdaly %>% filter(year == "2373", source != "SOC") %>% 
-  ggplot(aes(x = cost_cat, y = netdaly_averted, color=source)) +
-    geom_boxplot() +
-    theme_minimal(base_size = 14) +
-    labs(title = "Average annual net DALYs averted (2023 to 2073)",
-         subtitle = "Accounting for cost with cost-effectiveness threshold of $500 USD/DALY averted",
-         y = "Discounted DALYs (in thousands)",
-         x = "Cost scenario",
-         caption = "calculated by summing total mean annual DALYs averted and subtracting mean annual cost / cost effectiveness threshold of $500 USD") +
-    theme(
-      plot.title = element_text(size = 18, face = "bold"),
-      axis.title.y = element_text(size = 16),
-      axis.title.x = element_text(size = 16),
-      legend.position = "bottom"
-    )
-
-```
 
 ## Cost-effectiveness
 
-
-### Proportion of setting-scenarios where strategy is most-cost-effective
-```{r cf_all}
-df_netdaly %>% filter(year == "2373") %>% 
-  group_by(source, cost_cat) %>% 
-  summarize(prop = mean(cf_netdaly_all)) %>% 
-  ggplot(aes(x = cost_cat, y = prop, fill=source)) +
-    geom_bar(stat = 'identity', position= 'dodge') +
-    theme_minimal(base_size = 14) +
-    labs(title = "Proportion of setting-scenarios where strategy is cost-effective (2023 - 2073)",
-         subtitle = "Considering all policies",
-        y = "Proportion of settings that policy is the most cost-effective",
-         caption = "assuming cost-effectiveness threshold of $500 USD per DALY averted") +
-    theme(
-      plot.title = element_text(size = 18, face = "bold"),
-      axis.title.y = element_text(size = 16),
-      axis.title.x = element_text(size = 16),
-      legend.position = "bottom"
-    )
-```
-
-### Cost-effectiveness at varying cost-effectiveness thresholds
-```{r cf_all_graph}
-df_netdaly_graph_summ %>% 
-  ggplot(aes(x = ce_threshold, y = prop, color=source)) +
-  geom_line() +
-  geom_point() +
-  coord_cartesian(ylim = c(0,1)) +
-  theme_minimal(base_size = 14) +
-  scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) + 
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
-  labs(title = "Proportion of setting-scenarios where strategy is cost-effective (2023 - 2073)",
-       subtitle = "Under varying cost-effectiveness thresholds",
-       y = "Proportion of settings that policy is the most cost-effective",
-       x = "Cost-effectiveness threshold (USD/DALY averted)") +
-  theme(
-    plot.title = element_text(size = 18, face = "bold"),
-    axis.title.y = element_text(size = 16),
-    axis.title.x = element_text(size = 16),
-    legend.position = "bottom"
-  )
-```
-
 ### Cost-effectiveness frontier
 ```{r icer}
-
-plot_icer
-
-plot_icer %>% 
-  filter(cost_cat %in% c("total htn")) %>% 
-  ggplot(aes(x = mean_ddaly, y = mean_cost)) +
-  geom_line() +
-  geom_point() +
-  annotate("text", x=0, y=1, label= "SOC") +
-  annotate("text", x=20, y=3, label= "Chronic Care Clinic") +
-  annotate("text", x=20, y=2, label= "$20/DALY") +
-  annotate("text", x=78, y=19, label= "CHW Screening") +
-  annotate("text", x=78, y=18, label= "$252/DALY") +
-  theme_minimal(base_size = 14) +
-  coord_cartesian(ylim = c(0,20), xlim = c(0,80)) +
-  labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
-       y = "Annual incremental cost (millions $USD)",
-       x = "Annual DALYs averted (thousands)") +
-  theme(
-    plot.title = element_text(size = 16, face = "bold"),
-    axis.title.y = element_text(size = 14),
-    axis.title.x = element_text(size = 14),
-    legend.position = "bottom"
-  ) +
-  scale_color_brewer(palette = "Dark2")
 
 plot_icer %>% 
   filter(cost_cat %in% c("total (50% clinic cost)", "total htn", "total (200% clinic cost)")) %>% 
@@ -1038,13 +867,13 @@ plot_icer %>%
   geom_point() +
   annotate("text", x=0, y=1, label= "SOC") +
   annotate("text", x=18, y=5, label= "Chronic Care Clinic") +
-  annotate("text", x=18, y=4, label= "$20/DALY", color = "#D95F02") +
-  annotate("text", x=18, y=3, label= "$13/DALY", color = "#7570B3") +
-  annotate("text", x=18, y=2, label= "$-24/DALY (cost saving)", color = "#1B9E77") +
+  annotate("text", x=18, y=4, label= "$39/DALY", color = "#7570B3") +
+  annotate("text", x=18, y=3, label= "$20/DALY", color = "#D95F02") +
+  annotate("text", x=18, y=2, label= "$10/DALY", color = "#1B9E77") +
   annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$366/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$252/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$146/DALY", color = "#1B9E77") +
+  annotate("text", x=78, y=20, label= "$552/DALY", color = "#7570B3") +
+  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
+  annotate("text", x=78, y=18, label= "$250/DALY", color = "#1B9E77") +
   theme_minimal(base_size = 14) +
   coord_cartesian(ylim = c(0,30), xlim = c(0,80)) +
   labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
@@ -1070,9 +899,9 @@ plot_icer %>%
   annotate("text", x=18, y=5, label= "$20/DALY", color = "#D95F02") +
   annotate("text", x=18, y=4, label= "$-52/DALY (cost-saving)", color = "#1B9E77") +
   annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$395/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$252/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$180/DALY", color = "#1B9E77") +
+  annotate("text", x=78, y=20, label= "$495/DALY", color = "#7570B3") +
+  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
+  annotate("text", x=78, y=18, label= "$279/DALY", color = "#1B9E77") +
   theme_minimal(base_size = 14) +
   labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
        subtitle = "Alternative assumptions about drug costs",
@@ -1095,9 +924,9 @@ plot_icer %>%
   annotate("text", x=20, y=3, label= "Chronic Care Clinic") +
   annotate("text", x=20, y=2, label= "$20/DALY", color = "#D95F02") +
   annotate("text", x=78, y=21, label= "CHW Screening") +
-  annotate("text", x=78, y=20, label= "$343/DALY", color = "#7570B3") +
-  annotate("text", x=78, y=19, label= "$252/DALY", color = "#D95F02") +
-  annotate("text", x=78, y=18, label= "$205/DALY", color = "#1B9E77") +
+  annotate("text", x=78, y=20, label= "$480/DALY", color = "#7570B3") +
+  annotate("text", x=78, y=19, label= "$351/DALY", color = "#D95F02") +
+  annotate("text", x=78, y=18, label= "$287/DALY", color = "#1B9E77") +
   theme_minimal(base_size = 14) +
   labs(title = "Cost-effectiveness of hypertension treatment policies (2023 - 2073)",
        subtitle = "Alternative assumptions about screening costs",
