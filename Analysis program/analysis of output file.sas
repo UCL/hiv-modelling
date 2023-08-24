@@ -31,6 +31,8 @@ proc means n p50 p5 p95 min max;var
 prevalence1549_22 	 prevalence1549w_22 	prevalence1549m_22 	incidence1549_22 	incidence1549w_22 	incidence1549m_22
 p_diag_22	 		 p_onart_diag_22   		p_onart_vl1000_22	p_vg1000_22 		p_vl1000_22 		prevalence_vg1000_22
 incidence_sw_22		p_fsw_newp0__22
+
+p_diag_w_22 p_diag_m_22;
 ;run;
 
 /*
