@@ -13,28 +13,28 @@ data a.testing_age_updating_01_08_2023; set a.out:;
 proc sort;
 by run cald option;run;
 
-proc freq data=a.testing_age_updating_23_08_01; table run;run;
-proc freq data=a.testing_age_updating_23_08_01; table cald;run;*116 simulations;
+proc freq data=a.testing_age_updating_01_08_2023; table run;run;
+proc freq data=a.testing_age_updating_01_08_2023; table cald;run;	*100 simulations;
 ods html close;
 ods listing;
 
 
 ***THIS DATASTEP CALCUATES THE SCALE FACTOR;
 data sf;
-set a;
+set a.testing_age_updating_01_08_2023;
 
-if cald=2023.25; ***Update as required;
+if cald=2024; 	***Update as required;
 s_alive = s_alive_m + s_alive_w ;
-sf_2023 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
-keep run sf_2023;
+sf_2024 = 10000000 / s_alive; ***If calibrating to a specific setting, change 10000000 to desired 15+ population size;
+keep run sf_2024;
 proc sort; by run;run;
 
 
-%let sf=sf_2023;
+%let sf=sf_2024;
 
 
 data y; 
-merge a sf;
+merge a.testing_age_updating_01_08_2023 sf;
 by run ;
 
 * preparatory code ;
@@ -223,25 +223,29 @@ option nospool;
 %macro var(v=);
 
 ***OUTPUTS IN SPECIFIC YEARS - AMEND TO E.G. PROJECT SPECIFIC BASELINE (NOTE THESE ARE NOT BY OPTION);
-proc means  noprint data=y; var &v; output out=y_22 mean= &v._22; by run; where 2021.0 <= cald < 2022.0; 
+proc means  noprint data=y; var &v; output out=y_23 mean= &v._23; by run; where 2023.0 <= cald < 2024.0; 
 
 ***OUTPUTS IN SPECIFIC YEARS BY OPTION - THIS MAY NOT BE NEEDED IN ALL ANALYSES;
 proc means noprint data=y; var &v; output out=y_30 mean= &v._30; by run option; where 2029.0 <= cald < 2030.25; 
+proc means noprint data=y; var &v; output out=y_43 mean= &v._43; by run option; where 2043.0 <= cald < 2044.00; 
 
 ***OUTPUTS FOR CE ANALYSES OVER 5, 20 AND 50 years BY OPTION;
-proc means noprint data=y; var &v; output out=y_22_27 mean= &v._22_27; by run option ; where 2022.5 <= cald < 2027.50;
-proc means noprint data=y; var &v; output out=y_22_42 mean= &v._22_42; by run option ; where 2022.5 <= cald < 2042.50;
-proc means noprint data=y; var &v; output out=y_22_72 mean= &v._22_72; by run option ; where 2022.5 <= cald < 2072.50;
+proc means noprint data=y; var &v; output out=y_24_28 mean= &v._24_28; by run option ; where 2024.0 <= cald < 2028.50;
+proc means noprint data=y; var &v; output out=y_24_30 mean= &v._24_30; by run option ; where 2024.0 <= cald < 2030.50;
+proc means noprint data=y; var &v; output out=y_24_43 mean= &v._24_43; by run option ; where 2024.0 <= cald < 2043.50;
+proc means noprint data=y; var &v; output out=y_24_73 mean= &v._24_73; by run option ; where 2024.0 <= cald < 2073.50;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
-proc sort data=y_22; by run; proc transpose data=y_22 out=t_22 prefix=&v._22_; var &v._22; by run;
+proc sort data=y_23; by run; proc transpose data=y_23 out=t_22 prefix=&v._24_; var &v._23; by run;
 proc sort data=y_30; by run; proc transpose data=y_30 out=t_30 prefix=&v._30_; var &v._30; by run;
-proc sort data=y_22_27; by run; proc transpose data=y_22_27 out=t_22_27 prefix=&v._22_27_; var &v._22_27; by run;
-proc sort data=y_22_42; by run; proc transpose data=y_22_42 out=t_22_42 prefix=&v._22_42_; var &v._22_42; by run;
-proc sort data=y_22_72; by run; proc transpose data=y_22_72 out=t_22_72 prefix=&v._22_72_; var &v._22_72; by run;
+proc sort data=y_43; by run; proc transpose data=y_43 out=t_43 prefix=&v._43_; var &v._43; by run;
+proc sort data=y_24_28; by run; proc transpose data=y_24_28 out=t_24_28 prefix=&v._24_28_; var &v._24_28; by run;
+proc sort data=y_24_30; by run; proc transpose data=y_24_30 out=t_24_30 prefix=&v._24_30_; var &v._24_30; by run;
+proc sort data=y_24_43; by run; proc transpose data=y_24_43 out=t_24_43 prefix=&v._24_43_; var &v._24_43; by run;
+proc sort data=y_24_73; by run; proc transpose data=y_24_73 out=t_24_73 prefix=&v._24_73_; var &v._24_73; by run;
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_22 t_30 t_22_27 t_22_42 t_22_72;  
+data &v ; merge  y_23 t_30 t_43 t_24_28 t_24_30 t_24_43 t_24_73;  
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -293,10 +297,13 @@ data wide_par; merge
 sw_art_disadv		sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any		effect_sw_prog_pers_sti
 sw_trans_matrix;
+
+
+
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_XXX;
-merge   wide_outputs  wide_par ;  
+data a.testing_age_updating_01_08_2023;
+merge   wide_outputs  /*wide_par*/ ;  
 by run;run;
 
