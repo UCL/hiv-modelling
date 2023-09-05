@@ -85,7 +85,7 @@ proc means n p50 p5 p95;var
 p_sw_prog_vis_30_1  p_tested_past_year_sw_30_1
 p_diag_sw_30_1		p_onart_diag_sw_30_1	p_onart_vl1000_sw_30_1		p_fsw_newp0__30_1	prop_sw_onprep_30_1
 p_sti_sw_30_1		incidence_sw_30_1	prevalence_sw_30_1
-incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1
+incidence1549_30_1	prevalence1549_30_1		p_diag_30_1	  p_onart_diag_30_1   p_onart_vl1000_30_1 p_vl1000_30_1
 
 /*current level*/
 p_sw_prog_vis_30_2  p_tested_past_year_sw_30_2
@@ -112,16 +112,25 @@ proc means n mean lclm uclm;var
 d_p_tested_past_year_sw_lo_none 
 d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
 d_p_fsw_newp0_lo_none	d_prop_sw_onprep_lo_none		d_p_sti_sw_lo_none	d_incidence_sw_lo_none	d_prevalence_sw_lo_none
-d_incidence1549_lo_none	d_prevalence1549_lo_none		d_p_diag_lo_none	  	d_p_onart_diag_lo_none   d_p_onart_vl1000_lo_none;
+d_incidence1549_lo_none	d_prevalence1549_lo_none		d_p_diag_lo_none	  	d_p_onart_diag_lo_none   d_p_onart_vl1000_lo_none
 
 d_p_tested_past_year_sw_hi_none 
 d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
 d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
 d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
-
 run;
 
+proc means n p50 p5 p95;var 
+d_p_tested_past_year_sw_lo_none 
+d_p_diag_sw_lo_none		d_p_onart_diag_sw_lo_none	d_p_onart_vl1000_sw_lo_none
+d_p_fsw_newp0_lo_none	d_prop_sw_onprep_lo_none		d_p_sti_sw_lo_none	d_incidence_sw_lo_none	d_prevalence_sw_lo_none
+d_incidence1549_lo_none	d_prevalence1549_lo_none		d_p_diag_lo_none	  	d_p_onart_diag_lo_none   d_p_onart_vl1000_lo_none
 
+d_p_tested_past_year_sw_hi_none 
+d_p_diag_sw_hi_none		d_p_onart_diag_sw_hi_none	d_p_onart_vl1000_sw_hi_none
+d_p_fsw_newp0_hi_none	d_prop_sw_onprep_hi_none		d_p_sti_sw_hi_none	d_incidence_sw_hi_none	d_prevalence_sw_hi_none
+d_incidence1549_hi_none	d_prevalence1549_hi_none		d_p_diag_hi_none	  	d_p_onart_diag_hi_none   d_p_onart_vl1000_hi_none;
+run;
 
 
 **Impact of specific aspects of a SW program;
