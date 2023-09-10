@@ -1,8 +1,8 @@
 * options user="/folders/myfolders/";
 
-libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\";
+libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\";
 
-libname b "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\kenya\kenya_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\kenya\kenya_out\";
 
 data g ; set b.out: ;
 
@@ -272,7 +272,7 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_newp_ge1_age1549;			p_newp_ge1_age1549 = (s_w1549_newp_ge1 + s_m1549_newp_ge1) / (s_alive1549_w + s_alive1549_m) ;
 
-* p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_m1524_newp_ge1 ) 
+* p_1524_newp_ge1;				p_1524_newp_ge1 = ( s_m1524_newp_ge1 + s_w1524_newp_ge1 ) 
 									/ (s_ageg1517m + s_ageg1819m + s_ageg1519m + s_ageg2024m + s_ageg1517w + s_ageg1819w + s_ageg1519w + s_ageg2024w ) ;
 
 * p_newp_ge5;					p_newp_ge5 = s_newp_ge5 / s_alive1564 ;
@@ -339,6 +339,11 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 * prop_1564m_onprep;			prop_1564m_onprep =   max(s_onprep_m, 0) / (s_alive1564_m - s_hiv1564m) ;
 * prop_1564w_onprep;			prop_1564w_onprep =   max(s_onprep_w, 0) / (s_alive1564_w - s_hiv1564w) ;
 
+* n_onprep_w;					n_onprep_w = max(s_onprep_w, 0) * &sf;
+* n_onprep_m;					n_onprep_m = max(s_onprep_m, 0) * &sf;
+
+* n_newp_ge1_w; 				n_newp_ge1_w = (s_w1524_newp_ge1 + s_w2534_newp_ge1 + s_w3544_newp_ge1 + s_w4554_newp_ge1 + s_w5564_newp_ge1) * &sf; 
+
 * p_prep_elig_past_year;		p_prep_elig_past_year = s_prep_elig_past_year / ((s_alive1564_w + s_alive1564_m) - s_hiv1564);
 * p_prep_elig_past_5year;		p_prep_elig_past_5year = s_prep_elig_past_5year / ((s_alive1564_w + s_alive1564_m) - s_hiv1564);
 * mean_newp_ppers_prep;			if s_prep > 0 then mean_newp_ppers_prep = s_prep_newp / s_prep ;
@@ -350,6 +355,10 @@ s_onart_w50pl = s_onart_w5054_ + s_onart_w5559_ + s_onart_w6064_ + s_onart_w6569
 
 * p_newp_this_per_prep;			p_newp_this_per_prep = s_newp_this_per_prep / s_newp_this_per_hivneg ;  * newp this per means at least one newp ;
 * prop_elig_on_prep;			if s_elig_prep > 0 then prop_elig_on_prep = s_prep / s_elig_prep ; 
+
+* n_prep_elig_w;					n_prep_elig_w = s_elig_prep_any_w_1564 * &sf;
+* n_prep_elig_m;					n_prep_elig_m = s_elig_prep_any_m_1564 * &sf;
+
 * p_newp_prep;					p_newp_prep = s_prep_newp / (s_m_newp + s_w_newp) ;  * proportion of all newp for which person is on prep;
 * p_newp_prep_hivneg;			p_newp_prep_hivneg = s_prep_newp / s_newp_hivneg ;  * proportion of all newp in hiv-ve people for which person is on prep;
 * prop_1564_hivneg_onprep;		prop_1564_hivneg_onprep =   max((s_prep-s_hiv1_prep), 0) / ((s_alive1564_w + s_alive1564_m) - s_hiv1564) ;
@@ -887,7 +896,7 @@ n_birth_with_inf_child  dead_ddaly_ntd   ddaly_mtct   dead_ddaly_odabe n_tested 
 prop_elig_on_prep n_hiv1_prep  n_prep  n_covid  n_death_covid n_death n_death_hivrel p_death_hivrel_age_le64 
 p_prep_ever  p_hiv1_prep incidence1524w   incidence1524m incidence2534w   incidence2534m incidence3544w   incidence3544m 
 incidence4554w   incidence4554m incidence5564w   incidence5564m incidence_sw test_prop_positive  p_newp_prep  
-p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v
+p_newp_this_per_prep  p_newp_prep_hivneg  av_prep_eff_non_res_v  n_prep_elig_w n_prep_elig_m  n_onprep_m  n_onprep_w
 
 p_hypert_1549  p_hypert_5059 p_hypert_6069  p_hypert_7079  p_hypert_ge80  p_diagnosed_hypert_1549 
 p_diagnosed_hypert_5059  p_diagnosed_hypert_6069  p_diagnosed_hypert_7079  p_diagnosed_hypert_ge80  p_on_anti_hypert_1549 
@@ -971,7 +980,7 @@ inc_adeathr_disrup_covid art_low_adh_disrup_covid  cov_death_risk_mult
 n_mcirc1549_  n_mcirc1549_3m n_vmmc1549_ n_vmmc1549_3m n_new_inf1549m n_new_inf1549w n_new_inf1549 
 
 p_prep_newp  prop_1564m_onprep  prop_1564w_onprep  p_prep_elig_past_year  p_prep_elig_past_5year  mean_newp_ppers_prep  prop_onprep_newpge1
-prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep
+prop_onprep_newpge2 prop_onprep_newpge3  prop_1564_onprep   n_newp_ge1_w
 
 p_onart_m_age50pl p_onart_w_age50pl  n_onart
 
@@ -980,7 +989,7 @@ prevalence_hiv_preg p_onart_w p_onart_m n_onart_w n_onart_m  p_diag_w p_diag_m p
 test_prop_positive
 
 n_alive  n_diagnosed  n_hiv  prevalence1524w prevalence1524m prevalence2549w prevalence2549m prevalence_sw
-
+n_prep_elig_past_year
 
 ;
 
@@ -990,9 +999,6 @@ proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
 data a.l_base_kenya; set y;  
-
-
-
 
 data y; set a.l_base_kenya; 
 
