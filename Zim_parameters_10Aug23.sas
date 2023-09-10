@@ -74,14 +74,14 @@ rate_ch_art_init_str_9 = 0.1 ;
 								%sample_uniform(rate_disengage_sw_program, 0.02 0.05);
 								end;
 
-***higher impact of a sw_program compared to core since this is from 2010;
+***Change these parameters as are assuming higher attendance than in core and Zim has Sisters program in place;
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10);
 * effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.20 0.35 0.50);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.30 0.50 0.70);
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.10 0.15 0.25);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
-* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.05 0.10);
-* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.10 0.20);
+* effect_sw_prog_prep_any;  %sample_uniform(effect_sw_prog_prep_any, 0.50 0.75);
+* effect_sw_prog_pers_sti;  %sample_uniform(effect_sw_prog_pers_sti, 0.50 0.75);
 
 * CIRCUMCISION;
 
