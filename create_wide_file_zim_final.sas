@@ -774,7 +774,6 @@ n_dead_Agt6_cd4gt200&wage 		= s_dead_Agt6_cd4gt200&wage * &sf * 4;
 %scaleup(7579_,7579m,7579w); %scaleup(8084_,8084m,8084w); 
 
 
-
 keep cald	run sf_2022
 n_alive1564_	n_alive1564_m		n_alive1564_w		prevalence1564_		prevalence1564m		prevalence1564w	
 incidence1564_	incidence1564_m		incidence1564_w		p_diag				p_diag_m			p_diag_w
@@ -1388,8 +1387,8 @@ cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
 data l_&v;set l_&v;
 *p5_&v  = PCTL(5,of &v.1-&v.&nfit);
 *p95_&v = PCTL(95,of &v.1-&v.&nfit);
-p50_&v = median(of &v.1-&v.&nfit);
-keep cald /*p5_&v p95_&v*/ p50_&v;
+mean_&v = mean(of &v.1-&v.&nfit);
+keep cald /*p5_&v p95_&v*/ mean_&v;
 run;
 proc datasets nodetails nowarn nolist;delete &v;run;
 %mend var_d;
@@ -1942,6 +1941,8 @@ l_n_I_undiag&age			l_n_I_undiag&mage			l_n_I_undiag&wage
 l_n_I_diag_naive&age		l_n_I_diag_naive&mage		l_n_I_diag_naive&wage
 l_n_I_diag_startart&age		l_n_I_diag_startart&mage	l_n_I_diag_startart&wage
 l_n_I_onart&age				l_n_I_onart&mage			l_n_I_onart&wage
+l_n_I_offart&age			l_n_I_offart&mage			l_n_I_offart&wage
+
 l_n_I_onart_lt6m&age		l_n_I_onart_lt6m&mage		l_n_I_onart_lt6m&wage
 l_n_I_onart_lt6m_nvs&age	l_n_I_onart_lt6m_nvs&mage	l_n_I_onart_lt6m_nvs&wage
 l_n_I_onart_gt6m_nvs&age	l_n_I_onart_gt6m_nvs&mage	l_n_I_onart_gt6m_nvs&wage
@@ -1963,7 +1964,7 @@ l_n_I_offart_SIgt6m&age		l_n_I_offart_SIgt6m&mage	l_n_I_offart_SIgt6m&wage
 ods listing close;
 ods results off;
 
-ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_HIVSynthesis31Jul23.xlsx"
+ods excel file="C:\Loveleen\Synthesis model\Modelling Consortium\Attribution of deaths\Transmissions\Trans_HIVSynthesis05Sep23a.xlsx"
 options(sheet_name='base1' start_at='A2');
 proc print data=a.wide_base noobs;run;
 
