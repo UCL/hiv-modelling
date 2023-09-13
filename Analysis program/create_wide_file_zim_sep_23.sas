@@ -10,7 +10,7 @@ by run cald option;run;
 
 proc freq;table run;where cald=2020;run;
 
-proc freq;table cald;run;
+proc freq;table cald option;run;
 
 proc freq data=a;table effect_sw_prog_newp;where option =1;run;
 /*
@@ -505,7 +505,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_17_08_23;
+data a.wide_fsw_10_09_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
