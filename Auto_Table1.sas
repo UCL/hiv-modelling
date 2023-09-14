@@ -1,7 +1,7 @@
 
 
 /*libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\";*/
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023\";
+libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
 
 
 ***************************************************;
@@ -62,7 +62,8 @@ libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\outp
 
 ***Read in SAS file;
 data indata2;
-  set a.testing_age_updating_01_08_2023;
+  set a.testing_age_updating_01_08_2023; 
+if run=. then delete; 
 
 subgp = 1;*this refers to the columns we want - one column per each year of interest, starting with 1995;
 %setup(yr=95); ***Using above macro to add on '_95' suffix to each output;

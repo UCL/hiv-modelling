@@ -3,14 +3,15 @@
 *libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
 
-data a.testing_age_updating_01_08_2023; set a.out:;
+data a.testing_age_updating_01_08_2023; set a.out:; 
+if run=. then delete; run;
 
 
 /*data a;*/
 /*set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; */
 /*if run=. then delete; */
 
-proc sort;
+proc sort data=a.testing_age_updating_01_08_2023;	* specified data to sort;
 by run cald option;run;
 
 proc freq data=a.testing_age_updating_01_08_2023; table run;run;
@@ -35,7 +36,7 @@ proc sort; by run;run;
 
 data y; 
 merge a.testing_age_updating_01_08_2023 sf;
-by run ;
+by run ; 
 
 * preparatory code ;
 
@@ -62,8 +63,8 @@ discount_10py = 1/(1.10**(cald-&year_start_disc));
 
 * ================================================================================= ;
 
-ly = s_ly * &sf;  *life years;
-dly = s_dly * &sf; *discounted life years;
+/*ly = s_ly * &sf;  *life years;*/
+/*dly = s_dly * &sf; *discounted life years;*/
 
 s_ddaly = s_dead_ddaly + s_live_ddaly;
 
@@ -144,7 +145,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
 		dcost_sw_program;
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
@@ -303,7 +304,14 @@ sw_trans_matrix;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.testing_age_updating_01_08_2023;
+data a.wide;
 merge   wide_outputs  /*wide_par*/ ;  
 by run;run;
 
+proc means n p50 p5 p95; var 
+p_diag_23	 		p_diag_m_23	 		p_diag_w_23   			p_onart_diag_23  	p_onart_diag_w_23
+p_onart_diag_m_23 	p_onart_vl1000_23	p_onart_vl1000_w_23   	p_onart_vl1000_m_23
+p_vg1000_23 		p_vl1000_23			prevalence_vg1000_23
+prevalence1549m_23	prevalence1549w_23 	prevalence1549_23 		incidence1549_23 	incidence1549w_23 	incidence1549m_23
+dcost_23			ddaly_23
+; run;
