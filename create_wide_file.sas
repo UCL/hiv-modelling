@@ -1,9 +1,9 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
-*libname a "C:\Users\lovel\TLO_HMC Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\FSW\";
 libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
+libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023\testing_age_updating_out";
 
-data a.testing_age_updating_01_08_2023; set a.out:; 
+data a.testing_age_updating_01_08_2023; set b.out:; 
 if run=. then delete; run;
 
 
