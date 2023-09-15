@@ -896,7 +896,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 
-%include "/home/rmjllob/Zim_parameters_10Aug23.sas";
+%include "/home/rmjllob/Zim_parameters_08_.sas";
 
 
 * ===================== ;
