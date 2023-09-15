@@ -217,12 +217,14 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 * p_sw_age2024_;					p_sw_age2024_=s_sw_2024/s_sw_1564;
 * p_sw_age2529_;					p_sw_age2529_=s_sw_2529/s_sw_1564;
 * p_sw_age3039_;					p_sw_age3039_=s_sw_3039/s_sw_1564;
+* p_sw_age40pl_;					p_sw_age40pl_=s_sw_ov40/s_sw_1564;
 								end;
 
 * p_age_deb_sw1519_;			p_age_deb_sw1519_ = s_age_deb_sw1519_ /s_sw_1564;
 * p_age_deb_sw2024_;			p_age_deb_sw2024_ = s_age_deb_sw2024_ /s_sw_1564;
 * p_age_deb_sw2529_;			p_age_deb_sw2529_ = s_age_deb_sw2529_ /s_sw_1564;
 * p_age_deb_sw3039_;			p_age_deb_sw3039_ = s_age_deb_sw3039_ /s_sw_1564;
+* p_age_deb_sw40pl_;		    p_age_deb_sw40pl_ =	s_age_deb_swov40_ /s_sw_1564;
 
 * sw_episodes;					sw_episodes = s_episodes_sw/s_ever_sw;
 * p_sw_gt1ep;					p_sw_gt1ep   = s_sw_gt1ep     / s_ever_sw;
@@ -286,8 +288,8 @@ n_tested_at_return
 
 n_sw_1564_  	 	 n_sw_1549_ 	 	prop_w_1564_sw		prop_w_1549_sw 	 	prop_w_ever_sw  
 p_fsw1519_	  		 p_fsw2024_		  	p_fsw2529_			p_fsw3039_	
-p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_
-p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_
+p_sw_age1519_	  	 p_sw_age2024_	  	p_sw_age2529_ 		p_sw_age3039_ 		p_sw_age40pl_
+p_age_deb_sw1519_  	 p_age_deb_sw2024_  p_age_deb_sw2529_   p_age_deb_sw3039_   p_age_deb_sw40pl_
 sw_episodes 	  	 p_sw_gt1ep
 p_fsw_newp0_   	 	 p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_  p_fsw_newpov130_
 av_sw_newp	 		 p_newp_sw
@@ -343,11 +345,11 @@ proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lo
 proc means n p50 p5 p95;var p_onart_diag_sw;where option=2 and effect_sw_prog_lossdiag=0.35 and cald=2030;run;
 
 proc freq;table effect_sw_prog_lossdiag;where option=2;run;
-
+/*
 data a.fsw_17_08_23_short; set y;run;
 
 data y; set a.fsw_17_08_23_short;run;
-
+*/
 proc means n sum mean P50;var n_tested_sw dtest_cost ;where cald >2030 and cald<2040 and option=0;run;
 
 proc means n sum mean P50;var n_tested_sw dtest_cost;where cald >2030 and cald<2040 and option=2;run;
@@ -428,8 +430,8 @@ data &v ; merge  y_10 y_15 y_20 y_22 t_30 t_23_24 t_22_27 t_22_42 t_22_72;
 %var(v=n_sw_1564_);     %var(v=n_sw_1549_);		    %var(v=prop_w_1564_sw);		%var(v=prop_w_1549_sw); %var(v=prop_w_ever_sw);  
 %var(v=p_fsw1519_);	  	%var(v=p_fsw2024_);		    %var(v=p_fsw2529_);			%var(v=p_fsw3039_);	
 
-%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);
-%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_);
+%var(v=p_sw_age1519_);	  %var(v=p_sw_age2024_);	%var(v=p_sw_age2529_) 		%var(v=p_sw_age3039_);	%var(v=p_sw_age40pl_);
+%var(v=p_age_deb_sw1519_);%var(v=p_age_deb_sw2024_);%var(v=p_age_deb_sw2529_)  	%var(v=p_age_deb_sw3039_); %var(v=p_age_deb_sw40pl_);
 
 %var(v=sw_episodes); 	%var(v=p_sw_gt1ep);
 %var(v=p_fsw_newp0_);   %var(v=p_fsw_newp1to5_);    %var(v=p_fsw_newp6to40_);  	%var(v=p_fsw_newp41to130_);%var(v=p_fsw_newpov130_);
@@ -462,8 +464,8 @@ p_vg1000 		p_vl1000			prevalence_vg1000
 n_sw_1564_      n_sw_1549_		    prop_w_1564_sw		prop_w_1549_sw 	prop_w_ever_sw  
 p_fsw1519_	  	p_fsw2024_		    p_fsw2529_			p_fsw3039_	
 
-p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_
-p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw3039_
+p_sw_age1519_	  p_sw_age2024_		p_sw_age2529_ 		p_sw_age3039_ 	p_sw_age40pl_
+p_age_deb_sw1519_ p_age_deb_sw2024_ p_age_deb_sw2529_  	p_age_deb_sw3039_ p_age_deb_sw40pl_
 
 sw_episodes 	p_sw_gt1ep
 p_fsw_newp0_   	p_fsw_newp1to5_    p_fsw_newp6to40_  	p_fsw_newp41to130_	p_fsw_newpov130_
