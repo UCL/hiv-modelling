@@ -81,7 +81,8 @@ rate_ch_art_init_str_9 = 0.1 ;
 * base_rate_stop_sexwork;	*%sample_uniform(base_rate_stop_sexwork, 0.015 0.030 0.045);*Vale - 20211026, not specific to Zim before;
 																					  *Vale - 20211123, removed;	
 
-* rr_sw_age_3549;			rr_sw_age_3549 = 0.20;
+* base_rate_sw;				%sample(base_rate_sw, 0.0015 0.0020 0.0025, 0.1 0.6 0.3);
+* rr_sw_age_3549;			rr_sw_age_3549 = 0.25;
 *age_effect_stop_sexwork;	age_effect_stop_sexwork=2;
 *rate_engage_sw_program;	%sample_uniform(rate_engage_sw_program, 0.10 0.20 0.30); 
 *rate_disengage_sw_program;	%sample_uniform(rate_disengage_sw_program, 0.01 0.03);
