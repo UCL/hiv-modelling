@@ -1,8 +1,6 @@
 
 
-/*libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\";*/
-libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
-
+libname a "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\";
 
 ***************************************************;
 *Macro to set up data that will be outputted in Word;
@@ -62,15 +60,14 @@ libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\outp
 
 ***Read in SAS file;
 data indata2;
-  set a.testing_age_updating_01_08_2023; 
-if run=. then delete; 
+  set a.w_base_03_12_21;  
 
 subgp = 1;*this refers to the columns we want - one column per each year of interest, starting with 1995;
 %setup(yr=95); ***Using above macro to add on '_95' suffix to each output;
 output;
 
 subgp = 2;
-%setup(yr=00);
+%setup(yr=05);
 output;
 
 subgp = 3;
@@ -78,20 +75,10 @@ subgp = 3;
 output;
 
 subgp = 4;
-%setup(yr=10);
+%setup(yr=05);
 output;
 
-subgp = 5;
-%setup(yr=15);
-output;
 
-subgp = 6;
-%setup(yr=20);
-output;
-
-subgp = 7;
-%setup(yr=23);
-output;
 
   keep
 
@@ -338,9 +325,9 @@ options nodate nonumber orientation=landscape;
 
 *Output destination - saving as an rtf file and have specified Journal style (there are others to choose from);
 ods listing close;
-ods rtf file = "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023\table1_01_08_2023.rtf" style=journal; *Can add BODYTITLE option to get this in body of RTF document;
-
-title1 "Table 1: Key summary statistics testing_age_updating 1st Aug 2023";
+ods rtf file = "C:\Users\w3sth\TLO_HMC Dropbox\Andrew Phillips\hiv synthesis ssa unified program\output files\base\table1_03_12_21.rtf" style=journal; *Can add BODYTITLE option to get this in body of RTF document;
+ 
+title1 "Table 1: Key summary statistics 3rd December 2021";
 
 *This code appears on the rtf as Page x of y. Can be placed as footnote or title and justified as left, centre or right (in this example, j=r);
 *footnote1 j=r "{Page \field {\*\fldinst PAGE \\*MERGEFORMAT}} { of \field{\*\fldinst NUMPAGES \\*MERGEFORMAT}}";
@@ -351,17 +338,14 @@ title1 "Table 1: Key summary statistics testing_age_updating 1st Aug 2023";
 *SPLIT assigns a character (*) to start a new row - in this example, it is used to put the N= for each column under the column title; 
 *ASIS=ON preserves blank spaces at start of text - so allows indenting for row titles;
 proc report data=final split='*'; 
-  columns (grpord catlbl num1 ("Median (90% range)" col1 col2 col3 col4 col5 col6));
+  columns (grpord catlbl num1 ("Median (90% range)" col1 col2 col3 col4));
   define grpord      / order noprint;
   define catlbl      / "Variable" flow style(column) = [width = 25% textalign = left asis=on] style(header) =[textalign = left]; 
   define num1        / "N" flow style(column) = [width = 10% textalign = center] style(header) =[textalign = center]; 
   define col1        / "1995" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col2        / "2000" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col3        / "2005" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col4        / "2010" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col5        / "2015" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col6        / "2020" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
-  define col7        / "2023" flow style(column) = [width = 15% textalign = center fontweight=bold] style(header) =[textalign = center fontweight=bold];
+  define col2        / "2005" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
+  define col3        / "2015" flow style(column) = [width = 15% textalign = center] style(header) =[textalign = center];
+  define col4        / "2021" flow style(column) = [width = 15% textalign = center fontweight=bold] style(header) =[textalign = center fontweight=bold];
 
 /*  compute before grpord;  *This inserts a blank line before each change in the variable, grpord, to give a gap between sections;
     line " ";
