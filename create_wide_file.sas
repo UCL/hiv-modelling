@@ -3,15 +3,11 @@
 libname a "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023";
 libname b "C:\Users\rmjlja9\Dropbox (UCL)\hiv synthesis ssa unified program\output files\jenny updates\testing_age_updating_1stAug2023\testing_age_updating_out";
 
-data a.testing_age_updating_01_08_2023; set b.out:; 
+data a.testing_age_updating_01_08_2023; 			***INSERT OUTPUT FILENAME;
+set b.out:; 
 if run=. then delete; run;
 
-
-/*data a;*/
-/*set a.fsw_03_02_23; ***INSERT OUTPUT FILENAME; */
-/*if run=. then delete; */
-
-proc sort data=a.testing_age_updating_01_08_2023;	* specified data to sort;
+proc sort data=a.testing_age_updating_01_08_2023;	* specify which data to sort;
 by run cald option;run;
 
 proc freq data=a.testing_age_updating_01_08_2023; table run;run;
