@@ -2,7 +2,7 @@
 
 ***INSERT FILE EXPLORER PATH WHERE OUTPUT FILES ARE KEPT (USUALLY ON TLO HMC DROPBOX);
 libname a "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\";
-libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\future_incidence_b_out\";
+libname b "C:\Users\w3sth\Dropbox (UCL)\hiv synthesis ssa unified program\output files\future_incidence\core3_out\";
 
 ods html close;
 
@@ -239,6 +239,8 @@ s_hiv = s_hivge15 ;
 * incidence1549w;				incidence1549w = (s_primary1549w * 4 * 100) / (s_alive1549_w  - s_hiv1549w  + s_primary1549w);
 * incidence1549m;				incidence1549m = (s_primary1549m * 4 * 100) / (s_alive1549_m  - s_hiv1549m  + s_primary1549m);
 
+* incidence_sw;					incidence_sw = (s_primary_sw * 4 * 100) / s_sw_1549 ; 
+
 * prop_inf_w_sw;				if s_primary1549w > 0 then prop_inf_w_sw = s_primary_sw /	s_primary1549w ;
 
 * n_death_hiv;					n_death_hiv = s_death_hiv  * 4* &sf;
@@ -273,17 +275,9 @@ s_hiv = s_hivge15 ;
 ***ADD PROJECT SPECIFIC OUTPUTS HERE;
 
 
-proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2018 <= cald < 2019; run;
-proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2020 <= cald < 2021; run;
-proc means median data=a.future_inc_b_l; var p_diag_w p_diag_m p_diag_sw; where 2022 <= cald < 2023; run;
-
-
-
-
-
 
 keep run option cald p_onart  p_adhav_hi_onart  p_dol  p_efa  n_undiag  n_onart
-prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m   n_tested n_prep_any
+prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m  incidence_sw n_tested n_prep_any
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000  n_vg1000
 dcost cost ddaly   n_death_hiv  p_onart_vl1000   n_alive   p_mcirc n_undiag  n_hiv  prop_inf_w_sw  n_vg1000_np
@@ -332,7 +326,7 @@ sw_art_disadv prep_dependent_prev_vg1000
 
 
 
-data a.future_inc_b_l; set y;
+data a.core_l; set y;
 
 
 
@@ -495,16 +489,16 @@ sw_art_disadv
 
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_future_inc_b;
+data a.wide_core;
 merge   wide_outputs  wide_par ;  
 by run;
 
 r_incidence_23_43 = incidence1549_43_1 / incidence1549_23 ;
 
 
-proc contents data=a.wide_future_inc_b; run; 
+proc contents data=a.wide_core; run; 
 
-proc univariate data=a.wide_future_inc_b;
+proc univariate data=a.core;
 var p_diag_w_23 p_diag_m_23; 
 run;
 
