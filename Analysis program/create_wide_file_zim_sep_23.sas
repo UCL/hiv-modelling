@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\Dropbox (UCL)\hiv synthesis ssa unified program\output files\FSW\Zim";
 
 data a;
-set a.fsw_zim_15sep23;  
+set a.fsw_zim_18sep23;  
 if run=. then delete; 
 proc sort;
 by run cald option;run;
@@ -485,7 +485,7 @@ effect_sw_prog_int	effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_pr
 sw_trans_matrix;
 ;proc sort; by run;run;
 
-data a.wide_fsw_15_09_23;
+data a.wide_fsw_18_09_23;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
@@ -510,7 +510,7 @@ data b;set y;
 proc sort;by cald;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 702  ;
+%let nfit = 440  ;
 proc sort;by cald option ;run;
 
 
@@ -699,9 +699,9 @@ run;
 
 
 
-data a.fsw_07_05_23_graphs; set e;run;
+data a.fsw_18_09_23_graphs; set e;run;
 
-data e; set a.fsw_07_05_23_graphs;run;
+data e; set a.fsw_18_09_23_graphs;run;
 
 
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
@@ -711,7 +711,7 @@ proc sgplot data=e;
 Title    height=1.5 justify=center "FSW Incidence";
 
 xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 1 by 0.2)  valueattrs=(size=10);
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 20 by 0.2)  valueattrs=(size=10);
 label p50_incidence_sw_0	               = "Median";
 
 series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
