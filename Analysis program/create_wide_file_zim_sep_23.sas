@@ -155,6 +155,7 @@ cost = dcost / discount;
 
 * ================================================================================= ;
 
+p_newp_ge1_ = s_newp_ge1 / s_alive1564;
 
 s_diag_1564_ = s_diag_m1549_ + s_diag_w1549_ + s_diag_m5054_ + s_diag_m5559_ +  s_diag_m6064_ +  s_diag_w5054_ +  s_diag_w5559_ +  s_diag_w6064_; 
 s_diag_m1564_ = s_diag_m1549_  + s_diag_m5054_ +  s_diag_m5559_ +  s_diag_m6064_ ; 
@@ -274,7 +275,7 @@ n_pregnant = s_pregnant * sf_2023 * 4;
 * linked_diag_sw;				if s_diag_thisper_sw>0 then p_linked_diag_sw = s_linked_diag_sw/s_diag_thisper_sw;
 
 
-keep run option cald 
+keep run option cald p_newp_ge1_
 prevalence1549m 	 prevalence1549w 	prevalence1549 		incidence1549 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000 			p_vl1000 			prevalence_vg1000
@@ -325,9 +326,14 @@ data a.fsw_17_08_23_short; set y;run;
 data y; set a.fsw_17_08_23_short;run;
 */
 
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2010< cald <2013 and option=0 ;run;
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014< cald <2017 and option=0 ;run;
-proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2018< cald <2021 and option=0 ;run;
+
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2014<= cald <2017 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2017<= cald <2020 and option=0 ;run;
+proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2020<= cald <2023 and option=0 ;run;
+
+
+
 proc means n mean P50 p5 p95;var prop_w_1549_sw incidence_sw ;where 2022< cald <2025 and option=0 ;run;
 
 
@@ -519,9 +525,10 @@ data option_0;
 set b;
 if option =1 then delete;
 
-%let var =  
+%let var =  p_newp_ge1_   prop_w_1549_sw incidence_sw incidence1549w;
 
-n_sw_1564_  n_sw_1549_  prop_w_1564_sw  prop_w_1549_sw  prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
+/*
+n_sw_1564_  n_sw_1549_  prop_w_1564_sw   prop_w_ever_sw  p_fsw1519_  p_fsw2024_  p_fsw2529_  p_fsw3039_
 p_sw_age1519_  p_sw_age2024_  p_sw_age2529_  p_sw_age3039_ p_age_deb_sw1519_  p_age_deb_sw2024_  p_age_deb_sw2529_  p_age_deb_sw3039_
 sw_episodes  p_sw_gt1ep  tot_dur_sw  act_dur_sw
 p_actdur_0to3_  p_actdur_3to5_  p_actdur_6to9_  p_actdur_10to19_
@@ -529,7 +536,8 @@ p_totdur_0to3_  p_totdur_3to5_  p_totdur_6to9_  p_totdur_10to19_
 p_fsw_newp0_  av_sw_newp   p_newp_sw
 
 p_sw_prog_vis  n_tested_sw  prop_sw_onprep p_diag_sw  p_onart_diag_sw  p_onart_vl1000_sw
-prevalence_sw  incidence_sw incidence1549w p_sti_sw;
+prevalence_sw   p_sti_sw;
+*/
 
 ***transpose given name; *starts with %macro and ends with %mend;
 %macro option_0;
@@ -538,6 +546,7 @@ prevalence_sw  incidence_sw incidence1549w p_sti_sw;
 %let p5_var = p5_&var_0;
 %let p95_var = p95_&var_0;
 %let p50_var = median_&var_0;
+%let pmean_var = mean_&var_0;
 
 %let count = 0;
 %do %while (%qscan(&var, &count+1, %str( )) ne %str());
@@ -552,8 +561,9 @@ p75_&varb._0 = PCTL(75,of &varb.1-&varb.&nfit);
 p5_&varb._0  = PCTL(5,of &varb.1-&varb.&nfit);
 p95_&varb._0 = PCTL(95,of &varb.1-&varb.&nfit);
 p50_&varb._0 = median(of &varb.1-&varb.&nfit);
+pmean_&varb._0 = mean(of &varb.1-&varb.&nfit);
 
-keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0;
+keep cald option p5_&varb._0 p95_&varb._0 p50_&varb._0 p25_&varb._0 p75_&varb._0 pmean_&varb._0;
 run;
 
       proc datasets nodetails nowarn nolist; 
@@ -670,8 +680,8 @@ run;
 
 data d; * this is number of variables in %let var = above ;
 merge 
-g1   g2   g3   g4   g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
-g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  /*g42  g43  g44  g45  g46  g47  g48   g49  g50 
+g1   g2   g3   g4 /*  g5   g6   g7   g8   g9   g10  g11  g12  g13  g14  g15  g16  g17  g18  g19  g20  g21  g22  g23  g24  g25  g26 
+g27  g28  g29  g30  g31  g32  g33  g34  g35  g36  g37  g38  g39  g40  g41  g42  g43  g44  g45  g46  g47  g48   g49  g50 
 g51  g52  g53  g54  g55  g56  g57  g58  g59  g60  g61  g62  g63  g64  g65  g66  g67  g68  g69  g70  g71 g72 g73 g74 g75  g76  g77  g78 
 g79  g80  g81  g82  g83  g84  g85  g86  g87  g88  g89  g90  g91  g92  g93  g94  g95  g96  g97  g98  g99  g100 g101 g102 g103 g104
 g105 g106 g107 g108 g109 g110 g111 g112 g113 g114 g115 g116 g117 g118 g119 g120 g121 g122 g123 g124 g125 g126 g127 g128 g129 g130
@@ -707,16 +717,39 @@ data e; set a.fsw_18_09_23_graphs;run;
 ods graphics / reset imagefmt=jpeg height=5in width=8in; run;
 ods rtf file = 'C:\Loveleen\Synthesis model\Zim\FSW\25Apr2023.doc' startpage=never; 
 
+
+proc sgplot data=e; 
+Title    height=1.5 justify=center "newp_ge1";
+
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 0.1 by 0.02)  valueattrs=(size=10);
+label p50_p_newp_ge1__0	               = "Median";
+
+series  x=cald y=p50_p_newp_ge1__0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=p5_p_newp_ge1__0     upper=p95_p_newp_ge1__0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+run;quit;
+
+
+
 proc sgplot data=e; 
 Title    height=1.5 justify=center "FSW Incidence";
 
-xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2050 by 2)        valueattrs=(size=10); 
-yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 20 by 0.2)  valueattrs=(size=10);
+xaxis label       = 'Year'                labelattrs=(size=12)  values = (2010 to 2022 by 2)        valueattrs=(size=10); 
+yaxis grid label  = 'per 100 py'              labelattrs=(size=12)  values = (0 to 60 by 0.2)  valueattrs=(size=10);
+label pmean_incidence_sw_0	               = "Mean";
 label p50_incidence_sw_0	               = "Median";
 
-series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
+
+series  x=cald y=pmean_incidence_sw_0  /           lineattrs = (color=blue thickness = 2);
+band    x=cald lower=pmean_incidence_sw_0     upper=pmean_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+series  x=cald y=p50_incidence_sw_0  /           lineattrs = (color=green thickness = 2);
 band    x=cald lower=p5_incidence_sw_0     upper=p95_incidence_sw_0 / transparency=0.9 fillattrs = (color=blue) legendlabel= "Model 90% range";
+
+
 run;quit;
+
+
 
 proc sgplot data=e; 
 Title    height=1.5 justify=center "Incidence";
