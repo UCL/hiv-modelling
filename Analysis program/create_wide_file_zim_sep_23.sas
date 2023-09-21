@@ -889,3 +889,62 @@ run;quit;
 proc print;var p50_n_tested_sw_0 p50_n_tested_sw_1 p50_n_tested_sw_2;run;
 proc contents;run;
 run;
+
+
+
+
+***Graph these numbers;
+proc means data=y n mean P50 p5 p95;var incidence_sw ;where 2011<= cald <2014 and option=0 ;run;
+proc means n mean P50 p5 p95;var incidence_sw ;where 2014<= cald <2017 and option=0 ;run;
+proc means n mean P50 p5 p95;var incidence_sw ;where 2017<= cald <2020 and option=0 ;run;
+proc means n mean P50 p5 p95;var  incidence_sw ;where 2020<= cald <2023 and option=0 ;run;
+
+data y;set y;
+
+if option ne 0 then delete;
+keep option cald run incidence_sw;
+
+run;
+
+proc sort data=y;by cald;run;
+data y;set y;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
+proc means max data=y;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
+%let nfit = 220  ;
+proc sort;by cald option ;run;
+
+
+
+***Macro var used to calculate means across each year and transpose to one line per run;
+ 
+%macro var_d(v);
+data one;set y;keep &v count_csim cald;
+proc sort;by count_csim cald;
+%let count=2000;
+%do %while (&count le 2050);
+proc means noprint data = one; var &v; output out = y_&count mean=&v._&count p50=&v._&count p5=&v._&count p95=&v._&count; by count_csim ; where &count <= cald < &count+3;
+%let count = %eval(&count + 1);
+%end;
+
+data &v ;merge 
+	   y_2011 y_2014  y_2017 y_2020;
+
+drop _NAME_ _TYPE_ _FREQ_;run;
+proc datasets nodetails nowarn nolist;
+
+delete y_2011 y_2014  y_2017 y_2020;quit;
+
+proc transpose data=&v out=l_&v prefix=&v;id  count_csim;run;
+data l_&v;set l_&v;
+cald= input(substr(_NAME_,length(_NAME_)-3,4),4.);drop _NAME_;run;
+
+data l_&v;set l_&v;
+p50_&v = PCTL(50,of &v.1-&v.&nfit);
+p5_&v  = PCTL(5,of &v.1-&v.&nfit);
+p95_&v = PCTL(95,of &v.1-&v.&nfit);
+mean_&v = mean(of &v.1-&v.&nfit);
+keep cald p50_&v p5_&v p95_&v mean_&v;
+run;
+proc datasets nodetails nowarn nolist;delete &v;run;
+%mend var_d;
+
+%var_d(incidence_sw);
