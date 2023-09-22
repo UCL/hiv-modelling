@@ -54,22 +54,28 @@
 *******************************************************************************************
 ************************************     CONTENT   ************************************
 *******************************************************************************************
-1.  Population...................................Line 77
+1.  Population...................................Line 78
 2.  Fertility....................................Line 343
 3.  Mortality....................................Line 439
 4.  Prevalence...................................Line 615
 5.  Incidence....................................Line 1027
 6.  Number living with HIV ......................Line 1179
 7.  Sexual behaviour.............................Line 1239
-8.  Testing......................................Line 1416
-9.  Linkage from testing to ART Uptake...........Line 2000
-10. On ART: In need, started, on ART.............Line 2033
+8.  Testing......................................Line 1426
+	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1432
+    8b. Number of HIV tests performed & positivity rate in the general population .....Line 1550
+    8c. Diagnosed with HIV in the general population...................................Line 1750
+    8d. Testing in female sex workers..................................................Line 1784
+    8e. Testing in Pregnant women......................................................Line 1854
+    8f. PMTCT..........................................................................Line 1966
+9.  Linkage from testing to ART Uptake...........Line 
+10. On ART: In need, started, on ART.............Line 
 11. Median CD4 at diagnosis and ART initiation...Line 2388
 12. Virological outcomes on 1st line.............Line 2447
 13. Retention on ART.............................Line 2557
 14. Resistance...................................Line 2725
-15. Male circumcision............................Line 2793
-16. PrEP.........................................Line 2904
+15. Male circumcision............................Line 2850
+16. PrEP.........................................Line 2949
 17. Structural intervention and social enablers..Line 2919
 18. Sexually transmitted infections..............Line 2929
 19. Tubercolosis.................................Line 2939
@@ -1426,10 +1432,7 @@ if cald=2016 then do; o_p_cls_last_1524w_zdhs=0.56;o_p_cls_last_1524m_zdhs=0.34;
 **********************************     8. Testing     *************************************
 *******************************************************************************************
 
-
-
-
-**** Proportion ever tested for HIV and tested in the last year in the general population;
+**** 8a. Proportion ever tested for HIV and tested in the last year in the general population;
 
 *I did not use "Percentage of population tested for HIV in the last 12 months" in
 male 15-24, female 15-24, male 25-49, female 25-49, male 50+, female 50+ from David Wilson 
@@ -1543,7 +1546,8 @@ if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.588; o_p_evertested_1844w_nb
 
 
 
-*** Number of HIV tests performed & positivity rate in the general population;
+
+**** 8b. Number of HIV tests performed & positivity rate in the general population;
 
 *Source: Global AIDS response country  progress report Zimbabwe 2015;
 if cald=2010.5 then o_s_tested_1549_py_garcpr =1653603;
@@ -1565,8 +1569,33 @@ if cald=2014.5 then do; o_s_tested_1549_py_garcpr =1755179;o_s_tested_py_garcpr 
 if cald=2015.5 then do; o_s_tested_1549_py_garcpr =2201246;o_s_tested_py_garcpr =1952278;end;*how can alla ges be higher than 15-49?;
 if cald=2016.5 then do; o_s_tested_1549_py_garcpr =2664844;o_s_tested_py_garcpr =2580766;end;
 if cald=2017.5 then o_s_tested_1549_py_garcpr =2851049;
-if cald=2018.5 then o_s_tested_1549_py_garcpr =3011027;
+if cald=2018.5 then do;o_s_tested_1549_py_garcpr =3011027;
+					   o_s_tested_1549w_py_garcpr =1959193;
+					   o_s_tested_1549m_py_garcpr =1051834;end;
 if cald=2019.5 then o_s_tested_1549_py_garcpr =2382768;
+
+*Number of men and women who were tested and received their results;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+*Note: I am using the same variable name as above as the etsimate for 2018 were the same;
+if cald=2020.5 then do;target_s_tested_1549_py_garcpr =2580149;
+					   target_s_tested_1549w_py_garcpr=1625494;
+					   target_s_tested_1549m_py_garcpr= 954655;end;
+if cald=2021.5 then do;target_s_tested_1549_py_garcpr =1769084;
+					   target_s_tested_1549w_py_garcpr=1096832;
+					   target_s_tested_1549m_py_garcpr= 672252;end;
+if cald=2022.5 then do;target_s_tested_1549_py_garcpr =1805214;
+					   target_s_tested_1549w_py_garcpr=1101181;
+					   target_s_tested_1549m_py_garcpr= 704033;end;             
+if cald=2023.5 then do;target_s_tested_1549_py_garcpr =1793079;
+					   target_s_tested_1549w_py_garcpr=1075847;
+					   target_s_tested_1549m_py_garcpr= 717232;end;
+if cald=2024.5 then do;target_s_tested_1549_py_garcpr =1777957;
+					   target_s_tested_1549w_py_garcpr=1048994;
+					   target_s_tested_1549m_py_garcpr= 728962;end;
+if cald=2025.5 then do;target_s_tested_1549_py_garcpr =1814657;
+					   target_s_tested_1549w_py_garcpr=1052501;
+					   target_s_tested_1549m_py_garcpr= 762156;end;
 
 *HIV tests performed in adults (15+) in the public health sector, including first antenatal tests but not second antenatal tests;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
@@ -1704,13 +1733,21 @@ if cald=2022.5 then o_n_hivst_secd_partners =31538;*VCMar2023;
 if cald=2022.5 then o_n_contactsested_fac =62526;*VCMar2023;
 
 
+*Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_n_hcwtest=1793079;*Conventional tests;
+if cald=2023.75 then target_n_hivst=769860;
+
+***Repeat testing;
+*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16–32 Year Olds;
+if cald=2011 then o_rct_max_p_repeat_test=0.28;
 
 
 
 
 
 
-***Diagnosed with HIV in the general population;
+
+**** 8c. Diagnosed with HIV in the general population;
 *Source: DHS 2010-11
 		 Table 14.10 page 227 "Percent distribution of women and men age 15-49 who tested HIV positive...");
 if cald=2011 then do;
@@ -1744,7 +1781,7 @@ end;
 
 
 
-*** Testing in female sex workers;
+**** 8d. Testing in female sex workers;
 
 *3Nov2015;
 *Source: "Zimbabwe data.xls" sent by David Wilson;
@@ -1813,7 +1850,8 @@ if cald=2019.5 then o_p_diag_fsw_garpr=0.81;
 
 
 
-**** Testing in Pregnant women;
+
+**** 8e. Testing in Pregnant women;
 
 *** Proportion of pregnant women attending ANC (irrespective of HIV status) ;
 *Source: Figure 6 in "Policy brief_Option A IE (3).doc" sent by Frances Cowan on 4th November 2016;
@@ -1893,21 +1931,21 @@ end;
 
 
 ** Source for all of the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
-*# of women who were tested for the first time in ANC (not clear whetehr it includes those tested for the first time at delivery);
-if cald=2022.5 then o_n_firsttested_anc =411830;*VCMar2023;
+*# of women who were tested for the first time in ANC (it does not includes those tested for the first time at delivery);
+if cald=2022.5 then o_n_firsttested_anc =411830;
 *# test done in ANC;
-if cald=2022.5 then o_n_tests_anc =411830+150337;*VCMar2023;
+if cald=2022.5 then o_n_tests_anc =411830+150337;
 *# Women tested for the first time in Labour and Delivery;
-if cald=2022.5 then o_n_firsttested_labdel =6864;*VCMar2023;
+if cald=2022.5 then o_n_firsttested_labdel =6864;
 *# Women tested during Labour and Delivery;
-if cald=2022.5 then o_n_tested_labdel =6864+23901;*VCMar2023;
-*# Women tested for the first time during Post delivery (I assumed it was a typo in excel spreadsheet); 
-if cald=2022.5 then o_n_firsttested_postdel =15259;*VCMar2023;
+if cald=2022.5 then o_n_tested_labdel =6864+23901;
+*# Women tested for the first time during Post delivery ; 
+if cald=2022.5 then o_n_firsttested_postdel =15259;
 *# Women tested during Post delivery;
-if cald=2022.5 then o_n_tested_postdel =15259+139141;*VCMar2023;
+if cald=2022.5 then o_n_tested_postdel =15259+139141;
 
 ** Source for all fo the following: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
-*# HIV +  for the first time  in ANC (i.e. number of new diagnoses);
+*# HIV +  for the first time (i.e. number of new diagnoses) in ANC;
 if cald=2022.5 then o_n_newdiag_anc =11272;*VCMar2023;
 *# HIV + first time during Labour& delivery;
 if cald=2022.5 then o_n_newdiag_labdel =328;*VCMar2023;
@@ -1918,12 +1956,15 @@ if cald=2022.5 then o_n_newdiag_postdel =368;*VCMar2023;
 *# HIV +  during Post delivery (I assumed it was a typo in excel spreadsheet); 
 if cald=2022.5 then o_n_hiv_postdel =368;*VCMar2023;
 
-
 *** # of deliveries by HIV+ women ;
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2022.5 then o_n_births_hivposmother =40988;*VCMar2023;
 
 
+
+
+
+**** 8f. PMTCT;
 
 *** Number of pregnant women who were given PMTCT prophylaxis in the 3 months period;
 
@@ -1950,7 +1991,6 @@ if cald=2013.25 then     o_s_pregnant_pmtct_Z_GF=13444;*(84% REPORTING RATE);
 *Source: Interventions for consideration_MIHPSA_Zimbabwe_v8_20230214.xls;
 if cald=2022.5 then     o_s_pregnant_pmtct_Z_NAC=43856;
 
-
 *** % HIV+ pregnant women receiving PMTCT;
 if cald=2010.25 then o_P_hivpospreg_pmtct_Z_GF=0.16;
 if cald=2010.5  then o_P_hivpospreg_pmtct_Z_GF=0.20;
@@ -1966,7 +2006,6 @@ if cald=2013.25 then o_P_hivpospreg_pmtct_Z_GF=0.905;
 if cald=2012.75 then o_P_hivpospreg_pmtct_dw = 0.93;
 if cald=2013.75 then o_P_hivpospreg_pmtct_dw = 0.82;	
 if cald=2014.75 then o_P_hivpospreg_pmtct_dw = 0.66;
-
 
 ***LBM update;
 *Source: Global AIDS response country  progress report 2016;
@@ -1988,12 +2027,6 @@ if cald=2019.5 then o_P_hivpospreg_pmtct_garcpr = 0.908;
 *Update VC Nov 2016;
 if cald=2012.5 then o_p_PMTCTorART_pospreg_Cowan=0.59;
 if cald=2014.5 then o_p_PMTCTorART_pospreg_Cowan=0.65;
-
-
-***Repeat testing;
-*Source: Increases in HIV Testing and Case Detection from NIMH Project Accept (HPTN 043) among 16–32 Year Olds;
-if cald=2011 then o_rct_max_p_repeat_test=0.28;
-
 
 
 
@@ -2853,10 +2886,6 @@ if cald = 2017.5  then o_s_new_mcirc_all=301366;
 if cald = 2018.5  then o_s_new_mcirc_all=326012;
 if cald = 2019.5  then o_s_new_mcirc_all=354819;
 
-
-
-
-
 *** Cumulative number of males circumcised according to national standards;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
@@ -2907,8 +2936,15 @@ if cald=2006   then o_p_circ_15pl_DHIS2_z=0.105;
 if cald=2010.5 then o_p_circ_15pl_DHIS2_z=0.091;
 if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 
+***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_s_new_mcirc=211526;
 
-
+**Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
+circumcision for HIV prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2024.75 then target_s_new_mcirc=463448;*These could have been changed given COVID;
+if cald=2025.75 then target_s_new_mcirc=175211;*These could have been changed given COVID;
 
 *******************************************************************************************
 *******************************     16. PreP     **********************************
@@ -2922,6 +2958,29 @@ if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 This is presented as a range due to difficulty in tracking precise numbers and possible double reporting, I used the midlle number in the range;
 if cald=2022.25   then o_n_prep_ever=72500;
 
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then o_n_prep_fsw=1570;
+if cald=2018.75 then o_n_prep_all=6528;
+
+*Source: PrEP Interventions for consideration_MIHPSA_Zimbabwe_wm.xls sent on 5/7/2023 by Ngwarai;
+if cald=2021.75 then o_prepinit_1524w=12070;
+if cald=2022.75 then o_prepinit_1524w=26425;
+
+if cald=2021.75 then o_prepinit_fsw=11830;
+if cald=2022.75 then o_prepinit_fsw=17773;
+
+if cald=2021.75 then o_prepinit_sdc=1730;
+if cald=2022.75 then o_prepinit_sdc=4447;
+
+*pregnant and breastfeeding women;
+if cald=2021.75 then o_prepinit_pbf=545;
+if cald=2022.75 then o_prepinit_pbf=8177;
+
+
+
+
+***Targets;
 *PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
 if cald=2023.75 then target_prepinit_1524w =37144;
 if cald=2024.75 then target_prepinit_1524w =41639;
@@ -2940,6 +2999,8 @@ if cald=2024.75 then target_curr_prep_1524w =26125;
 if cald=2025.75 then target_curr_prep_1524w =35484;
 if cald=2026.75 then target_curr_prep_1524w =43443;
 
+***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
 
 
 *******************************************************************************************
