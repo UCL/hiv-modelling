@@ -65,7 +65,7 @@
 	8a. % ever tested for HIV and tested in the last year in the general population ...Line 1432
     8b. Number of HIV tests performed & positivity rate in the general population .....Line 1550
     8c. Diagnosed with HIV in the general population...................................Line 1750
-    8d. Testing in female sex workers..................................................Line 1784
+    8d. Testing in female sex workers..................................................Line 1890
     8e. Testing in Pregnant women......................................................Line 1854
     8f. PMTCT..........................................................................Line 1966
 9.  Linkage from testing to ART Uptake...........Line 
@@ -75,10 +75,11 @@
 13. Retention on ART.............................Line 2557
 14. Resistance...................................Line 2725
 15. Male circumcision............................Line 2850
-16. PrEP.........................................Line 2949
-17. Structural intervention and social enablers..Line 2919
-18. Sexually transmitted infections..............Line 2929
-19. Tubercolosis.................................Line 2939
+16. Packages of HIV combination prevention services for key populations ...............Line 2950
+17. PrEP.........................................Line 2949
+18. Structural intervention and social enablers..Line 2919
+19. Sexually transmitted infections..............Line 2929
+20. Tubercolosis.................................Line 2939
 
 *******************************************************************************************
 *********************************     1. Population    ************************************
@@ -1543,7 +1544,13 @@ if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.5; o_p_evertested_1844w_nbcp
 
 if cald=2011.5 then do; o_p_evertested_1844m_nbcp=0.588; o_p_evertested_1844w_nbcp=0.763; end;
 
-
+*Percentage of women and men aged 15-49 who received an HIV test in the last 12 months and know their status;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2025.75 then do;
+	target_p_testedly_1549m_NSP=0.95;
+	target_p_testedly_1549w_NSP=0.95;
+end;
 
 
 
@@ -1578,24 +1585,31 @@ if cald=2019.5 then o_s_tested_1549_py_garcpr =2382768;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
 *Note: I am using the same variable name as above as the etsimate for 2018 were the same;
-if cald=2020.5 then do;target_s_tested_1549_py_garcpr =2580149;
-					   target_s_tested_1549w_py_garcpr=1625494;
-					   target_s_tested_1549m_py_garcpr= 954655;end;
-if cald=2021.5 then do;target_s_tested_1549_py_garcpr =1769084;
-					   target_s_tested_1549w_py_garcpr=1096832;
-					   target_s_tested_1549m_py_garcpr= 672252;end;
-if cald=2022.5 then do;target_s_tested_1549_py_garcpr =1805214;
-					   target_s_tested_1549w_py_garcpr=1101181;
-					   target_s_tested_1549m_py_garcpr= 704033;end;             
-if cald=2023.5 then do;target_s_tested_1549_py_garcpr =1793079;
-					   target_s_tested_1549w_py_garcpr=1075847;
-					   target_s_tested_1549m_py_garcpr= 717232;end;
-if cald=2024.5 then do;target_s_tested_1549_py_garcpr =1777957;
-					   target_s_tested_1549w_py_garcpr=1048994;
-					   target_s_tested_1549m_py_garcpr= 728962;end;
-if cald=2025.5 then do;target_s_tested_1549_py_garcpr =1814657;
-					   target_s_tested_1549w_py_garcpr=1052501;
-					   target_s_tested_1549m_py_garcpr= 762156;end;
+if cald=2018.5 then    o_pos_rate_15ov_z=0.06;
+if cald=2020.5 then do;target_s_tested_1549_py_NSP =2580149;
+					   target_s_tested_1549w_py_NSP=1625494;
+					   target_s_tested_1549m_py_NSP= 954655;end;
+if cald=2021.5 then do;target_s_tested_1549_py_NSP =1769084;
+					   target_s_tested_1549w_py_NSP=1096832;
+					   target_s_tested_1549m_py_NSP= 672252;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2022.5 then do;target_s_tested_1549_py_NSP =1805214;
+					   target_s_tested_1549w_py_NSP=1101181;
+					   target_s_tested_1549m_py_NSP= 704033;
+						target_pos_rate_15ov_NSP=0.05;end;             
+if cald=2023.5 then do;target_s_tested_1549_py_NSP =1793079;
+					   target_s_tested_1549w_py_NSP=1075847;
+					   target_s_tested_1549m_py_NSP= 717232;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2024.5 then do;target_s_tested_1549_py_NSP =1777957;
+					   target_s_tested_1549w_py_NSP=1048994;
+					   target_s_tested_1549m_py_NSP= 728962;
+						target_pos_rate_15ov_NSP=0.05;end;
+if cald=2025.5 then do;target_s_tested_1549_py_NSP =1814657;
+					   target_s_tested_1549w_py_NSP=1052501;
+					   target_s_tested_1549m_py_NSP= 762156;
+					   target_pos_rate_15ov_NSP=0.05;end;
+
 
 *HIV tests performed in adults (15+) in the public health sector, including first antenatal tests but not second antenatal tests;
 *Source: HIVcalibrationData_Zimbabwe.xls sent by Isaac Taramusi in Sept 2021;
@@ -1778,7 +1792,16 @@ if cald=2020 then do;
 	o_p_diag_15plw_zimphia=0.883;
 end;
 
-
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if  cald=2025.75 then do;
+	target_p_diag_15pl_NSP=0.95;
+	target_p_diag_15plm_NSP=0.95;
+	target_p_diag_15plw_NSP=0.95;
+	target_p_diag_1524_NSP=0.95;
+	target_p_diag_1524m_NSP=0.95;
+	target_p_diag_1524w_NSP=0.95;
+end;
 
 
 **** 8d. Testing in female sex workers;
@@ -1847,6 +1870,16 @@ if cald=2017.5 then o_p_diag_fsw_garpr=0.91;
 if cald=2018.5 then o_p_diag_fsw_garpr=0.93;
 if cald=2019.5 then o_p_diag_fsw_garpr=0.81;
 
+*Percentage of FSW living with HIV who know their status;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.5 then o_p_diag_fsw_NSP=0.936;
+if cald=2020.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2021.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2022.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2023.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2024.5 then target_p_diag_fsw_NSP=0.95;
+if cald=2025.5 then target_p_diag_fsw_NSP=0.95;
 
 
 
@@ -1860,7 +1893,6 @@ if cald=2012.5 then o_p_anc_pregnant_Cowan=0.94;
 if cald=2014.5 then o_p_anc_pregnant_Cowan=0.95;
 
 *** Proportion of pregnant women tested in ANC;
-
 *Source: DHS 2005-2006, page 203;
 if cald=2006 then do;
 	o_p_testedanc_1549_zdhs = 0.226;
@@ -1870,7 +1902,6 @@ if cald=2006 then do;
 	o_p_testedanc_3039_zdhs = 0.225;
 	o_p_testedanc_4049_zdhs = 0.119;
 end;
-
 *Source: DHS 2010-2011, Page 201;
 if cald=2011 then do;
 	o_p_testedanc_1549_zdhs = 0.591;
@@ -2382,6 +2413,9 @@ if cald=2009.5 then do; o_ratiofm_newart_mmwr=1.76; o_ratiofm_newart_ll_mmwr=1.5
 if cald=2009.5 then e_ratiofm_newart_unaids=1.43;
 
 
+
+
+
 ***Number of FSW on art (this is a minimum estimate);
 *Source: Document “Sisters numbers v4”, Page 3;
 if cald=2013.75 then o_s_fsw_onart_fc=4500;
@@ -2400,7 +2434,16 @@ if cald=2015.5 then o_p_onart_fswdiag_garpr =0.69;
 if cald=2018.5 then o_p_onart_fswdiag_garpr =0.72;
 if cald=2019.5 then o_p_onart_fswdiag_garpr =0.78;
 
-
+*Percentage of FSW who received ART;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.5 then o_p_onart_fsw_NSP=0.719;
+if cald=2020.5 then target_p_onart_fsw_NSP=0.75;
+if cald=2021.5 then target_p_onart_fsw_NSP=0.80;
+if cald=2022.5 then target_p_onart_fsw_NSP=0.85;
+if cald=2023.5 then target_p_onart_fsw_NSP=0.90;
+if cald=2024.5 then target_p_onart_fsw_NSP=0.95;
+if cald=2025.5 then target_p_onart_fsw_NSP=0.95;
 
 
 **** Reasons for ART initiation in the following hierarchical order 
@@ -2886,6 +2929,20 @@ if cald = 2017.5  then o_s_new_mcirc_all=301366;
 if cald = 2018.5  then o_s_new_mcirc_all=326012;
 if cald = 2019.5  then o_s_new_mcirc_all=354819;
 
+***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
+if cald=2023.75 then target_s_new_mcirc=211526;
+
+**Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
+circumcision for HIV prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then o_s_new_mcirc_NSP=299302;
+if cald=2024.75 then target_s_new_mcirc_NSP=463448;*These could have been changed given COVID;
+if cald=2025.75 then target_s_new_mcirc_NSP=175211;*These could have been changed given COVID;
+
+
+
+
 *** Cumulative number of males circumcised according to national standards;
 *Source: "GLOBAL AIDS RESPONSE PROGRESS REPORT 2020"
 https://www.unaids.org/sites/default/files/country/documents/ZWE_2020_countryreport.pdf (accessed 05/03/2021); 
@@ -2936,18 +2993,48 @@ if cald=2006   then o_p_circ_15pl_DHIS2_z=0.105;
 if cald=2010.5 then o_p_circ_15pl_DHIS2_z=0.091;
 if cald=2016   then o_p_circ_15pl_DHIS2_z=0.143;
 
-***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
-if cald=2023.75 then target_s_new_mcirc=211526;
-
-**Target: Number of Men aged 15+ years circumcised as part of the minimum package of male 
-circumcision for HIV prevention services;
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
-if cald=2024.75 then target_s_new_mcirc=463448;*These could have been changed given COVID;
-if cald=2025.75 then target_s_new_mcirc=175211;*These could have been changed given COVID;
+if cald=2018.75   then o_p_circ_1549m_NSP=0.43;
+if cald=2020.75   then target_p_circ_1549m_NSP=0.43;
+if cald=2021.75   then target_p_circ_1549m_NSP=0.50;
+if cald=2022.75   then target_p_circ_1549m_NSP=0.60;
+if cald=2023.75   then target_p_circ_1549m_NSP=0.65;
+if cald=2024.75   then target_p_circ_1549m_NSP=0.70;
+if cald=2025.75   then target_p_circ_1549m_NSP=0.80;
+
+
+
 
 *******************************************************************************************
-*******************************     16. PreP     **********************************
+********   16. Packages of HIV combination prevention services for key populations ********
+*******************************************************************************************
+
+*Percentage of FSW reached with the package of HIV combination prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2020.75 then target_p_FSWprog_fsw_NSP =0.75;
+if cald=2021.75 then target_p_FSWprog_fsw_NSP = 0.80;
+if cald=2022.75 then target_p_FSWprog_fsw_NSP = 0.85;
+if cald=2023.75 then target_p_FSWprog_fsw_NSP = 0.85;
+if cald=2024.75 then target_p_FSWprog_fsw_NSP = 0.90;
+if cald=2025.75 then target_p_FSWprog_fsw_NSP = 0.90;
+
+*Number of FSW reached with the defined package of HIV combination prevention services;
+*Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
+		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
+if cald=2018.75 then o_FSWprog_NSP =19800;
+
+if cald=2020.75 then o_FSWprog_NSP = 33750;
+if cald=2021.75 then o_FSWprog_NSP = 36000;
+if cald=2022.75 then o_FSWprog_NSP = 38250;
+if cald=2023.75 then o_FSWprog_NSP = 40500;
+if cald=2024.75 then o_FSWprog_NSP = 42750;
+if cald=2025.75 then o_FSWprog_NSP = 42750;
+
+
+*******************************************************************************************
+*******************************     17. PreP     **********************************
 *******************************************************************************************
 *Source: https://www.prepwatch.org/country/zimbabwe/, accessed 08/07/2022, updated aRpil 2022;
 *Estimated Cumulative Number of People Initiating PrEP:
@@ -2960,44 +3047,72 @@ if cald=2022.25   then o_n_prep_ever=72500;
 
 *Source: "MONITORING AND EVALUATION PLAN SUPPORTING THE ZIMBABWE HIV AND AIDS NATIONAL STRATEGIC PLAN 2021 - 2025"
 		(file name is "•	Monitoring and Evaluation Plan_report_WEB.pdf");
-if cald=2018.75 then o_n_prep_fsw=1570;
-if cald=2018.75 then o_n_prep_all=6528;
+if cald=2018.75 then do;
+	o_n_prep_fsw_NSP=1570;
+	o_n_prep_all_NSP=6528;
+end;
 
 *Source: PrEP Interventions for consideration_MIHPSA_Zimbabwe_wm.xls sent on 5/7/2023 by Ngwarai;
-if cald=2021.75 then o_prepinit_1524w=12070;
-if cald=2022.75 then o_prepinit_1524w=26425;
+if cald=2021.75 then do; 
+	o_prepinit_1524w=12070;
+	o_prepinit_fsw=11830;
+	o_prepinit_sdc=1730;
+	o_prepinit_pbf=545;*pregnant and breastfeeding women;
+end;
+if cald=2022.75 then do;
+	o_prepinit_1524w=26425;
+	o_prepinit_fsw=17773;
+	o_prepinit_sdc=4447;
+	o_prepinit_pbf=8177;
+end;
 
-if cald=2021.75 then o_prepinit_fsw=11830;
-if cald=2022.75 then o_prepinit_fsw=17773;
+***Targets for PrEP are taken from file "Revised PrEP Targets and Assumptions 12022023 (2) GN" as they are the most up to date;
 
-if cald=2021.75 then o_prepinit_sdc=1730;
-if cald=2022.75 then o_prepinit_sdc=4447;
-
-*pregnant and breastfeeding women;
-if cald=2021.75 then o_prepinit_pbf=545;
-if cald=2022.75 then o_prepinit_pbf=8177;
-
-
-
-
-***Targets;
 *PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
-if cald=2023.75 then target_prepinit_1524w =37144;
-if cald=2024.75 then target_prepinit_1524w =41639;
-if cald=2025.75 then target_prepinit_1524w =44303;
-if cald=2026.75 then target_prepinit_1524w =45084;
+if cald in (2023.75 2024.75 2025.75 2026.75) then do;
+	`target_prepinit_sdc  = 10149;	target_prepinit_fsw   = 6960;end;
+if cald=2023.75 then do;
+	target_prepinit_1524w = 37144;	target_prepinit_pbf   = 18900;*Pregnant and Lactating Women;end;
+if cald=2024.75 then do;
+	target_prepinit_1524w = 41639; 	target_prepinit_pbf   = 21187;*Pregnant and Lactating Women;end
+if cald=2025.75 then do;
+	target_prepinit_1524w = 44303;	target_prepinit_pbf   = 22543;*Pregnant and Lactating Women;end;
+if cald=2026.75 then do;
+	target_prepinit_1524w = 45084;	target_prepinit_pbf   = 22941;*Pregnant and Lactating Women;end;
+
 
 *** PrEP_CT: Number of clients actively taking the indicated PrEP method(s) (excluding newly enrolled) during the last quarter of the date range displayed;
-if cald=2023.75 then target_prep_1524w_lq = 11594;
-if cald=2024.75 then target_prep_1524w_lq = 22544;
-if cald=2025.75 then target_prep_1524w_lq = 33436;
-if cald=2026.75 then target_prep_1524w_lq = 42431;
+if cald=2023.75 then do;
+	target_prep_lq_1524w = 11594;	target_prep_lq_sdc   = 14388;
+	target_prep_lq_fsw   = 16638;	target_prep_lq_pbf   = 16144; 
+end;
+if cald=2024.75 then do;
+	target_prep_1524w_lq = 22544;	target_prep_lq_sdc   = 15641;
+	target_prep_lq_fsw   = 14127;	target_prep_lq_pbf   = 18252; 
+end;
+if cald=2025.75 then do;
+	target_prep_1524w_lq = 33436;	target_prep_lq_sdc   = 18520;
+	target_prep_lq_fsw   = 15592;	target_prep_lq_pbf   = 26981; 
+end;
+if cald=2026.75 then do;
+	target_prep_1524w_lq = 42431;	target_prep_lq_sdc   = 20718;
+	target_prep_lq_fsw   = 16939;	target_prep_lq_pbf   = 32070;
+end;
+
 
 *Currently on PrEP;
-if cald=2023.75 then target_curr_prep_1524w =15292;
-if cald=2024.75 then target_curr_prep_1524w =26125;
-if cald=2025.75 then target_curr_prep_1524w =35484;
-if cald=2026.75 then target_curr_prep_1524w =43443;
+if cald=2023.75 then do;
+	target_curr_prep_1524w = 15292;	target_curr_prep_sdc   = 13854;
+	target_curr_prep_fsw   = 15478;	target_curr_prep_pbf   = 18890; end;
+if cald=2024.75 then do;
+	target_curr_prep_1524w = 26125;	target_curr_prep_sdc   = 16337;
+	target_curr_prep_fsw   = 13262;	target_curr_prep_pbf   = 21883; end;
+if cald=2025.75 then do; 
+	target_curr_prep_1524w = 35484; target_curr_prep_sdc   = 18699;
+	target_curr_prep_fsw   = 14583;	target_curr_prep_pbf   = 28938; end;
+if cald=2026.75 then do; 
+	target_curr_prep_1524w = 43443; target_curr_prep_sdc   = 20670;
+	target_curr_prep_fsw   = 15746;	target_curr_prep_pbf   = 33533;end;
 
 ***Source: Draft 2023 HIV Prevention Targets Handbook 20022023 (1).docs sent by Ngwarai on 28/6/2023;
 if cald=2023.75 then target_prep=79092; *not clear exactly what it is;
