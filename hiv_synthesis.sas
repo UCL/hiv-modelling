@@ -17480,14 +17480,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-/*proc print; var*/
-/*caldate&j option age gender hiv death newp ep epi sdc prep_any_strategy prep_any_elig*/
-/*	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever */
-/*	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever */
-/*	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever*/
-/*;*/
-/*where serial_no<150 and age ge 15 and death=.;*/
-/*run;*/
+proc print; var
+caldate&j option age gender hiv death newp ep epi sdc prep_any_strategy prep_any_elig
+	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever 
+	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever 
+	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever
+;
+where serial_no<150 and age ge 15 and death=.;
+run;
 
 
 /*proc print; var*/
