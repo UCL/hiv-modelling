@@ -3289,7 +3289,7 @@ ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc)
 
 * MIHPSA PrEP options that cannot go in main options section; * QUERY because they have to come after the testing section? JAS Jul23;
 *In the essential scenario no one is on PrEP;
-if caldate{t} >= &year_interv then do;
+if option ne . and option ne 0 and caldate{t} >= &year_interv then do;
 	eff_rate_test_startprep_any=0;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 	eff_prob_prep_oral_b=0;
 	eff_prob_prep_inj_b=0; 
