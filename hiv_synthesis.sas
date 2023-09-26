@@ -705,7 +705,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_inj and pref_prep_oral >
 
 * INJECTABLE CABOTEGRAVIR PREP ; * lapr;
 
-* date_prep_inj_intro;			date_prep_inj_intro=2100;		* Introduction of injectable PrEP ;
+* date_prep_inj_intro;			date_prep_inj_intro=2027;		* Introduction of injectable PrEP ;
 * dur_prep_inj_scaleup;			dur_prep_inj_scaleup=5;			* Assume 5 years to scale up injectable prep;
 * prob_prep_inj_b;				prob_prep_inj_b = prob_prep_oral_b; * probability of starting inj PrEP in people (who are eligible and willing to take inj prep) tested for HIV according to the base rate of testing;
 																* since we have different preference for oral and inj, dont think we need separate values of this for oral and inj ;
@@ -877,6 +877,7 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_07.sas";
+%include "C:\Users\rmjlja9\Documents\GitHub\hiv-modelling\Zim_parameters.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
 
 
@@ -1996,7 +1997,7 @@ option = &s;
 
 /*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
 /*option = 16;	* MIHPSA: oral PrEP for FSW;*/
-option = 17;	* MIHPSA: oral PrEP for SDC;
+/*option = 17;	* MIHPSA: oral PrEP for SDC;*/
 /*option = 18;	* MIHPSA: oral PrEP for PLW;*/
 /*option = 19;	* MIHPSA: VR PrEP for AGYW;*/
 /*option = 23;	* MIHPSA: inj PrEP for AGYW;*/
@@ -2083,10 +2084,6 @@ age=age+0.25;  * dependent_on_time_step_length ;
 age=age + (1/12);
 ;
 
-age =age +0.25;  * dependent_on_time_step_length ;
-* ts1m ; * change this line to: 
-age =age  + (1/12);
-;
 agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 
 
@@ -12230,7 +12227,7 @@ end;
 
 if tested=1 then ever_tested=1;
 
-<if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from caldate{t} to caldate_never_dot because caldate is missing for people who died in the previous time step JAS Jul23;
+if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from caldate{t} to caldate_never_dot because caldate is missing for people who died in the previous time step JAS Jul23;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
@@ -17483,14 +17480,14 @@ hiv_cab = hiv_cab_3m + hiv_cab_6m + hiv_cab_9m + hiv_cab_ge12m ;
 * procs;
 
 
-proc print; var
-caldate&j option age gender hiv death newp ep epi sdc prep_any_strategy prep_any_elig
-	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever 
-	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever 
-	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever
-;
-where serial_no<150 and age ge 15 and death=.;
-run;
+/*proc print; var*/
+/*caldate&j option age gender hiv death newp ep epi sdc prep_any_strategy prep_any_elig*/
+/*	date_prep_oral_intro pref_prep_oral prep_oral_willing prep_oral prep_oral_ever */
+/*	date_prep_inj_intro pref_prep_inj prep_inj_willing prep_inj prep_inj_ever */
+/*	date_prep_vr_intro pref_prep_vr prep_vr_willing prep_vr prep_vr_ever*/
+/*;*/
+/*where serial_no<150 and age ge 15 and death=.;*/
+/*run;*/
 
 
 /*proc print; var*/
@@ -19174,11 +19171,11 @@ keep_going_1999   keep_going_2004   keep_going_2016   keep_going_2020
 
 ;
 
-/****Zim specific;*/
-/**/
-/*if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;*/
-/*if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;*/
-/*if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;*/
+***Zim specific;
+
+if cald = 1999.5 and (prevalence1549 < 0.08) then do; abort abend; end;
+if cald = 2004.5 and (prevalence1549 < 0.07) then do; abort abend; end;
+if cald = 2015.5 and (prevalence1549 < 0.12  or prevalence1549 > 0.15 ) then do; abort abend; end;*ZIMPHIA 13.4;
 
 /*if cald = &year_interv and (prevalence1549 > 0.30  or incidence1549 < 0.15 ) then do; abort abend; end;*/
 
@@ -20222,13 +20219,6 @@ end;
 %update_r1(da1=2,da2=1,e=6,f=7,g=109,h=116,j=114,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=109,h=116,j=115,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=109,h=116,j=116,s=0);	* QUERY - end 2017? JAS Jul23;
-
-data a ;  set r1 ;
-
-
-data r1 ; set a ;
-
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=113,h=120,j=117,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=113,h=120,j=118,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=113,h=120,j=119,s=0);
@@ -20246,11 +20236,11 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);	* QUERY - end 2021? JAS Jul23;
 
-/*
+
 data a ;  set r1 ;
 
 data r1 ; set a ;
-*/
+
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
@@ -20289,8 +20279,7 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=161,h=168,j=165,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=161,h=168,j=166,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=161,h=168,j=167,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);	* QUERY - end 2030? JAS Jul23;  * QUERY 356 is end of 2072 for Zim (starts 1984) comment out s=1-4 JAS Jul23;
-/*
+%update_r1(da1=2,da2=1,e=8,f=9,g=161,h=168,j=168,s=0);	* QUERY - end 2030? JAS Jul23;
 %update_r1(da1=1,da2=2,e=5,f=6,g=165,h=172,j=169,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=165,h=172,j=170,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=165,h=172,j=171,s=0);
@@ -20461,11 +20450,10 @@ data r1 ; set a ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=0);
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);		* end of s=0 JAS Sep2023;	* QUERY 356 is end of 2072 for Zim (starts 1984);
 
-* QUERY 356 is end of 2072 for Zim (starts 1984);
-* commented out s1-3 in core JAS Jul23;
-/*	
+
+
 data r1; set a      ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
@@ -20674,7 +20662,7 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=1);
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=1);		* end of s=1 JAS Sep2023;
 
 
 
@@ -20888,7 +20876,7 @@ data r1; set a     ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=2);
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=2);		* end of s=2 JAS Sep2023;
 
 
 data r1; set a      ;
@@ -21099,9 +21087,9 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=8,f=9,g=325,h=332,j=332,s=3);
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
+%update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);		* end of s=3 JAS Sep2023;
 
-*/
+
 
 
 
