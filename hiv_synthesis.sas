@@ -876,8 +876,8 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 
 * OVERWRITES country specific parameters;
 * %include "/home/rmjlaph/SA_parameters.sas";
-* %include "/home/rmjlvca/Zim_parameters_06.sas";
- *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_03.sas";
+* %include "/home/rmjlvca/Zim_parameters_07.sas";
+ *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_07.sas";
 
 
 * ===================== ;
@@ -1244,23 +1244,25 @@ inc12=0.016;
 inc13=0.012;
 end;
 
-* In hptn sa this is indicated as inc_cat = 3) ;
-* Running for 87 years - 1984 - 2071;  * AP 20-7-19 ;
-* Using a moderate rate of population growth;
+*Vale 20230808;
+*This is used for Zimbabwe;
+											 
 if inc_cat=1 and caldate1=1984  then do;
-inc1=0.1750; *more in this category as covers 19 years;
-inc2=0.1100;
-inc3=0.1000;
-inc4=0.0960;
-inc5=0.0900;
-inc6=0.0860;
-inc7=0.0790;
-inc8=0.070;
-inc9 =0.060;
-inc10=0.050;
-inc11=0.038;
-inc12=0.026;
-inc13=0.020;
+*Inc1 is obtained as 0.18 (inc1 for inc_Cat)/14*19=0.2443;
+*1.0643 = 1 + (0.2443-0.18);
+inc1=0.2443/1.0643;*19 years instead of 14, so a total of 139 years;
+inc2=0.1650/1.0643;
+inc3=0.1440/1.0643;
+inc4=0.1140/1.0643;
+inc5=0.0900/1.0643;
+inc6=0.0800/1.0643;
+inc7=0.0680/1.0643;
+inc8=0.0470/1.0643;
+inc9 =0.036/1.0643;
+inc10=0.027/1.0643;
+inc11=0.021/1.0643;
+inc12=0.016/1.0643;
+inc13=0.012/1.0643;
 end;							 	
 
 if inc_cat=2 then do;
@@ -1318,10 +1320,10 @@ if cum12 <= e          then age= 55+rand('uniform')*10;
 
 age =round(age ,.25);
 
-year_start=-69;
-if caldate1=1984 then year_start=-74;									 
+lowest_age_at_start=-69;
+if caldate1=1984 then lowest_age_at_start=-74;									 
 
-if age  >= year_start;
+if age  >= lowest_age_at_start;
 
 hiv =0;
 
@@ -2076,6 +2078,10 @@ if t ge 2 and caldate{t-1} < 2072.5  and death=. then caldate{t}=caldate{t-1}+0.
 if t ge 2 and caldate{t-1} < 2072.5  and dead_tm1 ne 1 and dead_tm1 ne .  then caldate{t}=caldate{t-1} + (1/12);
 ;
 
+age=age+0.25;  * dependent_on_time_step_length ;
+* ts1m ; * change this line to: 
+age=age + (1/12);
+;
 
 age =age +0.25;  * dependent_on_time_step_length ;
 * ts1m ; * change this line to: 
@@ -2960,29 +2966,29 @@ if t ge 2 then do;
 
 * not * dependent_on_time_step_length ;
 
-if 10 le age_tm1 lt 20 then do;
+if 10 le age lt 20 then do;
 if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate;
 end;
 
-if 20 le age_tm1 lt 30 then do;
+if 20 le age lt 30 then do;
 if mc_int < caldate{t} le 2013 then prob_circ = 0 + (caldate{t}-mc_int)*circ_inc_rate *circ_red_20_30;
 end;
 
 
-if 30 le age_tm1 le 50 then do;
+if 30 le age lt 50 then do;
 if mc_int < caldate{t} le 2013 then prob_circ = (0 + (caldate{t}-mc_int)*circ_inc_rate) * circ_red_30_50;
 end;
 
 
-if 10 le age_tm1 lt 20 then do;
+if 10 le age lt 20 then do;
 if 2013 < caldate{t} le 2019 then prob_circ =  ((2013-mc_int)*circ_inc_rate) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
 end;
 
-if 20 le age_tm1 lt 30 then do;
+if 20 le age lt 30 then do;
 if 2013 < caldate{t} le 2019 then prob_circ =  (((2013-mc_int)*circ_inc_rate)*circ_red_20_30) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_red_20_30;
 end;
 
-if 30 le age_tm1 le 50 then do;
+if 30 le age lt 50 then do;
 if 2013 < caldate{t} le 2019 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((caldate{t}-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
@@ -2990,17 +2996,17 @@ end;
 
 * this is the default if note circ_inc_rate_year_i = .  - no change in circ policy ;
 if t ge 2 and 2019 < caldate{t} and circ_inc_rate_year_i=0         then do;
-if  10 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
-if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
-if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
+if  10 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 * note circ_inc_rate_year_i = 1 means circ stops in 10-15 year olds;
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 1 then do;*option=1 - no circ in under 15s and increased rate in 15-19 year olds;
-if  age_tm1 lt 15 then prob_circ =0;
-if  15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_inc_15_19;
-if  20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
-if  30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
+if  age lt 15 then prob_circ =0;
+if  15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015)*circ_inc_15_19;
+if  20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if  30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 2 then do; *option=2 - no further circ;
@@ -3008,18 +3014,18 @@ prob_circ = 0;test_link_circ_prob=0;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 3 then do; *option=3- no circ in under 15s and NO increased rate in 15-19 year olds;
-if age_tm1 lt 15 then prob_circ =0;
-if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
-if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
-if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
+if age lt 15 then prob_circ =0;
+if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
 end;
 
 if t ge 2 and &year_interv <= caldate{t} and circ_inc_rate_year_i = 4 then do;*option=4 - no circ in under 15s, no increased rate in 15-19yo, stop VMMC after 5 years;
 	if caldate{t} <= 2026.5 then do;
-      if age_tm1 lt 15 then prob_circ =0;
-      if 15 le age_tm1 lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
-	  if 20 le age_tm1 le 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
-	  if 30 le age_tm1 le 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
+      if age lt 15 then prob_circ =0;
+      if 15 le age lt 20 then prob_circ = (((2013-mc_int)*circ_inc_rate)) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015);
+	  if 20 le age lt 30 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_20_30) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_20_30;
+	  if 30 le age lt 50 then prob_circ = (((2013-mc_int)*circ_inc_rate) * circ_red_30_50) + ((2019-2013)*circ_inc_rate*rel_incr_circ_post_2013*rel_incr_circ_post_2015) * circ_red_30_50;
     end;
 
     if caldate{t} > 2026.5 then do;
@@ -3063,7 +3069,7 @@ and age < 50 then do;
 			if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
 			np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 		end;
-		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age_tm1;end;
+		if hiv    ne 1 and vmmc_disrup_covid ne 1 then do;	mcirc=1;new_mcirc=1;age_circ=age;end;
 	end;
 
 	if test_link_circ=1 and t ge 2 and tested_tm1=1 and registd_tm1  ne 1 then do;
@@ -3076,17 +3082,6 @@ end;
 
 vmmc=0;if mcirc=1 and birth_circ ne 1 then vmmc=1;
 new_vmmc=0;if new_mcirc=1 and birth_circ ne 1 then new_vmmc=1;
-
-if gender = 1 then do;
-hivneg_uncirc_1014 =0; if 10 <= age < 15 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1014 = 1;
-hivneg_uncirc_1519 =0; if 15 <= age < 20 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_1519 = 1;
-hivneg_uncirc_2024 =0; if 20 <= age < 25 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2024 = 1;
-hivneg_uncirc_2529 =0; if 25 <= age < 30 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_2529 = 1;
-hivneg_uncirc_3034 =0; if 30 <= age < 35 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3034 = 1;
-hivneg_uncirc_3539 =0; if 35 <= age < 40 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_3539 = 1;
-hivneg_uncirc_4044 =0; if 40 <= age < 45 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4044 = 1;
-hivneg_uncirc_4549 =0; if 45 <= age < 50 and mcirc ne 1 and hiv ne 1 then hivneg_uncirc_4549 = 1;
-end;
 
 
 * treatment / follow-up status stays the same from t-1 to t, unless changed later in program;
@@ -3106,13 +3101,11 @@ ageg_ep=.;
 end;
 
 
-if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
-u=rand('uniform'); if u < rate_want_no_more_children  then want_no_more_children = 1; * dependent_on_time_step_length ;
-end;
-
-
-
 * PREGNANCY AND CHILDREN; * note code on pregnancy further below in section 3B;
+
+if t ge 2 and gender = 2 and 25 <= age_tm1  < 55 and want_no_more_children ne 1 then do;
+	u=rand('uniform'); if u < rate_want_no_more_children then want_no_more_children = 1; * dependent_on_time_step_length ;
+end;
 
 if t ge 2 and gender=2 then do;
 	pregnant=0;on_sd_nvp=0;on_dual_nvp=0;
@@ -11247,13 +11240,13 @@ cur_in_prep_inj_tail_no_r=0; if cur_in_prep_inj_tail_hiv=1 and (r_cab=0 or emerg
 	pcp_p   =0;
 
 	if hiv_monitoring_strategy=2 then do;
-		if visit=1 and . < cm    < 350 and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
+		if visit=1 and (. < cm < 350 or . < cm_tm1 < 350) and d lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 	end;
 
 	r=rand('uniform');
 	if visit=1 and (non_tb_who3_ev   =1 or adc=1) and r lt 0.8 and 1996 le caldate{t} lt 2015 then pcp_p   =1;
 
-	if caldate{t} ge 2015 and onart=1 then pcp_p   =1;
+	if onart=1 then pcp_p   =1;
 
 
 	if pop_wide_tld = 1 and onartvisit0 = 1 then pcp_p = 0;  
@@ -12237,7 +12230,7 @@ end;
 
 if tested=1 then ever_tested=1;
 
-if  caldate_never_dot > death > . then do; * update_24_4_21;
+<if  caldate_never_dot > death > . then do; * update_24_4_21;	* changed from caldate{t} to caldate_never_dot because caldate is missing for people who died in the previous time step JAS Jul23;
 	hiv=.;newp=.;np=.;epi   =.; epmono=.;sbp=.;  visit_hypertension=.; sbp_m=.;
 	diagnosed_hypertension=. ; on_anti_hypertensive =.; sbp_start_anti_hyp = .; start_anti_hyp_this_per =.;  
 	ever_on_anti_hyp =.;  effect_anti_hyp=.;  cvd_death_risk=.;  non_hiv_tb=.;  cur_non_hiv_tb_death_risk=.;  
@@ -17327,9 +17320,6 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	/*circumcision*/
 
-	s_hivneg_uncirc_1014 + hivneg_uncirc_1014 ; s_hivneg_uncirc_1519 + hivneg_uncirc_1519 ; 
-	s_hivneg_uncirc_2024 + hivneg_uncirc_2024 ; s_hivneg_uncirc_2529 + hivneg_uncirc_2529 ; s_hivneg_uncirc_3034 + hivneg_uncirc_3034 ; 
-	s_hivneg_uncirc_3539 + hivneg_uncirc_3539 ; s_hivneg_uncirc_4044 + hivneg_uncirc_4044 ; s_hivneg_uncirc_4549 + hivneg_uncirc_4549 ;
 	s_mcirc + mcirc ; s_mcirc_1519m + mcirc_1519m ; s_mcirc_2024m + mcirc_2024m ; s_mcirc_2529m + mcirc_2529m ; s_mcirc_3034m + mcirc_3034m ; 
 	s_mcirc_3539m + mcirc_3539m ; s_mcirc_4044m + mcirc_4044m ; s_mcirc_4549m + mcirc_4549m ; s_mcirc_50plm + mcirc_50plm ;
 	s_mcirc_5054m + mcirc_5054m ; s_mcirc_5559m + mcirc_5559m ; s_mcirc_6064m + mcirc_6064m ; s_mcirc_6569m + mcirc_6569m ;
@@ -19000,9 +18990,6 @@ s_new_mcirc_4044m  s_new_mcirc_4549m
 s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  
 
-s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
-s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
-
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 /* blood pressure */
@@ -19944,9 +19931,6 @@ s_new_mcirc_4044m  s_new_mcirc_4549m
 s_new_vmmc1519m  s_new_vmmc2024m  s_new_vmmc2529m  s_new_vmmc3034m  s_new_vmmc3539m  s_new_vmmc4044m 
 s_new_vmmc4549m  
 
-s_hivneg_uncirc_1014  s_hivneg_uncirc_1519 s_hivneg_uncirc_2024  s_hivneg_uncirc_2529  s_hivneg_uncirc_3034 
-s_hivneg_uncirc_3539 s_hivneg_uncirc_4044  s_hivneg_uncirc_4549 
-
 s_birth_circ  s_mcirc_1014m  s_new_mcirc_1014m  s_vmmc1014m  s_new_vmmc1014m
 
 /* blood pressure */
@@ -20040,7 +20024,7 @@ s_prop_w_vlg5   s_prop_w_vlg6   s_prop_y181m   s_sw  s_w_newp ;
 
 data r&da2; set r&da2; 
 
-if age  >= year_start;
+/*if age  >= lowest_age_at_start;*/		* commented out to prevent dead people being removed from overall dataset when age=. JAS Aug23;
 
 
 /*
@@ -20479,7 +20463,9 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=329,h=336,j=333,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=0);
 
- * QUERY 356 is end of 2072 for Zim (starts 1984) comment out s=1-4 JAS Jul23;
+* QUERY 356 is end of 2072 for Zim (starts 1984);
+* commented out s1-3 in core JAS Jul23;
+/*	
 data r1; set a      ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
@@ -21116,6 +21102,8 @@ data r1; set a      ;
 %update_r1(da1=2,da2=1,e=6,f=7,g=329,h=336,j=334,s=3);
 
 */
+
+
 
 
 * ts1m:  need more update statements ;
