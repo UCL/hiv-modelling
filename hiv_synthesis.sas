@@ -1995,6 +1995,7 @@ _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand
 option = &s;			
 * options mprint;
 
+option = 0;	* SQ;
 /*option = 15;	* MIHPSA: oral PrEP for AGYW;*/
 /*option = 16;	* MIHPSA: oral PrEP for FSW;*/
 /*option = 17;	* MIHPSA: oral PrEP for SDC;*/
