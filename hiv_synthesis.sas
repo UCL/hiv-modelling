@@ -20237,12 +20237,6 @@ end;
 %update_r1(da1=1,da2=2,e=7,f=8,g=125,h=132,j=131,s=0);
 %update_r1(da1=2,da2=1,e=8,f=9,g=125,h=132,j=132,s=0);	* QUERY - end 2021? JAS Jul23;
 
-
-data a ;  set r1 ;
-
-data r1 ; set a ;
-
-
 %update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=0);
@@ -20266,8 +20260,12 @@ data r1 ; set a ;
 %update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=0);
 %update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=0);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);
+%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=0);	* end of 2022 (zim);
 
+
+data a ;  set r1 ;
+
+data r1 ; set a ;
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=0);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=0);
@@ -20457,30 +20455,7 @@ data r1 ; set a ;
 
 data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=1);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=1);													  
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=1);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=1);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=1);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=1);
+
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=1);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=1);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=1);
@@ -20670,30 +20645,6 @@ data r1; set a      ;
 
 data r1; set a     ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=2);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=2);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=2);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=2);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=2);
 
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=2);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=2);
@@ -20882,30 +20833,6 @@ data r1; set a     ;
 
 data r1; set a      ;
 
-%update_r1(da1=1,da2=2,e=5,f=6,g=129,h=136,j=133,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=129,h=136,j=134,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=129,h=136,j=135,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=129,h=136,j=136,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=133,h=140,j=137,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=133,h=140,j=138,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=133,h=140,j=139,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=133,h=140,j=140,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=137,h=144,j=141,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=137,h=144,j=142,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=137,h=144,j=143,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=137,h=144,j=144,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=141,h=148,j=145,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=141,h=148,j=146,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=141,h=148,j=147,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=141,h=148,j=148,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=145,h=152,j=149,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=145,h=152,j=150,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=145,h=152,j=151,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=145,h=152,j=152,s=3);
-%update_r1(da1=1,da2=2,e=5,f=6,g=149,h=156,j=153,s=3);
-%update_r1(da1=2,da2=1,e=6,f=7,g=149,h=156,j=154,s=3);
-%update_r1(da1=1,da2=2,e=7,f=8,g=149,h=156,j=155,s=3);
-%update_r1(da1=2,da2=1,e=8,f=9,g=149,h=156,j=156,s=3);
 %update_r1(da1=1,da2=2,e=5,f=6,g=153,h=160,j=157,s=3);
 %update_r1(da1=2,da2=1,e=6,f=7,g=153,h=160,j=158,s=3);
 %update_r1(da1=1,da2=2,e=7,f=8,g=153,h=160,j=159,s=3);
