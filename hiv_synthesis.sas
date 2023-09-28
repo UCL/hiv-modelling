@@ -2126,6 +2126,16 @@ who may be dead and hence have caldate{t} missing;
 		condom_incr_year_i=2;    *Switchs off SBCC;
 		circ_inc_rate_year_i = 2;*No VMMC;
 
+		turn_prep_off=1;					* marker not to update PrEP eff_ parameters off downstream JAS Sep23;
+		eff_rate_test_startprep_any=0;		*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
+		eff_prob_prep_oral_b=0;
+		eff_prob_prep_inj_b=0; 
+		eff_prob_prep_vr_b=0;
+		eff_rate_choose_stop_prep_oral=1;
+		eff_rate_choose_stop_prep_inj=1;
+		eff_rate_choose_stop_prep_vr=1;
+		eff_prob_prep_any_restart_choice=0;	
+
 		*More PrEP variables are switched off later on;
 		prep_any_strategy=0;
 		date_prep_oral_intro=2100;
@@ -2298,9 +2308,6 @@ end;
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
 if . < caldate{t} < date_prep_inj_intro or date_prep_inj_intro=. then pref_prep_inj = 0;
 if . < caldate{t} < date_prep_vr_intro or date_prep_vr_intro=. then pref_prep_vr = 0;
-
-* delay in roll-out of prep_inj in men as no direct data in msw yet;
-/*if gender=1 and caldate{t} < 2027 then pref_prep_inj=0;					* commented out for now but we may need to use this code in future analyses JAS Jul23;*/
 
 * highest_prep_pref;
 * does not show people who are not willing to take any PrEP type;
@@ -3287,6 +3294,9 @@ ch_risk_beh_ep = ch_risk_beh_ep2000_+((1-ch_risk_beh_ep2000_)*prop_redattr_sbcc)
 
 * MIHPSA PrEP options that cannot go in main options section; * QUERY because they have to come after the testing section? JAS Jul23;
 *In the essential scenario no one is on PrEP;
+
+*JAS Sep23 comment this option bit out;
+/*
 if option ne . and option ne 0 and caldate{t} >= &year_interv then do;
 	eff_rate_test_startprep_any=0;*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
 	eff_prob_prep_oral_b=0;
@@ -3297,8 +3307,8 @@ if option ne . and option ne 0 and caldate{t} >= &year_interv then do;
 	eff_rate_choose_stop_prep_vr=1;
 	eff_prob_prep_any_restart_choice=0;	
 end;   
-
-* MIHPSA Oral PrEP; *JAS Apr2023;	* QUERY can this be >= &year_interv? at the moment, no one is on PrEP in year 2024 JAS Jul23;
+*/
+* MIHPSA Oral PrEP; *JAS Apr2023;
 if option = 15 and caldate{t} >= &year_interv then do;		*Essential + Oral TDF/FTC PrEP for AGWY;
 		*Following values need to change;
 		eff_rate_test_startprep_any=0.95;	*If we want to evaluate 1 PrEP modality this cannot be 0, but we can play with date_prep_oral_intro, date_prep_inj_intro and date_prep_vr_intro;
@@ -4562,7 +4572,7 @@ if anc=1 then do;
 			end;
 	end;
     *5Nov2016: women who are already diagnosed but who do not disclose get tested;
-    u=rand('uniform'); if registd=1 and tested ne 1 and caldate{t} = dt_start_pregn+0.25 and u<0.7 then do;tested=1; tested_anc_prevdiag=1; end;
+    u=rand('uniform'); if registd=1 and tested ne 1 and caldate{t} = dt_start_pregn+0.25 and u<0.7 then tested_anc_prevdiag=1;
 end;
 
 tested_pd=0;
