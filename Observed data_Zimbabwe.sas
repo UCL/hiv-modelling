@@ -3074,7 +3074,7 @@ if cald in (2023.75 2024.75 2025.75 2026.75) then do;
 if cald=2023.75 then do;
 	target_prepinit_1524w = 37144;	target_prepinit_pbf   = 18900;*Pregnant and Lactating Women;end;
 if cald=2024.75 then do;
-	target_prepinit_1524w = 41639; 	target_prepinit_pbf   = 21187;*Pregnant and Lactating Women;end
+	target_prepinit_1524w = 41639; 	target_prepinit_pbf   = 21187;*Pregnant and Lactating Women;end;
 if cald=2025.75 then do;
 	target_prepinit_1524w = 44303;	target_prepinit_pbf   = 22543;*Pregnant and Lactating Women;end;
 if cald=2026.75 then do;
