@@ -13,7 +13,7 @@ n_tested_w_sympt n_tested_m_sympt
 n_tested_m_circ n_tested_w_non_anc n_tested_w_labdel n_tested_w_pd
 n_vm;run;*/
 data b;
-set a.l_base_10_08_2023;
+set a.l_base_27_09_2023;
 
 
 p_onart_vl1000_all = .;

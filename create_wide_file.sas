@@ -3,9 +3,9 @@
 
 libname a "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe";
 
-libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v16_uptoend2042_2023Aug10_out";
+libname b "C:\Users\Valentina\Dropbox (UCL)\hiv synthesis ssa unified program\output files\zimbabwe\mihpsa_p2_v17_uptoend2072_2023Sep27_out";
 
-data a.base_10_08_2023;   set b.out:;run;
+data a.base_27_09_2023;   set b.out:;run;
 
 *Investigating why p_newp_ge1 is going down;
 /*
@@ -20,8 +20,8 @@ proc sort data=a.base_16_06_23; by run; run;
 proc print data=a.base_16_06_23; var run; where cald=2022.75;run;*/
 ods html close;
 ods listing;
-proc freq data=a.base_10_08_2023; table run;run;
-proc freq data=a.base_10_08_2023; table cald;run;*594 simulations;
+proc freq data=a.base_27_09_2023; table run;run;
+proc freq data=a.base_27_09_2023; table cald;run;*69 simulations;
 
 /*
 proc freq data=a.base_25_05_23;
@@ -33,14 +33,12 @@ s_tested_ancpd  s_diag_thisper_progsw;run;*/
 
 
 
-data g; set  a.base_10_08_2023;
+data g; set  a.base_27_09_2023;
 
 proc sort data=g; 
 by run cald option;run;
-*116 out of 1000;
-*100 out of 860;
-*87 out of 850;
-*104 out of 850;
+*69 out of ~964;
+
 
 * calculate the scale factor for the run, based on 1000000 / s_alive in 2019 ;
 data sf;
@@ -1231,7 +1229,7 @@ dcost_80 ddaly_80
 proc sort data=y;by run option;run;
 
 * l.base is the long file after adding in newly defined variables and selecting only variables of interest - will read this in to graph program;
-data a.l_base_10_08_2023; set y;  run;
+data a.l_base_27_09_2023; set y;  run;
 /*proc freq data=a.l_base_17_05_23;table prevalence_sw  n_sw_1564 ;run;
 proc freq data=a.l_base_25_05_23;table 
 n_death_hivrel_m  n_death_hivrel_w  n_diag_w  test_proppos_w
