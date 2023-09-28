@@ -234,7 +234,7 @@ if cald=2012.5 then do; o_pop_ab1ts6m_nbcs=39497; end;
 *** >=1 TS partner in last 12 months (Notes made by VC (Notes_CEA_meeting_28Jan2016_final (002)_LBM) state 1 TSP should not be 
 	considered as FSW);
 
-*Source: Population-Level Impact of Zimbabwe's National Behavioural Change Programme, Buzdugan, Cowan 2015,5.1%+3.8%=8.9% in 2011
+*Source: Population-Level Impact of Zimbabwes National Behavioural Change Programme, Buzdugan, Cowan 2015,5.1%+3.8%=8.9% in 2011
 		 Estimated as above - 8.9% * 3291432;
 if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 
@@ -248,7 +248,7 @@ if cald=2012.5 then do; o_pop_fsw_1ts12m_nbcs=292937; end;
 		  implying 41% CCU in 2016
 
 
-Numbers below are estimated by multiplying 67.7% with David Wilson's and NBCP estimates above
+Numbers below are estimated by multiplying 67.7% with David Wilson and NBCP estimates above
 (In Document “Sisters numbers v4” circulated in Mar 2016 55% used condom at last sex);
 
 /* these numbers were calculated using the 59.3% which we are now unable to find;
@@ -303,7 +303,7 @@ if cald=2011.5 then o_fsw_seen_py_cowan=3560;
 	- o_p_fsw_1ts6m_1849w_nbcs:   1 transactional sex partners in the last 6 months;
 
 ***LBM update Sep2016;
-*Source: Population-Level Impact of Zimbabwe's National Behavioural Change Programme, Cowan 2015,5.1%+3.8%=8.9% in 2011
+*Source: Population-Level Impact of Zimbabwes National Behavioural Change Programme, Cowan 2015,5.1%+3.8%=8.9% in 2011
 	- o_p_fsw_1ts12m_1849w_nbcs:   >=1 transactional sex partners in the last 12 months;
 
 if cald=2011.5 then do;
@@ -389,7 +389,7 @@ if cald=2014 then o_s_fertility_mims=4.3;
 
 *Source: CIA website, accessed Sep 2016 "https://www.cia.gov/library/publications/the-world-factbook/geos/zi.html";
 if cald=2016 then o_s_fertility_cia=3.5;
-if cald=2014 then o_s_fertility_cia=3.56; *(page no longer active, number reported from Vale's Zimbabwe Summary data file);
+if cald=2014 then o_s_fertility_cia=3.56; *(page no longer active, number reported from Vales Zimbabwe Summary data file);
 
 *Source: United Nations World Population Prospects, 2012 revision
          "https://esa.un.org/unpd/wpp/Publications/Files/WPP2012_Volume-I_Comprehensive-Tables.pdf";
@@ -430,7 +430,7 @@ if cald=2016.5 then o_s_exppregn_MoH=433914;
 if cald=2022.5 then o_s_exppregn_MoH=508952;*VCMar2023;
 
 
-*Source:  'Issues_with_testing_in_anc_20161107'. Document produced by VC to explore discrepancies in anc data;
+*Source:  "Issues_with_testing_in_anc_20161107". Document produced by VC to explore discrepancies in anc data;
 ***Number of pregnant women;
 if cald=2011.5 then o_s_pregnant_MoH=412122;
 if cald=2013.5 then o_s_pregnant_WHO=398474;
@@ -773,7 +773,7 @@ if cald=2006 then do;
 *The following are from Hogan 2012;o_prev1549m_ll_Z_Hog=0.113;o_prev1549m_ul_Z_Hog=0.253; 
 *The following are from Hogan 2012;o_prev1549w_ll_Z_Hog=0.133;o_prev1549w_ul_Z_Hog=0.333; 
 
-*Source: David Wilson's estimates;
+*Source: David Wilson estimates;
 	o_prev2549m_Z_DHS=0.233; o_prev2549w_Z_DHS=0.325;
 	o_prev50plm_Z_DHS=0.20;  o_prev50plw_Z_DHS=0.28;
 
@@ -806,7 +806,7 @@ if cald=2011 then do;
 *The following are based on Hogan 2012; o_prev1549m_ll_Z_Hog=0.096;o_prev1549m_ul_Z_Hog=0.214; 
 
 
-*Source: David Wilson's estimates;
+*Source: David Wilson estimates;
 	o_prev2549m_Z_DHS=0.166; o_prev2549w_Z_DHS=0.253;
 	o_prev50plm_Z_DHS=0.194; o_prev50plw_Z_DHS=0.296;
 end;
@@ -1025,7 +1025,7 @@ end;
 
 ***LBM Feb 2017;
 ***Prevalence stratified by age and duration of FSW;
-*Source: Draft Paper  - 'How can programmes better support female sex workers to avoid HIV infection in Zimbabwe' (Cowen 2017)? ;
+*Source: Draft Paper  - "How can programmes better support female sex workers to avoid HIV infection in Zimbabwe" (Cowen 2017)? ;
 if cald=2013.5 then do;
 	o_prev_1824fsw_0_2_rds=0.31;	o_prev_2529fsw_0_2_rds=0.53;	o_prev_3039fsw_0_2_rds=0.63;	o_prev_ov40fsw_0_2_rds=0.80;
 	o_prev_1824fsw_3_4_rds=0.43;	o_prev_2529fsw_3_4_rds=0.54;	o_prev_3039fsw_3_4_rds=0.63;	o_prev_ov40fsw_3_4_rds=0.67;
@@ -1531,7 +1531,7 @@ if cald=2009.5 then o_p_evertested_1549w_mim=0.449;
 if cald=2014.5 then o_p_evertested_1549w_mim=0.816;
 
 *Source: National Behavioural Change Programme, AIDS 2010 Conference
-		(Langhaug L, Buzdugan R, Dirawo J, et al. An evaluation of Zimbabwe's national behaviour change programme: results of the mid-term evaluation survey. 2010 Jul, Vienna, Austria 2010.);
+		(Langhaug L, Buzdugan R, Dirawo J, et al. An evaluation of Zimbabwe national behaviour change programme: results of the mid-term evaluation survey. 2010 Jul, Vienna, Austria 2010.);
 if cald=2010.5 then do; o_p_evertested_1844_i_nbcp=0.5; o_p_evertested_1844_c_nbcp=0.36; end;
 
 *Source: National Behavioural Change Programme 2013 
@@ -1725,7 +1725,7 @@ Q1 - Are people diagnosed in hospital symptomatic people or are they due to PITC
 Q2 - Would most people who develop WHO4 or WHO3 disease present in the hospital?
 	 Reply from Tsitsi on 5th July 2016: "yes, this is true"
 Q3 - I know that circumcision is rolled out in Zim, if a person is diagnosed at the test pre-circumcision to which of the “reasons” it belongs? 
-	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  'hospital/illness' where VMMC is offered at the hospital or 'Other'. 
+	 Reply from Tsitsi on 5th July 2016: It could be classified as either as  "hospital/illness" where VMMC is offered at the hospital or "Other". 
 	 We are revising the Green book so there is need to specifiy VMMC."
 Q4 - What is the denominator?
 	 Reply from Tsitsi on 11th July 2016: 
@@ -2153,7 +2153,7 @@ if cald=2015.5  then do; o_s_all_on1stline_NAC = 831584; o_s_all_2ndline_NAC = 2
 
 
 ***LBM Update Mar 2017;
-*  Tsitsi Apollo, received 23rd Feb 2017 'Zim_Adults on ART by gender';
+*  Tsitsi Apollo, received 23rd Feb 2017 "Zim_Adults on ART by gender";
 * "all refers to adults";
 if cald=2004.75 then do;	o_s_allmale_onart_NAC = 4857;   o_s_allfemale_onart_NAC = 6143; 	o_s_all_onart_NAC=11000; end;
 if cald=2005.75 then do;	o_s_allmale_onart_NAC = 11305;  o_s_allfemale_onart_NAC = 14562;	o_s_all_onart_NAC=25867; end;
@@ -2488,7 +2488,7 @@ if cald=2009 then do;
 end;
 
 ***LBM Update Sep 2016;
-*Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe's
+*Source: Patient Retention, Clinical Outcomes and Attrition-Associated Factors of HIV-Infected Patients Enrolled in Zimbabwe
 		 National Antiretroviral Therapy Programme, 2007–2010, Mutasa-Apollo 2014;
 
 if cald=2008 then do;
@@ -2597,8 +2597,8 @@ if cald=2010 then do; o_ratecifail_Renaud=0.264; o_ratecifail_ll_Renaud=0.173; o
 *** Proportion with treatment failure (based on viral load);
 
 *Source: Report on the National HIV Drug Resistance Monitoring at Sentinel sites (2009–2011)” 2009-2011 (n=1000),
-		 cited in 'Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014; 
+		 cited in "Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014; 
 
 *Treatment failure definition: VL>1000 at 12m;
 if cald=2010.5 then o_p_vlab1000_12mart_HDRM=0.104;
@@ -2616,7 +2616,7 @@ end;
 *** Proportion who switched to 2nd line;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 3; 
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 3; 
 
 *Treatment failure definition: switch to 2nd line based on clinical or immunological monitoring;
 if cald=2009 then o_p_switch2nd_17mart_Mutasa=0.104;
@@ -2672,7 +2672,7 @@ if cald=2008.5 then o_p_ret_12m_art_WHORes=0.952;*0.939 if exlucing 1.3% people 
 *At different time points;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014;
+		 Zimbabwe National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014;
 if cald=2009 then do;
 	 o_p_ret_6m_art_mutasa=0.907; o_p_ret_6m_art_ll_mutasa=0.861; o_p_ret_6m_art_ul_mutasa=0.938;
 	o_p_ret_12m_art_mutasa=0.781;o_p_ret_12m_art_ll_mutasa=0.697;o_p_ret_12m_art_ul_mutasa=0.847;
@@ -2712,7 +2712,7 @@ end;
 *** Proportion dead at timepoints since ART initiation;
 
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 5;
+		 Zimbabwes National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 5;
 if cald=2009 then do;
 	 o_p_dead_6m_art_mutasa=0.041; 
 	o_p_dead_12m_art_mutasa=0.048;
@@ -2756,7 +2756,7 @@ if cald=2007 then do; o_deathrate_art_2430_msfb=0.077; o_deathrate_art_2430_ll_m
 
 *** Proportion lost at x months since ART initiation;
 *Source: Patient retention, clinical outcomes and attrition-associated factors of HIV-infected patients enrolled in
-		 Zimbabwe's National Antiretroviral Therapy Programme, 2007-2010', Mutasa-Apollo 2014, Page 5;
+		 Zimbabwes National Antiretroviral Therapy Programme, 2007-2010", Mutasa-Apollo 2014, Page 5;
 
 *Definition of lost to follow-up is >90 days late for a scheduled visit with the healthcare provider or pharamcy;
 if cald=2009 then do;
@@ -3070,7 +3070,7 @@ end;
 
 *PrEP_New: Number of clients initiating the indicated PrEP method(s) for the first time during the date range displayed.;
 if cald in (2023.75 2024.75 2025.75 2026.75) then do;
-	`target_prepinit_sdc  = 10149;	target_prepinit_fsw   = 6960;end;
+	target_prepinit_sdc  = 10149;	target_prepinit_fsw   = 6960;end;
 if cald=2023.75 then do;
 	target_prepinit_1524w = 37144;	target_prepinit_pbf   = 18900;*Pregnant and Lactating Women;end;
 if cald=2024.75 then do;
